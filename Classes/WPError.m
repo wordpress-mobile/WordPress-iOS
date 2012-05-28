@@ -39,23 +39,23 @@ NSString * const WPErrorResponseKey = @"wp_error_response";
                         case 415:
                         case 416:
                         case 417:
-                            customTitle = NSLocalizedString(@"Incompatible site", @"");
-                            message = [NSString stringWithFormat:NSLocalizedString(@"Your WordPress site returned a error %d.\nThat probably means you have some special configuration that is not compatible with this app.\nPlease let us know in the forums about it.", @""), response.statusCode];
+                            customTitle = NSLocalizedString(@"Incompatible site", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error being returned from the site.");
+                            message = [NSString stringWithFormat:NSLocalizedString(@"Your WordPress site returned a error %d.\nThat probably means you have some special configuration that is not compatible with this app.\nPlease let us know in the forums about it.", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error being returned from the site."), response.statusCode];
                             break;
                         case 403:
-                            customTitle = NSLocalizedString(@"Forbidden Access", @"");
-                            message = NSLocalizedString(@"Received 'Forbidden Access'.\nIt seems there is a problem with your WordPress site", @"");
+                            customTitle = NSLocalizedString(@"Forbidden Access", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error accessing the site.");
+                            message = NSLocalizedString(@"Received 'Forbidden Access'.\nIt seems there is a problem with your WordPress site", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error accessing the site.");
                             break;
                         case 500:
                         case 501:
-                            customTitle = NSLocalizedString(@"Internal Server Error", @"");
-                            message = NSLocalizedString(@"Received 'Internal Server Error'.\nIt seems there is a problem with your WordPress site", @"");
+                            customTitle = NSLocalizedString(@"Internal Server Error", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error accessing the site, most likely due to an error with the server hosting the WP install.");
+                            message = NSLocalizedString(@"Received 'Internal Server Error'.\nIt seems there is a problem with your WordPress site", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error accessing the site, most likely due to an error with the server hosting the WP install.");
                             break;
                         case 502:
                         case 503:
                         case 504:
-                            customTitle = NSLocalizedString(@"Temporary Server Error", @"");
-                            message = NSLocalizedString(@"It seems your WordPress site is not accessible at this time, please try again later", @"");
+                            customTitle = NSLocalizedString(@"Temporary Server Error", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error accessing the site, most likely due to an error with the server hosting the WP install, but may be a temporary issue.");
+                            message = NSLocalizedString(@"It seems your WordPress site is not accessible at this time, please try again later", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error accessing the site, most likely due to an error with the server hosting the WP install, but may be a temporary issue.");
                             break;
                         default:
                             break;

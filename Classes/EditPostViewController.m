@@ -148,28 +148,28 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (currentView != editView) {
         [self switchToView:editView];
     }
-	self.navigationItem.title = NSLocalizedString(@"Write", @"");
+	self.navigationItem.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
 }
 
 - (IBAction)switchToSettings {
     if (currentView != postSettingsController.view) {
         [self switchToView:postSettingsController.view];
     }
-	self.navigationItem.title = NSLocalizedString(@"Settings", @"");
+	self.navigationItem.title = NSLocalizedString(@"Settings", @"Post Editor / Settings screen title.");
 }
 
 - (IBAction)switchToMedia {
     if (currentView != postMediaViewController.view) {
         [self switchToView:postMediaViewController.view];
     }
-	self.navigationItem.title = NSLocalizedString(@"Media", @"");
+	self.navigationItem.title = NSLocalizedString(@"Media", @"Post Editor / Media screen title.");
 }
 
 - (IBAction)switchToPreview {
     if (currentView != postPreviewViewController.view) {
         [self switchToView:postPreviewViewController.view];
     }
-	self.navigationItem.title = NSLocalizedString(@"Preview", @"");
+	self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
 }
 
 - (IBAction)addVideo:(id)sender {
@@ -248,11 +248,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
 
-    titleLabel.text = NSLocalizedString(@"Title:", @"");
-    tagsLabel.text = NSLocalizedString(@"Tags:", @"");
-    tagsTextField.placeholder = NSLocalizedString(@"Separate tags with commas", @"");
-    categoriesLabel.text = NSLocalizedString(@"Categories:", @"");
-    textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"");
+    titleLabel.text = NSLocalizedString(@"Title:", @"Label for the title of the post field. Should be the same as WP core.");
+    tagsLabel.text = NSLocalizedString(@"Tags:", @"Label for the tags field. Should be the same as WP core.");
+    tagsTextField.placeholder = NSLocalizedString(@"Separate tags with commas", @"Placeholder text for the tags field. Should be the same as WP core.");
+    categoriesLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
+    textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
 	textViewPlaceHolderField.textAlignment = UITextAlignmentCenter; 
 
     if ([textView respondsToSelector:@selector(setInputAccessoryView:)]) {
@@ -281,8 +281,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     postPreviewViewController.postDetailViewController = self;
     postPreviewViewController.view.frame = editView.frame;
     
-	self.navigationItem.title = NSLocalizedString(@"Write", @"");
-	statuses = [[NSArray arrayWithObjects:NSLocalizedString(@"Local Draft", @""), NSLocalizedString(@"Draft", @""), NSLocalizedString(@"Private", @""), NSLocalizedString(@"Pending review", @""), NSLocalizedString(@"Published", @""), nil] retain];
+	self.navigationItem.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
+	statuses = [[NSArray arrayWithObjects:NSLocalizedString(@"Local Draft", @""), NSLocalizedString(@"Draft", @"Post status label in the posts list if the post has not yet been synced to the remote server."), NSLocalizedString(@"Private", @"Post status label in the posts list if the post is marked as private. Should be the same as WP core."), NSLocalizedString(@"Pending review", @"Post status label in the post list if the post is pending review. Should be the same as WP core."), NSLocalizedString(@"Published", @"Post status to indicate that the post is live and published. Should be the same as WP core."), nil] retain];
 	
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -298,7 +298,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	
     isTextViewEditing = NO;
-    spinner = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Saving...", @"")];
+    spinner = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Saving...", @"Status message to indicate that content in saving (use an ellipsis (...) towards the end)")];
 	hasSaved = NO;
     
     currentView = editView;
@@ -364,7 +364,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	animateWiggleIt.toValue=[NSNumber numberWithFloat:0.06];
 	[textViewPlaceHolderField.layer addAnimation:animateWiggleIt forKey:@"textViewPlaceHolderField"];
 	
-	self.navigationItem.title = NSLocalizedString(@"Write", @"");
+	self.navigationItem.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
 }
 
 - (void)viewWillDisappear:(BOOL)animated {	
@@ -425,21 +425,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [cancelButton release];
     
     UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] init];
-    saveButton.title = NSLocalizedString(@"Save", @"");
+    saveButton.title = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
     saveButton.target = self;
     saveButton.style = UIBarButtonItemStyleDone;
     saveButton.action = @selector(saveAction:);
     
     if(![self.apost hasRemote]) {
         if ([self.apost.status isEqualToString:@"publish"] && ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
-            saveButton.title = NSLocalizedString(@"Schedule", @"");
+            saveButton.title = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
 		} else if ([self.apost.status isEqualToString:@"publish"]){
-			saveButton.title = NSLocalizedString(@"Publish", @"");
+			saveButton.title = NSLocalizedString(@"Publish", @"Publish button label.");
 		} else {
-            saveButton.title = NSLocalizedString(@"Save", @"");
+            saveButton.title = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
         }
     } else {
-        saveButton.title = NSLocalizedString(@"Update", @"");
+        saveButton.title = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
     }
     self.navigationItem.rightBarButtonItem = saveButton;
     
@@ -447,7 +447,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)refreshUIForCompose {
-	self.navigationItem.title = NSLocalizedString(@"Write", @"");
+	self.navigationItem.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
     titleTextField.text = @"";
     textView.text = @"";
     textViewPlaceHolderField.hidden = NO;
@@ -458,7 +458,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if ([self.apost.postTitle length] > 0) {
         self.navigationItem.title = self.apost.postTitle;
     }
-    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"")
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"Back button label.")
 																			 style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
 	
     titleTextField.text = self.apost.postTitle;
@@ -751,17 +751,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	UIActionSheet *actionSheet;
 	if (![self.apost hasRemote]) {
         if ([self isAFreshlyCreatedDraft]) {
-            actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
-                                                      delegate:self cancelButtonTitle:NSLocalizedString(@"Keep editing", @"") destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
-                                             otherButtonTitles:NSLocalizedString(@"Save Draft", @""), nil];
+            actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+                                                      delegate:self cancelButtonTitle:NSLocalizedString(@"Keep editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.") destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                             otherButtonTitles:NSLocalizedString(@"Save Draft", @"Button shown if there are unsaved changes and the author is trying to move away from the post."), nil];
         } else {
-            actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
-                                                      delegate:self cancelButtonTitle:NSLocalizedString(@"Keep editing", @"") destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
-                                             otherButtonTitles:NSLocalizedString(@"Update Draft", @""), nil];
+            actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+                                                      delegate:self cancelButtonTitle:NSLocalizedString(@"Keep editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.") destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                             otherButtonTitles:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post."), nil];
         }
 	} else {
-		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
-												  delegate:self cancelButtonTitle:NSLocalizedString(@"Keep editing", @"") destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
+		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+												  delegate:self cancelButtonTitle:NSLocalizedString(@"Keep editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.") destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
 										 otherButtonTitles:nil];
     }
 
@@ -823,8 +823,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 65.0, 260.0, 28.0)];
 	}
 
-    infoText.placeholder = NSLocalizedString(@"Text to be linked", @"");
-    urlField.placeholder = NSLocalizedString(@"Link URL", @"");
+    infoText.placeholder = NSLocalizedString(@"Text to be linked", @"Popup to aid in creating a Link in the Post Editor.");
+    urlField.placeholder = NSLocalizedString(@"Link URL", @"Popup to aid in creating a Link in the Post Editor, URL field (where you can type or paste a URL that the text should link.");
 	infoText.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	urlField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     
@@ -843,9 +843,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     urlField.keyboardAppearance = UIKeyboardAppearanceAlert;
 	infoText.keyboardType = UIKeyboardTypeDefault;
 	urlField.keyboardType = UIKeyboardTypeURL;
-    [addURLSourceAlert addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
-    [addURLSourceAlert addButtonWithTitle:NSLocalizedString(@"Insert", @"")];
-    addURLSourceAlert.title = NSLocalizedString(@"Make a Link\n\n\n\n", @"");
+    [addURLSourceAlert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")];
+    [addURLSourceAlert addButtonWithTitle:NSLocalizedString(@"Insert", @"Insert content (link, media) button")];
+    addURLSourceAlert.title = NSLocalizedString(@"Make a Link\n\n\n\n", @"Title of the Link Helper popup to aid in creating a Link in the Post Editor. DON'T REMOVE the line breaks!");
     addURLSourceAlert.delegate = self;
     [addURLSourceAlert addSubview:infoText];
     [addURLSourceAlert addSubview:urlField];
@@ -1022,7 +1022,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         if ([self.apost.postTitle length] > 0) {
             self.navigationItem.title = self.apost.postTitle;
         } else {
-            self.navigationItem.title = NSLocalizedString(@"Write", @"");
+            self.navigationItem.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
         }
 
     }

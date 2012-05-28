@@ -98,7 +98,7 @@
     // 0. Is an empty url? Sorry, no psychic powers yet
     // ------------------------------------------------
     if (url == nil || [url isEqualToString:@""]) {
-        NSError *error = [NSError errorWithDomain:@"org.wordpress.api" code:0 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Empty URL", @"") forKey:NSLocalizedDescriptionKey]];
+        NSError *error = [NSError errorWithDomain:@"org.wordpress.api" code:0 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Empty URL", @"Used to display an error message in the set up process when no URL is provided in the URL field.") forKey:NSLocalizedDescriptionKey]];
         return failure ? failure(error) : nil;
     }
     
@@ -117,7 +117,7 @@
     if (xmlrpcURL == nil) {
         // Not a valid URL. Could be a bad protocol (htpp://), syntax error (http//), ...
         // See https://github.com/koke/NSURL-Guess for extra help cleaning user typed URLs
-        NSError *error = [NSError errorWithDomain:@"org.wordpress.api" code:1 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Invalid URL", @"") forKey:NSLocalizedDescriptionKey]];
+        NSError *error = [NSError errorWithDomain:@"org.wordpress.api" code:1 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Invalid URL", @"Used to display an error message in the set up process when a malformed URL is provided in the URL field.") forKey:NSLocalizedDescriptionKey]];
         return failure ? failure(error) : nil;
     }
     [self validateXMLRPCUrl:xmlrpcURL success:^{

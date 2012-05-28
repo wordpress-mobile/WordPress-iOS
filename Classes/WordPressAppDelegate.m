@@ -234,7 +234,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 			[wViewController release];
 		}
 		else {
-			blogsViewController.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Blogs", @"") style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
+			blogsViewController.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Blogs", @"Blogs list screen title.") style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
 		}
 		
 	}
@@ -484,8 +484,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                           message:message
                           delegate:self
-						cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-						otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+						cancelButtonTitle:NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.")
+						otherButtonTitles:NSLocalizedString(@"OK", @"OK button label."), nil];
     [alert show];
     [alert release];
 }
@@ -532,7 +532,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	if([cleanedErrorMsg rangeOfString:@"NSXMLParserErrorDomain"].location != NSNotFound )
 		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your blog.", @"");
 	
-	[self showAlertWithTitle:NSLocalizedString(@"Error", @"") message:cleanedErrorMsg];
+	[self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
 }
 
 
@@ -547,18 +547,18 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	else 
 		lineBreaks = @"\n\n\n";
 	
-	UIAlertView *customSizeAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Incorrect Password", @"") 
+	UIAlertView *customSizeAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Incorrect Password", @"If the password was lost, a popup asks the author to update their password, this is the popup's title.") 
 															  message:lineBreaks // IMPORTANT
 															 delegate:self 
-													cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
-													otherButtonTitles:NSLocalizedString(@"Save", @""), nil];
+													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button label.") 
+													otherButtonTitles:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment)."), nil];
 	
 	customSizeAlert.tag = 101;
 	
 	labelPasswd = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 48.0, 260.0, 29.0)];
 	labelPasswd.backgroundColor = [UIColor clearColor];
 	labelPasswd.textColor = [UIColor whiteColor];
-	labelPasswd.text = NSLocalizedString(@"Please update your password:", @"");
+	labelPasswd.text = NSLocalizedString(@"Please update your password:", @"If the password was lost, a popup asks the author to update their password, this is the popup's description.");
 	[customSizeAlert addSubview:labelPasswd];
 	[labelPasswd release];
 	
@@ -1100,17 +1100,17 @@ static WordPressAppDelegate *wordPressApp = NULL;
                     lastNotificationInfo = [userInfo retain];
                     UIAlertView *alert = nil;
                     if ([userInfo objectForKey:@"blog_id"] && [userInfo objectForKey:@"comment_id"]) {
-                        alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New comment", @"")
+                        alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New comment", @"Popup title for a new push notification (shown when you receive a push notification and the phone is not locked).")
                                                            message:message
                                                           delegate:self
-                                                 cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
-                                                 otherButtonTitles:NSLocalizedString(@"View", @"View comment from push notification"), nil];
+                                                 cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Popup dismiss button for a new push notification (shown when you receive a push notification and the phone is not locked).")
+                                                 otherButtonTitles:NSLocalizedString(@"View", @"Popup view push notification button for a new push notification (shown when you receive a push notification and the phone is not locked)."), nil];
                     } else {
                         // Unsupported notification: show it but do nothing when it's dismissed
                         alert = [[UIAlertView alloc] initWithTitle:nil
                                                            message:message
                                                           delegate:self
-                                                 cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
+                                                 cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Popup dismiss button for a new push notification (shown when you receive a push notification and the phone is not locked).")
                                                  otherButtonTitles:nil];
                     }
                     alert.tag = kNotificationNewComment;
@@ -1314,7 +1314,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 							   initWithTitle: [error localizedDescription]
 							   message: [error localizedFailureReason]
 							   delegate:nil
-							   cancelButtonTitle:NSLocalizedString(@"OK", @"")
+							   cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label (shown in popups).")
 							   otherButtonTitles:nil];
 	[errorAlert show];
 	[errorAlert release];
@@ -1326,11 +1326,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     if ([statsDataString compare:appversion options:NSNumericSearch] > 0) {
         NSLog(@"There's a new version: %@", statsDataString);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Update Available", @"")
-                                                        message:NSLocalizedString(@"A new version of WordPress for iOS is now available", @"")
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Update Available", @"Popup title to highlight a new version of the app being available.")
+                                                        message:NSLocalizedString(@"A new version of WordPress for iOS is now available", @"Generic popup message to highlight a new version of the app being available.")
                                                        delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
-                                              otherButtonTitles:NSLocalizedString(@"Update Now", @""), nil];
+                                              cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Dismiss button label.")
+                                              otherButtonTitles:NSLocalizedString(@"Update Now", @"Popup 'update' button to highlight a new version of the app being available. The button takes you to the app store on the device, and should be actionable."), nil];
         alert.tag = 102;
         [alert show];
         [alert release];
@@ -1369,7 +1369,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)splitViewController: (UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc {
 	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
-	[barButtonItem setTitle:NSLocalizedString(@"My Blog", @"")];
+	[barButtonItem setTitle:NSLocalizedString(@"My Blog", @"Title of the iPad button to display any blogs added to the app.")];
 	[theNavigationItem setLeftBarButtonItem:barButtonItem animated:YES];
 	if ([[self.detailNavigationController.viewControllers objectAtIndex:0] isKindOfClass:[BlogSplitViewDetailViewController class]])
 	{

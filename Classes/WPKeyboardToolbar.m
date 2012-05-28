@@ -115,7 +115,7 @@
         boldButton.frame = CGRectMake(x, 0, boldButton.imageView.image.size.width + padding, height);
         x += boldButton.frame.size.width + margin;
         boldButton.actionTag = @"strong";
-        boldButton.actionName = NSLocalizedString(@"bold", @"");
+        boldButton.actionName = NSLocalizedString(@"bold", @"Bold text formatting in the Post Editor. This string will be used in the Undo message if the last change was adding formatting.");
         [boldButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (italicsButton == nil) {
@@ -124,7 +124,7 @@
         italicsButton.frame = CGRectMake(x, 0, italicsButton.imageView.image.size.width + padding, height);
         x += italicsButton.frame.size.width + margin;
         italicsButton.actionTag = @"em";
-        italicsButton.actionName = NSLocalizedString(@"italic", @"");
+        italicsButton.actionName = NSLocalizedString(@"italic", @"Italic text formatting in the Post Editor. This string will be used in the Undo message if the last change was adding formatting.");
         [italicsButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (linkButton == nil) {
@@ -133,7 +133,7 @@
         linkButton.frame = CGRectMake(x, 0, linkButton.imageView.image.size.width + padding, height);
         x += linkButton.frame.size.width + margin;
         linkButton.actionTag = @"link";
-        linkButton.actionName = NSLocalizedString(@"link", @"");
+        linkButton.actionName = NSLocalizedString(@"link", @"Link helper button in the Post Editor. This string will be used in the Undo message if the last change was adding a link.");
         [linkButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (quoteButton == nil) {
@@ -142,7 +142,7 @@
         quoteButton.frame = CGRectMake(x, 0, quoteButton.imageView.image.size.width + padding, height);
 		x += quoteButton.frame.size.width + margin;
         quoteButton.actionTag = @"blockquote";
-        quoteButton.actionName = NSLocalizedString(@"quote", @"");
+        quoteButton.actionName = NSLocalizedString(@"quote", @"Blockquote HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding a blockquote.");
         [quoteButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (delButton == nil) {
@@ -150,7 +150,7 @@
         [delButton setImageName:@"toolbarDel"];
         delButton.frame = CGRectMake(x, 0, delButton.imageView.image.size.width + padding, height);
         delButton.actionTag = @"del";
-        delButton.actionName = NSLocalizedString(@"del", @"");
+        delButton.actionName = NSLocalizedString(@"del", @"<del> (deleted text) HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding a <del> HTML element.");
         [delButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
@@ -166,7 +166,7 @@
         ulButton.frame = CGRectMake(x, 0, ulButton.imageView.image.size.width + padding, height);
         x += ulButton.frame.size.width + margin;
         ulButton.actionTag = @"ul";
-        ulButton.actionName = NSLocalizedString(@"unordered list", @"");
+        ulButton.actionName = NSLocalizedString(@"unordered list", @"Unordered list (ul) HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding this formatting.");
         [ulButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (olButton == nil) {
@@ -175,7 +175,7 @@
         olButton.frame = CGRectMake(x, 0, olButton.imageView.image.size.width + padding, height);
         x += olButton.frame.size.width + margin;
         olButton.actionTag = @"ol";
-        olButton.actionName = NSLocalizedString(@"ordered list", @"");
+        olButton.actionName = NSLocalizedString(@"ordered list", @"Ordered list (<ol>) HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding this formatting.");
         [olButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (liButton == nil) {
@@ -184,7 +184,7 @@
         liButton.frame = CGRectMake(x, 0, liButton.imageView.image.size.width + padding, height);
         x += liButton.frame.size.width + margin;
         liButton.actionTag = @"li";
-        liButton.actionName = NSLocalizedString(@"list item", @"");
+        liButton.actionName = NSLocalizedString(@"list item", @"List item (<li>) HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding this formatting.");
         [liButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (codeButton == nil) {
@@ -193,7 +193,7 @@
         codeButton.frame = CGRectMake(x, 0, codeButton.imageView.image.size.width + padding, height);
         x += codeButton.frame.size.width + margin;
         codeButton.actionTag = @"code";
-        codeButton.actionName = NSLocalizedString(@"code", @"");
+        codeButton.actionName = NSLocalizedString(@"code", @"Code (<code>) HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding this formatting.");
         [codeButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (moreButton == nil) {
@@ -201,7 +201,7 @@
         [moreButton setImageName:@"toolbarMore"];
         moreButton.frame = CGRectMake(x, 0, moreButton.imageView.image.size.width + padding, height);
         moreButton.actionTag = @"more";
-        moreButton.actionName = NSLocalizedString(@"more", @"");
+        moreButton.actionName = NSLocalizedString(@"more", @"Adding a More excerpt cut-off in the Post Editor. This string will be used in the Undo message if the last change was adding this formatting.");
         [moreButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
 }

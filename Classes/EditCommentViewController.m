@@ -50,7 +50,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
       
      if (!saveButton) {
          saveButton = [[UIBarButtonItem alloc] 
-         initWithTitle:NSLocalizedString(@"Save", @"") 
+         initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).") 
          style:UIBarButtonItemStyleDone
          target:self 
          action:@selector(initiateSaveCommentReply:)];

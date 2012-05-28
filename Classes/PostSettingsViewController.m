@@ -73,14 +73,14 @@
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 
-    statusTitleLabel.text = NSLocalizedString(@"Status", @"");
-    visibilityTitleLabel.text = NSLocalizedString(@"Visibility", @"");
-    postFormatTitleLabel.text = NSLocalizedString(@"Post Format", @"");
+    statusTitleLabel.text = NSLocalizedString(@"Status", @"The status of the post. Should be the same as in core WP.");
+    visibilityTitleLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
+    postFormatTitleLabel.text = NSLocalizedString(@"Post Format", @"The post formats available for the post. Should be the same as in core WP.");
     passwordTextField.placeholder = NSLocalizedString(@"Enter a password", @"");
     NSMutableArray *allStatuses = [NSMutableArray arrayWithArray:[postDetailViewController.apost availableStatuses]];
-    [allStatuses removeObject:NSLocalizedString(@"Private", @"")];
+    [allStatuses removeObject:NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
     statusList = [[NSArray arrayWithArray:allStatuses] retain];
-    visibilityList = [[NSArray arrayWithObjects:NSLocalizedString(@"Public", @""), NSLocalizedString(@"Password protected", @""), NSLocalizedString(@"Private", @""), nil] retain];
+    visibilityList = [[NSArray arrayWithObjects:NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."), NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."), NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP."), nil] retain];
     formatsList = [postDetailViewController.post.blog.sortedPostFormatNames retain];
 
     CGRect pickerFrame;
@@ -224,11 +224,11 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if (section == 0)
-		return NSLocalizedString(@"Publish", @"");
+		return NSLocalizedString(@"Publish", @"The grandiose Publish button in the Post Editor! Should use the same translation as core WP.");
 	else if (section == 1)
 		return nil; // Post Format
 	else if (section == 2)
-		return NSLocalizedString(@"Geolocation", @"");
+		return NSLocalizedString(@"Geolocation", @"Label for the geolocation feature (tagging posts by their physical location).");
 	else
 		return nil;
 }
@@ -244,7 +244,7 @@
 			case 0:
 				if (([postDetailViewController.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)
 					&& ([postDetailViewController.apost.status isEqualToString:@"publish"])) {
-					statusLabel.text = NSLocalizedString(@"Scheduled", @"");
+					statusLabel.text = NSLocalizedString(@"Scheduled", @"If a post is scheduled for later, this string is used for the post's status. Should use the same translation as core WP.");
 				} else {
 					statusLabel.text = postDetailViewController.apost.statusTitle;
 				}
@@ -259,11 +259,11 @@
 				if (postDetailViewController.apost.password) {
 					passwordTextField.text = postDetailViewController.apost.password;
 					passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-					visibilityLabel.text = NSLocalizedString(@"Password protected", @"");
+					visibilityLabel.text = NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP.");
 				} else if ([postDetailViewController.apost.status isEqualToString:@"private"]) {
-					visibilityLabel.text = NSLocalizedString(@"Private", @"");
+					visibilityLabel.text = NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.");
 				} else {
-					visibilityLabel.text = NSLocalizedString(@"Public", @"");
+					visibilityLabel.text = NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.");
 				}
 				
 				return visibilityTableViewCell;
@@ -272,9 +272,9 @@
 			{
 				if (postDetailViewController.apost.dateCreated) {
 					if ([postDetailViewController.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending) {
-						publishOnLabel.text = NSLocalizedString(@"Scheduled for", @"");
+						publishOnLabel.text = NSLocalizedString(@"Scheduled for", @"Scheduled for [date]");
 					} else {
-						publishOnLabel.text = NSLocalizedString(@"Published on", @"Published on <date>");
+						publishOnLabel.text = NSLocalizedString(@"Published on", @"Published on [date]");
 					}
 					
 					NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -320,14 +320,14 @@
 					}
 				}
 				if (isUpdatingLocation) {
-					addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"");
+					addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
 					[addGeotagTableViewCell.spinner startAnimating];
 				} else {
 					[addGeotagTableViewCell.spinner stopAnimating];
 					if (postDetailViewController.post.geolocation) {
-						addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Update Location", @"");
+						addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Update Location", @"Gelocation feature to update physical location.");
 					} else {
-						addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Add Location", @"");
+						addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Add Location", @"Geolocation feature to add location.");
 					}
 				}
 				return addGeotagTableViewCell;
@@ -354,7 +354,7 @@
 				if (address) {
 					addressLabel.text = address;
 				} else {
-					addressLabel.text = NSLocalizedString(@"Finding address...", @"");
+					addressLabel.text = NSLocalizedString(@"Finding address...", @"Used for Geo-tagging posts.");
 					[self geocodeCoordinate:postDetailViewController.post.geolocation.coordinate];
 				}
 				addressLabel.font = [UIFont boldSystemFontOfSize:16];
@@ -365,8 +365,8 @@
 				int latM = trunc((fabs(latitude) - latD) * 60);
 				int lonD = trunc(fabs(longitude));
 				int lonM = trunc((fabs(longitude) - lonD) * 60);
-				NSString *latDir = (latitude > 0) ? NSLocalizedString(@"North", @"") : NSLocalizedString(@"South", @"");
-				NSString *lonDir = (longitude > 0) ? NSLocalizedString(@"East", @"") : NSLocalizedString(@"West", @"");
+				NSString *latDir = (latitude > 0) ? NSLocalizedString(@"North", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"South", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
+				NSString *lonDir = (longitude > 0) ? NSLocalizedString(@"East", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"West", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
 				if (latitude == 0.0) latDir = @"";
 				if (longitude == 0.0) lonDir = @"";
 
@@ -388,7 +388,7 @@
 			case 2:
 				if (removeGeotagTableViewCell == nil)
 					removeGeotagTableViewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RemoveGeotag"];
-				removeGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Remove Location", @"");
+				removeGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Remove Location", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
 				removeGeotagTableViewCell.textLabel.textAlignment = UITextAlignmentCenter;
 				return removeGeotagTableViewCell;
 				break;
@@ -523,14 +523,14 @@
         postDetailViewController.apost.statusTitle = [statusList objectAtIndex:row];
     } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
         NSString *visibility = [visibilityList objectAtIndex:row];
-        if ([visibility isEqualToString:NSLocalizedString(@"Private", @"")]) {
+        if ([visibility isEqualToString:NSLocalizedString(@"Private", @"Post privacy status in the Post Editor/Settings area (compare with WP core translations).")]) {
             postDetailViewController.apost.status = @"private";
             postDetailViewController.apost.password = nil;
         } else {
             if ([postDetailViewController.apost.status isEqualToString:@"private"]) {
                 postDetailViewController.apost.status = @"publish";
             }
-            if ([visibility isEqualToString:NSLocalizedString(@"Password protected", @"")]) {
+            if ([visibility isEqualToString:NSLocalizedString(@"Password protected", @"Post password protection in the Post Editor/Settings area (compare with WP core translations).")]) {
                 postDetailViewController.apost.password = @"";
             } else {
                 postDetailViewController.apost.password = nil;
@@ -563,7 +563,7 @@
         if (picker.tag == TAG_PICKER_DATE) {
             fakeController.contentSizeForViewInPopover = CGSizeMake(320, 256);
 
-            UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"")]];
+            UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")]];
             publishNowButton.momentary = YES; 
             publishNowButton.frame = CGRectMake(0, 0, 320, 40);
             publishNowButton.segmentedControlStyle = UISegmentedControlStyleBar;
@@ -599,7 +599,7 @@
         actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
         [actionSheet setActionSheetStyle:UIActionSheetStyleAutomatic];
         [actionSheet addSubview:picker];
-		UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Done", @"")]];
+		UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")]];
 		closeButton.momentary = YES; 
 		closeButton.frame = CGRectMake(260, 7, 50, 30);
 		closeButton.segmentedControlStyle = UISegmentedControlStyleBar;
@@ -609,7 +609,7 @@
 		[closeButton release];
 
         if (picker.tag == TAG_PICKER_DATE) {
-            UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"")]];
+            UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")]];
             publishNowButton.momentary = YES; 
             publishNowButton.frame = CGRectMake(10, 7, 129, 30);
             publishNowButton.segmentedControlStyle = UISegmentedControlStyleBar;
@@ -710,7 +710,7 @@
 	if (address)
 		[address release];
 	
-	address = [NSString stringWithString:NSLocalizedString(@"Location unknown", @"")];
+	address = [NSString stringWithString:NSLocalizedString(@"Location unknown", @"Used when geo-tagging posts, if the geo-tagging failed.")];
 	addressLabel.text = [address retain];
 }
 

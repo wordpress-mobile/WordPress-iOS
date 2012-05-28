@@ -44,8 +44,8 @@
     NSString *catName = newCatNameField.text;
 
     if (!catName ||[catName length] == 0) {
-        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Category title missing.", @"")
-                               message:NSLocalizedString(@"Title for a category is mandatory.", @"")
+        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Category title missing.", @"Error popup title to indicate that there was no category title filled in.")
+                               message:NSLocalizedString(@"Title for a category is mandatory.", @"Error popup message to indicate that there was no category title filled in.")
                                delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
 
         [alert2 show];
@@ -57,9 +57,9 @@
     }
 
     if ([Category existsName:catName forBlog:self.blog withParentId:parentCat.categoryID]) {
-        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Category name already exists.", @"")
-                                                         message:NSLocalizedString(@"There is another category with that name.", @"")
-                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
+        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Category name already exists.", @"Error popup title to show that a category already exists.")
+                                                         message:NSLocalizedString(@"There is another category with that name.", @"Error popup message to show that a category already exists.")
+                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label.") otherButtonTitles:nil];
 		
         [alert2 show];
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -96,17 +96,17 @@
 
     newCatNameField.font = [UIFont fontWithName:@"Helvetica" size:17];
     parentCatNameField.font = [UIFont fontWithName:@"Helvetica" size:17];
-    parentCatNameLabel.text = NSLocalizedString(@"Parent Category", @"");
-    parentCatNameField.placeholder = NSLocalizedString(@"Optional", @"");
-    newCatNameField.placeholder = NSLocalizedString(@"Title", @"");
-    saveButtonItem.title = NSLocalizedString(@"Save", @"");
-    cancelButtonItem.title = NSLocalizedString(@"Cancel", @"");
+    parentCatNameLabel.text = NSLocalizedString(@"Parent Category", @"Placeholder to set a parent category for a new category.");
+    parentCatNameField.placeholder = NSLocalizedString(@"Optional", @"Placeholder to indicate that filling out the field is optional.");
+    newCatNameField.placeholder = NSLocalizedString(@"Title", @"Title of the new Category being created.");
+    saveButtonItem.title = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).");
+    cancelButtonItem.title = NSLocalizedString(@"Cancel", @"Cancel button label.");
 
     parentCat = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    self.title = NSLocalizedString(@"Add Category", @"");
+    self.title = NSLocalizedString(@"Add Category", @"Button to add category.");
 	// only show "cancel" button if we're presented in a modal view controller
 	// that is, if we are the root item of a UINavigationController
 	if ([self.parentViewController isKindOfClass:[UINavigationController class]]) {
