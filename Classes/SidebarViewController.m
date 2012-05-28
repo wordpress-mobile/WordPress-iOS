@@ -18,6 +18,7 @@
 #import "CommentsViewController.h"
 #import "StatsTableViewController.h"
 #import "WPReaderViewController.h"
+#import "WPTableViewController.h"
 
 // Number of items before blogs list */
 #define SIDEBAR_BLOGS_OFFSET 0

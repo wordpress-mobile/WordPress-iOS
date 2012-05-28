@@ -313,7 +313,7 @@
 		[delegate.navigationController pushViewController:self.replyToCommentViewController animated:YES];
 	} else {
 		if (self.commentsViewController) {
-			[self.commentsViewController setReplying:YES];
+//			[self.commentsViewController setReplying:YES];
 		}
 
 		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:replyToCommentViewController] autorelease];
@@ -414,7 +414,7 @@
 - (void)cancelReplyToCommentViewController:(id)sender {
 	[self cancelView:sender];
 	if (self.commentsViewController) {
-		[self.commentsViewController setReplying:NO];
+//		[self.commentsViewController setReplying:NO];
 	}
 }
 	

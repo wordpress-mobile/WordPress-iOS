@@ -8,13 +8,13 @@
 #import <Foundation/Foundation.h>
 
 #import "CommentsTableViewDelegate.h"
+#import "WPTableViewController.h"
 #import "Blog.h"
-#import "EGORefreshTableHeaderView.h"
 #import "ReplyToCommentViewController.h"
 
 @class CommentViewController;
 
-@interface CommentsViewController : UIViewController <ReplyToCommentViewControllerDelegate, UITableViewDataSource, CommentsTableViewDelegate, UIAccelerometerDelegate, NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate> {
+@interface CommentsViewController : WPTableViewController <ReplyToCommentViewControllerDelegate, UIAccelerometerDelegate> {
 @private
     IBOutlet UITableView *commentsTableView;
 
@@ -22,54 +22,39 @@
     UIBarButtonItem *editButtonItem;
 	
 	CommentViewController *commentViewController;
-
+    
     IBOutlet UIBarButtonItem *approveButton;
     IBOutlet UIBarButtonItem *unapproveButton;
     IBOutlet UIBarButtonItem *spamButton;
     IBOutlet UIBarButtonItem *deleteButton;
-    BOOL editing;
 	BOOL replying;
 	BOOL willReloadTable;
 
-    IBOutlet UIView* moderationSwipeView;
     UITableViewCell* moderationSwipeCell;
     UISwipeGestureRecognizerDirection moderationSwipeDirection;
     BOOL animatingRemovalOfModerationSwipeView;
 
     NSMutableArray *commentsArray;
     NSMutableDictionary *commentsDict;
-    NSMutableArray *selectedComments;
     int indexForCurrentPost;
 	NSNumber *lastUserSelectedCommentID;
 	NSIndexPath *selectedIndexPath, *selectionWanted;
-	
-	// added to distinguish a single posts's comments VC
-	// from the master VC's comments list.
-	// consider rethinking how this is done.
-	BOOL isSecondaryViewController;
-	
-    EGORefreshTableHeaderView *_refreshHeaderView;
-
+		
 	NSDate *dateOfPreviouslyOldestComment;
-	NSMutableArray *newCommentIndexPaths;
 }
 
 @property (readonly) UIBarButtonItem *editButtonItem;
-@property (nonatomic, retain) NSMutableArray *selectedComments;
 @property (nonatomic, retain) NSMutableArray *commentsArray;
 @property int indexForCurrentPost; 
 @property (nonatomic, retain) NSNumber *lastUserSelectedCommentID;
 @property (nonatomic, retain) CommentViewController *commentViewController;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
-@property (nonatomic, assign) BOOL isSecondaryViewController;
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
 @property (nonatomic, retain) Blog *blog;
-@property (nonatomic, retain) IBOutlet UIView* moderationSwipeView;
 @property (nonatomic, retain) IBOutlet UIButton *moderationApproveButton, *moderationSpamButton, *moderationReplyButton;
 @property (nonatomic, retain) UITableViewCell* moderationSwipeCell;
 @property (nonatomic) UISwipeGestureRecognizerDirection moderationSwipeDirection;
 @property (nonatomic, retain) NSDate *dateOfPreviouslyOldestComment;
-@property (nonatomic, retain) NSNumber *wantedCommentId;
 
 - (IBAction)deleteSelectedComments:(id)sender;
 - (IBAction)approveSelectedComments:(id)sender;
@@ -87,6 +72,5 @@
 - (void)showPreviousComment;
 - (void)showNextComment;
 - (void)trySelectSomething;
-- (void)setReplying:(BOOL)value;
 
 @end
