@@ -253,10 +253,10 @@
     [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:deleteAnimation];
     [self.tableView endUpdates];
     self.openSectionIndex = sectionOpened;
-    //select the first row in the section
-    //[self.tableView selectRowAtIndexPath:[indexPathsToInsert objectAtIndex:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
-    //[self processRowSelectionAtIndexPath:[indexPathsToInsert objectAtIndex:0] closingSidebar:NO];
-    
+    // select the first row in the section
+    // if we don't, a) you lose the current selection, b) the sidebar doesn't open on iPad
+    [self.tableView selectRowAtIndexPath:[indexPathsToInsert objectAtIndex:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+    [self processRowSelectionAtIndexPath:[indexPathsToInsert objectAtIndex:0] closingSidebar:NO];
 }
 
 
