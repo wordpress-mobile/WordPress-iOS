@@ -783,6 +783,7 @@
 #pragma mark - Navigation methods
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    WPFLogMethod();
     if (self.navigationController) {
         [self.navigationController pushViewController:viewController animated:animated];
     } else {
@@ -820,8 +821,15 @@
     }
 }
 
+- (void)pushViewController:(UIViewController *)viewController fromViewController:(UIViewController *)fromViewController animated:(BOOL)animated {
+    WPFLogMethod();
+    [self popToViewController:fromViewController animated:NO];
+    [self pushViewController:viewController animated:YES];
+}
+
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
     UIViewController *viewController = nil;
+    WPFLogMethod();
     if (self.navigationController) {
         return [self.navigationController popViewControllerAnimated:animated];
     } else {
@@ -843,15 +851,31 @@
 }
 
 - (NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    WPFLogMethod();
     if (self.navigationController) {
         return [self.navigationController popToViewController:viewController animated:animated];
     } else {
-        // TODO
+        NSMutableArray *poppedControllers = [NSMutableArray array];
+        __block BOOL found = NO;        
+        [self.detailViewControllers enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if (obj == viewController) {
+                *stop = YES;
+                found = YES;
+            } else {
+                [poppedControllers addObject:obj];
+                [self popViewControllerAnimated:animated];
+            }
+        }];
+        if (!found && viewController != self.detailViewController) {
+            [poppedControllers addObject:self.detailViewController];
+            [self setDetailViewController:viewController];
+        }
+        return [NSArray arrayWithArray:poppedControllers];
     }
-    return nil;
 }
 
 - (NSArray *)popToRootViewControllerAnimated:(BOOL)animated {
+    WPFLogMethod();
     NSMutableArray *viewControllers = [NSMutableArray array];
     if (self.navigationController) {
         return [self.navigationController popToRootViewControllerAnimated:animated];
