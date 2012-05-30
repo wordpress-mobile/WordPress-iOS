@@ -830,6 +830,7 @@
         [viewController setPanelNavigationController:self];
         [viewController didMoveToParentViewController:self];
         [self.detailViewControllers addObject:viewController];
+        [self setStackOffset:[self maxOffsetSoft] duration:0];
     }
 }
 
