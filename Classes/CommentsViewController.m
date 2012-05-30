@@ -370,24 +370,14 @@
         NSLog(@"sections: %@", self.resultsController.sections);
         NSLog(@"results: %@", self.resultsController.fetchedObjects);
         comment = nil;
-		//push an the WP logo on the right. 
-		WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-		[delegate showContentDetailViewController:nil];		
-        return;
     }
-	
-	if (self.isSecondaryViewController) {
-		[self.navigationController pushViewController:self.commentViewController animated:YES];
-	} else {
-		
-		if (!self.commentViewController.isVisible) {
-			WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-			[delegate showContentDetailViewController:self.commentViewController];
-		}
-	}
-	
-	if(comment != nil)
+    
+	if(comment != nil) {        
 		[self.commentViewController showComment:comment];
+        [self.panelNavigationController pushViewController:self.commentViewController fromViewController:self animated:YES];
+    } else {
+        [self.panelNavigationController popToViewController:self animated:NO];
+    }
 }
 
 - (void)setSelectedIndexPath:(NSIndexPath *)indexPath {
@@ -648,7 +638,9 @@
         if (DeviceIsPad() && self.selectedIndexPath && [self.selectedIndexPath isEqual:[tableView indexPathForSelectedRow]]) {
             return;
         }
-        if(self.blog.isSyncingComments) {
+        // Disabled while debugging panels
+        // It should go away eventually and handle if the comment displayed changes when syncing
+        if(self.blog.isSyncingComments && NO) {
             //the blog is using the network connection and cannot be stoped, show a message to the user
             UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
                                                                           message:NSLocalizedString(@"The blog is syncing with the server. Please try later.", @"")
