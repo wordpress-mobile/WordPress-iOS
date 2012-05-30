@@ -659,14 +659,18 @@
 }
 
 - (CGFloat)nearestValidOffsetWithVelocity:(CGFloat)velocity {
+    NSLog(@"nearest with velocity: %.2f", velocity);
     CGFloat offset = 0;
-    CGFloat diff = ABS(_stackOffset - offset);
+    CGFloat remainingVelocity = velocity;
+    CGFloat velocityFactor = 10;
+    CGFloat diff = ABS(_stackOffset + remainingVelocity / velocityFactor - offset);
     CGFloat previousOffset = offset;
     CGFloat previousDiff = diff;
     
     // View 0
     offset += DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
-    diff = ABS(_stackOffset - offset);
+    diff = ABS(_stackOffset + remainingVelocity / velocityFactor - offset);
+    remainingVelocity -= remainingVelocity / velocityFactor;
     if (diff > previousDiff) {
         return previousOffset;
     } else {
@@ -678,7 +682,8 @@
     for (int i = 0; i < viewCount - 2; i++) {
         UIView *view = [self.detailViews objectAtIndex:i];
         offset += view.frame.size.width;
-        diff = ABS(_stackOffset - offset);
+        diff = ABS(_stackOffset + remainingVelocity / velocityFactor - offset);
+        remainingVelocity -= remainingVelocity / velocityFactor;
         if (diff > previousDiff) {
             return previousOffset;
         } else {
@@ -691,7 +696,8 @@
     offset += [[self.detailViewWidths objectAtIndex:(viewCount - 1)] floatValue];
     offset += [[self.detailViewWidths objectAtIndex:(viewCount - 2)] floatValue];
     offset -= self.view.bounds.size.width;
-    diff = ABS(_stackOffset - offset);
+    diff = ABS(_stackOffset + remainingVelocity / velocityFactor - offset);
+    remainingVelocity -= remainingVelocity / velocityFactor;
     if (diff > previousDiff) {
         return previousOffset;
     } else {
@@ -731,7 +737,9 @@
         maxHard = DETAIL_LEDGE_OFFSET;
     } else {
         maxHard = DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
-        maxHard+= [[self.detailViewWidths objectAtIndex:(viewCount - 2)] floatValue];
+        for (int i = 0; i < viewCount; i++) {
+            maxHard += [[self.detailViewWidths objectAtIndex:i] floatValue];
+        }
     }
     return maxHard;
 }
