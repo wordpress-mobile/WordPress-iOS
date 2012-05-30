@@ -495,10 +495,12 @@
 }
 
 - (void)applyShadows {
-    if (self.detailView.frame.origin.x > 0) {
-        [self addShadowTo:self.detailView];
-    } else {
-        [self removeShadowFrom:self.detailView];
+    for (UIView *view in self.detailViews) {
+        if (view == self.detailView || view.frame.origin.x > DETAIL_OFFSET) {
+            [self addShadowTo:view];
+        } else {
+            [self removeShadowFrom:view];
+        }
     }
 }
 
@@ -530,6 +532,7 @@
 }
 
 - (void)panned:(UIPanGestureRecognizer *)sender {
+    [self applyShadows];
     /*
      _stackOffset is how many pixels the views are dragged to the left from the initial (sidebar open) position
      
