@@ -33,14 +33,16 @@
 
 // On iPhone, sidebar can be fully closed
 #define IPHONE_DETAIL_OFFSET 0
-#define IPHONE_DETAIL_HEIGHT self.view.frame.size.height
-#define IPHONE_DETAIL_WIDTH self.view.frame.size.width
+#define IPHONE_DETAIL_HEIGHT self.view.bounds.size.height
+#define IPHONE_DETAIL_WIDTH self.view.bounds.size.width
 
 // On iPad, always show part of the sidebar
 #define IPAD_DETAIL_OFFSET DETAIL_LEDGE
 #define IPAD_DETAIL_HEIGHT IPHONE_DETAIL_HEIGHT
 // Fits two regular size panels with the sidebar collapsed
-#define IPAD_DETAIL_WIDTH 490.0f
+#define IPAD_DETAIL_WIDTH_LANDSCAPE ((self.view.bounds.size.width - DETAIL_LEDGE) / 2)
+#define IPAD_DETAIL_WIDTH_PORTRAIT (self.view.bounds.size.width - SIDEBAR_WIDTH)
+#define IPAD_DETAIL_WIDTH (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? IPAD_DETAIL_WIDTH_PORTRAIT : IPAD_DETAIL_WIDTH_LANDSCAPE)
 
 // Minimum x position for detail view
 #define DETAIL_OFFSET (IS_IPAD ? IPAD_DETAIL_OFFSET : IPHONE_DETAIL_OFFSET)
@@ -231,7 +233,18 @@
     for (int i = 0; i < viewCount; i++) {
         UIView *view = [self.detailViews objectAtIndex:i];
         CGRect frame = view.frame;
-        frame.size.width = [[self.detailViewWidths objectAtIndex:i] doubleValue];
+        UIViewController *vc;
+        if (i == 0) {
+            vc = self.detailViewController;
+        } else {
+            vc = [self.detailViewControllers objectAtIndex:i - 1];
+        }
+        CGFloat newWidth = DETAIL_WIDTH;
+        if ([vc respondsToSelector:@selector(expectedWidth)]) {
+            newWidth = [[vc performSelector:@selector(expectedWidth)] doubleValue];
+        }
+        [self.detailViewWidths replaceObjectAtIndex:i withObject:[NSNumber numberWithDouble:newWidth]];
+        frame.size.width = newWidth;
         view.frame = frame;
     }
     [self setStackOffset:[self nearestValidOffsetWithVelocity:0] duration:duration];
