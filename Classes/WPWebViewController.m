@@ -144,6 +144,10 @@
     return NO;
 }
 
+- (NSNumber *)expectedWidth {
+    return [NSNumber numberWithFloat:668];
+}
+
 #pragma mark - webView related methods
 
 - (void)setStatusTimer:(NSTimer *)timer
