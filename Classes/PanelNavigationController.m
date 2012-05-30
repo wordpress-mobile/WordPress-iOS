@@ -823,6 +823,7 @@
         [self.view addSubview:viewController.view];
         [self.detailViews addObject:viewController.view];
         [self.detailViewWidths addObject:[NSNumber numberWithFloat:newPanelWidth]];
+        [self applyShadows];
         [UIView animateWithDuration:CLOSE_SLIDE_DURATION(animated) animations:^{
             topView.frame = topViewFrame;
         }];
