@@ -46,7 +46,6 @@
 - (void)dealloc {
     self.resultsController.delegate = nil;
     self.resultsController = nil;
-    [selectedIndex release];
     [super dealloc];
 }
 
@@ -101,7 +100,6 @@
     [super viewDidUnload];
     [tableView release];
     [footerButton release];
-    selectedIndex = nil;
     
     self.sectionInfoArray = nil;
 }
@@ -213,10 +211,6 @@
 	SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:sectionOpened - 1];
 	
 	sectionInfo.open = YES;
-    NSIndexPath *currentIndex = [self.tableView indexPathForSelectedRow];
-    if (currentIndex) {
-        selectedIndex = [[NSIndexPath indexPathForRow:currentIndex.row inSection:currentIndex.section] retain];
-    }
     
     /*
      Create an array containing the index paths of the rows to insert: These correspond to the rows for each quotation in the current section.
@@ -322,15 +316,6 @@
 
 #pragma mark - Table view delegate
 
--(NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSIndexPath *currentIndex = [self.tableView indexPathForSelectedRow];
-    if (currentIndex) {
-        selectedIndex = [[NSIndexPath indexPathForRow:currentIndex.row inSection:currentIndex.section] retain];
-    }
-    return indexPath;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
@@ -354,50 +339,33 @@
     
     if (indexPath.section != 0) {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
-        
-        //did user select the same item, but for a different blog? If so then just update the data in the view controller.
-        if (selectedIndex != nil) {
-            if (indexPath.row == selectedIndex.row) {
-                switch (indexPath.row) {
-                    case 0:
-                        [(PostsViewController*) self.panelNavigationController.detailViewController setBlog: blog];
-                        break;
-                    case 1:
-                        [(PagesViewController*) self.panelNavigationController.detailViewController setBlog: blog];
-                        break; 
-                    case 2:
-                        [(CommentsViewController*) self.panelNavigationController.detailViewController setBlog: blog];
-                        break;
-                    case 3:
-                        [(StatsTableViewController*) self.panelNavigationController.detailViewController setBlog: blog];
-                        break;
-                }
-            [self.panelNavigationController popToRootViewControllerAnimated:NO];
-            if (!DeviceIsPad())
-                [self.panelNavigationController closeSidebar];
-            return;
-            }
-        }
 
+        Class controllerClass = nil;
+        //did user select the same item, but for a different blog? If so then just update the data in the view controller.
         if (indexPath.row == 0) {
-            PostsViewController *postsViewController = [[[PostsViewController alloc] init] autorelease];
-            postsViewController.blog = blog;
-            detailViewController = postsViewController;
+            controllerClass = [PostsViewController class];
         }
         if (indexPath.row == 1) {
-            PagesViewController *pagesViewController = [[[PagesViewController alloc] init] autorelease];
-            pagesViewController.blog = blog;
-            detailViewController = pagesViewController;
+            controllerClass = [PagesViewController class];
         }
         if (indexPath.row == 2) {
-            CommentsViewController *commentsViewController = [[[CommentsViewController alloc] init] autorelease];
-            commentsViewController.blog = blog;
-            detailViewController = commentsViewController;
+            controllerClass = [CommentsViewController class];
         }
         if (indexPath.row == 3) {
-            StatsTableViewController *statsTableViewController = [[[StatsTableViewController alloc] init] autorelease];
-            statsTableViewController.blog = blog;
-            detailViewController = statsTableViewController;
+            controllerClass = [StatsTableViewController class];
+        }
+        if ([self.panelNavigationController.detailViewController isKindOfClass:controllerClass] && [self.panelNavigationController.detailViewController respondsToSelector:@selector(setBlog:)]) {
+            [self.panelNavigationController.detailViewController performSelector:@selector(setBlog:) withObject:blog];
+            [self.panelNavigationController popToRootViewControllerAnimated:NO];
+            if (!DeviceIsPad() && closingSidebar) {
+                [self.panelNavigationController closeSidebar];
+            }
+            return;
+        } else {
+            detailViewController = (UIViewController *)[[[controllerClass alloc] init] autorelease];
+            if ([detailViewController respondsToSelector:@selector(setBlog:)]) {
+                [detailViewController performSelector:@selector(setBlog:) withObject:blog];
+            }
         }
     } else {
         if (indexPath.row == 1) {
