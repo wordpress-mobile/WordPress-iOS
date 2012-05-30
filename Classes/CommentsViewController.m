@@ -206,7 +206,7 @@
     self.resultsController = nil;
     NSError *error = nil;
     [self.resultsController performFetch:&error];
-    [commentsTableView reloadData];
+    [self.tableView reloadData];
     if ([self.resultsController.fetchedObjects count] == 0) {
         if (![self isSyncing]) {
             CGPoint offset = commentsTableView.contentOffset;
