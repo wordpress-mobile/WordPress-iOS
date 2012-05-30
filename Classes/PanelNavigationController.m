@@ -65,6 +65,7 @@
 @property (nonatomic, retain) NSMutableArray *detailViewWidths;
 @property (nonatomic, retain) UIButton *detailTapper;
 @property (nonatomic, retain) UIPanGestureRecognizer *panner;
+@property (nonatomic, retain) UITapGestureRecognizer *tapper;
 @property (nonatomic, retain) UIImageView *backgroundImageView;
 - (void)showSidebar;
 - (void)showSidebarAnimated:(BOOL)animated;
@@ -79,6 +80,8 @@
 - (void)setScrollsToTop:(BOOL)scrollsToTop forView:(UIView *)view;
 - (void)addPanner;
 - (void)removePanner;
+- (void)addTapper;
+- (void)removeTapper;
 - (void)setViewOffset:(CGFloat)offset forView:(UIView *)view;
 - (void)setStackOffset:(CGFloat)offset duration:(CGFloat)duration;
 - (CGFloat)nearestValidOffsetWithVelocity:(CGFloat)velocity;
@@ -90,6 +93,7 @@
 - (UIView *)viewForIndex:(NSUInteger)index;
 - (UIView *)viewBefore:(UIView *)view;
 - (UIView *)viewAfter:(UIView *)view;
+- (NSArray *)partiallyVisibleViews;
 @end
 
 @interface UIViewController (PanelNavigationController_Internal)
@@ -111,6 +115,7 @@
 @synthesize detailViewWidths = _detailViewWidths;
 @synthesize detailTapper = _detailTapper;
 @synthesize panner = _panner;
+@synthesize tapper = _tapper;
 @synthesize backgroundImageView = _backgroundImageView;
 
 - (void)dealloc {
@@ -123,6 +128,7 @@
     self.detailViewWidths = nil;
     self.detailTapper = nil;
     self.panner = nil;
+    self.tapper = nil;
 
     [super dealloc];
 }
@@ -214,6 +220,7 @@
     [self prepareDetailView:self.detailViewController.view];
 
     [self addPanner];
+    [self addTapper];
     [self applyShadows];
 }
 
@@ -221,6 +228,7 @@
     [super viewWillDisappear:animated];
 
     [self removePanner];
+    [self removeTapper];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -539,13 +547,45 @@
 #pragma mark - Panning
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    [self applyShadows];
+    if (gestureRecognizer == self.panner) {
+        [self applyShadows];
+    } else if (gestureRecognizer == self.tapper) {
+        NSLog(@"should begin gesture: %@", gestureRecognizer);
+        CGPoint point = [gestureRecognizer locationInView:self.view];
+
+        __block UIView *touchedView = nil;
+        [self.detailViews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            UIView *view = (UIView *)obj;
+            if (CGRectContainsPoint(view.frame, point)) {
+                touchedView = view;
+                *stop = YES;
+            }
+        }];
+        if (touchedView && [[self partiallyVisibleViews] containsObject:touchedView]) {
+            NSLog(@"Touched view: %@", touchedView);
+            UIView *nextView = [self viewAfter:touchedView];
+            CGFloat offset;
+            if (CGRectGetMaxX(touchedView.frame) > CGRectGetMaxX(self.view.bounds)) {
+                // Partly off-screen, move left
+                offset = CGRectGetMaxX(touchedView.frame) - CGRectGetMaxX(self.view.bounds);
+            } else if (nextView && CGRectGetMinX(nextView.frame) < CGRectGetMaxX(touchedView.frame)) {
+                // Covered by another view, move right
+                offset = CGRectGetMinX(nextView.frame) - CGRectGetMaxX(touchedView.frame);
+            }
+            [self setStackOffset:_stackOffset + offset duration:DURATION_FAST];
+            return YES;
+        } else {
+            return NO;
+        }
+    }
     return YES;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    _panOrigin = _stackOffset;
-    NSLog(@"panOrigin: %.0f", _panOrigin);
+    if (gestureRecognizer == self.panner) {
+        _panOrigin = _stackOffset;
+        NSLog(@"panOrigin: %.0f", _panOrigin);
+    }
     return YES;
 }
 
@@ -643,6 +683,29 @@
     self.panner = nil;
 }
 
+- (void)addTapper {
+    [self removeTapper];
+
+    if (IS_IPAD) {
+        UITapGestureRecognizer *tapper = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)] autorelease];
+        tapper.cancelsTouchesInView = YES;
+        tapper.delegate = self;
+        self.tapper = tapper;
+        [self.view addGestureRecognizer:tapper];
+    }
+}
+
+- (void)removeTapper {
+    if (self.tapper) {
+        [self.tapper.view removeGestureRecognizer:self.tapper];
+    }
+    self.tapper = nil;
+}
+
+- (void)tapped:(UITapGestureRecognizer *)sender {
+    // Shouldn't really get here since we deny the touch in the delegate
+}
+
 - (void)setViewOffset:(CGFloat)offset forView:(UIView *)view {
     CGRect frame = view.frame;
     frame.origin.x = MAX(0, MIN(offset, self.view.bounds.size.width));
@@ -674,6 +737,7 @@
     }
     [UIView commitAnimations];
     _stackOffset = offset - remainingOffset;
+    NSLog(@"partially visible: %@", [self partiallyVisibleViews]);
 }
 
 - (CGFloat)nearestValidOffsetWithVelocity:(CGFloat)velocity {
@@ -808,6 +872,25 @@
     return [self viewForIndex:[self indexForView:view] + 1];
 }
 
+- (NSArray *)partiallyVisibleViews {
+    NSMutableArray *views = [NSMutableArray arrayWithCapacity:[self.detailViews count]];
+    [self.detailViews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        UIView *view = (UIView *)obj;
+        if (CGRectContainsRect(self.view.bounds, view.frame)) {
+            // Fully inside, check for overlapping views
+            if (idx + 1 < [self.detailViews count]) {
+                UIView *nextView = [self.detailViews objectAtIndex:idx+1];
+                if (nextView && CGRectIntersectsRect(view.frame, nextView.frame) && nextView.frame.origin.x > view.frame.origin.x) {
+                    [views addObject:view];
+                }
+            }
+        } else if (CGRectIntersectsRect(self.view.bounds, view.frame)) {
+            // Intersects, so partly visible
+            [views addObject:view];
+        }
+    }];
+    return [NSArray arrayWithArray:views];
+}
 
 #pragma mark - Navigation methods
 
