@@ -226,10 +226,15 @@
 	return YES;
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    if (self.detailView.frame.origin.x > 0.0f) {
-        [self showSidebarAnimated:NO];
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
+    int viewCount = [self.detailViews count];
+    for (int i = 0; i < viewCount; i++) {
+        UIView *view = [self.detailViews objectAtIndex:i];
+        CGRect frame = view.frame;
+        frame.size.width = [[self.detailViewWidths objectAtIndex:i] doubleValue];
+        view.frame = frame;
     }
+    [self setStackOffset:[self nearestValidOffsetWithVelocity:0] duration:duration];
 }
 
 #pragma mark - Memory management
