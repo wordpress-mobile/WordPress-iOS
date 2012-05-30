@@ -369,6 +369,15 @@
         }
     } else {
         if (indexPath.row == 1) {
+            if ([self.panelNavigationController.detailViewController isKindOfClass:[WPReaderViewController class]]) {
+                // Reader was already selected
+                if (IS_IPAD) {
+                    [self.panelNavigationController showSidebar];
+                } else {
+                    [self.panelNavigationController popToRootViewControllerAnimated:YES];
+                }
+                return;
+            }
             // Reader
             WPReaderViewController *readerViewController = [[[WPReaderViewController alloc] init] autorelease];
             detailViewController = readerViewController;
