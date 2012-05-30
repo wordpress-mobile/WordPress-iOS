@@ -356,8 +356,10 @@
         }
         if ([self.panelNavigationController.detailViewController isKindOfClass:controllerClass] && [self.panelNavigationController.detailViewController respondsToSelector:@selector(setBlog:)]) {
             [self.panelNavigationController.detailViewController performSelector:@selector(setBlog:) withObject:blog];
-            [self.panelNavigationController popToRootViewControllerAnimated:NO];
-            if (!DeviceIsPad() && closingSidebar) {
+            if (IS_IPAD) {
+                [self.panelNavigationController showSidebar];
+            } else {
+                [self.panelNavigationController popToRootViewControllerAnimated:NO];
                 [self.panelNavigationController closeSidebar];
             }
             return;
@@ -374,7 +376,8 @@
                 if (IS_IPAD) {
                     [self.panelNavigationController showSidebar];
                 } else {
-                    [self.panelNavigationController popToRootViewControllerAnimated:YES];
+                    [self.panelNavigationController popToRootViewControllerAnimated:NO];
+                    [self.panelNavigationController closeSidebar];
                 }
                 return;
             }
