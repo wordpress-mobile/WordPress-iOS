@@ -354,7 +354,7 @@
         if (indexPath.row == 3) {
             controllerClass = [StatsTableViewController class];
         }
-        if ([self.panelNavigationController.detailViewController isKindOfClass:controllerClass] && [self.panelNavigationController.detailViewController respondsToSelector:@selector(setBlog:)]) {
+        if ([self.panelNavigationController.detailViewController isMemberOfClass:controllerClass] && [self.panelNavigationController.detailViewController respondsToSelector:@selector(setBlog:)]) {
             [self.panelNavigationController.detailViewController performSelector:@selector(setBlog:) withObject:blog];
             if (IS_IPAD) {
                 [self.panelNavigationController showSidebar];
@@ -371,7 +371,7 @@
         }
     } else {
         if (indexPath.row == 1) {
-            if ([self.panelNavigationController.detailViewController isKindOfClass:[WPReaderViewController class]]) {
+            if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPReaderViewController class]]) {
                 // Reader was already selected
                 if (IS_IPAD) {
                     [self.panelNavigationController showSidebar];
