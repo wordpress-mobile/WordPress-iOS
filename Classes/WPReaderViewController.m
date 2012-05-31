@@ -126,6 +126,13 @@
     return NO;
 }
 
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+    [super didMoveToParentViewController:parent];
+    if (parent == nil) {
+        [self setRefreshTimer:nil];
+    }
+}
+
 #pragma mark - Topic View Controller Methods
 - (void)showTopicSelector:(id)sender
 {
