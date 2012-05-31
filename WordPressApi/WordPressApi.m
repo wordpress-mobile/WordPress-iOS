@@ -12,13 +12,17 @@
 #import "TouchXML.h"
 #import "RegexKitLite.h"
 
+#ifndef WPFLog
+#define WPFLog(...) NSLog(__VA_ARGS__)
+#endif
+
 @interface WordPressApi ()
 @property (readwrite, nonatomic, retain) NSURL *xmlrpc;
 @property (readwrite, nonatomic, retain) NSString *username;
 @property (readwrite, nonatomic, retain) NSString *password;
 @property (readwrite, nonatomic, retain) AFXMLRPCClient *client;
-
 + (void)validateXMLRPCUrl:(NSURL *)url success:(void (^)())success failure:(void (^)(NSError *error))failure;
++ (void)logExtraInfo:(NSString *)format, ...;
 @end
 
 
@@ -94,17 +98,20 @@
                       failure:(void (^)(NSError *error))failure {
     __block NSURL *xmlrpcURL;
     __block NSString *xmlrpc;
+
     // ------------------------------------------------
     // 0. Is an empty url? Sorry, no psychic powers yet
     // ------------------------------------------------
     if (url == nil || [url isEqualToString:@""]) {
-        NSError *error = [NSError errorWithDomain:@"org.wordpress.api" code:0 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Empty URL", @"Used to display an error message in the set up process when no URL is provided in the URL field.") forKey:NSLocalizedDescriptionKey]];
+        NSError *error = [NSError errorWithDomain:@"org.wordpress.api" code:0 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Empty URL", @"") forKey:NSLocalizedDescriptionKey]];
+        [self logExtraInfo: [error localizedDescription] ];
         return failure ? failure(error) : nil;
     }
     
     // ------------------------------------------------------------------------
     // 1. Assume the given url is the home page and XML-RPC sits at /xmlrpc.php
     // ------------------------------------------------------------------------
+    [self logExtraInfo: @"1. Assume the given url is the home page and XML-RPC sits at /xmlrpc.php" ];
     if(![url hasPrefix:@"http"])
         url = [NSString stringWithFormat:@"http://%@", url];
     
@@ -117,15 +124,18 @@
     if (xmlrpcURL == nil) {
         // Not a valid URL. Could be a bad protocol (htpp://), syntax error (http//), ...
         // See https://github.com/koke/NSURL-Guess for extra help cleaning user typed URLs
-        NSError *error = [NSError errorWithDomain:@"org.wordpress.api" code:1 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Invalid URL", @"Used to display an error message in the set up process when a malformed URL is provided in the URL field.") forKey:NSLocalizedDescriptionKey]];
+        NSError *error = [NSError errorWithDomain:@"org.wordpress.api" code:1 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Invalid URL", @"") forKey:NSLocalizedDescriptionKey]];
+        [self logExtraInfo: [error localizedDescription]];
         return failure ? failure(error) : nil;
     }
+    [self logExtraInfo: @"Trying the following URL: %@", xmlrpcURL ];
     [self validateXMLRPCUrl:xmlrpcURL success:^{
         if (success) {
             success(xmlrpcURL);
         }
     } failure:^(NSError *error){
         if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
+            [self logExtraInfo: [error localizedDescription]];
             if (failure) {
                 failure(error);
             }
@@ -134,15 +144,19 @@
         // -------------------------------------------
         // 2. Try the given url as an XML-RPC endpoint
         // -------------------------------------------
+        [self logExtraInfo:@"2. Try the given url as an XML-RPC endpoint"];
         xmlrpcURL = [NSURL URLWithString:url];
+        [self logExtraInfo: @"Trying the following URL: %@", url];
         [self validateXMLRPCUrl:xmlrpcURL success:^{
             if (success) {
                 success(xmlrpcURL);
             }
         } failure:^(NSError *error){
+            [self logExtraInfo:[error localizedDescription]];
             // ---------------------------------------------------
             // 3. Fetch the original url and look for the RSD link
             // ---------------------------------------------------
+            [self logExtraInfo:@"3. Fetch the original url and look for the RSD link by using RegExp"];
             NSURLRequest *request = [NSURLRequest requestWithURL:xmlrpcURL];
             AFHTTPRequestOperation *operation = [[[AFHTTPRequestOperation alloc] initWithRequest:request] autorelease];
             [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -150,16 +164,22 @@
 
                 if (rsdURL == nil) {
                     //the RSD link not found using RegExp, try to find it again on a "cleaned" HTML document
+                    [self logExtraInfo:@"The RSD link not found using RegExp, on the following doc: %@", operation.responseString];
+                    [self logExtraInfo:@"Try to find it again on a cleaned HTML document"];
                     NSError *htmlError;
                     CXMLDocument *rsdHTML = [[[CXMLDocument alloc] initWithXMLString:operation.responseString options:CXMLDocumentTidyXML error:&htmlError] autorelease];
                     if(!htmlError) {
                         NSString *cleanedHTML = [rsdHTML XMLStringWithOptions:CXMLDocumentTidyXML];
+                        [self logExtraInfo:@"The cleaned doc: %@", cleanedHTML];
                         rsdURL = [cleanedHTML stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
+                    } else {
+                         [self logExtraInfo:@"The cleaning function reported the following error: %@", [htmlError localizedDescription]];
                     }
                 }
                 
                 if (rsdURL != nil) {
                     void (^parseBlock)(void) = ^() {
+                         [self logExtraInfo:@"5. Parse the RSD document at the following URL: %@", rsdURL];
                         // -------------------------
                         // 5. Parse the RSD document
                         // -------------------------
@@ -176,9 +196,11 @@
                                             // Bingo! We found the WordPress XML-RPC element
                                             xmlrpc = [[api attributeForName:@"apiLink"] stringValue];
                                             xmlrpcURL = [NSURL URLWithString:xmlrpc];
+                                            [self logExtraInfo:@"Bingo! We found the WordPress XML-RPC element: %@", xmlrpcURL];
                                             [self validateXMLRPCUrl:xmlrpcURL success:^{
                                                 if (success) success(xmlrpcURL);
                                             } failure:^(NSError *error){
+                                                [self logExtraInfo: [error localizedDescription]];
                                                 if (failure) failure(error);
                                             }];
                                         }
@@ -189,6 +211,7 @@
                                 }
                             }
                         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                            [self logExtraInfo: [error localizedDescription]];
                             if (failure) failure(error);
                         }];
                         NSOperationQueue *queue = [[[NSOperationQueue alloc] init] autorelease];
@@ -215,6 +238,7 @@
                         failure(error);
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                [self logExtraInfo:@"Can't fetch the original url: %@", [error localizedDescription]];
                 if (failure) failure(error);
             }];
             NSOperationQueue *queue = [[[NSOperationQueue alloc] init] autorelease];
@@ -238,6 +262,25 @@
                        failure(error);
                    }
                }];
+}
+
++ (void)logExtraInfo:(NSString *)format, ... {
+    BOOL extraDebugIsActive = NO;
+    NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
+    if ([extra_debug boolValue]) {
+        extraDebugIsActive = YES;
+    } 
+    #ifdef DEBUG
+        extraDebugIsActive = YES; 
+    #endif 
+    
+    if( extraDebugIsActive == NO ) return;
+    
+    va_list ap;
+	va_start(ap, format);
+	NSString *message = [[NSString alloc] initWithFormat:format arguments:ap];
+    WPFLog(@"[WordPressApi] < %@", message);
+    [message release];
 }
 
 @end

@@ -13,6 +13,10 @@
 #import "XMLRPCEncoder.h"
 #import "XMLRPCResponse.h"
 
+#ifndef WPFLog
+#define WPFLog(...) NSLog(__VA_ARGS__)
+#endif
+
 static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
 
 @implementation AFXMLRPCRequest
@@ -162,13 +166,18 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
                                                     failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
     AFHTTPRequestOperation *operation = [[[AFHTTPRequestOperation alloc] initWithRequest:request] autorelease];
     
-
+    BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
+#ifndef DEBUG
+    NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
+    if ([extra_debug boolValue]) extra_debug_on = YES;
+#endif
+    
     void (^xmlrpcSuccess)(AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
             XMLRPCResponse *response = [[XMLRPCResponse alloc] initWithData:responseObject];
             NSError *err = nil;
-            if (getenv("WPDebugXMLRPC")) {
-                NSLog(@"[XML-RPC] < %@", [response body]);
+            if ( extra_debug_on == YES ) {
+                 WPFLog(@"[XML-RPC] < %@", [response body]);
             }
             
             if ([response isFault]) {
@@ -179,15 +188,10 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
             if ([response object] == nil) {
                 NSDictionary *usrInfo = [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"Blog returned invalid data.", @""), NSLocalizedDescriptionKey, nil];
                 err = [NSError errorWithDomain:@"XMLRPC" code:kNoXMLPrefix userInfo:usrInfo];
-#ifndef DEBUG
-                NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
-                if ([extra_debug boolValue]) {
-#endif
                     // Log the whole response for "invalid data"
+                if ( extra_debug_on == YES ) {
                     WPFLog(@"Blog returned invalid data (URL: %@)\n%@", request.URL.absoluteString, operation.responseString);
-#ifndef DEBUG
                 }
-#endif
             }
             
             id object = [[response object] copy];
@@ -208,8 +212,8 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
         });        
     };
     void (^xmlrpcFailure)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (getenv("WPDebugXMLRPC")) {
-            NSLog(@"[XML-RPC] ! %@", [error localizedDescription]);
+         if ( extra_debug_on == YES ) {
+            WPFLog(@"[XML-RPC] ! %@", [error localizedDescription]);
         }
 
         if (failure) {
@@ -231,8 +235,13 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
         }        
     }];
 
-    if (getenv("WPDebugXMLRPC")) {
-        NSLog(@"[XML-RPC] > %@", [[[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding] autorelease]);
+    if ( extra_debug_on == YES ) {
+        NSString *requestString = [[[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding] autorelease];
+        if (getenv("WPDebugXMLRPC")) {
+            WPFLog(@"[XML-RPC] > %@", requestString);
+        } else {
+            WPFLog(@"[XML-RPC] > %@", [requestString stringByMatching:@"<methodName>(.*)</methodName>" capture:1]);
+        }
     }
     
     return operation;
