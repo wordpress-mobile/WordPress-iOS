@@ -57,7 +57,8 @@
 		
 	[self initObjects];
 	self.videoEnabled = YES;
-	[self performSelectorInBackground:@selector(checkVideoPressEnabled) withObject:nil];
+    if([self.postDetailViewController.post.blog isWPcom])
+        [self performSelectorInBackground:@selector(checkVideoPressEnabled) withObject:nil];
 	
     [self addNotifications];
 }
