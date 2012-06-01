@@ -105,16 +105,15 @@
     self.detailViewController.delegate = self;
 
     
-//    if (self.url) {
-//        NSString *loaderPath = [[NSBundle mainBundle] pathForResource:@"loader" ofType:@"html"];
-//        [self.webView loadHTMLString:[NSString stringWithContentsOfFile:loaderPath encoding:NSUTF8StringEncoding error:nil] baseURL:[NSURL URLWithString:kMobileReaderFakeLoaderURL]];
-//    }
-//    
+    if (self.url) {
+        NSString *loaderPath = [[NSBundle mainBundle] pathForResource:@"loader" ofType:@"html"];
+        [self.webView loadHTMLString:[NSString stringWithContentsOfFile:loaderPath encoding:NSUTF8StringEncoding error:nil] baseURL:[NSURL URLWithString:kMobileReaderFakeLoaderURL]];
+    }
+    
 
     [self refreshWebView];
     [self addNotifications];
-//    [self setRefreshTimer:[NSTimer timerWithTimeInterval:kReaderRefreshThreshold target:self selector:@selector(refreshWebViewTimer:) userInfo:nil repeats:YES]];
-//	[[NSRunLoop currentRunLoop] addTimer:[self refreshTimer] forMode:NSDefaultRunLoopMode];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -303,45 +302,21 @@
 }
 
 - (void)refreshWebView {
-    // needsLogin = NO;
+    
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    
-    // if (!needsLogin && self.username && self.password && ![self canIHazCookie]) {
-    //    WPFLog(@"We have login credentials but no cookie, let's try login first");
-    //    [self retryWithLogin];
-    //    return;
-    // }
-    
-    NSURL *webURL;
-    if (needsLogin)
-        webURL = [[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"] autorelease];
-    else
-        webURL = self.url;
-    
+        
     
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:webURL];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.url];
     request.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
     [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
     
     [request setCachePolicy:NSURLRequestReturnCacheDataElseLoad];
-    if (needsLogin) {
-        NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
-                                  [self.username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                                  [self.password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                                  [self.url.absoluteString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        [request setURL:[[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"] autorelease]];
-        [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
-        [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
-        [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-        [request setHTTPMethod:@"POST"];
-    } else {
-        // prefetch the details page        
-        self.detailViewController.url = [NSURL URLWithString:kMobileReaderDetailURL];
-        // load the topics page
-        [self.detailViewController view];
-        [self.topicsViewController loadTopicsPage];
-    }
+    // prefetch the details page        
+    self.detailViewController.url = [NSURL URLWithString:kMobileReaderDetailURL];
+    // load the topics page
+    [self.detailViewController view];
+    [self.topicsViewController loadTopicsPage];
     request = [self authorizeHybridRequest:request];
     [self.webView loadRequest:request];
     [self setupTopics];

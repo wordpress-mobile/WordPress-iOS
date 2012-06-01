@@ -14,37 +14,55 @@
 #import "JSONKit.h"
 #import "WordPressAppDelegate.h"
 
-@interface WPFriendFinderViewController ()
+typedef void (^DismissBlock)(int buttonIndex);
+typedef void (^CancelBlock)();
+
+
+@interface WPFriendFinderViewController () <UIAlertViewDelegate>
+
+@property (nonatomic, copy) DismissBlock dismissBlock;
+
 - (void)findEmails;
 - (void)findTwitterFollowers;
 - (void)findFacebookFriends;
 - (void)facebookDidLogIn:(NSNotification *)notification;
-
+- (void)facebookDidNotLogIn:(NSNotification *)notification;
+- (void)dismissFriendFinder:(id)sender;
+- (UIAlertView *)alertWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle confirmButtonTitle:(NSString *)confirmButtonTitle dismissBlock:(DismissBlock)dismiss;
 @end
 
 @implementation WPFriendFinderViewController
 
+@synthesize dismissBlock;
+
 - (void)viewDidLoad
 {
     // register for a notification
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(facebookDidLogIn:) name:kFacebookLoginNotificationName object:nil];
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(facebookDidLogIn:) name:kFacebookLoginNotificationName object:nil];
+    [nc addObserver:self selector:@selector(facebookDidNotLogIn:) name:kFacebookNoLoginNotificationName object:nil];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissFriendFinder:)];
 }
 
 - (void)viewDidUnload
 {
     // remove notification
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.dismissBlock = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    NSLog(@"Who is the delegate?: %@", self.webView.delegate);
     [super viewWillAppear:animated];
+}
+
+- (void)dismissFriendFinder:(id)sender
+{
+    [self.navigationController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)authorizeSource:(NSString *)source
 {
-    NSLog(@"Authorize source: %@", source);
     // time to load up the addressbook folks!
     if ([source isEqualToString:@"address-book"]) {
         [self findEmails];
@@ -59,28 +77,53 @@
 - (void) findEmails
 {
     
-    ABAddressBookRef address_book = ABAddressBookCreate();
-    CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(address_book);
-    CFIndex count = CFArrayGetCount(people);
+    // aplication name
     
-    NSMutableArray *addresses = [NSMutableArray arrayWithCapacity:count];
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    NSString *title = [NSString stringWithFormat:@"“%@” %@", appName, NSLocalizedString(@"Would Like Access to Address Book", @"")];
+    NSString *message = NSLocalizedString(@"Your contacts will be transmitted securely and will not be stored on our servers.", @"");
     
-    for (CFIndex i = 0; i<count; i++) {
-        ABRecordRef person = CFArrayGetValueAtIndex(people, i);
-        ABMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
-        for (CFIndex j = 0; j<ABMultiValueGetCount(emails); j++) {
-            NSString *email = (NSString *)ABMultiValueCopyValueAtIndex(emails, j);
-            [addresses addObject:email];
-            [email release];
-        }
-        CFRelease(emails);
-    }
-    CFRelease(people);
-    CFRelease(address_book);
-        
-    // pipe this addresses into the webview
+    [self alertWithTitle:title
+                 message:message
+       cancelButtonTitle:NSLocalizedString(@"Don’t Allow", @"")
+      confirmButtonTitle:NSLocalizedString(@"OK", @"")
+            dismissBlock:^(int buttonIndex) {
+                
+                if (1 == buttonIndex) {
+                    ABAddressBookRef address_book = ABAddressBookCreate();
+                    CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(address_book);
+                    CFIndex count = CFArrayGetCount(people);
+                    
+                    NSMutableArray *addresses = [NSMutableArray arrayWithCapacity:count];
+                    
+                    for (CFIndex i = 0; i<count; i++) {
+                        ABRecordRef person = CFArrayGetValueAtIndex(people, i);
+                        ABMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
+                        for (CFIndex j = 0; j<ABMultiValueGetCount(emails); j++) {
+                            NSString *email = (NSString *)ABMultiValueCopyValueAtIndex(emails, j);
+                            [addresses addObject:email];
+                            [email release];
+                        }
+                        CFRelease(emails);
+                    }
+                    CFRelease(people);
+                    CFRelease(address_book);
+                    
+                    // pipe this addresses into the webview
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByEmail(%@)", [addresses JSONString]]];
+                    });
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByEmail()"];
+                    });
+
+                }
+                
+            }];
     
-    [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByEmail(%@)", [addresses JSONString]]];
+    return;
+    
 
 }
 
@@ -114,10 +157,10 @@
                 });
             }];
         } else {
-            [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByTwitterID(false)"];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByTwitterID()"];
+            });
         }
-        
-        
         
     }];
     
@@ -127,8 +170,12 @@
 
 - (void)facebookDidLogIn:(NSNotification *)notification
 {
-    NSLog(@"Facebook logged in");
     [self findFacebookFriends];
+}
+
+- (void)facebookDidNotLogIn:(NSNotification *)notification
+{
+    [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByFacebookID()"];
 }
 
 - (void) findFacebookFriends
@@ -137,8 +184,6 @@
     Facebook *facebook = appDelegate.facebook;
     
     if ([facebook isSessionValid]) {
-        // find us some people
-        NSLog(@"Valid session!");
                 
         [facebook requestWithGraphPath:@"/me/friends" andDelegate:self];
         
@@ -175,7 +220,6 @@
  */
 - (void)request:(FBRequest *)request didFailWithError:(NSError *)error
 {
-    NSLog(@"Failed with error: %@", [error localizedDescription]);
     
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     Facebook *facebook = appDelegate.facebook;
@@ -207,6 +251,44 @@
  */
 - (void)request:(FBRequest *)request didLoadRawResponse:(NSData *)data
 {
+}
+
+- (UIAlertView *)alertWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle confirmButtonTitle:(NSString *)confirmButtonTitle dismissBlock:(DismissBlock)dismiss
+{
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if([defaults boolForKey:kAccessedAddressBookPreference] == YES){
+        dismiss(1);
+        return nil;
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancelButtonTitle otherButtonTitles:confirmButtonTitle, nil];
+        
+        self.dismissBlock = dismiss;
+        [alertView show];
+        return [alertView autorelease];
+
+    }
+
+}
+
+#pragma mark - UIAlertView Delegate Methods
+
+// Called when a button is clicked. The view will be automatically dismissed after this call returns
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (1 == buttonIndex){
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setBool:YES forKey:kAccessedAddressBookPreference];
+        [defaults synchronize];
+    }
+    self.dismissBlock(buttonIndex);
+}
+
+// Called when we cancel a view (eg. the user clicks the Home button). This is not called when the user clicks the cancel button.
+// If not defined in the delegate, we simulate a click in the cancel button
+- (void)alertViewCancel:(UIAlertView *)alertView
+{
+    self.dismissBlock(-1);
 }
 
 

@@ -214,10 +214,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
     
     facebook = [[Facebook alloc] initWithAppId:kFacebookAppID andDelegate:self];
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults objectForKey:@"FBAccessTokenKey"] 
-        && [defaults objectForKey:@"FBExpirationDateKey"]) {
-        facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
-        facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
+    if ([defaults objectForKey:kFacebookAccessTokenKey] 
+        && [defaults objectForKey:kFacebookExpirationDateKey]) {
+        facebook.accessToken = [defaults objectForKey:kFacebookAccessTokenKey];
+        facebook.expirationDate = [defaults objectForKey:kFacebookExpirationDateKey];
     }
     
 #ifdef PANELS_EXPERIMENTAL
@@ -1531,8 +1531,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 - (void)fbDidLogin {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[facebook accessToken] forKey:@"FBAccessTokenKey"];
-    [defaults setObject:[facebook expirationDate] forKey:@"FBExpirationDateKey"];
+    [defaults setObject:[facebook accessToken] forKey:kFacebookAccessTokenKey];
+    [defaults setObject:[facebook expirationDate] forKey:kFacebookExpirationDateKey];
     [defaults synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:kFacebookLoginNotificationName object:self];
     
@@ -1543,7 +1543,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
  */
 - (void)fbDidNotLogin:(BOOL)cancelled
 {
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kFacebookNoLoginNotificationName object:self];
 }
 
 /**
@@ -1564,7 +1564,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
  */
 - (void)fbDidLogout
 {
-    
 }
 
 /**
@@ -1576,7 +1575,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
  */
 - (void)fbSessionInvalidated
 {
-    
 }
 
 

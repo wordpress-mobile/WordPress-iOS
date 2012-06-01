@@ -27,8 +27,14 @@
 #define kMobileReaderFFURL      @"https://en.wordpress.com/reader/mobile/v2/?template=friendfinder"
 #define kHybridTokenSetting     @"WPWebAppHybridAuthToken"
 #define kAuthorizedHybridHost   @"en.wordpress.com"
-#define kFacebookAppID          @"230877513681511"
-#define kFacebookLoginNotificationName @"FacebookLogin"
+
+#define kFacebookAppID                   @"230877513681511"
+#define kFacebookLoginNotificationName   @"FacebookLogin"
+#define kFacebookNoLoginNotificationName @"FacebookNoLogin"
+#define kFacebookAccessTokenKey          @"FBAccessTokenKey"
+#define kFacebookExpirationDateKey       @"FBExpirationDateKey"
+
+#define kAccessedAddressBookPreference   @"AddressBookAccessGranted"
 
 #define kStatsEndpointURL		@"https://stats.wordpress.com/api/1.0/"
 #define kJetPackURL             @"http://jetpack.me"
