@@ -251,13 +251,14 @@
 }
 
 - (void)refreshWebView {
+    // needsLogin = NO;
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     
-    if (!needsLogin && self.username && self.password && ![self canIHazCookie]) {
-        WPFLog(@"We have login credentials but no cookie, let's try login first");
-        [self retryWithLogin];
-        return;
-    }
+    // if (!needsLogin && self.username && self.password && ![self canIHazCookie]) {
+    //    WPFLog(@"We have login credentials but no cookie, let's try login first");
+    //    [self retryWithLogin];
+    //    return;
+    // }
     
     NSURL *webURL;
     if (needsLogin)
@@ -286,6 +287,7 @@
         // prefetch the details page        
         self.detailViewController.url = [NSURL URLWithString:kMobileReaderDetailURL];
         // load the topics page
+        [self.detailViewController view];
         [self.topicsViewController loadTopicsPage];
     }
     request = [self authorizeHybridRequest:request];
@@ -355,7 +357,7 @@
         if (self.username && self.password) {
             WPFLog(@"WP is asking for credentials, let's login first");
             [self retryWithLogin];
-            return NO;
+            // return NO;
         }
     }
     
@@ -414,27 +416,6 @@
         return;
     }
     
-    //finished to load the Reader Home page, start a new call to get the detailView HTML
-    if ( ! self.detailContentHTML ) {
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[kMobileReaderDetailURL stringByAppendingFormat:@"&wp_hybrid_auth_token=%@", self.hybridAuthToken]]];
-        [request setHTTPMethod:@"GET"];
-        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-        [request addValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-        [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            self.detailContentHTML = operation.responseString;
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), error];
-            self.detailContentHTML = nil;
-        }];
-
-        NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-        [queue addOperation:operation];
-
-        [operation release];
-        [queue release];
-    }
 }
 
 @end

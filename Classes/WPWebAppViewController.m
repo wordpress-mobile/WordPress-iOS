@@ -246,7 +246,10 @@ Adds a token to the querystring of the request and to a request header
 
 - (void)setTitle:(NSString *)title
 {
-    self.navigationItem.title = title;
+    WPFLog(@"Don't allow blank titles: %@", title);
+    if (![[title stringByReplacingOccurrencesOfString:@" " withString:@""] isEqualToString:@""]) {
+        self.navigationItem.title = title;        
+    }
 }
 
 - (void)hideWebViewBackgrounds
