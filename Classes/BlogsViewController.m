@@ -404,6 +404,7 @@
 
 
 - (void)showReader { 
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setupReader]; 
     [self.navigationController pushViewController:readerViewController animated:YES]; 
 } 
