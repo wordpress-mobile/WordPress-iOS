@@ -28,5 +28,6 @@
 
 - (void)setSelectedTopic:(NSString *)topicId;
 - (void)setupTopics;
+- (void)showArticleDetails:(id)article;
 
 @end

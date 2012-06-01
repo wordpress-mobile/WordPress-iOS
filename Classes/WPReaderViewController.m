@@ -10,6 +10,7 @@
 #import "WPWebViewController.h"
 #import "WordPressAppDelegate.h"
 #import "SFHFKeychainUtils.h"
+#import "JSONKit.h"
 
 #ifdef DEBUG
 #define kReaderRefreshThreshold 10*60 // 10min
@@ -242,6 +243,18 @@
     }
 }
 
+#pragma mark - Hybrid Methods
+
+- (void)showArticleDetails:(id)item
+{
+    NSDictionary *article = (NSDictionary *)item;
+    NSLog(@"Show detail view: %@", article);
+    [self.panelNavigationController popToRootViewControllerAnimated:NO];
+    self.detailViewController.currentItem = [article JSONString];
+    [self.panelNavigationController pushViewController:self.detailViewController animated:YES];
+
+}
+
 #pragma mark - webView related methods
 
 - (void)setStatusTimer:(NSTimer *)timer
@@ -383,20 +396,14 @@
     if (!needsLogin && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location != NSNotFound) {
         if (self.username && self.password) {
             WPFLog(@"WP is asking for credentials, let's login first");
-            [self retryWithLogin];
             // return NO;
         }
     }
     
     if ( ![requestedURL isEqual:self.url] && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location == NSNotFound ) {
                 
-        if ( [requestedURLAbsoluteString rangeOfString:kMobileReaderDetailURL].location != NSNotFound ) {
-
-            [self.panelNavigationController popToRootViewControllerAnimated:NO];
-            NSString *item = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_current_item()"];
-            self.detailViewController.currentItem = item;
-            [self.panelNavigationController pushViewController:detailViewController animated:YES];
-                        
+        if ( [requestedURLAbsoluteString rangeOfString:kMobileReaderDetailLegacyURL].location != NSNotFound ) {
+            // Detail view is now being handled by showDetailView via hybrid bridge
             return NO;
         } else if ( [requestedURLAbsoluteString rangeOfString:kMobileReaderFPURL].location == NSNotFound
                    && [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location == NSNotFound ) {
@@ -409,14 +416,18 @@
             return NO;
         }
     }
-    
+        
     if( [requestedURLAbsoluteString rangeOfString:kMobileReaderFPURL].location == NSNotFound && [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location != NSNotFound ){
         [self pingStatsEndpoint:@"home_page"];
 
     }
     
-    [self setLoading:YES];        
-    return YES;
+    if ([requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location != NSNotFound) {
+        [self setLoading:YES];
+        return YES;
+    }
+    
+    return NO;
 }
 
 

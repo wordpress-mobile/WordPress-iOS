@@ -27,6 +27,7 @@
 #define kMobileReaderFFURL      @"https://en.wordpress.com/reader/mobile/v2/?template=friendfinder"
 #define kHybridTokenSetting     @"WPWebAppHybridAuthToken"
 #define kAuthorizedHybridHost   @"en.wordpress.com"
+#define kMobileReaderDetailLegacyURL @"https://en.wordpress.com/wp-admin/admin-ajax.php?action=wpcom_load_mobile&template=details&v=2"
 
 #define kFacebookAppID                   @"249643311490"
 #define kFacebookLoginNotificationName   @"FacebookLogin"
