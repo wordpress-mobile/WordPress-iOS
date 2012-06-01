@@ -61,6 +61,26 @@ typedef void (^CancelBlock)();
     [self.navigationController dismissModalViewControllerAnimated:YES];
 }
 
+- (void)configureFriendFinder:(id)config
+{
+    NSDictionary *settings = (NSDictionary *)config;
+    NSArray *sources = (NSArray *)[settings objectForKey:@"sources"];
+    
+    Class tweetComposer = NSClassFromString(@"TWTweetComposeViewController");
+    
+    NSMutableArray *available = [NSMutableArray arrayWithObjects:@"address-book", @"facebook", nil];
+    
+    if ( [sources containsObject:@"twitter"] && tweetComposer && [tweetComposer performSelector:(@selector(canSendTweet))]){
+        [available addObject:@"twitter"];
+    }
+    
+    NSLog(@"Sources: %@", [NSNumber numberWithBool:[sources containsObject:@"twitter"]]);
+    
+    [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.enableSources(%@)", [available JSONString]]];
+    
+    
+}
+
 - (void)authorizeSource:(NSString *)source
 {
     // time to load up the addressbook folks!

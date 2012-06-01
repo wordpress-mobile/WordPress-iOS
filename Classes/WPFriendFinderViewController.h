@@ -11,6 +11,7 @@
 @interface WPFriendFinderViewController : WPWebAppViewController <FBRequestDelegate>
 
 - (void)authorizeSource:(NSString *)source;
+- (void)configureFriendFinder:(id)config;
 
 @end
 
