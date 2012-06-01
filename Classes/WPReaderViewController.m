@@ -28,7 +28,7 @@
 - (void)refreshWebViewIfNeeded;
 - (void)retryWithLogin;
 - (void)pingStatsEndpoint:(NSString*)statName;
-
+- (void)canIHazCookie;
 
 @end
 
