@@ -27,12 +27,22 @@
 - (void)refreshWebViewIfNeeded;
 - (void)retryWithLogin;
 - (void)pingStatsEndpoint:(NSString*)statName;
+
+
+@end
+
+
+// Empty category allows us to define "private" properties
+@interface WPReaderViewController ()
+
+@property (nonatomic, retain) WPWebViewController *detailViewController; 
+
 @end
 
 @implementation WPReaderViewController
 @synthesize url, username, password, detailContentHTML;
 @synthesize refreshTimer, iPadNavBar;
-@synthesize topicsViewController;
+@synthesize topicsViewController, detailViewController;
 
 - (void)dealloc
 {
@@ -43,6 +53,7 @@
     self.detailContentHTML = nil;
     self.refreshTimer = nil;
     self.topicsViewController = nil;
+    self.detailViewController = nil;
     [super dealloc];
 }
 
@@ -86,17 +97,20 @@
     [self.webView stringByEvaluatingJavaScriptFromString:@"document.body.style.background = '#F2F2F2';"];
 
     self.topicsViewController = [[[WPReaderTopicsViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil] autorelease];
+    self.detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
+
     self.topicsViewController.delegate = self;
     
-    if (self.url) {
-        NSString *loaderPath = [[NSBundle mainBundle] pathForResource:@"loader" ofType:@"html"];
-        [self.webView loadHTMLString:[NSString stringWithContentsOfFile:loaderPath encoding:NSUTF8StringEncoding error:nil] baseURL:[NSURL URLWithString:kMobileReaderFakeLoaderURL]];
-    }
-    
-    
+//    if (self.url) {
+//        NSString *loaderPath = [[NSBundle mainBundle] pathForResource:@"loader" ofType:@"html"];
+//        [self.webView loadHTMLString:[NSString stringWithContentsOfFile:loaderPath encoding:NSUTF8StringEncoding error:nil] baseURL:[NSURL URLWithString:kMobileReaderFakeLoaderURL]];
+//    }
+//    
+
+    [self refreshWebView];
     [self addNotifications];
-    [self setRefreshTimer:[NSTimer timerWithTimeInterval:kReaderRefreshThreshold target:self selector:@selector(refreshWebViewTimer:) userInfo:nil repeats:YES]];
-	[[NSRunLoop currentRunLoop] addTimer:[self refreshTimer] forMode:NSDefaultRunLoopMode];
+//    [self setRefreshTimer:[NSTimer timerWithTimeInterval:kReaderRefreshThreshold target:self selector:@selector(refreshWebViewTimer:) userInfo:nil repeats:YES]];
+//	[[NSRunLoop currentRunLoop] addTimer:[self refreshTimer] forMode:NSDefaultRunLoopMode];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -114,6 +128,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];  
    	[self setRefreshTimer:nil];
     self.topicsViewController = nil;
+    self.detailViewController = nil;
     [self removeNotifications];
     [super viewDidUnload];
 }
@@ -137,7 +152,6 @@
 - (void)showTopicSelector:(id)sender
 {
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.topicsViewController];
-    NSLog(@"What's going on? %@ %@", self.topicsViewController.webView, self.topicsViewController.webView.superview);
     [self presentModalViewController:nav animated:YES];
     [nav release];
 }
@@ -269,6 +283,9 @@
         [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
         [request setHTTPMethod:@"POST"];
     } else {
+        // prefetch the details page        
+        self.detailViewController.url = [NSURL URLWithString:kMobileReaderDetailURL];
+        // load the topics page
         [self.topicsViewController loadTopicsPage];
     }
     request = [self authorizeHybridRequest:request];
@@ -346,27 +363,20 @@
                 
         if ( [requestedURLAbsoluteString rangeOfString:kMobileReaderDetailURL].location != NSNotFound ) {
             //The user tapped an item in the posts list
-            WPWebViewController *detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
-            if( self.detailContentHTML ) 
-                detailViewController.detailHTML = self.detailContentHTML;
-            else
-                detailViewController.url = [request URL]; 
-
-            detailViewController.detailContent = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.last_selected_item;"];
-            detailViewController.readerAllItems = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_loaded_items();"];
+            self.detailViewController.detailContent = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.last_selected_item;"];
+            // self.detailViewController.readerAllItems = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_loaded_items();"];
             [self.panelNavigationController popToRootViewControllerAnimated:NO];
             [self.panelNavigationController pushViewController:detailViewController animated:YES];
-            [detailViewController release];
-            
+                        
             return NO;
         } else if ( [requestedURLAbsoluteString rangeOfString:kMobileReaderFPURL].location == NSNotFound
                    && [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location == NSNotFound ) {
             //When in FP and the user click on an item we should push a new VC into the stack
-            WPWebViewController *detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
-            detailViewController.url = [request URL]; 
+            WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
+            webViewController.url = [request URL]; 
             [self.panelNavigationController popToRootViewControllerAnimated:NO];
             [self.panelNavigationController pushViewController:detailViewController animated:YES];
-            [detailViewController release];
+            [webViewController release];
             return NO;
         }
     }

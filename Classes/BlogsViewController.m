@@ -404,15 +404,6 @@
 
 
 - (void)showReader { 
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)]; 
-    if ( appDelegate.wpcomAvailable == NO ) {
-        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, no connection to WordPress.com.", @"")
-																	  message:NSLocalizedString(@"The Reader is not available at this moment.", @"")
-																	 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-        [connectionFailAlert show];
-        [connectionFailAlert release];
-        return;
-    }
     [self setupReader]; 
     [self.navigationController pushViewController:readerViewController animated:YES]; 
 } 
