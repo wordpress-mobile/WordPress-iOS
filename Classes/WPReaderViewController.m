@@ -35,7 +35,7 @@
 // Empty category allows us to define "private" properties
 @interface WPReaderViewController ()
 
-@property (nonatomic, retain) WPWebViewController *detailViewController; 
+@property (nonatomic, retain) WPReaderDetailViewController *detailViewController; 
 
 @end
 
@@ -71,6 +71,8 @@
             self.username = wpcom_username;
             self.password = wpcom_password;
         }
+        
+        [self canIHazCookie];
     }
     return self;
 }
@@ -97,9 +99,11 @@
     [self.webView stringByEvaluatingJavaScriptFromString:@"document.body.style.background = '#F2F2F2';"];
 
     self.topicsViewController = [[[WPReaderTopicsViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil] autorelease];
-    self.detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
-
     self.topicsViewController.delegate = self;
+
+    self.detailViewController = [[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
+    self.detailViewController.delegate = self;
+
     
 //    if (self.url) {
 //        NSString *loaderPath = [[NSBundle mainBundle] pathForResource:@"loader" ofType:@"html"];
@@ -146,6 +150,31 @@
     if (parent == nil) {
         [self setRefreshTimer:nil];
     }
+}
+
+#pragma mark - Detail View Controller Delegate Methods
+
+- (id)nextItemForDetailController:(WPReaderDetailViewController *)detailController
+{
+    NSString *item = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_next_item()"];
+    NSLog(@"Next: %@", item);
+    return item;
+}
+
+- (id)previousItemForDetailController:(WPReaderDetailViewController *)detailController
+{
+    return [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_previous_item()"];
+}
+
+- (BOOL)detailController:(WPReaderDetailViewController *)detailController hasNextForItem:(id)item
+{
+    return [[self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.has_next_item()"] isEqualToString:@"true"];
+}
+
+- (BOOL)detailController:(WPReaderDetailViewController *)detailController hasPreviousForItem:(id)item
+{
+    NSString *prev = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.has_previous_item()"];
+    return [prev isEqualToString:@"true"];
 }
 
 #pragma mark - Topic View Controller Methods
@@ -247,6 +276,29 @@
             return YES;
         }
     }
+    // fetch the cookie using a NSURLRequest and NSURLConnection
+    // when the cookie has been made available the Reader will automatically
+    // be authenticated
+    
+    NSURL *loginURL = [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
+    NSMutableURLRequest *loginRequest = [[NSMutableURLRequest alloc] initWithURL:loginURL];
+    [loginURL release];
+    
+    NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&rememberme=forever&redirect_to=%@",
+                              [self.username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+                              [self.password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+                              [self.url.absoluteString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    loginRequest.HTTPBody = [request_body dataUsingEncoding:NSUTF8StringEncoding];
+    loginRequest.HTTPMethod = @"POST";
+    [loginRequest setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
+    [loginRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
+    
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:loginRequest delegate:nil];
+    [loginRequest release];
+    [connection start];
+    [connection release];
+    
+    
     return NO;
 }
 
@@ -364,10 +416,10 @@
     if ( ![requestedURL isEqual:self.url] && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location == NSNotFound ) {
                 
         if ( [requestedURLAbsoluteString rangeOfString:kMobileReaderDetailURL].location != NSNotFound ) {
-            //The user tapped an item in the posts list
-            self.detailViewController.detailContent = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.last_selected_item;"];
-            // self.detailViewController.readerAllItems = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_loaded_items();"];
+
             [self.panelNavigationController popToRootViewControllerAnimated:NO];
+            NSString *item = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_current_item()"];
+            self.detailViewController.currentItem = item;
             [self.panelNavigationController pushViewController:detailViewController animated:YES];
                         
             return NO;

@@ -211,6 +211,8 @@ Classes/WPComOAuthController.h -text
 Classes/WPComOAuthController.m -text
 Classes/WPError.h -text
 Classes/WPError.m -text
+Classes/WPFriendFinderViewController.h -text
+Classes/WPFriendFinderViewController.m -text
 Classes/WPImagePickerController.h -text
 Classes/WPImagePickerController.m -text
 Classes/WPKeyboardToolbar.h -text
@@ -223,6 +225,8 @@ Classes/WPPageControl.h -text
 Classes/WPPageControl.m -text
 Classes/WPProgressHUD.h -text
 Classes/WPProgressHUD.m -text
+Classes/WPReaderDetailViewController.h -text
+Classes/WPReaderDetailViewController.m -text
 Classes/WPReaderTopicsViewController.h -text
 Classes/WPReaderTopicsViewController.m -text
 Classes/WPReaderViewController.h -text
@@ -703,6 +707,23 @@ de.lproj/Localizable.strings -text svneol=unset#unset
 /downArrow@2x.png -text svneol=unset#unset
 en.lproj/Localizable.strings -text svneol=unset#unset
 es.lproj/Localizable.strings -text svneol=unset#unset
+facebook-ios-sdk/FBConnect.h -text
+facebook-ios-sdk/FBDialog.bundle/images/close.png -text svneol=unset#unset
+facebook-ios-sdk/FBDialog.bundle/images/close@2x.png -text svneol=unset#unset
+facebook-ios-sdk/FBDialog.bundle/images/fbicon.png -text svneol=unset#unset
+facebook-ios-sdk/FBDialog.h -text
+facebook-ios-sdk/FBFrictionlessRequestSettings.h -text
+facebook-ios-sdk/FBLoginDialog.h -text
+facebook-ios-sdk/FBRequest.h -text
+facebook-ios-sdk/Facebook.h -text
+facebook-ios-sdk/JSON.h -text
+facebook-ios-sdk/NSObject+SBJSON.h -text
+facebook-ios-sdk/NSString+SBJSON.h -text
+facebook-ios-sdk/SBJSON.h -text
+facebook-ios-sdk/SBJsonBase.h -text
+facebook-ios-sdk/SBJsonParser.h -text
+facebook-ios-sdk/SBJsonWriter.h -text
+facebook-ios-sdk/libfacebook_ios_sdk.a -text svneol=unset#unset
 /fix-translation.php -text
 fr.lproj/Localizable.strings -text svneol=unset#unset
 fr.lproj/Localizable.strings.bak -text svneol=unset#unset

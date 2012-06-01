@@ -39,6 +39,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 @synthesize splitViewController, crashReportView, isUploadingPost;
 @synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
 @synthesize blogsViewController;
+@synthesize facebook;
 #ifdef PANELS_EXPERIMENTAL
 @synthesize panelNavigationController;
 #endif
@@ -106,6 +107,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #else
     WPFLog(@"Notifications: production");
 #endif
+    
+    NSURL *fb = [NSURL URLWithString:[NSString stringWithFormat:@"fb%@://testurl", kFacebookAppID]];
+    NSLog(@"Can we open: %@", fb);
+    if([[UIApplication sharedApplication] canOpenURL:fb]){
+        NSLog(@"We can open: %@", fb);
+    } else {
+        NSLog(@"Sorry people, not goint to happen: %@", fb);
+    }
 	
 	if(getenv("NSZombieEnabled"))
 		NSLog(@"NSZombieEnabled!");
@@ -202,7 +211,15 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//BetaUIWindow *betaWindow = [[BetaUIWindow alloc] initWithFrame:CGRectZero];
 	//betaWindow.hidden = NO;
 	//BETA FEEDBACK BAR
-	
+    
+    facebook = [[Facebook alloc] initWithAppId:kFacebookAppID andDelegate:self];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults objectForKey:@"FBAccessTokenKey"] 
+        && [defaults objectForKey:@"FBExpirationDateKey"]) {
+        facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
+        facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
+    }
+    
 #ifdef PANELS_EXPERIMENTAL
     NSError *err = nil;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -326,6 +343,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 -(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    if ([facebook handleOpenURL:url]){
+        return YES;
+    }
+
     if (url && [url isKindOfClass:[NSURL class]]) {
         NSString *URLString = [url absoluteString];
         NSLog(@"Application launched with URL: %@", URLString);
@@ -1506,4 +1527,58 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [[UIApplication sharedApplication] openURL:callback];
 }
 
+#pragma mark - Facebook Delegate Methods
+
+- (void)fbDidLogin {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[facebook accessToken] forKey:@"FBAccessTokenKey"];
+    [defaults setObject:[facebook expirationDate] forKey:@"FBExpirationDateKey"];
+    [defaults synchronize];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kFacebookLoginNotificationName object:self];
+    
+}
+
+/**
+ * Called when the user dismissed the dialog without logging in.
+ */
+- (void)fbDidNotLogin:(BOOL)cancelled
+{
+    
+}
+
+/**
+ * Called after the access token was extended. If your application has any
+ * references to the previous access token (for example, if your application
+ * stores the previous access token in persistent storage), your application
+ * should overwrite the old access token with the new one in this method.
+ * See extendAccessToken for more details.
+ */
+- (void)fbDidExtendToken:(NSString*)accessToken
+               expiresAt:(NSDate*)expiresAt
+{
+    
+}
+
+/**
+ * Called when the user logged out.
+ */
+- (void)fbDidLogout
+{
+    
+}
+
+/**
+ * Called when the current session has expired. This might happen when:
+ *  - the access token expired
+ *  - the app has been disabled
+ *  - the user revoked the app's permissions
+ *  - the user changed his or her password
+ */
+- (void)fbSessionInvalidated
+{
+    
+}
+
+
 @end
+

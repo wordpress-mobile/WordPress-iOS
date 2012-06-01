@@ -9,17 +9,19 @@
 #import "Reachability.h"
 #import "WPComOAuthController.h"
 #import "PanelNavigationController.h"
+#import "FBConnect.h"
 
 @class AutosaveManager;
 @class BlogsViewController;
 
-@interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate, WPComOAuthDelegate> {
+@interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate, WPComOAuthDelegate, FBSessionDelegate> {
 	Blog *currentBlog;
     //Connection Reachability variables
     Reachability *internetReachability;
     Reachability *wpcomReachability;
     Reachability *currentBlogReachability;
     BOOL connectionAvailable, wpcomAvailable, currentBlogAvailable;
+    Facebook *facebook;
 @private
     IBOutlet UIWindow *window;
     IBOutlet UINavigationController *navigationController;
@@ -64,6 +66,7 @@
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) BlogsViewController *blogsViewController;
+@property (nonatomic, retain) Facebook *facebook;
 #ifdef PANELS_EXPERIMENTAL
 @property (nonatomic, retain) PanelNavigationController *panelNavigationController;
 #endif

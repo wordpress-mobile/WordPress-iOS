@@ -10,8 +10,10 @@
 #import <MessageUI/MFMailComposeViewController.h>
 #import "EGORefreshTableHeaderView.h"
 #import "WPReaderTopicsViewController.h"
+#import "WPReaderDetailViewController.h"
 
-@interface WPReaderViewController : WPWebAppViewController <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, WPReaderTopicsViewControllerDelegate> {
+
+@interface WPReaderViewController : WPWebAppViewController <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, WPReaderTopicsViewControllerDelegate, WPReaderDetailViewControllerDelegate> {
     BOOL needsLogin;
     NSTimer *statusTimer;   // This timer checks the nav buttons every 0.75 seconds, and updates them
     NSTimer *refreshTimer; 

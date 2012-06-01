@@ -23,6 +23,7 @@
 - (void)loadTopicsPage;
 - (void)selectTopic:(NSString *)topic :(NSString *) title;
 - (void)setSelectedTopic:(NSString *)topicId;
+- (void)openFriendFinder;
 - (NSString *)selectedTopicTitle;
 @end
 

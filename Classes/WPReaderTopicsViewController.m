@@ -8,6 +8,7 @@
 
 #import "WPReaderTopicsViewController.h"
 #import "WordPressAppDelegate.h"
+#import "WPFriendFinderViewController.h"
 
 @implementation WPReaderTopicsViewController
 
@@ -52,7 +53,14 @@
     [super viewDidLoad];
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelSelection:)];
     self.navigationItem.rightBarButtonItem = cancelButton;
+    
     [cancelButton release];
+    
+    UIBarButtonItem *ffButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(openFriendFinder)];
+    
+    self.navigationItem.leftBarButtonItem = ffButton;
+    [ffButton release];
+    
 
 }
 
@@ -82,13 +90,8 @@
 
 - (void)loadTopicsPage
 {
-    NSHTTPCookieStorage *cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:kMobileReaderTopicsURL]];
-    NSDictionary *cookieHeader = [NSHTTPCookie requestHeaderFieldsWithCookies:[cookies cookiesForURL:request.URL]];
-    [request setValue:appDelegate.applicationUserAgent forHTTPHeaderField:@"User-Agent"];
-    [request setValue:[cookieHeader valueForKey:@"Cookie"] forHTTPHeaderField:@"Cookie"];
-    [self.webView loadRequest:[self authorizeHybridRequest:request]];
+    
+    [self loadURL:kMobileReaderTopicsURL];
 }
 
 
@@ -102,6 +105,14 @@
     
     [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.setSelectedTopic('%@')", topicId]];
     
+}
+
+- (void)openFriendFinder
+{
+    WPFriendFinderViewController *friendFinder = [[WPFriendFinderViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil];
+    [self.navigationController pushViewController:friendFinder animated:YES];
+    [friendFinder release];
+    [friendFinder loadURL:kMobileReaderFFURL];
 }
 
 - (NSString *)selectedTopicTitle {

@@ -335,6 +335,13 @@
 		C5C272DF0E7EC00A0034AA46 /* uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272DE0E7EC00A0034AA46 /* uncheck.png */; };
 		C5C272E10E7EC00F0034AA46 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272E00E7EC00F0034AA46 /* check.png */; };
 		C5E3AE350E93F3C5008755FF /* WPImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */; };
+		CC24E5EB157723AD00A6D5B5 /* WPReaderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC24E5EA157723AD00A6D5B5 /* WPReaderDetailViewController.m */; };
+		CC24E5EF1577D1EA00A6D5B5 /* WPFriendFinderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC24E5EE1577D1EA00A6D5B5 /* WPFriendFinderViewController.m */; };
+		CC24E5F11577DBC300A6D5B5 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F01577DBC300A6D5B5 /* AddressBook.framework */; };
+		CC24E5F31577DFF500A6D5B5 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F21577DFF400A6D5B5 /* Twitter.framework */; };
+		CC24E5F51577E16B00A6D5B5 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F41577E16B00A6D5B5 /* Accounts.framework */; };
+		CC24E6061578273A00A6D5B5 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CC24E5F91578273A00A6D5B5 /* FBDialog.bundle */; };
+		CC24E6071578273A00A6D5B5 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5FF1578273A00A6D5B5 /* libfacebook_ios_sdk.a */; };
 		CC9AF2AE14D2F58400256729 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = CC9AF2AD14D2F58400256729 /* JSONKit.m */; };
 		CCB3A04014C8E12700D43C3F /* WPReaderTopicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB3A03F14C8E12700D43C3F /* WPReaderTopicsViewController.m */; };
 		CCEF153114C9EA050001176D /* WPWebAppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEF153014C9EA050001176D /* WPWebAppViewController.m */; };
@@ -979,6 +986,28 @@
 		C5C272E00E7EC00F0034AA46 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = "<group>"; };
 		C5E3AE330E93F3C5008755FF /* WPImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPImagePickerController.h; sourceTree = "<group>"; };
 		C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPImagePickerController.m; sourceTree = "<group>"; };
+		CC24E5E9157723AD00A6D5B5 /* WPReaderDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPReaderDetailViewController.h; sourceTree = "<group>"; };
+		CC24E5EA157723AD00A6D5B5 /* WPReaderDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPReaderDetailViewController.m; sourceTree = "<group>"; };
+		CC24E5ED1577D1EA00A6D5B5 /* WPFriendFinderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPFriendFinderViewController.h; sourceTree = "<group>"; };
+		CC24E5EE1577D1EA00A6D5B5 /* WPFriendFinderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPFriendFinderViewController.m; sourceTree = "<group>"; };
+		CC24E5F01577DBC300A6D5B5 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		CC24E5F21577DFF400A6D5B5 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
+		CC24E5F41577E16B00A6D5B5 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		CC24E5F71578273A00A6D5B5 /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facebook.h; sourceTree = "<group>"; };
+		CC24E5F81578273A00A6D5B5 /* FBConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBConnect.h; sourceTree = "<group>"; };
+		CC24E5F91578273A00A6D5B5 /* FBDialog.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FBDialog.bundle; sourceTree = "<group>"; };
+		CC24E5FA1578273A00A6D5B5 /* FBDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBDialog.h; sourceTree = "<group>"; };
+		CC24E5FB1578273A00A6D5B5 /* FBFrictionlessRequestSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBFrictionlessRequestSettings.h; sourceTree = "<group>"; };
+		CC24E5FC1578273A00A6D5B5 /* FBLoginDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBLoginDialog.h; sourceTree = "<group>"; };
+		CC24E5FD1578273A00A6D5B5 /* FBRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRequest.h; sourceTree = "<group>"; };
+		CC24E5FE1578273A00A6D5B5 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
+		CC24E5FF1578273A00A6D5B5 /* libfacebook_ios_sdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfacebook_ios_sdk.a; sourceTree = "<group>"; };
+		CC24E6001578273A00A6D5B5 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
+		CC24E6011578273A00A6D5B5 /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
+		CC24E6021578273A00A6D5B5 /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
+		CC24E6031578273A00A6D5B5 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
+		CC24E6041578273A00A6D5B5 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		CC24E6051578273A00A6D5B5 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		CC9AF2AC14D2F58400256729 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		CC9AF2AD14D2F58400256729 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		CCB3A03E14C8E12700D43C3F /* WPReaderTopicsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPReaderTopicsViewController.h; sourceTree = "<group>"; };
@@ -1301,6 +1330,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC24E5F51577E16B00A6D5B5 /* Accounts.framework in Frameworks */,
+				CC24E5F31577DFF500A6D5B5 /* Twitter.framework in Frameworks */,
+				CC24E5F11577DBC300A6D5B5 /* AddressBook.framework in Frameworks */,
 				E1A386CB14DB063800954CF8 /* MediaPlayer.framework in Frameworks */,
 				E1A386CA14DB05F700954CF8 /* CoreMedia.framework in Frameworks */,
 				E1A386C814DB05C300954CF8 /* AVFoundation.framework in Frameworks */,
@@ -1321,6 +1353,7 @@
 				3789C598129EA5E600ADA91C /* CrashReporter.framework in Frameworks */,
 				FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */,
 				FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */,
+				CC24E6071578273A00A6D5B5 /* libfacebook_ios_sdk.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1470,6 +1503,9 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CC24E5F41577E16B00A6D5B5 /* Accounts.framework */,
+				CC24E5F21577DFF400A6D5B5 /* Twitter.framework */,
+				CC24E5F01577DBC300A6D5B5 /* AddressBook.framework */,
 				E1A386C914DB05F700954CF8 /* CoreMedia.framework */,
 				E1A386C714DB05C300954CF8 /* AVFoundation.framework */,
 				E19DF740141F7BDD000002F3 /* libz.dylib */,
@@ -2202,6 +2238,28 @@
 			name = Categories;
 			sourceTree = "<group>";
 		};
+		CC24E5F61578273A00A6D5B5 /* facebook-ios-sdk */ = {
+			isa = PBXGroup;
+			children = (
+				CC24E5F71578273A00A6D5B5 /* Facebook.h */,
+				CC24E5F81578273A00A6D5B5 /* FBConnect.h */,
+				CC24E5F91578273A00A6D5B5 /* FBDialog.bundle */,
+				CC24E5FA1578273A00A6D5B5 /* FBDialog.h */,
+				CC24E5FB1578273A00A6D5B5 /* FBFrictionlessRequestSettings.h */,
+				CC24E5FC1578273A00A6D5B5 /* FBLoginDialog.h */,
+				CC24E5FD1578273A00A6D5B5 /* FBRequest.h */,
+				CC24E5FE1578273A00A6D5B5 /* JSON.h */,
+				CC24E5FF1578273A00A6D5B5 /* libfacebook_ios_sdk.a */,
+				CC24E6001578273A00A6D5B5 /* NSObject+SBJSON.h */,
+				CC24E6011578273A00A6D5B5 /* NSString+SBJSON.h */,
+				CC24E6021578273A00A6D5B5 /* SBJSON.h */,
+				CC24E6031578273A00A6D5B5 /* SBJsonBase.h */,
+				CC24E6041578273A00A6D5B5 /* SBJsonParser.h */,
+				CC24E6051578273A00A6D5B5 /* SBJsonWriter.h */,
+			);
+			path = "facebook-ios-sdk";
+			sourceTree = "<group>";
+		};
 		CC9AF2AA14D2F53800256729 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
@@ -2216,10 +2274,14 @@
 			children = (
 				FD3890EE1442F91000135C6D /* WPReaderViewController.h */,
 				FD3890EF1442F91000135C6D /* WPReaderViewController.m */,
+				CC24E5ED1577D1EA00A6D5B5 /* WPFriendFinderViewController.h */,
+				CC24E5EE1577D1EA00A6D5B5 /* WPFriendFinderViewController.m */,
 				CCB3A03E14C8E12700D43C3F /* WPReaderTopicsViewController.h */,
 				CCB3A03F14C8E12700D43C3F /* WPReaderTopicsViewController.m */,
 				CCEF152F14C9EA050001176D /* WPWebAppViewController.h */,
 				CCEF153014C9EA050001176D /* WPWebAppViewController.m */,
+				CC24E5E9157723AD00A6D5B5 /* WPReaderDetailViewController.h */,
+				CC24E5EA157723AD00A6D5B5 /* WPReaderDetailViewController.m */,
 			);
 			name = Reader;
 			sourceTree = "<group>";
@@ -2289,6 +2351,7 @@
 		E12F55F714A1F2640060A510 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				CC24E5F61578273A00A6D5B5 /* facebook-ios-sdk */,
 				E12F95B6155820A40067A653 /* KVO+Blocks */,
 				E1EAD53D1554498000C0ED7A /* CameraPlus */,
 				FDA68C1D14AC6CB800151896 /* Reachability */,
@@ -2994,6 +3057,7 @@
 				373C5184156D0523007C2977 /* SidebarViewController.xib in Resources */,
 				373C5187156D2547007C2977 /* carat-open@2x.png in Resources */,
 				373C5188156D2547007C2977 /* carat@2x.png in Resources */,
+				CC24E6061578273A00A6D5B5 /* FBDialog.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3211,6 +3275,8 @@
 				A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */,
 				5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */,
 				5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */,
+				CC24E5EB157723AD00A6D5B5 /* WPReaderDetailViewController.m in Sources */,
+				CC24E5EF1577D1EA00A6D5B5 /* WPFriendFinderViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3295,7 +3361,10 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "Info-dev.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/facebook-ios-sdk\"",
+				);
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-DDEBUG",
@@ -3325,7 +3394,10 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/facebook-ios-sdk\"",
+				);
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-Wno-format",
@@ -3382,7 +3454,10 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/facebook-ios-sdk\"",
+				);
 				OTHER_CFLAGS = (
 					"-Wno-format",
 					"-Wno-format-security",
@@ -3445,7 +3520,10 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Info-beta.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/facebook-ios-sdk\"",
+				);
 				PRODUCT_NAME = WordPress;
 				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = YES;

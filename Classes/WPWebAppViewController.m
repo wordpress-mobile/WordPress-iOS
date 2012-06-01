@@ -9,6 +9,7 @@
 #import <CommonCrypto/CommonDigest.h>
 #import "WPWebAppViewController.h"
 #import "JSONKit.h"
+#import "WordPressAppDelegate.h"
 
 @implementation WPWebAppViewController
 
@@ -237,6 +238,19 @@ Adds a token to the querystring of the request and to a request header
 }
 
 #pragma mark - Hybrid Helper Methods
+
+- (void)loadURL:(NSString *)url
+{
+    
+    NSHTTPCookieStorage *cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
+    NSDictionary *cookieHeader = [NSHTTPCookie requestHeaderFieldsWithCookies:[cookies cookiesForURL:request.URL]];
+    [request setValue:appDelegate.applicationUserAgent forHTTPHeaderField:@"User-Agent"];
+    [request setValue:[cookieHeader valueForKey:@"Cookie"] forHTTPHeaderField:@"Cookie"];
+    [self.webView loadRequest:[self authorizeHybridRequest:request]];
+
+}
 
 // Just a Hello World for testing integration
 - (void)enableAwesomeness

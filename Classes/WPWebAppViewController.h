@@ -27,6 +27,7 @@
 - (void)setNavigationBarColor:(NSDictionary *)colorWithRGBA;
 - (void)enableFastScrolling;
 - (void)enableAwesomeness;
+- (void)loadURL:(NSString *)url;
 - (UIScrollView *)scrollView;
 - (NSMutableURLRequest *)authorizeHybridRequest:(NSMutableURLRequest *)request;
 + (NSURL *)authorizeHybridURL:(NSURL *) url;
