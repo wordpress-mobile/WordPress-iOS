@@ -28,7 +28,7 @@
 #define kHybridTokenSetting     @"WPWebAppHybridAuthToken"
 #define kAuthorizedHybridHost   @"en.wordpress.com"
 
-#define kFacebookAppID                   @"230877513681511"
+#define kFacebookAppID                   @"249643311490"
 #define kFacebookLoginNotificationName   @"FacebookLogin"
 #define kFacebookNoLoginNotificationName @"FacebookNoLogin"
 #define kFacebookAccessTokenKey          @"FBAccessTokenKey"
