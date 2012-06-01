@@ -107,15 +107,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #else
     WPFLog(@"Notifications: production");
 #endif
-    
-    NSURL *fb = [NSURL URLWithString:[NSString stringWithFormat:@"fb%@://testurl", kFacebookAppID]];
-    NSLog(@"Can we open: %@", fb);
-    if([[UIApplication sharedApplication] canOpenURL:fb]){
-        NSLog(@"We can open: %@", fb);
-    } else {
-        NSLog(@"Sorry people, not goint to happen: %@", fb);
-    }
-	
+    	
 	if(getenv("NSZombieEnabled"))
 		NSLog(@"NSZombieEnabled!");
 	else if(getenv("NSAutoreleaseFreedObjectCheckEnabled"))
