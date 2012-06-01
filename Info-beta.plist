@@ -56,13 +56,6 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>wordpress</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>org.wordpress</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
 				<string>fb249643311490</string>
 			</array>
 		</dict>
