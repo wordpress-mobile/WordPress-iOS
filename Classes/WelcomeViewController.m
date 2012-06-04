@@ -154,7 +154,7 @@
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if(indexPath.row == 0) { // Start a new blog at WordPress.com
-		NSString *newNibName = @"XMLSignupViewController";
+	/*	NSString *newNibName = @"XMLSignupViewController";
 		if(DeviceIsPad() == YES) {
 			newNibName = @"XMLSignupViewController-iPad";
         } else {
@@ -163,7 +163,13 @@
 
         XMLSignupViewController *xmlSignup = [[XMLSignupViewController alloc] initWithNibName:newNibName bundle:[NSBundle mainBundle]];            
         [self.navigationController pushViewController:xmlSignup animated:YES];
-        [xmlSignup release];
+        [xmlSignup release];*/
+        NSString *newNibName = @"WebSignupViewController";
+		if(DeviceIsPad() == YES)
+			newNibName = @"WebSignupViewController-iPad";
+		WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:newNibName bundle:[NSBundle mainBundle]];
+		[self.navigationController pushViewController:webSignup animated:YES];
+		[webSignup release];
 	}
 	else if(indexPath.row == 1) { // Add blog hosted at WordPress.com
         NSString *username = nil;
