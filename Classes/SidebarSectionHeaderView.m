@@ -7,11 +7,19 @@
 #import "SidebarSectionHeaderView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIImageView+Gravatar.h"
+#define DETAIL_LEDGE 44.0f //Fixme: this is already defined in PanelNavigationController.m
 
+@interface SidebarSectionHeaderView ()
+
+-(UIImage *)addText:(UIImage *)img text:(NSString *)text1;
+
+@end
+    
+    
 @implementation SidebarSectionHeaderView
 
 
-@synthesize titleLabel=_titleLabel, disclosureButton=_disclosureButton, delegate=_delegate, sectionInfo=_sectionInfo;
+@synthesize titleLabel=_titleLabel, disclosureButton=_disclosureButton, delegate=_delegate, sectionInfo=_sectionInfo, numberOfCommentsImageView=_numberOfCommentsImageView, blog = _blog;
 
 
 + (Class)layerClass {
@@ -31,6 +39,7 @@
         [self addGestureRecognizer:tapGesture];
         [tapGesture release];
         
+        _blog = blog;
         _delegate = delegate;        
         self.userInteractionEnabled = YES;
         
@@ -44,10 +53,13 @@
         self.sectionInfo = sectionInfo;
         CGRect titleLabelFrame = self.bounds;
         titleLabelFrame.origin.x += 51.0;
-       /* if ( numberOfPendingComments > 0 ) 
+        if ( numberOfPendingComments > 0 ) 
             titleLabelFrame.size.width -= 102.0;
         else
-            titleLabelFrame.size.width -= 51.0;*/
+            titleLabelFrame.size.width -= 51.0;
+        
+        titleLabelFrame.size.width -= DETAIL_LEDGE;
+        
         CGRectInset(titleLabelFrame, 0.0, 6.0);
         UILabel *label = [[UILabel alloc] initWithFrame:titleLabelFrame];
         
@@ -56,17 +68,21 @@
         if (blogName != nil && ! [@"" isEqualToString: [blogName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
             label.text = blogName;
         else
-            label.text = [blog hostURL];
-        
-        if ( numberOfPendingComments > 0 ) {
-            label.text =[NSString stringWithFormat:@"(%d) %@", numberOfPendingComments, label.text];
-        }
+            label.text = [blog hostURL];            
         
         label.font = [UIFont boldSystemFontOfSize:17.0];
         label.textColor = [UIColor blackColor];
         label.backgroundColor = [UIColor clearColor];
         [self addSubview:label];
         _titleLabel = label;
+        
+        UIImageView *commentsIconImgView = [[[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width - ( 35.0 + DETAIL_LEDGE ), 6.0, 35.0, 35.0)] autorelease];
+        if ( numberOfPendingComments > 0 ) {
+            UIImage *img = [self addText:[UIImage imageNamed:@"inner-shadow.png"] text:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            commentsIconImgView.image = img;
+        }
+        [self addSubview:commentsIconImgView];
+        _numberOfCommentsImageView = commentsIconImgView;
         
         // Create and configure the disclosure button.
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -104,6 +120,30 @@
 }
 
 
+//Add text to UIImage - ref: http://iphonesdksnippets.com/post/2009/05/05/Add-text-to-image-(UIImage).aspx
+-(UIImage *)addText:(UIImage *)img text:(NSString *)text1{ 
+    int w = img.size.width; 
+    int h = img.size.height; 
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 
+    CGContextRef context = CGBitmapContextCreate(NULL, w, h, 8, 4 * w, colorSpace, kCGImageAlphaPremultipliedFirst); 
+    CGContextDrawImage(context, CGRectMake(0, 0, w, h), img.CGImage); 
+    
+    char* text= (char *)[text1 cStringUsingEncoding:NSASCIIStringEncoding]; 
+    CGContextSelectFont(context, "Arial", 17, kCGEncodingMacRoman); 
+    CGContextSetTextDrawingMode(context, kCGTextFill); 
+    CGContextSetRGBFillColor(context, 0, 0, 0, 1); 
+    CGContextShowTextAtPoint(context,10,10,text, strlen(text)); 
+    CGImageRef imgCombined = CGBitmapContextCreateImage(context); 
+    
+    CGContextRelease(context); 
+    CGColorSpaceRelease(colorSpace); 
+    
+    UIImage *retImage = [UIImage imageWithCGImage:imgCombined]; 
+    CGImageRelease(imgCombined); 
+    
+    return retImage; 
+}
+
 -(void)toggleOpenWithUserAction:(BOOL)userAction {
     
     // Don't allow section to be collapsed if it is already open
@@ -112,6 +152,20 @@
     
     // Toggle the disclosure button state.
     self.disclosureButton.selected = !self.disclosureButton.selected;
+    
+    //change the comments icon
+    if( self.disclosureButton.selected ) {
+        self.numberOfCommentsImageView.image = nil;        
+    } else {
+        int numberOfPendingComments = [_blog numberOfPendingComments];
+        if ( numberOfPendingComments > 0 ) {
+            UIImage *img = [self addText:[UIImage imageNamed:@"inner-shadow.png"] text:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            self.numberOfCommentsImageView.image = img;
+        } else {
+            self.numberOfCommentsImageView.image = nil;
+        }
+        
+    }
     
     // If this was a user action, send the delegate the appropriate message.
     if (userAction) {
