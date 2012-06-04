@@ -387,6 +387,7 @@
 		E131D08912C8C9160056BAB9 /* AbstractPost.m in Sources */ = {isa = PBXBuildFile; fileRef = E131D08812C8C9160056BAB9 /* AbstractPost.m */; };
 		E1330B0F151275300010018D /* AFAuthenticationAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1330B0E151275300010018D /* AFAuthenticationAlertView.m */; };
 		E138623C1355FF8800AAB235 /* UINavigationController+FormSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = E138623B1355FF8800AAB235 /* UINavigationController+FormSheet.m */; };
+		E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */ = {isa = PBXBuildFile; fileRef = E13EB7A4157D230000885780 /* WordPressComApi.m */; };
 		E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = E13F23C214FE84600081D9CC /* NSMutableDictionary+Helpers.m */; };
 		E13FA0CC134BDCBB007DCDD0 /* QuickPhotoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0CB134BDCBB007DCDD0 /* QuickPhotoViewController.xib */; };
 		E13FA0CF134BE530007DCDD0 /* quickPhotoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = E13FA0CD134BE530007DCDD0 /* quickPhotoButton.png */; };
@@ -1079,6 +1080,8 @@
 		E133DB40137AE180003C0AF9 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E138623A1355FF8800AAB235 /* UINavigationController+FormSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FormSheet.h"; sourceTree = "<group>"; };
 		E138623B1355FF8800AAB235 /* UINavigationController+FormSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+FormSheet.m"; sourceTree = "<group>"; };
+		E13EB7A3157D230000885780 /* WordPressComApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressComApi.h; sourceTree = "<group>"; };
+		E13EB7A4157D230000885780 /* WordPressComApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressComApi.m; sourceTree = "<group>"; };
 		E13F23C114FE84600081D9CC /* NSMutableDictionary+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+Helpers.h"; sourceTree = "<group>"; };
 		E13F23C214FE84600081D9CC /* NSMutableDictionary+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+Helpers.m"; sourceTree = "<group>"; };
 		E13FA0CB134BDCBB007DCDD0 /* QuickPhotoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuickPhotoViewController.xib; sourceTree = "<group>"; };
@@ -2340,6 +2343,8 @@
 				E154376214B5B2120038E574 /* WordPressApi.m */,
 				E1330B0D151275300010018D /* AFAuthenticationAlertView.h */,
 				E1330B0E151275300010018D /* AFAuthenticationAlertView.m */,
+				E13EB7A3157D230000885780 /* WordPressComApi.h */,
+				E13EB7A4157D230000885780 /* WordPressComApi.m */,
 			);
 			path = WordPressApi;
 			sourceTree = "<group>";
@@ -3283,6 +3288,7 @@
 				CC24E5EB157723AD00A6D5B5 /* WPReaderDetailViewController.m in Sources */,
 				CC24E5EF1577D1EA00A6D5B5 /* WPFriendFinderViewController.m in Sources */,
 				E1AB07AD1578D34300D6AD64 /* SettingsViewController.m in Sources */,
+				E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

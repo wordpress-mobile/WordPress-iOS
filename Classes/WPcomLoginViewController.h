@@ -10,17 +10,16 @@
 #import "UITableViewActivityCell.h"
 #import "WordPressAppDelegate.h"
 
-@interface WPcomLoginViewController : UIViewController <UITableViewDelegate, UITextFieldDelegate> {
-	NSString *footerText, *buttonText, *username, *password, *WPcomXMLRPCUrl;
-	BOOL isAuthenticated, isSigningIn, isStatsInitiated;
-	IBOutlet UITableView *tableView;
-	WordPressAppDelegate *appDelegate;
-}
+@protocol WPcomLoginViewControllerDelegate;
 
-@property (nonatomic, retain) NSString *footerText, *buttonText, *username, *password, *WPcomXMLRPCUrl;
-@property (nonatomic, assign) BOOL isAuthenticated, isSigningIn, isStatsInitiated;
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, assign) WordPressAppDelegate *appDelegate;
+@interface WPcomLoginViewController : UITableViewController
+@property (assign) id<WPcomLoginViewControllerDelegate> delegate;
+@property (nonatomic, assign) BOOL isStatsInitiated;
 
 - (IBAction)cancel:(id)sender;
+@end
+
+@protocol WPcomLoginViewControllerDelegate <NSObject>
+- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithUsername:(NSString *)username;
+- (void)loginControllerDidDismiss:(WPcomLoginViewController *)loginController;
 @end

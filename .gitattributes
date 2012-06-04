@@ -595,6 +595,8 @@ WordPressApi/AFXMLRPCClient.h -text
 WordPressApi/AFXMLRPCClient.m -text
 WordPressApi/WordPressApi.h -text
 WordPressApi/WordPressApi.m -text
+WordPressApi/WordPressComApi.h -text
+WordPressApi/WordPressComApi.m -text
 WordPressTest/WordPressTest-Info.plist -text
 WordPressTest/WordPressTest-Prefix.pch -text
 WordPressTest/WordPressTest.h -text

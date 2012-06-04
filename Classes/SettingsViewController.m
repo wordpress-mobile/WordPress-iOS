@@ -31,19 +31,21 @@
 #import "WordPressAppDelegate.h"
 #import "EditSiteViewController.h"
 #import "WelcomeViewController.h"
+#import "WPcomLoginViewController.h"
 #import "UIImageView+Gravatar.h"
+#import "WordPressComApi.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,
     SettingsSectionBlogsAdd,
-//    SettingsSectionWpcom,
+    SettingsSectionWpcom,
 //    SettingsSectionMedia,
 //    SettingsSectionInfo,
     
     SettingsSectionCount
 } SettingsSection;
 
-@interface SettingsViewController () <NSFetchedResultsControllerDelegate>
+@interface SettingsViewController () <NSFetchedResultsControllerDelegate,WPcomLoginViewControllerDelegate>
 @property (readonly) NSFetchedResultsController *resultsController;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
@@ -108,6 +110,8 @@ typedef enum {
             return [[self.resultsController fetchedObjects] count];
         case SettingsSectionBlogsAdd:
             return 1;
+        case SettingsSectionWpcom:
+            return [WordPressComApi sharedApi].username ? 2 : 1;
         default:
             return 0;
     }
@@ -123,11 +127,14 @@ typedef enum {
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (section == SettingsSectionBlogs) {
         return NSLocalizedString(@"Blogs", @"");
+    } else if (section == SettingsSectionWpcom) {
+        return NSLocalizedString(@"WordPress.com", @"");
     }
     return nil;
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    cell.textLabel.textAlignment = UITextAlignmentLeft;
     if (indexPath.section == SettingsSectionBlogs) {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
         cell.textLabel.text = blog.blogName;
@@ -136,6 +143,20 @@ typedef enum {
     } else if (indexPath.section == SettingsSectionBlogsAdd) {
         cell.textLabel.text = NSLocalizedString(@"Add a blog", @"");
         cell.textLabel.textAlignment = UITextAlignmentCenter;
+    } else if (indexPath.section == SettingsSectionWpcom) {
+        if ([WordPressComApi sharedApi].username) {
+            if (indexPath.row == 0) {
+                cell.textLabel.text = NSLocalizedString(@"Username:", @"");
+                cell.detailTextLabel.text = [WordPressComApi sharedApi].username;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            } else {
+                cell.textLabel.textAlignment = UITextAlignmentCenter;
+                cell.textLabel.text = NSLocalizedString(@"Sign out", @"Sign out from WordPress.com");
+            }
+        } else {
+            cell.textLabel.textAlignment = UITextAlignmentCenter;
+            cell.textLabel.text = NSLocalizedString(@"Sign in", @"Sign into WordPress.com");
+        }
     }
 }
 
@@ -148,6 +169,9 @@ typedef enum {
             cellIdentifier = @"BlogCell";
             cellStyle = UITableViewCellStyleSubtitle;
             break;
+        case SettingsSectionWpcom:
+            cellIdentifier = @"WpcomCell";
+            cellStyle = UITableViewCellStyleValue1;
     }
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
@@ -213,6 +237,19 @@ typedef enum {
             welcomeViewController = [[[WelcomeViewController alloc] init] autorelease];
         }
         [self.navigationController pushViewController:welcomeViewController animated:YES];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    } else if (indexPath.section == SettingsSectionWpcom) {
+        if ([WordPressComApi sharedApi].username) {
+            if (indexPath.row == 1) {
+                // Sign out
+                [[WordPressComApi sharedApi] signOut];
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
+            }
+        } else {
+            WPcomLoginViewController *loginViewController = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
+            loginViewController.delegate = self;
+            [self.navigationController pushViewController:loginViewController animated:YES];
+        }
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
@@ -286,6 +323,17 @@ typedef enum {
                                                     arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
+}
+
+#pragma mark - WPComLoginViewControllerDelegate
+
+- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithUsername:(NSString *)username {
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+- (void)loginControllerDidDismiss:(WPcomLoginViewController *)loginController {
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 @end

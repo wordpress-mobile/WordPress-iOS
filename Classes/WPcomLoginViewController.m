@@ -9,19 +9,23 @@
 #import "UITableViewTextFieldCell.h"
 #import "SFHFKeychainUtils.h"
 #import "WordPressApi.h"
+#import "WordPressComApi.h"
 
-@interface WPcomLoginViewController(PrivateMethods)
-- (void)saveLoginData;
-- (void)authenticateWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)clearLoginData;
+@interface WPcomLoginViewController () <UITextFieldDelegate>
+@property (nonatomic, retain) NSString *footerText, *buttonText;
+@property (nonatomic, assign) BOOL isSigningIn;
+@property (nonatomic, retain) WordPressComApi *wpComApi;
+
 - (void)signIn:(id)sender;
-- (IBAction)cancel:(id)sender;
-- (void)refreshTable;
 @end
 
 
-@implementation WPcomLoginViewController
-@synthesize footerText, buttonText, username, password, isAuthenticated, isSigningIn, WPcomXMLRPCUrl, tableView, appDelegate, isStatsInitiated;
+@implementation WPcomLoginViewController {
+    UITableViewTextFieldCell *loginCell, *passwordCell;
+}
+@synthesize footerText, buttonText, isSigningIn, isStatsInitiated;
+@synthesize delegate;
+@synthesize wpComApi = _wpComApi;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -29,23 +33,12 @@
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-	
+
+    self.wpComApi = [WordPressComApi sharedApi];
 	self.footerText = @" ";
 	self.buttonText = NSLocalizedString(@"Sign In", @"");
-	WPcomXMLRPCUrl = @"https://wordpress.com/xmlrpc.php";
 	self.navigationItem.title = NSLocalizedString(@"Sign In", @"");
-	
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
-        NSError *error = nil;
-		self.username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        self.password = [SFHFKeychainUtils getPasswordForUsername:username
-                                              andServiceName:@"WordPress.com"
-                                                       error:&error];
-    }
-	
-	if(username != nil && password != nil && (![username isEqualToString:@""]) && (![password isEqualToString:@""]))
-		[self authenticateWithSuccess:nil failure:nil];
-	
+
 	// Setup WPcom table header
 	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
 	CGRect logoFrame = CGRectMake(40, 20, 229, 43);
@@ -66,9 +59,8 @@
 	
 	if(DeviceIsPad())
 		self.tableView.backgroundView = nil;
-	
-	self.tableView.backgroundColor = [UIColor clearColor];
-	
+
+//	self.tableView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -133,36 +125,39 @@
 		
 		activityCell.textLabel.text = buttonText;
 		cell = activityCell;
-	} else {
-		UITableViewTextFieldCell *loginCell = [[[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault 
-                                           reuseIdentifier:@"TextCell"] autorelease];
-		
-				if ([indexPath row] == 0) {
-                    loginCell.textLabel.text = NSLocalizedString(@"Username", @"");
-					loginCell.textField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
-					loginCell.textField.keyboardType = UIKeyboardTypeEmailAddress;
-					loginCell.textField.returnKeyType = UIReturnKeyNext;
-					loginCell.textField.tag = 0;
-					loginCell.textField.delegate = self;
-					if(username != nil)
-						loginCell.textField.text = username;
-				}
-				else {
-                    loginCell.textLabel.text = NSLocalizedString(@"Password", @"");
-					loginCell.textField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
-					loginCell.textField.keyboardType = UIKeyboardTypeDefault;
-					loginCell.textField.secureTextEntry = YES;
-					loginCell.textField.tag = 1;
-					loginCell.textField.delegate = self;
-					if(password != nil)
-						loginCell.textField.text = password;
-				}
-			loginCell.textField.delegate = self;
-			
-			if(isSigningIn)
-				[loginCell.textField resignFirstResponder];
-
-        cell = loginCell;
+	} else {		
+        if ([indexPath row] == 0) {
+            if (loginCell == nil) {
+                loginCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault 
+                                                            reuseIdentifier:@"TextCell"];
+                loginCell.textField.text = self.wpComApi.username;
+            }
+            loginCell.textLabel.text = NSLocalizedString(@"Username", @"");
+            loginCell.textField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
+            loginCell.textField.keyboardType = UIKeyboardTypeEmailAddress;
+            loginCell.textField.returnKeyType = UIReturnKeyNext;
+            loginCell.textField.tag = 0;
+            loginCell.textField.delegate = self;
+            if(isSigningIn)
+                [loginCell.textField resignFirstResponder];
+            cell = loginCell;
+        }
+        else {
+            if (passwordCell == nil) {
+                passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault 
+                                                               reuseIdentifier:@"TextCell"];
+                passwordCell.textField.text = self.wpComApi.password;
+            }
+            passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
+            passwordCell.textField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
+            passwordCell.textField.keyboardType = UIKeyboardTypeDefault;
+            passwordCell.textField.secureTextEntry = YES;
+            passwordCell.textField.tag = 1;
+            passwordCell.textField.delegate = self;
+            if(isSigningIn)
+                [passwordCell.textField resignFirstResponder];
+            cell = passwordCell;
+        }
     }
 
 	return cell;    
@@ -197,12 +192,12 @@
 					}
 				}
 			}
-			if(username == nil) {
+			if([loginCell.textField.text isEqualToString:@""]) {
 				self.footerText = NSLocalizedString(@"Username is required.", @"");
 				self.buttonText = NSLocalizedString(@"Sign In", @"");
 				[tv reloadData];
 			}
-			else if(password == nil) {
+			else if([passwordCell.textField.text isEqualToString:@""]) {
 				self.footerText = NSLocalizedString(@"Password is required.", @"");
 				self.buttonText = NSLocalizedString(@"Sign In", @"");
 				[tv reloadData];
@@ -236,7 +231,7 @@
     switch (textField.tag) {
         case 0:
             [textField endEditing:YES];
-            cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+            cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
             if(cell != nil) {
                 nextField = (UITextField*)[cell viewWithTag:1];
                 if(nextField != nil)
@@ -244,11 +239,11 @@
             }
             break;
         case 1:
-            if((username != nil) && (password != nil)) {
+            if((![loginCell.textField.text isEqualToString:@""]) && (![passwordCell.textField.text isEqualToString:@""])) {
                 if (!isSigningIn){
                     isSigningIn = YES;
 					[self.navigationItem setHidesBackButton:YES animated:NO];
-                    [self refreshTable];
+                    [self.tableView reloadData];
                     [self signIn:self];
                 }
             }
@@ -268,16 +263,12 @@
 				self.footerText = NSLocalizedString(@"Username is required.", @"");
 			}
 			else {
-				self.username = [[textField.text stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString];
-				textField.text = self.username;
+				textField.text = [[textField.text stringByReplacingOccurrencesOfString:@" " withString:@""] lowercaseString];
 			}
 			break;
 		case 1:
 			if((textField.text != nil) && ([textField.text isEqualToString:@""])) {
 				self.footerText = NSLocalizedString(@"Password is required.", @"");
-			}
-			else {
-				self.password = textField.text;
 			}
 			break;
 		default:
@@ -291,93 +282,22 @@
 #pragma mark -
 #pragma mark Custom methods
 
-- (void)saveLoginData {
-    if (isAuthenticated) {
-        NSError *error = nil;
-        [SFHFKeychainUtils storeUsername:username
-                             andPassword:password
-                          forServiceName:@"WordPress.com"
-                          updateExisting:YES
-                                   error:&error];
-
-        if (error) {
-            NSLog(@"Error storing wpcom credentials: %@", [error localizedDescription]);
-        }
-    }
-	if(![username isEqualToString:@""])
-		[[NSUserDefaults standardUserDefaults] setObject:username forKey:@"wpcom_username_preference"];
-
-	if(isAuthenticated)
-		[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];
-	else
-		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"wpcom_authenticated_flag"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = isAuthenticated;
-    [[WordPressAppDelegate sharedWordPressApp] registerForPushNotifications];
-}
-
-- (void)clearLoginData {
-    NSError *error = nil;
-    [SFHFKeychainUtils deleteItemForUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
-                              andServiceName:@"WordPress.com"
-                                       error:&error];
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_authenticated_flag"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (void)authenticateWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    WordPressApi *api = [WordPressApi apiWithXMLRPCEndpoint:[NSURL URLWithString:WPcomXMLRPCUrl] username:username password:password];
-    [api authenticateWithSuccess:^{
-        isAuthenticated = YES;
-        [self saveLoginData];
-
-        if (success) {
-            success();
-        }
-    } failure:^(NSError *error) {
-        isAuthenticated = NO;
-        [self clearLoginData];
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
 - (void)signIn:(id)sender {
-	[self authenticateWithSuccess:^{
-        [WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = YES;
-        if(DeviceIsPad() == YES && !isStatsInitiated) {
-            AddUsersBlogsViewController *addBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController-iPad" bundle:nil];
-            addBlogsView.isWPcom = YES;
-            [addBlogsView setUsername:self.username];
-            [addBlogsView setPassword:self.password];
-            [self.navigationController pushViewController:addBlogsView animated:YES];
-            [addBlogsView release];
-        }
-        else {
-            if (DeviceIsPad())
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"didDismissWPcomLogin" object:nil];
-            [super dismissModalViewControllerAnimated:YES];
-        }
-    } failure:^(NSError *error) {
-        self.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
-		self.buttonText = NSLocalizedString(@"Sign In", @"");
-		isSigningIn = NO;
-		[self.navigationItem setHidesBackButton:NO animated:NO];
-		[self.tableView reloadData];
-    }];
+    [self.wpComApi setUsername:loginCell.textField.text
+                      password:passwordCell.textField.text
+                       success:^{
+                           [self.delegate loginController:self didAuthenticateWithUsername:self.wpComApi.username];
+                       }
+                       failure:^(NSError *error) {
+                           self.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
+                           self.buttonText = NSLocalizedString(@"Sign In", @"");
+                           isSigningIn = NO;
+                           [self.tableView reloadData];
+                       }];
 }
 
 - (IBAction)cancel:(id)sender {
-    if (DeviceIsPad())
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"didDismissWPcomLogin" object:nil];
-	[self dismissModalViewControllerAnimated:YES];
-}
-
-- (void)refreshTable {
-	[self.tableView reloadData];
+    [self.delegate loginControllerDidDismiss:self];
 }
 
 #pragma mark -
@@ -390,14 +310,10 @@
 - (void)viewDidUnload {
 }
 
-
 - (void)dealloc {
-	[tableView release];
     self.footerText = nil;
     self.buttonText = nil;
-	[username release];
-	[password release];
-	[WPcomXMLRPCUrl release];
+    self.wpComApi = nil;
     [super dealloc];
 }
 
