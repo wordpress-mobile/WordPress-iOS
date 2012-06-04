@@ -7,6 +7,7 @@
 #import "WPWebView.h"
 #import "Reachability.h"
 #import "AFHTTPRequestOperation.h"
+#import "WordPressAppDelegate.h"
 
 NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequestNotification";
 
@@ -105,7 +106,11 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 	[self setDefaultHeader:@"Accept-Language" value:[NSString stringWithFormat:@"%@, en-us;q=0.8", preferredLanguageCodes]];
     
     // User-Agent Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.43
-    NSString *userAgent = [NSString stringWithFormat:@"%@ ipad",[webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSString *userAgent = [appDelegate applicationUserAgent];
+    if(!userAgent){
+        userAgent = [NSString stringWithFormat:@"%@",[webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
+    }
     [self setDefaultHeader:@"User-Agent" value:userAgent];
 }
 
@@ -309,10 +314,6 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     
     [self setLoading:YES];
     
-    [webView loadRequest:aRequest];
-    return;
-    
-    
     NSMutableURLRequest *mRequest;
     if ([aRequest isKindOfClass:[NSMutableURLRequest class]]) {
         mRequest = [(NSMutableURLRequest *)aRequest retain];
@@ -322,12 +323,16 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
                                                         timeoutInterval:aRequest.timeoutInterval];
         [mRequest setAllHTTPHeaderFields:self.defaultHeaders];
     }
-    
+
     self.baseURLFallback = [mRequest.URL baseURL];
     if (!baseURLFallback) 
         self.baseURLFallback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/", mRequest.URL.scheme, mRequest.URL.host]];
     
     self.currentRequest = [[[AFHTTPRequestOperation alloc] initWithRequest:mRequest] autorelease];
+
+    // webview loading vs afnetworking loading
+    [webView loadRequest:aRequest];
+    return;
     
     [currentRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         [webView loadData:operation.responseData MIMEType:operation.response.MIMEType textEncodingName:@"utf-8" baseURL:nil];
@@ -435,7 +440,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     [self stopLoading];
     self.lastWebViewRefreshDate = [NSDate date];
     [refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView * )scrollView];
-NSLog(@"WebView Loaded: %@ ", self.webView.request.URL);
+
     if (delegate && [delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
         [delegate webViewDidFinishLoad:self];
     }
