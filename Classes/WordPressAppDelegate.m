@@ -213,15 +213,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     }
     
 #ifdef PANELS_EXPERIMENTAL
-    NSError *err = nil;
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:[self managedObjectContext]]];
-    NSArray *blogs = [self.managedObjectContext executeFetchRequest:fetchRequest error:&err];
-
-    PostsViewController *postsViewController = [[[PostsViewController alloc] init] autorelease];
-    postsViewController.blog = [blogs objectAtIndex:0];
-    CommentsViewController *commentsViewController = [[[CommentsViewController alloc] init] autorelease];
-    commentsViewController.blog = [blogs objectAtIndex:0];
     SidebarViewController *sidebarViewController = [[[SidebarViewController alloc] init] autorelease];
     //WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
     WPReaderViewController *readerViewController = [[[WPReaderViewController alloc] init] autorelease];

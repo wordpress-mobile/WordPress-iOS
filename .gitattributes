@@ -173,6 +173,8 @@ Classes/QuickPicturePreviewView.h -text
 Classes/QuickPicturePreviewView.m -text
 Classes/SectionInfo.h -text
 Classes/SectionInfo.m -text
+Classes/SettingsViewController.h -text
+Classes/SettingsViewController.m -text
 Classes/SidebarSectionHeaderView.h -text
 Classes/SidebarSectionHeaderView.m -text
 Classes/SidebarViewController.h -text

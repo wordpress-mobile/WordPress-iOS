@@ -18,6 +18,7 @@
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIButton *footerButton;
 
+- (IBAction)showSettings:(id)sender;
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath;
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath closingSidebar:(BOOL)closingSidebar;
 

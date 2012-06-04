@@ -65,6 +65,7 @@
 #pragma mark - 
 
 - (void)dataSave;
+- (void)remove;
 
 #pragma mark -
 #pragma mark Synchronization

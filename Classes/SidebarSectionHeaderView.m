@@ -11,7 +11,7 @@
 @implementation SidebarSectionHeaderView
 
 
-@synthesize titleLabel=_titleLabel, disclosureButton=_disclosureButton, delegate=_delegate, section=_section;
+@synthesize titleLabel=_titleLabel, disclosureButton=_disclosureButton, delegate=_delegate, sectionInfo=_sectionInfo;
 
 
 + (Class)layerClass {
@@ -20,7 +20,7 @@
 }
 
 
--(id)initWithFrame:(CGRect)frame blog:(Blog*)blog section:(NSInteger)sectionNumber delegate:(id <SidebarSectionHeaderViewDelegate>)delegate {
+-(id)initWithFrame:(CGRect)frame blog:(Blog*)blog sectionInfo:(SectionInfo *)sectionInfo delegate:(id <SidebarSectionHeaderViewDelegate>)delegate {
     
     self = [super initWithFrame:frame];
     
@@ -39,7 +39,7 @@
         [self addSubview:blavatarView];
         
         // Create and configure the title label.
-        _section = sectionNumber;
+        self.sectionInfo = sectionInfo;
         CGRect titleLabelFrame = self.bounds;
         titleLabelFrame.origin.x += 51.0;
         titleLabelFrame.size.width -= 51.0;
@@ -102,12 +102,12 @@
     if (userAction) {
         if (self.disclosureButton.selected) {
             if ([self.delegate respondsToSelector:@selector(sectionHeaderView:sectionOpened:)]) {
-                [self.delegate sectionHeaderView:self sectionOpened:self.section];
+                [self.delegate sectionHeaderView:self sectionOpened:self.sectionInfo];
             }
         }
         /*else {
             if ([self.delegate respondsToSelector:@selector(sectionHeaderView:sectionClosed:)]) {
-                [self.delegate sectionHeaderView:self sectionClosed:self.section];
+                [self.delegate sectionHeaderView:self sectionClosed:self.sectionInfo];
             }
         }*/
     }

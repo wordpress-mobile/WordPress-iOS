@@ -167,7 +167,6 @@
     NSString *hostname = [[NSURL URLWithString:self.url] host];
     if (hostname == nil) {
         hostname = [[self.url stringByReplacingOccurrencesOfRegex:@"^.*://" withString:@""] stringByReplacingOccurrencesOfRegex:@"/.*$" withString:@""];
-        WPFLog(@"- [Blog hostname] for %@: %@", self.url, hostname);
     }
     return hostname;
 }
@@ -218,6 +217,13 @@
         WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
         exit(-1);
     }
+}
+
+- (void)remove {
+    WPFLog(@"<Blog:%@> remove", self.hostURL);
+    [self.api cancelAllHTTPOperations];
+    [[self managedObjectContext] deleteObject:self];
+    [self dataSave];
 }
 
 - (void)setXmlrpc:(NSString *)xmlrpc {

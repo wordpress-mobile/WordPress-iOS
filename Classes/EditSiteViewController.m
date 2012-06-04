@@ -42,12 +42,14 @@
 			self.tableView.backgroundView = nil;
 			self.tableView.backgroundColor = [UIColor clearColor];
 		}
-		
+
+#ifndef PANELS_EXPERIMENTAL
 		if (DeviceIsPad() && self.navigationItem.leftBarButtonItem == nil)
 		{
 			//add cancel button if editing an existing blog
 			self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)] autorelease];
 		}
+#endif
 
         NSError *error = nil;
         self.url = blog.url;
@@ -417,10 +419,14 @@
     } else {
 		[FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), blog.url];
 	}
+#ifdef PANELS_EXPERIMENTAL
+    [self.navigationController popToRootViewControllerAnimated:YES];
+#else
 	if (DeviceIsPad())
 		[self dismissModalViewControllerAnimated:YES];
 	else
 		[self.navigationController popToRootViewControllerAnimated:YES];
+#endif
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 
     saveButton.enabled = YES;
@@ -520,18 +526,26 @@
 			&& [self.password isEqualToString:passwordTextField.text]
 			&& [self.url isEqualToString:urlTextField.text]) {
 			// No need to check if nothing changed
+#ifdef PANELS_EXPERIMENTAL
+            [self.navigationController popToRootViewControllerAnimated:YES];
+#else
 			if (DeviceIsPad())
 				[self dismissModalViewControllerAnimated:YES];
 			else
 				[self.navigationController popToRootViewControllerAnimated:YES];
+#endif
 		} else {
 			[self validateFields];
 		}
 }
 
 - (void)cancel:(id)sender {
+#ifdef PANELS_EXPERIMENTAL
+    [self.navigationController popToRootViewControllerAnimated:YES];
+#else
 	if (DeviceIsPad())
 		[self dismissModalViewControllerAnimated:YES];
+#endif
 }
 
 - (void)handleKeyboardWillShow:(NSNotification *)notification {

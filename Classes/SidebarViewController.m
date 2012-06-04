@@ -19,9 +19,8 @@
 #import "StatsTableViewController.h"
 #import "WPReaderViewController.h"
 #import "WPTableViewController.h"
+#import "SettingsViewController.h"
 
-// Number of items before blogs list */
-#define SIDEBAR_BLOGS_OFFSET 0
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
 // Height for secondary cells (posts/pages/comments/... inside a blog)
@@ -33,14 +32,17 @@
 
 @interface SidebarViewController () <NSFetchedResultsControllerDelegate>
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
-@property (nonatomic, assign) NSInteger openSectionIndex;
-@property (nonatomic, strong) NSMutableArray* sectionInfoArray;
+@property (nonatomic, assign) SectionInfo *openSection;
+@property (nonatomic, strong) NSMutableArray *sectionInfoArray;
 @property (nonatomic, assign) NSInteger topSectionRowCount;
+- (SectionInfo *)sectionInfoForBlog:(Blog *)blog;
+- (void)addSectionInfoForBlog:(Blog *)blog;
+- (void)insertSectionInfoForBlog:(Blog *)blog atIndex:(NSUInteger)index;
 @end
 
 @implementation SidebarViewController
-@synthesize resultsController = _resultsController, openSectionIndex=openSectionIndex_, sectionInfoArray=sectionInfoArray_;
-@synthesize topSectionRowCount = topSectionRowCount_;
+@synthesize resultsController = _resultsController, openSection=_openSection, sectionInfoArray=_sectionInfoArray;
+@synthesize topSectionRowCount = _topSectionRowCount;
 @synthesize tableView, footerButton;
 
 - (void)dealloc {
@@ -55,33 +57,18 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.view.backgroundColor = SIDEBAR_BGCOLOR;
-    openSectionIndex_ = NSNotFound;
+    self.openSection = nil;
     
     // Depending on what we want to add here (quick video? etc) created a variable for the row count
-    topSectionRowCount_ = 2;
+    _topSectionRowCount = 2;
     
     // create the sectionInfoArray, stores data for collapsing/expanding sections in the tableView
-	if ((self.sectionInfoArray == nil) || ([self.sectionInfoArray count] != [self numberOfSectionsInTableView:self.tableView])) {
-		
+	if (self.sectionInfoArray == nil) {
+        self.sectionInfoArray = [[NSMutableArray alloc] initWithCapacity:[[self.resultsController fetchedObjects] count]];
         // For each play, set up a corresponding SectionInfo object to contain the default height for each row.
-		NSMutableArray *infoArray = [[NSMutableArray alloc] init];
-		
 		for (Blog *blog in [self.resultsController fetchedObjects]) {
-			
-			SectionInfo *sectionInfo = [[SectionInfo alloc] init];			
-			sectionInfo.blog = blog;
-			sectionInfo.open = NO;
-			
-            NSNumber *defaultRowHeight = [NSNumber numberWithInteger:DEFAULT_ROW_HEIGHT];
-			for (NSInteger i = 0; i < NUM_ROWS; i++) {
-				[sectionInfo insertObject:defaultRowHeight inRowHeightsAtIndex:i];
-			}
-			
-			[infoArray addObject:sectionInfo];
+            [self addSectionInfoForBlog:blog];
 		}
-		
-		self.sectionInfoArray = infoArray;
-        [infoArray release];
 	}
     
     // Select the Reader row
@@ -113,6 +100,29 @@
 	
 	[super viewWillAppear:animated]; 
 	
+}
+
+#pragma mark - Custom methods
+
+- (SectionInfo *)sectionInfoForBlog:(Blog *)blog {
+    SectionInfo *sectionInfo = [[SectionInfo alloc] init];			
+    sectionInfo.blog = blog;
+    sectionInfo.open = NO;
+
+    NSNumber *defaultRowHeight = [NSNumber numberWithInteger:DEFAULT_ROW_HEIGHT];
+    for (NSInteger i = 0; i < NUM_ROWS; i++) {
+        [sectionInfo insertObject:defaultRowHeight inRowHeightsAtIndex:i];
+    }
+
+    return sectionInfo;
+}
+
+- (void)addSectionInfoForBlog:(Blog *)blog {    
+    [self.sectionInfoArray addObject:[self sectionInfoForBlog:blog]];
+}
+
+- (void)insertSectionInfoForBlog:(Blog *)blog atIndex:(NSUInteger)index {
+    [self.sectionInfoArray insertObject:[self sectionInfoForBlog:blog] atIndex:index];
 }
 
 #pragma mark - Table view data source
@@ -151,7 +161,7 @@
     Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(section - 1) inSection:0]];
     SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:section - 1];
     if (!sectionInfo.headerView) {
-        sectionInfo.headerView = [[SidebarSectionHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.bounds.size.width, HEADER_HEIGHT) blog:blog section:section delegate:self];
+        sectionInfo.headerView = [[SidebarSectionHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.bounds.size.width, HEADER_HEIGHT) blog:blog sectionInfo:sectionInfo delegate:self];
     }
     
     return sectionInfo.headerView;
@@ -206,18 +216,16 @@
 
 #pragma mark Section header delegate
 
--(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionOpened:(NSInteger)sectionOpened {
-    
-	SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:sectionOpened - 1];
-	
-	sectionInfo.open = YES;
+-(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionOpened:(SectionInfo *)sectionOpened {    
+	sectionOpened.open = YES;
+    NSUInteger sectionNumber = [self.sectionInfoArray indexOfObject:sectionOpened] + 1;
     
     /*
      Create an array containing the index paths of the rows to insert: These correspond to the rows for each quotation in the current section.
      */
     NSMutableArray *indexPathsToInsert = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < NUM_ROWS; i++) {
-        [indexPathsToInsert addObject:[NSIndexPath indexPathForRow:i inSection:sectionOpened]];
+        [indexPathsToInsert addObject:[NSIndexPath indexPathForRow:i inSection:sectionNumber]];
     }
     
     /*
@@ -225,11 +233,12 @@
      */
     NSMutableArray *indexPathsToDelete = [[NSMutableArray alloc] init];
     
-    NSInteger previousOpenSectionIndex = self.openSectionIndex;
-    if (previousOpenSectionIndex != NSNotFound) {
-        SectionInfo *previousOpenSection = [self.sectionInfoArray objectAtIndex:previousOpenSectionIndex - 1];
+    SectionInfo *previousOpenSection = self.openSection;
+    NSUInteger previousOpenSectionIndex = NSNotFound;
+    if (previousOpenSection) {
         previousOpenSection.open = NO;
         [previousOpenSection.headerView toggleOpenWithUserAction:NO];
+        previousOpenSectionIndex = [self.sectionInfoArray indexOfObject:previousOpenSection] + 1;
         for (NSInteger i = 0; i < NUM_ROWS; i++) {
             [indexPathsToDelete addObject:[NSIndexPath indexPathForRow:i inSection:previousOpenSectionIndex]];
         }
@@ -238,7 +247,7 @@
     // Style the animation so that there's a smooth flow in either direction.
     UITableViewRowAnimation insertAnimation;
     UITableViewRowAnimation deleteAnimation;
-    if (previousOpenSectionIndex == NSNotFound || sectionOpened < previousOpenSectionIndex) {
+    if (previousOpenSectionIndex == NSNotFound || sectionNumber < previousOpenSectionIndex) {
         insertAnimation = UITableViewRowAnimationTop;
         deleteAnimation = UITableViewRowAnimationBottom;
     }
@@ -252,7 +261,7 @@
     [self.tableView insertRowsAtIndexPaths:indexPathsToInsert withRowAnimation:insertAnimation];
     [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:deleteAnimation];
     [self.tableView endUpdates];
-    self.openSectionIndex = sectionOpened;
+    self.openSection = sectionOpened;
     // select the first row in the section
     // if we don't, a) you lose the current selection, b) the sidebar doesn't open on iPad
     [self.tableView selectRowAtIndexPath:[indexPathsToInsert objectAtIndex:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -260,18 +269,16 @@
 }
 
 
--(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionClosed:(NSInteger)sectionClosed {
-    
-    SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:sectionClosed - 1];
-	
-	sectionInfo.open = NO;
-    
+-(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionClosed:(SectionInfo *)sectionClosed {    
+    NSUInteger sectionNumber = [self.sectionInfoArray indexOfObject:sectionClosed] + 1;
+	sectionClosed.open = NO;
+
     NSMutableArray *indexPathsToDelete = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < NUM_ROWS; i++) {
-        [indexPathsToDelete addObject:[NSIndexPath indexPathForRow:i inSection:sectionClosed]];
+        [indexPathsToDelete addObject:[NSIndexPath indexPathForRow:i inSection:sectionNumber]];
     }
     [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:UITableViewRowAnimationTop];
-    self.openSectionIndex = NSNotFound;
+    self.openSection = nil;
 }
 
 
@@ -328,6 +335,15 @@
      */
     
     [self processRowSelectionAtIndexPath: indexPath];
+}
+
+- (IBAction)showSettings:(id)sender {
+    SettingsViewController *settingsViewController = [[[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+    UINavigationController *aNavigationController = [[[UINavigationController alloc] initWithRootViewController:settingsViewController] autorelease];
+    aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+
+    [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
 }
 
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath {
@@ -426,6 +442,52 @@
     }
     
     return _resultsController;
+}
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView beginUpdates];
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView endUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
+    
+    if (NSFetchedResultsChangeUpdate == type && newIndexPath != nil) {
+        // Seriously, Apple?
+        // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html
+        type = NSFetchedResultsChangeMove;
+    }
+    
+    switch (type) {
+        case NSFetchedResultsChangeInsert:
+            NSLog(@"Inserting row %d: %@", newIndexPath.row, anObject);
+            [self insertSectionInfoForBlog:anObject atIndex:newIndexPath.row];
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:newIndexPath.row + 1] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeDelete:
+            NSLog(@"Deleting row %d: %@", indexPath.row, anObject);
+            SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:indexPath.row];
+            if (sectionInfo.open) {
+                NSMutableArray *indexPathsToDelete = [[NSMutableArray alloc] init];                
+                for (NSInteger i = 0; i < NUM_ROWS; i++) {
+                    [indexPathsToDelete addObject:[NSIndexPath indexPathForRow:i inSection:indexPath.row + 1]];
+                }
+                [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:UITableViewRowAnimationFade];
+                [indexPathsToDelete release];
+            }
+            if (self.openSection == sectionInfo) {
+                self.openSection = nil;
+            }
+            [self.sectionInfoArray removeObjectAtIndex:indexPath.row];
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.row + 1] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
 }
 
 @end

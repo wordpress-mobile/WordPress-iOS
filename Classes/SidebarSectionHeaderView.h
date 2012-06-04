@@ -6,6 +6,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Blog.h"
+#import "SectionInfo.h"
 
 @protocol SidebarSectionHeaderViewDelegate;
 
@@ -14,10 +15,10 @@
 
 @property (nonatomic, assign) UILabel *titleLabel;
 @property (nonatomic, assign) UIButton *disclosureButton;
-@property (nonatomic, assign) NSInteger section;
+@property (nonatomic, assign) SectionInfo *sectionInfo;
 @property (nonatomic, assign) id <SidebarSectionHeaderViewDelegate> delegate;
 
--(id)initWithFrame:(CGRect)frame blog:(Blog*)blog section:(NSInteger)sectionNumber delegate:(id <SidebarSectionHeaderViewDelegate>)delegate;
+-(id)initWithFrame:(CGRect)frame blog:(Blog*)blog sectionInfo:(SectionInfo *)sectionInfo delegate:(id <SidebarSectionHeaderViewDelegate>)delegate;
 -(void)toggleOpenWithUserAction:(BOOL)userAction;
 
 @end
@@ -29,8 +30,8 @@
 @protocol SidebarSectionHeaderViewDelegate <NSObject>
 
 @optional
--(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionOpened:(NSInteger)section;
--(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionClosed:(NSInteger)section;
+-(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionOpened:(SectionInfo *)sectionInfo;
+-(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionClosed:(SectionInfo *)sectionInfo;
 
 @end
 
