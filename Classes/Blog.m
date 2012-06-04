@@ -175,6 +175,16 @@
     return [self.xmlrpc stringByReplacingOccurrencesOfRegex:@"/xmlrpc.php$" withString:@"/wp-login.php"];
 }
 
+- (int)numberOfPendingComments{
+    int pendingComments = 0;
+    for (Comment *element in self.comments) {
+        if ( [@"hold" isEqualToString: element.status] )
+            pendingComments++;
+    }
+    
+    return pendingComments;
+}
+
 -(NSArray *)sortedCategories {
 	NSSortDescriptor *sortNameDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"categoryName" 
 																		ascending:YES 

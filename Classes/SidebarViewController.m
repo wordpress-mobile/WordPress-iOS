@@ -174,10 +174,10 @@
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
-    
     // Configure the cell...
+    cell.accessoryView = nil;
     NSString *title = nil;
-    
+      
     if (indexPath.section == 0) {
         switch (indexPath.row) {
             case 0:
@@ -197,6 +197,14 @@
                 break;
             case 2:
                 title = NSLocalizedString(@"Comments", @"");
+                Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
+                int numberOfPendingComments = [blog numberOfPendingComments];
+                if( numberOfPendingComments > 0 ) {
+                    UIImage *img = [self addText:[UIImage imageNamed:@"inner-shadow.png"] text:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+                    UIImageView *image = [[UIImageView alloc] initWithImage:img];
+                    cell.accessoryView = image;
+                    [image release];
+                }
                 break;
             case 3:
                 title = NSLocalizedString(@"Stats", @"");
@@ -212,6 +220,30 @@
     cell.textLabel.backgroundColor = SIDEBAR_BGCOLOR;
     
     return cell;
+}
+
+//Add text to UIImage - ref: http://iphonesdksnippets.com/post/2009/05/05/Add-text-to-image-(UIImage).aspx
+-(UIImage *)addText:(UIImage *)img text:(NSString *)text1{ 
+    int w = img.size.width; 
+    int h = img.size.height; 
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 
+    CGContextRef context = CGBitmapContextCreate(NULL, w, h, 8, 4 * w, colorSpace, kCGImageAlphaPremultipliedFirst); 
+    CGContextDrawImage(context, CGRectMake(0, 0, w, h), img.CGImage); 
+    
+    char* text= (char *)[text1 cStringUsingEncoding:NSASCIIStringEncoding]; 
+    CGContextSelectFont(context, "Arial", 17, kCGEncodingMacRoman); 
+    CGContextSetTextDrawingMode(context, kCGTextFill); 
+    CGContextSetRGBFillColor(context, 0, 0, 0, 1); 
+    CGContextShowTextAtPoint(context,10,10,text, strlen(text)); 
+    CGImageRef imgCombined = CGBitmapContextCreateImage(context); 
+    
+    CGContextRelease(context); 
+    CGColorSpaceRelease(colorSpace); 
+    
+    UIImage *retImage = [UIImage imageWithCGImage:imgCombined]; 
+    CGImageRelease(imgCombined); 
+    
+    return retImage; 
 }
 
 #pragma mark Section header delegate

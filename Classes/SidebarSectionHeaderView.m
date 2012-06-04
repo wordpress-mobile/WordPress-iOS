@@ -38,20 +38,35 @@
         [blavatarView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
         [self addSubview:blavatarView];
         
+        int numberOfPendingComments = [blog numberOfPendingComments];
+      
         // Create and configure the title label.
         self.sectionInfo = sectionInfo;
         CGRect titleLabelFrame = self.bounds;
         titleLabelFrame.origin.x += 51.0;
-        titleLabelFrame.size.width -= 51.0;
+       /* if ( numberOfPendingComments > 0 ) 
+            titleLabelFrame.size.width -= 102.0;
+        else
+            titleLabelFrame.size.width -= 51.0;*/
         CGRectInset(titleLabelFrame, 0.0, 6.0);
         UILabel *label = [[UILabel alloc] initWithFrame:titleLabelFrame];
-        label.text = blog.blogName;
+        
+        //set the title of the blog        
+        NSString *blogName = blog.blogName;
+        if (blogName != nil && ! [@"" isEqualToString: [blogName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]])
+            label.text = blogName;
+        else
+            label.text = [blog hostURL];
+        
+        if ( numberOfPendingComments > 0 ) {
+            label.text =[NSString stringWithFormat:@"(%d) %@", numberOfPendingComments, label.text];
+        }
+        
         label.font = [UIFont boldSystemFontOfSize:17.0];
         label.textColor = [UIColor blackColor];
         label.backgroundColor = [UIColor clearColor];
         [self addSubview:label];
         _titleLabel = label;
-        
         
         // Create and configure the disclosure button.
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];

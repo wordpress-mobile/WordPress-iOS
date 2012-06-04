@@ -21,5 +21,6 @@
 - (IBAction)showSettings:(id)sender;
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath;
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath closingSidebar:(BOOL)closingSidebar;
+- (UIImage *)addText:(UIImage *)img text:(NSString *)text1;
 
 @end

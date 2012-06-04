@@ -61,6 +61,7 @@
 - (NSString *)loginURL;
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
 - (NSString *)fetchPassword;
+- (int)numberOfPendingComments;
 
 #pragma mark - 
 
