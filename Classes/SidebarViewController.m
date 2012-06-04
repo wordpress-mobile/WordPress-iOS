@@ -20,6 +20,7 @@
 #import "WPReaderViewController.h"
 #import "WPTableViewController.h"
 #import "SettingsViewController.h"
+#import "StatsWebViewController.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
@@ -400,7 +401,11 @@
             controllerClass = [CommentsViewController class];
         }
         if (indexPath.row == 3) {
-            controllerClass = [StatsTableViewController class];
+            if (IS_IPAD) {
+                controllerClass = [StatsWebViewController class];
+            } else {
+                controllerClass = [StatsTableViewController class];
+            }
         }
         if ([self.panelNavigationController.detailViewController isMemberOfClass:controllerClass] && [self.panelNavigationController.detailViewController respondsToSelector:@selector(setBlog:)]) {
             [self.panelNavigationController.detailViewController performSelector:@selector(setBlog:) withObject:blog];

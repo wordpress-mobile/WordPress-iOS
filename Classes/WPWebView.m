@@ -22,6 +22,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 @property (strong, nonatomic) UIActivityIndicatorView *activityView;
 @property (strong, nonatomic) UIWebView *webView;
 @property (strong, nonatomic) UIScrollView *scrollView;
+@property (strong, nonatomic) NSURL *baseURLFallback;
 
 - (void)setupSubviews;
 - (void)setupHeaders;
@@ -49,22 +50,24 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 @synthesize activityView;
 @synthesize webView;
 @synthesize scrollView;
+@synthesize baseURLFallback;
 
 - (void)dealloc {
     self.delegate = nil;
     webView.delegate = nil;
-    self.webView = nil;
     
-    self.refreshHeaderView = nil;
-    self.defaultHeaders = nil;
-    self.lastWebViewRefreshDate = nil;
-    self.currentRequest = nil;
-    self.reachability = nil;
-    self.loadingView = nil;
-    self.loadingLabel = nil;
-    self.activityView = nil;
-    self.webView = nil;
-    self.scrollView = nil;
+    [webView release];
+    
+    [refreshHeaderView release];
+    [defaultHeaders release];
+    [lastWebViewRefreshDate release];
+    [currentRequest release];
+    [reachability release];
+    [loadingView release];
+    [loadingLabel release];
+    [activityView release];
+    [scrollView release];
+    [baseURLFallback release];
     
     [super dealloc];
 }
@@ -102,7 +105,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 	[self setDefaultHeader:@"Accept-Language" value:[NSString stringWithFormat:@"%@, en-us;q=0.8", preferredLanguageCodes]];
     
     // User-Agent Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.43
-    NSString *userAgent = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    NSString *userAgent = [NSString stringWithFormat:@"%@ ipad",[webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
     [self setDefaultHeader:@"User-Agent" value:userAgent];
 }
 
@@ -215,6 +218,15 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 #pragma mark -
 #pragma mark Instance Methods
 
+- (void)layoutSubviews {
+    CGRect f = self.frame;
+    CGRect frame = webView.frame;
+    frame.size.width = f.size.width;
+    frame.size.height = f.size.height;
+    webView.frame = frame;
+    scrollView.frame = frame;
+}
+
 - (void)setDefaultHeader:(NSString *)header value:(NSString *)value {
 	[defaultHeaders setValue:value forKey:header];
 }
@@ -297,20 +309,29 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     
     [self setLoading:YES];
     
-    NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] initWithURL:aRequest.URL 
-                                                        cachePolicy:aRequest.cachePolicy 
-                                                    timeoutInterval:aRequest.timeoutInterval];
-    [mRequest setAllHTTPHeaderFields:self.defaultHeaders];
+    [webView loadRequest:aRequest];
+    return;
     
-    // here's where the magic happens.
-    NSURL *baseURL = [mRequest.URL baseURL];
+    
+    NSMutableURLRequest *mRequest;
+    if ([aRequest isKindOfClass:[NSMutableURLRequest class]]) {
+        mRequest = [(NSMutableURLRequest *)aRequest retain];
+    } else {
+        mRequest = [[NSMutableURLRequest alloc] initWithURL:aRequest.URL 
+                                                            cachePolicy:aRequest.cachePolicy 
+                                                        timeoutInterval:aRequest.timeoutInterval];
+        [mRequest setAllHTTPHeaderFields:self.defaultHeaders];
+    }
+    
+    self.baseURLFallback = [mRequest.URL baseURL];
+    if (!baseURLFallback) 
+        self.baseURLFallback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/", mRequest.URL.scheme, mRequest.URL.host]];
     
     self.currentRequest = [[[AFHTTPRequestOperation alloc] initWithRequest:mRequest] autorelease];
     
     [currentRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [webView loadData:operation.responseData MIMEType:operation.response.MIMEType textEncodingName:@"utf-8" baseURL:baseURL];
+        [webView loadData:operation.responseData MIMEType:operation.response.MIMEType textEncodingName:@"utf-8" baseURL:nil];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-NSLog(@"Error!");
         [self webView:webView didFailLoadWithError:error];
         
     }];
@@ -382,6 +403,12 @@ NSLog(@"Error!");
 #pragma mark WebViewDelegate Methods
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)aRequest navigationType:(UIWebViewNavigationType)navigationType {
+    // applewebdata:// urls are a problem. Kill that request and substitute a better one. Assumes a GET request.
+    if ([@"applewebdata" isEqualToString:aRequest.URL.scheme]) {
+        [self loadPath:[NSString stringWithFormat:@"%@://%@/%@?", aRequest.URL.scheme, self.baseURLFallback, aRequest.URL.path, aRequest.URL.query]];
+        return NO;
+    }
+    
     // If we have a delegate listening to this method, let the delegate decide how to handle it.
     if (delegate && [delegate respondsToSelector:@selector(wpWebView:shouldStartLoadWithRequest:navigationType:)]) {
         return [delegate wpWebView:self shouldStartLoadWithRequest:aRequest navigationType:navigationType];
@@ -397,7 +424,7 @@ NSLog(@"Error!");
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    [self setLoading:YES];
+//    [self setLoading:YES];
     if (delegate && [delegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
         [delegate webViewDidStartLoad:self];
     }
@@ -408,7 +435,7 @@ NSLog(@"Error!");
     [self stopLoading];
     self.lastWebViewRefreshDate = [NSDate date];
     [refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView * )scrollView];
-    
+NSLog(@"WebView Loaded: %@ ", self.webView.request.URL);
     if (delegate && [delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
         [delegate webViewDidFinishLoad:self];
     }

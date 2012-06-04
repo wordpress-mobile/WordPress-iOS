@@ -119,6 +119,8 @@
 #define kDraftsBlogIdStr @"localDrafts"
 #define kDraftsHostName @"iPhone"
 
+#define kDidDismissWPcomLoginNotification @"didDismissWPcomLogin"
+
 #define kUnsupportedWordpressVersionTag 900
 #define kRSDErrorTag 901
 #define kCrashAlertTag 902

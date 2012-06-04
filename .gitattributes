@@ -187,6 +187,8 @@ Classes/StatsTableCell.h -text
 Classes/StatsTableCell.m -text
 Classes/StatsTableViewController.h -text
 Classes/StatsTableViewController.m -text
+Classes/StatsWebViewController.h -text
+Classes/StatsWebViewController.m -text
 Classes/UIDevice-Hardware.h -text
 Classes/UIDevice-Hardware.m -text
 Classes/UIImageView+Gravatar.h -text

@@ -195,26 +195,25 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		if (presentDialog) {
 			dotorgLogin = YES;
 		
-		if(DeviceIsPad() == YES) {
-			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad-stats" bundle:nil];	
-            wpComLogin.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-			wpComLogin.modalPresentationStyle = UIModalPresentationFormSheet;
-            wpComLogin.isStatsInitiated = YES;
-			[appDelegate.splitViewController presentModalViewController:wpComLogin animated:YES];			
-            [wpComLogin release];
-		}
-		else {
-			dotorgLogin = YES;
-			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController" bundle:nil];	
-			[appDelegate.navigationController presentModalViewController:wpComLogin animated:YES];
-			[wpComLogin release];
-		}
-		UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WordPress.com Stats", @"")
-														 message:NSLocalizedString(@"To load stats for your blog you will need to have the WordPress.com stats plugin installed and correctly configured as well as your WordPress.com login.", @"") 
-														delegate:self cancelButtonTitle:NSLocalizedString(@"Learn More", @"") otherButtonTitles:nil] autorelease];
-		alert.tag = 1;
-		[alert addButtonWithTitle:NSLocalizedString(@"I'm Ready!", @"")];
-		[alert show];
+            if(DeviceIsPad() == YES) {
+                WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad-stats" bundle:nil];	
+                wpComLogin.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                wpComLogin.modalPresentationStyle = UIModalPresentationFormSheet;
+                wpComLogin.isStatsInitiated = YES;
+                [appDelegate.splitViewController presentModalViewController:wpComLogin animated:YES];			
+                [wpComLogin release];
+            } else {
+                dotorgLogin = YES;
+                WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController" bundle:nil];	
+                [appDelegate.navigationController presentModalViewController:wpComLogin animated:YES];
+                [wpComLogin release];
+            }
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WordPress.com Stats", @"")
+                                                             message:NSLocalizedString(@"To load stats for your blog you will need to have the WordPress.com stats plugin installed and correctly configured as well as your WordPress.com login.", @"") 
+                                                            delegate:self cancelButtonTitle:NSLocalizedString(@"Learn More", @"") otherButtonTitles:nil] autorelease];
+            alert.tag = 1;
+            [alert addButtonWithTitle:NSLocalizedString(@"I'm Ready!", @"")];
+            [alert show];
 		}
 		
 	}
