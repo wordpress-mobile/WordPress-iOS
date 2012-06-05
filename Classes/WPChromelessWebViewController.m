@@ -27,13 +27,22 @@
     [super dealloc];
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     CGRect frame = self.view.frame;
+    frame.origin.x = 0.0f;
+    frame.origin.y = 0.0f;
     self.webView = [[[WPWebView alloc] initWithFrame:frame] autorelease];
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth & UIViewAutoresizingFlexibleHeight;
     webView.delegate = self;
+
     [self.view addSubview:webView];
 }
 

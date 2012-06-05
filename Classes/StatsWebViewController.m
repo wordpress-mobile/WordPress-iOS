@@ -33,8 +33,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor whiteColor];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(credentialsChanged:) name:kDidDismissWPcomLoginNotification object:nil];
 }
 

@@ -83,6 +83,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 }
 
 - (id)initWithFrame:(CGRect)frame {
+NSLog(@"Web 1 Frame: %f, %f, %f, %f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
     self = [super initWithFrame:frame];
     if (self) {
         [self setupSubviews];
@@ -124,7 +125,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     CGFloat padding = 5.0;
     
     CGRect frame = CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height);
-    
+NSLog(@"Setup Sub Views Frame: %f, %f, %f, %f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
     // WebView
     self.webView = [[[UIWebView alloc] initWithFrame:frame] autorelease];
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
