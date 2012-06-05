@@ -9,9 +9,9 @@
 #import "UIImageView+Gravatar.h"
 #define DETAIL_LEDGE 44.0f //Fixme: this is already defined in PanelNavigationController.m
 
-@interface SidebarSectionHeaderView ()
+@interface SidebarSectionHeaderView (Private)
 
--(UIImage *)addText:(UIImage *)img text:(NSString *)text1;
+-(UIImage *)badgeImage:(UIImage *)img withText:(NSString *)text1;
 -(void)receivedCommentsChangedNotification:(NSNotification*)aNotification;
 -(void)updatePendingCommentsIcon;
 @end
@@ -78,7 +78,7 @@
         
         UIImageView *commentsIconImgView = [[[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width - ( 35.0 + DETAIL_LEDGE ), 6.0, 35.0, 35.0)] autorelease];
         if ( numberOfPendingComments > 0 ) {
-            UIImage *img = [self addText:[UIImage imageNamed:@"inner-shadow.png"] text:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            UIImage *img = [self badgeImage:[UIImage imageNamed:@"inner-shadow.png"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
             commentsIconImgView.image = img;
         }
         [self addSubview:commentsIconImgView];
@@ -129,7 +129,7 @@
     } else {
         int numberOfPendingComments = [_blog numberOfPendingComments];
         if ( numberOfPendingComments > 0 ) {
-            UIImage *img = [self addText:[UIImage imageNamed:@"inner-shadow.png"] text:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            UIImage *img = [self badgeImage:[UIImage imageNamed:@"inner-shadow.png"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
             self.numberOfCommentsImageView.image = img;
         } else {
             self.numberOfCommentsImageView.image = nil;
@@ -138,7 +138,7 @@
 }
 
 //Add text to UIImage - ref: http://iphonesdksnippets.com/post/2009/05/05/Add-text-to-image-(UIImage).aspx
--(UIImage *)addText:(UIImage *)img text:(NSString *)text1{ 
+-(UIImage *)badgeImage:(UIImage *)img withText:(NSString *)text1{ 
     int w = img.size.width; 
     int h = img.size.height; 
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 

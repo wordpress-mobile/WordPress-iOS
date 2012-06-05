@@ -8,10 +8,10 @@
 
 #import "SidebarTableViewCell.h"
 
-@interface SidebarTableViewCell ()
+@interface SidebarTableViewCell (Private)
 
 - (void)receivedCommentsChangedNotification:(NSNotification*)aNotification;
--(UIImage *)addText:(UIImage *)img text:(NSString *)text1;
+- (UIImage *)badgeImage:(UIImage *)img withText:(NSString *)text1;
 
 @end;
 
@@ -33,7 +33,7 @@
         //do other stuff here
         int numberOfPendingComments = [blog numberOfPendingComments];
         if( numberOfPendingComments > 0 ) {
-            UIImage *img = [self addText:[UIImage imageNamed:@"inner-shadow.png"] text:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            UIImage *img = [self badgeImage:[UIImage imageNamed:@"inner-shadow.png"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
             UIImageView *image = [[UIImageView alloc] initWithImage:img];
             self.accessoryView = image;
             [image release];
@@ -43,8 +43,6 @@
                                                          name:kCommentsChangedNotificationName
                                                        object:blog];
         }
-    } else {
-        
     }
 }
 
@@ -61,7 +59,7 @@
         //do other stuff here
         int numberOfPendingComments = [blog numberOfPendingComments];
         if( numberOfPendingComments > 0 ) {
-            UIImage *img = [self addText:[UIImage imageNamed:@"inner-shadow.png"] text:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            UIImage *img = [self badgeImage:[UIImage imageNamed:@"inner-shadow.png"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
             UIImageView *image = [[UIImageView alloc] initWithImage:img];
             self.accessoryView = image;
             [image release];
@@ -73,7 +71,7 @@
 
 
 //Add text to UIImage - ref: http://iphonesdksnippets.com/post/2009/05/05/Add-text-to-image-(UIImage).aspx
--(UIImage *)addText:(UIImage *)img text:(NSString *)text1{ 
+-(UIImage *)badgeImage:(UIImage *)img withText:(NSString *)text1{ 
     int w = img.size.width; 
     int h = img.size.height; 
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 

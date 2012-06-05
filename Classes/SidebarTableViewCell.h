@@ -13,8 +13,6 @@
      Blog *blog;
 }
 
-- (UIImage *)addText:(UIImage *)img text:(NSString *)text1;
-
 @property (readwrite, assign) Blog *blog;
 
 @end
