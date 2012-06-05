@@ -332,9 +332,16 @@
 }
 
 - (void)showAddPostView {
-	WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 		
     Post *post = [Post newDraftForBlog:self.blog];
+#ifdef PANELS_EXPERIMENTAL
+    EditPostViewController *editPostViewController = [[[EditPostViewController alloc] initWithPost:[post createRevision]] autorelease];
+    editPostViewController.editMode = kNewPost;
+    [editPostViewController refreshUIForCompose];
+    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editPostViewController] autorelease];
+    [self.panelNavigationController presentModalViewController:navController animated:YES];
+#else
+	WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 	if (DeviceIsPad()) {
         self.postReaderViewController = [[[PostViewController alloc] initWithPost:post] autorelease];
 		[delegate showContentDetailViewController:self.postReaderViewController];
@@ -346,6 +353,7 @@
         [self.postDetailViewController refreshUIForCompose];
 		[delegate showContentDetailViewController:self.postDetailViewController];
 	}
+#endif
     [post release];
 }
 
