@@ -60,16 +60,9 @@
 	[super viewWillAppear:animated];
 	
 	if((isWPcom) && (!appDelegate.isWPcomAuthenticated)) {
-		if(DeviceIsPad() == YES) {
-			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad" bundle:nil];	
-			[self.navigationController pushViewController:wpComLogin animated:YES];
-			[wpComLogin release];
-		}
-		else {
-			WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController" bundle:nil];	
-			[self.navigationController presentModalViewController:wpComLogin animated:YES];
-			[wpComLogin release];
-		}
+        WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        [self.navigationController pushViewController:wpComLogin animated:YES];
+        [wpComLogin release];
 	}
 	else if(isWPcom) {
 		if((usersBlogs == nil) && ([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"] != nil)) {

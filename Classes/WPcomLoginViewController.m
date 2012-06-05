@@ -124,6 +124,11 @@
 		}
 		
 		activityCell.textLabel.text = buttonText;
+        if (isSigningIn) {
+            activityCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        } else {
+            activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        }
 		cell = activityCell;
 	} else {		
         if ([indexPath row] == 0) {
@@ -283,9 +288,11 @@
 #pragma mark Custom methods
 
 - (void)signIn:(id)sender {
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
     [self.wpComApi setUsername:loginCell.textField.text
                       password:passwordCell.textField.text
                        success:^{
+                           [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
                            [self.delegate loginController:self didAuthenticateWithUsername:self.wpComApi.username];
                        }
                        failure:^(NSError *error) {
