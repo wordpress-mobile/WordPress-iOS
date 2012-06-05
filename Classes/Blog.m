@@ -568,6 +568,7 @@
         if (success) {
             success();
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
         self.isSyncingComments = NO;
         self.lastCommentsSync = [NSDate date];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

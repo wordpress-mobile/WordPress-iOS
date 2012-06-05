@@ -113,6 +113,8 @@
 #define kMETHODARGS @"METHODARGS"
 #define BlavatarLoaded @"BlavatarLoaded"
 #define DidChangeStatusBarFrame @"DidChangeStatusBarFrame"
+#define kCommentsChangedNotificationName @"CommentsChangedNotificationName"
+
 
 #define kPostsDownloadCount @"postsDownloadCount"
 //#define kPagesDownloadCount @"pagesDownloadCount"

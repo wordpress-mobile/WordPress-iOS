@@ -236,6 +236,7 @@
         WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
         exit(-1);
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self.blog];
 }
 
 @end

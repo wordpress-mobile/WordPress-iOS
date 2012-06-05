@@ -12,7 +12,8 @@
 @interface SidebarSectionHeaderView ()
 
 -(UIImage *)addText:(UIImage *)img text:(NSString *)text1;
-
+-(void)receivedCommentsChangedNotification:(NSNotification*)aNotification;
+-(void)updatePendingCommentsIcon;
 @end
     
     
@@ -29,11 +30,10 @@
 
 
 -(id)initWithFrame:(CGRect)frame blog:(Blog*)blog sectionInfo:(SectionInfo *)sectionInfo delegate:(id <SidebarSectionHeaderViewDelegate>)delegate {
-    
+
     self = [super initWithFrame:frame];
     
     if (self != nil) {
-        
         // Set up the tap gesture recognizer.
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleOpen:)];
         [self addGestureRecognizer:tapGesture];
@@ -109,16 +109,33 @@
         [(CAGradientLayer *)self.layer setColors:colors];
         [(CAGradientLayer *)self.layer setLocations:[NSArray arrayWithObjects:[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:0.48], [NSNumber numberWithFloat:1.0], nil]];
     }
+        
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedCommentsChangedNotification:) 
+                                                 name:kCommentsChangedNotificationName
+                                               object:self.blog];
     
     return self;
 }
-
 
 -(IBAction)toggleOpen:(id)sender {
     
     [self toggleOpenWithUserAction:YES];
 }
 
+-(void)updatePendingCommentsIcon {
+    if( self.disclosureButton.selected ) {
+        self.numberOfCommentsImageView.image = nil;        
+    } else {
+        int numberOfPendingComments = [_blog numberOfPendingComments];
+        if ( numberOfPendingComments > 0 ) {
+            UIImage *img = [self addText:[UIImage imageNamed:@"inner-shadow.png"] text:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            self.numberOfCommentsImageView.image = img;
+        } else {
+            self.numberOfCommentsImageView.image = nil;
+        }
+    }
+}
 
 //Add text to UIImage - ref: http://iphonesdksnippets.com/post/2009/05/05/Add-text-to-image-(UIImage).aspx
 -(UIImage *)addText:(UIImage *)img text:(NSString *)text1{ 
@@ -144,6 +161,11 @@
     return retImage; 
 }
 
+- (void)receivedCommentsChangedNotification:(NSNotification*)aNotification {
+    [self updatePendingCommentsIcon];
+}
+
+
 -(void)toggleOpenWithUserAction:(BOOL)userAction {
     
     // Don't allow section to be collapsed if it is already open
@@ -154,18 +176,7 @@
     self.disclosureButton.selected = !self.disclosureButton.selected;
     
     //change the comments icon
-    if( self.disclosureButton.selected ) {
-        self.numberOfCommentsImageView.image = nil;        
-    } else {
-        int numberOfPendingComments = [_blog numberOfPendingComments];
-        if ( numberOfPendingComments > 0 ) {
-            UIImage *img = [self addText:[UIImage imageNamed:@"inner-shadow.png"] text:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
-            self.numberOfCommentsImageView.image = img;
-        } else {
-            self.numberOfCommentsImageView.image = nil;
-        }
-        
-    }
+    [self updatePendingCommentsIcon];
     
     // If this was a user action, send the delegate the appropriate message.
     if (userAction) {
@@ -182,7 +193,10 @@
     }
 }
 
-
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super dealloc];
+}
 
 
 @end

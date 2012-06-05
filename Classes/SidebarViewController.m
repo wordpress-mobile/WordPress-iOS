@@ -39,6 +39,7 @@
 - (SectionInfo *)sectionInfoForBlog:(Blog *)blog;
 - (void)addSectionInfoForBlog:(Blog *)blog;
 - (void)insertSectionInfoForBlog:(Blog *)blog atIndex:(NSUInteger)index;
+- (void)receivedCommentsChangedNotification:(NSNotification*)aNotification;
 @end
 
 @implementation SidebarViewController
@@ -49,6 +50,7 @@
 - (void)dealloc {
     self.resultsController.delegate = nil;
     self.resultsController = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
 
@@ -81,6 +83,12 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receivedCommentsChangedNotification:) 
+                                                 name:kCommentsChangedNotificationName
+                                               object:nil];
 }
 
 - (void)viewDidUnload
@@ -104,6 +112,10 @@
 }
 
 #pragma mark - Custom methods
+
+- (void)receivedCommentsChangedNotification:(NSNotification*)aNotification {
+    [tableView reloadData]; //Need to update the cells
+}
 
 - (SectionInfo *)sectionInfoForBlog:(Blog *)blog {
     SectionInfo *sectionInfo = [[SectionInfo alloc] init];			
