@@ -12,6 +12,7 @@
 #import "WordPressAppDelegate.h"
 #import "UIImageView+Gravatar.h"
 #import "SidebarSectionHeaderView.h"
+#import "SidebarTableViewCell.h"
 #import "SectionInfo.h"
 #import "PostsViewController.h"
 #import "PagesViewController.h"
@@ -39,7 +40,6 @@
 - (SectionInfo *)sectionInfoForBlog:(Blog *)blog;
 - (void)addSectionInfoForBlog:(Blog *)blog;
 - (void)insertSectionInfoForBlog:(Blog *)blog atIndex:(NSUInteger)index;
-- (void)receivedCommentsChangedNotification:(NSNotification*)aNotification;
 @end
 
 @implementation SidebarViewController
@@ -50,7 +50,6 @@
 - (void)dealloc {
     self.resultsController.delegate = nil;
     self.resultsController = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
 
@@ -83,12 +82,6 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(receivedCommentsChangedNotification:) 
-                                                 name:kCommentsChangedNotificationName
-                                               object:nil];
 }
 
 - (void)viewDidUnload
@@ -112,11 +105,6 @@
 }
 
 #pragma mark - Custom methods
-
-- (void)receivedCommentsChangedNotification:(NSNotification*)aNotification {
-    [tableView reloadData]; //Need to update the cells
-}
-
 - (SectionInfo *)sectionInfoForBlog:(Blog *)blog {
     SectionInfo *sectionInfo = [[SectionInfo alloc] init];			
     sectionInfo.blog = blog;
@@ -182,13 +170,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString *CellIdentifier = @"SideBarCell";
+    SidebarTableViewCell *cell = (SidebarTableViewCell *) [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[SidebarTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
-    // Configure the cell...
-    cell.accessoryView = nil;
+    
     NSString *title = nil;
       
     if (indexPath.section == 0) {
@@ -211,13 +198,7 @@
             case 2:
                 title = NSLocalizedString(@"Comments", @"");
                 Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
-                int numberOfPendingComments = [blog numberOfPendingComments];
-                if( numberOfPendingComments > 0 ) {
-                    UIImage *img = [self addText:[UIImage imageNamed:@"inner-shadow.png"] text:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
-                    UIImageView *image = [[UIImageView alloc] initWithImage:img];
-                    cell.accessoryView = image;
-                    [image release];
-                }
+                cell.blog = blog;
                 break;
             case 3:
                 title = NSLocalizedString(@"Stats", @"");
@@ -233,30 +214,6 @@
     cell.textLabel.backgroundColor = SIDEBAR_BGCOLOR;
     
     return cell;
-}
-
-//Add text to UIImage - ref: http://iphonesdksnippets.com/post/2009/05/05/Add-text-to-image-(UIImage).aspx
--(UIImage *)addText:(UIImage *)img text:(NSString *)text1{ 
-    int w = img.size.width; 
-    int h = img.size.height; 
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 
-    CGContextRef context = CGBitmapContextCreate(NULL, w, h, 8, 4 * w, colorSpace, kCGImageAlphaPremultipliedFirst); 
-    CGContextDrawImage(context, CGRectMake(0, 0, w, h), img.CGImage); 
-    
-    char* text= (char *)[text1 cStringUsingEncoding:NSASCIIStringEncoding]; 
-    CGContextSelectFont(context, "Arial", 17, kCGEncodingMacRoman); 
-    CGContextSetTextDrawingMode(context, kCGTextFill); 
-    CGContextSetRGBFillColor(context, 0, 0, 0, 1); 
-    CGContextShowTextAtPoint(context,10,10,text, strlen(text)); 
-    CGImageRef imgCombined = CGBitmapContextCreateImage(context); 
-    
-    CGContextRelease(context); 
-    CGColorSpaceRelease(colorSpace); 
-    
-    UIImage *retImage = [UIImage imageWithCGImage:imgCombined]; 
-    CGImageRelease(imgCombined); 
-    
-    return retImage; 
 }
 
 #pragma mark Section header delegate

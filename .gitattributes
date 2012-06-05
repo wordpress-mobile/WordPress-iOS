@@ -177,6 +177,8 @@ Classes/SettingsViewController.h -text
 Classes/SettingsViewController.m -text
 Classes/SidebarSectionHeaderView.h -text
 Classes/SidebarSectionHeaderView.m -text
+Classes/SidebarTableViewCell.h -text
+Classes/SidebarTableViewCell.m -text
 Classes/SidebarViewController.h -text
 Classes/SidebarViewController.m -text
 Classes/StatsChartViewController.h -text
