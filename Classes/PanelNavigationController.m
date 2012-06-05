@@ -82,6 +82,7 @@
 - (void)removePanner;
 - (void)addTapper;
 - (void)removeTapper;
+- (void)setFrameForViewController:(UIViewController *)viewController;
 - (void)setViewOffset:(CGFloat)offset forView:(UIView *)view;
 - (void)setStackOffset:(CGFloat)offset duration:(CGFloat)duration;
 - (CGFloat)nearestValidOffsetWithVelocity:(CGFloat)velocity;
@@ -576,7 +577,11 @@
 }
 
 - (void)prepareDetailView:(UIView *)view {
-    view.frame = CGRectMake(0, 0, DETAIL_WIDTH, DETAIL_HEIGHT);
+    CGFloat newPanelWidth = DETAIL_WIDTH;
+    if ([self.detailViewController respondsToSelector:@selector(expectedWidth)]) {
+        newPanelWidth = [[self.detailViewController performSelector:@selector(expectedWidth)] floatValue];
+    }
+    view.frame = CGRectMake(0, 0, newPanelWidth, DETAIL_HEIGHT);
     if (IS_IPAD) {
         view.layer.cornerRadius = PANEL_CORNER_RADIUS;
         view.layer.masksToBounds = YES;
@@ -780,6 +785,16 @@
 
 - (void)tapped:(UITapGestureRecognizer *)sender {
     // Shouldn't really get here since we deny the touch in the delegate
+}
+
+- (void)setFrameForViewController:(UIViewController *)viewController {
+    CGFloat newPanelWidth = DETAIL_WIDTH;
+    if ([viewController respondsToSelector:@selector(expectedWidth)]) {
+        newPanelWidth = [[viewController performSelector:@selector(expectedWidth)] floatValue];
+    }
+    CGRect frame = viewController.view.frame;
+    frame.size.width = newPanelWidth;
+    viewController.view.frame = frame;
 }
 
 - (void)setViewOffset:(CGFloat)offset forView:(UIView *)view {

@@ -206,6 +206,9 @@
     [self getUserAPIKey];
 }
 
+- (NSNumber *)expectedWidth {
+    return [NSNumber numberWithFloat:668];
+}
 
 #pragma mark -
 #pragma mark XMLParser Delegate Methods
