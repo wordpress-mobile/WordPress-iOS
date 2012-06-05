@@ -40,7 +40,7 @@
     frame.origin.x = 0.0f;
     frame.origin.y = 0.0f;
     self.webView = [[[WPWebView alloc] initWithFrame:frame] autorelease];
-    webView.autoresizingMask = UIViewAutoresizingFlexibleWidth & UIViewAutoresizingFlexibleHeight;
+    webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     webView.delegate = self;
 
     [self.view addSubview:webView];
