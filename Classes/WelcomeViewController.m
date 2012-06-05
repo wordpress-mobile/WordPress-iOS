@@ -9,6 +9,9 @@
 #import "AboutViewController.h"
 #import "SFHFKeychainUtils.h"
 
+@interface WelcomeViewController () <WPcomLoginViewControllerDelegate>
+@end
+
 @implementation WelcomeViewController
 
 @synthesize tableView, appDelegate;
@@ -196,7 +199,8 @@
 			[addUsersBlogsView release];
 		}
 		else if(DeviceIsPad() == YES) {
-			WPcomLoginViewController *wpLoginView = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad" bundle:nil];
+			WPcomLoginViewController *wpLoginView = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
+            wpLoginView.delegate = self;
 			[self.navigationController pushViewController:wpLoginView animated:YES];
 			[wpLoginView release];
 		}
@@ -234,6 +238,18 @@
 	//aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	[self.navigationController pushViewController:aboutViewController animated:YES];
     [aboutViewController release];
+}
+
+#pragma mark - WPcomLoginViewControllerDelegate
+
+- (void)loginControllerDidDismiss:(WPcomLoginViewController *)loginController {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithUsername:(NSString *)username {
+    [self.navigationController popViewControllerAnimated:NO];
+    [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    
 }
 
 #pragma mark -

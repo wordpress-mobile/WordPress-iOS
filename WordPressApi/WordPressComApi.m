@@ -67,12 +67,16 @@
 }
 
 - (void)signOut {
+#if FALSE
+    // Until we have accounts, don't delete the password or any blog with that username will stop working
     NSError *error = nil;
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
+#endif
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_authenticated_flag"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = NO;
+    [[WordPressAppDelegate sharedWordPressApp] unregisterApnsToken];
     self.username = nil;
     self.password = nil;
 

@@ -8,6 +8,7 @@
 #import "AddUsersBlogsViewController.h"
 #import "SFHFKeychainUtils.h"
 #import "NSString+XMLExtensions.h"
+#import "WordPressComApi.h"
 
 @implementation AddUsersBlogsViewController
 @synthesize usersBlogs, isWPcom, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;
@@ -61,7 +62,7 @@
 	
 	if((isWPcom) && (!appDelegate.isWPcomAuthenticated)) {
         WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        [self.navigationController pushViewController:wpComLogin animated:YES];
+        [self.navigationController presentModalViewController:wpComLogin animated:YES];
         [wpComLogin release];
 	}
 	else if(isWPcom) {
@@ -271,15 +272,7 @@
 
 - (void)signOut {
     if (isWPcom) {
-        appDelegate.isWPcomAuthenticated = NO;
-        [appDelegate unregisterApnsToken];
-       /* NSError *error = nil;
-        [SFHFKeychainUtils deleteItemForUsername:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]
-                                  andServiceName:@"WordPress.com"
-                                           error:&error];*/
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_authenticated_flag"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [[WordPressComApi sharedApi] signOut];
     }
 	[self.navigationController popViewControllerAnimated:YES];
 }

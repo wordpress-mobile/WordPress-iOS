@@ -65,7 +65,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[self.navigationItem setHidesBackButton:NO animated:NO];
 	isSigningIn = NO;
 }
 
@@ -214,7 +213,6 @@
 				[NSThread sleepForTimeInterval:0.15];
 				[tv reloadData];
 				if (!isSigningIn){
-					[self.navigationItem setHidesBackButton:YES animated:NO];
 					isSigningIn = YES;
                     [self signIn:self];
 				}
@@ -247,7 +245,6 @@
             if((![loginCell.textField.text isEqualToString:@""]) && (![passwordCell.textField.text isEqualToString:@""])) {
                 if (!isSigningIn){
                     isSigningIn = YES;
-					[self.navigationItem setHidesBackButton:YES animated:NO];
                     [self.tableView reloadData];
                     [self signIn:self];
                 }
