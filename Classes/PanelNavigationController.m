@@ -388,11 +388,11 @@
             if (_isAppeared) {
                 [_detailViewController vdc_viewDidDisappear:NO];
             }
+            [_detailViewController willMoveToParentViewController:nil];
+            [_detailViewController setPanelNavigationController:nil];
+            [_detailViewController removeFromParentViewController];
+            [_detailViewController didMoveToParentViewController:nil];
         }
-        [_detailViewController willMoveToParentViewController:nil];
-        [_detailViewController setPanelNavigationController:nil];
-        [_detailViewController removeFromParentViewController];
-        [_detailViewController didMoveToParentViewController:nil];
         [_detailViewController release];
     }
 
@@ -400,8 +400,7 @@
 
     if (_detailViewController) {
         [_detailViewController retain];
-        [_detailViewController willMoveToParentViewController:self];
-        [self addChildViewController:_detailViewController];
+        [_detailViewController setPanelNavigationController:self];
         if (self.navigationController) {
             [self.navigationController setViewControllers:[NSArray arrayWithObject:_detailViewController] animated:NO];
             if (sidebarButton == nil) {
@@ -410,6 +409,8 @@
             _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
             [sidebarButton release];
         } else {
+            [_detailViewController willMoveToParentViewController:self];
+            [self addChildViewController:_detailViewController];
             if (_isAppeared) {
                 [_detailViewController vdc_viewWillAppear:NO];
             }
@@ -418,9 +419,8 @@
             if (_isAppeared) {
                 [_detailViewController vdc_viewDidAppear:NO];
             }
+            [_detailViewController didMoveToParentViewController:self];
         }
-        [_detailViewController setPanelNavigationController:self];
-        [_detailViewController didMoveToParentViewController:self];
     }
 
     if (IS_IPHONE && closingSidebar) {
