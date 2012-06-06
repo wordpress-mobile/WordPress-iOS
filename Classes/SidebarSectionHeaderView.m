@@ -69,7 +69,8 @@
         [self addSubview:label];
         _titleLabel = label;
         
-        UIImageView *commentsIconImgView = [[[UIImageView alloc] initWithFrame:CGRectMake(self.bounds.size.width - ( 35.0 + DETAIL_LEDGE ), 6.0, 35.0, 35.0)] autorelease];
+        CGRect commentsBadgedRect = IS_IPAD ? CGRectMake(self.bounds.size.width - ( 31.0 + 35.0 ) , 6.0, 35.0, 35.0) : CGRectMake(self.bounds.size.width - ( 35.0 + DETAIL_LEDGE + 4 ), 6.0, 35.0, 35.0);
+        UIImageView *commentsIconImgView = [[[UIImageView alloc] initWithFrame:commentsBadgedRect] autorelease];
         if ( numberOfPendingComments > 0 ) {
             UIImage *img = [self badgeImage:[UIImage imageNamed:@"inner-shadow.png"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
             commentsIconImgView.image = img;
@@ -113,11 +114,20 @@
 -(CGRect)titleLabelFrame:(BOOL)isBadgeVisible {
     CGRect titleLabelFrame = self.bounds;
     titleLabelFrame.size.width = startingFrameWidth;    
-    titleLabelFrame.origin.x += 51.0;
-    if ( isBadgeVisible ) 
-        titleLabelFrame.size.width -= 102.0;
-    else
-        titleLabelFrame.size.width -= 51.0;
+    titleLabelFrame.origin.x += 47.0; //blavatar size 
+    
+    if ( IS_IPAD ) {
+        if ( isBadgeVisible ) 
+            titleLabelFrame.size.width -= ( 31 + 35 + 47 ); //the disclosure size + comment badge + blavatar size;
+        else
+            titleLabelFrame.size.width -= ( 31 + 47 ); //the disclosure size + blavatar size
+    } else {
+        if ( isBadgeVisible ) 
+            titleLabelFrame.size.width -= ( DETAIL_LEDGE + 4  + 35 + 47 ); //ledge + padding + comment badge + blavatar size;
+        else
+            titleLabelFrame.size.width -= ( DETAIL_LEDGE + 4 + 47 ); //ledge + padding + blavatar size
+    }
+     
     return titleLabelFrame;
 }
 
