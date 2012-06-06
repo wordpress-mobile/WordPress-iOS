@@ -140,6 +140,7 @@ Classes/PageViewController.h -text
 Classes/PageViewController.m -text
 Classes/PagesViewController.h -text
 Classes/PagesViewController.m -text
+Classes/PanelNavigationConstants.h -text
 Classes/PanelNavigationController.h -text
 Classes/PanelNavigationController.m -text
 Classes/Post.h -text

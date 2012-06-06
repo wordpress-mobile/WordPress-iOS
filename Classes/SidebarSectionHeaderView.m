@@ -7,7 +7,7 @@
 #import "SidebarSectionHeaderView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIImageView+Gravatar.h"
-#define DETAIL_LEDGE 44.0f //Fixme: this is already defined in PanelNavigationController.m
+#import "PanelNavigationConstants.h"
 
 @interface SidebarSectionHeaderView (Private)
 
@@ -115,8 +115,20 @@
                                                  name:kCommentsChangedNotificationName
                                                object:self.blog];
     
+ /*  
+    NSLog(@"bounds.origin.x: %f", self.bounds.origin.x);
+    NSLog(@"bounds.origin.y: %f", self.bounds.origin.y);
+    NSLog(@"bounds.size.width: %f", self.bounds.size.width);
+    NSLog(@"bounds.size.height: %f", self.bounds.size.height);
+    
+    NSLog(@"frame.origin.x: %f", self.frame.origin.x);
+    NSLog(@"frame.origin.y: %f", self.frame.origin.y);
+    NSLog(@"frame.size.width: %f", self.frame.size.width);
+    NSLog(@"frame.size.height: %f", self.frame.size.height);
+    */
     return self;
 }
+
 
 -(IBAction)toggleOpen:(id)sender {
     

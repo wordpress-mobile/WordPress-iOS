@@ -1319,6 +1319,7 @@
 		FD0D42DA149A0B5500F5E115 /* InAppSettingsReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppSettingsReader.m; sourceTree = "<group>"; };
 		FD0D42DB149A0B5500F5E115 /* InAppSettingsSpecifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InAppSettingsSpecifier.h; sourceTree = "<group>"; };
 		FD0D42DC149A0B5500F5E115 /* InAppSettingsSpecifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InAppSettingsSpecifier.m; sourceTree = "<group>"; };
+		FD141F8E157F93F400BCDC1F /* PanelNavigationConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelNavigationConstants.h; sourceTree = "<group>"; };
 		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		FD374343156CF4B800BAB5B5 /* WordPress 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 6.xcdatamodel"; sourceTree = "<group>"; };
 		FD3890EE1442F91000135C6D /* WPReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPReaderViewController.h; sourceTree = "<group>"; };
@@ -2425,6 +2426,7 @@
 				E15D46D0156AABD900227392 /* SidebarViewController.m */,
 				FDC528AA157E551000A3FD91 /* SidebarTableViewCell.h */,
 				FDC528AB157E551000A3FD91 /* SidebarTableViewCell.m */,
+				FD141F8E157F93F400BCDC1F /* PanelNavigationConstants.h */,
 			);
 			name = Panels;
 			sourceTree = "<group>";

@@ -22,6 +22,7 @@
 #import "WPTableViewController.h"
 #import "SettingsViewController.h"
 #import "StatsWebViewController.h"
+#import "PanelNavigationConstants.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
@@ -162,7 +163,7 @@
     Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(section - 1) inSection:0]];
     SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:section - 1];
     if (!sectionInfo.headerView) {
-        sectionInfo.headerView = [[SidebarSectionHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.tableView.bounds.size.width, HEADER_HEIGHT) blog:blog sectionInfo:sectionInfo delegate:self];
+        sectionInfo.headerView = [[SidebarSectionHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, SIDEBAR_WIDTH, HEADER_HEIGHT) blog:blog sectionInfo:sectionInfo delegate:self];
     }
     
     return sectionInfo.headerView;
