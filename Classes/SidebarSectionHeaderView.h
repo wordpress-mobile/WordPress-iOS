@@ -11,7 +11,9 @@
 @protocol SidebarSectionHeaderViewDelegate;
 
 
-@interface SidebarSectionHeaderView : UIView 
+@interface SidebarSectionHeaderView : UIView {
+    float startingFrameWidth;
+}
 
 @property (nonatomic, assign) UILabel *titleLabel;
 @property (nonatomic, assign) UIButton *disclosureButton;

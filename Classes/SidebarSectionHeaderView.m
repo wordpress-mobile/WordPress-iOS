@@ -10,10 +10,10 @@
 #import "PanelNavigationConstants.h"
 
 @interface SidebarSectionHeaderView (Private)
-
 -(UIImage *)badgeImage:(UIImage *)img withText:(NSString *)text1;
 -(void)receivedCommentsChangedNotification:(NSNotification*)aNotification;
 -(void)updatePendingCommentsIcon;
+-(CGRect)titleLabelFrame:(BOOL)isBadgeVisible;
 @end
     
     
@@ -28,10 +28,10 @@
     return [CAGradientLayer class];
 }
 
-
 -(id)initWithFrame:(CGRect)frame blog:(Blog*)blog sectionInfo:(SectionInfo *)sectionInfo delegate:(id <SidebarSectionHeaderViewDelegate>)delegate {
 
     self = [super initWithFrame:frame];
+    startingFrameWidth = frame.size.width;
     
     if (self != nil) {
         // Set up the tap gesture recognizer.
@@ -51,15 +51,8 @@
       
         // Create and configure the title label.
         self.sectionInfo = sectionInfo;
-        CGRect titleLabelFrame = self.bounds;
-        titleLabelFrame.origin.x += 51.0;
-        if ( numberOfPendingComments > 0 ) 
-            titleLabelFrame.size.width -= 102.0;
-        else
-            titleLabelFrame.size.width -= 51.0;
-        
-        titleLabelFrame.size.width -= DETAIL_LEDGE;
-        
+        CGRect titleLabelFrame = [self titleLabelFrame:(numberOfPendingComments > 0 )];
+                   
         CGRectInset(titleLabelFrame, 0.0, 6.0);
         UILabel *label = [[UILabel alloc] initWithFrame:titleLabelFrame];
         
@@ -114,31 +107,30 @@
                                              selector:@selector(receivedCommentsChangedNotification:) 
                                                  name:kCommentsChangedNotificationName
                                                object:self.blog];
-    
- /*  
-    NSLog(@"bounds.origin.x: %f", self.bounds.origin.x);
-    NSLog(@"bounds.origin.y: %f", self.bounds.origin.y);
-    NSLog(@"bounds.size.width: %f", self.bounds.size.width);
-    NSLog(@"bounds.size.height: %f", self.bounds.size.height);
-    
-    NSLog(@"frame.origin.x: %f", self.frame.origin.x);
-    NSLog(@"frame.origin.y: %f", self.frame.origin.y);
-    NSLog(@"frame.size.width: %f", self.frame.size.width);
-    NSLog(@"frame.size.height: %f", self.frame.size.height);
-    */
     return self;
 }
 
+-(CGRect)titleLabelFrame:(BOOL)isBadgeVisible {
+    CGRect titleLabelFrame = self.bounds;
+    titleLabelFrame.size.width = startingFrameWidth;    
+    titleLabelFrame.origin.x += 51.0;
+    if ( isBadgeVisible ) 
+        titleLabelFrame.size.width -= 102.0;
+    else
+        titleLabelFrame.size.width -= 51.0;
+    return titleLabelFrame;
+}
 
 -(IBAction)toggleOpen:(id)sender {
-    
     [self toggleOpenWithUserAction:YES];
 }
 
 -(void)updatePendingCommentsIcon {
     if( self.disclosureButton.selected ) {
-        self.numberOfCommentsImageView.image = nil;        
+        self.numberOfCommentsImageView.image = nil;    
+        self.titleLabel.frame = [self titleLabelFrame:NO];
     } else {
+        //update the #s of pending comments and the size of title label.
         int numberOfPendingComments = [_blog numberOfPendingComments];
         if ( numberOfPendingComments > 0 ) {
             UIImage *img = [self badgeImage:[UIImage imageNamed:@"inner-shadow.png"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
@@ -146,6 +138,7 @@
         } else {
             self.numberOfCommentsImageView.image = nil;
         }
+        self.titleLabel.frame = [self titleLabelFrame:(numberOfPendingComments > 0)];
     }
 }
 
