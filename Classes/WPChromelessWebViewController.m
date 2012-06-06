@@ -35,10 +35,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    CGRect frame = self.view.frame;
-    frame.origin.x = 0.0f;
-    frame.origin.y = 0.0f;
+
+    CGRect frame = self.view.bounds;
     self.webView = [[[WPWebView alloc] initWithFrame:frame] autorelease];
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     webView.delegate = self;
