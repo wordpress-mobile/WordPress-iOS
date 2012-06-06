@@ -355,43 +355,7 @@
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath closingSidebar:(BOOL)closingSidebar {
     UIViewController *detailViewController = nil;  
     
-    if (indexPath.section != 0) {
-        Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
-
-        Class controllerClass = nil;
-        //did user select the same item, but for a different blog? If so then just update the data in the view controller.
-        if (indexPath.row == 0) {
-            controllerClass = [PostsViewController class];
-        }
-        if (indexPath.row == 1) {
-            controllerClass = [PagesViewController class];
-        }
-        if (indexPath.row == 2) {
-            controllerClass = [CommentsViewController class];
-        }
-        if (indexPath.row == 3) {
-            if (IS_IPAD) {
-                controllerClass = [StatsWebViewController class];
-            } else {
-                controllerClass = [StatsTableViewController class];
-            }
-        }
-        if ([self.panelNavigationController.detailViewController isMemberOfClass:controllerClass] && [self.panelNavigationController.detailViewController respondsToSelector:@selector(setBlog:)]) {
-            [self.panelNavigationController.detailViewController performSelector:@selector(setBlog:) withObject:blog];
-            if (IS_IPAD) {
-                [self.panelNavigationController showSidebar];
-            } else {
-                [self.panelNavigationController popToRootViewControllerAnimated:NO];
-                [self.panelNavigationController closeSidebar];
-            }
-            return;
-        } else {
-            detailViewController = (UIViewController *)[[[controllerClass alloc] init] autorelease];
-            if ([detailViewController respondsToSelector:@selector(setBlog:)]) {
-                [detailViewController performSelector:@selector(setBlog:) withObject:blog];
-            }
-        }
-    } else {
+    if (indexPath.section == 0) { //Reader, QuickPhoto
         if (indexPath.row == 1) {
             if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPReaderViewController class]]) {
                 // Reader was already selected
@@ -407,7 +371,46 @@
             WPReaderViewController *readerViewController = [[[WPReaderViewController alloc] init] autorelease];
             detailViewController = readerViewController;
         }
-    }
+    } else {
+        Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
+
+        Class controllerClass = nil;
+        //did user select the same item, but for a different blog? If so then just update the data in the view controller.
+        switch (indexPath.row) {
+            case 0:
+                 controllerClass = [PostsViewController class];
+                break;
+            case 1:
+                controllerClass = [PagesViewController class];
+                break;
+            case 2:
+                controllerClass = [CommentsViewController class];
+                break;
+            case 3:
+                controllerClass =  IS_IPAD ? [StatsWebViewController class] : [StatsTableViewController class];
+                break;
+            default:
+                controllerClass = [PostsViewController class];
+                break;
+        }
+        
+        //ercoli: Don't like this if condition. FIXME!!
+        if ([self.panelNavigationController.detailViewController isMemberOfClass:controllerClass] && [self.panelNavigationController.detailViewController respondsToSelector:@selector(setBlog:)]) {
+            [self.panelNavigationController.detailViewController performSelector:@selector(setBlog:) withObject:blog];
+            if (IS_IPAD) {
+                [self.panelNavigationController showSidebar];
+            } else {
+                [self.panelNavigationController popToRootViewControllerAnimated:NO];
+               // [self.panelNavigationController closeSidebar];
+            }
+            return;
+        } else {
+            detailViewController = (UIViewController *)[[[controllerClass alloc] init] autorelease];
+            if ([detailViewController respondsToSelector:@selector(setBlog:)]) {
+                [detailViewController performSelector:@selector(setBlog:) withObject:blog];
+            }
+        }
+    } 
 
     if (detailViewController) {
         [self.panelNavigationController setDetailViewController:detailViewController closingSidebar:closingSidebar];
