@@ -266,7 +266,7 @@
     self.openSection = sectionOpened;
     // select the first row in the section
     // if we don't, a) you lose the current selection, b) the sidebar doesn't open on iPad
-    [self.tableView selectRowAtIndexPath:[indexPathsToInsert objectAtIndex:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+    [self.tableView selectRowAtIndexPath:[indexPathsToInsert objectAtIndex:0] animated:NO scrollPosition:UITableViewScrollPositionNone];    
     [self processRowSelectionAtIndexPath:[indexPathsToInsert objectAtIndex:0] closingSidebar:NO];
 }
 
@@ -401,7 +401,8 @@
                 [self.panelNavigationController showSidebar];
             } else {
                 [self.panelNavigationController popToRootViewControllerAnimated:NO];
-               // [self.panelNavigationController closeSidebar];
+                if ( closingSidebar )
+                    [self.panelNavigationController closeSidebar];
             }
             return;
         } else {
