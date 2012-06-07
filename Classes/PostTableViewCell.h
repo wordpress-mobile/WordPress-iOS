@@ -8,18 +8,19 @@
 #import <Foundation/Foundation.h>
 #import "AbstractPost.h"
 
-#define POST_ROW_HEIGHT         60
+#define POST_ROW_HEIGHT         60.0f
 
-#define LEFT_OFFSET             10
-#define RIGHT_OFFSET            200
+#define LEFT_OFFSET             10.0f
+#define RIGHT_OFFSET            200.0f
+#define RIGHT_MARGIN            16.0f
 
-#define MAIN_FONT_SIZE          15
-#define DATE_FONT_SIZE          13
+#define MAIN_FONT_SIZE          15.0f
+#define DATE_FONT_SIZE          13.0f
 
-#define LABEL_HEIGHT            19
-#define DATE_LABEL_HEIGHT       15
-#define STATUS_LABEL_WIDTH		50
-#define VERTICAL_OFFSET         2
+#define LABEL_HEIGHT            19.0f
+#define DATE_LABEL_HEIGHT       15.0f
+#define STATUS_LABEL_WIDTH		50.0f
+#define VERTICAL_OFFSET         2.0f
 
 #define POST_LOCK_IMAGE         @"lock.png"
 
