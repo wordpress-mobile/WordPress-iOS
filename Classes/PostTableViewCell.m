@@ -139,12 +139,14 @@
 #pragma mark Private methods
 
 - (void)addNameLabel {
-    CGRect rect = CGRectMake(LEFT_OFFSET, (POST_ROW_HEIGHT - LABEL_HEIGHT - DATE_LABEL_HEIGHT - VERTICAL_OFFSET) / 2.0, 288, LABEL_HEIGHT);
+    CGFloat w = self.frame.size.width - LEFT_OFFSET - RIGHT_MARGIN;
+    CGRect rect = CGRectMake(LEFT_OFFSET, (POST_ROW_HEIGHT - LABEL_HEIGHT - DATE_LABEL_HEIGHT - VERTICAL_OFFSET) / 2.0, w, LABEL_HEIGHT);
 
     nameLabel = [[UILabel alloc] initWithFrame:rect];
     nameLabel.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
     nameLabel.highlightedTextColor = [UIColor whiteColor];
     nameLabel.backgroundColor = [UIColor clearColor];
+    nameLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
     [self.contentView addSubview:nameLabel];
 }
@@ -162,12 +164,14 @@
 }
 
 - (void)addStatusLabel {
-    CGRect rect = CGRectMake(288 - STATUS_LABEL_WIDTH, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, STATUS_LABEL_WIDTH, DATE_LABEL_HEIGHT);
+    CGFloat x = self.frame.size.width - STATUS_LABEL_WIDTH - RIGHT_MARGIN;
+    CGRect rect = CGRectMake(x, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, STATUS_LABEL_WIDTH, DATE_LABEL_HEIGHT);
 	
 	statusLabel = [[UILabel alloc] initWithFrame:rect];
     statusLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
     statusLabel.textColor = [UIColor blackColor];
     statusLabel.backgroundColor = [UIColor whiteColor];
+    statusLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
 //	statusLabel.layer.cornerRadius = DATE_LABEL_HEIGHT / 2;
 	
     [self.contentView addSubview:statusLabel];
