@@ -23,6 +23,7 @@
 	#import "CDeviceSupport.h"
 	#import "FileLogger.h"
     #import "WPError.h"
+    #import "UIColor+Helpers.h"
 
 #ifdef DEBUG
 #define _AFNETWORKING_ALLOW_INVALID_SSL_CERTIFICATES_

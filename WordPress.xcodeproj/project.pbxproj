@@ -532,6 +532,7 @@
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
 		FD3890F01442F91000135C6D /* WPReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD3890EF1442F91000135C6D /* WPReaderViewController.m */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
+		FD4500D11580DF3600F2B0E6 /* UIColor+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FD4500D01580DF3500F2B0E6 /* UIColor+Helpers.m */; };
 		FD76A898156CEB0B001FBAC6 /* XMLSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD76A897156CEB0B001FBAC6 /* XMLSignupViewController.xib */; };
 		FD76A89A156CEB22001FBAC6 /* XMLSignupViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD76A899156CEB22001FBAC6 /* XMLSignupViewController-iPad.xib */; };
 		FD76A89D156CEB4C001FBAC6 /* XMLSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD76A89C156CEB4C001FBAC6 /* XMLSignupViewController.m */; };
@@ -1325,6 +1326,8 @@
 		FD3890EE1442F91000135C6D /* WPReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPReaderViewController.h; sourceTree = "<group>"; };
 		FD3890EF1442F91000135C6D /* WPReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPReaderViewController.m; sourceTree = "<group>"; };
 		FD3D6D2B1349F5D30061136A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		FD4500CF1580DF3500F2B0E6 /* UIColor+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Helpers.h"; sourceTree = "<group>"; };
+		FD4500D01580DF3500F2B0E6 /* UIColor+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Helpers.m"; sourceTree = "<group>"; };
 		FD76A897156CEB0B001FBAC6 /* XMLSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XMLSignupViewController.xib; sourceTree = "<group>"; };
 		FD76A899156CEB22001FBAC6 /* XMLSignupViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "XMLSignupViewController-iPad.xib"; sourceTree = "<group>"; };
 		FD76A89B156CEB4C001FBAC6 /* XMLSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLSignupViewController.h; sourceTree = "<group>"; };
@@ -2251,6 +2254,8 @@
 				E1F80824146420B000726BC7 /* UIImageView+Gravatar.m */,
 				E13F23C114FE84600081D9CC /* NSMutableDictionary+Helpers.h */,
 				E13F23C214FE84600081D9CC /* NSMutableDictionary+Helpers.m */,
+				FD4500CF1580DF3500F2B0E6 /* UIColor+Helpers.h */,
+				FD4500D01580DF3500F2B0E6 /* UIColor+Helpers.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -3303,6 +3308,7 @@
 				E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */,
 				5D1392A7157D4D92007D51B8 /* StatsWebViewController.m in Sources */,
 				FDC528AC157E551100A3FD91 /* SidebarTableViewCell.m in Sources */,
+				FD4500D11580DF3600F2B0E6 /* UIColor+Helpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,6 +9,10 @@
 #import "UIImageView+Gravatar.h"
 #import "PanelNavigationConstants.h"
 
+
+// Set the colors for the gradient layer.
+static NSArray *colors = nil;
+
 @interface SidebarSectionHeaderView (Private)
 -(UIImage *)badgeImage:(UIImage *)img withText:(NSString *)text1;
 -(void)receivedCommentsChangedNotification:(NSNotification*)aNotification;
@@ -30,6 +34,15 @@
 
 -(id)initWithFrame:(CGRect)frame blog:(Blog*)blog sectionInfo:(SectionInfo *)sectionInfo delegate:(id <SidebarSectionHeaderViewDelegate>)delegate {
 
+    if ( nil == colors ) {
+        colors = [[NSArray alloc] initWithObjects:
+                  (id) [[UIColor UIColorFromRGBColorWithRed:229.5 green:229.5 blue:229.5] CGColor],
+                  (id) [[UIColor UIColorFromRGBColorWithRed:216.75 green:216.75 blue:216.75] CGColor],
+                  (id) [[UIColor UIColorFromRGBColorWithRed:204.0 green:204.0 blue:204.0] CGColor],
+                  nil
+                  ];
+    }
+    
     self = [super initWithFrame:frame];
     startingFrameWidth = frame.size.width;
     
@@ -87,19 +100,6 @@
         [self addSubview:button];
         _disclosureButton = button;
         
-        
-        // Set the colors for the gradient layer.
-        static NSMutableArray *colors = nil;
-        if (colors == nil) {
-            colors = [[NSMutableArray alloc] initWithCapacity:3];
-            UIColor *color = nil;
-            color = [UIColor colorWithRed:0.9 green:0.9 blue:0.9 alpha:1.0];
-            [colors addObject:(id)[color CGColor]];
-            color = [UIColor colorWithRed:0.85 green:0.85 blue:0.85 alpha:1.0];
-            [colors addObject:(id)[color CGColor]];
-            color = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
-            [colors addObject:(id)[color CGColor]];
-        }
         [(CAGradientLayer *)self.layer setColors:colors];
         [(CAGradientLayer *)self.layer setLocations:[NSArray arrayWithObjects:[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:0.48], [NSNumber numberWithFloat:1.0], nil]];
     }
