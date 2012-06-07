@@ -341,22 +341,40 @@
 }
 
 - (void)setImage:(UIImage *)image withSize:(MediaResize)size {
+    //Read the predefined resizeDimensions and fix them by using the image orietation
+    NSDictionary* predefDim = [self.blog getImageResizeDimensions];
+    CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
+    CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
+    CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
+    switch (image.imageOrientation) { 
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            smallSize = CGSizeMake(smallSize.height, smallSize.width);
+            mediumSize = CGSizeMake(mediumSize.height, mediumSize.width);
+            largeSize = CGSizeMake(largeSize.height, largeSize.width);
+            break;
+        default:
+            break;
+    }
+    
     CGSize newSize;
     switch (size) {
         case kResizeSmall:
-			newSize = CGSizeMake(150, 150);
+			newSize = smallSize;
             break;
         case kResizeMedium:
-            newSize = CGSizeMake(300, 300);
+            newSize = mediumSize;
             break;
         case kResizeLarge:
-            newSize = CGSizeMake(1200, 1200);
+            newSize = largeSize;
             break;
-            
         default:
             newSize = image.size;
             break;
     }
+    
     switch (image.imageOrientation) { 
         case UIImageOrientationUp: 
         case UIImageOrientationUpMirrored:
@@ -373,12 +391,14 @@
         default:
             self.orientation = @"portrait";
     }
+    
 
+    
     //The dimensions of the image, taking orientation into account.
     CGSize originalSize = CGSizeMake(image.size.width, image.size.height);
 
     UIImage *resizedImage = image;
-    if(image.size.width > newSize.width  && image.size.height > newSize.height)
+    if(image.size.width > newSize.width || image.size.height > newSize.height)
         resizedImage = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit
                                                    bounds:newSize
                                      interpolationQuality:kCGInterpolationHigh];

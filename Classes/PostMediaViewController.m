@@ -20,7 +20,6 @@
 
 @interface PostMediaViewController (Private)
 - (void)getMetadataFromAssetForURL:(NSURL *)url;
-- (NSDictionary *) getImageResizeDimensions;
 @end
 
 @implementation PostMediaViewController
@@ -579,53 +578,29 @@
 	[orientationActionSheet release];
 }
 
-
-- (NSDictionary *) getImageResizeDimensions {
-    
-    CGSize smallSize, mediumSize, largeSize;
-    UIImageOrientation orientation = currentImage.imageOrientation; 
-    
-    Blog *currentBlog = self.postDetailViewController.post.blog;
-    int thumbnail_size_w =  ([currentBlog getOptionValue:@"thumbnail_size_w"] != nil ? [[currentBlog getOptionValue:@"thumbnail_size_w"] intValue] : image_small_size_w);
-    int thumbnail_size_h =  [currentBlog getOptionValue:@"thumbnail_size_h"] != nil ? [[currentBlog getOptionValue:@"thumbnail_size_h"] intValue] : image_small_size_h;
-    int medium_size_w =     [currentBlog getOptionValue:@"medium_size_w"] != nil ? [[currentBlog getOptionValue:@"medium_size_w"] intValue] : image_medium_size_w;
-    int medium_size_h =     [currentBlog getOptionValue:@"medium_size_h"] != nil ? [[currentBlog getOptionValue:@"medium_size_h"] intValue] : image_medium_size_h;
-    int large_size_w =      [currentBlog getOptionValue:@"large_size_w"] != nil ? [[currentBlog getOptionValue:@"large_size_w"] intValue] : image_large_size_w;
-    int large_size_h =      [currentBlog getOptionValue:@"large_size_h"] != nil ? [[currentBlog getOptionValue:@"large_size_h"] intValue] : image_large_size_h;
-    
-    switch (orientation) { 
-        case UIImageOrientationUp: 
-        case UIImageOrientationUpMirrored:
-        case UIImageOrientationDown: 
-        case UIImageOrientationDownMirrored:
-            smallSize = CGSizeMake(thumbnail_size_w, thumbnail_size_h);
-            mediumSize = CGSizeMake(medium_size_w, medium_size_h);
-            largeSize = CGSizeMake(large_size_w, large_size_h);
-            break;
-        case UIImageOrientationLeft:
-        case UIImageOrientationLeftMirrored:
-        case UIImageOrientationRight:
-        case UIImageOrientationRightMirrored:
-            smallSize = CGSizeMake(thumbnail_size_h, thumbnail_size_w);
-            mediumSize = CGSizeMake(medium_size_h, medium_size_w);
-            largeSize = CGSizeMake(large_size_h, large_size_w);
-    }
-    return [NSDictionary dictionaryWithObjectsAndKeys: [NSValue valueWithCGSize:smallSize], @"smallSize", 
-                                                       [NSValue valueWithCGSize:mediumSize], @"mediumSize", 
-                                                       [NSValue valueWithCGSize:largeSize], @"largeSize", 
-            nil];
-
-}
-
 - (void)showResizeActionSheet {
 	if(self.isShowingResizeActionSheet == NO) {
 		isShowingResizeActionSheet = YES;
-		
-		NSDictionary* predefDim = [self getImageResizeDimensions];
+        
+        Blog *currentBlog = self.postDetailViewController.post.blog;
+        NSDictionary* predefDim = [currentBlog getImageResizeDimensions];
         CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
         CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
         CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
         CGSize originalSize = CGSizeMake(currentImage.size.width, currentImage.size.height); //The dimensions of the image, taking orientation into account.
+        
+        switch (currentImage.imageOrientation) { 
+            case UIImageOrientationLeft:
+            case UIImageOrientationLeftMirrored:
+            case UIImageOrientationRight:
+            case UIImageOrientationRightMirrored:
+                smallSize = CGSizeMake(smallSize.height, smallSize.width);
+                mediumSize = CGSizeMake(mediumSize.height, mediumSize.width);
+                largeSize = CGSizeMake(largeSize.height, largeSize.width);
+                break;
+            default:
+                break;
+        }
         
 		NSString *resizeSmallStr = [NSString stringWithFormat:NSLocalizedString(@"Small (%@)", @"Small (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)smallSize.width, (int)smallSize.height]];
    		NSString *resizeMediumStr = [NSString stringWithFormat:NSLocalizedString(@"Medium (%@)", @"Medium (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)mediumSize.width, (int)mediumSize.height]];
@@ -1101,11 +1076,22 @@
 }
 
 - (UIImage *)resizeImage:(UIImage *)original toSize:(MediaResize)resize {
-	    
-    NSDictionary* predefDim = [self getImageResizeDimensions];
+    NSDictionary* predefDim = [self.postDetailViewController.post.blog getImageResizeDimensions];
     CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
     CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
     CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
+    switch (currentImage.imageOrientation) { 
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            smallSize = CGSizeMake(smallSize.height, smallSize.width);
+            mediumSize = CGSizeMake(mediumSize.height, mediumSize.width);
+            largeSize = CGSizeMake(largeSize.height, largeSize.width);
+            break;
+        default:
+            break;
+    }
     
     CGSize originalSize = CGSizeMake(currentImage.size.width, currentImage.size.height); //The dimensions of the image, taking orientation into account.
 	
@@ -1113,37 +1099,37 @@
 	UIImage *resizedImage = original;
 	switch (resize) {
 		case kResizeSmall:
-			if(currentImage.size.width > smallSize.width  && currentImage.size.height > smallSize.height)
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill  
+			if(currentImage.size.width > smallSize.width  || currentImage.size.height > smallSize.height)
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit  
 															  bounds:smallSize  
 												interpolationQuality:kCGInterpolationHigh]; 
 			else  
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill  
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit  
 															  bounds:originalSize  
 												interpolationQuality:kCGInterpolationHigh];
 			break;
 		case kResizeMedium:
-			if(currentImage.size.width > mediumSize.width  && currentImage.size.height > mediumSize.height) 
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill  
+			if(currentImage.size.width > mediumSize.width  || currentImage.size.height > mediumSize.height) 
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit  
 															  bounds:mediumSize  
 												interpolationQuality:kCGInterpolationHigh]; 
 			else  
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill  
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit  
 															  bounds:originalSize  
 												interpolationQuality:kCGInterpolationHigh];
 			break;
 		case kResizeLarge:
-			if(currentImage.size.width > largeSize.width && currentImage.size.height > largeSize.height) 
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill  
+			if(currentImage.size.width > largeSize.width || currentImage.size.height > largeSize.height) 
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit  
 															  bounds:largeSize  
 												interpolationQuality:kCGInterpolationHigh]; 
 			else  
-				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill  
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit  
 															  bounds:originalSize  
 												interpolationQuality:kCGInterpolationHigh];
 			break;
 		case kResizeOriginal:
-			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill 
+			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit 
 														  bounds:originalSize 
 											interpolationQuality:kCGInterpolationHigh];
 			break;
@@ -1153,16 +1139,17 @@
 	return resizedImage;
 }
 
+/* Used in Custom Dimensions Resize */
 - (UIImage *)resizeImage:(UIImage *)original width:(CGFloat)width height:(CGFloat)height {
 	UIImage *resizedImage = original;
-	if(currentImage.size.width > width && currentImage.size.height > height) {
+	if(currentImage.size.width > width || currentImage.size.height > height) {
 		// Resize the image using the selected dimensions
-		resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill 
+		resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
 													  bounds:CGSizeMake(width, height) 
 										interpolationQuality:kCGInterpolationHigh];
 	} else {
 		//use the original dimension
-		resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFill 
+		resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit 
 													  bounds:CGSizeMake(currentImage.size.width, currentImage.size.height) 
 										interpolationQuality:kCGInterpolationHigh];
 	}

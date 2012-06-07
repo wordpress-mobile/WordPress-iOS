@@ -62,6 +62,7 @@
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
 - (NSString *)fetchPassword;
 - (int)numberOfPendingComments;
+- (NSDictionary *) getImageResizeDimensions;
 
 #pragma mark - 
 

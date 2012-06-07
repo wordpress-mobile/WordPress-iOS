@@ -131,7 +131,7 @@
                         newSize = kResizeOriginal;
                         break;
                 }
-                
+                                
                 [media setImage:self.photo withSize:newSize];
             }
             
