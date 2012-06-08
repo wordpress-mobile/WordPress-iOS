@@ -427,4 +427,8 @@
     [self.blog syncCommentsWithSuccess:success failure:failure];
 }
 
+- (BOOL)isSyncing {
+	return self.blog.isSyncingComments;
+}
+
 @end

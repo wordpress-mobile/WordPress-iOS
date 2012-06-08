@@ -269,10 +269,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 #pragma mark - Private Methods
 
-- (BOOL)isSyncing {
-	return self.blog.isSyncingComments;
-}
-
 - (void)simulatePullToRefresh {
     CGPoint offset = self.tableView.contentOffset;
     offset.y = - 65.0f;
@@ -321,6 +317,10 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     AssertSubclassMethod();
+}
+
+- (BOOL)isSyncing {
+	AssertSubclassMethod();
 }
 
 - (UITableViewCell *)newCell {

@@ -86,6 +86,11 @@
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
+ Returns a boolean indicating if the blog is syncing that type of item right now
+ */
+- (BOOL)isSyncing;
+
+/**
  If the subclass supports infinite scrolling, and there's more content available, return YES.
  This is an optional method which returns NO by default
  
