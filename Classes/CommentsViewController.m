@@ -318,6 +318,7 @@
     }
     [selectedComments removeAllObjects];
     [self updateSelectedComments];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self.blog];
 }
 
 - (void)updateSelectedComments {

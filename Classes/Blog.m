@@ -597,7 +597,7 @@
         if (failure) {
             failure(error);
         }
-
+        [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
         self.isSyncingComments = NO;
     }];
     

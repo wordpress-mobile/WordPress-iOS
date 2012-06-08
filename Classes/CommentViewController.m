@@ -508,10 +508,12 @@
 }
 
 - (void)moderateCommentWithSelector:(SEL)selector {
+    Blog *currentBlog = self.comment.blog;
     [self.comment performSelector:selector];
     if (!DeviceIsPad()) {
         [self.navigationController popViewControllerAnimated:YES];
     }
+   [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:currentBlog];
 }
 
 #pragma mark resize top UIView
