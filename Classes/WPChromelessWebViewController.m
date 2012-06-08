@@ -6,6 +6,7 @@
 
 #import "WPChromelessWebViewController.h"
 #import "WordPressAppDelegate.h"
+#import "WPWebViewController.h"
 
 @interface WPChromelessWebViewController ()
 @property (nonatomic, retain) WPWebView *webView;
@@ -27,11 +28,6 @@
     [super dealloc];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    self.view.backgroundColor = [UIColor whiteColor];
-}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -43,6 +39,7 @@
 
     [self.view addSubview:webView];
 }
+
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -78,6 +75,11 @@
 }
 
 
+- (NSURL *)currentURL {
+    return [self.webView currentURL];
+}
+
+
 #pragma mark -
 #pragma mark WPWebView Delegate Methods
 
@@ -86,16 +88,51 @@
     // This method is also triggered when loading html from a string so we need to handle that case as well.
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
 
+        // Check the panelNavigationController's stack to see if the previous item was a chromeless webview controller.
+        // If so check to see if its displaying the same url that was just clicked. 
+        // If so just pop ourself off the stack.
+        UIViewController *detailController = [self.panelNavigationController detailViewController];
+        if ([detailController isKindOfClass:[self class]]) {
+            WPChromelessWebViewController *controller = (WPChromelessWebViewController *)detailController;
+            if([[[controller currentURL] absoluteString] isEqualToString:[[request URL] absoluteString] ]) {
+                // if the detail controller is ourself disregard the click so we don't spam a series of the same page.
+                if (detailController != self) {
+                    [self.panelNavigationController popViewControllerAnimated:YES];
+                }
+                return NO;
+            }
+        }       
+
+        // If the url points off-site we want to handle it differently.
+        NSString *host = request.URL.host;
+        if ([host rangeOfString:@"wordpress.com"].location == NSNotFound) {
+            WPWebViewController *controller;
+            if (DeviceIsPad()) {
+                controller = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+            }
+            else {
+                controller = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+            }
+            [controller setUrl:request.URL];
+            if (IS_IPAD) {
+                [self presentModalViewController:controller animated:YES];
+            } else {
+                [self.navigationController pushViewController:controller animated:YES];
+            }
+            return NO;
+        }
+        
         WPChromelessWebViewController *controller = [[WPChromelessWebViewController alloc] init];
         [controller loadPath:request.URL.absoluteString];        
         if (!DeviceIsPad()) {
             [self.navigationController pushViewController:controller animated:YES];
 
         } else {
+            
             [self.panelNavigationController popToRootViewControllerAnimated:NO];
             [self.panelNavigationController pushViewController:controller animated:YES];
+
         }
-        
 
         [controller release];
         return NO;

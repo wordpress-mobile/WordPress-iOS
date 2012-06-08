@@ -116,7 +116,7 @@
 }
 
 - (NSNumber *)expectedWidth {
-    return [NSNumber numberWithFloat:668];
+    return [NSNumber numberWithFloat:668.0f];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {

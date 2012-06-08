@@ -55,6 +55,10 @@
 #pragma mark Instance Methods
 
 - (void)setBlog:(Blog *)aBlog {
+    if ([blog isEqual:aBlog]) {
+        return;
+    }
+    
     if (blog) {
         [blog release]; blog = nil;
     }
@@ -156,7 +160,7 @@
         password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&error];
     }
     
-    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/my-stats/?blog=%@&unit=1", [blog blogID]];
+    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/my-stats/no-chrome/?blog=%@&unit=1", [blog blogID]];
     NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
     NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
                              [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],

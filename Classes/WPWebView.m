@@ -83,7 +83,6 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 }
 
 - (id)initWithFrame:(CGRect)frame {
-NSLog(@"Web 1 Frame: %f, %f, %f, %f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
     self = [super initWithFrame:frame];
     if (self) {
         [self setupSubviews];
@@ -116,6 +115,7 @@ NSLog(@"Web 1 Frame: %f, %f, %f, %f", frame.origin.x, frame.origin.y, frame.size
 }
 
 - (void)setupSubviews {
+    self.backgroundColor = [UIColor whiteColor];
     
     CGFloat fontSize = 14.0;
     CGFloat x = 0.0;
@@ -125,7 +125,7 @@ NSLog(@"Web 1 Frame: %f, %f, %f, %f", frame.origin.x, frame.origin.y, frame.size
     CGFloat padding = 5.0;
     
     CGRect frame = CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height);
-NSLog(@"Setup Sub Views Frame: %f, %f, %f, %f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+
     // WebView
     self.webView = [[[UIWebView alloc] initWithFrame:frame] autorelease];
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -159,7 +159,8 @@ NSLog(@"Setup Sub Views Frame: %f, %f, %f, %f", frame.origin.x, frame.origin.y, 
     // Pull to refresh
     if (self.refreshHeaderView == nil) {
         scrollView.delegate = self;
-		self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - scrollView.bounds.size.height, scrollView.frame.size.width, scrollView.bounds.size.height)];
+        CGRect frm = CGRectMake(0.0f, 0.0f - scrollView.bounds.size.height, scrollView.frame.size.width, scrollView.bounds.size.height);
+		self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:frm];
 		refreshHeaderView.delegate = self;
 		[scrollView addSubview:refreshHeaderView];
 	}
@@ -224,15 +225,6 @@ NSLog(@"Setup Sub Views Frame: %f, %f, %f, %f", frame.origin.x, frame.origin.y, 
 #pragma mark -
 #pragma mark Instance Methods
 
-- (void)layoutSubviews {
-    CGRect f = self.frame;
-    CGRect frame = webView.frame;
-    frame.size.width = f.size.width;
-    frame.size.height = f.size.height;
-    webView.frame = frame;
-    scrollView.frame = frame;
-}
-
 - (void)setDefaultHeader:(NSString *)header value:(NSString *)value {
 	[defaultHeaders setValue:value forKey:header];
 }
@@ -248,6 +240,8 @@ NSLog(@"Setup Sub Views Frame: %f, %f, %f, %f", frame.origin.x, frame.origin.y, 
 - (NSURLRequest *)request {
     if (currentRequest) {
         return currentRequest.request;
+    } else if ([webView request]) {
+        return [webView request];
     }
     return nil;
 }
@@ -272,9 +266,13 @@ NSLog(@"Setup Sub Views Frame: %f, %f, %f, %f", frame.origin.x, frame.origin.y, 
     currentRequest = [newCurrentRequest retain];
 }
 
+- (NSURL *)currentURL {
+    return [[webView request] URL];
+}
+
 
 #pragma mark -
-#pragma Loading Methods
+#pragma mark Loading Methods
 
 - (BOOL)isLoading {
     return loading;
@@ -430,7 +428,6 @@ NSLog(@"Setup Sub Views Frame: %f, %f, %f, %f", frame.origin.x, frame.origin.y, 
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-//    [self setLoading:YES];
     if (delegate && [delegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
         [delegate webViewDidStartLoad:self];
     }
@@ -444,7 +441,7 @@ NSLog(@"Setup Sub Views Frame: %f, %f, %f, %f", frame.origin.x, frame.origin.y, 
 
     if (delegate && [delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
         [delegate webViewDidFinishLoad:self];
-    }
+    }    
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
@@ -517,6 +514,5 @@ NSLog(@"Setup Sub Views Frame: %f, %f, %f, %f", frame.origin.x, frame.origin.y, 
 - (void)scrollViewDidEndDragging:(UIScrollView *)aScrollView willDecelerate:(BOOL)decelerate {
 	[refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
-
 
 @end

@@ -15,5 +15,6 @@
 @property (nonatomic, retain, readonly) WPWebView *webView;
 
 - (void)loadPath:(NSString *)aPath;
+- (NSURL *)currentURL;
 
 @end

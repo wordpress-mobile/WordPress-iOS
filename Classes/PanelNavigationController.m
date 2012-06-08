@@ -247,21 +247,13 @@
 
     int viewCount = [self.detailViews count];
     for (int i = 0; i < viewCount; i++) {
-        UIView *view = [self.detailViews objectAtIndex:i];
-        CGRect frame = view.frame;
         UIViewController *vc;
         if (i == 0) {
             vc = self.detailViewController;
         } else {
             vc = [self.detailViewControllers objectAtIndex:i - 1];
         }
-        CGFloat newWidth = DETAIL_WIDTH;
-        if ([vc respondsToSelector:@selector(expectedWidth)]) {
-            newWidth = [[vc performSelector:@selector(expectedWidth)] doubleValue];
-        }
-        [self.detailViewWidths replaceObjectAtIndex:i withObject:[NSNumber numberWithDouble:newWidth]];
-        frame.size.width = newWidth;
-        view.frame = frame;
+        [self setFrameForViewController:vc];
     }
     [self setStackOffset:[self nearestValidOffsetWithVelocity:0] duration:duration];
     [self relayAppearanceMethod:^(UIViewController *controller) {
@@ -963,6 +955,7 @@
     }
 }
 
+
 #pragma mark - Navigation methods
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
@@ -986,9 +979,9 @@
         if (CGRectGetMaxX(topViewFrame) + newPanelWidth > self.view.bounds.size.width) {
             // Move previous controller to the left
             topViewFrame.origin.x = MAX(DETAIL_OFFSET, self.view.bounds.size.width - newPanelWidth - topViewFrame.size.width);
-            viewController.view.frame = CGRectMake(self.view.bounds.size.width - newPanelWidth, 0, newPanelWidth, DETAIL_HEIGHT);
+            viewController.view.frame = CGRectMake(self.view.bounds.size.width - newPanelWidth, 0.0f, newPanelWidth, DETAIL_HEIGHT);
         } else {
-            viewController.view.frame = CGRectMake(CGRectGetMaxX(topViewFrame), 0, newPanelWidth, DETAIL_HEIGHT);
+            viewController.view.frame = CGRectMake(CGRectGetMaxX(topViewFrame), 0.0f, newPanelWidth, DETAIL_HEIGHT);
         }
         [viewController willMoveToParentViewController:self];
         if (_isAppeared) {
