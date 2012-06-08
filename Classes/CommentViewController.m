@@ -343,9 +343,7 @@
 	if (!replyToCommentViewController.hasChanges && !editCommentViewController.hasChanges) {
 		[self dismissEditViewController];
 		
-		if(sender == replyToCommentViewController) {
-			commentsViewController.selectedIndexPath = nil; //the selectedIndex path is on the reply comment
-			
+		if(sender == replyToCommentViewController) {			
 			[replyToCommentViewController.comment remove]; //delete the empty comment
 			replyToCommentViewController.comment = nil;
 			

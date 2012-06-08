@@ -176,9 +176,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     };
     // start the notifier which will cause the reachability object to retain itself!
     [wpcomReachability startNotifier];
-        
-    [self setAutoRefreshMarkers];
-	
+        	
 	NSManagedObjectContext *context = [self managedObjectContext];
     if (!context) {
         NSLog(@"\nCould not create *context for self");
@@ -541,16 +539,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	
 	[passwordTextField becomeFirstResponder]; //this line should always be called on MainThread
     [passwordTextField release];
-}
-
-- (void)setAutoRefreshMarkers {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-	[defaults setBool:true forKey:@"refreshCommentsRequired"];
-	[defaults setBool:true forKey:@"refreshPostsRequired"];
-	[defaults setBool:true forKey:@"refreshPagesRequired"];
-	[defaults setBool:true forKey:@"anyMorePosts"];
-	[defaults setBool:true forKey:@"anyMorePages"];
 }
 
 - (void)showContentDetailViewController:(UIViewController *)viewController {

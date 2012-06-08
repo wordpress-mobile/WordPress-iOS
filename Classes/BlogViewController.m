@@ -126,9 +126,7 @@
 
 - (void)configureCommentsTab {
 	[[NSUserDefaults standardUserDefaults] setValue:@"Comments" forKey:@"WPSelectedContentType"];
-	[commentsViewController setIndexForCurrentPost:-2];
 	//force commentViewController to nil, fixes trac #754
-	commentsViewController.commentViewController = nil;
 	self.navigationItem.rightBarButtonItem = commentsViewController.editButtonItem;
 }
 
@@ -157,7 +155,7 @@
 	BOOL hasIndexPath = NO;
 	NSString *vcName = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPSelectedContentType"];
 	if ([vcName isEqual:@"Comments"]) {
-		indexPath = commentsViewController.selectedIndexPath;
+//		indexPath = commentsViewController.selectedIndexPath;
 		hasIndexPath = YES;
 	}
 	else if	([vcName isEqual:@"Posts"]) {
@@ -190,7 +188,7 @@
 		NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
 		if ([vcName isEqual:@"Comments"]) {
 			self.selectedIndex = 2;
-			commentsViewController.selectedIndexPath = selectedIndexPath;
+//			commentsViewController.selectedIndexPath = selectedIndexPath;
 		}
 		else if	([vcName isEqual:@"Posts"]) {
 			self.selectedIndex = 0;

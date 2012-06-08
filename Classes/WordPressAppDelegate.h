@@ -81,7 +81,6 @@
 - (void)showNotificationErrorAlert:(NSNotification *)notification;
 - (BOOL)isWPcomAuthenticated;
 - (void)checkWPcomAuthentication;
-- (void)setAutoRefreshMarkers;
 - (void)showContentDetailViewController:(UIViewController *)viewController;
 - (void)deleteLocalDraft:(NSNotification *)notification;
 - (void)dismissCrashReporter:(NSNotification *)notification;

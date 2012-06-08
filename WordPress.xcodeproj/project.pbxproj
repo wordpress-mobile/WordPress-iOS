@@ -1224,6 +1224,7 @@
 		E19F29AC12B8BC22008FF660 /* win32tc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = win32tc.h; sourceTree = "<group>"; };
 		E1A386C714DB05C300954CF8 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E1A386C914DB05F700954CF8 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		E1A38C921581879D00439E55 /* WPTableViewControllerSubclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPTableViewControllerSubclass.h; sourceTree = "<group>"; };
 		E1AB07AB1578D34300D6AD64 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		E1AB07AC1578D34300D6AD64 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		E1ABD13B135862EC00DB0707 /* quickPhotoButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = quickPhotoButtonHighlighted.png; sourceTree = "<group>"; };
@@ -1882,6 +1883,7 @@
 			children = (
 				A25EBD85156E330600530E3D /* WPTableViewController.h */,
 				A25EBD86156E330600530E3D /* WPTableViewController.m */,
+				E1A38C921581879D00439E55 /* WPTableViewControllerSubclass.h */,
 				E15D46C7156A506A00227392 /* Panels */,
 				E12AAB601513C4B6009D025B /* WPComOAuthController.h */,
 				E12AAB611513C4B6009D025B /* WPComOAuthController.m */,

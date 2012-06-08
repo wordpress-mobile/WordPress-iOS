@@ -7,28 +7,35 @@
 //
 
 #import "WPTableViewController.h"
-#import "Comment.h"
-#import "CommentTableViewCell.h"
+#import "WPTableViewControllerSubclass.h"
+#import "EGORefreshTableHeaderView.h" 
 
-@interface WPTableViewController (Private)
+NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
-- (void)refreshHandler;
-- (void)triggerRefresh;
-- (void)syncComments;
-
+@interface WPTableViewController () <NSFetchedResultsControllerDelegate,EGORefreshTableHeaderDelegate>
+@property (nonatomic,retain) NSFetchedResultsController *resultsController;
+- (void)simulatePullToRefresh;
 @end
 
-@implementation WPTableViewController
-@synthesize selectedComments, isSecondaryViewController, wantedCommentId;
-@synthesize moderationSwipeView;
+@implementation WPTableViewController {
+    EGORefreshTableHeaderView *_refreshHeaderView;
+}
 @synthesize blog = _blog;
 @synthesize resultsController = _resultsController;
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (void)dealloc
 {
-    self = [super initWithStyle:style];
+    [_refreshHeaderView release];
+    _resultsController.delegate = nil;
+    [_resultsController release];
+    [_blog release];
+    [super dealloc];
+}
+
+- (id)initWithBlog:(Blog *)blog {
+    self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
-        // Custom initialization
+        _blog = [blog retain];
     }
     return self;
 }
@@ -45,61 +52,59 @@
 	
 	//  update the last update date
 	[_refreshHeaderView refreshLastUpdatedDate];
+
+    self.tableView.allowsSelectionDuringEditing = YES;
+    self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+
+    [_refreshHeaderView release]; _refreshHeaderView = nil;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    NSDate *lastSynced = [self lastSyncDate];
+    if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
+        // If table is at the original scroll position, simulate a pull to refresh
+        if (self.tableView.contentOffset.y == 0) {
+            [self simulatePullToRefresh];
+        } else {
+        // Otherwise, just update in the background
+            [self syncItemsWithUserInteraction:NO];
+        }
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
+}
+
+- (void)setEditing:(BOOL)editing {
+    [super setEditing:editing];
+    [self.tableView setEditing:editing animated:YES];
+    _refreshHeaderView.hidden = editing;
+}
+
+#pragma mark - Property accessors
+
+- (void)setBlog:(Blog *)blog {
+    if (_blog == blog) 
+        return;
+
+    [_blog release];
+    _blog = [blog retain];
+
+    self.resultsController = nil;
+    [self.tableView reloadData];
+    if ([self.resultsController.fetchedObjects count] == 0 && ![self isSyncing]) {
+        [self simulatePullToRefresh];
+    }
 }
 
 #pragma mark - Table view data source
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
-    if (comment.isNew) {
-        cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
-        if ([comment.status isEqual:@"hold"]) {
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                [UIView animateWithDuration:1.0
-                                      delay:1.0
-                                    options:UIViewAnimationOptionAllowUserInteraction
-                                 animations:^{
-                                     cell.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
-                                 } completion:nil];
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                [UIView animateWithDuration:1.0
-                                      delay:1.0
-                                    options:UIViewAnimationOptionAllowUserInteraction
-                                 animations:^{
-                                     cell.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
-                                 } completion:^(BOOL finished) {
-                                     [UIView animateWithDuration:0.5
-                                                           delay:1.0
-                                                         options:UIViewAnimationOptionAllowUserInteraction
-                                                      animations:^{
-                                                          cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
-                                                      }
-                                                      completion:nil];
-                                 }];
-            });
-        }
-        comment.isNew = NO;
-    } else if ([comment.status isEqual:@"hold"]) {
-        cell.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
-    } else {
-        cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
-    }
-    
-}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return [[self.resultsController sections] count];
@@ -107,7 +112,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-    return [Comment titleForStatus:[sectionInfo name]];
+    return [sectionInfo name];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -116,22 +121,10 @@
     return [sectionInfo numberOfObjects];
 }
 
-- (void)configureCell:(CommentTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
-    cell.comment = comment;
-    cell.checked = [selectedComments containsObject:comment];
-    cell.editing = editing;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"CommentCell";
-    CommentTableViewCell *cell = (CommentTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (cell == nil) {
-        cell = [[[CommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-    }
-    
-    if ((DeviceIsPad() == YES && !self.isSecondaryViewController) || tableView.isEditing) {
+    UITableViewCell *cell = [[self newCell] autorelease];
+
+    if (IS_IPAD || self.tableView.isEditing) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	} else {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -143,56 +136,116 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
-    CGSize commentSize = [comment.content sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:CGSizeMake(self.view.bounds.size.width - 16, 80)];
-    return COMMENT_ROW_HEIGHT - 60 + MIN(commentSize.height, 60);
+    return kCellHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 0;
-}
-
-- (void) setupModerationSwipeView
-{
-    if (DeviceIsPad()) return;
-    
-    for (UIView* subview in moderationSwipeView.subviews)
-    {
-        if ([subview isKindOfClass:[UIButton class]])
-        {
-            UIImage* buttonImage = [[UIImage imageNamed:@"UISegmentBarBlackButton.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
-            UIImage* buttonPressedImage = [[UIImage imageNamed:@"UISegmentBarBlackButtonHighlighted.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
-            
-            UIButton* button = (UIButton*)subview;
-            [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
-            [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
-        }
-    }
-    
-    self.moderationSwipeView.backgroundColor = [UIColor colorWithPatternImage: [UIImage imageNamed:@"dotted-pattern.png"]];
-    
-    UIImage* shadow = [[UIImage imageNamed:@"inner-shadow.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
-    UIImageView* shadowImageView = [[[UIImageView alloc] initWithFrame:moderationSwipeView.frame] autorelease];
-    shadowImageView.alpha = 0.6;
-    shadowImageView.image = shadow;
-    
-    [self.moderationSwipeView insertSubview:shadowImageView atIndex:0];  
+    return kSectionHeaderHight;
 }
 
 #pragma mark -
-#pragma mark EGORefreshTableHeaderDelegate Methods
+#pragma mark Fetched results controller
 
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
-	[self refreshHandler];
-	_refreshHeaderView.hidden = NO; // Just in case
+- (NSFetchedResultsController *)resultsController {
+    if (_resultsController != nil) {
+        return _resultsController;
+    }
+
+    NSManagedObjectContext *moc = self.blog.managedObjectContext;    
+    _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest]
+                                                             managedObjectContext:moc
+                                                               sectionNameKeyPath:[self sectionNameKeyPath]
+                                                                        cacheName:[NSString stringWithFormat:@"%@-%@", [self entityName], [self.blog objectID]]];
+    _resultsController.delegate = self;
+        
+    NSError *error = nil;
+    if (![_resultsController performFetch:&error]) {
+        WPFLog(@"%@ couldn't fetch %@: %@", self, [self entityName], [error localizedDescription]);
+        _resultsController = nil;
+    }
+    
+    return _resultsController;
 }
 
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView beginUpdates];
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView endUpdates];    
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
+
+    if (NSFetchedResultsChangeUpdate == type && newIndexPath != nil) {
+        // Seriously, Apple?
+        // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html
+        type = NSFetchedResultsChangeMove;
+    }
+
+    switch(type) {            
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:newIndexPath];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            [self.tableView deleteRowsAtIndexPaths:[NSArray
+                                                       arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView insertRowsAtIndexPaths:[NSArray
+                                                       arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }    
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+#pragma mark - EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view{
+	[self syncItemsWithUserInteraction:YES];
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view{
 	return [self isSyncing]; // should return if data source model is reloading
 }
 
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view{
 	return [self lastSyncDate]; // should return date data source was last changed
+}
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+	if (!self.editing)
+        [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+	if (!self.editing)
+		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
 #pragma mark - Private Methods
@@ -201,48 +254,70 @@
 	return self.blog.isSyncingComments;
 }
 
-- (NSDate *)lastSyncDate {
-	return self.blog.lastCommentsSync;
-}
-
-- (void)refreshHandler {
-	[self setEditing:false];
-	[self syncComments];
-}
-
-- (void)triggerRefresh {
+- (void)simulatePullToRefresh {
     CGPoint offset = self.tableView.contentOffset;
     offset.y = - 65.0f;
     [self.tableView setContentOffset:offset];
     [_refreshHeaderView egoRefreshScrollViewDidEndDragging:self.tableView];
 }
 
-- (void)syncComments {
-    [self.blog syncCommentsWithSuccess:^() {
-		[newCommentIndexPaths removeAllObjects];
-        if (self.wantedCommentId) {
-            Comment *wantedComment = [self commentWithId:self.wantedCommentId];
-            if (wantedComment) {
-                NSIndexPath *wantedIndexPath = [self.resultsController indexPathForObject:wantedComment];
-                [self.tableView scrollToRowAtIndexPath:wantedIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
-                // We scroll now, but can't select the comment yet since the table view doesn't have
-                // the new cells. We'll do that in the results controller delegate
-            } else {
-                // Didn't get the comment: forget about it
-                self.wantedCommentId = nil;
-            }
-        }
+- (void)syncItemsWithUserInteraction:(BOOL)userInteraction {
+    [self syncItemsWithUserInteraction:userInteraction success:^{
         [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     } failure:^(NSError *error) {
-        [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync comments", @"")];
+        [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync", @"")];
         [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     }];
 }
 
-- (Comment *)commentWithId:(NSNumber *)commentId {
-    Comment *comment = [[[self.resultsController fetchedObjects] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"commentID = %@", commentId]] lastObject];
-    
-    return comment;
+#pragma mark - Subclass methods
+
+#define AssertSubclassMethod() @throw [NSException exceptionWithName:NSInternalInconsistencyException\
+                                                    reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)] \
+                                                    userInfo:nil]
+
+- (NSString *)entityName {
+    AssertSubclassMethod();
+}
+
+- (NSDate *)lastSyncDate {
+    AssertSubclassMethod();
+}
+
+- (NSFetchRequest *)fetchRequest {
+    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:self.blog.managedObjectContext]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
+
+    return fetchRequest;
+}
+
+- (NSString *)sectionNameKeyPath {
+    return nil;
+}
+
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    AssertSubclassMethod();
+}
+
+- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+    AssertSubclassMethod();
+}
+
+- (UITableViewCell *)newCell {
+    NSString *cellIdentifier = [NSString stringWithFormat:@"_WPTable_%@_Cell", [self entityName]];
+    UITableViewCell *cell = [[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier] retain];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    return cell;
+}
+
+- (BOOL)hasMoreContent {
+    return NO;
+}
+
+- (void)loadMoreContent {
 }
 
 @end
