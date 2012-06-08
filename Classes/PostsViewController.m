@@ -16,7 +16,6 @@
 //- (void) removeSpinnerFromCell:(NSIndexPath *)indexPath;
 - (BOOL)handleAutoSavedContext:(NSInteger)tag;
 - (void)deletePostAtIndexPath:(NSIndexPath *)indexPath;
-- (void)trySelectSomething;
 - (void)editPost:(AbstractPost *)apost;
 - (void)showSelectedPost;
 - (BOOL)isSyncing;
@@ -114,9 +113,6 @@
 			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 		}
 	} else if (DeviceIsPad() == YES) {
-        if (!self.selectedIndexPath && ([self.resultsController.fetchedObjects count] > 0)) {
-            [self trySelectSomething];
-        }
 		// sometimes, iPad table views should
 		if (self.selectedIndexPath) {
             [self showSelectedPost];
@@ -418,28 +414,6 @@
         }
 
     } 
-}
-
-- (void)trySelectSomething {
-    if (!DeviceIsPad())
-        return;
-	
-    if (self.tabBarController.selectedViewController != self)
-        return;
-	
-    if (!self.selectedIndexPath) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        @try {
-            if ([resultsController fetchedObjects] &&
-                ([[resultsController fetchedObjects] count] > 0) &&
-                [resultsController objectAtIndexPath:indexPath]) {
-                self.selectedIndexPath = indexPath;
-            }
-        }
-        @catch (NSException * e) {
-            NSLog(@"Caught exception when looking for a post to select. Maybe there are no posts yet?");
-        }
-    }
 }
 
 #pragma mark -

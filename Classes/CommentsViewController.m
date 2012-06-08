@@ -172,10 +172,6 @@
         [self triggerRefresh];
 		[defaults setBool:false forKey:@"refreshCommentsRequired"];
 	}
-
-    if (DeviceIsPad()) {
-        [self trySelectSomething];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -767,69 +763,6 @@
     }
 }
 
-
-- (void)trySelectSomething {
-#ifndef PANELS_EXPERIMENTAL
-	if (!DeviceIsPad())
-#endif
-        return;
-    
-    if (self.selectedIndexPath && [[commentsTableView indexPathForSelectedRow] isEqual:self.selectedIndexPath]) {
-        // Already selected something
-        return;
-    }
-    	
-	//try to move the comments list on the last user selected comment
-	if(self.lastUserSelectedCommentID != nil) {
-		NSArray *sections = [self.resultsController sections];
-		int currentSectionIndex = 0;
-		for (currentSectionIndex = 0; currentSectionIndex < [sections count]; currentSectionIndex++) {
-			id <NSFetchedResultsSectionInfo> sectionInfo = nil;
-			sectionInfo = [sections objectAtIndex:currentSectionIndex];
-			
-			int currentCommentIndex = 0;
-			NSArray *commentsForSection = [sectionInfo objects];
-			
-			for (currentCommentIndex = 0; currentCommentIndex < [commentsForSection count]; currentCommentIndex++) {
-				Comment *cmt = [commentsForSection objectAtIndex:currentCommentIndex];
-				//NSLog(@"comment ID == %@", cmt.commentID);
-				//NSLog(@"self.comment ID == %@", self.lastUserSelectedCommentID);
-				if([cmt.commentID  compare:self.lastUserSelectedCommentID] == NSOrderedSame) { 
-					self.selectedIndexPath = [NSIndexPath indexPathForRow:currentCommentIndex inSection:currentSectionIndex];
-					[commentsTableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
-				}
-			}
-		}
-	}	
-	
-	//On ipad we should show the comments on the right side and we should highlight the comments within the comments list	
-	
-    if (!self.selectedIndexPath) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        @try {
-            if ([self.resultsController fetchedObjects] &&
-                ([[self.resultsController fetchedObjects] count] > 0) &&
-                [self.resultsController objectAtIndexPath:indexPath]) {
-                self.selectedIndexPath = indexPath;
-            }
-        }
-        @catch (NSException * e) {
-            NSLog(@"Caught exception when looking for a post to select. Maybe there are no posts yet?");
-			self.selectedComments = nil;
-        }
-	}
-
-	if (!self.selectedIndexPath) {
-		//nothing is selected, push an the WP logo on the right.
-		WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-		[delegate showContentDetailViewController:nil];
-	} else {
-		[commentsTableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-		[self showCommentAtIndexPath:self.selectedIndexPath];
-	}
-	
-}
-
 #pragma mark -
 #pragma mark Fetched results controller
 
@@ -892,8 +825,6 @@
                 self.selectedIndexPath = selectionWanted;
                 [commentsTableView selectRowAtIndexPath:selectionWanted animated:NO scrollPosition:UITableViewScrollPositionNone];
             }
-        } else if ([commentsTableView indexPathForSelectedRow] == nil) {
-            [self trySelectSomething];
         }
     }
 

@@ -71,6 +71,5 @@
 - (BOOL)hasNextComment;
 - (void)showPreviousComment;
 - (void)showNextComment;
-- (void)trySelectSomething;
 
 @end

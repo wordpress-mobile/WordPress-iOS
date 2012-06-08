@@ -335,7 +335,6 @@
 
 - (void) closeReplyViewAndSelectTheNewComment {
 	[self dismissEditViewController];
-	[self.commentsViewController trySelectSomething];
 }
 
 - (void)cancelView:(id)sender {
