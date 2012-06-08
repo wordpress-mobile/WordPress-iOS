@@ -61,6 +61,7 @@ NSString *FileLoggerPath() {
 #endif
 	[[FileLogger sharedInstance] log:message];
 	[message release];
+    va_end(ap);
 }
 
 + (FileLogger *)sharedInstance {
