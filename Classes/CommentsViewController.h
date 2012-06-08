@@ -16,9 +16,6 @@
 
 @interface CommentsViewController : WPTableViewController <ReplyToCommentViewControllerDelegate, UIAccelerometerDelegate, CommentsTableViewDelegate> {
 @private
-
-    IBOutlet UIToolbar *editToolbar;
-    
     IBOutlet UIBarButtonItem *approveButton;
     IBOutlet UIBarButtonItem *unapproveButton;
     IBOutlet UIBarButtonItem *spamButton;

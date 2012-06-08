@@ -18,7 +18,6 @@
 @interface CommentsViewController () <CommentViewControllerDelegate>
 @property (nonatomic,retain) CommentViewController *commentViewController;
 @property (nonatomic,retain) NSIndexPath *currentIndexPath;
-- (void)setEditing:(BOOL)value;
 - (void)updateSelectedComments;
 - (void)moderateCommentsWithSelector:(SEL)selector;
 - (Comment *)commentWithId:(NSNumber *)commentId;
@@ -57,10 +56,14 @@
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Comments", @"");
-    spamButton.title = NSLocalizedString(@"Spam", @"");
-    unapproveButton.title = NSLocalizedString(@"Unapprove", @"");
-    approveButton.title = NSLocalizedString(@"Approve", @"");
-        
+    spamButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Spam", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(spamSelectedComments:)];
+    unapproveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unapprove", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(unapproveSelectedComments:)];
+    approveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Approve", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(approveSelectedComments:)];
+    deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteSelectedComments:)];
+    deleteButton.style = UIBarButtonItemStyleBordered;
+    UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+    [self setToolbarItems:[NSArray arrayWithObjects:deleteButton, spacer, spamButton, spacer, unapproveButton, spacer, approveButton, nil]];
+
     self.tableView.accessibilityLabel = @"Comments";       // required for UIAutomation for iOS 4
 	if([self.tableView respondsToSelector:@selector(setAccessibilityIdentifier:)]){
 		self.tableView.accessibilityIdentifier = @"Comments";  // required for UIAutomation for iOS 5
@@ -72,13 +75,16 @@
 - (void)viewDidUnload {
     [super viewDidUnload];
     [_selectedComments release]; _selectedComments = nil;
+    [spamButton release]; spamButton = nil;
+    [unapproveButton release]; unapproveButton = nil;
+    [approveButton release]; approveButton = nil;
+    [deleteButton release]; deleteButton = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[super viewWillAppear:animated];
-    [self setEditing:NO];
-    [editToolbar setHidden:YES];
+    [self setEditing:NO animated:animated];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.commentViewController.delegate = nil;
     self.commentViewController = nil;
@@ -101,20 +107,10 @@
 	}
 }
 
-- (void)setEditing:(BOOL)editing {
-    [super setEditing:editing];
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
 	
-    // Adjust comments table view height to fit toolbar (if it's visible).
-    CGFloat toolbarHeight = editing ? editToolbar.bounds.size.height : 0;
-    CGRect mainViewBounds = self.view.bounds;
-    CGRect rect = CGRectMake(mainViewBounds.origin.x,
-                             mainViewBounds.origin.y,
-                             mainViewBounds.size.width,
-                             mainViewBounds.size.height - toolbarHeight);
-	
-    self.tableView.frame = rect;
-	
-    [editToolbar setHidden:!editing];
+    [self.navigationController setToolbarHidden:!editing animated:animated];
     [deleteButton setEnabled:!editing];
     [approveButton setEnabled:!editing];
     [unapproveButton setEnabled:!editing];

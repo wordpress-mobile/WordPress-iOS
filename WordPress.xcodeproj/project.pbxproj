@@ -329,7 +329,6 @@
 		ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */; };
 		ACFF1DE40E23265000EC6BF5 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = ACFF1DE30E23265000EC6BF5 /* settings.png */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
-		C533CF460E6D3E24000C3DE8 /* CommentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C533CF450E6D3E24000C3DE8 /* CommentsViewController.xib */; };
 		C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */; };
 		C584D0B40EF943A600B78012 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C584D0B30EF943A600B78012 /* QuartzCore.framework */; };
 		C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */; };
@@ -983,7 +982,6 @@
 		ACFF1DE30E23265000EC6BF5 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
 		C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
 		C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsViewController.m; sourceTree = "<group>"; };
-		C533CF450E6D3E24000C3DE8 /* CommentsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentsViewController.xib; sourceTree = "<group>"; };
 		C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPSegmentedSelectionTableViewController.h; sourceTree = "<group>"; };
 		C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPSegmentedSelectionTableViewController.m; sourceTree = "<group>"; };
 		C584D0B30EF943A600B78012 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS2.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
@@ -2217,7 +2215,6 @@
 				2994EEED10DF0FCD008336A6 /* ReplyToCommentViewController.xib */,
 				2906F811110CDA8900169D56 /* EditCommentViewController.xib */,
 				37F74136131866A600AED18A /* CommentViewController.xib */,
-				C533CF450E6D3E24000C3DE8 /* CommentsViewController.xib */,
 			);
 			name = Comments;
 			sourceTree = "<group>";
@@ -2792,7 +2789,6 @@
 				2FAE970A0E33B21600CA8540 /* license.txt in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
-				C533CF460E6D3E24000C3DE8 /* CommentsViewController.xib in Resources */,
 				2A7F722B0E71000000E48A1F /* up.png in Resources */,
 				2A7F722C0E71000000E48A1F /* down.png in Resources */,
 				C5C272DF0E7EC00A0034AA46 /* uncheck.png in Resources */,

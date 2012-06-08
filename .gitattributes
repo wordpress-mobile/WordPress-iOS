@@ -284,7 +284,6 @@ Classes/fabric@2x.png -text svneol=unset#unset
 Classes/stats.png -text
 Classes/stats@2x.png -text
 /CommentViewController.xib -text
-/CommentsViewController.xib -text
 /CrashReportView.xib -text
 Creation/CXMLDocument_CreationExtensions.h -text
 Creation/CXMLDocument_CreationExtensions.m -text
