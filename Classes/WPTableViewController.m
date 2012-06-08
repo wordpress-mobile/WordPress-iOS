@@ -19,6 +19,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 @implementation WPTableViewController {
     EGORefreshTableHeaderView *_refreshHeaderView;
+    NSIndexPath *_indexPathSelectedBeforeUpdates;
+    NSIndexPath *_indexPathSelectedAfterUpdates;
 }
 @synthesize blog = _blog;
 @synthesize resultsController = _resultsController;
@@ -26,6 +28,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)dealloc
 {
     [_refreshHeaderView release];
+    [_indexPathSelectedBeforeUpdates release];
+    [_indexPathSelectedAfterUpdates release];
     _resultsController.delegate = nil;
     [_resultsController release];
     [_blog release];
@@ -131,7 +135,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     }
     
     [self configureCell:cell atIndexPath:indexPath];
-    
+
     return cell;
 }
 
@@ -168,11 +172,20 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    _indexPathSelectedBeforeUpdates = [[self.tableView indexPathForSelectedRow] retain];
     [self.tableView beginUpdates];
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView endUpdates];    
+    [self.tableView endUpdates];
+    if (_indexPathSelectedAfterUpdates) {
+        [self.tableView selectRowAtIndexPath:_indexPathSelectedAfterUpdates animated:NO scrollPosition:UITableViewScrollPositionNone];
+
+        [_indexPathSelectedBeforeUpdates release];
+        _indexPathSelectedBeforeUpdates = nil;
+        [_indexPathSelectedAfterUpdates release];
+        _indexPathSelectedAfterUpdates = nil;
+    }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
@@ -181,7 +194,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
 
-    if (NSFetchedResultsChangeUpdate == type && newIndexPath != nil) {
+    if (NSFetchedResultsChangeUpdate == type && ![newIndexPath isEqual:indexPath]) {
         // Seriously, Apple?
         // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html
         type = NSFetchedResultsChangeMove;
@@ -194,6 +207,9 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
             
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            if ([_indexPathSelectedBeforeUpdates isEqual:indexPath]) {
+                [self.panelNavigationController popToViewController:self animated:YES];
+            }
             break;
             
         case NSFetchedResultsChangeUpdate:
@@ -205,6 +221,9 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                                                        arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
             [self.tableView insertRowsAtIndexPaths:[NSArray
                                                        arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            if ([_indexPathSelectedBeforeUpdates isEqual:indexPath] && _indexPathSelectedAfterUpdates == nil) {
+                _indexPathSelectedAfterUpdates = [newIndexPath retain];
+            }
             break;
     }    
 }
