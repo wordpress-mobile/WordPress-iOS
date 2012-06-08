@@ -15,16 +15,12 @@
 #import "BlogViewController.h"
 #import "ReplyToCommentViewController.h"
 
-@interface CommentsViewController (Private)
-
+@interface CommentsViewController () <CommentViewControllerDelegate>
+@property (nonatomic,retain) CommentViewController *commentViewController;
+@property (nonatomic,retain) NSIndexPath *currentIndexPath;
 - (void)setEditing:(BOOL)value;
 - (void)updateSelectedComments;
 - (void)moderateCommentsWithSelector:(SEL)selector;
-- (void)deleteComments;
-- (void)approveComments;
-- (void)markCommentsAsSpam;
-- (void)unapproveComments;
-- (NSMutableArray *)commentsOnHold;
 - (Comment *)commentWithId:(NSNumber *)commentId;
 @end
 
@@ -33,6 +29,8 @@
 }
 
 @synthesize wantedCommentId = _wantedCommentId;
+@synthesize commentViewController = _commentViewController;
+@synthesize currentIndexPath = _currentIndexPath;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -40,6 +38,9 @@
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.commentViewController.delegate = nil;
+    self.commentViewController = nil;
+    self.currentIndexPath = nil;
     [super dealloc];
 }
 
@@ -77,9 +78,10 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[super viewWillAppear:animated];
     [self setEditing:NO];
-    //selectedIndexPath = nil;    
     [editToolbar setHidden:YES];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.commentViewController.delegate = nil;
+    self.commentViewController = nil;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -226,10 +228,18 @@
     }
     
 	if(comment) {
-        CommentViewController *commentViewController = [[CommentViewController alloc] init];
-        commentViewController.comment = comment;
+        self.currentIndexPath = indexPath;
+        BOOL commentViewControllerVisible = YES;
+        if (self.commentViewController == nil) {
+            commentViewControllerVisible = NO;
+            self.commentViewController = [[[CommentViewController alloc] init] autorelease];
+            self.commentViewController.delegate = self;
+        }
+        [self.commentViewController showComment:comment];
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-        [self.panelNavigationController pushViewController:commentViewController fromViewController:self animated:YES];
+        if (!commentViewControllerVisible) {
+            [self.panelNavigationController pushViewController:self.commentViewController fromViewController:self animated:YES];
+        }
     } else {
         [self.panelNavigationController popToViewController:self animated:NO];
     }
@@ -326,7 +336,7 @@
 #pragma mark Comment navigation
 
 - (NSIndexPath *)indexPathForPreviousComment {
-    NSIndexPath *currentIndexPath = self.tableView.indexPathForSelectedRow;
+    NSIndexPath *currentIndexPath = self.currentIndexPath;
     if (currentIndexPath == nil) return nil;
 
     NSIndexPath *indexPath = nil;
@@ -352,7 +362,7 @@
 }
 
 - (NSIndexPath *)indexPathForNextComment {
-    NSIndexPath *currentIndexPath = self.tableView.indexPathForSelectedRow;
+    NSIndexPath *currentIndexPath = self.currentIndexPath;
     if (currentIndexPath == nil) return nil;
 
     NSIndexPath *indexPath = nil;

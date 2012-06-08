@@ -11,6 +11,8 @@
 #import "CommentsViewController.h"
 #import "Comment.h"
 
+@protocol CommentViewControllerDelegate;
+
 @interface CommentViewController : UIViewController <ReplyToCommentViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UIWebViewDelegate> {
 
 	CommentsViewController *commentsViewController;
@@ -71,7 +73,17 @@
 @property (nonatomic, retain) IBOutlet UIButton *commentAuthorEmailButton;
 @property (nonatomic, retain) IBOutlet UIButton *commentPostTitleButton;
 @property (nonatomic, retain) IBOutlet UILabel *commentPostTitleLabel;
+@property (nonatomic, assign) id<CommentViewControllerDelegate> delegate;
 @property BOOL wasLastCommentPending;
 @property BOOL isVisible;
+
+@end
+
+@protocol CommentViewControllerDelegate <NSObject>
+
+- (BOOL)hasPreviousComment;
+- (BOOL)hasNextComment;
+- (void)showPreviousComment;
+- (void)showNextComment;
 
 @end

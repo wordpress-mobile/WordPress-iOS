@@ -51,6 +51,7 @@
 @synthesize replyToCommentViewController, editCommentViewController, commentsViewController, wasLastCommentPending, commentAuthorUrlButton, commentAuthorEmailButton;
 @synthesize commentPostTitleButton, commentPostTitleLabel;
 @synthesize comment = _comment, isVisible;
+@synthesize delegate;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -196,8 +197,8 @@
 	} else {
 		[actionSheet showInView:self.view];
 	}
-	WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-	[delegate setAlertRunning:YES];
+	WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+	[appDelegate setAlertRunning:YES];
 	
 	[actionSheet release];	
 	
@@ -268,8 +269,8 @@
         }
     }
     
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [delegate setAlertRunning:NO];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate setAlertRunning:NO];
 }
 
 
@@ -295,7 +296,7 @@
 	}
 }
 - (void)showReplyToCommentViewWithAnimation:(BOOL)animate {
-	WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+	WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 	
 	if (self.replyToCommentViewController) {
 		self.replyToCommentViewController.delegate = nil;
@@ -310,7 +311,7 @@
 	
 	
 	if (DeviceIsPad() == NO) {
-		[delegate.navigationController pushViewController:self.replyToCommentViewController animated:YES];
+		[appDelegate.navigationController pushViewController:self.replyToCommentViewController animated:YES];
 	} else {
 		if (self.commentsViewController) {
 //			[self.commentsViewController setReplying:YES];
@@ -373,8 +374,8 @@
 		[actionSheet showInView:editCommentViewController.view];
 	}
 	
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [delegate setAlertRunning:YES];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate setAlertRunning:YES];
 	
     [actionSheet release];
 }
@@ -385,7 +386,7 @@
 
 
 - (void)showEditCommentViewWithAnimation:(BOOL)animate {
-	WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+	WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 	
 	self.editCommentViewController = [[[EditCommentViewController alloc] 
 									 initWithNibName:@"EditCommentViewController" 
@@ -400,7 +401,7 @@
 		navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 		[self presentModalViewController:navController animated:YES];
 	} else {
-		[delegate.navigationController pushViewController:self.editCommentViewController animated:YES];
+		[appDelegate.navigationController pushViewController:self.editCommentViewController animated:YES];
 	}
 }
 
@@ -441,9 +442,9 @@
 		wasLastCommentPending = NO;
 	}
     if (segmentedControl.selectedSegmentIndex == 0) {
-        [commentsViewController showPreviousComment];
+        [self.delegate showPreviousComment];
     } else {
-        [commentsViewController showNextComment];
+        [self.delegate showNextComment];
     }
 
 }
@@ -457,8 +458,8 @@
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     [actionSheet showInView:self.view];
 	
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [delegate setAlertRunning:YES];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate setAlertRunning:YES];
 	
     [actionSheet release];
 	
@@ -716,8 +717,8 @@
         [approveButton setAction:@selector(unApproveComment:)];
 	}
     
-    [segmentedControl setEnabled:[commentsViewController hasPreviousComment] forSegmentAtIndex:0];
-    [segmentedControl setEnabled:[commentsViewController hasNextComment] forSegmentAtIndex:1];
+    [segmentedControl setEnabled:[self.delegate hasPreviousComment] forSegmentAtIndex:0];
+    [segmentedControl setEnabled:[self.delegate hasNextComment] forSegmentAtIndex:1];
 }
 
 - (void)viewURL{
