@@ -10,6 +10,7 @@
 #import "WordPressAppDelegate.h"
 #import "SFHFKeychainUtils.h"
 #import "WPcomLoginViewController.h"
+#import "PanelNavigationConstants.h"
 
 @implementation StatsWebViewController
 
@@ -211,7 +212,8 @@
 }
 
 - (NSNumber *)expectedWidth {
-    return [NSNumber numberWithFloat:668];
+    
+    return UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? [NSNumber numberWithFloat:IPAD_DETAIL_WIDTH_PORTRAIT] : [NSNumber numberWithFloat:668.8f];
 }
 
 #pragma mark -
