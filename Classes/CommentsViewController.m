@@ -296,7 +296,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return COMMENT_ROW_HEIGHT;
+    Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
+    CGSize commentSize = [comment.content sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:CGSizeMake(self.view.bounds.size.width - 16, 80)];
+    return COMMENT_ROW_HEIGHT - 60 + MIN(commentSize.height, 60);
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
