@@ -149,10 +149,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-#ifdef PANELS_EXPERIMENTAL
     return 0;
-#endif
-    return kSectionHeaderHight;
 }
 
 - (void) setupModerationSwipeView

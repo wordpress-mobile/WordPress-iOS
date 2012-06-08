@@ -92,13 +92,8 @@
             [self.navigationController pushViewController:controller animated:YES];
 
         } else {
-#ifdef PANELS_EXPERIMENTAL
-            WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-            [appDelegate.panelNavigationController popToRootViewControllerAnimated:NO];
-            [appDelegate.panelNavigationController pushViewController:controller animated:YES];
-#else
-            [self.navigationController pushViewController:controller animated:YES];
-#endif
+            [self.panelNavigationController popToRootViewControllerAnimated:NO];
+            [self.panelNavigationController pushViewController:controller animated:YES];
         }
         
 

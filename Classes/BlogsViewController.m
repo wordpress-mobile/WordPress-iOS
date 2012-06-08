@@ -316,9 +316,6 @@
 #pragma mark Custom methods
 
 - (void)setupPhotoButton {
-#ifdef PANELS_EXPERIMENTAL
-    return;
-#endif
     BOOL wantsPhotoButton = NO;
     BOOL wantsReaderButton = NO;
     

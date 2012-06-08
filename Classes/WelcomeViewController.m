@@ -33,27 +33,10 @@
     [self.view addSubview:infoButton];
 	if(DeviceIsPad()) {
 		self.tableView.backgroundView = nil;
-#ifndef PANELS_EXPERIMENTAL
-		UIBarButtonItem *cancelButton = [[[UIBarButtonItem alloc] 
-										 initWithTitle:NSLocalizedString(@"Close", @"") 
-										 style:UIBarButtonItemStylePlain 
-										 target:self action:@selector(cancel:)] autorelease];
-		self.navigationItem.leftBarButtonItem = cancelButton;
-#endif
 	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-#ifndef PANELS_EXPERIMENTAL
-	if([Blog countWithContext:appDelegate.managedObjectContext] == 0) {
-		self.navigationItem.title = NSLocalizedString(@"Welcome", @"");
-		[self.navigationItem setHidesBackButton:YES animated:YES];
-	}
-	else {
-		self.navigationItem.title = NSLocalizedString(@"Add Blog", @"");
-		[self.navigationItem setHidesBackButton:NO animated:YES];
-	}
-#endif
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

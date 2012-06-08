@@ -330,26 +330,11 @@
 - (void)showAddPostView {
 		
     Post *post = [Post newDraftForBlog:self.blog];
-#ifdef PANELS_EXPERIMENTAL
     EditPostViewController *editPostViewController = [[[EditPostViewController alloc] initWithPost:[post createRevision]] autorelease];
     editPostViewController.editMode = kNewPost;
     [editPostViewController refreshUIForCompose];
     UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editPostViewController] autorelease];
     [self.panelNavigationController presentModalViewController:navController animated:YES];
-#else
-	WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-	if (DeviceIsPad()) {
-        self.postReaderViewController = [[[PostViewController alloc] initWithPost:post] autorelease];
-		[delegate showContentDetailViewController:self.postReaderViewController];
-		[self.postReaderViewController showModalEditor];
-	} else {
-        self.postDetailViewController = [[[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil] autorelease];
-        self.postDetailViewController.apost = [post createRevision];
-        self.postDetailViewController.editMode = kNewPost;
-        [self.postDetailViewController refreshUIForCompose];
-		[delegate showContentDetailViewController:self.postDetailViewController];
-	}
-#endif
     [post release];
 }
 
@@ -368,9 +353,6 @@
 // Subclassed in PagesViewController
 - (void)showSelectedPost {
     Post *post = nil;
-#ifndef PANELS_EXPERIMENTAL
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-#endif
     NSIndexPath *indexPath = self.selectedIndexPath;
 
     @try {
@@ -384,12 +366,8 @@
         post = nil;
     }
     self.postReaderViewController = [[PostViewController alloc] initWithPost:post];
-#ifdef PANELS_EXPERIMENTAL
     [self.panelNavigationController popToRootViewControllerAnimated:NO];
     [self.panelNavigationController pushViewController:self.postReaderViewController animated:YES];
-#else
-    [delegate showContentDetailViewController:self.postReaderViewController];
-#endif
 }
 
 - (void)setSelectedIndexPath:(NSIndexPath *)indexPath {

@@ -403,16 +403,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark -
 
 - (void)dismissEditView {
-#ifdef PANELS_EXPERIMENTAL
     [self dismissModalViewControllerAnimated:YES];
-#else
-	if (DeviceIsPad() == NO) {
-        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-        [appDelegate.navigationController popViewControllerAnimated:YES];
-	} else {
-		[self dismissModalViewControllerAnimated:YES];		
-	}
-#endif
 	[postSettingsController release]; postSettingsController = nil;
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];

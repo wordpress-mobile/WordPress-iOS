@@ -46,9 +46,7 @@
     
     // Push notifications
     NSDictionary *lastNotificationInfo;
-#ifdef PANELS_EXPERIMENTAL
     PanelNavigationController *panelNavigationController;
-#endif
 }
 
 @property (nonatomic, retain) UIWindow *window;
@@ -67,9 +65,7 @@
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) BlogsViewController *blogsViewController;
 @property (nonatomic, retain) Facebook *facebook;
-#ifdef PANELS_EXPERIMENTAL
 @property (nonatomic, retain) PanelNavigationController *panelNavigationController;
-#endif
 
 //Connection Reachability variables
 @property (nonatomic, retain) Reachability *internetReachability, *wpcomReachability, *currentBlogReachability;

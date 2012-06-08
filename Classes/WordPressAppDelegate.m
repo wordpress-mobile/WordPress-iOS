@@ -40,9 +40,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 @synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
 @synthesize blogsViewController;
 @synthesize facebook;
-#ifdef PANELS_EXPERIMENTAL
 @synthesize panelNavigationController;
-#endif
 
 - (id)init {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -212,56 +210,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
         facebook.expirationDate = [defaults objectForKey:kFacebookExpirationDateKey];
     }
     
-#ifdef PANELS_EXPERIMENTAL
     SidebarViewController *sidebarViewController = [[[SidebarViewController alloc] init] autorelease];
     //WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
     WPReaderViewController *readerViewController = [[[WPReaderViewController alloc] init] autorelease];
     panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:readerViewController masterViewController:sidebarViewController];
     window.rootViewController = panelNavigationController;
-#else
-	if(DeviceIsPad() == NO)
-	{
-        UINavigationController *aNavigationController = [[[UINavigationController alloc] initWithRootViewController:blogsViewController] autorelease];
-        aNavigationController.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
-        self.navigationController = aNavigationController;
-        
-        [window addSubview:aNavigationController.view];
-        window.rootViewController = aNavigationController;
-
-		if ([Blog countWithContext:context] == 0) {
-			WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
-			[blogsViewController.navigationController pushViewController:wViewController animated:YES];
-			[wViewController release];
-		}
-		else {
-			blogsViewController.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Blogs", @"Blogs list screen title.") style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
-		}
-		
-	}
-	else
-	{
-		[window addSubview:splitViewController.view];
-        window.rootViewController = splitViewController;
-		[window makeKeyAndVisible];
-
-		if ([Blog countWithContext:context] == 0)
-		{
-			WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController-iPad" bundle:nil];
-			UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
-			aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-			aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-			self.navigationController = aNavigationController;
-			[splitViewController presentModalViewController:aNavigationController animated:YES];
-			[aNavigationController release];
-			[welcomeViewController release];
-		}
-
-		//NSLog(@"? %d", [self.splitViewController shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeLeft]);
-
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newBlogNotification:) name:@"NewBlogAdded" object:nil];
-		[self performSelector:@selector(showPopoverIfNecessary) withObject:nil afterDelay:0.1];
-	}
-#endif
 
 	// Add listeners
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -601,36 +554,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)showContentDetailViewController:(UIViewController *)viewController {
-#ifdef PANELS_EXPERIMENTAL
     if (viewController) {
         [panelNavigationController pushViewController:viewController animated:YES];
     } else {
         [panelNavigationController popToRootViewControllerAnimated:YES];
     }
-    return;
-#endif
-	if (self.splitViewController) {
-		UINavigationController *navController = self.detailNavigationController;
-		// preserve left bar button item: issue #379
-		viewController.navigationItem.leftBarButtonItem = navController.topViewController.navigationItem.leftBarButtonItem;
-        if (viewController) {
-            [navController setViewControllers:[NSArray arrayWithObject:viewController] animated:NO];
-        } else {
-            UIImageView *fabric = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fabric"]];
-            fabric.contentMode = UIViewContentModeCenter;
-            UIViewController *fabricController = [[UIViewController alloc] init];
-            fabricController.view = fabric;
-            fabricController.navigationItem.title = @"WordPress";
-            fabricController.navigationItem.leftBarButtonItem = navController.topViewController.navigationItem.leftBarButtonItem;
-            [navController setViewControllers:[NSArray arrayWithObject:fabricController] animated:NO];
-            [fabric release];
-            [fabricController release];
-        }
-
-	}
-	else if (self.navigationController) {
-		[self.navigationController pushViewController:viewController animated:YES];
-	}
 }
 
 

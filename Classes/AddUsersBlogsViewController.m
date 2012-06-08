@@ -378,17 +378,7 @@
 }
 
 - (void)didSaveSelectedBlogsInBackground {
-#ifdef PANELS_EXPERIMENTAL
     [self.navigationController popToRootViewControllerAnimated:YES];
-#else
-	if(DeviceIsPad() == YES) {
-		[appDelegate.navigationController popToRootViewControllerAnimated:YES];
-		[appDelegate.splitViewController dismissModalViewControllerAnimated:YES];
-	}
-	else {
-		[appDelegate.navigationController popToRootViewControllerAnimated:YES];
-	}
-#endif
     [appDelegate sendPushNotificationBlogsList]; 
 }
 

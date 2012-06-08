@@ -731,14 +731,7 @@
             webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
         }
         [webViewController setUrl:url];
-#ifdef PANELS_EXPERIMENTAL
         [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
-#else
-        if (DeviceIsPad())
-            [self presentModalViewController:webViewController animated:YES];
-        else
-            [self.navigationController pushViewController:webViewController animated:YES];
-#endif
 	}
 }
 
@@ -765,11 +758,7 @@
         webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
     }
 	webViewController.url = [NSURL URLWithString:self.comment.link];
-#ifdef PANELS_EXPERIMENTAL
     [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
-#else
-	[self.navigationController pushViewController:webViewController animated:YES];
-#endif
 }
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller  didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
@@ -795,14 +784,7 @@
             webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
         }
         [webViewController setUrl:[inRequest URL]];
-#ifdef PANELS_EXPERIMENTAL
         [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
-#else
-        if (DeviceIsPad())
-            [self presentModalViewController:webViewController animated:YES];
-        else
-            [self.navigationController pushViewController:webViewController animated:YES];
-#endif
 		return NO;
 	}
 	return YES;
