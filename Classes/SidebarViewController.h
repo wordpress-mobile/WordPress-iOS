@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "SidebarSectionHeaderView.h"
 #import "WordPressAppDelegate.h"
+#import "WPWebViewController.h"
+#import "SFHFKeychainUtils.h"
 
 @interface SidebarViewController : UIViewController <SidebarSectionHeaderViewDelegate, UITableViewDataSource, UITableViewDelegate> {
     IBOutlet UITableView *tableView;

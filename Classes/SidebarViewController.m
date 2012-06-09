@@ -31,7 +31,7 @@
 #define SIDEBAR_BGCOLOR [UIColor colorWithWhite:0.921875f alpha:1.0f];
 #define HEADER_HEIGHT 47
 #define DEFAULT_ROW_HEIGHT 48
-#define NUM_ROWS 4
+#define NUM_ROWS 5
 
 @interface SidebarViewController () <NSFetchedResultsControllerDelegate>
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
@@ -204,6 +204,9 @@
             case 3:
                 title = NSLocalizedString(@"Stats", @"");
                 break;
+            case 4:
+                title = NSLocalizedString(@"Dashboard", @"Button to load the dashboard in a web view");
+                break;
             default:
                 break;
         }
@@ -355,7 +358,6 @@
 
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath closingSidebar:(BOOL)closingSidebar {
     UIViewController *detailViewController = nil;  
-    
     if (indexPath.section == 0) { //Reader, QuickPhoto
         if (indexPath.row == 1) {
             if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPReaderViewController class]]) {
@@ -390,12 +392,41 @@
             case 3:
                 controllerClass =  IS_IPAD ? [StatsWebViewController class] : [StatsTableViewController class];
                 break;
+            case 4:
+                controllerClass = [WPWebViewController class];
+                //dashboard already selected
+                if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPWebViewController class]]) {
+                    if (IS_IPAD) {
+                        [self.panelNavigationController showSidebar];
+                    } else {
+                        [self.panelNavigationController popToRootViewControllerAnimated:NO];
+                        [self.panelNavigationController closeSidebar];
+                    }
+                } else {
+                    
+                    WPWebViewController *webViewController;
+                    if ( IS_IPAD ) {
+                        webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+                    }
+                    else {
+                        webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+                    }
+                    NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
+                    [webViewController setUrl:[NSURL URLWithString:dashboardUrl]];
+                    
+                    [webViewController setUsername:blog.username];
+                    NSError *error = nil;
+                    [webViewController setPassword:[SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.hostURL error:&error]];
+                    [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginURL]];
+                    [self.panelNavigationController setDetailViewController:webViewController closingSidebar:closingSidebar];
+                }                
+                return;
             default:
                 controllerClass = [PostsViewController class];
                 break;
         }
         
-        //ercoli: Don't like this if condition. FIXME!!
+        //Check if the controller is already on the screen
         if ([self.panelNavigationController.detailViewController isMemberOfClass:controllerClass] && [self.panelNavigationController.detailViewController respondsToSelector:@selector(setBlog:)]) {
             [self.panelNavigationController.detailViewController performSelector:@selector(setBlog:) withObject:blog];
             if (IS_IPAD) {
