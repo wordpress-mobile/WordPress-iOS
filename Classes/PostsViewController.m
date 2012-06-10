@@ -292,7 +292,7 @@
     editPostViewController.editMode = kNewPost;
     [editPostViewController refreshUIForCompose];
     UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editPostViewController] autorelease];
-    navController.modalTransitionStyle = UIModalPresentationFormSheet;
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];
     [post release];
 }
