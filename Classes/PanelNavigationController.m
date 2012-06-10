@@ -406,6 +406,7 @@
             if (_isAppeared) {
                 [_detailViewController vdc_viewWillAppear:NO];
             }
+            
             [self prepareDetailView:_detailViewController.view];
             [self.detailView addSubview:_detailViewController.view];
             if (_isAppeared) {
@@ -872,7 +873,7 @@
 }
 
 - (CGFloat)minOffsetSoft {
-    return 0;
+    return 0.0f;
 }
 
 - (CGFloat)minOffsetHard {

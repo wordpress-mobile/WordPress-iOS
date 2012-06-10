@@ -1,6 +1,7 @@
+
+#import "WPTableViewControllerSubclass.h"
 #import "PostsViewController.h"
 #import "EditPostViewController.h"
-#import "PostViewController.h"
 #import "PostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
@@ -9,63 +10,64 @@
 
 @interface PostsViewController (Private)
 
-- (void)refreshHandler;
 - (void)syncPostsWithBlogInfo:(BOOL)blogInfo;
 - (void)syncPosts;
-//- (void) addSpinnerToCell:(NSIndexPath *)indexPath;
-//- (void) removeSpinnerFromCell:(NSIndexPath *)indexPath;
 - (BOOL)handleAutoSavedContext:(NSInteger)tag;
 - (void)deletePostAtIndexPath:(NSIndexPath *)indexPath;
 - (void)editPost:(AbstractPost *)apost;
 - (void)showSelectedPost;
-- (BOOL)isSyncing;
 - (void)checkLastSyncDate;
-- (NSDate *)lastSyncDate;
-- (BOOL) hasOlderItems;
-- (void)loadMore;
-- (void)loadMoreItemsWithBlock:(void (^)())block;
-- (NSString *)entityName;
 - (void)syncFinished;
-- (void)configureCell:(PostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+
 @end
 
 @implementation PostsViewController
 
 @synthesize composeButtonItem, postDetailViewController, postReaderViewController;
 @synthesize anyMorePosts, selectedIndexPath, drafts;
-@synthesize resultsController, blog = _blog;
+//@synthesize resultsController;
 
 #pragma mark -
 #pragma mark View lifecycle
+
+- (void)dealloc {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    
+    [activityFooter release];
+    [postDetailViewController release];
+	[selectedIndexPath release], selectedIndexPath = nil;
+	[drafts release];
+	
+    [super dealloc];
+}
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
 
-    self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
-
 	// ShouldRefreshPosts
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
 
-    composeButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
-                     target:self
-                     action:@selector(showAddPostView)];
-    self.navigationItem.rightBarButtonItem = composeButtonItem;
     self.title = NSLocalizedString(@"Posts", @"");
-
-    if (_refreshHeaderView == nil) {
-		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
-		_refreshHeaderView.delegate = self;
-		[self.tableView addSubview:_refreshHeaderView];
-	}
-
-	//  update the last update date
-	[_refreshHeaderView refreshLastUpdatedDate];
+    composeButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+                     target:self
+                     action:@selector(showAddPostView)] autorelease];
+    if (IS_IPAD) {
+        CGFloat toolbarHeight = 44.0f;
+        CGRect frame = CGRectMake(0.0f, self.view.frame.size.height - toolbarHeight, self.view.frame.size.width, toolbarHeight);
+        UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:frame];
+        toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        [self.view addSubview:toolbar];
+        [toolbar setItems:[NSArray arrayWithObject:composeButtonItem]];
+        
+    } else {
+        self.navigationItem.rightBarButtonItem = composeButtonItem;
+    }
 
     if (DeviceIsPad() && self.selectedIndexPath && self.postReaderViewController) {
         @try {
-            self.postReaderViewController.post = [resultsController objectAtIndexPath:self.selectedIndexPath];
+            self.postReaderViewController.post = [self.resultsController objectAtIndexPath:self.selectedIndexPath];
             [self.postReaderViewController refreshUI];
         }
         @catch (NSException * e) {
@@ -86,7 +88,7 @@
     UIView *footerView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 50.0)] autorelease];
     footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [footerView addSubview:activityFooter];
-    self.tableView.tableFooterView = footerView;
+    tableView.tableFooterView = footerView;
 }
 
 
@@ -99,25 +101,18 @@
 	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	appDelegate.postID = nil;
 
-	if ( appDelegate.connectionAvailable && ![self isSyncing] && ([self refreshRequired] || [self lastSyncDate] == nil)) {
-		CGPoint offset = self.tableView.contentOffset;
-		offset.y = - 65.0f;
-		self.tableView.contentOffset = offset;
-		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:self.tableView];
-	}
-
 	if (DeviceIsPad() == NO) {
 		// iPhone table views should not appear selected
-		if ([self.tableView indexPathForSelectedRow]) {
-			[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
+		if ([tableView indexPathForSelectedRow]) {
+			[tableView scrollToRowAtIndexPath:[tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+			[tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:animated];
 		}
 	} else if (DeviceIsPad() == YES) {
 		// sometimes, iPad table views should
 		if (self.selectedIndexPath) {
             [self showSelectedPost];
-			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-			[self.tableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+			[tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+			[tableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		} else {
 			//There are no content yet, push an the WP logo on the right.  
 			WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate]; 
@@ -128,9 +123,9 @@
 
 - (void)viewDidUnload {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_refreshHeaderView release]; _refreshHeaderView = nil;
 	[super viewDidUnload];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -148,11 +143,11 @@
 	return self.blog.isSyncingPosts;
 }
 
--(NSDate *) lastSyncDate {
+- (NSDate *)lastSyncDate {
 	return self.blog.lastPostsSync;
 }
 
-- (BOOL) hasOlderItems {
+- (BOOL)hasMoreContent {
 	return [self.blog.hasOlderPosts boolValue];
 }
 
@@ -165,7 +160,7 @@
 #pragma mark -
 #pragma mark TableView delegate
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)aTableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 
 	if (DeviceIsPad() == YES) {
@@ -175,16 +170,12 @@
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) && [self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
         // Only 3 rows till the end of table
-        if (![self isSyncing] && [self hasOlderItems]) {
+        if (![self isSyncing] && [self hasMoreContent]) {
             [activityFooter startAnimating];
             WPLog(@"Approaching end of table, let's load more posts");
-            [self loadMore];
+            [self loadMoreContent];
         }
     }
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [[self.resultsController sections] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -192,12 +183,6 @@
     NSString *sectionName = [sectionInfo name];
     
     return [Post titleForRemoteStatus:[sectionName numericValue]];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    id <NSFetchedResultsSectionInfo> sectionInfo = nil;
-    sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-    return [sectionInfo numberOfObjects];
 }
 
 - (void)configureCell:(PostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
@@ -210,20 +195,7 @@
 	}
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"PostCell";
-    PostTableViewCell *cell = (PostTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-
-    if (cell == nil) {
-        cell = [[[PostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-    }
-
-    [self configureCell:cell atIndexPath:indexPath];
-
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
 	if (post.remoteStatus == AbstractPostRemoteStatusPushing) {
 		// Don't allow editing while pushing changes
@@ -233,16 +205,12 @@
         self.selectedIndexPath = indexPath;
     } else {
         [self editPost:post];
-        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return POST_ROW_HEIGHT;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return kSectionHeaderHight;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -264,16 +232,6 @@
 #pragma mark -
 #pragma mark Custom methods
 
-- (void)syncFinished {
-    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-}
-
-- (void)refreshHandler {
-    if ([self isSyncing])
-        return;
-    [self syncPostsWithBlogInfo:YES];
-}
-
 - (void)syncPostsWithBlogInfo:(BOOL)blogInfo {
     void (^success)() = ^{
         [self syncFinished];
@@ -294,8 +252,8 @@
     [self syncPostsWithBlogInfo:NO];
 }
 
-- (void)loadMore {
-    if ((![self isSyncing]) && [self hasOlderItems]) {
+- (void)loadMoreContent {
+    if ((![self isSyncing]) && [self hasMoreContent]) {
         WPLog(@"We have older posts to load");
         [self loadMoreItemsWithBlock:^{
             [activityFooter stopAnimating];
@@ -304,7 +262,7 @@
 }
 
 - (void)deletePostAtIndexPath:(NSIndexPath *)indexPath{
-    Post *post = [resultsController objectAtIndexPath:indexPath];
+    Post *post = [self.resultsController objectAtIndexPath:indexPath];
     [post deletePostWithSuccess:nil failure:^(NSError *error) {
         NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
@@ -334,6 +292,7 @@
     editPostViewController.editMode = kNewPost;
     [editPostViewController refreshUIForCompose];
     UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editPostViewController] autorelease];
+    navController.modalTransitionStyle = UIModalPresentationFormSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];
     [post release];
 }
@@ -401,107 +360,6 @@
     return @"Post";
 }
 
-- (NSFetchedResultsController *)resultsController {
-    if (resultsController != nil) {
-        return resultsController;
-    }
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:appDelegate.managedObjectContext]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@) && (original == nil)", self.blog]];
-    NSSortDescriptor *sortDescriptorLocal = [[NSSortDescriptor alloc] initWithKey:@"remoteStatusNumber" ascending:YES];
-    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorLocal, sortDescriptorDate, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
-    
-    NSFetchedResultsController *aResultsController = [[NSFetchedResultsController alloc]
-                                                      initWithFetchRequest:fetchRequest
-                                                      managedObjectContext:appDelegate.managedObjectContext
-                                                      sectionNameKeyPath:@"remoteStatusNumber"
-                                                      cacheName:[NSString stringWithFormat:@"%@-%@", [self entityName], [self.blog objectID]]];
-    self.resultsController = aResultsController;
-    resultsController.delegate = self;
-    
-    [aResultsController release];
-    [fetchRequest release];
-    [sortDescriptorLocal release]; sortDescriptorLocal = nil;
-    [sortDescriptorDate release]; sortDescriptorDate = nil;
-    [sortDescriptors release]; sortDescriptors = nil;
-
-    NSError *error = nil;
-    if (![resultsController performFetch:&error]) {
-        NSLog(@"Couldn't fetch posts");
-        resultsController = nil;
-    }
-    NSLog(@"fetched posts: %@\ntotal: %i", [resultsController fetchedObjects], [[resultsController fetchedObjects] count]);
-    
-    return resultsController;
-}
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView beginUpdates];
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView endUpdates];
-}
-
-- (void)controller:(NSFetchedResultsController *)controller
-   didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath {
-
-    if (NSFetchedResultsChangeUpdate == type && newIndexPath != nil) {
-        // Seriously, Apple?
-        // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html
-        type = NSFetchedResultsChangeMove;
-    }
-    
-    switch (type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            if (DeviceIsPad()) {
-                self.selectedIndexPath = newIndexPath;
-            }
-            break;
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            if(self.selectedIndexPath && (self.selectedIndexPath == indexPath)) {
-                //push an the W logo on the right. 
-                WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-                [delegate showContentDetailViewController:nil];
-                if (DeviceIsPad()) {
-                    self.selectedIndexPath = nil;
-                }
-            }
-            break;
-        case NSFetchedResultsChangeUpdate:
-            [self configureCell:((PostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath]) atIndexPath:indexPath];
-            break;
-            
-        case NSFetchedResultsChangeMove:
-            [self.tableView deleteRowsAtIndexPaths:[NSArray
-                                                    arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [self.tableView insertRowsAtIndexPaths:[NSArray
-                                                    arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-    }
-}
-
 - (BOOL)refreshRequired {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	if ([defaults boolForKey:@"refreshPostsRequired"]) { 
@@ -512,67 +370,33 @@
 	return NO;
 }
 
-- (void)setBlog:(Blog *)blog {
-    if (_blog == blog) 
-        return;
-    [_blog release];
-    _blog = [blog retain];
-    self.resultsController = nil;
-    NSError *error = nil;
-    [self.resultsController performFetch:&error];
-    [self.tableView reloadData];
-    if ([self.resultsController.fetchedObjects count] == 0) {
-        if (![self isSyncing]) {
-            CGPoint offset = self.tableView.contentOffset;
-            offset.y = - 65.0f;
-            self.tableView.contentOffset = offset;
-            [_refreshHeaderView egoRefreshScrollViewDidEndDragging:self.tableView];
-        }
+- (NSFetchRequest *)fetchRequest {
+    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:self.blog.managedObjectContext]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@) && (original == nil)", self.blog]];
+    NSSortDescriptor *sortDescriptorLocal = [[[NSSortDescriptor alloc] initWithKey:@"remoteStatusNumber" ascending:YES] autorelease];
+    NSSortDescriptor *sortDescriptorDate = [[[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO] autorelease];
+    NSArray *sortDescriptors = [[[NSArray alloc] initWithObjects:sortDescriptorLocal, sortDescriptorDate, nil] autorelease];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+
+    return fetchRequest;
+}
+
+- (NSString *)sectionNameKeyPath {
+    return @"remoteStatusNumber";
+}
+
+- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+    [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
+}
+
+- (UITableViewCell *)newCell {
+    NSString *cellIdentifier = @"PostCell";
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [[[PostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
     }
-}
-
-#pragma mark -
-#pragma mark UIScrollViewDelegate Methods
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-}
-
-#pragma mark -
-#pragma mark EGORefreshTableHeaderDelegate Methods
-
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
-	[self refreshHandler];
-}
-
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
-	return [self isSyncing]; // should return if data source model is reloading
-}
-
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
-	return [self lastSyncDate]; // should return date data source was last changed
-}
-
-#pragma mark -
-#pragma mark Dealloc
-
-- (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    self.blog = nil;
-    self.resultsController = nil;
-
-    [_refreshHeaderView release]; _refreshHeaderView = nil;
-    [activityFooter release];
-    [postDetailViewController release];
-    [composeButtonItem release];
-	[selectedIndexPath release], selectedIndexPath = nil;
-	[drafts release];
-	
-    [super dealloc];
+    return cell;
 }
 
 @end

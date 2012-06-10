@@ -8,6 +8,7 @@
 #import "PagesViewController.h"
 #import "PageViewController.h"
 #import "EditPageViewController.h"
+#import "WPTableViewControllerSubclass.h"
 
 #define TAG_OFFSET 1010
 

@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
-		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">10J567</string>
-		<string key="IBDocument.InterfaceBuilderVersion">823</string>
-		<string key="IBDocument.AppKitVersion">1038.35</string>
-		<string key="IBDocument.HIToolboxVersion">462.00</string>
+		<int key="IBDocument.SystemTarget">1296</int>
+		<string key="IBDocument.SystemVersion">11E53</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2182</string>
+		<string key="IBDocument.AppKitVersion">1138.47</string>
+		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">132</string>
+			<string key="NS.object.0">1179</string>
 		</object>
-		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
+		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="5"/>
+			<string>IBProxyObject</string>
+			<string>IBUINavigationController</string>
+			<string>IBUIViewController</string>
+			<string>IBUISplitViewController</string>
+			<string>IBUINavigationBar</string>
+			<string>IBUITableViewController</string>
+			<string>IBUINavigationItem</string>
+			<string>IBUIView</string>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.Metadata">
-			<bool key="EncodedWithXMLCoder">YES</bool>
-			<object class="NSArray" key="dict.sortedKeys" id="0">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-			</object>
-			<object class="NSMutableArray" key="dict.values">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-			</object>
+			<string key="NS.key.0">PluginDependencyRecalculationVersion</string>
+			<integer value="1" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.RootObjects" id="1000">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -38,9 +40,11 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUIView" id="547559843">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{768, 1004}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSNextKeyView"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -51,11 +55,14 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUISplitViewController" id="23626528">
-				<reference key="IBUIToolbarItems" ref="0"/>
+				<object class="NSArray" key="IBUIToolbarItems" id="0">
+					<bool key="EncodedWithXMLCoder">YES</bool>
+				</object>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics">
 					<int key="IBUIStatusBarStyle">2</int>
 				</object>
 				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
+					<int key="IBUIInterfaceOrientation">3</int>
 					<int key="interfaceOrientation">3</int>
 				</object>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -66,6 +73,7 @@
 						<int key="IBUIStatusBarStyle">2</int>
 					</object>
 					<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
+						<int key="IBUIInterfaceOrientation">1</int>
 						<int key="interfaceOrientation">1</int>
 					</object>
 					<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -83,7 +91,6 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="IBUITableViewController" id="443917576">
 							<object class="IBUINavigationItem" key="IBUINavigationItem" id="363892539">
-								<reference key="IBUINavigationBar"/>
 								<string key="IBUITitle">Root View Controller</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
@@ -92,6 +99,7 @@
 								<int key="IBUIStatusBarStyle">2</int>
 							</object>
 							<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
+								<int key="IBUIInterfaceOrientation">1</int>
 								<int key="interfaceOrientation">1</int>
 							</object>
 							<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -104,6 +112,7 @@
 					<reference key="IBUIToolbarItems" ref="0"/>
 					<reference key="IBUIParentViewController" ref="23626528"/>
 					<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
+						<int key="IBUIInterfaceOrientation">1</int>
 						<int key="interfaceOrientation">1</int>
 					</object>
 					<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -116,19 +125,19 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">view</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="547559843"/>
-					</object>
-					<int key="connectionID">9</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">splitViewController</string>
 						<reference key="source" ref="841351856"/>
 						<reference key="destination" ref="23626528"/>
 					</object>
 					<int key="connectionID">10</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">view</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="547559843"/>
+					</object>
+					<int key="connectionID">11</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -207,8 +216,9 @@
 				<object class="NSArray" key="dict.sortedKeys">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>-1.CustomClassName</string>
+					<string>-1.IBPluginDependency</string>
 					<string>-2.CustomClassName</string>
-					<string>2.IBEditorWindowLastContentRect</string>
+					<string>-2.IBPluginDependency</string>
 					<string>2.IBPluginDependency</string>
 					<string>3.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
@@ -218,11 +228,12 @@
 					<string>7.IBPluginDependency</string>
 					<string>8.IBPluginDependency</string>
 				</object>
-				<object class="NSMutableArray" key="dict.values">
+				<object class="NSArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>BlogViewController</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>UIResponder</string>
-					<string>{{335, 4}, {1024, 768}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -236,20 +247,16 @@
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<reference key="dict.sortedKeys" ref="0"/>
-				<object class="NSMutableArray" key="dict.values">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-				</object>
+				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="activeLocalization"/>
 			<object class="NSMutableDictionary" key="localizations">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<reference key="dict.sortedKeys" ref="0"/>
-				<object class="NSMutableArray" key="dict.values">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-				</object>
+				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">10</int>
+			<int key="maxID">11</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -261,18 +268,28 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>commentsItem</string>
 							<string>commentsViewController</string>
+							<string>pagesItem</string>
 							<string>pagesViewController</string>
+							<string>postsItem</string>
 							<string>postsViewController</string>
 							<string>splitViewController</string>
+							<string>statsItem</string>
+							<string>statsTableViewController</string>
 							<string>tabBarController</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UITabBarItem</string>
 							<string>CommentsViewController</string>
+							<string>UITabBarItem</string>
 							<string>PagesViewController</string>
+							<string>UITabBarItem</string>
 							<string>PostsViewController</string>
 							<string>UISplitViewController</string>
+							<string>UITabBarItem</string>
+							<string>StatsTableViewController</string>
 							<string>UITabBarController</string>
 						</object>
 					</object>
@@ -280,21 +297,38 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>commentsItem</string>
 							<string>commentsViewController</string>
+							<string>pagesItem</string>
 							<string>pagesViewController</string>
+							<string>postsItem</string>
 							<string>postsViewController</string>
 							<string>splitViewController</string>
+							<string>statsItem</string>
+							<string>statsTableViewController</string>
 							<string>tabBarController</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">commentsItem</string>
+								<string key="candidateClassName">UITabBarItem</string>
+							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">commentsViewController</string>
 								<string key="candidateClassName">CommentsViewController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
+								<string key="name">pagesItem</string>
+								<string key="candidateClassName">UITabBarItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">pagesViewController</string>
 								<string key="candidateClassName">PagesViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">postsItem</string>
+								<string key="candidateClassName">UITabBarItem</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">postsViewController</string>
@@ -305,6 +339,14 @@
 								<string key="candidateClassName">UISplitViewController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
+								<string key="name">statsItem</string>
+								<string key="candidateClassName">UITabBarItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">statsTableViewController</string>
+								<string key="candidateClassName">StatsTableViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">tabBarController</string>
 								<string key="candidateClassName">UITabBarController</string>
 							</object>
@@ -312,23 +354,25 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/BlogViewController.h</string>
+						<string key="minorKey">./Classes/BlogViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">CommentsViewController</string>
-					<string key="superclassName">UIViewController</string>
+					<string key="superclassName">WPTableViewController</string>
 					<object class="NSMutableDictionary" key="actions">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>approveSelectedComments:</string>
 							<string>deleteSelectedComments:</string>
+							<string>replyToSelectedComment:</string>
 							<string>spamSelectedComments:</string>
 							<string>unapproveSelectedComments:</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -341,10 +385,11 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>approveSelectedComments:</string>
 							<string>deleteSelectedComments:</string>
+							<string>replyToSelectedComment:</string>
 							<string>spamSelectedComments:</string>
 							<string>unapproveSelectedComments:</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBActionInfo">
 								<string key="name">approveSelectedComments:</string>
@@ -352,6 +397,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">deleteSelectedComments:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">replyToSelectedComment:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -369,18 +418,14 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>approveButton</string>
-							<string>commentsTableView</string>
 							<string>deleteButton</string>
-							<string>editToolbar</string>
 							<string>spamButton</string>
 							<string>unapproveButton</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIBarButtonItem</string>
-							<string>UITableView</string>
 							<string>UIBarButtonItem</string>
-							<string>UIToolbar</string>
 							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
 						</object>
@@ -390,29 +435,19 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>approveButton</string>
-							<string>commentsTableView</string>
 							<string>deleteButton</string>
-							<string>editToolbar</string>
 							<string>spamButton</string>
 							<string>unapproveButton</string>
 						</object>
-						<object class="NSMutableArray" key="dict.values">
+						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
 								<string key="name">approveButton</string>
 								<string key="candidateClassName">UIBarButtonItem</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">commentsTableView</string>
-								<string key="candidateClassName">UITableView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
 								<string key="name">deleteButton</string>
 								<string key="candidateClassName">UIBarButtonItem</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">editToolbar</string>
-								<string key="candidateClassName">UIToolbar</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">spamButton</string>
@@ -426,14 +461,7 @@
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/CommentsViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">XMLRPCConnection.h</string>
+						<string key="minorKey">./Classes/CommentsViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -441,109 +469,84 @@
 					<string key="superclassName">PostsViewController</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/PagesViewController.h</string>
+						<string key="minorKey">./Classes/PagesViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">PostsViewController</string>
+					<string key="superclassName">WPTableViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/PostsViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">StatsTableViewController</string>
 					<string key="superclassName">UITableViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>container</string>
+							<string>loginView</string>
+							<string>statsView</string>
+							<string>wpcomLogin</string>
+							<string>wpcomLoginTable</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIView</string>
+							<string>UIView</string>
+							<string>UIView</string>
+							<string>UIView</string>
+							<string>UITableView</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>container</string>
+							<string>loginView</string>
+							<string>statsView</string>
+							<string>wpcomLogin</string>
+							<string>wpcomLoginTable</string>
+						</object>
+						<object class="NSArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">container</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">loginView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">statsView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">wpcomLogin</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">wpcomLoginTable</string>
+								<string key="candidateClassName">UITableView</string>
+							</object>
+						</object>
+					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/PostsViewController.h</string>
+						<string key="minorKey">./Classes/StatsTableViewController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">UIViewController</string>
+					<string key="className">WPTableViewController</string>
+					<string key="superclassName">UIViewController</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/UIViewController+WPAnimation.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UIViewController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/UIViewController_iPadExtensions.h</string>
-					</object>
-				</object>
-			</object>
-			<object class="NSMutableArray" key="referencedPartialClassDescriptionsV3.2+">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSError.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSFileManager.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSKeyValueCoding.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSKeyValueObserving.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSKeyedArchiver.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSObject.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSRunLoop.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSThread.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSURL.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Foundation.framework/Headers/NSURLConnection.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UIViewController</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">MediaPlayer.framework/Headers/MPMoviePlayerViewController.h</string>
+						<string key="minorKey">./Classes/WPTableViewController.h</string>
 					</object>
 				</object>
 			</object>
@@ -552,15 +555,14 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<integer value="1056" key="NS.object.0"/>
+			<real value="1296" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.InterfaceBuilder3</string>
 			<integer value="3100" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<string key="IBDocument.LastKnownRelativeProjectPath">WordPress.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">132</string>
+		<string key="IBCocoaTouchPluginVersion">1179</string>
 	</data>
 </archive>

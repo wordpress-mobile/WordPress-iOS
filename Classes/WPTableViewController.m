@@ -12,7 +12,7 @@
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
-@interface WPTableViewController () <NSFetchedResultsControllerDelegate,EGORefreshTableHeaderDelegate>
+@interface WPTableViewController () <NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate>
 @property (nonatomic,retain) NSFetchedResultsController *resultsController;
 - (void)simulatePullToRefresh;
 @end
@@ -24,9 +24,11 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 @synthesize blog = _blog;
 @synthesize resultsController = _resultsController;
+@synthesize tableView;
 
 - (void)dealloc
 {
+    [tableView release];
     [_refreshHeaderView release];
     [_indexPathSelectedBeforeUpdates release];
     [_indexPathSelectedAfterUpdates release];
@@ -37,7 +39,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (id)initWithBlog:(Blog *)blog {
-    self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
         _blog = [blog retain];
     }
@@ -48,6 +49,12 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 {
     [super viewDidLoad];
 
+    self.tableView = [[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain] autorelease];
+    tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    [self.view addSubview:tableView];
+    
     if (_refreshHeaderView == nil) {
 		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
 		_refreshHeaderView.delegate = self;
@@ -126,7 +133,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[self newCell] autorelease];
+    UITableViewCell *cell = [self newCell];
 
     if (IS_IPAD || self.tableView.isEditing) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
@@ -325,9 +332,9 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (UITableViewCell *)newCell {
     NSString *cellIdentifier = [NSString stringWithFormat:@"_WPTable_%@_Cell", [self entityName]];
-    UITableViewCell *cell = [[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier] retain];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
     }
     return cell;
 }

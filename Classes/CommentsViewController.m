@@ -301,7 +301,7 @@
     return COMMENT_ROW_HEIGHT - 60 + MIN(commentSize.height, 60);
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.editing) {
         [self tableView:tableView didCheckRowAtIndexPath:indexPath];
     } else {
@@ -309,7 +309,7 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView didCheckRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)aTableView didCheckRowAtIndexPath:(NSIndexPath *)indexPath {
     CommentTableViewCell *cell = (CommentTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     Comment *comment = cell.comment;
 	
@@ -416,9 +416,9 @@
 
 - (UITableViewCell *)newCell {
     static NSString *cellIdentifier = @"CommentCell";
-    CommentTableViewCell *cell = (CommentTableViewCell *)[[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier] retain];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[CommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        cell = [[[CommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
     }
     return cell;
 }

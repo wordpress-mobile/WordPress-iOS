@@ -1,13 +1,11 @@
 #import <Foundation/Foundation.h>
-#import "Post.h"
 #import "PostViewController.h"
-#import "EGORefreshTableHeaderView.h"
+#import "WPTableViewController.h"
 
-@class EditPostViewController, EditPostViewController;
+@class EditPostViewController;
 
-@interface PostsViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAccelerometerDelegate, NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate> {
+@interface PostsViewController : WPTableViewController <UIAccelerometerDelegate, NSFetchedResultsControllerDelegate> {
 @private
-    EGORefreshTableHeaderView *_refreshHeaderView;
     UIActivityIndicatorView *activityFooter;
 }
 
@@ -17,12 +15,9 @@
 @property (nonatomic, assign) BOOL anyMorePosts;
 @property (nonatomic, retain) NSIndexPath *selectedIndexPath;
 @property (nonatomic, retain) NSMutableArray *drafts;
-@property (nonatomic, retain) NSFetchedResultsController *resultsController;
-@property (nonatomic, retain) Blog *blog;
 
 - (void)showAddPostView;
 - (void)reselect;
 - (BOOL)refreshRequired;
-- (void)setBlog:(Blog *)blog;
 
 @end
