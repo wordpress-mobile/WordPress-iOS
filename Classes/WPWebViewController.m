@@ -526,7 +526,8 @@
         NSString *body = [permaLink trim];
         [controller setMessageBody:body isHTML:NO];
         
-        if (controller) [self presentModalViewController:controller animated:YES];
+        if (controller) 
+            [self.panelNavigationController presentModalViewController:controller animated:YES];        
         [self setMFMailFieldAsFirstResponder:controller.view mfMailField:@"MFRecipientTextField"];
         [controller release];
     } else if ( buttonIndex == 2 ) {
