@@ -740,7 +740,6 @@
 }
 
 - (void) openInAppWebView:(NSURL*)url {
-    //NSURL *url = [NSURL URLWithString:URL];
 	if (url != nil && [[url description] length] > 0) {
         WPWebViewController *webViewController;
         if (DeviceIsPad()) {
@@ -750,10 +749,9 @@
             webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
         }
         [webViewController setUrl:url];
-        webViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        webViewController.modalPresentationStyle = UIModalPresentationPageSheet; // UIModalPresentationFormSheet;
-        //Modal big screen
-        [self.panelNavigationController presentModalViewController:webViewController animated:YES];
+       
+        if ( self.panelNavigationController  )
+            [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
 	}
 }
 

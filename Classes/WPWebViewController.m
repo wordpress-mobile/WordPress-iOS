@@ -342,7 +342,7 @@
 }
 
 - (void)dismiss {
-    [self dismissModalViewControllerAnimated:YES];
+    [self.panelNavigationController popViewControllerAnimated:NO];
 }
 
 - (void)goBack {
@@ -434,13 +434,14 @@
             return NO;
         }
     }
-        
+    
     //the user clicked a link available in the detailsView, a new webView will be pushed into the stack
     if (![requestedURL isEqual:self.url] && 
         [requestedURLAbsoluteString rangeOfString:@"file://"].location == NSNotFound && 
         self.detailContent != nil &&
         navigationType == UIWebViewNavigationTypeLinkClicked
         ) { 
+        
         WPWebViewController *webViewController;
         if (DeviceIsPad()) {
             webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
@@ -449,10 +450,8 @@
             webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
         }
         [webViewController setUrl:[request URL]];
-        webViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-          
-        //Modal big screen
-        [self.panelNavigationController presentModalViewController:webViewController animated:YES];
+        if ( self.panelNavigationController  )
+            [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
         return NO;
     }
     
