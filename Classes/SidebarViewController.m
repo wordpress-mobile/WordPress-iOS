@@ -525,6 +525,10 @@
             }
             if (self.openSection == sectionInfo) {
                 self.openSection = nil;
+                //Select the reader for now
+                NSIndexPath *readerPath = [NSIndexPath indexPathForRow:1 inSection:0];
+                [self processRowSelectionAtIndexPath:readerPath closingSidebar:NO];
+                [self.tableView selectRowAtIndexPath: readerPath animated:NO scrollPosition:UITableViewScrollPositionNone];
             }
             [self.sectionInfoArray removeObjectAtIndex:indexPath.row];
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.row + 1] withRowAnimation:UITableViewRowAnimationFade];
