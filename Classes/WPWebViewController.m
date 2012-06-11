@@ -441,11 +441,19 @@
         self.detailContent != nil &&
         navigationType == UIWebViewNavigationTypeLinkClicked
         ) { 
-            WPWebViewController *detailViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
-            detailViewController.url = [request URL]; 
-            [self.navigationController pushViewController:detailViewController animated:YES];
-            [detailViewController release];
-            return NO;
+        WPWebViewController *webViewController;
+        if (DeviceIsPad()) {
+            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+        }
+        else {
+            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+        }
+        [webViewController setUrl:[request URL]];
+        webViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+          
+        //Modal big screen
+        [self.panelNavigationController presentModalViewController:webViewController animated:YES];
+        return NO;
     }
     
     [self setLoading:YES];        
