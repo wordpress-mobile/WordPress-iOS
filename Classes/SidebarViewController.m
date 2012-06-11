@@ -23,6 +23,7 @@
 #import "SettingsViewController.h"
 #import "StatsWebViewController.h"
 #import "PanelNavigationConstants.h"
+#import "WPWebViewController.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
@@ -415,8 +416,7 @@
                     [webViewController setUrl:[NSURL URLWithString:dashboardUrl]];
                     
                     [webViewController setUsername:blog.username];
-                    NSError *error = nil;
-                    [webViewController setPassword:[SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.hostURL error:&error]];
+                    [webViewController setPassword:[blog fetchPassword]];
                     [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginURL]];
                     [self.panelNavigationController setDetailViewController:webViewController closingSidebar:closingSidebar];
                 }                
