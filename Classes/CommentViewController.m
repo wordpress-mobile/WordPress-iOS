@@ -11,7 +11,6 @@
 #import "NSString+XMLExtensions.h"
 #import "WPWebViewController.h"
 #import "UIImageView+Gravatar.h"
-#import "WPWebViewController.h"
 
 #define COMMENT_BODY_TOP        100
 #define COMMENT_BODY_MAX_HEIGHT 4000
@@ -41,7 +40,7 @@
 - (void)launchEditComment;
 
 -(void)reachabilityChanged:(BOOL)reachable;
-
+-(void)openInAppWebView:(NSURL*)url;
 @end
 
 @implementation CommentViewController {
@@ -721,19 +720,9 @@
     [segmentedControl setEnabled:[self.delegate hasNextComment] forSegmentAtIndex:1];
 }
 
-- (void)viewURL{
+- (IBAction)viewURL{
 	NSURL *url = [NSURL URLWithString: [self.comment.author_url trim]];
-	if (url != nil && [[url description] length] > 0) {
-        WPWebViewController *webViewController;
-        if (DeviceIsPad()) {
-            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
-        }
-        else {
-            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
-        }
-        [webViewController setUrl:url];
-        [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
-	}
+    [self openInAppWebView:url];
 }
 
 - (void)sendEmail{
@@ -750,16 +739,26 @@
 	}
 }
 
+- (void) openInAppWebView:(NSURL*)url {
+    //NSURL *url = [NSURL URLWithString:URL];
+	if (url != nil && [[url description] length] > 0) {
+        WPWebViewController *webViewController;
+        if (DeviceIsPad()) {
+            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+        }
+        else {
+            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+        }
+        [webViewController setUrl:url];
+        webViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        webViewController.modalPresentationStyle = UIModalPresentationPageSheet; // UIModalPresentationFormSheet;
+        //Modal big screen
+        [self.panelNavigationController presentModalViewController:webViewController animated:YES];
+	}
+}
+
 - (IBAction)handlePostTitleButtonTapped:(id)sender {
-    WPWebViewController *webViewController;
-    if (DeviceIsPad()) {
-        webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
-    }
-    else {
-        webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
-    }
-	webViewController.url = [NSURL URLWithString:self.comment.link];
-    [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
+    [self openInAppWebView:[NSURL URLWithString:self.comment.link]];
 }
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller  didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
@@ -777,15 +776,7 @@
 
 -(BOOL) webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
 	if (inType == UIWebViewNavigationTypeLinkClicked) {
-        WPWebViewController *webViewController;
-        if (DeviceIsPad()) {
-            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
-        }
-        else {
-            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
-        }
-        [webViewController setUrl:[inRequest URL]];
-        [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
+        [self openInAppWebView:[inRequest URL]];
 		return NO;
 	}
 	return YES;
