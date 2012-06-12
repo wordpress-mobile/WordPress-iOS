@@ -548,6 +548,9 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
+    if ([self.tableView indexPathForSelectedRow] == nil) {
+        [self selectFirstAvailableItem];
+    }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
@@ -581,7 +584,6 @@
             }
             if (self.openSection == sectionInfo) {
                 self.openSection = nil;
-                [self selectFirstAvailableItem];
             }
             [self.sectionInfoArray removeObjectAtIndex:indexPath.row];
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.row + 1] withRowAnimation:UITableViewRowAnimationFade];
