@@ -212,8 +212,8 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 
     self.loadingView = [[[UIView alloc] initWithFrame:CGRectMake(x, y, width, height)] autorelease];
     loadingView.backgroundColor = [UIColor clearColor];
-    loadingView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin & UIViewAutoresizingFlexibleBottomMargin & 
-                                    UIViewAutoresizingFlexibleLeftMargin & UIViewAutoresizingFlexibleRightMargin;
+    loadingView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | 
+                                    UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     loadingView.hidden = YES; // Don't show until we start loading something.
     
     [loadingView addSubview:loadingLabel];
