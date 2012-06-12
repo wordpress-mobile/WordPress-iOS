@@ -40,7 +40,7 @@
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
 @property (nonatomic, assign) SectionInfo *openSection;
 @property (nonatomic, strong) NSMutableArray *sectionInfoArray;
-@property (nonatomic, assign) NSInteger topSectionRowCount;
+@property (readonly) NSInteger topSectionRowCount;
 - (SectionInfo *)sectionInfoForBlog:(Blog *)blog;
 - (void)addSectionInfoForBlog:(Blog *)blog;
 - (void)insertSectionInfoForBlog:(Blog *)blog atIndex:(NSUInteger)index;
@@ -49,7 +49,6 @@
 
 @implementation SidebarViewController
 @synthesize resultsController = _resultsController, openSection=_openSection, sectionInfoArray=_sectionInfoArray;
-@synthesize topSectionRowCount = _topSectionRowCount;
 @synthesize tableView, footerButton;
 
 - (void)dealloc {
@@ -65,9 +64,6 @@
     self.tableView.dataSource = self;
     self.view.backgroundColor = SIDEBAR_BGCOLOR;
     self.openSection = nil;
-    
-    // Depending on what we want to add here (quick video? etc) created a variable for the row count
-    _topSectionRowCount = 2;
     
     // create the sectionInfoArray, stores data for collapsing/expanding sections in the tableView
 	if (self.sectionInfoArray == nil) {
@@ -87,6 +83,11 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    void (^wpcomNotificationBlock)(NSNotification *) = ^(NSNotification *note) {
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+    };
+    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
+    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
 }
 
 - (void)viewDidUnload
@@ -96,6 +97,7 @@
     [footerButton release];
     
     self.sectionInfoArray = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -113,6 +115,15 @@
 }
 
 #pragma mark - Custom methods
+
+- (NSInteger)topSectionRowCount {
+    if ([WordPressComApi sharedApi].username) {
+        return 2;
+    } else {
+        return 1;
+    }
+}
+
 - (SectionInfo *)sectionInfoForBlog:(Blog *)blog {
     SectionInfo *sectionInfo = [[SectionInfo alloc] init];			
     sectionInfo.blog = blog;
