@@ -249,10 +249,15 @@
 {
     NSDictionary *article = (NSDictionary *)item;
     NSLog(@"Show detail view: %@", article);
+    
+    //Remove the list item highlight in the list for tapped items
+    if ( IS_IPHONE ) {     
+        //[self.webView stringByEvaluatingJavaScriptFromString:@"var selected = jq('#subscriptions .selected-item');selected.removeClass('selected-item');"];
+        [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.removeHighlight()"];
+    }
     [self.panelNavigationController popToRootViewControllerAnimated:NO];
     self.detailViewController.currentItem = [article JSONString];
     [self.panelNavigationController pushViewController:self.detailViewController animated:YES];
-
 }
 
 #pragma mark - webView related methods
