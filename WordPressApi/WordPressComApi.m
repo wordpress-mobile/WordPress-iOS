@@ -40,7 +40,9 @@
 }
 
 - (void)setUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *error))failure {
-    [self signOut]; // Only one account supported for now
+    if (self.username && ![username isEqualToString:self.username]) {
+        [self signOut]; // Only one account supported for now
+    }
     self.username = username;
     self.password = password;
     [self authenticateWithSuccess:^{
