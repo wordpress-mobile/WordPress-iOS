@@ -45,6 +45,7 @@
 - (void)addSectionInfoForBlog:(Blog *)blog;
 - (void)insertSectionInfoForBlog:(Blog *)blog atIndex:(NSUInteger)index;
 - (void)showWelcomeScreenIfNeeded;
+- (void)selectFirstAvailableItem;
 @end
 
 @implementation SidebarViewController
@@ -74,17 +75,12 @@
 		}
 	}
     
-    // Select the Reader row
-    NSIndexPath *path = [NSIndexPath indexPathForRow:1 inSection:0];
-    [self.tableView selectRowAtIndexPath: path animated:NO scrollPosition:UITableViewScrollPositionNone];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     void (^wpcomNotificationBlock)(NSNotification *) = ^(NSNotification *note) {
+        NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+        if (selectedIndexPath == nil || (selectedIndexPath.section == 0 && selectedIndexPath.row == 1)) {
+            [self selectFirstAvailableItem];
+        }
     };
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
@@ -107,11 +103,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated]; 	
+    [self showWelcomeScreenIfNeeded];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated]; 
-    [self showWelcomeScreenIfNeeded];
+    [self selectFirstAvailableItem];    
 }
 
 #pragma mark - Custom methods
@@ -168,6 +165,22 @@
             [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
             [welcomeViewController release];
         }
+    }
+}
+
+- (void)selectFirstAvailableItem {
+    if ([self.tableView numberOfRowsInSection:0] > 1) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+        [self processRowSelectionAtIndexPath:indexPath];
+        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    } else if ([self.sectionInfoArray count] > 0) {
+        SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:0];
+        if (!sectionInfo.open) {
+            [sectionInfo.headerView toggleOpenWithUserAction:YES];
+        }
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+        [self processRowSelectionAtIndexPath:indexPath closingSidebar:NO];
+        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
 }
 
@@ -568,10 +581,7 @@
             }
             if (self.openSection == sectionInfo) {
                 self.openSection = nil;
-                //Select the reader for now
-                NSIndexPath *readerPath = [NSIndexPath indexPathForRow:1 inSection:0];
-                [self processRowSelectionAtIndexPath:readerPath closingSidebar:NO];
-                [self.tableView selectRowAtIndexPath: readerPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+                [self selectFirstAvailableItem];
             }
             [self.sectionInfoArray removeObjectAtIndex:indexPath.row];
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.row + 1] withRowAnimation:UITableViewRowAnimationFade];

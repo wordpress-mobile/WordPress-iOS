@@ -208,8 +208,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     }
     
     SidebarViewController *sidebarViewController = [[[SidebarViewController alloc] init] autorelease];
-    WPReaderViewController *readerViewController = [[[WPReaderViewController alloc] init] autorelease];
-    panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:readerViewController masterViewController:sidebarViewController];
+    panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:nil masterViewController:sidebarViewController];
     window.rootViewController = panelNavigationController;
 
 	// Add listeners
