@@ -10,6 +10,7 @@
 #import "SFHFKeychainUtils.h"
 
 @interface WelcomeViewController () <WPcomLoginViewControllerDelegate>
+- (void)blogsRefreshNotificationReceived:(NSNotification *)notification;
 @end
 
 @implementation WelcomeViewController
@@ -181,18 +182,12 @@
 			[self.navigationController pushViewController:addUsersBlogsView animated:YES];
 			[addUsersBlogsView release];
 		}
-		else if(DeviceIsPad() == YES) {
+		else {
 			WPcomLoginViewController *wpLoginView = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
             wpLoginView.delegate = self;
 			[self.navigationController pushViewController:wpLoginView animated:YES];
 			[wpLoginView release];
-		}
-		else {
-			AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
-			addUsersBlogsView.isWPcom = YES;
-			[self.navigationController pushViewController:addUsersBlogsView animated:YES];
-			[addUsersBlogsView release];
-		}
+        }
 	}
 	else if(indexPath.row == 2) { // Add self-hosted WordPress.org blog
         AddSiteViewController *addSiteView;
@@ -211,6 +206,15 @@
 
 #pragma mark -
 #pragma mark Custom methods
+
+-(void) automaticallyDismissOnLoginActions {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];    
+}
+
+- (void)blogsRefreshNotificationReceived:(NSNotification *)notification {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
+    [super dismissModalViewControllerAnimated:YES];
+}
 
 - (IBAction)cancel:(id)sender {
 	[super dismissModalViewControllerAnimated:YES];
@@ -243,6 +247,7 @@
 }
 
 - (void)viewDidUnload {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
     [super viewDidUnload];
 }
 

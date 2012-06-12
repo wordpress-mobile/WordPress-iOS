@@ -6,7 +6,6 @@
 #import "BlogSplitViewDetailViewController.h"
 #import "CPopoverManager.h"
 #import "UIViewController_iPadExtensions.h"
-#import "WelcomeViewController.h"
 #import "BetaUIWindow.h"
 #import "MigrateBlogsFromFiles.h"
 #import "InAppSettings.h"
@@ -209,7 +208,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     }
     
     SidebarViewController *sidebarViewController = [[[SidebarViewController alloc] init] autorelease];
-    //WelcomeViewController *wViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
     WPReaderViewController *readerViewController = [[[WPReaderViewController alloc] init] autorelease];
     panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:readerViewController masterViewController:sidebarViewController];
     window.rootViewController = panelNavigationController;

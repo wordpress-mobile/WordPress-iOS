@@ -24,6 +24,8 @@
 #import "StatsWebViewController.h"
 #import "PanelNavigationConstants.h"
 #import "WPWebViewController.h"
+#import "WordPressComApi.h"
+#import "WelcomeViewController.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
@@ -42,6 +44,7 @@
 - (SectionInfo *)sectionInfoForBlog:(Blog *)blog;
 - (void)addSectionInfoForBlog:(Blog *)blog;
 - (void)insertSectionInfoForBlog:(Blog *)blog atIndex:(NSUInteger)index;
+- (void)showWelcomeScreenIfNeeded;
 @end
 
 @implementation SidebarViewController
@@ -101,9 +104,12 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	
-	[super viewWillAppear:animated]; 
-	
+	[super viewWillAppear:animated]; 	
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated]; 
+    [self showWelcomeScreenIfNeeded];
 }
 
 #pragma mark - Custom methods
@@ -126,6 +132,32 @@
 
 - (void)insertSectionInfoForBlog:(Blog *)blog atIndex:(NSUInteger)index {
     [self.sectionInfoArray insertObject:[self sectionInfoForBlog:blog] atIndex:index];
+}
+
+- (void)showWelcomeScreenIfNeeded {
+     WPFLogMethod();
+    if ( [[self.resultsController fetchedObjects] count] == 0 ) {
+        //ohh poor boy, no blogs yet?
+        if ( ! [WordPressComApi sharedApi].username ) {
+            //ohh auch! no .COM account? 
+            WelcomeViewController *welcomeViewController = nil;
+            
+            if ( IS_IPAD ) {
+                welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController-iPad" bundle:nil];
+            } else {
+                welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
+            }
+            
+            [welcomeViewController automaticallyDismissOnLoginActions];
+            
+            UINavigationController *aNavigationController = [[[UINavigationController alloc] initWithRootViewController:welcomeViewController] autorelease];
+            aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+
+            [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
+            [welcomeViewController release];
+        }
+    }
 }
 
 #pragma mark - Table view data source
@@ -532,6 +564,7 @@
             }
             [self.sectionInfoArray removeObjectAtIndex:indexPath.row];
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.row + 1] withRowAnimation:UITableViewRowAnimationFade];
+            [self showWelcomeScreenIfNeeded];
             break;
     }
 }

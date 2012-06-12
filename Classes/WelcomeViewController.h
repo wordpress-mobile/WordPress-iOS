@@ -25,5 +25,6 @@
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
 
 - (IBAction)cancel:(id)sender;
+- (void)automaticallyDismissOnLoginActions; //used when shown as a Real Welcome controller
 
 @end
