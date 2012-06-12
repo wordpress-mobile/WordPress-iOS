@@ -103,11 +103,11 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated]; 	
-    [self showWelcomeScreenIfNeeded];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated]; 
+    [self showWelcomeScreenIfNeeded];
     [self selectFirstAvailableItem];    
 }
 
