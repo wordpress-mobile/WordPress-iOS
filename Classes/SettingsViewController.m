@@ -49,6 +49,7 @@ typedef enum {
 @property (readonly) NSFetchedResultsController *resultsController;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
+- (void)checkCloseButton;
 @end
 
 @implementation SettingsViewController {
@@ -92,6 +93,11 @@ typedef enum {
     [super viewDidUnload];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self checkCloseButton];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
@@ -100,7 +106,15 @@ typedef enum {
 #pragma mark - Custom methods
 
 - (void)dismiss {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissModalViewControllerAnimated:NO];
+}
+
+- (void)checkCloseButton {
+    if ([[self.resultsController fetchedObjects] count] == 0 && [WordPressComApi sharedApi].username == nil) {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    } else {
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    }
 }
 
 #pragma mark - Table view data source
@@ -251,6 +265,7 @@ typedef enum {
                 // Sign out
                 [[WordPressComApi sharedApi] signOut];
                 [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
+                [self checkCloseButton];
             }
         } else {
             WPcomLoginViewController *loginViewController = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -298,6 +313,7 @@ typedef enum {
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
+    [self checkCloseButton];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
@@ -337,6 +353,7 @@ typedef enum {
 - (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithUsername:(NSString *)username {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
     [self.navigationController popToRootViewControllerAnimated:YES];
+    [self checkCloseButton];
 }
 
 - (void)loginControllerDidDismiss:(WPcomLoginViewController *)loginController {
