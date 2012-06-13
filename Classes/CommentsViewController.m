@@ -61,8 +61,10 @@
     approveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Approve", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(approveSelectedComments:)];
     deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteSelectedComments:)];
     deleteButton.style = UIBarButtonItemStyleBordered;
-    UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
-    [self setToolbarItems:[NSArray arrayWithObjects:deleteButton, spacer, spamButton, spacer, unapproveButton, spacer, approveButton, nil]];
+    if (IS_IPHONE) {
+        UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+        self.toolbarItems = [NSArray arrayWithObjects:deleteButton, spacer, spamButton, spacer, unapproveButton, spacer, approveButton, nil];
+    }
 
     self.tableView.accessibilityLabel = @"Comments";       // required for UIAutomation for iOS 4
 	if([self.tableView respondsToSelector:@selector(setAccessibilityIdentifier:)]){
@@ -85,7 +87,12 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[super viewWillAppear:animated];
     [self setEditing:NO animated:animated];
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    if (IS_IPHONE) {
+        self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    } else {
+        self.toolbarItems = [NSArray arrayWithObject:self.editButtonItem];
+        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:animated];
+    }
     self.commentViewController.delegate = nil;
     self.commentViewController = nil;
 }
@@ -110,7 +117,16 @@
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
 	
-    [self.navigationController setToolbarHidden:!editing animated:animated];
+    UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+    if (IS_IPHONE) {
+        [self.navigationController setToolbarHidden:!editing animated:animated];
+    } else {
+        if (editing) {
+            self.toolbarItems = [NSArray arrayWithObjects:self.editButtonItem, spacer, deleteButton, spacer, spamButton, spacer, unapproveButton, spacer, approveButton, nil];
+        } else {
+            self.toolbarItems = [NSArray arrayWithObject:self.editButtonItem];
+        }
+    }
     [deleteButton setEnabled:!editing];
     [approveButton setEnabled:!editing];
     [unapproveButton setEnabled:!editing];

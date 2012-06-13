@@ -6,12 +6,14 @@
 //
 
 #import "PanelViewWrapper.h"
+#import "NSObject+BlockObservation.h"
 
 @interface PanelViewWrapper()
 
 // Assign vs retain cos releasing later gets tricky.
 @property (nonatomic, assign) UIViewController *viewController;
 @property (nonatomic, assign) UIView *wrappedView;
+@property (nonatomic, retain) AMBlockToken *observerToken;
 
 - (void)setup;
 
@@ -23,6 +25,7 @@
 @synthesize toolbar = _toolbar;
 @synthesize viewController = _viewController;
 @synthesize wrappedView = _wrappedView;
+@synthesize observerToken = _observerToken;
 
 - (void)dealloc {
     self.toolbar = nil;
@@ -76,7 +79,11 @@
 
 
 - (void)wrapViewFromController:(UIViewController *)controller {
+    [self.viewController removeObserverWithBlockToken:self.observerToken];
     self.viewController = controller;
+    self.observerToken = [self.viewController addObserverForKeyPath:@"toolbarItems" task:^(id obj, NSDictionary *change) {
+        [self setToolbarItems:self.viewController.toolbarItems];
+    }];
     
     // Adopt the view's frame and autoresizing mask. 
     UIView *view = controller.view;
