@@ -10,13 +10,14 @@
 #import "EditPostViewController.h"
 #import "Post.h"
 
-@interface PostViewController : UIViewController<UITextFieldDelegate, UITextViewDelegate> {
+@interface PostViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate, UIWebViewDelegate> {
 
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *titleTitleLabel, *tagsTitleLabel, *categoriesTitleLabel;
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel, *tagsLabel, *categoriesLabel;
 @property (nonatomic, retain) IBOutlet UITextView *contentView;
+@property (nonatomic, retain) IBOutlet UIWebView *contentWebView;
 @property (nonatomic, retain) IBOutlet AbstractPost *apost;
 @property (nonatomic, assign) Post *post;
 @property (nonatomic, assign) Blog * blog;
@@ -26,4 +27,5 @@
 - (void)refreshUI;
 - (void)checkForNewItem;
 - (EditPostViewController *) getPostOrPageController: (AbstractPost *)revision;
+
 @end

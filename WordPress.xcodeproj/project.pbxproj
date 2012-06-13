@@ -187,6 +187,7 @@
 		45F45AFD11614A0E0022D394 /* CDeviceSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F45AFC11614A0E0022D394 /* CDeviceSupport.m */; };
 		45F45B3611614BA50022D394 /* CPopoverManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F45B3511614BA50022D394 /* CPopoverManager.m */; };
 		5D1392A7157D4D92007D51B8 /* StatsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */; };
+		5DB767411588F64D00EBE36C /* postPreview.html in Resources */ = {isa = PBXBuildFile; fileRef = 5DB767401588F64D00EBE36C /* postPreview.html */; };
 		5DC433311587C3600073CF07 /* PanelViewWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC433301587C3600073CF07 /* PanelViewWrapper.m */; };
 		5DC433321587C3600073CF07 /* PanelViewWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC433301587C3600073CF07 /* PanelViewWrapper.m */; };
 		5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B3156FCD3400242C35 /* WPWebView.m */; };
@@ -783,6 +784,7 @@
 		45F45B3511614BA50022D394 /* CPopoverManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPopoverManager.m; sourceTree = "<group>"; };
 		5D1392A5157D4D92007D51B8 /* StatsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsWebViewController.h; sourceTree = "<group>"; };
 		5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsWebViewController.m; sourceTree = "<group>"; };
+		5DB767401588F64D00EBE36C /* postPreview.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = postPreview.html; sourceTree = "<group>"; };
 		5DC4332F1587C3600073CF07 /* PanelViewWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelViewWrapper.h; sourceTree = "<group>"; };
 		5DC433301587C3600073CF07 /* PanelViewWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelViewWrapper.m; sourceTree = "<group>"; };
 		5DEB61B2156FCD3400242C35 /* WPWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebView.h; sourceTree = "<group>"; };
@@ -1493,6 +1495,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5DB767401588F64D00EBE36C /* postPreview.html */,
 				30811746151057940028A15E /* Icon-72@2x.png */,
 				E18165FC14E4428B006CE885 /* loader.html */,
 				37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */,
@@ -3089,6 +3092,7 @@
 				373C5187156D2547007C2977 /* carat-open@2x.png in Resources */,
 				373C5188156D2547007C2977 /* carat@2x.png in Resources */,
 				CC24E6061578273A00A6D5B5 /* FBDialog.bundle in Resources */,
+				5DB767411588F64D00EBE36C /* postPreview.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,11 +9,11 @@
 #import "PostViewController.h"
 #import "NSString+XMLExtensions.h"
 
-
 @implementation PostViewController
 @synthesize titleTitleLabel, tagsTitleLabel, categoriesTitleLabel;
 @synthesize titleLabel, tagsLabel, categoriesLabel;
 @synthesize contentView;
+@synthesize contentWebView;
 @synthesize apost;
 @synthesize blog;
 
@@ -26,6 +26,7 @@
     self.apost = nil;
 	self.blog = nil;
     self.contentView = nil;
+    self.contentWebView = nil;
     self.titleLabel = nil;
     self.tagsLabel = nil;
     self.categoriesLabel = nil;
@@ -36,6 +37,7 @@
     [super dealloc];
 }
 
+
 - (id)initWithPost:(AbstractPost *)aPost {
     if ((self = [super initWithNibName:@"PostViewController-iPad" bundle:nil])) {
         self.apost = aPost;
@@ -43,7 +45,6 @@
     }
     return self;
 }
-
 
 
 - (void)viewDidLoad {
@@ -86,9 +87,11 @@
     }
 }
 
+
 - (void)setPost:(Post *)aPost {
     self.apost = aPost;
 }
+
 
 - (NSNumber *)expectedWidth {
     return [NSNumber numberWithFloat:668.0f];
@@ -104,11 +107,19 @@
         tagsLabel.text = self.post.tags;
         categoriesLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
     }
-	if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0))
+	if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0)) {
 		contentView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more];
-	else
+    } else {
 		contentView.text = self.apost.content;
+        
+        NSString *postPreviewPath = [[NSBundle mainBundle] pathForResource:@"postpreview" ofType:@"html"];
+        NSString *htmlStr = [NSString stringWithContentsOfFile:postPreviewPath encoding:NSUTF8StringEncoding error:nil];
+        NSString *contentStr = [self.apost.content stringByReplacingOccurrencesOfRegex:@">\\n+<" withString:@"><"];
+        contentStr = [htmlStr stringByAppendingString:contentStr];
+        [contentWebView loadHTMLString:contentStr baseURL:nil];        
+    }
 }
+
 
 - (void)showModalEditor {
     if (self.modalViewController) {
@@ -140,6 +151,7 @@
     [nav release];
 }
 
+
 - (EditPostViewController *)getPostOrPageController:(AbstractPost *)revision {
 	return [[[EditPostViewController alloc] initWithPost:revision] autorelease];
 }
@@ -150,6 +162,7 @@
 		self.apost = [[Post newDraftForBlog:self.blog] autorelease];
 }
 
+
 - (void)editorDismissed:(NSNotification *)aNotification {
     if (![self.apost hasRemote] && self.apost.remoteStatus == AbstractPostRemoteStatusLocal && !self.apost.postTitle && !self.apost.content) {
 		//do not remove the post here. it is removed in EditPostViewController
@@ -159,6 +172,7 @@
     [self refreshUI];
 }
 
+
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     CGPoint point = [[touches anyObject] locationInView:self.view];
     // Did the touch ended inside?
@@ -166,5 +180,17 @@
         [self showModalEditor];
     }
 }
+
+
+#pragma mark -
+#pragma mark UIWebView Delegate Methods
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        return NO;
+    }
+    return YES;
+}
+
 
 @end

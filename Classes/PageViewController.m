@@ -1,4 +1,4 @@
-    //
+//
 //  PageViewController.m
 //  WordPress
 //
@@ -24,10 +24,11 @@
     frame.origin.y -= 93;
     frame.size.height += 93;
     self.contentView.frame = frame;
+    self.contentWebView.frame = frame;
 }
 
--(EditPostViewController *) getPostOrPageController: (AbstractPost *) revision {
-	EditPostViewController *postViewController = [[[EditPageViewController alloc] initWithPost:revision] autorelease];
-	return postViewController;
+- (EditPostViewController *)getPostOrPageController: (AbstractPost *) revision {
+	return [[[EditPageViewController alloc] initWithPost:revision] autorelease];
 }
+
 @end
