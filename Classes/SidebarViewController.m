@@ -169,6 +169,10 @@
 }
 
 - (void)selectFirstAvailableItem {
+    if ([self.tableView indexPathForSelectedRow] != nil) {
+        return;
+    }
+
     if ([self.tableView numberOfRowsInSection:0] > 1) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
         [self processRowSelectionAtIndexPath:indexPath];
