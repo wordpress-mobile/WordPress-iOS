@@ -17,6 +17,25 @@
 @synthesize apost;
 @synthesize blog;
 
+#pragma mark -
+#pragma mark LifeCycle
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    self.apost = nil;
+	self.blog = nil;
+    self.contentView = nil;
+    self.titleLabel = nil;
+    self.tagsLabel = nil;
+    self.categoriesLabel = nil;
+    self.titleTitleLabel = nil;
+    self.tagsTitleLabel = nil;
+    self.categoriesTitleLabel = nil;
+	
+    [super dealloc];
+}
+
 - (id)initWithPost:(AbstractPost *)aPost {
     if ((self = [super initWithNibName:@"PostViewController-iPad" bundle:nil])) {
         self.apost = aPost;
@@ -24,6 +43,40 @@
     }
     return self;
 }
+
+
+
+- (void)viewDidLoad {
+	[FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+	[super viewDidLoad];
+    [self refreshUI];
+    
+    self.titleTitleLabel.text = NSLocalizedString(@"Title:", @"");
+    self.tagsTitleLabel.text = NSLocalizedString(@"Tags:", @"");
+    self.categoriesTitleLabel.text = NSLocalizedString(@"Categories:", @"");
+    
+    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                                 target:self
+                                                                                 action:@selector(showModalEditor)] autorelease];
+    if (IS_IPAD) {
+        self.toolbarItems = [NSArray arrayWithObject:editButton];
+    } else {
+        self.navigationItem.rightBarButtonItem = editButton;
+    }
+}
+
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if(IS_IPAD){
+        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
+    }
+}
+
+
+#pragma mark -
+#pragma mark Accessors
 
 - (Post *)post {
     if ([self.apost isKindOfClass:[Post class]]) {
@@ -37,6 +90,14 @@
     self.apost = aPost;
 }
 
+- (NSNumber *)expectedWidth {
+    return [NSNumber numberWithFloat:668.0f];
+}
+
+
+#pragma mark -
+#pragma mark Instance Methods
+
 - (void)refreshUI {
     titleLabel.text = self.apost.postTitle;
     if (self.post) {
@@ -47,22 +108,6 @@
 		contentView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more];
 	else
 		contentView.text = self.apost.content;
-}
-
-- (void)viewDidLoad {
-	[FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	[super viewDidLoad];
-    [self refreshUI];
-
-    self.titleTitleLabel.text = NSLocalizedString(@"Title:", @"");
-    self.tagsTitleLabel.text = NSLocalizedString(@"Tags:", @"");
-    self.categoriesTitleLabel.text = NSLocalizedString(@"Categories:", @"");
-    
-    UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                                target:self
-                                                                                action:@selector(showModalEditor)];
-    self.navigationItem.rightBarButtonItem = editButton;
-    [editButton release];
 }
 
 - (void)showModalEditor {
@@ -95,9 +140,8 @@
     [nav release];
 }
 
--(EditPostViewController *) getPostOrPageController: (AbstractPost *) revision {
-	EditPostViewController *postViewController = [[[EditPostViewController alloc] initWithPost:revision] autorelease];
-	return postViewController;
+- (EditPostViewController *)getPostOrPageController:(AbstractPost *)revision {
+	return [[[EditPostViewController alloc] initWithPost:revision] autorelease];
 }
 
 // Subclassed in PageViewController
@@ -115,32 +159,12 @@
     [self refreshUI];
 }
 
-- (NSNumber *)expectedWidth {
-    return [NSNumber numberWithFloat:668.0f];
-}
-
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     CGPoint point = [[touches anyObject] locationInView:self.view];
     // Did the touch ended inside?
     if (CGRectContainsPoint(self.view.bounds, point)) {
         [self showModalEditor];
     }
-}
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-
-    self.apost = nil;
-	self.blog = nil;
-    self.contentView = nil;
-    self.titleLabel = nil;
-    self.tagsLabel = nil;
-    self.categoriesLabel = nil;
-    self.titleTitleLabel = nil;
-    self.tagsTitleLabel = nil;
-    self.categoriesTitleLabel = nil;
-	
-    [super dealloc];
 }
 
 @end
