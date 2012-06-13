@@ -201,10 +201,14 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
 
-    if (NSFetchedResultsChangeUpdate == type && ![newIndexPath isEqual:indexPath]) {
+    if (NSFetchedResultsChangeUpdate == type && newIndexPath && ![newIndexPath isEqual:indexPath]) {
         // Seriously, Apple?
         // http://developer.apple.com/library/ios/#releasenotes/iPhone/NSFetchedResultsChangeMoveReportedAsNSFetchedResultsChangeUpdate/_index.html
         type = NSFetchedResultsChangeMove;
+    }
+    if (newIndexPath == nil) {
+        // It seems in some cases newIndexPath can be nil for updates
+        newIndexPath = indexPath;
     }
 
     switch(type) {            
