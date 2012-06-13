@@ -587,7 +587,7 @@
             }
             [self.sectionInfoArray removeObjectAtIndex:indexPath.row];
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.row + 1] withRowAnimation:UITableViewRowAnimationFade];
-            [self showWelcomeScreenIfNeeded];
+            //[self showWelcomeScreenIfNeeded];
             break;
     }
 }
