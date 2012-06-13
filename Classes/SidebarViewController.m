@@ -458,10 +458,13 @@
                 break;
             case 4:
                 controllerClass = [WPWebViewController class];
-                //site already selected
+                NSString *blogURL = blog.url;
+                if(![blogURL hasPrefix:@"http"])
+                    blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
+                //check if the same site already loaded
                 if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPWebViewController class]]
                     &&
-                    [((WPWebViewController*)self.panelNavigationController.detailViewController).url.absoluteString isEqual:blog.url]
+                    [((WPWebViewController*)self.panelNavigationController.detailViewController).url.absoluteString isEqual:blogURL]
                     ) {
                     if (IS_IPAD) {
                         [self.panelNavigationController showSidebar];
@@ -470,7 +473,6 @@
                         [self.panelNavigationController closeSidebar];
                     }
                 } else {
-                    
                     WPWebViewController *webViewController;
                     if ( IS_IPAD ) {
                         webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
@@ -478,7 +480,7 @@
                     else {
                         webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
                     }
-                    NSString *blogURL = blog.url;
+                    
                     [webViewController setUrl:[NSURL URLWithString:blogURL]];
                     if( [blog isPrivate] ) {
                         [webViewController setUsername:blog.username];
@@ -487,13 +489,14 @@
                     }
                     [self.panelNavigationController setDetailViewController:webViewController closingSidebar:closingSidebar];
                 }        
-                break;
+                return;
             case 5:
                 controllerClass = [WPWebViewController class];
+                 NSString *dashboardURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
                 //dashboard already selected
                 if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPWebViewController class]] 
                     && 
-                    [((WPWebViewController*)self.panelNavigationController.detailViewController).url.absoluteString isEqual: [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"]]
+                    [((WPWebViewController*)self.panelNavigationController.detailViewController).url.absoluteString isEqual:dashboardURL]
                     ) {
                     if (IS_IPAD) {
                         [self.panelNavigationController showSidebar];
@@ -510,9 +513,7 @@
                     else {
                         webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
                     }
-                    NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
-                    [webViewController setUrl:[NSURL URLWithString:dashboardUrl]];
-                    
+                    [webViewController setUrl:[NSURL URLWithString:dashboardURL]];
                     [webViewController setUsername:blog.username];
                     [webViewController setPassword:[blog fetchPassword]];
                     [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginURL]];
