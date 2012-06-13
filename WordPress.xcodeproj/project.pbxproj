@@ -187,6 +187,8 @@
 		45F45AFD11614A0E0022D394 /* CDeviceSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F45AFC11614A0E0022D394 /* CDeviceSupport.m */; };
 		45F45B3611614BA50022D394 /* CPopoverManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F45B3511614BA50022D394 /* CPopoverManager.m */; };
 		5D1392A7157D4D92007D51B8 /* StatsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */; };
+		5DC433311587C3600073CF07 /* PanelViewWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC433301587C3600073CF07 /* PanelViewWrapper.m */; };
+		5DC433321587C3600073CF07 /* PanelViewWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC433301587C3600073CF07 /* PanelViewWrapper.m */; };
 		5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B3156FCD3400242C35 /* WPWebView.m */; };
 		5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */; };
 		6E05AEE411EE8C1B00237983 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E05AEE311EE8C1B00237983 /* Icon-Small-50.png */; };
@@ -781,6 +783,8 @@
 		45F45B3511614BA50022D394 /* CPopoverManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPopoverManager.m; sourceTree = "<group>"; };
 		5D1392A5157D4D92007D51B8 /* StatsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsWebViewController.h; sourceTree = "<group>"; };
 		5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsWebViewController.m; sourceTree = "<group>"; };
+		5DC4332F1587C3600073CF07 /* PanelViewWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelViewWrapper.h; sourceTree = "<group>"; };
+		5DC433301587C3600073CF07 /* PanelViewWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelViewWrapper.m; sourceTree = "<group>"; };
 		5DEB61B2156FCD3400242C35 /* WPWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebView.h; sourceTree = "<group>"; };
 		5DEB61B3156FCD3400242C35 /* WPWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebView.m; sourceTree = "<group>"; };
 		5DEB61B6156FCD5200242C35 /* WPChromelessWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPChromelessWebViewController.h; sourceTree = "<group>"; };
@@ -2431,6 +2435,8 @@
 				FDC528AA157E551000A3FD91 /* SidebarTableViewCell.h */,
 				FDC528AB157E551000A3FD91 /* SidebarTableViewCell.m */,
 				FD141F8E157F93F400BCDC1F /* PanelNavigationConstants.h */,
+				5DC4332F1587C3600073CF07 /* PanelViewWrapper.h */,
+				5DC433301587C3600073CF07 /* PanelViewWrapper.m */,
 			);
 			name = Panels;
 			sourceTree = "<group>";
@@ -3307,6 +3313,7 @@
 				5D1392A7157D4D92007D51B8 /* StatsWebViewController.m in Sources */,
 				FDC528AC157E551100A3FD91 /* SidebarTableViewCell.m in Sources */,
 				FD4500D11580DF3600F2B0E6 /* UIColor+Helpers.m in Sources */,
+				5DC433311587C3600073CF07 /* PanelViewWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3317,6 +3324,7 @@
 				E16AB93714D978240047A2E5 /* WordPressTest.m in Sources */,
 				371C367B156CCFDD007EA03E /* SectionInfo.m in Sources */,
 				371C367C156CCFDD007EA03E /* SidebarSectionHeaderView.m in Sources */,
+				5DC433321587C3600073CF07 /* PanelViewWrapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

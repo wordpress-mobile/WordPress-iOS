@@ -24,11 +24,9 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 @synthesize blog = _blog;
 @synthesize resultsController = _resultsController;
-@synthesize tableView;
 
 - (void)dealloc
 {
-    [tableView release];
     [_refreshHeaderView release];
     [_indexPathSelectedBeforeUpdates release];
     [_indexPathSelectedAfterUpdates release];
@@ -48,12 +46,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.tableView = [[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain] autorelease];
-    tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    tableView.delegate = self;
-    tableView.dataSource = self;
-    [self.view addSubview:tableView];
     
     if (_refreshHeaderView == nil) {
 		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];

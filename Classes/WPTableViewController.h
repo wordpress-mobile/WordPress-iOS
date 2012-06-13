@@ -8,11 +8,8 @@
 #import <UIKit/UIKit.h>
 #import "Blog.h"
 
-@interface WPTableViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
-    UITableView *tableView;
-}
+@interface WPTableViewController : UITableViewController
 
-@property (strong, nonatomic) UITableView *tableView;
 @property (nonatomic, retain) Blog *blog;
 
 - (id)initWithBlog:(Blog *)blog;

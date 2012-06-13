@@ -143,6 +143,8 @@ Classes/PagesViewController.m -text
 Classes/PanelNavigationConstants.h -text
 Classes/PanelNavigationController.h -text
 Classes/PanelNavigationController.m -text
+Classes/PanelViewWrapper.h -text
+Classes/PanelViewWrapper.m -text
 Classes/Post.h -text
 Classes/Post.m -text
 Classes/PostAnnotation.h -text

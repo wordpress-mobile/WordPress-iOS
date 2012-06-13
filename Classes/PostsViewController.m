@@ -53,18 +53,13 @@
     composeButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                      target:self
                      action:@selector(showAddPostView)] autorelease];
-    if (IS_IPAD) {
-        CGFloat toolbarHeight = 44.0f;
-        CGRect frame = CGRectMake(0.0f, self.view.frame.size.height - toolbarHeight, self.view.frame.size.width, toolbarHeight);
-        UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:frame];
-        toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-        [self.view addSubview:toolbar];
-        [toolbar setItems:[NSArray arrayWithObject:composeButtonItem]];
-        
-    } else {
+    if (!DeviceIsPad()) {
         self.navigationItem.rightBarButtonItem = composeButtonItem;
+    } else {
+        self.toolbarItems = [NSArray arrayWithObject:composeButtonItem];
     }
-
+    
+    
     if (DeviceIsPad() && self.selectedIndexPath && self.postReaderViewController) {
         @try {
             self.postReaderViewController.post = [self.resultsController objectAtIndexPath:self.selectedIndexPath];
@@ -88,7 +83,7 @@
     UIView *footerView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 50.0)] autorelease];
     footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [footerView addSubview:activityFooter];
-    tableView.tableFooterView = footerView;
+    self.tableView.tableFooterView = footerView;
 }
 
 
@@ -103,21 +98,22 @@
 
 	if (DeviceIsPad() == NO) {
 		// iPhone table views should not appear selected
-		if ([tableView indexPathForSelectedRow]) {
-			[tableView scrollToRowAtIndexPath:[tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-			[tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:animated];
+		if ([self.tableView indexPathForSelectedRow]) {
+			[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 		}
 	} else if (DeviceIsPad() == YES) {
 		// sometimes, iPad table views should
 		if (self.selectedIndexPath) {
             [self showSelectedPost];
-			[tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-			[tableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+			[self.tableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		} else {
 			//There are no content yet, push an the WP logo on the right.  
 			WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate]; 
 			[delegate showContentDetailViewController:nil];
 		}
+        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
 	}
 }
 
@@ -160,7 +156,7 @@
 #pragma mark -
 #pragma mark TableView delegate
 
-- (void)tableView:(UITableView *)aTableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 
 	if (DeviceIsPad() == YES) {
@@ -195,7 +191,7 @@
 	}
 }
 
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
 	if (post.remoteStatus == AbstractPostRemoteStatusPushing) {
 		// Don't allow editing while pushing changes

@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "PanelNavigationController.h"
 #import "PanelNavigationConstants.h"
+#import "PanelViewWrapper.h"
 
 #pragma mark -
 
@@ -58,6 +59,11 @@
 - (UIView *)viewAfter:(UIView *)view;
 - (NSArray *)partiallyVisibleViews;
 - (void)relayAppearanceMethod:(void(^)(UIViewController* controller))relay;
+
+- (UIView *)createWrapViewForViewController:(UIViewController *)controller;
+- (PanelViewWrapper *)wrapViewForViewController:(UIViewController *)controller;
+- (UIView *)viewOrViewWrapper:(UIView *)view;
+
 @end
 
 @interface UIViewController (PanelNavigationController_Internal)
@@ -185,13 +191,19 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
+    UIView *viewToPrepare = nil;
     if (self.navigationController) {
         [self.navigationController.view removeFromSuperview];
         [self.detailView addSubview:self.navigationController.view];
         [self.navigationController viewWillAppear:animated];
+        viewToPrepare = self.navigationController.view;
     } else {
         [self.detailViewController.view removeFromSuperview];
-        [self.detailView addSubview:self.detailViewController.view];        
+        
+        UIView *wrappedView = [self createWrapViewForViewController:self.detailViewController];
+        [self.detailView addSubview:wrappedView];
+        viewToPrepare = wrappedView;
+
         [self.detailViewController viewWillAppear:animated];
     }
     [self.masterViewController.view removeFromSuperview];
@@ -199,7 +211,7 @@
     self.masterView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self.view insertSubview:self.masterViewController.view belowSubview:self.detailView];
     // FIXME: keep sliding status
-    [self prepareDetailView:self.detailViewController.view];
+    [self prepareDetailView:viewToPrepare];
 
     [self addPanner];
     [self addTapper];
@@ -285,7 +297,59 @@
     [self.navigationController didReceiveMemoryWarning];
     [self.masterViewController didReceiveMemoryWarning];
     [self.detailViewController didReceiveMemoryWarning];
+    [self.detailViewControllers performSelector:@selector(didReceiveMemoryWarning)];
 }
+
+#pragma mark - View Wrapping
+
+- (PanelViewWrapper *)wrapViewForViewController:(UIViewController *)controller {
+    UIView *view = controller.view;
+    if ([[view superview] isKindOfClass:[PanelViewWrapper class]]) {
+        return (PanelViewWrapper *)[view superview];
+    }
+    return nil;
+}
+
+- (UIView *)createWrapViewForViewController:(UIViewController *)controller {
+    if (self.navigationController) {
+        return controller.view;
+    }
+    UIView *view = [self wrapViewForViewController:controller];
+    if (view == nil) {
+        return [[[PanelViewWrapper alloc] initWithViewController:controller] autorelease];
+    }
+    return view;
+}
+
+- (UIView *)viewOrViewWrapper:(UIView *)view {
+    if ([[view superview] isKindOfClass:[PanelViewWrapper class]]) {
+        return [view superview];
+    }
+    return view;
+}
+
+
+#pragma mark - Toolbar wrangling.
+
+- (UIToolbar *)toolbarForViewController:(UIViewController *)controller {
+    return [[self wrapViewForViewController:controller] toolbar];
+}
+
+
+- (BOOL)isToolbarHiddenForViewController:(UIViewController *)controller {
+    return [[self wrapViewForViewController:controller] isToolbarHidden];
+}
+
+
+- (void)setToolbarHidden:(BOOL)hidden forViewController:(UIViewController *)controller {
+    [self setToolbarHidden:hidden forViewController:controller animated:YES];
+}
+
+
+- (void)setToolbarHidden:(BOOL)hidden forViewController:(UIViewController *)controller animated:(BOOL)animated {
+    [[self wrapViewForViewController:controller] setToolbarHidden:hidden animated:animated];
+}
+
 
 #pragma mark - Property accessors
 
@@ -301,7 +365,7 @@
     if ([self.detailViewControllers count] == 0) {
         return self.detailView;
     } else {
-        return self.topViewController.view;
+        return [self viewOrViewWrapper:self.topViewController.view];
     }
 }
 
@@ -316,7 +380,7 @@
         }
     }];
 
-    return view;
+    return [self viewOrViewWrapper:view];
 }
 
 - (UIViewController *)topViewController {
@@ -376,7 +440,10 @@
             if (_isAppeared) {
                 [_detailViewController vdc_viewWillDisappear:NO];
             }
-            [_detailViewController.view removeFromSuperview];
+            
+            UIView *view = [self viewOrViewWrapper:_detailViewController.view];
+            [view removeFromSuperview];
+
             if (_isAppeared) {
                 [_detailViewController vdc_viewDidDisappear:NO];
             }
@@ -384,6 +451,7 @@
             [_detailViewController setPanelNavigationController:nil];
             [_detailViewController removeFromParentViewController];
             [_detailViewController didMoveToParentViewController:nil];
+
         }
         [_detailViewController release];
     }
@@ -406,9 +474,11 @@
             if (_isAppeared) {
                 [_detailViewController vdc_viewWillAppear:NO];
             }
-            
-            [self prepareDetailView:_detailViewController.view];
-            [self.detailView addSubview:_detailViewController.view];
+
+            UIView *wrappedView = [self createWrapViewForViewController:_detailViewController];
+            [self prepareDetailView:wrappedView];
+            [self.detailView addSubview:wrappedView];
+
             if (_isAppeared) {
                 [_detailViewController vdc_viewDidAppear:NO];
             }
@@ -512,7 +582,7 @@
     self.detailTapper.frame = self.detailView.bounds;
 
     // Switch scroll to top behavior to master view
-    [self setScrollsToTop:NO forView:self.detailViewController.view];
+    [self setScrollsToTop:NO forView:[self viewOrViewWrapper:self.detailViewController.view]];
     [self setScrollsToTop:YES forView:self.masterView];
 }
 
@@ -528,7 +598,7 @@
 
     // Restore scroll to top behavior to detail view
     [self setScrollsToTop:NO forView:self.masterView];
-    [self setScrollsToTop:YES forView:self.detailViewController.view];
+    [self setScrollsToTop:YES forView:[self viewOrViewWrapper:self.detailViewController.view]];
 }
 
 - (void)prepareDetailView:(UIView *)view {
@@ -747,12 +817,21 @@
     if ([viewController respondsToSelector:@selector(expectedWidth)]) {
         newPanelWidth = [[viewController performSelector:@selector(expectedWidth)] floatValue];
     }
-    CGRect frame = viewController.view.frame;
-    frame.size.width = newPanelWidth;
-    viewController.view.frame = frame;
+    if (self.navigationController) {
+        CGRect frame = viewController.view.frame;
+        frame.size.width = newPanelWidth;
+        viewController.view.frame = frame;
+    } else {
+        UIView *view = [self viewOrViewWrapper:viewController.view];
+        CGRect frame = view.frame;
+        frame.size.width = newPanelWidth;
+        view.frame = frame;
+    }
 }
 
 - (void)setViewOffset:(CGFloat)offset forView:(UIView *)view {
+    view = [self viewOrViewWrapper:view];
+    
     CGRect frame = view.frame;
     frame.origin.x = MAX(0, MIN(offset, self.view.bounds.size.width));
     view.frame = frame;
@@ -901,7 +980,7 @@
         if (index > [self.detailViewControllers count]) {
             return nil;
         }
-        return [[self.detailViewControllers objectAtIndex:(index - 1)] view];
+        return [self viewOrViewWrapper:[[self.detailViewControllers objectAtIndex:(index - 1)] view]];
     }
 }
 
@@ -970,7 +1049,7 @@
             [self closeSidebar];
             topView = self.detailView;
         } else {
-            topView = self.topViewController.view;
+            topView = [self viewOrViewWrapper:self.topViewController.view];
         }
         CGRect topViewFrame = topView.frame;
         CGFloat newPanelWidth = DETAIL_WIDTH;
@@ -990,12 +1069,17 @@
             [viewController vdc_viewWillAppear:animated];
         }
         [self addChildViewController:viewController];
-        [self.view addSubview:viewController.view];
+
+        UIView *wrappedView = [self createWrapViewForViewController:viewController];
+        [self.view addSubview:wrappedView];
+
+        [self.detailViews addObject:wrappedView];
+        [self.detailViewWidths addObject:[NSNumber numberWithFloat:newPanelWidth]];
+        
         if (_isAppeared) {
             [viewController vdc_viewDidDisappear:animated];
         }
-        [self.detailViews addObject:viewController.view];
-        [self.detailViewWidths addObject:[NSNumber numberWithFloat:newPanelWidth]];
+
         [self applyShadows];
         [UIView animateWithDuration:CLOSE_SLIDE_DURATION(animated) animations:^{
             topView.frame = topViewFrame;
@@ -1024,12 +1108,20 @@
             [viewController willMoveToParentViewController:nil];
             [viewController vdc_viewWillDisappear:animated];
             [viewController removeFromParentViewController];
-            [viewController.view removeFromSuperview];
+            
+            UIView *view = [self viewOrViewWrapper:viewController.view];
+            [view removeFromSuperview];
+//            [viewController.view removeFromSuperview];
             [viewController vdc_viewDidDisappear:animated];
             [viewController didMoveToParentViewController:nil];
+            
+            // cleanup wrapper and toolbar.
+//            [self removeWrapperForView:viewController.view];
+            
             [self.detailViewControllers removeLastObject];
             [self.detailViews removeLastObject];
             [self.detailViewWidths removeLastObject];
+            
             if ([self.detailViewControllers count] == 0) {
                 [self showSidebar];
             }

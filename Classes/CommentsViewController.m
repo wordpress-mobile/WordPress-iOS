@@ -301,7 +301,7 @@
     return COMMENT_ROW_HEIGHT - 60 + MIN(commentSize.height, 60);
 }
 
-- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (self.editing) {
         [self tableView:tableView didCheckRowAtIndexPath:indexPath];
     } else {
@@ -309,7 +309,7 @@
     }
 }
 
-- (void)tableView:(UITableView *)aTableView didCheckRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didCheckRowAtIndexPath:(NSIndexPath *)indexPath {
     CommentTableViewCell *cell = (CommentTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
     Comment *comment = cell.comment;
 	
