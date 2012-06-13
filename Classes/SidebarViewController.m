@@ -34,7 +34,7 @@
 #define SIDEBAR_BGCOLOR [UIColor colorWithWhite:0.921875f alpha:1.0f];
 #define HEADER_HEIGHT 47
 #define DEFAULT_ROW_HEIGHT 48
-#define NUM_ROWS 5
+#define NUM_ROWS 6
 
 @interface SidebarViewController () <NSFetchedResultsControllerDelegate>
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
@@ -266,6 +266,9 @@
                 title = NSLocalizedString(@"Stats", @"");
                 break;
             case 4:
+                title = NSLocalizedString(@"View Site", @"");
+                break;
+            case 5:
                 title = NSLocalizedString(@"Dashboard", @"Button to load the dashboard in a web view");
                 break;
             default:
@@ -455,8 +458,43 @@
                 break;
             case 4:
                 controllerClass = [WPWebViewController class];
+                //site already selected
+                if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPWebViewController class]]
+                    &&
+                    [((WPWebViewController*)self.panelNavigationController.detailViewController).url.absoluteString isEqual:blog.url]
+                    ) {
+                    if (IS_IPAD) {
+                        [self.panelNavigationController showSidebar];
+                    } else {
+                        [self.panelNavigationController popToRootViewControllerAnimated:NO];
+                        [self.panelNavigationController closeSidebar];
+                    }
+                } else {
+                    
+                    WPWebViewController *webViewController;
+                    if ( IS_IPAD ) {
+                        webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+                    }
+                    else {
+                        webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+                    }
+                    NSString *blogURL = blog.url;
+                    [webViewController setUrl:[NSURL URLWithString:blogURL]];
+                    if( [blog isPrivate] ) {
+                        [webViewController setUsername:blog.username];
+                        [webViewController setPassword:[blog fetchPassword]];
+                        [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginURL]];
+                    }
+                    [self.panelNavigationController setDetailViewController:webViewController closingSidebar:closingSidebar];
+                }        
+                break;
+            case 5:
+                controllerClass = [WPWebViewController class];
                 //dashboard already selected
-                if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPWebViewController class]]) {
+                if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPWebViewController class]] 
+                    && 
+                    [((WPWebViewController*)self.panelNavigationController.detailViewController).url.absoluteString isEqual: [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"]]
+                    ) {
                     if (IS_IPAD) {
                         [self.panelNavigationController showSidebar];
                     } else {
