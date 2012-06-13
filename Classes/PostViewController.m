@@ -122,7 +122,7 @@
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     CGPoint point = [[touches anyObject] locationInView:self.view];
     // Did the touch ended inside?
-    if (CGRectContainsPoint(self.view.frame, point)) {
+    if (CGRectContainsPoint(self.view.bounds, point)) {
         [self showModalEditor];
     }
 }

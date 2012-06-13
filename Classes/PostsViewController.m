@@ -292,20 +292,19 @@
     editPostViewController.editMode = kNewPost;
     [editPostViewController refreshUIForCompose];
     UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editPostViewController] autorelease];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];
     [post release];
 }
 
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-
-    self.postDetailViewController = [[[EditPostViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil] autorelease];
-    self.postDetailViewController.apost = [apost createRevision];
-    self.postDetailViewController.editMode = kEditPost;
-    [self.postDetailViewController refreshUIForCurrentPost];
-    [appDelegate showContentDetailViewController:self.postDetailViewController];
+    EditPostViewController *editPostViewController = [[[EditPostViewController alloc] initWithPost:[apost createRevision]] autorelease];
+    editPostViewController.editMode = kEditPost;
+    [editPostViewController refreshUIForCurrentPost];
+    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editPostViewController] autorelease];
+    navController.modalPresentationStyle = UIModalPresentationPageSheet;
+    [self.panelNavigationController presentModalViewController:navController animated:YES];
 }
 
 // For iPad
