@@ -134,7 +134,7 @@
 			}
 		}
 		[self updateSelectedComments];
-	}	
+	}
 }
 
 - (void)configureCell:(CommentTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
@@ -288,6 +288,46 @@
     Comment *comment = [[[self.resultsController fetchedObjects] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"commentID = %@", commentId]] lastObject];
     
     return comment;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
+    if (comment.isNew) {
+        cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+        if ([comment.status isEqual:@"hold"]) {
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [UIView animateWithDuration:1.0
+                                      delay:1.0
+                                    options:UIViewAnimationOptionAllowUserInteraction
+                                 animations:^{
+                                     cell.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+                                 } completion:nil];
+            });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                [UIView animateWithDuration:1.0
+                                      delay:1.0
+                                    options:UIViewAnimationOptionAllowUserInteraction
+                                 animations:^{
+                                     cell.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+                                 } completion:^(BOOL finished) {
+                                     [UIView animateWithDuration:0.5
+                                                           delay:1.0
+                                                         options:UIViewAnimationOptionAllowUserInteraction
+                                                      animations:^{
+                                                          cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+                                                      }
+                                                      completion:nil];
+                                 }];
+            });
+        }
+        comment.isNew = NO;
+    } else if ([comment.status isEqual:@"hold"]) {
+        cell.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+    } else {
+        cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+    }
+
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
