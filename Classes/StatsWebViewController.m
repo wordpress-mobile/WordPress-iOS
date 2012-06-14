@@ -117,8 +117,6 @@
     AFXMLRequestOperation *currentRequest = [[[AFXMLRequestOperation alloc] initWithRequest:mRequest] autorelease];
     
     [currentRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"Response Object: %@", operation.responseString);
-                
         NSXMLParser *parser = (NSXMLParser *)responseObject;
         parser.delegate = self;
         [parser parse];
@@ -167,7 +165,7 @@
                              [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                              [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                              [pathStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    [mRequest setURL:[NSURL URLWithString:@"https://en.wordpress.com/wp-login.php"]];
+    [mRequest setURL:[NSURL URLWithString:@"https://wordpress.com/wp-login.php"]];
     [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
     [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
     [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
@@ -212,7 +210,6 @@
 }
 
 - (NSNumber *)expectedWidth {
-    
     return UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? [NSNumber numberWithFloat:IPAD_DETAIL_WIDTH_PORTRAIT] : [NSNumber numberWithFloat:668.8f];
 }
 

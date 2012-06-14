@@ -94,12 +94,20 @@
         UIViewController *detailController = [self.panelNavigationController detailViewController];
         if ([detailController isKindOfClass:[self class]]) {
             WPChromelessWebViewController *controller = (WPChromelessWebViewController *)detailController;
-            if([[[controller currentURL] absoluteString] isEqualToString:[[request URL] absoluteString] ]) {
-                // if the detail controller is ourself disregard the click so we don't spam a series of the same page.
-                if (detailController != self) {
-                    [self.panelNavigationController popViewControllerAnimated:YES];
+            
+            // Check the url parts individually. Comparing absoluteStrings can yield an incorrect result.
+            NSURL *currURL = [controller currentURL];
+            NSURL *reqURL = [request URL];
+            if ([currURL.host isEqualToString:reqURL.host]) {
+                if([currURL.path isEqualToString:reqURL.path]) {
+                    if ([currURL.query isEqualToString:reqURL.query]) {
+                        // if the detail controller is ourself disregard the click so we don't spam a series of the same page.
+                        if (detailController != self) {
+                            [self.panelNavigationController popViewControllerAnimated:YES];
+                        }
+                        return NO;
+                    }
                 }
-                return NO;
             }
         }       
 

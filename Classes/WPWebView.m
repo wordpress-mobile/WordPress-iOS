@@ -16,7 +16,8 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 @property (strong, nonatomic) EGORefreshTableHeaderView *refreshHeaderView;
 @property (strong, nonatomic) NSMutableDictionary *defaultHeaders;
 @property (strong, nonatomic) NSDate *lastWebViewRefreshDate;
-@property (strong, nonatomic) AFHTTPRequestOperation *currentRequest;
+@property (strong, nonatomic) AFHTTPRequestOperation *currentHTTPRequestOperation;
+@property (strong, nonatomic) NSURLRequest *currentRequest;
 @property (strong, nonatomic) Reachability *reachability;
 @property (strong, nonatomic) UIView *loadingView;
 @property (strong, nonatomic) UILabel *loadingLabel;
@@ -44,6 +45,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 @synthesize refreshHeaderView;
 @synthesize defaultHeaders;
 @synthesize lastWebViewRefreshDate;
+@synthesize currentHTTPRequestOperation;
 @synthesize currentRequest;
 @synthesize reachability;
 @synthesize loadingView;
@@ -62,6 +64,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     [refreshHeaderView release];
     [defaultHeaders release];
     [lastWebViewRefreshDate release];
+    [currentHTTPRequestOperation release];
     [currentRequest release];
     [reachability release];
     [loadingView release];
@@ -239,11 +242,26 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 
 - (NSURLRequest *)request {
     if (currentRequest) {
-        return currentRequest.request;
+        return currentRequest;
     } else if ([webView request]) {
         return [webView request];
     }
     return nil;
+}
+
+- (void)setCurrentRequest:(NSURLRequest *)req {
+    if ([req isEqual:currentRequest]) {
+        return;
+    }
+    
+    // Ajax requests may return about:blank and we want to ignore these.
+    if ([@"about:blank" isEqualToString:[[req URL] absoluteString]]) {
+        return;
+    }
+    
+    [currentRequest release];
+    currentRequest = nil;
+    currentRequest = [req retain];
 }
 
 - (void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message {
@@ -256,18 +274,18 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     [alertView release];
 }
 
-- (void)setCurrentRequest:(AFHTTPRequestOperation *)newCurrentRequest {
-    if (currentRequest){
-        if(currentRequest.isExecuting) {
-            [currentRequest cancel];
+- (void)setCurrentHTTPRequestOperation:(AFHTTPRequestOperation *)newCurrentHTTPRequestOperation {
+    if (currentHTTPRequestOperation){
+        if(currentHTTPRequestOperation.isExecuting) {
+            [currentHTTPRequestOperation cancel];
         }
-        [currentRequest release]; currentRequest = nil;
+        [currentHTTPRequestOperation release]; currentHTTPRequestOperation = nil;
     }
-    currentRequest = [newCurrentRequest retain];
+    currentHTTPRequestOperation = [newCurrentHTTPRequestOperation retain];
 }
 
 - (NSURL *)currentURL {
-    return [[webView request] URL];
+    return [[self currentRequest] URL];
 }
 
 
@@ -289,13 +307,13 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 }
 
 - (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType textEncodingName:(NSString *)encodingName baseURL:(NSURL *)baseURL {
-    self.currentRequest = nil;
+    self.currentHTTPRequestOperation = nil;
     [self setLoading:YES];
     [webView loadData:data MIMEType:MIMEType textEncodingName:encodingName baseURL:baseURL];
 }
 
 - (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL {
-    self.currentRequest = nil;
+    self.currentHTTPRequestOperation = nil;
     [self setLoading:YES];
     [webView loadHTMLString:string baseURL:baseURL];
 }
@@ -317,9 +335,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     if ([aRequest isKindOfClass:[NSMutableURLRequest class]]) {
         mRequest = [(NSMutableURLRequest *)aRequest retain];
     } else {
-        mRequest = [[NSMutableURLRequest alloc] initWithURL:aRequest.URL 
-                                                            cachePolicy:aRequest.cachePolicy 
-                                                        timeoutInterval:aRequest.timeoutInterval];
+        mRequest = [aRequest mutableCopy];
         [mRequest setAllHTTPHeaderFields:self.defaultHeaders];
     }
 
@@ -327,20 +343,25 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     if (!baseURLFallback) 
         self.baseURLFallback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/", mRequest.URL.scheme, mRequest.URL.host]];
     
-    self.currentRequest = [[[AFHTTPRequestOperation alloc] initWithRequest:mRequest] autorelease];
-
-    // webview loading vs afnetworking loading
-    [webView loadRequest:aRequest];
-    return;
+    self.currentRequest = mRequest;
+    self.currentHTTPRequestOperation = [[[AFHTTPRequestOperation alloc] initWithRequest:mRequest] autorelease];
     
-    [currentRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [currentHTTPRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Check for a redirect.  Make sure the current URL reflects any redirects.
+        NSURL *currURL = [[self currentRequest] URL];
+        NSURL *respURL = [[operation response] URL];
+        if(![[currURL absoluteString] isEqualToString:[respURL absoluteString]]) {
+            NSMutableURLRequest *mReq = [currentRequest mutableCopy];
+            [mReq setURL:respURL];
+            self.currentRequest = mReq;
+            self.baseURLFallback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/", mReq.URL.scheme, mReq.URL.host]];
+        }
         [webView loadData:operation.responseData MIMEType:operation.response.MIMEType textEncodingName:@"utf-8" baseURL:nil];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self webView:webView didFailLoadWithError:error];
-        
     }];
     
-    [currentRequest start];
+    [currentHTTPRequestOperation start];
 }
 
 - (void)loadPath:(NSString *)path {
@@ -363,8 +384,8 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     [self setLoading:NO];
     
     // Cancel the currentRequest but do not dispose of it. Maybe we want to reload it later.
-    if (currentRequest && currentRequest.isExecuting) {
-        [currentRequest cancel];
+    if (currentHTTPRequestOperation && currentHTTPRequestOperation.isExecuting) {
+        [currentHTTPRequestOperation cancel];
     } else if (webView.isLoading) {
         [webView stopLoading];
     }
@@ -406,24 +427,54 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 #pragma mark - 
 #pragma mark WebViewDelegate Methods
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)aRequest navigationType:(UIWebViewNavigationType)navigationType {
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)aRequest navigationType:(UIWebViewNavigationType)navigationType {    
     // applewebdata:// urls are a problem. Kill that request and substitute a better one. Assumes a GET request.
     if ([@"applewebdata" isEqualToString:aRequest.URL.scheme]) {
-        [self loadPath:[NSString stringWithFormat:@"%@://%@/%@?", aRequest.URL.scheme, self.baseURLFallback, aRequest.URL.path, aRequest.URL.query]];
+        NSString *basepath = [self.baseURLFallback absoluteString];
+        basepath = [basepath substringToIndex:[basepath length] - 1]; // remove the trailing slash.
+        NSString *path = [NSString stringWithFormat:@"%@%@?%@", basepath, aRequest.URL.path, aRequest.URL.query];
+        
+        
+        // Since we are rewriting the request's url we need to retrigger the load so it is handled correctly,
+        // but we also need to respect the wishes of a delegate.
+        NSMutableURLRequest *modRequest = [aRequest mutableCopy];
+        [modRequest setURL:[NSURL URLWithString:path]];
+        
+        if (delegate && [delegate respondsToSelector:@selector(wpWebView:shouldStartLoadWithRequest:navigationType:)]) {
+            // ask the delegate what it wants to do.
+            BOOL should = [delegate wpWebView:self shouldStartLoadWithRequest:modRequest navigationType:navigationType];
+            if (should) {
+                // YES! Let the loading begin!
+                [self performSelector:@selector(loadRequest:) withObject:modRequest afterDelay:0.1];
+            } else {
+                // The delegate does not want the webview to load this request so do nothing now and return NO in a moment.
+            }
+        } else {
+            // No delegate or the it doesn't implement the method so load the modified url and return no.
+            [self performSelector:@selector(loadRequest:) withObject:modRequest afterDelay:0.1];
+        }
         return NO;
     }
     
     // If we have a delegate listening to this method, let the delegate decide how to handle it.
     if (delegate && [delegate respondsToSelector:@selector(wpWebView:shouldStartLoadWithRequest:navigationType:)]) {
-        return [delegate wpWebView:self shouldStartLoadWithRequest:aRequest navigationType:navigationType];
+        BOOL should = [delegate wpWebView:self shouldStartLoadWithRequest:aRequest navigationType:navigationType];
+        if(should){
+            self.currentRequest = aRequest;
+        }
+        return should;
     }
     
+    // Check reachibility after the delegates have been checked. Delegates may have their own reachibility check and we don't
+    // want to conflict. 
     if (![[self reachability] isReachable]) {
         [self showAlertWithTitle:NSLocalizedString(@"Network Unavailable", nil) 
                       andMessage:NSLocalizedString(@"Please check your device's network connection.", nil)];
         return NO;
     }
+        
     // No delegate so do our default action is to just handle the request.
+    self.currentRequest = aRequest;
     return YES;
 }
 
