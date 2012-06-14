@@ -50,8 +50,11 @@
     [self setLoading:NO];
     self.backButton.enabled = NO;
     self.forwardButton.enabled = NO;
-    self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showLinkOptions)] autorelease];
-    self.navigationItem.rightBarButtonItem = optionsButton;
+    
+    if( IS_IPHONE ) {
+        self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showLinkOptions)] autorelease];
+        self.navigationItem.rightBarButtonItem = optionsButton;
+    }
     self.optionsButton.enabled = NO;
     self.webView.scalesPageToFit = YES;
     self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
@@ -306,7 +309,6 @@
                          animations:^{self.loadingView.frame = frame;}];
         if( self.refreshButton )
             self.refreshButton.enabled = !loading;
-        self.navigationItem.leftBarButtonItem.enabled = YES;
     }
     else {
         if( self.refreshButton ) { //the refresh
@@ -335,7 +337,8 @@
 			[spinner release];
 			[customView release];
 		} else {
-			self.navigationItem.rightBarButtonItem = optionsButton;
+            if( IS_IPHONE )
+                self.navigationItem.rightBarButtonItem = optionsButton;
 		}
 	}
     isLoading = loading;
@@ -476,8 +479,7 @@
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setLoading:NO];
-    self.optionsButton.enabled = YES;
-    
+    self.optionsButton.enabled = YES;;
     if ( !hasLoadedContent && ([aWebView.request.URL.absoluteString rangeOfString:kMobileReaderDetailURL].location == NSNotFound || self.detailContent)) {
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(%@);", self.readerAllItems]];
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent]];
@@ -569,6 +571,14 @@
     
     //field not found in this view.
     return NO;
+}
+
+
+- (void) showCloseButton {
+    if ( IS_IPAD ) {
+        UINavigationItem *topItem = self.iPadNavBar.topItem;        
+        topItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)] autorelease];
+    }
 }
 
 @end

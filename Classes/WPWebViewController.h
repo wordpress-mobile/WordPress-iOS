@@ -31,11 +31,13 @@
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *optionsButton;
 @property (retain, nonatomic) NSTimer *statusTimer;
 
+
 //reader variables
 @property (nonatomic,retain) NSString *detailContent;
 @property (nonatomic,retain) NSString *detailHTML;
 @property (nonatomic,retain) NSString *readerAllItems;
 
+- (void) showCloseButton;
 - (IBAction) showLinkOptions;
 - (IBAction) dismiss;
 - (IBAction) goForward;
