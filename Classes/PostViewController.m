@@ -115,6 +115,7 @@
         NSString *postPreviewPath = [[NSBundle mainBundle] pathForResource:@"postpreview" ofType:@"html"];
         NSString *htmlStr = [NSString stringWithContentsOfFile:postPreviewPath encoding:NSUTF8StringEncoding error:nil];
         NSString *contentStr = [self.apost.content stringByReplacingOccurrencesOfRegex:@">\\n+<" withString:@"><"];
+        contentStr = [contentStr stringByReplacingOccurrencesOfRegex:@"\\n{3,999}" withString:@"\n"];
         contentStr = [htmlStr stringByAppendingString:contentStr];
         [contentWebView loadHTMLString:contentStr baseURL:nil];        
     }
