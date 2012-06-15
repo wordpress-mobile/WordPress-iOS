@@ -30,6 +30,7 @@
 @property (nonatomic, retain) UIPanGestureRecognizer *panner;
 @property (nonatomic, retain) UITapGestureRecognizer *tapper;
 @property (nonatomic, retain) UIImageView *backgroundImageView;
+
 - (void)showSidebar;
 - (void)showSidebarAnimated:(BOOL)animated;
 - (void)closeSidebar;
@@ -58,6 +59,7 @@
 - (UIView *)viewBefore:(UIView *)view;
 - (UIView *)viewAfter:(UIView *)view;
 - (NSArray *)partiallyVisibleViews;
+//- (BOOL)hasWidePanel;
 - (void)relayAppearanceMethod:(void(^)(UIViewController* controller))relay;
 
 - (UIView *)createWrapViewForViewController:(UIViewController *)controller;
@@ -429,6 +431,14 @@
 - (void)setDetailViewController:(UIViewController *)detailViewController closingSidebar:(BOOL)closingSidebar {
     if (_detailViewController == detailViewController) return;
 
+    BOOL oldWasWide = NO;
+    if ([_detailViewController respondsToSelector:@selector(expectedWidth)]) {
+        CGFloat expectedWidth = [[_detailViewController performSelector:@selector(expectedWidth)] floatValue];
+        if (expectedWidth == IPAD_WIDE_PANEL_WIDTH) {
+            oldWasWide = YES;
+        }
+    }
+    
     UIBarButtonItem *sidebarButton = nil;
     
     [self popToRootViewControllerAnimated:NO];
@@ -478,6 +488,29 @@
             UIView *wrappedView = [self createWrapViewForViewController:_detailViewController];
             [self prepareDetailView:wrappedView];
             [self.detailView addSubview:wrappedView];
+            BOOL newIsWide = NO;
+            
+            if ([_detailViewController respondsToSelector:@selector(expectedWidth)]) {
+                CGFloat expectedWidth = [[_detailViewController performSelector:@selector(expectedWidth)] floatValue];
+                if (expectedWidth == IPAD_WIDE_PANEL_WIDTH) {
+                    newIsWide = YES;
+                }
+            }
+            
+            if (newIsWide != oldWasWide) {
+                CGRect frm = self.detailView.frame;
+                if (newIsWide) {
+                    frm.origin.x = self.view.bounds.size.width - IPAD_WIDE_PANEL_WIDTH;
+                } else {
+                    frm.origin.x = SIDEBAR_WIDTH;
+                }
+                if(self.detailView.frame.origin.x != frm.origin.x) {
+                    [UIView animateWithDuration:0.3 animations:^{
+                        self.detailView.frame = frm;
+                    }];
+                    _stackOffset = ABS(SIDEBAR_WIDTH - frm.origin.x);
+                }
+            }
 
             if (_isAppeared) {
                 [_detailViewController vdc_viewDidAppear:NO];
@@ -652,6 +685,13 @@
 
 #pragma mark - Panning
 
+//- (BOOL)hasWidePanel {
+//    if ([[self topViewController] respondsToSelector:@selector(hasWidePanel)]) {
+//        return (BOOL)[[self topViewController] performSelector:@selector(hasWidePanel)];
+//    }
+//    return NO;
+//}
+
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     if (gestureRecognizer == self.panner) {
         [self applyShadows];
@@ -689,7 +729,16 @@
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     if (gestureRecognizer == self.panner) {
-        _panOrigin = _stackOffset;
+//        if (_stackOffset > 0) {
+//            CGFloat detail_ledge_offset = DETAIL_LEDGE_OFFSET;
+//            CGFloat detail_offset = DETAIL_OFFSET;
+//            NSLog(@"ledge: %.1f  offset: %.1f  stackoffset: %.1f", detail_ledge_offset, detail_offset, _stackOffset);
+//            _panOrigin = detail_ledge_offset + detail_offset + _stackOffset;
+//            _panOrigin =  _stackOffset*3;
+//        } else {
+            _panOrigin = _stackOffset;
+//        }
+
         NSLog(@"panOrigin: %.0f", _panOrigin);
     }
     return YES;
@@ -814,19 +863,21 @@
 
 - (void)setFrameForViewController:(UIViewController *)viewController {
     CGFloat newPanelWidth = DETAIL_WIDTH;
+    CGRect frame;
     if ([viewController respondsToSelector:@selector(expectedWidth)]) {
         newPanelWidth = [[viewController performSelector:@selector(expectedWidth)] floatValue];
     }
     if (self.navigationController) {
-        CGRect frame = viewController.view.frame;
+        frame = viewController.view.frame;
         frame.size.width = newPanelWidth;
         viewController.view.frame = frame;
     } else {
         UIView *view = [self viewOrViewWrapper:viewController.view];
-        CGRect frame = view.frame;
+        frame = view.frame;
         frame.size.width = newPanelWidth;
         view.frame = frame;
     }
+    NSLog(@"Frame Set For View Controller : %.1f %.1f %.1f %.1f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 }
 
 - (void)setViewOffset:(CGFloat)offset forView:(UIView *)view {
@@ -839,6 +890,17 @@
 
 - (void)setStackOffset:(CGFloat)offset duration:(CGFloat)duration {
     CGFloat remainingOffset = offset;
+    
+    CGFloat detailLedgeOffset = DETAIL_LEDGE_OFFSET;
+    if ([[self detailViewController] respondsToSelector:@selector(expectedWidth)]) {
+        CGFloat expectedWidth = [[[self detailViewController] performSelector:@selector(expectedWidth)] floatValue];
+        CGFloat panelWidth = IPAD_WIDE_PANEL_WIDTH;
+        
+        if (expectedWidth == panelWidth) {
+            detailLedgeOffset = 44.0f;
+        }
+    }
+    
     CGFloat usedOffset = MIN(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET, remainingOffset);
     CGFloat viewX = DETAIL_LEDGE_OFFSET - usedOffset;
     if (duration > 0) {
@@ -862,6 +924,7 @@
     }
     [UIView commitAnimations];
     _stackOffset = offset - remainingOffset;
+
     NSLog(@"partially visible: %@", [self partiallyVisibleViews]);
 }
 
@@ -921,7 +984,8 @@
     if (IS_IPHONE) {
         maxSoft = DETAIL_LEDGE_OFFSET;
     } else if (viewCount <= 1) {
-        maxSoft = 0;
+//        maxSoft = 0;
+        maxSoft = DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
     } else {
         maxSoft = DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
         maxSoft+= DETAIL_LEDGE;
@@ -1053,6 +1117,7 @@
         }
         CGRect topViewFrame = topView.frame;
         CGFloat newPanelWidth = DETAIL_WIDTH;
+        
         if ([viewController respondsToSelector:@selector(expectedWidth)]) {
             newPanelWidth = [[viewController performSelector:@selector(expectedWidth)] floatValue];
         }

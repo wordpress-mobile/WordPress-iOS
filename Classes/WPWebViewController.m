@@ -8,6 +8,7 @@
 
 #import "WPWebViewController.h"
 #import "WordPressAppDelegate.h"
+#import "PanelNavigationConstants.h"
 
 @interface WPWebViewController (Private)
 @property (readonly) UIScrollView *scrollView;
@@ -147,8 +148,10 @@
     return NO;
 }
 
+
 - (NSNumber *)expectedWidth {
-    return [NSNumber numberWithFloat:668];
+    return [NSNumber numberWithFloat:IPAD_WIDE_PANEL_WIDTH];
+//    return [NSNumber numberWithFloat:668.0f];
 }
 
 #pragma mark - webView related methods

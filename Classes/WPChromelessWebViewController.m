@@ -7,6 +7,7 @@
 #import "WPChromelessWebViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
+#import "PanelNavigationConstants.h"
 
 @interface WPChromelessWebViewController ()
 @property (nonatomic, retain) WPWebView *webView;
@@ -77,6 +78,12 @@
 
 - (NSURL *)currentURL {
     return [self.webView currentURL];
+}
+
+
+- (NSNumber *)expectedWidth {
+    return [NSNumber numberWithFloat:IPAD_WIDE_PANEL_WIDTH];
+//    return UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? [NSNumber numberWithFloat:IPAD_DETAIL_WIDTH_PORTRAIT] : [NSNumber numberWithFloat:668.8f];
 }
 
 

@@ -8,6 +8,7 @@
 
 #import "PostViewController.h"
 #import "NSString+XMLExtensions.h"
+#import "PanelNavigationConstants.h"
 
 @implementation PostViewController
 @synthesize titleTitleLabel, tagsTitleLabel, categoriesTitleLabel;
@@ -94,7 +95,8 @@
 
 
 - (NSNumber *)expectedWidth {
-    return [NSNumber numberWithFloat:668.0f];
+    return [NSNumber numberWithFloat:IPAD_WIDE_PANEL_WIDTH];
+//    return [NSNumber numberWithFloat:668.0f];
 }
 
 
