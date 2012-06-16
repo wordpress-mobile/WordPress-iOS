@@ -119,7 +119,7 @@
         NSString *contentStr = [self.apost.content stringByReplacingOccurrencesOfRegex:@">\\n+<" withString:@"><"];
         contentStr = [contentStr stringByReplacingOccurrencesOfRegex:@"\\n{3,999}" withString:@"\n"];
         contentStr = [htmlStr stringByAppendingString:contentStr];
-        [contentWebView loadHTMLString:contentStr baseURL:nil];        
+        [contentWebView loadHTMLString:contentStr baseURL:nil];
     }
 }
 
@@ -193,6 +193,27 @@
         return NO;
     }
     return YES;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    // Disable user interaction if we don't need to scroll. This will let taps on the view invoke 
+    // the edit form.
+    UIScrollView *scrollView = nil;
+    if ([webView respondsToSelector:@selector(scrollView)]) {
+        scrollView = (UIScrollView *)[webView performSelector:@selector(scrollView)];
+    } else {
+        for (UIView* subView in webView.subviews) {
+            if ([subView isKindOfClass:[UIScrollView class]]) {
+                scrollView = (UIScrollView*)subView;
+                break;
+            }
+        }
+    }
+    if (scrollView.contentSize.height > webView.bounds.size.height) {
+        webView.userInteractionEnabled = YES;
+    } else {
+        webView.userInteractionEnabled = NO;
+    }
 }
 
 
