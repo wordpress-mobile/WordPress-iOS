@@ -203,15 +203,15 @@ typedef enum {
 /**
  * @page async_safety Async-Safe Programming Guide
  *
- * Plausible CrashReporter now provides support for executing your own code in the context of the crash reporter's
- * signal handler, after the crash report has been written to disk. This was a regularly requested feature, and provides
- * a convenient point for performing application finalization. However, there is an important caveat to be aware to
- * when writing code intended for execution inside of a signal handler -- specifically, your code must be async-safe.
+ * Plausible CrashReporter provides support for executing an application specified function in the context of the
+ * crash reporter's signal handler, after the crash report has been written to disk. This was a regularly requested
+ * feature, and provides the ability to implement application finalization in the event of a crash. However, writing
+ * code intended for execution inside of a signal handler is exceptionally difficult, and is not recommended.
  *
  * @section program_flow Program Flow and Signal Handlers
  *
- * When the signal handler is called, the normal flow of the program is interrupted, and your program is an entirely
- * unknown state. Locks may be held, the heap may be corrupt (or in the process of being updated), and your signal
+ * When the signal handler is called the normal flow of the program is interrupted, and your program is an unknown
+ * state. Locks may be held, the heap may be corrupt (or in the process of being updated), and your signal
  * handler may invoke a function that was being executed at the time of the signal. This may result in deadlocks,
  * data corruption, and program termination.
  *
@@ -222,6 +222,8 @@ typedef enum {
  * and additional information is available from the
  * <a href="https://www.securecoding.cert.org/confluence/display/seccode/SIG30-C.+Call+only+asynchronous-safe+functions+within+signal+handlers">CERT programming guide - SIG30-C</a>
  *
+ * Most notably, the Objective-C runtime itself is not async-safe, and Objective-C may not be used within a signal
+ * handler.
  *
- * @sa PLCrashReporter::setPostCrashCallbacks:
+ * @sa PLCrashReporter::setCrashCallbacks:
  */

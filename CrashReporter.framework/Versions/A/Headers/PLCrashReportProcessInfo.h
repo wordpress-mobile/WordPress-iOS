@@ -46,13 +46,17 @@
     
     /** Parent process ID */
     NSUInteger _parentProcessID;
+    
+    /** If false, the process is being run via process-level CPU emulation (such as Rosetta). */
+    BOOL _native;
 }
 
 - (id) initWithProcessName: (NSString *) processName
                  processID: (NSUInteger) processID
                processPath: (NSString *) processPath
          parentProcessName: (NSString *) parentProcessName
-           parentProcessID: (NSUInteger) parentProcessID;
+           parentProcessID: (NSUInteger) parentProcessID
+                    native: (BOOL) native;
 
 /**
  * The process name. This value may not be included in the crash report, in which case this property
@@ -81,5 +85,8 @@
  * The parent process ID.
  */
 @property(nonatomic, readonly) NSUInteger parentProcessID;
+
+/** The process' native execution status. If false, the process is being run via process-level CPU emulation (such as Rosetta). */
+@property(nonatomic, readonly) BOOL native;
 
 @end

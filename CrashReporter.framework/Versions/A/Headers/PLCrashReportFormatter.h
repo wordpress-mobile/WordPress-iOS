@@ -31,8 +31,8 @@
 #import "PLCrashReport.h"
 
 /**
- * A crash report formatter accepts a PLCrashReport and formats according to implementation-specified rules (such
- * as implementing text output support), writing the formatted result to a given output stream.
+ * A crash report formatter accepts a PLCrashReport instance, formats it according to implementation-specified rules,
+ * (such as implementing text output support), and returns the result.
  */
 @protocol PLCrashReportFormatter
 

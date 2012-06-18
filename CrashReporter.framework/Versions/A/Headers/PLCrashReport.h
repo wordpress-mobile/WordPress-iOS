@@ -28,6 +28,7 @@
 
 #import <Foundation/Foundation.h>
 #import "PLCrashReportSystemInfo.h"
+#import "PLCrashReportMachineInfo.h"
 #import "PLCrashReportApplicationInfo.h"
 #import "PLCrashReportProcessInfo.h"
 #import "PLCrashReportSignalInfo.h"
@@ -80,6 +81,9 @@ typedef struct _PLCrashReportDecoder _PLCrashReportDecoder;
 
     /** System info */
     PLCrashReportSystemInfo *_systemInfo;
+    
+    /** Machine info */
+    PLCrashReportMachineInfo *_machineInfo;
 
     /** Application info */
     PLCrashReportApplicationInfo *_applicationInfo;
@@ -108,6 +112,17 @@ typedef struct _PLCrashReportDecoder _PLCrashReportDecoder;
  * System information.
  */
 @property(nonatomic, readonly) PLCrashReportSystemInfo *systemInfo;
+
+/**
+ * YES if machine information is available.
+ */
+@property(nonatomic, readonly) BOOL hasMachineInfo;
+
+/**
+ * Machine information. Only available in later (v1.1+) crash report format versions. If not available,
+ * will be nil.
+ */
+@property(nonatomic, readonly) PLCrashReportMachineInfo *machineInfo;
 
 /**
  * Application information.

@@ -27,6 +27,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "PLCrashReportThreadInfo.h"
 
 
 @interface PLCrashReportExceptionInfo : NSObject {
@@ -36,9 +37,16 @@
 
     /** Reason */
     NSString *_reason;
+
+    /** Ordered list of PLCrashReportStackFrame instances, or nil if unavailable. */
+    NSArray *_stackFrames;
 }
 
 - (id) initWithExceptionName: (NSString *) name reason: (NSString *) reason;
+
+- (id) initWithExceptionName: (NSString *) name 
+                      reason: (NSString *) reason
+                 stackFrames: (NSArray *) stackFrames;
 
 /**
  * The exception name.
@@ -49,5 +57,9 @@
  * The exception reason.
  */
 @property(nonatomic, readonly) NSString *exceptionReason;
+
+/* The exception's original call stack, as an array of PLCrashReportStackFrameInfo instances, or nil if unavailable.
+ * This may be preserved across rethrow of an exception, and can be used to determine the original call stack. */
+@property(nonatomic, readonly) NSArray *stackFrames;
 
 @end

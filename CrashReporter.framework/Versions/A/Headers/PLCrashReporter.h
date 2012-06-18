@@ -46,12 +46,12 @@ typedef void (*PLCrashReporterPostCrashSignalCallback)(siginfo_t *info, ucontext
 /**
  * @ingroup types
  *
- * This structure contains callbacks implemented by the PLCrashReporter to allow end-user software to perform
- * additional tasks prior to program termination after a crash has occured andbeen recorded by PLCrashReporter.
+ * This structure contains callbacks supported by PLCrashReporter to allow the host application to perform
+ * additional tasks prior to program termination after a crash has occured.
  *
  * @sa @ref async_safety
  */
-typedef struct PLCrashReporterPostCrashCallbacks {
+typedef struct PLCrashReporterCallbacks {
     /** The version number of this structure. If not one of the defined version numbers for this type, the behavior
      * is undefined. The current version of this structure is 0. */
     uint16_t version;
@@ -62,7 +62,7 @@ typedef struct PLCrashReporterPostCrashCallbacks {
     /** The callback used to report caught signal information. In version 0 of this structure, all crashes will be
      * reported via this function. */
     PLCrashReporterPostCrashSignalCallback handleSignal;
-} PLCrashReporterPostCrashCallbacks;
+} PLCrashReporterCallbacks;
 
 @interface PLCrashReporter : NSObject {
 @private
@@ -92,7 +92,6 @@ typedef struct PLCrashReporterPostCrashCallbacks {
 - (BOOL) enableCrashReporter;
 - (BOOL) enableCrashReporterAndReturnError: (NSError **) outError;
 
-- (PLCrashReporterPostCrashCallbacks) postCrashCallbacks;
-- (void) setPostCrashCallbacks: (PLCrashReporterPostCrashCallbacks) callbacks;
+- (void) setCrashCallbacks: (PLCrashReporterCallbacks *) callbacks;
 
 @end

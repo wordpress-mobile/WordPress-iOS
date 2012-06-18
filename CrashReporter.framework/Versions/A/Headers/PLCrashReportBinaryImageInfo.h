@@ -27,9 +27,13 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "PLCrashReportProcessorInfo.h"
 
 @interface PLCrashReportBinaryImageInfo : NSObject {
 @private
+    /** Code type */
+    PLCrashReportProcessorInfo *_processorInfo;
+
     /** Base image address */
     uint64_t _baseAddress;
 
@@ -46,10 +50,16 @@
     NSString *_imageUUID;
 }
 
-- (id) initWithImageBaseAddress: (uint64_t) baseAddress 
-                      imageSize: (uint64_t) imageSize
-                      imageName: (NSString *) imageName
-                      imageUUID: (NSString *) imageUUID;
+- (id) initWithCodeType: (PLCrashReportProcessorInfo *) processorInfo
+            baseAddress: (uint64_t) baseAddress 
+                   size: (uint64_t) imageSize
+                   name: (NSString *) imageName
+                   uuid: (NSData *) uuid;
+
+/**
+ * Image code type, or nil if unavailable.
+ */
+@property(nonatomic, readonly) PLCrashReportProcessorInfo *codeType;
 
 /**
  * Image base address.
