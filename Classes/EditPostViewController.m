@@ -491,7 +491,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     selObject = [self.post.categories allObjects];
 	
-    [segmentedTableViewController populateDataSource:cats    //datasorce
+    [segmentedTableViewController populateDataSource:cats    //datasource
 									   havingContext:kSelectionsCategoriesContext
 									 selectedObjects:selObject
 									   selectionType:kCheckbox
@@ -515,9 +515,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			[[CPopoverManager instance] setCurrentPopoverController:popover];
 		}
 		else {
-			WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 			self.editMode = kEditPost;
-			[delegate.navigationController pushViewController:segmentedTableViewController animated:YES];
+			[self.navigationController pushViewController:segmentedTableViewController animated:YES];
 		}
     }
 	

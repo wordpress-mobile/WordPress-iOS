@@ -110,7 +110,7 @@
     CGFloat height = DeviceIsPad() ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
 	CGFloat margin = DeviceIsPad() ? WPKT_BUTTON_MARGIN_IPAD : WPKT_BUTTON_MARGIN_IPHONE;
     if (boldButton == nil) {
-        boldButton = [WPKeyboardToolbarButtonItem button];
+        boldButton = [[WPKeyboardToolbarButtonItem button] retain];
         [boldButton setImageName:@"toolbarBold"];
         boldButton.frame = CGRectMake(x, 0, boldButton.imageView.image.size.width + padding, height);
         x += boldButton.frame.size.width + margin;
@@ -119,7 +119,7 @@
         [boldButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (italicsButton == nil) {
-        italicsButton = [WPKeyboardToolbarButtonItem button];
+        italicsButton = [[WPKeyboardToolbarButtonItem button] retain];
         [italicsButton setImageName:@"toolbarItalic"];
         italicsButton.frame = CGRectMake(x, 0, italicsButton.imageView.image.size.width + padding, height);
         x += italicsButton.frame.size.width + margin;
@@ -128,7 +128,7 @@
         [italicsButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (linkButton == nil) {
-        linkButton = [WPKeyboardToolbarButtonItem button];
+        linkButton = [[WPKeyboardToolbarButtonItem button] retain];
         [linkButton setImageName:@"toolbarLink"];
         linkButton.frame = CGRectMake(x, 0, linkButton.imageView.image.size.width + padding, height);
         x += linkButton.frame.size.width + margin;
@@ -137,7 +137,7 @@
         [linkButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (quoteButton == nil) {
-        quoteButton = [WPKeyboardToolbarButtonItem button];
+        quoteButton = [[WPKeyboardToolbarButtonItem button] retain];
         [quoteButton setImageName:@"toolbarBlockquote"];
         quoteButton.frame = CGRectMake(x, 0, quoteButton.imageView.image.size.width + padding, height);
 		x += quoteButton.frame.size.width + margin;
@@ -146,7 +146,7 @@
         [quoteButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (delButton == nil) {
-        delButton = [WPKeyboardToolbarButtonItem button];
+        delButton = [[WPKeyboardToolbarButtonItem button] retain];
         [delButton setImageName:@"toolbarDel"];
         delButton.frame = CGRectMake(x, 0, delButton.imageView.image.size.width + padding, height);
         delButton.actionTag = @"del";
@@ -161,7 +161,7 @@
 	CGFloat margin = DeviceIsPad() ? WPKT_BUTTON_MARGIN_IPAD : WPKT_BUTTON_MARGIN_IPHONE;
     CGFloat x = 4.0f;
     if (ulButton == nil) {
-        ulButton = [WPKeyboardToolbarButtonItem button];
+        ulButton = [[WPKeyboardToolbarButtonItem button] retain];
         [ulButton setImageName:@"toolbarUl"];
         ulButton.frame = CGRectMake(x, 0, ulButton.imageView.image.size.width + padding, height);
         x += ulButton.frame.size.width + margin;
@@ -170,7 +170,7 @@
         [ulButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (olButton == nil) {
-        olButton = [WPKeyboardToolbarButtonItem button];
+        olButton = [[WPKeyboardToolbarButtonItem button] retain];
         [olButton setImageName:@"toolbarOl"];
         olButton.frame = CGRectMake(x, 0, olButton.imageView.image.size.width + padding, height);
         x += olButton.frame.size.width + margin;
@@ -179,7 +179,7 @@
         [olButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (liButton == nil) {
-        liButton = [WPKeyboardToolbarButtonItem button];
+        liButton = [[WPKeyboardToolbarButtonItem button] retain];
         [liButton setImageName:@"toolbarLi"];
         liButton.frame = CGRectMake(x, 0, liButton.imageView.image.size.width + padding, height);
         x += liButton.frame.size.width + margin;
@@ -188,7 +188,7 @@
         [liButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (codeButton == nil) {
-        codeButton = [WPKeyboardToolbarButtonItem button];
+        codeButton = [[WPKeyboardToolbarButtonItem button] retain];
         [codeButton setImageName:@"toolbarCode"];
         codeButton.frame = CGRectMake(x, 0, codeButton.imageView.image.size.width + padding, height);
         x += codeButton.frame.size.width + margin;
@@ -197,7 +197,7 @@
         [codeButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     if (moreButton == nil) {
-        moreButton = [WPKeyboardToolbarButtonItem button];
+        moreButton = [[WPKeyboardToolbarButtonItem button] retain];
         [moreButton setImageName:@"toolbarMore"];
         moreButton.frame = CGRectMake(x, 0, moreButton.imageView.image.size.width + padding, height);
         moreButton.actionTag = @"more";
@@ -209,7 +209,7 @@
 - (void)buildMainView {
     if (mainView == nil) {
         CGFloat height = DeviceIsPad() ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
-        mainView = [[UIView alloc] init];
+        mainView = [[[UIView alloc] init] retain];
         [self buildMainButtons];
         CGFloat mainWidth = delButton.frame.origin.x + delButton.frame.size.width;
         mainView.frame = CGRectMake(0, 0, mainWidth, height);
@@ -226,7 +226,7 @@
 - (void)buildExtendedView {
     if (extendedView == nil) {
         CGFloat height = DeviceIsPad() ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
-        extendedView = [[UIView alloc] init];
+        extendedView = [[[UIView alloc] init] retain];
         [self buildExtendedButtons];
         CGFloat extendedWidth = moreButton.frame.origin.x + moreButton.frame.size.width;
         extendedView.frame = CGRectMake(0, 0, extendedWidth, height);
@@ -254,7 +254,7 @@
 
 - (void)buildToggleButton {
     if (toggleButton == nil) {
-        toggleButton = [WPKeyboardToolbarButtonItem button];
+        toggleButton = [[WPKeyboardToolbarButtonItem button] retain];
         toggleButton.frame = CGRectMake(2, 2, 39, 39);
         toggleButton.adjustsImageWhenHighlighted = NO;
         [toggleButton addTarget:self action:@selector(toggleExtendedView) forControlEvents:UIControlEventTouchDown];
@@ -268,7 +268,7 @@
 
 - (void)setupDoneButton {
     if (doneButton == nil) {
-        doneButton = [WPKeyboardToolbarButtonItem button];
+        doneButton = [[WPKeyboardToolbarButtonItem button] retain];
         doneButton.frame = CGRectMake(4, 2, 50, 39);
         [doneButton setTitle:@"Done" forState:UIControlStateNormal];
 		doneButton.titleLabel.textAlignment = UITextAlignmentCenter;
