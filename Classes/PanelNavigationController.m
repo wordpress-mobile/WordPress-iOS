@@ -299,7 +299,8 @@
     [self.navigationController didReceiveMemoryWarning];
     [self.masterViewController didReceiveMemoryWarning];
     [self.detailViewController didReceiveMemoryWarning];
-    [self.detailViewControllers performSelector:@selector(didReceiveMemoryWarning)];
+    [self.detailViewControllers makeObjectsPerformSelector:@selector(didReceiveMemoryWarning)];
+    
 }
 
 #pragma mark - View Wrapping
