@@ -36,9 +36,9 @@ static NSArray *colors = nil;
 
     if ( nil == colors ) {
         colors = [[NSArray alloc] initWithObjects:
-                  (id) [[UIColor UIColorFromRGBColorWithRed:229.5 green:229.5 blue:229.5] CGColor],
-                  (id) [[UIColor UIColorFromRGBColorWithRed:216.75 green:216.75 blue:216.75] CGColor],
-                  (id) [[UIColor UIColorFromRGBColorWithRed:204.0 green:204.0 blue:204.0] CGColor],
+                  (id) [[UIColor UIColorFromRGBAColorWithRed:229.5 green:229.5 blue:229.5 alpha:1.0] CGColor],
+                  (id) [[UIColor UIColorFromRGBAColorWithRed:216.75 green:216.75 blue:216.75 alpha:1.0] CGColor],
+                  (id) [[UIColor UIColorFromRGBAColorWithRed:204.0 green:204.0 blue:204.0 alpha:1.0] CGColor],
                   nil
                   ];
     }
@@ -102,8 +102,6 @@ static NSArray *colors = nil;
                 
         [(CAGradientLayer *)self.layer setColors:colors];
         [(CAGradientLayer *)self.layer setLocations:[NSArray arrayWithObjects:[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:0.48], [NSNumber numberWithFloat:1.0], nil]];
-        
-        self.backgroundColor = [UIColor colorWithWhite:0.921875f alpha:1.0f];
     }
         
     [[NSNotificationCenter defaultCenter] addObserver:self

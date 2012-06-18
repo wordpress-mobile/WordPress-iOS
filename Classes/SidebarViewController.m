@@ -30,7 +30,7 @@
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
 // Height for secondary cells (posts/pages/comments/... inside a blog)
-#define SIDEBAR_CELL_SECONDARY_HEIGHT 38.0f
+#define SIDEBAR_CELL_SECONDARY_HEIGHT 48.0f
 #define SIDEBAR_BGCOLOR [UIColor colorWithWhite:0.921875f alpha:1.0f];
 #define HEADER_HEIGHT 47
 #define DEFAULT_ROW_HEIGHT 48
@@ -63,7 +63,8 @@
     [super viewDidLoad];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.view.backgroundColor = SIDEBAR_BGCOLOR;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //self.view.backgroundColor = SIDEBAR_BGCOLOR;
     self.openSection = nil;
     
     // create the sectionInfoArray, stores data for collapsing/expanding sections in the tableView
@@ -236,6 +237,11 @@
     SidebarTableViewCell *cell = (SidebarTableViewCell *) [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[SidebarTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell.textLabel.shadowOffset = CGSizeMake(0, 1.1f);
+        cell.textLabel.shadowColor = [UIColor blackColor];
+        cell.textLabel.textColor = [[UIColor alloc] initWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0f];
+        cell.backgroundView = [[[UIImageView alloc] initWithImage:[ [UIImage imageNamed:@"sidebar_bg.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:5.0]] autorelease];
+        cell.selectedBackgroundView = [[[UIImageView alloc] initWithImage:[ [UIImage imageNamed:@"sidebar_bg_selected.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:5.0]] autorelease];
     }
     
     NSString *title = nil;
@@ -276,9 +282,7 @@
         }
     }
     
-    
     cell.textLabel.text = title;
-    cell.backgroundColor = SIDEBAR_BGCOLOR;
     cell.textLabel.backgroundColor = SIDEBAR_BGCOLOR;
     
     return cell;
