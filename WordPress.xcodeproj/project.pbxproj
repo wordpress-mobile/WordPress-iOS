@@ -960,10 +960,6 @@
 		A2CDC80E14C7681600091CEB /* approve@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "approve@2x.png"; sourceTree = "<group>"; };
 		A2CDC80F14C7681600091CEB /* unapprove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unapprove.png; sourceTree = "<group>"; };
 		A2CDC81014C7681600091CEB /* unapprove@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "unapprove@2x.png"; sourceTree = "<group>"; };
-		A2D4F854153F0E3F00686803 /* Blog.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Blog.js; sourceTree = "<group>"; };
-		A2D4F855153F0E3F00686803 /* Config.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Config.js; sourceTree = "<group>"; };
-		A2D4F856153F0E3F00686803 /* Post.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Post.js; sourceTree = "<group>"; };
-		A2D4F857153F0E3F00686803 /* WPiOSTests.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = WPiOSTests.js; sourceTree = "<group>"; };
 		AC3D2C100E2222430064A705 /* RoundedRectBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RoundedRectBlack.png; sourceTree = "<group>"; };
 		AC600C080E20B80400D663AA /* write.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = write.png; sourceTree = "<group>"; };
 		AC600C0A0E20B80400D663AA /* photos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = photos.png; sourceTree = "<group>"; };
@@ -1464,7 +1460,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				45C73C23113C36F50024D0D2 /* Resources-iPad */,
 				E16AB92F14D978240047A2E5 /* WordPressTest */,
-				A2D4F853153F0E3F00686803 /* UIAutomationTests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				45B71DE4113EDAA100D0A33C /* Entitlements.plist */,
@@ -1840,17 +1835,6 @@
 				030DB993113C4BE6002FF1A2 /* BlogViewController-iPad.xib */,
 			);
 			name = Blogs;
-			sourceTree = "<group>";
-		};
-		A2D4F853153F0E3F00686803 /* UIAutomationTests */ = {
-			isa = PBXGroup;
-			children = (
-				A2D4F854153F0E3F00686803 /* Blog.js */,
-				A2D4F855153F0E3F00686803 /* Config.js */,
-				A2D4F856153F0E3F00686803 /* Post.js */,
-				A2D4F857153F0E3F00686803 /* WPiOSTests.js */,
-			);
-			path = UIAutomationTests;
 			sourceTree = "<group>";
 		};
 		AC3439790E11434600E5D79B /* Post */ = {
