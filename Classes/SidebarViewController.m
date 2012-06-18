@@ -64,6 +64,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.showsVerticalScrollIndicator = NO;
     //self.view.backgroundColor = SIDEBAR_BGCOLOR;
     self.openSection = nil;
     
