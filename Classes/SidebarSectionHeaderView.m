@@ -99,9 +99,11 @@ static NSArray *colors = nil;
         [button addTarget:self action:@selector(toggleOpen:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:button];
         _disclosureButton = button;
-        
+                
         [(CAGradientLayer *)self.layer setColors:colors];
         [(CAGradientLayer *)self.layer setLocations:[NSArray arrayWithObjects:[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:0.48], [NSNumber numberWithFloat:1.0], nil]];
+        
+        self.backgroundColor = [UIColor colorWithWhite:0.921875f alpha:1.0f];
     }
         
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -127,7 +129,7 @@ static NSArray *colors = nil;
         else
             titleLabelFrame.size.width -= ( DETAIL_LEDGE + 4 + 47 ); //ledge + padding + blavatar size
     }
-     
+         
     return titleLabelFrame;
 }
 
