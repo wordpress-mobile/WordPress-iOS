@@ -382,7 +382,7 @@
 }
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
-    [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
+    [self.blog syncBlogPostsWithSuccess:success failure:failure];
 }
 
 - (UITableViewCell *)newCell {
