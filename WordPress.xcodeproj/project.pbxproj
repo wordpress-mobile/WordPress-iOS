@@ -354,7 +354,7 @@
 		E10B3652158F2D3F00419A93 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3651158F2D3F00419A93 /* QuartzCore.framework */; };
 		E10B3654158F2D4500419A93 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3653158F2D4500419A93 /* UIKit.framework */; };
 		E10B3655158F2D7800419A93 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7371256D0F60046A4A3 /* CoreGraphics.framework */; };
-		E10B3661158F2E6700419A93 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3660158F2E6700419A93 /* CrashReporter.framework */; };
+		E10B3664158F3B9500419A93 /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3663158F3B9500419A93 /* CrashReporter.framework */; };
 		E114D79A153D85A800984182 /* WPError.m in Sources */ = {isa = PBXBuildFile; fileRef = E114D799153D85A800984182 /* WPError.m */; };
 		E11930C41312F8A800F34124 /* FakeMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = E11930C31312F8A800F34124 /* FakeMigration.m */; };
 		E11C91D1135771010072A811 /* blockquote.png in Resources */ = {isa = PBXBuildFile; fileRef = E11C91CB135771010072A811 /* blockquote.png */; };
@@ -1029,7 +1029,7 @@
 		E100D630134B163E001AC67F /* BlogViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlogViewController.xib; sourceTree = "<group>"; };
 		E10B3651158F2D3F00419A93 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E10B3653158F2D4500419A93 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		E10B3660158F2E6700419A93 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CrashReporter.framework; sourceTree = "<group>"; };
+		E10B3663158F3B9500419A93 /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = Classes/CrashReporter.framework; sourceTree = "<group>"; };
 		E114D798153D85A800984182 /* WPError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPError.h; sourceTree = "<group>"; };
 		E114D799153D85A800984182 /* WPError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPError.m; sourceTree = "<group>"; };
 		E11930C21312F8A800F34124 /* FakeMigration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeMigration.h; sourceTree = "<group>"; };
@@ -1371,7 +1371,7 @@
 				FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */,
 				FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */,
 				CC24E6071578273A00A6D5B5 /* libfacebook_ios_sdk.a in Frameworks */,
-				E10B3661158F2E6700419A93 /* CrashReporter.framework in Frameworks */,
+				E10B3664158F3B9500419A93 /* CrashReporter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1530,7 +1530,7 @@
 				834CE7371256D0F60046A4A3 /* CoreGraphics.framework */,
 				83F3E2D211276371004CD686 /* CoreLocation.framework */,
 				E1A386C914DB05F700954CF8 /* CoreMedia.framework */,
-				E10B3660158F2E6700419A93 /* CrashReporter.framework */,
+				E10B3663158F3B9500419A93 /* CrashReporter.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				FD3D6D2B1349F5D30061136A /* ImageIO.framework */,
 				FD21397E13128C5300099582 /* libiconv.dylib */,
