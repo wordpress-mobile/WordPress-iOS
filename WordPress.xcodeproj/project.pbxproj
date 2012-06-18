@@ -173,6 +173,10 @@
 		379225B412F6DC1600F2176A /* StatsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 379225AB12F6DC1600F2176A /* StatsTableViewController.xib */; };
 		37A443B91354D03000029509 /* WPcomLoginViewController-iPad-stats.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37A443B81354D03000029509 /* WPcomLoginViewController-iPad-stats.xib */; };
 		37A443BB1354D05B00029509 /* BlogsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37A443BA1354D05B00029509 /* BlogsViewController.xib */; };
+		37F0D61B158F74F400261452 /* sidebar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37F0D619158F74F400261452 /* sidebar_bg@2x.png */; };
+		37F0D61C158F74F400261452 /* sidebar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 37F0D61A158F74F400261452 /* sidebar_bg.png */; };
+		37F0D630158F808400261452 /* sidebar_bg_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 37F0D62E158F808400261452 /* sidebar_bg_selected.png */; };
+		37F0D634158F836200261452 /* sidebar_bg_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37F0D633158F836200261452 /* sidebar_bg_selected@2x.png */; };
 		37F74137131866A600AED18A /* CommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37F74136131866A600AED18A /* CommentViewController.xib */; };
 		4526DC551148072F0090C99D /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC531148072F0090C99D /* Default-Portrait.png */; };
 		4526DC561148072F0090C99D /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4526DC541148072F0090C99D /* Default-Landscape.png */; };
@@ -764,6 +768,10 @@
 		379225AB12F6DC1600F2176A /* StatsTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsTableViewController.xib; sourceTree = "<group>"; };
 		37A443B81354D03000029509 /* WPcomLoginViewController-iPad-stats.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WPcomLoginViewController-iPad-stats.xib"; sourceTree = "<group>"; };
 		37A443BA1354D05B00029509 /* BlogsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BlogsViewController.xib; path = Classes/BlogsViewController.xib; sourceTree = "<group>"; };
+		37F0D619158F74F400261452 /* sidebar_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar_bg@2x.png"; sourceTree = "<group>"; };
+		37F0D61A158F74F400261452 /* sidebar_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_bg.png; sourceTree = "<group>"; };
+		37F0D62E158F808400261452 /* sidebar_bg_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_bg_selected.png; sourceTree = "<group>"; };
+		37F0D633158F836200261452 /* sidebar_bg_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar_bg_selected@2x.png"; sourceTree = "<group>"; };
 		37F74136131866A600AED18A /* CommentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentViewController.xib; sourceTree = "<group>"; };
 		4526DC531148072F0090C99D /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
 		4526DC541148072F0090C99D /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
@@ -1916,6 +1924,10 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				37F0D633158F836200261452 /* sidebar_bg_selected@2x.png */,
+				37F0D62E158F808400261452 /* sidebar_bg_selected.png */,
+				37F0D619158F74F400261452 /* sidebar_bg@2x.png */,
+				37F0D61A158F74F400261452 /* sidebar_bg.png */,
 				373C5185156D2547007C2977 /* carat-open@2x.png */,
 				373C5186156D2547007C2977 /* carat@2x.png */,
 				371C367E156CD03A007EA03E /* carat-open.png */,
@@ -3071,6 +3083,10 @@
 				373C5188156D2547007C2977 /* carat@2x.png in Resources */,
 				CC24E6061578273A00A6D5B5 /* FBDialog.bundle in Resources */,
 				5DB767411588F64D00EBE36C /* postPreview.html in Resources */,
+				37F0D61B158F74F400261452 /* sidebar_bg@2x.png in Resources */,
+				37F0D61C158F74F400261452 /* sidebar_bg.png in Resources */,
+				37F0D630158F808400261452 /* sidebar_bg_selected.png in Resources */,
+				37F0D634158F836200261452 /* sidebar_bg_selected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
