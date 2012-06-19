@@ -17,3 +17,8 @@ Version: 1cf8f0ff987cc473c6be9204eb3abb7f6322a805
 KVO+Blocks
 Source: https://gist.github.com/153676
 Version: 4eecf9d6dd54cc44f4932b97352554717a5c3547
+
+facebook-ios-sdk
+Source: https://github.com/facebook/facebook-ios-sdk
+Version: 397c0b62b116a9680035e87a07ab936e1c5dfce6
+Note: Built static lib using scripts/build_facebook_ios_sdk_static_lib.sh
