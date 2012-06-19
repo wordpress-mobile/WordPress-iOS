@@ -499,6 +499,23 @@ Vendor/KVO+Blocks/NSObject+BlockObservation.h -text
 Vendor/KVO+Blocks/NSObject+BlockObservation.m -text
 Vendor/Reachability/Reachability.h -text
 Vendor/Reachability/Reachability.m -text
+Vendor/facebook-ios-sdk/FBConnect.h -text
+Vendor/facebook-ios-sdk/FBDialog.bundle/images/close.png -text svneol=unset#unset
+Vendor/facebook-ios-sdk/FBDialog.bundle/images/close@2x.png -text svneol=unset#unset
+Vendor/facebook-ios-sdk/FBDialog.bundle/images/fbicon.png -text svneol=unset#unset
+Vendor/facebook-ios-sdk/FBDialog.h -text
+Vendor/facebook-ios-sdk/FBFrictionlessRequestSettings.h -text
+Vendor/facebook-ios-sdk/FBLoginDialog.h -text
+Vendor/facebook-ios-sdk/FBRequest.h -text
+Vendor/facebook-ios-sdk/Facebook.h -text
+Vendor/facebook-ios-sdk/JSON.h -text
+Vendor/facebook-ios-sdk/NSObject+SBJSON.h -text
+Vendor/facebook-ios-sdk/NSString+SBJSON.h -text
+Vendor/facebook-ios-sdk/SBJSON.h -text
+Vendor/facebook-ios-sdk/SBJsonBase.h -text
+Vendor/facebook-ios-sdk/SBJsonParser.h -text
+Vendor/facebook-ios-sdk/SBJsonWriter.h -text
+Vendor/facebook-ios-sdk/libfacebook_ios_sdk.a -text svneol=unset#unset
 Vendor/libraries.txt -text
 Vendor/xmlrpc/Configurations/Common.xcconfig -text
 Vendor/xmlrpc/Configurations/CommonDevelopment.xcconfig -text
@@ -722,23 +739,6 @@ de.lproj/Localizable.strings -text svneol=unset#unset
 /downArrow@2x.png -text svneol=unset#unset
 en.lproj/Localizable.strings -text svneol=unset#unset
 es.lproj/Localizable.strings -text svneol=unset#unset
-facebook-ios-sdk/FBConnect.h -text
-facebook-ios-sdk/FBDialog.bundle/images/close.png -text svneol=unset#unset
-facebook-ios-sdk/FBDialog.bundle/images/close@2x.png -text svneol=unset#unset
-facebook-ios-sdk/FBDialog.bundle/images/fbicon.png -text svneol=unset#unset
-facebook-ios-sdk/FBDialog.h -text
-facebook-ios-sdk/FBFrictionlessRequestSettings.h -text
-facebook-ios-sdk/FBLoginDialog.h -text
-facebook-ios-sdk/FBRequest.h -text
-facebook-ios-sdk/Facebook.h -text
-facebook-ios-sdk/JSON.h -text
-facebook-ios-sdk/NSObject+SBJSON.h -text
-facebook-ios-sdk/NSString+SBJSON.h -text
-facebook-ios-sdk/SBJSON.h -text
-facebook-ios-sdk/SBJsonBase.h -text
-facebook-ios-sdk/SBJsonParser.h -text
-facebook-ios-sdk/SBJsonWriter.h -text
-facebook-ios-sdk/libfacebook_ios_sdk.a -text svneol=unset#unset
 /fix-translation.php -text
 fr.lproj/Localizable.strings -text svneol=unset#unset
 fr.lproj/Localizable.strings.bak -text svneol=unset#unset
