@@ -51,8 +51,3 @@
 //#define DETAIL_OFFSET (IS_IPAD ? (self.hasWidePanel ? self.view.frame.size.width - IPAD_WIDE_PANEL_WIDTH : IPAD_DETAIL_OFFSET ) : IPHONE_DETAIL_OFFSET)
 #define DETAIL_HEIGHT (IS_IPAD ? IPAD_DETAIL_HEIGHT : IPHONE_DETAIL_HEIGHT)
 #define DETAIL_WIDTH (IS_IPAD ? IPAD_DETAIL_WIDTH : IPHONE_DETAIL_WIDTH)
-
-//for use in roundViewCorners
-#define ROUND_ALL 0
-#define ROUND_LEFT 1
-#define ROUND_RIGHT 2

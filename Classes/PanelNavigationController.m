@@ -41,7 +41,7 @@
 - (void)addShadowTo:(UIView *)view;
 - (void)removeShadowFrom:(UIView *)view;
 - (void)applyCorners;
-- (void)roundViewCorners: (UIView *)view forCorners: (int)corners;
+- (void)roundViewCorners: (UIView *)view forCorners: (UIRectCorner)rectCorner;
 - (void)setScrollsToTop:(BOOL)scrollsToTop forView:(UIView *)view;
 - (void)addPanner;
 - (void)removePanner;
@@ -670,13 +670,13 @@
         for (int i=0; i < [self.detailViews count]; i++) {
             UIView *view = [self.detailViews objectAtIndex:i];
             if (i == 0 && [self.detailViews count] == 1) {
-                [self roundViewCorners:view forCorners:ROUND_ALL];
+                [self roundViewCorners:view forCorners:UIRectCornerAllCorners];
             }
             else if (i ==0) {
-                [self roundViewCorners:view forCorners:ROUND_LEFT];
+                [self roundViewCorners:view forCorners:UIRectCornerTopLeft|UIRectCornerBottomLeft];
             }
             else if (i == [self.detailViews count] - 1) {
-                //[self roundViewCorners:view forCorners:ROUND_RIGHT];
+                //[self roundViewCorners:view forCorners:UIRectCornerTopRight|UIRectCornerBottomRight];
                 [self addShadowTo:view];
             }
             else {
@@ -686,21 +686,8 @@
     }
 }
 
-- (void)roundViewCorners: (UIView *)view forCorners:(int)corners {
-    UIRectCorner rectCorner;
-    
-    switch (corners) {
-        case ROUND_ALL:
-            rectCorner = UIRectCornerAllCorners;
-            break;
-        case ROUND_LEFT:
-            rectCorner = UIRectCornerTopLeft|UIRectCornerBottomLeft;
-            break;
-        case ROUND_RIGHT:
-            rectCorner = UIRectCornerTopRight|UIRectCornerBottomRight;
-            break;
-    }
-    
+- (void)roundViewCorners: (UIView *)view forCorners:(UIRectCorner)rectCorner {
+
     UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:view.bounds 
                                                    byRoundingCorners: rectCorner
                                                          cornerRadii:CGSizeMake(PANEL_CORNER_RADIUS, PANEL_CORNER_RADIUS)];
