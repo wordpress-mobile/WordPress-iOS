@@ -105,7 +105,7 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tv {
-    return 3;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tv numberOfRowsInSection:(NSInteger)section {
@@ -114,9 +114,6 @@
             return 3;	// URL, username, password
 		case 1:
             return 1;	// Settings
-        case 2:
-            // Overloaded in AddSiteViewController to hide dashboard link
-            return 1;   // Dashboard
 		default:
 			break;
 	}
@@ -195,15 +192,7 @@
         switchCell.cellSwitch.on = self.geolocationEnabled;
         [switchCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
         return switchCell;
-	} else if(indexPath.section == 2) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DashboardCell"];
-        if (cell == nil) {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DashboardCell"] autorelease];
-        }
-        cell.textLabel.text = NSLocalizedString(@"View dashboard", @"Button to load the dashboard in a web view");
-        cell.textLabel.textAlignment = UITextAlignmentCenter;
-        return cell;
-    }
+	}
     
     // We shouldn't reach this point, but return an empty cell just in case
     return [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"] autorelease];
@@ -239,25 +228,7 @@
                 break;
             }
         }
-	} else if (indexPath.section == 2) {
-        WPWebViewController *webViewController;
-        if (DeviceIsPad()) {
-            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
-        }
-        else {
-            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
-        }
-        NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
-        [webViewController setUrl:[NSURL URLWithString:dashboardUrl]];
-        [webViewController setUsername:self.username];
-        [webViewController setPassword:self.password];
-        [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginURL]];
-        if (DeviceIsPad())
-            [self presentModalViewController:webViewController animated:YES];
-        else
-            [self.navigationController pushViewController:webViewController animated:YES];
-        
-    }
+	} 
     [tv deselectRowAtIndexPath:indexPath animated:YES];
 }
 
