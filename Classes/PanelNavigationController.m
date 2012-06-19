@@ -422,8 +422,9 @@
     if (self.navigationController) {
         return self.navigationController.viewControllers;
     } else {
-        // FIXME: add extra view controllers when there are panels
-        return [NSArray arrayWithObject:self.detailViewController];
+        NSMutableArray *arr = [[self.detailViewControllers mutableCopy] autorelease];
+        [arr insertObject:self.detailViewController atIndex:0];
+        return arr;
     }
 }
 

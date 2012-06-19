@@ -98,10 +98,25 @@
         // Check the panelNavigationController's stack to see if the previous item was a chromeless webview controller.
         // If so check to see if its displaying the same url that was just clicked. 
         // If so just pop ourself off the stack.
-        UIViewController *detailController = [self.panelNavigationController detailViewController];
-        if ([detailController isKindOfClass:[self class]]) {
-            WPChromelessWebViewController *controller = (WPChromelessWebViewController *)detailController;
-            
+        UIViewController *prevController = nil;
+        NSArray *controllers = [self.panelNavigationController viewControllers];
+        NSInteger len = [controllers count]; 
+        if(len > 0) {
+            for (NSInteger i = len; i > 0; i--) {
+                NSInteger idx = i-1;
+                UIViewController *controller = [controllers objectAtIndex:idx];
+                if ([controller isEqual:self]) {
+                    if (idx > 0) {
+                        prevController = [controllers objectAtIndex:(idx-1)];
+                        break;
+                    }
+                }
+            }
+        }
+        
+        if (prevController && [prevController isKindOfClass:[self class]]) {
+            WPChromelessWebViewController *controller = (WPChromelessWebViewController *)prevController;
+
             // Check the url parts individually. Comparing absoluteStrings can yield an incorrect result.
             NSURL *currURL = [controller currentURL];
             NSURL *reqURL = [request URL];
@@ -109,9 +124,7 @@
                 if([currURL.path isEqualToString:reqURL.path]) {
                     if ([currURL.query isEqualToString:reqURL.query]) {
                         // if the detail controller is ourself disregard the click so we don't spam a series of the same page.
-                        if (detailController != self) {
-                            [self.panelNavigationController popViewControllerAnimated:YES];
-                        }
+                        [self.panelNavigationController popViewControllerAnimated:YES];
                         return NO;
                     }
                 }

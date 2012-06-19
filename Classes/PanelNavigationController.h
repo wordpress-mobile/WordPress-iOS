@@ -38,7 +38,7 @@
 @property(nonatomic,readonly,retain) UIViewController *topViewController; // The top view controller on the stack.
 @property(nonatomic,readonly,retain) UIViewController *visibleViewController; // Return modal view controller if it exists. Otherwise the top view controller.
 
-//@property(nonatomic,copy) NSArray *viewControllers; // The current view controller stack.
+@property(nonatomic,readonly,copy) NSArray *viewControllers; // The current view controller stack.
 
 @end
 
