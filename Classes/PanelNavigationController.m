@@ -41,6 +41,7 @@
 - (void)addShadowTo:(UIView *)view;
 - (void)removeShadowFrom:(UIView *)view;
 - (void)applyShadows;
+- (void)applyCorners:(UIView *)view;
 - (void)setScrollsToTop:(BOOL)scrollsToTop forView:(UIView *)view;
 - (void)addPanner;
 - (void)removePanner;
