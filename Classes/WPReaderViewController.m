@@ -54,6 +54,7 @@
     self.detailContentHTML = nil;
     self.refreshTimer = nil;
     self.topicsViewController = nil;
+    self.detailViewController.delegate = nil;
     self.detailViewController = nil;
     [super dealloc];
 }
