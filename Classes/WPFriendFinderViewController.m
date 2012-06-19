@@ -23,7 +23,7 @@ typedef void (^CancelBlock)();
 @property (nonatomic, copy) DismissBlock dismissBlock;
 
 - (void)findEmails;
-- (void)findTwitterFollowers;
+- (void)findTwitterFriends;
 - (void)findFacebookFriends;
 - (void)facebookDidLogIn:(NSNotification *)notification;
 - (void)facebookDidNotLogIn:(NSNotification *)notification;
@@ -87,7 +87,7 @@ typedef void (^CancelBlock)();
     if ([source isEqualToString:@"address-book"]) {
         [self findEmails];
     } else if ([source isEqualToString:@"twitter"]) {
-        [self findTwitterFollowers];
+        [self findTwitterFriends];
     } else if ([source isEqualToString:@"facebook"]){
         [self findFacebookFriends];
     }
@@ -147,7 +147,7 @@ typedef void (^CancelBlock)();
 
 }
 
-- (void) findTwitterFollowers 
+- (void) findTwitterFriends 
 {
     
     ACAccountStore *store = [[ACAccountStore alloc] init];
@@ -162,10 +162,10 @@ typedef void (^CancelBlock)();
                                     @"-1", @"cursor",
                                     nil];
             
-            NSURL *followersURL = [NSURL URLWithString:@"http://api.twitter.com/1/followers/ids.json"];
+            NSURL *followingURL = [NSURL URLWithString:@"http://api.twitter.com/1/friends/ids.json"];
             NSArray *twitterAccounts = [store accountsWithAccountType:twitterAccountType];
             ACAccount *account = (ACAccount *)[twitterAccounts objectAtIndex:0];
-            TWRequest *request = [[[TWRequest alloc] initWithURL:followersURL
+            TWRequest *request = [[[TWRequest alloc] initWithURL:followingURL
                                                       parameters:params
                                                    requestMethod:TWRequestMethodGET] autorelease];
             request.account = account;
