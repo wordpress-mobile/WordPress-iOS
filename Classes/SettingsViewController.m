@@ -77,7 +77,7 @@ typedef enum {
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Settings", @"App Settings");
-    
+    self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)] autorelease];
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
@@ -96,9 +96,7 @@ typedef enum {
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self checkCloseButton];
-    if ([[self.resultsController fetchedObjects] count] > 0) {
-        self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    }
+    self.editButtonItem.enabled = ([[self.resultsController fetchedObjects] count] > 0) ? YES : NO;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -226,7 +224,7 @@ typedef enum {
         
         if([[self.resultsController fetchedObjects] count] == 0) {
             [self setEditing:NO];
-            self.navigationItem.leftBarButtonItem = nil;
+            self.editButtonItem.enabled = NO;
         }
     }   
 }
