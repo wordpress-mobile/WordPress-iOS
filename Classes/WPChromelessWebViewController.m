@@ -81,9 +81,8 @@
 }
 
 
-- (NSNumber *)expectedWidth {
-    return [NSNumber numberWithFloat:IPAD_WIDE_PANEL_WIDTH];
-//    return UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? [NSNumber numberWithFloat:IPAD_DETAIL_WIDTH_PORTRAIT] : [NSNumber numberWithFloat:668.8f];
+- (BOOL)expectsWidePanel {
+    return YES;
 }
 
 

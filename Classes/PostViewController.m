@@ -94,9 +94,8 @@
 }
 
 
-- (NSNumber *)expectedWidth {
-    return [NSNumber numberWithFloat:IPAD_WIDE_PANEL_WIDTH];
-//    return [NSNumber numberWithFloat:668.0f];
+- (BOOL)expectsWidePanel {
+    return YES;
 }
 
 
