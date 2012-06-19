@@ -41,7 +41,8 @@
 - (void)addShadowTo:(UIView *)view;
 - (void)removeShadowFrom:(UIView *)view;
 - (void)applyShadows;
-- (void)applyCorners:(UIView *)view;
+- (void)applyCorners;
+- (void)roundViewCorners: (UIView *)view forCorners: (int)corners;
 - (void)setScrollsToTop:(BOOL)scrollsToTop forView:(UIView *)view;
 - (void)addPanner;
 - (void)removePanner;
@@ -642,7 +643,7 @@
         newPanelWidth = [[self.detailViewController performSelector:@selector(expectedWidth)] floatValue];
     }
     view.frame = CGRectMake(0, 0, newPanelWidth, DETAIL_HEIGHT);
-    [self applyCorners:view];
+    [self applyCorners];
 }
 
 - (void)addShadowTo:(UIView *)view {
@@ -668,17 +669,48 @@
     }
 }
 
-- (void)applyCorners: (UIView*) view {
+- (void)applyCorners{
     if (IS_IPAD) {
-        // Nicked from http://stackoverflow.com/a/5826745/309558
-        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:view.bounds 
-                                                       byRoundingCorners:UIRectCornerTopLeft|UIRectCornerBottomLeft
-                                                             cornerRadii:CGSizeMake(PANEL_CORNER_RADIUS, PANEL_CORNER_RADIUS)];
-        CAShapeLayer *maskLayer = [CAShapeLayer layer];
-        maskLayer.frame = view.bounds;
-        maskLayer.path = maskPath.CGPath;
-        view.layer.mask = maskLayer;
+        for (int i=0; i < [self.detailViews count]; i++) {
+            UIView *view = [self.detailViews objectAtIndex:i];
+            if (i == 0 && [self.detailViews count] == 1) {
+                [self roundViewCorners:view forCorners:ROUND_ALL];
+            }
+            else if (i ==0) {
+                [self roundViewCorners:view forCorners:ROUND_LEFT];
+            }
+            else if (i == [self.detailViews count] - 1) {
+                [self roundViewCorners:view forCorners:ROUND_RIGHT];
+            }
+            else {
+                view.layer.mask = nil;
+            }
+        }
     }
+}
+
+- (void)roundViewCorners: (UIView *)view forCorners:(int)corners {
+    UIRectCorner rectCorner;
+    
+    switch (corners) {
+        case ROUND_ALL:
+            rectCorner = UIRectCornerAllCorners;
+            break;
+        case ROUND_LEFT:
+            rectCorner = UIRectCornerTopLeft|UIRectCornerBottomLeft;
+            break;
+        case ROUND_RIGHT:
+            rectCorner = UIRectCornerTopRight|UIRectCornerBottomRight;
+            break;
+    }
+    
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:view.bounds 
+                                                   byRoundingCorners: rectCorner
+                                                         cornerRadii:CGSizeMake(PANEL_CORNER_RADIUS, PANEL_CORNER_RADIUS)];
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = view.bounds;
+    maskLayer.path = maskPath.CGPath;
+    view.layer.mask = maskLayer;
 }
 
 - (void)setScrollsToTop:(BOOL)scrollsToTop forView:(UIView *)view {
@@ -1158,7 +1190,7 @@
         }
 
         [self applyShadows];
-        [self applyCorners: viewController.view];
+        [self applyCorners];
         
         [UIView animateWithDuration:CLOSE_SLIDE_DURATION(animated) animations:^{
             topView.frame = topViewFrame;
