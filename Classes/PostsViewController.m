@@ -228,26 +228,6 @@
 #pragma mark -
 #pragma mark Custom methods
 
-- (void)syncPostsWithBlogInfo:(BOOL)blogInfo {
-    void (^success)() = ^{
-        [self syncFinished];
-    };
-    void (^failure)(NSError *error) = ^(NSError *error) {
-        [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync posts", @"")];
-        [self syncFinished];
-    };
-
-    if (blogInfo) {
-        [self.blog syncBlogPostsWithSuccess:success failure:failure];
-    } else {
-        [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
-    }
-}
-
-- (void)syncPosts {
-    [self syncPostsWithBlogInfo:NO];
-}
-
 - (void)loadMoreContent {
     if ((![self isSyncing]) && [self hasMoreContent]) {
         WPLog(@"We have older posts to load");
@@ -382,7 +362,12 @@
 }
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
-    [self.blog syncBlogPostsWithSuccess:success failure:failure];
+    // If triggered by a pull to refres, sync categories, post formats, ...
+    if (userInteraction) {
+        [self.blog syncBlogPostsWithSuccess:success failure:failure];
+    } else {
+        [self.blog syncPostsWithSuccess:success failure:failure loadMore:NO];
+    }
 }
 
 - (UITableViewCell *)newCell {
