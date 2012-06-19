@@ -129,11 +129,7 @@
                 controller = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
             }
             [controller setUrl:request.URL];
-            if (IS_IPAD) {
-                [self presentModalViewController:controller animated:YES];
-            } else {
-                [self.navigationController pushViewController:controller animated:YES];
-            }
+            [self.panelNavigationController pushViewController:controller animated:YES];
             return NO;
         }
         
