@@ -578,7 +578,7 @@
 
 - (void)showSidebarAnimated:(BOOL)animated {
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
-        //[self addShadowTo:self.detailView];
+        [self addShadowTo:self.detailView];
         self.masterViewController.view.hidden = NO;
         [self setStackOffset:0 duration:0];
         [self disableDetailView];
