@@ -61,6 +61,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
         [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
         [dictionary release];
 
+        self.wpcomAvailable = YES; //Set the wpcom availability to YES to avoid issues with lazy reachibility notifier        
+       
         /* 
          ( The following "init" code loads the Settings.bundle at startup and it is required from InAppSettings. 
          We are not using it since at this point the app already loaded the bundle. Keep the code for future reference. )
@@ -159,7 +161,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     };
     // start the notifier which will cause the reachability object to retain itself!
     [internetReachability startNotifier];
-        
+    
     // allocate the WP.com reachability object
     wpcomReachability = [Reachability reachabilityWithHostname:@"wordpress.com"];
     // set the blocks 
