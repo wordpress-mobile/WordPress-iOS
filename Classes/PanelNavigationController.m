@@ -40,7 +40,6 @@
 - (void)prepareDetailView:(UIView *)view;
 - (void)addShadowTo:(UIView *)view;
 - (void)removeShadowFrom:(UIView *)view;
-- (void)applyShadows;
 - (void)applyCorners;
 - (void)roundViewCorners: (UIView *)view forCorners: (int)corners;
 - (void)setScrollsToTop:(BOOL)scrollsToTop forView:(UIView *)view;
@@ -219,7 +218,6 @@
 
     [self addPanner];
     [self addTapper];
-    [self applyShadows];
     [self relayAppearanceMethod:^(UIViewController *controller) {
         [controller viewWillAppear:animated];
     }];
@@ -574,7 +572,7 @@
 
 - (void)showSidebarAnimated:(BOOL)animated {
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
-        [self addShadowTo:self.detailView];
+        //[self addShadowTo:self.detailView];
         self.masterViewController.view.hidden = NO;
         [self setStackOffset:0 duration:0];
         [self disableDetailView];
@@ -590,7 +588,6 @@
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) duration:0];
     } completion:^(BOOL finished) {
-        [self applyShadows];
         [self enableDetailView];
     }];
 }
@@ -660,16 +657,6 @@
     view.layer.shadowOpacity = 0.0f;
 }
 
-- (void)applyShadows {
-    for (UIView *view in self.detailViews) {
-        if (view == self.detailView || view.frame.origin.x > DETAIL_OFFSET) {
-            [self addShadowTo:view];
-        } else {
-            [self removeShadowFrom:view];
-        }
-    }
-}
-
 - (void)applyCorners{
     if (IS_IPAD) {
         for (int i=0; i < [self.detailViews count]; i++) {
@@ -681,7 +668,8 @@
                 [self roundViewCorners:view forCorners:ROUND_LEFT];
             }
             else if (i == [self.detailViews count] - 1) {
-                [self roundViewCorners:view forCorners:ROUND_RIGHT];
+                //[self roundViewCorners:view forCorners:ROUND_RIGHT];
+                [self addShadowTo:view];
             }
             else {
                 view.layer.mask = nil;
@@ -739,7 +727,6 @@
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     if (gestureRecognizer == self.panner) {
-        [self applyShadows];
     } else if (gestureRecognizer == self.tapper) {
         NSLog(@"should begin gesture: %@", gestureRecognizer);
         CGPoint point = [gestureRecognizer locationInView:self.view];
@@ -790,7 +777,6 @@
 }
 
 - (void)panned:(UIPanGestureRecognizer *)sender {
-    [self applyShadows];
     /*
      _stackOffset is how many pixels the views are dragged to the left from the initial (sidebar open) position
      
@@ -1190,7 +1176,6 @@
             [viewController vdc_viewDidDisappear:animated];
         }
 
-        [self applyShadows];
         [self applyCorners];
         
         [UIView animateWithDuration:CLOSE_SLIDE_DURATION(animated) animations:^{

@@ -65,7 +65,7 @@
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.showsVerticalScrollIndicator = NO;
-    //self.view.backgroundColor = SIDEBAR_BGCOLOR;
+    self.view.backgroundColor = [UIColor darkGrayColor];
     self.openSection = nil;
     
     // create the sectionInfoArray, stores data for collapsing/expanding sections in the tableView
