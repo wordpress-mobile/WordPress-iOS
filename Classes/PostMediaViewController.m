@@ -199,7 +199,6 @@
         MediaObjectViewController *mediaView = [[MediaObjectViewController alloc] initWithNibName:@"MediaObjectView" bundle:nil];
         [mediaView setMedia:media];
 
-        WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         if(DeviceIsPad() == YES) {
 			mediaView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 			mediaView.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -207,7 +206,7 @@
             [self presentModalViewController:mediaView animated:YES];
 		}
         else
-            [appDelegate.navigationController pushViewController:mediaView animated:YES];
+            [self.postDetailViewController.navigationController pushViewController:mediaView animated:YES];
         [mediaView release];
     }
 
@@ -412,9 +411,8 @@
 		}
 		else {			
 			pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
-			WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-			[appDelegate.navigationController.view addSubview:pickerContainer.view];
-			[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
+			[postDetailViewController.navigationController.view addSubview:pickerContainer.view];
+			[postDetailViewController.navigationController.view bringSubviewToFront:pickerContainer.view];
 			[pickerContainer presentModalViewController:picker animated:YES];
 		}
     }
@@ -461,9 +459,8 @@
 			pickerContainer = [[UIViewController alloc] init];
 		
 		pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
-		WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-		[appDelegate.navigationController.view addSubview:pickerContainer.view];
-		[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
+		[postDetailViewController.navigationController.view addSubview:pickerContainer.view];
+		[postDetailViewController.navigationController.view bringSubviewToFront:pickerContainer.view];
 		[pickerContainer presentModalViewController:picker animated:YES];
 	}
 	
@@ -554,9 +551,8 @@
 				pickerContainer = [[UIViewController alloc] init];
 			
 			pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
-            WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-			[appDelegate.navigationController.view addSubview:pickerContainer.view];
-			[appDelegate.navigationController.view bringSubviewToFront:pickerContainer.view];
+			[postDetailViewController.navigationController.view addSubview:pickerContainer.view];
+			[postDetailViewController.navigationController.view bringSubviewToFront:pickerContainer.view];
 			[pickerContainer presentModalViewController:picker animated:YES];
 		}
     }
