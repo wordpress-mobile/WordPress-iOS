@@ -838,6 +838,22 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /sidebar_bg@2x.png -text
 /sidebar_bg_selected.png -text
 /sidebar_bg_selected@2x.png -text
+/sidebar_comments.png -text
+/sidebar_comments@2x.png -text
+/sidebar_dashboard.png -text
+/sidebar_dashboard@2x.png -text
+/sidebar_pages.png -text
+/sidebar_pages@2x.png -text
+/sidebar_posts.png -text
+/sidebar_posts@2x.png -text
+/sidebar_quickphoto.png -text
+/sidebar_quickphoto@2x.png -text
+/sidebar_read.png -text
+/sidebar_read@2x.png -text
+/sidebar_stats.png -text
+/sidebar_stats@2x.png -text
+/sidebar_view.png -text
+/sidebar_view@2x.png -text
 /stats.png -text
 /stats@2x.png -text
 sv.lproj/Localizable.strings -text svneol=unset#unset

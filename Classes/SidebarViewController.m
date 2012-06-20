@@ -251,32 +251,40 @@
         switch (indexPath.row) {
             case 0:
                 title = NSLocalizedString(@"Quick Photo", @"");
+                cell.imageView.image = [UIImage imageNamed:@"sidebar_quickphoto"];
                 break;
             case 1:
                 title = NSLocalizedString(@"Read", @"");
+                cell.imageView.image = [UIImage imageNamed:@"sidebar_read"];
                 break;
         }
     } else {
         switch (indexPath.row) {
             case 0:
                 title = NSLocalizedString(@"Posts", @"");
+                cell.imageView.image = [UIImage imageNamed:@"sidebar_posts"];
                 break;
             case 1:
                 title = NSLocalizedString(@"Pages", @"");
+                cell.imageView.image = [UIImage imageNamed:@"sidebar_pages"];
                 break;
             case 2:
                 title = NSLocalizedString(@"Comments", @"");
                 Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
                 cell.blog = blog;
+                cell.imageView.image = [UIImage imageNamed:@"sidebar_comments"];
                 break;
             case 3:
                 title = NSLocalizedString(@"Stats", @"");
+                cell.imageView.image = [UIImage imageNamed:@"sidebar_stats"];
                 break;
             case 4:
                 title = NSLocalizedString(@"View Site", @"");
+                cell.imageView.image = [UIImage imageNamed:@"sidebar_view"];
                 break;
             case 5:
                 title = NSLocalizedString(@"Dashboard", @"Button to load the dashboard in a web view");
+                cell.imageView.image = [UIImage imageNamed:@"sidebar_dashboard"];
                 break;
             default:
                 break;
