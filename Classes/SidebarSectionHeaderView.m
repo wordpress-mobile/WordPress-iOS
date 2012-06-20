@@ -9,10 +9,6 @@
 #import "UIImageView+Gravatar.h"
 #import "PanelNavigationConstants.h"
 
-
-// Set the colors for the gradient layer.
-static NSArray *colors = nil;
-
 @interface SidebarSectionHeaderView (Private)
 -(UIImage *)badgeImage:(UIImage *)img withText:(NSString *)text1;
 -(void)receivedCommentsChangedNotification:(NSNotification*)aNotification;
@@ -33,15 +29,6 @@ static NSArray *colors = nil;
 }
 
 -(id)initWithFrame:(CGRect)frame blog:(Blog*)blog sectionInfo:(SectionInfo *)sectionInfo delegate:(id <SidebarSectionHeaderViewDelegate>)delegate {
-
-    if ( nil == colors ) {
-        colors = [[NSArray alloc] initWithObjects:
-                  (id) [[UIColor UIColorFromRGBAColorWithRed:229.5 green:229.5 blue:229.5 alpha:1.0] CGColor],
-                  (id) [[UIColor UIColorFromRGBAColorWithRed:216.75 green:216.75 blue:216.75 alpha:1.0] CGColor],
-                  (id) [[UIColor UIColorFromRGBAColorWithRed:204.0 green:204.0 blue:204.0 alpha:1.0] CGColor],
-                  nil
-                  ];
-    }
     
     self = [super initWithFrame:frame];
     startingFrameWidth = frame.size.width;
@@ -77,12 +64,14 @@ static NSArray *colors = nil;
             label.text = [blog hostURL];            
         
         label.font = [UIFont boldSystemFontOfSize:17.0];
-        label.textColor = [UIColor blackColor];
+        label.textColor = [UIColor whiteColor];
+        label.shadowOffset = CGSizeMake(0, 1.1f);
+        label.shadowColor = [UIColor blackColor];
         label.backgroundColor = [UIColor clearColor];
         [self addSubview:label];
         _titleLabel = label;
         
-        CGRect commentsBadgedRect = IS_IPAD ? CGRectMake(self.bounds.size.width - ( 31.0 + 35.0 ) , 6.0, 35.0, 35.0) : CGRectMake(self.bounds.size.width - ( 35.0 + DETAIL_LEDGE + 4 ), 6.0, 35.0, 35.0);
+        CGRect commentsBadgedRect = IS_IPAD ? CGRectMake(self.bounds.size.width - ( 31.0 + 35.0 ) , 6.0, 35.0, 35.0) : CGRectMake(self.bounds.size.width - ( 65.0 + DETAIL_LEDGE + 4 ), 6.0, 35.0, 35.0);
         UIImageView *commentsIconImgView = [[[UIImageView alloc] initWithFrame:commentsBadgedRect] autorelease];
         if ( numberOfPendingComments > 0 ) {
             UIImage *img = [self badgeImage:[UIImage imageNamed:@"inner-shadow.png"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
@@ -93,15 +82,16 @@ static NSArray *colors = nil;
         
         // Create and configure the disclosure button.
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(self.frame.size.width - 31.0, 6.0, 35.0, 35.0);
-        [button setImage:[UIImage imageNamed:@"carat.png"] forState:UIControlStateNormal];
-        [button setImage:[UIImage imageNamed:@"carat-open.png"] forState:UIControlStateSelected];
+        button.frame = IS_IPAD ? CGRectMake(self.frame.size.width - 31.0, 6.0, 35.0, 35.0) : CGRectMake(self.frame.size.width - 80.0, 8.0, 35.0, 35.0);
+        [button setImage:[UIImage imageNamed:@"sidebar_expand_down"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"sidebar_expand_up"] forState:UIControlStateSelected];
         [button addTarget:self action:@selector(toggleOpen:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:button];
         _disclosureButton = button;
-                
-        [(CAGradientLayer *)self.layer setColors:colors];
-        [(CAGradientLayer *)self.layer setLocations:[NSArray arrayWithObjects:[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:0.48], [NSNumber numberWithFloat:1.0], nil]];
+        
+        background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_bg"]];
+        [self addSubview:background];
+        [self sendSubviewToBack:background];
     }
         
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -210,6 +200,7 @@ static NSArray *colors = nil;
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [background release];
     [super dealloc];
 }
 

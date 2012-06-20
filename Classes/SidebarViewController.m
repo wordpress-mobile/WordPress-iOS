@@ -249,7 +249,7 @@
     if (!sectionInfo.headerView) {
         sectionInfo.headerView = [[SidebarSectionHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, SIDEBAR_WIDTH, HEADER_HEIGHT) blog:blog sectionInfo:sectionInfo delegate:self];
     }
-    
+
     return sectionInfo.headerView;
 }
 
@@ -262,6 +262,7 @@
         cell.textLabel.shadowOffset = CGSizeMake(0, 1.1f);
         cell.textLabel.shadowColor = [UIColor blackColor];
         cell.textLabel.textColor = [[UIColor alloc] initWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0f];
+        cell.textLabel.font = [UIFont systemFontOfSize:17.0];
         cell.backgroundView = [[[UIImageView alloc] initWithImage:[ [UIImage imageNamed:@"sidebar_bg.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:5.0]] autorelease];
         cell.selectedBackgroundView = [[[UIImageView alloc] initWithImage:[ [UIImage imageNamed:@"sidebar_bg_selected.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:5.0]] autorelease];
     }

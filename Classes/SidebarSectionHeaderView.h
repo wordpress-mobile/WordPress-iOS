@@ -13,6 +13,7 @@
 
 @interface SidebarSectionHeaderView : UIView {
     float startingFrameWidth;
+    UIImageView *background;
 }
 
 @property (nonatomic, assign) UILabel *titleLabel;
