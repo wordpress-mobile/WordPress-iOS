@@ -24,7 +24,7 @@
 
 @implementation PostMediaViewController
 @synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, addPopover, picker, customSizeAlert;
-@synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner, pickerContainer;
+@synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner;
 @synthesize currentImage, currentImageMetadata, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
 @synthesize postDetailViewController, postID, blogURL, bottomToolbar;
 @synthesize isShowingResizeActionSheet, isShowingCustomSizeAlert, videoEnabled, currentUpload, videoPressCheckBlogURL, isCheckingVideoCapability, uniqueID;
@@ -396,9 +396,6 @@
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 		picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
 		
-		if(pickerContainer == nil)
-			pickerContainer = [[UIViewController alloc] init];
-		
 		if(DeviceIsPad() == YES) {
 			UIBarButtonItem *barButton = postDetailViewController.photoButton;
 			if (addPopover == nil) {
@@ -410,10 +407,7 @@
 			[[CPopoverManager instance] setCurrentPopoverController:addPopover];
 		}
 		else {			
-			pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
-			[postDetailViewController.navigationController.view addSubview:pickerContainer.view];
-			[postDetailViewController.navigationController.view bringSubviewToFront:pickerContainer.view];
-			[pickerContainer presentModalViewController:picker animated:YES];
+			[postDetailViewController.navigationController presentModalViewController:picker animated:YES];
 		}
     }
 }
@@ -455,13 +449,7 @@
 		[[CPopoverManager instance] setCurrentPopoverController:addPopover];
 	}
 	else {
-		if(pickerContainer == nil)
-			pickerContainer = [[UIViewController alloc] init];
-		
-		pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
-		[postDetailViewController.navigationController.view addSubview:pickerContainer.view];
-		[postDetailViewController.navigationController.view bringSubviewToFront:pickerContainer.view];
-		[pickerContainer presentModalViewController:picker animated:YES];
+		[postDetailViewController.navigationController presentModalViewController:picker animated:YES];
 	}
 	
 	/*[[NSNotificationCenter defaultCenter] addObserver:self
@@ -547,13 +535,7 @@
             [[CPopoverManager instance] setCurrentPopoverController:addPopover];
 		}
 		else {
-			if(pickerContainer == nil)
-				pickerContainer = [[UIViewController alloc] init];
-			
-			pickerContainer.view.frame = CGRectMake(0, 0, 320, 480);
-			[postDetailViewController.navigationController.view addSubview:pickerContainer.view];
-			[postDetailViewController.navigationController.view bringSubviewToFront:pickerContainer.view];
-			[pickerContainer presentModalViewController:picker animated:YES];
+			[postDetailViewController.navigationController presentModalViewController:picker animated:YES];
 		}
     }
 }
@@ -900,8 +882,7 @@
 		}
 		
 		if(DeviceIsPad() == NO) {
-			[pickerContainer dismissModalViewControllerAnimated:NO];
-			pickerContainer.view.frame = CGRectMake(0, 2000, 0, 0);
+			[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
 		}
 	}
 	
@@ -972,17 +953,14 @@
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-	[pickerContainer dismissModalViewControllerAnimated:NO];
-	pickerContainer.view.frame = CGRectMake(0, 2000, 0, 0);
+	[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)processRecordedVideo {
 	if(DeviceIsPad() == YES)
 		[addPopover dismissPopoverAnimated:YES];
 	else {
-		NSLog(@"pickerContainer: %@", pickerContainer);
-		[pickerContainer dismissModalViewControllerAnimated:NO];
-		pickerContainer.view.frame = CGRectMake(0, 2000, 0, 0);
+		[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
 	}
 	
 	[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];
@@ -1003,8 +981,7 @@
 		if(DeviceIsPad() == YES)
 			[addPopover dismissPopoverAnimated:YES];
 		else {
-			[pickerContainer dismissModalViewControllerAnimated:NO];
-			pickerContainer.view.frame = CGRectMake(0, 2000, 0, 0);
+			[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
 		}
 		
 		[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];

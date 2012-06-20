@@ -30,7 +30,6 @@ static inline double radians(double degrees) {
 @interface PostMediaViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UITextFieldDelegate> {
 	EditPostViewController *postDetailViewController;
 	UIImagePickerController *picker;
-	UIViewController *pickerContainer;
 	
 	IBOutlet UITableView *table;
 	IBOutlet UIBarButtonItem *addMediaButton;
@@ -72,7 +71,6 @@ static inline double radians(double degrees) {
 @property (nonatomic, retain) NSDictionary *currentImageMetadata;
 @property (nonatomic, retain) NSMutableDictionary *currentVideo;
 @property (nonatomic, retain) UIImagePickerController *picker;
-@property (nonatomic, retain) UIViewController *pickerContainer;
 @property (readonly) NSFetchedResultsController *resultsController;
 @property (nonatomic, retain) UIAlertView *customSizeAlert;
 
