@@ -1206,27 +1206,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {
     if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
         WPFLog(@"Received notification: %@", remoteNotif);
-        Blog *blog = [Blog findWithId:[[remoteNotif objectForKey:@"blog_id"] intValue] withContext:self.managedObjectContext];
-        if (blog) {
-            UIViewController *rootViewController = self.window.rootViewController;
-            if (rootViewController.modalViewController) {
-                WPFLog(@"We're showing a modal controller and it's not safe to load the notification");
-#if DEBUG
-                [rootViewController dismissModalViewControllerAnimated:NO];
-#else
-                return;
-#endif
-            }
-            if ([rootViewController isKindOfClass:[UISplitViewController class]]) {
-                rootViewController = [((UISplitViewController *)rootViewController).viewControllers objectAtIndex:0];
-            }
-            UINavigationController *nav = (UINavigationController *)rootViewController;
-            [nav popToRootViewControllerAnimated:NO];
-            BlogsViewController *blogsController = (BlogsViewController *)nav.topViewController;
-            [blogsController showBlog:blog animated:NO];
-            BlogViewController *blogViewController = (BlogViewController *)nav.visibleViewController;
-            [blogViewController showCommentWithId:[remoteNotif objectForKey:@"comment_id"]];
-        }
+        SidebarViewController *sidebar = (SidebarViewController *)self.panelNavigationController.masterViewController;
+        [sidebar showCommentWithId:[remoteNotif objectForKey:@"comment_id"] blogId:[remoteNotif objectForKey:@"blog_id"]];
     } else {
         WPFLog(@"Got unsupported notification: %@", remoteNotif);
     }

@@ -21,5 +21,6 @@
 - (IBAction)showSettings:(id)sender;
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath;
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath closingSidebar:(BOOL)closingSidebar;
+- (void)showCommentWithId:(NSNumber *)itemId blogId:(NSNumber *)blogId;
 
 @end

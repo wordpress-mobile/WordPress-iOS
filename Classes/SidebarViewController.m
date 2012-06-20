@@ -190,6 +190,27 @@
     }
 }
 
+- (void)showCommentWithId:(NSNumber *)itemId blogId:(NSNumber *)blogId {
+    __block SectionInfo *targetSection;
+    __block NSUInteger sectionNumber;
+    [self.sectionInfoArray enumerateObjectsUsingBlock:^(SectionInfo *obj, NSUInteger idx, BOOL *stop) {
+        if ([obj.blog.blogID isEqualToNumber:blogId]) {
+            targetSection = obj;
+            sectionNumber = idx;
+            *stop = YES;
+        }
+    }];
+    
+    if (targetSection) {
+        if (!targetSection.open) {
+            [targetSection.headerView toggleOpenWithUserAction:YES];
+        }
+        NSIndexPath *commentsPath = [NSIndexPath indexPathForRow:2 inSection:sectionNumber+1];
+        [self processRowSelectionAtIndexPath:commentsPath];
+        [self.tableView selectRowAtIndexPath:commentsPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
