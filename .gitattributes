@@ -281,8 +281,6 @@ Classes/WordPressAppDelegate.h -text
 Classes/WordPressAppDelegate.m -text
 Classes/XMLSignupViewController.h -text
 Classes/XMLSignupViewController.m -text
-Classes/carat-open.png -text
-Classes/carat.png -text
 Classes/fabric.png -text svneol=unset#unset
 Classes/fabric@2x.png -text svneol=unset#unset
 Classes/stats.png -text
@@ -709,8 +707,6 @@ c_tidy/win32tc.c -text
 c_tidy/win32tc.h -text
 /camera.png -text svneol=unset#unset
 /camera@2x.png -text svneol=unset#unset
-/carat-open@2x.png -text
-/carat@2x.png -text
 /categoriesHighlighted.png -text svneol=unset#unset
 /categoriesHighlighted@2x.png -text svneol=unset#unset
 /category_child.png -text
