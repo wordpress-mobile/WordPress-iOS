@@ -24,6 +24,7 @@
     if(path) {
         [path release]; path = nil;
     }
+    webView.delegate = nil;
     [webView release];
     
     [super dealloc];
