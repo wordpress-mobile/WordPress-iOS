@@ -152,7 +152,12 @@
     [super viewDidLoad];
 
     self.detailView = [[[UIView alloc] init] autorelease];
-    self.detailView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    
+    if (IS_IPAD) {
+        self.detailView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    } else {
+        self.detailView.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
+    }
     self.detailView.autoresizesSubviews = YES;
     self.detailView.clipsToBounds = YES;
     [self.view addSubview:self.detailView];
