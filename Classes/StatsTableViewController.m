@@ -96,10 +96,12 @@ searchTermsConn, clicksConn, daysConn, weeksConn, monthsConn;
 		[self initWithNibName:@"StatsTableViewConroller-iPad" bundle:nil];
 		[appDelegate showContentDetailViewController:self];
 	}*/
-	[self.tableView setBackgroundColor:[[[UIColor alloc] initWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0] autorelease]];
+    self.tableView.backgroundColor = [UIColor colorWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0];
+
+    if (IS_IPHONE) {
+        self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    }
 }
-
-
 
 - (void) viewWillAppear:(BOOL)animated {
 	
