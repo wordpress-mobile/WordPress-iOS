@@ -96,7 +96,7 @@ typedef enum {
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self checkCloseButton];
-    self.editButtonItem.enabled = ([[self.resultsController fetchedObjects] count] > 0) ? YES : NO;
+    self.editButtonItem.enabled = ([[self.resultsController fetchedObjects] count] > 0); // Disable if we have no blogs.
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

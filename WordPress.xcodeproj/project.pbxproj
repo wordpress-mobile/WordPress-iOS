@@ -204,6 +204,7 @@
 		45F45AFD11614A0E0022D394 /* CDeviceSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F45AFC11614A0E0022D394 /* CDeviceSupport.m */; };
 		45F45B3611614BA50022D394 /* CPopoverManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F45B3511614BA50022D394 /* CPopoverManager.m */; };
 		5D1392A7157D4D92007D51B8 /* StatsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */; };
+		5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */; };
 		5DB767411588F64D00EBE36C /* postPreview.html in Resources */ = {isa = PBXBuildFile; fileRef = 5DB767401588F64D00EBE36C /* postPreview.html */; };
 		5DC433311587C3600073CF07 /* PanelViewWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC433301587C3600073CF07 /* PanelViewWrapper.m */; };
 		5DC433321587C3600073CF07 /* PanelViewWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC433301587C3600073CF07 /* PanelViewWrapper.m */; };
@@ -820,6 +821,8 @@
 		45F45B3511614BA50022D394 /* CPopoverManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPopoverManager.m; sourceTree = "<group>"; };
 		5D1392A5157D4D92007D51B8 /* StatsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsWebViewController.h; sourceTree = "<group>"; };
 		5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsWebViewController.m; sourceTree = "<group>"; };
+		5D2B80CF1592447200161F6E /* QuickPhotoButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; path = QuickPhotoButtonView.h; sourceTree = "<group>"; };
+		5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPhotoButtonView.m; sourceTree = "<group>"; };
 		5DB767401588F64D00EBE36C /* postPreview.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = postPreview.html; sourceTree = "<group>"; };
 		5DC4332F1587C3600073CF07 /* PanelViewWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelViewWrapper.h; sourceTree = "<group>"; };
 		5DC433301587C3600073CF07 /* PanelViewWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelViewWrapper.m; sourceTree = "<group>"; };
@@ -1426,6 +1429,8 @@
 		031662E60FFB14C60045D052 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5D2B80CF1592447200161F6E /* QuickPhotoButtonView.h */,
+				5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */,
 				E1B4A9DE12FC8B1000EB3F67 /* EGOTableViewPullRefresh */,
 				031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */,
 				03958060100D6CFC00850742 /* WPLabel.h */,
@@ -3377,6 +3382,7 @@
 				FDC528AC157E551100A3FD91 /* SidebarTableViewCell.m in Sources */,
 				FD4500D11580DF3600F2B0E6 /* UIColor+Helpers.m in Sources */,
 				5DC433311587C3600073CF07 /* PanelViewWrapper.m in Sources */,
+				5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

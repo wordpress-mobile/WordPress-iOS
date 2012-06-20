@@ -10,17 +10,22 @@
 #import "SidebarSectionHeaderView.h"
 #import "WordPressAppDelegate.h"
 
-@interface SidebarViewController : UIViewController <SidebarSectionHeaderViewDelegate, UITableViewDataSource, UITableViewDelegate> {
+@class Post;
+
+@interface SidebarViewController : UIViewController <UIActionSheetDelegate, SidebarSectionHeaderViewDelegate, UITableViewDataSource, UITableViewDelegate> {
     IBOutlet UITableView *tableView;
-    IBOutlet UIButton *footerButton;
+    IBOutlet UIButton *settingsButton;
+    NSUInteger openSectionIdx;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) IBOutlet UIButton *footerButton;
+@property (nonatomic, retain) IBOutlet UIButton *settingsButton;
 
 - (IBAction)showSettings:(id)sender;
-- (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath;
-- (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath closingSidebar:(BOOL)closingSidebar;
+- (void)processRowSelectionAtIndexPath:(NSIndexPath *)indexPath;
+- (void)processRowSelectionAtIndexPath:(NSIndexPath *)indexPath closingSidebar:(BOOL)closingSidebar;
 - (void)showCommentWithId:(NSNumber *)itemId blogId:(NSNumber *)blogId;
+
+- (void)uploadQuickPhoto:(Post *)post;
 
 @end

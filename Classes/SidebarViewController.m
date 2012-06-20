@@ -26,6 +26,9 @@
 #import "WPWebViewController.h"
 #import "WordPressComApi.h"
 #import "WelcomeViewController.h"
+#import "CameraPlusPickerManager.h"
+#import "QuickPhotoViewController.h"
+#import "QuickPhotoButtonView.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
@@ -36,25 +39,44 @@
 #define DEFAULT_ROW_HEIGHT 48
 #define NUM_ROWS 6
 
-@interface SidebarViewController () <NSFetchedResultsControllerDelegate>
+@interface SidebarViewController () <NSFetchedResultsControllerDelegate, QuickPhotoButtonViewDelegate> {
+    QuickPhotoUploadProgressController *uploadController;
+    QuickPhotoButtonView *quickPhotoButton;
+}
+
+@property (nonatomic, retain) Post *currentQuickPost;
+@property (nonatomic, retain) QuickPhotoButtonView *quickPhotoButton;
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
 @property (nonatomic, assign) SectionInfo *openSection;
 @property (nonatomic, strong) NSMutableArray *sectionInfoArray;
 @property (readonly) NSInteger topSectionRowCount;
+
 - (SectionInfo *)sectionInfoForBlog:(Blog *)blog;
 - (void)addSectionInfoForBlog:(Blog *)blog;
 - (void)insertSectionInfoForBlog:(Blog *)blog atIndex:(NSUInteger)index;
 - (void)showWelcomeScreenIfNeeded;
 - (void)selectFirstAvailableItem;
+
+- (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)useCameraPlus withImage:(UIImage *)image;
+- (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)useCameraPlus;
+- (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType;
+- (void)postDidUploadSuccessfully:(NSNotification *)notification;
+- (void)postUploadFailed:(NSNotification *)notification;
+- (void)setupQuickPhotoButton;
+- (void)tearDownQuickPhotoButton;
+- (void)handleCameraPlusImages:(NSNotification *)notification;
+
 @end
 
 @implementation SidebarViewController
 @synthesize resultsController = _resultsController, openSection=_openSection, sectionInfoArray=_sectionInfoArray;
-@synthesize tableView, footerButton;
+@synthesize tableView, settingsButton, quickPhotoButton;
+@synthesize currentQuickPost = _currentQuickPost;
 
 - (void)dealloc {
     self.resultsController.delegate = nil;
     self.resultsController = nil;
+    
     [super dealloc];
 }
 
@@ -65,7 +87,7 @@
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.showsVerticalScrollIndicator = NO;
-    self.view.backgroundColor = [UIColor darkGrayColor];
+    //self.view.backgroundColor = SIDEBAR_BGCOLOR;
     self.openSection = nil;
     
     // create the sectionInfoArray, stores data for collapsing/expanding sections in the tableView
@@ -77,6 +99,10 @@
 		}
 	}
     
+    if ([[self.resultsController fetchedObjects] count] > 0) {
+        [self setupQuickPhotoButton];
+    }
+    
     void (^wpcomNotificationBlock)(NSNotification *) = ^(NSNotification *note) {
         NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
@@ -86,13 +112,17 @@
     };
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCameraPlusImages:) name:kCameraPlusImagesNotification object:nil];
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    [tableView release];
-    [footerButton release];
+
+    self.tableView = nil;
+    self.settingsButton = nil;
+    self.quickPhotoButton.delegate = nil;
+    self.quickPhotoButton = nil;
     
     self.sectionInfoArray = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -117,9 +147,9 @@
 
 - (NSInteger)topSectionRowCount {
     if ([WordPressComApi sharedApi].username) {
-        return 2;
-    } else {
         return 1;
+    } else {
+        return 0;
     }
 }
 
@@ -211,6 +241,187 @@
     }
 }
 
+- (IBAction)showSettings:(id)sender {
+    SettingsViewController *settingsViewController = [[[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+    UINavigationController *aNavigationController = [[[UINavigationController alloc] initWithRootViewController:settingsViewController] autorelease];
+    aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
+}
+
+#pragma mark - Quick Photo Methods
+
+- (void)quickPhotoButtonViewTapped:(QuickPhotoButtonView *)sender {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    
+	UIActionSheet *actionSheet = nil;
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        if ([[CameraPlusPickerManager sharedManager] cameraPlusPickerAvailable]) {
+            actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
+                                                      delegate:self 
+                                             cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+                                        destructiveButtonTitle:nil 
+                                             otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),NSLocalizedString(@"Add Photo from Camera+", @""), NSLocalizedString(@"Take Photo with Camera+", @""),nil];
+        } else {
+            actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
+                                                      delegate:self 
+                                             cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+                                        destructiveButtonTitle:nil 
+                                             otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),nil];            
+        }
+	} else {
+        [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary useCameraPlus:NO withImage:nil];
+        return;
+	}
+    
+    actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+    [actionSheet showInView:self.panelNavigationController.view];
+    [actionSheet release];
+    
+//    [appDelegate setAlertRunning:YES];
+}
+
+- (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType {
+    [self showQuickPhoto:sourceType useCameraPlus:NO withImage:nil];
+}
+
+- (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)useCameraPlus {
+    if (useCameraPlus) {
+        CameraPlusPickerManager *picker = [CameraPlusPickerManager sharedManager];
+        picker.callbackURLProtocol = @"wordpress";
+        picker.maxImages = 1;
+        picker.imageSize = 4096;
+        CameraPlusPickerMode mode = (sourceType == UIImagePickerControllerSourceTypeCamera) ? CameraPlusPickerModeShootOnly : CameraPlusPickerModeLightboxOnly;
+        [picker openCameraPlusPickerWithMode:mode];
+    } else {
+        [self showQuickPhoto:sourceType useCameraPlus:useCameraPlus withImage:nil];
+    }
+}
+
+- (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)useCameraPlus withImage:(UIImage *)image {
+    QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
+    quickPhotoViewController.sidebarViewController = self;
+    quickPhotoViewController.photo = image;
+    if (!image) {
+        quickPhotoViewController.sourceType = sourceType;
+    }
+    quickPhotoViewController.isCameraPlus = useCameraPlus;
+    quickPhotoViewController.startingBlog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:openSectionIdx-1 inSection:0]];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:quickPhotoViewController];
+    if (IS_IPAD) {
+        // TODO: Figure out the best way to present this on the ipad.
+        navController.modalPresentationStyle = UIModalPresentationFormSheet;
+        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self.panelNavigationController presentModalViewController:navController animated:YES];
+    } else {
+        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self.panelNavigationController presentModalViewController:navController animated:YES];
+    }
+    [quickPhotoViewController release];
+    [navController release];
+}
+
+- (void)uploadQuickPhoto:(Post *)post {
+    if (post != nil) {
+        self.currentQuickPost = post;
+        [quickPhotoButton showProgress:YES animated:YES];
+    }
+}
+
+- (void)postDidUploadSuccessfully:(NSNotification *)notification {
+//    appDelegate.isUploadingPost = NO;
+    self.currentQuickPost = nil;
+    [quickPhotoButton showSuccess];
+}
+
+- (void)postUploadFailed:(NSNotification *)notification {
+//    appDelegate.isUploadingPost = NO;
+    self.currentQuickPost = nil;
+    [quickPhotoButton showProgress:NO animated:YES];
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
+                                                    message:NSLocalizedString(@"Sorry, the photo publish failed. The post has been saved as a Local Draft.", @"")
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                          otherButtonTitles:nil];
+    [alert show];
+    [alert release];
+}
+
+- (void)setCurrentQuickPost:(Post *)currentQuickPost {
+    if (currentQuickPost != _currentQuickPost) {
+        if (_currentQuickPost) {
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:@"PostUploaded" object:_currentQuickPost];
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:@"PostUploadFailed" object:_currentQuickPost];
+            [_currentQuickPost release];
+        }
+        _currentQuickPost = [currentQuickPost retain];
+        if (_currentQuickPost) {
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postDidUploadSuccessfully:) name:@"PostUploaded" object:currentQuickPost];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postUploadFailed:) name:@"PostUploadFailed" object:currentQuickPost];
+        }
+    }
+}
+
+- (void)setupQuickPhotoButton {
+    if (IS_IPAD) return; // TODO: Remove this when the iPad is supported
+    
+    if (quickPhotoButton) return;
+    
+    // Make room for the photo button
+    CGRect settingsFrame = settingsButton.frame;
+    CGFloat buttonWidth = (self.view.frame.size.width - 30.0f)/2; // 10px margins + 10px gap
+    settingsFrame.size.width = buttonWidth;
+    settingsFrame.origin.x = 20.0f + buttonWidth;
+    settingsButton.frame = settingsFrame;
+    settingsButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+    // Match the height and y of the settings Button.
+    CGRect frame = CGRectMake(10.0f, settingsFrame.origin.y, buttonWidth, settingsFrame.size.height);
+    self.quickPhotoButton = [[QuickPhotoButtonView alloc] initWithFrame:frame];
+    quickPhotoButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+    quickPhotoButton.delegate = self;
+    
+    [self.view addSubview:quickPhotoButton];
+}
+
+- (void)tearDownQuickPhotoButton {
+    if (!quickPhotoButton) return;
+
+    [quickPhotoButton removeFromSuperview];
+    quickPhotoButton.delegate = nil;
+    self.quickPhotoButton = nil;
+    
+    // fill the gap
+    CGRect settingsFrame = settingsButton.frame;
+    settingsFrame.size.width = 300.0f;
+    settingsFrame.origin.x = 10.0f;
+    settingsButton.frame = settingsFrame;
+}
+
+- (void)handleCameraPlusImages:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    UIImage *image = [userInfo objectForKey:@"image"];
+    // The source type isn't really important since we're also passing an image.
+    [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary useCameraPlus:YES withImage:image];
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if(buttonIndex == 0) {
+        [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary];
+    } else if(buttonIndex == 1) {
+        [self showQuickPhoto:UIImagePickerControllerSourceTypeCamera];
+    } else if(buttonIndex == 2) {
+        [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary useCameraPlus:YES];
+    } else if(buttonIndex == 3) {
+        [self showQuickPhoto:UIImagePickerControllerSourceTypeCamera useCameraPlus:YES];
+    }
+}
+
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -256,7 +467,7 @@
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"SideBarCell";
-    SidebarTableViewCell *cell = (SidebarTableViewCell *) [aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    SidebarTableViewCell *cell = (SidebarTableViewCell *)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[SidebarTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.textLabel.shadowOffset = CGSizeMake(0, 1.1f);
@@ -270,16 +481,18 @@
     NSString *title = nil;
       
     if (indexPath.section == 0) {
-        switch (indexPath.row) {
-            case 0:
-                title = NSLocalizedString(@"Quick Photo", @"");
-                cell.imageView.image = [UIImage imageNamed:@"sidebar_quickphoto"];
-                break;
-            case 1:
-                title = NSLocalizedString(@"Read", @"");
-                cell.imageView.image = [UIImage imageNamed:@"sidebar_read"];
-                break;
-        }
+        title = NSLocalizedString(@"Read", @"");
+        cell.imageView.image = [UIImage imageNamed:@"sidebar_read"];
+//        switch (indexPath.row) {
+//            case 0:
+//                title = NSLocalizedString(@"Quick Photo", @"");
+//                cell.imageView.image = [UIImage imageNamed:@"sidebar_quickphoto"];
+//                break;
+//            case 1:
+//                title = NSLocalizedString(@"Read", @"");
+//                cell.imageView.image = [UIImage imageNamed:@"sidebar_read"];
+//                break;
+//        }
     } else {
         switch (indexPath.row) {
             case 0:
@@ -321,9 +534,10 @@
 
 #pragma mark Section header delegate
 
--(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionOpened:(SectionInfo *)sectionOpened {    
+-(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionOpened:(SectionInfo *)sectionOpened {
 	sectionOpened.open = YES;
     NSUInteger sectionNumber = [self.sectionInfoArray indexOfObject:sectionOpened] + 1;
+    openSectionIdx = sectionNumber;
     
     /*
      Create an array containing the index paths of the rows to insert: These correspond to the rows for each quotation in the current section.
@@ -442,37 +656,28 @@
     [self processRowSelectionAtIndexPath: indexPath];
 }
 
-- (IBAction)showSettings:(id)sender {
-    SettingsViewController *settingsViewController = [[[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
-    UINavigationController *aNavigationController = [[[UINavigationController alloc] initWithRootViewController:settingsViewController] autorelease];
-    aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-
-    [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
-}
-
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath {
     [self processRowSelectionAtIndexPath:indexPath closingSidebar:YES];
 }
 
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath closingSidebar:(BOOL)closingSidebar {
     UIViewController *detailViewController = nil;  
-    if (indexPath.section == 0) { //Reader, QuickPhoto
-        if (indexPath.row == 1) {
-            if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPReaderViewController class]]) {
-                // Reader was already selected
-                if (IS_IPAD) {
-                    [self.panelNavigationController showSidebar];
-                } else {
-                    [self.panelNavigationController popToRootViewControllerAnimated:NO];
-                    [self.panelNavigationController closeSidebar];
-                }
-                return;
+    if (indexPath.section == 0) { //Reader
+        
+        if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPReaderViewController class]]) {
+            // Reader was already selected
+            if (IS_IPAD) {
+                [self.panelNavigationController showSidebar];
+            } else {
+                [self.panelNavigationController popToRootViewControllerAnimated:NO];
+                [self.panelNavigationController closeSidebar];
             }
-            // Reader
-            WPReaderViewController *readerViewController = [[[WPReaderViewController alloc] init] autorelease];
-            detailViewController = readerViewController;
+            return;
         }
+        // Reader
+        WPReaderViewController *readerViewController = [[[WPReaderViewController alloc] init] autorelease];
+        detailViewController = readerViewController;
+
     } else {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
 
@@ -628,6 +833,11 @@
     [self.tableView endUpdates];
     if ([self.tableView indexPathForSelectedRow] == nil) {
         [self selectFirstAvailableItem];
+    }
+    if([[self.resultsController fetchedObjects] count] > 0){
+        [self setupQuickPhotoButton];
+    } else {
+        [self tearDownQuickPhotoButton];
     }
 }
 

@@ -11,16 +11,21 @@
 #import "WPProgressHUD.h"
 #import "Post.h"
 #import "QuickPicturePreviewView.h"
-#import "BlogsViewController.h"
 #import "WordPressAppDelegate.h"
+#import "SidebarViewController.h"
 
 #define QPVCBlogForQuickPhoto @"blogForQuickPhoto"
 
-@interface QuickPhotoViewController : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,BlogSelectorButtonDelegate,QuickPicturePreviewViewDelegate> {
+@class Blog;
+
+@interface QuickPhotoViewController : UIViewController <UIPopoverControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, BlogSelectorButtonDelegate, QuickPicturePreviewViewDelegate> {
 	WordPressAppDelegate *appDelegate;
     Post *post;
-    BlogsViewController *blogsViewController;
     CGRect startingFrame;
+    CGRect keyboardFrame;
+    
+    SidebarViewController *sidebarViewController;
+    Blog *startingBlog;
 }
 
 @property (nonatomic, retain) IBOutlet QuickPicturePreviewView *photoImageView;
@@ -29,9 +34,10 @@
 @property (nonatomic, retain) IBOutlet BlogSelectorButton *blogSelector;
 @property (nonatomic, retain) UIBarButtonItem *postButtonItem;
 @property (nonatomic, retain) UIImage *photo;
-@property (nonatomic, retain) BlogsViewController *blogsViewController;
 @property (nonatomic, assign) UIImagePickerControllerSourceType sourceType;
 @property (nonatomic, assign) BOOL isCameraPlus;
+@property (nonatomic, retain) SidebarViewController *sidebarViewController;
+@property (nonatomic, retain) Blog *startingBlog;
 
 - (void)post;
 - (void)cancel;
