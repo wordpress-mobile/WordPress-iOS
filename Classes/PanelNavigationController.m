@@ -578,7 +578,8 @@
 
 - (void)showSidebarAnimated:(BOOL)animated {
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
-        [self addShadowTo:self.detailView];
+        if (IS_IPHONE)
+            [self addShadowTo:self.detailView];
         self.masterViewController.view.hidden = NO;
         [self setStackOffset:0 duration:0];
         [self disableDetailView];
@@ -687,7 +688,7 @@
 }
 
 - (void)roundViewCorners: (UIView *)view forCorners:(UIRectCorner)rectCorner {
-
+    
     UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:view.bounds 
                                                    byRoundingCorners: rectCorner
                                                          cornerRadii:CGSizeMake(PANEL_CORNER_RADIUS, PANEL_CORNER_RADIUS)];
