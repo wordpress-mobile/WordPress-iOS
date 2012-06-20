@@ -486,9 +486,6 @@
         } else {
             [_detailViewController willMoveToParentViewController:self];
             [self addChildViewController:_detailViewController];
-            if (_isAppeared) {
-                [_detailViewController vdc_viewWillAppear:NO];
-            }
 
             UIView *wrappedView = [self createWrapViewForViewController:_detailViewController];
 
@@ -518,6 +515,9 @@
             }
             
             [self prepareDetailView:wrappedView];
+            if (_isAppeared) {
+                [_detailViewController vdc_viewWillAppear:NO];
+            }
             [self.detailView addSubview:wrappedView];
             
             if (_isAppeared) {
