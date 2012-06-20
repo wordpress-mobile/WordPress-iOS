@@ -305,7 +305,11 @@
 }
 
 - (void)setSelectedIndexPath:(NSIndexPath *)indexPath {
-    if (selectedIndexPath != indexPath) {
+    if ([selectedIndexPath isEqual:indexPath]) {
+        if (self.panelNavigationController) {
+            [self.panelNavigationController viewControllerWantsToBeFullyVisible:self];
+        }
+    } else {
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         
         [selectedIndexPath release];

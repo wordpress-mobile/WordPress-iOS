@@ -28,6 +28,7 @@
 - (BOOL)isToolbarHiddenForViewController:(UIViewController *)controller;
 - (void)setToolbarHidden:(BOOL)hidden forViewController:(UIViewController *)controller;
 - (void)setToolbarHidden:(BOOL)hidden forViewController:(UIViewController *)controller animated:(BOOL)animated;
+- (void)viewControllerWantsToBeFullyVisible:(UIViewController *)controller;
 
 #pragma mark - Controllers
 @property(nonatomic,retain) UIViewController *detailViewController; // The first detail controller

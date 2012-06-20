@@ -277,6 +277,12 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    if (self.panelNavigationController) {
+        [self.panelNavigationController viewControllerWantsToBeFullyVisible:self];
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)simulatePullToRefresh {
