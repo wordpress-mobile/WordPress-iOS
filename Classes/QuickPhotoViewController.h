@@ -42,5 +42,6 @@
 - (void)post;
 - (void)cancel;
 - (void)saveImage;
+- (void)dismiss;
 
 @end
