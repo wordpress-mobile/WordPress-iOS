@@ -982,10 +982,25 @@
         previousDiff = diff;
     }
 
-    NSUInteger viewCount = [self.detailViews count];
-    for (int i = 0; i < viewCount - 2; i++) {
-        UIView *view = [self.detailViews objectAtIndex:i];
-        offset += view.frame.size.width;
+    if (self.detailViews) {
+        NSUInteger viewCount = [self.detailViews count];
+        for (int i = 0; i < viewCount-2; i++) {
+            UIView *view = [self.detailViews objectAtIndex:i];
+            offset += view.frame.size.width;
+            diff = ABS(_stackOffset + remainingVelocity / velocityFactor - offset);
+            remainingVelocity -= remainingVelocity / velocityFactor;
+            if (diff > previousDiff) {
+                return previousOffset;
+            } else {
+                previousOffset = offset;
+                previousDiff = diff;
+            }
+        }
+    
+        offset += DETAIL_LEDGE;
+        offset += [[self.detailViewWidths objectAtIndex:(viewCount - 1)] floatValue];
+        offset += [[self.detailViewWidths objectAtIndex:(viewCount - 2)] floatValue];
+        offset -= self.view.bounds.size.width;
         diff = ABS(_stackOffset + remainingVelocity / velocityFactor - offset);
         remainingVelocity -= remainingVelocity / velocityFactor;
         if (diff > previousDiff) {
@@ -996,19 +1011,6 @@
         }
     }
     
-    offset += DETAIL_LEDGE;
-    offset += [[self.detailViewWidths objectAtIndex:(viewCount - 1)] floatValue];
-    offset += [[self.detailViewWidths objectAtIndex:(viewCount - 2)] floatValue];
-    offset -= self.view.bounds.size.width;
-    diff = ABS(_stackOffset + remainingVelocity / velocityFactor - offset);
-    remainingVelocity -= remainingVelocity / velocityFactor;
-    if (diff > previousDiff) {
-        return previousOffset;
-    } else {
-        previousOffset = offset;
-        previousDiff = diff;
-    }
-
     return previousOffset;
 }
 
