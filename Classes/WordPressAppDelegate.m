@@ -57,7 +57,14 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		
 		NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 		[[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
-        NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:[NSString stringWithFormat:@"wp-iphone/%@", appVersion], @"UserAgent", nil];
+        NSString *defaultUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@)", 
+                     appVersion,
+                     [[UIDevice currentDevice] systemName], 
+                     [[UIDevice currentDevice] systemVersion], 
+                     [[UIDevice currentDevice] model]
+                     ];
+        
+        NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: defaultUA, @"UserAgent", nil];
         [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
         [dictionary release];
 
