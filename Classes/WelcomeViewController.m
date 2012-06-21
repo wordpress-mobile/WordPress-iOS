@@ -157,6 +157,7 @@
 		WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:newNibName bundle:[NSBundle mainBundle]];
 		[self.navigationController pushViewController:webSignup animated:YES];
 		[webSignup release];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wpcomSignupNotificationReceived:) name:@"wpcomSignupNotification" object:nil];    
 	}
 	else if(indexPath.row == 1) { // Add blog hosted at WordPress.com
         NSString *username = nil;
@@ -206,15 +207,29 @@
 
 #pragma mark -
 #pragma mark Custom methods
-
+// Add itself as observer for the 'BlogsRefreshNotification' notification. It is used when the app shows the Welcome Screen, since this Screen need to be dismissed upon login action
 -(void) automaticallyDismissOnLoginActions {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];    
+}
+
+// Called when the AppDelegate receives an URL like 'wordpress://wpcom_signup_completed'
+- (void)wpcomSignupNotificationReceived:(NSNotification *)notification {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"wpcomSignupNotification" object:nil];
+    NSDictionary *info = [notification userInfo];
+    WPFLog(@"Info received in the notification %@", info);
+    [self.navigationController popViewControllerAnimated:NO];
+    WPcomLoginViewController *wpLoginView = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    wpLoginView.delegate = self;
+    wpLoginView.predefinedUsername = [info valueForKey:@"username"];
+    [self.navigationController pushViewController:wpLoginView animated:YES];
+    [wpLoginView release];
 }
 
 - (void)blogsRefreshNotificationReceived:(NSNotification *)notification {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
     [super dismissModalViewControllerAnimated:YES];
 }
+
 
 - (IBAction)cancel:(id)sender {
 	[super dismissModalViewControllerAnimated:YES];
@@ -248,6 +263,7 @@
 
 - (void)viewDidUnload {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"wpcomSignupNotification" object:nil];
     [super viewDidUnload];
 }
 

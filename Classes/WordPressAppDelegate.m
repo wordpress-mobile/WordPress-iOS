@@ -304,7 +304,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
                 [WPComOAuthController presentWithClientId:clientId redirectUrl:redirectUrl clientSecret:secret delegate:self];
                 return YES;
             }
-        } else if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
+        } else if ([[url absoluteString] hasPrefix:@"wordpress://wpcom_signup_completed"]) {
+            NSDictionary *params = [[url query] dictionaryFromQueryString];
+           // WPFLog(@"%@", params);
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"wpcomSignupNotification" object:nil userInfo:params];
+        }
+        else if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
             /* Note that your application has been in the background and may have been terminated.
              * The only CameraPlusPickerManager state that is restored is the pickerMode, which is
              * restored to indicate the mode used to pick images.

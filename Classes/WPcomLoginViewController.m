@@ -23,7 +23,7 @@
 @implementation WPcomLoginViewController {
     UITableViewTextFieldCell *loginCell, *passwordCell;
 }
-@synthesize footerText, buttonText, isSigningIn, isStatsInitiated;
+@synthesize footerText, buttonText, isSigningIn, isStatsInitiated, predefinedUsername;
 @synthesize delegate;
 @synthesize wpComApi = _wpComApi;
 
@@ -142,6 +142,8 @@
             loginCell.textField.returnKeyType = UIReturnKeyNext;
             loginCell.textField.tag = 0;
             loginCell.textField.delegate = self;
+            if( self.predefinedUsername )
+                loginCell.textField.text = self.predefinedUsername;
             if(isSigningIn)
                 [loginCell.textField resignFirstResponder];
             cell = loginCell;
@@ -318,6 +320,7 @@
     self.footerText = nil;
     self.buttonText = nil;
     self.wpComApi = nil;
+    self.predefinedUsername = nil;
     [super dealloc];
 }
 
