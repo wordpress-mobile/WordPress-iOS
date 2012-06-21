@@ -694,7 +694,7 @@
                 controllerClass = [CommentsViewController class];
                 break;
             case 3:
-                controllerClass =  IS_IPAD ? [StatsWebViewController class] : [StatsTableViewController class];
+                controllerClass =  [StatsWebViewController class];//IS_IPAD ? [StatsWebViewController class] : [StatsTableViewController class];
                 break;
             case 4:
                 controllerClass = [WPWebViewController class];

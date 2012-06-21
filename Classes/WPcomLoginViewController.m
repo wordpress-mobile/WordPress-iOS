@@ -11,7 +11,9 @@
 #import "WordPressApi.h"
 #import "WordPressComApi.h"
 
-@interface WPcomLoginViewController () <UITextFieldDelegate>
+@interface WPcomLoginViewController () <UITextFieldDelegate> {
+    UITableViewTextFieldCell *loginCell, *passwordCell;
+}
 @property (nonatomic, retain) NSString *footerText, *buttonText;
 @property (nonatomic, assign) BOOL isSigningIn;
 @property (nonatomic, retain) WordPressComApi *wpComApi;
@@ -20,15 +22,26 @@
 @end
 
 
-@implementation WPcomLoginViewController {
-    UITableViewTextFieldCell *loginCell, *passwordCell;
-}
-@synthesize footerText, buttonText, isSigningIn, isStatsInitiated, predefinedUsername;
+@implementation WPcomLoginViewController
+
+@synthesize footerText, buttonText, isSigningIn, isStatsInitiated, isCancellable, predefinedUsername;
 @synthesize delegate;
 @synthesize wpComApi = _wpComApi;
 
 #pragma mark -
 #pragma mark View lifecycle
+
+- (void)dealloc {
+    self.delegate = nil;
+    self.footerText = nil;
+    self.buttonText = nil;
+    self.wpComApi = nil;
+    self.predefinedUsername = nil;
+    self.tableView = nil;
+
+    [super dealloc];
+}
+
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -38,7 +51,12 @@
 	self.footerText = @" ";
 	self.buttonText = NSLocalizedString(@"Sign In", @"");
 	self.navigationItem.title = NSLocalizedString(@"Sign In", @"");
-
+    
+    if (isCancellable) {
+        UIBarButtonItem *barButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)] autorelease];
+        self.navigationItem.leftBarButtonItem = barButton;
+    }
+    
 	// Setup WPcom table header
 	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
 	CGRect logoFrame = CGRectMake(40, 20, 229, 43);
@@ -69,10 +87,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if(DeviceIsPad() == YES)
-		return YES;
-	else
-		return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    return YES;
 }
 
 #pragma mark -
@@ -306,24 +321,5 @@
     [self.delegate loginControllerDidDismiss:self];
 }
 
-#pragma mark -
-#pragma mark Memory management
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];    
-}
-
-- (void)viewDidUnload {
-}
-
-- (void)dealloc {
-    self.footerText = nil;
-    self.buttonText = nil;
-    self.wpComApi = nil;
-    self.predefinedUsername = nil;
-    [super dealloc];
-}
-
 
 @end
-

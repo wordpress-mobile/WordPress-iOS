@@ -12,7 +12,6 @@
     NSMutableString *currentNode;
     NSMutableDictionary *parsedBlog;
     Blog *blog;
-    BOOL loadStatsWhenViewAppears;
 }
 
 @property (nonatomic, retain) Blog *blog;
@@ -25,6 +24,5 @@
 - (void)getUserAPIKey;
 - (void)loadStats;
 - (void)promptForCredentials;
-- (void)credentialsChanged:(NSNotification *)notification;
 
 @end

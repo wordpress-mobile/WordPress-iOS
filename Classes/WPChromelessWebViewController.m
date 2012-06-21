@@ -31,14 +31,14 @@
 }
 
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
     CGRect frame = self.view.bounds;
     self.webView = [[[WPWebView alloc] initWithFrame:frame] autorelease];
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     webView.delegate = self;
-
+    
     [self.view addSubview:webView];
 }
 
@@ -149,7 +149,7 @@
         WPChromelessWebViewController *controller = [[WPChromelessWebViewController alloc] init];
         [controller loadPath:request.URL.absoluteString];        
         if (!DeviceIsPad()) {
-            [self.navigationController pushViewController:controller animated:YES];
+            [self.panelNavigationController pushViewController:controller animated:YES];
 
         } else {
             
@@ -163,6 +163,14 @@
     }
     
     return YES;
+}
+
+
+- (void)webViewDidFinishLoad:(WPWebView *)wpWebView {
+    NSString *title = [wpWebView stringByEvaluatingJavaScriptFromString:@"document.title;"];
+    if (title && [title length] > 0) {
+        self.title = title;
+    }
 }
 
 @end

@@ -11,6 +11,15 @@
 #import "SFHFKeychainUtils.h"
 #import "WPcomLoginViewController.h"
 
+#import "HelpViewController.h"
+
+@interface StatsWebViewController () <WPcomLoginViewControllerDelegate> {
+    BOOL loadStatsWhenViewAppears;
+    BOOL promptCredentialsWhenViewAppears;
+}
+@property (nonatomic, strong) NSString *wporgBlogJetpackUsernameKey;
+@end
+
 @implementation StatsWebViewController
 
 #define kAlertTagAPIKey 1
@@ -19,37 +28,36 @@
 @synthesize blog;
 @synthesize currentNode;
 @synthesize parsedBlog;
+@synthesize wporgBlogJetpackUsernameKey;
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
     [blog release];
     [currentNode release];
     [parsedBlog release];
+    [wporgBlogJetpackUsernameKey release];
     
     [super dealloc];
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(credentialsChanged:) name:kDidDismissWPcomLoginNotification object:nil];
+    self.title = @"Stats";
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if (loadStatsWhenViewAppears) {
+    if (promptCredentialsWhenViewAppears) {
+        promptCredentialsWhenViewAppears = NO;
+        [self promptForCredentials];
+    } else if (loadStatsWhenViewAppears) {
         loadStatsWhenViewAppears = NO;
         [self loadStats];
     }
 }
+
 
 #pragma mark -
 #pragma mark Instance Methods
@@ -65,6 +73,9 @@
     blog = [aBlog retain];
     
     if (blog) {
+        if (![blog isWPcom]) {
+            self.wporgBlogJetpackUsernameKey = [NSString stringWithFormat:@"jetpackblog-%@",[blog hostURL]];
+        }
         [self initStats];
     } else {
         [webView loadHTMLString:@"<html><head></head><body></body></html>" baseURL:nil];
@@ -76,7 +87,7 @@
 	if ([blog apiKey] == nil || [[blog blogID] isEqualToNumber:[NSNumber numberWithInt:1]]) {
 		//first run or api key was deleted
 		[self getUserAPIKey];
-	} else if(![blog isWPcom] && [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] == nil) {
+	} else if(![blog isWPcom] && [[NSUserDefaults standardUserDefaults] objectForKey:wporgBlogJetpackUsernameKey] == nil) {
         // self-hosted blog and no associated .com login.
         [self promptForCredentials];
     } else {
@@ -153,8 +164,11 @@
         password = [SFHFKeychainUtils getPasswordForUsername:[blog username] andServiceName:[blog hostURL] error:&error];
         
     } else {
-        //use wpcom preference for self-hosted
-        username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+        /*
+         The value of wpcom_username_preference can get mismatched if the user gets happy about adding/removing blogs and signing
+         out and back in to load blogs from different wpcom accounts so we don't want to rely on it.
+         */
+        username = [[NSUserDefaults standardUserDefaults] objectForKey:wporgBlogJetpackUsernameKey];
         password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&error];
     }
     
@@ -177,22 +191,27 @@
 
 
 - (void)promptForCredentials {
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    if(DeviceIsPad() == YES) {
-        WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController-iPad-stats" bundle:nil];	
-        wpComLogin.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        wpComLogin.modalPresentationStyle = UIModalPresentationFormSheet;
-        wpComLogin.isStatsInitiated = YES;
-        [appDelegate.splitViewController presentModalViewController:wpComLogin animated:YES];			
-        [wpComLogin release];
-    } else {
-        WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithNibName:@"WPcomLoginViewController" bundle:nil];	
-        [appDelegate.navigationController presentModalViewController:wpComLogin animated:YES];
-        [wpComLogin release];
+    if (!self.view.window) {
+        promptCredentialsWhenViewAppears = YES;
+        return;
     }
     
+    WPcomLoginViewController *controller = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    controller.delegate = self;
+    controller.isCancellable = YES;
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    
+    if(DeviceIsPad() == YES) {
+        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
+
+    [self.panelNavigationController presentModalViewController:navController animated:YES];
+
+    [navController release];
+    [controller release];
+
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WordPress.com Stats", @"")
                                                         message:NSLocalizedString(@"To load stats for your blog you will need to have Jetpack or the WordPress.com Stats plugin installed on your blog.", @"") 
                                                        delegate:self 
@@ -201,11 +220,6 @@
     alertView.tag = kAlertTagCredentials;
     [alertView show];
     [alertView release];
-}
-
-- (void)credentialsChanged:(NSNotification *)notification {
-    // In theory we should have good wp.com credentials for .org blog's jetpack linkage.
-    [self getUserAPIKey];
 }
 
 
@@ -245,6 +259,16 @@
             }
             // All done here.
             [parser abortParsing];
+            
+            /*
+             We've successfully found the wpcom account used for the wporg account's jetpack plugin.
+             To avoid a mismatched credentials case, associate the current defaults value for wpcom_username_preference
+             with a new key for this jetpack account.
+             */
+            NSString *jetpackUsernameKey = [NSString stringWithFormat:@"jetpackblog-%@",[blog hostURL]];
+            NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+            [[NSUserDefaults standardUserDefaults] setValue:username forKey:jetpackUsernameKey];
+            [NSUserDefaults resetStandardUserDefaults];
             
             self.currentNode = nil;
             self.parsedBlog = nil;
@@ -292,7 +316,7 @@
         case kAlertTagCredentials : 
             if (buttonIndex == 0) {
                 // Learn More
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString: [NSString stringWithFormat: @"%@", kJetPackURL] ]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", kJetPackURL]]];
             }
             break;
 
@@ -300,5 +324,23 @@
             break;
     }
 }
+
+
+#pragma mark -
+#pragma mark WPcomLoginViewController Delegate Methods
+
+- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithUsername:(NSString *)username {
+    [self dismissModalViewControllerAnimated:YES];
+
+    // In theory we should have good wp.com credentials for .org blog's jetpack linkage.
+    [self getUserAPIKey];
+}
+
+
+- (void)loginControllerDidDismiss:(WPcomLoginViewController *)loginController {
+    [self dismissModalViewControllerAnimated:YES];
+    [self.panelNavigationController popViewControllerAnimated:YES];
+}
+
 
 @end
