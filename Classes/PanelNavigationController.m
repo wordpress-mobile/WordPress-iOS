@@ -158,7 +158,6 @@
     [self.view addSubview:self.detailView];
     
     if (self.navigationController) {
-        [self.navigationController willMoveToParentViewController:self];
         [self addChildViewController:self.navigationController];
         [self.navigationController didMoveToParentViewController:self];
         self.detailViewController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list"] style:UIBarButtonItemStyleBordered target:self action:@selector(showSidebar)] autorelease];
@@ -186,7 +185,6 @@
     if (self.navigationController) {
         [self.navigationController willMoveToParentViewController:nil];
         [self.navigationController removeFromParentViewController];
-        [self.navigationController didMoveToParentViewController:nil];
     }
     [super viewDidUnload];
 }
@@ -478,13 +476,13 @@
                 [_detailViewController vdc_viewWillDisappear:NO];
             }
             
+            [_detailViewController willMoveToParentViewController:nil];
             UIView *view = [self viewOrViewWrapper:_detailViewController.view];
             [view removeFromSuperview];
 
             if (_isAppeared) {
                 [_detailViewController vdc_viewDidDisappear:NO];
             }
-            [_detailViewController willMoveToParentViewController:nil];
             [_detailViewController setPanelNavigationController:nil];
             [_detailViewController removeFromParentViewController];
             [_detailViewController didMoveToParentViewController:nil];
@@ -506,7 +504,6 @@
             _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
             [sidebarButton release];
         } else {
-            [_detailViewController willMoveToParentViewController:self];
             [self addChildViewController:_detailViewController];
 
             UIView *wrappedView = [self createWrapViewForViewController:_detailViewController];
@@ -574,7 +571,6 @@
         [_masterViewController willMoveToParentViewController:nil];
         [_masterViewController setPanelNavigationController:nil];
         [_masterViewController removeFromParentViewController];
-        [_masterViewController didMoveToParentViewController:nil];
         [_masterViewController release];
     }
 
@@ -582,7 +578,6 @@
 
     if (_masterViewController) {
         [_masterViewController retain];
-        [_masterViewController willMoveToParentViewController:self];
         [self addChildViewController:_masterViewController];
         [_masterViewController setPanelNavigationController:self];
         [_masterViewController didMoveToParentViewController:self];
@@ -1124,11 +1119,10 @@
         } else {
             viewController.view.frame = CGRectMake(CGRectGetMaxX(topViewFrame), 0.0f, newPanelWidth, DETAIL_HEIGHT);
         }
-        [viewController willMoveToParentViewController:self];
+        [self addChildViewController:viewController];
         if (_isAppeared) {
             [viewController vdc_viewWillAppear:animated];
         }
-        [self addChildViewController:viewController];
 
         UIView *wrappedView = [self createWrapViewForViewController:viewController];
         [self.view addSubview:wrappedView];
@@ -1174,7 +1168,6 @@
             [view removeFromSuperview];
 //            [viewController.view removeFromSuperview];
             [viewController vdc_viewDidDisappear:animated];
-            [viewController didMoveToParentViewController:nil];
             
             // cleanup wrapper and toolbar.
 //            [self removeWrapperForView:viewController.view];
