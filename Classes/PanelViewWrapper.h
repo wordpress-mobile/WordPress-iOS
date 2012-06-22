@@ -11,6 +11,7 @@
 
 @property (nonatomic, strong) UIToolbar *toolbar;
 @property (nonatomic, getter=isToolbarHidden) BOOL toolbarHidden;
+@property (nonatomic, strong) UIView *overlay;
 
 - (id)initWithViewController:(UIViewController *)controller;
 

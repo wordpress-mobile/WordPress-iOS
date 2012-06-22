@@ -1053,21 +1053,43 @@
 
 - (NSArray *)partiallyVisibleViews {
     NSMutableArray *views = [NSMutableArray arrayWithCapacity:[self.detailViews count]];
-    [self.detailViews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        UIView *view = (UIView *)obj;
+    for (int idx=0;idx < [self.detailViews count];idx++) {
+        UIView *view = (UIView *)[self.detailViews objectAtIndex:idx];
         if (CGRectContainsRect(self.view.bounds, view.frame)) {
             // Fully inside, check for overlapping views
             if (idx + 1 < [self.detailViews count]) {
                 UIView *nextView = [self.detailViews objectAtIndex:idx+1];
+                
+                //get the correct overlay view, if it's the first panel (detailView), it's in a subview
+                UIView *alphaView = view;
+                if (view == self.detailView && [view.subviews count] >= 1)
+                    alphaView = [view.subviews objectAtIndex:1];
+                
                 if (nextView && CGRectIntersectsRect(view.frame, nextView.frame) && nextView.frame.origin.x > view.frame.origin.x) {
+                    if ([alphaView isKindOfClass: [PanelViewWrapper class]]) {
+                        CGRect intersection = CGRectIntersection(alphaView.frame, nextView.frame);
+                        if (alphaView.frame.size.width != 0) {
+                            CGFloat fadeAlpha = 1.0f - (intersection.origin.x / alphaView.frame.size.width);
+                            NSLog(@"fadeAlpha: %f", fadeAlpha);
+                            ((PanelViewWrapper*) alphaView).overlay.alpha = fadeAlpha;
+                        }
+                    }
                     [views addObject:view];
+                } else if ([alphaView isKindOfClass: [PanelViewWrapper class]] && nextView.frame.origin.x != view.frame.origin.x) {
+                    ((PanelViewWrapper*) alphaView).overlay.alpha = 0.0f;
+                }
+            } else {
+                UIView *alphaView = view;
+                if (view == self.detailView) {
+                    if ([self.detailView.subviews count] > 0)
+                        alphaView = [self.detailView.subviews objectAtIndex:0];
                 }
             }
         } else if (CGRectIntersectsRect(self.view.bounds, view.frame)) {
             // Intersects, so partly visible
             [views addObject:view];
-        }
-    }];
+        } 
+    }
     return [NSArray arrayWithArray:views];
 }
 

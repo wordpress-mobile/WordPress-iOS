@@ -26,10 +26,11 @@
 @synthesize viewController = _viewController;
 @synthesize wrappedView = _wrappedView;
 @synthesize observerToken = _observerToken;
+@synthesize overlay = _overlay;
 
 - (void)dealloc {
     self.toolbar = nil;
-    
+    self.overlay = nil;
     [super dealloc];
 }
 
@@ -40,6 +41,12 @@
     if (self) {
         [self wrapViewFromController:controller];
     }
+    _overlay = [[UIView alloc] initWithFrame:self.bounds];
+    _overlay.backgroundColor = [UIColor blackColor];
+    _overlay.alpha = 0.0f;
+    _overlay.userInteractionEnabled = NO;
+    _overlay.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self addSubview:_overlay];
     return self;
 }
 
