@@ -85,6 +85,24 @@
 
 - (void)viewDidUnload {
     [self removeNotifications];
+    self.table = nil;
+    self.addMediaButton = nil;
+    self.spinner = nil;
+    self.messageLabel = nil;
+    self.bottomToolbar = nil;
+    self.addPopover = nil;
+    self.postID = nil;
+    self.blogURL = nil;
+    self.videoPressCheckBlogURL = nil;
+    self.uniqueID = nil;
+    self.currentUpload = nil;
+    self.photos = nil;
+    self.videos = nil;
+    self.currentImage = nil;
+    self.currentImageMetadata = nil;
+    self.currentVideo = nil;
+    self.picker = nil;
+    self.customSizeAlert = nil;
 	[super viewDidUnload];
 }
 
@@ -1492,8 +1510,8 @@
 
 - (void)dealloc {
     picker.delegate = nil;
-	[picker release], picker = nil;
-	[customSizeAlert release]; customSizeAlert = nil;
+	[picker release];
+	[customSizeAlert release];
 	[uniqueID release];
 	[addPopover release];
 	[bottomToolbar release];
@@ -1504,7 +1522,6 @@
 	[messageLabel release];
 	[currentVideo release];
 	[currentImage release];
-	self.currentImageMetadata = nil;
 	[currentImageMetadata release];
 	[spinner release];
 	[table release];
