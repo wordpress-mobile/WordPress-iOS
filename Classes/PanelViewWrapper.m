@@ -41,12 +41,6 @@
     if (self) {
         [self wrapViewFromController:controller];
     }
-    _overlay = [[UIView alloc] initWithFrame:self.bounds];
-    _overlay.backgroundColor = [UIColor blackColor];
-    _overlay.alpha = 0.0f;
-    _overlay.userInteractionEnabled = NO;
-    _overlay.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self addSubview:_overlay];
     return self;
 }
 
@@ -109,6 +103,14 @@
     
     // Use the toolbarItems from the controller.
     [self setToolbarItems:controller.toolbarItems];
+    
+    //add the overlay for fading when partialy hidden
+    _overlay = [[UIView alloc] initWithFrame:self.bounds];
+    _overlay.backgroundColor = [UIColor blackColor];
+    _overlay.alpha = 0.0f;
+    _overlay.userInteractionEnabled = NO;
+    _overlay.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self addSubview:_overlay];
 }
 
 
