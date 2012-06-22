@@ -89,7 +89,7 @@
         [self addSubview:button];
         _disclosureButton = button;
         
-        background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_bg"]];
+        background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_cell_bg"]];
         [self addSubview:background];
         [self sendSubviewToBack:background];
     }
