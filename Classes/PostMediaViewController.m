@@ -91,17 +91,6 @@
     self.messageLabel = nil;
     self.bottomToolbar = nil;
     self.addPopover = nil;
-    self.postID = nil;
-    self.blogURL = nil;
-    self.videoPressCheckBlogURL = nil;
-    self.uniqueID = nil;
-    self.currentUpload = nil;
-    self.photos = nil;
-    self.videos = nil;
-    self.currentImage = nil;
-    self.currentImageMetadata = nil;
-    self.currentVideo = nil;
-    self.picker = nil;
     self.customSizeAlert = nil;
 	[super viewDidUnload];
 }

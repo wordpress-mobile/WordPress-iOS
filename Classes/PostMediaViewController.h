@@ -59,7 +59,7 @@ static inline double radians(double degrees) {
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) IBOutlet UILabel *messageLabel;
 @property (nonatomic, retain) IBOutlet UIToolbar *bottomToolbar;
-@property (nonatomic, retain) IBOutlet IBOutlet UIPopoverController *addPopover;
+@property (nonatomic, retain) IBOutlet UIPopoverController *addPopover;
 @property (nonatomic, assign) BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet, isShowingCustomSizeAlert;
 @property (nonatomic, assign) BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability;
 @property (nonatomic, retain) NSString *postID, *blogURL, *videoPressCheckBlogURL, *uniqueID;
