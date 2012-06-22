@@ -904,8 +904,7 @@
     }
     [UIView commitAnimations];
     _stackOffset = offset - remainingOffset;
-
-    NSLog(@"partially visible: %@", [self partiallyVisibleViews]);
+    [self partiallyVisibleViews];
 }
 
 - (CGFloat)nearestValidOffsetWithVelocity:(CGFloat)velocity {
@@ -1070,7 +1069,16 @@
                         CGRect intersection = CGRectIntersection(alphaView.frame, nextView.frame);
                         if (alphaView.frame.size.width != 0) {
                             CGFloat fadeAlpha = 1.0f - (intersection.origin.x / alphaView.frame.size.width);
-                            ((PanelViewWrapper*) alphaView).overlay.alpha = fadeAlpha;
+                            CGFloat alphaDifference = ((PanelViewWrapper*) alphaView).overlay.alpha - fadeAlpha;
+                            if (alphaDifference > 0.01f || alphaDifference < -0.01f) {
+                                [UIView beginAnimations:@"fadeAnimation" context:nil];
+                                [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                                [UIView setAnimationDuration:0.3f];
+                                ((PanelViewWrapper*) alphaView).overlay.alpha = fadeAlpha;
+                                [UIView commitAnimations];
+                            } else {
+                                ((PanelViewWrapper*) alphaView).overlay.alpha = fadeAlpha;
+                            }
                         }
                     }
                     [views addObject:view];
