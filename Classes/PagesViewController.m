@@ -55,7 +55,6 @@
 // For iPad
 - (void)showSelectedPost {
     Page *page = nil;
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     NSIndexPath *indexPath = self.selectedIndexPath;
 
     @try {
@@ -68,8 +67,10 @@
         NSLog(@"results: %@", self.resultsController.fetchedObjects);
         page = nil;
     }
+    
+    [self.panelNavigationController popToRootViewControllerAnimated:YES];
     self.postReaderViewController = [[PageViewController alloc] initWithPost:page];
-    [delegate showContentDetailViewController:self.postReaderViewController];    
+    [self.panelNavigationController pushViewController:self.postReaderViewController animated:YES];  
 }
 
 - (void)showAddPostView {
