@@ -1070,7 +1070,6 @@
                         CGRect intersection = CGRectIntersection(alphaView.frame, nextView.frame);
                         if (alphaView.frame.size.width != 0) {
                             CGFloat fadeAlpha = 1.0f - (intersection.origin.x / alphaView.frame.size.width);
-                            NSLog(@"fadeAlpha: %f", fadeAlpha);
                             ((PanelViewWrapper*) alphaView).overlay.alpha = fadeAlpha;
                         }
                     }
@@ -1078,13 +1077,7 @@
                 } else if ([alphaView isKindOfClass: [PanelViewWrapper class]] && nextView.frame.origin.x != view.frame.origin.x) {
                     ((PanelViewWrapper*) alphaView).overlay.alpha = 0.0f;
                 }
-            } else {
-                UIView *alphaView = view;
-                if (view == self.detailView) {
-                    if ([self.detailView.subviews count] > 0)
-                        alphaView = [self.detailView.subviews objectAtIndex:0];
-                }
-            }
+            } 
         } else if (CGRectIntersectsRect(self.view.bounds, view.frame)) {
             // Intersects, so partly visible
             [views addObject:view];
