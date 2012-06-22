@@ -923,9 +923,13 @@
             offset = DETAIL_LEDGE_OFFSET - (self.view.bounds.size.width - IPAD_WIDE_PANEL_WIDTH);
         }
     }
+    // if we have a single panel, transition back to its starting offset.
+    if ([self.detailViews count] <= 1) {
+        return offset;
+    }
     
     CGFloat remainingVelocity = velocity;
-    CGFloat velocityFactor = 10;
+    CGFloat velocityFactor = 10.0f;
     CGFloat diff = ABS(_stackOffset + remainingVelocity / velocityFactor - offset);
     CGFloat previousOffset = offset;
     CGFloat previousDiff = diff;
@@ -979,7 +983,10 @@
     if (IS_IPHONE) {
         maxSoft = DETAIL_LEDGE_OFFSET;
     } else if (viewCount <= 1) {
-        maxSoft = DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
+        maxSoft = 0.0f;
+        if ([self viewControllerExpectsWidePanel:_detailViewController] && UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+            maxSoft = DETAIL_LEDGE_OFFSET - (self.view.bounds.size.width - IPAD_WIDE_PANEL_WIDTH);
+        }    
     } else {
         maxSoft = DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
         maxSoft+= DETAIL_LEDGE;
