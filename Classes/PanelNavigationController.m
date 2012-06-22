@@ -304,6 +304,11 @@
 - (PanelViewWrapper *)wrapViewForViewController:(UIViewController *)controller {
     UIView *view = controller.view;
     if ([[view superview] isKindOfClass:[PanelViewWrapper class]]) {
+        // Make sure the controller's view's origin is 0,0
+        CGRect frame = view.frame;
+        frame.origin.x = 0.0f;
+        frame.origin.y = 0.0f;
+        view.frame = frame;
         return (PanelViewWrapper *)[view superview];
     }
     return nil;
