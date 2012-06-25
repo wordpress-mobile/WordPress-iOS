@@ -385,4 +385,19 @@
     return cell;
 }
 
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
+
+    [super controller:controller didChangeObject:anObject atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
+
+    if (type == NSFetchedResultsChangeDelete) {
+        if ([indexPath compare:selectedIndexPath] == NSOrderedSame) {
+            self.selectedIndexPath = nil;
+        }
+    }
+}
+
 @end

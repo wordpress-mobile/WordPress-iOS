@@ -61,7 +61,11 @@
                                                                                  target:self
                                                                                  action:@selector(showModalEditor)] autorelease];
     if (IS_IPAD) {
-        self.toolbarItems = [NSArray arrayWithObject:editButton];
+        UIBarButtonItem *deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash 
+                                                                                      target:self 
+                                                                                      action:@selector(deletePost:)];
+        deleteButton.style = UIBarButtonItemStyleBordered;
+        self.toolbarItems = [NSArray arrayWithObjects:editButton, deleteButton, nil];
     } else {
         self.navigationItem.rightBarButtonItem = editButton;
     }
@@ -101,6 +105,23 @@
 
 #pragma mark -
 #pragma mark Instance Methods
+
+- (void)deletePost:(id)sender {
+
+    if (![self.apost hasRemote] && self.apost.remoteStatus == AbstractPostRemoteStatusLocal && !self.apost.postTitle && !self.apost.content) {
+		//do not remove the post here. it is removed in EditPostViewController
+		[self.apost deletePostWithSuccess:nil failure:nil]; //this is a local draft no remote errors checking.
+		self.apost = nil;
+    } else {
+        // Remote post
+        [self.apost deletePostWithSuccess:^{
+            self.apost = nil;
+        } failure:^(NSError *error) {
+            // could not delete the remote post. try again? 
+            
+        }]; 
+    }
+}
 
 - (void)refreshUI {
     titleLabel.text = self.apost.postTitle;

@@ -12,7 +12,7 @@
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
-@interface WPTableViewController () <NSFetchedResultsControllerDelegate, EGORefreshTableHeaderDelegate>
+@interface WPTableViewController () <EGORefreshTableHeaderDelegate>
 @property (nonatomic,retain) NSFetchedResultsController *resultsController;
 - (void)simulatePullToRefresh;
 @end

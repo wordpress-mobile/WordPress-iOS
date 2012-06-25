@@ -8,7 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "Blog.h"
 
-@interface WPTableViewController : UITableViewController
+@interface WPTableViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, retain) Blog *blog;
 

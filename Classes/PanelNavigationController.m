@@ -1068,7 +1068,8 @@
 }
 
 - (NSArray *)partiallyVisibleViews {
-    NSMutableArray *views = [NSMutableArray arrayWithCapacity:[self.detailViews count]];
+
+    NSMutableArray *views = [NSMutableArray arrayWithCapacity:[self.detailViews count]];    
     for (int idx=0;idx < [self.detailViews count];idx++) {
         UIView *view = (UIView *)[self.detailViews objectAtIndex:idx];
         if (CGRectContainsRect(self.view.bounds, view.frame)) {
@@ -1102,12 +1103,22 @@
                 } else if ([alphaView isKindOfClass: [PanelViewWrapper class]] && nextView.frame.origin.x != view.frame.origin.x) {
                     ((PanelViewWrapper*) alphaView).overlay.alpha = 0.0f;
                 }
-            } 
+            }
         } else if (CGRectIntersectsRect(self.view.bounds, view.frame)) {
             // Intersects, so partly visible
             [views addObject:view];
-        } 
+        }
     }
+    
+    // Ensure that the detailView is not faded if it is the only view.
+    if ([self.detailViews count] == 1 && [[self.detailView subviews] count] > 0) {
+        UIView *aView = [[self.detailView subviews] objectAtIndex:1];
+        if ([aView isKindOfClass:[PanelViewWrapper class]]) {
+            PanelViewWrapper *wrapperView = (PanelViewWrapper *)aView;
+            wrapperView.overlay.alpha = 0.0f;            
+        }
+    }
+    
     return [NSArray arrayWithArray:views];
 }
 
@@ -1203,7 +1214,7 @@
             [viewController willMoveToParentViewController:nil];
             [viewController vdc_viewWillDisappear:animated];
             [viewController removeFromParentViewController];
-            
+
             UIView *view = [self viewOrViewWrapper:viewController.view];
             [view removeFromSuperview];
 //            [viewController.view removeFromSuperview];
