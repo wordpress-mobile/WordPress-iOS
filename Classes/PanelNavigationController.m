@@ -926,7 +926,11 @@
     }
     // if we have a single panel, transition back to its starting offset.
     if ([self.detailViews count] <= 1) {
-        return DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
+        if (IS_IPHONE) {
+            return DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
+        } else {
+            return offset;
+        }
     }
     
     CGFloat remainingVelocity = velocity;
