@@ -15,10 +15,12 @@
 
 @interface QuickPhotoViewController () {
     UIPopoverController *popController;
+    BOOL showPickerAfterRotation;
 }
 
 @property (nonatomic, retain) UIPopoverController *popController;
 
+- (void)showPicker;
 - (void)handleKeyboardWillShow:(NSNotification *)notification;
 - (void)handleKeyboardWillHide:(NSNotification *)notification;
 
@@ -64,15 +66,11 @@
 
 - (void)didReceiveMemoryWarning {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
 }
 
 #pragma mark - View lifecycle
 
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
@@ -94,7 +92,7 @@
     [postButtonItem setEnabled:NO];
     self.navigationItem.rightBarButtonItem = self.postButtonItem;
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)] autorelease];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
@@ -104,24 +102,7 @@
     
     startingFrame = self.view.frame;
     if (self.photo == nil) {
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.sourceType = self.sourceType;
-        picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
-        picker.allowsEditing = NO;
-        picker.delegate = self;
-
-        if (IS_IPAD) {
-            //Hmm... what to do here?
-            self.popController = [[UIPopoverController alloc] initWithContentViewController:picker];
-            popController.delegate = self;
-            CGRect rect = CGRectMake((self.view.frame.size.width/2), 1.0f, 1.0f, 1.0f);
-            [popController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];            
-            
-        } else {
-            picker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            [self presentModalViewController:picker animated:YES];
-        }
-        [picker release];
+        [self showPicker];
     } else {
         [self.titleTextField becomeFirstResponder];
     }
@@ -146,19 +127,99 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
+    // On the iPhone, we don't have enough vertical space in landscape mode
+    // so we'll require a Portrait orientation.
+    if (IS_IPAD) {
+        return YES;
+    };
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    if (self.popController) {
+        showPickerAfterRotation = YES;
+        [popController dismissPopoverAnimated:NO];
+        self.popController = nil;
+    }
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    
+    if (showPickerAfterRotation) {
+        showPickerAfterRotation = NO;
+        [self showPicker];
+    }
+}
+
 
 #pragma mark -
 #pragma mark Custom methods
 
+- (void)showPicker {
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = self.sourceType;
+    picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+    picker.allowsEditing = NO;
+    picker.delegate = self;
+    
+    if (IS_IPAD) {
+        //Hmm... what to do here?
+        self.popController = [[UIPopoverController alloc] initWithContentViewController:picker];
+        popController.delegate = self;
+        CGRect rect = CGRectMake((self.view.frame.size.width/2), 1.0f, 1.0f, 1.0f); // puts the arrow in the middle of the screen
+        [popController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];            
+        
+    } else {
+        picker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentModalViewController:picker animated:YES];
+    }
+    [picker release];
+}
+
+
 - (void)handleKeyboardWillShow:(NSNotification *)notification {
     keyboardFrame = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
     CGRect frame = startingFrame;
-    frame.size.height = frame.size.height - keyboardFrame.size.height;
-    [self.view setFrame:frame];
+
+    if (!IS_IPAD) {
+        frame.size.height = frame.size.height - keyboardFrame.size.height;
+        [self.view setFrame:frame];
+
+    }  else {        
+        /* For the iPad: when the keyboard shwos in portrait orientation the modal continues to 
+         be centered vertically.  When the keyboard shows in landscape orientation the modal is moved to 
+         the top of the screen. */
+        
+        CGFloat h, y, overlap, bottomEdge;
+        if(UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ){
+            // retrieve the height of the window
+            CGFloat winHeight = self.view.window.frame.size.height;
+            
+            // Find the keyboard's top edge by subtracting its height from winHeight.
+            // keyboardFrame.origin.y is unreliable so we don't use it.
+            h = keyboardFrame.size.height;
+            y = winHeight - h;
+            
+            // Find the bottom edge of our view. We should be modal, centered vertically so 
+            // we can find this by doing the math vs pathing up the view hierarchy.
+            CGFloat modalHeight = startingFrame.size.height + 64.0; // adds the nav bar's height.
+
+            bottomEdge = ((winHeight - modalHeight)/2.0f) + modalHeight;
+            overlap = bottomEdge - y;
+            
+        } else {
+            h = keyboardFrame.size.width; // Because we're rotated.
+            bottomEdge = startingFrame.size.height;
+            overlap = bottomEdge - h; // adds the height of the status bar and nav bar
+        }
+        
+        // we will reduce our height by the amount of the overlap
+        frame.size.height -= overlap;
+        [self.view setFrame:frame];
+    }
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
@@ -272,6 +333,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     if (popController) {
         [popController dismissPopoverAnimated:YES];
+        self.popController = nil;
     }
     
     self.photo = (UIImage *)[info objectForKey:UIImagePickerControllerOriginalImage];

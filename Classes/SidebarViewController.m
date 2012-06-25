@@ -368,7 +368,7 @@
 }
 
 - (void)setupQuickPhotoButton {
-    if (IS_IPAD) return; // TODO: Remove this when the iPad is supported
+//    if (IS_IPAD) return; // TODO: Remove this when the iPad is supported
     
     if (quickPhotoButton) return;
     
