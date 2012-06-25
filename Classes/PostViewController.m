@@ -113,7 +113,7 @@
     } else {
 		contentView.text = self.apost.content;
         
-        NSString *postPreviewPath = [[NSBundle mainBundle] pathForResource:@"postpreview" ofType:@"html"];
+        NSString *postPreviewPath = [[NSBundle mainBundle] pathForResource:@"postPreview" ofType:@"html"];
         NSString *htmlStr = [NSString stringWithContentsOfFile:postPreviewPath encoding:NSUTF8StringEncoding error:nil];
         
         NSString *contentStr;
