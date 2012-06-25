@@ -866,9 +866,10 @@
 
 - (void)setViewOffset:(CGFloat)offset forView:(UIView *)view {
     view = [self viewOrViewWrapper:view];
-    
+
     CGRect frame = view.frame;
     frame.origin.x = MAX(0, MIN(offset, self.view.bounds.size.width));
+
     view.frame = frame;
 }
 
@@ -925,7 +926,7 @@
     }
     // if we have a single panel, transition back to its starting offset.
     if ([self.detailViews count] <= 1) {
-        return offset;
+        return DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
     }
     
     CGFloat remainingVelocity = velocity;
