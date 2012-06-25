@@ -11,6 +11,7 @@
 #import "NSString+XMLExtensions.h"
 #import "WPWebViewController.h"
 #import "UIImageView+Gravatar.h"
+#import "SFHFKeychainUtils.h"
 
 #define COMMENT_BODY_TOP        100
 #define COMMENT_BODY_MAX_HEIGHT 4000
@@ -278,7 +279,7 @@
 //These methods call the ReplyToCommentViewController as well as handling the "back-referenced" cancel button click
 //that has to be run here given the view heirarchy...
 
--(void) showSynchInProgressAlert {
+- (void)showSynchInProgressAlert {
 	//the blog is using the network connection and cannot be stoped, show a message to the user
 	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
 																  message:NSLocalizedString(@"The blog is syncing with the server. Please try later.", @"")
@@ -739,7 +740,9 @@
 	}
 }
 
-- (void) openInAppWebView:(NSURL*)url {
+- (void)openInAppWebView:(NSURL*)url {
+    Blog *blog = [[self comment] blog];
+    
 	if (url != nil && [[url description] length] > 0) {
         WPWebViewController *webViewController;
         if (DeviceIsPad()) {
@@ -749,7 +752,13 @@
             webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
         }
         [webViewController setUrl:url];
-       
+
+        if (blog.isPrivate && [blog isWPcom]) {
+            NSError *error;
+            webViewController.username = blog.username;
+            webViewController.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:@"WordPress.com" error:&error];
+        }
+        
         if ( self.panelNavigationController  )
             [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
 	}
@@ -759,7 +768,7 @@
     [self openInAppWebView:[NSURL URLWithString:self.comment.link]];
 }
 
-- (void)mailComposeController:(MFMailComposeViewController*)controller  didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
 {
 	[self dismissModalViewControllerAnimated:YES];
 }
@@ -772,7 +781,7 @@
 		self.navigationItem.rightBarButtonItem = segmentBarItem;
 }
 
--(BOOL) webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
+- (BOOL)webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
 	if (inType == UIWebViewNavigationTypeLinkClicked) {
         [self openInAppWebView:[inRequest URL]];
 		return NO;
