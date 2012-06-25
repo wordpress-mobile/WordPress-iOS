@@ -10,7 +10,6 @@
 #import "AFHTTPRequestOperation.h"
 #import "AFXMLRPCClient.h"
 #import "TouchXML.h"
-#import "RegexKitLite.h"
 
 #ifndef WPFLog
 #define WPFLog(...) NSLog(__VA_ARGS__)
@@ -160,7 +159,15 @@
             NSURLRequest *request = [NSURLRequest requestWithURL:xmlrpcURL];
             AFHTTPRequestOperation *operation = [[[AFHTTPRequestOperation alloc] initWithRequest:request] autorelease];
             [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSString *rsdURL = [operation.responseString stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
+                NSError *error = NULL;
+                NSRegularExpression *rsdURLRegExp = [NSRegularExpression regularExpressionWithPattern:@"<link\\s+rel=\"EditURI\"\\s+type=\"application/rsd\\+xml\"\\s+title=\"RSD\"\\s+href=\"([^\"]*)\"[^/]*/>" options:NSRegularExpressionCaseInsensitive error:&error];
+                NSArray *matches = [rsdURLRegExp matchesInString:operation.responseString options:0 range:NSMakeRange(0, [operation.responseString length])];
+                NSString *rsdURL = nil;
+                if (matches) {
+                    NSRange rsdURLRange = [[matches objectAtIndex:0] rangeAtIndex:1];
+                    if(rsdURLRange.location != NSNotFound)
+                        rsdURL = [operation.responseString substringWithRange:rsdURLRange];
+                }
 
                 if (rsdURL == nil) {
                     //the RSD link not found using RegExp, try to find it again on a "cleaned" HTML document
@@ -171,7 +178,12 @@
                     if(!htmlError) {
                         NSString *cleanedHTML = [rsdHTML XMLStringWithOptions:CXMLDocumentTidyXML];
                         [self logExtraInfo:@"The cleaned doc: %@", cleanedHTML];
-                        rsdURL = [cleanedHTML stringByMatching:@"<link rel=\"EditURI\" type=\"application/rsd\\+xml\" title=\"RSD\" href=\"([^\"]*)\"[^/]*/>" capture:1];
+                        NSArray *matches = [rsdURLRegExp matchesInString:operation.responseString options:0 range:NSMakeRange(0, [cleanedHTML length])];
+                        if (matches) {
+                            NSRange rsdURLRange = [[matches objectAtIndex:0] rangeAtIndex:1];
+                            if (rsdURLRange.location != NSNotFound)
+                                rsdURL = [cleanedHTML substringWithRange:rsdURLRange];
+                        }
                     } else {
                          [self logExtraInfo:@"The cleaning function reported the following error: %@", [htmlError localizedDescription]];
                     }

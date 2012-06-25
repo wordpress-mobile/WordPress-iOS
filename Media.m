@@ -225,9 +225,18 @@
                 // TODO: we should use regxep to capture other type of errors!!
                 // atom pub services could be enabled but errors can occur.
                 NSMutableDictionary *videoMeta = [[NSMutableDictionary alloc] init];
-                NSString *regEx = @"src=\"([^\"]*)\"";
-                NSString *link = [operation.responseString stringByMatching:regEx capture:1];
+
+                NSError *error = NULL;
+                NSRegularExpression *regEx = [NSRegularExpression regularExpressionWithPattern:@"src=\"([^\"]*)\"" options:NSRegularExpressionCaseInsensitive error:&error];
+                NSArray *matches = [regEx matchesInString:operation.responseString options:0 range:NSMakeRange(0, [operation.responseString length])];
+                NSString *link = nil;
+                if (matches) {
+                    NSRange linkRange = [[matches objectAtIndex:0] rangeAtIndex:1];
+                    if(linkRange.location != NSNotFound)
+                        link = [operation.responseString substringWithRange:linkRange];
+                }
                 link = [link stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+
                 [videoMeta setObject:link forKey:@"url"];
                 self.remoteURL = link;
                 self.remoteStatus = MediaRemoteStatusSync;

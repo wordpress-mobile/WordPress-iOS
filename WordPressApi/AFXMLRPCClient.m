@@ -241,7 +241,16 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
         if (getenv("WPDebugXMLRPC")) {
             WPFLog(@"[XML-RPC] > %@", requestString);
         } else {
-            WPFLog(@"[XML-RPC] > %@", [requestString stringByMatching:@"<methodName>(.*)</methodName>" capture:1]);
+            NSError *error = NULL;
+            NSRegularExpression *method = [NSRegularExpression regularExpressionWithPattern:@"<methodName>(.*)</methodName>" options:NSRegularExpressionCaseInsensitive error:&error];
+            NSArray *matches = [method matchesInString:requestString options:0 range:NSMakeRange(0, [requestString length])];
+            NSString *methodName = nil;
+            if (matches) {
+                NSRange methodRange = [[matches objectAtIndex:0] rangeAtIndex:1];
+                if(methodRange.location != NSNotFound)
+                    methodName = [requestString substringWithRange:methodRange];
+            }
+            WPFLog(@"[XML-RPC] > %@", methodName);
         }
     }
     

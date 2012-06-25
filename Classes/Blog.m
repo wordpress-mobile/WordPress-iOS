@@ -150,8 +150,9 @@
 
 // used as a key to store passwords, if you change the algorithm, logins will break
 - (NSString *)displayURL {
-    NSString *result = [NSString stringWithFormat:@"%@",
-                        [[NSURL IDNDecodedHostname:self.url] stringByReplacingOccurrencesOfRegex:@"http(s?)://" withString:@""]];
+    NSError *error = NULL;
+    NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:[NSURL IDNDecodedHostname:self.url] options:0 range:NSMakeRange(0, [[NSURL IDNDecodedHostname:self.url] length]) withTemplate:@""]];
     
     if([result hasSuffix:@"/"])
         result = [result substringToIndex:[result length] - 1];
@@ -166,13 +167,17 @@
 - (NSString *)hostname {
     NSString *hostname = [[NSURL URLWithString:self.url] host];
     if (hostname == nil) {
-        hostname = [[self.url stringByReplacingOccurrencesOfRegex:@"^.*://" withString:@""] stringByReplacingOccurrencesOfRegex:@"/.*$" withString:@""];
+        NSError *error = NULL;
+        NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"^.*://" options:NSRegularExpressionCaseInsensitive error:&error];
+        hostname = [protocol stringByReplacingMatchesInString:self.url options:0 range:NSMakeRange(0, [self.url length]) withTemplate:@""];
     }
     return hostname;
 }
 
 - (NSString *)loginURL {
-    return [self.xmlrpc stringByReplacingOccurrencesOfRegex:@"/xmlrpc.php$" withString:@"/wp-login.php"];
+    NSError *error = NULL;
+    NSRegularExpression *xmlrpc = [NSRegularExpression regularExpressionWithPattern:@"/xmlrpc.php$" options:NSRegularExpressionCaseInsensitive error:&error];
+    return [xmlrpc stringByReplacingMatchesInString:self.xmlrpc options:0 range:NSMakeRange(0, [self.xmlrpc length]) withTemplate:@"/wp-login.php"];
 }
 
 - (int)numberOfPendingComments{

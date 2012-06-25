@@ -958,9 +958,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSArray *contentsOfDir = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:NULL];
+    
+    NSError *regexpError = NULL;
+    NSRegularExpression *jpeg = [NSRegularExpression regularExpressionWithPattern:@".jpg$" options:NSRegularExpressionCaseInsensitive error:&regexpError];
 
 	for (NSString *currentPath in contentsOfDir)
-		if([currentPath isMatchedByRegex:@".jpg$"]) {
+		if([jpeg numberOfMatchesInString:currentPath options:0 range:NSMakeRange(0, [currentPath length])] > 0) {
 			NSString *filepath = [documentsDirectory stringByAppendingPathComponent:currentPath];
 
 			BOOL keep = NO;

@@ -115,8 +115,20 @@
         
         NSString *postPreviewPath = [[NSBundle mainBundle] pathForResource:@"postpreview" ofType:@"html"];
         NSString *htmlStr = [NSString stringWithContentsOfFile:postPreviewPath encoding:NSUTF8StringEncoding error:nil];
-        NSString *contentStr = [self.apost.content stringByReplacingOccurrencesOfRegex:@">\\n+<" withString:@"><"];
-        contentStr = [contentStr stringByReplacingOccurrencesOfRegex:@"\\n{3,999}" withString:@"\n"];
+        
+        NSString *contentStr;
+        if (self.apost.content != nil) {
+            NSError *error = NULL;
+            NSRegularExpression *linesBetweenTags = [NSRegularExpression regularExpressionWithPattern:@">\\n+<" options:NSRegularExpressionCaseInsensitive error:&error];
+            NSRegularExpression *extraLines = [NSRegularExpression regularExpressionWithPattern:@"\\n{3,}" options:NSRegularExpressionCaseInsensitive error:&error];
+            
+            contentStr = [linesBetweenTags stringByReplacingMatchesInString:self.apost.content options:0 range:NSMakeRange(0, [self.apost.content length]) withTemplate:@"><"];
+            contentStr = [extraLines stringByReplacingMatchesInString:contentStr options:0 range:NSMakeRange(0, [contentStr length]) withTemplate:@"\n"];
+        }
+        else {
+            contentStr = @"";
+        }
+        
         contentStr = [htmlStr stringByAppendingString:contentStr];
         [contentWebView loadHTMLString:contentStr baseURL:nil];
     }
