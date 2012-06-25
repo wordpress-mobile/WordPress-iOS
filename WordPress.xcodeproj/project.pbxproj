@@ -3473,7 +3473,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/facebook-ios-sdk\"",
 					"\"$(SRCROOT)/Vendor/facebook-ios-sdk\"",
 				);
 				OTHER_CFLAGS = (
@@ -3508,7 +3507,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/facebook-ios-sdk\"",
 					"\"$(SRCROOT)/Vendor/facebook-ios-sdk\"",
 				);
 				OTHER_CFLAGS = (
@@ -3570,7 +3568,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/facebook-ios-sdk\"",
 					"\"$(SRCROOT)/Vendor/facebook-ios-sdk\"",
 				);
 				OTHER_CFLAGS = (
@@ -3638,7 +3635,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/facebook-ios-sdk\"",
 					"\"$(SRCROOT)/Vendor/facebook-ios-sdk\"",
 				);
 				PRODUCT_NAME = WordPress;
