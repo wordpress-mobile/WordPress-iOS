@@ -68,9 +68,8 @@
         page = nil;
     }
     
-    [self.panelNavigationController popToRootViewControllerAnimated:YES];
     self.postReaderViewController = [[PageViewController alloc] initWithPost:page];
-    [self.panelNavigationController pushViewController:self.postReaderViewController animated:YES];  
+    [self.panelNavigationController pushViewController:self.postReaderViewController fromViewController:self animated:YES];
 }
 
 - (void)showAddPostView {

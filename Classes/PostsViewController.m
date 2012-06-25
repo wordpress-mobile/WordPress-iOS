@@ -300,8 +300,7 @@
         post = nil;
     }
     self.postReaderViewController = [[PostViewController alloc] initWithPost:post];
-    [self.panelNavigationController popToRootViewControllerAnimated:NO];
-    [self.panelNavigationController pushViewController:self.postReaderViewController animated:YES];
+    [self.panelNavigationController pushViewController:self.postReaderViewController fromViewController:self animated:YES];
 }
 
 - (void)setSelectedIndexPath:(NSIndexPath *)indexPath {
