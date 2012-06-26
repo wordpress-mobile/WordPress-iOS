@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "BlogSelectorButton.h"
-#import "WPProgressHUD.h"
 #import "Post.h"
 #import "QuickPicturePreviewView.h"
 #import "WordPressAppDelegate.h"
