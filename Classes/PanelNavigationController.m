@@ -1112,7 +1112,7 @@
     
     // Ensure that the detailView is not faded if it is the only view.
     if ([self.detailViews count] == 1 && [[self.detailView subviews] count] > 0) {
-        UIView *aView = [[self.detailView subviews] objectAtIndex:1];
+        UIView *aView = [[self.detailView subviews] objectAtIndex:0];
         if ([aView isKindOfClass:[PanelViewWrapper class]]) {
             PanelViewWrapper *wrapperView = (PanelViewWrapper *)aView;
             wrapperView.overlay.alpha = 0.0f;            
