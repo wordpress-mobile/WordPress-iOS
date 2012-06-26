@@ -209,7 +209,7 @@
 - (void)buildMainView {
     if (mainView == nil) {
         CGFloat height = DeviceIsPad() ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
-        mainView = [[[UIView alloc] init] retain];
+        mainView = [[UIView alloc] init];
         [self buildMainButtons];
         CGFloat mainWidth = delButton.frame.origin.x + delButton.frame.size.width;
         mainView.frame = CGRectMake(0, 0, mainWidth, height);
@@ -226,7 +226,7 @@
 - (void)buildExtendedView {
     if (extendedView == nil) {
         CGFloat height = DeviceIsPad() ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
-        extendedView = [[[UIView alloc] init] retain];
+        extendedView = [[UIView alloc] init];
         [self buildExtendedButtons];
         CGFloat extendedWidth = moreButton.frame.origin.x + moreButton.frame.size.width;
         extendedView.frame = CGRectMake(0, 0, extendedWidth, height);
