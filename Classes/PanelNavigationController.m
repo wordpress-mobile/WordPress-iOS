@@ -166,6 +166,11 @@
     [self.detailViews addObject:self.detailView];
     [self.detailViewWidths addObject:[NSNumber numberWithFloat:DETAIL_WIDTH]];
     _stackOffset = 0;
+    if (IS_IPHONE) {
+        _stackOffset = DETAIL_LEDGE_OFFSET;
+    } else {
+        _stackOffset = 0;
+    }
     if (IS_IPAD) {
         self.backgroundImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fabric"]] autorelease];
         self.backgroundImageView.frame = CGRectMake(DETAIL_LEDGE_OFFSET, 0, self.view.frame.size.width - DETAIL_LEDGE_OFFSET, DETAIL_HEIGHT);
