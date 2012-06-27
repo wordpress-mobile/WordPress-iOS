@@ -217,9 +217,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     }
     
     SidebarViewController *sidebarViewController = [[[SidebarViewController alloc] init] autorelease];
-
-    // hide sidebar until requested
-    sidebarViewController.view.hidden = YES;
     
     panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:nil masterViewController:sidebarViewController];
     window.rootViewController = panelNavigationController;
