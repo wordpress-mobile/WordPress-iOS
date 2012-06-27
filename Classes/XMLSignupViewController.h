@@ -12,7 +12,6 @@
 #import "AddUsersBlogsViewController.h"
 #import "Blog.h"
 #import "WordPressAppDelegate.h"
-#import "BlogsViewController.h"
 
 @interface XMLSignupViewController : UIViewController <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate> {
     WordPressAppDelegate *appDelegate;

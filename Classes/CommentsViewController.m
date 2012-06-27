@@ -12,7 +12,6 @@
 #import "CommentViewController.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
-#import "BlogViewController.h"
 #import "ReplyToCommentViewController.h"
 
 @interface CommentsViewController () <CommentViewControllerDelegate>

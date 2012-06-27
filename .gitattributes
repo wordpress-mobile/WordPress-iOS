@@ -6,9 +6,6 @@
 /AddUsersBlogsViewController.xib -text
 /BetaFeedbackViewController.xib -text
 /BlogSettingsView-iPad.xib -text
-/BlogSplitViewDetailViewController.xib -text
-/BlogViewController-iPad.xib -text
-/BlogViewController.xib -text
 /CTidy.h -text
 /CTidy.m -text
 /CXMLDocument.h -text
@@ -53,15 +50,8 @@ Classes/BlogSelectorButton.h -text
 Classes/BlogSelectorButton.m -text
 Classes/BlogSelectorViewController.h -text
 Classes/BlogSelectorViewController.m -text
-Classes/BlogSplitViewDetailViewController.h -text
-Classes/BlogSplitViewDetailViewController.m -text
-Classes/BlogViewController.h -text
-Classes/BlogViewController.m -text
 Classes/BlogsTableViewCell.h -text
 Classes/BlogsTableViewCell.m -text
-Classes/BlogsViewController.h -text
-Classes/BlogsViewController.m -text
-Classes/BlogsViewController.xib -text
 Classes/CDeviceSupport.h -text
 Classes/CDeviceSupport.m -text
 Classes/CPopoverManager.h -text
@@ -120,8 +110,6 @@ Classes/FileLogger.h -text
 Classes/FileLogger.m -text
 Classes/HelpViewController.h -text
 Classes/HelpViewController.m -text
-Classes/ImageCache.h -text
-Classes/ImageCache.m -text
 Classes/MediaObjectViewController.h -text
 Classes/MediaObjectViewController.m -text
 Classes/MigrateBlogsFromFiles.h -text
@@ -167,13 +155,8 @@ Classes/PostViewController.h -text
 Classes/PostViewController.m -text
 Classes/PostsViewController.h -text
 Classes/PostsViewController.m -text
-Classes/QuickPhotoButton.h -text
-Classes/QuickPhotoButton.m -text
 Classes/QuickPhotoButtonView.h -text
 Classes/QuickPhotoButtonView.m -text
-Classes/QuickPhotoUploadProgressController.h -text
-Classes/QuickPhotoUploadProgressController.m -text
-Classes/QuickPhotoUploadProgressController.xib -text
 Classes/QuickPhotoViewController.h -text
 Classes/QuickPhotoViewController.m -text
 Classes/QuickPicturePreviewView.h -text
@@ -188,14 +171,6 @@ Classes/SidebarTableViewCell.h -text
 Classes/SidebarTableViewCell.m -text
 Classes/SidebarViewController.h -text
 Classes/SidebarViewController.m -text
-Classes/StatsChartViewController.h -text
-Classes/StatsChartViewController.m -text
-Classes/StatsPageControlViewController.h -text
-Classes/StatsPageControlViewController.m -text
-Classes/StatsTableCell.h -text
-Classes/StatsTableCell.m -text
-Classes/StatsTableViewController.h -text
-Classes/StatsTableViewController.m -text
 Classes/StatsWebViewController.h -text
 Classes/StatsWebViewController.m -text
 Classes/UIColor+Helpers.h -text
@@ -204,8 +179,6 @@ Classes/UIDevice-Hardware.h -text
 Classes/UIDevice-Hardware.m -text
 Classes/UIImageView+Gravatar.h -text
 Classes/UIImageView+Gravatar.m -text
-Classes/UINavigationController+FormSheet.h -text
-Classes/UINavigationController+FormSheet.m -text
 Classes/UITableViewActivityCell.h -text
 Classes/UITableViewActivityCell.m -text
 Classes/UITableViewSwitchCell.h -text
@@ -236,8 +209,6 @@ Classes/WPKeyboardToolbarButtonItem.h -text
 Classes/WPKeyboardToolbarButtonItem.m -text
 Classes/WPLabel.h -text
 Classes/WPLabel.m -text
-Classes/WPPageControl.h -text
-Classes/WPPageControl.m -text
 Classes/WPProgressHUD.h -text
 Classes/WPProgressHUD.m -text
 Classes/WPReaderDetailViewController.h -text
@@ -335,13 +306,7 @@ Resources-iPad/MainWindow-iPad.xib -text
 Settings.bundle/Root.plist -text
 Settings.bundle/en.lproj/Root.strings -text
 /SidebarViewController.xib -text
-/StatsCategoryViewController.xib -text
-/StatsChartViewController-iPad.xib -text
-/StatsChartViewController.xib -text
-/StatsPageControlViewController-iPad.xib -text
-/StatsPageControlViewController.xib -text
 /StatsTableViewController-iPad.xib -text
-/StatsTableViewController.xib -text
 /ToolbarIconCamera.png -text svneol=unset#unset
 /ToolbarIconEye.png -text svneol=unset#unset
 /ToolbarIconGear.png -text svneol=unset#unset
@@ -604,9 +569,6 @@ Vendor/xmlrpc/XMLRPCResponse.m -text
 /WPSelectionTableViewController.xib -text
 /WPWebViewController-iPad.xib -text
 /WPWebViewController.xib -text
-/WPcomLoginViewController-iPad-stats.xib -text
-/WPcomLoginViewController-iPad.xib -text
-/WPcomLoginViewController.xib -text
 /WPpregressHUDBackground.png -text
 /WPpregressHUDBackground@2x.png -text
 /WebSignupViewController-iPad.xib -text

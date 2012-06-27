@@ -129,31 +129,38 @@
         tagsLabel.text = self.post.tags;
         categoriesLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
     }
-	if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0)) {
+    
+    NSString *contentStr = nil;
+    NSString *postPreviewPath = [[NSBundle mainBundle] pathForResource:@"postPreview" ofType:@"html"];
+    NSString *htmlStr = [NSString stringWithContentsOfFile:postPreviewPath encoding:NSUTF8StringEncoding error:nil];
+    
+	if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0)) {        
+        contentStr = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", [self formatString:self.apost.content], [self formatString:self.apost.mt_text_more]];
 		contentView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more];
     } else {
 		contentView.text = self.apost.content;
-        
-        NSString *postPreviewPath = [[NSBundle mainBundle] pathForResource:@"postPreview" ofType:@"html"];
-        NSString *htmlStr = [NSString stringWithContentsOfFile:postPreviewPath encoding:NSUTF8StringEncoding error:nil];
-        
-        NSString *contentStr;
         if (self.apost.content != nil) {
-            NSError *error = NULL;
-            NSRegularExpression *linesBetweenTags = [NSRegularExpression regularExpressionWithPattern:@">\\n+<" options:NSRegularExpressionCaseInsensitive error:&error];
-            NSRegularExpression *extraLines = [NSRegularExpression regularExpressionWithPattern:@"\\n{3,}" options:NSRegularExpressionCaseInsensitive error:&error];
-            
-            contentStr = [linesBetweenTags stringByReplacingMatchesInString:self.apost.content options:0 range:NSMakeRange(0, [self.apost.content length]) withTemplate:@"><"];
-            contentStr = [extraLines stringByReplacingMatchesInString:contentStr options:0 range:NSMakeRange(0, [contentStr length]) withTemplate:@"\n"];
+            contentStr = [self formatString:self.apost.content];
         }
         else {
             contentStr = @"";
         }
-        
-        contentStr = [htmlStr stringByAppendingString:contentStr];
-        [contentWebView loadHTMLString:contentStr baseURL:nil];
     }
+    contentStr = [htmlStr stringByAppendingString:contentStr];
+    [contentWebView loadHTMLString:contentStr baseURL:nil];
 }
+
+- (NSString *)formatString:(NSString *)str {
+    NSError *error = NULL;
+    NSRegularExpression *linesBetweenTags = [NSRegularExpression regularExpressionWithPattern:@">\\n+<" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSRegularExpression *extraLines = [NSRegularExpression regularExpressionWithPattern:@"\\n{3,}" options:NSRegularExpressionCaseInsensitive error:&error];
+    
+    NSString *contentStr = [linesBetweenTags stringByReplacingMatchesInString:str options:0 range:NSMakeRange(0, [self.apost.content length]) withTemplate:@"><"];
+    contentStr = [extraLines stringByReplacingMatchesInString:contentStr options:0 range:NSMakeRange(0, [contentStr length]) withTemplate:@"\n"];
+    
+    return contentStr;
+}
+
 
 
 - (void)showModalEditor {

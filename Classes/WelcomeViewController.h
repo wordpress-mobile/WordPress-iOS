@@ -7,7 +7,6 @@
 
 #import <UIKit/UIKit.h>
 #import "WordPressAppDelegate.h"
-#import "BlogsViewController.h"
 #import "WebSignupViewController.h"
 #import "AddUsersBlogsViewController.h"
 #import "AddSiteViewController.h"

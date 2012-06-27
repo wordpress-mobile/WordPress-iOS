@@ -17,7 +17,6 @@
 #import "PostsViewController.h"
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
-#import "StatsTableViewController.h"
 #import "WPReaderViewController.h"
 #import "WPTableViewController.h"
 #import "SettingsViewController.h"
@@ -40,7 +39,6 @@
 #define NUM_ROWS 6
 
 @interface SidebarViewController () <NSFetchedResultsControllerDelegate, QuickPhotoButtonViewDelegate> {
-    QuickPhotoUploadProgressController *uploadController;
     QuickPhotoButtonView *quickPhotoButton;
 }
 

@@ -1,15 +1,13 @@
 #import "WordPressAppDelegate.h"
-#import "BlogsViewController.h"
 #import "Reachability.h"
 #import "NSString+Helpers.h"
-#import "BlogViewController.h"
-#import "BlogSplitViewDetailViewController.h"
 #import "CPopoverManager.h"
 #import "UIViewController_iPadExtensions.h"
 #import "BetaUIWindow.h"
 #import "MigrateBlogsFromFiles.h"
 #import "InAppSettings.h"
 #import "Blog.h"
+#import "Media.h"
 #import "SFHFKeychainUtils.h"
 #import "CameraPlusPickerManager.h"
 #import "PanelNavigationController.h"
@@ -200,7 +198,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     });
 
     [self checkWPcomAuthentication];
-	self.blogsViewController = [[[BlogsViewController alloc] init] autorelease];
+//	self.blogsViewController = [[[BlogsViewController alloc] init] autorelease];
 	crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
 	
 	//BETA FEEDBACK BAR, COMMENT THIS OUT BEFORE RELEASE
@@ -372,11 +370,11 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [self setAppBadge];
 	
 	if (DeviceIsPad()) {
-		UIViewController *topVC = self.masterNavigationController.topViewController;
-        
-		if (topVC && [topVC isKindOfClass:[BlogViewController class]]) {
-			[(BlogViewController *)topVC saveState];
-		}
+//		UIViewController *topVC = self.masterNavigationController.topViewController;
+//        
+//		if (topVC && [topVC isKindOfClass:[BlogViewController class]]) {
+//			[(BlogViewController *)topVC saveState];
+//		}
 	}
 }
 
@@ -1286,10 +1284,10 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
 	[barButtonItem setTitle:NSLocalizedString(@"My Blog", @"Title of the iPad button to display any blogs added to the app.")];
 	[theNavigationItem setLeftBarButtonItem:barButtonItem animated:YES];
-	if ([[self.detailNavigationController.viewControllers objectAtIndex:0] isKindOfClass:[BlogSplitViewDetailViewController class]])
-	{
-		[[CPopoverManager instance] setCurrentPopoverController:pc];
-	}
+//	if ([[self.detailNavigationController.viewControllers objectAtIndex:0] isKindOfClass:[BlogSplitViewDetailViewController class]])
+//	{
+//		[[CPopoverManager instance] setCurrentPopoverController:pc];
+//	}
 }
 
 - (void)splitViewController: (UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {

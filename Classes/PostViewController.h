@@ -28,5 +28,6 @@
 - (void)checkForNewItem;
 - (EditPostViewController *) getPostOrPageController: (AbstractPost *)revision;
 - (void)deletePost:(id)sender;
+- (void)refreshUI;
 
 @end

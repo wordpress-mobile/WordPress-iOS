@@ -7,7 +7,6 @@
 #import "WPProgressHUD.h"
 #import "WPAddCategoryViewController.h"
 #import "Post.h"
-#import "UIDevice-hardware.h"
 #import "WPKeyboardToolbar.h"
 
 #define kSelectionsStatusContext ((void *)1000)
