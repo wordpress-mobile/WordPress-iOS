@@ -29,5 +29,6 @@
 - (EditPostViewController *) getPostOrPageController: (AbstractPost *)revision;
 - (void)deletePost:(id)sender;
 - (void)refreshUI;
+- (NSString *)formatString:(NSString *)str;
 
 @end
