@@ -15,6 +15,11 @@
 @property (nonatomic,readonly,retain) NSFetchedResultsController *resultsController;
 
 /**
+ Enables the swipe menu for cells
+ */
+@property (nonatomic) BOOL swipeActionsEnabled;
+
+/**
  Sync content with the server
  
  Subclasses can call this method if they need to invoke a refresh, but it's not meant to be implemented by subclasses.
@@ -102,5 +107,19 @@
  Load extra content for infinite scrolling
  */
 - (void)loadMoreContent;
+
+/**
+ Configures the secondary view to show when you swipe on a cell
+ 
+ Subclasses *MUST* implement this method if swipeActionsEnabled is YES
+ */
+- (void)configureSwipeView:(UIView *)swipeView forIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ Removes the swipe view.
+ 
+ Subclasses should call this method if one of the swipe actions needs to dismiss the secondary menu
+ */
+- (void)removeSwipeView:(BOOL)animated;
 
 @end

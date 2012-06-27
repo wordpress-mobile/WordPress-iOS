@@ -14,22 +14,41 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 @interface WPTableViewController () <EGORefreshTableHeaderDelegate>
 @property (nonatomic,retain) NSFetchedResultsController *resultsController;
+@property (nonatomic) BOOL swipeActionsEnabled;
+@property (nonatomic,retain,readonly) UIView *swipeView;
+@property (nonatomic,retain) UITableViewCell *swipeCell;
 - (void)simulatePullToRefresh;
+- (void)enableSwipeGestureRecognizer;
+- (void)disableSwipeGestureRecognizer;
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer direction:(UISwipeGestureRecognizerDirection)direction;
+- (void)swipeLeft:(UISwipeGestureRecognizer *)recognizer;
+- (void)swipeRight:(UISwipeGestureRecognizer *)recognizer;
 @end
 
 @implementation WPTableViewController {
     EGORefreshTableHeaderView *_refreshHeaderView;
     NSIndexPath *_indexPathSelectedBeforeUpdates;
     NSIndexPath *_indexPathSelectedAfterUpdates;
+    UISwipeGestureRecognizer *_leftSwipeGestureRecognizer;
+    UISwipeGestureRecognizer *_rightSwipeGestureRecognizer;
+    UISwipeGestureRecognizerDirection _swipeDirection;
+    BOOL _animatingRemovalOfModerationSwipeView;
 }
 @synthesize blog = _blog;
 @synthesize resultsController = _resultsController;
+@synthesize swipeActionsEnabled = _swipeActionsEnabled;
+@synthesize swipeView = _swipeView;
+@synthesize swipeCell = _swipeCell;
 
 - (void)dealloc
 {
     [_refreshHeaderView release];
     [_indexPathSelectedBeforeUpdates release];
     [_indexPathSelectedAfterUpdates release];
+    [_leftSwipeGestureRecognizer release];
+    [_rightSwipeGestureRecognizer release];
+    [_swipeView release];
+    [_swipeCell release];
     _resultsController.delegate = nil;
     [_resultsController release];
     [_blog release];
@@ -58,6 +77,10 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+    
+    if (self.swipeActionsEnabled) {
+        [self enableSwipeGestureRecognizer];
+    }
 }
 
 - (void)viewDidUnload
@@ -65,6 +88,10 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     [super viewDidUnload];
 
     [_refreshHeaderView release]; _refreshHeaderView = nil;
+    
+    if (self.swipeActionsEnabled) {
+        [self disableSwipeGestureRecognizer];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -86,6 +113,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [self removeSwipeView:NO];
     [super setEditing:editing animated:animated];
     _refreshHeaderView.hidden = editing;
 }
@@ -104,6 +132,42 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     if ([self.resultsController.fetchedObjects count] == 0 && ![self isSyncing]) {
         [self simulatePullToRefresh];
     }
+}
+
+- (void)setSwipeActionsEnabled:(BOOL)swipeActionsEnabled {
+    if (swipeActionsEnabled == _swipeActionsEnabled)
+        return;
+
+    _swipeActionsEnabled = swipeActionsEnabled;
+    if (self.isViewLoaded) {
+        if (_swipeActionsEnabled) {
+            [self enableSwipeGestureRecognizer];
+        } else {
+            [self disableSwipeGestureRecognizer];
+        }
+    }
+}
+
+- (BOOL)swipeActionsEnabled {
+    return _swipeActionsEnabled && !self.editing;
+}
+
+- (UIView *)swipeView {
+    if (_swipeView) {
+        return _swipeView;
+    }
+
+    _swipeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, kCellHeight)];
+    _swipeView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"dotted-pattern.png"]];
+    
+    UIImage *shadow = [[UIImage imageNamed:@"inner-shadow.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
+    UIImageView *shadowImageView = [[[UIImageView alloc] initWithFrame:_swipeView.frame] autorelease];
+    shadowImageView.alpha = 0.6;
+    shadowImageView.image = shadow;
+    shadowImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    [_swipeView insertSubview:shadowImageView atIndex:0];  
+
+    return _swipeView;
 }
 
 #pragma mark - Table view data source
@@ -151,6 +215,12 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
     return NO;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)theTableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self removeSwipeView:YES];
+    return indexPath;
 }
 
 #pragma mark -
@@ -281,6 +351,9 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     if (self.panelNavigationController) {
         [self.panelNavigationController viewControllerWantsToBeFullyVisible:self];
     }
+    if (self.swipeActionsEnabled) {
+        [self removeSwipeView:YES];
+    }
 }
 
 #pragma mark - Private Methods
@@ -300,6 +373,142 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
         [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     }];
 }
+
+#pragma mark - Swipe gestures
+
+- (void)enableSwipeGestureRecognizer {
+    _leftSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft:)];
+    _leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.tableView addGestureRecognizer:_leftSwipeGestureRecognizer];
+
+    _rightSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight:)];
+    _rightSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.tableView addGestureRecognizer:_rightSwipeGestureRecognizer];
+}
+
+- (void)disableSwipeGestureRecognizer {
+    if (_leftSwipeGestureRecognizer) {
+        [self.tableView removeGestureRecognizer:_leftSwipeGestureRecognizer];
+        [_leftSwipeGestureRecognizer release];
+        _leftSwipeGestureRecognizer = nil;
+    }
+
+    if (_rightSwipeGestureRecognizer) {
+        [self.tableView removeGestureRecognizer:_rightSwipeGestureRecognizer];
+        [_rightSwipeGestureRecognizer release];
+        _rightSwipeGestureRecognizer = nil;
+    }
+}
+
+- (void)removeSwipeView:(BOOL)animated {
+    if (!self.swipeActionsEnabled || !_swipeCell || (self.swipeCell.frame.origin.x == 0 && self.swipeView.superview == nil)) return;
+    
+    if (animated)
+    {
+        _animatingRemovalOfModerationSwipeView = YES;
+        [UIView animateWithDuration:0.2
+                         animations:^{
+                             if (_swipeDirection == UISwipeGestureRecognizerDirectionRight)
+                             {
+                                 self.swipeView.frame = CGRectMake(-self.swipeView.frame.size.width + 5.0,self.swipeView.frame.origin.y, self.swipeView.frame.size.width, self.swipeView.frame.size.height);
+                                 self.swipeCell.frame = CGRectMake(5.0, self.swipeCell.frame.origin.y, self.swipeCell.frame.size.width, self.swipeCell.frame.size.height);
+                             }
+                             else
+                             {
+                                 self.swipeView.frame = CGRectMake(self.swipeView.frame.size.width - 5.0,self.swipeView.frame.origin.y,self.swipeView.frame.size.width, self.swipeView.frame.size.height);
+                                 self.swipeCell.frame = CGRectMake(-5.0, self.swipeCell.frame.origin.y, self.swipeCell.frame.size.width, self.swipeCell.frame.size.height);
+                             }
+                         }
+                         completion:^(BOOL finished) {
+                             [UIView animateWithDuration:0.1
+                                              animations:^{
+                                                  if (_swipeDirection == UISwipeGestureRecognizerDirectionRight)
+                                                  {
+                                                      self.swipeView.frame = CGRectMake(-self.swipeView.frame.size.width + 10.0,self.swipeView.frame.origin.y,self.swipeView.frame.size.width, self.swipeView.frame.size.height);
+                                                      self.swipeCell.frame = CGRectMake(10.0, self.swipeCell.frame.origin.y, self.swipeCell.frame.size.width, self.swipeCell.frame.size.height);
+                                                  }
+                                                  else
+                                                  {
+                                                      self.swipeView.frame = CGRectMake(self.swipeView.frame.size.width - 10.0,self.swipeView.frame.origin.y,self.swipeView.frame.size.width, self.swipeView.frame.size.height);
+                                                      self.swipeCell.frame = CGRectMake(-10.0, self.swipeCell.frame.origin.y, self.swipeCell.frame.size.width, self.swipeCell.frame.size.height);
+                                                  }
+                                              } completion:^(BOOL finished) {
+                                                  [UIView animateWithDuration:0.1
+                                                                   animations:^{
+                                                                       if (_swipeDirection == UISwipeGestureRecognizerDirectionRight)
+                                                                       {
+                                                                           self.swipeView.frame = CGRectMake(-self.swipeView.frame.size.width ,self.swipeView.frame.origin.y,self.swipeView.frame.size.width, self.swipeView.frame.size.height);
+                                                                           self.swipeCell.frame = CGRectMake(0, self.swipeCell.frame.origin.y, self.swipeCell.frame.size.width, self.swipeCell.frame.size.height);
+                                                                       }
+                                                                       else
+                                                                       {
+                                                                           self.swipeView.frame = CGRectMake(self.swipeView.frame.size.width ,self.swipeView.frame.origin.y,self.swipeView.frame.size.width, self.swipeView.frame.size.height);
+                                                                           self.swipeCell.frame = CGRectMake(0, self.swipeCell.frame.origin.y, self.swipeCell.frame.size.width, self.swipeCell.frame.size.height);
+                                                                       }
+                                                                   }
+                                                                   completion:^(BOOL finished) {
+                                                                       _animatingRemovalOfModerationSwipeView = NO;
+                                                                       self.swipeCell = nil;
+                                                                       [_swipeView removeFromSuperview];
+                                                                       [_swipeView release]; _swipeView = nil;
+                                                                   }];
+                                              }];
+                         }];
+    }
+    else
+    {
+        [self.swipeView removeFromSuperview];
+        [_swipeView release]; _swipeView = nil;
+        self.swipeCell.frame = CGRectMake(0,self.swipeCell.frame.origin.y,self.swipeCell.frame.size.width, self.swipeCell.frame.size.height);
+        self.swipeCell = nil;
+    }
+}
+
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer direction:(UISwipeGestureRecognizerDirection)direction
+{
+    if (recognizer && recognizer.state == UIGestureRecognizerStateEnded)
+    {
+        if (_animatingRemovalOfModerationSwipeView) return;
+        
+        CGPoint location = [recognizer locationInView:self.tableView];
+        NSIndexPath* indexPath = [self.tableView indexPathForRowAtPoint:location];
+        UITableViewCell* cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        
+        if (cell.frame.origin.x != 0)
+        {
+            [self removeSwipeView:YES];
+            return;
+        }
+        [self removeSwipeView:NO];
+        
+        if (cell != self.swipeCell)
+        {
+            [self configureSwipeView:self.swipeView forIndexPath:indexPath];
+            
+            [self.tableView addSubview:self.swipeView];
+            self.swipeCell = cell;
+            CGRect cellFrame = cell.frame;
+            _swipeDirection = direction;
+            self.swipeView.frame = CGRectMake(direction == UISwipeGestureRecognizerDirectionRight ? -cellFrame.size.width : cellFrame.size.width, cellFrame.origin.y, cellFrame.size.width, cellFrame.size.height);
+            
+            [UIView animateWithDuration:0.2 animations:^{
+                self.swipeView.frame = CGRectMake(0, cellFrame.origin.y, cellFrame.size.width, cellFrame.size.height);
+                cell.frame = CGRectMake(direction == UISwipeGestureRecognizerDirectionRight ? cellFrame.size.width : -cellFrame.size.width, cellFrame.origin.y, cellFrame.size.width, cellFrame.size.height);
+            }];
+        }
+    }
+}
+
+- (void)swipeLeft:(UISwipeGestureRecognizer *)recognizer
+{
+    [self swipe:recognizer direction:UISwipeGestureRecognizerDirectionLeft];
+}
+
+- (void)swipeRight:(UISwipeGestureRecognizer *)recognizer
+{
+    [self swipe:recognizer direction:UISwipeGestureRecognizerDirectionRight];
+}
+
 
 #pragma mark - Subclass methods
 

@@ -52,6 +52,7 @@
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    self.swipeActionsEnabled = YES;
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Comments", @"");
@@ -163,18 +164,22 @@
 #pragma mark Action Methods
 
 - (IBAction)deleteSelectedComments:(id)sender {
+    [self removeSwipeView:NO];
     [self moderateCommentsWithSelector:@selector(remove)];
 }
 
 - (IBAction)approveSelectedComments:(id)sender {
+    [self removeSwipeView:NO];
     [self moderateCommentsWithSelector:@selector(approve)];
 }
 
 - (IBAction)unapproveSelectedComments:(id)sender {
+    [self removeSwipeView:NO];
     [self moderateCommentsWithSelector:@selector(unapprove)];
 }
 
 - (IBAction)spamSelectedComments:(id)sender {
+    [self removeSwipeView:NO];
     [self moderateCommentsWithSelector:@selector(spam)];
 }
 
@@ -297,6 +302,7 @@
 		navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 		[self presentModalViewController:navController animated:YES];
 	}  
+    [self removeSwipeView:NO];
 }
 
 - (Comment *)commentWithId:(NSNumber *)commentId {
@@ -485,6 +491,78 @@
 
 - (BOOL)isSyncing {
 	return self.blog.isSyncingComments;
+}
+
+- (void)configureSwipeView:(UIView *)swipeView forIndexPath:(NSIndexPath *)indexPath {
+    CGFloat swipeViewWidth = swipeView.bounds.size.width;
+    CGFloat padding = 2.0f;
+    CGFloat buttonCount = 4;
+    CGFloat height = 35.f;
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    CGFloat y = (cell.bounds.size.height - height) / 2.f;
+
+    /*
+     | padding || button padding | button | button padding || button padding | button | button padding || ... || padding |
+     */
+    CGFloat buttonWidth = (swipeViewWidth - 2.0f * padding) / buttonCount - 2 * padding;
+    CGFloat x = padding * 2;
+
+    UIButton *button;
+    Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
+    [_selectedComments removeAllObjects];
+    [_selectedComments addObject:comment];
+
+    UIImage* buttonImage = [[UIImage imageNamed:@"UISegmentBarBlackButton"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
+    UIImage* buttonPressedImage = [[UIImage imageNamed:@"UISegmentBarBlackButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
+    
+    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
+    if ([comment.status isEqualToString:@"approve"]) {
+        [button addTarget:self action:@selector(unapproveSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
+        [button setTitle:NSLocalizedString(@"Unapprove", @"") forState:UIControlStateNormal];
+    } else {
+        [button addTarget:self action:@selector(approveSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
+        [button setTitle:NSLocalizedString(@"Approve", @"") forState:UIControlStateNormal];
+    }
+    button.titleLabel.font = [UIFont systemFontOfSize:13.f];
+    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
+    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
+    [swipeView addSubview:button];
+    [button release];
+    x += buttonWidth + 2 * padding;
+    
+    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
+    [button addTarget:self action:@selector(deleteSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
+    [button setTitle:NSLocalizedString(@"Trash", @"") forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:13.f];
+    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
+    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
+    [swipeView addSubview:button];
+    [button release];
+    x += buttonWidth + 2 * padding;
+
+    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
+    [button addTarget:self action:@selector(spamSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
+    [button setTitle:NSLocalizedString(@"Spam", @"") forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:13.f];
+    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
+    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
+    [swipeView addSubview:button];
+    [button release];
+    x += buttonWidth + 2 * padding;
+
+    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
+    [button addTarget:self action:@selector(replyToSelectedComment:) forControlEvents:UIControlEventTouchUpInside];
+    [button setTitle:NSLocalizedString(@"Reply", @"") forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:13.f];
+    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
+    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
+    [swipeView addSubview:button];
+    [button release];
+}
+
+- (void)removeSwipeView:(BOOL)animated {
+    [_selectedComments removeAllObjects];
+    [super removeSwipeView:animated];
 }
 
 @end
