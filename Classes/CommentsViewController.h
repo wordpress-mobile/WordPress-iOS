@@ -20,7 +20,6 @@
     IBOutlet UIBarButtonItem *unapproveButton;
     IBOutlet UIBarButtonItem *spamButton;
     IBOutlet UIBarButtonItem *deleteButton;
-	BOOL replying;
 }
 
 @property (nonatomic, retain) NSNumber *wantedCommentId;

@@ -103,7 +103,7 @@
     self.topicsViewController = [[[WPReaderTopicsViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil] autorelease];
     self.topicsViewController.delegate = self;
 
-    self.detailViewController = [[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
+    self.detailViewController = [[[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
     self.detailViewController.delegate = self;
 
     

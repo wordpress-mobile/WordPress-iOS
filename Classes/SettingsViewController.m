@@ -309,7 +309,7 @@ typedef enum {
         [_resultsController release];
         _resultsController = nil;
     }
-    
+    [fetchRequest release];
     return _resultsController;
 }
 

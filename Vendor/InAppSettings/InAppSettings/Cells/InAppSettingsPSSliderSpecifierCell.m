@@ -59,7 +59,7 @@
     [super setupCell];
     
     //create the slider
-    self.valueSlider = [[UISlider alloc] initWithFrame:CGRectZero];
+    self.valueSlider = [[[UISlider alloc] initWithFrame:CGRectZero] autorelease];
     [self.valueSlider addTarget:self action:@selector(slideAction) forControlEvents:UIControlEventTouchUpInside+UIControlEventTouchUpOutside];
     [self.contentView addSubview:self.valueSlider];
 }

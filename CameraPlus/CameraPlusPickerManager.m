@@ -242,14 +242,13 @@ NSString *CameraPlusExportPhotoMetadataType = @"com.taptaptap.CameraPlus.photoMe
         
         UIPasteboard *pasteboard = [UIPasteboard pasteboardWithName:pasteboardName create:NO];
         if (pasteboard) {
-            CameraPlusPickedImages *images = [[CameraPlusPickedImages alloc] initWithPasteboard:pasteboard];
+            CameraPlusPickedImages *images = [[[CameraPlusPickedImages alloc] initWithPasteboard:pasteboard] autorelease];
 #if NS_BLOCKS_AVAILABLE
             if (block) {
                 block(images);
             }
 #else
             [delegate cameraPlusPickerManager:self didPickImages:images];
-            [images release];
 #endif
             
             [UIPasteboard removePasteboardWithName:pasteboardName];

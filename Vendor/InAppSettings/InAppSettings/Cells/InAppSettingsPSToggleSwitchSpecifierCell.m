@@ -67,7 +67,7 @@
     [super setupCell];
     
     //create the switch
-    self.valueSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+    self.valueSwitch = [[[UISwitch alloc] initWithFrame:CGRectZero] autorelease];
     CGRect valueSwitchFrame = self.valueSwitch.frame;
     valueSwitchFrame.origin.y = (CGFloat)round((self.contentView.frame.size.height*0.5f)-(valueSwitchFrame.size.height*0.5f))-InAppSettingsOffsetY;
     valueSwitchFrame.origin.x = (CGFloat)round((InAppSettingsScreenWidth-(InAppSettingsTotalTablePadding+InAppSettingsCellPadding))-valueSwitchFrame.size.width);

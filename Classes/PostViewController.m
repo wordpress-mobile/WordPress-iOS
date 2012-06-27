@@ -66,6 +66,7 @@
                                                                                       action:@selector(deletePost:)];
         deleteButton.style = UIBarButtonItemStyleBordered;
         self.toolbarItems = [NSArray arrayWithObjects:editButton, deleteButton, nil];
+        [deleteButton release];
     } else {
         self.navigationItem.rightBarButtonItem = editButton;
     }

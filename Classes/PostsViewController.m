@@ -377,10 +377,11 @@
 }
 
 - (UITableViewCell *)newCell {
+    // To comply with apple ownership and naming conventions, returned cell should have a retain count > 0, so retain the dequeued cell.
     NSString *cellIdentifier = @"PostCell";
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    UITableViewCell *cell = [[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier] retain];
     if (cell == nil) {
-        cell = [[[PostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+        cell = [[PostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     return cell;
 }

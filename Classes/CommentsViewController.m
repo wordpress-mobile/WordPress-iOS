@@ -458,9 +458,9 @@
 - (NSFetchRequest *)fetchRequest {
     NSFetchRequest *fetchRequest = [super fetchRequest];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, @"spam"]];
-    NSSortDescriptor *sortDescriptorStatus = [[NSSortDescriptor alloc] initWithKey:@"status" ascending:NO];
-    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorStatus, sortDescriptorDate, nil];
+    NSSortDescriptor *sortDescriptorStatus = [[[NSSortDescriptor alloc] initWithKey:@"status" ascending:NO] autorelease];
+    NSSortDescriptor *sortDescriptorDate = [[[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO] autorelease];
+    NSArray *sortDescriptors = [[[NSArray alloc] initWithObjects:sortDescriptorStatus, sortDescriptorDate, nil] autorelease];
     [fetchRequest setSortDescriptors:sortDescriptors];
     return fetchRequest;
 }
@@ -470,10 +470,11 @@
 }
 
 - (UITableViewCell *)newCell {
+    // To comply with apple ownership and naming conventions, returned cell should have a retain count > 0, so retain the dequeued cell.
     static NSString *cellIdentifier = @"CommentCell";
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    UITableViewCell *cell = [[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier] retain];
     if (cell == nil) {
-        cell = [[[CommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+        cell = [[CommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     return cell;
 }

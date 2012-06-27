@@ -96,7 +96,7 @@ static InAppSettings *sharedInstance = nil;
 
 - (void)viewDidLoad{
     //setup the table
-    self.settingsTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    self.settingsTableView = [[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped] autorelease];
     self.settingsTableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight);
     self.settingsTableView.delegate = self;
     self.settingsTableView.dataSource = self;
@@ -112,7 +112,7 @@ static InAppSettings *sharedInstance = nil;
         self.file = InAppSettingsRootFile;
     }
     
-    self.settingsReader = [[InAppSettingsReader alloc] initWithFile:self.file];
+    self.settingsReader = [[[InAppSettingsReader alloc] initWithFile:self.file] autorelease];
     
     //setup keyboard notification
     self.firstResponder = nil;

@@ -135,7 +135,7 @@
 
 - (void)setupCell{
     //setup title label
-    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.titleLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
     self.titleLabel.font = InAppSettingsBoldFont;
     self.titleLabel.highlightedTextColor = [UIColor whiteColor];
     self.titleLabel.backgroundColor = [UIColor clearColor];
@@ -143,7 +143,7 @@
     [self.contentView addSubview:self.titleLabel];
     
     //setup value label
-    self.valueLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.valueLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
     self.valueLabel.font = InAppSettingsNormalFont;
     self.valueLabel.textColor = InAppSettingsBlue;
     self.valueLabel.highlightedTextColor = [UIColor whiteColor];

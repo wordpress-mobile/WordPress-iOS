@@ -108,7 +108,7 @@
     [super setupCell];
     
     //create text field
-    self.textField =[[UITextField alloc] initWithFrame:CGRectZero];
+    self.textField =[[[UITextField alloc] initWithFrame:CGRectZero] autorelease];
     self.textField.textColor = InAppSettingsBlue;
     self.textField.adjustsFontSizeToFitWidth = YES;
     

@@ -352,6 +352,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
             UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:crashReportView];
             navController.modalPresentationStyle = UIModalPresentationFormSheet;
             [self.panelNavigationController presentModalViewController:navController animated:YES];
+            [navController release];
 		}
 		else {
 			[crashReporter purgePendingCrashReport];

@@ -437,8 +437,7 @@
     [api callMethod:@"wpcom.registerAccount"
          parameters:[NSArray arrayWithObjects:blogName, username, password, email, nil]
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSString *status = [[NSString alloc] init];
-                status = @"";
+                NSString *status = @"";
                 NSDictionary *returnData = [responseObject retain];
                 NSArray *errors = [NSArray arrayWithObjects:@"blogname", @"user_name", @"pass1", @"user_email", nil];
                 for (id e in errors) {

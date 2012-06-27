@@ -113,6 +113,7 @@
                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     [self dismissModalViewControllerAnimated:YES];
                 } failure:nil];
+        [api release];
 	}
 	else {
 		[sendFeedbackButton setEnabled:YES];

@@ -50,8 +50,8 @@
 - (id)init{
     self = [super init];
     if (self != nil) {
-        self.files = [[NSMutableArray alloc] init];
-        self.values = [[NSMutableDictionary alloc] init];
+        self.files = [[[NSMutableArray alloc] init] autorelease];
+        self.values = [[[NSMutableDictionary alloc] init] autorelease];
         [self loadFile:InAppSettingsRootFile];
         [[NSUserDefaults standardUserDefaults] registerDefaults:self.values];
     }
@@ -83,8 +83,8 @@
         NSString *stringsTable = [settingsDictionary objectForKey:InAppSettingsStringsTable];
         
         //initialize the arrays
-        self.headers = [[NSMutableArray alloc] init];
-        self.settings = [[NSMutableArray alloc] init];
+        self.headers = [[[NSMutableArray alloc] init] autorelease];
+        self.settings = [[[NSMutableArray alloc] init] autorelease];
         
         //load the data
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];

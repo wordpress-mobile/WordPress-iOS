@@ -95,7 +95,7 @@
                               code];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    AFHTTPRequestOperation *operation = [[[AFHTTPRequestOperation alloc] initWithRequest:request] autorelease];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *responseString = operation.responseString;
         NSDictionary *response = (NSDictionary *)[responseString objectFromJSONString];

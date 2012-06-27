@@ -31,7 +31,8 @@
 		[betaButton setTitle:@"Version 2.7 beta - tap here to leave feedback!" forState:UIControlStateNormal];
 		[betaButton addTarget:self action:@selector(showBetaFeedbackForm:) forControlEvents:UIControlEventTouchUpInside];
 		[self addSubview:betaButton];
-		
+		[betaButton release];
+        
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(didChangeStatusBarFrame:)
 													 name:UIApplicationWillChangeStatusBarFrameNotification object:nil];
