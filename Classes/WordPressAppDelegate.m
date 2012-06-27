@@ -354,8 +354,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	else {
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"crash_report_dontbug"] == nil) {
 			// Display CrashReportViewController
-			if(!DeviceIsPad())
-				[self.navigationController pushViewController:crashReportView animated:YES];
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:crashReportView];
+            navController.modalPresentationStyle = UIModalPresentationFormSheet;
+            [self.panelNavigationController presentModalViewController:navController animated:YES];
 		}
 		else {
 			[crashReporter purgePendingCrashReport];
@@ -366,11 +367,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 - (void)dismissCrashReporter:(NSNotification *)notification {
-	if(DeviceIsPad()) {
-		[splitViewController dismissModalViewControllerAnimated:NO];
-		crashReportView.view.frame = CGRectMake(0, 1000, 0, 0);
-		[crashReportView.view removeFromSuperview];
-	}
+    [self.panelNavigationController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

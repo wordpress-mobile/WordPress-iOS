@@ -38,7 +38,6 @@ NSString *CrashFilePath();
 }
 
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
-	[self dismissModalViewControllerAnimated:YES];
 	[self finish];
 }
 
@@ -100,12 +99,7 @@ NSString *CrashFilePath();
 }
 
 - (void)finish {
-	if(DeviceIsPad()) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"CrashReporterIsFinished" object:nil];
-		[self dismissModalViewControllerAnimated:YES];
-	}
-	else
-		[self.navigationController popViewControllerAnimated:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CrashReporterIsFinished" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
