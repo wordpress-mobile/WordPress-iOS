@@ -40,6 +40,7 @@
 
 @interface SidebarViewController () <NSFetchedResultsControllerDelegate, QuickPhotoButtonViewDelegate> {
     QuickPhotoButtonView *quickPhotoButton;
+    NSUInteger wantedSection;
 }
 
 @property (nonatomic, retain) Post *currentQuickPost;
@@ -54,6 +55,8 @@
 - (void)insertSectionInfoForBlog:(Blog *)blog atIndex:(NSUInteger)index;
 - (void)showWelcomeScreenIfNeeded;
 - (void)selectFirstAvailableItem;
+- (void)selectFirstAvailableBlog;
+- (void)selectBlogWithSection:(NSUInteger)index;
 
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)useCameraPlus withImage:(UIImage *)image;
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)useCameraPlus;
@@ -205,19 +208,29 @@
         return;
     }
 
-    if ([self.tableView numberOfRowsInSection:0] > 1) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+    if ([self.tableView numberOfRowsInSection:0] > 0) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         [self processRowSelectionAtIndexPath:indexPath];
         [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-    } else if ([self.sectionInfoArray count] > 0) {
-        SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:0];
-        if (!sectionInfo.open) {
-            [sectionInfo.headerView toggleOpenWithUserAction:YES];
-        }
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-        [self processRowSelectionAtIndexPath:indexPath closingSidebar:NO];
-        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    } else {
+        [self selectFirstAvailableBlog];
     }
+}
+
+- (void)selectFirstAvailableBlog {
+    if ([self.sectionInfoArray count] > 0) {
+        [self selectBlogWithSection:1];
+    }
+}
+
+- (void)selectBlogWithSection:(NSUInteger)index {
+    SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:index - 1];
+    if (!sectionInfo.open) {
+        [sectionInfo.headerView toggleOpenWithUserAction:YES];
+    }
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:index];
+    [self processRowSelectionAtIndexPath:indexPath closingSidebar:NO];
+    [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (void)showCommentWithId:(NSNumber *)itemId blogId:(NSNumber *)blogId {
@@ -644,16 +657,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
-    
-    [self processRowSelectionAtIndexPath: indexPath];
+    [self processRowSelectionAtIndexPath:indexPath];
 }
 
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath {
@@ -661,6 +665,7 @@
 }
 
 - (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath closingSidebar:(BOOL)closingSidebar {
+    WPFLog(@"%@ %@ %@", self, NSStringFromSelector(_cmd), indexPath);
     UIViewController *detailViewController = nil;  
     if (indexPath.section == 0) { //Reader
         
@@ -826,12 +831,27 @@
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    if (indexPath) {
+        wantedSection = indexPath.section;
+    } else {
+        wantedSection = 0;
+    }
     [self.tableView beginUpdates];
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
-    if ([self.tableView indexPathForSelectedRow] == nil) {
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    if (indexPath) {
+        if (indexPath.section != wantedSection) {
+            if (wantedSection > 0) {
+                [self selectBlogWithSection:wantedSection];
+            } else {
+                [self selectFirstAvailableItem];
+            }
+        }
+    } else {
         [self selectFirstAvailableItem];
     }
     if([[self.resultsController fetchedObjects] count] > 0){
@@ -858,6 +878,7 @@
             NSLog(@"Inserting row %d: %@", newIndexPath.row, anObject);
             [self insertSectionInfoForBlog:anObject atIndex:newIndexPath.row];
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:newIndexPath.row + 1] withRowAnimation:UITableViewRowAnimationFade];
+            wantedSection = newIndexPath.row + 1;
             break;
         case NSFetchedResultsChangeDelete:
             NSLog(@"Deleting row %d: %@", indexPath.row, anObject);
@@ -872,6 +893,7 @@
             }
             if (self.openSection == sectionInfo) {
                 self.openSection = nil;
+                wantedSection = 0;
             }
             [self.sectionInfoArray removeObjectAtIndex:indexPath.row];
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.row + 1] withRowAnimation:UITableViewRowAnimationFade];
