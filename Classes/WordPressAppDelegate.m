@@ -2,10 +2,10 @@
 #import "Reachability.h"
 #import "NSString+Helpers.h"
 #import "CPopoverManager.h"
-#import "UIViewController_iPadExtensions.h"
+//#import "UIViewController_iPadExtensions.h"
 #import "BetaUIWindow.h"
 #import "MigrateBlogsFromFiles.h"
-#import "InAppSettings.h"
+//#import "InAppSettings.h"
 #import "Blog.h"
 #import "Media.h"
 #import "SFHFKeychainUtils.h"
@@ -33,55 +33,13 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 @synthesize window, currentBlog, postID;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
-@synthesize splitViewController, crashReportView, isUploadingPost;
+@synthesize crashReportView, isUploadingPost;
 @synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
-@synthesize blogsViewController;
 @synthesize facebook;
 @synthesize panelNavigationController;
 
-- (id)init {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    if (!wordPressApp) {
-        wordPressApp = [super init];
-		
-		if (DeviceIsPad())
-			[UIViewController youWillAutorotateOrYouWillDieMrBond];
-				
-		if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
-			NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
-			if([tempIsAuthenticated isEqualToString:@"1"])
-				self.isWPcomAuthenticated = YES;
-		}
-		
-		NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-		[[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
-        NSString *defaultUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@)", 
-                     appVersion,
-                     [[UIDevice currentDevice] systemName], 
-                     [[UIDevice currentDevice] systemVersion], 
-                     [[UIDevice currentDevice] model]
-                     ];
-        
-        NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: defaultUA, @"UserAgent", nil];
-        [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-        [dictionary release];
-
-        self.wpcomAvailable = YES; //Set the wpcom availability to YES to avoid issues with lazy reachibility notifier        
-       
-        /* 
-         ( The following "init" code loads the Settings.bundle at startup and it is required from InAppSettings. 
-         We are not using it since at this point the app already loaded the bundle. Keep the code for future reference. )
-         
-         //The user defaults from the Settings.bundle are not initialized on startup, and are only initialized when viewed in the Settings App. 
-         //InAppSettings has a registerDefaults class method that can be called to initialize all of the user defaults from the Settings.bundle. 
-        if([self class] == [WordPressAppDelegate class]){
-            [InAppSettings registerDefaults];
-        }
-         */
-    }
-
-    return wordPressApp;
-}
+#pragma mark -
+#pragma mark Class Methods
 
 + (WordPressAppDelegate *)sharedWordPressApp {
     if (!wordPressApp) {
@@ -90,6 +48,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
     return wordPressApp;
 }
+
+#pragma mark -
+#pragma mark LifeCycle Methods
 
 - (void)dealloc {
 	[crashReportView release];
@@ -100,12 +61,64 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [passwordTextField release];
     [wpcomReachability release];
     [internetReachability release];
+    [facebook release];
+    [panelNavigationController release];
+    [managedObjectModel_ release];
+    [managedObjectContext_ release];
+    
     [super dealloc];
 }
 
+- (id)init {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    if (!wordPressApp) {
+        wordPressApp = [super init];
+		
+//		if (DeviceIsPad())
+//			[UIViewController youWillAutorotateOrYouWillDieMrBond];
+        
+		if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
+			NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
+			if([tempIsAuthenticated isEqualToString:@"1"])
+				self.isWPcomAuthenticated = YES;
+		}
+		
+		NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+		[[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
+        NSString *defaultUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@)", 
+                               appVersion,
+                               [[UIDevice currentDevice] systemName], 
+                               [[UIDevice currentDevice] systemVersion], 
+                               [[UIDevice currentDevice] model]
+                               ];
+        
+        NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: defaultUA, @"UserAgent", nil];
+        [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+        [dictionary release];
+        
+        self.wpcomAvailable = YES; //Set the wpcom availability to YES to avoid issues with lazy reachibility notifier        
+        
+        /* 
+         ( The following "init" code loads the Settings.bundle at startup and it is required from InAppSettings. 
+         We are not using it since at this point the app already loaded the bundle. Keep the code for future reference. )
+         
+         //The user defaults from the Settings.bundle are not initialized on startup, and are only initialized when viewed in the Settings App. 
+         //InAppSettings has a registerDefaults class method that can be called to initialize all of the user defaults from the Settings.bundle. 
+         if([self class] == [WordPressAppDelegate class]){
+         [InAppSettings registerDefaults];
+         }
+         */
+    }
+    
+    return wordPressApp;
+}
+
+
 #pragma mark -
 #pragma mark UIApplicationDelegate Methods
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
+
 #ifdef DEBUG
     WPFLog(@"Notifications: sandbox");
 #else
@@ -127,6 +140,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	if (![fileManager fileExistsAtPath:currentDirectoryPath isDirectory:&isDir] || !isDir) {
 		[fileManager createDirectoryAtPath:currentDirectoryPath withIntermediateDirectories:YES attributes:nil error:nil];
 	}
+    
 	//FIXME: we should handle errors here:
 	/*
 	 NSError *error;
@@ -198,7 +212,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     });
 
     [self checkWPcomAuthentication];
-//	self.blogsViewController = [[[BlogsViewController alloc] init] autorelease];
+
 	crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
 	
 	//BETA FEEDBACK BAR, COMMENT THIS OUT BEFORE RELEASE
@@ -251,7 +265,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	if (![crashReporter enableCrashReporterAndReturnError: &error])
 		NSLog(@"Warning: Could not enable crash reporter: %@", error);
 	
-	[blogsViewController release];
 	[window makeKeyAndVisible];
 
 	[self registerForPushNotifications];
@@ -315,7 +328,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
                 NSLog(@"Camera+ returned %@", [images images]);
                 UIImage *image = [images image];
                 UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-//                [self.blogsViewController showQuickPhotoWithImage:image isCameraPlus:YES];
                 NSDictionary *userInfo = [NSDictionary dictionaryWithObject:image forKey:@"image"];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kCameraPlusImagesNotification object:nil userInfo:userInfo];
             } cancelBlock:^(void) {
@@ -325,45 +337,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
         }
     }
     return NO;
-}
-
-- (void)handleCrashReport {
-	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-	NSData *crashData;
-	NSError *error;
-	
-	// Try loading the crash report
-	crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
-	if (crashData == nil) {
-		NSLog(@"Could not load crash report: %@", error);
-		[crashReporter purgePendingCrashReport];
-	}
-	
-	// We could send the report from here, but we'll just print out
-	// some debugging info instead
-	PLCrashReport *report = [[[PLCrashReport alloc] initWithData: crashData error: &error] autorelease];
-	if (report == nil) {
-		NSLog(@"Could not parse crash report");
-		[crashReporter purgePendingCrashReport];
-	}
-	else {
-		if([[NSUserDefaults standardUserDefaults] objectForKey:@"crash_report_dontbug"] == nil) {
-			// Display CrashReportViewController
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:crashReportView];
-            navController.modalPresentationStyle = UIModalPresentationFormSheet;
-            [self.panelNavigationController presentModalViewController:navController animated:YES];
-            [navController release];
-		}
-		else {
-			[crashReporter purgePendingCrashReport];
-		}
-	}
-	
-	return;
-}
-
-- (void)dismissCrashReporter:(NSNotification *)notification {
-    [self.panelNavigationController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -440,6 +413,50 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//we are using a custom notification
 	[[NSNotificationCenter defaultCenter] postNotificationName:DidChangeStatusBarFrame object:nil];
 }
+
+
+#pragma mark -
+#pragma mark CrashReport Methods
+
+- (void)handleCrashReport {
+	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+	NSData *crashData;
+	NSError *error;
+	
+	// Try loading the crash report
+	crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
+	if (crashData == nil) {
+		NSLog(@"Could not load crash report: %@", error);
+		[crashReporter purgePendingCrashReport];
+	}
+	
+	// We could send the report from here, but we'll just print out
+	// some debugging info instead
+	PLCrashReport *report = [[[PLCrashReport alloc] initWithData: crashData error: &error] autorelease];
+	if (report == nil) {
+		NSLog(@"Could not parse crash report");
+		[crashReporter purgePendingCrashReport];
+	}
+	else {
+		if([[NSUserDefaults standardUserDefaults] objectForKey:@"crash_report_dontbug"] == nil) {
+			// Display CrashReportViewController
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:crashReportView];
+            navController.modalPresentationStyle = UIModalPresentationFormSheet;
+            [self.panelNavigationController presentModalViewController:navController animated:YES];
+            [navController release];
+		}
+		else {
+			[crashReporter purgePendingCrashReport];
+		}
+	}
+	
+	return;
+}
+
+- (void)dismissCrashReporter:(NSNotification *)notification {
+    [self.panelNavigationController dismissModalViewControllerAnimated:YES];
+}
+
 
 #pragma mark -
 #pragma mark Public Methods
@@ -827,7 +844,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 
-
 - (void) checkIfStatsShouldRun {
     if (NO) { // Switch this to YES to debug stats/update check
         [self runStats];
@@ -840,7 +856,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		NSDate *theDate = [NSDate date];
 		[defaults setObject:theDate forKey:@"statsDate"];
 		[self runStats];
-	}else{
+	} else {
 		//if statsDate existed, check if it's 7 days since last stats run, if it is > 7 days, run stats
 		NSDate *statsDate = [defaults objectForKey:@"statsDate"];
 		NSDate *today = [NSDate date];
@@ -1267,59 +1283,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 }
 
 #pragma mark -
-#pragma mark Split View
-
-- (UINavigationController *)masterNavigationController {
-	id theObject = [self.splitViewController.viewControllers objectAtIndex:0];
-	NSAssert([theObject isKindOfClass:[UINavigationController class]], @"That is not a nav controller");
-	return(theObject);
-}
-
-- (UINavigationController *)detailNavigationController {
-	id theObject = [self.splitViewController.viewControllers objectAtIndex:1];
-	NSAssert([theObject isKindOfClass:[UINavigationController class]], @"That is not a nav controller");
-	return(theObject);
-}
-
-- (void)splitViewController: (UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc {
-	UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
-	[barButtonItem setTitle:NSLocalizedString(@"My Blog", @"Title of the iPad button to display any blogs added to the app.")];
-	[theNavigationItem setLeftBarButtonItem:barButtonItem animated:YES];
-//	if ([[self.detailNavigationController.viewControllers objectAtIndex:0] isKindOfClass:[BlogSplitViewDetailViewController class]])
-//	{
-//		[[CPopoverManager instance] setCurrentPopoverController:pc];
-//	}
-}
-
-- (void)splitViewController: (UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem {
-	[[[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem] setLeftBarButtonItem:NULL animated:YES];
-
-	[[CPopoverManager instance] setCurrentPopoverController:NULL];
-}
-
-- (void)splitViewController: (UISplitViewController*)svc popoverController: (UIPopoverController*)pc willPresentViewController:(UIViewController *)aViewController {
-}
-
-- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation {
-    return NO;
-}
-
-- (void)showPopoverIfNecessary {
-	if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation) && !self.splitViewController.modalViewController) {
-		UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
-		[[[CPopoverManager instance] currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		[[[CPopoverManager instance] currentPopoverController] dismissPopoverAnimated:NO];
-	}
-}
-
-- (void)newBlogNotification:(NSNotification *)aNotification {
-	if (UIInterfaceOrientationIsPortrait(self.masterNavigationController.interfaceOrientation)) {
-		UINavigationItem *theNavigationItem = [[self.detailNavigationController.viewControllers objectAtIndex:0] navigationItem];
-		[[[CPopoverManager instance] currentPopoverController] presentPopoverFromBarButtonItem:theNavigationItem.leftBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-	}
-}
-
-#pragma mark -
 #pragma mark UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
@@ -1370,14 +1333,15 @@ static WordPressAppDelegate *wordPressApp = NULL;
 				HelpViewController *helpViewController = [[HelpViewController alloc] init];
 				WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 				
-				if (DeviceIsPad() && self.splitViewController.modalViewController) {
+//				if (DeviceIsPad() && self.splitViewController.modalViewController) {
+				if (DeviceIsPad() && self.panelNavigationController.modalViewController) {
 					[self.navigationController pushViewController:helpViewController animated:YES];
 				}
 				else {
 					if (DeviceIsPad()) {
 						helpViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 						helpViewController.modalPresentationStyle = UIModalPresentationFormSheet;
-						[splitViewController presentModalViewController:helpViewController animated:YES];
+//						[splitViewController presentModalViewController:helpViewController animated:YES];
 					}
 					else
 						[appDelegate.navigationController presentModalViewController:helpViewController animated:YES];

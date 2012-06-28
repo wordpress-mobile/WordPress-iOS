@@ -755,8 +755,8 @@
 		37F74136131866A600AED18A /* CommentViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentViewController.xib; sourceTree = "<group>"; };
 		4526DC531148072F0090C99D /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
 		4526DC541148072F0090C99D /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
-		458776AF11623ED300906CEE /* UIViewController_iPadExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_iPadExtensions.h; sourceTree = "<group>"; };
-		458776B011623ED300906CEE /* UIViewController_iPadExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewController_iPadExtensions.m; sourceTree = "<group>"; };
+		458776AF11623ED300906CEE /* UIViewController_iPadExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIViewController_iPadExtensions.h; path = Classes/UIViewController_iPadExtensions.h; sourceTree = "<group>"; };
+		458776B011623ED300906CEE /* UIViewController_iPadExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIViewController_iPadExtensions.m; path = Classes/UIViewController_iPadExtensions.m; sourceTree = "<group>"; };
 		45B71DE4113EDAA100D0A33C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		45C73C24113C36F70024D0D2 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		45CD32181157D83D009E78D3 /* fabric.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fabric.png; path = Classes/fabric.png; sourceTree = "<group>"; };
@@ -1398,8 +1398,6 @@
 				1D3623250D0F684500981E51 /* WordPressAppDelegate.m */,
 				45F45B3411614BA50022D394 /* CPopoverManager.h */,
 				45F45B3511614BA50022D394 /* CPopoverManager.m */,
-				458776AF11623ED300906CEE /* UIViewController_iPadExtensions.h */,
-				458776B011623ED300906CEE /* UIViewController_iPadExtensions.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1598,12 +1596,15 @@
 		5D63449E159A4B0E00AF402F /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
+				FD0D42C2149A0B5500F5E115 /* InAppSettings */,
 				C5E3AE330E93F3C5008755FF /* WPImagePickerController.h */,
 				C5E3AE340E93F3C5008755FF /* WPImagePickerController.m */,
 				CEFC8B5710057D0A0052604A /* WPProgressHUD.h */,
 				CEFC8B5810057D0A0052604A /* WPProgressHUD.m */,
 				45F45AFB11614A0E0022D394 /* CDeviceSupport.h */,
 				45F45AFC11614A0E0022D394 /* CDeviceSupport.m */,
+				458776AF11623ED300906CEE /* UIViewController_iPadExtensions.h */,
+				458776B011623ED300906CEE /* UIViewController_iPadExtensions.m */,
 			);
 			name = Deprecated;
 			sourceTree = "<group>";
@@ -2320,7 +2321,6 @@
 				E1EAD53D1554498000C0ED7A /* CameraPlus */,
 				FDA68C1D14AC6CB800151896 /* Reachability */,
 				E1F807F714641AC700726BC7 /* AFNetworking */,
-				FD0D42C2149A0B5500F5E115 /* InAppSettings */,
 				837614E8120A7FA3005CCB33 /* XMLRPC */,
 			);
 			name = Vendor;

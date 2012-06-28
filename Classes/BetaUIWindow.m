@@ -48,7 +48,8 @@
 	if (DeviceIsPad()) {
 		betaFeedbackViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		betaFeedbackViewController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[appDelegate.splitViewController presentModalViewController:betaFeedbackViewController animated:YES];
+        [appDelegate.panelNavigationController presentModalViewController:betaFeedbackViewController animated:YES];
+//		[appDelegate.splitViewController presentModalViewController:betaFeedbackViewController animated:YES];
 	}
 	else
 		[appDelegate.navigationController presentModalViewController:betaFeedbackViewController animated:YES];

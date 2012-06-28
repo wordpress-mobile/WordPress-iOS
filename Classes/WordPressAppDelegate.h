@@ -12,7 +12,6 @@
 #import "FBConnect.h"
 
 @class AutosaveManager;
-@class BlogsViewController;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate, WPComOAuthDelegate, FBSessionDelegate> {
 	Blog *currentBlog;
@@ -25,7 +24,7 @@
 @private
     IBOutlet UIWindow *window;
     IBOutlet UINavigationController *navigationController;
-	IBOutlet UISplitViewController *splitViewController;
+//	IBOutlet UISplitViewController *splitViewController;
 	CrashReportViewController *crashReportView;
     BOOL alertRunning, passwordAlertRunning;
     BOOL isUploadingPost;
@@ -51,10 +50,10 @@
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
-@property (nonatomic, retain) IBOutlet UISplitViewController *splitViewController;
+//@property (nonatomic, retain) IBOutlet UISplitViewController *splitViewController;
 @property (nonatomic, retain) CrashReportViewController *crashReportView;
-@property (readonly, nonatomic, retain) UINavigationController *masterNavigationController;
-@property (readonly, nonatomic, retain) UINavigationController *detailNavigationController;
+//@property (readonly, nonatomic, retain) UINavigationController *masterNavigationController;
+//@property (readonly, nonatomic, retain) UINavigationController *detailNavigationController;
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
 @property (nonatomic, assign) BOOL isUploadingPost;
@@ -63,7 +62,6 @@
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, retain) BlogsViewController *blogsViewController;
 @property (nonatomic, retain) Facebook *facebook;
 @property (nonatomic, retain) PanelNavigationController *panelNavigationController;
 
@@ -89,4 +87,5 @@
 - (void)unregisterApnsToken;
 - (void)sendPushNotificationBlogsList;
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif;
+
 @end
