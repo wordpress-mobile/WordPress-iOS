@@ -275,7 +275,7 @@
     NSIndexPath *preservedIndexPath = [NSIndexPath indexPathForRow:[[dict objectForKey:@"row"] integerValue] inSection:[[dict objectForKey:@"section"] integerValue]];
     
     if (preservedIndexPath.section > 0 && ((preservedIndexPath.section - 1) < [self.resultsController.fetchedObjects count] )) {
-        if ([self.sectionInfoArray count] > preservedIndexPath.section) {
+        if ([self.sectionInfoArray count] > (preservedIndexPath.section - 1)) {
             SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:(preservedIndexPath.section -1)];
             if (!sectionInfo.open) {
                 [sectionInfo.headerView toggleOpenWithUserAction:YES];
