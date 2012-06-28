@@ -24,7 +24,7 @@
 @private
     IBOutlet UIWindow *window;
     IBOutlet UINavigationController *navigationController;
-//	IBOutlet UISplitViewController *splitViewController;
+
 	CrashReportViewController *crashReportView;
     BOOL alertRunning, passwordAlertRunning;
     BOOL isUploadingPost;
@@ -46,14 +46,12 @@
     // Push notifications
     NSDictionary *lastNotificationInfo;
     PanelNavigationController *panelNavigationController;
+
 }
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
-//@property (nonatomic, retain) IBOutlet UISplitViewController *splitViewController;
 @property (nonatomic, retain) CrashReportViewController *crashReportView;
-//@property (readonly, nonatomic, retain) UINavigationController *masterNavigationController;
-//@property (readonly, nonatomic, retain) UINavigationController *detailNavigationController;
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
 @property (nonatomic, assign) BOOL isUploadingPost;
