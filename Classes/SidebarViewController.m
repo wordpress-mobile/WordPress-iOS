@@ -40,6 +40,7 @@
 
 @interface SidebarViewController () <NSFetchedResultsControllerDelegate, QuickPhotoButtonViewDelegate> {
     QuickPhotoButtonView *quickPhotoButton;
+    BOOL selectionRestored;
     NSUInteger wantedSection;
 }
 
@@ -116,6 +117,8 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCameraPlusImages:) name:kCameraPlusImagesNotification object:nil];
+
+    selectionRestored = NO; // incase the view was previously loaded and later unloaded.
 }
 
 - (void)viewDidUnload
@@ -131,8 +134,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;
 }
 
@@ -143,7 +145,11 @@
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated]; 
     [self showWelcomeScreenIfNeeded];
-    [self selectFirstAvailableItem];    
+//    [self selectFirstAvailableItem];
+    if (!selectionRestored) {
+        [self restorePreservedSelection];
+        selectionRestored = YES;
+    }
 }
 
 #pragma mark - Custom methods
@@ -261,6 +267,26 @@
     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     
     [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
+}
+
+
+- (void)restorePreservedSelection {
+    NSDictionary *dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"kSelectedSidebarIndexDictionary"];
+    NSIndexPath *preservedIndexPath = [NSIndexPath indexPathForRow:[[dict objectForKey:@"row"] integerValue] inSection:[[dict objectForKey:@"section"] integerValue]];
+    
+    if (preservedIndexPath.section > 0 && ((preservedIndexPath.section - 1) < [self.resultsController.fetchedObjects count] )) {
+        if ([self.sectionInfoArray count] > preservedIndexPath.section) {
+            SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:(preservedIndexPath.section -1)];
+            if (!sectionInfo.open) {
+                [sectionInfo.headerView toggleOpenWithUserAction:YES];
+            }
+            
+            [self processRowSelectionAtIndexPath:preservedIndexPath closingSidebar:NO];
+            [self.tableView selectRowAtIndexPath:preservedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }        
+    } else {
+        [self selectFirstAvailableItem];
+    }
 }
 
 #pragma mark - Quick Photo Methods
@@ -496,16 +522,6 @@
     if (indexPath.section == 0) {
         title = NSLocalizedString(@"Read", @"");
         cell.imageView.image = [UIImage imageNamed:@"sidebar_read"];
-//        switch (indexPath.row) {
-//            case 0:
-//                title = NSLocalizedString(@"Quick Photo", @"");
-//                cell.imageView.image = [UIImage imageNamed:@"sidebar_quickphoto"];
-//                break;
-//            case 1:
-//                title = NSLocalizedString(@"Read", @"");
-//                cell.imageView.image = [UIImage imageNamed:@"sidebar_read"];
-//                break;
-//        }
     } else {
         switch (indexPath.row) {
             case 0:
@@ -664,8 +680,15 @@
     [self processRowSelectionAtIndexPath:indexPath closingSidebar:YES];
 }
 
-- (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath closingSidebar:(BOOL)closingSidebar {
+
+
+- (void) processRowSelectionAtIndexPath:(NSIndexPath *)indexPath closingSidebar:(BOOL)closingSidebar {
     WPFLog(@"%@ %@ %@", self, NSStringFromSelector(_cmd), indexPath);
+    
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:indexPath.row], @"row", [NSNumber numberWithInteger:indexPath.section], @"section", nil];
+    [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"kSelectedSidebarIndexDictionary"];
+    [NSUserDefaults resetStandardUserDefaults];
+    
     UIViewController *detailViewController = nil;  
     if (indexPath.section == 0) { //Reader
         

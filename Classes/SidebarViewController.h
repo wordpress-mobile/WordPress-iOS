@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "SidebarSectionHeaderView.h"
-#import "WordPressAppDelegate.h"
 
 @class Post;
 
@@ -27,5 +26,6 @@
 - (void)showCommentWithId:(NSNumber *)itemId blogId:(NSNumber *)blogId;
 
 - (void)uploadQuickPhoto:(Post *)post;
+- (void)restorePreservedSelection;
 
 @end
