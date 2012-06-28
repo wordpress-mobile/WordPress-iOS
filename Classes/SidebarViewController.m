@@ -67,6 +67,7 @@
 - (void)setupQuickPhotoButton;
 - (void)tearDownQuickPhotoButton;
 - (void)handleCameraPlusImages:(NSNotification *)notification;
+- (void)presentContent;
 
 @end
 
@@ -145,11 +146,22 @@
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated]; 
     [self showWelcomeScreenIfNeeded];
-//    [self selectFirstAvailableItem];
+    
+    // In iOS 5, the first detailViewController that we load during launch does not
+    // see its viewWillAppear and viewDidAppear methods fire. As a work around, we can
+    // present our content with a slight delay, and then the events fire.
+    // TODO: Find a true fix and remove this workaround.
+    // See http://ios.trac.wordpress.org/ticket/1114
+    [self performSelector:@selector(presentContent) withObject:self afterDelay:0.01];
+}
+
+- (void)presentContent {
+    [self showWelcomeScreenIfNeeded];
+    //    [self selectFirstAvailableItem];
     if (!selectionRestored) {
         [self restorePreservedSelection];
         selectionRestored = YES;
-    }
+    }   
 }
 
 #pragma mark - Custom methods
