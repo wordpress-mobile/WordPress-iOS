@@ -150,10 +150,11 @@
 
 
 - (void)loadStats {
-    if (!self.view.window) {
+    if (!self.isViewLoaded || !self.view.window) {
         loadStatsWhenViewAppears = YES;
         return;
     }
+
     
     NSString *username = @"";
     NSString *password = @"";
