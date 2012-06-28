@@ -219,7 +219,9 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (NSIndexPath *)tableView:(UITableView *)theTableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self removeSwipeView:YES];
+    if (!self.editing) {
+        [self removeSwipeView:YES];
+    }
     return indexPath;
 }
 
