@@ -305,6 +305,8 @@ Resources-iPad/MainWindow-iPad.xib -text
 /RoundedRectBlack.png -text
 Settings.bundle/Root.plist -text
 Settings.bundle/en.lproj/Root.strings -text
+/SidebarToolbarButton.png -text svneol=unset#unset
+/SidebarToolbarButton@2x.png -text svneol=unset#unset
 /SidebarViewController.xib -text
 /StatsTableViewController-iPad.xib -text
 /ToolbarIconCamera.png -text svneol=unset#unset

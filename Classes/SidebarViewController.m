@@ -90,7 +90,7 @@
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
 
     //self.view.backgroundColor = SIDEBAR_BGCOLOR;
     self.openSection = nil;
@@ -104,6 +104,9 @@
 		}
 	}
     
+    self.settingsButton.backgroundColor = [UIColor clearColor];
+    [self.settingsButton setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButton"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateNormal];
+
     if ([[self.resultsController fetchedObjects] count] > 0) {
         [self setupQuickPhotoButton];
     }
@@ -424,10 +427,6 @@
     // Make room for the photo button
     CGRect settingsFrame = settingsButton.frame;
     CGFloat buttonWidth = (self.view.frame.size.width - 30.0f)/2; // 10px margins + 10px gap
-    settingsFrame.size.width = buttonWidth;
-    settingsFrame.origin.x = 20.0f + buttonWidth;
-    settingsButton.frame = settingsFrame;
-    settingsButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
     // Match the height and y of the settings Button.
     CGRect frame = CGRectMake(10.0f, settingsFrame.origin.y, buttonWidth, settingsFrame.size.height);
     self.quickPhotoButton = [[QuickPhotoButtonView alloc] initWithFrame:frame];
@@ -443,12 +442,6 @@
     [quickPhotoButton removeFromSuperview];
     quickPhotoButton.delegate = nil;
     self.quickPhotoButton = nil;
-    
-    // fill the gap
-    CGRect settingsFrame = settingsButton.frame;
-    settingsFrame.size.width = 300.0f;
-    settingsFrame.origin.x = 10.0f;
-    settingsButton.frame = settingsFrame;
 }
 
 - (void)handleCameraPlusImages:(NSNotification *)notification {

@@ -64,7 +64,7 @@
     button.frame = self.bounds;
     button.titleLabel.textColor = [UIColor whiteColor];
     [button.titleLabel setFont:[UIFont boldSystemFontOfSize:15.0f]];
-    [button setBackgroundImage:[UIImage imageNamed:@"quickPhotoButtonBackground.png"] forState:UIControlStateNormal];
+    [button setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButton"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateNormal];
     [button setTitle:NSLocalizedString(@"Photo", @"") forState:UIControlStateNormal];
     [button addTarget:self action:@selector(handleButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button];
