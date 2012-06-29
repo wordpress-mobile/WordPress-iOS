@@ -14,11 +14,13 @@
 @interface SidebarViewController : UIViewController <UIActionSheetDelegate, SidebarSectionHeaderViewDelegate, UITableViewDataSource, UITableViewDelegate> {
     IBOutlet UITableView *tableView;
     IBOutlet UIButton *settingsButton;
+    IBOutlet UIView *utililtyView;
     NSUInteger openSectionIdx;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) IBOutlet UIButton *settingsButton;
+@property (nonatomic, retain) IBOutlet UIView *utililtyView;
 
 - (IBAction)showSettings:(id)sender;
 - (void)processRowSelectionAtIndexPath:(NSIndexPath *)indexPath;

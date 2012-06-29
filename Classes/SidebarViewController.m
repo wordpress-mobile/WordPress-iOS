@@ -72,26 +72,41 @@
 @end
 
 @implementation SidebarViewController
+
 @synthesize resultsController = _resultsController, openSection=_openSection, sectionInfoArray=_sectionInfoArray;
 @synthesize tableView, settingsButton, quickPhotoButton;
 @synthesize currentQuickPost = _currentQuickPost;
+@synthesize utililtyView;
 
 - (void)dealloc {
     self.resultsController.delegate = nil;
     self.resultsController = nil;
+    self.utililtyView = nil;
+    self.tableView = nil;
+    self.settingsButton = nil;
+    self.quickPhotoButton = nil;
     
     [super dealloc];
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
+
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
 
+    utililtyView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
+    utililtyView.layer.shadowRadius = 10.0f;
+    utililtyView.layer.shadowOpacity = 0.8f;
+    utililtyView.layer.shadowColor = [[UIColor blackColor] CGColor];
+    utililtyView.layer.shadowOffset = CGSizeMake(0.0f, 5.0f);
+    utililtyView.layer.shadowPath = [[UIBezierPath bezierPathWithRoundedRect:utililtyView.bounds cornerRadius:PANEL_CORNER_RADIUS] CGPath];
+    
+    [settingsButton setBackgroundImage:[[UIImage imageNamed:@"UISegmentBarBlackButtonHighlighted.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:5.0] forState:UIControlStateNormal];
+    
     //self.view.backgroundColor = SIDEBAR_BGCOLOR;
     self.openSection = nil;
     
@@ -125,12 +140,12 @@
     selectionRestored = NO; // incase the view was previously loaded and later unloaded.
 }
 
-- (void)viewDidUnload
-{
+- (void)viewDidUnload {
     [super viewDidUnload];
 
     self.tableView = nil;
     self.settingsButton = nil;
+    self.utililtyView = nil;
     self.quickPhotoButton.delegate = nil;
     self.quickPhotoButton = nil;
     
@@ -140,10 +155,6 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated]; 	
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -419,9 +430,7 @@
     }
 }
 
-- (void)setupQuickPhotoButton {
-//    if (IS_IPAD) return; // TODO: Remove this when the iPad is supported
-    
+- (void)setupQuickPhotoButton {    
     if (quickPhotoButton) return;
     
     // Make room for the photo button
