@@ -137,7 +137,7 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCameraPlusImages:) name:kCameraPlusImagesNotification object:nil];
 
-    selectionRestored = NO; // incase the view was previously loaded and later unloaded.
+    selectionRestored = NO; // incase the view was previously loaded and later unloaded.    
 }
 
 - (void)viewDidUnload {
@@ -157,28 +157,40 @@
 	return YES;
 }
 
-- (void) viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated]; 
-    [self showWelcomeScreenIfNeeded];
-    
-    // In iOS 5, the first detailViewController that we load during launch does not
-    // see its viewWillAppear and viewDidAppear methods fire. As a work around, we can
-    // present our content with a slight delay, and then the events fire.
-    // TODO: Find a true fix and remove this workaround.
-    // See http://ios.trac.wordpress.org/ticket/1114
-    [self performSelector:@selector(presentContent) withObject:self afterDelay:0.01];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    if (IS_IPAD) {
+        // In iOS 5, the first detailViewController that we load during launch does not
+        // see its viewWillAppear and viewDidAppear methods fire. As a work around, we can
+        // present our content with a slight delay, and then the events fire.
+        // TODO: Find a true fix and remove this workaround.
+        // See http://ios.trac.wordpress.org/ticket/1114
+        [self performSelector:@selector(presentContent) withObject:self afterDelay:0.01];
+    } else {
+        [self presentContent];
+    }
+
 }
 
-- (void)presentContent {
-    [self showWelcomeScreenIfNeeded];
-    //    [self selectFirstAvailableItem];
-    if (!selectionRestored) {
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated]; 
+
+    if (!IS_IPAD) {
+        // Called here to ensure the section is opened after launch on the iPad.
         [self restorePreservedSelection];
-        selectionRestored = YES;
-    }   
+    }
 }
 
 #pragma mark - Custom methods
+
+- (void)presentContent {
+    [self showWelcomeScreenIfNeeded];
+    if (!selectionRestored) {
+        [self restorePreservedSelection];
+        selectionRestored = YES;
+    }
+}
 
 - (NSInteger)topSectionRowCount {
     if ([WordPressComApi sharedApi].username) {
@@ -372,7 +384,14 @@
         quickPhotoViewController.sourceType = sourceType;
     }
     quickPhotoViewController.isCameraPlus = useCameraPlus;
-    quickPhotoViewController.startingBlog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:openSectionIdx-1 inSection:0]];
+
+    Blog *startingBlog = nil;
+    if ([self openSection]) {
+        startingBlog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:openSectionIdx-1 inSection:0]];
+    } else {
+        startingBlog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    }
+    quickPhotoViewController.startingBlog = startingBlog;
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:quickPhotoViewController];
     if (IS_IPAD) {
