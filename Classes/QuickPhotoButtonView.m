@@ -117,7 +117,7 @@
     [UIView animateWithDuration:0.6f animations:^{
         spinner.alpha = 0.0f;
         label.text = NSLocalizedString(@"Published!", @"");
-        label.textColor = [[UIColor alloc] initWithRed:0.0f green:128.0f/255.0f blue:0.0f alpha:1.0f];
+//        label.textColor = [[UIColor alloc] initWithRed:0.0f green:128.0f/255.0f blue:0.0f alpha:1.0f];
     } completion:^(BOOL finished) {
         [self showProgress:NO animated:YES delayed:YES];
     }];
@@ -148,7 +148,7 @@
             button.frame = frame;
             
             frame = spinner.frame;
-            frame.origin.y = (self.frame.size.height - frame.size.height) / 2;
+            frame.origin.y = (self.frame.size.height - frame.size.height) / 2.0f;
             spinner.frame = frame;
             
             frame = label.frame;
@@ -181,16 +181,16 @@
             
         } completion:^(BOOL finished) {
             CGRect frame = spinner.frame;
-            frame.origin.y = - frame.size.height;
+            frame.origin.y = -frame.size.height;
             spinner.frame = frame;
             [spinner stopAnimating];
             
             frame = label.frame;
-            frame.origin.y = frame.size.height;
+            frame.origin.y = -frame.size.height;
             label.frame = frame;
 
             label.hidden = YES;
-            label.textColor = [[[UIColor alloc] initWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f] autorelease];
+//            label.textColor = [[[UIColor alloc] initWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f] autorelease];
             label.text = NSLocalizedString(@"Uploading...", @"");
         }];
     }
