@@ -98,7 +98,7 @@
 //    label.text = NSLocalizedString(@"Uploading Quick Photo...", @"");
     [self addSubview:label];
     
-    [self showProgress:NO animated:NO];
+    [self showProgress:NO animated:NO delayed:NO];
 }
 
 
@@ -142,7 +142,7 @@
         [spinner startAnimating];
         label.hidden = NO;
         
-        [UIView animateWithDuration:0.6f delay:delay options:0 animations:^{
+        [UIView animateWithDuration:duration delay:delay options:0 animations:^{
             CGRect frame = button.frame;
             frame.origin.y = self.frame.size.height;
             button.frame = frame;
@@ -166,7 +166,7 @@
     } else {
         button.hidden = NO;
         
-        [UIView animateWithDuration:0.6f delay:delay options:0 animations:^{
+        [UIView animateWithDuration:duration delay:delay options:0 animations:^{
             CGRect frame = button.frame;
             frame.origin.y = 0.0f;
             button.frame = frame;
