@@ -85,6 +85,12 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     return self;
 }
 
+- (void)didMoveToWindow {
+    [super didMoveToWindow];
+
+    // To prevent werid scrolling while we're waiting for content to load.
+    [scrollView setContentSize:self.frame.size];
+}
 
 #pragma mark -
 #pragma mark Drawing Methods
