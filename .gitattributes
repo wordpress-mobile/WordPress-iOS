@@ -812,8 +812,6 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /sidebar_pages@2x.png -text
 /sidebar_posts.png -text
 /sidebar_posts@2x.png -text
-/sidebar_quickphoto.png -text
-/sidebar_quickphoto@2x.png -text
 /sidebar_read.png -text
 /sidebar_read@2x.png -text
 /sidebar_stats.png -text
