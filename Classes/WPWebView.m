@@ -147,7 +147,6 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
         }
     }
     
-    
     // Pull to refresh
     if (self.refreshHeaderView == nil) {
         scrollView.delegate = self;

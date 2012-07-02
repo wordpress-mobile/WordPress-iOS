@@ -34,7 +34,7 @@
     
     if (self) {
         active = NO;
-        self.autoresizesSubviews = NO;
+        self.autoresizesSubviews = YES;
 
         CGRect blavatarFrame = self.bounds;
         blavatarFrame.size.width = 36.0f;
@@ -65,6 +65,7 @@
         blogTitleLabel = [[UILabel alloc] initWithFrame:blogTitleFrame];
         blogTitleLabel.font = [UIFont boldSystemFontOfSize:20];
         blogTitleLabel.numberOfLines = 1;
+        blogTitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [self addSubview:blogTitleLabel];
         
         CGRect selectorImageFrame = self.bounds;
@@ -73,6 +74,7 @@
         selectorImageView = [[UIImageView alloc] initWithFrame:selectorImageFrame];
         selectorImageView.contentMode = UIViewContentModeCenter;
         selectorImageView.image = [UIImage imageNamed:@"downArrow"];
+        selectorImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         [self addSubview:selectorImageView];
         
         [self addTarget:self action:@selector(tap) forControlEvents:UIControlEventTouchUpInside];        
