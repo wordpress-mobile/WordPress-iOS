@@ -104,9 +104,7 @@
     utililtyView.layer.shadowColor = [[UIColor blackColor] CGColor];
     utililtyView.layer.shadowOffset = CGSizeMake(0.0f, 5.0f);
     utililtyView.layer.shadowPath = [[UIBezierPath bezierPathWithRoundedRect:utililtyView.bounds cornerRadius:PANEL_CORNER_RADIUS] CGPath];
-    
-    [settingsButton setBackgroundImage:[[UIImage imageNamed:@"UISegmentBarBlackButtonHighlighted.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:5.0] forState:UIControlStateNormal];
-    
+        
     //self.view.backgroundColor = SIDEBAR_BGCOLOR;
     self.openSection = nil;
     

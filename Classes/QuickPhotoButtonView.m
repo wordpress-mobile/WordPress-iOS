@@ -68,9 +68,9 @@
     [button setTitle:NSLocalizedString(@"Photo", @"") forState:UIControlStateNormal];
     [button addTarget:self action:@selector(handleButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [button setBackgroundColor:[UIColor clearColor]];
-//    [button setImage:[UIImage imageNamed:@"sidebar_quickphoto"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"sidebar_camera"] forState:UIControlStateNormal];
     [button setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 0.0f)];
-    [button setImageEdgeInsets:UIEdgeInsetsMake(0.0f, 5.0f, 0.0f, 0.0f)];
+    [button setImageEdgeInsets:UIEdgeInsetsMake(3.0f, 5.0f, 0.0f, 0.0f)];
     [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     
     [self addSubview:button];

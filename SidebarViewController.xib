@@ -151,7 +151,7 @@
 						<double key="IBUITitleEdgeInsets.right">0.0</double>
 						<double key="IBUIImageEdgeInsets.top">0.0</double>
 						<double key="IBUIImageEdgeInsets.bottom">0.0</double>
-						<double key="IBUIImageEdgeInsets.left">5</double>
+						<double key="IBUIImageEdgeInsets.left">10</double>
 						<double key="IBUIImageEdgeInsets.right">0.0</double>
 						<string key="IBUINormalTitle">Settings</string>
 						<reference key="IBUIHighlightedTitleColor" ref="834125249"/>
@@ -163,9 +163,13 @@
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC41AA</bytes>
 						</object>
+						<object class="NSCustomResource" key="IBUINormalImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">sidebar_settings.png</string>
+						</object>
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">quickPhotoButtonBackground.png</string>
+							<string key="NSResourceName">UISegmentBarBlackButtonHighlighted.png</string>
 						</object>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
 							<int key="type">2</int>
@@ -325,7 +329,7 @@
 				<string key="21.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="3.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="4.IBUIButtonInspectorSelectedEdgeInsetMetadataKey"/>
+				<real value="2" key="4.IBUIButtonInspectorSelectedEdgeInsetMetadataKey"/>
 				<real value="0.0" key="4.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
@@ -384,10 +388,10 @@
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">quickPhotoButtonBackground.png</string>
-			<string key="NS.object.0">{1, 83}</string>
-		</object>
+		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="UISegmentBarBlackButtonHighlighted.png">{12, 30}</string>
+			<string key="sidebar_settings.png">{21, 21}</string>
+		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">1179</string>
 	</data>
 </archive>

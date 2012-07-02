@@ -796,6 +796,8 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /settings@2x.png -text
 /sidebar_bg.png -text
 /sidebar_bg@2x.png -text
+/sidebar_camera.png -text
+/sidebar_camera@2x.png -text
 /sidebar_cell_bg.png -text
 /sidebar_cell_bg@2x.png -text
 /sidebar_cell_bg_selected.png -text
@@ -814,6 +816,8 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /sidebar_posts@2x.png -text
 /sidebar_read.png -text
 /sidebar_read@2x.png -text
+/sidebar_settings.png -text
+/sidebar_settings@2x.png -text
 /sidebar_stats.png -text
 /sidebar_stats@2x.png -text
 /sidebar_view.png -text
