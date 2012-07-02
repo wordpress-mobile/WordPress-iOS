@@ -19,9 +19,6 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 @property (strong, nonatomic) AFHTTPRequestOperation *currentHTTPRequestOperation;
 @property (strong, nonatomic) NSURLRequest *currentRequest;
 @property (strong, nonatomic) Reachability *reachability;
-@property (strong, nonatomic) UIView *loadingView;
-@property (strong, nonatomic) UILabel *loadingLabel;
-@property (strong, nonatomic) UIActivityIndicatorView *activityView;
 @property (strong, nonatomic) UIWebView *webView;
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) NSURL *baseURLFallback;
@@ -48,9 +45,6 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 @synthesize currentHTTPRequestOperation;
 @synthesize currentRequest;
 @synthesize reachability;
-@synthesize loadingView;
-@synthesize loadingLabel;
-@synthesize activityView;
 @synthesize webView;
 @synthesize scrollView;
 @synthesize baseURLFallback;
@@ -67,9 +61,6 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     [currentHTTPRequestOperation release];
     [currentRequest release];
     [reachability release];
-    [loadingView release];
-    [loadingLabel release];
-    [activityView release];
     [scrollView release];
     [baseURLFallback release];
     
@@ -120,19 +111,11 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 - (void)setupSubviews {
     self.backgroundColor = [UIColor whiteColor];
     
-    CGFloat fontSize = 14.0;
-    CGFloat x = 0.0;
-    CGFloat y = 0.0;
-    CGFloat width = 0.0;
-    CGFloat height = 0.0;
-    CGFloat padding = 5.0;
-    
     CGRect frame = CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height);
 
     // WebView
     self.webView = [[[UIWebView alloc] initWithFrame:frame] autorelease];
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    webView.hidden = YES; // Hidden until content is loaded.
     webView.scalesPageToFit = YES;
     webView.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.95 alpha:1.0];
     [webView stringByEvaluatingJavaScriptFromString:@"document.body.style.background = '#F2F2F2';"];
@@ -170,58 +153,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     self.lastWebViewRefreshDate = [NSDate date];
 	//  update the last update date
 	[refreshHeaderView refreshLastUpdatedDate];
-    
-    
-    // Spinner
-    self.activityView = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
-    activityView.hidesWhenStopped = NO;
-    [activityView startAnimating];
-    CGRect activityFrame = activityView.frame;
-    
-    
-    // Build and configure the loadingLabel
-    NSString *loadingStr = NSLocalizedString(@"Loading...", nil);
-    CGSize size = [loadingStr sizeWithFont:[UIFont systemFontOfSize:fontSize]];
 
-    x = activityFrame.size.width + padding;
-    y = (activityFrame.size.height - size.height) / 2;
-    
-    frame = CGRectMake(x, y, size.width, size.height);
-    self.loadingLabel = [[[UILabel alloc] initWithFrame:frame] autorelease];
-    loadingLabel.font = [UIFont systemFontOfSize:fontSize];
-    loadingLabel.textColor = [UIColor grayColor];
-    loadingLabel.text = loadingStr;
-    loadingLabel.backgroundColor = [UIColor clearColor];
-    
-    width = activityFrame.size.width + padding + size.width;
-    height = activityFrame.size.height;
-    
-    // Reposition the activityView below the label if width is an issue.    
-    if (width > self.frame.size.width ) {
-        width = MAX(size.width, activityFrame.size.width);
-        height = size.height + activityFrame.size.height + padding;
-        
-        frame = CGRectMake(0.0, 0.0, size.width, size.height);
-        [loadingLabel setFrame:frame];
-        
-        activityFrame.origin.x = (size.width - activityFrame.size.width) / 2;
-        activityFrame.origin.y = size.height + padding;
-        [activityView setFrame:activityFrame];
-    }
-    
-    // Create and config the loadingView
-    x = (self.frame.size.width - width) / 2;
-    y = (self.frame.size.height - height) / 2;
-
-    self.loadingView = [[[UIView alloc] initWithFrame:CGRectMake(x, y, width, height)] autorelease];
-    loadingView.backgroundColor = [UIColor clearColor];
-    loadingView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | 
-                                    UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    loadingView.hidden = YES; // Don't show until we start loading something.
-    
-    [loadingView addSubview:loadingLabel];
-    [loadingView addSubview:activityView];
-    [self addSubview:loadingView];
 }
 
 
@@ -297,13 +229,12 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 }
 
 - (void)setLoading:(BOOL)value {
-    loading = value;
+    if (value == loading) return;
 
-    // Don't hide the webview if we used the pull to refresh mechanism.
-    if (pulledToRefresh) return;
-    
-    webView.hidden = loading;
-    loadingView.hidden = !loading;
+    loading = value;
+    if (loading) {
+        [self showRefreshingState];
+    }
 }
 
 - (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType textEncodingName:(NSString *)encodingName baseURL:(NSURL *)baseURL {
@@ -485,7 +416,6 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    pulledToRefresh = NO;
     [self stopLoading];
     self.lastWebViewRefreshDate = [NSDate date];
     [refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView * )scrollView];
@@ -496,7 +426,6 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    pulledToRefresh = NO;
     [self stopLoading];
     self.lastWebViewRefreshDate = [NSDate date];
     [refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView * )scrollView];
@@ -527,19 +456,18 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 #pragma mark EGORefreshTableHeaderDelegate Methods
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view {
-    pulledToRefresh = YES;
-    
     if (currentRequest == nil) {
         // If we pull to refresh when a string or data was loaded then it is the resposibility of the
         // loading object to refresh the content.
         [[NSNotificationCenter defaultCenter] postNotificationName:refreshedWithOutValidRequestNotification object:self userInfo:nil];
         return;
     }
-
+    if (loading) return; //loop breaker.
     [self reload];
 }
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view {
+    return NO;
 	return loading;
 }
 

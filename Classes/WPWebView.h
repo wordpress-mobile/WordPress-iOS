@@ -13,7 +13,6 @@ extern NSString *refreshedWithOutValidRequestNotification;
 
 @interface WPWebView : UIView <UIWebViewDelegate, UIAlertViewDelegate, EGORefreshTableHeaderDelegate, UIScrollViewDelegate> {
     id <WPWebViewDelegate>delegate;
-    BOOL pulledToRefresh;
     NSURL *baseURLFallback;
 }
 
