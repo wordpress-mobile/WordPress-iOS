@@ -18,6 +18,7 @@
 @property (nonatomic,retain) CommentViewController *commentViewController;
 @property (nonatomic,retain) NSIndexPath *currentIndexPath;
 - (void)updateSelectedComments;
+- (void)deselectAllComments;
 - (void)moderateCommentsWithSelector:(SEL)selector;
 - (Comment *)commentWithId:(NSNumber *)commentId;
 @end
@@ -131,26 +132,8 @@
     [approveButton setEnabled:!editing];
     [unapproveButton setEnabled:!editing];
     [spamButton setEnabled:!editing];
-	
-	if(editing && _selectedComments) { //if we are switching to editing mode and there were selected comments
-		if(_selectedComments.count > 0) { 
-			if ([[self.resultsController fetchedObjects] count] > 0) {
-				
-				NSMutableArray *commentsToKeep = [NSMutableArray array] ;
-				for (Comment  *commentInfo in [self.resultsController fetchedObjects]) {
-					if ([_selectedComments containsObject:commentInfo]) {
-						[commentsToKeep addObject:commentInfo];
-					} 					
-				}
 
-				[_selectedComments removeAllObjects];
-                [_selectedComments addObjectsFromArray:commentsToKeep];				
-			} else {
-				[_selectedComments removeAllObjects];
-			}
-		}
-		[self updateSelectedComments];
-	}
+	[self deselectAllComments];
 }
 
 - (void)configureCell:(CommentTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
@@ -164,18 +147,18 @@
 #pragma mark Action Methods
 
 - (IBAction)deleteSelectedComments:(id)sender {
-    [self removeSwipeView:NO];
     [self moderateCommentsWithSelector:@selector(remove)];
+    [self removeSwipeView:NO];
 }
 
 - (IBAction)approveSelectedComments:(id)sender {
-    [self removeSwipeView:NO];
     [self moderateCommentsWithSelector:@selector(approve)];
+    [self removeSwipeView:NO];
 }
 
 - (IBAction)unapproveSelectedComments:(id)sender {
-    [self removeSwipeView:NO];
     [self moderateCommentsWithSelector:@selector(unapprove)];
+    [self removeSwipeView:NO];
 }
 
 - (IBAction)spamSelectedComments:(id)sender {
@@ -186,18 +169,7 @@
 - (void)moderateCommentsWithSelector:(SEL)selector {
     [FileLogger log:@"%@ %@%@", self, NSStringFromSelector(_cmd), NSStringFromSelector(selector)];
     [_selectedComments makeObjectsPerformSelector:selector];
-    if (self.editing) {
-        for (Comment *comment in _selectedComments) {
-            NSIndexPath *indexPath = [self.resultsController indexPathForObject:comment];
-            if (indexPath) {
-                CommentTableViewCell *cell = (CommentTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-                if (cell) {
-                    cell.checked = NO;
-                }
-            }
-        }
-    }
-    [_selectedComments removeAllObjects];
+    [self deselectAllComments];
     [self updateSelectedComments];
     [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self.blog];
 }
@@ -227,6 +199,19 @@
     [approveButton setTitle:(((count - approvedCount) > 0) ? [NSString stringWithFormat:NSLocalizedString(@"Approve (%d)", @""), count - approvedCount]:NSLocalizedString(@"Approve", @""))];
     [unapproveButton setTitle:(((count - unapprovedCount) > 0) ? [NSString stringWithFormat:NSLocalizedString(@"Unapprove (%d)", @""), count - unapprovedCount]:NSLocalizedString(@"Unapprove", @""))];
     [spamButton setTitle:(((count - spamCount) > 0) ? [NSString stringWithFormat:NSLocalizedString(@"Spam (%d)", @""), count - spamCount]:NSLocalizedString(@"Spam", @""))];
+}
+
+- (void)deselectAllComments {
+    for (Comment *comment in _selectedComments) {
+        NSIndexPath *indexPath = [self.resultsController indexPathForObject:comment];
+        if (indexPath) {
+            CommentTableViewCell *cell = (CommentTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+            if (cell) {
+                cell.checked = NO;
+            }
+        }
+    }
+    [_selectedComments removeAllObjects];
 }
 
 - (void)showCommentAtIndexPath:(NSIndexPath *)indexPath {
@@ -561,7 +546,9 @@
 }
 
 - (void)removeSwipeView:(BOOL)animated {
-    [_selectedComments removeAllObjects];
+    if (!self.editing) {
+        [_selectedComments removeAllObjects];
+    }
     [super removeSwipeView:animated];
 }
 

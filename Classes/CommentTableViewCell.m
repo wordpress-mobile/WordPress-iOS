@@ -51,9 +51,7 @@
 @end
 
 
-@implementation CommentTableViewCell {
-    BOOL editing;
-}
+@implementation CommentTableViewCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier]) {
@@ -92,6 +90,11 @@
     } else {
         [checkButton setImage:[UIImage imageNamed:CHECK_BUTTON_UNCHECKED_ICON] forState:UIControlStateNormal];
     }
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [self setChecked:checked];
+    [super setEditing:editing animated:animated];
 }
 
 - (Comment *)comment {
