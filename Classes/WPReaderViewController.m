@@ -59,6 +59,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     self.topicsViewController = nil;
     self.detailViewController.delegate = nil;
     self.detailViewController = nil;
+    self.friendFinderNote = nil;
     [super dealloc];
 }
 
