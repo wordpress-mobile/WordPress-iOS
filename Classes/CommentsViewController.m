@@ -1,4 +1,3 @@
-
 //
 //  CommentsViewController.m
 //  WordPress
@@ -13,6 +12,7 @@
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "ReplyToCommentViewController.h"
+#import "UIColor+Helpers.h"
 
 @interface CommentsViewController () <CommentViewControllerDelegate>
 @property (nonatomic,retain) CommentViewController *commentViewController;
@@ -57,14 +57,30 @@
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Comments", @"");
-    spamButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Spam", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(spamSelectedComments:)];
-    unapproveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unapprove", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(unapproveSelectedComments:)];
-    approveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Approve", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(approveSelectedComments:)];
-    deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteSelectedComments:)];
-    deleteButton.style = UIBarButtonItemStyleBordered;
+    
+    
+    spamButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_flag"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
+    unapproveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_unapprove"] style:UIBarButtonItemStylePlain target:self action:@selector(unapproveSelectedComments:)];
+    approveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_approve"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
+    deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_delete"] style:UIBarButtonItemStylePlain target:self action:@selector(deleteSelectedComments:)];
+    
+    if ([spamButton respondsToSelector:@selector(setTintColor:)]) {
+        UIColor *color = [UIColor UIColorFromHex:0x464646];
+        spamButton.tintColor = color;
+        unapproveButton.tintColor = color;
+        approveButton.tintColor = color;
+        deleteButton.tintColor = color;        
+    }
+
+//    spamButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Spam", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(spamSelectedComments:)];
+//    unapproveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unapprove", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(unapproveSelectedComments:)];
+//    approveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Approve", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(approveSelectedComments:)];
+//    deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteSelectedComments:)];
+//    deleteButton.style = UIBarButtonItemStyleBordered;
+
     if (IS_IPHONE) {
         UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
-        self.toolbarItems = [NSArray arrayWithObjects:deleteButton, spacer, spamButton, spacer, unapproveButton, spacer, approveButton, nil];
+        self.toolbarItems = [NSArray arrayWithObjects:approveButton, spacer, unapproveButton, spacer, spamButton, spacer, deleteButton, nil];
     }
 
     self.tableView.accessibilityLabel = @"Comments";       // required for UIAutomation for iOS 4
@@ -122,10 +138,14 @@
     if (IS_IPHONE) {
         [self.navigationController setToolbarHidden:!editing animated:animated];
     } else {
-        if (editing) {
-            self.toolbarItems = [NSArray arrayWithObjects:self.editButtonItem, spacer, deleteButton, spacer, spamButton, spacer, unapproveButton, spacer, approveButton, nil];
+        if (editing) { 
+            // intentionally doubling spacers to get the layout we want on the ipad
+            self.toolbarItems = [NSArray arrayWithObjects:self.editButtonItem, spacer,  approveButton, spacer, spacer, unapproveButton, spacer, spacer, spamButton, spacer, spacer, deleteButton, spacer, nil];
         } else {
             self.toolbarItems = [NSArray arrayWithObject:self.editButtonItem];
+        }
+        if ([self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
+            self.editButtonItem.tintColor = [UIColor UIColorFromHex:0x336699];
         }
     }
     [deleteButton setEnabled:!editing];
@@ -196,9 +216,9 @@
     [unapproveButton setEnabled:((count - unapprovedCount) > 0)];
     [spamButton setEnabled:((count - spamCount) > 0)];
 
-    [approveButton setTitle:(((count - approvedCount) > 0) ? [NSString stringWithFormat:NSLocalizedString(@"Approve (%d)", @""), count - approvedCount]:NSLocalizedString(@"Approve", @""))];
-    [unapproveButton setTitle:(((count - unapprovedCount) > 0) ? [NSString stringWithFormat:NSLocalizedString(@"Unapprove (%d)", @""), count - unapprovedCount]:NSLocalizedString(@"Unapprove", @""))];
-    [spamButton setTitle:(((count - spamCount) > 0) ? [NSString stringWithFormat:NSLocalizedString(@"Spam (%d)", @""), count - spamCount]:NSLocalizedString(@"Spam", @""))];
+//    [approveButton setTitle:(((count - approvedCount) > 0) ? [NSString stringWithFormat:NSLocalizedString(@"Approve (%d)", @""), count - approvedCount]:NSLocalizedString(@"Approve", @""))];
+//    [unapproveButton setTitle:(((count - unapprovedCount) > 0) ? [NSString stringWithFormat:NSLocalizedString(@"Unapprove (%d)", @""), count - unapprovedCount]:NSLocalizedString(@"Unapprove", @""))];
+//    [spamButton setTitle:(((count - spamCount) > 0) ? [NSString stringWithFormat:NSLocalizedString(@"Spam (%d)", @""), count - spamCount]:NSLocalizedString(@"Spam", @""))];
 }
 
 - (void)deselectAllComments {

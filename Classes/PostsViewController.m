@@ -54,6 +54,9 @@
     //composeButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
                      //target:self
                      //action:@selector(showAddPostView)] autorelease];
+    if ([composeButtonItem respondsToSelector:@selector(setTintColor:)]) {
+        composeButtonItem.tintColor = [UIColor UIColorFromHex:0x464646];
+    }
     if (!DeviceIsPad()) {
         self.navigationItem.rightBarButtonItem = composeButtonItem;
     } else {

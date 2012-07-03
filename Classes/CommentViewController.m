@@ -72,6 +72,9 @@
 	commentBodyWebView.delegate = nil;
     [commentBodyWebView stopLoading];
     [commentBodyWebView release];
+    
+    
+    
     [super dealloc];
 }
 

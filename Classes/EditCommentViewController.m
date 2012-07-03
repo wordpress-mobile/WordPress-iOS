@@ -25,30 +25,17 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 @end
 
-
-
 @implementation EditCommentViewController
 
 @synthesize commentViewController, saveButton, doneButton, comment;
 @synthesize cancelButton, label, hasChanges, textViewText, isTransitioning, isEditing;
 
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        // Custom initialization
-    }
-    return self;
-}
-*/
 
-
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
- - (void)viewDidLoad {
-	 [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-     [super viewDidLoad];
+- (void)viewDidLoad {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [super viewDidLoad];
       
-     if (!saveButton) {
+    if (!saveButton) {
          saveButton = [[UIBarButtonItem alloc] 
          initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).") 
          style:UIBarButtonItemStyleDone
@@ -163,8 +150,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	return NO;
 }
 
--(void) receivedRotate: (NSNotification*) notification
-{
+-(void)receivedRotate:(NSNotification *)notification {
 	if (isEditing) {
 		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
 		if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {

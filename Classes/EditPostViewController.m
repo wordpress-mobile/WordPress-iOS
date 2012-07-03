@@ -28,6 +28,45 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize photoButton, movieButton;
 @synthesize undoButton, redoButton;
 
+
+#pragma mark -
+#pragma mark LifeCycle Methods
+
+- (void)dealloc {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+	self.hasLocation = nil;
+    //	[statuses release];
+    [postMediaViewController release];
+	[postPreviewViewController release];
+    [postSettingsController release];
+    [writeButton release];
+    [settingsButton release];
+	[textView release];
+	[contentView release];
+	[subView release];
+	[textViewContentView release];
+	[statusTextField release];
+	[categoriesButton release];
+	[titleTextField release];
+	[tagsTextField release];
+	[textViewPlaceHolderField release];
+	[tagsLabel release];
+	[statusLabel release];
+	[categoriesLabel release];
+	[titleLabel release];
+	[customFieldsEditButton release];
+	[locationButton release];
+	[locationSpinner release];
+	[createCategoryBarButtonItem release];
+    [infoText release];
+    [urlField release];
+    [bookMarksArray release];
+    [segmentedTableViewController release];
+    [editorToolbar release];
+    [super dealloc];
+}
+
+
 - (id)initWithPost:(AbstractPost *)aPost {
     NSString *nib;
     if (DeviceIsPad()) {
@@ -41,167 +80,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
     
     return self;
-}
-
-- (Post *)post {
-    if ([self.apost isKindOfClass:[Post class]]) {
-        return (Post *)self.apost;
-    } else {
-        return nil;
-    }
-}
-
-- (void)setPost:(Post *)aPost {
-    self.apost = aPost;
-}
-
-- (void)switchToView:(UIView *)newView {
-	if([currentView isEqual:postPreviewViewController.view])
-		[postPreviewViewController viewWillDisappear:YES];
-	else if ([currentView isEqual:postSettingsController.view])
-		[postSettingsController viewWillDisappear:YES];
-	else if ([currentView isEqual:postMediaViewController.view])
-		[postMediaViewController viewWillDisappear:YES];
-
-    if ([newView isEqual:postSettingsController.view])
-        [postSettingsController viewWillAppear:YES];
-    else if ([newView isEqual:postPreviewViewController.view])
-		[postPreviewViewController viewWillAppear:YES];
-    else if ([newView isEqual:postMediaViewController.view])
-		[postMediaViewController viewWillAppear:YES];
-	
-    if ([newView isEqual:editView]) {
-		writeButton.enabled = NO;
-		settingsButton.enabled = YES;
-		previewButton.enabled = YES;
-		if ([self.apost.media count]) attachmentButton.enabled = YES;
-		else attachmentButton.enabled = NO;
-    } else if ([newView isEqual:postSettingsController.view]) {
-		writeButton.enabled = YES;
-		settingsButton.enabled = NO;
-		previewButton.enabled = YES;
-		if ([self.apost.media count]) attachmentButton.enabled = YES;
-		else attachmentButton.enabled = NO;
-    } else if ([newView isEqual:postPreviewViewController.view]) {
-		writeButton.enabled = YES;
-		settingsButton.enabled = YES;
-		previewButton.enabled = NO;
-		if ([self.apost.media count]) attachmentButton.enabled = YES;
-		else attachmentButton.enabled = NO;
-	} else if ([newView isEqual:postMediaViewController.view]) {
-		writeButton.enabled = YES;
-		settingsButton.enabled = YES;
-		previewButton.enabled = YES;
-		attachmentButton.enabled = NO;
-	}
-	
-    newView.frame = currentView.frame;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
-
-	CGRect pointerFrame = tabPointer.frame;
-    if ([newView isEqual:editView]) {
-		pointerFrame.origin.x = 22;
-    } else if ([newView isEqual:postSettingsController.view]) {
-		pointerFrame.origin.x = 61;
-    } else if ([newView isEqual:postPreviewViewController.view]) {
-		pointerFrame.origin.x = 101;
-	} else if ([newView isEqual:postMediaViewController.view]) {
-		if (DeviceIsPad()) {
-			if ([postMediaViewController isDeviceSupportVideo])
-				pointerFrame.origin.x = 646;
-			else
-				pointerFrame.origin.x = 688;
-		}
-		else {
-			if ([postMediaViewController isDeviceSupportVideo])
-				pointerFrame.origin.x = 198;
-			else
-				pointerFrame.origin.x = 240;
-		}
-	}
-	tabPointer.frame = pointerFrame;
-    [currentView removeFromSuperview];
-    [contentView addSubview:newView];
-
-    [UIView commitAnimations];
-    
-	UIView *oldView = currentView;
-    currentView = newView;
-
-	if([oldView isEqual:postPreviewViewController.view])
-		[postPreviewViewController viewDidDisappear:YES];
-	else if ([oldView isEqual:postSettingsController.view])
-		[postSettingsController viewDidDisappear:YES];
-	else if ([oldView isEqual:postMediaViewController.view])
-		[postMediaViewController viewDidDisappear:YES];
-	
-    if ([newView isEqual:postSettingsController.view])
-        [postSettingsController viewDidAppear:YES];
-    else if ([newView isEqual:postPreviewViewController.view])
-		[postPreviewViewController viewDidAppear:YES];
-    else if ([newView isEqual:postMediaViewController.view])
-		[postMediaViewController viewDidAppear:YES];
-}
-
-- (IBAction)switchToEdit {
-    if (currentView != editView) {
-        [self switchToView:editView];
-    }
-	self.navigationItem.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
-}
-
-- (IBAction)switchToSettings {
-    if (currentView != postSettingsController.view) {
-        [self switchToView:postSettingsController.view];
-    }
-	self.navigationItem.title = NSLocalizedString(@"Settings", @"Post Editor / Settings screen title.");
-}
-
-- (IBAction)switchToMedia {
-    if (currentView != postMediaViewController.view) {
-        [self switchToView:postMediaViewController.view];
-    }
-	self.navigationItem.title = NSLocalizedString(@"Media", @"Post Editor / Media screen title.");
-}
-
-- (IBAction)switchToPreview {
-    if (currentView != postPreviewViewController.view) {
-        [self switchToView:postPreviewViewController.view];
-    }
-	self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
-}
-
-- (IBAction)addVideo:(id)sender {
-    [postMediaViewController showVideoPickerActionSheet:sender];
-}
-
-- (IBAction)addPhoto:(id)sender {
-    [postMediaViewController showPhotoPickerActionSheet:sender];
-}
-
-- (IBAction)showCategories:(id)sender {
-    [self populateSelectionsControllerWithCategories];
-}
-- (IBAction)touchTextView:(id)sender {
-    [textView becomeFirstResponder];
-}
-
-#pragma mark -
-#pragma mark View lifecycle
-
-- (CGRect)normalTextFrame {
-    if (DeviceIsPad())
-        if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-            || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-            return CGRectMake(0, 143, 768, 517);
-        else // Portrait
-            return CGRectMake(0, 143, 768, 753);
-		else if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-				 || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-			return CGRectMake(0, 136, 480, 236);
-		else // Portrait
-			return CGRectMake(0, 136, 320, 236);
 }
 
 - (void)viewDidUnload {
@@ -331,6 +209,15 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [self refreshUIForCurrentPost];
 	}
     
+    if ([writeButton respondsToSelector:@selector(setTintColor:)]) {
+        UIColor *color = [UIColor UIColorFromHex:0x464646];
+        writeButton.tintColor = color;
+        settingsButton.tintColor = color;
+        previewButton.tintColor = color;
+        attachmentButton.tintColor = color;
+        photoButton.tintColor = color;
+        movieButton.tintColor = color;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -395,6 +282,170 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	return NO;	
 }
+
+
+#pragma mark -
+#pragma mark Instance Methods
+
+- (Post *)post {
+    if ([self.apost isKindOfClass:[Post class]]) {
+        return (Post *)self.apost;
+    } else {
+        return nil;
+    }
+}
+
+- (void)setPost:(Post *)aPost {
+    self.apost = aPost;
+}
+
+- (void)switchToView:(UIView *)newView {
+	if([currentView isEqual:postPreviewViewController.view])
+		[postPreviewViewController viewWillDisappear:YES];
+	else if ([currentView isEqual:postSettingsController.view])
+		[postSettingsController viewWillDisappear:YES];
+	else if ([currentView isEqual:postMediaViewController.view])
+		[postMediaViewController viewWillDisappear:YES];
+    
+    if ([newView isEqual:postSettingsController.view])
+        [postSettingsController viewWillAppear:YES];
+    else if ([newView isEqual:postPreviewViewController.view])
+		[postPreviewViewController viewWillAppear:YES];
+    else if ([newView isEqual:postMediaViewController.view])
+		[postMediaViewController viewWillAppear:YES];
+	
+    if ([newView isEqual:editView]) {
+		writeButton.enabled = NO;
+		settingsButton.enabled = YES;
+		previewButton.enabled = YES;
+		if ([self.apost.media count]) attachmentButton.enabled = YES;
+		else attachmentButton.enabled = NO;
+    } else if ([newView isEqual:postSettingsController.view]) {
+		writeButton.enabled = YES;
+		settingsButton.enabled = NO;
+		previewButton.enabled = YES;
+		if ([self.apost.media count]) attachmentButton.enabled = YES;
+		else attachmentButton.enabled = NO;
+    } else if ([newView isEqual:postPreviewViewController.view]) {
+		writeButton.enabled = YES;
+		settingsButton.enabled = YES;
+		previewButton.enabled = NO;
+		if ([self.apost.media count]) attachmentButton.enabled = YES;
+		else attachmentButton.enabled = NO;
+	} else if ([newView isEqual:postMediaViewController.view]) {
+		writeButton.enabled = YES;
+		settingsButton.enabled = YES;
+		previewButton.enabled = YES;
+		attachmentButton.enabled = NO;
+	}
+	
+    newView.frame = currentView.frame;
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.3];
+    
+	CGRect pointerFrame = tabPointer.frame;
+    if ([newView isEqual:editView]) {
+		pointerFrame.origin.x = 22;
+    } else if ([newView isEqual:postSettingsController.view]) {
+		pointerFrame.origin.x = 61;
+    } else if ([newView isEqual:postPreviewViewController.view]) {
+		pointerFrame.origin.x = 101;
+	} else if ([newView isEqual:postMediaViewController.view]) {
+		if (DeviceIsPad()) {
+			if ([postMediaViewController isDeviceSupportVideo])
+				pointerFrame.origin.x = 646;
+			else
+				pointerFrame.origin.x = 688;
+		}
+		else {
+			if ([postMediaViewController isDeviceSupportVideo])
+				pointerFrame.origin.x = 198;
+			else
+				pointerFrame.origin.x = 240;
+		}
+	}
+	tabPointer.frame = pointerFrame;
+    [currentView removeFromSuperview];
+    [contentView addSubview:newView];
+    
+    [UIView commitAnimations];
+    
+	UIView *oldView = currentView;
+    currentView = newView;
+    
+	if([oldView isEqual:postPreviewViewController.view])
+		[postPreviewViewController viewDidDisappear:YES];
+	else if ([oldView isEqual:postSettingsController.view])
+		[postSettingsController viewDidDisappear:YES];
+	else if ([oldView isEqual:postMediaViewController.view])
+		[postMediaViewController viewDidDisappear:YES];
+	
+    if ([newView isEqual:postSettingsController.view])
+        [postSettingsController viewDidAppear:YES];
+    else if ([newView isEqual:postPreviewViewController.view])
+		[postPreviewViewController viewDidAppear:YES];
+    else if ([newView isEqual:postMediaViewController.view])
+		[postMediaViewController viewDidAppear:YES];
+}
+
+- (IBAction)switchToEdit {
+    if (currentView != editView) {
+        [self switchToView:editView];
+    }
+	self.navigationItem.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
+}
+
+- (IBAction)switchToSettings {
+    if (currentView != postSettingsController.view) {
+        [self switchToView:postSettingsController.view];
+    }
+	self.navigationItem.title = NSLocalizedString(@"Settings", @"Post Editor / Settings screen title.");
+}
+
+- (IBAction)switchToMedia {
+    if (currentView != postMediaViewController.view) {
+        [self switchToView:postMediaViewController.view];
+    }
+	self.navigationItem.title = NSLocalizedString(@"Media", @"Post Editor / Media screen title.");
+}
+
+- (IBAction)switchToPreview {
+    if (currentView != postPreviewViewController.view) {
+        [self switchToView:postPreviewViewController.view];
+    }
+	self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
+}
+
+- (IBAction)addVideo:(id)sender {
+    [postMediaViewController showVideoPickerActionSheet:sender];
+}
+
+- (IBAction)addPhoto:(id)sender {
+    [postMediaViewController showPhotoPickerActionSheet:sender];
+}
+
+- (IBAction)showCategories:(id)sender {
+    [self populateSelectionsControllerWithCategories];
+}
+- (IBAction)touchTextView:(id)sender {
+    [textView becomeFirstResponder];
+}
+
+
+- (CGRect)normalTextFrame {
+    if (DeviceIsPad())
+        if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+            || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
+            return CGRectMake(0, 143, 768, 517);
+        else // Portrait
+            return CGRectMake(0, 143, 768, 753);
+		else if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+				 || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
+			return CGRectMake(0, 136, 480, 236);
+		else // Portrait
+			return CGRectMake(0, 136, 320, 236);
+}
+
 
 - (void)disableInteraction {
 	editingDisabled = YES;
@@ -1516,42 +1567,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
 }
 
-#pragma mark -
-#pragma mark Dealloc
-
-- (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	self.hasLocation = nil;
-//	[statuses release];
-    [postMediaViewController release];
-	[postPreviewViewController release];
-    [postSettingsController release];
-    [writeButton release];
-    [settingsButton release];
-	[textView release];
-	[contentView release];
-	[subView release];
-	[textViewContentView release];
-	[statusTextField release];
-	[categoriesButton release];
-	[titleTextField release];
-	[tagsTextField release];
-	[textViewPlaceHolderField release];
-	[tagsLabel release];
-	[statusLabel release];
-	[categoriesLabel release];
-	[titleLabel release];
-	[customFieldsEditButton release];
-	[locationButton release];
-	[locationSpinner release];
-	[createCategoryBarButtonItem release];
-    [infoText release];
-    [urlField release];
-    [bookMarksArray release];
-    [segmentedTableViewController release];
-    [editorToolbar release];
-    [super dealloc];
-}
 
 
 @end

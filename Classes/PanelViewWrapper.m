@@ -7,6 +7,7 @@
 
 #import "PanelViewWrapper.h"
 #import "NSObject+BlockObservation.h"
+#import "UIToolbar+Styled.h"
 
 @interface PanelViewWrapper()
 
@@ -74,7 +75,7 @@
     self.toolbar = [[[UIToolbar alloc] initWithFrame:frame] autorelease];
     self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     self.toolbar.hidden = YES;
-    
+
     [self addSubview:self.toolbar];
 }
 

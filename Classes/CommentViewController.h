@@ -74,6 +74,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *commentPostTitleButton;
 @property (nonatomic, retain) IBOutlet UILabel *commentPostTitleLabel;
 @property (nonatomic, assign) id<CommentViewControllerDelegate> delegate;
+
 @property BOOL wasLastCommentPending;
 @property BOOL isVisible;
 

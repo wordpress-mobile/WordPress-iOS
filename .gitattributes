@@ -179,12 +179,16 @@ Classes/UIDevice-Hardware.h -text
 Classes/UIDevice-Hardware.m -text
 Classes/UIImageView+Gravatar.h -text
 Classes/UIImageView+Gravatar.m -text
+Classes/UINavigationBar+Styled.h -text
+Classes/UINavigationBar+Styled.m -text
 Classes/UITableViewActivityCell.h -text
 Classes/UITableViewActivityCell.m -text
 Classes/UITableViewSwitchCell.h -text
 Classes/UITableViewSwitchCell.m -text
 Classes/UITableViewTextFieldCell.h -text
 Classes/UITableViewTextFieldCell.m -text
+Classes/UIToolbar+Styled.h -text
+Classes/UIToolbar+Styled.m -text
 Classes/UIViewController_iPadExtensions.h -text
 Classes/UIViewController_iPadExtensions.m -text
 Classes/WPAddCategoryViewController.h -text
@@ -761,6 +765,8 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /main.m -text
 /movie.png -text svneol=unset#unset
 /movie@2x.png -text svneol=unset#unset
+/navbar_background.png -text
+/navbar_background@2x.png -text
 /navbar_bg.png -text
 /navbar_bg@2x.png -text
 /navbar_button_bg.png -text
@@ -917,6 +923,18 @@ sv.lproj/Localizable.strings -text svneol=unset#unset
 /toolbarUlHighlighted@2x.png -text
 /toolbarUliPad.png -text
 /toolbarUliPad@2x.png -text svneol=unset#unset
+/toolbar_approve.png -text
+/toolbar_approve@2x.png -text
+/toolbar_background.png -text
+/toolbar_background@2x.png -text
+/toolbar_delete.png -text
+/toolbar_delete@2x.png -text
+/toolbar_flag.png -text
+/toolbar_flag@2x.png -text
+/toolbar_unapprove.png -text
+/toolbar_unapprove@2x.png -text
+/toolbar_write.png -text
+/toolbar_write@2x.png -text
 tr.lproj/Localizable.strings -text
 /unapprove.png -text svneol=unset#unset
 /unapprove@2x.png -text svneol=unset#unset
