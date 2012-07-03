@@ -58,6 +58,7 @@
 
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [self.comment removeObserver:self forKeyPath:@"status"];
     self.comment = nil;
     [segmentedControl release];
     [segmentBarItem release];
@@ -632,10 +633,12 @@
         [_comment.blog removeObserverWithBlockToken:_reachabilityToken];
     }
 
+    [_comment removeObserver:self forKeyPath:@"status"];
     [self willChangeValueForKey:@"comment"];
     [_comment release];
     _comment = [comment retain];
     [self didChangeValueForKey:@"comment"];
+    [_comment addObserver:self forKeyPath:@"status" options:0 context:nil];
 
     _reachabilityToken = [[comment.blog addObserverForKeyPath:@"reachable" task:^(id obj, NSDictionary *change) {
         Blog *blog = (Blog *)obj;
@@ -787,6 +790,14 @@
 		return NO;
 	}
 	return YES;
+}
+
+#pragma mark - KVO
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([self isViewLoaded]) {
+        [self showComment:self.comment];
+    }
 }
 
 @end
