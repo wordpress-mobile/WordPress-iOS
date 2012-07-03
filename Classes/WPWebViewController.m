@@ -51,6 +51,14 @@
     [self setLoading:NO];
     self.backButton.enabled = NO;
     self.forwardButton.enabled = NO;
+
+    if ([forwardButton respondsToSelector:@selector(setTintColor:)]) {
+        UIColor *color = [UIColor UIColorFromHex:0x464646];
+        backButton.tintColor = color;
+        forwardButton.tintColor = color;
+        refreshButton.tintColor = color;
+        optionsButton.tintColor = color;
+    }
     
     if( IS_IPHONE ) {
         self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showLinkOptions)] autorelease];
@@ -59,27 +67,15 @@
     self.optionsButton.enabled = NO;
     self.webView.scalesPageToFit = YES;
     self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
+
     //allows the toolbar to become smaller in landscape mode.
     if (!DeviceIsPad()) {
         toolbar.autoresizingMask = toolbar.autoresizingMask | UIViewAutoresizingFlexibleHeight;
-        //retina displays have a 2px gap at the bottom, this corrects it
-        /* ^ I didn't see a gap on a device or in any simulator version, so commenting this out for now
-		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2){
-            toolbar.frame = CGRectMake(toolbar.frame.origin.x, toolbar.frame.origin.y + 2, toolbar.frame.size.width, toolbar.frame.size.height);
-            webView.frame = CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, webView.frame.size.height + 2);
-        }
-		*/
     }
-    
+        
     if (self.url) {
         [self refreshWebView];
     } else {
-        
-/*        NSString *path = [[NSBundle mainBundle] bundlePath];
-        NSURL *baseURL = [NSURL fileURLWithPath:path];
-        baseURL:baseURL 
-        //[NSURL URLWithString:@"http://en.wordpress.com"]
-*/
         [self.webView loadHTMLString:self.detailHTML baseURL:[NSURL URLWithString:@"https://en.wordpress.com"]];     
     }
 }
@@ -327,7 +323,7 @@
 		if (loading) {
 			UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
 			
-			UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+			UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 			[spinner setCenter:customView.center];
 			[customView addSubview:spinner];
 			

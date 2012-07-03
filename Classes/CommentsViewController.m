@@ -69,7 +69,7 @@
         spamButton.tintColor = color;
         unapproveButton.tintColor = color;
         approveButton.tintColor = color;
-        deleteButton.tintColor = color;        
+        deleteButton.tintColor = color;
     }
 
 //    spamButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Spam", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(spamSelectedComments:)];
