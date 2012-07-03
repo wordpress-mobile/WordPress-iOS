@@ -50,9 +50,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
 
     self.title = NSLocalizedString(@"Posts", @"");
-    composeButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
-                     target:self
-                     action:@selector(showAddPostView)] autorelease];
+    composeButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_new"] style:UIBarButtonItemStyleBordered target:self action:@selector(showAddPostView)] autorelease];
+    //composeButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
+                     //target:self
+                     //action:@selector(showAddPostView)] autorelease];
     if (!DeviceIsPad()) {
         self.navigationItem.rightBarButtonItem = composeButtonItem;
     } else {

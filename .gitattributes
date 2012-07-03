@@ -761,6 +761,18 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /main.m -text
 /movie.png -text svneol=unset#unset
 /movie@2x.png -text svneol=unset#unset
+/navbar_bg.png -text
+/navbar_bg@2x.png -text
+/navbar_button_bg.png -text
+/navbar_button_bg@2x.png -text
+/navbar_button_bg_active.png -text
+/navbar_button_bg_active@2x.png -text
+/navbar_menu.png -text
+/navbar_menu@2x.png -text
+/navbar_new.png -text
+/navbar_new@2x.png -text
+/navbar_read.png -text
+/navbar_read@2x.png -text
 nb.lproj/Localizable.strings -text svneol=unset#unset
 /next.png -text svneol=unset#unset
 /next@2x.png -text svneol=unset#unset

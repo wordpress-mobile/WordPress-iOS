@@ -509,7 +509,10 @@
         if (self.navigationController) {
             [self.navigationController setViewControllers:[NSArray arrayWithObject:_detailViewController] animated:NO];
             if (sidebarButton == nil) {
-                sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list"] style:UIBarButtonItemStyleBordered target:self action:@selector(showSidebar)];
+                UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 33, 21)];
+                [menuButton setImage:[UIImage imageNamed:@"navbar_menu"] forState:UIControlStateNormal];
+                [menuButton addTarget:self action:@selector(showSidebar) forControlEvents:UIControlEventTouchUpInside];
+                sidebarButton = [[UIBarButtonItem alloc] initWithCustomView:menuButton];
             }
             _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
             [sidebarButton release];

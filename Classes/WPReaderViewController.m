@@ -219,7 +219,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 {
     [self.topicsViewController view];
     [self.topicsViewController loadTopicsPage];
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list"] style:UIBarButtonItemStyleBordered target:self action:@selector(showTopicSelector:)];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_read"] style:UIBarButtonItemStyleBordered target:self action:@selector(showTopicSelector:)];
     [self.navigationItem setRightBarButtonItem:button animated:YES];
     [button release];
     
