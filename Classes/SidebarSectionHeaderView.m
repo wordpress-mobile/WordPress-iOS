@@ -43,7 +43,7 @@
         _delegate = delegate;        
         self.userInteractionEnabled = YES;
         
-        UIImageView *blavatarView = [[[UIImageView alloc] initWithFrame:CGRectMake(6.0, 6.0, 35.0, 35.0)] autorelease];
+        UIImageView *blavatarView = [[[UIImageView alloc] initWithFrame:CGRectMake(0.0, 1.0, 46.0, 46.0)] autorelease];
         [blavatarView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
         [self addSubview:blavatarView];
         
@@ -71,10 +71,10 @@
         [self addSubview:label];
         _titleLabel = label;
         
-        CGRect commentsBadgedRect = IS_IPAD ? CGRectMake(self.bounds.size.width - ( 31.0 + 35.0 ) , 6.0, 35.0, 35.0) : CGRectMake(self.bounds.size.width - ( 65.0 + DETAIL_LEDGE + 4 ), 6.0, 35.0, 35.0);
+        CGRect commentsBadgedRect = IS_IPAD ? CGRectMake(self.bounds.size.width - 48.0 , 12.0, 34.0, 24.0) : CGRectMake(self.bounds.size.width - 88.0 , 12.0, 34.0, 24.0);
         UIImageView *commentsIconImgView = [[[UIImageView alloc] initWithFrame:commentsBadgedRect] autorelease];
         if ( numberOfPendingComments > 0 ) {
-            UIImage *img = [self badgeImage:[UIImage imageNamed:@"inner-shadow.png"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            UIImage *img = [self badgeImage:[UIImage imageNamed:@"sidebar_comment_bubble"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
             commentsIconImgView.image = img;
         }
         [self addSubview:commentsIconImgView];
@@ -83,8 +83,8 @@
         // Create and configure the disclosure button.
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = IS_IPAD ? CGRectMake(self.frame.size.width - 31.0, 6.0, 35.0, 35.0) : CGRectMake(self.frame.size.width - 80.0, 8.0, 35.0, 35.0);
-        [button setImage:[UIImage imageNamed:@"sidebar_expand_down"] forState:UIControlStateNormal];
-        [button setImage:[UIImage imageNamed:@"sidebar_expand_up"] forState:UIControlStateSelected];
+        //[button setImage:[UIImage imageNamed:@"sidebar_expand_down"] forState:UIControlStateNormal];
+        //[button setImage:[UIImage imageNamed:@"sidebar_expand_up"] forState:UIControlStateSelected];
         [button addTarget:self action:@selector(toggleOpen:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:button];
         _disclosureButton = button;
@@ -108,7 +108,7 @@
 -(CGRect)titleLabelFrame:(BOOL)isBadgeVisible {
     CGRect titleLabelFrame = self.bounds;
     titleLabelFrame.size.width = startingFrameWidth;    
-    titleLabelFrame.origin.x += 47.0; //blavatar size 
+    titleLabelFrame.origin.x += 61.0; //blavatar size 
     
     if ( IS_IPAD ) {
         if ( isBadgeVisible ) 
@@ -137,7 +137,7 @@
         //update the #s of pending comments and the size of title label.
         int numberOfPendingComments = [_blog numberOfPendingComments];
         if ( numberOfPendingComments > 0 ) {
-            UIImage *img = [self badgeImage:[UIImage imageNamed:@"inner-shadow.png"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            UIImage *img = [self badgeImage:[UIImage imageNamed:@"sidebar_comment_bubble"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
             self.numberOfCommentsImageView.image = img;
         } else {
             self.numberOfCommentsImageView.image = nil;
@@ -154,11 +154,17 @@
     CGContextRef context = CGBitmapContextCreate(NULL, w, h, 8, 4 * w, colorSpace, kCGImageAlphaPremultipliedFirst); 
     CGContextDrawImage(context, CGRectMake(0, 0, w, h), img.CGImage); 
     
+    //draw the text invisible so we can calculate the center position later
     char* text= (char *)[text1 cStringUsingEncoding:NSASCIIStringEncoding]; 
-    CGContextSelectFont(context, "Arial", 17, kCGEncodingMacRoman); 
+    CGContextSetTextDrawingMode(context, kCGTextInvisible);
+    CGContextSelectFont(context, "Helvetica", 16, kCGEncodingMacRoman);
+    CGContextShowTextAtPoint(context, 0, 0, text, strlen(text));
+    CGPoint pt = CGContextGetTextPosition(context);
+    
     CGContextSetTextDrawingMode(context, kCGTextFill); 
-    CGContextSetRGBFillColor(context, 0, 0, 0, 1); 
-    CGContextShowTextAtPoint(context,10,10,text, strlen(text)); 
+    CGContextSetShadow(context, CGSizeMake(0.0f, 1.0f), 1.0f);
+    CGContextSetRGBFillColor(context, 255, 255, 255, 1); 
+    CGContextShowTextAtPoint(context,(w / 2) - pt.x / 2, 7,text, strlen(text)); 
     CGImageRef imgCombined = CGBitmapContextCreateImage(context); 
     
     CGContextRelease(context); 

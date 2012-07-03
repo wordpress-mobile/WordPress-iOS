@@ -34,7 +34,7 @@
         //do other stuff here
         int numberOfPendingComments = [blog numberOfPendingComments];
         if( numberOfPendingComments > 0 ) {
-            UIImage *img = [self badgeImage:[UIImage imageNamed:@"inner-shadow.png"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            UIImage *img = [self badgeImage:[UIImage imageNamed:@"sidebar_comment_badge"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
             UIImageView *image = [[UIImageView alloc] initWithImage:img];
             self.accessoryView = image;
             [image release];
@@ -60,7 +60,7 @@
         //do other stuff here
         int numberOfPendingComments = [blog numberOfPendingComments];
         if( numberOfPendingComments > 0 ) {
-            UIImage *img = [self badgeImage:[UIImage imageNamed:@"inner-shadow.png"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            UIImage *img = [self badgeImage:[UIImage imageNamed:@"sidebar_comment_badge"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
             UIImageView *image = [[UIImageView alloc] initWithImage:img];
             self.accessoryView = image;
             [image release];
@@ -79,11 +79,17 @@
     CGContextRef context = CGBitmapContextCreate(NULL, w, h, 8, 4 * w, colorSpace, kCGImageAlphaPremultipliedFirst); 
     CGContextDrawImage(context, CGRectMake(0, 0, w, h), img.CGImage); 
     
+    //draw the text invisible so we can calculate the center position later
     char* text= (char *)[text1 cStringUsingEncoding:NSASCIIStringEncoding]; 
-    CGContextSelectFont(context, "Arial", 17, kCGEncodingMacRoman); 
+    CGContextSetTextDrawingMode(context, kCGTextInvisible);
+    CGContextSelectFont(context, "Helvetica", 16, kCGEncodingMacRoman);
+    CGContextShowTextAtPoint(context, 0, 0, text, strlen(text));
+    CGPoint pt = CGContextGetTextPosition(context);
+    
     CGContextSetTextDrawingMode(context, kCGTextFill); 
-    CGContextSetRGBFillColor(context, 0, 0, 0, 1); 
-    CGContextShowTextAtPoint(context,10,10,text, strlen(text)); 
+    CGContextSetShadow(context, CGSizeMake(0.0f, 1.0f), 1.0f);
+    CGContextSetRGBFillColor(context, 255, 255, 255, 1); 
+    CGContextShowTextAtPoint(context,(w / 2) - pt.x / 2, 7,text, strlen(text)); 
     CGImageRef imgCombined = CGBitmapContextCreateImage(context); 
     
     CGContextRelease(context); 
