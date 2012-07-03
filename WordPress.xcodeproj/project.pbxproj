@@ -342,6 +342,11 @@
 		CC24E5F11577DBC300A6D5B5 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F01577DBC300A6D5B5 /* AddressBook.framework */; };
 		CC24E5F31577DFF500A6D5B5 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F21577DFF400A6D5B5 /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		CC24E5F51577E16B00A6D5B5 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F41577E16B00A6D5B5 /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		CC6B3BE715A33E16005A4523 /* WPFriendFinderNudgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6B3BE615A33E16005A4523 /* WPFriendFinderNudgeView.m */; };
+		CC6B3BFD15A35F10005A4523 /* friend_finder_cancel_btn_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BF915A35F10005A4523 /* friend_finder_cancel_btn_highlight.png */; };
+		CC6B3BFE15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFA15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png */; };
+		CC6B3BFF15A35F10005A4523 /* friend_finder_cancel_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFB15A35F10005A4523 /* friend_finder_cancel_btn.png */; };
+		CC6B3C0015A35F10005A4523 /* friend_finder_cancel_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFC15A35F10005A4523 /* friend_finder_cancel_btn@2x.png */; };
 		CC9AF2AE14D2F58400256729 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = CC9AF2AD14D2F58400256729 /* JSONKit.m */; };
 		CCB3A04014C8E12700D43C3F /* WPReaderTopicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB3A03F14C8E12700D43C3F /* WPReaderTopicsViewController.m */; };
 		CCDCBC201590BF2A0040B3B1 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CCDCBC131590BF2A0040B3B1 /* FBDialog.bundle */; };
@@ -989,6 +994,12 @@
 		CC24E5F01577DBC300A6D5B5 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		CC24E5F21577DFF400A6D5B5 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		CC24E5F41577E16B00A6D5B5 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		CC6B3BE515A33E16005A4523 /* WPFriendFinderNudgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPFriendFinderNudgeView.h; sourceTree = "<group>"; };
+		CC6B3BE615A33E16005A4523 /* WPFriendFinderNudgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPFriendFinderNudgeView.m; sourceTree = "<group>"; };
+		CC6B3BF915A35F10005A4523 /* friend_finder_cancel_btn_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friend_finder_cancel_btn_highlight.png; sourceTree = "<group>"; };
+		CC6B3BFA15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friend_finder_cancel_btn_highlight@2x.png"; sourceTree = "<group>"; };
+		CC6B3BFB15A35F10005A4523 /* friend_finder_cancel_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friend_finder_cancel_btn.png; sourceTree = "<group>"; };
+		CC6B3BFC15A35F10005A4523 /* friend_finder_cancel_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friend_finder_cancel_btn@2x.png"; sourceTree = "<group>"; };
 		CC9AF2AC14D2F58400256729 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		CC9AF2AD14D2F58400256729 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		CCB3A03E14C8E12700D43C3F /* WPReaderTopicsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPReaderTopicsViewController.h; sourceTree = "<group>"; };
@@ -1393,6 +1404,8 @@
 				E1CAAE3913F4142E0000C58D /* WPKeyboardToolbarButtonItem.m */,
 				5DEB61B2156FCD3400242C35 /* WPWebView.h */,
 				5DEB61B3156FCD3400242C35 /* WPWebView.m */,
+				CC6B3BE515A33E16005A4523 /* WPFriendFinderNudgeView.h */,
+				CC6B3BE615A33E16005A4523 /* WPFriendFinderNudgeView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1974,6 +1987,10 @@
 				E13FA0F6134C849D007DCDD0 /* downArrow@2x.png */,
 				30811748151057B50028A15E /* fabric@2x.png */,
 				45CD32181157D83D009E78D3 /* fabric.png */,
+				CC6B3BF915A35F10005A4523 /* friend_finder_cancel_btn_highlight.png */,
+				CC6B3BFA15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png */,
+				CC6B3BFB15A35F10005A4523 /* friend_finder_cancel_btn.png */,
+				CC6B3BFC15A35F10005A4523 /* friend_finder_cancel_btn@2x.png */,
 				837576C311305C67002EAA27 /* getLocation.png */,
 				6EF6701611BE30020069703D /* getLocation@2x.png */,
 				837576C111305C67002EAA27 /* gettingLocation.png */,
@@ -3077,6 +3094,10 @@
 				5DC1F1E815A25D6600177CD3 /* sidebar_settings@2x.png in Resources */,
 				371C15D015A2F9DA00BC653C /* sidebar_comment_bubble.png in Resources */,
 				371C15D115A2F9DA00BC653C /* sidebar_comment_bubble@2x.png in Resources */,
+				CC6B3BFD15A35F10005A4523 /* friend_finder_cancel_btn_highlight.png in Resources */,
+				CC6B3BFE15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png in Resources */,
+				CC6B3BFF15A35F10005A4523 /* friend_finder_cancel_btn.png in Resources */,
+				CC6B3C0015A35F10005A4523 /* friend_finder_cancel_btn@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3288,6 +3309,7 @@
 				FD4500D11580DF3600F2B0E6 /* UIColor+Helpers.m in Sources */,
 				5DC433311587C3600073CF07 /* PanelViewWrapper.m in Sources */,
 				5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */,
+				CC6B3BE715A33E16005A4523 /* WPFriendFinderNudgeView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

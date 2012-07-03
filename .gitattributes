@@ -199,6 +199,8 @@ Classes/WPComOAuthController.h -text
 Classes/WPComOAuthController.m -text
 Classes/WPError.h -text
 Classes/WPError.m -text
+Classes/WPFriendFinderNudgeView.h -text
+Classes/WPFriendFinderNudgeView.m -text
 Classes/WPFriendFinderViewController.h -text
 Classes/WPFriendFinderViewController.m -text
 Classes/WPImagePickerController.h -text
@@ -702,6 +704,10 @@ es.lproj/Localizable.strings -text svneol=unset#unset
 /fix-translation.php -text
 fr.lproj/Localizable.strings -text svneol=unset#unset
 fr.lproj/Localizable.strings.bak -text svneol=unset#unset
+/friend_finder_cancel_btn.png -text
+/friend_finder_cancel_btn@2x.png -text
+/friend_finder_cancel_btn_highlight.png -text
+/friend_finder_cancel_btn_highlight@2x.png -text
 /getLocation.png -text
 /getLocation@2x.png -text
 /gettingLocation.png -text

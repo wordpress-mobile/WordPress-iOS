@@ -46,7 +46,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 @implementation WPReaderViewController
 @synthesize url, username, password, detailContentHTML;
 @synthesize refreshTimer, iPadNavBar;
-@synthesize topicsViewController, detailViewController, friendFinderNote;
+@synthesize topicsViewController, detailViewController, friendFinderNudgeView;
 
 - (void)dealloc
 {
@@ -59,7 +59,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     self.topicsViewController = nil;
     self.detailViewController.delegate = nil;
     self.detailViewController = nil;
-    self.friendFinderNote = nil;
+    self.friendFinderNudgeView = nil;
     [super dealloc];
 }
 
@@ -128,7 +128,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    [self performSelector:@selector(showFriendFinderButton:) withObject:self afterDelay:2.0];
+    [self performSelector:@selector(showFriendFinderNudgeView:) withObject:self afterDelay:2.0];
 }
 
 
@@ -143,7 +143,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
    	[self setRefreshTimer:nil];
     self.topicsViewController = nil;
     self.detailViewController = nil;
-    self.friendFinderNote = nil;
+    self.friendFinderNudgeView = nil;
     [self removeNotifications];
     [super viewDidUnload];
 }
@@ -468,63 +468,66 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 #pragma mark -- Friend Finder Button
 
-- (void) showFriendFinderButton:(id)sender {
-    
+
+- (BOOL) shouldDisplayfriendFinderNudgeView {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if (![userDefaults boolForKey:WPReaderViewControllerDisplayedFriendFinder] && self.friendFinderNote == nil) {
+    return ![userDefaults boolForKey:WPReaderViewControllerDisplayedFriendFinder] && self.friendFinderNudgeView == nil;
+}
+
+- (void) showFriendFinderNudgeView:(id)sender {
+    
+    if ([self shouldDisplayfriendFinderNudgeView]) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
         [userDefaults setBool:YES forKey:WPReaderViewControllerDisplayedFriendFinder];
 #ifdef DEBUG
         [userDefaults setBool:NO forKey:WPReaderViewControllerDisplayedFriendFinder];
 #endif
         [userDefaults synchronize];
-        self.friendFinderNote = [UIButton buttonWithType:UIButtonTypeCustom];
-        CGRect buttonFrame = CGRectMake(0,self.view.frame.size.height,self.view.frame.size.width, 60.f);
-        self.friendFinderNote.frame = buttonFrame;
-        self.friendFinderNote.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-        self.friendFinderNote.backgroundColor = [UIColor grayColor];
-        [self.friendFinderNote setTitle:NSLocalizedString(@"Find Friends", nil) forState:UIControlStateNormal];
-        [self.view addSubview:self.friendFinderNote];
         
-        [self.friendFinderNote addTarget:self action:@selector(openFriendFinder:) forControlEvents:UIControlEventTouchDown];
+        CGRect buttonFrame = CGRectMake(0,self.view.frame.size.height,self.view.frame.size.width, 0.f);
+        WPFriendFinderNudgeView *nudgeView = [[WPFriendFinderNudgeView alloc] initWithFrame:buttonFrame];
+        self.friendFinderNudgeView = nudgeView;
+        [nudgeView release];
+        self.friendFinderNudgeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        [self.view addSubview:self.friendFinderNudgeView];
         
-        [UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
-            
-            CGRect viewFrame = self.webView.frame;
-            CGRect buttonFrame;
-            buttonFrame = self.friendFinderNote.frame;
-            viewFrame.size.height -= buttonFrame.size.height;
-            buttonFrame.origin.y = viewFrame.size.height;
-            
-            self.webView.frame = viewFrame;
-            self.friendFinderNote.frame = buttonFrame;
-        } completion:NULL];
+        buttonFrame = self.friendFinderNudgeView.frame;
+        CGRect viewFrame = self.webView.frame;        
+        buttonFrame.origin.y = viewFrame.size.height - buttonFrame.size.height + 1.f;
+        
+        [self.friendFinderNudgeView.cancelButton addTarget:self action:@selector(hideFriendFinderNudgeView:) forControlEvents:UIControlEventTouchUpInside];
+        [self.friendFinderNudgeView.confirmButton addTarget:self action:@selector(openFriendFinder:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            self.friendFinderNudgeView.frame = buttonFrame;
+        }];
         
         
     }
 
 }
 
-- (void) hideFriendFinderButton:(id)sender {
+- (void) hideFriendFinderNudgeView:(id)sender {
     
-    if (self.friendFinderNote == nil) {
+    if (self.friendFinderNudgeView == nil) {
         return;
     }
     
-    CGRect buttonFrame = self.friendFinderNote.frame;
+    CGRect buttonFrame = self.friendFinderNudgeView.frame;
     CGRect viewFrame = self.webView.frame;
-    viewFrame.size.height += buttonFrame.size.height;
-    buttonFrame.origin.y = viewFrame.size.height;
-    [UIView animateWithDuration:0.2 animations:^{
-        self.webView.frame = viewFrame;
-        self.friendFinderNote.frame = buttonFrame;
+    buttonFrame.origin.y = viewFrame.size.height + 1.f;
+    [UIView animateWithDuration:0.1 animations:^{
+        self.friendFinderNudgeView.frame = buttonFrame;
     } completion:^(BOOL finished) {
-        self.friendFinderNote = nil;
+        [self.friendFinderNudgeView removeFromSuperview];
+        self.friendFinderNudgeView = nil;
     }];
     
 }
 
 - (void)openFriendFinder:(id)sender {
-    [self hideFriendFinderButton:nil];
+    [self hideFriendFinderNudgeView:sender];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.topicsViewController];
     WPFriendFinderViewController *friendFinder = [[WPFriendFinderViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil];
     [navController pushViewController:friendFinder animated:NO];

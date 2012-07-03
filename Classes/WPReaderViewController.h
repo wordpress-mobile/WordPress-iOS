@@ -11,6 +11,7 @@
 #import "EGORefreshTableHeaderView.h"
 #import "WPReaderTopicsViewController.h"
 #import "WPReaderDetailViewController.h"
+#import "WPFriendFinderNudgeView.h"
 
 @interface WPReaderViewController : WPWebAppViewController <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, WPReaderTopicsViewControllerDelegate, WPReaderDetailViewControllerDelegate> {
     BOOL needsLogin;
@@ -24,14 +25,14 @@
 @property (nonatomic, retain) IBOutlet UINavigationBar *iPadNavBar;
 @property (retain, nonatomic) NSTimer *refreshTimer;
 @property (nonatomic, retain) WPReaderTopicsViewController *topicsViewController;
-@property (nonatomic, retain) UIButton *friendFinderNote;
+@property (nonatomic, retain) WPFriendFinderNudgeView *friendFinderNudgeView;
 
 - (void)setSelectedTopic:(NSString *)topicId;
 - (void)setupTopics;
 - (void)showArticleDetails:(id)article;
 
-- (void)showFriendFinderButton:(id)sender;
-- (void)hideFriendFinderButton:(id)sender;
+- (void)showFriendFinderNudgeView:(id)sender;
+- (void)hideFriendFinderNudgeView:(id)sender;
 - (void)openFriendFinder:(id)sender;
 
 
