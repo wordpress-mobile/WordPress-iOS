@@ -480,7 +480,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
         self.friendFinderNote = [UIButton buttonWithType:UIButtonTypeCustom];
         CGRect buttonFrame = CGRectMake(0,self.view.frame.size.height,self.view.frame.size.width, 60.f);
         self.friendFinderNote.frame = buttonFrame;
-        self.friendFinderNote.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+        self.friendFinderNote.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         self.friendFinderNote.backgroundColor = [UIColor grayColor];
         [self.friendFinderNote setTitle:NSLocalizedString(@"Find Friends", nil) forState:UIControlStateNormal];
         [self.view addSubview:self.friendFinderNote];
