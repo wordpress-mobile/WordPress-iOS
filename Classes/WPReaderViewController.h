@@ -12,7 +12,6 @@
 #import "WPReaderTopicsViewController.h"
 #import "WPReaderDetailViewController.h"
 
-
 @interface WPReaderViewController : WPWebAppViewController <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, WPReaderTopicsViewControllerDelegate, WPReaderDetailViewControllerDelegate> {
     BOOL needsLogin;
     NSTimer *statusTimer;   // This timer checks the nav buttons every 0.75 seconds, and updates them
@@ -25,9 +24,16 @@
 @property (nonatomic, retain) IBOutlet UINavigationBar *iPadNavBar;
 @property (retain, nonatomic) NSTimer *refreshTimer;
 @property (nonatomic, retain) WPReaderTopicsViewController *topicsViewController;
+@property (nonatomic, retain) UIButton *friendFinderNote;
 
 - (void)setSelectedTopic:(NSString *)topicId;
 - (void)setupTopics;
 - (void)showArticleDetails:(id)article;
+
+- (void)showFriendFinderButton:(id)sender;
+- (void)hideFriendFinderButton:(id)sender;
+- (void)openFriendFinder:(id)sender;
+
+
 
 @end
