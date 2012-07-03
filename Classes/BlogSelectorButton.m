@@ -61,7 +61,7 @@
         blogTitleFrame.origin.x = blavatarFrame.size.width + 15;
         blogTitleFrame.origin.y = blogTitleFrame.origin.y + 23;
         blogTitleFrame.size.width -= blavatarFrame.size.width + 10 + 50;
-        blogTitleFrame.size.height = 20.0f;
+        blogTitleFrame.size.height = 24.0f;
         blogTitleLabel = [[UILabel alloc] initWithFrame:blogTitleFrame];
         blogTitleLabel.font = [UIFont boldSystemFontOfSize:20];
         blogTitleLabel.numberOfLines = 1;
