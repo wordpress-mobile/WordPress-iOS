@@ -34,7 +34,7 @@
         //do other stuff here
         int numberOfPendingComments = [blog numberOfPendingComments];
         if( numberOfPendingComments > 0 ) {
-            UIImage *img = [self badgeImage:[UIImage imageNamed:@"sidebar_comment_badge"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            UIImage *img = [self badgeImage:[UIImage imageNamed:@"sidebar_comment_bubble"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
             UIImageView *image = [[UIImageView alloc] initWithImage:img];
             self.accessoryView = image;
             [image release];
@@ -60,7 +60,7 @@
         //do other stuff here
         int numberOfPendingComments = [blog numberOfPendingComments];
         if( numberOfPendingComments > 0 ) {
-            UIImage *img = [self badgeImage:[UIImage imageNamed:@"sidebar_comment_badge"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            UIImage *img = [self badgeImage:[UIImage imageNamed:@"sidebar_comment_bubble"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
             UIImageView *image = [[UIImageView alloc] initWithImage:img];
             self.accessoryView = image;
             [image release];
