@@ -189,6 +189,8 @@ Classes/UITableViewTextFieldCell.h -text
 Classes/UITableViewTextFieldCell.m -text
 Classes/UIToolbar+Styled.h -text
 Classes/UIToolbar+Styled.m -text
+Classes/UIViewController+Util.h -text
+Classes/UIViewController+Util.m -text
 Classes/UIViewController_iPadExtensions.h -text
 Classes/UIViewController_iPadExtensions.m -text
 Classes/WPAddCategoryViewController.h -text

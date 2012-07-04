@@ -167,6 +167,7 @@
 		376EEF2A12F7068A005CE77A /* page_control_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376EEF2612F7068A005CE77A /* page_control_blue@2x.png */; };
 		376EEF5D12F70C9B005CE77A /* stats.png in Resources */ = {isa = PBXBuildFile; fileRef = 376EEF5B12F70C9B005CE77A /* stats.png */; };
 		376EEF5E12F70C9B005CE77A /* stats@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376EEF5C12F70C9B005CE77A /* stats@2x.png */; };
+		37B6145F15A48E3D00F9F185 /* UIViewController+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B6145E15A48E3D00F9F185 /* UIViewController+Util.m */; };
 		37CB07471594A037002AE0C4 /* sidebar_cell_bg_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37CB07431594A037002AE0C4 /* sidebar_cell_bg_selected@2x.png */; };
 		37CB07481594A037002AE0C4 /* sidebar_cell_bg_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 37CB07441594A037002AE0C4 /* sidebar_cell_bg_selected.png */; };
 		37CB07491594A037002AE0C4 /* sidebar_cell_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 37CB07451594A037002AE0C4 /* sidebar_cell_bg.png */; };
@@ -785,6 +786,8 @@
 		376EEF2612F7068A005CE77A /* page_control_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page_control_blue@2x.png"; sourceTree = "<group>"; };
 		376EEF5B12F70C9B005CE77A /* stats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stats.png; sourceTree = "<group>"; };
 		376EEF5C12F70C9B005CE77A /* stats@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "stats@2x.png"; sourceTree = "<group>"; };
+		37B6145D15A48E3D00F9F185 /* UIViewController+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Util.h"; sourceTree = "<group>"; };
+		37B6145E15A48E3D00F9F185 /* UIViewController+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Util.m"; sourceTree = "<group>"; };
 		37CB07431594A037002AE0C4 /* sidebar_cell_bg_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar_cell_bg_selected@2x.png"; sourceTree = "<group>"; };
 		37CB07441594A037002AE0C4 /* sidebar_cell_bg_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_cell_bg_selected.png; sourceTree = "<group>"; };
 		37CB07451594A037002AE0C4 /* sidebar_cell_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_cell_bg.png; sourceTree = "<group>"; };
@@ -2305,6 +2308,8 @@
 				5DFAC18C15A37AEF008BD156 /* UIToolbar+Styled.m */,
 				5DFAC18F15A37B0B008BD156 /* UINavigationBar+Styled.h */,
 				5DFAC19015A37B0B008BD156 /* UINavigationBar+Styled.m */,
+				37B6145D15A48E3D00F9F185 /* UIViewController+Util.h */,
+				37B6145E15A48E3D00F9F185 /* UIViewController+Util.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -3464,6 +3469,7 @@
 				CC6B3BE715A33E16005A4523 /* WPFriendFinderNudgeView.m in Sources */,
 				5DFAC18D15A37AEF008BD156 /* UIToolbar+Styled.m in Sources */,
 				5DFAC19115A37B0B008BD156 /* UINavigationBar+Styled.m in Sources */,
+				37B6145F15A48E3D00F9F185 /* UIViewController+Util.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

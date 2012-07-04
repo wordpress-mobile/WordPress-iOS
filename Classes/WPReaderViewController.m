@@ -115,7 +115,6 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
         NSString *loaderPath = [[NSBundle mainBundle] pathForResource:@"loader" ofType:@"html"];
         [self.webView loadHTMLString:[NSString stringWithContentsOfFile:loaderPath encoding:NSUTF8StringEncoding error:nil] baseURL:[NSURL URLWithString:kMobileReaderFakeLoaderURL]];
     }
-    
 
     [self refreshWebView];
     [self addNotifications];
