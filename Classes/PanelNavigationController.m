@@ -160,7 +160,7 @@
     if (self.navigationController) {
         [self addChildViewController:self.navigationController];
         [self.navigationController didMoveToParentViewController:self];
-        self.detailViewController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list"] style:UIBarButtonItemStyleBordered target:self action:@selector(showSidebar)] autorelease];
+        self.detailViewController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"list"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)] autorelease];
     }
     self.detailView.frame = CGRectMake(0, 0, DETAIL_WIDTH, DETAIL_HEIGHT);
     [self.detailViews addObject:self.detailView];
@@ -626,6 +626,14 @@
     } completion:^(BOOL finished) {
         [self enableDetailView];
     }];
+}
+
+- (void)toggleSidebar {
+    if (self.detailTapper) {
+        [self showSidebar];
+    } else {
+        [self closeSidebar];
+    }
 }
 
 - (void)centerTapped {
