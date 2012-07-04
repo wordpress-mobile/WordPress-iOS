@@ -218,6 +218,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
         photoButton.tintColor = color;
         movieButton.tintColor = color;
     }
+    
+    // TODO: remove this when sunset support for iOS 4 and either
+    // fix the positioning in the xibs or use a different image for the pointer.
+    // This moves the pointer up 1 pixel to fix its appearance on iOS 5, while preserving
+    // its appearance on iOS 4.
+    if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
+        CGRect frame = tabPointer.frame;
+        frame.origin.y = frame.origin.y - 1;
+        tabPointer.frame = frame;
+    }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
