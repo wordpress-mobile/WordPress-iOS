@@ -17,6 +17,8 @@
         return;
     }
     
+    [self setTintColor:[UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0]];
+    
     UIImage *img = [UIImage imageNamed:@"navbar_background"];
     [img drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
 }

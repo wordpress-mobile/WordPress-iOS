@@ -136,7 +136,7 @@
 	
     UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
     if (IS_IPHONE) {
-        [self.navigationController setToolbarHidden:!editing animated:animated];
+        [self.navigationController setToolbarHidden:!editing animated:animated];        
     } else {
         if (editing) { 
             // intentionally doubling spacers to get the layout we want on the ipad
@@ -148,12 +148,69 @@
             self.editButtonItem.tintColor = [UIColor UIColorFromHex:0x336699];
         }
     }
+    
+    if (editing) {
+        //set up the blue button for nav bar
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom]; 
+        UIFont *titleFont = [UIFont boldSystemFontOfSize:12];
+        CGSize titleSize = [NSLocalizedString(@"Done", @"") sizeWithFont:titleFont];
+        CGFloat buttonWidth = titleSize.width + 20;
+        button.frame = CGRectMake(0, 0, buttonWidth, 30);
+        
+        [button setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
+        button.titleLabel.font = titleFont;
+        button.titleLabel.shadowColor = [UIColor blackColor];
+        button.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        [button addTarget:self action:@selector(stopEditing:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+        [button setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+        
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+        self.navigationItem.rightBarButtonItem = doneButton;
+        [doneButton release];
+    } else {
+        UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(startEditing:)];
+        self.navigationItem.rightBarButtonItem = editButton;
+        [editButton release];
+    }
+    
     [deleteButton setEnabled:!editing];
     [approveButton setEnabled:!editing];
     [unapproveButton setEnabled:!editing];
     [spamButton setEnabled:!editing];
 
 	[self deselectAllComments];
+}
+
+- (void) stopEditing:(id)sender {
+    [self setEditing:NO animated:YES];
+}
+
+- (void) startEditing:(id)sender {
+    [self setEditing:YES animated:YES];
+}
+
+- (void)setTitle:(NSString *)title
+{
+    [super setTitle:title];
+    //Change title color on iOS 4
+    if (![[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
+        UILabel *titleView = (UILabel *)self.navigationItem.titleView;
+        if (!titleView) {
+            titleView = [[UILabel alloc] initWithFrame:CGRectZero];
+            titleView.backgroundColor = [UIColor clearColor];
+            titleView.font = [UIFont boldSystemFontOfSize:20.0];
+            titleView.shadowColor = [UIColor whiteColor];
+            titleView.shadowOffset = CGSizeMake(0.0, 1.0);
+            titleView.textColor = [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0];
+            
+            self.navigationItem.titleView = titleView;
+            [titleView release];
+        }
+        titleView.text = title;
+        [titleView sizeToFit];
+    }
 }
 
 - (void)configureCell:(CommentTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {

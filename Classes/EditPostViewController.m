@@ -159,7 +159,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     postPreviewViewController.postDetailViewController = self;
     postPreviewViewController.view.frame = editView.frame;
     
-	self.navigationItem.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
+	self.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
 	statuses = [[NSArray arrayWithObjects:NSLocalizedString(@"Local Draft", @"Post status label in the posts list if the post has not yet been synced to the remote server."), NSLocalizedString(@"Draft", @"Post status label in the posts list if the post is a draft."), NSLocalizedString(@"Private", @"Post status label in the posts list if the post is marked as private. Should be the same as WP core."), NSLocalizedString(@"Pending review", @"Post status label in the post list if the post is pending review. Should be the same as WP core."), NSLocalizedString(@"Published", @"Post status to indicate that the post is live and published. Should be the same as WP core."), nil] retain];
 	
 	
@@ -251,7 +251,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	animateWiggleIt.toValue=[NSNumber numberWithFloat:0.06];
 	[textViewPlaceHolderField.layer addAnimation:animateWiggleIt forKey:@"textViewPlaceHolderField"];
 	
-	self.navigationItem.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
+	self.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
 }
 
 - (void)viewWillDisappear:(BOOL)animated {	
@@ -470,25 +470,37 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.navigationItem.leftBarButtonItem = cancelButton;
     [cancelButton release];
     
-    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] init];
-    saveButton.title = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
-    saveButton.target = self;
-    saveButton.style = UIBarButtonItemStyleDone;
-    saveButton.action = @selector(saveAction:);
-    
+    NSString *buttonTitle;
     if(![self.apost hasRemote]) {
         if ([self.apost.status isEqualToString:@"publish"] && ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
-            saveButton.title = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
+            buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
 		} else if ([self.apost.status isEqualToString:@"publish"]){
-			saveButton.title = NSLocalizedString(@"Publish", @"Publish button label.");
+            buttonTitle = NSLocalizedString(@"Publish", @"Publish button label.");
 		} else {
-            saveButton.title = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
+            buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
         }
     } else {
-        saveButton.title = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
+        buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
     }
-    self.navigationItem.rightBarButtonItem = saveButton;
     
+    //set up the blue button for nav bar
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom]; 
+    UIFont *titleFont = [UIFont boldSystemFontOfSize:12];
+    CGSize titleSize = [buttonTitle sizeWithFont:titleFont];
+    CGFloat buttonWidth = titleSize.width + 20;
+    button.frame = CGRectMake(0, 0, buttonWidth, 30);
+    
+    [button setTitle:buttonTitle forState:UIControlStateNormal];
+    button.titleLabel.font = titleFont;
+    button.titleLabel.shadowColor = [UIColor blackColor];
+    button.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+    [button addTarget:self action:@selector(saveAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+    [button setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+    
+    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.rightBarButtonItem = saveButton;
     [saveButton release];
 }
 
@@ -1148,6 +1160,28 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [textView setFrame:newFrame];
 	
 	[UIView commitAnimations];
+}
+
+- (void)setTitle:(NSString *)title
+{
+    [super setTitle:title];
+    //Change title color on iOS 4
+    if (![[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
+        UILabel *titleView = (UILabel *)self.navigationItem.titleView;
+        if (!titleView) {
+            titleView = [[UILabel alloc] initWithFrame:CGRectZero];
+            titleView.backgroundColor = [UIColor clearColor];
+            titleView.font = [UIFont boldSystemFontOfSize:20.0];
+            titleView.shadowColor = [UIColor whiteColor];
+            titleView.shadowOffset = CGSizeMake(0.0, 1.0);
+            titleView.textColor = [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0];
+            
+            self.navigationItem.titleView = titleView;
+            [titleView release];
+        }
+        titleView.text = title;
+        [titleView sizeToFit];
+    }
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {

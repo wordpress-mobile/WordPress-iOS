@@ -87,7 +87,7 @@
         [self saveImage];
     }
     self.photoImageView.delegate = self;
-    self.navigationItem.title = NSLocalizedString(@"Quick Photo", @"");
+    self.title = NSLocalizedString(@"Quick Photo", @"");
     self.postButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Publish", @"") style:UIBarButtonItemStyleDone target:self action:@selector(post)] autorelease];
     [postButtonItem setEnabled:NO];
     self.navigationItem.rightBarButtonItem = self.postButtonItem;
@@ -124,6 +124,28 @@
 
     self.popController.delegate = nil;
     self.popController = nil;
+}
+
+- (void)setTitle:(NSString *)title
+{
+    [super setTitle:title];
+    //Change title color on iOS 4
+    if (![[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
+        UILabel *titleView = (UILabel *)self.navigationItem.titleView;
+        if (!titleView) {
+            titleView = [[UILabel alloc] initWithFrame:CGRectZero];
+            titleView.backgroundColor = [UIColor clearColor];
+            titleView.font = [UIFont boldSystemFontOfSize:20.0];
+            titleView.shadowColor = [UIColor whiteColor];
+            titleView.shadowOffset = CGSizeMake(0.0, 1.0);
+            titleView.textColor = [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0];
+            
+            self.navigationItem.titleView = titleView;
+            [titleView release];
+        }
+        titleView.text = title;
+        [titleView sizeToFit];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
