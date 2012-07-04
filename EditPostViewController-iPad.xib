@@ -490,7 +490,7 @@
 					<object class="IBUIImageView" id="366038211">
 						<reference key="NSNextResponder" ref="333657908"/>
 						<int key="NSvFlags">264</int>
-						<string key="NSFrame">{{20, 928}, {19, 9}}</string>
+						<string key="NSFrame">{{20, 929}, {19, 9}}</string>
 						<reference key="NSSuperview" ref="333657908"/>
 						<reference key="NSWindow"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>

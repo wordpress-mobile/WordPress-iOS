@@ -57,19 +57,27 @@
     self.tagsTitleLabel.text = NSLocalizedString(@"Tags:", @"");
     self.categoriesTitleLabel.text = NSLocalizedString(@"Categories:", @"");
     
+    UIBarButtonItem *deleteButton = nil;
     UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
                                                                                  target:self
                                                                                  action:@selector(showModalEditor)] autorelease];
     if (IS_IPAD) {
-        UIBarButtonItem *deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash 
+        deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash 
                                                                                       target:self 
                                                                                       action:@selector(deletePost:)];
-        deleteButton.style = UIBarButtonItemStyleBordered;
+        deleteButton.style = UIBarButtonItemStylePlain;
         self.toolbarItems = [NSArray arrayWithObjects:editButton, deleteButton, nil];
         [deleteButton release];
     } else {
         self.navigationItem.rightBarButtonItem = editButton;
     }
+
+    if ([editButton respondsToSelector:@selector(setTintColor:)]) {
+        UIColor *color = [UIColor UIColorFromHex:0x464646];
+        editButton.tintColor = color;
+        deleteButton.tintColor = color; //Might be nil but no error if so.
+    }
+    
 }
 
 

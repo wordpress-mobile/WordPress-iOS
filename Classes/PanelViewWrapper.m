@@ -77,6 +77,9 @@
     CGRect frame = CGRectMake(0.0f, self.frame.size.height, self.frame.size.width, toolbarHeight);
     self.toolbar = [[[UIToolbar alloc] initWithFrame:frame] autorelease];
     self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+
+        self.toolbar.barStyle = UIBarStyleBlack;
+
     self.toolbar.hidden = YES;
 
     [self addSubview:self.toolbar];

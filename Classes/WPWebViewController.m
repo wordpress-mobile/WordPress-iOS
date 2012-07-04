@@ -53,6 +53,11 @@
     self.backButton.enabled = NO;
     self.forwardButton.enabled = NO;
 
+    if( IS_IPHONE ) {
+        self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showLinkOptions)] autorelease];
+        self.navigationItem.rightBarButtonItem = optionsButton;
+    }
+    
     if ([forwardButton respondsToSelector:@selector(setTintColor:)]) {
         UIColor *color = [UIColor UIColorFromHex:0x464646];
         backButton.tintColor = color;
@@ -61,10 +66,6 @@
         optionsButton.tintColor = color;
     }
     
-    if( IS_IPHONE ) {
-        self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showLinkOptions)] autorelease];
-        self.navigationItem.rightBarButtonItem = optionsButton;
-    }
     self.optionsButton.enabled = NO;
     self.webView.scalesPageToFit = YES;
     self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
@@ -101,7 +102,6 @@
                           [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
                           forwardButton, nil];
         toolbar.items = items;
-        self.refreshButton = nil;
 
         //you got pink'd!
         //[toolbar setTintColor:[UIColor colorWithRed:254.0f/255 green:14.0f/255 blue:204.0f/255 alpha:1.0f]];
@@ -394,9 +394,12 @@
     if( permaLink == nil || [[permaLink trim] isEqualToString:@""] ) return; //this should never happen
     
     UIActionSheet *linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:permaLink delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open in Safari", @"Open in Safari"), NSLocalizedString(@"Mail Link", @"Mail Link"),  NSLocalizedString(@"Copy Link", @"Copy Link"), nil];
-    
-    linkOptionsActionSheet .actionSheetStyle = UIActionSheetStyleDefault;
-    [linkOptionsActionSheet showInView:self.view];
+    linkOptionsActionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+    if(IS_IPAD ){
+        [linkOptionsActionSheet showFromBarButtonItem:optionsButton animated:YES];
+    } else {
+        [linkOptionsActionSheet showInView:self.view];
+    }
     [linkOptionsActionSheet  release];
 }
 

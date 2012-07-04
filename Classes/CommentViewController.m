@@ -54,7 +54,7 @@
 @synthesize delegate;
 
 #pragma mark -
-#pragma mark Memory Management
+#pragma mark View Lifecycle
 
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -72,20 +72,9 @@
 	commentBodyWebView.delegate = nil;
     [commentBodyWebView stopLoading];
     [commentBodyWebView release];
-    
-    
-    
+   
     [super dealloc];
 }
-
-- (void)didReceiveMemoryWarning {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super didReceiveMemoryWarning];
-}
-
-
-#pragma mark -
-#pragma mark View Lifecycle
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -120,6 +109,13 @@
     if (self.comment) {
         [self showComment:self.comment];
     }
+    
+    if ([approveButton respondsToSelector:@selector(setTintColor:)]) {
+        UIColor *color = [UIColor UIColorFromHex:0x464646];
+        approveButton.tintColor = color;
+        actionButton.tintColor = color;
+        replyButton.tintColor = color;
+    }
 }
 
 - (void)viewDidUnload {
@@ -153,14 +149,9 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)reachabilityChanged:(BOOL)reachable {
-    approveButton.enabled = reachable;
-    replyButton.enabled = reachable;
-    actionButton.enabled = reachable;
-    if (reachable) {
-        // Load gravatar if it wasn't loaded yet
-        [gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim]];
-    }
+- (void)didReceiveMemoryWarning {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [super didReceiveMemoryWarning];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
@@ -173,6 +164,20 @@
 	}
 	return NO;
 }
+
+#pragma mark -
+#pragma mark Reachability
+
+- (void)reachabilityChanged:(BOOL)reachable {
+    approveButton.enabled = reachable;
+    replyButton.enabled = reachable;
+    actionButton.enabled = reachable;
+    if (reachable) {
+        // Load gravatar if it wasn't loaded yet
+        [gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim]];
+    }
+}
+
 
 #pragma mark -
 #pragma mark UIActionSheetDelegate methods

@@ -126,10 +126,10 @@
 						<string key="NSFrame">{{0, 416}, {320, 44}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIBarStyle">1</int>
 						<object class="NSMutableArray" key="IBUIItems">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIBarButtonItem" id="727731352">
@@ -138,7 +138,6 @@
 									<string key="NSResourceName">left.png</string>
 								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="102111937"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="25027384">
@@ -147,7 +146,6 @@
 									<string key="NSResourceName">right.png</string>
 								</object>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="102111937"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="400719812">
@@ -157,7 +155,6 @@
 							</object>
 							<object class="IBUIBarButtonItem" id="632068120">
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="102111937"/>
 								<int key="IBUISystemItemIdentifier">9</int>
 							</object>

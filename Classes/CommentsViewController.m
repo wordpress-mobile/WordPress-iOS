@@ -62,7 +62,7 @@
     spamButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_flag"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
     unapproveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_unapprove"] style:UIBarButtonItemStylePlain target:self action:@selector(unapproveSelectedComments:)];
     approveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_approve"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
-    deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_delete"] style:UIBarButtonItemStylePlain target:self action:@selector(deleteSelectedComments:)];
+    deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteSelectedComments:)];
     
     if ([spamButton respondsToSelector:@selector(setTintColor:)]) {
         UIColor *color = [UIColor UIColorFromHex:0x464646];
@@ -71,12 +71,6 @@
         approveButton.tintColor = color;
         deleteButton.tintColor = color;
     }
-
-//    spamButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Spam", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(spamSelectedComments:)];
-//    unapproveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unapprove", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(unapproveSelectedComments:)];
-//    approveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Approve", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(approveSelectedComments:)];
-//    deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteSelectedComments:)];
-//    deleteButton.style = UIBarButtonItemStyleBordered;
 
     if (IS_IPHONE) {
         UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
@@ -134,28 +128,15 @@
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
 	
-    UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
-    if (IS_IPHONE) {
-        [self.navigationController setToolbarHidden:!editing animated:animated];        
-    } else {
-        if (editing) { 
-            // intentionally doubling spacers to get the layout we want on the ipad
-            self.toolbarItems = [NSArray arrayWithObjects:self.editButtonItem, spacer,  approveButton, spacer, spacer, unapproveButton, spacer, spacer, spamButton, spacer, spacer, deleteButton, spacer, nil];
-        } else {
-            self.toolbarItems = [NSArray arrayWithObject:self.editButtonItem];
-        }
-        if ([self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
-            self.editButtonItem.tintColor = [UIColor UIColorFromHex:0x336699];
-        }
-    }
+    UIBarButtonItem *editItem = nil;
     
-    if (editing) {
+    if ([self.editButtonItem respondsToSelector:@selector(setTintColor:)] && editing) {
         //set up the blue button for nav bar
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom]; 
-        UIFont *titleFont = [UIFont boldSystemFontOfSize:12];
+        UIFont *titleFont = [UIFont boldSystemFontOfSize:12.0f];
         CGSize titleSize = [NSLocalizedString(@"Done", @"") sizeWithFont:titleFont];
-        CGFloat buttonWidth = titleSize.width + 20;
-        button.frame = CGRectMake(0, 0, buttonWidth, 30);
+        CGFloat buttonWidth = titleSize.width + 20.0f;
+        button.frame = CGRectMake(0.0f, 0.0f, buttonWidth, 30.0f);
         
         [button setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
         button.titleLabel.font = titleFont;
@@ -166,13 +147,23 @@
         UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
         [button setBackgroundImage:backgroundImage forState:UIControlStateNormal];
         
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithCustomView:button];
-        self.navigationItem.rightBarButtonItem = doneButton;
-        [doneButton release];
+        UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
+        editItem = doneButton;
     } else {
-        UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(startEditing:)];
-        self.navigationItem.rightBarButtonItem = editButton;
-        [editButton release];
+        editItem = self.editButtonItem;
+    }
+    
+    UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+    if (IS_IPHONE) {
+        self.navigationItem.rightBarButtonItem = editItem;
+        [self.navigationController setToolbarHidden:!editing animated:animated];
+    } else {
+        if (editing) { 
+            // intentionally doubling spacers to get the layout we want on the ipad
+            self.toolbarItems = [NSArray arrayWithObjects:editItem, spacer,  approveButton, spacer, spacer, unapproveButton, spacer, spacer, spamButton, spacer, spacer, deleteButton, spacer, nil];
+        } else {
+            self.toolbarItems = [NSArray arrayWithObject:editItem];
+        }
     }
     
     [deleteButton setEnabled:!editing];

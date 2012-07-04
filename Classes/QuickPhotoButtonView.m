@@ -83,7 +83,7 @@
     rect = spinner.frame;
     
     rect.origin.x = self.frame.size.width - rect.size.width;
-    rect.origin.y = (self.frame.size.height - rect.size.height) / 2;
+    rect.origin.y = (self.frame.size.height - rect.size.height) / 2.0f;
     spinner.frame = rect;
     [self addSubview:spinner];
     
