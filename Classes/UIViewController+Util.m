@@ -28,6 +28,8 @@
         }
         titleView.text = title;
         [titleView sizeToFit];
+    } else {
+        self.navigationItem.title = title;
     }
 }
 
