@@ -602,7 +602,7 @@
     /*
      Create an array containing the index paths of the rows to insert: These correspond to the rows for each quotation in the current section.
      */
-    NSMutableArray *indexPathsToInsert = [[NSMutableArray alloc] init];
+    NSMutableArray *indexPathsToInsert = [NSMutableArray array];
     for (NSInteger i = 0; i < NUM_ROWS; i++) {
         [indexPathsToInsert addObject:[NSIndexPath indexPathForRow:i inSection:sectionNumber]];
     }
@@ -610,7 +610,7 @@
     /*
      Create an array containing the index paths of the rows to delete: These correspond to the rows for each quotation in the previously-open section, if there was one.
      */
-    NSMutableArray *indexPathsToDelete = [[NSMutableArray alloc] init];
+    NSMutableArray *indexPathsToDelete = [NSMutableArray array];
     
     SectionInfo *previousOpenSection = self.openSection;
     NSUInteger previousOpenSectionIndex = NSNotFound;
