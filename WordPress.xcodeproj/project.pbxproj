@@ -370,6 +370,8 @@
 		CC24E5F11577DBC300A6D5B5 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F01577DBC300A6D5B5 /* AddressBook.framework */; };
 		CC24E5F31577DFF500A6D5B5 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F21577DFF400A6D5B5 /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		CC24E5F51577E16B00A6D5B5 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F41577E16B00A6D5B5 /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		CC313AD115A4360800F7B7C6 /* friend_follow_service_icons.png in Resources */ = {isa = PBXBuildFile; fileRef = CC313ACF15A4360800F7B7C6 /* friend_follow_service_icons.png */; };
+		CC313AD215A4360800F7B7C6 /* friend_follow_service_icons@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC313AD015A4360800F7B7C6 /* friend_follow_service_icons@2x.png */; };
 		CC6B3BE715A33E16005A4523 /* WPFriendFinderNudgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6B3BE615A33E16005A4523 /* WPFriendFinderNudgeView.m */; };
 		CC6B3BFD15A35F10005A4523 /* friend_finder_cancel_btn_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BF915A35F10005A4523 /* friend_finder_cancel_btn_highlight.png */; };
 		CC6B3BFE15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFA15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png */; };
@@ -1052,6 +1054,8 @@
 		CC24E5F01577DBC300A6D5B5 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		CC24E5F21577DFF400A6D5B5 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		CC24E5F41577E16B00A6D5B5 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		CC313ACF15A4360800F7B7C6 /* friend_follow_service_icons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friend_follow_service_icons.png; sourceTree = "<group>"; };
+		CC313AD015A4360800F7B7C6 /* friend_follow_service_icons@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friend_follow_service_icons@2x.png"; sourceTree = "<group>"; };
 		CC6B3BE515A33E16005A4523 /* WPFriendFinderNudgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPFriendFinderNudgeView.h; sourceTree = "<group>"; };
 		CC6B3BE615A33E16005A4523 /* WPFriendFinderNudgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPFriendFinderNudgeView.m; sourceTree = "<group>"; };
 		CC6B3BF915A35F10005A4523 /* friend_finder_cancel_btn_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friend_finder_cancel_btn_highlight.png; sourceTree = "<group>"; };
@@ -2097,6 +2101,8 @@
 				CC6B3BFC15A35F10005A4523 /* friend_finder_cancel_btn@2x.png */,
 				CC6B3BF915A35F10005A4523 /* friend_finder_cancel_btn_highlight.png */,
 				CC6B3BFA15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png */,
+				CC313ACF15A4360800F7B7C6 /* friend_follow_service_icons.png */,
+				CC313AD015A4360800F7B7C6 /* friend_follow_service_icons@2x.png */,
 				837576C311305C67002EAA27 /* getLocation.png */,
 				6EF6701611BE30020069703D /* getLocation@2x.png */,
 				837576C111305C67002EAA27 /* gettingLocation.png */,
@@ -3242,6 +3248,8 @@
 				371C163315A3A3F800BC653C /* navbar_new@2x.png in Resources */,
 				371C163415A3A3F800BC653C /* navbar_read.png in Resources */,
 				371C163515A3A3F800BC653C /* navbar_read@2x.png in Resources */,
+				CC313AD115A4360800F7B7C6 /* friend_follow_service_icons.png in Resources */,
+				CC313AD215A4360800F7B7C6 /* friend_follow_service_icons@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

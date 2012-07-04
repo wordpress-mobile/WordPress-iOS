@@ -531,9 +531,9 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.topicsViewController];
     WPFriendFinderViewController *friendFinder = [[WPFriendFinderViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil];
     [navController pushViewController:friendFinder animated:NO];
-    [friendFinder release];
     [self presentModalViewController:navController animated:YES];
     [friendFinder loadURL:kMobileReaderFFURL];
+    [friendFinder release];
 
 }
 

@@ -712,6 +712,8 @@ fr.lproj/Localizable.strings.bak -text svneol=unset#unset
 /friend_finder_cancel_btn@2x.png -text
 /friend_finder_cancel_btn_highlight.png -text
 /friend_finder_cancel_btn_highlight@2x.png -text
+/friend_follow_service_icons.png -text svneol=unset#unset
+/friend_follow_service_icons@2x.png -text svneol=unset#unset
 /getLocation.png -text
 /getLocation@2x.png -text
 /gettingLocation.png -text
