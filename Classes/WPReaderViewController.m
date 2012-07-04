@@ -470,6 +470,10 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 
 - (BOOL) shouldDisplayfriendFinderNudgeView {
+    #ifdef DEBUG
+    return true;
+    #endif
+
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     return ![userDefaults boolForKey:WPReaderViewControllerDisplayedFriendFinder] && self.friendFinderNudgeView == nil;
 }
@@ -480,9 +484,6 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 
         [userDefaults setBool:YES forKey:WPReaderViewControllerDisplayedFriendFinder];
-#ifdef DEBUG
-        [userDefaults setBool:NO forKey:WPReaderViewControllerDisplayedFriendFinder];
-#endif
         [userDefaults synchronize];
         
         CGRect buttonFrame = CGRectMake(0,self.view.frame.size.height,self.view.frame.size.width, 0.f);
