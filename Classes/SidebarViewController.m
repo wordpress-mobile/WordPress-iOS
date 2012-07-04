@@ -110,7 +110,7 @@
     
     // create the sectionInfoArray, stores data for collapsing/expanding sections in the tableView
 	if (self.sectionInfoArray == nil) {
-        self.sectionInfoArray = [[NSMutableArray alloc] initWithCapacity:[[self.resultsController fetchedObjects] count]];
+        self.sectionInfoArray = [[[NSMutableArray alloc] initWithCapacity:[[self.resultsController fetchedObjects] count]] autorelease];
         // For each play, set up a corresponding SectionInfo object to contain the default height for each row.
 		for (Blog *blog in [self.resultsController fetchedObjects]) {
             [self addSectionInfoForBlog:blog];
@@ -541,7 +541,7 @@
     Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(section - 1) inSection:0]];
     SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:section - 1];
     if (!sectionInfo.headerView) {
-        sectionInfo.headerView = [[SidebarSectionHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, SIDEBAR_WIDTH, HEADER_HEIGHT) blog:blog sectionInfo:sectionInfo delegate:self];
+        sectionInfo.headerView = [[[SidebarSectionHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, SIDEBAR_WIDTH, HEADER_HEIGHT) blog:blog sectionInfo:sectionInfo delegate:self] autorelease];
     }
 
     return sectionInfo.headerView;
@@ -555,7 +555,7 @@
         cell = [[[SidebarTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.textLabel.shadowOffset = CGSizeMake(0, 1.1f);
         cell.textLabel.shadowColor = [UIColor blackColor];
-        cell.textLabel.textColor = [[UIColor alloc] initWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0f];
+        cell.textLabel.textColor = [UIColor colorWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0f];
         cell.textLabel.font = [UIFont systemFontOfSize:17.0];
         cell.backgroundView = [[[UIImageView alloc] initWithImage:[ [UIImage imageNamed:@"sidebar_cell_bg.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:5.0]] autorelease];
         cell.selectedBackgroundView = [[[UIImageView alloc] initWithImage:[ [UIImage imageNamed:@"sidebar_cell_bg_selected.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:5.0]] autorelease];

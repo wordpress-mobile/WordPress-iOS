@@ -528,7 +528,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 - (void)openFriendFinder:(id)sender {
     [self hideFriendFinderNudgeView:sender];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.topicsViewController];
+    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:self.topicsViewController] autorelease];
     WPFriendFinderViewController *friendFinder = [[WPFriendFinderViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil];
     [navController pushViewController:friendFinder animated:NO];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
