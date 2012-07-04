@@ -450,14 +450,22 @@
 - (void)setupQuickPhotoButton {    
     if (quickPhotoButton) return;
     
+    CGFloat buttonWidth = (self.view.frame.size.width - 30.0f)/2; // 10px margins + 10px gap
+    
     // Make room for the photo button
     CGRect settingsFrame = settingsButton.frame;
-    CGFloat buttonWidth = (self.view.frame.size.width - 30.0f)/2; // 10px margins + 10px gap
+//    settingsFrame.size.width = buttonWidth;
+    settingsFrame.origin.x = self.view.frame.size.width - (buttonWidth + 10.0f);
+    settingsButton.frame = settingsFrame;
+//    settingsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    
     // Match the height and y of the settings Button.
     CGRect frame = CGRectMake(10.0f, settingsFrame.origin.y, buttonWidth, settingsFrame.size.height);
     self.quickPhotoButton = [[QuickPhotoButtonView alloc] initWithFrame:frame];
     quickPhotoButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
     quickPhotoButton.delegate = self;
+    
+
     
     [self.view addSubview:quickPhotoButton];
 }
@@ -468,6 +476,12 @@
     [quickPhotoButton removeFromSuperview];
     quickPhotoButton.delegate = nil;
     self.quickPhotoButton = nil;
+    
+    CGRect frame = settingsButton.frame;
+    frame.origin.x = 10.0f;
+//    frame.size.width = self.view.frame.size.width - 20.0f;
+    settingsButton.frame = frame;
+//    settingsButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
 }
 
 - (void)handleCameraPlusImages:(NSNotification *)notification {
