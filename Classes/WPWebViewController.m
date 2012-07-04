@@ -36,6 +36,7 @@
     self.password = nil;
     self.detailContent = nil;
     self.detailHTML = nil;
+    self.webView.delegate = nil;
     self.webView = nil;
     self.statusTimer = nil;
     [super dealloc];
