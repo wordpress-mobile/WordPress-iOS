@@ -300,8 +300,6 @@
 	}
 }
 - (void)showReplyToCommentViewWithAnimation:(BOOL)animate {
-	WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-	
 	if (self.replyToCommentViewController) {
 		self.replyToCommentViewController.delegate = nil;
 	}
@@ -313,33 +311,21 @@
 	replyToCommentViewController.comment = [[self.comment newReply] autorelease];
 	replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
 	
-	
-	if (DeviceIsPad() == NO) {
-		[appDelegate.navigationController pushViewController:self.replyToCommentViewController animated:YES];
-	} else {
-		if (self.commentsViewController) {
-//			[self.commentsViewController setReplying:YES];
-		}
-
-		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:replyToCommentViewController] autorelease];
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-		[self presentModalViewController:navController animated:YES];
-	}
+    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:replyToCommentViewController] autorelease];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navController animated:YES];
 }
 
 - (void)dismissEditViewController;
 {
-	if (DeviceIsPad() == NO) {
-        [self.navigationController popViewControllerAnimated:YES];
-	} else {
-		[self dismissModalViewControllerAnimated:YES];
-	}
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 
-- (void) closeReplyViewAndSelectTheNewComment {
+- (void)closeReplyViewAndSelectTheNewComment {
 	[self dismissEditViewController];
+    // TODO: Select new comment or dismiss comment view on iPhone
 }
 
 - (void)cancelView:(id)sender {

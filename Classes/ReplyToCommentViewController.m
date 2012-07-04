@@ -118,7 +118,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	if (delegate) {
 		[delegate cancelReplyToCommentViewController:self];	
 	} else {
-		[self.navigationController popViewControllerAnimated:YES];
+		[self dismissModalViewControllerAnimated:YES];
 	}
 }
 
