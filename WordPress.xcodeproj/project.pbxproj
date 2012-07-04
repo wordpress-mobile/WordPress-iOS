@@ -219,8 +219,6 @@
 		5DC433321587C3600073CF07 /* PanelViewWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC433301587C3600073CF07 /* PanelViewWrapper.m */; };
 		5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B3156FCD3400242C35 /* WPWebView.m */; };
 		5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */; };
-		5DFAC18D15A37AEF008BD156 /* UIToolbar+Styled.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFAC18C15A37AEF008BD156 /* UIToolbar+Styled.m */; };
-		5DFAC19115A37B0B008BD156 /* UINavigationBar+Styled.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFAC19015A37B0B008BD156 /* UINavigationBar+Styled.m */; };
 		5DFAC19615A39145008BD156 /* navbar_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DFAC19215A39144008BD156 /* navbar_background.png */; };
 		5DFAC19715A39145008BD156 /* navbar_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DFAC19315A39144008BD156 /* navbar_background@2x.png */; };
 		5DFAC19815A39145008BD156 /* toolbar_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DFAC19415A39145008BD156 /* toolbar_background.png */; };
@@ -847,10 +845,6 @@
 		5DEB61B3156FCD3400242C35 /* WPWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebView.m; sourceTree = "<group>"; };
 		5DEB61B6156FCD5200242C35 /* WPChromelessWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPChromelessWebViewController.h; sourceTree = "<group>"; };
 		5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPChromelessWebViewController.m; sourceTree = "<group>"; };
-		5DFAC18B15A37AEF008BD156 /* UIToolbar+Styled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIToolbar+Styled.h"; sourceTree = "<group>"; };
-		5DFAC18C15A37AEF008BD156 /* UIToolbar+Styled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIToolbar+Styled.m"; sourceTree = "<group>"; };
-		5DFAC18F15A37B0B008BD156 /* UINavigationBar+Styled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+Styled.h"; sourceTree = "<group>"; };
-		5DFAC19015A37B0B008BD156 /* UINavigationBar+Styled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Styled.m"; sourceTree = "<group>"; };
 		5DFAC19215A39144008BD156 /* navbar_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_background.png; sourceTree = "<group>"; };
 		5DFAC19315A39144008BD156 /* navbar_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_background@2x.png"; sourceTree = "<group>"; };
 		5DFAC19415A39145008BD156 /* toolbar_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_background.png; sourceTree = "<group>"; };
@@ -2304,10 +2298,6 @@
 				838A477811AF9BE9004FA306 /* UIDevice-Hardware.m */,
 				FD4500CF1580DF3500F2B0E6 /* UIColor+Helpers.h */,
 				FD4500D01580DF3500F2B0E6 /* UIColor+Helpers.m */,
-				5DFAC18B15A37AEF008BD156 /* UIToolbar+Styled.h */,
-				5DFAC18C15A37AEF008BD156 /* UIToolbar+Styled.m */,
-				5DFAC18F15A37B0B008BD156 /* UINavigationBar+Styled.h */,
-				5DFAC19015A37B0B008BD156 /* UINavigationBar+Styled.m */,
 				37B6145D15A48E3D00F9F185 /* UIViewController+Util.h */,
 				37B6145E15A48E3D00F9F185 /* UIViewController+Util.m */,
 			);
@@ -3467,8 +3457,6 @@
 				5DC433311587C3600073CF07 /* PanelViewWrapper.m in Sources */,
 				5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */,
 				CC6B3BE715A33E16005A4523 /* WPFriendFinderNudgeView.m in Sources */,
-				5DFAC18D15A37AEF008BD156 /* UIToolbar+Styled.m in Sources */,
-				5DFAC19115A37B0B008BD156 /* UINavigationBar+Styled.m in Sources */,
 				37B6145F15A48E3D00F9F185 /* UIViewController+Util.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

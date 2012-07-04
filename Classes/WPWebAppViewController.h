@@ -22,7 +22,6 @@
 @property (nonatomic, retain) NSDate *lastWebViewRefreshDate;
 
 - (void)executeBatchFromRequest:(NSURLRequest *)request;
-- (void)setTitle:(NSString *)title;
 - (void)setBackgroundColor:(NSDictionary *)colorWithRGBA;
 - (void)setNavigationBarColor:(NSDictionary *)colorWithRGBA;
 - (void)enableFastScrolling;

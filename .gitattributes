@@ -179,16 +179,12 @@ Classes/UIDevice-Hardware.h -text
 Classes/UIDevice-Hardware.m -text
 Classes/UIImageView+Gravatar.h -text
 Classes/UIImageView+Gravatar.m -text
-Classes/UINavigationBar+Styled.h -text
-Classes/UINavigationBar+Styled.m -text
 Classes/UITableViewActivityCell.h -text
 Classes/UITableViewActivityCell.m -text
 Classes/UITableViewSwitchCell.h -text
 Classes/UITableViewSwitchCell.m -text
 Classes/UITableViewTextFieldCell.h -text
 Classes/UITableViewTextFieldCell.m -text
-Classes/UIToolbar+Styled.h -text
-Classes/UIToolbar+Styled.m -text
 Classes/UIViewController+Util.h -text
 Classes/UIViewController+Util.m -text
 Classes/UIViewController_iPadExtensions.h -text

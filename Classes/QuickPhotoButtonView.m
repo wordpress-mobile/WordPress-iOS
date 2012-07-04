@@ -72,6 +72,7 @@
     [button setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 0.0f)];
     [button setImageEdgeInsets:UIEdgeInsetsMake(3.0f, 5.0f, 0.0f, 0.0f)];
     [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    button.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     [self addSubview:button];
     
