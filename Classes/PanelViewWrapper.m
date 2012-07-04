@@ -7,12 +7,11 @@
 
 #import "PanelViewWrapper.h"
 #import "NSObject+BlockObservation.h"
-#import "UIToolbar+Styled.h"
 
 @interface PanelViewWrapper()
 
 // Assign vs retain cos releasing later gets tricky.
-@property (nonatomic, assign) UIViewController *viewController;
+@property (nonatomic, retain) UIViewController *viewController;
 @property (nonatomic, assign) UIView *wrappedView;
 @property (nonatomic, retain) AMBlockToken *observerToken;
 
@@ -30,8 +29,12 @@
 @synthesize overlay = _overlay;
 
 - (void)dealloc {
+    if (self.observerToken) {
+        [self.viewController removeObserverWithBlockToken:self.observerToken];
+    }
     self.toolbar = nil;
     self.overlay = nil;
+    self.viewController = nil;
     [super dealloc];
 }
 
