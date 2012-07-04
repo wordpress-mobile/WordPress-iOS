@@ -835,6 +835,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
           UITextAttributeTextShadowOffset,
           nil] forState:UIControlStateSelected];
+        
+        [[UISegmentedControl appearance] setTintColor:[UIColor UIColorFromHex:0xeeeeee]];
+
     }
 }
 

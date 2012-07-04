@@ -699,6 +699,8 @@ de.lproj/Localizable.strings -text svneol=unset#unset
 /down@2x.png -text
 /downArrow.png -text svneol=unset#unset
 /downArrow@2x.png -text svneol=unset#unset
+/down_dim.png -text
+/down_dim@2x.png -text
 en.lproj/Localizable.strings -text svneol=unset#unset
 es.lproj/Localizable.strings -text svneol=unset#unset
 /fix-translation.php -text
@@ -939,6 +941,8 @@ tr.lproj/Localizable.strings -text
 /undo~ipad.png -text svneol=unset#unset
 /up.png -text
 /up@2x.png -text
+/up_dim.png -text
+/up_dim@2x.png -text
 /update-translations.rb -text
 /video_thumbnail.png -text
 /welcome_bg.png -text

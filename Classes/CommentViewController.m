@@ -80,11 +80,19 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[super viewDidLoad];
 	
-    segmentedControl = [[UISegmentedControl alloc] initWithItems:
-                        [NSArray arrayWithObjects:
-                         [UIImage imageNamed:@"up.png"],
-                         [UIImage imageNamed:@"down.png"],
-                         nil]];
+    if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
+        segmentedControl = [[UISegmentedControl alloc] initWithItems:
+                            [NSArray arrayWithObjects:
+                             [UIImage imageNamed:@"up_dim.png"],
+                             [UIImage imageNamed:@"down_dim.png"],
+                             nil]];
+    } else {
+        segmentedControl = [[UISegmentedControl alloc] initWithItems:
+                            [NSArray arrayWithObjects:
+                             [UIImage imageNamed:@"up.png"],
+                             [UIImage imageNamed:@"down.png"],
+                             nil]];        
+    }
     
     [segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
     segmentedControl.frame = CGRectMake(0, 0, 90, kCustomButtonHeight);
