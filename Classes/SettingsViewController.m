@@ -265,7 +265,7 @@ typedef enum {
         } else {
             welcomeViewController = [[[WelcomeViewController alloc] init] autorelease];
         }
-        welcomeViewController.title = NSLocalizedString(@"Add a blog", @"");
+        welcomeViewController.title = NSLocalizedString(@"Add a Blog", @"");
         [self.navigationController pushViewController:welcomeViewController animated:YES];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     } else if (indexPath.section == SettingsSectionWpcom) {
