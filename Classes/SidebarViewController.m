@@ -98,7 +98,7 @@
     self.tableView.showsVerticalScrollIndicator = NO;
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
 
-    utililtyView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
+    utililtyView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_footer_bg"]];
     utililtyView.layer.shadowRadius = 10.0f;
     utililtyView.layer.shadowOpacity = 0.8f;
     utililtyView.layer.shadowColor = [[UIColor blackColor] CGColor];
