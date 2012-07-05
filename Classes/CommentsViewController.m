@@ -249,12 +249,18 @@
 
 - (void)deselectAllComments {
     for (Comment *comment in _selectedComments) {
-        NSIndexPath *indexPath = [self.resultsController indexPathForObject:comment];
-        if (indexPath) {
-            CommentTableViewCell *cell = (CommentTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-            if (cell) {
-                cell.checked = NO;
+        // In iOS4, indexPathForObject crashes when comment isn't in the results controller,
+        // which happens after deleting comments
+        @try {
+            NSIndexPath *indexPath = [self.resultsController indexPathForObject:comment];
+            if (indexPath) {
+                CommentTableViewCell *cell = (CommentTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+                if (cell) {
+                    cell.checked = NO;
+                }
             }
+        }
+        @catch (NSException *exception) {
         }
     }
     [_selectedComments removeAllObjects];
