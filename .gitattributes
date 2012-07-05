@@ -575,6 +575,7 @@ Vendor/xmlrpc/XMLRPCResponse.m -text
 /WPpregressHUDBackground@2x.png -text
 /WebSignupViewController-iPad.xib -text
 /WebSignupViewController.xib -text
+/WelcomeView.xib -text
 /WelcomeViewController-iPad.xib -text
 /WelcomeViewController.xib -text
 /WordPress[!!-~]copy-Info.plist -text
@@ -601,6 +602,8 @@ WordPressTest/entitiesDecoded.xml -text
 /XMLValueDecoder.m -text
 /approve.png -text svneol=unset#unset
 /approve@2x.png -text svneol=unset#unset
+/asterisk.png -text
+/asterisk@2x.png -text
 /attachment.png -text svneol=unset#unset
 /attachment@2x.png -text svneol=unset#unset
 /autosave.png -text
@@ -723,6 +726,8 @@ hu.lproj/Localizable.strings -text svneol=unset#unset
 /i18n_download -text
 /iTunesArtwork -text
 id.lproj/Localizable.strings -text
+/info_button.png -text
+/info_button@2x.png -text
 /inner-shadow.png -text svneol=unset#unset
 it.lproj/Localizable.strings -text
 /italic.png -text svneol=unset#unset
@@ -957,11 +962,19 @@ tr.lproj/Localizable.strings -text
 /video_thumbnail.png -text
 /welcome_bg.png -text
 /welcome_bg@2x.png -text
+/welcome_bg_pattern.png -text
+/welcome_bg_pattern@2x.png -text
 /welcome_btn_normal.png -text
 /welcome_btn_normal@2x.png -text
 /welcome_btn_over.png -text
 /welcome_btn_over@2x.png -text
+/welcome_button_bg.png -text
+/welcome_button_bg@2x.png -text
+/welcome_button_bg_full.png -text
+/welcome_button_bg_full@2x.png -text
 /whitebg.png -text
+/wp_logo.png -text
+/wp_logo@2x.png -text
 /write.png -text
 /write@2x.png -text
 /xhtml1-transitional.dtd -text

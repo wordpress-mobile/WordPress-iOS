@@ -260,11 +260,12 @@ typedef enum {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     } else if (indexPath.section == SettingsSectionBlogsAdd) {
         WelcomeViewController *welcomeViewController;
-        if (IS_IPAD) {
-            welcomeViewController = [[[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController-iPad" bundle:nil] autorelease];
-        } else {
-            welcomeViewController = [[[WelcomeViewController alloc] init] autorelease];
-        }
+        welcomeViewController = [[[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil] autorelease]; 
+//        if (IS_IPAD) {
+//            welcomeViewController = [[[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController-iPad" bundle:nil] autorelease];
+//        } else {
+//            welcomeViewController = [[[WelcomeViewController alloc] init] autorelease];
+//        }
         welcomeViewController.title = NSLocalizedString(@"Add a Blog", @"");
         [self.navigationController pushViewController:welcomeViewController animated:YES];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
