@@ -231,6 +231,8 @@
 		5DD8A6E715A5ECDC00A673A4 /* sync_lite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6E315A5ECDB00A673A4 /* sync_lite@2x.png */; };
 		5DD8A6F015A62CA000A673A4 /* navbar_read_dim.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6EE15A62C9D00A673A4 /* navbar_read_dim.png */; };
 		5DD8A6F115A62CA000A673A4 /* navbar_read_dim@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6EF15A62C9F00A673A4 /* navbar_read_dim@2x.png */; };
+		5DD8A6F415A6327000A673A4 /* settings_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6F215A6326700A673A4 /* settings_bg.png */; };
+		5DD8A6F515A6327000A673A4 /* settings_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6F315A6326A00A673A4 /* settings_bg@2x.png */; };
 		5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B3156FCD3400242C35 /* WPWebView.m */; };
 		5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */; };
 		6E05AEE411EE8C1B00237983 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E05AEE311EE8C1B00237983 /* Icon-Small-50.png */; };
@@ -861,6 +863,8 @@
 		5DD8A6E315A5ECDB00A673A4 /* sync_lite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync_lite@2x.png"; sourceTree = "<group>"; };
 		5DD8A6EE15A62C9D00A673A4 /* navbar_read_dim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_read_dim.png; sourceTree = "<group>"; };
 		5DD8A6EF15A62C9F00A673A4 /* navbar_read_dim@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_read_dim@2x.png"; sourceTree = "<group>"; };
+		5DD8A6F215A6326700A673A4 /* settings_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_bg.png; sourceTree = "<group>"; };
+		5DD8A6F315A6326A00A673A4 /* settings_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings_bg@2x.png"; sourceTree = "<group>"; };
 		5DEB61B2156FCD3400242C35 /* WPWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebView.h; sourceTree = "<group>"; };
 		5DEB61B3156FCD3400242C35 /* WPWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebView.m; sourceTree = "<group>"; };
 		5DEB61B6156FCD5200242C35 /* WPChromelessWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPChromelessWebViewController.h; sourceTree = "<group>"; };
@@ -2150,6 +2154,8 @@
 				E1472B9513EFF9FF00987A40 /* right.png */,
 				E1472B9613EFF9FF00987A40 /* right@2x.png */,
 				AC3D2C100E2222430064A705 /* RoundedRectBlack.png */,
+				5DD8A6F215A6326700A673A4 /* settings_bg.png */,
+				5DD8A6F315A6326A00A673A4 /* settings_bg@2x.png */,
 				374F188915A5895B00524ED0 /* Sidebar */,
 				376EEF5B12F70C9B005CE77A /* stats.png */,
 				376EEF5C12F70C9B005CE77A /* stats@2x.png */,
@@ -3274,6 +3280,8 @@
 				376DE02D15A5E9290026CB00 /* sidebar_cell_bg.png in Resources */,
 				5DD8A6F015A62CA000A673A4 /* navbar_read_dim.png in Resources */,
 				5DD8A6F115A62CA000A673A4 /* navbar_read_dim@2x.png in Resources */,
+				5DD8A6F415A6327000A673A4 /* settings_bg.png in Resources */,
+				5DD8A6F515A6327000A673A4 /* settings_bg@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

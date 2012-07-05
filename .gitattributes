@@ -818,6 +818,8 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /right@2x.png -text svneol=unset#unset
 /settings.png -text
 /settings@2x.png -text
+/settings_bg.png -text
+/settings_bg@2x.png -text
 /sidebar_bg.png -text
 /sidebar_bg@2x.png -text
 /sidebar_camera.png -text

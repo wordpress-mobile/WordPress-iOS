@@ -194,7 +194,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 {
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.topicsViewController];
     if (IS_IPAD) {
-        nav.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		nav.modalPresentationStyle = UIModalPresentationFormSheet;
     }
    
