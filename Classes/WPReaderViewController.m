@@ -225,9 +225,22 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 {
     [self.topicsViewController view];
     [self.topicsViewController loadTopicsPage];
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_read"] style:UIBarButtonItemStylePlain target:self action:@selector(showTopicSelector:)];
+
+    UIBarButtonItem *button = nil;
+    if (IS_IPHONE && [[UIButton class] respondsToSelector:@selector(appearance)]) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btn setImage:[UIImage imageNamed:@"navbar_read"] forState:UIControlStateNormal];
+        btn.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
+        btn.autoresizingMask =  UIViewAutoresizingFlexibleHeight;
+        [btn addTarget:self action:@selector(showTopicSelector:) forControlEvents:UIControlEventTouchUpInside];
+        button = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    } else {
+        button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks 
+                                                               target:self 
+                                                               action:@selector(showTopicSelector:)];
+    }
     
-    if (IS_IPAD && [button respondsToSelector:@selector(setTintColor:)]) {
+    if ([button respondsToSelector:@selector(setTintColor:)]) {
         UIColor *color = [UIColor UIColorFromHex:0x464646];
         button.tintColor = color;
     }
