@@ -60,8 +60,8 @@
     
     
     spamButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_flag"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
-    unapproveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_unapprove"] style:UIBarButtonItemStylePlain target:self action:@selector(unapproveSelectedComments:)];
-    approveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_approve"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
+    unapproveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"unapprove"] style:UIBarButtonItemStylePlain target:self action:@selector(unapproveSelectedComments:)];
+    approveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"approve"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
     deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteSelectedComments:)];
     
     if ([spamButton respondsToSelector:@selector(setTintColor:)]) {

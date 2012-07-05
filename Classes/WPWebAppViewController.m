@@ -15,19 +15,19 @@
 
 @synthesize webView, loading, lastWebViewRefreshDate;
 
-/*
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-    }
-    return self;
+#pragma mark - View lifecycle
+
+- (void)dealloc {
+    WPFLogMethod();
+    self.view = nil;
+    self.webView = nil;
+    self.lastWebViewRefreshDate = nil;
+    [super dealloc];
+    
 }
-*/
 
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     WPFLogMethod();
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -35,35 +35,14 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-#pragma mark - View lifecycle
 
-
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-/*
-- (void)loadView
-{
-    self.view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-    self.webView = [[[UIWebView alloc] initWithFrame:self.view.frame] autorelease];
-    self.webView.delegate = self;
-    self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.view addSubview:self.webView];
-    }
-
-}
-*/
-
-
-
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     WPFLogMethod();
     [super viewDidLoad];
 }
 
 
-- (void)viewDidUnload
-{
+- (void)viewDidUnload {
     WPFLogMethod();
     [_refreshHeaderView release]; _refreshHeaderView = nil;
     [super viewDidUnload];
@@ -71,21 +50,12 @@
     // e.g. self.myOutlet = nil;
 }
 
-- (void)dealloc
-{
-    WPFLogMethod();
-    self.view = nil;
-    self.webView = nil;
-    self.lastWebViewRefreshDate = nil;
-    [super dealloc];
 
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
 
 // Find the Webview's UIScrollView backwards compatible
 - (UIScrollView *)scrollView {

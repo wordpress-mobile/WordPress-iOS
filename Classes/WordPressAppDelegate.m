@@ -814,6 +814,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
           UITextAttributeTextShadowOffset,
           nil]];
+        
         [[UIBarButtonItem appearance] setTintColor:[UIColor colorWithRed:229.0/255.0 green:229.0/255.0 blue:229.0/255.0 alpha:1.0]];
         [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg"] forState: UIControlStateNormal barMetrics:UIBarMetricsDefault];
         [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_active"] forState: UIControlStateSelected barMetrics:UIBarMetricsDefault];

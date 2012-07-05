@@ -230,8 +230,15 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     if (IS_IPHONE && [[UIButton class] respondsToSelector:@selector(appearance)]) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [btn setImage:[UIImage imageNamed:@"navbar_read"] forState:UIControlStateNormal];
-        btn.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
-        btn.autoresizingMask =  UIViewAutoresizingFlexibleHeight;
+        [btn setImage:[UIImage imageNamed:@"navbar_read_dim"] forState:UIControlStateHighlighted];
+        UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+        [btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+
+        backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+        [btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
+        
+        btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
+
         [btn addTarget:self action:@selector(showTopicSelector:) forControlEvents:UIControlEventTouchUpInside];
         button = [[UIBarButtonItem alloc] initWithCustomView:btn];
     } else {

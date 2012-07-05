@@ -497,6 +497,7 @@
 
     return YES;
 }
+
 - (BOOL)isApprove {
 	if ([self.comment.status isEqualToString:@"hold"]) {
 		return YES;

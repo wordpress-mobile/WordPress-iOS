@@ -229,6 +229,8 @@
 		5DD8A6E515A5ECDC00A673A4 /* sync_dark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6E115A5ECD900A673A4 /* sync_dark@2x.png */; };
 		5DD8A6E615A5ECDC00A673A4 /* sync_lite.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6E215A5ECDA00A673A4 /* sync_lite.png */; };
 		5DD8A6E715A5ECDC00A673A4 /* sync_lite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6E315A5ECDB00A673A4 /* sync_lite@2x.png */; };
+		5DD8A6F015A62CA000A673A4 /* navbar_read_dim.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6EE15A62C9D00A673A4 /* navbar_read_dim.png */; };
+		5DD8A6F115A62CA000A673A4 /* navbar_read_dim@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6EF15A62C9F00A673A4 /* navbar_read_dim@2x.png */; };
 		5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B3156FCD3400242C35 /* WPWebView.m */; };
 		5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */; };
 		6E05AEE411EE8C1B00237983 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E05AEE311EE8C1B00237983 /* Icon-Small-50.png */; };
@@ -857,6 +859,8 @@
 		5DD8A6E115A5ECD900A673A4 /* sync_dark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync_dark@2x.png"; sourceTree = "<group>"; };
 		5DD8A6E215A5ECDA00A673A4 /* sync_lite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sync_lite.png; sourceTree = "<group>"; };
 		5DD8A6E315A5ECDB00A673A4 /* sync_lite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync_lite@2x.png"; sourceTree = "<group>"; };
+		5DD8A6EE15A62C9D00A673A4 /* navbar_read_dim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_read_dim.png; sourceTree = "<group>"; };
+		5DD8A6EF15A62C9F00A673A4 /* navbar_read_dim@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_read_dim@2x.png"; sourceTree = "<group>"; };
 		5DEB61B2156FCD3400242C35 /* WPWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebView.h; sourceTree = "<group>"; };
 		5DEB61B3156FCD3400242C35 /* WPWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebView.m; sourceTree = "<group>"; };
 		5DEB61B6156FCD5200242C35 /* WPChromelessWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPChromelessWebViewController.h; sourceTree = "<group>"; };
@@ -1649,6 +1653,8 @@
 				371C162715A3A3F800BC653C /* navbar_new@2x.png */,
 				371C162815A3A3F800BC653C /* navbar_read.png */,
 				371C162915A3A3F800BC653C /* navbar_read@2x.png */,
+				5DD8A6EE15A62C9D00A673A4 /* navbar_read_dim.png */,
+				5DD8A6EF15A62C9F00A673A4 /* navbar_read_dim@2x.png */,
 			);
 			name = "Navigation Bar";
 			sourceTree = "<group>";
@@ -3266,6 +3272,8 @@
 				376DE02915A5E8360026CB00 /* sidebar_cell_bg_selected.png in Resources */,
 				376DE02C15A5E9290026CB00 /* sidebar_cell_bg@2x.png in Resources */,
 				376DE02D15A5E9290026CB00 /* sidebar_cell_bg.png in Resources */,
+				5DD8A6F015A62CA000A673A4 /* navbar_read_dim.png in Resources */,
+				5DD8A6F115A62CA000A673A4 /* navbar_read_dim@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
