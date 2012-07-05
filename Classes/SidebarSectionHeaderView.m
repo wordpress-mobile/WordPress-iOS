@@ -43,9 +43,10 @@
         _delegate = delegate;        
         self.userInteractionEnabled = YES;
         
-        UIImageView *blavatarView = [[[UIImageView alloc] initWithFrame:CGRectMake(0.0, 1.0, 46.0, 46.0)] autorelease];
+        blavatarView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 47.0, 47.0)];
+        [blavatarView setAlpha:0.65f];
         [blavatarView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
-        [self addSubview:blavatarView];
+        [self addSubview: blavatarView];
         
         int numberOfPendingComments = [blog numberOfPendingComments];
       
@@ -64,7 +65,7 @@
             label.text = [blog hostURL];            
         
         label.font = [UIFont boldSystemFontOfSize:17.0];
-        label.textColor = [UIColor whiteColor];
+        label.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
         label.shadowOffset = CGSizeMake(0, 1.1f);
         label.shadowColor = [UIColor blackColor];
         label.backgroundColor = [UIColor clearColor];
@@ -193,6 +194,15 @@
     //change the comments icon
     [self updatePendingCommentsIcon];
     
+    if (self.disclosureButton.selected) {
+        [self.titleLabel setTextColor:[UIColor whiteColor]];
+        [blavatarView setAlpha:1.0f];
+    }
+    else {
+        [self.titleLabel setTextColor:[UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0]];
+        [blavatarView setAlpha:0.65f];
+    }
+    
     // If this was a user action, send the delegate the appropriate message.
     if (userAction) {
         if (self.disclosureButton.selected) {
@@ -211,6 +221,7 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [background release];
+    [blavatarView release];
     [super dealloc];
 }
 

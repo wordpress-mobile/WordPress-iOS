@@ -34,7 +34,7 @@
 // Height for secondary cells (posts/pages/comments/... inside a blog)
 #define SIDEBAR_CELL_SECONDARY_HEIGHT 48.0f
 #define SIDEBAR_BGCOLOR [UIColor colorWithWhite:0.921875f alpha:1.0f];
-#define HEADER_HEIGHT 47
+#define HEADER_HEIGHT 48
 #define DEFAULT_ROW_HEIGHT 48
 #define NUM_ROWS 6
 
@@ -554,8 +554,9 @@
         cell.textLabel.shadowColor = [UIColor blackColor];
         cell.textLabel.textColor = [UIColor colorWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0f];
         cell.textLabel.font = [UIFont systemFontOfSize:17.0];
-        cell.backgroundView = [[[UIImageView alloc] initWithImage:[ [UIImage imageNamed:@"sidebar_cell_bg.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:5.0]] autorelease];
-        cell.selectedBackgroundView = [[[UIImageView alloc] initWithImage:[ [UIImage imageNamed:@"sidebar_cell_bg_selected.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:5.0]] autorelease];
+        cell.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_cell_bg"]] autorelease];
+        cell.selectedBackgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_cell_bg_selected"]] autorelease];
+        
     }
     
     NSString *title = nil;
