@@ -24,5 +24,6 @@
 
 - (IBAction)cancel:(id)sender;
 - (void)automaticallyDismissOnLoginActions; //used when shown as a Real Welcome controller
+- (void)showAboutView;
 
 @end
