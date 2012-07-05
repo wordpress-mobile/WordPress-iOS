@@ -189,6 +189,8 @@
 		3768F4911340BBD60075B633 /* blavatar-wpcom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3768F48D1340BBD60075B633 /* blavatar-wpcom@2x.png */; };
 		3768F4921340BBD60075B633 /* blavatar-wporg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3768F48E1340BBD60075B633 /* blavatar-wporg.png */; };
 		3768F4931340BBD60075B633 /* blavatar-wpcom.png in Resources */ = {isa = PBXBuildFile; fileRef = 3768F48F1340BBD60075B633 /* blavatar-wpcom.png */; };
+		376DDFE815A5A8C90026CB00 /* navbar_menu_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 376DDFE615A5A8C90026CB00 /* navbar_menu_white.png */; };
+		376DDFE915A5A8C90026CB00 /* navbar_menu_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376DDFE715A5A8C90026CB00 /* navbar_menu_white@2x.png */; };
 		376EEF2712F7068A005CE77A /* page_control_blue_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 376EEF2312F7068A005CE77A /* page_control_blue_active.png */; };
 		376EEF2812F7068A005CE77A /* page_control_blue_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376EEF2412F7068A005CE77A /* page_control_blue_active@2x.png */; };
 		376EEF2912F7068A005CE77A /* page_control_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 376EEF2512F7068A005CE77A /* page_control_blue.png */; };
@@ -807,6 +809,8 @@
 		3768F48D1340BBD60075B633 /* blavatar-wpcom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blavatar-wpcom@2x.png"; sourceTree = "<group>"; };
 		3768F48E1340BBD60075B633 /* blavatar-wporg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blavatar-wporg.png"; sourceTree = "<group>"; };
 		3768F48F1340BBD60075B633 /* blavatar-wpcom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blavatar-wpcom.png"; sourceTree = "<group>"; };
+		376DDFE615A5A8C90026CB00 /* navbar_menu_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_menu_white.png; sourceTree = "<group>"; };
+		376DDFE715A5A8C90026CB00 /* navbar_menu_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_menu_white@2x.png"; sourceTree = "<group>"; };
 		376EEF2312F7068A005CE77A /* page_control_blue_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page_control_blue_active.png; sourceTree = "<group>"; };
 		376EEF2412F7068A005CE77A /* page_control_blue_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "page_control_blue_active@2x.png"; sourceTree = "<group>"; };
 		376EEF2512F7068A005CE77A /* page_control_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = page_control_blue.png; sourceTree = "<group>"; };
@@ -1628,12 +1632,14 @@
 			children = (
 				371C161E15A3A3F800BC653C /* navbar_bg.png */,
 				371C161F15A3A3F800BC653C /* navbar_bg@2x.png */,
-				371C162015A3A3F800BC653C /* navbar_button_bg_active.png */,
-				371C162115A3A3F800BC653C /* navbar_button_bg_active@2x.png */,
 				371C162215A3A3F800BC653C /* navbar_button_bg.png */,
 				371C162315A3A3F800BC653C /* navbar_button_bg@2x.png */,
+				371C162015A3A3F800BC653C /* navbar_button_bg_active.png */,
+				371C162115A3A3F800BC653C /* navbar_button_bg_active@2x.png */,
 				371C162415A3A3F800BC653C /* navbar_menu.png */,
 				371C162515A3A3F800BC653C /* navbar_menu@2x.png */,
+				376DDFE615A5A8C90026CB00 /* navbar_menu_white.png */,
+				376DDFE715A5A8C90026CB00 /* navbar_menu_white@2x.png */,
 				371C162615A3A3F800BC653C /* navbar_new.png */,
 				371C162715A3A3F800BC653C /* navbar_new@2x.png */,
 				371C162815A3A3F800BC653C /* navbar_read.png */,
@@ -3247,6 +3253,8 @@
 				374F18CB15A5897500524ED0 /* sidebar_view@2x.png in Resources */,
 				374F18CC15A5897500524ED0 /* SidebarToolbarButton.png in Resources */,
 				374F18CD15A5897500524ED0 /* SidebarToolbarButton@2x.png in Resources */,
+				376DDFE815A5A8C90026CB00 /* navbar_menu_white.png in Resources */,
+				376DDFE915A5A8C90026CB00 /* navbar_menu_white@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

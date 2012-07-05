@@ -809,7 +809,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
          [NSDictionary dictionaryWithObjectsAndKeys:
           [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0], 
           UITextAttributeTextColor, 
-          [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0], 
+          [UIColor whiteColor], 
           UITextAttributeTextShadowColor, 
           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
           UITextAttributeTextShadowOffset,
@@ -821,20 +821,29 @@ static WordPressAppDelegate *wordPressApp = NULL;
          [NSDictionary dictionaryWithObjectsAndKeys:
           [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0], 
           UITextAttributeTextColor, 
-          [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0], 
+          [UIColor whiteColor], 
           UITextAttributeTextShadowColor,  
           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
           UITextAttributeTextShadowOffset,
           nil] forState:UIControlStateNormal];
         [[UIBarButtonItem appearance] setTitleTextAttributes:
          [NSDictionary dictionaryWithObjectsAndKeys:
-          [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0], 
+          [UIColor whiteColor], 
           UITextAttributeTextColor, 
           [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0], 
           UITextAttributeTextShadowColor,  
           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
           UITextAttributeTextShadowOffset,
           nil] forState:UIControlStateSelected];
+        [[UIBarButtonItem appearance] setTitleTextAttributes:
+         [NSDictionary dictionaryWithObjectsAndKeys:
+          [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0], 
+          UITextAttributeTextColor, 
+          [UIColor whiteColor], 
+          UITextAttributeTextShadowColor,  
+          [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+          UITextAttributeTextShadowOffset,
+          nil] forState:UIControlStateDisabled];
         
         [[UISegmentedControl appearance] setTintColor:[UIColor UIColorFromHex:0xeeeeee]];
 

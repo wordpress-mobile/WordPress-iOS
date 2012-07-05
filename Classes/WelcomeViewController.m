@@ -71,10 +71,6 @@
 		headerTextFrame = CGRectMake(25, 80, 450, 252);
 		logoName = @"logo_welcome.png";
 	}
-	
-	if([[UIDevice currentDevice] platformString] == IPHONE_1G_NAMESTRING)
-		logoName = @"logo_welcome.png";
-	
 		
 	UIView *headerView = [[[UIView alloc] initWithFrame:headerViewFrame] autorelease];
 	UIImageView *logo = [[UIImageView alloc] initWithFrame:logoViewFrame];

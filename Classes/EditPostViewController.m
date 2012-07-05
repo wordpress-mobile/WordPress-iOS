@@ -925,12 +925,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [addURLSourceAlert addSubview:urlField];
     [infoText becomeFirstResponder];
 	
-	//move the alert dialog up for older devices
-	float version = [[[UIDevice currentDevice] systemVersion] floatValue];
-	if (version < 3.2){
-		CGAffineTransform myTransform = CGAffineTransformMakeTranslation(0, 100);
-		[addURLSourceAlert setTransform:myTransform];
-	}
     isShowingLinkAlert = YES;
     [addURLSourceAlert setTag:2];
     [addURLSourceAlert show];
