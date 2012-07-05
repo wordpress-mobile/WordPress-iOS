@@ -260,6 +260,13 @@
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
     [super willAnimateRotationToInterfaceOrientation:interfaceOrientation duration:duration];
 
+    // Set the detail view's new width due to the rotation on the iPad if wide panels are expected.
+    if (IS_IPAD && [self viewControllerExpectsWidePanel:self.detailViewController]) {
+        CGRect frm = self.detailView.frame;
+        frm.size.width = IPAD_WIDE_PANEL_WIDTH;
+        self.detailView.frame = frm;
+    }
+    
     int viewCount = [self.detailViews count];
     for (int i = 0; i < viewCount; i++) {
         UIViewController *vc;
@@ -268,6 +275,7 @@
         } else {
             vc = [self.detailViewControllers objectAtIndex:i - 1];
         }
+
         [self setFrameForViewController:vc];
     }
     [self setStackOffset:[self nearestValidOffsetWithVelocity:0] duration:duration];
