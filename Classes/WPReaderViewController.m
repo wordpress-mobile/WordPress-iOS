@@ -123,7 +123,9 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super viewWillAppear:animated];    
+    [super viewWillAppear:animated];  
+    if (IS_IPAD)
+        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -191,6 +193,11 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 - (void)showTopicSelector:(id)sender
 {
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.topicsViewController];
+    if (IS_IPAD) {
+        nav.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+		nav.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
+   
     [self presentModalViewController:nav animated:YES];
     [nav release];
 }
@@ -218,8 +225,18 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 {
     [self.topicsViewController view];
     [self.topicsViewController loadTopicsPage];
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_read"] style:UIBarButtonItemStyleBordered target:self action:@selector(showTopicSelector:)];
-    [self.navigationItem setRightBarButtonItem:button animated:YES];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_read"] style:UIBarButtonItemStylePlain target:self action:@selector(showTopicSelector:)];
+    
+    if (IS_IPAD && [button respondsToSelector:@selector(setTintColor:)]) {
+        UIColor *color = [UIColor UIColorFromHex:0x464646];
+        button.tintColor = color;
+    }
+    
+    if (!IS_IPAD) {
+        [self.navigationItem setRightBarButtonItem:button animated:YES];
+    } else {
+        self.toolbarItems = [NSArray arrayWithObject:button];
+    }
     [button release];
     
 }
