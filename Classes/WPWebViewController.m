@@ -158,7 +158,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    if (DeviceIsPad()) {
+    if (IS_IPAD) {
         return YES;
     }
     
@@ -189,7 +189,7 @@
     self.backButton.enabled = webView.canGoBack;
     self.forwardButton.enabled = webView.canGoForward;
     if (!isLoading) {
-        if (DeviceIsPad()) {
+        if (IS_IPAD) {
             [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
         }
         else
@@ -319,7 +319,7 @@
 
     self.optionsButton.enabled = !loading;
     
-    if (DeviceIsPad()) {
+    if (IS_IPAD) {
         CGRect frame = self.loadingView.frame;
         if (loading) {
             frame.origin.y -= frame.size.height;
@@ -381,7 +381,7 @@
         else 
             self.backButton.enabled = YES;
         self.forwardButton.enabled = YES;
-        if (DeviceIsPad()) {
+        if (IS_IPAD) {
             [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
         }
         else
@@ -402,7 +402,7 @@
         else 
             self.forwardButton.enabled = YES;
         self.backButton.enabled = YES;
-        if (DeviceIsPad()) {
+        if (IS_IPAD) {
             [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
         }
         else
@@ -474,7 +474,7 @@
         ) { 
         
         WPWebViewController *webViewController;
-        if (DeviceIsPad()) {
+        if (IS_IPAD) {
             webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
         }
         else {
@@ -511,7 +511,7 @@
     if ( !hasLoadedContent && ([aWebView.request.URL.absoluteString rangeOfString:kMobileReaderDetailURL].location == NSNotFound || self.detailContent)) {
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(%@);", self.readerAllItems]];
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent]];
-        if (DeviceIsPad()) {
+        if (IS_IPAD) {
             [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
         }
         else

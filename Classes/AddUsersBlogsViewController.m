@@ -29,7 +29,7 @@
 	// Setup WP logo table header
 	NSString *logoFile = @"logo_wporg.png";
 	if(isWPcom == YES) {
-		if (DeviceIsPad())
+		if (IS_IPAD)
 			logoFile = @"logo_wpcom@2x.png";
 		else
 			logoFile = @"logo_wpcom.png";
@@ -39,7 +39,7 @@
     // Setup WPcom table header
 	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
 	CGRect logoFrame = CGRectMake(40, 20, 229, 43);
-	if(DeviceIsPad() == YES) {
+	if(IS_IPAD == YES) {
 		logoFrame = CGRectMake(150, 20, 229, 43);
 	}
 	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
@@ -49,7 +49,7 @@
 	[logo release];
 	self.tableView.tableHeaderView = headerView;
     
-	if(DeviceIsPad())
+	if(IS_IPAD)
 		self.tableView.backgroundView = nil;
 	self.tableView.backgroundColor = [UIColor clearColor];
 	
@@ -79,7 +79,7 @@
         }
 	}
 	
-	if(DeviceIsPad() == YES) {
+	if(IS_IPAD == YES) {
 		topAddSelectedButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add Selected", @"") 
 																				 style:UIBarButtonItemStyleDone 
 																				target:self 
@@ -96,7 +96,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if((DeviceIsPad() == YES) || (interfaceOrientation == UIInterfaceOrientationPortrait))
+	if((IS_IPAD == YES) || (interfaceOrientation == UIInterfaceOrientationPortrait))
 		return YES;
 	else
 		return NO;
@@ -134,7 +134,7 @@
 	if(section == 0) {
 		CGRect footerSpinnerFrame = CGRectMake(80, 0, 20, 20);
 		CGRect footerTextFrame = CGRectMake(110, 0, 200, 20);
-		if(DeviceIsPad() == YES) {
+		if(IS_IPAD == YES) {
 			footerSpinnerFrame = CGRectMake(190, 0, 20, 20);
 			footerTextFrame = CGRectMake(220, 0, 200, 20);
 		}
@@ -331,7 +331,7 @@
 		case 0: {
 			HelpViewController *helpViewController = [[HelpViewController alloc] init];
 						
-			if (DeviceIsPad()) {
+			if (IS_IPAD) {
 				helpViewController.isBlogSetup = YES;
 				[self.navigationController pushViewController:helpViewController animated:YES];
 			}
@@ -403,12 +403,12 @@
 	//disable the 'Add Selected' button if they have selected 0 blogs, trac #521
 	if (selectedBlogs.count == 0) {
 		buttonAddSelected.enabled = FALSE;
-		if (DeviceIsPad())
+		if (IS_IPAD)
 			topAddSelectedButton.enabled = FALSE;
 	}
 	else {
 		buttonAddSelected.enabled = TRUE;
-		if (DeviceIsPad())
+		if (IS_IPAD)
 			topAddSelectedButton.enabled = TRUE;
 	}
 	

@@ -135,7 +135,7 @@
         NSString *host = request.URL.host;
         if ([host rangeOfString:@"wordpress.com"].location == NSNotFound) {
             WPWebViewController *controller;
-            if (DeviceIsPad()) {
+            if (IS_IPAD) {
                 controller = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
             }
             else {
@@ -148,7 +148,7 @@
         
         WPChromelessWebViewController *controller = [[WPChromelessWebViewController alloc] init];
         [controller loadPath:request.URL.absoluteString];        
-        if (!DeviceIsPad()) {
+        if (!IS_IPAD) {
             [self.panelNavigationController pushViewController:controller animated:YES];
 
         } else {

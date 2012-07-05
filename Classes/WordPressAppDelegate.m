@@ -75,7 +75,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     if (!wordPressApp) {
         wordPressApp = [super init];
 		
-//		if (DeviceIsPad())
+//		if (IS_IPAD)
 //			[UIViewController youWillAutorotateOrYouWillDieMrBond];
         
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
@@ -346,7 +346,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setAppBadge];
 	
-	if (DeviceIsPad()) {
+	if (IS_IPAD) {
 //		UIViewController *topVC = self.masterNavigationController.topViewController;
 //        
 //		if (topVC && [topVC isKindOfClass:[BlogViewController class]]) {
@@ -527,7 +527,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	
 	NSString *lineBreaks;
 	
-	if (DeviceIsPad())
+	if (IS_IPAD)
 		lineBreaks = @"\n\n\n\n";
 	else 
 		lineBreaks = @"\n\n\n";
@@ -1389,12 +1389,12 @@ static WordPressAppDelegate *wordPressApp = NULL;
 				HelpViewController *helpViewController = [[HelpViewController alloc] init];
 				WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 				
-//				if (DeviceIsPad() && self.splitViewController.modalViewController) {
-				if (DeviceIsPad() && self.panelNavigationController.modalViewController) {
+//				if (IS_IPAD && self.splitViewController.modalViewController) {
+				if (IS_IPAD && self.panelNavigationController.modalViewController) {
 					[self.navigationController pushViewController:helpViewController animated:YES];
 				}
 				else {
-					if (DeviceIsPad()) {
+					if (IS_IPAD) {
 						helpViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 						helpViewController.modalPresentationStyle = UIModalPresentationFormSheet;
 //						[splitViewController presentModalViewController:helpViewController animated:YES];

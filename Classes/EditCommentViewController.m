@@ -111,7 +111,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 - (void)endTextEnteringButtonAction:(id)sender {
     [textView resignFirstResponder];
-	if (DeviceIsPad() == NO) {
+	if (IS_IPAD == NO) {
 		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
 		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
 			isTransitioning = YES;
@@ -137,7 +137,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	
-	if (DeviceIsPad())
+	if (IS_IPAD)
 		return YES;
 	else if (self.isTransitioning){
         self.comment.content = textView.text;
@@ -154,13 +154,13 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	if (isEditing) {
 		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
 		if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
-			if (DeviceIsPad())
+			if (IS_IPAD)
 				[self setTextViewHeight:353];
 			else
 				[self setTextViewHeight:106];
 		}
 		else if (UIInterfaceOrientationIsPortrait(interfaceOrientation)){
-			if (DeviceIsPad())
+			if (IS_IPAD)
 				[self setTextViewHeight:504];
 			else
 				[self setTextViewHeight:200];
@@ -179,12 +179,12 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	
 	self.isEditing = NO;
 	
-	if (DeviceIsPad())
+	if (IS_IPAD)
 		[self setTextViewHeight:576];
 	else
 		[self setTextViewHeight:416];
 	
-	if (DeviceIsPad() == NO) {
+	if (IS_IPAD == NO) {
 		self.navigationItem.leftBarButtonItem =
 		[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
 										 style: UIBarButtonItemStyleBordered
@@ -195,7 +195,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
 	self.navigationItem.rightBarButtonItem = saveButton;
-	if (DeviceIsPad() == NO) {
+	if (IS_IPAD == NO) {
 		doneButton = [[UIBarButtonItem alloc] 
 					  initWithTitle:NSLocalizedString(@"Done", @"") 
 					  style:UIBarButtonItemStyleDone 
@@ -294,7 +294,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 - (void)initiateSaveCommentReply:(id)sender {
 	[self endTextEnteringButtonAction: sender];
 	if(hasChanges == NO) {
-		if (DeviceIsPad() == YES) {
+		if (IS_IPAD == YES) {
 			[commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:NO];
 		} else
 			[self.navigationController popViewControllerAnimated:YES];
@@ -311,7 +311,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
         [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
         [progressAlert release];
         self.hasChanges = NO;
-		if (DeviceIsPad() == YES) {
+		if (IS_IPAD == YES) {
 			[commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:NO];
 		}
     } failure:^(NSError *error) {

@@ -73,7 +73,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    if (DeviceIsPad()) {
+    if (IS_IPAD) {
         return YES;
     }
 

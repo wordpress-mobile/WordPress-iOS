@@ -52,8 +52,6 @@ Classes/BlogSelectorViewController.h -text
 Classes/BlogSelectorViewController.m -text
 Classes/BlogsTableViewCell.h -text
 Classes/BlogsTableViewCell.m -text
-Classes/CDeviceSupport.h -text
-Classes/CDeviceSupport.m -text
 Classes/CPopoverManager.h -text
 Classes/CPopoverManager.m -text
 Classes/Category.h -text

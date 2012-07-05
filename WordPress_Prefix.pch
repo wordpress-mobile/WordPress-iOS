@@ -19,7 +19,6 @@
 	// Project-specific
     #import "Constants.h"
     #import "NSString+Util.h"
-	#import "CDeviceSupport.h"
 	#import "FileLogger.h"
     #import "WPError.h"
     #import "UIColor+Helpers.h"

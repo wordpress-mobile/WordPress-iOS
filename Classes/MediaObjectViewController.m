@@ -40,7 +40,7 @@
 		}
 	}
 	
-	if (!DeviceIsPad()) { 
+	if (!IS_IPAD) { 
 		NSMutableArray *items = [[toolbar.items mutableCopy] autorelease]; 
 		[items removeObject: cancelButton]; 
 		toolbar.items = items; 
@@ -104,7 +104,7 @@
 			case 0:
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:media];
                 [media remove];
-				if(DeviceIsPad() == YES)
+				if(IS_IPAD == YES)
 					[self dismissModalViewControllerAnimated:YES];
 				else
 					[self.navigationController popViewControllerAnimated:YES];
@@ -117,14 +117,14 @@
 		switch (buttonIndex) {
 			case 0:
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaAbove" object:media];
-				if(DeviceIsPad() == YES)
+				if(IS_IPAD == YES)
 					[self dismissModalViewControllerAnimated:YES];
 				else
 					[self.navigationController popViewControllerAnimated:YES];
 				break;
 			case 1:
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
-				if(DeviceIsPad() == YES)
+				if(IS_IPAD == YES)
 					[self dismissModalViewControllerAnimated:YES];
 				else
 					[self.navigationController popViewControllerAnimated:YES];
@@ -167,7 +167,7 @@
 }
 
 - (IBAction)cancelSelection:(id)sender { 
- 	if (DeviceIsPad()) 
+ 	if (IS_IPAD) 
 		[self dismissModalViewControllerAnimated:YES]; 
  	} 
 

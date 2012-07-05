@@ -32,7 +32,7 @@
 	infoButton.frame = CGRectMake(self.view.bounds.size.width - infoButton.frame.size.width - 9,9,infoButton.frame.size.width,infoButton.frame.size.height);
     //infoButton.center = CGPointMake(self.view.bounds.size.width - infoButton.frame.size.width, infoButton.frame.size.height);
     [self.view addSubview:infoButton];
-	if(DeviceIsPad()) {
+	if(IS_IPAD) {
 		self.tableView.backgroundView = nil;
 	}
 }
@@ -41,7 +41,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if(DeviceIsPad() == YES)
+	if(IS_IPAD == YES)
 		return YES;
 	else
 		return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -65,7 +65,7 @@
 	CGRect headerTextFrame = CGRectMake(20, 145, 280, 105);
 	NSString *logoName = @"logo_welcome";
 	
-	if(DeviceIsPad() == YES) {
+	if(IS_IPAD == YES) {
 		headerViewFrame = CGRectMake(0, 0, 500, 252);
 		logoViewFrame = CGRectMake(175, 15, 150, 150);
 		headerTextFrame = CGRectMake(25, 80, 450, 252);
@@ -125,7 +125,7 @@
 	//cell.textLabel.textAlignment = UITextAlignmentCenter;
 	cell.textLabel.numberOfLines = 0;
 	cell.textLabel.font = [UIFont boldSystemFontOfSize:15];
-	if(DeviceIsPad() == YES)
+	if(IS_IPAD == YES)
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	
@@ -138,7 +138,7 @@
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if(indexPath.row == 0) { // Start a new blog at WordPress.com
 	/*	NSString *newNibName = @"XMLSignupViewController";
-		if(DeviceIsPad() == YES) {
+		if(IS_IPAD == YES) {
 			newNibName = @"XMLSignupViewController-iPad";
         } else {
 			newNibName = @"XMLSignupViewController";
@@ -148,7 +148,7 @@
         [self.navigationController pushViewController:xmlSignup animated:YES];
         [xmlSignup release];*/
         NSString *newNibName = @"WebSignupViewController";
-		if(DeviceIsPad() == YES)
+		if(IS_IPAD == YES)
 			newNibName = @"WebSignupViewController-iPad";
 		WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:newNibName bundle:[NSBundle mainBundle]];
 		[self.navigationController pushViewController:webSignup animated:YES];
@@ -169,7 +169,7 @@
 
 		if(appDelegate.isWPcomAuthenticated) {
 			AddUsersBlogsViewController *addUsersBlogsView;
-			if (DeviceIsPad() == YES)
+			if (IS_IPAD == YES)
 				addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController-iPad" bundle:nil];
 			else
 				addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
@@ -188,7 +188,7 @@
 	}
 	else if(indexPath.row == 2) { // Add self-hosted WordPress.org blog
         AddSiteViewController *addSiteView;
-		if(DeviceIsPad() == YES) {
+		if(IS_IPAD == YES) {
             addSiteView = [[AddSiteViewController alloc] initWithNibName:@"AddSiteViewController-iPad" bundle:nil];
         } else {
             addSiteView = [[AddSiteViewController alloc] initWithNibName:@"AddSiteViewController" bundle:nil];

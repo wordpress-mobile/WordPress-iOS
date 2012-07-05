@@ -71,7 +71,7 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 1.0f);
     CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
-    if (DeviceIsPad()) {
+    if (IS_IPAD) {
         CGContextSetStrokeColorWithColor(context, CGColorFromRGB(0x404040));
     } else {
         CGContextSetStrokeColorWithColor(context, CGColorFromRGB(0x52555b));        
@@ -79,7 +79,7 @@
     CGContextMoveToPoint(context, self.bounds.origin.x, self.bounds.origin.y + 0.5f);
     CGContextAddLineToPoint(context, self.bounds.size.width, self.bounds.origin.y + 0.5f);
     CGContextStrokePath(context);
-    if (DeviceIsPad()) {
+    if (IS_IPAD) {
         CGContextSetStrokeColorWithColor(context, CGColorFromRGB(0xd9d9d9));
     } else {
         CGContextSetStrokeColorWithColor(context, CGColorFromRGB(0xdbdfe4));
@@ -106,9 +106,9 @@
 
 - (void)buildMainButtons {
     CGFloat x = 4.0f;
-    CGFloat padding = DeviceIsPad() ? WPKT_BUTTON_PADDING_IPAD : WPKT_BUTTON_PADDING_IPHONE;
-    CGFloat height = DeviceIsPad() ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
-	CGFloat margin = DeviceIsPad() ? WPKT_BUTTON_MARGIN_IPAD : WPKT_BUTTON_MARGIN_IPHONE;
+    CGFloat padding = IS_IPAD ? WPKT_BUTTON_PADDING_IPAD : WPKT_BUTTON_PADDING_IPHONE;
+    CGFloat height = IS_IPAD ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
+	CGFloat margin = IS_IPAD ? WPKT_BUTTON_MARGIN_IPAD : WPKT_BUTTON_MARGIN_IPHONE;
     if (boldButton == nil) {
         boldButton = [[WPKeyboardToolbarButtonItem button] retain];
         [boldButton setImageName:@"toolbarBold"];
@@ -156,9 +156,9 @@
 }
 
 - (void)buildExtendedButtons {
-    CGFloat padding = DeviceIsPad() ? WPKT_BUTTON_PADDING_IPAD : WPKT_BUTTON_PADDING_IPHONE;
-    CGFloat height = DeviceIsPad() ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
-	CGFloat margin = DeviceIsPad() ? WPKT_BUTTON_MARGIN_IPAD : WPKT_BUTTON_MARGIN_IPHONE;
+    CGFloat padding = IS_IPAD ? WPKT_BUTTON_PADDING_IPAD : WPKT_BUTTON_PADDING_IPHONE;
+    CGFloat height = IS_IPAD ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
+	CGFloat margin = IS_IPAD ? WPKT_BUTTON_MARGIN_IPAD : WPKT_BUTTON_MARGIN_IPHONE;
     CGFloat x = 4.0f;
     if (ulButton == nil) {
         ulButton = [[WPKeyboardToolbarButtonItem button] retain];
@@ -208,7 +208,7 @@
 
 - (void)buildMainView {
     if (mainView == nil) {
-        CGFloat height = DeviceIsPad() ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
+        CGFloat height = IS_IPAD ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
         mainView = [[UIView alloc] init];
         [self buildMainButtons];
         CGFloat mainWidth = delButton.frame.origin.x + delButton.frame.size.width;
@@ -225,7 +225,7 @@
 
 - (void)buildExtendedView {
     if (extendedView == nil) {
-        CGFloat height = DeviceIsPad() ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
+        CGFloat height = IS_IPAD ? WPKT_BUTTON_HEIGHT_IPAD : WPKT_BUTTON_HEIGHT_PORTRAIT;
         extendedView = [[UIView alloc] init];
         [self buildExtendedButtons];
         CGFloat extendedWidth = moreButton.frame.origin.x + moreButton.frame.size.width;
@@ -275,7 +275,7 @@
 		//doneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         doneButton.actionTag = @"done";
         [doneButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
-        if (DeviceIsPad()) {
+        if (IS_IPAD) {
             doneButton.titleLabel.font = [UIFont systemFontOfSize:22.0f];
             [doneButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             [doneButton setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -297,7 +297,7 @@
     self.backgroundColor = UIColorFromRGB(0xb0b7c1);
     _gradient = [CAGradientLayer layer];
     _gradient.frame = [self gradientFrame];
-    if (DeviceIsPad()) {
+    if (IS_IPAD) {
         _gradient.colors = [NSArray arrayWithObjects:(id)kStartColorIpad.CGColor, (id)kEndColorIpad.CGColor, nil];
     } else {
         _gradient.colors = [NSArray arrayWithObjects:(id)kStartColor.CGColor, (id)kEndColor.CGColor, nil];
@@ -316,7 +316,7 @@
     
     CGRect doneFrame = doneButton.frame;
     doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 5;
-    if (DeviceIsPad()) {
+    if (IS_IPAD) {
         doneFrame.size.height = WPKT_BUTTON_HEIGHT_IPAD;
         doneFrame.size.width = WPKT_BUTTON_HEIGHT_IPAD + 14.0f;
         doneFrame.origin.x = self.frame.size.width - doneFrame.size.width - 5;
@@ -399,7 +399,7 @@
         
         frame = extendedView.frame;
         frame.origin.x = mainView.frame.origin.x + mainView.frame.size.width;
-		if (DeviceIsPad()) frame.origin.x -= 4; // Dirty fix, but works for now
+		if (IS_IPAD) frame.origin.x -= 4; // Dirty fix, but works for now
         if (self.frame.size.height < WPKT_HEIGHT_IPHONE_PORTRAIT) {
             frame.origin.y = -1;
             frame.size.height = WPKT_BUTTON_HEIGHT_LANDSCAPE;

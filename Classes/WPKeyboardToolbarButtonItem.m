@@ -47,7 +47,7 @@
 //        [self setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
 //        self.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
 		
-        if (DeviceIsPad()) {
+        if (IS_IPAD) {
             [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtoniPad"] stretchableImageWithLeftCapWidth:10.0f topCapHeight:0.0f] forState:UIControlStateNormal];
             [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtoniPadHighlighted"] stretchableImageWithLeftCapWidth:10.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
         } else {
@@ -60,7 +60,7 @@
 }
 
 - (void)setImageName:(NSString *)imageName {
-    if (DeviceIsPad()) {
+    if (IS_IPAD) {
         [self setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@iPad", imageName]] forState:UIControlStateNormal];
         [self setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@iPadHighlighted", imageName]] forState:UIControlStateHighlighted];
     } else {

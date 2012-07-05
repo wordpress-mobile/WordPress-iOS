@@ -13,7 +13,7 @@
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	if(DeviceIsPad() == YES) {
+	if(IS_IPAD == YES) {
 		self.view.frame = CGRectMake(0, 0, 500, 400);
 	}
 	
@@ -64,7 +64,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if(DeviceIsPad() == YES)
+	if(IS_IPAD == YES)
 		return YES;
 	else
 		return (interfaceOrientation == UIInterfaceOrientationPortrait);

@@ -61,7 +61,7 @@
 	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
 	CGRect logoFrame = CGRectMake(40, 20, 229, 43);
 	NSString *logoFile = @"logo_wpcom.png";
-	if(DeviceIsPad() == YES) {
+	if(IS_IPAD == YES) {
 		logoFile = @"logo_wpcom@2x.png";
 		logoFrame = CGRectMake(150, 20, 229, 43);
 	}
@@ -73,7 +73,7 @@
 	[logo release];
 	self.tableView.tableHeaderView = headerView;
 	
-	if(DeviceIsPad())
+	if(IS_IPAD)
 		self.tableView.backgroundView = nil;
 
 //	self.tableView.backgroundColor = [UIColor clearColor];

@@ -17,7 +17,7 @@
     logoView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     tableView.tableHeaderView = logoView;
     [logoView release];
-	if (DeviceIsPad())
+	if (IS_IPAD)
 		self.tableView.backgroundView = nil;
 	self.tableView.backgroundColor = [UIColor clearColor];
     
@@ -54,7 +54,7 @@
 			[self.blog dataSave];
             [self.blog syncBlogWithSuccess:nil failure:nil];
             
-            if (DeviceIsPad()) {
+            if (IS_IPAD) {
                 [self dismissModalViewControllerAnimated:YES];
             }
 			else

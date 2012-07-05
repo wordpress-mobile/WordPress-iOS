@@ -167,7 +167,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if (DeviceIsPad() == YES) {
+	if (IS_IPAD == YES) {
 		return YES;
 	}
 	return NO;
@@ -204,7 +204,7 @@
 	
 	actionSheet.tag = 301;
 	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-	if (DeviceIsPad() == YES) {
+	if (IS_IPAD == YES) {
         actionButton.enabled = NO;
 		[actionSheet showFromBarButtonItem:actionButton animated:YES];
 	} else {
@@ -347,7 +347,7 @@
 			[replyToCommentViewController.comment remove]; //delete the empty comment
 			replyToCommentViewController.comment = nil;
 			
-			if (DeviceIsPad() == YES)  //an half-patch for #790: sometimes the modal view is not disposed when click on cancel. 
+			if (IS_IPAD == YES)  //an half-patch for #790: sometimes the modal view is not disposed when click on cancel. 
 				[self dismissModalViewControllerAnimated:YES];
 			
 		} 
@@ -394,7 +394,7 @@
 	editCommentViewController.comment = self.comment;
 	editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
 	
-	if (DeviceIsPad() == YES) {
+	if (IS_IPAD == YES) {
 		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editCommentViewController] autorelease];
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 		navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -508,7 +508,7 @@
 - (void)moderateCommentWithSelector:(SEL)selector {
     Blog *currentBlog = self.comment.blog;
     [self.comment performSelector:selector];
-    if (!DeviceIsPad()) {
+    if (!IS_IPAD) {
         [self.navigationController popViewControllerAnimated:YES];
     }
    [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:currentBlog];
@@ -746,7 +746,7 @@
     
 	if (url != nil && [[url description] length] > 0) {
         WPWebViewController *webViewController;
-        if (DeviceIsPad()) {
+        if (IS_IPAD) {
             webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
         }
         else {
@@ -775,7 +775,7 @@
 }
 
 - (void)addOrRemoveSegmentedControl {
-	if (DeviceIsPad() && (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
+	if (IS_IPAD && (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
 		self.navigationItem.rightBarButtonItem = nil;
 	}	
 	else

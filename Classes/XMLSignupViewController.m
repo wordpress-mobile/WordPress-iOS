@@ -56,7 +56,7 @@
 	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
 	CGRect logoFrame = CGRectMake(40, 20, 229, 43);
 	NSString *logoFile = @"logo_wpcom.png";
-	if(DeviceIsPad() == YES) {
+	if(IS_IPAD == YES) {
 		logoFile = @"logo_wpcom@2x.png";
 		logoFrame = CGRectMake(150, 20, 229, 43);
 	}
@@ -78,7 +78,7 @@
     [footerButton addTarget:self action:@selector(tosButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     self.tableView.tableFooterView = footerButton;
     
-	if(DeviceIsPad())
+	if(IS_IPAD)
 		self.tableView.backgroundView = nil;
 	
 	self.tableView.backgroundColor = [UIColor clearColor];
@@ -383,7 +383,7 @@
 - (void)scrollViewToCenter
 {
     // Scroll fields behind keyboard so the user can see them
-    if(DeviceIsPad() == NO) {
+    if(IS_IPAD == NO) {
         CGPoint textFieldOrigin = [self.lastTextField convertPoint:self.lastTextField.frame.origin toView:self.view];
         CGFloat scrollPoint = self.view.frame.size.height / 2 - self.lastTextField.frame.size.height;
         
@@ -398,7 +398,7 @@
     // Push ToS to new webview
 
     WPWebViewController *tosView;
-    if (DeviceIsPad()) {
+    if (IS_IPAD) {
         tosView = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
     }
     else {

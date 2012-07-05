@@ -67,14 +67,14 @@
     if ([composeButtonItem respondsToSelector:@selector(setTintColor:)]) {
         composeButtonItem.tintColor = [UIColor UIColorFromHex:0x464646];
     }
-    if (!DeviceIsPad()) {
+    if (!IS_IPAD) {
         self.navigationItem.rightBarButtonItem = composeButtonItem;
     } else {
         self.toolbarItems = [NSArray arrayWithObject:composeButtonItem];
     }
     
     
-    if (DeviceIsPad() && self.selectedIndexPath && self.postReaderViewController) {
+    if (IS_IPAD && self.selectedIndexPath && self.postReaderViewController) {
         @try {
             self.postReaderViewController.post = [self.resultsController objectAtIndexPath:self.selectedIndexPath];
             [self.postReaderViewController refreshUI];
@@ -110,13 +110,13 @@
 	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	appDelegate.postID = nil;
 
-	if (DeviceIsPad() == NO) {
+	if (IS_IPAD == NO) {
 		// iPhone table views should not appear selected
 		if ([self.tableView indexPathForSelectedRow]) {
 			[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 		}
-	} else if (DeviceIsPad() == YES) {
+	} else if (IS_IPAD == YES) {
 		// sometimes, iPad table views should
 		if (self.selectedIndexPath) {
             [self showSelectedPost];
@@ -173,7 +173,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 
-	if (DeviceIsPad() == YES) {
+	if (IS_IPAD == YES) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	}
     
@@ -211,7 +211,7 @@
 		// Don't allow editing while pushing changes
 		return;
 	}
-    if (DeviceIsPad()) {
+    if (IS_IPAD) {
         self.selectedIndexPath = indexPath;
     } else {
         [self editPost:post];
@@ -261,7 +261,7 @@
         NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
         [self syncPosts];
-        if(DeviceIsPad() && self.postReaderViewController) {
+        if(IS_IPAD && self.postReaderViewController) {
             if(self.postReaderViewController.apost == post) {
                 //push an the W logo on the right. 
                 WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];

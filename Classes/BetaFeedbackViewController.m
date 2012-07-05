@@ -59,7 +59,7 @@
 		textView.text = nil;
 	textView.textColor = [UIColor blackColor];
 	isEditingFeedback = YES;
-	if (!DeviceIsPad())
+	if (!IS_IPAD)
 		cancelButton.title = @"Done";
 }
 
@@ -85,7 +85,7 @@
 }
 
 -(void) cancel: (id)sender {
-	if (isEditingFeedback && !DeviceIsPad()) {
+	if (isEditingFeedback && !IS_IPAD) {
 		[feedback resignFirstResponder];
 		isEditingFeedback = NO;
 		cancelButton.title = @"Cancel";
@@ -164,7 +164,7 @@
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations.
-	if (DeviceIsPad())
+	if (IS_IPAD)
 		return YES;
 
     return (interfaceOrientation == UIInterfaceOrientationPortrait);

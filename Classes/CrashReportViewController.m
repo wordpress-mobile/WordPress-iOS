@@ -31,7 +31,7 @@ NSString *CrashFilePath();
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if(DeviceIsPad() == YES)
+	if(IS_IPAD == YES)
 		return YES;
 	else
 		return NO;

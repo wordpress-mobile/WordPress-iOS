@@ -20,7 +20,7 @@
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    if (DeviceIsPad())
+    if (IS_IPAD)
 		return YES;
 	
 	return NO;

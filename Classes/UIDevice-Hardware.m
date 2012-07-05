@@ -38,7 +38,7 @@
 	if ([platform isEqualToString:@"iPod2,1"])   return IPOD_2G_NAMESTRING;
 	if ([platform isEqualToString:@"iPad1,1"])   return IPAD_1G_NAMESTRING;
 	if ([platform isEqualToString:@"i386"]) {
-		if(DeviceIsPad())
+		if(IS_IPAD)
 			return IPAD_SIMULATOR_NAMESTRING;
 		else
 			return IPHONE_SIMULATOR_NAMESTRING;

@@ -52,7 +52,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	[self refreshWebView];
-	if (DeviceIsPad())
+	if (IS_IPAD)
 		[activityFooter setCenter:CGPointMake(self.view.center.x, self.view.center.y)];
 	else
 		[activityFooter setCenter:CGPointMake(self.view.center.x - 20, self.view.center.y - 20)];
@@ -64,7 +64,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if (DeviceIsPad() == YES) {
+	if (IS_IPAD == YES) {
 		return YES;
 	}
 

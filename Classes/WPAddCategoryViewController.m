@@ -28,7 +28,7 @@
 }
 - (void)dismiss {
     WPFLogMethod();
-    if (DeviceIsPad() == YES) {
+    if (IS_IPAD == YES) {
         [(WPSelectionTableViewController *)self.parentViewController popViewControllerAnimated:YES];
     } else {
         [self.parentViewController dismissModalViewControllerAnimated:YES];
@@ -114,7 +114,7 @@
 		if ([[parent viewControllers] objectAtIndex:0] == self) {
 			self.navigationItem.leftBarButtonItem = cancelButtonItem;
         } else {
-            if (DeviceIsPad()) {
+            if (IS_IPAD) {
                 if ([[parent viewControllers] objectAtIndex:1] == self)
                     self.navigationItem.leftBarButtonItem = cancelButtonItem;
             } else {
@@ -129,7 +129,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if (DeviceIsPad() == YES) {
+	if (IS_IPAD == YES) {
 		return YES;
 	}
 

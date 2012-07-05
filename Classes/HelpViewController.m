@@ -22,7 +22,7 @@
 	if (![MFMailComposeViewController canSendMail])
 		[emailButton setHidden:YES]; 
 	
-	if (DeviceIsPad())
+	if (IS_IPAD)
 		self.navigationItem.title = NSLocalizedString(@"Help", @"");
     
     self.helpText.text = NSLocalizedString(@"Please visit the FAQ to get answers to common questions. If you're still having trouble, post in the forums or email us.", @"");
@@ -33,13 +33,13 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	
-	if (DeviceIsPad() && isBlogSetup)
+	if (IS_IPAD && isBlogSetup)
 			[navBar setHidden:YES];
 }
 
 // Override to allow orientations other than the default portrait orientation.
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    if (DeviceIsPad())
+    if (IS_IPAD)
 		return YES;
 	
 	return NO;

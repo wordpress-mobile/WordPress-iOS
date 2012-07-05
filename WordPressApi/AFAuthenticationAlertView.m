@@ -37,7 +37,7 @@
     if ([self respondsToSelector:@selector(setAlertViewStyle:)]) {
         self.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
     } else {
-        if (DeviceIsPad()) {
+        if (IS_IPAD) {
             self.message = [self.message stringByAppendingString:@"\n\n\n\n"];
         } else {
             self.message = [self.message stringByAppendingString:@"\n\n\n"];

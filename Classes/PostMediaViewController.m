@@ -206,7 +206,7 @@
         MediaObjectViewController *mediaView = [[MediaObjectViewController alloc] initWithNibName:@"MediaObjectView" bundle:nil];
         [mediaView setMedia:media];
 
-        if(DeviceIsPad() == YES) {
+        if(IS_IPAD == YES) {
 			mediaView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 			mediaView.modalPresentationStyle = UIModalPresentationFormSheet;
 			
@@ -403,7 +403,7 @@
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 		picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
 		
-		if(DeviceIsPad() == YES) {
+		if(IS_IPAD == YES) {
 			UIBarButtonItem *barButton = postDetailViewController.photoButton;
 			if (addPopover == nil) {
 				addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
@@ -446,7 +446,7 @@
 		}
 	}
 	
-	if(DeviceIsPad() == YES) {
+	if(IS_IPAD == YES) {
 		UIBarButtonItem *barButton = postDetailViewController.movieButton;	
 		if (addPopover == nil) {
 			addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
@@ -497,7 +497,7 @@
 	UIBarButtonItem *barButton = nil;
 
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        if (DeviceIsPad() && addPopover != nil) {
+        if (IS_IPAD && addPopover != nil) {
             [addPopover dismissPopoverAnimated:YES];
         }        
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -532,7 +532,7 @@
         }
 		isLibraryMedia = YES;
 		
-		if(DeviceIsPad() == YES) {
+		if(IS_IPAD == YES) {
             if (addPopover == nil) {
                 addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
                 addPopover.delegate = self;
@@ -661,7 +661,7 @@
 		
 		NSString *lineBreaks;
 		
-		if (DeviceIsPad())
+		if (IS_IPAD)
 			lineBreaks = @"\n\n\n\n";
 		else 
 			lineBreaks = @"\n\n\n";
@@ -888,12 +888,12 @@
 				break;
 		}
 		
-		if(DeviceIsPad() == NO) {
+		if(IS_IPAD == NO) {
 			[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
 		}
 	}
 	
-	if(DeviceIsPad() == YES){
+	if(IS_IPAD == YES){
 		[addPopover dismissPopoverAnimated:YES];
 		[[CPopoverManager instance] setCurrentPopoverController:NULL];
 		addPopover = nil;
@@ -964,7 +964,7 @@
 }
 
 - (void)processRecordedVideo {
-	if(DeviceIsPad() == YES)
+	if(IS_IPAD == YES)
 		[addPopover dismissPopoverAnimated:YES];
 	else {
 		[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
@@ -985,7 +985,7 @@
 		videoURL = [currentVideo valueForKey:UIImagePickerControllerReferenceURL];
 	
 	if(videoURL != nil) {
-		if(DeviceIsPad() == YES)
+		if(IS_IPAD == YES)
 			[addPopover dismissPopoverAnimated:YES];
 		else {
 			[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
@@ -1481,7 +1481,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if (DeviceIsPad())
+	if (IS_IPAD)
 		return YES;
 	
 	return NO;

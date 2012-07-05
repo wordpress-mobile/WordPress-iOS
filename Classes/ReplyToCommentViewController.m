@@ -150,7 +150,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if (DeviceIsPad())
+	if (IS_IPAD)
 		return YES;
 	else if (self.isTransitioning){
 		return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -166,13 +166,13 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	if (isEditing) {
 		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
 		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
-			if (DeviceIsPad())
+			if (IS_IPAD)
 				[self setTextViewHeight:353];
 			else
 				[self setTextViewHeight:106];
 		}
 		else if (UIInterfaceOrientationIsPortrait(interfaceOrientation)){
-			if (DeviceIsPad())
+			if (IS_IPAD)
 				[self setTextViewHeight:504];
 			else
 				[self setTextViewHeight:200];
@@ -193,12 +193,12 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	self.isEditing = NO;
 	
 	//make the text view longer !!!! 
-	if (DeviceIsPad())
+	if (IS_IPAD)
 		[self setTextViewHeight:576];
 	else
 		[self setTextViewHeight:416];
 	
-	if (DeviceIsPad() == NO) {
+	if (IS_IPAD == NO) {
 		self.navigationItem.leftBarButtonItem =
 		[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
 										 style:UIBarButtonItemStyleBordered
@@ -210,7 +210,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
 	self.navigationItem.rightBarButtonItem = saveButton;
 	
-	if (DeviceIsPad() == NO) {
+	if (IS_IPAD == NO) {
 		doneButton = [[UIBarButtonItem alloc] 
 									   initWithTitle:NSLocalizedString(@"Done", @"") 
 									   style:UIBarButtonItemStyleDone 
@@ -314,7 +314,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	//within the keyboard, the textViewDidEndEditing is never called
 	[self endTextEnteringButtonAction:sender];
 	if(hasChanges == NO) {
-		if (DeviceIsPad() == YES) {
+		if (IS_IPAD == YES) {
 			[textView becomeFirstResponder];
 		}		
 		UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error.", @"")

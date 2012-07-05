@@ -38,7 +38,7 @@
             self.navigationItem.title = NSLocalizedString(@"Edit Site", @"");
         }
 		self.tableView.backgroundColor = [UIColor clearColor];
-		if (DeviceIsPad()){
+		if (IS_IPAD){
 			self.tableView.backgroundView = nil;
 			self.tableView.backgroundColor = [UIColor clearColor];
 		}
@@ -54,7 +54,7 @@
     
     self.navigationItem.rightBarButtonItem = saveButton;
     
-    if (!DeviceIsPad()){
+    if (!IS_IPAD){
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
         
@@ -71,7 +71,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-	if(DeviceIsPad() == YES)
+	if(IS_IPAD == YES)
 		return YES;
 	else
 		return NO;
@@ -289,7 +289,7 @@
                 HelpViewController *helpViewController = [[HelpViewController alloc] init];
                 WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
                 
-                if (DeviceIsPad()) {
+                if (IS_IPAD) {
                     helpViewController.isBlogSetup = YES;
                     [self.navigationController pushViewController:helpViewController animated:YES];
                 }

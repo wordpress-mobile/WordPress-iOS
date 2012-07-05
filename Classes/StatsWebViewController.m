@@ -203,7 +203,7 @@
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     
-    if(DeviceIsPad() == YES) {
+    if(IS_IPAD == YES) {
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         navController.modalPresentationStyle = UIModalPresentationFormSheet;
     }

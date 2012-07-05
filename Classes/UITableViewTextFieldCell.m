@@ -48,7 +48,7 @@
     CGSize labelSize = [self.textLabel.text sizeWithFont:[UIFont boldSystemFontOfSize:17]];
     labelSize.width = ceil(labelSize.width/5) * 5; // Round to upper 5
 
-    if (DeviceIsPad()) {
+    if (IS_IPAD) {
         frame = CGRectMake(labelSize.width + 50,
                            self.textLabel.frame.origin.y,
                            self.frame.size.width - labelSize.width - 100,

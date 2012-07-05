@@ -69,7 +69,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (id)initWithPost:(AbstractPost *)aPost {
     NSString *nib;
-    if (DeviceIsPad()) {
+    if (IS_IPAD) {
         nib = @"EditPostViewController-iPad";
     } else {
         nib = @"EditPostViewController";
@@ -135,7 +135,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     if ([textView respondsToSelector:@selector(setInputAccessoryView:)]) {
         CGRect frame;
-        if (DeviceIsPad()) {
+        if (IS_IPAD) {
             frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_IPAD_PORTRAIT);
         } else {
             frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_IPHONE_PORTRAIT);
@@ -277,7 +277,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-	if(DeviceIsPad()) {
+	if(IS_IPAD) {
 		return YES;
 	}else if (toInterfaceOrientation == UIInterfaceOrientationPortrait) { 
 		return YES; 
@@ -362,7 +362,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     } else if ([newView isEqual:postPreviewViewController.view]) {
 		pointerFrame.origin.x = 101;
 	} else if ([newView isEqual:postMediaViewController.view]) {
-		if (DeviceIsPad()) {
+		if (IS_IPAD) {
 			if ([postMediaViewController isDeviceSupportVideo])
 				pointerFrame.origin.x = 646;
 			else
@@ -444,7 +444,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 
 - (CGRect)normalTextFrame {
-    if (DeviceIsPad())
+    if (IS_IPAD)
         if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
             || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
             return CGRectMake(0, 143, 768, 517);
@@ -581,7 +581,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     segmentedTableViewController.navigationItem.rightBarButtonItem = createCategoryBarButtonItem;
 	
     if (isNewCategory != YES) {
-		if (DeviceIsPad() == YES) {
+		if (IS_IPAD == YES) {
             UINavigationController *navController;
             if (segmentedTableViewController.navigationController) {
                 navController = segmentedTableViewController.navigationController;
@@ -630,7 +630,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     selectionTableViewController.title = NSLocalizedString(@"Status", @"");
     selectionTableViewController.navigationItem.rightBarButtonItem = nil;
-	if (DeviceIsPad() == YES) {
+	if (IS_IPAD == YES) {
 		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:selectionTableViewController] autorelease];
 		UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
 		CGRect popoverRect = [self.view convertRect:[statusTextField frame] fromView:[statusTextField superview]];
@@ -684,7 +684,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     WPFLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
     addCategoryViewController.blog = self.post.blog;
-	if (DeviceIsPad() == YES) {
+	if (IS_IPAD == YES) {
         [segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
  	} else {
 		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
@@ -850,7 +850,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (IBAction)endTextEnteringButtonAction:(id)sender {
     [textView resignFirstResponder];
-	if (DeviceIsPad() == NO) {
+	if (IS_IPAD == NO) {
 		if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 			//#615 -- trick to rotate the interface back to portrait. 
 				UIViewController *garbageController = [[[UIViewController alloc] init] autorelease]; 
@@ -1050,7 +1050,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		
         self.apost.content = textView.text;
 		
-		if (!DeviceIsPad()) {
+		if (!IS_IPAD) {
             [self refreshButtons];
 		}
     }
@@ -1137,9 +1137,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
          * iPad Landscape with external keyboard
          */
         BOOL wantsFullScreen = (
-                                (!DeviceIsPad() && !isExternalKeyboard)                  // iPhone without external keyboard
-                                || (!DeviceIsPad() && isLandscape && isExternalKeyboard) // iPhone Landscape with external keyboard
-                                || (DeviceIsPad() && isLandscape && !isExternalKeyboard) // iPad Landscape without external keyboard
+                                (!IS_IPAD && !isExternalKeyboard)                  // iPhone without external keyboard
+                                || (!IS_IPAD && isLandscape && isExternalKeyboard) // iPhone Landscape with external keyboard
+                                || (IS_IPAD && isLandscape && !isExternalKeyboard) // iPad Landscape without external keyboard
                                 );
         if (wantsFullScreen && isShowing) {
             [self.navigationController setNavigationBarHidden:YES animated:YES];
@@ -1177,13 +1177,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
     WPFLogMethod();
     CGRect frame = editorToolbar.frame;
     if (UIDeviceOrientationIsLandscape(interfaceOrientation)) {
-        if (DeviceIsPad()) {
+        if (IS_IPAD) {
             frame.size.height = WPKT_HEIGHT_IPAD_LANDSCAPE;
         } else {
             frame.size.height = WPKT_HEIGHT_IPHONE_LANDSCAPE;
         }
     } else {
-        if (DeviceIsPad()) {
+        if (IS_IPAD) {
             frame.size.height = WPKT_HEIGHT_IPAD_PORTRAIT;
         } else {
             frame.size.height = WPKT_HEIGHT_IPHONE_PORTRAIT;
@@ -1532,7 +1532,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	isShowingKeyboard = YES;
     if (isEditing) {
         [self positionTextView:notification];
-        editorToolbar.doneButton.hidden = DeviceIsPad() && ! isExternalKeyboard;
+        editorToolbar.doneButton.hidden = IS_IPAD && ! isExternalKeyboard;
     }
 }
 

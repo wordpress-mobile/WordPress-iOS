@@ -45,7 +45,7 @@
 	betaFeedbackViewController = [[BetaFeedbackViewController alloc] init];
 	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
-	if (DeviceIsPad()) {
+	if (IS_IPAD) {
 		betaFeedbackViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		betaFeedbackViewController.modalPresentationStyle = UIModalPresentationFormSheet;
         [appDelegate.panelNavigationController presentModalViewController:betaFeedbackViewController animated:YES];

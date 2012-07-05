@@ -84,7 +84,7 @@
     formatsList = [postDetailViewController.post.blog.sortedPostFormatNames retain];
 
     CGRect pickerFrame;
-	if (DeviceIsPad())
+	if (IS_IPAD)
 		pickerFrame = CGRectMake(0, 0, 320, 216);  
 	else 
 		pickerFrame = CGRectMake(0, 40, 320, 216);    
@@ -97,7 +97,7 @@
     datePickerView.minuteInterval = 5;
     [datePickerView addTarget:self action:@selector(datePickerChanged) forControlEvents:UIControlEventValueChanged];
 
-    if (!DeviceIsPad()) {
+    if (!IS_IPAD) {
         /*UIToolbar *accesoryToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
         accesoryToolbar.tintColor = postDetailViewController.toolbar.tintColor;
         NSMutableArray *barButtons = [NSMutableArray arrayWithCapacity:2];
@@ -182,7 +182,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if (DeviceIsPad() == YES) {
+	if (IS_IPAD == YES) {
 		return YES;
 	}
 	
@@ -556,7 +556,7 @@
     if (isShowingKeyboard)
         [passwordTextField resignFirstResponder];
     
-    if (DeviceIsPad()) {
+    if (IS_IPAD) {
         if (popover)
             [popover release];
         UIViewController *fakeController = [[UIViewController alloc] init];
@@ -632,7 +632,7 @@
     datePickerView.date = [NSDate date];
     postDetailViewController.apost.dateCreated = nil;
     [tableView reloadData];
-    if (DeviceIsPad())
+    if (IS_IPAD)
         [popover dismissPopoverAnimated:YES];
     else
         [self hidePicker];
