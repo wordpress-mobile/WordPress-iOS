@@ -107,7 +107,7 @@ typedef enum {
 #pragma mark - Custom methods
 
 - (void)dismiss {
-    [self dismissModalViewControllerAnimated:NO];
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)checkCloseButton {
