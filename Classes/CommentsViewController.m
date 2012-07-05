@@ -116,13 +116,7 @@
 #pragma mark -
 
 - (void)cancelReplyToCommentViewController:(id)sender {
-	if (DeviceIsPad() == NO) {
-		WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [delegate.navigationController popViewControllerAnimated:YES];
-	}
-	else if (DeviceIsPad() == YES) {
-		[self dismissModalViewControllerAnimated:YES];
-	}
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
@@ -319,26 +313,21 @@
 }
 
 - (IBAction)replyToSelectedComment:(id)sender {
-	WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-	
-  Comment *selectedComment = [_selectedComments objectAtIndex:0];
-  
-  ReplyToCommentViewController *replyToCommentViewController = [[[ReplyToCommentViewController alloc] 
-                                        initWithNibName:@"ReplyToCommentViewController" 
-                                        bundle:nil] autorelease];
-  
-  replyToCommentViewController.delegate = self;
-  replyToCommentViewController.comment = [[selectedComment newReply] autorelease];
-  replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
-	
-	if (DeviceIsPad() == NO) {
-		[delegate.navigationController pushViewController:replyToCommentViewController animated:YES];
-	} else {
-		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:replyToCommentViewController] autorelease];
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-		[self presentModalViewController:navController animated:YES];
-	}  
+    Comment *selectedComment = [_selectedComments objectAtIndex:0];
+
+    ReplyToCommentViewController *replyToCommentViewController = [[[ReplyToCommentViewController alloc]
+                                                                   initWithNibName:@"ReplyToCommentViewController"
+                                                                   bundle:nil] autorelease];
+
+    replyToCommentViewController.delegate = self;
+    replyToCommentViewController.comment = [[selectedComment newReply] autorelease];
+    replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
+
+    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:replyToCommentViewController] autorelease];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navController animated:YES];
+
     [self removeSwipeView:NO];
 }
 
