@@ -855,6 +855,10 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 sv.lproj/Localizable.strings -text svneol=unset#unset
 /sync.png -text svneol=unset#unset
 /sync@2x.png -text
+/sync_dark.png -text
+/sync_dark@2x.png -text
+/sync_lite.png -text
+/sync_lite@2x.png -text
 /tabPointer.png -text svneol=unset#unset
 /tabPointer@2x.png -text svneol=unset#unset
 /table_sep.png -text svneol=unset#unset

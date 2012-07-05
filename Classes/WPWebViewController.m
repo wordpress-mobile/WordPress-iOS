@@ -54,8 +54,39 @@
     self.forwardButton.enabled = NO;
 
     if( IS_IPHONE ) {
-        self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(showLinkOptions)] autorelease];
+        //allows the toolbar to become smaller in landscape mode.
+        toolbar.autoresizingMask = toolbar.autoresizingMask | UIViewAutoresizingFlexibleHeight;
+        
+        if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+//TODO: Replace with new graphics.  The sync graphics are placeholders.
+            [btn setImage:[UIImage imageNamed:@"sync_dark"] forState:UIControlStateNormal];
+            [btn setImage:[UIImage imageNamed:@"sync_lite"] forState:UIControlStateHighlighted];
+            
+            btn.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
+            btn.autoresizingMask =  UIViewAutoresizingFlexibleHeight;
+            [btn addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
+            
+            self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
+            
+        } else {        
+            self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction 
+                                                                                target:self 
+                                                                                action:@selector(showLinkOptions)] autorelease];
+        }
         self.navigationItem.rightBarButtonItem = optionsButton;
+    } else {
+        // We want the refresh button to be borderless, but buttons in navbars want a border.
+        // We need to compose the refresh button as a UIButton that is used as the UIBarButtonItem's custom view.
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btn setImage:[UIImage imageNamed:@"sync_dark"] forState:UIControlStateNormal];
+        [btn setImage:[UIImage imageNamed:@"sync_lite"] forState:UIControlStateHighlighted];
+
+        btn.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
+        btn.autoresizingMask =  UIViewAutoresizingFlexibleHeight;
+        [btn addTarget:self action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
+
+        refreshButton.customView = btn;
     }
     
     if ([forwardButton respondsToSelector:@selector(setTintColor:)]) {
@@ -69,11 +100,6 @@
     self.optionsButton.enabled = NO;
     self.webView.scalesPageToFit = YES;
     self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
-
-    //allows the toolbar to become smaller in landscape mode.
-    if (!DeviceIsPad()) {
-        toolbar.autoresizingMask = toolbar.autoresizingMask | UIViewAutoresizingFlexibleHeight;
-    }
         
     if (self.url) {
         [self refreshWebView];
@@ -84,7 +110,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super viewWillAppear:animated];   
+    [super viewWillAppear:animated];
+    
     if( self.detailContent == nil ) {
         [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
         [[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
@@ -102,10 +129,6 @@
                           [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
                           forwardButton, nil];
         toolbar.items = items;
-
-        //you got pink'd!
-        //[toolbar setTintColor:[UIColor colorWithRed:254.0f/255 green:14.0f/255 blue:204.0f/255 alpha:1.0f]];
-		[toolbar setTintColor:[UIColor colorWithRed:96.0f/255 green:101.0f/255 blue:111.0f/255 alpha:1.0f]];
     }
 }
 
@@ -324,7 +347,12 @@
 		if (loading) {
 			UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
 			
-			UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            UIActivityIndicatorView *spinner = nil;
+            if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
+                spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            } else if (IS_IPHONE) {
+                spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+            }
 			[spinner setCenter:customView.center];
 			[customView addSubview:spinner];
 			
@@ -332,7 +360,6 @@
 			
 			self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:customView] autorelease];
 			
-			[spinner release];
 			[customView release];
 		} else {
             if( IS_IPHONE )
