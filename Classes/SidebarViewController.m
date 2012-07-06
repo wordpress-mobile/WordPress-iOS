@@ -293,6 +293,9 @@
         NSIndexPath *commentsPath = [NSIndexPath indexPathForRow:2 inSection:sectionNumber+1];
         [self processRowSelectionAtIndexPath:commentsPath];
         [self.tableView selectRowAtIndexPath:commentsPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        if ([self.panelNavigationController.detailViewController respondsToSelector:@selector(setWantedCommentId:)]) {
+            [self.panelNavigationController.detailViewController performSelector:@selector(setWantedCommentId:) withObject:itemId];
+        }
     }
 }
 
