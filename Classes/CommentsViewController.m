@@ -82,6 +82,39 @@
 		self.tableView.accessibilityIdentifier = @"Comments";  // required for UIAutomation for iOS 5
 	}
     
+    if ([[self.editButtonItem class] respondsToSelector:@selector(appearance)]) {
+        [self.editButtonItem setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+        [self.editButtonItem setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_active"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+        
+        [self.editButtonItem setTitleTextAttributes:
+         [NSDictionary dictionaryWithObjectsAndKeys:
+          [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0], 
+          UITextAttributeTextColor, 
+          [UIColor whiteColor], 
+          UITextAttributeTextShadowColor,  
+          [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+          UITextAttributeTextShadowOffset,
+          nil] forState:UIControlStateNormal];
+        [self.editButtonItem setTitleTextAttributes:
+         [NSDictionary dictionaryWithObjectsAndKeys:
+          [UIColor whiteColor], 
+          UITextAttributeTextColor, 
+          [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0], 
+          UITextAttributeTextShadowColor,  
+          [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+          UITextAttributeTextShadowOffset,
+          nil] forState:UIControlStateSelected];
+        [self.editButtonItem setTitleTextAttributes:
+         [NSDictionary dictionaryWithObjectsAndKeys:
+          [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0], 
+          UITextAttributeTextColor, 
+          [UIColor whiteColor], 
+          UITextAttributeTextShadowColor,  
+          [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+          UITextAttributeTextShadowOffset,
+          nil] forState:UIControlStateDisabled];
+    }
+    
     _selectedComments = [[NSMutableArray alloc] init];
 }
 
