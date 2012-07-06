@@ -76,7 +76,6 @@ typedef void (^CancelBlock)();
         [available addObject:@"twitter"];
     }
     
-    NSLog(@"Sources: %@", [NSNumber numberWithBool:[sources containsObject:@"twitter"]]);
     
     [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.enableSources(%@)", [available JSONString]]];
     
