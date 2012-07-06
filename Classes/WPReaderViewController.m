@@ -97,6 +97,12 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
+    
+    if (IS_IPAD) {
+        CGRect frame = self.webView.frame;
+        frame.size.height -= 44.0f;
+        self.webView.frame = frame;
+    }
         
     self.webView.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.95 alpha:1.0];
 
