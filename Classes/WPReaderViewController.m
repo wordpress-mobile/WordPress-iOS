@@ -46,7 +46,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 @implementation WPReaderViewController
 @synthesize url, username, password, detailContentHTML;
 @synthesize refreshTimer, iPadNavBar;
-@synthesize topicsViewController, detailViewController, friendFinderNudgeView;
+@synthesize topicsViewController, detailViewController, friendFinderNudgeView, titleLabel;
 
 - (void)dealloc
 {
@@ -60,6 +60,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     self.detailViewController.delegate = nil;
     self.detailViewController = nil;
     self.friendFinderNudgeView = nil;
+    self.titleLabel = nil;
     [super dealloc];
 }
 
@@ -151,6 +152,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     self.topicsViewController = nil;
     self.detailViewController = nil;
     self.friendFinderNudgeView = nil;
+    self.titleLabel = nil;
     [self removeNotifications];
     [super viewDidUnload];
 }
@@ -261,7 +263,18 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     if (!IS_IPAD) {
         [self.navigationItem setRightBarButtonItem:button animated:YES];
     } else {
-        self.toolbarItems = [NSArray arrayWithObject:button];
+        titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 300.0f, 30.0f)];
+        [titleLabel setBackgroundColor:[UIColor clearColor]];
+        [titleLabel setTextColor:[UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f]];
+        [titleLabel setFont:[UIFont boldSystemFontOfSize:18.0f]];
+        [titleLabel setShadowColor:[UIColor whiteColor]];
+        [titleLabel setShadowOffset:CGSizeMake(0.0f, 1.0f)];
+        UIBarButtonItem *labelButton = [[UIBarButtonItem alloc] initWithCustomView: titleLabel];
+        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+        spacer.width = 8.0f;
+        self.toolbarItems = [NSArray arrayWithObjects:button, spacer, labelButton, nil];
+        [labelButton release];
+        [spacer release];
     }
     [button release];
     
@@ -579,6 +592,21 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     [friendFinder loadURL:kMobileReaderFFURL];
     [friendFinder release];
 
+}
+
+#pragma mark -- View Overrides
+
+- (void)setTitle:(NSString *)title {
+    
+    if ([title isEqualToString:@""])
+        title = NSLocalizedString(@"Read", @"");
+    
+    [super setTitle: title];
+    
+    if (IS_IPAD) {
+        if (titleLabel) 
+            [titleLabel setText:title];
+    }
 }
 
 
