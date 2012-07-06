@@ -296,7 +296,6 @@
 		8350E49611D2C71E00A7B073 /* Media.m in Sources */ = {isa = PBXBuildFile; fileRef = 8350E49511D2C71E00A7B073 /* Media.m */; };
 		8355D67E11D13EAD00A61362 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D67D11D13EAD00A61362 /* MobileCoreServices.framework */; };
 		8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D7D811D260AA00A61362 /* CoreData.framework */; };
-		835871C9120096AC007682CB /* WelcomeViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 835871C8120096AC007682CB /* WelcomeViewController-iPad.xib */; };
 		835E2403126E66E50085940B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 835E2402126E66E50085940B /* AssetsLibrary.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		83610AAA11F4AD2C00421116 /* WPcomLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83610AA811F4AD2C00421116 /* WPcomLoginViewController.m */; };
 		8362C1041201E7CE00599347 /* WebSignupViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */; };
@@ -953,7 +952,6 @@
 		8350E49511D2C71E00A7B073 /* Media.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Media.m; path = ../Media.m; sourceTree = "<group>"; };
 		8355D67D11D13EAD00A61362 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8355D7D811D260AA00A61362 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		835871C8120096AC007682CB /* WelcomeViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "WelcomeViewController-iPad.xib"; sourceTree = "<group>"; };
 		835E2402126E66E50085940B /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		83610AA711F4AD2C00421116 /* WPcomLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPcomLoginViewController.h; sourceTree = "<group>"; };
 		83610AA811F4AD2C00421116 /* WPcomLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPcomLoginViewController.m; sourceTree = "<group>"; };
@@ -1809,7 +1807,6 @@
 		5D63449E159A4B0E00AF402F /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
-				835871C8120096AC007682CB /* WelcomeViewController-iPad.xib */,
 				CE1E3BC61005B3D500A7BD08 /* WPpregressHUDBackground.png */,
 				6E81AC2411BF34810072965C /* WPpregressHUDBackground@2x.png */,
 				30FE87981367328B00808634 /* quickPhotoButtonBackground.png */,
@@ -3043,7 +3040,6 @@
 				8370D1E911FA648F009D650F /* logo_welcome@2x.png in Resources */,
 				8320B5D911FCA50400607422 /* UITableViewSwitchCell.xib in Resources */,
 				8333FE0E11FF6EF200A495C1 /* EditSiteViewController.xib in Resources */,
-				835871C9120096AC007682CB /* WelcomeViewController-iPad.xib in Resources */,
 				8362C1041201E7CE00599347 /* WebSignupViewController-iPad.xib in Resources */,
 				8362C1C6120229BC00599347 /* AddSiteViewController-iPad.xib in Resources */,
 				8362C54612027BC300599347 /* AddUsersBlogsViewController-iPad.xib in Resources */,
