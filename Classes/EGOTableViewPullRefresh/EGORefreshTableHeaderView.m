@@ -27,7 +27,8 @@
 #import "EGORefreshTableHeaderView.h"
 
 
-#define TEXT_COLOR	 [UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0]
+#define TEXT_COLOR	 [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.8]
+#define TEXT_COLOR_ACTIVE	 [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]
 #define FLIP_ANIMATION_DURATION 0.18f
 
 
@@ -44,14 +45,14 @@
     if (self = [super initWithFrame:frame]) {
 		
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		self.backgroundColor = [UIColor colorWithRed:226.0/255.0 green:231.0/255.0 blue:237.0/255.0 alpha:1.0];
+        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
 
 		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, frame.size.height - 30.0f, self.frame.size.width, 20.0f)];
 		label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		label.font = [UIFont systemFontOfSize:12.0f];
 		label.textColor = TEXT_COLOR;
-		label.shadowColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
-		label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+		label.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
+		label.shadowOffset = CGSizeMake(0.0f, -1.0f);
 		label.backgroundColor = [UIColor clearColor];
 		label.textAlignment = UITextAlignmentCenter;
 		[self addSubview:label];
@@ -62,8 +63,8 @@
 		label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		label.font = [UIFont boldSystemFontOfSize:13.0f];
 		label.textColor = TEXT_COLOR;
-		label.shadowColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
-		label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+		label.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
+		label.shadowOffset = CGSizeMake(0.0f, -1.0f);
 		label.backgroundColor = [UIColor clearColor];
 		label.textAlignment = UITextAlignmentCenter;
 		[self addSubview:label];
@@ -83,14 +84,14 @@
 		
 		[[self layer] addSublayer:layer];
 		_arrowImage=layer;
+        _arrowImage.hidden = YES;
 		
-		UIActivityIndicatorView *view = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-		view.frame = CGRectMake(25.0f, frame.size.height - 38.0f, 20.0f, 20.0f);
+		UIActivityIndicatorView *view = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+		view.frame = CGRectMake(25.0f, frame.size.height - 40.0f, self.frame.size.width - 50.0f, 20.0f);
+        view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[self addSubview:view];
 		_activityView = view;
 		[view release];
-		
-		
 		[self setState:EGOOPullRefreshNormal];
 		
     }
@@ -133,12 +134,13 @@
 	
 	switch (aState) {
 		case EGOOPullRefreshPulling:
-			
+            _statusLabel.textColor = TEXT_COLOR_ACTIVE;
 			_statusLabel.text = NSLocalizedString(@"Release to refresh...", @"Release to refresh status");
 			[CATransaction begin];
 			[CATransaction setAnimationDuration:FLIP_ANIMATION_DURATION];
 			_arrowImage.transform = CATransform3DMakeRotation((M_PI / 180.0) * 180.0f, 0.0f, 0.0f, 1.0f);
 			[CATransaction commit];
+            _arrowImage.hidden = YES;
 			
 			break;
 		case EGOOPullRefreshNormal:
@@ -149,7 +151,7 @@
 				_arrowImage.transform = CATransform3DIdentity;
 				[CATransaction commit];
 			}
-			
+            _statusLabel.textColor = TEXT_COLOR;
 			_statusLabel.text = NSLocalizedString(@"Pull down to refresh...", @"Pull down to refresh status");
 			[_activityView stopAnimating];
 			[CATransaction begin];
@@ -159,7 +161,9 @@
 			[CATransaction commit];
 			
 			[self refreshLastUpdatedDate];
-			
+			_arrowImage.hidden = YES;
+            _statusLabel.hidden = FALSE;
+            _lastUpdatedLabel.hidden = FALSE;
 			break;
 		case EGOOPullRefreshLoading:
 			
@@ -168,6 +172,8 @@
 			[CATransaction begin];
 			[CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions]; 
 			_arrowImage.hidden = YES;
+            _statusLabel.hidden = YES;
+            _lastUpdatedLabel.hidden = YES;
 			[CATransaction commit];
 			
 			break;
@@ -183,6 +189,7 @@
 #pragma mark ScrollView Methods
 
 - (void)egoRefreshScrollViewDidScroll:(UIScrollView *)scrollView {	
+    
 	
 	if (_state == EGOOPullRefreshLoading) {
 		
@@ -223,7 +230,7 @@
 		if ([_delegate respondsToSelector:@selector(egoRefreshTableHeaderDidTriggerRefresh:)]) {
 			[_delegate egoRefreshTableHeaderDidTriggerRefresh:self];
 		}
-		
+        
 		[self setState:EGOOPullRefreshLoading];
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:0.2];
