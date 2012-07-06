@@ -32,8 +32,14 @@
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
     NSLog(@"hasSubsites: %@", subsites);
 
-    if (subsites) {
-        if ([subsites count] > 1) {
+    if ([subsites count] > 0) {
+        // If the user has entered the URL of a site they own on a MultiSite install, 
+        // assume they want to add that specific site.
+        NSDictionary *subsite = nil;
+        if ([subsites count] > 1)
+            subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlrpc]] lastObject];
+
+        if ([subsites count] > 1 && [[subsite objectForKey:@"blogid"] isEqualToString:@"1"]) {
             AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
             addUsersBlogsView.isWPcom = NO;
             addUsersBlogsView.usersBlogs = subsites;
@@ -43,8 +49,12 @@
 			addUsersBlogsView.geolocationEnabled = self.geolocationEnabled;
             [self.navigationController pushViewController:addUsersBlogsView animated:YES];
             [addUsersBlogsView release];
-        } else if ([subsites count] == 1) {
-            NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:[subsites objectAtIndex:0]];
+        } else {
+            NSMutableDictionary *newBlog;
+            if(subsite)
+                newBlog = [NSMutableDictionary dictionaryWithDictionary:subsite];
+            else
+                newBlog = [NSMutableDictionary dictionaryWithDictionary:[subsites objectAtIndex:0]];
             [newBlog setObject:self.username forKey:@"username"];
             [newBlog setObject:self.password forKey:@"password"];
             [newBlog setObject:xmlrpc forKey:@"xmlrpc"];
