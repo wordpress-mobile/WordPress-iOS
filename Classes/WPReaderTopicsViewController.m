@@ -25,11 +25,6 @@
     self.navigationItem.rightBarButtonItem = cancelButton;
     [cancelButton release];
     
-    UIBarButtonItem *ffButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit 
-                                                                              target:self 
-                                                                              action:@selector(openFriendFinder)];    
-    self.navigationItem.leftBarButtonItem = ffButton;
-    [ffButton release];
 }
 
 
@@ -64,6 +59,11 @@
     [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.setSelectedTopic('%@')", topicId]];
 }
 
+
+- (void)enableFriendFinder {
+    NSLog(@"Enable the Friend Finder");
+    [self.webView stringByEvaluatingJavaScriptFromString:@"document.enableFriendFinder()"];
+}
 
 - (void)openFriendFinder {
     WPFriendFinderViewController *friendFinder = [[WPFriendFinderViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil];
