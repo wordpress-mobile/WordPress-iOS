@@ -226,13 +226,7 @@
         if ( ! [WordPressComApi sharedApi].username ) {
             //ohh auch! no .COM account? 
             WelcomeViewController *welcomeViewController = nil;
-            
-            if ( IS_IPAD ) {
-                welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController-iPad" bundle:nil];
-            } else {
-                welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
-            }
-            
+            welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
             [welcomeViewController automaticallyDismissOnLoginActions];
             
             UINavigationController *aNavigationController = [[[UINavigationController alloc] initWithRootViewController:welcomeViewController] autorelease];
