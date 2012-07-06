@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1181</string>
+			<string key="NS.object.0">1179</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -385,22 +385,6 @@
 					<int key="connectionID">42</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">headerLabel</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="826050936"/>
-					</object>
-					<int key="connectionID">47</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">logo</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="736093450"/>
-					</object>
-					<int key="connectionID">48</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">handleInfoTapped:</string>
 						<reference key="source" ref="126770629"/>
@@ -584,7 +568,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">48</int>
+			<int key="maxID">46</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -653,9 +637,7 @@
 							<string>buttonView</string>
 							<string>createBlogButton</string>
 							<string>createLabel</string>
-							<string>headerLabel</string>
 							<string>infoButton</string>
-							<string>logo</string>
 							<string>logoView</string>
 							<string>orgBlogButton</string>
 						</object>
@@ -665,9 +647,7 @@
 							<string>UIView</string>
 							<string>UIButton</string>
 							<string>UILabel</string>
-							<string>UILabel</string>
 							<string>UIButton</string>
-							<string>UIImageView</string>
 							<string>UIView</string>
 							<string>UIButton</string>
 						</object>
@@ -680,9 +660,7 @@
 							<string>buttonView</string>
 							<string>createBlogButton</string>
 							<string>createLabel</string>
-							<string>headerLabel</string>
 							<string>infoButton</string>
-							<string>logo</string>
 							<string>logoView</string>
 							<string>orgBlogButton</string>
 						</object>
@@ -705,16 +683,8 @@
 								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
-								<string key="name">headerLabel</string>
-								<string key="candidateClassName">UILabel</string>
-							</object>
-							<object class="IBToOneOutletInfo">
 								<string key="name">infoButton</string>
 								<string key="candidateClassName">UIButton</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">logo</string>
-								<string key="candidateClassName">UIImageView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">logoView</string>
@@ -764,6 +734,6 @@
 				<string>{182, 42}</string>
 			</object>
 		</object>
-		<string key="IBCocoaTouchPluginVersion">1181</string>
+		<string key="IBCocoaTouchPluginVersion">1179</string>
 	</data>
 </archive>

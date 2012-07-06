@@ -33,8 +33,6 @@
 @synthesize appDelegate;
 
 @synthesize buttonView;
-@synthesize logo;
-@synthesize headerLabel;
 @synthesize logoView;
 @synthesize infoButton;
 @synthesize orgBlogButton;
@@ -50,8 +48,6 @@
 
     [buttonView release];
     [logoView release];
-    [logo release];
-    [headerLabel release];
     [infoButton release];
     [orgBlogButton release];
     [addBlogButton release];
@@ -71,25 +67,23 @@
     // The welcome screen is presented without a navbar so this is a convenient way to
     // know if the user has blogs or not.
     if (!self.navigationController.navigationBar.hidden) {
-        if (IS_IPHONE) {
-            self.navigationController.navigationBar.hidden = YES;
+        if (IS_IPHONE) {        
+            self.logoView.hidden = YES;
+            CGRect frame = buttonView.frame;
+            frame.origin.y = 0.0f;
+            buttonView.frame = frame;
         }
-        headerLabel.text = NSLocalizedString(@"Create beautiful blogs and websites that can be updated on the go.", @"");
         createLabel.text = NSLocalizedString(@"Want to start another blog?", @"");
     }
 }
 
 
 - (void)viewDidUnload {
-    [self setHeaderLabel:nil];
-    [self setLogo:nil];
     [super viewDidUnload];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.buttonView = nil;
     self.logoView = nil;
-    self.logo = nil;
-    self.headerLabel = nil;
     self.infoButton = nil;
     self.orgBlogButton = nil;
     self.addBlogButton = nil;

@@ -11,8 +11,6 @@
 
 @property (nonatomic, retain) IBOutlet UIView *logoView;
 @property (nonatomic, retain) IBOutlet UIView *buttonView;
-@property (nonatomic, retain) IBOutlet UIImageView *logo;
-@property (nonatomic, retain) IBOutlet UILabel *headerLabel;
 @property (nonatomic, retain) IBOutlet UIButton *infoButton;
 @property (nonatomic, retain) IBOutlet UIButton *orgBlogButton;
 @property (nonatomic, retain) IBOutlet UIButton *addBlogButton;
