@@ -11,8 +11,6 @@
 #import "SFHFKeychainUtils.h"
 #import "WPcomLoginViewController.h"
 
-#import "HelpViewController.h"
-
 @interface StatsWebViewController () <WPcomLoginViewControllerDelegate> {
     BOOL loadStatsWhenViewAppears;
     BOOL promptCredentialsWhenViewAppears;
