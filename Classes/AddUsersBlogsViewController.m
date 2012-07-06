@@ -18,6 +18,20 @@
 #pragma mark -
 #pragma mark View lifecycle
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+	self.username = nil;
+    self.password = nil;
+	[_url release];
+	[usersBlogs release];
+	[selectedBlogs release];
+	[tableView release];
+	[buttonAddSelected release];
+	[buttonSelectAll release];
+	[topAddSelectedButton release];
+    [super dealloc];
+}
+
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
@@ -27,32 +41,40 @@
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
 	// Setup WP logo table header
-	NSString *logoFile = @"logo_wporg.png";
+	NSString *logoFile = @"logo_wporg";
 	if(isWPcom == YES) {
-		if (IS_IPAD)
-			logoFile = @"logo_wpcom@2x.png";
-		else
-			logoFile = @"logo_wpcom.png";
+        logoFile = @"logo_wpcom@2x.png";
 	}
+    
+    UIImageView *logoImage = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]] autorelease];
+    logoImage.frame = CGRectMake(0.0f, 0.0f, 320.0f, 70.0f);
+    logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    logoImage.contentMode = UIViewContentModeCenter;
+    tableView.tableHeaderView = logoImage;
+    
+    if (isWPcom) {
+        logoImage.contentScaleFactor = 2.0f;
+    }
 	
-	
-    // Setup WPcom table header
-	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
-	CGRect logoFrame = CGRectMake(40, 20, 229, 43);
-	if(IS_IPAD == YES) {
-		logoFrame = CGRectMake(150, 20, 229, 43);
-	}
-	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
-	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
-	logo.frame = logoFrame;
-	[headerView addSubview:logo];
-	[logo release];
-	self.tableView.tableHeaderView = headerView;
+//    // Setup WPcom table header
+//	CGRect headerFrame = CGRectMake(0.0f, 0.0f, 320.0f, 70.0f);
+//	CGRect logoFrame = CGRectMake(40.0f, 20.0f, 229.0f, 43.0f);
+//	if(IS_IPAD == YES) {
+//		logoFrame = CGRectMake(150.0f, 20.0f, 229.0f, 43.0f);
+//	}
+//	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
+//	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
+//	logo.frame = logoFrame;
+//	[headerView addSubview:logo];
+//	[logo release];
+//	self.tableView.tableHeaderView = headerView;
     
 	if(IS_IPAD)
 		self.tableView.backgroundView = nil;
-	self.tableView.backgroundColor = [UIColor clearColor];
 	
+    self.tableView.backgroundColor = [UIColor clearColor];
+	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
+    
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelAddWPcomBlogs) 
 												 name:@"didCancelWPcomLogin" object:nil];
 }
@@ -414,30 +436,4 @@
 	
 }
 
-#pragma mark -
-#pragma mark Memory management
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
-- (void)viewDidUnload {
-}
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.username = nil;
-    self.password = nil;
-	[_url release];
-	[usersBlogs release];
-	[selectedBlogs release];
-	[tableView release];
-	[buttonAddSelected release];
-	[buttonSelectAll release];
-	[topAddSelectedButton release];
-    [super dealloc];
-}
-
-
 @end
-

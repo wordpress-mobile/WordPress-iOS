@@ -11,16 +11,35 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg.png"]];
-    logoView.frame = CGRectMake(0, 0, 320, 60);
-    logoView.contentMode = UIViewContentModeCenter;
-    logoView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    tableView.tableHeaderView = logoView;
-    [logoView release];
+    UIImageView *logoImage = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg"]] autorelease];
+    logoImage.frame = CGRectMake(0.0f, 0.0f, 320.0f, 70.0f);
+    logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    logoImage.contentMode = UIViewContentModeCenter;
+    tableView.tableHeaderView = logoImage;
+    
+    // Setup WPcom table header
+//	CGRect headerFrame = CGRectMake(0.0f, 0.0f, 320.0f, 70.0f);
+//	CGRect logoFrame = CGRectMake(40.0f, 20.0f, 229.0f, 43.0f);
+//	if(IS_IPAD == YES) {
+//		logoFrame = CGRectMake(150.0f, 20.0f, 229.0f, 43.0f);
+//	}
+//	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
+//	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg.png"]];
+//	logo.frame = logoFrame;
+//	[headerView addSubview:logo];
+//	[logo release];
+//    tableView.tableHeaderView = headerView;
+    
+//    UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg.png"]];
+//    logoView.frame = CGRectMake(0.0f, 10.0f, 320.0f, 60.0f);
+//    logoView.contentMode = UIViewContentModeCenter;
+//    logoView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    tableView.tableHeaderView = logoView;
+//    [logoView release];
 	if (IS_IPAD)
 		self.tableView.backgroundView = nil;
 	self.tableView.backgroundColor = [UIColor clearColor];
-    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
     self.navigationItem.title = NSLocalizedString(@"Add Blog", @"");
 }
 

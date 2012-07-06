@@ -42,7 +42,8 @@
 			self.tableView.backgroundView = nil;
 			self.tableView.backgroundColor = [UIColor clearColor];
 		}
-
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
+        
         NSError *error = nil;
         self.url = blog.url;
         self.username = blog.username;
