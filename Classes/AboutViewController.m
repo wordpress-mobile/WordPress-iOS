@@ -8,14 +8,15 @@
 
 #import "AboutViewController.h"
 
-
 @implementation AboutViewController
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
 	
-    self.navigationItem.title = NSLocalizedString(@"About", @"About this app (information page title)");    
+    self.navigationItem.title = NSLocalizedString(@"About", @"About this app (information page title)");
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
 }
 
 // Override to allow orientations other than the default portrait orientation.
@@ -25,7 +26,6 @@
 	
 	return NO;
 }
-
 
 -(void)viewTermsOfService:(id)sender {
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://wordpress.com/tos/"]];

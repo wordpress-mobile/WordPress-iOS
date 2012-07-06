@@ -676,7 +676,7 @@
 		30811742151057880028A15E /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x.png"; sourceTree = "<group>"; };
 		30811746151057940028A15E /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = "<group>"; };
 		30811748151057B50028A15E /* fabric@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "fabric@2x.png"; path = "Classes/fabric@2x.png"; sourceTree = "<group>"; };
-		30AF6CF413C2289600A29C00 /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AboutViewController.xib; path = ../AboutViewController.xib; sourceTree = "<group>"; };
+		30AF6CF413C2289600A29C00 /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		30AF6CFB13C230C600A29C00 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		30AF6CFC13C230C600A29C00 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		30E5DD46140E7747003FA092 /* toolbarUlHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbarUlHighlighted@2x.png"; sourceTree = "<group>"; };
@@ -780,7 +780,7 @@
 		373C5183156D0523007C2977 /* SidebarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SidebarViewController.xib; sourceTree = "<group>"; };
 		3744A0DB130ABB0800CE7BE1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
-		3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = HelpViewController.xib; path = ../HelpViewController.xib; sourceTree = "<group>"; };
+		3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HelpViewController.xib; sourceTree = "<group>"; };
 		374F188A15A5897500524ED0 /* sidebar_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_bg.png; sourceTree = "<group>"; };
 		374F188B15A5897500524ED0 /* sidebar_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar_bg@2x.png"; sourceTree = "<group>"; };
 		374F188C15A5897500524ED0 /* sidebar_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_camera.png; sourceTree = "<group>"; };
@@ -1029,8 +1029,8 @@
 		8398EE9911ACE63C000FE6E0 /* WelcomeViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WelcomeViewController.xib; sourceTree = "<group>"; };
 		8398EEA611ACE6F9000FE6E0 /* welcome_btn_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = welcome_btn_normal.png; sourceTree = "<group>"; };
 		8398EEA711ACE6F9000FE6E0 /* welcome_btn_over.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = welcome_btn_over.png; sourceTree = "<group>"; };
-		83A64687112C5F75000999A6 /* PostSettingsHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsHelpViewController.h; sourceTree = "<group>"; };
-		83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsHelpViewController.m; sourceTree = "<group>"; };
+		83A64687112C5F75000999A6 /* PostSettingsHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PostSettingsHelpViewController.h; path = Classes/PostSettingsHelpViewController.h; sourceTree = "<group>"; };
+		83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PostSettingsHelpViewController.m; path = Classes/PostSettingsHelpViewController.m; sourceTree = "<group>"; };
 		83A646AA112C63E5000999A6 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
 		83BC943B11F94AA00041141A /* whitebg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whitebg.png; sourceTree = "<group>"; };
 		83CAD41A1235F854003DFA20 /* MediaObjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaObjectViewController.h; sourceTree = "<group>"; };
@@ -1430,8 +1430,8 @@
 		FD4500D01580DF3500F2B0E6 /* UIColor+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Helpers.m"; sourceTree = "<group>"; };
 		FD76A897156CEB0B001FBAC6 /* XMLSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XMLSignupViewController.xib; sourceTree = "<group>"; };
 		FD76A899156CEB22001FBAC6 /* XMLSignupViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "XMLSignupViewController-iPad.xib"; sourceTree = "<group>"; };
-		FD76A89B156CEB4C001FBAC6 /* XMLSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLSignupViewController.h; sourceTree = "<group>"; };
-		FD76A89C156CEB4C001FBAC6 /* XMLSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLSignupViewController.m; sourceTree = "<group>"; };
+		FD76A89B156CEB4C001FBAC6 /* XMLSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XMLSignupViewController.h; path = Classes/XMLSignupViewController.h; sourceTree = "<group>"; };
+		FD76A89C156CEB4C001FBAC6 /* XMLSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XMLSignupViewController.m; path = Classes/XMLSignupViewController.m; sourceTree = "<group>"; };
 		FD9A948A12FAEA2300438F94 /* DateUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateUtils.h; sourceTree = "<group>"; };
 		FD9A948B12FAEA2300438F94 /* DateUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateUtils.m; sourceTree = "<group>"; };
 		FDA68C1E14AC6CB800151896 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -1655,7 +1655,6 @@
 		30AF6CFE13C230CC00A29C00 /* About */ = {
 			isa = PBXGroup;
 			children = (
-				30AF6CF413C2289600A29C00 /* AboutViewController.xib */,
 				30AF6CFB13C230C600A29C00 /* AboutViewController.h */,
 				30AF6CFC13C230C600A29C00 /* AboutViewController.m */,
 			);
@@ -1696,7 +1695,6 @@
 		3744A0DA130ABAFA00CE7BE1 /* Help */ = {
 			isa = PBXGroup;
 			children = (
-				3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */,
 				3744A0DB130ABB0800CE7BE1 /* HelpViewController.h */,
 				3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */,
 			);
@@ -1815,6 +1813,12 @@
 				6EF66FEC11BE27BB0069703D /* settings@2x.png */,
 				ACFF1DE30E23265000EC6BF5 /* settings.png */,
 				EC270CB10E8B5E8200E9AA18 /* commentDelete.png */,
+				8398EEA611ACE6F9000FE6E0 /* welcome_btn_normal.png */,
+				6E8BE5DF11BF5F7B002A13DD /* welcome_btn_normal@2x.png */,
+				8398EEA711ACE6F9000FE6E0 /* welcome_btn_over.png */,
+				6E8BE5DC11BF5F77002A13DD /* welcome_btn_over@2x.png */,
+				FD76A897156CEB0B001FBAC6 /* XMLSignupViewController.xib */,
+				FD76A899156CEB22001FBAC6 /* XMLSignupViewController-iPad.xib */,
 				CE1946361017F4DF002BE752 /* Tab Icons */,
 				E1ABD141135862EF00DB0707 /* Quick Photo */,
 				FD0D42C2149A0B5500F5E115 /* InAppSettings */,
@@ -1824,6 +1828,10 @@
 				CEFC8B5810057D0A0052604A /* WPProgressHUD.m */,
 				458776AF11623ED300906CEE /* UIViewController_iPadExtensions.h */,
 				458776B011623ED300906CEE /* UIViewController_iPadExtensions.m */,
+				FD76A89B156CEB4C001FBAC6 /* XMLSignupViewController.h */,
+				FD76A89C156CEB4C001FBAC6 /* XMLSignupViewController.m */,
+				83A64687112C5F75000999A6 /* PostSettingsHelpViewController.h */,
+				83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */,
 			);
 			name = Deprecated;
 			sourceTree = "<group>";
@@ -2040,7 +2048,6 @@
 				8362C1C5120229BC00599347 /* AddSiteViewController-iPad.xib */,
 				8362C54512027BC300599347 /* AddUsersBlogsViewController-iPad.xib */,
 				8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */,
-				FD76A899156CEB22001FBAC6 /* XMLSignupViewController-iPad.xib */,
 			);
 			name = Blogs;
 			sourceTree = "<group>";
@@ -2058,8 +2065,6 @@
 				ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */,
 				2F970F720DF92274006BD934 /* PostsViewController.h */,
 				2F970F730DF92274006BD934 /* PostsViewController.m */,
-				83A64687112C5F75000999A6 /* PostSettingsHelpViewController.h */,
-				83A64688112C5F75000999A6 /* PostSettingsHelpViewController.m */,
 				E1497BBA12CCA8270022BCD9 /* PostViewController.h */,
 				E1497BBB12CCA8270022BCD9 /* PostViewController.m */,
 			);
@@ -2107,8 +2112,6 @@
 				8369FF8F11F4F3BF003106C7 /* AddUsersBlogsViewController.m */,
 				8398EE3011ACE206000FE6E0 /* WebSignupViewController.h */,
 				8398EE3111ACE206000FE6E0 /* WebSignupViewController.m */,
-				FD76A89B156CEB4C001FBAC6 /* XMLSignupViewController.h */,
-				FD76A89C156CEB4C001FBAC6 /* XMLSignupViewController.m */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -2233,10 +2236,6 @@
 				834CAEA6122D56DC003DDF49 /* video_thumbnail.png */,
 				8370D11611FA4CCF009D650F /* welcome_bg.png */,
 				8370D11711FA4CCF009D650F /* welcome_bg@2x.png */,
-				8398EEA611ACE6F9000FE6E0 /* welcome_btn_normal.png */,
-				6E8BE5DF11BF5F7B002A13DD /* welcome_btn_normal@2x.png */,
-				8398EEA711ACE6F9000FE6E0 /* welcome_btn_over.png */,
-				6E8BE5DC11BF5F77002A13DD /* welcome_btn_over@2x.png */,
 				83BC943B11F94AA00041141A /* whitebg.png */,
 				7F3E102213497EB2008CF73D /* dotted-pattern.png */,
 				7F3E102313497EB2008CF73D /* dotted-pattern@2x.png */,
@@ -2301,7 +2300,6 @@
 			children = (
 				8333FE0D11FF6EF200A495C1 /* EditSiteViewController.xib */,
 				8370D1BC11FA6295009D650F /* AddSiteViewController.xib */,
-				FD76A897156CEB0B001FBAC6 /* XMLSignupViewController.xib */,
 				8369FF9011F4F3BF003106C7 /* AddUsersBlogsViewController.xib */,
 				8398EE9811ACE63C000FE6E0 /* WebSignupViewController.xib */,
 				8398EE9911ACE63C000FE6E0 /* WelcomeViewController.xib */,
@@ -2661,6 +2659,8 @@
 				FD0882EC1445F38C00F51302 /* WPReaderViewController.xib */,
 				E12AAB631513C4CA009D025B /* WPComOAuthController.xib */,
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
+				30AF6CF413C2289600A29C00 /* AboutViewController.xib */,
+				3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */,
 				836FECEA12715E2A000309D8 /* CrashReportView.xib */,
 				A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */,
 				ACAC7B690E1F8C0700AC7074 /* WPSelectionTableViewController.xib */,

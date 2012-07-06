@@ -11,17 +11,26 @@ NSString *CrashFilePath();
 @implementation CrashReportViewController
 @synthesize crashData;
 
+- (void)dealloc {
+	[crashData release], crashData = nil;
+    [super dealloc];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
 	self.title = NSLocalizedString(@"Crash Detected", @"");
     messageLabel.text = NSLocalizedString(@"It looks like WordPress for iOS crashed the last time you used it. You can help us resolve the issue by sending a crash report.", @"");
     [sendButton setTitle:NSLocalizedString(@"Send Crash Report", @"") forState:UIControlStateNormal];
     [dontSendButton setTitle:NSLocalizedString(@"Don't Send Crash Report", @"") forState:UIControlStateNormal];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:YES];
+- (void)viewDidUnload {
+    messageLabel = nil;
+    sendButton = nil;
+    dontSendButton = nil;
+    [super viewDidUnload];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -101,22 +110,5 @@ NSString *CrashFilePath();
 - (void)finish {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"CrashReporterIsFinished" object:nil];
 }
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
-- (void)viewDidUnload {
-    messageLabel = nil;
-    sendButton = nil;
-    dontSendButton = nil;
-    [super viewDidUnload];
-}
-
-- (void)dealloc {
-	[crashData release], crashData = nil;
-    [super dealloc];
-}
-
 
 @end

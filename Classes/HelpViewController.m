@@ -8,11 +8,31 @@
 
 #import "HelpViewController.h"
 
-
 @implementation HelpViewController
 
 @synthesize helpText, faqButton, forumButton, cancel, navBar, isBlogSetup;
 
+- (void)dealloc {    
+    [faqButton release];
+    [forumButton release];
+    [emailButton release];
+    [cancel release];
+    [navBar release];
+    [helpText release];
+    
+    [super dealloc];
+}
+
+
+- (void)viewDidUnload {
+    [super viewDidUnload];
+    
+    self.faqButton = nil;
+    self.forumButton = nil;
+    self.helpText = nil;
+    self.cancel = nil;
+    self.navBar = nil;
+}
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -24,6 +44,8 @@
 	
 	if (IS_IPAD)
 		self.navigationItem.title = NSLocalizedString(@"Help", @"");
+    
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
     
     self.helpText.text = NSLocalizedString(@"Please visit the FAQ to get answers to common questions. If you're still having trouble, post in the forums or email us.", @"");
     [self.faqButton setTitle:NSLocalizedString(@"Read the FAQ", @"") forState:UIControlStateNormal];
@@ -44,7 +66,6 @@
 	
 	return NO;
 }
-
 
 -(void) cancel: (id)sender {
 	[self dismissModalViewControllerAnimated:YES];
@@ -77,29 +98,11 @@
 	[controller release];
 }
 
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc. that aren't in use.
-}
-
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
 {
 	[self dismissModalViewControllerAnimated:YES];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    self.faqButton = nil;
-    self.forumButton = nil;
-    self.helpText = nil;
-}
-
-
-- (void)dealloc {
-    [super dealloc];
-}
 
 
 @end

@@ -78,10 +78,10 @@
     self.toolbar = [[[UIToolbar alloc] initWithFrame:frame] autorelease];
     self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 
-        self.toolbar.barStyle = UIBarStyleBlack;
+    self.toolbar.barStyle = UIBarStyleBlack;
 
     self.toolbar.hidden = YES;
-
+    
     [self addSubview:self.toolbar];
 }
 

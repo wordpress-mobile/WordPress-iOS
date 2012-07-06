@@ -3,7 +3,6 @@
 #import <MapKit/MapKit.h>
 #import "UITableViewActivityCell.h"
 #import "EditPostViewController.h"
-#import "PostSettingsHelpViewController.h"
 #import "CPopoverManager.h"
 #import "PostAnnotation.h"
 
