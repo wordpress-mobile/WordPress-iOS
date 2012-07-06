@@ -54,6 +54,7 @@
     [createBlogButton release];
     [createLabel release];
     
+    [createLabel release];
     [super dealloc];
 }
 
@@ -66,7 +67,7 @@
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
     // The welcome screen is presented without a navbar so this is a convenient way to
     // know if the user has blogs or not.
-    if (!self.navigationController.navigationBar.hidden) {
+    if ([self.navigationController.viewControllers count] > 1) {
         if (IS_IPHONE) {        
             self.logoView.hidden = YES;
             CGRect frame = buttonView.frame;
@@ -79,6 +80,7 @@
 
 
 - (void)viewDidUnload {
+    [self setCreateLabel:nil];
     [super viewDidUnload];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -89,6 +91,15 @@
     self.addBlogButton = nil;
     self.createBlogButton = nil;
     self.createLabel = nil;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    if ([self.navigationController.viewControllers count] <= 1)
+        self.navigationController.navigationBar.hidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    self.navigationController.navigationBar.hidden = NO;
 }
 
 
