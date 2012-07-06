@@ -27,8 +27,8 @@
 #import "EGORefreshTableHeaderView.h"
 
 
-#define TEXT_COLOR	 [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.8]
-#define TEXT_COLOR_ACTIVE	 [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]
+#define TEXT_COLOR	 [UIColor colorWithRed:154.0/255.0 green:154.0/255.0 blue:154.0/255.0 alpha:1.0]
+#define TEXT_COLOR_ACTIVE	 [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0]
 #define FLIP_ANIMATION_DURATION 0.18f
 
 
@@ -46,25 +46,26 @@
 		
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
-
+        self.backgroundColor = [UIColor colorWithRed:246.0/255.0 green:246.0/255.0 blue:246.0/255.0 alpha:1.0];
+        
 		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, frame.size.height - 30.0f, self.frame.size.width, 20.0f)];
 		label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		label.font = [UIFont systemFontOfSize:12.0f];
 		label.textColor = TEXT_COLOR;
-		label.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
-		label.shadowOffset = CGSizeMake(0.0f, -1.0f);
+		label.shadowColor = [UIColor colorWithWhite:1.0f alpha:1.0f];
+		label.shadowOffset = CGSizeMake(0.0f, 1.0f);
 		label.backgroundColor = [UIColor clearColor];
 		label.textAlignment = UITextAlignmentCenter;
 		[self addSubview:label];
 		_lastUpdatedLabel=label;
 		[label release];
 		
-		label = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, frame.size.height - 48.0f, self.frame.size.width, 20.0f)];
+		label = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, frame.size.height - 40.0f, self.frame.size.width, 20.0f)];
 		label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		label.font = [UIFont boldSystemFontOfSize:13.0f];
 		label.textColor = TEXT_COLOR;
-		label.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
-		label.shadowOffset = CGSizeMake(0.0f, -1.0f);
+		label.shadowColor = [UIColor colorWithWhite:1.0f alpha:1.0f];
+		label.shadowOffset = CGSizeMake(0.0f, 1.0f);
 		label.backgroundColor = [UIColor clearColor];
 		label.textAlignment = UITextAlignmentCenter;
 		[self addSubview:label];
@@ -86,7 +87,7 @@
 		_arrowImage=layer;
         _arrowImage.hidden = YES;
 		
-		UIActivityIndicatorView *view = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+		UIActivityIndicatorView *view = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 		view.frame = CGRectMake(25.0f, frame.size.height - 40.0f, self.frame.size.width - 50.0f, 20.0f);
         view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[self addSubview:view];
@@ -141,6 +142,7 @@
 			_arrowImage.transform = CATransform3DMakeRotation((M_PI / 180.0) * 180.0f, 0.0f, 0.0f, 1.0f);
 			[CATransaction commit];
             _arrowImage.hidden = YES;
+            _lastUpdatedLabel.hidden = YES;
 			
 			break;
 		case EGOOPullRefreshNormal:
@@ -163,7 +165,7 @@
 			[self refreshLastUpdatedDate];
 			_arrowImage.hidden = YES;
             _statusLabel.hidden = FALSE;
-            _lastUpdatedLabel.hidden = FALSE;
+            _lastUpdatedLabel.hidden = YES;
 			break;
 		case EGOOPullRefreshLoading:
 			
