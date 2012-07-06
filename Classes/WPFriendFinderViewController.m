@@ -165,17 +165,18 @@ typedef void (^CancelBlock)();
             
             NSURL *followingURL = [NSURL URLWithString:@"http://api.twitter.com/1/friends/ids.json"];
             NSArray *twitterAccounts = [store accountsWithAccountType:twitterAccountType];
-            ACAccount *account = (ACAccount *)[twitterAccounts objectAtIndex:0];
-            TWRequest *request = [[[TWRequest alloc] initWithURL:followingURL
-                                                      parameters:params
-                                                   requestMethod:TWRequestMethodGET] autorelease];
-            request.account = account;
-            
-            [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-                NSString *responseJSON = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] autorelease];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByTwitterID(%@)", responseJSON]];
-                });
+            [twitterAccounts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                ACAccount *account = (ACAccount *)obj;
+                TWRequest *request = [[[TWRequest alloc] initWithURL:followingURL
+                                                          parameters:params
+                                                       requestMethod:TWRequestMethodGET] autorelease];
+                request.account = account;
+                [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+                    NSString *responseJSON = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] autorelease];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByTwitterID(%@, '%@')", responseJSON, account.accountDescription]];
+                    });
+                }];
             }];
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
