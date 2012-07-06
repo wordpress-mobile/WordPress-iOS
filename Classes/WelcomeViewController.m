@@ -53,8 +53,7 @@
     [addBlogButton release];
     [createBlogButton release];
     [createLabel release];
-    
-    [createLabel release];
+
     [super dealloc];
 }
 
@@ -80,7 +79,6 @@
 
 
 - (void)viewDidUnload {
-    [self setCreateLabel:nil];
     [super viewDidUnload];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
