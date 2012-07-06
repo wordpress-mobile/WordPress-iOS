@@ -226,6 +226,12 @@
 		5D86498615A6459C00A64FB0 /* welcome_bg_pattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D86498415A6459C00A64FB0 /* welcome_bg_pattern@2x.png */; };
 		5D9832EC15A77F0700A5E783 /* toolbar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832EA15A77ED900A5E783 /* toolbar_bg.png */; };
 		5D9832ED15A77F0700A5E783 /* toolbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832EB15A77EEF00A5E783 /* toolbar_bg@2x.png */; };
+		5D9832F015A78AB400A5E783 /* UINavigationBar+Styled.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9832EF15A78AB400A5E783 /* UINavigationBar+Styled.m */; };
+		5D9832F315A78CCB00A5E783 /* UIToolbar+Styled.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9832F215A78CCA00A5E783 /* UIToolbar+Styled.m */; };
+		5D9832F815A790FE00A5E783 /* navbar_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832F415A7908D00A5E783 /* navbar_shadow.png */; };
+		5D9832F915A790FE00A5E783 /* navbar_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832F515A790A400A5E783 /* navbar_shadow@2x.png */; };
+		5D9832FA15A790FE00A5E783 /* toolbar_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832F615A790BA00A5E783 /* toolbar_shadow.png */; };
+		5D9832FB15A790FE00A5E783 /* toolbar_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832F715A790E500A5E783 /* toolbar_shadow@2x.png */; };
 		5DB767411588F64D00EBE36C /* postPreview.html in Resources */ = {isa = PBXBuildFile; fileRef = 5DB767401588F64D00EBE36C /* postPreview.html */; };
 		5DC433311587C3600073CF07 /* PanelViewWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC433301587C3600073CF07 /* PanelViewWrapper.m */; };
 		5DC433321587C3600073CF07 /* PanelViewWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC433301587C3600073CF07 /* PanelViewWrapper.m */; };
@@ -871,6 +877,14 @@
 		5D86498415A6459C00A64FB0 /* welcome_bg_pattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "welcome_bg_pattern@2x.png"; sourceTree = "<group>"; };
 		5D9832EA15A77ED900A5E783 /* toolbar_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_bg.png; sourceTree = "<group>"; };
 		5D9832EB15A77EEF00A5E783 /* toolbar_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbar_bg@2x.png"; sourceTree = "<group>"; };
+		5D9832EE15A78AB400A5E783 /* UINavigationBar+Styled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+Styled.h"; sourceTree = "<group>"; };
+		5D9832EF15A78AB400A5E783 /* UINavigationBar+Styled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Styled.m"; sourceTree = "<group>"; };
+		5D9832F115A78CCA00A5E783 /* UIToolbar+Styled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIToolbar+Styled.h"; sourceTree = "<group>"; };
+		5D9832F215A78CCA00A5E783 /* UIToolbar+Styled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIToolbar+Styled.m"; sourceTree = "<group>"; };
+		5D9832F415A7908D00A5E783 /* navbar_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_shadow.png; sourceTree = "<group>"; };
+		5D9832F515A790A400A5E783 /* navbar_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_shadow@2x.png"; sourceTree = "<group>"; };
+		5D9832F615A790BA00A5E783 /* toolbar_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_shadow.png; sourceTree = "<group>"; };
+		5D9832F715A790E500A5E783 /* toolbar_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbar_shadow@2x.png"; sourceTree = "<group>"; };
 		5DB767401588F64D00EBE36C /* postPreview.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = postPreview.html; sourceTree = "<group>"; };
 		5DC4332F1587C3600073CF07 /* PanelViewWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelViewWrapper.h; sourceTree = "<group>"; };
 		5DC433301587C3600073CF07 /* PanelViewWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelViewWrapper.m; sourceTree = "<group>"; };
@@ -2131,6 +2145,10 @@
 				374F188915A5895B00524ED0 /* Sidebar */,
 				5DD8A6F815A63F3100A673A4 /* Welcome */,
 				A2CDC80D14C7681600091CEB /* approve.png */,
+				5D9832F415A7908D00A5E783 /* navbar_shadow.png */,
+				5D9832F515A790A400A5E783 /* navbar_shadow@2x.png */,
+				5D9832F615A790BA00A5E783 /* toolbar_shadow.png */,
+				5D9832F715A790E500A5E783 /* toolbar_shadow@2x.png */,
 				A2CDC80E14C7681600091CEB /* approve@2x.png */,
 				E1EE23E712E628F6000B2BE6 /* attachment.png */,
 				E1EE23E812E628F6000B2BE6 /* attachment@2x.png */,
@@ -2370,6 +2388,10 @@
 				838A477811AF9BE9004FA306 /* UIDevice-Hardware.m */,
 				FD4500CF1580DF3500F2B0E6 /* UIColor+Helpers.h */,
 				FD4500D01580DF3500F2B0E6 /* UIColor+Helpers.m */,
+				5D9832EE15A78AB400A5E783 /* UINavigationBar+Styled.h */,
+				5D9832EF15A78AB400A5E783 /* UINavigationBar+Styled.m */,
+				5D9832F115A78CCA00A5E783 /* UIToolbar+Styled.h */,
+				5D9832F215A78CCA00A5E783 /* UIToolbar+Styled.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -3342,6 +3364,10 @@
 				5D86498615A6459C00A64FB0 /* welcome_bg_pattern@2x.png in Resources */,
 				5D9832EC15A77F0700A5E783 /* toolbar_bg.png in Resources */,
 				5D9832ED15A77F0700A5E783 /* toolbar_bg@2x.png in Resources */,
+				5D9832F815A790FE00A5E783 /* navbar_shadow.png in Resources */,
+				5D9832F915A790FE00A5E783 /* navbar_shadow@2x.png in Resources */,
+				5D9832FA15A790FE00A5E783 /* toolbar_shadow.png in Resources */,
+				5D9832FB15A790FE00A5E783 /* toolbar_shadow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3553,6 +3579,8 @@
 				5DC433311587C3600073CF07 /* PanelViewWrapper.m in Sources */,
 				5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */,
 				CC6B3BE715A33E16005A4523 /* WPFriendFinderNudgeView.m in Sources */,
+				5D9832F015A78AB400A5E783 /* UINavigationBar+Styled.m in Sources */,
+				5D9832F315A78CCB00A5E783 /* UIToolbar+Styled.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
