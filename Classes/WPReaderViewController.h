@@ -26,7 +26,7 @@
 @property (retain, nonatomic) NSTimer *refreshTimer;
 @property (nonatomic, retain) WPReaderTopicsViewController *topicsViewController;
 @property (nonatomic, retain) WPFriendFinderNudgeView *friendFinderNudgeView;
-@property (nonatomic, retain) UILabel *titleLabel;
+@property (nonatomic, retain) UIBarButtonItem *titleButton;
 
 - (void)setSelectedTopic:(NSString *)topicId;
 - (void)setupTopics;
