@@ -888,7 +888,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)showLinkView {
     UIAlertView *addURLSourceAlert = [[UIAlertView alloc] init];
-	if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait) {
+	if (IS_IPAD || [[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait) {
 		infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 46.0, 260.0, 31.0)];
 		urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 82.0, 260.0, 31.0)];
 	}
@@ -1196,6 +1196,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     WPFLogMethod();
 	//CGRect infoText = self.addURLSourceAlert;
 	//infoText.text = "test";
+    
+    if (IS_IPAD) {
+        return;
+    }
 	
 	// This reinforces text field constraints set above, for when the Link Helper is already showing when the device is rotated.
 	if (isShowingLinkAlert == TRUE) {
