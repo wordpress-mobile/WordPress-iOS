@@ -73,7 +73,7 @@ float const WPFriendFinderNudgeViewCancelButtonWidth = 46.f;
         self.gradient.frame = gradientFrame;
         self.gradient.colors = [NSArray arrayWithObjects:
                            (id)[[UIColor clearColor] CGColor],
-                           (id)[[[UIColor blackColor] colorWithAlphaComponent:0.7f] CGColor],
+                           (id)[[[UIColor blackColor] colorWithAlphaComponent:0.5f] CGColor],
                            nil];
         self.gradient.startPoint = CGPointMake(0.f, 0.f);
         self.gradient.endPoint = CGPointMake(0.f, 1.f);
