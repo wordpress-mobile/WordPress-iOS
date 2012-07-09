@@ -8,19 +8,19 @@
 
 #import "UINavigationBar+Styled.h"
 
+#import <objc/runtime.h>
+
 @implementation UINavigationBar (Styled) 
 
-- (void)layoutSubviews {
+- (void)layoutSubviewsWithShadows {
+    // Since we exchanged implementations, this actually calls UIKit's layoutSubviews
+    [self layoutSubviewsWithShadows];
+
     // Super sneaky/hacky way of getting dropshadows on all our styled navbars.
     if ([[self class] respondsToSelector:@selector(appearance)]) {
         NSInteger shadowTag = 1;
-        UIView *shadowView = nil;
-        for (UIView *view in self.subviews) {
-            if (view.tag == shadowTag) {
-                shadowView = view;
-                break;
-            }
-        }
+        UIView *shadowView = [self viewWithTag:shadowTag];
+
         if (shadowView == nil) {
             UIImageView *shadowImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navbar_shadow"]];
             shadowImg.frame = CGRectMake(0.0f, self.frame.size.height, self.frame.size.width, 3.0f);
@@ -29,6 +29,12 @@
             [self addSubview:shadowImg];
         }
     }
+}
+
++ (void)load {
+    Method origMethod = class_getInstanceMethod(self, @selector(layoutSubviews));
+    Method newMethod = class_getInstanceMethod(self, @selector(layoutSubviewsWithShadows));
+    method_exchangeImplementations(origMethod, newMethod);
 }
 
 @end
