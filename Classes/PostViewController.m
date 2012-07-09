@@ -101,9 +101,8 @@
                                                                                       action:@selector(deletePost:)];
         deleteButton.style = UIBarButtonItemStylePlain;
         
-        UIBarButtonItem *fixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        fixedSpacer.width = 10.0f;
-        self.toolbarItems = [NSArray arrayWithObjects:editButton, fixedSpacer, deleteButton, nil];
+        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        self.toolbarItems = [NSArray arrayWithObjects:editButton, spacer, deleteButton, nil];
         [deleteButton release];
     } else {
         self.navigationItem.rightBarButtonItem = editButton;
