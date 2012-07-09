@@ -88,8 +88,11 @@
         _arrowImage.hidden = YES;
 		
 		UIActivityIndicatorView *view = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-		view.frame = CGRectMake(25.0f, frame.size.height - 40.0f, self.frame.size.width - 50.0f, 20.0f);
-        view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        CGRect frame = view.frame;
+        frame.origin.x = (self.frame.size.width - frame.size.width) / 2.0f;
+        frame.origin.y = self.frame.size.height - 40.0f;
+        view.frame = frame;
+        view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin; 
 		[self addSubview:view];
 		_activityView = view;
 		[view release];
