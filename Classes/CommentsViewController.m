@@ -572,67 +572,101 @@
     CGFloat swipeViewWidth = swipeView.bounds.size.width;
     CGFloat padding = 2.0f;
     CGFloat buttonCount = 4;
-    CGFloat height = 35.f;
+    CGFloat height = 35.0f;
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    CGFloat y = (cell.bounds.size.height - height) / 2.f;
+    CGFloat y = (cell.bounds.size.height - height) / 2.0f;
 
     /*
      | padding || button padding | button | button padding || button padding | button | button padding || ... || padding |
      */
     CGFloat buttonWidth = (swipeViewWidth - 2.0f * padding) / buttonCount - 2 * padding;
-    CGFloat x = padding * 2;
+    CGFloat x = padding * 2.0f;
 
     UIButton *button;
     Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
     [_selectedComments removeAllObjects];
     [_selectedComments addObject:comment];
 
-    UIImage* buttonImage = [[UIImage imageNamed:@"UISegmentBarBlackButton"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
-    UIImage* buttonPressedImage = [[UIImage imageNamed:@"UISegmentBarBlackButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
-    
-    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
-    if ([comment.status isEqualToString:@"approve"]) {
+//    UIImage* buttonImage = [[UIImage imageNamed:@"UISegmentBarBlackButton"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
+//    UIImage* buttonPressedImage = [[UIImage imageNamed:@"UISegmentBarBlackButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0];
+
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(x, y, buttonWidth, height);
+    if([comment.status isEqualToString:@"approve"]){
+        [button setImage:[UIImage imageNamed:@"unapprove"] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(unapproveSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
-        [button setTitle:NSLocalizedString(@"Unapprove", @"") forState:UIControlStateNormal];
     } else {
+        [button setImage:[UIImage imageNamed:@"approve"] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(approveSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
-        [button setTitle:NSLocalizedString(@"Approve", @"") forState:UIControlStateNormal];
     }
-    button.titleLabel.font = [UIFont systemFontOfSize:13.f];
-    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
-    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
     [swipeView addSubview:button];
-    [button release];
+    x += buttonWidth + 2 * padding;
+        
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[UIImage imageNamed:@"UIButtonBarTrash"] forState:UIControlStateNormal];
+    button.frame = CGRectMake(x, y, buttonWidth, height);
+    [button addTarget:self action:@selector(deleteSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
+    [swipeView addSubview:button];
     x += buttonWidth + 2 * padding;
     
-    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
-    [button addTarget:self action:@selector(deleteSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:NSLocalizedString(@"Trash", @"") forState:UIControlStateNormal];
-    button.titleLabel.font = [UIFont systemFontOfSize:13.f];
-    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
-    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
-    [swipeView addSubview:button];
-    [button release];
-    x += buttonWidth + 2 * padding;
-
-    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[UIImage imageNamed:@"toolbar_flag_lite"] forState:UIControlStateNormal];
+    button.frame = CGRectMake(x, y, buttonWidth, height);
     [button addTarget:self action:@selector(spamSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:NSLocalizedString(@"Spam", @"") forState:UIControlStateNormal];
-    button.titleLabel.font = [UIFont systemFontOfSize:13.f];
-    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
-    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
     [swipeView addSubview:button];
-    [button release];
     x += buttonWidth + 2 * padding;
-
-    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
+    
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[UIImage imageNamed:@"toolbar_write_lite"] forState:UIControlStateNormal];
+    button.frame = CGRectMake(x, y, buttonWidth, height);
     [button addTarget:self action:@selector(replyToSelectedComment:) forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:NSLocalizedString(@"Reply", @"") forState:UIControlStateNormal];
-    button.titleLabel.font = [UIFont systemFontOfSize:13.f];
-    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
-    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
     [swipeView addSubview:button];
-    [button release];
+    
+    
+//    
+//    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
+//    if ([comment.status isEqualToString:@"approve"]) {
+//        [button addTarget:self action:@selector(unapproveSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
+//        [button setTitle:NSLocalizedString(@"Unapprove", @"") forState:UIControlStateNormal];
+//    } else {
+//        [button addTarget:self action:@selector(approveSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
+//        [button setTitle:NSLocalizedString(@"Approve", @"") forState:UIControlStateNormal];
+//    }
+//    button.titleLabel.font = [UIFont systemFontOfSize:13.f];
+//    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
+//    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
+//    [swipeView addSubview:button];
+//    [button release];
+//    x += buttonWidth + 2 * padding;
+//    
+//    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
+//    [button addTarget:self action:@selector(deleteSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
+//    [button setTitle:NSLocalizedString(@"Trash", @"") forState:UIControlStateNormal];
+//    button.titleLabel.font = [UIFont systemFontOfSize:13.f];
+//    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
+//    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
+//    [swipeView addSubview:button];
+//    [button release];
+//    x += buttonWidth + 2 * padding;
+//
+//    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
+//    [button addTarget:self action:@selector(spamSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
+//    [button setTitle:NSLocalizedString(@"Spam", @"") forState:UIControlStateNormal];
+//    button.titleLabel.font = [UIFont systemFontOfSize:13.f];
+//    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
+//    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
+//    [swipeView addSubview:button];
+//    [button release];
+//    x += buttonWidth + 2 * padding;
+//
+//    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
+//    [button addTarget:self action:@selector(replyToSelectedComment:) forControlEvents:UIControlEventTouchUpInside];
+//    [button setTitle:NSLocalizedString(@"Reply", @"") forState:UIControlStateNormal];
+//    button.titleLabel.font = [UIFont systemFontOfSize:13.0f];
+//    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
+//    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
+//    [swipeView addSubview:button];
+//    [button release];
 }
 
 - (void)removeSwipeView:(BOOL)animated {

@@ -954,12 +954,16 @@ sv.lproj/Localizable.strings -text svneol=unset#unset
 /toolbar_delete@2x.png -text
 /toolbar_flag.png -text
 /toolbar_flag@2x.png -text
+/toolbar_flag_lite.png -text
+/toolbar_flag_lite@2x.png -text
 /toolbar_shadow.png -text
 /toolbar_shadow@2x.png -text
 /toolbar_unapprove.png -text
 /toolbar_unapprove@2x.png -text
 /toolbar_write.png -text
 /toolbar_write@2x.png -text
+/toolbar_write_lite.png -text
+/toolbar_write_lite@2x.png -text
 tr.lproj/Localizable.strings -text
 /unapprove.png -text svneol=unset#unset
 /unapprove@2x.png -text svneol=unset#unset
