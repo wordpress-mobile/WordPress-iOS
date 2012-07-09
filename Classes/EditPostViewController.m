@@ -27,7 +27,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize toolbar;
 @synthesize photoButton, movieButton;
 @synthesize undoButton, redoButton;
-
+@synthesize currentActionSheet;
 
 #pragma mark -
 #pragma mark LifeCycle Methods
@@ -63,6 +63,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [bookMarksArray release];
     [segmentedTableViewController release];
     [editorToolbar release];
+    [currentActionSheet release];
+    
     [super dealloc];
 }
 
@@ -118,6 +120,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.movieButton = nil;
     self.undoButton = nil;
     self.redoButton = nil;
+    self.currentActionSheet = nil;
 
     [super viewDidUnload];
 }
@@ -757,27 +760,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self dismissEditView];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if ([actionSheet tag] == 201) {
-        if (buttonIndex == 0) {
-            [self discard];
-        }
-        
-        if (buttonIndex == 1) {  
-			if ([actionSheet numberOfButtons] == 2)
-				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-			else {
-				if (![self.apost hasRemote])
-					[self savePost:NO];
-				else
-					[self savePost:YES];
-			}
-        }
-    }
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:NO];
-}
 
 //check if there are media in uploading status
 -(BOOL) isMediaInUploading {
@@ -806,6 +788,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (IBAction)cancelView:(id)sender {
+    if(currentActionSheet) return;
+    
     [textView resignFirstResponder];
     [titleTextField resignFirstResponder];
     [tagsTextField resignFirstResponder];
@@ -936,6 +920,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [addURLSourceAlert release];
 }
 
+- (BOOL)hasChanges {
+    return self.apost.hasChanges;
+}
+
+#pragma mark -
+#pragma mark AlertView Delegate Methods
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 	
@@ -989,11 +980,41 @@ NSTimeInterval kAnimationDuration = 0.3f;
     return;
 }
 
-- (BOOL)hasChanges {
-    return self.apost.hasChanges;
+
+#pragma mark -
+#pragma mark ActionSheet Delegate Methods
+
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
+    self.currentActionSheet = actionSheet;
 }
 
-#pragma mark TextView & TextField Delegates
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    self.currentActionSheet = nil;
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if ([actionSheet tag] == 201) {
+        if (buttonIndex == 0) {
+            [self discard];
+        }
+        
+        if (buttonIndex == 1) {  
+			if ([actionSheet numberOfButtons] == 2)
+				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
+			else {
+				if (![self.apost hasRemote])
+					[self savePost:NO];
+				else
+					[self savePost:YES];
+			}
+        }
+    }
+    
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate setAlertRunning:NO];
+}
+
+#pragma mark - TextView & TextField Delegates
 
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
     if (!isTextViewEditing) {

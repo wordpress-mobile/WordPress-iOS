@@ -44,7 +44,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 	IBOutlet UIBarButtonItem *photoButton;
 	IBOutlet UIBarButtonItem *movieButton;
     IBOutlet UIImageView *tabPointer;
-    
+    UIActionSheet *currentActionSheet;
 	
     WPSelectionTableViewController *selectionTableViewController;
     WPSegmentedSelectionTableViewController *segmentedTableViewController;
@@ -98,6 +98,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (readonly) BOOL hasChanges;
 @property (readonly) CGRect normalTextFrame;
 @property (nonatomic, retain) UIButton *undoButton, *redoButton;
+@property (nonatomic, retain) UIActionSheet *currentActionSheet;
 
 - (id)initWithPost:(AbstractPost *)aPost;
 
