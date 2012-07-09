@@ -170,7 +170,7 @@
 	statusLabel = [[UILabel alloc] initWithFrame:rect];
     statusLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
     statusLabel.textColor = [UIColor blackColor];
-    statusLabel.backgroundColor = [UIColor whiteColor];
+    statusLabel.backgroundColor = [UIColor clearColor];
     statusLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
 //	statusLabel.layer.cornerRadius = DATE_LABEL_HEIGHT / 2;
 	
