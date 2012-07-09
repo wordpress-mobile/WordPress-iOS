@@ -179,15 +179,19 @@
     rect.origin.x = LEFT_OFFSET + buttonOffset;
     rect.size.width = width - buttonOffset;
     commentLabel.frame = rect;
+    
+    rect = checkButton.frame;
+    rect.origin.y = (self.frame.size.height - 30.0f) / 2.0f;
+    checkButton.frame = rect;
 }
 
 - (void)addCheckButton {
-    CGRect rect = CGRectMake(LEFT_OFFSET, 15, 30, COMMENT_ROW_HEIGHT - 30);
 
+    CGRect rect = CGRectMake(LEFT_OFFSET, (COMMENT_ROW_HEIGHT - 30.0f)/2, 30.0, 30.0f);
     checkButton = [[UIButton alloc] initWithFrame:rect];
     [checkButton addTarget:self action:@selector(checkButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self setChecked:NO];
-
+    checkButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     [self.contentView addSubview:checkButton];
 }
 
