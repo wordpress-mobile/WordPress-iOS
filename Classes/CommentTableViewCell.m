@@ -134,6 +134,7 @@
 #pragma mark Private Methods
 
 - (void)layoutSubviews {
+    [super layoutSubviews];
     CGRect rect;
     int buttonOffset = 0;
     
