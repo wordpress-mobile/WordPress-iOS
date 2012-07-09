@@ -195,8 +195,6 @@
     CGRect rect = CGRectMake(LEFT_OFFSET, TOP_OFFSET, GRAVATAR_WIDTH, GRAVATAR_HEIGHT);
     
     gravatarImageView = [[UIImageView alloc] initWithFrame:rect];
-    gravatarImageView.layer.cornerRadius = 10.0f;
-    gravatarImageView.layer.masksToBounds = YES;
     
     [self.contentView addSubview:gravatarImageView];
 }
@@ -219,7 +217,7 @@
     urlLabel = [[UILabel alloc] initWithFrame:rect];
     urlLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
     urlLabel.backgroundColor = [UIColor clearColor];
-    urlLabel.textColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.8];
+    urlLabel.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
     urlLabel.highlightedTextColor = [UIColor whiteColor];
     urlLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 
@@ -232,7 +230,7 @@
     postLabel = [[UILabel alloc] initWithFrame:rect];
     postLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
     postLabel.backgroundColor = [UIColor clearColor];
-    postLabel.textColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.8];
+    postLabel.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
 	postLabel.highlightedTextColor = [UIColor whiteColor];
     postLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
     
@@ -245,7 +243,7 @@
     commentLabel = [[WPLabel alloc] initWithFrame:rect];
     commentLabel.font = [UIFont systemFontOfSize:COMMENT_FONT_SIZE];
     commentLabel.backgroundColor = [UIColor clearColor];
-    commentLabel.textColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.8];
+    commentLabel.textColor = [UIColor colorWithRed:34.0f/255.0f green:34.0f/255.0f blue:34.0f/255.0f alpha:1.0f];
     commentLabel.highlightedTextColor = [UIColor whiteColor];
     commentLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     commentLabel.numberOfLines = 3;

@@ -84,7 +84,9 @@
     
     if ([[self.editButtonItem class] respondsToSelector:@selector(appearance)]) {
         [self.editButtonItem setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+        [self.editButtonItem setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_landscape"] forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
         [self.editButtonItem setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_active"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+        [self.editButtonItem setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_active_landscape"] forState:UIControlStateSelected barMetrics:UIBarMetricsLandscapePhone];
         
         [self.editButtonItem setTitleTextAttributes:
          [NSDictionary dictionaryWithObjectsAndKeys:
@@ -163,7 +165,6 @@
         UIFont *titleFont = [UIFont boldSystemFontOfSize:12.0f];
         CGSize titleSize = [NSLocalizedString(@"Done", @"") sizeWithFont:titleFont];
         CGFloat buttonWidth = titleSize.width + 20.0f;
-        button.frame = CGRectMake(0.0f, 0.0f, buttonWidth, 30.0f);
         
         [button setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
         button.titleLabel.font = titleFont;
@@ -171,7 +172,16 @@
         button.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [button addTarget:self action:@selector(stopEditing:) forControlEvents:UIControlEventTouchUpInside];
         
-        UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+        UIImage *backgroundImage;
+        if (IS_IPHONE && (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
+            backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_landscape_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+            button.frame = CGRectMake(0.0f, 0.0f, buttonWidth, 24.0f);
+        }
+        else {
+            backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+            button.frame = CGRectMake(0.0f, 0.0f, buttonWidth, 30.0f);
+        }
+        
         [button setBackgroundImage:backgroundImage forState:UIControlStateNormal];
         
         UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
@@ -381,6 +391,7 @@
                                     options:UIViewAnimationOptionAllowUserInteraction
                                  animations:^{
                                      cell.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+                                     [cell.backgroundView setAlpha:0.7f];
                                  } completion:nil];
             });
         } else {
@@ -396,6 +407,7 @@
                                                          options:UIViewAnimationOptionAllowUserInteraction
                                                       animations:^{
                                                           cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+                                                          [cell.backgroundView setAlpha:1.0f];
                                                       }
                                                       completion:nil];
                                  }];
@@ -404,8 +416,10 @@
         comment.isNew = NO;
     } else if ([comment.status isEqual:@"hold"]) {
         cell.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+        [cell.backgroundView setAlpha:0.7f];
     } else {
         cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
+        [cell.backgroundView setAlpha:1.0f];
     }
 
 }
@@ -540,6 +554,8 @@
     UITableViewCell *cell = [[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier] retain];
     if (cell == nil) {
         cell = [[CommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
+        [cell setBackgroundView:imageView];
     }
     return cell;
 }

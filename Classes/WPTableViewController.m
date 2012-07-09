@@ -71,12 +71,14 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 		_refreshHeaderView.delegate = self;
 		[self.tableView addSubview:_refreshHeaderView];
 	}
+
 	
 	//  update the last update date
 	[_refreshHeaderView refreshLastUpdatedDate];
 
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+    self.tableView.separatorColor = [UIColor colorWithRed:204.0f/255.0f green:204.0f/255.0f blue:204.0f/255.0f alpha:1.0f];
     
     if (self.swipeActionsEnabled) {
         [self enableSwipeGestureRecognizer];

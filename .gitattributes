@@ -680,6 +680,8 @@ c_tidy/win32tc.h -text
 /categoriesHighlighted@2x.png -text svneol=unset#unset
 /category_child.png -text
 /category_child@2x.png -text
+/cell_gradient_bg.png -text
+/cell_gradient_bg@2x.png -text
 /check.png -text
 /check@2x.png -text
 /commentDelete.png -text
@@ -776,6 +778,10 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /navbar_button_bg@2x.png -text
 /navbar_button_bg_active.png -text
 /navbar_button_bg_active@2x.png -text
+/navbar_button_bg_landscape.png -text
+/navbar_button_bg_landscape@2x.png -text
+/navbar_button_bg_landscape_active.png -text
+/navbar_button_bg_landscape_active@2x.png -text
 /navbar_menu.png -text
 /navbar_menu@2x.png -text
 /navbar_menu_white.png -text

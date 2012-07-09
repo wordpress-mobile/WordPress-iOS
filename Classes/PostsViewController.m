@@ -171,7 +171,6 @@
 #pragma mark TableView delegate
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    cell.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
 
 	if (IS_IPAD == YES) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
@@ -396,6 +395,8 @@
     UITableViewCell *cell = [[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier] retain];
     if (cell == nil) {
         cell = [[PostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
+        [cell setBackgroundView:imageView];
     }
     return cell;
 }
