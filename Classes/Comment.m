@@ -63,6 +63,7 @@
     
     if (comment == nil) {
         comment = [[Comment newCommentForBlog:blog] autorelease];
+        comment.isNew = YES;
     }
     
     [comment updateFromDictionary:commentInfo];
