@@ -42,12 +42,14 @@
     [super dealloc];
 }
 
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
+   self.navigationItem.title = NSLocalizedString(@"Loading...", @"");
     isLoading = YES;
     [self setLoading:NO];
     self.backButton.enabled = NO;
@@ -93,6 +95,7 @@
         [btn addTarget:self action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
 
         refreshButton.customView = btn;
+        iPadNavBar.topItem.title = NSLocalizedString(@"Loading...", @"");
     }
     
     if ([forwardButton respondsToSelector:@selector(setTintColor:)]) {
@@ -106,10 +109,11 @@
     self.optionsButton.enabled = NO;
     self.webView.scalesPageToFit = YES;
     self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
-        
+    
     if (self.url) {
         [self refreshWebView];
     } else {
+        self.navigationItem.title = NSLocalizedString(@"Loading...", @"");
         [self.webView loadHTMLString:self.detailHTML baseURL:[NSURL URLWithString:@"https://en.wordpress.com"]];     
     }
 }
@@ -129,8 +133,8 @@
         [forwardButton setImage:[UIImage imageNamed:@"next.png"]];
         
         // Replace refresh button with options button
-        backButton.width = (toolbar.frame.size.width / 2) - 10;
-        forwardButton.width = (toolbar.frame.size.width / 2) - 10;
+        backButton.width = (toolbar.frame.size.width / 2.0f) - 10.0f;
+        forwardButton.width = (toolbar.frame.size.width / 2.0f) - 10.0f;
         NSArray *items = [NSArray arrayWithObjects:backButton,
                           [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
                           forwardButton, nil];
