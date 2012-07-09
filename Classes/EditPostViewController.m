@@ -841,7 +841,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     actionSheet.tag = 201;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-    [actionSheet showInView:self.view];
+    if (IS_IPAD) {
+        [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
+    } else {
+        [actionSheet showInView:self.view];
+    }
+
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:YES];
     
