@@ -34,6 +34,9 @@
     IBOutlet UIBarButtonItem *approveButton;
     IBOutlet UIBarButtonItem *actionButton;
     IBOutlet UIBarButtonItem *replyButton;
+    IBOutlet UIBarButtonItem *trashButton;
+    IBOutlet UIBarButtonItem *spamButton;
+    IBOutlet UIBarButtonItem *editButton;
 
     UIBarButtonItem *segmentBarItem;
     UISegmentedControl *segmentedControl;
@@ -46,9 +49,10 @@
 }
 
 
-- (IBAction)launchModerateMenu;
 - (IBAction)launchReplyToComments;
 - (IBAction)launchDeleteCommentActionSheet;
+- (IBAction)launchEditComment:(id)sender;
+- (IBAction)spamComment:(id)sender;
 - (IBAction)viewURL;
 - (IBAction)sendEmail;
 - (IBAction)handlePostTitleButtonTapped:(id)sender;
@@ -62,7 +66,6 @@
 - (void)deleteComment:(id)sender;
 - (void)approveComment:(id)sender;
 - (void)unApproveComment:(id)sender;
-- (void)spamComment:(id)sender;
 - (void)addOrRemoveSegmentedControl;
 
 @property (nonatomic, retain) ReplyToCommentViewController *replyToCommentViewController;

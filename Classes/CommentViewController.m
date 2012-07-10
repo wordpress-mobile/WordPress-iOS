@@ -12,6 +12,7 @@
 #import "WPWebViewController.h"
 #import "UIImageView+Gravatar.h"
 #import "SFHFKeychainUtils.h"
+#import "UIColor+Helpers.h"
 
 #define COMMENT_BODY_TOP        100
 #define COMMENT_BODY_MAX_HEIGHT 4000
@@ -38,7 +39,6 @@
 - (void)removePendingLabel;
 
 - (void)launchReplyToComments;
-- (void)launchEditComment;
 
 -(void)reachabilityChanged:(BOOL)reachable;
 -(void)openInAppWebView:(NSURL*)url;
@@ -136,6 +136,9 @@
     [approveButton release]; approveButton = nil;
     [actionButton release]; actionButton = nil;
     [replyButton release]; replyButton = nil;
+    [trashButton release]; trashButton = nil;
+    [spamButton release]; spamButton = nil;
+    [editButton release]; editButton = nil;
     [segmentedControl release]; segmentedControl = nil;
     [gravatarImageView release]; gravatarImageView = nil;
     self.commentAuthorEmailButton = nil;
@@ -190,33 +193,6 @@
 #pragma mark -
 #pragma mark UIActionSheetDelegate methods
 
-//not truly an ActionSheetDelegate method, but it's where we call the ActionSheet...
-- (void) launchModerateMenu {
-	if(self.commentsViewController.blog.isSyncingComments) {
-		[self showSynchInProgressAlert];
-		return;
-	} 
-	
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
-															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil
-													otherButtonTitles: NSLocalizedString(@"Delete Comment", @""), NSLocalizedString(@"Mark Comment as Spam", @""), NSLocalizedString(@"Edit Comment", @""),nil];
-	//otherButtonTitles: conditionalButtonTitle, NSLocalizedString(@"Mark Comment as Spam", @""),nil];
-	
-	actionSheet.tag = 301;
-	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-	if (IS_IPAD == YES) {
-        actionButton.enabled = NO;
-		[actionSheet showFromBarButtonItem:actionButton animated:YES];
-	} else {
-		[actionSheet showInView:self.view];
-	}
-	WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-	[appDelegate setAlertRunning:YES];
-	
-	[actionSheet release];	
-	
-}
-
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	
 //handle action sheet from trash button
@@ -257,30 +233,6 @@
 			[self cancel];
 		}
 	}
-		
-	
-	//handle action sheet for approve/spam/edit
-    if ([actionSheet tag] == 301) {
-        actionButton.enabled = YES;
-        if (buttonIndex == 0) {  //Delete comment was selected
-			[self deleteComment:nil];
-        }
-		
-        if (buttonIndex == 1) {  //Mark as Spam was selected
-            [self spamComment:nil];
-        }
-		
-		if (buttonIndex == 2) {  //Edit Comment was selected
-			[self launchEditComment];
-			//[self showEditCommentModalViewWithAnimation:YES];
-			//... or [self editThisComment]; (if we need more data loading perhaps)
-			//yet to be written...
-			//launch the modal editing view and load it with the selected comment
-			//editing view to save new comment and return to this screen with new comment loaded into detail
-			//consider making this edit view and the reply-to-comment edit view the same xib
-			//   and load data conditionally
-        }
-    }
     
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:NO];
@@ -385,7 +337,7 @@
     [actionSheet release];
 }
 
-- (void)launchEditComment {
+- (IBAction)launchEditComment:(id)sender {
 	[self showEditCommentViewWithAnimation:YES];
 }
 
@@ -449,13 +401,16 @@
 }
 
 - (void)launchDeleteCommentActionSheet {
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure?", @"")
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this comment?", @"")
 															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
 											   destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
 													otherButtonTitles:nil];
     actionSheet.tag = 501;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-    [actionSheet showInView:self.view];
+    if (IS_IPAD)
+        [actionSheet showFromBarButtonItem:trashButton animated:YES];
+    else 
+        [actionSheet showInView:self.view];
 	
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:YES];
@@ -479,7 +434,7 @@
     [self moderateCommentWithSelector:@selector(unapprove)];
 }
 
-- (void)spamComment:(id)sender {
+- (IBAction)spamComment:(id)sender {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentWithSelector:@selector(spam)];
 }
@@ -527,7 +482,7 @@
     CGRect rect;
 
 	float pendingLabelHeight = pendingLabelHolder.frame.size.height;
-    pendingLabelHolder.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
+    pendingLabelHolder.backgroundColor = [UIColor UIColorFromHex:0xf6f6dc alpha:1.0f];
     pendingLabel.text = NSLocalizedString(@"Pending Comment", @"");
     
 	[labelHolder addSubview:pendingLabelHolder];
