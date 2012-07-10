@@ -385,23 +385,17 @@
 
 
 - (void)showEditCommentViewWithAnimation:(BOOL)animate {
-	WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-	
 	self.editCommentViewController = [[[EditCommentViewController alloc] 
 									 initWithNibName:@"EditCommentViewController" 
 									 bundle:nil] autorelease];
 	editCommentViewController.commentViewController = self;
 	editCommentViewController.comment = self.comment;
 	editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
-	
-	if (IS_IPAD == YES) {
-		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editCommentViewController] autorelease];
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-		[self presentModalViewController:navController animated:YES];
-	} else {
-		[appDelegate.navigationController pushViewController:self.editCommentViewController animated:YES];
-	}
+
+    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editCommentViewController] autorelease];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentModalViewController:navController animated:animate];
 }
 
 
