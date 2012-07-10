@@ -87,6 +87,7 @@
     }
     
     nameLabel.text = [title stringByDecodingXMLCharacters];
+   // nameLabel.backgroundColor = [UIColor orangeColor];
     if ([post.status isEqualToString:@"pending"]) {
         statusLabel.textColor = [UIColor lightGrayColor];
         statusLabel.text = NSLocalizedString(@"Pending", @"");
@@ -98,14 +99,11 @@
         statusLabel.text = @"";
     }
 
-    CGRect rect = statusLabel.frame;
-    CGSize statusSize = [statusLabel.text sizeWithFont:statusLabel.font];
-    rect.size.width = statusSize.width;
-    rect.origin.x = 288 - statusSize.width;
-    statusLabel.frame = rect;
-    
+    //statusLabel.backgroundColor = [UIColor orangeColor];
+
     NSDate *date = [post valueForKey:@"dateCreated"];
     dateLabel.text = [dateFormatter stringFromDate:date];
+    //dateLabel.backgroundColor = [UIColor redColor];
     
     @try {
         if(post.remoteStatus != AbstractPostRemoteStatusPushing)
@@ -128,7 +126,8 @@
 	self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	self.selectionStyle = UITableViewCellSelectionStyleBlue;
 	
-	CGRect rect = CGRectMake(LEFT_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, 320, DATE_LABEL_HEIGHT);
+    CGFloat w = self.frame.size.width - LEFT_OFFSET - RIGHT_MARGIN - STATUS_LABEL_WIDTH; //Max space available for the Date
+    CGRect rect = CGRectMake(LEFT_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, w, DATE_LABEL_HEIGHT);
 	dateLabel.frame = rect;
 	
 	
@@ -152,7 +151,8 @@
 }
 
 - (void)addDateLabel {
-    CGRect rect = CGRectMake(LEFT_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, RIGHT_OFFSET - LEFT_OFFSET, DATE_LABEL_HEIGHT);
+    CGFloat w = self.frame.size.width - LEFT_OFFSET - RIGHT_MARGIN - STATUS_LABEL_WIDTH; //Max space available for the Date
+    CGRect rect = CGRectMake(LEFT_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, w, DATE_LABEL_HEIGHT);
 
     dateLabel = [[UILabel alloc] initWithFrame:rect];
     dateLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
@@ -172,6 +172,7 @@
     statusLabel.textColor = [UIColor blackColor];
     statusLabel.backgroundColor = [UIColor clearColor];
     statusLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
+    statusLabel.textAlignment = UITextAlignmentRight;
 //	statusLabel.layer.cornerRadius = DATE_LABEL_HEIGHT / 2;
 	
     [self.contentView addSubview:statusLabel];
