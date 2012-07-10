@@ -65,7 +65,7 @@
                                                                            action:@selector(showAddPostView)] autorelease];
     }
     if ([composeButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        composeButtonItem.tintColor = [UIColor UIColorFromHex:0x464646];
+        composeButtonItem.tintColor = [UIColor UIColorFromHex:0x222222];
     }
     if (!IS_IPAD) {
         self.navigationItem.rightBarButtonItem = composeButtonItem;

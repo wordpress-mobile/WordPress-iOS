@@ -162,7 +162,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     postPreviewViewController.postDetailViewController = self;
     postPreviewViewController.view.frame = editView.frame;
     
-	self.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
+	self.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
 	statuses = [[NSArray arrayWithObjects:NSLocalizedString(@"Local Draft", @"Post status label in the posts list if the post has not yet been synced to the remote server."), NSLocalizedString(@"Draft", @"Post status label in the posts list if the post is a draft."), NSLocalizedString(@"Private", @"Post status label in the posts list if the post is marked as private. Should be the same as WP core."), NSLocalizedString(@"Pending review", @"Post status label in the post list if the post is pending review. Should be the same as WP core."), NSLocalizedString(@"Published", @"Post status to indicate that the post is live and published. Should be the same as WP core."), nil] retain];
 	
 	
@@ -213,7 +213,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	}
     
     if ([writeButton respondsToSelector:@selector(setTintColor:)]) {
-        UIColor *color = [UIColor UIColorFromHex:0x464646];
+        UIColor *color = [UIColor UIColorFromHex:0x222222];
         writeButton.tintColor = color;
         settingsButton.tintColor = color;
         previewButton.tintColor = color;
@@ -265,7 +265,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	animateWiggleIt.toValue=[NSNumber numberWithFloat:0.06];
 	[textViewPlaceHolderField.layer addAnimation:animateWiggleIt forKey:@"textViewPlaceHolderField"];
 	
-	self.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
+	self.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
 }
 
 - (void)viewWillDisappear:(BOOL)animated {	
@@ -406,7 +406,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (currentView != editView) {
         [self switchToView:editView];
     }
-	self.navigationItem.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
+	self.navigationItem.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
 }
 
 - (IBAction)switchToSettings {
@@ -511,11 +511,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
         
         [button setTitle:buttonTitle forState:UIControlStateNormal];
         button.titleLabel.font = titleFont;
-        button.titleLabel.shadowColor = [UIColor blackColor];
-        button.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        button.titleLabel.textColor = [UIColor UIColorFromHex:0x222222];
+        button.titleLabel.shadowColor = [UIColor whiteColor];
+        button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [button addTarget:self action:@selector(saveAction:) forControlEvents:UIControlEventTouchUpInside];
         
-        UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+        // ##### Needs Primary button active state!
+        UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_primary_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
         [button setBackgroundImage:backgroundImage forState:UIControlStateNormal];
         
         UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithCustomView:button];
@@ -525,7 +527,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)refreshUIForCompose {
-	self.navigationItem.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
+	self.navigationItem.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
     titleTextField.text = @"";
     textView.text = @"";
     textViewPlaceHolderField.hidden = NO;
@@ -1116,7 +1118,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         if ([self.apost.postTitle length] > 0) {
             self.navigationItem.title = self.apost.postTitle;
         } else {
-            self.navigationItem.title = NSLocalizedString(@"Write", @"Post Editor screen title.");
+            self.navigationItem.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
         }
 
     }
