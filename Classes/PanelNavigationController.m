@@ -28,7 +28,6 @@
 @property (nonatomic, retain) NSMutableArray *detailViewWidths;
 @property (nonatomic, retain) UIButton *detailTapper;
 @property (nonatomic, retain) UIPanGestureRecognizer *panner;
-@property (nonatomic, retain) UIImageView *backgroundImageView;
 
 - (void)showSidebar;
 - (void)showSidebarAnimated:(BOOL)animated;
@@ -101,7 +100,6 @@
 @synthesize detailViewWidths = _detailViewWidths;
 @synthesize detailTapper = _detailTapper;
 @synthesize panner = _panner;
-@synthesize backgroundImageView = _backgroundImageView;
 
 - (void)dealloc {
     self.detailViewController.panelNavigationController = nil;
@@ -170,12 +168,8 @@
     } else {
         _stackOffset = 0;
     }
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
     if (IS_IPAD) {
-        self.backgroundImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fabric"]] autorelease];
-        self.backgroundImageView.frame = CGRectMake(DETAIL_LEDGE_OFFSET, 0, self.view.frame.size.width - DETAIL_LEDGE_OFFSET, DETAIL_HEIGHT);
-        self.backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
-        [self.view insertSubview:self.backgroundImageView belowSubview:self.detailView];
         [self showSidebarAnimated:NO];
     }
 }
@@ -184,7 +178,6 @@
     self.detailView = nil;
     self.detailViews = nil;
     self.detailViewWidths = nil;
-    self.backgroundImageView = nil;
 
     if (self.navigationController) {
         [self.navigationController willMoveToParentViewController:nil];
