@@ -547,13 +547,6 @@
     SidebarTableViewCell *cell = (SidebarTableViewCell *)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[SidebarTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-        cell.textLabel.shadowOffset = CGSizeMake(0, 1.1f);
-        cell.textLabel.shadowColor = [UIColor blackColor];
-        cell.textLabel.textColor = [UIColor colorWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0f];
-        cell.textLabel.font = [UIFont systemFontOfSize:17.0];
-        cell.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_cell_bg"]] autorelease];
-        cell.selectedBackgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_cell_bg_selected"]] autorelease];
-        
     }
     
     NSString *title = nil;

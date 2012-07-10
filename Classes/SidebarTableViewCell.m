@@ -22,6 +22,19 @@
     [super dealloc];
 }
 
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self.textLabel.shadowOffset = CGSizeMake(0, 1.1f);
+        self.textLabel.shadowColor = [UIColor blackColor];
+        self.textLabel.textColor = [UIColor colorWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0f];
+        self.textLabel.font = [UIFont systemFontOfSize:17.0];
+        self.backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_cell_bg"]] autorelease];
+        self.selectedBackgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_cell_bg_selected"]] autorelease];
+    }
+    return self;
+}
+
 - (Blog *)blog {
     return blog;
 }
