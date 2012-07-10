@@ -297,7 +297,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 - (void)initiateSaveCommentReply:(id)sender {
 	[self endTextEnteringButtonAction: sender];
 	if(hasChanges == NO) {
-        [commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:NO];
+        [commentViewController cancelView:self];
 		return;
 	}
 	self.comment.content = textView.text;
@@ -311,7 +311,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
         [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
         [progressAlert release];
         self.hasChanges = NO;
-        [commentViewController performSelectorOnMainThread:@selector(cancelView:) withObject:self waitUntilDone:NO];
+        [commentViewController cancelView:self];
     } failure:^(NSError *error) {
         [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
         [progressAlert release];
