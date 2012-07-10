@@ -7,6 +7,7 @@
 #import "SidebarSectionHeaderView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIImageView+Gravatar.h"
+#import "Constants.h"
 #import "PanelNavigationConstants.h"
 
 @interface SidebarSectionHeaderView (Private)
