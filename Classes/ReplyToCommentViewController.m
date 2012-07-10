@@ -115,6 +115,9 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 #pragma mark Button Override Methods
 
 - (void)cancelView:(id)sender {
+	if (![textView.text isEqualToString:textViewText]) {
+		self.hasChanges=YES;
+	}
 	if (delegate) {
 		[delegate cancelReplyToCommentViewController:self];	
 	} else {

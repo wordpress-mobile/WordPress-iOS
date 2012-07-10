@@ -368,9 +368,15 @@
 	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
 	
 	if (replyToCommentViewController.hasChanges) { 
-		[actionSheet showInView:replyToCommentViewController.view];
+        if (IS_IPAD)
+            [actionSheet showFromBarButtonItem:replyToCommentViewController.navigationItem.leftBarButtonItem animated:YES];
+        else
+            [actionSheet showInView:replyToCommentViewController.view];
 	}else if (editCommentViewController.hasChanges) {
-		[actionSheet showInView:editCommentViewController.view];
+        if (IS_IPAD)
+            [actionSheet showFromBarButtonItem:editCommentViewController.navigationItem.leftBarButtonItem animated:YES];
+        else
+            [actionSheet showInView:editCommentViewController.view];
 	}
 	
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
