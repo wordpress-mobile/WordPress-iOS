@@ -559,7 +559,7 @@
     NSString *title = nil;
       
     if (indexPath.section == 0) {
-        title = NSLocalizedString(@"Read", @"");
+        title = NSLocalizedString(@"Reader", @"");
         cell.imageView.image = [UIImage imageNamed:@"sidebar_read"];
     } else {
         switch (indexPath.row) {
