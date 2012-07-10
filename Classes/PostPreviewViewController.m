@@ -78,15 +78,12 @@
 }
 
 
-- (NSString *)buildSimplePreview:(NSString *)alertString {
+- (NSString *)buildSimplePreview {
 	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
 	NSString *fpath = [NSString stringWithFormat:@"%@/defaultPostTemplate.html", resourcePath];
 	NSString *str = [NSString stringWithContentsOfFile:fpath encoding:NSUTF8StringEncoding error:nil];
 	
 	if ([str length]) {
-		
-		//alert msg
-		str = [str stringByReplacingOccurrencesOfString:@"!$alert_msg$!" withString:alertString];
 		
 		//Title
 		NSString *title = postDetailViewController.apost.postTitle;
@@ -151,15 +148,15 @@
 		isPending = YES;
 	
 	if (edited) {
-		[webView loadHTMLString:[self buildSimplePreview:NSLocalizedString(@"Sorry, the post has changed, or it is not published. A simple preview is shown below.", @"")] baseURL:nil];
+		[webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
 	} else {
 		
 		NSString *link = postDetailViewController.apost.permaLink;
 		
         if (postDetailViewController.apost.blog.reachable == NO ) {
-			[webView loadHTMLString:[self buildSimplePreview:NSLocalizedString(@"Sorry, no connection to host. A simple preview is shown below.", @"")] baseURL:nil];
+			[webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
 		} else if (link == nil ) {
-			[webView loadHTMLString:[self buildSimplePreview:NSLocalizedString(@"Sorry, the post has changed, or it is not published. A simple preview is shown below.", @"")] baseURL:nil];
+			[webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
 		} else {
 				
 
