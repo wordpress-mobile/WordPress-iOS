@@ -86,7 +86,11 @@ CGFloat const BlavatarHeight = 32.f;
         UILabel *commentsLbl = [[UILabel alloc]initWithFrame:commentsBadgedRect];
         commentsLbl.backgroundColor = [UIColor clearColor];
         commentsLbl.textAlignment = UITextAlignmentCenter;
-        commentsLbl.text = [NSString stringWithFormat:@"%d", numberOfPendingComments];
+        if (numberOfPendingComments > 0) {
+            commentsLbl.text = [NSString stringWithFormat:@"%d", numberOfPendingComments];
+        } else {
+            commentsLbl.text = nil;
+        }
         commentsLbl.font = [UIFont boldSystemFontOfSize:17.0];
         commentsLbl.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
         commentsLbl.shadowOffset = CGSizeMake(0, 1.1f);
