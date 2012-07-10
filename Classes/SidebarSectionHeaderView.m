@@ -18,6 +18,7 @@
 @end
 
 CGFloat const BlavatarHeight = 32.f;
+CGFloat const BadgeHeight = 24.f;
     
 @implementation SidebarSectionHeaderView
 
@@ -74,7 +75,7 @@ CGFloat const BlavatarHeight = 32.f;
         [self addSubview:label];
         _titleLabel = label;
         
-        CGRect commentsBadgedRect = IS_IPAD ? CGRectMake(self.bounds.size.width - 48.0 , 12.0, 34.0, 24.0) : CGRectMake(self.bounds.size.width - 88.0 , 12.0, 34.0, 24.0);
+        CGRect commentsBadgedRect = IS_IPAD ? CGRectMake(self.bounds.size.width - 48.0 , (frame.size.height - BadgeHeight) / 2.f, 34.0, BadgeHeight ) : CGRectMake(self.bounds.size.width - 88.0 ,  (frame.size.height - BadgeHeight) / 2.f, 34.0, BadgeHeight);
         UIImageView *commentsIconImgView = [[[UIImageView alloc] initWithFrame:commentsBadgedRect] autorelease];
         if ( numberOfPendingComments > 0 ) {
             UIImage *img = [UIImage imageNamed:@"sidebar_comment_bubble"];
