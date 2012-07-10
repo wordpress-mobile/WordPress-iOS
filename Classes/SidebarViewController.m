@@ -421,7 +421,7 @@
     [quickPhotoButton showProgress:NO animated:YES];
 
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
-                                                    message:NSLocalizedString(@"Sorry, the photo publish failed. The post has been saved as a Local Draft.", @"")
+                                                    message:NSLocalizedString(@"The photo could not be published. It's been saved as a local draft.", @"")
                                                    delegate:self
                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
