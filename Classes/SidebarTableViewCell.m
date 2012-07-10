@@ -11,7 +11,7 @@
 @interface SidebarTableViewCell (Private)
 
 - (void)receivedCommentsChangedNotification:(NSNotification*)aNotification;
-- (UIImage *)badgeImage:(UIImage *)img withText:(NSString *)text1;
+- (UILabel *)commentsBadgeLabel:(CGRect)aRect text:(NSString *) text;
 
 @end;
 
@@ -47,8 +47,10 @@
         //do other stuff here
         int numberOfPendingComments = [blog numberOfPendingComments];
         if( numberOfPendingComments > 0 ) {
-            UIImage *img = [self badgeImage:[UIImage imageNamed:@"sidebar_comment_bubble"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            UIImage *img = [UIImage imageNamed:@"sidebar_comment_bubble"];
             UIImageView *image = [[UIImageView alloc] initWithImage:img];
+            UILabel *commentsLbl = [self commentsBadgeLabel:image.bounds text:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            [image addSubview:commentsLbl];
             self.accessoryView = image;
             [image release];
             
@@ -73,8 +75,9 @@
         //do other stuff here
         int numberOfPendingComments = [blog numberOfPendingComments];
         if( numberOfPendingComments > 0 ) {
-            UIImage *img = [self badgeImage:[UIImage imageNamed:@"sidebar_comment_bubble"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
-            UIImageView *image = [[UIImageView alloc] initWithImage:img];
+            UIImageView *image = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_comment_bubble"]];
+            UILabel *commentsLbl = [self commentsBadgeLabel:image.bounds text:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            [image addSubview:commentsLbl];
             self.accessoryView = image;
             [image release];
         } else {
@@ -83,35 +86,15 @@
     }
 }
 
-
-//Add text to UIImage - ref: http://iphonesdksnippets.com/post/2009/05/05/Add-text-to-image-(UIImage).aspx
--(UIImage *)badgeImage:(UIImage *)img withText:(NSString *)text1{ 
-    int w = img.size.width; 
-    int h = img.size.height; 
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 
-    CGContextRef context = CGBitmapContextCreate(NULL, w, h, 8, 4 * w, colorSpace, kCGImageAlphaPremultipliedFirst); 
-    CGContextDrawImage(context, CGRectMake(0, 0, w, h), img.CGImage); 
-    
-    //draw the text invisible so we can calculate the center position later
-    char* text= (char *)[text1 cStringUsingEncoding:NSASCIIStringEncoding]; 
-    CGContextSetTextDrawingMode(context, kCGTextInvisible);
-    CGContextSelectFont(context, "Helvetica", 16, kCGEncodingMacRoman);
-    CGContextShowTextAtPoint(context, 0, 0, text, strlen(text));
-    CGPoint pt = CGContextGetTextPosition(context);
-    
-    CGContextSetTextDrawingMode(context, kCGTextFill); 
-    CGContextSetShadow(context, CGSizeMake(0.0f, 1.0f), 1.0f);
-    CGContextSetRGBFillColor(context, 255, 255, 255, 1); 
-    CGContextShowTextAtPoint(context,(w / 2) - pt.x / 2, 7,text, strlen(text)); 
-    CGImageRef imgCombined = CGBitmapContextCreateImage(context); 
-    
-    CGContextRelease(context); 
-    CGColorSpaceRelease(colorSpace); 
-    
-    UIImage *retImage = [UIImage imageWithCGImage:imgCombined]; 
-    CGImageRelease(imgCombined); 
-    
-    return retImage; 
+- (UILabel *)commentsBadgeLabel:(CGRect)aRect text:(NSString *) text {
+    UILabel *commentsLbl = [[[UILabel alloc]initWithFrame:aRect] autorelease];
+    commentsLbl.backgroundColor = [UIColor clearColor];
+    commentsLbl.textAlignment = UITextAlignmentCenter;
+    commentsLbl.text = text;
+    commentsLbl.font = [UIFont systemFontOfSize:17.0];
+    commentsLbl.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
+    commentsLbl.shadowOffset = CGSizeMake(0, 1.1f);
+    commentsLbl.shadowColor = [UIColor blackColor];
+    return commentsLbl;
 }
-
 @end
