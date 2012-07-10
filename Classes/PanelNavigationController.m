@@ -168,7 +168,7 @@
     } else {
         _stackOffset = 0;
     }
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     if (IS_IPAD) {
         [self showSidebarAnimated:NO];
     }

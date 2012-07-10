@@ -610,6 +610,8 @@ WordPressTest/entitiesDecoded.xml -text
 /attachment@2x.png -text svneol=unset#unset
 /autosave.png -text
 /autosave@2x.png -text
+/background.png -text
+/background@2x.png -text
 /blavatar-wpcom.png -text
 /blavatar-wpcom@2x.png -text
 /blavatar-wporg.png -text
