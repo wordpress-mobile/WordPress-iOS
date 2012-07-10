@@ -6,7 +6,7 @@
 
 - (void)addProgressIndicator;
 - (NSString *)stringReplacingNewlinesWithBR:(NSString *)surString;
-- (NSString *)buildSimplePreview:(NSString *)alertString;
+- (NSString *)buildSimplePreview;
 
 @end
 
