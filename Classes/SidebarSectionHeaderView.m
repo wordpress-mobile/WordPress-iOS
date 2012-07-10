@@ -10,7 +10,6 @@
 #import "PanelNavigationConstants.h"
 
 @interface SidebarSectionHeaderView (Private)
--(UIImage *)badgeImage:(UIImage *)img withText:(NSString *)text1;
 -(void)receivedCommentsChangedNotification:(NSNotification*)aNotification;
 -(void)updatePendingCommentsIcon;
 -(CGRect)titleLabelFrame:(BOOL)isBadgeVisible;
@@ -20,7 +19,7 @@
 @implementation SidebarSectionHeaderView
 
 
-@synthesize titleLabel=_titleLabel, disclosureButton=_disclosureButton, delegate=_delegate, sectionInfo=_sectionInfo, numberOfCommentsImageView=_numberOfCommentsImageView, blog = _blog;
+@synthesize titleLabel=_titleLabel, disclosureButton=_disclosureButton, delegate=_delegate, sectionInfo=_sectionInfo, numberOfCommentsImageView=_numberOfCommentsImageView, blog = _blog, numberOfcommentsLabel = _numberOfcommentsLabel;
 
 
 + (Class)layerClass {
@@ -75,11 +74,22 @@
         CGRect commentsBadgedRect = IS_IPAD ? CGRectMake(self.bounds.size.width - 48.0 , 12.0, 34.0, 24.0) : CGRectMake(self.bounds.size.width - 88.0 , 12.0, 34.0, 24.0);
         UIImageView *commentsIconImgView = [[[UIImageView alloc] initWithFrame:commentsBadgedRect] autorelease];
         if ( numberOfPendingComments > 0 ) {
-            UIImage *img = [self badgeImage:[UIImage imageNamed:@"sidebar_comment_bubble"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            UIImage *img = [UIImage imageNamed:@"sidebar_comment_bubble"];
             commentsIconImgView.image = img;
         }
         [self addSubview:commentsIconImgView];
         _numberOfCommentsImageView = commentsIconImgView;
+        
+        UILabel *commentsLbl = [[UILabel alloc]initWithFrame:commentsBadgedRect];
+        commentsLbl.backgroundColor = [UIColor clearColor];
+        commentsLbl.textAlignment = UITextAlignmentCenter;
+        commentsLbl.text = [NSString stringWithFormat:@"%d", numberOfPendingComments];
+        commentsLbl.font = [UIFont boldSystemFontOfSize:17.0];
+        commentsLbl.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
+        commentsLbl.shadowOffset = CGSizeMake(0, 1.1f);
+        commentsLbl.shadowColor = [UIColor blackColor];
+        [self addSubview:commentsLbl];
+        _numberOfcommentsLabel = commentsLbl;
         
         // Create and configure the disclosure button.
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -132,55 +142,27 @@
 
 -(void)updatePendingCommentsIcon {
     if( self.disclosureButton.selected ) {
-        self.numberOfCommentsImageView.image = nil;    
+        self.numberOfCommentsImageView.image = nil;
+        self.numberOfcommentsLabel.text = nil;
         self.titleLabel.frame = [self titleLabelFrame:NO];
     } else {
         //update the #s of pending comments and the size of title label.
         int numberOfPendingComments = [_blog numberOfPendingComments];
         if ( numberOfPendingComments > 0 ) {
-            UIImage *img = [self badgeImage:[UIImage imageNamed:@"sidebar_comment_bubble"] withText:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            UIImage *img = [UIImage imageNamed:@"sidebar_comment_bubble"];
             self.numberOfCommentsImageView.image = img;
+            self.numberOfcommentsLabel.text = [NSString stringWithFormat:@"%d", numberOfPendingComments];
         } else {
             self.numberOfCommentsImageView.image = nil;
+            self.numberOfcommentsLabel.text = nil;
         }
         self.titleLabel.frame = [self titleLabelFrame:(numberOfPendingComments > 0)];
     }
 }
 
-//Add text to UIImage - ref: http://iphonesdksnippets.com/post/2009/05/05/Add-text-to-image-(UIImage).aspx
--(UIImage *)badgeImage:(UIImage *)img withText:(NSString *)text1{ 
-    int w = img.size.width; 
-    int h = img.size.height; 
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 
-    CGContextRef context = CGBitmapContextCreate(NULL, w, h, 8, 4 * w, colorSpace, kCGImageAlphaPremultipliedFirst); 
-    CGContextDrawImage(context, CGRectMake(0, 0, w, h), img.CGImage); 
-    
-    //draw the text invisible so we can calculate the center position later
-    char* text= (char *)[text1 cStringUsingEncoding:NSASCIIStringEncoding]; 
-    CGContextSetTextDrawingMode(context, kCGTextInvisible);
-    CGContextSelectFont(context, "Helvetica", 16, kCGEncodingMacRoman);
-    CGContextShowTextAtPoint(context, 0, 0, text, strlen(text));
-    CGPoint pt = CGContextGetTextPosition(context);
-    
-    CGContextSetTextDrawingMode(context, kCGTextFill); 
-    CGContextSetShadow(context, CGSizeMake(0.0f, 1.0f), 1.0f);
-    CGContextSetRGBFillColor(context, 255, 255, 255, 1); 
-    CGContextShowTextAtPoint(context,(w / 2) - pt.x / 2, 7,text, strlen(text)); 
-    CGImageRef imgCombined = CGBitmapContextCreateImage(context); 
-    
-    CGContextRelease(context); 
-    CGColorSpaceRelease(colorSpace); 
-    
-    UIImage *retImage = [UIImage imageWithCGImage:imgCombined]; 
-    CGImageRelease(imgCombined); 
-    
-    return retImage; 
-}
-
 - (void)receivedCommentsChangedNotification:(NSNotification*)aNotification {
     [self updatePendingCommentsIcon];
 }
-
 
 -(void)toggleOpenWithUserAction:(BOOL)userAction {
     

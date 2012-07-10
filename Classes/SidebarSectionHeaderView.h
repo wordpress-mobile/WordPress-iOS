@@ -22,6 +22,7 @@
 @property (nonatomic, assign) SectionInfo *sectionInfo;
 @property (nonatomic, assign) id <SidebarSectionHeaderViewDelegate> delegate;
 @property (nonatomic, assign) UIImageView *numberOfCommentsImageView;
+@property (nonatomic, assign) UILabel *numberOfcommentsLabel;
 @property (nonatomic, assign) Blog *blog;
 
 -(id)initWithFrame:(CGRect)frame blog:(Blog*)blog sectionInfo:(SectionInfo *)sectionInfo delegate:(id <SidebarSectionHeaderViewDelegate>)delegate;
