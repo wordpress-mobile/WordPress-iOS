@@ -34,7 +34,7 @@
 // Height for secondary cells (posts/pages/comments/... inside a blog)
 #define SIDEBAR_CELL_SECONDARY_HEIGHT 48.0f
 #define SIDEBAR_BGCOLOR [UIColor colorWithWhite:0.921875f alpha:1.0f];
-#define HEADER_HEIGHT 48
+#define HEADER_HEIGHT 42.f
 #define DEFAULT_ROW_HEIGHT 48
 #define NUM_ROWS 6
 

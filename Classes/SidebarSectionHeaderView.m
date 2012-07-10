@@ -13,15 +13,16 @@
 @interface SidebarSectionHeaderView (Private)
 -(void)receivedCommentsChangedNotification:(NSNotification*)aNotification;
 -(void)updatePendingCommentsIcon;
+-(void)updateGradient;
 -(CGRect)titleLabelFrame:(BOOL)isBadgeVisible;
 @end
-    
+
+CGFloat const BlavatarHeight = 32.f;
     
 @implementation SidebarSectionHeaderView
 
 
 @synthesize titleLabel=_titleLabel, disclosureButton=_disclosureButton, delegate=_delegate, sectionInfo=_sectionInfo, numberOfCommentsImageView=_numberOfCommentsImageView, blog = _blog, numberOfcommentsLabel = _numberOfcommentsLabel;
-
 
 + (Class)layerClass {
     
@@ -43,7 +44,8 @@
         _delegate = delegate;        
         self.userInteractionEnabled = YES;
         
-        blavatarView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 47.0, 47.0)];
+        CGFloat blavatarOffset = (frame.size.height - BlavatarHeight) / 2.f;
+        blavatarView = [[UIImageView alloc] initWithFrame:CGRectMake(blavatarOffset, blavatarOffset, BlavatarHeight, BlavatarHeight)];
         [blavatarView setAlpha:0.65f];
         [blavatarView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
         [self addSubview: blavatarView];
@@ -64,7 +66,7 @@
         else
             label.text = [blog hostURL];            
         
-        label.font = [UIFont boldSystemFontOfSize:17.0];
+        label.font = [UIFont systemFontOfSize:17.0];
         label.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
         label.shadowOffset = CGSizeMake(0, 1.1f);
         label.shadowColor = [UIColor blackColor];
@@ -100,6 +102,8 @@
         [button addTarget:self action:@selector(toggleOpen:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:button];
         _disclosureButton = button;
+
+        [self updateGradient];
         
 //        background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_cell_bg"]];
 //        [self addSubview:background];
@@ -120,18 +124,18 @@
 -(CGRect)titleLabelFrame:(BOOL)isBadgeVisible {
     CGRect titleLabelFrame = self.bounds;
     titleLabelFrame.size.width = startingFrameWidth;    
-    titleLabelFrame.origin.x += 61.0; //blavatar size 
+    titleLabelFrame.origin.x = 49.f; // Aligns to row labels
     
     if ( IS_IPAD ) {
         if ( isBadgeVisible ) 
-            titleLabelFrame.size.width -= ( 31 + 35 + 47 ); //the disclosure size + comment badge + blavatar size;
+            titleLabelFrame.size.width -= ( 31 + 35 + titleLabelFrame.origin.x ); //the disclosure size + comment badge + blavatar size;
         else
-            titleLabelFrame.size.width -= ( 31 + 47 ); //the disclosure size + blavatar size
+            titleLabelFrame.size.width -= ( 31 + titleLabelFrame.origin.x ); //the disclosure size + blavatar size
     } else {
         if ( isBadgeVisible ) 
-            titleLabelFrame.size.width -= ( DETAIL_LEDGE + 4  + 35 + 47 ); //ledge + padding + comment badge + blavatar size;
+            titleLabelFrame.size.width -= ( DETAIL_LEDGE + 4  + 35 + titleLabelFrame.origin.x ); //ledge + padding + comment badge + blavatar size;
         else
-            titleLabelFrame.size.width -= ( DETAIL_LEDGE + 4 + 47 ); //ledge + padding + blavatar size
+            titleLabelFrame.size.width -= ( DETAIL_LEDGE + 4 + titleLabelFrame.origin.x ); //ledge + padding + blavatar size
     }
          
     return titleLabelFrame;
@@ -176,6 +180,7 @@
     
     //change the comments icon
     [self updatePendingCommentsIcon];
+    [self updateGradient];
     
     if (self.disclosureButton.selected) {
         [self.titleLabel setTextColor:[UIColor whiteColor]];
@@ -201,12 +206,24 @@
     }
 }
 
+- (void)updateGradient {
+    CAGradientLayer *gradient = (CAGradientLayer *)self.layer;
+    CGColorRef startColor, endColor;
+    if (self.disclosureButton.selected) {
+        startColor = [[UIColor colorWithWhite:0.6f alpha:0.3f] CGColor];
+        endColor = [[UIColor colorWithWhite:0.6f alpha:0.0f] CGColor];
+    } else {
+        startColor = [[UIColor colorWithWhite:0.6f alpha:0.15f] CGColor];
+        endColor = [[UIColor colorWithWhite:0.6f alpha:0.f] CGColor];
+    }
+    gradient.colors = [NSArray arrayWithObjects:(id)startColor, (id)endColor, nil];
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [background release];
     [blavatarView release];
     [super dealloc];
 }
-
 
 @end
