@@ -18,7 +18,7 @@
 	}
 	
 	self.navigationItem.title = NSLocalizedString(@"Sign Up", @"");
-	spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+	spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	spinner.hidesWhenStopped = YES;
 	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] init];
 	buttonItem.customView = spinner;
@@ -33,14 +33,17 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)wv {
     [spinner startAnimating];
+    self.navigationItem.title = NSLocalizedString(@"Loading...", @"");
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)wv {
     [spinner stopAnimating];
+    self.navigationItem.title = NSLocalizedString(@"Sign Up", @"");
 }
 
 - (void)webView:(UIWebView *)wv didFailLoadWithError:(NSError *)error {
     [spinner stopAnimating];
+    self.navigationItem.title = NSLocalizedString(@"Sign Up", @"");
     if (error != NULL) {
         UIAlertView *errorAlert = [[UIAlertView alloc]
 								   initWithTitle: [error localizedDescription]
@@ -57,7 +60,18 @@
     [super didReceiveMemoryWarning];
 }
 
+
+- (NSString*) getDocumentTitle {
+    //load the title from the document
+    NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"]; 
+    if ( title != nil && [[title trim] isEqualToString:@""] == false)
+        return title;
+    
+    return NSLocalizedString(@"Sign Up", @"");
+}
+
 - (void)dealloc {
+    self.webView.delegate = nil;
 	[webView release];
 	[spinner release];
     [super dealloc];

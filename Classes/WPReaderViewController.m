@@ -592,7 +592,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 - (void)setTitle:(NSString *)title {
     
     if ([title isEqualToString:@""])
-        title = NSLocalizedString(@"Read", @"");
+        title = NSLocalizedString(@"Reader", @"");
     
     [super setTitle: title];
     
