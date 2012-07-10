@@ -123,6 +123,9 @@
         approveButton.tintColor = color;
         actionButton.tintColor = color;
         replyButton.tintColor = color;
+        trashButton.tintColor = color;
+        spamButton.tintColor = color;
+        editButton.tintColor = color;
     }
 }
 
