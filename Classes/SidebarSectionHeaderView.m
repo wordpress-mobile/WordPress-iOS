@@ -110,13 +110,14 @@ CGFloat const BadgeHeight = 24.f;
 
         [self updateGradient];
         
-//        background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_cell_bg"]];
-//        [self addSubview:background];
-//        [self sendSubviewToBack:background];
+        background = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"sidebar_cell_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
+        background.frame = self.frame;
+        [self addSubview:background];
+        [self sendSubviewToBack:background];
         
         // we need a background color in order to make the cell incertion/deletion animation look nice
         // since sidebar_cell_bg is transparent 
-//        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
+        //self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
     }
         
     [[NSNotificationCenter defaultCenter] addObserver:self
