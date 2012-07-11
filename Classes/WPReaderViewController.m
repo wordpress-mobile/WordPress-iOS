@@ -238,7 +238,8 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     if (IS_IPHONE && [[UIButton class] respondsToSelector:@selector(appearance)]) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [btn setImage:[UIImage imageNamed:@"navbar_read"] forState:UIControlStateNormal];
-        [btn setImage:[UIImage imageNamed:@"navbar_read_dim"] forState:UIControlStateHighlighted];
+        // Left this in here for now, not sure if the below is needed for iPad but the if above suggests not
+        [btn setImage:[UIImage imageNamed:@"navbar_read"] forState:UIControlStateHighlighted];
         UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
         [btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
 
