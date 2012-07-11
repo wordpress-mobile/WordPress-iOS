@@ -23,7 +23,7 @@
 
         if (shadowView == nil) {
             UIImageView *shadowImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navbar_shadow"]];
-            shadowImg.frame = CGRectMake(0.0f, self.frame.size.height, self.frame.size.width, 3.0f);
+            shadowImg.frame = CGRectMake(0.0f, self.frame.size.height, self.frame.size.width, 4.0f);
             shadowImg.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
             shadowImg.tag = shadowTag;
             [self addSubview:shadowImg];

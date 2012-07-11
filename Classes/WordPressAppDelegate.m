@@ -825,19 +825,19 @@ static WordPressAppDelegate *wordPressApp = NULL;
         [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"navbar_back_button_bg_active"] stretchableImageWithLeftCapWidth:14.f topCapHeight:0] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
         [[UIBarButtonItem appearance] setTitleTextAttributes:
          [NSDictionary dictionaryWithObjectsAndKeys:
-          [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0], 
+          [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0], 
           UITextAttributeTextColor, 
-          [UIColor whiteColor], 
+          [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0],
           UITextAttributeTextShadowColor,  
           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
           UITextAttributeTextShadowOffset,
           nil] forState:UIControlStateNormal];
         [[UIBarButtonItem appearance] setTitleTextAttributes:
          [NSDictionary dictionaryWithObjectsAndKeys:
-          [UIColor whiteColor], 
+          [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0], 
           UITextAttributeTextColor, 
-          [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0], 
-          UITextAttributeTextShadowColor,  
+          [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0],
+          UITextAttributeTextShadowColor, 
           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
           UITextAttributeTextShadowOffset,
           nil] forState:UIControlStateSelected];
@@ -845,7 +845,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
          [NSDictionary dictionaryWithObjectsAndKeys:
           [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0], 
           UITextAttributeTextColor, 
-          [UIColor whiteColor], 
+          [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0], 
           UITextAttributeTextShadowColor,  
           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
           UITextAttributeTextShadowOffset,
