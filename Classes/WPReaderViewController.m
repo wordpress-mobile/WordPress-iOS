@@ -136,7 +136,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    [self performSelector:@selector(showFriendFinderNudgeView:) withObject:self afterDelay:2.0];
+    [self performSelector:@selector(showFriendFinderNudgeView:) withObject:self afterDelay:3.0];
 }
 
 
