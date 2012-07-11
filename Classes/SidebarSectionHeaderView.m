@@ -15,6 +15,7 @@
 -(void)updatePendingCommentsIcon;
 -(void)updateGradient;
 -(CGRect)titleLabelFrame:(BOOL)isBadgeVisible;
+-(CGRect)badgeItemFrame:(CGFloat)itemHeight;
 @end
 
 CGFloat const BlavatarHeight = 32.f;
@@ -75,7 +76,7 @@ CGFloat const BadgeHeight = 24.f;
         [self addSubview:label];
         _titleLabel = label;
         
-        CGRect commentsBadgedRect = IS_IPAD ? CGRectMake(self.bounds.size.width - 48.0 , (frame.size.height - BadgeHeight) / 2.f, 34.0, BadgeHeight ) : CGRectMake(self.bounds.size.width - 88.0 ,  (frame.size.height - BadgeHeight) / 2.f, 34.0, BadgeHeight);
+        CGRect commentsBadgedRect = [self badgeItemFrame:BadgeHeight];
         UIImageView *commentsIconImgView = [[[UIImageView alloc] initWithFrame:commentsBadgedRect] autorelease];
         if ( numberOfPendingComments > 0 ) {
             UIImage *img = [UIImage imageNamed:@"sidebar_comment_bubble"];
@@ -84,21 +85,22 @@ CGFloat const BadgeHeight = 24.f;
         [self addSubview:commentsIconImgView];
         _numberOfCommentsImageView = commentsIconImgView;
         
-        UILabel *commentsLbl = [[UILabel alloc]initWithFrame:commentsBadgedRect];
+        NSString *badgeText = (numberOfPendingComments > 99) ? NSLocalizedString(@"99⁺", "") : [NSString stringWithFormat:@"%d", numberOfPendingComments];
+        UIFont *badgeFont = [UIFont systemFontOfSize:17.0];
+        CGSize badgeTextSize = [badgeText sizeWithFont:badgeFont];
+        CGRect commentsTextRect = [self badgeItemFrame:badgeTextSize.height];
+        UILabel *commentsLbl = [[UILabel alloc]initWithFrame:commentsTextRect];
         commentsLbl.backgroundColor = [UIColor clearColor];
         commentsLbl.textAlignment = UITextAlignmentCenter;
         if (numberOfPendingComments > 0) {
-            commentsLbl.text = (numberOfPendingComments > 99) ? NSLocalizedString(@"99⁺", "") : [NSString stringWithFormat:@"%d", numberOfPendingComments];
+            commentsLbl.text = badgeText;
         } else {
             commentsLbl.text = nil;
         }
-        commentsLbl.font = [UIFont systemFontOfSize:17.0];
+        commentsLbl.font = badgeFont;
         commentsLbl.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
         commentsLbl.shadowOffset = CGSizeMake(0, 1.1f);
         commentsLbl.shadowColor = [UIColor blackColor];
-        CGRect frame = commentsLbl.frame;
-        frame.origin.y = 7.0f;
-        commentsLbl.frame = frame;
         [self addSubview:commentsLbl];
         _numberOfcommentsLabel = commentsLbl;
         
@@ -126,6 +128,14 @@ CGFloat const BadgeHeight = 24.f;
                                                  name:kCommentsChangedNotificationName
                                                object:self.blog];
     return self;
+}
+
+
+-(CGRect)badgeItemFrame:(CGFloat)itemHeight{
+    CGRect frame = self.bounds;
+    CGRect itemRect = IS_IPAD ? CGRectMake(frame.size.width - 48.0 , (frame.size.height - itemHeight) / 2.f, 34.0, itemHeight ) : CGRectMake(frame.size.width - 88.0 ,  (frame.size.height - itemHeight) / 2.f, 34.0, itemHeight);
+    
+    return itemRect;
 }
 
 -(CGRect)titleLabelFrame:(BOOL)isBadgeVisible {
