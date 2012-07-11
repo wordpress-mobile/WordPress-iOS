@@ -34,8 +34,8 @@
 
 #define GRAVATAR_WIDTH              47
 #define GRAVATAR_HEIGHT             47
-#define GRAVATAR_LEFT_OFFSET        LEFT_OFFSET + GRAVATAR_WIDTH + CELL_PADDING
-#define GRAVATAR_TOP_OFFSET         TOP_OFFSET + GRAVATAR_HEIGHT + PADDING
+#define GRAVATAR_LEFT_OFFSET        ( LEFT_OFFSET + GRAVATAR_WIDTH + CELL_PADDING )
+#define GRAVATAR_TOP_OFFSET         ( TOP_OFFSET + GRAVATAR_HEIGHT + PADDING )
 
 
 @interface CommentTableViewCell (Private)
@@ -152,9 +152,14 @@
             self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
-    
+ 
     CGFloat width = self.bounds.size.width - CELL_PADDING;
     CGFloat gravatarWidth = width - GRAVATAR_LEFT_OFFSET;
+    
+    if ( self.accessoryType == UITableViewCellAccessoryDisclosureIndicator ) {
+        gravatarWidth -= 22;
+        width -= 22;
+    }
     
     rect = gravatarImageView.frame;
     rect.origin.x = LEFT_OFFSET + buttonOffset;
@@ -216,7 +221,7 @@
 }
 
 - (void)addURLLabel {
-    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, nameLabel.frame.origin.y + NAME_LABEL_HEIGHT, OTHER_LABEL_WIDTH, URL_LABEL_HEIGHT);
+    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, TOP_OFFSET + NAME_LABEL_HEIGHT, OTHER_LABEL_WIDTH, URL_LABEL_HEIGHT);
 
     urlLabel = [[UILabel alloc] initWithFrame:rect];
     urlLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
@@ -229,7 +234,7 @@
 }
 
 - (void)addPostLabel {
-    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, urlLabel.frame.origin.y + URL_LABEL_HEIGHT, OTHER_LABEL_WIDTH, POST_LABEL_HEIGHT);
+    CGRect rect = CGRectMake(GRAVATAR_LEFT_OFFSET, TOP_OFFSET + NAME_LABEL_HEIGHT + URL_LABEL_HEIGHT, OTHER_LABEL_WIDTH, POST_LABEL_HEIGHT);
     
     postLabel = [[UILabel alloc] initWithFrame:rect];
     postLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
