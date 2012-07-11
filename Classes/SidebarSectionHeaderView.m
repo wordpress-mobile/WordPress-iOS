@@ -135,12 +135,12 @@ CGFloat const BadgeHeight = 24.f;
     
     if ( IS_IPAD ) {
         if ( isBadgeVisible ) 
-            titleLabelFrame.size.width -= ( 31 + 35 + titleLabelFrame.origin.x ); //the disclosure size + comment badge + blavatar size;
+            titleLabelFrame.size.width -= ( 31 + 48 + titleLabelFrame.origin.x ); //the disclosure size + comment badge rect + blavatar size;
         else
             titleLabelFrame.size.width -= ( 31 + titleLabelFrame.origin.x ); //the disclosure size + blavatar size
     } else {
         if ( isBadgeVisible ) 
-            titleLabelFrame.size.width -= ( DETAIL_LEDGE + 4  + 35 + titleLabelFrame.origin.x ); //ledge + padding + comment badge + blavatar size;
+            titleLabelFrame.size.width -= ( DETAIL_LEDGE + 4  + 48 + titleLabelFrame.origin.x ); //ledge + padding + comment badge rect + blavatar size;
         else
             titleLabelFrame.size.width -= ( DETAIL_LEDGE + 4 + titleLabelFrame.origin.x ); //ledge + padding + blavatar size
     }
