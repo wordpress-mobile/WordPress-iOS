@@ -431,8 +431,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
-    CGSize commentSize = [comment.content sizeWithFont:[UIFont systemFontOfSize:15] constrainedToSize:CGSizeMake(self.view.bounds.size.width - 16, 80)];
-    return COMMENT_ROW_HEIGHT - 60 + MIN(commentSize.height, 60);
+    float cellH = [CommentTableViewCell calculateCommentCellHeight:comment.content availableWidth:self.view.bounds.size.width];
+//    WPLog(@"Expected size: %f", cellH);
+    return cellH;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

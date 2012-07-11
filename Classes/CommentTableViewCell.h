@@ -24,6 +24,8 @@
     BOOL checked;
 }
 
++ (float) calculateCommentCellHeight:(NSString *)commentText availableWidth:(CGFloat)availableWidth;
+
 @property (readwrite, assign) Comment *comment;
 @property BOOL checked;
 

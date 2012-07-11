@@ -190,6 +190,16 @@
     checkButton.frame = rect;
 }
 
++ (float) calculateCommentCellHeight:(NSString *)commentText availableWidth:(CGFloat)availableWidth {
+    CGFloat width = availableWidth - CELL_PADDING;
+    if (IS_IPHONE) 
+         width -= 22;
+    CGSize maximumLabelSize = CGSizeMake(width,COMMENT_LABEL_HEIGHT);
+    CGSize expectedLabelSize = [commentText sizeWithFont:[UIFont systemFontOfSize:COMMENT_FONT_SIZE] constrainedToSize:maximumLabelSize lineBreakMode:UILineBreakModeTailTruncation];   
+    // WPLog(@"Expected text size: %f", expectedLabelSize.height);
+    return GRAVATAR_TOP_OFFSET + MIN(expectedLabelSize.height, 60) + CELL_PADDING;
+}
+
 - (void)addCheckButton {
 
     CGRect rect = CGRectMake(LEFT_OFFSET, (COMMENT_ROW_HEIGHT - 30.0f)/2, 30.0, 30.0f);
