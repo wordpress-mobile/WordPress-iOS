@@ -338,22 +338,9 @@
         }
         [UIView animateWithDuration:0.2
                          animations:^{self.loadingView.frame = frame;}];
-        if( self.refreshButton )
-            self.refreshButton.enabled = !loading;
-    }
-    else {
-        if( self.refreshButton ) { //the refresh
-            if (!loading) {
-                NSArray *items = [NSArray arrayWithObjects:backButton,
-                                  [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
-                                  forwardButton,
-                                  [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
-                                  self.refreshButton, nil];
-                toolbar.items = items;
-            }
-        }
     }
 	if( self.refreshButton ) { //the refresh
+        self.refreshButton.enabled = !loading;
 		if (loading) {
 			UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
 			
