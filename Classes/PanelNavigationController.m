@@ -157,11 +157,19 @@
     
     if (self.navigationController) {
         [self addChildViewController:self.navigationController];
+        [self.detailView addSubview:self.navigationController.view];
         [self.navigationController didMoveToParentViewController:self];
+    } else if (self.detailViewController) {
+        UIView *wrappedView = [self createWrapViewForViewController:self.detailViewController];
+        [self.detailView addSubview:wrappedView];
     }
     self.detailView.frame = CGRectMake(0, 0, DETAIL_WIDTH, DETAIL_HEIGHT);
     [self.detailViews addObject:self.detailView];
     [self.detailViewWidths addObject:[NSNumber numberWithFloat:DETAIL_WIDTH]];
+    self.masterView.frame = CGRectMake(0, 0, DETAIL_LEDGE_OFFSET, self.view.frame.size.height);
+    self.masterView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    [self.view insertSubview:self.masterViewController.view belowSubview:self.detailView];
+
     _stackOffset = 0;
     if (IS_IPHONE) {
         _stackOffset = DETAIL_LEDGE_OFFSET;
@@ -191,23 +199,10 @@
 
     UIView *viewToPrepare = nil;
     if (self.navigationController) {
-        [self.navigationController.view removeFromSuperview];
-        [self.detailView addSubview:self.navigationController.view];
-        [self.navigationController viewWillAppear:animated];
         viewToPrepare = self.navigationController.view;
     } else {
-        [self.detailViewController.view removeFromSuperview];
-        
-        UIView *wrappedView = [self createWrapViewForViewController:self.detailViewController];
-        [self.detailView addSubview:wrappedView];
-        viewToPrepare = wrappedView;
-
-        [self.detailViewController viewWillAppear:animated];
+        viewToPrepare = [self createWrapViewForViewController:self.detailViewController];
     }
-    [self.masterViewController.view removeFromSuperview];
-    self.masterView.frame = CGRectMake(0, 0, DETAIL_LEDGE_OFFSET, self.view.frame.size.height);
-    self.masterView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-    [self.view insertSubview:self.masterViewController.view belowSubview:self.detailView];
     // FIXME: keep sliding status
     [self prepareDetailView:viewToPrepare];
 
