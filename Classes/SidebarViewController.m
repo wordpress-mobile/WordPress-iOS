@@ -624,22 +624,10 @@
         }
     }
     
-    // Style the animation so that there's a smooth flow in either direction.
-    UITableViewRowAnimation insertAnimation;
-    UITableViewRowAnimation deleteAnimation;
-    if (previousOpenSectionIndex == NSNotFound || sectionNumber < previousOpenSectionIndex) {
-        insertAnimation = UITableViewRowAnimationTop;
-        deleteAnimation = UITableViewRowAnimationBottom;
-    }
-    else {
-        insertAnimation = UITableViewRowAnimationBottom;
-        deleteAnimation = UITableViewRowAnimationTop;
-    }
-    
     // Apply the updates.
     [self.tableView beginUpdates];
-    [self.tableView insertRowsAtIndexPaths:indexPathsToInsert withRowAnimation:insertAnimation];
-    [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:deleteAnimation];
+    [self.tableView insertRowsAtIndexPaths:indexPathsToInsert withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
     self.openSection = sectionOpened;
     // select the first row in the section
