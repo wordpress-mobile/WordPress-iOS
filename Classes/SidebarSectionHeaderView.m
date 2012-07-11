@@ -88,7 +88,7 @@ CGFloat const BadgeHeight = 24.f;
         commentsLbl.backgroundColor = [UIColor clearColor];
         commentsLbl.textAlignment = UITextAlignmentCenter;
         if (numberOfPendingComments > 0) {
-            commentsLbl.text = [NSString stringWithFormat:@"%d", numberOfPendingComments];
+            commentsLbl.text = (numberOfPendingComments > 99) ? NSLocalizedString(@"99⁺", "") : [NSString stringWithFormat:@"%d", numberOfPendingComments];
         } else {
             commentsLbl.text = nil;
         }
@@ -96,14 +96,15 @@ CGFloat const BadgeHeight = 24.f;
         commentsLbl.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
         commentsLbl.shadowOffset = CGSizeMake(0, 1.1f);
         commentsLbl.shadowColor = [UIColor blackColor];
+        CGRect frame = commentsLbl.frame;
+        frame.origin.y = 7.0f;
+        commentsLbl.frame = frame;
         [self addSubview:commentsLbl];
         _numberOfcommentsLabel = commentsLbl;
         
         // Create and configure the disclosure button.
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = IS_IPAD ? CGRectMake(self.frame.size.width - 31.0, 6.0, 35.0, 35.0) : CGRectMake(self.frame.size.width - 80.0, 8.0, 35.0, 35.0);
-        //[button setImage:[UIImage imageNamed:@"sidebar_expand_down"] forState:UIControlStateNormal];
-        //[button setImage:[UIImage imageNamed:@"sidebar_expand_up"] forState:UIControlStateSelected];
         [button addTarget:self action:@selector(toggleOpen:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:button];
         _disclosureButton = button;

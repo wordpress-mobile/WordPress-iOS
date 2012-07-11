@@ -49,7 +49,7 @@
         if( numberOfPendingComments > 0 ) {
             UIImage *img = [UIImage imageNamed:@"sidebar_comment_bubble"];
             UIImageView *image = [[UIImageView alloc] initWithImage:img];
-            UILabel *commentsLbl = [self commentsBadgeLabel:image.bounds text:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            UILabel *commentsLbl = [self commentsBadgeLabel:image.bounds text:(numberOfPendingComments > 99) ? NSLocalizedString(@"99⁺", "") : [NSString stringWithFormat:@"%d", numberOfPendingComments]];
             [image addSubview:commentsLbl];
             self.accessoryView = image;
             [image release];
@@ -76,7 +76,7 @@
         int numberOfPendingComments = [blog numberOfPendingComments];
         if( numberOfPendingComments > 0 ) {
             UIImageView *image = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_comment_bubble"]];
-            UILabel *commentsLbl = [self commentsBadgeLabel:image.bounds text:[NSString stringWithFormat:@"%d", numberOfPendingComments]];
+            UILabel *commentsLbl = [self commentsBadgeLabel:image.bounds text:(numberOfPendingComments > 99) ? NSLocalizedString(@"99⁺", "") : [NSString stringWithFormat:@"%d", numberOfPendingComments]];
             [image addSubview:commentsLbl];
             self.accessoryView = image;
             [image release];
@@ -87,6 +87,7 @@
 }
 
 - (UILabel *)commentsBadgeLabel:(CGRect)aRect text:(NSString *) text {
+    aRect.origin.y = -1.0f;
     UILabel *commentsLbl = [[[UILabel alloc]initWithFrame:aRect] autorelease];
     commentsLbl.backgroundColor = [UIColor clearColor];
     commentsLbl.textAlignment = UITextAlignmentCenter;
