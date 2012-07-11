@@ -26,6 +26,7 @@
 @synthesize webView, toolbar, statusTimer;
 @synthesize loadingView, loadingLabel, activityIndicator;
 @synthesize iPadNavBar, backButton, forwardButton, refreshButton, optionsButton;
+@synthesize navbarBackButton;
 
 - (void)dealloc
 {
@@ -39,6 +40,7 @@
     self.webView.delegate = nil;
     self.webView = nil;
     self.statusTimer = nil;
+    self.navbarBackButton = nil;
     [super dealloc];
 }
 
@@ -60,6 +62,27 @@
         toolbar.autoresizingMask = toolbar.autoresizingMask | UIViewAutoresizingFlexibleHeight;
         
         if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
+            
+            // Custom back button so we can get the highlighted text colors we want.
+            UIButton *bak = [UIButton buttonWithType:UIButtonTypeCustom];
+            bak.frame = CGRectMake(0.0f, 0.0f, 90.0f, 30.0f);
+            UIImage *img = [UIImage imageNamed:@"navbar_back_button_bg"];
+            img = [img resizableImageWithCapInsets:UIEdgeInsetsMake(15.0f, 15.0f, 15.0f, 5.0f)];
+            [bak setBackgroundImage:img forState:UIControlStateNormal];
+            img = [UIImage imageNamed:@"navbar_back_button_bg_active"];
+            img = [img resizableImageWithCapInsets:UIEdgeInsetsMake(15.0f, 15.0f, 15.0f, 5.0f)];
+            [bak setBackgroundImage:img forState:UIControlStateHighlighted];
+            [bak setTitleColor:[UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+            [bak setTitleShadowColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+            bak.contentEdgeInsets = UIEdgeInsetsMake(0.0f, 10.0, 0.0, 3.0);
+            [bak.titleLabel setShadowOffset:CGSizeMake(0.0f, 1.0f)];
+            [bak.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0f]];
+            bak.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
+            [bak addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
+            UIBarButtonItem *bakItem = [[[UIBarButtonItem alloc] initWithCustomView:bak] autorelease];
+            [self.navigationItem setLeftBarButtonItem:bakItem];
+            self.navbarBackButton = bak;
+            
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
 //TODO: Replace with new graphics.  The sync graphics are placeholders.
             [btn setImage:[UIImage imageNamed:@"sync_dark"] forState:UIControlStateNormal];
@@ -122,12 +145,33 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillAppear:animated];
     
+    if (navbarBackButton) {
+        // Since the view can be loaded before the controller is added to a navigation stack we want to 
+        // wait til the view is about to appear before setting the text label of the custom
+        // back button.
+        NSInteger len = [self.panelNavigationController.viewControllers count];
+        if (len >= 2) {
+            UIViewController *prevController = [self.navigationController.viewControllers objectAtIndex:len-2];
+            NSString *title = prevController.navigationItem.title;
+            [navbarBackButton setTitle:title forState:UIControlStateNormal];
+        }
+        CGRect frame = navbarBackButton.frame;
+        if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+            navbarBackButton.titleLabel.font = [UIFont boldSystemFontOfSize:10.0f];
+            frame.size.height = 20.0f;
+        } else {
+            navbarBackButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+            frame.size.height = 30.0f;
+        }
+        navbarBackButton.frame = frame;
+
+    }
+        
     if( self.detailContent == nil ) {
         [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
         [[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
     } else {
         //do not set the timer on the detailsView
-
         //change the arrows to up/down icons
         [backButton setImage:[UIImage imageNamed:@"previous.png"]];
         [forwardButton setImage:[UIImage imageNamed:@"next.png"]];
@@ -150,6 +194,7 @@
 
 - (void)viewDidUnload
 {
+    [super viewDidUnload];
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];  
     self.webView.delegate = nil;
     self.webView = nil;
@@ -163,7 +208,7 @@
     self.refreshButton = nil;
     self.backButton = nil;
     self.forwardButton = nil;
-    [super viewDidUnload];
+    self.navbarBackButton = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -176,6 +221,21 @@
         return YES;
     
     return NO;
+}
+
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    if (navbarBackButton) {
+        CGRect frame = navbarBackButton.frame;
+        if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+            navbarBackButton.titleLabel.font = [UIFont boldSystemFontOfSize:10.0f];
+            frame.size.height = 20.0f;
+        } else {
+            navbarBackButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+            frame.size.height = 30.0f;
+        }
+        navbarBackButton.frame = frame;
+    }
 }
 
 - (BOOL)expectsWidePanel {

@@ -14,6 +14,7 @@
     BOOL isLoading, needsLogin, hasLoadedContent;
     UIWebView *webView;
 	NSTimer *statusTimer;   // This timer checks the nav buttons every 0.75 seconds, and updates them
+    UIButton *navbarBackButton;
 }
 @property (nonatomic,retain) NSURL *url;
 @property (nonatomic,retain) NSURL *wpLoginURL;
@@ -30,7 +31,7 @@
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *refreshButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *optionsButton;
 @property (retain, nonatomic) NSTimer *statusTimer;
-
+@property (nonatomic, retain) UIButton *navbarBackButton;
 
 //reader variables
 @property (nonatomic,retain) NSString *detailContent;
