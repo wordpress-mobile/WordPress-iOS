@@ -1092,8 +1092,9 @@
                 
                 //get the correct overlay view, if it's the first panel (detailView), it's in a subview
                 UIView *alphaView = view;
-                if (view == self.detailView && [view.subviews count] >= 1)
-                    alphaView = [view.subviews objectAtIndex:1];
+                if (view == self.detailView && [view.subviews count] >= 1) {
+                    alphaView = [view.subviews objectAtIndex:0];
+                }
                 
                 if (nextView && CGRectIntersectsRect(view.frame, nextView.frame) && nextView.frame.origin.x > view.frame.origin.x) {
                     if ([alphaView isKindOfClass: [PanelViewWrapper class]]) {
@@ -1206,6 +1207,7 @@
         [viewController setPanelNavigationController:self];
         [viewController didMoveToParentViewController:self];
         [self.detailViewControllers addObject:viewController];
+        
         [self setStackOffset:[self maxOffsetSoft] duration:0];
     }
 }
