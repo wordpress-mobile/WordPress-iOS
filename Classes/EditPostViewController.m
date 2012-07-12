@@ -355,7 +355,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     newView.frame = currentView.frame;
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationDuration:0.2];
     
 	CGRect pointerFrame = tabPointer.frame;
     if ([newView isEqual:editView]) {
