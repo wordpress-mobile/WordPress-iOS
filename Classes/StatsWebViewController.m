@@ -69,12 +69,23 @@
         [blog release]; blog = nil;
     }
     blog = [aBlog retain];
-    
     if (blog) {
         if (![blog isWPcom]) {
             self.wporgBlogJetpackUsernameKey = [NSString stringWithFormat:@"jetpackblog-%@",[blog hostURL]];
         }
-        [self initStats];
+        
+        WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
+        if( appDelegate.connectionAvailable == NO ) {
+            UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Problem", @"")
+                                                                          message:NSLocalizedString(@"The internet connection appears to be offline.", @"")
+                                                                         delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
+            [connectionFailAlert show];
+            [connectionFailAlert release];
+            [webView loadHTMLString:@"<html><head></head><body></body></html>" baseURL:nil];
+            
+        } else {
+            [self initStats];
+        }
     } else {
         [webView loadHTMLString:@"<html><head></head><body></body></html>" baseURL:nil];
     }
