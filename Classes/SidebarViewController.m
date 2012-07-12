@@ -135,7 +135,7 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCameraPlusImages:) name:kCameraPlusImagesNotification object:nil];
 
-    selectionRestored = NO; // incase the view was previously loaded and later unloaded.    
+    selectionRestored = NO; // incase the view was previously loaded and later unloaded.
 }
 
 - (void)viewDidUnload {
@@ -158,14 +158,17 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-
-        // In iOS 5, the first detailViewController that we load during launch does not
-        // see its viewWillAppear and viewDidAppear methods fire. As a work around, we can
-        // present our content with a slight delay, and then the events fire.
-        // TODO: Find a true fix and remove this workaround.
-        // See http://ios.trac.wordpress.org/ticket/1114
+    // In iOS 5, the first detailViewController that we load during launch does not
+    // see its viewWillAppear and viewDidAppear methods fire. As a work around, we can
+    // present our content with a slight delay, and then the events fire.
+    // TODO: Find a true fix and remove this workaround.
+    // See http://ios.trac.wordpress.org/ticket/1114
+    if (IS_IPHONE) {
+        // Don't delay presentation on iPhone, or the sidebar is briefly visible after launch
+        [self presentContent];
+    } else {
         [self performSelector:@selector(presentContent) withObject:self afterDelay:0.01];
-
+    }
 }
 
 - (void) viewDidAppear:(BOOL)animated {
