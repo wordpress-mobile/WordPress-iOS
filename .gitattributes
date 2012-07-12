@@ -820,6 +820,8 @@ nl.lproj/Localizable.strings -text svneol=unset#unset
 /page_control_blue_active@2x.png -text
 /pages.png -text
 /pages@2x.png -text
+/panel_icon.png -text
+/panel_icon@2x.png -text
 /paperclip.png -text
 /paperclip@2x.png -text
 /photos.png -text

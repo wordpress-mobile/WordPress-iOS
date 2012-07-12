@@ -103,6 +103,8 @@
 	
 	// Force a crash for CrashReporter
 	//NSLog(@"crash time! %@", 1);
+    
+    self.panelNavigationController.delegate = self;
 		
 	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	appDelegate.postID = nil;
@@ -162,6 +164,16 @@
 	[self.blog syncPostsWithSuccess:block failure:^(NSError *error) {
         if (block) block();
     } loadMore:YES];
+}
+
+#pragma mark - DetailViewDelegate
+
+- (void)resetView {
+    //Reset a few things if extra panels were popped off on the iPad
+    if (self.selectedIndexPath) {
+        [self.tableView deselectRowAtIndexPath: self.selectedIndexPath animated: NO];
+        self.selectedIndexPath = nil;
+    }
 }
 
 #pragma mark -

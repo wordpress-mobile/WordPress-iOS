@@ -28,6 +28,7 @@
 @property (nonatomic, retain) NSMutableArray *detailViewWidths;
 @property (nonatomic, retain) UIButton *detailTapper;
 @property (nonatomic, retain) UIPanGestureRecognizer *panner;
+@property (nonatomic, retain) UIView *popPanelsView;
 
 - (void)showSidebar;
 - (void)showSidebarAnimated:(BOOL)animated;
@@ -90,6 +91,7 @@
     CGFloat _panOrigin;
     CGFloat _stackOffset;
     BOOL _isAppeared;
+    BOOL _isShowingPoppedIcon;
 }
 @synthesize detailViewController = _detailViewController;
 @synthesize masterViewController = _masterViewController;
@@ -100,6 +102,8 @@
 @synthesize detailViewWidths = _detailViewWidths;
 @synthesize detailTapper = _detailTapper;
 @synthesize panner = _panner;
+@synthesize popPanelsView = _popPanelsView;
+@synthesize delegate;
 
 - (void)dealloc {
     self.detailViewController.panelNavigationController = nil;
@@ -111,7 +115,8 @@
     self.detailViewWidths = nil;
     self.detailTapper = nil;
     self.panner = nil;
-
+    self.popPanelsView = nil;
+    self.delegate = nil;
     [super dealloc];
 }
 
@@ -177,6 +182,30 @@
         _stackOffset = 0;
     }
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
+    if (IS_IPAD) {
+        //TODO: Couldn't get the proper height of the view depending on orientation, help?
+        CGFloat height = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? self.view.bounds.size.height: self.view.bounds.size.width;
+        //The iOS simulator would pull in the wrong values
+        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && height > self.view.bounds.size.width)
+            height = self.view.bounds.size.width;
+        _popPanelsView = [[UIView alloc] initWithFrame:CGRectMake(SIDEBAR_WIDTH + 10.0f, (height / 2) - 82.0f, 200.0f, 82.0f)];
+        [_popPanelsView setBackgroundColor:[UIColor clearColor]];
+        
+        [_popPanelsView addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]]];
+        
+        UIImageView *popperImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]];
+        CGRect frame = popperImageView.frame;
+        frame.origin.x += 10.0f;
+        popperImageView.frame = frame;
+        UIImageView *trashIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UIButtonBarTrash"]];
+        trashIcon.center = CGPointMake(popperImageView.bounds.size.width/2,popperImageView.bounds.size.height/2);
+        trashIcon.alpha = 0.0f;
+        [popperImageView addSubview:trashIcon];
+        [_popPanelsView addSubview:popperImageView];
+        [_popPanelsView setAlpha:0.0f];
+        [self.view addSubview:_popPanelsView];
+        [self.view sendSubviewToBack:_popPanelsView];
+    }
     if (IS_IPAD) {
         [self showSidebarAnimated:NO];
     }
@@ -811,6 +840,30 @@
     offset = MAX(minHard, MIN(maxHard, offset));
     NSLog(@"after hard adjusting: %.1f", offset);
     
+    if (IS_IPAD) {
+        if (offset < 0 && offset <= -120.0f) {
+            if (!_isShowingPoppedIcon) {
+                _isShowingPoppedIcon = YES;
+            UIImageView *popIcon = (UIImageView*) [[_popPanelsView subviews] objectAtIndex:1];
+            UIImageView *trashIcon = (UIImageView*) [[popIcon subviews] objectAtIndex:0];
+            [UIView animateWithDuration:0.3f delay: 0.0f options: UIViewAnimationCurveEaseOut
+                             animations:^{
+                                 popIcon.frame = CGRectMake(popIcon.frame.origin.x + 50.0f,popIcon.frame.origin.y, popIcon.frame.size.width, popIcon.frame.size.height);
+                                 popIcon.alpha = 0.7f;
+                             }
+                             completion:nil];
+                [UIView animateWithDuration:0.5f
+                                 animations:^{
+                                     trashIcon.alpha = 1.0f;
+                                 }
+                                 completion:nil];
+            }
+        } else if (offset > -120.0f && _isShowingPoppedIcon) {
+            [self animatePoppedIcon];
+            _isShowingPoppedIcon = NO;
+        }
+    }
+    
     /*
      Step 2: calculate each view position
      */
@@ -824,6 +877,14 @@
         if (IS_IPAD) {
             CGFloat nearestOffset = [self nearestValidOffsetWithVelocity:-velocity];
             [self setStackOffset:nearestOffset duration:DURATION_FAST];
+            //pop all extra view controllers if user dragged stack to the right
+            if (offset < 0 && offset <= -120.0f) {
+                [self animatePoppedIcon];
+                _isShowingPoppedIcon = NO;
+                [self popToRootViewControllerAnimated:YES];
+                [self applyCorners];
+                [self.delegate resetView];
+            }
         } else {
             // TODO: multiple panel panning
             if (ABS(velocity) < 100) {
@@ -840,6 +901,19 @@
             }
         }
     }
+}
+
+- (void)animatePoppedIcon {
+    UIImageView *popIcon = (UIImageView*) [[_popPanelsView subviews] objectAtIndex:1];
+    UIImageView *trashIcon = (UIImageView*) [[popIcon subviews] objectAtIndex:0];
+    [UIView animateWithDuration:0.3f delay: 0.0f options: UIViewAnimationCurveEaseOut 
+                     animations:^{
+                         trashIcon.alpha = 0.0f;
+                         popIcon.frame = CGRectMake(popIcon.frame.origin.x - 50.0f,popIcon.frame.origin.y, popIcon.frame.size.width, popIcon.frame.size.height);
+                         popIcon.alpha = 1.0f;
+                     }
+                     completion:nil];
+    
 }
 
 - (void)addPanner {
@@ -1213,6 +1287,7 @@
         [UIView animateWithDuration:CLOSE_SLIDE_DURATION(animated) animations:^{
             topView.frame = topViewFrame;
         }];
+        [_popPanelsView setAlpha:1.0f];
         [viewController setPanelNavigationController:self];
         [viewController didMoveToParentViewController:self];
         [self.detailViewControllers addObject:viewController];
@@ -1253,6 +1328,12 @@
             
             if ([self.detailViewControllers count] == 0) {
                 [self showSidebar];
+                [UIView animateWithDuration:0.5f
+                                 animations:^{
+                                     [_popPanelsView setAlpha:0.0f];
+                                 }
+                                 completion:nil];
+                
             }
         }
     }

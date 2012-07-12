@@ -142,6 +142,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     [super viewWillAppear:animated];  
     if (IS_IPAD)
         [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
+    self.panelNavigationController.delegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -179,6 +180,12 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     if (parent == nil) {
         [self setRefreshTimer:nil];
     }
+}
+
+#pragma mark - DetailViewDelegate
+
+- (void)resetView {
+    [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.deselectSelectedItem()"];
 }
 
 #pragma mark - Detail View Controller Delegate Methods

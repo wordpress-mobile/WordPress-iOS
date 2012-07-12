@@ -114,6 +114,7 @@
     }
     self.commentViewController.delegate = nil;
     self.commentViewController = nil;
+    self.panelNavigationController.delegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -163,6 +164,16 @@
     cell.comment = comment;
     cell.checked = [_selectedComments containsObject:comment];
     cell.editing = self.editing;
+}
+
+#pragma mark - DetailViewDelegate
+
+- (void)resetView {
+    //Reset a few things if extra panels were popped off on the iPad
+    if ([self.tableView indexPathForSelectedRow]) {
+        [self.tableView deselectRowAtIndexPath: [self.tableView indexPathForSelectedRow] animated: NO];
+    }
+    self.commentViewController = nil;
 }
 
 #pragma mark -

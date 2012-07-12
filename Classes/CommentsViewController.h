@@ -14,7 +14,7 @@
 
 @class CommentViewController;
 
-@interface CommentsViewController : WPTableViewController <ReplyToCommentViewControllerDelegate, UIAccelerometerDelegate, CommentsTableViewDelegate> {
+@interface CommentsViewController : WPTableViewController <ReplyToCommentViewControllerDelegate, UIAccelerometerDelegate, CommentsTableViewDelegate, DetailViewDelegate> {
 @private
     IBOutlet UIBarButtonItem *approveButton;
     IBOutlet UIBarButtonItem *unapproveButton;

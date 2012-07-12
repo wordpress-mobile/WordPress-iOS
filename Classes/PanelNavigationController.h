@@ -8,7 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PanelNavigationController : UIViewController
+#pragma mark - Protocol setup
+@protocol DetailViewDelegate <NSObject>
+- (void) resetView;
+@end
+
+@interface PanelNavigationController : UIViewController {
+    id <DetailViewDelegate> delegate;
+}
+
+@property (nonatomic, assign) id <DetailViewDelegate> delegate;
 
 #pragma mark - Initialization
 

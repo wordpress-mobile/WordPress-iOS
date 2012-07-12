@@ -13,7 +13,7 @@
 #import "WPReaderDetailViewController.h"
 #import "WPFriendFinderNudgeView.h"
 
-@interface WPReaderViewController : WPWebAppViewController <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, WPReaderTopicsViewControllerDelegate, WPReaderDetailViewControllerDelegate> {
+@interface WPReaderViewController : WPWebAppViewController <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, WPReaderTopicsViewControllerDelegate, WPReaderDetailViewControllerDelegate, DetailViewDelegate> {
     BOOL needsLogin;
     NSTimer *statusTimer;   // This timer checks the nav buttons every 0.75 seconds, and updates them
     NSTimer *refreshTimer; 
