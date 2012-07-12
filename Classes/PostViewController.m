@@ -75,15 +75,7 @@
           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
           UITextAttributeTextShadowOffset,
           nil] forState:UIControlStateNormal];
-        [editButton setTitleTextAttributes:
-         [NSDictionary dictionaryWithObjectsAndKeys:
-          [UIColor whiteColor], 
-          UITextAttributeTextColor, 
-          [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0], 
-          UITextAttributeTextShadowColor,  
-          [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
-          UITextAttributeTextShadowOffset,
-          nil] forState:UIControlStateSelected];
+        
         [editButton setTitleTextAttributes:
          [NSDictionary dictionaryWithObjectsAndKeys:
           [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0], 
