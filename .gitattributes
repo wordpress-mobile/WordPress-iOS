@@ -778,12 +778,7 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /navbar_add@2x.png -text
 /navbar_back_button_bg.png -text
 /navbar_back_button_bg@2x.png -text
-/navbar_back_button_bg_active.png -text
 /navbar_back_button_bg_active@2x.png -text
-/navbar_back_button_bg_landscape.png -text
-/navbar_back_button_bg_landscape@2x.png -text
-/navbar_back_button_bg_landscape_active.png -text
-/navbar_back_button_bg_landscape_active@2x.png -text
 /navbar_bg.png -text
 /navbar_bg@2x.png -text
 /navbar_button_bg.png -text
@@ -798,10 +793,13 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /navbar_menu@2x.png -text
 /navbar_menu_white.png -text
 /navbar_menu_white@2x.png -text
-/navbar_primary_button_bg.png -text
 /navbar_primary_button_bg@2x.png -text
 /navbar_primary_button_bg_active.png -text
 /navbar_primary_button_bg_active@2x.png -text
+/navbar_primary_button_bg_landscape.png -text
+/navbar_primary_button_bg_landscape@2x.png -text
+/navbar_primary_button_bg_landscape_active.png -text
+/navbar_primary_button_bg_landscape_active@2x.png -text
 /navbar_read.png -text
 /navbar_read@2x.png -text
 /navbar_read_dim.png -text

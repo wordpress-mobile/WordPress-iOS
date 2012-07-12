@@ -257,12 +257,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
     textViewPlaceHolderField.frame = frame;
 	textViewPlaceHolderField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	CABasicAnimation *animateWiggleIt;	
-	animateWiggleIt=[CABasicAnimation animationWithKeyPath:@"transform.rotation"];
-	animateWiggleIt.duration=0.15;
-	animateWiggleIt.repeatCount=3;
-	animateWiggleIt.autoreverses=YES;
-	animateWiggleIt.fromValue=[NSNumber numberWithFloat:-0.06];
-	animateWiggleIt.toValue=[NSNumber numberWithFloat:0.06];
+	animateWiggleIt=[CABasicAnimation animationWithKeyPath:@"transform.scale"];
+	animateWiggleIt.duration=0.5;
+	animateWiggleIt.repeatCount=1;
+	animateWiggleIt.autoreverses=NO;
+    animateWiggleIt.fromValue=[NSNumber numberWithFloat:0.75];
+    animateWiggleIt.toValue=[NSNumber numberWithFloat:1.0];
 	[textViewPlaceHolderField.layer addAnimation:animateWiggleIt forKey:@"textViewPlaceHolderField"];
 	
 	self.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
@@ -515,10 +515,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
         button.titleLabel.shadowColor = [UIColor whiteColor];
         button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [button addTarget:self action:@selector(saveAction:) forControlEvents:UIControlEventTouchUpInside];
-        
-        // ##### Needs Primary button active state!
+       
         UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_primary_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
         [button setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+        
+        UIImage *backgroundImageSelected = [[UIImage imageNamed:@"navbar_primary_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+        [button setBackgroundImage:backgroundImageSelected forState:UIControlStateHighlighted];
         
         UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithCustomView:button];
         self.navigationItem.rightBarButtonItem = saveButton;
@@ -1170,11 +1172,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
                                 || (IS_IPAD && isLandscape && !isExternalKeyboard) // iPad Landscape without external keyboard
                                 );
         if (wantsFullScreen && isShowing) {
-            [self.navigationController setNavigationBarHidden:YES animated:YES];
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+            [self.navigationController setNavigationBarHidden:YES animated:YES];;
         } else {
             [self.navigationController setNavigationBarHidden:NO animated:YES];
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         }
         // If we show/hide the navigation bar, the view frame changes so the converted keyboardFrame is not valid anymore
         keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
