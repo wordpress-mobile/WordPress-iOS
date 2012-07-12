@@ -64,6 +64,8 @@
 - (PanelViewWrapper *)wrapViewForViewController:(UIViewController *)controller;
 - (UIView *)viewOrViewWrapper:(UIView *)view;
 
+- (void)animatePoppedIcon;
+
 @end
 
 @interface UIViewController (PanelNavigationController_Internal)
