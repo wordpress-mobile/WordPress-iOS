@@ -60,17 +60,25 @@
     
     
     spamButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_flag"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
-    unapproveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"unapprove"] style:UIBarButtonItemStylePlain target:self action:@selector(unapproveSelectedComments:)];
-    approveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"approve"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
-    deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteSelectedComments:)];
+    unapproveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_unapprove"] style:UIBarButtonItemStylePlain target:self action:@selector(unapproveSelectedComments:)];
+    approveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_approve"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
+    
+    deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_delete"] style:UIBarButtonItemStylePlain target:self action:@selector(deleteSelectedComments:)];
     
     if ([spamButton respondsToSelector:@selector(setTintColor:)]) {
-        UIColor *color = [UIColor UIColorFromHex:0x464646];
+        UIColor *color = [UIColor UIColorFromHex:0x222222];
         spamButton.tintColor = color;
         unapproveButton.tintColor = color;
         approveButton.tintColor = color;
         deleteButton.tintColor = color;
     }
+    
+    
+    
+    //deleteButton.layer.shadowOpacity = 0.0;
+//    _myButton.layer.shadowRadius = 0.0;
+//    _myButton.layer.shadowColor = [UIColor blackColor].CGColor;
+//    _myButton.layer.shadowOffset = CGSizeMake(0.0, [UIScreen mainScreen].scale == 1 ? -1:-1.5);
 
     if (IS_IPHONE) {
         UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
@@ -568,7 +576,7 @@
     CGFloat swipeViewWidth = swipeView.bounds.size.width;
     CGFloat padding = 2.0f;
     CGFloat buttonCount = 4;
-    CGFloat height = 35.0f;
+    CGFloat height = 37.0f;
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     CGFloat y = (cell.bounds.size.height - height) / 2.0f;
 
@@ -589,31 +597,31 @@
     button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(x, y, buttonWidth, height);
     if([comment.status isEqualToString:@"approve"]){
-        [button setImage:[UIImage imageNamed:@"unapprove"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"toolbar_swipe_unapprove"] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(unapproveSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
     } else {
-        [button setImage:[UIImage imageNamed:@"approve"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:@"toolbar_swipe_approve"] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(approveSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
     }
     [swipeView addSubview:button];
     x += buttonWidth + 2 * padding;
+    
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[UIImage imageNamed:@"toolbar_swipe_flag"] forState:UIControlStateNormal];
+    button.frame = CGRectMake(x, y, buttonWidth, height);
+    [button addTarget:self action:@selector(spamSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
+    [swipeView addSubview:button];
+    x += buttonWidth + 2 * padding;
         
     button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[UIImage imageNamed:@"UIButtonBarTrash"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"toolbar_swipe_trash"] forState:UIControlStateNormal];
     button.frame = CGRectMake(x, y, buttonWidth, height);
     [button addTarget:self action:@selector(deleteSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
     [swipeView addSubview:button];
     x += buttonWidth + 2 * padding;
     
     button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[UIImage imageNamed:@"toolbar_flag_lite"] forState:UIControlStateNormal];
-    button.frame = CGRectMake(x, y, buttonWidth, height);
-    [button addTarget:self action:@selector(spamSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
-    [swipeView addSubview:button];
-    x += buttonWidth + 2 * padding;
-    
-    button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[UIImage imageNamed:@"toolbar_write_lite"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"toolbar_swipe_reply"] forState:UIControlStateNormal];
     button.frame = CGRectMake(x, y, buttonWidth, height);
     [button addTarget:self action:@selector(replyToSelectedComment:) forControlEvents:UIControlEventTouchUpInside];
     [swipeView addSubview:button];

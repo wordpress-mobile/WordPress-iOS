@@ -101,7 +101,7 @@
     segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
     segmentedControl.momentary = YES;
     
-    gravatarImageView.layer.cornerRadius = 10.0f;
+    gravatarImageView.layer.cornerRadius = 2.0f;
     gravatarImageView.layer.masksToBounds = YES;
     
     segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];

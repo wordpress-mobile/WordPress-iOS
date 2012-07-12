@@ -972,6 +972,16 @@ sv.lproj/Localizable.strings -text svneol=unset#unset
 /toolbar_flag_lite@2x.png -text
 /toolbar_shadow.png -text
 /toolbar_shadow@2x.png -text
+/toolbar_swipe_approve.png -text
+/toolbar_swipe_approve@2x.png -text
+/toolbar_swipe_flag.png -text
+/toolbar_swipe_flag@2x.png -text
+/toolbar_swipe_reply.png -text
+/toolbar_swipe_reply@2x.png -text
+/toolbar_swipe_trash.png -text
+/toolbar_swipe_trash@2x.png -text
+/toolbar_swipe_unapprove.png -text
+/toolbar_swipe_unapprove@2x.png -text
 /toolbar_unapprove.png -text
 /toolbar_unapprove@2x.png -text
 /toolbar_write.png -text
