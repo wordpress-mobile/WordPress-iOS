@@ -28,9 +28,35 @@
 @synthesize currentImage, currentImageMetadata, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
 @synthesize postDetailViewController, postID, blogURL, bottomToolbar;
 @synthesize isShowingResizeActionSheet, isShowingCustomSizeAlert, videoEnabled, currentUpload, videoPressCheckBlogURL, isCheckingVideoCapability, uniqueID;
+@synthesize currentActionSheet;
 
 #pragma mark -
-#pragma mark View lifecycle
+#pragma mark Lifecycle Methods
+
+- (void)dealloc {
+    picker.delegate = nil;
+	[picker release];
+	[customSizeAlert release];
+	[uniqueID release];
+	[addPopover release];
+	[bottomToolbar release];
+	[videoPressCheckBlogURL release];
+	[currentUpload release];
+	[blogURL release];
+	[postID release];
+	[messageLabel release];
+	[currentVideo release];
+	[currentImage release];
+	[currentImageMetadata release];
+	[spinner release];
+	[table release];
+	[addMediaButton release];
+	[photos release];
+	[videos release];
+    [currentActionSheet release];
+    
+	[super dealloc];
+}
 
 - (void)initObjects {
 	photos = [[NSMutableArray alloc] init];
@@ -44,7 +70,6 @@
     if ((self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])) {
 		[self initObjects];
     }
-	
     return self;
 }
 
@@ -92,7 +117,16 @@
     self.bottomToolbar = nil;
     self.addPopover = nil;
     self.customSizeAlert = nil;
+    self.currentActionSheet = nil;
+    
 	[super viewDidUnload];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	if (IS_IPAD)
+		return YES;
+	
+	return NO;
 }
 
 #pragma mark -
@@ -246,6 +280,10 @@
 }
 
 - (IBAction)showVideoPickerActionSheet:(id)sender {
+    if (currentActionSheet || addPopover) {
+        return;
+    }
+    
     isShowingMediaPickerActionSheet = YES;
 	isAddingMedia = YES;
 	
@@ -276,7 +314,12 @@
 	
     actionSheet.tag = TAG_ACTIONSHEET_VIDEO;
     actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	[actionSheet showInView:postDetailViewController.view];
+    if (IS_IPAD) { 
+        [actionSheet showFromBarButtonItem:postDetailViewController.movieButton animated:YES];
+    } else {
+        [actionSheet showInView:postDetailViewController.view];
+    }
+
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:YES];
 	
@@ -284,6 +327,10 @@
 }
 
 - (IBAction)showPhotoPickerActionSheet:(id)sender {
+    if (currentActionSheet || addPopover) {
+        return;
+    }
+    
     isShowingMediaPickerActionSheet = YES;
 	isAddingMedia = YES;
 	
@@ -303,11 +350,37 @@
 	
     actionSheet.tag = TAG_ACTIONSHEET_PHOTO;
     actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	[actionSheet showInView:postDetailViewController.view];
+    if (IS_IPAD) { 
+        [actionSheet showFromBarButtonItem:postDetailViewController.photoButton animated:YES];
+    } else {
+        [actionSheet showInView:postDetailViewController.view];
+    }
+    
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:YES];
 	
     [actionSheet release];
+}
+
+
+#pragma mark -
+#pragma mark UIPopover Delegate Methods
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    [addPopover release];
+    addPopover = nil;
+}
+
+
+#pragma mark -
+#pragma mark Action Sheet Delegate Methods
+
+- (void)didPresentActionSheet:(UIActionSheet *)actionSheet {
+    self.currentActionSheet = actionSheet;
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    self.currentActionSheet = nil;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -397,6 +470,9 @@
 	[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 }
 
+#pragma mark -
+#pragma mark Picker Methods
+
 - (void)pickPhotoFromCamera:(id)sender {
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
@@ -464,35 +540,6 @@
 												 name:@"UIDeviceOrientationDidChangeNotification" object:nil];*/
 }
 
-- (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation {
-	MediaOrientation result = kPortrait;
-	switch (theOrientation) {
-		case UIDeviceOrientationPortrait:
-			result = kPortrait;
-			break;
-		case UIDeviceOrientationPortraitUpsideDown:
-			result = kPortrait;
-			break;
-		case UIDeviceOrientationLandscapeLeft:
-			result = kLandscape;
-			break;
-		case UIDeviceOrientationLandscapeRight:
-			result = kLandscape;
-			break;
-		case UIDeviceOrientationFaceUp:
-			result = kPortrait;
-			break;
-		case UIDeviceOrientationFaceDown:
-			result = kPortrait;
-			break;
-		case UIDeviceOrientationUnknown:
-			result = kPortrait;
-			break;
-	}
-	
-	return result;
-}
-
 - (void)pickPhotoFromPhotoLibrary:(id)sender {
 	UIBarButtonItem *barButton = nil;
 
@@ -547,12 +594,40 @@
     }
 }
 
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-    [addPopover release];
-    addPopover = nil;
+- (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation {
+	MediaOrientation result = kPortrait;
+	switch (theOrientation) {
+		case UIDeviceOrientationPortrait:
+			result = kPortrait;
+			break;
+		case UIDeviceOrientationPortraitUpsideDown:
+			result = kPortrait;
+			break;
+		case UIDeviceOrientationLandscapeLeft:
+			result = kLandscape;
+			break;
+		case UIDeviceOrientationLandscapeRight:
+			result = kLandscape;
+			break;
+		case UIDeviceOrientationFaceUp:
+			result = kPortrait;
+			break;
+		case UIDeviceOrientationFaceDown:
+			result = kPortrait;
+			break;
+		case UIDeviceOrientationUnknown:
+			result = kPortrait;
+			break;
+	}
+	
+	return result;
 }
 
 - (void)showOrientationChangedActionSheet {
+    if (currentActionSheet || addPopover) {
+        return;
+    }
+    
 	isShowingChangeOrientationActionSheet = YES;
 	UIActionSheet *orientationActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Orientation changed during recording. Please choose which orientation to use for this video.", @"") 
 																		delegate:self 
@@ -624,7 +699,7 @@
 												   otherButtonTitles: originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 		}
 		
-		[resizeActionSheet showInView:postDetailViewController.view];
+        [resizeActionSheet showInView:postDetailViewController.view];
 		[resizeActionSheet release];
 	}
 }
@@ -792,10 +867,6 @@
 	isShowingCustomSizeAlert = NO;
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
-	addPopover = nil;
-}
-
 - (void)imagePickerController:(UIImagePickerController *)thePicker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 	if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
 		self.currentVideo = [[info mutableCopy] autorelease];
@@ -888,12 +959,12 @@
 				break;
 		}
 		
-		if(IS_IPAD == NO) {
+		if(!IS_IPAD) {
 			[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
 		}
 	}
 	
-	if(IS_IPAD == YES){
+	if(IS_IPAD){
 		[addPopover dismissPopoverAnimated:YES];
 		[[CPopoverManager instance] setCurrentPopoverController:NULL];
 		addPopover = nil;
@@ -1480,45 +1551,5 @@
     [table reloadData];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if (IS_IPAD)
-		return YES;
-	
-	return NO;
-}
-
-#pragma mark -
-#pragma mark Memory management
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
-#pragma mark -
-#pragma mark Dealloc
-
-- (void)dealloc {
-    picker.delegate = nil;
-	[picker release];
-	[customSizeAlert release];
-	[uniqueID release];
-	[addPopover release];
-	[bottomToolbar release];
-	[videoPressCheckBlogURL release];
-	[currentUpload release];
-	[blogURL release];
-	[postID release];
-	[messageLabel release];
-	[currentVideo release];
-	[currentImage release];
-	[currentImageMetadata release];
-	[spinner release];
-	[table release];
-	[addMediaButton release];
-	[photos release];
-	[videos release];
-	[super dealloc];
-}
 
 @end
-

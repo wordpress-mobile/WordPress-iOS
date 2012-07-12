@@ -52,6 +52,7 @@ static inline double radians(double degrees) {
 	
 	//used in customResizeField
 	UIAlertView *customSizeAlert;
+    UIActionSheet *currentActionSheet;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *table;
@@ -73,6 +74,7 @@ static inline double radians(double degrees) {
 @property (nonatomic, retain) UIImagePickerController *picker;
 @property (readonly) NSFetchedResultsController *resultsController;
 @property (nonatomic, retain) UIAlertView *customSizeAlert;
+@property (nonatomic, retain) UIActionSheet *currentActionSheet;
 
 - (void)scaleAndRotateImage:(UIImage *)image;
 - (IBAction)showVideoPickerActionSheet:(id)sender;
