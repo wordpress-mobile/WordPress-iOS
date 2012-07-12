@@ -156,53 +156,16 @@
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
-	
-    UIBarButtonItem *editItem = nil;
-    
-    if ([self.editButtonItem respondsToSelector:@selector(setTintColor:)] && editing) {
-        //set up the blue button for nav bar
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom]; 
-        UIFont *titleFont = [UIFont boldSystemFontOfSize:12.0f];
-        CGSize titleSize = [NSLocalizedString(@"Done", @"") sizeWithFont:titleFont];
-        CGFloat buttonWidth = titleSize.width + 20.0f;
-        
-        [button setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
-        button.titleLabel.font = titleFont;
-        button.titleLabel.shadowColor = [UIColor blackColor];
-        button.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        [button addTarget:self action:@selector(stopEditing:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIImage *backgroundImage, *selectedBackgroundImage;
-        if ( IS_IPHONE && UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ) {
-            backgroundImage = [[UIImage imageNamed:@"navbar_primary_button_bg_landscape"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-            selectedBackgroundImage = [[UIImage imageNamed:@"navbar_primary_button_bg_landscape_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-            button.frame = CGRectMake(0.0f, 0.0f, buttonWidth, 24.0f);
-        }
-        else {
-            backgroundImage = [[UIImage imageNamed:@"navbar_primary_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-            selectedBackgroundImage = [[UIImage imageNamed:@"navbar_primary_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-            button.frame = CGRectMake(0.0f, 0.0f, buttonWidth, 30.0f);
-        }
-        
-        [button setBackgroundImage:backgroundImage forState:UIControlStateNormal];
-        [button setBackgroundImage:selectedBackgroundImage forState:UIControlStateHighlighted];
-        
-        UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
-        editItem = doneButton;
-    } else {
-        editItem = self.editButtonItem;
-    }
     
     UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
     if (IS_IPHONE) {
-        self.navigationItem.rightBarButtonItem = editItem;
         [self.navigationController setToolbarHidden:!editing animated:animated];
     } else {
         if (editing) { 
             // intentionally doubling spacers to get the layout we want on the ipad
-            self.toolbarItems = [NSArray arrayWithObjects:editItem, spacer,  approveButton, spacer, spacer, unapproveButton, spacer, spacer, spamButton, spacer, spacer, deleteButton, spacer, nil];
+            self.toolbarItems = [NSArray arrayWithObjects:self.editButtonItem, spacer,  approveButton, spacer, spacer, unapproveButton, spacer, spacer, spamButton, spacer, spacer, deleteButton, spacer, nil];
         } else {
-            self.toolbarItems = [NSArray arrayWithObject:editItem];
+            self.toolbarItems = [NSArray arrayWithObject:self.editButtonItem];
         }
     }
     
