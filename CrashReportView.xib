@@ -42,7 +42,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUILabel" id="783976180">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">258</int>
+						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{20, 20}, {280, 124}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
@@ -79,7 +79,7 @@
 					</object>
 					<object class="IBUIButton" id="751283302">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">258</int>
+						<int key="NSvFlags">293</int>
 						<string key="NSFrame">{{20, 161}, {280, 44}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
@@ -120,11 +120,10 @@
 					</object>
 					<object class="IBUIButton" id="994208050">
 						<reference key="NSNextResponder" ref="191373211"/>
-						<int key="NSvFlags">258</int>
+						<int key="NSvFlags">293</int>
 						<string key="NSFrame">{{20, 232}, {280, 44}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
