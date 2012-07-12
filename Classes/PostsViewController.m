@@ -5,7 +5,6 @@
 #import "PostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
-#import "UIColor+Helpers.h"
 
 #define TAG_OFFSET 1010
 
@@ -56,30 +55,14 @@
 //                                                                       target:self
 //                                                                       action:@selector(showAddPostView)] autorelease];
     if (IS_IPHONE && [self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        composeButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"+"  
-                                                              style:UIBarButtonItemStyleBordered 
-                                                             target:self 
-                                                             action:@selector(showAddPostView)] autorelease];
-        [composeButtonItem setTitleTextAttributes:
-        [NSDictionary dictionaryWithObjectsAndKeys:
-         [UIColor UIColorFromHex: 0x222222 alpha: 1.0f], 
-         UITextAttributeTextColor, 
-         [UIColor whiteColor], 
-         UITextAttributeTextShadowColor, 
-         [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
-         UITextAttributeTextShadowOffset, 
-         [UIFont boldSystemFontOfSize:35.0f], 
-         UITextAttributeFont, 
-         nil] 
-        forState:UIControlStateNormal];
-        [composeButtonItem setTitlePositionAdjustment:UIOffsetMake(0.0f, -2.0f) forBarMetrics:UIControlStateNormal];
+        composeButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]style:UIBarButtonItemStyleBordered target:self action:@selector(showAddPostView)] autorelease];
     } else {
         composeButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
                                                                            target:self 
                                                                            action:@selector(showAddPostView)] autorelease];
     }
     if ([composeButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        composeButtonItem.tintColor = [UIColor UIColorFromHex:0x222222];
+        composeButtonItem.tintColor = [UIColor UIColorFromHex:0x333333];
     }
     if (!IS_IPAD) {
         self.navigationItem.rightBarButtonItem = composeButtonItem;
