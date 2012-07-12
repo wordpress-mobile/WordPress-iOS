@@ -23,7 +23,7 @@
 
         if (shadowView == nil) {
             UIImageView *shadowImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"toolbar_shadow"]];
-            shadowImg.frame = CGRectMake(0.0f,-3.0f, self.frame.size.width, 3.0f);
+            shadowImg.frame = CGRectMake(0.0f,-4.0f, self.frame.size.width, 4.0f);
             // Even though it feels like we want flexible top margin, we're using negative positioning
             // so flexible bottom margin seems to do the trick for this
             shadowImg.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
