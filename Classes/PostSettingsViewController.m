@@ -200,11 +200,14 @@
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	if (postDetailViewController.post &&  postDetailViewController.post.blog.geolocationEnabled ) {
-		return 3; // Geolocation
-	} else {
-		return 2; // Pages don't have geolocation
+    NSInteger sections = 1; // Always have the status section
+	if (postDetailViewController.post) {
+        sections += 1; // Post formats
+        if (postDetailViewController.post.blog.geolocationEnabled) {
+            sections += 1; // Geolocation
+        }
 	}
+    return sections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
