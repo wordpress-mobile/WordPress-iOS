@@ -1186,6 +1186,13 @@
                         CGRect intersection = CGRectIntersection(alphaView.frame, nextView.frame);
                         if (alphaView.frame.size.width != 0) {
                             CGFloat fadeAlpha = 1.0f - (intersection.origin.x / alphaView.frame.size.width);
+                            fadeAlpha /= 2.0f;
+                            if (fadeAlpha > 0.15f) {
+                                fadeAlpha = 0.15f;
+                            }
+                            if (fadeAlpha < 0.f) {
+                                fadeAlpha = 0.f;
+                            }
                             CGFloat alphaDifference = ((PanelViewWrapper*) alphaView).overlay.alpha - fadeAlpha;
                             if (alphaDifference > 0.01f || alphaDifference < -0.01f) {
                                 [UIView beginAnimations:@"fadeAnimation" context:nil];
