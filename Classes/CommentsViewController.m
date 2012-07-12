@@ -86,7 +86,7 @@
         [self.editButtonItem setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
         [self.editButtonItem setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_landscape"] forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
         [self.editButtonItem setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_active"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
-        [self.editButtonItem setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_active_landscape"] forState:UIControlStateSelected barMetrics:UIBarMetricsLandscapePhone];
+        [self.editButtonItem setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_landscape_active"] forState:UIControlStateSelected barMetrics:UIBarMetricsLandscapePhone];
         
         [self.editButtonItem setTitleTextAttributes:
          [NSDictionary dictionaryWithObjectsAndKeys:
@@ -172,17 +172,20 @@
         button.titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [button addTarget:self action:@selector(stopEditing:) forControlEvents:UIControlEventTouchUpInside];
         
-        UIImage *backgroundImage;
-        if (IS_IPHONE && (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-            backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_landscape_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+        UIImage *backgroundImage, *selectedBackgroundImage;
+        if ( IS_IPHONE && UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ) {
+            backgroundImage = [[UIImage imageNamed:@"navbar_primary_button_bg_landscape"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+            selectedBackgroundImage = [[UIImage imageNamed:@"navbar_primary_button_bg_landscape_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
             button.frame = CGRectMake(0.0f, 0.0f, buttonWidth, 24.0f);
         }
         else {
-            backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+            backgroundImage = [[UIImage imageNamed:@"navbar_primary_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+            selectedBackgroundImage = [[UIImage imageNamed:@"navbar_primary_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
             button.frame = CGRectMake(0.0f, 0.0f, buttonWidth, 30.0f);
         }
         
         [button setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+        [button setBackgroundImage:selectedBackgroundImage forState:UIControlStateHighlighted];
         
         UIBarButtonItem *doneButton = [[[UIBarButtonItem alloc] initWithCustomView:button] autorelease];
         editItem = doneButton;
@@ -622,52 +625,7 @@
     button.frame = CGRectMake(x, y, buttonWidth, height);
     [button addTarget:self action:@selector(replyToSelectedComment:) forControlEvents:UIControlEventTouchUpInside];
     [swipeView addSubview:button];
-    
-    
-//    
-//    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
-//    if ([comment.status isEqualToString:@"approve"]) {
-//        [button addTarget:self action:@selector(unapproveSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
-//        [button setTitle:NSLocalizedString(@"Unapprove", @"") forState:UIControlStateNormal];
-//    } else {
-//        [button addTarget:self action:@selector(approveSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
-//        [button setTitle:NSLocalizedString(@"Approve", @"") forState:UIControlStateNormal];
-//    }
-//    button.titleLabel.font = [UIFont systemFontOfSize:13.f];
-//    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
-//    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
-//    [swipeView addSubview:button];
-//    [button release];
-//    x += buttonWidth + 2 * padding;
-//    
-//    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
-//    [button addTarget:self action:@selector(deleteSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
-//    [button setTitle:NSLocalizedString(@"Trash", @"") forState:UIControlStateNormal];
-//    button.titleLabel.font = [UIFont systemFontOfSize:13.f];
-//    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
-//    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
-//    [swipeView addSubview:button];
-//    [button release];
-//    x += buttonWidth + 2 * padding;
-//
-//    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
-//    [button addTarget:self action:@selector(spamSelectedComments:) forControlEvents:UIControlEventTouchUpInside];
-//    [button setTitle:NSLocalizedString(@"Spam", @"") forState:UIControlStateNormal];
-//    button.titleLabel.font = [UIFont systemFontOfSize:13.f];
-//    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
-//    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
-//    [swipeView addSubview:button];
-//    [button release];
-//    x += buttonWidth + 2 * padding;
-//
-//    button = [[UIButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, height)];
-//    [button addTarget:self action:@selector(replyToSelectedComment:) forControlEvents:UIControlEventTouchUpInside];
-//    [button setTitle:NSLocalizedString(@"Reply", @"") forState:UIControlStateNormal];
-//    button.titleLabel.font = [UIFont systemFontOfSize:13.0f];
-//    [button setBackgroundImage:buttonImage forState:UIControlStateNormal];
-//    [button setBackgroundImage:buttonPressedImage forState:UIControlStateHighlighted];
-//    [swipeView addSubview:button];
-//    [button release];
+
 }
 
 - (void)removeSwipeView:(BOOL)animated {

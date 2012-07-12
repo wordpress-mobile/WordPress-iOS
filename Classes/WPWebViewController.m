@@ -61,7 +61,9 @@
         //allows the toolbar to become smaller in landscape mode.
         toolbar.autoresizingMask = toolbar.autoresizingMask | UIViewAutoresizingFlexibleHeight;
         
-        if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
+        // Do not create a custom back item if the left bar item is already set.  An existing button 
+        // is probably the sidebar button.
+        if ([[UIToolbar class] respondsToSelector:@selector(appearance)] && !self.navigationItem.leftBarButtonItem) {
             
             // Custom back button so we can get the highlighted text colors we want.
             UIButton *bak = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -157,8 +159,8 @@
         }
         CGRect frame = navbarBackButton.frame;
         if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-            navbarBackButton.titleLabel.font = [UIFont boldSystemFontOfSize:10.0f];
-            frame.size.height = 20.0f;
+            navbarBackButton.titleLabel.font = [UIFont boldSystemFontOfSize:11.0f];
+            frame.size.height = 24.0f;
         } else {
             navbarBackButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
             frame.size.height = 30.0f;
@@ -228,8 +230,8 @@
     if (navbarBackButton) {
         CGRect frame = navbarBackButton.frame;
         if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-            navbarBackButton.titleLabel.font = [UIFont boldSystemFontOfSize:10.0f];
-            frame.size.height = 20.0f;
+            navbarBackButton.titleLabel.font = [UIFont boldSystemFontOfSize:11.0f];
+            frame.size.height = 24.0f;
         } else {
             navbarBackButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
             frame.size.height = 30.0f;
