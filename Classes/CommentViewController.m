@@ -52,7 +52,6 @@
 @synthesize commentPostTitleButton, commentPostTitleLabel;
 @synthesize comment = _comment, isVisible;
 @synthesize delegate;
-@synthesize navbarBackButton;
 
 #pragma mark -
 #pragma mark View Lifecycle
@@ -73,7 +72,6 @@
 	commentBodyWebView.delegate = nil;
     [commentBodyWebView stopLoading];
     [commentBodyWebView release];
-    [navbarBackButton release];
    
     [super dealloc];
 }
@@ -128,29 +126,6 @@
         trashButton.tintColor = color;
         spamButton.tintColor = color;
         editButton.tintColor = color;
-        
-        if(IS_IPHONE){
-            // Custom back button so we can get the highlighted text colors we want.
-            UIButton *bak = [UIButton buttonWithType:UIButtonTypeCustom];
-            bak.frame = CGRectMake(0.0f, 0.0f, 90.0f, 30.0f);
-            UIImage *img = [UIImage imageNamed:@"navbar_back_button_bg"];
-            img = [img resizableImageWithCapInsets:UIEdgeInsetsMake(15.0f, 15.0f, 15.0f, 5.0f)];
-            [bak setBackgroundImage:img forState:UIControlStateNormal];
-            img = [UIImage imageNamed:@"navbar_back_button_bg_active"];
-            img = [img resizableImageWithCapInsets:UIEdgeInsetsMake(15.0f, 15.0f, 15.0f, 5.0f)];
-            [bak setBackgroundImage:img forState:UIControlStateHighlighted];
-            [bak setTitleColor:[UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-            [bak setTitleShadowColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-            bak.contentEdgeInsets = UIEdgeInsetsMake(0.0f, 10.0, 0.0, 3.0);
-            [bak.titleLabel setShadowOffset:CGSizeMake(0.0f, 1.0f)];
-            [bak.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0f]];
-            bak.titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
-            [bak addTarget:self.navigationController action:@selector(popViewControllerAnimated:) forControlEvents:UIControlEventTouchUpInside];
-            UIBarButtonItem *bakItem = [[[UIBarButtonItem alloc] initWithCustomView:bak] autorelease];
-            [self.navigationItem setLeftBarButtonItem:bakItem];
-            [bak setTitle:@"Comments" forState:UIControlStateNormal];
-            self.navbarBackButton = bak;
-        }
     }
 }
 
@@ -173,26 +148,13 @@
     self.commentAuthorUrlButton = nil;
 	self.commentPostTitleButton = nil;
 	self.commentPostTitleLabel = nil;
-    self.navbarBackButton = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	wasLastCommentPending = NO;
 	isVisible = YES;
-    [super viewWillAppear:animated];
-    if (navbarBackButton) {
-        CGRect frame = navbarBackButton.frame;
-        if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-            navbarBackButton.titleLabel.font = [UIFont boldSystemFontOfSize:11.0f];
-            frame.size.height = 24.0f;
-        } else {
-            navbarBackButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
-            frame.size.height = 30.0f;
-        }
-        navbarBackButton.frame = frame;
-    }
-    
+    [super viewWillAppear:animated];    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -208,20 +170,6 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	[self addOrRemoveSegmentedControl];
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    if (navbarBackButton) {
-        CGRect frame = navbarBackButton.frame;
-        if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-            navbarBackButton.titleLabel.font = [UIFont boldSystemFontOfSize:11.0f];
-            frame.size.height = 24.0f;
-        } else {
-            navbarBackButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
-            frame.size.height = 30.0f;
-        }
-        navbarBackButton.frame = frame;
-    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

@@ -46,7 +46,6 @@
 	//to control whether
 	BOOL wasLastCommentPending;
 	BOOL isVisible;
-    UIButton *navbarBackButton;
 }
 
 
@@ -78,7 +77,6 @@
 @property (nonatomic, retain) IBOutlet UIButton *commentPostTitleButton;
 @property (nonatomic, retain) IBOutlet UILabel *commentPostTitleLabel;
 @property (nonatomic, assign) id<CommentViewControllerDelegate> delegate;
-@property (nonatomic, retain) UIButton *navbarBackButton;
 
 @property BOOL wasLastCommentPending;
 @property BOOL isVisible;
