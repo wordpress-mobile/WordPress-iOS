@@ -9,9 +9,19 @@
 
 @implementation EditPageViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.title = NSLocalizedString(@"New Page", @"Page Editor screen title.");
+
+- (NSString *)editorTitle {
+    NSString *title = @"";
+    if (self.editMode == kNewPage) {
+        title = NSLocalizedString(@"New Page", @"New Page Editor screen title.");
+    } else {
+        if ([self.apost.postTitle length] > 0) {
+            title = self.apost.postTitle;
+        } else {
+            title = NSLocalizedString(@"Edit Page", @"Page Editor screen title.");
+        }
+    }
+    return title;
 }
 
 // Hides tags/categories fileds by putting text view above them

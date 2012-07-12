@@ -162,7 +162,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     postPreviewViewController.postDetailViewController = self;
     postPreviewViewController.view.frame = editView.frame;
     
-	self.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
+    self.title = [self editorTitle];
+
 	statuses = [[NSArray arrayWithObjects:NSLocalizedString(@"Local Draft", @"Post status label in the posts list if the post has not yet been synced to the remote server."), NSLocalizedString(@"Draft", @"Post status label in the posts list if the post is a draft."), NSLocalizedString(@"Private", @"Post status label in the posts list if the post is marked as private. Should be the same as WP core."), NSLocalizedString(@"Pending review", @"Post status label in the post list if the post is pending review. Should be the same as WP core."), NSLocalizedString(@"Published", @"Post status to indicate that the post is live and published. Should be the same as WP core."), nil] retain];
 	
 	
@@ -301,6 +302,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark -
 #pragma mark Instance Methods
 
+- (NSString *)editorTitle {
+    NSString *title = @"";
+    if (self.editMode == kNewPost) {
+        title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
+    } else {
+        if ([self.apost.postTitle length] > 0) {
+            title = self.apost.postTitle;
+        } else {
+            title = NSLocalizedString(@"Edit Post", @"Post Editor screen title.");
+        }
+    }
+    return title;
+}
+
+
 - (Post *)post {
     if ([self.apost isKindOfClass:[Post class]]) {
         return (Post *)self.apost;
@@ -406,7 +422,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     if (currentView != editView) {
         [self switchToView:editView];
     }
-	self.navigationItem.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
+//	self.navigationItem.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
+    self.navigationItem.title = [self editorTitle];
 }
 
 - (IBAction)switchToSettings {
@@ -502,7 +519,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)refreshUIForCompose {
-	self.navigationItem.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
+//	self.navigationItem.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
+    self.navigationItem.title = [self editorTitle];
     titleTextField.text = @"";
     textView.text = @"";
     textViewPlaceHolderField.hidden = NO;
@@ -511,7 +529,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)refreshUIForCurrentPost {
     if ([self.apost.postTitle length] > 0) {
-        self.navigationItem.title = self.apost.postTitle;
+//        self.navigationItem.title = self.apost.postTitle;
+        self.navigationItem.title = [self editorTitle];
     }
     self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"Back button label.")
 																			 style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
@@ -708,7 +727,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[self savePost:YES];
 }
 
-- (void)savePost: (BOOL)upload{
+- (void)savePost:(BOOL)upload{
 	self.apost.postTitle = titleTextField.text;
     self.apost.content = textView.text;
 	if ([self.apost.content rangeOfString:@"<!--more-->"].location != NSNotFound)
@@ -1090,11 +1109,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
         self.apost.postTitle = textField.text;
         
         // FIXME: this should be -[PostsViewController updateTitle]
-        if ([self.apost.postTitle length] > 0) {
-            self.navigationItem.title = self.apost.postTitle;
-        } else {
-            self.navigationItem.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
-        }
+        self.navigationItem.title = [self editorTitle];
+//        if ([self.apost.postTitle length] > 0) {
+//            self.navigationItem.title = self.apost.postTitle;
+//        } else {
+//            self.navigationItem.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
+//        }
 
     }
 	else if (textField == tagsTextField)

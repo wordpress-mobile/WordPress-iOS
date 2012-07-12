@@ -136,5 +136,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (IBAction)touchTextView:(id)sender;
 - (void)refreshButtons;
 - (void)dismissEditView;
+- (NSString *)editorTitle;
 
 @end
