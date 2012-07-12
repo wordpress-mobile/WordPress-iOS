@@ -127,7 +127,7 @@
             _detailViewWidths = [[NSMutableArray alloc] init];
         }
         self.detailViewController = detailController;
-        self.masterViewController = masterController;
+        self.masterViewController = masterController;        
     }
     return self;
 }
@@ -300,6 +300,14 @@
 }
 
 #pragma mark - View Wrapping
+
+- (void)clearDetailViewController {
+    [self popToRootViewControllerAnimated:YES];
+    
+    UIView *view = [self viewOrViewWrapper:self.detailViewController.view];
+    [view removeFromSuperview];
+    self.detailViewController = nil;
+}
 
 - (PanelViewWrapper *)wrapViewForViewController:(UIViewController *)controller {
     UIView *view = controller.view;

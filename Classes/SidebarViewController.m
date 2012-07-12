@@ -68,6 +68,7 @@
 - (void)tearDownQuickPhotoButton;
 - (void)handleCameraPlusImages:(NSNotification *)notification;
 - (void)presentContent;
+- (void)checkNothingToShow;
 
 @end
 
@@ -130,6 +131,7 @@
         if (selectedIndexPath == nil || (selectedIndexPath.section == 0 && selectedIndexPath.row == 1)) {
             [self selectFirstAvailableItem];
         }
+        [self checkNothingToShow];
     };
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
@@ -242,6 +244,20 @@
     }
 }
 
+- (void)checkNothingToShow {
+    if ( [[self.resultsController fetchedObjects] count] == 0 && ! [WordPressComApi sharedApi].username ) {
+        utililtyView.hidden = YES;
+        settingsButton.hidden = YES;
+        
+        // No user logged in and no blogs.
+        // The panelViewController needs to loose its detail view if it has one.
+        [self.panelNavigationController clearDetailViewController];
+    } else {
+        utililtyView.hidden = NO;
+        settingsButton.hidden = NO;
+    }
+}
+
 - (void)selectFirstAvailableItem {
     if ([self.tableView indexPathForSelectedRow] != nil) {
         return;
@@ -254,6 +270,7 @@
     } else {
         [self selectFirstAvailableBlog];
     }
+    [self checkNothingToShow];
 }
 
 - (void)selectFirstAvailableBlog {
@@ -465,7 +482,7 @@
     quickPhotoButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
     quickPhotoButton.delegate = self;
     
-    [self.view addSubview:quickPhotoButton];
+    [self.utililtyView addSubview:quickPhotoButton];
 }
 
 - (void)tearDownQuickPhotoButton {

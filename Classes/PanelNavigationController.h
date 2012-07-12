@@ -24,6 +24,7 @@
 - (void)closeSidebar;
 - (void)showSidebar;
 - (void)toggleSidebar;
+- (void)clearDetailViewController;
 
 - (UIToolbar *)toolbarForViewController:(UIViewController *)controller;
 - (BOOL)isToolbarHiddenForViewController:(UIViewController *)controller;
