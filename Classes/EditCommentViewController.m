@@ -42,45 +42,7 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
                       target:self 
                       action:@selector(initiateSaveCommentReply:)];
         
-        if ([[UIBarButtonItem class] respondsToSelector:@selector(appearance)]) {
-            [saveButton setBackgroundImage:[UIImage imageNamed:@"navbar_primary_button_bg"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-            [saveButton setBackgroundImage:[UIImage imageNamed:@"navbar_primary_button_bg_landscape"] forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
-            [saveButton setBackgroundImage:[UIImage imageNamed:@"navbar_primary_button_bg_active"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
-            [saveButton setBackgroundImage:[UIImage imageNamed:@"navbar_primary_button_bg_landscape_active"] forState:UIControlStateSelected barMetrics:UIBarMetricsLandscapePhone];
-            
-            [saveButton setTitleTextAttributes:
-             [NSDictionary dictionaryWithObjectsAndKeys:
-              [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0], 
-              UITextAttributeTextColor, 
-              [UIColor whiteColor], 
-              UITextAttributeTextShadowColor,  
-              [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
-              UITextAttributeTextShadowOffset,
-              nil] forState:UIControlStateSelected];
-            
-            [saveButton setTitleTextAttributes:
-             [NSDictionary dictionaryWithObjectsAndKeys:
-              [UIColor whiteColor], 
-              UITextAttributeTextColor, 
-              [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0], 
-              UITextAttributeTextShadowColor,  
-              [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
-              UITextAttributeTextShadowOffset,
-              nil] forState:UIControlStateNormal];
-            
-            [saveButton setTitleTextAttributes:
-             [NSDictionary dictionaryWithObjectsAndKeys:
-              [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0], 
-              UITextAttributeTextColor, 
-              [UIColor whiteColor], 
-              UITextAttributeTextShadowColor,  
-              [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
-              UITextAttributeTextShadowOffset,
-              nil] forState:UIControlStateDisabled];
-
-            self.navigationItem.rightBarButtonItem = saveButton;
-        }
-
+        self.navigationItem.rightBarButtonItem = saveButton;
      }
      
      self.hasChanges = NO;

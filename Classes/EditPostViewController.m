@@ -497,35 +497,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
         buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
     }
     
-    // Check if we're on iOS 4
-    if (![self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        UIBarButtonItem *saveButton = [[[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(saveAction:)] autorelease];
-        self.navigationItem.rightBarButtonItem = saveButton;
-    } else {
-        //set up the blue button for nav bar
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom]; 
-        UIFont *titleFont = [UIFont boldSystemFontOfSize:12];
-        CGSize titleSize = [buttonTitle sizeWithFont:titleFont];
-        CGFloat buttonWidth = titleSize.width + 20;
-        button.frame = CGRectMake(0, 0, buttonWidth, 30);
-        
-        [button setTitle:buttonTitle forState:UIControlStateNormal];
-        button.titleLabel.font = titleFont;
-        button.titleLabel.textColor = [UIColor UIColorFromHex:0x222222];
-        button.titleLabel.shadowColor = [UIColor whiteColor];
-        button.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
-        [button addTarget:self action:@selector(saveAction:) forControlEvents:UIControlEventTouchUpInside];
-       
-        UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_primary_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-        [button setBackgroundImage:backgroundImage forState:UIControlStateNormal];
-        
-        UIImage *backgroundImageSelected = [[UIImage imageNamed:@"navbar_primary_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-        [button setBackgroundImage:backgroundImageSelected forState:UIControlStateHighlighted];
-        
-        UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithCustomView:button];
-        self.navigationItem.rightBarButtonItem = saveButton;
-        [saveButton release];
-    }
+    UIBarButtonItem *saveButton = [[[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleDone target:self action:@selector(saveAction:)] autorelease];
+    self.navigationItem.rightBarButtonItem = saveButton;
 }
 
 - (void)refreshUIForCompose {

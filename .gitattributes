@@ -171,6 +171,8 @@ Classes/SidebarViewController.h -text
 Classes/SidebarViewController.m -text
 Classes/StatsWebViewController.h -text
 Classes/StatsWebViewController.m -text
+Classes/UIBarButtonItem+Styled.h -text
+Classes/UIBarButtonItem+Styled.m -text
 Classes/UIColor+Helpers.h -text
 Classes/UIColor+Helpers.m -text
 Classes/UIDevice-Hardware.h -text
