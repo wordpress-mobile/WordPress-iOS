@@ -642,7 +642,7 @@
 	if(self.isShowingResizeActionSheet == NO) {
 		isShowingResizeActionSheet = YES;
         
-        Blog *currentBlog = self.postDetailViewController.post.blog;
+        Blog *currentBlog = self.postDetailViewController.apost.blog;
         NSDictionary* predefDim = [currentBlog getImageResizeDimensions];
         CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
         CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];

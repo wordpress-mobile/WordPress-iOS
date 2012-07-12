@@ -9,6 +9,11 @@
 
 @implementation EditPageViewController
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = NSLocalizedString(@"New Page", @"Page Editor screen title.");
+}
+
 // Hides tags/categories fileds by putting text view above them
 - (CGRect)normalTextFrame {
     CGRect frame = [super normalTextFrame];

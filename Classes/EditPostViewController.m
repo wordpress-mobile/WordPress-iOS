@@ -264,8 +264,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     animateWiggleIt.fromValue=[NSNumber numberWithFloat:0.75];
     animateWiggleIt.toValue=[NSNumber numberWithFloat:1.0];
 	[textViewPlaceHolderField.layer addAnimation:animateWiggleIt forKey:@"textViewPlaceHolderField"];
-	
-	self.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
+
+//	self.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
 }
 
 - (void)viewWillDisappear:(BOOL)animated {	
