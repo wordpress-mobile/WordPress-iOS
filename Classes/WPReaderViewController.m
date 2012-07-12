@@ -92,6 +92,15 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     // Release any cached data, images, etc that aren't in use.
 }
 
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView { 
+    if (self.panelNavigationController) { 
+        [self.panelNavigationController viewControllerWantsToBeFullyVisible:self]; 
+    } 
+} 
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
