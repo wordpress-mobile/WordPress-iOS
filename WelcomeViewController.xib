@@ -188,9 +188,9 @@
 									<bytes key="NSWhite">MQA</bytes>
 									<reference key="NSCustomColorSpace" ref="352809616"/>
 								</object>
-								<object class="NSCustomResource" key="IBUINormalImage" id="763895159">
+								<object class="NSCustomResource" key="IBUINormalImage" id="227033445">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">navbar_new.png</string>
+									<string key="NSResourceName">navbar_add.png</string>
 								</object>
 								<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="706007471">
 									<string key="NSClassName">NSImage</string>
@@ -227,7 +227,7 @@
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MSAxIDEAA</bytes>
 								</object>
-								<reference key="IBUINormalImage" ref="763895159"/>
+								<reference key="IBUINormalImage" ref="227033445"/>
 								<reference key="IBUINormalBackgroundImage" ref="706007471"/>
 								<reference key="IBUIFontDescription" ref="406198130"/>
 								<reference key="IBUIFont" ref="427752553"/>
@@ -556,11 +556,11 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="2"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="2"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
@@ -729,7 +729,7 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>asterisk.png</string>
 				<string>info_button.png</string>
-				<string>navbar_new.png</string>
+				<string>navbar_add.png</string>
 				<string>welcome_button_bg_full.png</string>
 				<string>wp_logo.png</string>
 			</object>
@@ -737,7 +737,7 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{19, 19}</string>
 				<string>{19, 19}</string>
-				<string>{16, 17}</string>
+				<string>{22, 19}</string>
 				<string>{283, 44}</string>
 				<string>{182, 42}</string>
 			</object>
