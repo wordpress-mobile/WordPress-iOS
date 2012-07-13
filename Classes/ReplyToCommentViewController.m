@@ -153,7 +153,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	[UIView commitAnimations];
 }
 
-
+/*
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	if (IS_IPAD)
 		return YES;
@@ -164,6 +164,12 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
         return YES;
 	
 	return NO;
+}
+ */
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 -(void) receivedRotate: (NSNotification*) notification

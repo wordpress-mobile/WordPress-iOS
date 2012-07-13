@@ -62,7 +62,7 @@
     [super viewWillDisappear:animated];
 	[webView stopLoading];
 }
-
+/*
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	if (IS_IPAD == YES) {
 		return YES;
@@ -76,7 +76,12 @@
     // Return YES for supported orientations
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
+*/
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+}
 
 - (NSString *)buildSimplePreview {
 	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];

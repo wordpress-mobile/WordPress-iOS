@@ -128,18 +128,9 @@
     self.navigationItem.rightBarButtonItem = saveButtonItem;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if (IS_IPAD == YES) {
-		return YES;
-	}
-
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-
-    if ([delegate isAlertRunning] == YES) {
-        return NO; // Return YES for supported orientations
-    }
-
-    return ( interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown );
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 - (void)didReceiveMemoryWarning {

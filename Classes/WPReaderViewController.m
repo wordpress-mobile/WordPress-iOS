@@ -169,10 +169,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    if ((UIInterfaceOrientationIsLandscape(interfaceOrientation) || UIInterfaceOrientationIsPortrait(interfaceOrientation)) && interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown)
-        return YES;
-    
-    return NO;
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 - (void)didMoveToParentViewController:(UIViewController *)parent {

@@ -282,7 +282,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[textView resignFirstResponder];
     [super viewWillDisappear:animated];
 }
-
+/*
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 	if(IS_IPAD) {
 		return YES;
@@ -300,7 +300,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	return NO;	
 }
+*/
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+}
 
 #pragma mark -
 #pragma mark Instance Methods
