@@ -314,7 +314,8 @@
 - (IBAction)showSettings:(id)sender {
     SettingsViewController *settingsViewController = [[[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
     UINavigationController *aNavigationController = [[[UINavigationController alloc] initWithRootViewController:settingsViewController] autorelease];
-    aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    if (IS_IPAD)
+        aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     
     [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
@@ -413,7 +414,6 @@
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self.panelNavigationController presentModalViewController:navController animated:YES];
     } else {
-        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self.panelNavigationController presentModalViewController:navController animated:YES];
     }
     [quickPhotoViewController release];
