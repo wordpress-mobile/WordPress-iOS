@@ -19,6 +19,9 @@
 @implementation PostSettingsViewController
 @synthesize postDetailViewController;
 
+#pragma mark -
+#pragma mark Lifecycle Methods
+
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	if (locationManager) {
@@ -51,25 +54,6 @@
     [super dealloc];
 }
 
-- (void)endEditingAction:(id)sender {
-	if (passwordTextField != nil){
-    [passwordTextField resignFirstResponder];
-	}
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-	postDetailViewController.apost.password = textField.text;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    return YES;
-}
-
-- (void)endEditingForTextFieldAction:(id)sender {
-    [passwordTextField endEditing:YES];
-}
-
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     
@@ -99,29 +83,6 @@
     datePickerView = [[UIDatePicker alloc] initWithFrame:pickerView.frame];
     datePickerView.minuteInterval = 5;
     [datePickerView addTarget:self action:@selector(datePickerChanged) forControlEvents:UIControlEventValueChanged];
-
-    if (!IS_IPAD) {
-        /*UIToolbar *accesoryToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
-        accesoryToolbar.tintColor = postDetailViewController.toolbar.tintColor;
-        NSMutableArray *barButtons = [NSMutableArray arrayWithCapacity:2];
-        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        [barButtons addObject:barButton];
-        [barButton release];
-        barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(endEditingAction:)];
-        [barButtons addObject:barButton];
-        [barButton release];
-        accesoryToolbar.items = barButtons;
-		
-		//check iOS version for support of inputAccessoryView
-		float version = [[[UIDevice currentDevice] systemVersion] floatValue];
-		if (version >= 3.2)
-			passwordTextField.inputAccessoryView = accesoryToolbar;
-		else {
-			passwordTextField.returnKeyType = UIReturnKeyDone;
-			passwordTextField.delegate = self;
-		}
-        [accesoryToolbar release];*/
-    }
 	
 	passwordTextField.returnKeyType = UIReturnKeyDone;
 	passwordTextField.delegate = self;
@@ -145,6 +106,8 @@
 }
 
 - (void)viewDidUnload {
+    [super viewDidUnload];
+
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [locationManager stopUpdatingLocation];
     locationManager.delegate = nil;
@@ -164,7 +127,6 @@
     postFormatTitleLabel = nil;
     passwordTextField = nil;
 
-    [super viewDidUnload];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -176,6 +138,8 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -183,21 +147,9 @@
     WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
 }
-/*
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if (IS_IPAD == YES) {
-		return YES;
-	}
-	
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-	
-    if ([delegate isAlertRunning] == YES)
-        return NO;
-	
-    // Return YES for supported orientations
-    return ( interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown );
-}
-*/
+
+#pragma mark -
+#pragma mark Rotation Methods
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -207,6 +159,48 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self reloadData];
 }
+
+
+#pragma mark -
+#pragma mark Instance Methods
+
+- (void)endEditingAction:(id)sender {
+	if (passwordTextField != nil){
+        [passwordTextField resignFirstResponder];
+	}
+}
+
+- (void)endEditingForTextFieldAction:(id)sender {
+    [passwordTextField endEditing:YES];
+}
+
+- (void)reloadData {
+    passwordTextField.text = postDetailViewController.apost.password;
+	
+    [tableView reloadData];
+}
+
+- (void)datePickerChanged {
+    postDetailViewController.apost.dateCreated = datePickerView.date;
+	[postDetailViewController refreshButtons];
+    [tableView reloadData];
+}
+
+#pragma mark -
+#pragma mark TextField Delegate Methods
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+	postDetailViewController.apost.password = textField.text;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
+
+#pragma mark -
+#pragma mark TableView Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     NSInteger sections = 1; // Always have the status section
@@ -421,11 +415,6 @@
         return 44.0f;
 }
 
-- (void)reloadData {
-    passwordTextField.text = postDetailViewController.apost.password;
-	
-    [tableView reloadData];
-}
 
 - (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
@@ -555,11 +544,6 @@
     [tableView reloadData];
 }
 
-- (void)datePickerChanged {
-    postDetailViewController.apost.dateCreated = datePickerView.date;
-	[postDetailViewController refreshButtons];
-    [tableView reloadData];
-}
 
 #pragma mark -
 #pragma mark Pickers and keyboard animations
