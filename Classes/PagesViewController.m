@@ -40,6 +40,10 @@
     } loadMore:NO];
 }
 
+- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+    [self.blog syncPagesWithSuccess:success failure:failure loadMore: NO];
+}
+
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
     self.postDetailViewController = [[[EditPageViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil] autorelease];
