@@ -57,10 +57,13 @@
 }
 
 + (void)styleButtonAsPrimary:(UIBarButtonItem *)buttonItem {
+    
     [buttonItem setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [buttonItem setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+    [buttonItem setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+
     [buttonItem setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg_landscape"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
     [buttonItem setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg_landscape_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0] forState:UIControlStateSelected barMetrics:UIBarMetricsLandscapePhone];
+
     [buttonItem setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
       [UIColor whiteColor],
@@ -101,8 +104,11 @@
     };
     restoreBackgroundImage(UIControlStateNormal,    UIBarMetricsDefault);
     restoreBackgroundImage(UIControlStateSelected,  UIBarMetricsDefault);
+    restoreBackgroundImage(UIControlStateHighlighted,  UIBarMetricsDefault);
     restoreBackgroundImage(UIControlStateNormal,    UIBarMetricsLandscapePhone);
     restoreBackgroundImage(UIControlStateSelected,  UIBarMetricsLandscapePhone);
+    restoreBackgroundImage(UIControlStateHighlighted,  UIBarMetricsLandscapePhone);
+    
     restoreTextAttributes(UIControlStateNormal);
     restoreTextAttributes(UIControlStateHighlighted);
 }
