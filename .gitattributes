@@ -968,6 +968,8 @@ sv.lproj/Localizable.strings -text svneol=unset#unset
 /toolbarUlHighlighted@2x.png -text
 /toolbarUliPad.png -text
 /toolbarUliPad@2x.png -text svneol=unset#unset
+/toolbar_actions.png -text
+/toolbar_actions@2x.png -text
 /toolbar_approve.png -text
 /toolbar_approve@2x.png -text
 /toolbar_bg.png -text
