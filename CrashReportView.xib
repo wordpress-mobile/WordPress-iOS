@@ -91,16 +91,22 @@
 						<string key="IBUITitleShadowOffset">{0, 1}</string>
 						<string key="IBUINormalTitle">Send Crash Report</string>
 						<reference key="IBUIHighlightedTitleColor" ref="439962540"/>
-						<object class="NSColor" key="IBUINormalTitleColor" id="608028667">
+						<object class="NSColor" key="IBUINormalTitleColor" id="118787011">
 							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MAA</bytes>
+							<bytes key="NSWhite">MC4yNQA</bytes>
+							<object class="NSColorSpace" key="NSCustomColorSpace" id="308839698">
+								<int key="NSID">2</int>
+							</object>
+						</object>
+						<object class="NSColor" key="IBUIHighlightedTitleShadowColor" id="404113859">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MC41AA</bytes>
+							<reference key="NSCustomColorSpace" ref="308839698"/>
 						</object>
 						<object class="NSColor" key="IBUINormalTitleShadowColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MQA</bytes>
-							<object class="NSColorSpace" key="NSCustomColorSpace" id="308839698">
-								<int key="NSID">2</int>
-							</object>
+							<reference key="NSCustomColorSpace" ref="308839698"/>
 						</object>
 						<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="520879410">
 							<string key="NSClassName">NSImage</string>
@@ -131,7 +137,8 @@
 						<string key="IBUITitleShadowOffset">{0, 1}</string>
 						<string key="IBUINormalTitle">Don't Send Crash Report</string>
 						<reference key="IBUIHighlightedTitleColor" ref="439962540"/>
-						<reference key="IBUINormalTitleColor" ref="608028667"/>
+						<reference key="IBUINormalTitleColor" ref="118787011"/>
+						<reference key="IBUIHighlightedTitleShadowColor" ref="404113859"/>
 						<object class="NSColor" key="IBUINormalTitleShadowColor">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MQA</bytes>
@@ -282,9 +289,9 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
