@@ -120,8 +120,6 @@
         [oldImage removeFromSuperview];
     }
     
-	asyncImage.layer.cornerRadius = 4.0;
-	asyncImage.layer.masksToBounds = YES;
 	asyncImage.tag = 999;
 	[asyncImage setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
 	[cell.contentView addSubview:asyncImage];

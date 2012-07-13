@@ -42,8 +42,6 @@
         blavatarFrame.origin.x += 8;
         blavatarFrame.origin.y += 6;
         blavatarImageView = [[UIImageView alloc] initWithFrame:blavatarFrame];
-        blavatarImageView.layer.masksToBounds = YES;
-        blavatarImageView.layer.cornerRadius = 4.0f;
         [self addSubview:blavatarImageView];
         
         CGRect postToFrame = self.bounds;
@@ -54,12 +52,12 @@
         postToLabel = [[UILabel alloc] initWithFrame:postToFrame];
         postToLabel.font = [UIFont systemFontOfSize:15];
         postToLabel.textColor = [UIColor grayColor];
-        [postToLabel setText:@"Post to:"];
+        [postToLabel setText: NSLocalizedString(@"Post to:", @"")];
         [self addSubview:postToLabel];
         
         CGRect blogTitleFrame = self.bounds;
         blogTitleFrame.origin.x = blavatarFrame.size.width + 15;
-        blogTitleFrame.origin.y = blogTitleFrame.origin.y + 23;
+        blogTitleFrame.origin.y = blogTitleFrame.origin.y + 21;
         blogTitleFrame.size.width -= blavatarFrame.size.width + 10 + 50;
         blogTitleFrame.size.height = 24.0f;
         blogTitleLabel = [[UILabel alloc] initWithFrame:blogTitleFrame];
@@ -139,11 +137,16 @@
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"blogName" ascending:YES];
         [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
         [sortDescriptor release]; sortDescriptor = nil;
-        [fetchRequest setFetchLimit:1];
         NSArray *results = [moc executeFetchRequest:fetchRequest error:&error];
         [fetchRequest release];
         if (results && ([results count] > 0)) {
             self.activeBlog = [results objectAtIndex:0];
+            //Disable selecting a blog if user has only one blog in the app.
+            if ([results count] == 1) {
+                [postToLabel setText: NSLocalizedString(@"Posting to:", @"")];
+                self.enabled = NO;
+                selectorImageView.alpha = 0.0f;
+            }
         }
     }
 }
