@@ -87,7 +87,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return YES;
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 #pragma mark -

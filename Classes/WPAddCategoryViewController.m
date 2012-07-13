@@ -139,7 +139,7 @@
         return NO; // Return YES for supported orientations
     }
 
-    return YES;
+    return ( interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown );
 }
 
 - (void)didReceiveMemoryWarning {

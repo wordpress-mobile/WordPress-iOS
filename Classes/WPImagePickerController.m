@@ -25,7 +25,7 @@
         return NO; // Return YES for supported orientations
     }
 
-    return interfaceOrientation == UIInterfaceOrientationPortrait;
+    return ( interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown );
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {

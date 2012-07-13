@@ -117,11 +117,9 @@
 	[self checkAddSelectedButtonStatus];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if((IS_IPAD == YES) || (interfaceOrientation == UIInterfaceOrientationPortrait))
-		return YES;
-	else
-		return NO;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 #pragma mark -

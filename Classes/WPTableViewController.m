@@ -114,7 +114,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return YES;
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {

@@ -641,6 +641,7 @@
 		FD3890F01442F91000135C6D /* WPReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD3890EF1442F91000135C6D /* WPReaderViewController.m */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
 		FD4500D11580DF3600F2B0E6 /* UIColor+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FD4500D01580DF3500F2B0E6 /* UIColor+Helpers.m */; };
+		FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = FD75DDAC15B021C80043F12C /* UIViewController+Rotation.m */; };
 		FD76A898156CEB0B001FBAC6 /* XMLSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD76A897156CEB0B001FBAC6 /* XMLSignupViewController.xib */; };
 		FD76A89A156CEB22001FBAC6 /* XMLSignupViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD76A899156CEB22001FBAC6 /* XMLSignupViewController-iPad.xib */; };
 		FD76A89D156CEB4C001FBAC6 /* XMLSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD76A89C156CEB4C001FBAC6 /* XMLSignupViewController.m */; };
@@ -1532,6 +1533,8 @@
 		FD3D6D2B1349F5D30061136A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		FD4500CF1580DF3500F2B0E6 /* UIColor+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Helpers.h"; sourceTree = "<group>"; };
 		FD4500D01580DF3500F2B0E6 /* UIColor+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Helpers.m"; sourceTree = "<group>"; };
+		FD75DDAB15B021C70043F12C /* UIViewController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Rotation.h"; sourceTree = "<group>"; };
+		FD75DDAC15B021C80043F12C /* UIViewController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Rotation.m"; sourceTree = "<group>"; };
 		FD76A897156CEB0B001FBAC6 /* XMLSignupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = XMLSignupViewController.xib; sourceTree = "<group>"; };
 		FD76A899156CEB22001FBAC6 /* XMLSignupViewController-iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "XMLSignupViewController-iPad.xib"; sourceTree = "<group>"; };
 		FD76A89B156CEB4C001FBAC6 /* XMLSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XMLSignupViewController.h; path = Classes/XMLSignupViewController.h; sourceTree = "<group>"; };
@@ -2522,6 +2525,8 @@
 				E1745A9915AF49C000A3F7C5 /* UIViewController+Styled.m */,
 				E1745AA515AF4E5900A3F7C5 /* UIBarButtonItem+Styled.h */,
 				E1745AA615AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m */,
+				FD75DDAB15B021C70043F12C /* UIViewController+Rotation.h */,
+				FD75DDAC15B021C80043F12C /* UIViewController+Rotation.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -3753,6 +3758,7 @@
 				5D9832F315A78CCB00A5E783 /* UIToolbar+Styled.m in Sources */,
 				E1745A9A15AF49C000A3F7C5 /* UIViewController+Styled.m in Sources */,
 				E1745AA715AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m in Sources */,
+				FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

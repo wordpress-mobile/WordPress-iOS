@@ -142,7 +142,8 @@
 
     if ([delegate isAlertRunning] == YES)
         return NO;
-    return YES;
+    
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 #pragma mark -
