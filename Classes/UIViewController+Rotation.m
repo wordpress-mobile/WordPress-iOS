@@ -12,9 +12,6 @@
 @implementation UIViewController (Rotation)
 
 - (BOOL)myShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Since we exchanged implementations, this actually calls UIKit's shouldAutorotateToInterfaceOrientation
-    [self myShouldAutorotateToInterfaceOrientation:interfaceOrientation];
-    
     // Return YES for supported orientations
     if ( IS_IPHONE && interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown ) 
         return NO; 
