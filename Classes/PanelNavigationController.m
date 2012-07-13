@@ -98,6 +98,7 @@
     CGFloat _stackOffset;
     BOOL _isAppeared;
     BOOL _isShowingPoppedIcon;
+    BOOL _panned;
 }
 @synthesize detailViewController = _detailViewController;
 @synthesize masterViewController = _masterViewController;
@@ -645,6 +646,7 @@
 #pragma mark - Sidebar control
 
 - (void)showSidebar {
+    if (_panned == YES) return;
     [self showSidebarAnimated:YES];
 }
 
@@ -816,6 +818,7 @@
     if (gestureRecognizer == self.panner || gestureRecognizer.view == self.detailTapper) {
         _panOrigin = _stackOffset;
         NSLog(@"panOrigin: %.0f", _panOrigin);
+        _panned = NO;
     }
     return YES;
 }
@@ -836,6 +839,9 @@
      
      TODO: store lastFullyVisible for rotation
      */
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        _panned = YES;
+    }
     CGPoint p = [sender translationInView:self.rootViewController.view];
     CGFloat offset = _panOrigin - p.x;
     NSLog(@"offset: %.1f", offset);
@@ -897,7 +903,8 @@
         CGFloat velocity = [sender velocityInView:self.view].x;
         if (IS_IPAD) {
             CGFloat nearestOffset = [self nearestValidOffsetWithVelocity:-velocity];
-            [self setStackOffset:nearestOffset duration:DURATION_FAST];
+            //[self setStackOffset:nearestOffset duration:DURATION_FAST];
+            [self setStackOffset:nearestOffset withVelocity:velocity];
             //pop all extra view controllers if user dragged stack to the right
             if (offset < 0 && offset <= -120.0f) {
                 [self animatePoppedIcon];
@@ -918,7 +925,7 @@
                 // Going right
                 [self showSidebarWithVelocity:velocity];
             } else {
-                [self closeSidebar];
+                [self closeSidebarWithVelocity:velocity];
             }
         }
     }
@@ -1036,7 +1043,7 @@
     CALayer *viewLayer = view.layer;
     [viewLayer removeAllAnimations];
     [UIView setAnimationsEnabled:NO];
-    float viewOffset = MAX(0, MIN(offset, view.bounds.size.width));
+    float viewOffset = MAX(0, MIN(offset, self.view.bounds.size.width));
     
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"position.x"];
     
@@ -1045,36 +1052,43 @@
     CGFloat distance = ABS(startPosition.x - endPosition.x);
     NSMutableArray *values = [NSMutableArray arrayWithCapacity:4];
     NSMutableArray *timingFunctions = [NSMutableArray arrayWithCapacity:3];
+    NSMutableArray *keyTimes = [NSMutableArray arrayWithCapacity:4];
+    [keyTimes addObject:[NSNumber numberWithFloat:0.f]];
     [values addObject:[NSNumber numberWithFloat:startPosition.x]];
-    CGFloat overShot = 0, underShot = 0, duration = ABS(distance/velocity);
+    CGFloat overShot = 0, duration = ABS(distance/velocity);
     CAMediaTimingFunction *easeInOut = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    if(ABS(velocity) > 500.f && (!IS_IPAD || distance > 50.f)){
-        [timingFunctions addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
-        overShot = 50.f * (velocity * 0.00125);
+    [timingFunctions addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+    
+    if(ABS(velocity) > PANEL_MINIMUM_OVERSHOT_VELOCITY && (!IS_IPAD || distance > 10.f)){
+        [timingFunctions addObject:easeInOut];
+
+        overShot = 50.f * (velocity * PANEL_OVERSHOT_FRICTION);
         distance += ABS(overShot);
-        duration += ABS(overShot/(velocity * 0.99875));
+        CGFloat overShotDuration = ABS(overShot/(velocity * (1-PANEL_OVERSHOT_FRICTION))) + 0.1f;
+        [keyTimes addObject:[NSNumber numberWithFloat:duration/(duration+overShotDuration)]];
+        duration += overShotDuration;
         [values addObject:[NSNumber numberWithFloat:endPosition.x + overShot]];
-        if (ABS(overShot) >= 50.f && !IS_IPAD){
-            [timingFunctions addObject:easeInOut];
-            underShot = distance * 0.25f * (velocity * 0.001);
-            distance += ABS(underShot);
-            duration += ABS(underShot/(velocity * 0.999));
-            [values addObject:[NSNumber numberWithFloat:endPosition.x - underShot]];
-        }
+//        if (ABS(overShot) >= 50.f){
+//            [timingFunctions addObject:easeInOut];
+//            underShot = distance * 0.25f * (velocity * PANEL_UNDERSHOT_FRICTION);
+//            distance += ABS(underShot);
+//            duration += ABS(underShot/(velocity * (1 - PANEL_UNDERSHOT_FRICTION)));
+//            [values addObject:[NSNumber numberWithFloat:endPosition.x - underShot]];
+//        }
     } else {
         // nothing special, just slide
         duration = 0.2f;
-        [timingFunctions addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
         
     }
-    
+    [keyTimes addObject:[NSNumber numberWithFloat:1.f]];
     
     [values addObject:[NSNumber numberWithFloat:endPosition.x]];
     
     animation.values = values;
     animation.timingFunctions = timingFunctions;
+    animation.keyTimes = keyTimes;
     animation.duration = duration;
-    
+        
     [viewLayer addAnimation:animation forKey:@"position"];
     viewLayer.position = endPosition;
     
@@ -1082,9 +1096,10 @@
 
 - (void)setStackOffset:(CGFloat)offset withVelocity:(CGFloat)velocity{
     velocity = MAX(-1000, MIN(1000, velocity * 0.3)); // limit the velocity
-    CGFloat remainingOffset = offset;
     CALayer *viewLayer = self.detailView.layer;
     [viewLayer removeAllAnimations];
+    
+    CGFloat remainingOffset = offset;
     
     BOOL expectsWidePanels = [self viewControllerExpectsWidePanel:self.detailViewController];
     CGFloat detailLedgeOffset = DETAIL_LEDGE_OFFSET;
