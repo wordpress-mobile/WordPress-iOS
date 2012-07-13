@@ -778,6 +778,8 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /main.m -text
 /movie.png -text svneol=unset#unset
 /movie@2x.png -text svneol=unset#unset
+/navbar_actions.png -text
+/navbar_actions@2x.png -text
 /navbar_add.png -text
 /navbar_add@2x.png -text
 /navbar_back_button_bg.png -text
