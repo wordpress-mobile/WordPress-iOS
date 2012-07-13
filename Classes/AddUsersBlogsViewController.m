@@ -9,6 +9,7 @@
 #import "SFHFKeychainUtils.h"
 #import "NSString+XMLExtensions.h"
 #import "WordPressComApi.h"
+#import "UIBarButtonItem+Styled.h"
 
 @implementation AddUsersBlogsViewController
 @synthesize usersBlogs, isWPcom, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;
@@ -77,6 +78,8 @@
     
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelAddWPcomBlogs) 
 												 name:@"didCancelWPcomLogin" object:nil];
+    
+    [UIBarButtonItem styleButtonAsPrimary:buttonAddSelected];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
