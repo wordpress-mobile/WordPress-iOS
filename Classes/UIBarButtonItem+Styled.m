@@ -86,13 +86,15 @@
 
     [buttonItem setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
-      [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0],
+//      [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0],
+      [UIColor UIColorFromHex:0xeeeeee],
       UITextAttributeTextColor,
-      [UIColor whiteColor],
+//      [UIColor whiteColor],
+      [UIColor UIColorFromHex:0xbbbbbb],
       UITextAttributeTextShadowColor,
       [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
       UITextAttributeTextShadowOffset,
-      nil] forState:UIControlStateDisabled];
+      nil] forState:UIControlStateDisabled];    
 }
 
 + (void)restoreDefaultButtonStyle:(UIBarButtonItem *)buttonItem {
