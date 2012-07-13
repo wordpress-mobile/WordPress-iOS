@@ -782,6 +782,7 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /navbar_add@2x.png -text
 /navbar_back_button_bg.png -text
 /navbar_back_button_bg@2x.png -text
+/navbar_back_button_bg_active.png -text
 /navbar_back_button_bg_active@2x.png -text
 /navbar_bg.png -text
 /navbar_bg@2x.png -text
