@@ -97,9 +97,12 @@
 						<int key="IBUILineBreakMode">4</int>
 						<string key="IBUINormalTitle">Read the FAQ</string>
 						<reference key="IBUIHighlightedTitleColor" ref="85227070"/>
-						<object class="NSColor" key="IBUINormalTitleColor" id="370792777">
+						<object class="NSColor" key="IBUINormalTitleColor" id="45800047">
 							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MAA</bytes>
+							<bytes key="NSWhite">MC4yNQA</bytes>
+							<object class="NSColorSpace" key="NSCustomColorSpace">
+								<int key="NSID">2</int>
+							</object>
 						</object>
 						<object class="NSColor" key="IBUINormalTitleShadowColor" id="774107128">
 							<int key="NSColorSpace">3</int>
@@ -127,7 +130,6 @@
 						<string key="NSFrame">{{20, 230}, {280, 44}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
@@ -135,7 +137,7 @@
 						<int key="IBUILineBreakMode">4</int>
 						<string key="IBUINormalTitle">Visit the Forums</string>
 						<reference key="IBUIHighlightedTitleColor" ref="85227070"/>
-						<reference key="IBUINormalTitleColor" ref="370792777"/>
+						<reference key="IBUINormalTitleColor" ref="45800047"/>
 						<reference key="IBUINormalTitleShadowColor" ref="774107128"/>
 						<reference key="IBUINormalBackgroundImage" ref="299260080"/>
 						<reference key="IBUIFontDescription" ref="38981343"/>
@@ -354,9 +356,9 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="0.0"/>
+					<real value="1"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="0.0"/>
+					<real value="1"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
