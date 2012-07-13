@@ -34,13 +34,14 @@
 #import "WPcomLoginViewController.h"
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
+#import "AboutViewController.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,
     SettingsSectionBlogsAdd,
     SettingsSectionWpcom,
 //    SettingsSectionMedia,
-//    SettingsSectionInfo,
+    SettingsSectionInfo,
     
     SettingsSectionCount
 } SettingsSection;
@@ -136,6 +137,8 @@ typedef enum {
             return 1;
         case SettingsSectionWpcom:
             return [WordPressComApi sharedApi].username ? 2 : 1;
+        case SettingsSectionInfo:
+            return 2;
         default:
             return 0;
     }
@@ -153,12 +156,15 @@ typedef enum {
         return NSLocalizedString(@"Blogs", @"");
     } else if (section == SettingsSectionWpcom) {
         return NSLocalizedString(@"WordPress.com", @"");
+    } else if (section == SettingsSectionInfo) {
+        return NSLocalizedString(@"Info", @"");
     }
     return nil;
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     cell.textLabel.textAlignment = UITextAlignmentLeft;
+    cell.accessoryType = UITableViewCellAccessoryNone;
     if (indexPath.section == SettingsSectionBlogs) {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
         cell.textLabel.text = blog.blogName;
@@ -181,6 +187,16 @@ typedef enum {
             cell.textLabel.textAlignment = UITextAlignmentCenter;
             cell.textLabel.text = NSLocalizedString(@"Sign in", @"Sign into WordPress.com");
         }
+    } else if (indexPath.section == SettingsSectionInfo) {
+        if (indexPath.row == 0) {
+            cell.textLabel.text = NSLocalizedString(@"Version:", @"");
+            NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+            cell.detailTextLabel.text = appversion;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        } else {
+            cell.textLabel.text = NSLocalizedString(@"About", @"");
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
     }
 }
 
@@ -196,11 +212,17 @@ typedef enum {
         case SettingsSectionWpcom:
             cellIdentifier = @"WpcomCell";
             cellStyle = UITableViewCellStyleValue1;
+        case SettingsSectionInfo:
+            if (indexPath.row == 0) {
+                cellIdentifier = @"InfoCell";
+                cellStyle = UITableViewCellStyleValue1;
+            }
     }
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellIdentifier] autorelease];
     }
+    
     return cell;
 }
 
@@ -278,6 +300,12 @@ typedef enum {
             [self.navigationController pushViewController:loginViewController animated:YES];
         }
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    } else if (indexPath.section == SettingsSectionInfo) {
+        if (indexPath.row == 1) {
+            AboutViewController *aboutViewController = [[[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil] autorelease]; 
+            [self.navigationController pushViewController:aboutViewController animated:YES];
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        }
     }
 }
 
