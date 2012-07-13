@@ -49,6 +49,8 @@
 - (void)setFrameForViewController:(UIViewController *)viewController;
 - (void)setViewOffset:(CGFloat)offset forView:(UIView *)view;
 - (void)setStackOffset:(CGFloat)offset duration:(CGFloat)duration;
+- (void)animateView:(UIView *)view toOffset:(CGFloat)offset withVelocity:(CGFloat)velocity;
+- (void)setStackOffset:(CGFloat)offset withVelocity:(CGFloat)velocity;
 - (CGFloat)nearestValidOffsetWithVelocity:(CGFloat)velocity;
 - (CGFloat)maxOffsetSoft;
 - (CGFloat)maxOffsetHard;
