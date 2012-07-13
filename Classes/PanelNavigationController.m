@@ -276,7 +276,10 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return YES;
+	if (IS_IPHONE && interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown)
+        return NO;
+    else 
+        return YES;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
