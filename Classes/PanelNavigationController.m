@@ -47,10 +47,8 @@
 - (void)addPanner;
 - (void)removePanner;
 - (void)setFrameForViewController:(UIViewController *)viewController;
-- (void)setViewOffset:(CGFloat)offset forView:(UIView *)view withDuration:(float)duration;
-- (void)animateView:(UIView *)view toOffset:(CGFloat)offset withVelocity:(CGFloat)velocity;
+- (void)setViewOffset:(CGFloat)offset forView:(UIView *)view;
 - (void)setStackOffset:(CGFloat)offset duration:(CGFloat)duration;
-- (void)setStackOffset:(CGFloat)offset withVelocity:(CGFloat)velocity;
 - (CGFloat)nearestValidOffsetWithVelocity:(CGFloat)velocity;
 - (CGFloat)maxOffsetSoft;
 - (CGFloat)maxOffsetHard;
@@ -648,45 +646,41 @@
     [self showSidebarAnimated:YES];
 }
 
-- (void)showSidebarWithVelocity:(float)velocity {
-    if (IS_IPHONE)
-        [self addShadowTo:self.detailView];
-   [self disableDetailView];
-    [self setStackOffset:0.f withVelocity:velocity];
+- (void)showSidebarAnimated:(BOOL)animated {
+    [UIView setAnimationsEnabled:YES];
+    [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
+        if (IS_IPHONE)
+            [self addShadowTo:self.detailView];
+        [self setStackOffset:0 duration:0];
+        [self disableDetailView];
+    } completion:^(BOOL finished) {
+    }];
 }
 
-- (void)showSidebarAnimated:(BOOL)animated {
+- (void)showSidebarWithVelocity:(CGFloat)velocity {
     if (IS_IPHONE)
         [self addShadowTo:self.detailView];
     [self disableDetailView];
-    [self setStackOffset:0.f duration:OPEN_SLIDE_DURATION(animated)];
-
-//    [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
-//        if (IS_IPHONE)
-//            [self addShadowTo:self.detailView];
-//        [self setStackOffset:0 duration:0];
-//        [self disableDetailView];
-//    } completion:^(BOOL finished) {
-//    }];
+    [self setStackOffset:0.f withVelocity:velocity];
 }
 
+
 - (void)closeSidebar {
-    [self enableDetailView];
     [self closeSidebarAnimated:YES];
 }
 
-- (void)closeSidebarWithVelocity:(float)velocity {
-    [self enableDetailView];
-    [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) withVelocity:velocity];
+- (void)closeSidebarAnimated:(BOOL)animated {
+    [UIView setAnimationsEnabled:YES];
+    [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
+        [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) duration:0];
+    } completion:^(BOOL finished) {
+        [self enableDetailView];
+    }];
 }
 
-- (void)closeSidebarAnimated:(BOOL)animated {
-    [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) duration:OPEN_SLIDE_DURATION(animated)];
-//    [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
-//        [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) duration:0];
-//    } completion:^(BOOL finished) {
-//        [self enableDetailView];
-//    }];
+- (void)closeSidebarWithVelocity:(CGFloat)velocity {
+    [self enableDetailView];
+    [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) withVelocity:velocity];
 }
 
 - (void)toggleSidebar {
@@ -892,11 +886,7 @@
     /*
      Step 2: calculate each view position
      */
-    if (sender.state == UIGestureRecognizerStateChanged) {
-        [CATransaction setDisableActions:YES];
-        [self setStackOffset:offset duration:0];
-        return;
-    }
+    [self setStackOffset:offset duration:0];
 
     /*
      Step 3: when released, calculate final positions
@@ -905,7 +895,7 @@
         CGFloat velocity = [sender velocityInView:self.view].x;
         if (IS_IPAD) {
             CGFloat nearestOffset = [self nearestValidOffsetWithVelocity:-velocity];
-            [self setStackOffset:nearestOffset withVelocity:velocity];
+            [self setStackOffset:nearestOffset duration:DURATION_FAST];
             //pop all extra view controllers if user dragged stack to the right
             if (offset < 0 && offset <= -120.0f) {
                 [self animatePoppedIcon];
@@ -916,8 +906,6 @@
             }
         } else {
             // TODO: multiple panel panning
-            [CATransaction setDisableActions:NO];
-
             if (ABS(velocity) < 300) {
                 if (offset < DETAIL_LEDGE_OFFSET / 3) {
                     [self showSidebarWithVelocity:velocity];
@@ -991,78 +979,107 @@
     NSLog(@"Frame Set For View Controller : %.1f %.1f %.1f %.1f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 }
 
-- (void)setViewOffset:(CGFloat)offset forView:(UIView *)view withDuration:(float)duration {
-    
+- (void)setViewOffset:(CGFloat)offset forView:(UIView *)view {
     view = [self viewOrViewWrapper:view];
-    CALayer *viewLayer = view.layer;
+
+    CGRect frame = view.frame;
+    frame.origin.x = MAX(0, MIN(offset, self.view.bounds.size.width));
+
+    view.frame = frame;
+}
+
+- (void)setStackOffset:(CGFloat)offset duration:(CGFloat)duration {
+    CGFloat remainingOffset = offset;
     
-    float viewOffset = MAX(0, MIN(offset, view.bounds.size.width));
-    CGPoint startPosition = viewLayer.position;
-    //    animation.fromValue = [NSNumber numberWithFloat:startPosition.x];
-    
-    CGPoint endPosition = CGPointMake(viewOffset+(viewLayer.frame.size.width * 0.5f), startPosition.y);
-    //    animation.toValue = [NSNumber numberWithFloat:endPosition.x];
-    if (duration <= 0.f) {
-        [CATransaction setDisableActions:YES];
-        viewLayer.position = endPosition;
-        return;
+    BOOL expectsWidePanels = [self viewControllerExpectsWidePanel:self.detailViewController];
+    CGFloat detailLedgeOffset = DETAIL_LEDGE_OFFSET;
+    if (expectsWidePanels){
+        detailLedgeOffset = 44.0f;
     }
     
-    viewLayer.position = endPosition;
+    CGFloat usedOffset = MIN(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET, remainingOffset);
+    CGFloat viewX = DETAIL_LEDGE_OFFSET - usedOffset;
+    if (duration > 0) {
+        [UIView setAnimationsEnabled:YES];
+        [UIView beginAnimations:@"stackOffset" context:nil];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        [UIView setAnimationDuration:duration];
+    }
+    [self setViewOffset:viewX forView:self.detailView];
+    remainingOffset -= usedOffset;
 
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"position.x"];
-    animation.fromValue = [NSNumber numberWithFloat:startPosition.x];
-    animation.toValue = [NSNumber numberWithFloat:endPosition.x];
-    animation.duration = duration;
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-    
-    [viewLayer addAnimation:animation forKey:@"position"];
-
-
+    NSInteger viewCount = [self.detailViews count];
+    for (NSInteger i = 1; i < viewCount; i++) {        
+        UIView *view = [self.detailViews objectAtIndex:i];
+        UIView *previousView = [self.detailViews objectAtIndex:(i - 1)];
+        usedOffset = MIN(previousView.frame.size.width, remainingOffset);
+        viewX += previousView.frame.size.width;
+        viewX -= usedOffset;
+        
+        // ZOMG this is horrible, but without it the secondary detail does not position correctly.
+        if (offset >= 956.0f && i == viewCount -1 && expectsWidePanels && UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+            viewX += 44.0f;
+        }
+        
+        [self setViewOffset:viewX forView:view];
+        remainingOffset -= usedOffset;
+    }
+    [UIView commitAnimations];
+    _stackOffset = offset - remainingOffset;
+    [self partiallyVisibleViews];
 }
 
 - (void)animateView:(UIView *)view toOffset:(CGFloat)offset withVelocity:(CGFloat)velocity {
-    
     view = [self viewOrViewWrapper:view];
     CALayer *viewLayer = view.layer;
     [viewLayer removeAllAnimations];
-    
+    [UIView setAnimationsEnabled:NO];
     float viewOffset = MAX(0, MIN(offset, view.bounds.size.width));
-
+    
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"position.x"];
     
-    CGPoint startPosition = viewLayer.position;    
+    CGPoint startPosition = viewLayer.position;
     CGPoint endPosition = CGPointMake(viewOffset+(viewLayer.frame.size.width * 0.5f), startPosition.y);
+    CGFloat distance = ABS(startPosition.x - endPosition.x);
+    NSMutableArray *values = [NSMutableArray arrayWithCapacity:4];
+    NSMutableArray *timingFunctions = [NSMutableArray arrayWithCapacity:3];
+    [values addObject:[NSNumber numberWithFloat:startPosition.x]];
+    CGFloat overShot = 0, underShot = 0, duration = ABS(distance/velocity);
+    CAMediaTimingFunction *easeInOut = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    if(ABS(velocity) > 500.f && (!IS_IPAD || distance > 50.f)){
+        [timingFunctions addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+        overShot = 50.f * (velocity * 0.00125);
+        distance += ABS(overShot);
+        duration += ABS(overShot/(velocity * 0.99875));
+        [values addObject:[NSNumber numberWithFloat:endPosition.x + overShot]];
+        if (ABS(overShot) >= 50.f && !IS_IPAD){
+            [timingFunctions addObject:easeInOut];
+            underShot = distance * 0.25f * (velocity * 0.001);
+            distance += ABS(underShot);
+            duration += ABS(underShot/(velocity * 0.999));
+            [values addObject:[NSNumber numberWithFloat:endPosition.x - underShot]];
+        }
+    } else {
+        // nothing special, just slide
+        duration = 0.2f;
+        [timingFunctions addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+        
+    }
     
-    CGFloat overShot = 24.f  * (velocity*0.002);
-    CGFloat underShot = 12.f * (velocity*0.001);
-    animation.values = [NSArray arrayWithObjects:
-                        [NSNumber numberWithFloat:startPosition.x],
-                        [NSNumber numberWithFloat:endPosition.x + overShot],
-                        [NSNumber numberWithFloat:endPosition.x - underShot],
-                        [NSNumber numberWithFloat:endPosition.x],
-                        nil];
     
+    [values addObject:[NSNumber numberWithFloat:endPosition.x]];
     
-    animation.timingFunctions = [NSArray arrayWithObjects:
-                                 [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut],
-                                 [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
-                                 [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut],
-                                 [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut],
-                                 nil];
-    
-    float distance = (ABS(startPosition.x - endPosition.x) + ABS(overShot) + ABS(underShot));
-    float duration = (distance / ABS(velocity)) + ABS(overShot/(velocity*0.998)) + ABS(underShot/(velocity*0.999));
+    animation.values = values;
+    animation.timingFunctions = timingFunctions;
     animation.duration = duration;
-    
     
     [viewLayer addAnimation:animation forKey:@"position"];
     viewLayer.position = endPosition;
-
+    
 }
 
 - (void)setStackOffset:(CGFloat)offset withVelocity:(CGFloat)velocity{
-    velocity = MAX(-400, MIN(400, velocity * 0.5)); // limit the velocity
+    velocity = MAX(-1000, MIN(1000, velocity * 0.3)); // limit the velocity
     CGFloat remainingOffset = offset;
     CALayer *viewLayer = self.detailView.layer;
     [viewLayer removeAllAnimations];
@@ -1096,44 +1113,9 @@
     }
     _stackOffset = offset - remainingOffset;
     [self partiallyVisibleViews];
-
+    
 }
 
-- (void)setStackOffset:(CGFloat)offset duration:(CGFloat)duration {
-    
-    CGFloat remainingOffset = offset;
-    
-    BOOL expectsWidePanels = [self viewControllerExpectsWidePanel:self.detailViewController];
-    CGFloat detailLedgeOffset = DETAIL_LEDGE_OFFSET;
-    if (expectsWidePanels){
-        detailLedgeOffset = 44.0f;
-    }
-    CGFloat usedOffset = MIN(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET, remainingOffset);
-    CGFloat viewX = DETAIL_LEDGE_OFFSET - usedOffset;
-        
-    [self setViewOffset:viewX forView:self.detailView withDuration:duration];
-    remainingOffset -= usedOffset;
-
-    NSInteger viewCount = [self.detailViews count];
-    for (NSInteger i = 1; i < viewCount; i++) {        
-        UIView *view = [self.detailViews objectAtIndex:i];
-        UIView *previousView = [self.detailViews objectAtIndex:(i - 1)];
-        usedOffset = MIN(previousView.frame.size.width, remainingOffset);
-        viewX += previousView.frame.size.width;
-        viewX -= usedOffset;
-        
-        // ZOMG this is horrible, but without it the secondary detail does not position correctly.
-        if (offset >= 956.0f && i == viewCount -1 && expectsWidePanels && UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            viewX += 44.0f;
-        }
-        
-        [self setViewOffset:viewX forView:view withDuration:duration];
-        remainingOffset -= usedOffset;
-    }
-    _stackOffset = offset - remainingOffset;
-    [self partiallyVisibleViews];
-
-}
 
 - (CGFloat)nearestValidOffsetWithVelocity:(CGFloat)velocity {
     NSLog(@"nearest with velocity: %.2f", velocity);
