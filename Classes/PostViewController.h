@@ -10,8 +10,8 @@
 #import "EditPostViewController.h"
 #import "Post.h"
 
-@interface PostViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate, UIWebViewDelegate> {
-
+@interface PostViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate, UIWebViewDelegate, UIActionSheetDelegate> {
+    BOOL isShowingActionSheet;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *titleTitleLabel, *tagsTitleLabel, *categoriesTitleLabel;
@@ -27,7 +27,8 @@
 - (void)refreshUI;
 - (void)checkForNewItem;
 - (EditPostViewController *) getPostOrPageController: (AbstractPost *)revision;
-- (void)deletePost:(id)sender;
+- (void)showDeletePostActionSheet:(id)sender;
+- (void)deletePost;
 - (void)refreshUI;
 - (NSString *)formatString:(NSString *)str;
 

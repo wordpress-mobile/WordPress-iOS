@@ -90,11 +90,12 @@
     if (IS_IPAD) {
         deleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash 
                                                                                       target:self 
-                                                                                      action:@selector(deletePost:)];
+                                                                                      action:@selector(showDeletePostActionSheet:)];
         deleteButton.style = UIBarButtonItemStylePlain;
         
         UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         self.toolbarItems = [NSArray arrayWithObjects:editButton, spacer, deleteButton, nil];
+        [spacer release];
         [deleteButton release];
     } else {
         self.navigationItem.rightBarButtonItem = editButton;
@@ -143,7 +144,20 @@
 #pragma mark -
 #pragma mark Instance Methods
 
-- (void)deletePost:(id)sender {
+- (void)showDeletePostActionSheet:(id)sender {
+    if (!isShowingActionSheet) {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this post?", @"Confirmation dialog when user taps trash icon to delete a post.")
+                                                                 delegate:self
+                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                                   destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
+                                                        otherButtonTitles:nil];
+        [actionSheet showFromBarButtonItem:sender animated:YES];
+        [actionSheet release];
+        isShowingActionSheet = YES;
+    }
+}
+
+- (void)deletePost {
 
     if (![self.apost hasRemote] && self.apost.remoteStatus == AbstractPostRemoteStatusLocal && !self.apost.postTitle && !self.apost.content) {
 		//do not remove the post here. it is removed in EditPostViewController
@@ -198,6 +212,15 @@
     return contentStr;
 }
 
+#pragma mark -
+#pragma mark ActionSheet Delegate Methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        [self deletePost];
+    }
+    isShowingActionSheet = NO;
+}
 
 
 - (void)showModalEditor {

@@ -1461,6 +1461,12 @@
             
             if ([self.detailViewControllers count] == 0) {
                 [self showSidebar];
+                //make sure there's no tint on the detailView overlay any longer
+                if ([_detailView.subviews count] >= 1){
+                    PanelViewWrapper *overlayView = [_detailView.subviews objectAtIndex:0];
+                    overlayView.overlay.alpha = 0.0f;
+                }
+                [self applyCorners];
                 [UIView animateWithDuration:0.5f
                                  animations:^{
                                      [_popPanelsView setAlpha:0.0f];
