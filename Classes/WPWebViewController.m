@@ -60,13 +60,21 @@
         //allows the toolbar to become smaller in landscape mode.
         toolbar.autoresizingMask = toolbar.autoresizingMask | UIViewAutoresizingFlexibleHeight;
         
-        // Do not create a custom back item if the left bar item is already set.  An existing button 
+        /* Do not create a custom back item if the left bar item is already set.  An existing button 
         // is probably the sidebar button.
         if ([[UIToolbar class] respondsToSelector:@selector(appearance)] && !self.navigationItem.leftBarButtonItem) {
+  
+            
+        } else {
+
+        }
+        */
+        
+        if (IS_IPHONE && [[UIButton class] respondsToSelector:@selector(appearance)]) {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-//TODO: Replace with new graphics.  The sync graphics are placeholders.
-            [btn setImage:[UIImage imageNamed:@"sync_dark"] forState:UIControlStateNormal];
-            [btn setImage:[UIImage imageNamed:@"sync_lite"] forState:UIControlStateHighlighted];
+            
+            [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
+            [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateHighlighted];
             
             UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
             [btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
@@ -79,11 +87,10 @@
             [btn addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
             
             self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
-            
         } else {
             self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction 
                                                                                 target:self 
-                                                                                action:@selector(showLinkOptions)] autorelease];
+                                                                                action:@selector(showLinkOptions)] autorelease]; 
         }
         self.navigationItem.rightBarButtonItem = optionsButton;
     } else {
