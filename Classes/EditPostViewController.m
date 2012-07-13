@@ -231,6 +231,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
         CGRect frame = tabPointer.frame;
         frame.origin.y = frame.origin.y - 1;
         tabPointer.frame = frame;
+    } else {
+        //set the black tab pointer on iOS 4
+        [tabPointer setImage:[UIImage imageNamed:@"tabPointer_black"]];
     }
     
 }
