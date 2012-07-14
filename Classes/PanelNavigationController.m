@@ -651,7 +651,6 @@
 }
 
 - (void)showSidebarAnimated:(BOOL)animated {
-    [UIView setAnimationsEnabled:YES];
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         if (IS_IPHONE)
             [self addShadowTo:self.detailView];
@@ -674,7 +673,6 @@
 }
 
 - (void)closeSidebarAnimated:(BOOL)animated {
-    [UIView setAnimationsEnabled:YES];
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) duration:0];
     } completion:^(BOOL finished) {
@@ -1009,7 +1007,6 @@
     CGFloat usedOffset = MIN(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET, remainingOffset);
     CGFloat viewX = DETAIL_LEDGE_OFFSET - usedOffset;
     if (duration > 0) {
-        [UIView setAnimationsEnabled:YES];
         [UIView beginAnimations:@"stackOffset" context:nil];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
         [UIView setAnimationDuration:duration];
@@ -1042,7 +1039,6 @@
     view = [self viewOrViewWrapper:view];
     CALayer *viewLayer = view.layer;
     [viewLayer removeAllAnimations];
-    [UIView setAnimationsEnabled:NO];
     float viewOffset = MAX(0, MIN(offset, self.view.bounds.size.width));
     
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"position.x"];
@@ -1064,7 +1060,7 @@
 
         overShot = 50.f * (velocity * PANEL_OVERSHOT_FRICTION);
         distance += ABS(overShot);
-        CGFloat overShotDuration = ABS(overShot/(velocity * (1-PANEL_OVERSHOT_FRICTION))) + 0.1f;
+        CGFloat overShotDuration = ABS(overShot/(velocity * (1-PANEL_OVERSHOT_FRICTION))) + 0.05f;
         [keyTimes addObject:[NSNumber numberWithFloat:duration/(duration+overShotDuration)]];
         duration += overShotDuration;
         [values addObject:[NSNumber numberWithFloat:endPosition.x + overShot]];
