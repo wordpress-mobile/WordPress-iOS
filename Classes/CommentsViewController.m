@@ -57,12 +57,10 @@
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Comments", @"");
-    
-    
+        
     spamButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_flag"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
     unapproveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_unapprove"] style:UIBarButtonItemStylePlain target:self action:@selector(unapproveSelectedComments:)];
     approveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_approve"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
-    
     deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_delete"] style:UIBarButtonItemStylePlain target:self action:@selector(deleteSelectedComments:)];
     
     if ([spamButton respondsToSelector:@selector(setTintColor:)]) {
@@ -72,13 +70,6 @@
         approveButton.tintColor = color;
         deleteButton.tintColor = color;
     }
-    
-    
-    
-    //deleteButton.layer.shadowOpacity = 0.0;
-//    _myButton.layer.shadowRadius = 0.0;
-//    _myButton.layer.shadowColor = [UIColor blackColor].CGColor;
-//    _myButton.layer.shadowOffset = CGSizeMake(0.0, [UIScreen mainScreen].scale == 1 ? -1:-1.5);
 
     if (IS_IPHONE) {
         UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
@@ -91,6 +82,9 @@
 	}
         
     _selectedComments = [[NSMutableArray alloc] init];
+    
+    // Do not show row dividers for empty cells.
+    self.tableView.tableFooterView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 }
 
 - (void)viewDidUnload {
@@ -229,9 +223,6 @@
     [unapproveButton setEnabled:((count - unapprovedCount) > 0)];
     [spamButton setEnabled:((count - spamCount) > 0)];
 
-//    [approveButton setTitle:(((count - approvedCount) > 0) ? [NSString stringWithFormat:NSLocalizedString(@"Approve (%d)", @""), count - approvedCount]:NSLocalizedString(@"Approve", @""))];
-//    [unapproveButton setTitle:(((count - unapprovedCount) > 0) ? [NSString stringWithFormat:NSLocalizedString(@"Unapprove (%d)", @""), count - unapprovedCount]:NSLocalizedString(@"Unapprove", @""))];
-//    [spamButton setTitle:(((count - spamCount) > 0) ? [NSString stringWithFormat:NSLocalizedString(@"Spam (%d)", @""), count - spamCount]:NSLocalizedString(@"Spam", @""))];
 }
 
 - (void)deselectAllComments {
