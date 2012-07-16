@@ -10,6 +10,9 @@
 
 @implementation AboutViewController
 
+@synthesize buttonsView;
+@synthesize logoView;
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -21,6 +24,19 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    if( IS_IPHONE ) {
+        if ( YES == UIInterfaceOrientationIsLandscape(interfaceOrientation) ) {
+            self.logoView.hidden = YES;
+            CGRect frame = buttonsView.frame;
+            frame.origin.y = -20.0f;
+            self.buttonsView.frame = frame;
+        } else {
+            self.logoView.hidden = NO;
+            CGRect frame = buttonsView.frame;
+            frame.origin.y = 90.0f;
+            self.buttonsView.frame = frame;
+        }
+    }
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 

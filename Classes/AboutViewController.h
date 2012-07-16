@@ -15,4 +15,7 @@
 -(IBAction)viewPrivacyPolicy:(id)sender;
 -(IBAction)viewWebsite:(id)sender;
 
+@property (nonatomic, retain) IBOutlet UIView *logoView;
+@property (nonatomic, retain) IBOutlet UIView *buttonsView;
+
 @end
