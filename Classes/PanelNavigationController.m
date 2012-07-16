@@ -301,6 +301,7 @@
 
         [self setFrameForViewController:vc];
     }
+    [self enableDetailView];
     [self setStackOffset:[self nearestValidOffsetWithVelocity:0] duration:duration];
     [self relayAppearanceMethod:^(UIViewController *controller) {
         [controller willAnimateRotationToInterfaceOrientation:interfaceOrientation duration:duration];
