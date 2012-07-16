@@ -101,11 +101,11 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     if ([self.navigationController.viewControllers count] <= 1 || forceLogoView)
-        self.navigationController.navigationBar.hidden = YES;
+        [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    self.navigationController.navigationBar.hidden = NO;
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 
