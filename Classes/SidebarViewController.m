@@ -203,7 +203,7 @@
 	NSData *crashData;
 	NSError *error;
 	
-/*	// Try loading the crash report
+	// Try loading the crash report
 	crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
 	if (crashData == nil) {
 		NSLog(@"Could not load crash report: %@", error);
@@ -217,7 +217,7 @@
         NSLog(@"Could not parse crash report");
         [crashReporter purgePendingCrashReport];
     }
-    else {*/
+    else {
         if([[NSUserDefaults standardUserDefaults] objectForKey:@"crash_report_dontbug"] == nil) {
             // Display CrashReportViewController
             CrashReportViewController *crashReportView = nil;
@@ -233,8 +233,7 @@
 		else {
             [crashReporter purgePendingCrashReport];
         }
- //   }
-    
+    }
 	return;
 }
 
