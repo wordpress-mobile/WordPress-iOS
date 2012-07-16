@@ -524,7 +524,7 @@
     NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
     AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getOptions" parameters:parameters];
     AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([self isDeleted])
+        if ([self isDeleted] || self.managedObjectContext == nil)
             return;
 
         self.options = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
@@ -548,7 +548,7 @@
     
     AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostFormats" parameters:parameters];
     AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([self isDeleted])
+        if ([self isDeleted] || self.managedObjectContext == nil)
             return;
 
         NSDictionary *respDict = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
@@ -586,7 +586,7 @@
     NSArray *parameters = [self getXMLRPCArgsWithExtra:requestOptions];
     AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getComments" parameters:parameters];
     AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([self isDeleted])
+        if ([self isDeleted] || self.managedObjectContext == nil)
             return;
 
         [self mergeComments:responseObject];
@@ -613,7 +613,7 @@
     NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
     AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getCategories" parameters:parameters];
     AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([self isDeleted])
+        if ([self isDeleted] || self.managedObjectContext == nil)
             return;
 
         [self mergeCategories:responseObject];
@@ -652,7 +652,7 @@
     NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:num]];
     AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"metaWeblog.getRecentPosts" parameters:parameters];
     AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([self isDeleted])
+        if ([self isDeleted] || self.managedObjectContext == nil)
             return;
         
         NSArray *posts = (NSArray *)responseObject;
@@ -706,7 +706,7 @@
     NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:num]];
     AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPages" parameters:parameters];
     AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([self isDeleted])
+        if ([self isDeleted] || self.managedObjectContext == nil)
             return;
 
         NSArray *pages = (NSArray *)responseObject;
@@ -742,7 +742,7 @@
 
 - (void)mergeCategories:(NSArray *)newCategories {
     // Don't even bother if blog has been deleted while fetching categories
-    if ([self isDeleted])
+    if ([self isDeleted] || self.managedObjectContext == nil)
         return;
 
 	NSMutableArray *categoriesToKeep = [NSMutableArray array];
@@ -770,7 +770,7 @@
 
 - (void)mergePosts:(NSArray *)newPosts {
     // Don't even bother if blog has been deleted while fetching posts
-    if ([self isDeleted])
+    if ([self isDeleted] || self.managedObjectContext == nil)
         return;
 
     NSMutableArray *postsToKeep = [NSMutableArray array];
@@ -820,7 +820,7 @@
 }
 
 - (void)mergePages:(NSArray *)newPages {
-    if ([self isDeleted])
+    if ([self isDeleted] || self.managedObjectContext == nil)
         return;
 
     NSMutableArray *pagesToKeep = [NSMutableArray array];
@@ -868,7 +868,7 @@
 
 - (void)mergeComments:(NSArray *)newComments {
     // Don't even bother if blog has been deleted while fetching comments
-    if ([self isDeleted])
+    if ([self isDeleted] || self.managedObjectContext == nil)
         return;
 
 	NSMutableArray *commentsToKeep = [NSMutableArray array];
