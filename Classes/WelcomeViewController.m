@@ -43,14 +43,6 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-- (id)init {
-    self = [super init];
-    if (self) {
-        forceLogoView = NO;
-    }
-    return self;
-}
-
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
@@ -72,10 +64,10 @@
 	
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
-    // The welcome screen is presented without a navbar so this is a convenient way to
-    // know if the user has blogs or not.
-    if ([self.navigationController.viewControllers count] > 1 && !forceLogoView) {
-        if (IS_IPHONE) {        
+    // If there are blogs, this is being shown in the Settings.
+    if ([Blog countWithContext:[WordPressAppDelegate sharedWordPressApp].managedObjectContext] > 0) {
+        // HIde the Logo View on the iPhone, there isn't enough room for that and the navigation bar.
+        if (IS_IPHONE) {
             self.logoView.hidden = YES;
             CGRect frame = buttonView.frame;
             frame.origin.y = 0.0f;
@@ -100,7 +92,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if ([self.navigationController.viewControllers count] <= 1 || forceLogoView)
+    if ([Blog countWithContext:[WordPressAppDelegate sharedWordPressApp].managedObjectContext] <= 0)
         [self.navigationController setNavigationBarHidden:YES animated:animated];
 }
 
@@ -219,11 +211,6 @@
 	//aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	[self.navigationController pushViewController:aboutViewController animated:YES];
     [aboutViewController release];
-}
-
-
-- (void)forceLogoView {
-    forceLogoView = YES;
 }
 
 

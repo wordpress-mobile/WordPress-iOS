@@ -118,7 +118,6 @@ typedef enum {
         WelcomeViewController *welcomeViewController;
         welcomeViewController = [[[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil] autorelease]; 
         [welcomeViewController automaticallyDismissOnLoginActions];
-        [welcomeViewController forceLogoView];
         self.navigationController.navigationBar.hidden = YES;
         [self.navigationController pushViewController:welcomeViewController animated:YES];
     } else {
