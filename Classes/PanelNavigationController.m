@@ -38,7 +38,7 @@
 - (void)closeSidebarWithVelocity:(CGFloat)velocity;
 - (void)disableDetailView;
 - (void)enableDetailView;
-- (void)prepareDetailView:(UIView *)view;
+- (void)prepareDetailView:(UIView *)view forController:(UIViewController *)controller;
 - (void)addShadowTo:(UIView *)view;
 - (void)removeShadowFrom:(UIView *)view;
 - (void)applyCorners;
@@ -240,7 +240,7 @@
         viewToPrepare = [self createWrapViewForViewController:self.detailViewController];
     }
     // FIXME: keep sliding status
-    [self prepareDetailView:viewToPrepare];
+    [self prepareDetailView:viewToPrepare forController:self.detailViewController];
 
     [self addPanner];
     [self relayAppearanceMethod:^(UIViewController *controller) {
@@ -290,6 +290,10 @@
         self.detailView.frame = frm;
     }
     
+    // When rotated the detailviewwidths may become invalid. 
+    // Rebuild the array so we have accurate values.
+    self.detailViewWidths = [NSMutableArray array];
+    
     int viewCount = [self.detailViews count];
     for (int i = 0; i < viewCount; i++) {
         UIViewController *vc;
@@ -300,9 +304,15 @@
         }
 
         [self setFrameForViewController:vc];
+        
+        UIView *dview = [self.detailViews objectAtIndex:i];
+        CGRect frm = dview.frame;
+        [self.detailViewWidths addObject:[NSNumber numberWithFloat:frm.size.width]];
     }
+    
     if (IS_IPAD)
         [self setStackOffset:[self nearestValidOffsetWithVelocity:0] duration:duration];
+    
     [self relayAppearanceMethod:^(UIViewController *controller) {
         [controller willAnimateRotationToInterfaceOrientation:interfaceOrientation duration:duration];
     }];
@@ -590,7 +600,7 @@
                 }
             }
             
-            [self prepareDetailView:wrappedView];
+            [self prepareDetailView:wrappedView forController:_detailViewController];
             if (_isAppeared) {
                 [_detailViewController vdc_viewWillAppear:NO];
             }
@@ -737,14 +747,14 @@
     [self setScrollsToTop:YES forView:[self viewOrViewWrapper:self.detailViewController.view]];
 }
 
-- (void)prepareDetailView:(UIView *)view {
+- (void)prepareDetailView:(UIView *)view forController:(UIViewController *)controller {
     CGFloat newPanelWidth = DETAIL_WIDTH;
     
-    if (IS_IPAD && [self viewControllerExpectsWidePanel:self.detailViewController]) {
+    if (IS_IPAD && [self viewControllerExpectsWidePanel:controller]) {
         newPanelWidth = IPAD_WIDE_PANEL_WIDTH;
     }
     
-    view.frame = CGRectMake(0, 0, newPanelWidth, DETAIL_HEIGHT);
+    view.frame = CGRectMake(view.frame.origin.x, 0.0f, newPanelWidth, DETAIL_HEIGHT);
     [self applyCorners];
 }
 
@@ -983,7 +993,7 @@
         frame.size.width = newPanelWidth;
     }
     view.frame = frame;
-    [self prepareDetailView:view]; // Call this again to fix the masking bounds set for rounded corners.
+    [self prepareDetailView:view forController:viewController]; // Call this again to fix the masking bounds set for rounded corners.
     NSLog(@"Frame Set For View Controller : %.1f %.1f %.1f %.1f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 }
 
