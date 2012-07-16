@@ -13,6 +13,7 @@
 
 @synthesize media, imageView, videoPlayer, deleteButton, insertButton, cancelButton, isDeleting, isInserting, appDelegate, toolbar;
 @synthesize scrollView;
+@synthesize currentActionSheet;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -26,6 +27,7 @@
 	[videoPlayer release], videoPlayer = nil;
 	[cancelButton release], cancelButton = nil;
 	[toolbar release];
+    [currentActionSheet release];
 
     [super dealloc];
 }
@@ -75,7 +77,7 @@
     self.cancelButton = nil;
     self.scrollView = nil;
     self.toolbar = nil;
-    
+    self.currentActionSheet = nil;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -128,6 +130,10 @@
 #pragma mark -
 #pragma mark UIActionSheet delegate
 
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    self.currentActionSheet = nil;
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if(isDeleting == YES) {
 		switch (buttonIndex) {
@@ -169,6 +175,8 @@
 #pragma mark Custom methods
 
 - (IBAction)deleteObject:(id)sender {
+    if(currentActionSheet) return;
+    
 	isDeleting = YES;
 	isInserting = NO;
 	
@@ -178,11 +186,19 @@
 														  cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
 													 destructiveButtonTitle:NSLocalizedString(@"Delete", @"") 
 														  otherButtonTitles:nil];
-	[deleteActionSheet showInView:self.view];
+    
+    if (IS_IPAD) {
+        [deleteActionSheet showFromBarButtonItem:deleteButton animated:YES];
+    } else {
+        [deleteActionSheet showInView:self.view];
+    }
+    self.currentActionSheet = deleteActionSheet;
 	[deleteActionSheet release];
 }
 
 - (IBAction)insertObject:(id)sender {
+    if (currentActionSheet) return;
+    
 	isDeleting = NO;
 	isInserting = YES;
 	
@@ -192,8 +208,13 @@
 														  cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
 													 destructiveButtonTitle:nil
 														  otherButtonTitles:NSLocalizedString(@"Above Content", @""), NSLocalizedString(@"Below Content", @""), nil];
-	[insertActionSheet showInView:self.view];
-	[insertActionSheet release];
+    if (IS_IPAD) {
+        [insertActionSheet showFromBarButtonItem:insertButton animated:YES];
+    } else {
+        [insertActionSheet showInView:self.view];
+    }
+    self.currentActionSheet = insertActionSheet;
+    [insertActionSheet release];
 }
 
 - (IBAction)cancelSelection:(id)sender { 

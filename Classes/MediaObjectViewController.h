@@ -22,6 +22,7 @@
 	UIScrollView *scrollView;
 	BOOL isDeleting, isInserting;
 	UIToolbar *toolbar;
+    UIActionSheet *currentActionSheet;
 }
 
 @property (nonatomic, assign) WordPressAppDelegate *appDelegate;
@@ -34,6 +35,7 @@
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar; 
 @property (nonatomic, assign) BOOL isDeleting, isInserting;
+@property (nonatomic, retain) UIActionSheet *currentActionSheet;
 
 - (IBAction)deleteObject:(id)sender;
 - (IBAction)insertObject:(id)sender;
