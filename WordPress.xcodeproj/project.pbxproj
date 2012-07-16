@@ -274,6 +274,8 @@
 		5DB767411588F64D00EBE36C /* postPreview.html in Resources */ = {isa = PBXBuildFile; fileRef = 5DB767401588F64D00EBE36C /* postPreview.html */; };
 		5DC433311587C3600073CF07 /* PanelViewWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC433301587C3600073CF07 /* PanelViewWrapper.m */; };
 		5DC433321587C3600073CF07 /* PanelViewWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC433301587C3600073CF07 /* PanelViewWrapper.m */; };
+		5DC7368115B4C07500D72BDB /* popover_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DC7367F15B4C07500D72BDB /* popover_arrow@2x.png */; };
+		5DC7368215B4C07500D72BDB /* popover_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DC7368015B4C07500D72BDB /* popover_bg@2x.png */; };
 		5DD8A6E415A5ECDC00A673A4 /* sync_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6E015A5ECD700A673A4 /* sync_dark.png */; };
 		5DD8A6E515A5ECDC00A673A4 /* sync_dark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6E115A5ECD900A673A4 /* sync_dark@2x.png */; };
 		5DD8A6E615A5ECDC00A673A4 /* sync_lite.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A6E215A5ECDA00A673A4 /* sync_lite.png */; };
@@ -294,6 +296,9 @@
 		5DD8A70C15A63F4700A673A4 /* wp_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A70215A63F4700A673A4 /* wp_logo@2x.png */; };
 		5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B3156FCD3400242C35 /* WPWebView.m */; };
 		5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */; };
+		5DEB6EF515B471B3004E81F3 /* WPPopoverBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB6EF415B471B3004E81F3 /* WPPopoverBackgroundView.m */; };
+		5DEB6EF915B48404004E81F3 /* popover_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DEB6EF715B48404004E81F3 /* popover_arrow.png */; };
+		5DEB6EFA15B48404004E81F3 /* popover_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DEB6EF815B48404004E81F3 /* popover_bg.png */; };
 		6E05AEE411EE8C1B00237983 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E05AEE311EE8C1B00237983 /* Icon-Small-50.png */; };
 		6E05AEE711EE8DDD00237983 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E05AEE611EE8DDD00237983 /* Icon-Small.png */; };
 		6E05AEF311EE8EF800237983 /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6E05AEF211EE8EF800237983 /* Icon-Small@2x.png */; };
@@ -970,6 +975,8 @@
 		5DB767401588F64D00EBE36C /* postPreview.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = postPreview.html; sourceTree = "<group>"; };
 		5DC4332F1587C3600073CF07 /* PanelViewWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelViewWrapper.h; sourceTree = "<group>"; };
 		5DC433301587C3600073CF07 /* PanelViewWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelViewWrapper.m; sourceTree = "<group>"; };
+		5DC7367F15B4C07500D72BDB /* popover_arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popover_arrow@2x.png"; sourceTree = "<group>"; };
+		5DC7368015B4C07500D72BDB /* popover_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "popover_bg@2x.png"; sourceTree = "<group>"; };
 		5DD8A6E015A5ECD700A673A4 /* sync_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sync_dark.png; sourceTree = "<group>"; };
 		5DD8A6E115A5ECD900A673A4 /* sync_dark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync_dark@2x.png"; sourceTree = "<group>"; };
 		5DD8A6E215A5ECDA00A673A4 /* sync_lite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sync_lite.png; sourceTree = "<group>"; };
@@ -992,6 +999,10 @@
 		5DEB61B3156FCD3400242C35 /* WPWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebView.m; sourceTree = "<group>"; };
 		5DEB61B6156FCD5200242C35 /* WPChromelessWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPChromelessWebViewController.h; sourceTree = "<group>"; };
 		5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPChromelessWebViewController.m; sourceTree = "<group>"; };
+		5DEB6EF315B471B3004E81F3 /* WPPopoverBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPopoverBackgroundView.h; sourceTree = "<group>"; };
+		5DEB6EF415B471B3004E81F3 /* WPPopoverBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPPopoverBackgroundView.m; sourceTree = "<group>"; };
+		5DEB6EF715B48404004E81F3 /* popover_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popover_arrow.png; sourceTree = "<group>"; };
+		5DEB6EF815B48404004E81F3 /* popover_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = popover_bg.png; sourceTree = "<group>"; };
 		6E05AEE311EE8C1B00237983 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
 		6E05AEE611EE8DDD00237983 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
 		6E05AEF211EE8EF800237983 /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
@@ -2254,6 +2265,10 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5DC7367F15B4C07500D72BDB /* popover_arrow@2x.png */,
+				5DC7368015B4C07500D72BDB /* popover_bg@2x.png */,
+				5DEB6EF715B48404004E81F3 /* popover_arrow.png */,
+				5DEB6EF815B48404004E81F3 /* popover_bg.png */,
 				A2CDC80D14C7681600091CEB /* approve.png */,
 				A2CDC80E14C7681600091CEB /* approve@2x.png */,
 				E1EE23E712E628F6000B2BE6 /* attachment.png */,
@@ -2429,6 +2444,8 @@
 				5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */,
 				E114D798153D85A800984182 /* WPError.h */,
 				E114D799153D85A800984182 /* WPError.m */,
+				5DEB6EF315B471B3004E81F3 /* WPPopoverBackgroundView.h */,
+				5DEB6EF415B471B3004E81F3 /* WPPopoverBackgroundView.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -3543,6 +3560,10 @@
 				30B5533215AFBFD200077318 /* navbar_actions@2x.png in Resources */,
 				377636F215B0360C00C1C5C6 /* tabPointer_black.png in Resources */,
 				377636F315B0360C00C1C5C6 /* tabPointer_black@2x.png in Resources */,
+				5DEB6EF915B48404004E81F3 /* popover_arrow.png in Resources */,
+				5DEB6EFA15B48404004E81F3 /* popover_bg.png in Resources */,
+				5DC7368115B4C07500D72BDB /* popover_arrow@2x.png in Resources */,
+				5DC7368215B4C07500D72BDB /* popover_bg@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3759,6 +3780,7 @@
 				E1745A9A15AF49C000A3F7C5 /* UIViewController+Styled.m in Sources */,
 				E1745AA715AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m in Sources */,
 				FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */,
+				5DEB6EF515B471B3004E81F3 /* WPPopoverBackgroundView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

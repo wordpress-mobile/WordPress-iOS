@@ -11,7 +11,7 @@
 #import "ImageIO/CGImageSource.h"
 #import "ImageIO/CGImageDestination.h"
 #import "SFHFKeychainUtils.h"
-
+#import "WPPopoverBackgroundView.h"
 
 #define TAG_ACTIONSHEET_PHOTO 1
 #define TAG_ACTIONSHEET_VIDEO 2
@@ -581,6 +581,7 @@
             if (addPopover == nil) {
                 addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
                 addPopover.delegate = self;
+                addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
             }
             
             [addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];

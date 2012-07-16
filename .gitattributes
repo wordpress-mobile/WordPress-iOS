@@ -219,6 +219,8 @@ Classes/WPKeyboardToolbarButtonItem.h -text
 Classes/WPKeyboardToolbarButtonItem.m -text
 Classes/WPLabel.h -text
 Classes/WPLabel.m -text
+Classes/WPPopoverBackgroundView.h -text
+Classes/WPPopoverBackgroundView.m -text
 Classes/WPProgressHUD.h -text
 Classes/WPProgressHUD.m -text
 Classes/WPReaderDetailViewController.h -text
@@ -833,6 +835,10 @@ nl.lproj/Localizable.strings -text svneol=unset#unset
 /photos.png -text
 /photos@2x.png -text
 pl.lproj/Localizable.strings -text svneol=unset#unset
+/popover_arrow.png -text
+/popover_arrow@2x.png -text
+/popover_bg.png -text
+/popover_bg@2x.png -text
 /postPreview.html -text
 /posts.png -text
 /posts@2x.png -text

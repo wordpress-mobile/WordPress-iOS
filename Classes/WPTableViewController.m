@@ -35,6 +35,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     UISwipeGestureRecognizerDirection _swipeDirection;
     BOOL _animatingRemovalOfModerationSwipeView;
 }
+
 @synthesize blog = _blog;
 @synthesize resultsController = _resultsController;
 @synthesize swipeActionsEnabled = _swipeActionsEnabled;
