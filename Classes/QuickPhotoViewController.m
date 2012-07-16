@@ -132,7 +132,10 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+    if (IS_IPAD || interfaceOrientation == UIDeviceOrientationPortrait) 
+        return YES;
+    else 
+        return NO;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
