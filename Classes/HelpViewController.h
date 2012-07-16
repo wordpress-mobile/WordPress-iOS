@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 #import "WordPressAppDelegate.h"
 
 @interface HelpViewController : UIViewController <MFMailComposeViewControllerDelegate> {

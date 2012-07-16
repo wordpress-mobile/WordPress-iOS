@@ -28,6 +28,7 @@
 #import "CameraPlusPickerManager.h"
 #import "QuickPhotoViewController.h"
 #import "QuickPhotoButtonView.h"
+#import "CrashReportViewController.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
@@ -69,6 +70,8 @@
 - (void)handleCameraPlusImages:(NSNotification *)notification;
 - (void)presentContent;
 - (void)checkNothingToShow;
+- (void)handleCrashReport;
+- (void)dismissCrashReporter:(NSNotification *)notification;
 
 @end
 
@@ -136,6 +139,8 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCameraPlusImages:) name:kCameraPlusImagesNotification object:nil];
+    //Crash Report Notification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissCrashReporter:) name:@"CrashReporterIsFinished" object:nil];
 }
 
 - (void)viewDidUnload {
@@ -158,17 +163,23 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
-    // In iOS 5, the first detailViewController that we load during launch does not
-    // see its viewWillAppear and viewDidAppear methods fire. As a work around, we can
-    // present our content with a slight delay, and then the events fire.
-    // TODO: Find a true fix and remove this workaround.
-    // See http://ios.trac.wordpress.org/ticket/1114
-    if (IS_IPHONE && !( [[self.resultsController fetchedObjects] count] == 0 && ! [WordPressComApi sharedApi].username )) {
-        // Don't delay presentation on iPhone, or the sidebar is briefly visible after launch
-        [self presentContent];
-    } else {
-        [self performSelector:@selector(presentContent) withObject:self afterDelay:0.01];
+    
+    // Check if we previously crashed
+	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+    if ( [crashReporter hasPendingCrashReport] )
+        [self performSelector:@selector(handleCrashReport) withObject:self afterDelay:0.01];
+    else {
+        // In iOS 5, the first detailViewController that we load during launch does not
+        // see its viewWillAppear and viewDidAppear methods fire. As a work around, we can
+        // present our content with a slight delay, and then the events fire.
+        // TODO: Find a true fix and remove this workaround.
+        // See http://ios.trac.wordpress.org/ticket/1114
+        if (IS_IPHONE && !( [[self.resultsController fetchedObjects] count] == 0 && ! [WordPressComApi sharedApi].username )) {
+            // Don't delay presentation on iPhone, or the sidebar is briefly visible after launch
+            [self presentContent];
+        } else {
+            [self performSelector:@selector(presentContent) withObject:self afterDelay:0.01];
+        }
     }
 }
 
@@ -183,6 +194,55 @@
         });
     }
 }
+
+#pragma mark -
+#pragma mark CrashReport Methods
+
+- (void)handleCrashReport {
+	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+	NSData *crashData;
+	NSError *error;
+	
+/*	// Try loading the crash report
+	crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
+	if (crashData == nil) {
+		NSLog(@"Could not load crash report: %@", error);
+		[crashReporter purgePendingCrashReport];
+	}
+	
+	// We could send the report from here, but we'll just print out
+	// some debugging info instead
+    PLCrashReport *report = [[[PLCrashReport alloc] initWithData: crashData error: &error] autorelease];
+    if (report == nil) {
+        NSLog(@"Could not parse crash report");
+        [crashReporter purgePendingCrashReport];
+    }
+    else {*/
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"crash_report_dontbug"] == nil) {
+            // Display CrashReportViewController
+            CrashReportViewController *crashReportView = nil;
+            crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:[NSBundle mainBundle]];
+            
+            UINavigationController *aNavigationController = [[[UINavigationController alloc] initWithRootViewController:crashReportView] autorelease];
+            aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+            
+            [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
+            [crashReportView release];
+        }
+		else {
+            [crashReporter purgePendingCrashReport];
+        }
+ //   }
+    
+	return;
+}
+
+- (void)dismissCrashReporter:(NSNotification *)notification {
+    [self.panelNavigationController dismissModalViewControllerAnimated:YES];
+    [self performSelector:@selector(presentContent) withObject:self afterDelay:1.01];
+}
+
 
 #pragma mark - Custom methods
 

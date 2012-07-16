@@ -34,7 +34,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
 @synthesize window, currentBlog, postID;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
-@synthesize crashReportView, isUploadingPost;
+@synthesize isUploadingPost;
 @synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
 @synthesize facebook;
 @synthesize panelNavigationController;
@@ -54,7 +54,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #pragma mark LifeCycle Methods
 
 - (void)dealloc {
-	[crashReportView release];
 	[postID release];
     [navigationController release];
     [window release];
@@ -214,8 +213,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 
     [self checkWPcomAuthentication];
 
-	crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:nil];
-	
     [self customizeAppearance];
     
 	//BETA FEEDBACK BAR, COMMENT THIS OUT BEFORE RELEASE
@@ -240,11 +237,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(deleteLocalDraft:)
 												 name:@"LocalDraftWasPublishedSuccessfully" object:nil];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(dismissCrashReporter:)
-												 name:@"CrashReporterIsFinished" object:nil];
-	
+		
 	
 	//listener for XML-RPC errors
 	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.
@@ -258,13 +251,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"OpenWebPageFailed" object:nil];
 
     
-	NSError *error;
-	
-	// Check if we previously crashed
-	if ([crashReporter hasPendingCrashReport])
-		[self handleCrashReport];
-    
 	// Enable the Crash Reporter
+    NSError *error;
 	if (![crashReporter enableCrashReporterAndReturnError: &error])
 		NSLog(@"Warning: Could not enable crash reporter: %@", error);
 	
@@ -415,49 +403,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//but seems that the notification is never sent.
 	//we are using a custom notification
 	[[NSNotificationCenter defaultCenter] postNotificationName:DidChangeStatusBarFrame object:nil];
-}
-
-
-#pragma mark -
-#pragma mark CrashReport Methods
-
-- (void)handleCrashReport {
-	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-	NSData *crashData;
-	NSError *error;
-	
-	// Try loading the crash report
-	crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
-	if (crashData == nil) {
-		NSLog(@"Could not load crash report: %@", error);
-		[crashReporter purgePendingCrashReport];
-	}
-	
-	// We could send the report from here, but we'll just print out
-	// some debugging info instead
-	PLCrashReport *report = [[[PLCrashReport alloc] initWithData: crashData error: &error] autorelease];
-	if (report == nil) {
-		NSLog(@"Could not parse crash report");
-		[crashReporter purgePendingCrashReport];
-	}
-	else {
-		if([[NSUserDefaults standardUserDefaults] objectForKey:@"crash_report_dontbug"] == nil) {
-			// Display CrashReportViewController
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:crashReportView];
-            navController.modalPresentationStyle = UIModalPresentationFormSheet;
-            [self.panelNavigationController presentModalViewController:navController animated:YES];
-            [navController release];
-		}
-		else {
-			[crashReporter purgePendingCrashReport];
-		}
-	}
-	
-	return;
-}
-
-- (void)dismissCrashReporter:(NSNotification *)notification {
-    [self.panelNavigationController dismissModalViewControllerAnimated:YES];
 }
 
 
