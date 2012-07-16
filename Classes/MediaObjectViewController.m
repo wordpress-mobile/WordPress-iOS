@@ -7,7 +7,7 @@
 //
 
 #import "MediaObjectViewController.h"
-
+#import "UIColor+Helpers.h"
 
 @implementation MediaObjectViewController
 
@@ -16,6 +16,19 @@
 
 #pragma mark -
 #pragma mark View lifecycle
+
+- (void)dealloc {
+	[scrollView release], scrollView = nil;
+	[insertButton release], insertButton = nil;
+	[deleteButton release], deleteButton = nil;
+	[media release], media = nil;
+	[imageView release], imageView = nil;
+	[videoPlayer release], videoPlayer = nil;
+	[cancelButton release], cancelButton = nil;
+	[toolbar release];
+
+    [super dealloc];
+}
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -40,6 +53,12 @@
 		}
 	}
 	
+    if ([deleteButton respondsToSelector:@selector(setTintColor:)]) {
+        UIColor *color = [UIColor UIColorFromHex:0x464646];
+        deleteButton.tintColor = color;
+        cancelButton.tintColor = color;
+        insertButton.tintColor = color;
+    }    
 	if (!IS_IPAD) { 
 		NSMutableArray *items = [[toolbar.items mutableCopy] autorelease]; 
 		[items removeObject: cancelButton]; 
@@ -49,9 +68,19 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
+    
+    self.imageView = nil;
+    self.insertButton = nil;
+    self.deleteButton = nil;
+    self.cancelButton = nil;
+    self.scrollView = nil;
+    self.toolbar = nil;
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
     if (videoPlayer) {
         [videoPlayer stop];
     }
@@ -170,29 +199,6 @@
 - (IBAction)cancelSelection:(id)sender { 
  	if (IS_IPAD) 
 		[self dismissModalViewControllerAnimated:YES]; 
- 	} 
-
-#pragma mark -
-#pragma mark Memory management
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
-#pragma mark -
-#pragma mark Dealloc
-
-- (void)dealloc {
-	[scrollView release], scrollView = nil;
-	[insertButton release], insertButton = nil;
-	[deleteButton release], deleteButton = nil;
-	[media release], media = nil;
-	[imageView release], imageView = nil;
-	[videoPlayer release], videoPlayer = nil;
-	[cancelButton release], cancelButton = nil;
-	[toolbar release];
-    [super dealloc];
-}
-
+} 
 
 @end

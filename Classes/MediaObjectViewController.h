@@ -16,7 +16,8 @@
 	Media *media;
 	MPMoviePlayerController *videoPlayer;
 	UIImageView *imageView;
-	UIButton *deleteButton, *insertButton;
+	UIBarButtonItem *deleteButton;
+    UIBarButtonItem *insertButton;
 	UIBarButtonItem *cancelButton; 
 	UIScrollView *scrollView;
 	BOOL isDeleting, isInserting;
@@ -27,7 +28,8 @@
 @property (nonatomic, retain) Media *media;
 @property (nonatomic, retain) IBOutlet MPMoviePlayerController *videoPlayer;
 @property (nonatomic, retain) IBOutlet UIImageView *imageView;
-@property (nonatomic, retain) IBOutlet UIButton *deleteButton, *insertButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *deleteButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *insertButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *cancelButton; 
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar; 
