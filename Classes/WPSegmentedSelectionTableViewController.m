@@ -54,6 +54,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //Set background to clear for iOS 4. Delete this line when we set iOS 5 as the min OS
+    tableView.backgroundColor = [UIColor clearColor];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
 }
 

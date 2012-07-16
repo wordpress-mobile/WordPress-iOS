@@ -103,7 +103,8 @@
     cancelButtonItem.title = NSLocalizedString(@"Cancel", @"Cancel button label.");
 
     parentCat = nil;
-    
+    //Set background to clear for iOS 4. Delete this line when we set iOS 5 as the min OS
+    catTableView.backgroundColor = [UIColor clearColor];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
 }
 
