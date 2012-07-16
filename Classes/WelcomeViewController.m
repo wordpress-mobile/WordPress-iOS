@@ -43,6 +43,14 @@
 #pragma mark -
 #pragma mark View lifecycle
 
+- (id)init {
+    self = [super init];
+    if (self) {
+        forceLogoView = NO;
+    }
+    return self;
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
@@ -66,7 +74,7 @@
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
     // The welcome screen is presented without a navbar so this is a convenient way to
     // know if the user has blogs or not.
-    if ([self.navigationController.viewControllers count] > 1) {
+    if ([self.navigationController.viewControllers count] > 1 && !forceLogoView) {
         if (IS_IPHONE) {        
             self.logoView.hidden = YES;
             CGRect frame = buttonView.frame;
@@ -92,7 +100,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if ([self.navigationController.viewControllers count] <= 1)
+    if ([self.navigationController.viewControllers count] <= 1 || forceLogoView)
         self.navigationController.navigationBar.hidden = YES;
 }
 
@@ -211,6 +219,11 @@
 	//aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	[self.navigationController pushViewController:aboutViewController animated:YES];
     [aboutViewController release];
+}
+
+
+- (void)forceLogoView {
+    forceLogoView = YES;
 }
 
 

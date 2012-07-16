@@ -7,7 +7,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WelcomeViewController : UIViewController 
+@interface WelcomeViewController : UIViewController {
+    BOOL forceLogoView;
+}
 
 @property (nonatomic, retain) IBOutlet UIView *logoView;
 @property (nonatomic, retain) IBOutlet UIView *buttonView;
@@ -25,5 +27,6 @@
 - (IBAction)cancel:(id)sender;
 - (void)automaticallyDismissOnLoginActions; //used when shown as a Real Welcome controller
 - (void)showAboutView;
+- (void)forceLogoView;
 
 @end

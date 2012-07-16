@@ -115,7 +115,12 @@ typedef enum {
 
 - (void)checkCloseButton {
     if ([[self.resultsController fetchedObjects] count] == 0 && [WordPressComApi sharedApi].username == nil) {
-        self.navigationItem.rightBarButtonItem.enabled = NO;
+        WelcomeViewController *welcomeViewController;
+        welcomeViewController = [[[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil] autorelease]; 
+        [welcomeViewController automaticallyDismissOnLoginActions];
+        [welcomeViewController forceLogoView];
+        self.navigationController.navigationBar.hidden = YES;
+        [self.navigationController pushViewController:welcomeViewController animated:YES];
     } else {
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
