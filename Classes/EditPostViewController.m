@@ -586,7 +586,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     segmentedTableViewController.title = NSLocalizedString(@"Categories", @"");
     if (IS_IPHONE && [createCategoryBarButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        createCategoryBarButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]style:UIBarButtonItemStyleBordered target:self action:@selector(showAddNewCategoryView:)] autorelease];
+        createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]style:UIBarButtonItemStyleBordered target:self action:@selector(showAddNewCategoryView:)];
     } 
                               
     segmentedTableViewController.navigationItem.rightBarButtonItem = createCategoryBarButtonItem;
