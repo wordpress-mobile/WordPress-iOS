@@ -1058,20 +1058,14 @@
     
     if(ABS(velocity) > PANEL_MINIMUM_OVERSHOT_VELOCITY && (!IS_IPAD || distance > 10.f)){
         [timingFunctions addObject:easeInOut];
+        velocity *= 0.25f;
 
-        overShot = 50.f * (velocity * PANEL_OVERSHOT_FRICTION);
+        overShot = 22.f * (velocity * PANEL_OVERSHOT_FRICTION);
         distance += ABS(overShot);
-        CGFloat overShotDuration = ABS(overShot/(velocity * (1-PANEL_OVERSHOT_FRICTION))) + 0.05f;
-        [keyTimes addObject:[NSNumber numberWithFloat:duration/(duration+overShotDuration)]];
+        CGFloat overShotDuration = ABS(overShot/(velocity * (1-PANEL_OVERSHOT_FRICTION))) * 1.25;
+        [keyTimes addObject:[NSNumber numberWithFloat:(duration/(duration+overShotDuration))]];
         duration += overShotDuration;
         [values addObject:[NSNumber numberWithFloat:endPosition.x + overShot]];
-//        if (ABS(overShot) >= 50.f){
-//            [timingFunctions addObject:easeInOut];
-//            underShot = distance * 0.25f * (velocity * PANEL_UNDERSHOT_FRICTION);
-//            distance += ABS(underShot);
-//            duration += ABS(underShot/(velocity * (1 - PANEL_UNDERSHOT_FRICTION)));
-//            [values addObject:[NSNumber numberWithFloat:endPosition.x - underShot]];
-//        }
     } else {
         // nothing special, just slide
         duration = 0.2f;
