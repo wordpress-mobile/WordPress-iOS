@@ -63,6 +63,8 @@
 		30811744151057880028A15E /* Default-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30811742151057880028A15E /* Default-Landscape@2x.png */; };
 		30811747151057940028A15E /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30811746151057940028A15E /* Icon-72@2x.png */; };
 		30811749151057B50028A15E /* fabric@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30811748151057B50028A15E /* fabric@2x.png */; };
+		30AA7FA315B577F70049A32E /* navbar_toggle.png in Resources */ = {isa = PBXBuildFile; fileRef = 30AA7FA115B577F70049A32E /* navbar_toggle.png */; };
+		30AA7FA415B577F70049A32E /* navbar_toggle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30AA7FA215B577F70049A32E /* navbar_toggle@2x.png */; };
 		30AF6CF513C2289600A29C00 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30AF6CF413C2289600A29C00 /* AboutViewController.xib */; };
 		30AF6CFD13C230C600A29C00 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30AF6CFC13C230C600A29C00 /* AboutViewController.m */; };
 		30B5532915AFB1AB00077318 /* navbar_back_button_bg_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 30B5532815AFB1AB00077318 /* navbar_back_button_bg_active.png */; };
@@ -749,6 +751,8 @@
 		30811742151057880028A15E /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x.png"; sourceTree = "<group>"; };
 		30811746151057940028A15E /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = "<group>"; };
 		30811748151057B50028A15E /* fabric@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "fabric@2x.png"; path = "Classes/fabric@2x.png"; sourceTree = "<group>"; };
+		30AA7FA115B577F70049A32E /* navbar_toggle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_toggle.png; sourceTree = "<group>"; };
+		30AA7FA215B577F70049A32E /* navbar_toggle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_toggle@2x.png"; sourceTree = "<group>"; };
 		30AF6CF413C2289600A29C00 /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		30AF6CFB13C230C600A29C00 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		30AF6CFC13C230C600A29C00 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
@@ -1784,6 +1788,8 @@
 		371C161C15A3A3AD00BC653C /* Navigation Bar */ = {
 			isa = PBXGroup;
 			children = (
+				30AA7FA115B577F70049A32E /* navbar_toggle.png */,
+				30AA7FA215B577F70049A32E /* navbar_toggle@2x.png */,
 				30B5532F15AFBFD200077318 /* navbar_actions.png */,
 				30B5533015AFBFD200077318 /* navbar_actions@2x.png */,
 				307B242815AC48B900F09A35 /* navbar_back_button_bg.png */,
@@ -3564,6 +3570,8 @@
 				5DEB6EFA15B48404004E81F3 /* popover_bg.png in Resources */,
 				5DC7368115B4C07500D72BDB /* popover_arrow@2x.png in Resources */,
 				5DC7368215B4C07500D72BDB /* popover_bg@2x.png in Resources */,
+				30AA7FA315B577F70049A32E /* navbar_toggle.png in Resources */,
+				30AA7FA415B577F70049A32E /* navbar_toggle@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
