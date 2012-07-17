@@ -107,12 +107,6 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-    
-    if (IS_IPAD) {
-        CGRect frame = self.webView.frame;
-        frame.size.height -= 44.0f;
-        self.webView.frame = frame;
-    }
         
     self.webView.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.95 alpha:1.0];
 
@@ -122,8 +116,10 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
     self.topicsViewController = [[[WPReaderTopicsViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil] autorelease];
     self.topicsViewController.delegate = self;
-
-    self.detailViewController = [[[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+    if (IS_IPAD)
+        self.detailViewController = [[[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+    else 
+        self.detailViewController = [[[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
     self.detailViewController.delegate = self;
 
     
@@ -480,7 +476,11 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
         } else if ( [requestedURLAbsoluteString rangeOfString:kMobileReaderFPURL].location == NSNotFound
                    && [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location == NSNotFound ) {
             //When in FP and the user click on an item we should push a new VC into the stack
-            WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil]; 
+            WPWebViewController *webViewController;
+            if (IS_IPAD)
+                webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil]; 
+            else 
+                webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
             webViewController.url = [request URL]; 
             [self.panelNavigationController popToRootViewControllerAnimated:NO];
             [self.panelNavigationController pushViewController:detailViewController animated:YES];

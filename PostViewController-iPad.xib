@@ -12,13 +12,12 @@
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<string>IBProxyObject</string>
-			<string>IBUIImageView</string>
-			<string>IBUILabel</string>
-			<string>IBUIToolbar</string>
 			<string>IBUIWebView</string>
 			<string>IBUITextView</string>
+			<string>IBUIImageView</string>
 			<string>IBUIView</string>
+			<string>IBUILabel</string>
+			<string>IBProxyObject</string>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -200,10 +199,10 @@
 					<object class="IBUIWebView" id="126301764">
 						<reference key="NSNextResponder" ref="208215467"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{0, 143}, {768, 793}}</string>
+						<string key="NSFrame">{{0, 143}, {768, 837}}</string>
 						<reference key="NSSuperview" ref="208215467"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="524028975"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -211,20 +210,6 @@
 						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<bool key="IBUIScalesPageToFit">YES</bool>
-					</object>
-					<object class="IBUIToolbar" id="524028975">
-						<reference key="NSNextResponder" ref="208215467"/>
-						<int key="NSvFlags">266</int>
-						<string key="NSFrame">{{0, 936}, {768, 44}}</string>
-						<reference key="NSSuperview" ref="208215467"/>
-						<reference key="NSWindow"/>
-						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<int key="IBUIBarStyle">1</int>
-						<object class="NSMutableArray" key="IBUIItems">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-						</object>
 					</object>
 					<object class="IBUILabel" id="646131562">
 						<reference key="NSNextResponder" ref="208215467"/>
@@ -425,7 +410,6 @@
 							<reference ref="876685903"/>
 							<reference ref="986694920"/>
 							<reference ref="932001138"/>
-							<reference ref="524028975"/>
 							<reference ref="646131562"/>
 							<reference ref="96941245"/>
 							<reference ref="858444636"/>
@@ -475,14 +459,6 @@
 						<reference key="parent" ref="208215467"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">77</int>
-						<reference key="object" ref="524028975"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-						</object>
-						<reference key="parent" ref="208215467"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">79</int>
 						<reference key="object" ref="646131562"/>
 						<reference key="parent" ref="208215467"/>
@@ -520,7 +496,6 @@
 					<string>72.IBPluginDependency</string>
 					<string>74.IBPluginDependency</string>
 					<string>75.IBPluginDependency</string>
-					<string>77.IBPluginDependency</string>
 					<string>79.IBPluginDependency</string>
 					<string>80.IBPluginDependency</string>
 					<string>81.IBPluginDependency</string>
@@ -531,7 +506,6 @@
 					<string>PostViewController</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>UIResponder</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

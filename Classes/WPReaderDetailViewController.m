@@ -31,11 +31,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if (IS_IPAD) {
-        CGRect frame = self.webView.frame;
-        frame.size.height += 20.0f;
-        self.webView.frame = frame;
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

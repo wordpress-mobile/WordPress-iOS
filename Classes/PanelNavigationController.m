@@ -416,6 +416,11 @@
 
 
 - (void)setToolbarHidden:(BOOL)hidden forViewController:(UIViewController *)controller animated:(BOOL)animated {
+    if (!hidden) {
+        CGRect frame = controller.view.frame;
+        frame.size.height -= 44.0f;
+        controller.view.frame = frame;
+    }
     [[self wrapViewForViewController:controller] setToolbarHidden:hidden animated:animated];
 }
 
