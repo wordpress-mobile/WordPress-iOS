@@ -7,86 +7,15 @@
 @implementation WPAddCategoryViewController
 @synthesize blog;
 
-- (void)clearUI {
-    newCatNameField.text = @"";
-    parentCatNameField.text = @"";
-}
+#pragma mark -
+#pragma mark LifeCycle Methods
 
-- (void)addProgressIndicator {
-    UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
-	activityButtonItem.title = @"foobar!";
-    [aiv startAnimating];
-    [aiv release];
-
-    self.navigationItem.rightBarButtonItem = activityButtonItem;
-    [activityButtonItem release];
-}
-
-- (void)removeProgressIndicator {
-	self.navigationItem.rightBarButtonItem = saveButtonItem;
-	
-}
-- (void)dismiss {
+- (void)dealloc {
     WPFLogMethod();
-    if (IS_IPAD == YES) {
-        [(WPSelectionTableViewController *)self.parentViewController popViewControllerAnimated:YES];
-    } else {
-        [self.parentViewController dismissModalViewControllerAnimated:YES];
+    [super dealloc];
+    if (parentCat != nil) {
+        [parentCat release];
     }
-}
-
-- (IBAction)cancelAddCategory:(id)sender {
-    [self clearUI];
-    [self dismiss];
-}
-
-- (IBAction)saveAddCategory:(id)sender {
-    NSString *catName = newCatNameField.text;
-
-    if (!catName ||[catName length] == 0) {
-        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Category title missing.", @"Error popup title to indicate that there was no category title filled in.")
-                               message:NSLocalizedString(@"Title for a category is mandatory.", @"Error popup message to indicate that there was no category title filled in.")
-                               delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-
-        [alert2 show];
-        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [delegate setAlertRunning:YES];
-
-        [alert2 release];
-        return;
-    }
-
-    if ([Category existsName:catName forBlog:self.blog withParentId:parentCat.categoryID]) {
-        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Category name already exists.", @"Error popup title to show that a category already exists.")
-                                                         message:NSLocalizedString(@"There is another category with that name.", @"Error popup message to show that a category already exists.")
-                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label.") otherButtonTitles:nil];
-		
-        [alert2 show];
-        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        [delegate setAlertRunning:YES];
-
-        [alert2 release];
-        return;
-    }
-
-	//FIXME: At the first attempt the remoteHostStatus == NotReachable even if the connection is available. 
-	// if ([[ sharedReachability] remoteHostStatus] != NotReachable)
-    [self addProgressIndicator];
-
-    [Category createCategory:catName parent:parentCat forBlog:self.blog success:^(Category *category) {
-        //re-syncs categories this is necessary because the server can change the name of the category!!!
-		[self.blog syncCategoriesWithSuccess:nil failure:nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:self];
-        [self clearUI];
-        [self removeProgressIndicator];
-        [self dismiss];
-    } failure:^(NSError *error) {
-        NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
-		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
-		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-		[self removeProgressIndicator];
-    }];
 }
 
 - (void)viewDidLoad {
@@ -143,6 +72,93 @@
     [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
     // Release anything that's not essential, such as cached data
 }
+
+
+#pragma mark -
+#pragma mark Instance Methods
+
+- (void)clearUI {
+    newCatNameField.text = @"";
+    parentCatNameField.text = @"";
+}
+
+- (void)addProgressIndicator {
+    UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
+	activityButtonItem.title = @"foobar!";
+    [aiv startAnimating];
+    [aiv release];
+    
+    self.navigationItem.rightBarButtonItem = activityButtonItem;
+    [activityButtonItem release];
+}
+
+- (void)removeProgressIndicator {
+	self.navigationItem.rightBarButtonItem = saveButtonItem;
+	
+}
+- (void)dismiss {
+    WPFLogMethod();
+    if (IS_IPAD == YES) {
+        [(WPSelectionTableViewController *)self.parentViewController popViewControllerAnimated:YES];
+    } else {
+        [self.parentViewController dismissModalViewControllerAnimated:YES];
+    }
+}
+
+- (IBAction)cancelAddCategory:(id)sender {
+    [self clearUI];
+    [self dismiss];
+}
+
+- (IBAction)saveAddCategory:(id)sender {
+    NSString *catName = newCatNameField.text;
+    
+    if (!catName ||[catName length] == 0) {
+        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Category title missing.", @"Error popup title to indicate that there was no category title filled in.")
+                                                         message:NSLocalizedString(@"Title for a category is mandatory.", @"Error popup message to indicate that there was no category title filled in.")
+                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
+        
+        [alert2 show];
+        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+        [delegate setAlertRunning:YES];
+        
+        [alert2 release];
+        return;
+    }
+    
+    if ([Category existsName:catName forBlog:self.blog withParentId:parentCat.categoryID]) {
+        UIAlertView *alert2 = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Category name already exists.", @"Error popup title to show that a category already exists.")
+                                                         message:NSLocalizedString(@"There is another category with that name.", @"Error popup message to show that a category already exists.")
+                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label.") otherButtonTitles:nil];
+		
+        [alert2 show];
+        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+        [delegate setAlertRunning:YES];
+        
+        [alert2 release];
+        return;
+    }
+    
+	//FIXME: At the first attempt the remoteHostStatus == NotReachable even if the connection is available. 
+	// if ([[ sharedReachability] remoteHostStatus] != NotReachable)
+    [self addProgressIndicator];
+    
+    [Category createCategory:catName parent:parentCat forBlog:self.blog success:^(Category *category) {
+        //re-syncs categories this is necessary because the server can change the name of the category!!!
+		[self.blog syncCategoriesWithSuccess:nil failure:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:self];
+        [self clearUI];
+        [self removeProgressIndicator];
+        [self dismiss];
+    } failure:^(NSError *error) {
+        NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+		[self removeProgressIndicator];
+    }];
+}
+
 
 #pragma mark - functionalmethods
 
@@ -230,15 +246,9 @@
     return YES;
 }
 
-#pragma mark -dealloc
 
-- (void)dealloc {
-    WPFLogMethod();
-    [super dealloc];
-    if (parentCat != nil) {
-        [parentCat release];
-    }
-}
+#pragma mark -
+#pragma mark UIAlertView Delegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
