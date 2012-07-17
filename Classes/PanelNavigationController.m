@@ -680,6 +680,7 @@
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         if (IS_IPHONE)
             [self addShadowTo:self.detailView];
+        
         [self setStackOffset:0 duration:0];
         [self disableDetailView];
     } completion:^(BOOL finished) {
@@ -1518,8 +1519,10 @@
         for (int i = 0; i < count; i++) {
             [viewControllers addObject:[self popViewControllerAnimated:animated]];
         }
-        _stackOffset = 0;
-        [self showSidebar];
+        if (_stackOffset != 0 && !(UIDeviceOrientationIsPortrait(self.interfaceOrientation) && [self viewControllerExpectsWidePanel:self.detailViewController])) {
+            _stackOffset = 0;
+            [self showSidebar];
+        }
         //make sure there's no tint on the detailView overlay any longer
         if ([_detailView.subviews count] >= 1){
             PanelViewWrapper *overlayView = [_detailView.subviews objectAtIndex:0];
