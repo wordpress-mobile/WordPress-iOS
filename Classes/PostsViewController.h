@@ -9,7 +9,6 @@
     UIActivityIndicatorView *activityFooter;
 }
 
-@property (readonly) UIBarButtonItem *composeButtonItem;
 @property (nonatomic, retain) EditPostViewController *postDetailViewController;
 @property (nonatomic, retain) PostViewController *postReaderViewController;
 @property (nonatomic, assign) BOOL anyMorePosts;

@@ -1392,6 +1392,9 @@
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
     WPFLogMethod();
+    // Set the panelNavigation before any of the view methods are relayed for iOS4.
+    [viewController setPanelNavigationController:self];
+    
     if (self.navigationController) {
         [viewController setPanelNavigationController:self];
         [self.navigationController pushViewController:viewController animated:animated];
@@ -1417,10 +1420,7 @@
         } else {
             viewController.view.frame = CGRectMake(CGRectGetMaxX(topViewFrame), 0.0f, newPanelWidth, DETAIL_HEIGHT);
         }
-        
-        // Set the panelNavigation before any of the view methods are relayed for iOS4.
-        [viewController setPanelNavigationController:self];
-        
+                
         [self addChildViewController:viewController];
         if (_isAppeared) {
             [viewController vdc_viewWillAppear:animated];

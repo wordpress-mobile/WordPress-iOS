@@ -23,7 +23,7 @@
 
 @implementation PostsViewController
 
-@synthesize composeButtonItem, postDetailViewController, postReaderViewController;
+@synthesize postDetailViewController, postReaderViewController;
 @synthesize anyMorePosts, selectedIndexPath, drafts;
 //@synthesize resultsController;
 
@@ -50,7 +50,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
 
     self.title = NSLocalizedString(@"Posts", @"");
-
+    
+    UIBarButtonItem *composeButtonItem  = nil;
+    
     if (IS_IPHONE && [self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
         composeButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]style:UIBarButtonItemStyleBordered 
                                                              target:self 
