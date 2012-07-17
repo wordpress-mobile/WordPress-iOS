@@ -31,12 +31,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
     if (blog) {
-        if([blog isWPcom] == YES) {
-            self.navigationItem.title = NSLocalizedString(@"Edit Blog", @"");
-        }
-        else {
-            self.navigationItem.title = NSLocalizedString(@"Edit Site", @"");
-        }
+        self.navigationItem.title = NSLocalizedString(@"Edit Blog", @"");
 		self.tableView.backgroundColor = [UIColor clearColor];
 		if (IS_IPAD){
 			self.tableView.backgroundView = nil;

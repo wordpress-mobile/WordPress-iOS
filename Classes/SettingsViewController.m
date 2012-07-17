@@ -161,7 +161,7 @@ typedef enum {
     } else if (section == SettingsSectionWpcom) {
         return NSLocalizedString(@"WordPress.com", @"");
     } else if (section == SettingsSectionInfo) {
-        return NSLocalizedString(@"Info", @"");
+        return NSLocalizedString(@"App Info", @"");
     }
     return nil;
 }
@@ -175,13 +175,16 @@ typedef enum {
         cell.detailTextLabel.text = blog.hostURL;
         [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
     } else if (indexPath.section == SettingsSectionBlogsAdd) {
-        cell.textLabel.text = NSLocalizedString(@"Add a blog", @"");
+        cell.textLabel.text = NSLocalizedString(@"Add a Blog", @"");
         cell.textLabel.textAlignment = UITextAlignmentCenter;
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else if (indexPath.section == SettingsSectionWpcom) {
         if ([WordPressComApi sharedApi].username) {
             if (indexPath.row == 0) {
                 cell.textLabel.text = NSLocalizedString(@"Username:", @"");
                 cell.detailTextLabel.text = [WordPressComApi sharedApi].username;
+                cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             } else {
                 cell.textLabel.textAlignment = UITextAlignmentCenter;
