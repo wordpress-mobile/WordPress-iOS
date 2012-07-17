@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <UIKit/UIPopoverBackgroundView.h>
 
 @interface WPPopoverBackgroundView : UIPopoverBackgroundView {
     UIPopoverArrowDirection arrowDirection;
