@@ -46,7 +46,7 @@ typedef enum {
     SettingsSectionCount
 } SettingsSection;
 
-@interface SettingsViewController () <NSFetchedResultsControllerDelegate,WPcomLoginViewControllerDelegate>
+@interface SettingsViewController () <NSFetchedResultsControllerDelegate, UIActionSheetDelegate, WPcomLoginViewControllerDelegate>
 @property (readonly) NSFetchedResultsController *resultsController;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
@@ -296,10 +296,18 @@ typedef enum {
     } else if (indexPath.section == SettingsSectionWpcom) {
         if ([WordPressComApi sharedApi].username) {
             if (indexPath.row == 1) {
-                // Sign out
-                [[WordPressComApi sharedApi] signOut];
-                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
-                [self checkCloseButton];
+                // Present the Sign out ActionSheet
+                NSString *signOutTitle = NSLocalizedString(@"You are logged in as", @"");
+                signOutTitle = [NSString stringWithFormat:@"%@ %@", signOutTitle, [WordPressComApi sharedApi].username];
+                UIActionSheet *actionSheet;
+                actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle 
+                                                          delegate:self 
+                                                 cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+                                            destructiveButtonTitle:nil 
+                                                 otherButtonTitles:NSLocalizedString(@"Sign out", @""),nil];
+                actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+                [actionSheet showInView:self.view];
+                [actionSheet release];
             }
         } else {
             WPcomLoginViewController *loginViewController = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -400,4 +408,16 @@ typedef enum {
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+
+#pragma mark -
+#pragma mark Action Sheet Delegate Methods
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    if(buttonIndex == 0) {
+        // Sign out
+        [[WordPressComApi sharedApi] signOut];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
+        [self checkCloseButton];
+    }
+}
 @end
