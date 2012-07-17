@@ -8,6 +8,7 @@
 #import "NSURL+IDN.h"
 #import "WordPressApi.h"
 #import "SFHFKeychainUtils.h"
+#import "UIBarButtonItem+Styled.h"
 
 @interface EditSiteViewController (PrivateMethods)
 - (void)validateFields;
@@ -46,7 +47,7 @@
         self.geolocationEnabled = blog.geolocationEnabled;
     }
     
-    saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save:)];
+    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
     
     self.navigationItem.rightBarButtonItem = saveButton;
     

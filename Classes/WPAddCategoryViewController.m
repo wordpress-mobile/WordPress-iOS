@@ -2,6 +2,7 @@
 #import "PostSettingsViewController.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
+#import "UIBarButtonItem+Styled.h"
 
 @implementation WPAddCategoryViewController
 @synthesize blog;
@@ -12,7 +13,7 @@
 }
 
 - (void)addProgressIndicator {
-    UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    UIActivityIndicatorView *aiv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
 	activityButtonItem.title = @"foobar!";
     [aiv startAnimating];
@@ -93,13 +94,14 @@
 	[super viewDidLoad];
     catTableView.sectionFooterHeight = 0.0;
     [saveButtonItem retain];
+    saveButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:UIBarButtonItemStyleDone target:self action:@selector(saveAddCategory:)];
 
     newCatNameField.font = [UIFont fontWithName:@"Helvetica" size:17];
     parentCatNameField.font = [UIFont fontWithName:@"Helvetica" size:17];
     parentCatNameLabel.text = NSLocalizedString(@"Parent Category", @"Placeholder to set a parent category for a new category.");
     parentCatNameField.placeholder = NSLocalizedString(@"Optional", @"Placeholder to indicate that filling out the field is optional.");
     newCatNameField.placeholder = NSLocalizedString(@"Title", @"Title of the new Category being created.");
-    saveButtonItem.title = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).");
+    
     cancelButtonItem.title = NSLocalizedString(@"Cancel", @"Cancel button label.");
 
     parentCat = nil;
