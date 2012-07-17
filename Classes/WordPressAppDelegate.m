@@ -73,9 +73,6 @@ static WordPressAppDelegate *wordPressApp = NULL;
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     if (!wordPressApp) {
         wordPressApp = [super init];
-		
-//		if (IS_IPAD)
-//			[UIViewController youWillAutorotateOrYouWillDieMrBond];
         
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
 			NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
@@ -85,7 +82,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		
 		NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 		[[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
-        NSString *defaultUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@)", 
+        NSString *defaultUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@) Mobile", 
                                appVersion,
                                [[UIDevice currentDevice] systemName], 
                                [[UIDevice currentDevice] systemVersion], 
@@ -95,7 +92,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
         NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: defaultUA, @"UserAgent", nil];
         [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
         [dictionary release];
-        
+
         self.wpcomAvailable = YES; //Set the wpcom availability to YES to avoid issues with lazy reachibility notifier        
         
         /* 
