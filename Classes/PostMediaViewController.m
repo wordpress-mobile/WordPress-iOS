@@ -581,7 +581,9 @@
             if (addPopover == nil) {
                 addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
                 addPopover.delegate = self;
-                addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
+                if ([addPopover respondsToSelector:@selector(setPopoverBackgroundViewClass:)]) {
+                    addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
+                }
             }
             
             [addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
