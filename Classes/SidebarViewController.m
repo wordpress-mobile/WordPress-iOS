@@ -778,8 +778,6 @@
     [self processRowSelectionAtIndexPath:indexPath closingSidebar:YES];
 }
 
-
-
 - (void) processRowSelectionAtIndexPath:(NSIndexPath *)indexPath closingSidebar:(BOOL)closingSidebar {
     WPFLog(@"%@ %@ %@", self, NSStringFromSelector(_cmd), indexPath);
     

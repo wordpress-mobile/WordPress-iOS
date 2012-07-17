@@ -63,6 +63,7 @@
 - (NSArray *)partiallyVisibleViews;
 - (BOOL)viewControllerExpectsWidePanel:(UIViewController *)controller;
 - (void)relayAppearanceMethod:(void(^)(UIViewController* controller))relay;
+- (void)adjustFramesForRotation;
 
 - (UIView *)createWrapViewForViewController:(UIViewController *)controller;
 - (PanelViewWrapper *)wrapViewForViewController:(UIViewController *)controller;
@@ -283,32 +284,9 @@
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
     [super willAnimateRotationToInterfaceOrientation:interfaceOrientation duration:duration];
 
-    // Set the detail view's new width due to the rotation on the iPad if wide panels are expected.
-    if (IS_IPAD && [self viewControllerExpectsWidePanel:self.detailViewController]) {
-        CGRect frm = self.detailView.frame;
-        frm.size.width = IPAD_WIDE_PANEL_WIDTH;
-        self.detailView.frame = frm;
-    }
+    if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
+        [self adjustFramesForRotation];
     
-    // When rotated the detailviewwidths may become invalid. 
-    // Rebuild the array so we have accurate values.
-    self.detailViewWidths = [NSMutableArray array];
-    
-    int viewCount = [self.detailViews count];
-    for (int i = 0; i < viewCount; i++) {
-        UIViewController *vc;
-        if (i == 0) {
-            vc = self.detailViewController;
-        } else {
-            vc = [self.detailViewControllers objectAtIndex:i - 1];
-        }
-
-        [self setFrameForViewController:vc];
-        
-        UIView *dview = [self.detailViews objectAtIndex:i];
-        CGRect frm = dview.frame;
-        [self.detailViewWidths addObject:[NSNumber numberWithFloat:frm.size.width]];
-    }
     
     if (IS_IPAD)
         [self setStackOffset:[self nearestValidOffsetWithVelocity:0] duration:duration];
@@ -320,7 +298,7 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
+    
     [self relayAppearanceMethod:^(UIViewController *controller) {
         [controller willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     }];
@@ -328,10 +306,42 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    
+    if (UIInterfaceOrientationIsPortrait(fromInterfaceOrientation))
+        [self adjustFramesForRotation];
 
     [self relayAppearanceMethod:^(UIViewController *controller) {
         [controller didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     }];
+}
+
+- (void)adjustFramesForRotation {
+    // Set the detail view's new width due to the rotation on the iPad if wide panels are expected.
+    if (IS_IPAD && [self viewControllerExpectsWidePanel:self.detailViewController]) {
+        CGRect frm = self.detailView.frame;
+        frm.size.width = IPAD_WIDE_PANEL_WIDTH;
+        self.detailView.frame = frm;
+    }
+    
+    // When rotated the detailviewwidths may become invalid.
+    // Rebuild the array so we have accurate values.
+    self.detailViewWidths = [NSMutableArray array];
+    	   
+    int viewCount = [self.detailViews count];
+    for (int i = 0; i < viewCount; i++) {
+        UIViewController *vc;
+        if (i == 0) {
+            vc = self.detailViewController;
+        } else {
+            vc = [self.detailViewControllers objectAtIndex:i - 1];
+        }
+        	
+        [self setFrameForViewController:vc];
+             
+        UIView *dview = [self.detailViews objectAtIndex:i];
+        CGRect frm = dview.frame;
+        [self.detailViewWidths addObject:[NSNumber numberWithFloat:frm.size.width]];
+   }
 }
 
 #pragma mark - Memory management
