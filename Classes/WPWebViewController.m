@@ -329,7 +329,7 @@
 	
     if (isLoading == loading)
         return;
-
+    
     self.optionsButton.enabled = !loading;
     
     if (IS_IPAD) {
@@ -344,27 +344,30 @@
     }
 	if( self.refreshButton ) { //the refresh
         self.refreshButton.enabled = !loading;
-		if (loading) {
-			UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
-			
-            UIActivityIndicatorView *spinner = nil;
-            if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
-                spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            } else if (IS_IPHONE) {
-                spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        if (IS_IPHONE) {
+            NSMutableArray *newToolbarItems = [[NSMutableArray arrayWithArray:toolbar.items] retain];
+            if (loading) {
+                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 32.0f, 32.0f)];
+ 
+                UIActivityIndicatorView *spinner = nil;
+                if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
+                    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                } else {
+                    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+                }
+                [spinner setCenter:customView.center];
+                [customView addSubview:spinner];
+                
+                [spinner startAnimating];
+                
+                [newToolbarItems replaceObjectAtIndex:5 withObject:[[[UIBarButtonItem alloc] initWithCustomView:customView] autorelease]];
+                [spinner release];
+                [customView release];
+            } else {
+                [newToolbarItems replaceObjectAtIndex:5 withObject:self.refreshButton];
             }
-			[spinner setCenter:customView.center];
-			[customView addSubview:spinner];
-			
-			[spinner startAnimating];
-			
-			self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:customView] autorelease];
-			
-			[customView release];
-		} else {
-            if( IS_IPHONE )
-                self.navigationItem.rightBarButtonItem = optionsButton;
-		}
+            toolbar.items = newToolbarItems;
+        }
 	}
     isLoading = loading;
 }
