@@ -548,6 +548,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         // FIXME: tags should be an array/set of Tag objects
         tagsTextField.text = self.post.tags;
         [categoriesButton setTitle:[NSString decodeXMLCharactersIn:[self.post categoriesText]] forState:UIControlStateNormal];
+        [categoriesButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
     }
     
     if(self.apost.content == nil || [self.apost.content isEmpty]) {
@@ -585,10 +586,12 @@ NSTimeInterval kAnimationDuration = 0.3f;
 										 andDelegate:self];
 	
     segmentedTableViewController.title = NSLocalizedString(@"Categories", @"");
-    if (IS_IPHONE && [createCategoryBarButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]style:UIBarButtonItemStyleBordered target:self action:@selector(showAddNewCategoryView:)];
+    if ([createCategoryBarButtonItem respondsToSelector:@selector(setTintColor:)]) {
+        createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]style:UIBarButtonItemStyleBordered 
+                                                                      target:self 
+                                                                      action:@selector(showAddNewCategoryView:)];
     } 
-                              
+    
     segmentedTableViewController.navigationItem.rightBarButtonItem = createCategoryBarButtonItem;
 	
     if (isNewCategory != YES) {
@@ -600,8 +603,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
                 navController = [[[UINavigationController alloc] initWithRootViewController:segmentedTableViewController] autorelease];
             }
  			UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
-            popover.delegate = self;			CGRect popoverRect = [self.view convertRect:[categoriesButton frame] fromView:[categoriesButton superview]];
-			popoverRect.size.width = MIN(popoverRect.size.width, 100); // the text field is actually really big
+            popover.delegate = self;
+			CGRect popoverRect = [self.view convertRect:[categoriesButton frame] fromView:[categoriesButton superview]];
+			popoverRect.size.width = MIN(popoverRect.size.width, 100.0f); // the text field is actually really big
+            popover.popoverContentSize = CGSizeMake(320.0f, 460.0f);
 			[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 			[[CPopoverManager instance] setCurrentPopoverController:popover];
 		}
