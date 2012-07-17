@@ -8,6 +8,10 @@
 
 #import "AboutViewController.h"
 
+@interface AboutViewController (Private) 
+- (void)dismiss;
+@end
+
 @implementation AboutViewController
 
 @synthesize buttonsView;
@@ -20,6 +24,9 @@
 	
     self.navigationItem.title = NSLocalizedString(@"About", @"About this app (information page title)");
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
+    
+    if( [self.navigationController.viewControllers count] == 1 )
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)] autorelease];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -38,6 +45,12 @@
         }
     }
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+}
+
+#pragma mark - Custom methods
+
+- (void)dismiss {
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 -(void)viewTermsOfService:(id)sender {

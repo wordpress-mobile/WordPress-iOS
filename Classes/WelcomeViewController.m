@@ -208,14 +208,14 @@
 	[super dismissModalViewControllerAnimated:YES];
 }
 
-
 - (void)showAboutView {
     AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
-	//aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-	[self.navigationController pushViewController:aboutViewController animated:YES];
+	aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
+    nc.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self.navigationController presentModalViewController:nc animated:YES];
     [aboutViewController release];
 }
-
 
 #pragma mark - WPcomLoginViewControllerDelegate
 
