@@ -129,26 +129,12 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (isWPcom) {
-        return 2;
-    }
     return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	int result = 0;
-	switch (section) {
-		case 0:
-			result = usersBlogs.count;
-			break;
-		case 1:
-			result = 1;
-			break;
-		default:
-			break;
-	}
-	return result;
+	return usersBlogs.count;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
@@ -191,8 +177,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	if((section == 0) && (usersBlogs.count == 0))
 		return 60;
-	else if(section == 1)
-		return 100;
 	else
 		return 0;
 }
@@ -218,11 +202,6 @@
             if (!cell.textLabel.text || [cell.textLabel.text isEqualToString:@""]) {
                 cell.textLabel.text = [blog valueForKey:@"url"];
             }
-			break;
-		case 1:
-			cell.textLabel.textAlignment = UITextAlignmentCenter;
-			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.textLabel.text = NSLocalizedString(@"Sign Out", @"");
 			break;
 		default:
 			break;
@@ -262,9 +241,6 @@
 		else if(selectedBlogs.count == 0)
 			[self deselectAllBlogs:self];
 	}
-	else if(indexPath.section == 1) {
-		[self signOut];
-	}
 	
 	[self checkAddSelectedButtonStatus];
 
@@ -291,13 +267,6 @@
 	buttonSelectAll.title = NSLocalizedString(@"Select All", @"");
 	buttonSelectAll.action = @selector(selectAllBlogs:);
 	[self checkAddSelectedButtonStatus];
-}
-
-- (void)signOut {
-    if (isWPcom) {
-        [[WordPressComApi sharedApi] signOut];
-    }
-	[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)refreshBlogs {
