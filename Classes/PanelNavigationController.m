@@ -768,8 +768,10 @@
     if (IS_IPAD && [self viewControllerExpectsWidePanel:controller]) {
         newPanelWidth = IPAD_WIDE_PANEL_WIDTH;
     }
-    
-    view.frame = CGRectMake(view.frame.origin.x, 0.0f, newPanelWidth, DETAIL_HEIGHT);
+    CGFloat originX = view.frame.origin.x;
+    if (controller == _detailViewController)
+        originX = 0.0f;
+    view.frame = CGRectMake(originX, 0.0f, newPanelWidth, DETAIL_HEIGHT);
     [self applyCorners];
 }
 
