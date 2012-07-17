@@ -50,12 +50,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
 
     self.title = NSLocalizedString(@"Posts", @"");
-//    composeButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_new"] style:UIBarButtonItemStyleBordered target:self action:@selector(showAddPostView)] autorelease];
-//    composeButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose
-//                                                                       target:self
-//                                                                       action:@selector(showAddPostView)] autorelease];
+
     if (IS_IPHONE && [self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        composeButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]style:UIBarButtonItemStyleBordered target:self action:@selector(showAddPostView)] autorelease];
+        composeButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]style:UIBarButtonItemStyleBordered 
+                                                             target:self 
+                                                             action:@selector(showAddPostView)] autorelease];
     } else {
         composeButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
                                                                            target:self 

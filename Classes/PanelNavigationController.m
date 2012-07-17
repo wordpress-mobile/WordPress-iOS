@@ -1417,6 +1417,10 @@
         } else {
             viewController.view.frame = CGRectMake(CGRectGetMaxX(topViewFrame), 0.0f, newPanelWidth, DETAIL_HEIGHT);
         }
+        
+        // Set the panelNavigation before any of the view methods are relayed for iOS4.
+        [viewController setPanelNavigationController:self];
+        
         [self addChildViewController:viewController];
         if (_isAppeared) {
             [viewController vdc_viewWillAppear:animated];
@@ -1427,9 +1431,9 @@
 
         [self.detailViews addObject:wrappedView];
         [self.detailViewWidths addObject:[NSNumber numberWithFloat:newPanelWidth]];
-        
+
         if (_isAppeared) {
-            [viewController vdc_viewDidDisappear:animated];
+            [viewController vdc_viewDidAppear:animated];
         }
 
         [self applyCorners];
@@ -1438,7 +1442,7 @@
             topView.frame = topViewFrame;
         }];
         [_popPanelsView setAlpha:1.0f];
-        [viewController setPanelNavigationController:self];
+
         [viewController didMoveToParentViewController:self];
         [self.detailViewControllers addObject:viewController];
         

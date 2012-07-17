@@ -2273,10 +2273,6 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				5DC7367F15B4C07500D72BDB /* popover_arrow@2x.png */,
-				5DC7368015B4C07500D72BDB /* popover_bg@2x.png */,
-				5DEB6EF715B48404004E81F3 /* popover_arrow.png */,
-				5DEB6EF815B48404004E81F3 /* popover_bg.png */,
 				A2CDC80D14C7681600091CEB /* approve.png */,
 				A2CDC80E14C7681600091CEB /* approve@2x.png */,
 				E1EE23E712E628F6000B2BE6 /* attachment.png */,
@@ -2354,6 +2350,10 @@
 				377636E415AF620A00C1C5C6 /* panel_icon@2x.png */,
 				375D7EE11355E9B6001C7371 /* paperclip.png */,
 				E11C91D7135771520072A811 /* paperclip@2x.png */,
+				5DC7367F15B4C07500D72BDB /* popover_arrow@2x.png */,
+				5DC7368015B4C07500D72BDB /* popover_bg@2x.png */,
+				5DEB6EF715B48404004E81F3 /* popover_arrow.png */,
+				5DEB6EF815B48404004E81F3 /* popover_bg.png */,
 				AC600C100E20B81100D663AA /* Post Icons */,
 				30410683144E17AE00E98F07 /* previous.png */,
 				30410684144E17AE00E98F07 /* previous@2x.png */,
