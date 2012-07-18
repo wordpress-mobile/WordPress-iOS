@@ -109,7 +109,6 @@
         [self showPicker];
     } else {
         self.photoImageView.image = self.photo;
-        [self.titleTextField becomeFirstResponder];
     }
 }
 
@@ -347,7 +346,7 @@
         // If we get a memory warning on the way here our view could have unloaded.
         // In order to prevet a crash we'll make sure its loaded before 
         // dismissing the modal. 
-        [self loadView];
+        [self view];
         [self.blogSelector loadBlogsForType:BlogSelectorButtonTypeQuickPhoto];
         self.blogSelector.delegate = self;
         
@@ -362,7 +361,7 @@
     [picker dismissModalViewControllerAnimated:NO];
     [self saveImage];
     
-    [self.titleTextField becomeFirstResponder];
+    [self.titleTextField performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.f];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
