@@ -80,6 +80,15 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
         }
         
         [self canIHazCookie];
+        
+        self.topicsViewController = [[[WPReaderTopicsViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil] autorelease];
+        self.topicsViewController.delegate = self;
+        if (IS_IPAD)
+            self.detailViewController = [[[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+        else 
+            self.detailViewController = [[[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+        self.detailViewController.delegate = self;
+
     }
     return self;
 }
@@ -114,14 +123,6 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     self.webView.scalesPageToFit = YES;
     [self.webView stringByEvaluatingJavaScriptFromString:@"document.body.style.background = '#F2F2F2';"];
 
-    self.topicsViewController = [[[WPReaderTopicsViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil] autorelease];
-    self.topicsViewController.delegate = self;
-    if (IS_IPAD)
-        self.detailViewController = [[[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
-    else 
-        self.detailViewController = [[[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
-    self.detailViewController.delegate = self;
-
     
     if (self.url) {
         NSString *loaderPath = [[NSBundle mainBundle] pathForResource:@"loader" ofType:@"html"];
@@ -154,13 +155,15 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 - (void)viewDidUnload
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];  
+    [super viewDidUnload];
+    
    	[self setRefreshTimer:nil];
-    self.topicsViewController = nil;
-    self.detailViewController = nil;
+//    self.topicsViewController = nil;
+//    self.detailViewController = nil;
     self.friendFinderNudgeView = nil;
     self.titleButton = nil;
     [self removeNotifications];
-    [super viewDidUnload];
+
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -228,7 +231,6 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     if (title != nil){
         [self setTitle:title];
     }
-    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)setSelectedTopic:(NSString *)topicId;

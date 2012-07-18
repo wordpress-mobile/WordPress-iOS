@@ -39,15 +39,16 @@
 - (void)viewDidLoad {
     WPFLogMethod();
     [super viewDidLoad];
+    
 }
 
 
 - (void)viewDidUnload {
     WPFLogMethod();
-    [_refreshHeaderView release]; _refreshHeaderView = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    [_refreshHeaderView release]; _refreshHeaderView = nil;
 }
 
 
