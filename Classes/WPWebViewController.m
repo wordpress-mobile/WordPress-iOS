@@ -10,8 +10,11 @@
 #import "WordPressAppDelegate.h"
 #import "PanelNavigationConstants.h"
 
-@interface WPWebViewController (Private)
+@class WPReaderDetailViewController;
+
+@interface WPWebViewController ()
 @property (readonly) UIScrollView *scrollView;
+@property (nonatomic, retain) UIActionSheet *linkOptionsActionSheet;
 - (NSString*) getDocumentPermalink;
 - (NSString*) getDocumentTitle;
 - (void)upgradeButtonsAndLabels:(NSTimer*)timer;
@@ -26,6 +29,7 @@
 @synthesize webView, toolbar, statusTimer;
 @synthesize loadingView, loadingLabel, activityIndicator;
 @synthesize iPadNavBar, backButton, forwardButton, refreshButton, optionsButton;
+@synthesize linkOptionsActionSheet = _linkOptionsActionSheet;
 
 - (void)dealloc
 {
@@ -39,6 +43,8 @@
     self.webView.delegate = nil;
     self.webView = nil;
     self.statusTimer = nil;
+    self.linkOptionsActionSheet.delegate = nil;
+    self.linkOptionsActionSheet = nil;
 
     [super dealloc];
 }
@@ -56,42 +62,33 @@
     self.backButton.enabled = NO;
     self.forwardButton.enabled = NO;
 
+    if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+
+        [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
+        [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateHighlighted];
+
+        UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+        [btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+
+        backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+        [btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
+
+        btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
+
+        [btn addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
+
+        self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    } else {
+        self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                            target:self
+                                                                            action:@selector(showLinkOptions)] autorelease];
+    }
+
     if( IS_IPHONE ) {
         //allows the toolbar to become smaller in landscape mode.
         toolbar.autoresizingMask = toolbar.autoresizingMask | UIViewAutoresizingFlexibleHeight;
         
-        /* Do not create a custom back item if the left bar item is already set.  An existing button 
-        // is probably the sidebar button.
-        if ([[UIToolbar class] respondsToSelector:@selector(appearance)] && !self.navigationItem.leftBarButtonItem) {
-  
-            
-        } else {
-
-        }
-        */
-        
-        if (IS_IPHONE && [[UIButton class] respondsToSelector:@selector(appearance)]) {
-            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-            
-            [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
-            [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateHighlighted];
-            
-            UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-            [btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
-            
-            backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-            [btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
-            
-            btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
-            
-            [btn addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
-            
-            self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
-        } else {
-            self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction 
-                                                                                target:self 
-                                                                                action:@selector(showLinkOptions)] autorelease]; 
-        }
         self.navigationItem.rightBarButtonItem = optionsButton;
     } else {
         // We want the refresh button to be borderless, but buttons in navbars want a border.
@@ -106,6 +103,9 @@
 
         refreshButton.customView = btn;
         iPadNavBar.topItem.title = NSLocalizedString(@"Loading...", @"");
+        if ([self isMemberOfClass:NSClassFromString(@"WPReaderDetailViewController")]) {
+            iPadNavBar.topItem.rightBarButtonItem = self.optionsButton;
+        }
     }
     
     if ([forwardButton respondsToSelector:@selector(setTintColor:)]) {
@@ -419,18 +419,21 @@
 }
 
 - (void)showLinkOptions{
+    if (self.linkOptionsActionSheet) {
+        [self.linkOptionsActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
+        self.linkOptionsActionSheet = nil;
+    }
     NSString* permaLink = [self getDocumentPermalink];
     
     if( permaLink == nil || [[permaLink trim] isEqualToString:@""] ) return; //this should never happen
     
-    UIActionSheet *linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:permaLink delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open in Safari", @"Open in Safari"), NSLocalizedString(@"Mail Link", @"Mail Link"),  NSLocalizedString(@"Copy Link", @"Copy Link"), nil];
-    linkOptionsActionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+    self.linkOptionsActionSheet = [[[UIActionSheet alloc] initWithTitle:permaLink delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open in Safari", @"Open in Safari"), NSLocalizedString(@"Mail Link", @"Mail Link"),  NSLocalizedString(@"Copy Link", @"Copy Link"), nil] autorelease];
+    self.linkOptionsActionSheet.actionSheetStyle = UIActionSheetStyleDefault;
     if(IS_IPAD ){
-        [linkOptionsActionSheet showFromBarButtonItem:optionsButton animated:YES];
+        [self.linkOptionsActionSheet showFromBarButtonItem:optionsButton animated:YES];
     } else {
-        [linkOptionsActionSheet showInView:self.view];
+        [self.linkOptionsActionSheet showInView:self.view];
     }
-    [linkOptionsActionSheet  release];
 }
 
 - (void)reload {
