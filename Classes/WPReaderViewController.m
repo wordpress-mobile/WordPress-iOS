@@ -243,7 +243,6 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 - (void)setupTopics
 {
     [self.topicsViewController view];
-    [self.topicsViewController loadTopicsPage];
 
     UIBarButtonItem *button = nil;
     if (IS_IPHONE && [[UIButton class] respondsToSelector:@selector(appearance)]) {

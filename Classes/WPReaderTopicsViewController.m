@@ -25,6 +25,7 @@
     self.navigationItem.rightBarButtonItem = cancelButton;
     [cancelButton release];
     
+    [self loadTopicsPage];
 }
 
 
