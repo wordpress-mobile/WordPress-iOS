@@ -108,6 +108,7 @@
     if (self.photo == nil) {
         [self showPicker];
     } else {
+        self.photoImageView.image = self.photo;
         [self.titleTextField becomeFirstResponder];
     }
 }

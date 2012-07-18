@@ -27,6 +27,6 @@
 }
 
 @property (nonatomic, retain) UIImage *image;
-@property (nonatomic, assign) id<QuickPicturePreviewViewDelegate> delegate;
+@property (nonatomic, assign) IBOutlet id<QuickPicturePreviewViewDelegate> delegate;
 
 @end
