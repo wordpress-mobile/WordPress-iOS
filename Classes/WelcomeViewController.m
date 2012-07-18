@@ -66,7 +66,7 @@
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
     // If there are blogs, this is being shown in the Settings.
     if ([Blog countWithContext:[WordPressAppDelegate sharedWordPressApp].managedObjectContext] > 0) {
-        // HIde the Logo View on the iPhone, there isn't enough room for that and the navigation bar.
+        // Hide the Logo View on the iPhone, there isn't enough room for that and the navigation bar.
         if (IS_IPHONE) {
             self.logoView.hidden = YES;
             CGRect frame = buttonView.frame;
@@ -74,6 +74,10 @@
             buttonView.frame = frame;
         }
         createLabel.text = NSLocalizedString(@"Want to start another blog?", @"");
+    }
+    else if (IS_IPHONE) {
+        // Force the device orientation to Portrait if the full Welcome screen is showing
+        [[UIDevice currentDevice] performSelector:NSSelectorFromString(@"setOrientation:") withObject:(id)UIInterfaceOrientationPortrait];
     }
 }
 
@@ -104,9 +108,11 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     if (IS_IPAD || interfaceOrientation == UIDeviceOrientationPortrait)  
-        return YES; 
-    else  
-        return NO; 
+        return YES;
+    else if (IS_IPHONE && [Blog countWithContext:[WordPressAppDelegate sharedWordPressApp].managedObjectContext] > 0)
+        return YES;
+    else
+        return NO;
 }
 
 
