@@ -33,6 +33,7 @@
 - (void)closeSidebar;
 - (void)showSidebar;
 - (void)toggleSidebar;
+- (void)teaseSidebar;
 - (void)clearDetailViewController;
 
 - (UIToolbar *)toolbarForViewController:(UIViewController *)controller;

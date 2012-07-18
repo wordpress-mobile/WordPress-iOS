@@ -720,6 +720,29 @@
     }
 }
 
+- (void)teaseSidebar {
+    if (IS_IPAD)
+        return;
+
+    [self closeSidebarAnimated:NO];
+    CGRect previousFrame = self.detailView.frame;
+    [UIView animateWithDuration:0.5f
+                          delay:DURATION_FAST
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         CGRect frame = previousFrame;
+                         frame.origin.x += DETAIL_LEDGE;
+                         self.detailView.frame = frame;
+                     } completion:^(BOOL finished) {
+                         [UIView animateWithDuration:DURATION_FAST
+                                               delay:0.f
+                                             options:UIViewAnimationOptionCurveEaseInOut
+                                          animations:^{
+                                              self.detailView.frame = previousFrame;
+                                          } completion:nil];
+                     }];
+}
+
 - (void)centerTapped {
     [self closeSidebar];
 }

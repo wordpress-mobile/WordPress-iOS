@@ -43,6 +43,7 @@
     QuickPhotoButtonView *quickPhotoButton;
     BOOL selectionRestored;
     NSUInteger wantedSection;
+    BOOL _showingWelcomeScreen;
 }
 
 @property (nonatomic, retain) Post *currentQuickPost;
@@ -186,6 +187,13 @@
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated]; 
 
+    if (IS_IPHONE && _showingWelcomeScreen) {
+        _showingWelcomeScreen = NO;
+        static dispatch_once_t sidebarTeaseToken;
+        dispatch_once(&sidebarTeaseToken, ^{
+            [self.panelNavigationController teaseSidebar];
+        });
+    }
     if (!IS_IPAD) {
         // Called here to ensure the section is opened after launch on the iPad.
         static dispatch_once_t onceToken;
@@ -288,6 +296,7 @@
         //ohh poor boy, no blogs yet?
         if ( ! [WordPressComApi sharedApi].username ) {
             //ohh auch! no .COM account? 
+            _showingWelcomeScreen = YES;
             WelcomeViewController *welcomeViewController = nil;
             welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
             [welcomeViewController automaticallyDismissOnLoginActions];
