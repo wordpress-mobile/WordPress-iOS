@@ -86,11 +86,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)viewDidUnload {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-
+    [super viewDidUnload];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [postSettingsController release]; postSettingsController = nil;
-    [postMediaViewController release]; postMediaViewController = nil;
-    [postPreviewViewController release]; postPreviewViewController = nil;
+
     [statuses release]; statuses = nil;
     [spinner release]; spinner = nil;
     self.textView.inputAccessoryView = nil;
@@ -122,7 +121,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.redoButton = nil;
     self.currentActionSheet = nil;
 
-    [super viewDidUnload];
 }
 
 - (void)viewDidLoad {
@@ -150,16 +148,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
         textView.inputAccessoryView = editorToolbar;
     }
 
-    postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
-    postSettingsController.postDetailViewController = self;
-    postSettingsController.view.frame = editView.frame;
+    if(!postSettingsController) {
+        postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
+        postSettingsController.postDetailViewController = self;
+        
+        postMediaViewController = [[PostMediaViewController alloc] initWithNibName:@"PostMediaViewController" bundle:nil];
+        postMediaViewController.postDetailViewController = self;
+        
+        postPreviewViewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController" bundle:nil];
+        postPreviewViewController.postDetailViewController = self;
+    }
     
-    postMediaViewController = [[PostMediaViewController alloc] initWithNibName:@"PostMediaViewController" bundle:nil];
-    postMediaViewController.postDetailViewController = self;
+    postSettingsController.view.frame = editView.frame;
     postMediaViewController.view.frame = editView.frame;
-	
-	postPreviewViewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController" bundle:nil];
-    postPreviewViewController.postDetailViewController = self;
     postPreviewViewController.view.frame = editView.frame;
     
     self.title = [self editorTitle];
@@ -205,11 +206,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		self.hasLocation.enabled = NO;
 	}
 
-    if(self.editMode == kEditPost)
+    if(self.editMode == kEditPost) {
         [self refreshUIForCurrentPost];
-	else if(self.editMode == kNewPost)
+        
+    } else if(self.editMode == kNewPost) {
         [self refreshUIForCompose];
-	else if (self.editMode == kAutorecoverPost) {
+        
+//	} else if (self.editMode == kAutorecoverPost) {
+    } else {
         [self refreshUIForCurrentPost];
 	}
     
@@ -241,6 +245,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillAppear:animated];
+    
 	postSettingsController.view.frame = editView.frame;
     postMediaViewController.view.frame = editView.frame;
     postPreviewViewController.view.frame = editView.frame;
@@ -274,33 +279,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)viewWillDisappear:(BOOL)animated {	
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [super viewWillDisappear:animated];
+    
 	if(self.editMode != kNewPost)
 		self.editMode = kRefreshPost;
+    
 	isVisible = NO;
 	
 	[titleTextField resignFirstResponder];
 	[textView resignFirstResponder];
-    [super viewWillDisappear:animated];
+
 }
-/*
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-	if(IS_IPAD) {
-		return YES;
-	}else if (toInterfaceOrientation == UIInterfaceOrientationPortrait) { 
-		return YES; 
-	}
-	else if ((toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-		if (self.interfaceOrientation != toInterfaceOrientation) {
-			if (isEditing)
-				return YES;
-			else
-				return NO;
-		}
-	}
-	
-	return NO;	
-}
-*/
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
