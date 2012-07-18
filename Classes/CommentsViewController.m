@@ -253,17 +253,11 @@
     
 	if(comment) {
         self.currentIndexPath = indexPath;
-        BOOL commentViewControllerVisible = YES;
-        if (self.commentViewController == nil) {
-            commentViewControllerVisible = NO;
-            self.commentViewController = [[[CommentViewController alloc] init] autorelease];
-            self.commentViewController.delegate = self;
-        }
+        self.commentViewController = [[[CommentViewController alloc] init] autorelease];
+        self.commentViewController.delegate = self;
         [self.commentViewController showComment:comment];
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-        if (!commentViewControllerVisible) {
-            [self.panelNavigationController pushViewController:self.commentViewController fromViewController:self animated:YES];
-        }
+        [self.panelNavigationController pushViewController:self.commentViewController fromViewController:self animated:YES];
     } else {
         [self.panelNavigationController popToViewController:self animated:NO];
     }
