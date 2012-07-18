@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">768</int>
-		<string key="IBDocument.SystemVersion">11E2620</string>
+		<string key="IBDocument.SystemVersion">11E53</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2182</string>
 		<string key="IBDocument.AppKitVersion">1138.47</string>
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
@@ -49,6 +49,7 @@
 						<string key="NSFrame">{{0, 392}, {320, 44}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -104,7 +105,7 @@
 							</object>
 							<object class="IBUIButton" id="742290923">
 								<reference key="NSNextResponder" ref="898074275"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{100, 27}, {210, 17}}</string>
 								<reference key="NSSuperview" ref="898074275"/>
 								<reference key="NSWindow"/>
@@ -114,7 +115,7 @@
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<object class="NSColor" key="IBUIHighlightedTitleColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xMjk0MTE3NjQ3IDAuNDU4ODIzNTI5NCAwLjYwNzg0MzEzNzMAA</bytes>
+									<bytes key="NSRGB">MC4wNjA4NDM5NTgzIDAuMjIzNTUyMjgzNiAwLjI5ODkzNDI3MzEAA</bytes>
 								</object>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
@@ -138,7 +139,7 @@
 							</object>
 							<object class="IBUIButton" id="573811233">
 								<reference key="NSNextResponder" ref="898074275"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{100, 43}, {210, 17}}</string>
 								<reference key="NSSuperview" ref="898074275"/>
 								<reference key="NSWindow"/>
@@ -148,7 +149,7 @@
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<object class="NSColor" key="IBUIHighlightedTitleColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xMjk0MTE3NjQ3IDAuNDU4ODIzNTI5NCAwLjYwNzg0MzEzNzMAA</bytes>
+									<bytes key="NSRGB">MC4wNjA4NDM5NTgzIDAuMjIzNTUyMjgzNiAwLjI5ODkzNDI3MzEAA</bytes>
 								</object>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
@@ -208,7 +209,7 @@
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<object class="NSColor" key="IBUIHighlightedTitleColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xMjk0MTE3NjQ3IDAuNDU4ODIzNTI5NCAwLjYwNzg0MzEzNzMAA</bytes>
+									<bytes key="NSRGB">MC4wNjA4NDM5NTgzIDAuMjIzNTUyMjgzNiAwLjI5ODkzNDI3MzEAA</bytes>
 								</object>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
@@ -233,7 +234,7 @@
 					<object class="IBUIWebView" id="497579078">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{10, 99}, {310, 285}}</string>
+						<string key="NSFrame">{{10, 99}, {300, 285}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="612046044"/>
@@ -257,7 +258,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="673266904">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">290</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -266,7 +267,6 @@
 						<int key="NSvFlags">290</int>
 						<string key="NSFrame">{{20, 0}, {320, 44}}</string>
 						<reference key="NSSuperview" ref="673266904"/>
-						<reference key="NSWindow"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MCAwIDAgMAA</bytes>
@@ -299,8 +299,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 45}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="301925908"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -577,9 +575,12 @@
 					<string>130.IBPluginDependency</string>
 					<string>132.IBPluginDependency</string>
 					<string>134.IBPluginDependency</string>
+					<string>134.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
 					<string>140.IBPluginDependency</string>
+					<string>140.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
 					<string>162.IBPluginDependency</string>
 					<string>172.IBPluginDependency</string>
+					<string>172.IBUIButtonInspectorSelectedStateConfigurationMetadataKey</string>
 					<string>179.IBPluginDependency</string>
 					<string>27.IBPluginDependency</string>
 					<string>86.IBPluginDependency</string>
@@ -598,9 +599,12 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<real value="1"/>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<real value="1"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<real value="1"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -632,19 +636,11 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>handlePostTitleButtonTapped:</string>
-							<string>launchDeleteCommentActionSheet</string>
-							<string>launchEditComment:</string>
-							<string>launchReplyToComments</string>
 							<string>sendEmail</string>
-							<string>spamComment:</string>
 							<string>viewURL</string>
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -655,11 +651,7 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>handlePostTitleButtonTapped:</string>
-							<string>launchDeleteCommentActionSheet</string>
-							<string>launchEditComment:</string>
-							<string>launchReplyToComments</string>
 							<string>sendEmail</string>
-							<string>spamComment:</string>
 							<string>viewURL</string>
 						</object>
 						<object class="NSArray" key="dict.values">
@@ -669,23 +661,7 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">launchDeleteCommentActionSheet</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">launchEditComment:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">launchReplyToComments</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
 								<string key="name">sendEmail</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">spamComment:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
