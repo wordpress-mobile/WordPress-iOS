@@ -115,7 +115,7 @@
     UIBarButtonItem *approveButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_approve"] style:UIBarButtonItemStylePlain target:self action:@selector(approveComment)] autorelease];
     UIBarButtonItem *deleteButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_delete"] style:UIBarButtonItemStylePlain target:self action:@selector(launchDeleteCommentActionSheet)] autorelease];
     UIBarButtonItem *spamButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_flag"] style:UIBarButtonItemStylePlain target:self action:@selector(spamComment)] autorelease];
-    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_write"] style:UIBarButtonItemStylePlain target:self action:@selector(launchEditComment)] autorelease];
+    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_edit"] style:UIBarButtonItemStylePlain target:self action:@selector(launchEditComment)] autorelease];
     UIBarButtonItem *replyButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_reply"] style:UIBarButtonItemStylePlain target:self action:@selector(launchReplyToComments)] autorelease];
     UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
     [toolbar setItems: [NSArray arrayWithObjects:approveButton, spacer, deleteButton, spacer, spamButton, spacer, editButton, spacer, replyButton, nil]];
