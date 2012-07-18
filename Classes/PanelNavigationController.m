@@ -844,7 +844,6 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     if (gestureRecognizer == self.panner || gestureRecognizer.view == self.detailTapper) {
         _panOrigin = _stackOffset;
-        NSLog(@"panOrigin: %.0f", _panOrigin);
         _panned = NO;
     }
     return YES;
@@ -871,7 +870,6 @@
     }
     CGPoint p = [sender translationInView:self.rootViewController.view];
     CGFloat offset = _panOrigin - p.x;
-    NSLog(@"offset: %.1f", offset);
     
     /*
      Step 1: setup boundaries
@@ -880,8 +878,6 @@
     CGFloat minHard = [self minOffsetHard];
     CGFloat maxSoft = [self maxOffsetSoft];
     CGFloat maxHard = [self maxOffsetHard];
-    NSLog(@"min [%.1f,%.1f] max[%.1f,%.1f]", minSoft, minHard, maxSoft, maxHard);
-    NSLog(@"before adjusting: %.1f", offset);
     CGFloat limitOffset = MAX(minSoft, MIN(maxSoft, offset));
     CGFloat diff = ABS(ABS(offset) - ABS(limitOffset));
     // if we're outside the allowed bounds
@@ -890,9 +886,7 @@
         diff = diff / logf(diff + 1) * 2;
         offset = limitOffset + (offset < limitOffset ? -diff : diff);
     }
-    NSLog(@"after soft adjusting: %.1f", offset);
     offset = MAX(minHard, MIN(maxHard, offset));
-    NSLog(@"after hard adjusting: %.1f", offset);
     
     if (IS_IPAD) {
         if (offset < 0 && offset <= -120.0f) {
@@ -1012,7 +1006,6 @@
     }
     view.frame = frame;
     [self prepareDetailView:view forController:viewController]; // Call this again to fix the masking bounds set for rounded corners.
-    NSLog(@"Frame Set For View Controller : %.1f %.1f %.1f %.1f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 }
 
 - (void)setViewOffset:(CGFloat)offset forView:(UIView *)view {
@@ -1154,7 +1147,6 @@
 
 
 - (CGFloat)nearestValidOffsetWithVelocity:(CGFloat)velocity {
-    NSLog(@"nearest with velocity: %.2f", velocity);
     CGFloat offset = 0;
 
     // If we're working with wide panels we need to adjust the offset for the wide panel
