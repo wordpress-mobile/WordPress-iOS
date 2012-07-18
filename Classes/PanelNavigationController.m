@@ -1397,7 +1397,6 @@
     [viewController setPanelNavigationController:self];
     
     if (self.navigationController) {
-        [viewController setPanelNavigationController:self];
         [self.navigationController pushViewController:viewController animated:animated];
     } else {
         UIView *topView;
