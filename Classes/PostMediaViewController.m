@@ -61,7 +61,7 @@
 - (void)initObjects {
 	photos = [[NSMutableArray alloc] init];
 	videos = [[NSMutableArray alloc] init];
-	picker = [[WPImagePickerController alloc] init];
+	picker = [[UIImagePickerController alloc] init];
 	picker.delegate = self;
 	picker.allowsEditing = NO;
 }

@@ -2,7 +2,6 @@
 #import "Reachability.h"
 #import "NSString+Helpers.h"
 #import "CPopoverManager.h"
-//#import "UIViewController_iPadExtensions.h"
 #import "BetaUIWindow.h"
 #import "MigrateBlogsFromFiles.h"
 //#import "InAppSettings.h"

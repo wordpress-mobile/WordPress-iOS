@@ -16,7 +16,6 @@
 #import "UIImage+Resize.h"
 #import "WordPressAppDelegate.h"
 #import "MediaObjectViewController.h"
-#import "WPImagePickerController.h"
 
 typedef void (^ALAssetsLibraryAssetForURLResultBlock)(ALAsset *asset);
 typedef void (^ALAssetsLibraryAccessFailureBlock)(NSError *error);

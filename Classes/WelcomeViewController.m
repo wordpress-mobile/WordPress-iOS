@@ -14,8 +14,6 @@
 #import "EditSiteViewController.h"
 #import "WebSignupViewController.h"
 #import "WPcomLoginViewController.h"
-#import "XMLSignupViewController.h"
-
 
 @interface WelcomeViewController () <WPcomLoginViewControllerDelegate> {
     WordPressAppDelegate *appDelegate;
