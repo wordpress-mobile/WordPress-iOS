@@ -55,7 +55,7 @@
 
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [self.comment removeObserver:self forKeyPath:@"status"];
+//    [self.comment removeObserver:self forKeyPath:@"status"];
     self.comment = nil;
     [segmentedControl release];
     [segmentBarItem release];
