@@ -16,6 +16,8 @@
     IBOutlet UIButton *settingsButton;
     IBOutlet UIView *utililtyView;
     NSUInteger openSectionIdx;
+    NSIndexPath *currentIndexPath;
+    BOOL restoringView;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;

@@ -1,4 +1,4 @@
-//
+    //
 //  SidebarViewController.m
 //  WordPress
 //
@@ -52,6 +52,7 @@
 @property (nonatomic, assign) SectionInfo *openSection;
 @property (nonatomic, strong) NSMutableArray *sectionInfoArray;
 @property (readonly) NSInteger topSectionRowCount;
+@property (nonatomic, retain) NSIndexPath *currentIndexPath;
 
 - (SectionInfo *)sectionInfoForBlog:(Blog *)blog;
 - (void)addSectionInfoForBlog:(Blog *)blog;
@@ -82,6 +83,7 @@
 @synthesize tableView, settingsButton, quickPhotoButton;
 @synthesize currentQuickPost = _currentQuickPost;
 @synthesize utililtyView;
+@synthesize currentIndexPath;
 
 - (void)dealloc {
     self.resultsController.delegate = nil;
@@ -90,6 +92,7 @@
     self.tableView = nil;
     self.settingsButton = nil;
     self.quickPhotoButton = nil;
+    self.currentIndexPath = nil;
     
     [super dealloc];
 }
@@ -111,7 +114,7 @@
     utililtyView.layer.shadowPath = [[UIBezierPath bezierPathWithRoundedRect:utililtyView.bounds cornerRadius:PANEL_CORNER_RADIUS] CGPath];
         
     //self.view.backgroundColor = SIDEBAR_BGCOLOR;
-    self.openSection = nil;
+//    self.openSection = nil;
     
     // create the sectionInfoArray, stores data for collapsing/expanding sections in the tableView
 	if (self.sectionInfoArray == nil) {
@@ -142,6 +145,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCameraPlusImages:) name:kCameraPlusImagesNotification object:nil];
     //Crash Report Notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissCrashReporter:) name:@"CrashReporterIsFinished" object:nil];
+    
+    if (currentIndexPath) {
+        // If we are restoring the view after a memory warning we want to try to set the tableview back to the selected row and section
+        // Since controllerDidChangeContent will be triggered after the view is recreated, we want to restore our place from there, 
+        // and not here. 
+        restoringView = YES;
+    }
 }
 
 - (void)viewDidUnload {
@@ -153,7 +163,7 @@
     self.quickPhotoButton.delegate = nil;
     self.quickPhotoButton = nil;
     
-    self.sectionInfoArray = nil;
+//    self.sectionInfoArray = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -790,6 +800,8 @@
 - (void) processRowSelectionAtIndexPath:(NSIndexPath *)indexPath closingSidebar:(BOOL)closingSidebar {
     WPFLog(@"%@ %@ %@", self, NSStringFromSelector(_cmd), indexPath);
     
+    self.currentIndexPath = indexPath;
+    
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:indexPath.row], @"row", [NSNumber numberWithInteger:indexPath.section], @"section", nil];
     [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"kSelectedSidebarIndexDictionary"];
     [NSUserDefaults resetStandardUserDefaults];
@@ -970,6 +982,11 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
+    if (restoringView && currentIndexPath) {
+        restoringView = NO;
+        [[self tableView] selectRowAtIndexPath:currentIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        return;
+    }
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     if (indexPath) {
         if (indexPath.section != wantedSection) {
