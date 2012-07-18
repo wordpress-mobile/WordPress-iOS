@@ -75,10 +75,6 @@
         }
         createLabel.text = NSLocalizedString(@"Want to start another blog?", @"");
     }
-    else if (IS_IPHONE) {
-        // Force the device orientation to Portrait if the full Welcome screen is showing
-        [[UIDevice currentDevice] performSelector:NSSelectorFromString(@"setOrientation:") withObject:(id)UIInterfaceOrientationPortrait];
-    }
 }
 
 
