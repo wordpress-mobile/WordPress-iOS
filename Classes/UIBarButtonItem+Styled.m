@@ -17,6 +17,12 @@
     if (self) {
         if (style == UIBarButtonItemStyleDone) {
             [[self class] styleButtonAsPrimary:self];
+        } else if (style == UIBarButtonItemStylePlain) {
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            [button setFrame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)];
+            [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+            [button setImage:image forState:UIControlStateNormal];
+            [self setCustomView:button];
         }
     }
     return self;

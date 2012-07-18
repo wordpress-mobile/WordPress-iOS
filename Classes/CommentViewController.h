@@ -30,13 +30,7 @@
 	IBOutlet UIView *labelHolder;
 	IBOutlet UILabel *pendingLabel;
 	IBOutlet UIView *pendingLabelHolder;
-
-    IBOutlet UIBarButtonItem *approveButton;
-    IBOutlet UIBarButtonItem *actionButton;
-    IBOutlet UIBarButtonItem *replyButton;
-    IBOutlet UIBarButtonItem *trashButton;
-    IBOutlet UIBarButtonItem *spamButton;
-    IBOutlet UIBarButtonItem *editButton;
+    IBOutlet UIToolbar *toolbar;
 
     UIBarButtonItem *segmentBarItem;
     UISegmentedControl *segmentedControl;
@@ -46,13 +40,14 @@
 	//to control whether
 	BOOL wasLastCommentPending;
 	BOOL isVisible;
+    BOOL isShowingActionSheet;
 }
 
 
-- (IBAction)launchReplyToComments;
-- (IBAction)launchDeleteCommentActionSheet;
-- (IBAction)launchEditComment:(id)sender;
-- (IBAction)spamComment:(id)sender;
+- (void)launchReplyToComments;
+- (void)launchDeleteCommentActionSheet;
+- (void)launchEditComment;
+- (void)spamComment;
 - (IBAction)viewURL;
 - (IBAction)sendEmail;
 - (IBAction)handlePostTitleButtonTapped:(id)sender;
@@ -63,9 +58,9 @@
 - (void)closeReplyViewAndSelectTheNewComment;
 - (void)cancelView:(id)sender;
 
-- (void)deleteComment:(id)sender;
-- (void)approveComment:(id)sender;
-- (void)unApproveComment:(id)sender;
+- (void)deleteComment;
+- (void)approveComment;
+- (void)unApproveComment;
 - (void)addOrRemoveSegmentedControl;
 
 @property (nonatomic, retain) ReplyToCommentViewController *replyToCommentViewController;
@@ -77,6 +72,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *commentPostTitleButton;
 @property (nonatomic, retain) IBOutlet UILabel *commentPostTitleLabel;
 @property (nonatomic, assign) id<CommentViewControllerDelegate> delegate;
+@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 
 @property BOOL wasLastCommentPending;
 @property BOOL isVisible;

@@ -13,6 +13,7 @@
 #import "UIImageView+Gravatar.h"
 #import "SFHFKeychainUtils.h"
 #import "UIColor+Helpers.h"
+#import "UIBarButtonItem+Styled.h"
 
 #define COMMENT_BODY_TOP        100
 #define COMMENT_BODY_MAX_HEIGHT 4000
@@ -26,10 +27,6 @@
 - (BOOL)isConnectedToHost;
 - (BOOL)isApprove;
 - (void)moderateCommentWithSelector:(SEL)selector;
-- (void)deleteThisComment;
-- (void)approveThisComment;
-- (void)markThisCommentAsSpam;
-- (void)unapproveThisComment;
 - (void)cancel;
 - (void)discard;
 
@@ -51,7 +48,7 @@
 @synthesize replyToCommentViewController, editCommentViewController, commentsViewController, wasLastCommentPending, commentAuthorUrlButton, commentAuthorEmailButton;
 @synthesize commentPostTitleButton, commentPostTitleLabel;
 @synthesize comment = _comment, isVisible;
-@synthesize delegate;
+@synthesize delegate, toolbar;
 
 #pragma mark -
 #pragma mark View Lifecycle
@@ -72,7 +69,7 @@
 	commentBodyWebView.delegate = nil;
     [commentBodyWebView stopLoading];
     [commentBodyWebView release];
-   
+    [toolbar release];
     [super dealloc];
 }
 
@@ -113,19 +110,18 @@
 	for(UIView *wview in [[[commentBodyWebView subviews] objectAtIndex:0] subviews]) { 
 		if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; } 
 	}
-
+    
+    //toolbar items
+    UIBarButtonItem *approveButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_approve"] style:UIBarButtonItemStylePlain target:self action:@selector(approveComment)] autorelease];
+    UIBarButtonItem *deleteButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_delete"] style:UIBarButtonItemStylePlain target:self action:@selector(launchDeleteCommentActionSheet)] autorelease];
+    UIBarButtonItem *spamButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_flag"] style:UIBarButtonItemStylePlain target:self action:@selector(spamComment)] autorelease];
+    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_write"] style:UIBarButtonItemStylePlain target:self action:@selector(launchEditComment)] autorelease];
+    UIBarButtonItem *replyButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_reply"] style:UIBarButtonItemStylePlain target:self action:@selector(launchReplyToComments)] autorelease];
+    UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+    [toolbar setItems: [NSArray arrayWithObjects:approveButton, spacer, deleteButton, spacer, spamButton, spacer, editButton, spacer, replyButton, nil]];
+    
     if (self.comment) {
         [self showComment:self.comment];
-    }
-    
-    if ([approveButton respondsToSelector:@selector(setTintColor:)]) {
-        UIColor *color = [UIColor UIColorFromHex:0x464646];
-        approveButton.tintColor = color;
-        actionButton.tintColor = color;
-        replyButton.tintColor = color;
-        trashButton.tintColor = color;
-        spamButton.tintColor = color;
-        editButton.tintColor = color;
     }
 }
 
@@ -136,12 +132,6 @@
         [_reachabilityToken release]; _reachabilityToken = nil;
     }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [approveButton release]; approveButton = nil;
-    [actionButton release]; actionButton = nil;
-    [replyButton release]; replyButton = nil;
-    [trashButton release]; trashButton = nil;
-    [spamButton release]; spamButton = nil;
-    [editButton release]; editButton = nil;
     [segmentedControl release]; segmentedControl = nil;
     [gravatarImageView release]; gravatarImageView = nil;
     self.commentAuthorEmailButton = nil;
@@ -181,9 +171,13 @@
 #pragma mark Reachability
 
 - (void)reachabilityChanged:(BOOL)reachable {
-    approveButton.enabled = reachable;
-    replyButton.enabled = reachable;
-    actionButton.enabled = reachable;
+    
+    for (int i=0;i < [[toolbar items] count]; i++) {
+        if ([[[toolbar items] objectAtIndex:i] isKindOfClass:[UIBarButtonItem class]]) {
+            UIBarButtonItem *button = [[toolbar items] objectAtIndex:i];
+            button.enabled = reachable;
+        }
+    }
     if (reachable) {
         // Load gravatar if it wasn't loaded yet
         [gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim]];
@@ -195,11 +189,11 @@
 #pragma mark UIActionSheetDelegate methods
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-	
+
 //handle action sheet from trash button
 	if ([actionSheet tag] == 501) {
 		if (buttonIndex == 0) {
-			[self deleteComment:nil];
+			[self deleteComment];
 		}
 		
 		if (buttonIndex == 1) {
@@ -237,6 +231,7 @@
     
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:NO];
+    isShowingActionSheet = NO;
 }
 
 
@@ -331,14 +326,14 @@
         else
             [actionSheet showInView:editCommentViewController.view];
 	}
-	
+	isShowingActionSheet = YES;
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:YES];
 	
     [actionSheet release];
 }
 
-- (IBAction)launchEditComment:(id)sender {
+- (void)launchEditComment {
 	[self showEditCommentViewWithAnimation:YES];
 }
 
@@ -402,40 +397,41 @@
 }
 
 - (void)launchDeleteCommentActionSheet {
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this comment?", @"")
-															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
-											   destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
-													otherButtonTitles:nil];
-    actionSheet.tag = 501;
-    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-    if (IS_IPAD)
-        [actionSheet showFromBarButtonItem:trashButton animated:YES];
-    else 
-        [actionSheet showInView:self.view];
-	
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:YES];
-	
-    [actionSheet release];
-	
+    if (!isShowingActionSheet) {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this comment?", @"")
+                                                                 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+                                                   destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
+                                                        otherButtonTitles:nil];
+        actionSheet.tag = 501;
+        actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+        if (IS_IPAD)
+            [actionSheet showFromBarButtonItem:[[toolbar items] objectAtIndex: 2] animated:YES];
+        else 
+            [actionSheet showInView:self.view];
+        isShowingActionSheet = YES;
+        WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+        [appDelegate setAlertRunning:YES];
+        
+        [actionSheet release];
+    }
 }
 
-- (void)deleteComment:(id)sender {
+- (void)deleteComment {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentWithSelector:@selector(remove)];
 }
 
-- (void)approveComment:(id)sender {
+- (void)approveComment {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentWithSelector:@selector(approve)];
 }
 
-- (void)unApproveComment:(id)sender {
+- (void)unApproveComment {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentWithSelector:@selector(unapprove)];
 }
 
-- (IBAction)spamComment:(id)sender {
+- (void)spamComment {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentWithSelector:@selector(spam)];
 }
@@ -666,14 +662,31 @@
 		[self removePendingLabel];
     }
 
-    [approveButton setTarget:self];
-    if ([self isApprove]) {
-        [approveButton setImage:[UIImage imageNamed:@"approve.png"]];
-        [approveButton setAction:@selector(approveComment:)];
-	} else {
-        [approveButton setImage:[UIImage imageNamed:@"unapprove.png"]];
-        [approveButton setAction:@selector(unApproveComment:)];
-	}
+    if ([[UIBarButtonItem class] respondsToSelector: @selector(appearance)]) {
+        UIButton *button = (UIButton*)[[[toolbar items] objectAtIndex:0] customView];
+        if (button != nil) {
+            if ([self isApprove]) {
+                [button setImage:[UIImage imageNamed:@"toolbar_approve"] forState:UIControlStateNormal];
+                [button addTarget:self action:@selector(approveComment) forControlEvents:UIControlEventTouchUpInside];
+                
+            } else {
+                [button setImage:[UIImage imageNamed:@"toolbar_unapprove"] forState:UIControlStateNormal];
+                [button addTarget:self action:@selector(unApproveComment) forControlEvents:UIControlEventTouchUpInside];
+            }
+        }
+    } else {
+        UIBarButtonItem *approveButton = [[toolbar items] objectAtIndex:0];
+        if (approveButton != nil) {
+            [approveButton setTarget:self];
+            if ([self isApprove]) {
+                [approveButton setImage:[UIImage imageNamed:@"toolbar_approve"]];
+                [approveButton setAction:@selector(approveComment)];
+            } else {
+                [approveButton setImage:[UIImage imageNamed:@"toolbar_unapprove"]];
+                [approveButton setAction:@selector(unApproveComment)];
+            }
+        }
+    }
     
     [segmentedControl setEnabled:[self.delegate hasPreviousComment] forSegmentAtIndex:0];
     [segmentedControl setEnabled:[self.delegate hasNextComment] forSegmentAtIndex:1];

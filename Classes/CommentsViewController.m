@@ -13,6 +13,7 @@
 #import "Reachability.h"
 #import "ReplyToCommentViewController.h"
 #import "UIColor+Helpers.h"
+#import "UIBarButtonItem+Styled.h"
 
 @interface CommentsViewController () <CommentViewControllerDelegate>
 @property (nonatomic,retain) CommentViewController *commentViewController;
@@ -62,14 +63,6 @@
     unapproveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_unapprove"] style:UIBarButtonItemStylePlain target:self action:@selector(unapproveSelectedComments:)];
     approveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_approve"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
     deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_delete"] style:UIBarButtonItemStylePlain target:self action:@selector(deleteSelectedComments:)];
-    
-    if ([spamButton respondsToSelector:@selector(setTintColor:)]) {
-        UIColor *color = [UIColor UIColorFromHex:0x222222];
-        spamButton.tintColor = color;
-        unapproveButton.tintColor = color;
-        approveButton.tintColor = color;
-        deleteButton.tintColor = color;
-    }
 
     if (IS_IPHONE) {
         UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
