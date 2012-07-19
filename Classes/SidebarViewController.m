@@ -1,4 +1,4 @@
-    //
+//
 //  SidebarViewController.m
 //  WordPress
 //
@@ -41,6 +41,7 @@
 
 @interface SidebarViewController () <NSFetchedResultsControllerDelegate, QuickPhotoButtonViewDelegate> {
     QuickPhotoButtonView *quickPhotoButton;
+    UIActionSheet *quickPhotoActionSheet;
     BOOL selectionRestored;
     NSUInteger wantedSection;
     BOOL _showingWelcomeScreen;
@@ -48,6 +49,7 @@
 
 @property (nonatomic, retain) Post *currentQuickPost;
 @property (nonatomic, retain) QuickPhotoButtonView *quickPhotoButton;
+@property (nonatomic, retain) UIActionSheet *quickPhotoActionSheet;
 @property (nonatomic, retain) NSFetchedResultsController *resultsController;
 @property (nonatomic, assign) SectionInfo *openSection;
 @property (nonatomic, strong) NSMutableArray *sectionInfoArray;
@@ -84,6 +86,7 @@
 @synthesize currentQuickPost = _currentQuickPost;
 @synthesize utililtyView;
 @synthesize currentIndexPath;
+@synthesize quickPhotoActionSheet;
 
 - (void)dealloc {
     self.resultsController.delegate = nil;
@@ -93,6 +96,7 @@
     self.settingsButton = nil;
     self.quickPhotoButton = nil;
     self.currentIndexPath = nil;
+    self.quickPhotoActionSheet = nil;
     
     [super dealloc];
 }
@@ -162,14 +166,10 @@
     self.utililtyView = nil;
     self.quickPhotoButton.delegate = nil;
     self.quickPhotoButton = nil;
+    self.quickPhotoActionSheet = nil;
     
 //    self.sectionInfoArray = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -210,6 +210,22 @@
         dispatch_once(&onceToken, ^{
             [self restorePreservedSelection];
         });
+    }
+}
+
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+}
+
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    if (quickPhotoActionSheet) {
+        // The quickphoto actionsheet is showing but its location is probably off
+        // due to the rotation. Just represent it.
+        [self quickPhotoButtonViewTapped:nil];
     }
 }
 
@@ -426,9 +442,14 @@
 
 - (void)quickPhotoButtonViewTapped:(QuickPhotoButtonView *)sender {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+
+    if (quickPhotoActionSheet) {
+        // Dismiss the previous action sheet without invoking a button click.
+        [quickPhotoActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
+    }
     
 	UIActionSheet *actionSheet = nil;
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         if ([[CameraPlusPickerManager sharedManager] cameraPlusPickerAvailable]) {
             actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
                                                       delegate:self 
@@ -448,7 +469,12 @@
 	}
     
     actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-    [actionSheet showInView:self.panelNavigationController.view];
+    if (IS_IPAD) {
+        [actionSheet showFromRect:quickPhotoButton.frame inView:utililtyView animated:YES];
+    } else {
+        [actionSheet showInView:self.panelNavigationController.view];        
+    }
+    self.quickPhotoActionSheet = actionSheet;
     [actionSheet release];
     
 //    [appDelegate setAlertRunning:YES];
@@ -586,6 +612,7 @@
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    self.quickPhotoActionSheet = nil;
     if(buttonIndex == 0) {
         [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary];
     } else if(buttonIndex == 1) {
