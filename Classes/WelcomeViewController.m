@@ -14,6 +14,7 @@
 #import "EditSiteViewController.h"
 #import "WebSignupViewController.h"
 #import "WPcomLoginViewController.h"
+#import "WordPressComApi.h"
 
 @interface WelcomeViewController () <WPcomLoginViewControllerDelegate> {
     WordPressAppDelegate *appDelegate;
@@ -90,7 +91,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if ([Blog countWithContext:[WordPressAppDelegate sharedWordPressApp].managedObjectContext] <= 0)
+    if ([Blog countWithContext:[WordPressAppDelegate sharedWordPressApp].managedObjectContext] <= 0 && ( ![WordPressComApi sharedApi].username ) )
         [self.navigationController setNavigationBarHidden:YES animated:animated];
 }   
 
