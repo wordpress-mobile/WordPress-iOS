@@ -47,8 +47,13 @@ CGFloat const BadgeHeight = 24.f;
         self.userInteractionEnabled = YES;
         
         CGFloat blavatarOffset = (frame.size.height - BlavatarHeight) / 2.f;
-        blavatarView = [[UIImageView alloc] initWithFrame:CGRectMake(blavatarOffset, blavatarOffset, BlavatarHeight, BlavatarHeight)];
-        [blavatarView setAlpha:0.65f];
+        blavatarView = [[UIImageView alloc] initWithFrame:CGRectMake(8.f, blavatarOffset, BlavatarHeight, BlavatarHeight)]; // 8.f is the x position calculated from regular row height
+        [blavatarView setAlpha:0.5f];
+        blavatarView.layer.shadowColor = [UIColor blackColor].CGColor;
+        blavatarView.layer.shadowOffset = CGSizeMake(0, 1);
+        blavatarView.layer.shadowOpacity = 0.5;
+        blavatarView.layer.shadowRadius = 1.0;
+        blavatarView.clipsToBounds = NO;
         [blavatarView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
         [self addSubview: blavatarView];
         
@@ -202,10 +207,11 @@ CGFloat const BadgeHeight = 24.f;
     if (self.disclosureButton.selected) {
         [self.titleLabel setTextColor:[UIColor whiteColor]];
         [blavatarView setAlpha:1.0f];
+        blavatarView.layer.shadowOpacity = 1;
     }
     else {
         [self.titleLabel setTextColor:[UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0]];
-        [blavatarView setAlpha:0.65f];
+        [blavatarView setAlpha:0.5f];
     }
     
     // If this was a user action, send the delegate the appropriate message.
