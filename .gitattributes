@@ -181,6 +181,8 @@ Classes/UIImageView+Gravatar.h -text
 Classes/UIImageView+Gravatar.m -text
 Classes/UINavigationBar+Styled.h -text
 Classes/UINavigationBar+Styled.m -text
+Classes/UIPopoverController+Styled.h -text
+Classes/UIPopoverController+Styled.m -text
 Classes/UITableViewActivityCell.h -text
 Classes/UITableViewActivityCell.m -text
 Classes/UITableViewSwitchCell.h -text

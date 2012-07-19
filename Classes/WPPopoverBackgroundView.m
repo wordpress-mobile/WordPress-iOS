@@ -15,7 +15,7 @@
 @synthesize borderImageView;
 @synthesize arrowImageView;
 
-#define CONTENT_INSET 10.0f
+#define CONTENT_INSET 8.0f
 #define CAP_INSET 30.0f
 #define ARROW_BASE 30.0f
 #define ARROW_HEIGHT 16.0f

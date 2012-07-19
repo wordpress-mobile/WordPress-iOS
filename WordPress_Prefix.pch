@@ -23,6 +23,7 @@
     #import "WPError.h"
     #import "UIColor+Helpers.h"
     #import "PanelNavigationController.h"
+    #import "UIPopoverController+Styled.h"
 
 #ifdef DEBUG
 #define _AFNETWORKING_ALLOW_INVALID_SSL_CERTIFICATES_

@@ -64,7 +64,7 @@
     
     if ([[editButton class] respondsToSelector:@selector(appearance)]) {
         [editButton setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-        [editButton setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_active"] forState:UIControlStateSelected barMetrics:UIBarMetricsDefault];
+        [editButton setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_active"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
         
         [editButton setTitleTextAttributes:
          [NSDictionary dictionaryWithObjectsAndKeys:
