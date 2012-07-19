@@ -37,6 +37,7 @@ typedef void (^CancelBlock)();
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
     // register for a notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(facebookDidLogIn:) name:kFacebookLoginNotificationName object:nil];
@@ -48,14 +49,10 @@ typedef void (^CancelBlock)();
 
 - (void)viewDidUnload
 {
+    [super viewDidUnload];
     // remove notification
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.dismissBlock = nil;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
 }
 
 - (void)dismissFriendFinder:(id)sender

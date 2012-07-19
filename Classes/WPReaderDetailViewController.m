@@ -7,9 +7,11 @@
 //
 
 #import "WPReaderDetailViewController.h"
-
+#import "WPWebBridge.h"
 
 @interface WPReaderDetailViewController ()
+
+@property (nonatomic, retain) WPWebBridge *webBridge;
 
 - (void)loadNextItem:(id)sender;
 - (void)loadPreviousItem:(id)sender;
@@ -25,11 +27,15 @@
 
 - (void)dealloc
 {
+    self.webBridge.delegate = nil;
+    self.webBridge = nil;
     self.currentItem = nil;
     [super dealloc];
 }
 
 - (void)viewDidLoad {
+    self.webBridge = [WPWebBridge bridge];
+    self.webBridge.delegate = self;
     [super viewDidLoad];
 }
 
@@ -37,7 +43,7 @@
 {
     self.detailContent = @"";
     [super viewWillAppear:animated];
-    
+
     self.forwardButton.target = self;
     self.forwardButton.action = @selector(loadNextItem:);
     
@@ -73,10 +79,23 @@
     [self prepareViewForItem];
 }
 
-- (void)setViewTitle:(NSString *)title
+- (void)setTitle:(NSString *)title
 {
-    self.title = title;
+    super.title = title;
     self.navigationItem.title = title;
+    if (IS_IPAD) {
+        self.iPadNavBar.topItem.title = title;
+    }
 }
+
+- (BOOL)webView:(UIWebView *)view shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if ([self.webBridge handlesRequest:request]) {
+        return NO;
+    }
+    
+    return [super webView:view shouldStartLoadWithRequest:request navigationType:navigationType];
+    
+}
+
 
 @end

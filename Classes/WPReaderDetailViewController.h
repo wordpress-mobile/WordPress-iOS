@@ -24,6 +24,4 @@
 @property (nonatomic, assign) id<WPReaderDetailViewControllerDelegate> delegate;
 @property (nonatomic, retain) id currentItem;
 
-- (void)setViewTitle:(NSString *)title;
-
 @end

@@ -238,6 +238,8 @@ Classes/WPTableViewController.m -text
 Classes/WPTableViewControllerSubclass.h -text
 Classes/WPWebAppViewController.h -text
 Classes/WPWebAppViewController.m -text
+Classes/WPWebBridge.h -text
+Classes/WPWebBridge.m -text
 Classes/WPWebView.h -text
 Classes/WPWebView.m -text
 Classes/WPWebViewController.h -text

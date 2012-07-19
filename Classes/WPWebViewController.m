@@ -433,10 +433,7 @@
     self.linkOptionsActionSheet = [[[UIActionSheet alloc] initWithTitle:permaLink delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open in Safari", @"Open in Safari"), NSLocalizedString(@"Mail Link", @"Mail Link"),  NSLocalizedString(@"Copy Link", @"Copy Link"), nil] autorelease];
     self.linkOptionsActionSheet.actionSheetStyle = UIActionSheetStyleDefault;
     if(IS_IPAD ){
-        if ([[toolbar items] count] >= 4) {
-            UIBarButtonItem *actionButton = [[toolbar items] objectAtIndex:3];
-            [self.linkOptionsActionSheet showFromBarButtonItem:actionButton animated:YES];
-        }
+        [self.linkOptionsActionSheet showFromBarButtonItem:self.optionsButton animated:YES];
     } else {
         [self.linkOptionsActionSheet showInView:self.view];
     }

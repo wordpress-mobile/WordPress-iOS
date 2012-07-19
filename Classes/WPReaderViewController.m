@@ -321,7 +321,6 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 - (void)showArticleDetails:(id)item
 {
     NSDictionary *article = (NSDictionary *)item;
-    NSLog(@"Show detail view: %@", article);
     [self.panelNavigationController popToRootViewControllerAnimated:NO];
     self.detailViewController.currentItem = [article JSONString];
     [self.panelNavigationController pushViewController:self.detailViewController animated:YES];
@@ -402,7 +401,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     // load the topics page
     [self.detailViewController view];
     [self.topicsViewController loadTopicsPage];
-    request = [self authorizeHybridRequest:request];
+    request = [self.webBridge authorizeHybridRequest:request];
     [self.webView loadRequest:request];
     [self setupTopics];
 
@@ -451,7 +450,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 #pragma mark - UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)theWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    [FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), [[request URL] absoluteString]];
+    [FileLogger log:@"%@ %@: %@://%@%@", self, NSStringFromSelector(_cmd), [[request URL] scheme], [[request URL] host], [[request URL] path]];
     
     NSURL *requestedURL = [request URL];
     NSString *requestedURLAbsoluteString = [requestedURL absoluteString];

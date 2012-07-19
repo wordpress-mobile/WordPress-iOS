@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "EGORefreshTableHeaderView.h"
+#import "WPWebBridge.h"
 
 
 @interface WPWebAppViewController : UIViewController <UIWebViewDelegate, EGORefreshTableHeaderDelegate, UIScrollViewDelegate>
@@ -20,20 +21,14 @@
 @property (nonatomic, retain) IBOutlet UIWebView *webView;
 @property (nonatomic, assign) BOOL loading;
 @property (nonatomic, retain) NSDate *lastWebViewRefreshDate;
+@property (nonatomic, retain) WPWebBridge *webBridge;
 
-- (void)executeBatchFromRequest:(NSURLRequest *)request;
 - (void)setBackgroundColor:(NSDictionary *)colorWithRGBA;
 - (void)setNavigationBarColor:(NSDictionary *)colorWithRGBA;
 - (void)enableFastScrolling;
 - (void)enableAwesomeness;
 - (void)loadURL:(NSString *)url;
 - (UIScrollView *)scrollView;
-- (NSMutableURLRequest *)authorizeHybridRequest:(NSMutableURLRequest *)request;
-+ (NSURL *)authorizeHybridURL:(NSURL *) url;
-- (BOOL)requestIsValidHybridRequest:(NSURLRequest *)request;
-+ (BOOL)isValidHybridURL:(NSURL *)url;
-- (NSString *)hybridAuthToken;
-+ (NSString *)hybridAuthToken;
 - (void)showRefreshingState;
 
 @end
