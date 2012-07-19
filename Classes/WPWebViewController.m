@@ -80,9 +80,9 @@
 
         self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
     } else {
-        self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+        self.optionsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                             target:self
-                                                                            action:@selector(showLinkOptions)] autorelease];
+                                                                            action:@selector(showLinkOptions)];
     }
 
     if( IS_IPHONE ) {
@@ -113,7 +113,10 @@
         backButton.tintColor = color;
         forwardButton.tintColor = color;
         refreshButton.tintColor = color;
-        optionsButton.tintColor = color;
+        if ([[toolbar items] count] >= 4) {
+            UIBarButtonItem *actionButton = [[toolbar items] objectAtIndex:3];
+            actionButton.tintColor = color;
+        }
     }
     
     self.optionsButton.enabled = NO;
@@ -430,7 +433,10 @@
     self.linkOptionsActionSheet = [[[UIActionSheet alloc] initWithTitle:permaLink delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open in Safari", @"Open in Safari"), NSLocalizedString(@"Mail Link", @"Mail Link"),  NSLocalizedString(@"Copy Link", @"Copy Link"), nil] autorelease];
     self.linkOptionsActionSheet.actionSheetStyle = UIActionSheetStyleDefault;
     if(IS_IPAD ){
-        [self.linkOptionsActionSheet showFromBarButtonItem:optionsButton animated:YES];
+        if ([[toolbar items] count] >= 4) {
+            UIBarButtonItem *actionButton = [[toolbar items] objectAtIndex:3];
+        [self.linkOptionsActionSheet showFromBarButtonItem:actionButton animated:YES];
+        }
     } else {
         [self.linkOptionsActionSheet showInView:self.view];
     }

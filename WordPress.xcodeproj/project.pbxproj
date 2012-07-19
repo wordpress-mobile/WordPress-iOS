@@ -1545,9 +1545,11 @@
 			children = (
 				30B5532F15AFBFD200077318 /* navbar_actions.png */,
 				30B5533015AFBFD200077318 /* navbar_actions@2x.png */,
+				30E9683F15AE60B10047DD84 /* navbar_add.png */,
+				30E9684015AE60B20047DD84 /* navbar_add@2x.png */,
 				307B242815AC48B900F09A35 /* navbar_back_button_bg.png */,
-				30B5532815AFB1AB00077318 /* navbar_back_button_bg_active.png */,
 				307B242915AC48BA00F09A35 /* navbar_back_button_bg@2x.png */,
+				30B5532815AFB1AB00077318 /* navbar_back_button_bg_active.png */,
 				307B242715AC48B900F09A35 /* navbar_back_button_bg_active@2x.png */,
 				371C161E15A3A3F800BC653C /* navbar_bg.png */,
 				371C161F15A3A3F800BC653C /* navbar_bg@2x.png */,
@@ -1573,6 +1575,8 @@
 				30E9685015AE713A0047DD84 /* navbar_primary_button_bg_landscape_active@2x.png */,
 				371C162815A3A3F800BC653C /* navbar_read.png */,
 				371C162915A3A3F800BC653C /* navbar_read@2x.png */,
+				5D9832F415A7908D00A5E783 /* navbar_shadow.png */,
+				5D9832F515A790A400A5E783 /* navbar_shadow@2x.png */,
 			);
 			name = "Navigation Bar";
 			sourceTree = "<group>";
@@ -2047,10 +2051,6 @@
 				E151045D14E27F9300CE282B /* list@2x.png */,
 				2A8FF7D80E8A32F7001A9A40 /* lock.png */,
 				83610B1311F4B42D00421116 /* logos */,
-				30E9683F15AE60B10047DD84 /* navbar_add.png */,
-				30E9684015AE60B20047DD84 /* navbar_add@2x.png */,
-				5D9832F415A7908D00A5E783 /* navbar_shadow.png */,
-				5D9832F515A790A400A5E783 /* navbar_shadow@2x.png */,
 				371C161C15A3A3AD00BC653C /* Navigation Bar */,
 				30410681144E17AE00E98F07 /* next.png */,
 				30410682144E17AE00E98F07 /* next@2x.png */,
