@@ -12,6 +12,7 @@
 
 @implementation WPWebBridge
 
+@synthesize delegate;
 
 + (WPWebBridge *)bridge {
     WPWebBridge *bridge = [[WPWebBridge alloc] init];
