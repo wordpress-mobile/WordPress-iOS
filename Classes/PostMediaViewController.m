@@ -700,7 +700,12 @@
 												   otherButtonTitles: originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 		}
 		
-        [resizeActionSheet showInView:postDetailViewController.view];
+        // If there was a memory warning while picking a photo, the postDetailViewController's view will have been regenerated, but
+        // it will not yet be added to the view heirarchy (its window property will be nil). In this case the actionsheet presents 
+        // higher up on the screen than it should, leaving a gap at the bottom.  Presenting the actionsheet from the 
+        // apps window fixes this, even if it is a little hackish.
+        [resizeActionSheet showInView:[[[UIApplication sharedApplication] delegate] window]];
+//        [resizeActionSheet showInView:postDetailViewController.view];
 		[resizeActionSheet release];
 	}
 }
