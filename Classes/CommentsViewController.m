@@ -15,13 +15,14 @@
 #import "UIColor+Helpers.h"
 #import "UIBarButtonItem+Styled.h"
 
-@interface CommentsViewController () <CommentViewControllerDelegate>
+@interface CommentsViewController () <CommentViewControllerDelegate, UIActionSheetDelegate>
 @property (nonatomic,retain) CommentViewController *commentViewController;
 @property (nonatomic,retain) NSIndexPath *currentIndexPath;
 - (void)updateSelectedComments;
 - (void)deselectAllComments;
 - (void)moderateCommentsWithSelector:(SEL)selector;
 - (Comment *)commentWithId:(NSNumber *)commentId;
+- (void)confirmDeletingOfComments;
 @end
 
 @implementation CommentsViewController {
@@ -62,7 +63,7 @@
     spamButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_flag"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
     unapproveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_unapprove"] style:UIBarButtonItemStylePlain target:self action:@selector(unapproveSelectedComments:)];
     approveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_approve"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
-    deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_delete"] style:UIBarButtonItemStylePlain target:self action:@selector(deleteSelectedComments:)];
+    deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_delete"] style:UIBarButtonItemStylePlain target:self action:@selector(confirmDeletingOfComments)];
 
     if (IS_IPHONE) {
         UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
@@ -110,6 +111,19 @@
 }
 
 #pragma mark -
+- (void)confirmDeletingOfComments {
+    int selectedCommentsCount = [_selectedComments count];
+    NSString *titleString =  selectedCommentsCount > 1 ? [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to delete %d comments?", @""), selectedCommentsCount] : NSLocalizedString(@"Are you sure you want to delete the comment?", @""); 
+    UIActionSheet *actionSheet;
+    actionSheet = [[UIActionSheet alloc] initWithTitle:titleString 
+                                              delegate:self 
+                                     cancelButtonTitle:nil
+                                destructiveButtonTitle:NSLocalizedString(@"Delete", @"") 
+                                     otherButtonTitles:NSLocalizedString(@"Cancel", @""), nil ];
+    actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+    [actionSheet showFromBarButtonItem:deleteButton animated:YES];
+    [actionSheet release];
+}
 
 - (void)cancelReplyToCommentViewController:(id)sender {
     [self dismissModalViewControllerAnimated:YES];
@@ -151,6 +165,15 @@
     cell.comment = comment;
     cell.checked = [_selectedComments containsObject:comment];
     cell.editing = self.editing;
+}
+
+#pragma mark -
+#pragma mark Action Sheet Delegate Methods
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    if(buttonIndex == 0) {
+        [self deleteSelectedComments:deleteButton];
+    }
 }
 
 #pragma mark - DetailViewDelegate

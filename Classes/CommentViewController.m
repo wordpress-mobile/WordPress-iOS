@@ -399,9 +399,10 @@
 - (void)launchDeleteCommentActionSheet {
     if (!isShowingActionSheet) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this comment?", @"")
-                                                                 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+                                                                 delegate:self 
+                                                        cancelButtonTitle:nil 
                                                    destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
-                                                        otherButtonTitles:nil];
+                                                        otherButtonTitles:NSLocalizedString(@"Cancel", @""), nil];
         actionSheet.tag = 501;
         actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
         if (IS_IPAD)
