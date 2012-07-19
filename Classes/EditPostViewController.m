@@ -146,6 +146,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
             editorToolbar.delegate = self;
         }
         textView.inputAccessoryView = editorToolbar;
+        textViewPlaceHolderField.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     }
 
     if(!postSettingsController) {
