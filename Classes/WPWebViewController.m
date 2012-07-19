@@ -435,7 +435,7 @@
     if(IS_IPAD ){
         if ([[toolbar items] count] >= 4) {
             UIBarButtonItem *actionButton = [[toolbar items] objectAtIndex:3];
-        [self.linkOptionsActionSheet showFromBarButtonItem:actionButton animated:YES];
+            [self.linkOptionsActionSheet showFromBarButtonItem:actionButton animated:YES];
         }
     } else {
         [self.linkOptionsActionSheet showInView:self.view];

@@ -224,9 +224,12 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 - (void)topicsController:(WPReaderTopicsViewController *)topicsController didDismissSelectingTopic:(NSString *)topic withTitle:(NSString *)title
 {
+    [self dismiss];
     if (topic != nil) {
         NSString *javaScriptString = [NSString stringWithFormat:@"Reader2.load_topic('%@');", topic];
         [self.webView stringByEvaluatingJavaScriptFromString:javaScriptString];
+        if (IS_IPAD)
+            [self.panelNavigationController popToRootViewControllerAnimated:YES];
     }
     if (title != nil){
         [self setTitle:title];

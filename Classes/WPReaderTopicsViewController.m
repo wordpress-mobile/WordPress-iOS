@@ -35,7 +35,7 @@
 }
 
 
-- (void) cancelSelection:(id)sender {
+- (void)cancelSelection:(id)sender {
     [self.delegate topicsController:self didDismissSelectingTopic:nil withTitle:nil];
     [self dismissModalViewControllerAnimated:YES];
 }
