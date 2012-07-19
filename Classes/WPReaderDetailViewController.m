@@ -22,7 +22,7 @@
 @implementation WPReaderDetailViewController
 
 
-@synthesize delegate, currentItem;
+@synthesize delegate, currentItem, webBridge;
 
 
 - (void)dealloc

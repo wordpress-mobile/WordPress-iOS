@@ -12,7 +12,7 @@
 
 @implementation WPWebAppViewController
 
-@synthesize webView, loading, lastWebViewRefreshDate;
+@synthesize webView, loading, lastWebViewRefreshDate, webBridge;
 
 #pragma mark - View lifecycle
 
