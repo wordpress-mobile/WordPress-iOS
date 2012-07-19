@@ -35,7 +35,7 @@
 - (void)showFriendFinderNudgeView:(id)sender;
 - (void)hideFriendFinderNudgeView:(id)sender;
 - (void)openFriendFinder:(id)sender;
-
+- (void)dismiss;
 
 
 @end
