@@ -575,9 +575,9 @@
             [self.navigationController setViewControllers:[NSArray arrayWithObject:_detailViewController] animated:NO];
             if (sidebarButton == nil) {
                 if (![[UIButton class] respondsToSelector:@selector(appearance)])
-                    sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_menu_white"] style:UIBarButtonItemStyleBordered target:self action:@selector(showSidebar)];
+                    sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_menu_white"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)];
                 else 
-                    sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle"] style:UIBarButtonItemStyleBordered target:self action:@selector(showSidebar)];
+                    sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)];
             }
             _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
             [sidebarButton release];
@@ -709,7 +709,7 @@
 }
 
 - (void)toggleSidebar {
-    if (self.detailTapper) {
+    if (!self.detailTapper) {
         [self showSidebar];
     } else {
         [self closeSidebar];
@@ -760,7 +760,9 @@
         [self.detailTapper addGestureRecognizer:panner];
     }
     
-    self.detailTapper.frame = self.detailView.bounds;
+    CGRect tapFrame = self.detailView.bounds;
+    tapFrame.origin.y = 44.0f;
+    self.detailTapper.frame = tapFrame;
 
     // Switch scroll to top behavior to master view
     [self setScrollsToTop:NO forView:[self viewOrViewWrapper:self.detailViewController.view]];
