@@ -131,7 +131,8 @@
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing:editing animated:animated];
-    
+    [self deselectAllComments];
+    [self updateSelectedComments];
     UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
     if (IS_IPHONE) {
         [self.navigationController setToolbarHidden:!editing animated:animated];
@@ -141,6 +142,13 @@
             self.toolbarItems = [NSArray arrayWithObjects:self.editButtonItem, spacer,  approveButton, spacer, spacer, unapproveButton, spacer, spacer, spamButton, spacer, spacer, deleteButton, spacer, nil];
         } else {
             self.toolbarItems = [NSArray arrayWithObject:self.editButtonItem];
+        }
+        //make sure the panel is completely visible
+        if (self.panelNavigationController) {
+            [self.panelNavigationController viewControllerWantsToBeFullyVisible:self];
+        }
+        if (self.swipeActionsEnabled) {
+            [self removeSwipeView:YES];
         }
     }
     
@@ -211,6 +219,18 @@
 
 - (void)moderateCommentsWithSelector:(SEL)selector {
     [FileLogger log:@"%@ %@%@", self, NSStringFromSelector(_cmd), NSStringFromSelector(selector)];
+    //If the item shown in the 3rd panel was selected and the (spam|remove) action is called we need to dismiss the 3rd panel, or show another comment there.
+    //Dismiss it for now.
+    if( IS_IPAD && ( [@"remove" isEqualToString:NSStringFromSelector(selector)] ||  [@"spam" isEqualToString:NSStringFromSelector(selector)] ) 
+       && self.commentViewController != nil && self.commentViewController.comment != nil ) {
+        Comment *currentComentDetails = self.commentViewController.comment;
+        for (Comment *comment in _selectedComments) {
+            if( [comment.commentID intValue] == [currentComentDetails.commentID intValue] ) {
+                [self.panelNavigationController popToViewController:self animated:NO];
+                break;
+            }
+        }
+    }
     [_selectedComments makeObjectsPerformSelector:selector];
     [self deselectAllComments];
     [self updateSelectedComments];
