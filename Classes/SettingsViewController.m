@@ -188,11 +188,11 @@ typedef enum {
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             } else {
                 cell.textLabel.textAlignment = UITextAlignmentCenter;
-                cell.textLabel.text = NSLocalizedString(@"Sign out", @"Sign out from WordPress.com");
+                cell.textLabel.text = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
             }
         } else {
             cell.textLabel.textAlignment = UITextAlignmentCenter;
-            cell.textLabel.text = NSLocalizedString(@"Sign in", @"Sign into WordPress.com");
+            cell.textLabel.text = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
         }
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
@@ -302,10 +302,9 @@ typedef enum {
                 UIActionSheet *actionSheet;
                 actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle 
                                                           delegate:self 
-                                                 cancelButtonTitle:nil
-                                            destructiveButtonTitle:NSLocalizedString(@"Sign out", @"") 
-                                                 otherButtonTitles:NSLocalizedString(@"Cancel", @""), nil ];
-                actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
+                                                 cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                            destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"")otherButtonTitles:nil, nil ];
+                actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
                 [actionSheet showInView:self.view];
                 [actionSheet release];
             }
