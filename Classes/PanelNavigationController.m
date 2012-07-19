@@ -574,14 +574,10 @@
         if (self.navigationController) {
             [self.navigationController setViewControllers:[NSArray arrayWithObject:_detailViewController] animated:NO];
             if (sidebarButton == nil) {
-                UIButton *menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 33, 22)];
                 if (![[UIButton class] respondsToSelector:@selector(appearance)])
-                    [menuButton setImage:[UIImage imageNamed:@"navbar_menu_white"] forState:UIControlStateNormal];
+                    sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_menu_white"] style:UIBarButtonItemStyleBordered target:self action:@selector(showSidebar)];
                 else 
-                    [menuButton setImage:[UIImage imageNamed:@"navbar_menu"] forState:UIControlStateNormal];
-                    [menuButton setImage:[UIImage imageNamed:@"navbar_menu"] forState:UIControlStateHighlighted];
-                [menuButton addTarget:self action:@selector(showSidebar) forControlEvents:UIControlEventTouchUpInside];
-                sidebarButton = [[UIBarButtonItem alloc] initWithCustomView:menuButton];
+                    sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle"] style:UIBarButtonItemStyleBordered target:self action:@selector(showSidebar)];
             }
             _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
             [sidebarButton release];
