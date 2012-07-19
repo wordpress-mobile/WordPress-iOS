@@ -244,6 +244,7 @@
             UINavigationController *aNavigationController = [[[UINavigationController alloc] initWithRootViewController:crashReportView] autorelease];
             aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+            [self.view setHidden:YES];
             
             [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
             [crashReportView release];
@@ -256,6 +257,7 @@
 }
 
 - (void)dismissCrashReporter:(NSNotification *)notification {
+    [self.view setHidden:NO];
     [self.panelNavigationController dismissModalViewControllerAnimated:YES];
     [self performSelector:@selector(presentContent) withObject:self afterDelay:1.01];
 }
