@@ -302,10 +302,10 @@ typedef enum {
                 UIActionSheet *actionSheet;
                 actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle 
                                                           delegate:self 
-                                                 cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
-                                            destructiveButtonTitle:nil 
-                                                 otherButtonTitles:NSLocalizedString(@"Sign out", @""),nil];
-                actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+                                                 cancelButtonTitle:nil
+                                            destructiveButtonTitle:NSLocalizedString(@"Sign out", @"") 
+                                                 otherButtonTitles:NSLocalizedString(@"Cancel", @""), nil ];
+                actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
                 [actionSheet showInView:self.view];
                 [actionSheet release];
             }
