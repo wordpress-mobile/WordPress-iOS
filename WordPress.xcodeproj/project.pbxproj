@@ -1518,7 +1518,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				374CB16115B93C0800DD0EBC /* AudioToolbox.framework */,
 				5D63449E159A4B0E00AF402F /* Deprecated */,
 				2FAE97050E33B21600CA8540 /* license.txt */,
 				E11F949814A3344300277D31 /* WordPressApi */,
@@ -1584,6 +1583,7 @@
 				CC24E5F41577E16B00A6D5B5 /* Accounts.framework */,
 				CC24E5F01577DBC300A6D5B5 /* AddressBook.framework */,
 				835E2402126E66E50085940B /* AssetsLibrary.framework */,
+				374CB16115B93C0800DD0EBC /* AudioToolbox.framework */,
 				E1A386C714DB05C300954CF8 /* AVFoundation.framework */,
 				834CE7331256D0DE0046A4A3 /* CFNetwork.framework */,
 				8355D7D811D260AA00A61362 /* CoreData.framework */,
