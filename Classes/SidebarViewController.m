@@ -726,17 +726,14 @@
     NSUInteger sectionNumber = [self.sectionInfoArray indexOfObject:sectionOpened] + 1;
     openSectionIdx = sectionNumber;
     
-    /*
-     Create an array containing the index paths of the rows to insert: These correspond to the rows for each quotation in the current section.
-     */
+    // Create an array containing the index paths of the rows to insert
     NSMutableArray *indexPathsToInsert = [NSMutableArray array];
     for (NSInteger i = 0; i < NUM_ROWS; i++) {
         [indexPathsToInsert addObject:[NSIndexPath indexPathForRow:i inSection:sectionNumber]];
     }
     
-    /*
-     Create an array containing the index paths of the rows to delete: These correspond to the rows for each quotation in the previously-open section, if there was one.
-     */
+    
+    //Create an array containing the index paths of the rows to delete
     NSMutableArray *indexPathsToDelete = [NSMutableArray array];
     
     SectionInfo *previousOpenSection = self.openSection;
@@ -760,6 +757,11 @@
     // if we don't, a) you lose the current selection, b) the sidebar doesn't open on iPad
     [self.tableView selectRowAtIndexPath:[indexPathsToInsert objectAtIndex:0] animated:NO scrollPosition:UITableViewScrollPositionNone];    
     [self processRowSelectionAtIndexPath:[indexPathsToInsert objectAtIndex:0] closingSidebar:NO];
+    
+    // scroll to the section header view if it's not visible
+    CGRect sectionRect = [tableView rectForSection:openSectionIdx];
+    [self.tableView scrollRectToVisible:sectionRect animated:YES];
+    
 }
 
 
