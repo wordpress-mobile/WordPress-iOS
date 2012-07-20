@@ -8,12 +8,14 @@
 #import "PostTableViewCell.h"
 #import "NSString+XMLExtensions.h"
 
+static const float statusLabelMaxWidthLandscape = 200.f;
+static const float statusLabelMaxWidthPortrait = 100.f;
+
 @interface PostTableViewCell (Private)
 - (void)addNameLabel;
 - (void)addDateLabel;
 - (void)addStatusLabel;
 - (void)addActivityIndicator;
-
 @end
 
 @implementation PostTableViewCell
@@ -42,6 +44,7 @@
 }
 
 - (void)setSaving:(BOOL)value {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     saving = value;
 
     if (saving) {
@@ -99,11 +102,11 @@
         statusLabel.text = @"";
     }
 
-    //statusLabel.backgroundColor = [UIColor orangeColor];
-
+   // statusLabel.backgroundColor = [UIColor orangeColor];
+    
     NSDate *date = [post valueForKey:@"dateCreated"];
     dateLabel.text = [dateFormatter stringFromDate:date];
-    //dateLabel.backgroundColor = [UIColor redColor];
+  //  dateLabel.backgroundColor = [UIColor redColor];
     
     @try {
         if(post.remoteStatus != AbstractPostRemoteStatusPushing)
@@ -116,8 +119,39 @@
     }
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+   
+    CGSize expectedstatusLabelSize = [statusLabel.text sizeWithFont:[UIFont systemFontOfSize:DATE_FONT_SIZE]];   
+    CGFloat expectedStatusLabelWidth = 0.f;    
+    if ( IS_IPHONE && UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation]) ) {
+        expectedStatusLabelWidth = expectedstatusLabelSize.width > statusLabelMaxWidthPortrait ? statusLabelMaxWidthPortrait : expectedstatusLabelSize.width;
+    } else {
+        expectedStatusLabelWidth = expectedstatusLabelSize.width > statusLabelMaxWidthLandscape ? statusLabelMaxWidthLandscape : expectedstatusLabelSize.width;
+    }
+    
+    //NSLog(@"width of status label %f", expectedStatusLabelLength);
+    
+    CGFloat x = self.frame.size.width - expectedStatusLabelWidth - RIGHT_MARGIN;
+    if ( IS_IPHONE )
+        x = x - 22; //the disclousure size
+    
+    CGRect rect = CGRectMake(x, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, expectedStatusLabelWidth, DATE_LABEL_HEIGHT);
+    statusLabel.frame = rect;
+    
+    if ( self.isEditing ) 
+        statusLabel.hidden = YES;
+    else 
+        statusLabel.hidden = NO;
+    
+    CGFloat dateWidth = self.frame.size.width - LEFT_OFFSET - RIGHT_MARGIN -  ( IS_IPHONE ? expectedStatusLabelWidth + 22 : expectedStatusLabelWidth);  //Max space available for the Date
+    rect = CGRectMake(LEFT_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, dateWidth, DATE_LABEL_HEIGHT);
+    dateLabel.frame = rect;
+}
+
+
 - (void)prepareForReuse{
-	[super prepareForReuse];
+    [super prepareForReuse];
 	//change back the things that are different about the "more posts/pages/comments" cell so that reuse
 	//does not cause UI strangeness for users
 	self.contentView.backgroundColor = TABLE_VIEW_CELL_BACKGROUND_COLOR;
@@ -125,11 +159,6 @@
 	dateLabel.textColor = [UIColor lightGrayColor];
 	self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	self.selectionStyle = UITableViewCellSelectionStyleBlue;
-	
-    CGFloat w = self.frame.size.width - LEFT_OFFSET - RIGHT_MARGIN - STATUS_LABEL_WIDTH; //Max space available for the Date
-    CGRect rect = CGRectMake(LEFT_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, w, DATE_LABEL_HEIGHT);
-	dateLabel.frame = rect;
-	
 	
 	[self runSpinner:NO];
 }
@@ -151,10 +180,7 @@
 }
 
 - (void)addDateLabel {
-    CGFloat w = self.frame.size.width - LEFT_OFFSET - RIGHT_MARGIN - STATUS_LABEL_WIDTH; //Max space available for the Date
-    CGRect rect = CGRectMake(LEFT_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, w, DATE_LABEL_HEIGHT);
-
-    dateLabel = [[UILabel alloc] initWithFrame:rect];
+    dateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     dateLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
     dateLabel.highlightedTextColor = [UIColor whiteColor];
     dateLabel.textColor = [UIColor lightGrayColor];
@@ -164,10 +190,7 @@
 }
 
 - (void)addStatusLabel {
-    CGFloat x = self.frame.size.width - STATUS_LABEL_WIDTH - RIGHT_MARGIN;
-    CGRect rect = CGRectMake(x, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET, STATUS_LABEL_WIDTH, DATE_LABEL_HEIGHT);
-	
-	statusLabel = [[UILabel alloc] initWithFrame:rect];
+	statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     statusLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
     statusLabel.textColor = [UIColor blackColor];
     statusLabel.backgroundColor = [UIColor clearColor];
@@ -195,7 +218,6 @@
 }
 
 - (void)changeCellLabelsForUpdate:(NSString *)postTotalString:(NSString *) loadingString:(BOOL)isLoading{
-	
 	if (isLoading) {
 		nameLabel.textColor = [UIColor grayColor];
 		
@@ -204,16 +226,16 @@
 		//nameLabel.textColor = [UIColor blackColor];
 	}
 	
-		nameLabel.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
-		dateLabel.textColor = [UIColor grayColor];
-		dateLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
-		nameLabel.text = loadingString;
-		dateLabel.text = postTotalString;
-		self.accessoryType = UITableViewCellAccessoryNone;
-		self.contentView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
+    nameLabel.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
+    dateLabel.textColor = [UIColor grayColor];
+    dateLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
+    nameLabel.text = loadingString;
+    dateLabel.text = postTotalString;
+    self.accessoryType = UITableViewCellAccessoryNone;
+    self.contentView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
 	
-		CGRect rect = CGRectMake(LEFT_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET -1, 320, DATE_LABEL_HEIGHT);
-		dateLabel.frame = rect;
+    CGRect rect = CGRectMake(LEFT_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET -1, 320, DATE_LABEL_HEIGHT);
+    dateLabel.frame = rect;
 	
 }
 
