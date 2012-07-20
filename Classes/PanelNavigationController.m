@@ -308,6 +308,12 @@
     [self relayAppearanceMethod:^(UIViewController *controller) {
         [controller didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     }];
+    
+    // Redraw shadows. This fixes an issue where the 1..n-1 detail view's shadow can be
+    // incorrect when there are more than two detail views on the stack.
+    for (UIView *view in self.detailViews) {
+        [self addShadowTo:view];
+    }
 }
 
 - (void)adjustFramesForRotation {
@@ -798,6 +804,7 @@
     view.layer.shadowOpacity = 0.5f;
     view.layer.shadowColor = [[UIColor blackColor] CGColor];
     view.layer.shadowOffset = CGSizeZero;
+
     view.layer.shadowPath = [[UIBezierPath bezierPathWithRoundedRect:view.bounds cornerRadius:PANEL_CORNER_RADIUS] CGPath];
 }
 
