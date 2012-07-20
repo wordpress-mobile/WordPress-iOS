@@ -142,6 +142,8 @@
 		374CB15F15B9363800DD0EBC /* pull.wav in Resources */ = {isa = PBXBuildFile; fileRef = 374CB15D15B9363800DD0EBC /* pull.wav */; };
 		374CB16015B9363800DD0EBC /* refresh.wav in Resources */ = {isa = PBXBuildFile; fileRef = 374CB15E15B9363800DD0EBC /* refresh.wav */; };
 		374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374CB16115B93C0800DD0EBC /* AudioToolbox.framework */; };
+		374CB16515B9907600DD0EBC /* WPpregressHUDBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 374CB16315B9907600DD0EBC /* WPpregressHUDBackground.png */; };
+		374CB16615B9907600DD0EBC /* WPpregressHUDBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 374CB16415B9907600DD0EBC /* WPpregressHUDBackground@2x.png */; };
 		374F18AC15A5897500524ED0 /* sidebar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 374F188A15A5897500524ED0 /* sidebar_bg.png */; };
 		374F18AD15A5897500524ED0 /* sidebar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 374F188B15A5897500524ED0 /* sidebar_bg@2x.png */; };
 		374F18AE15A5897500524ED0 /* sidebar_camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 374F188C15A5897500524ED0 /* sidebar_camera.png */; };
@@ -767,6 +769,8 @@
 		374CB15D15B9363800DD0EBC /* pull.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pull.wav; sourceTree = "<group>"; };
 		374CB15E15B9363800DD0EBC /* refresh.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = refresh.wav; sourceTree = "<group>"; };
 		374CB16115B93C0800DD0EBC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		374CB16315B9907600DD0EBC /* WPpregressHUDBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WPpregressHUDBackground.png; sourceTree = "<group>"; };
+		374CB16415B9907600DD0EBC /* WPpregressHUDBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WPpregressHUDBackground@2x.png"; sourceTree = "<group>"; };
 		374F188A15A5897500524ED0 /* sidebar_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_bg.png; sourceTree = "<group>"; };
 		374F188B15A5897500524ED0 /* sidebar_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar_bg@2x.png"; sourceTree = "<group>"; };
 		374F188C15A5897500524ED0 /* sidebar_camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_camera.png; sourceTree = "<group>"; };
@@ -2268,6 +2272,8 @@
 				8370D11711FA4CCF009D650F /* welcome_bg@2x.png */,
 				83BC943B11F94AA00041141A /* whitebg.png */,
 				7F3E102413497EB2008CF73D /* inner-shadow.png */,
+				374CB16315B9907600DD0EBC /* WPpregressHUDBackground.png */,
+				374CB16415B9907600DD0EBC /* WPpregressHUDBackground@2x.png */,
 				7F3E104F13498200008CF73D /* UISegmentBarBlackButton.png */,
 				7F3E105013498200008CF73D /* UISegmentBarBlackButton@2x.png */,
 				7F3E105113498200008CF73D /* UISegmentBarBlackButtonHighlighted.png */,
@@ -3260,6 +3266,8 @@
 				5D15F4E715B8C43E001B14EA /* toolbarDeliPad@2x.png in Resources */,
 				374CB15F15B9363800DD0EBC /* pull.wav in Resources */,
 				374CB16015B9363800DD0EBC /* refresh.wav in Resources */,
+				374CB16515B9907600DD0EBC /* WPpregressHUDBackground.png in Resources */,
+				374CB16615B9907600DD0EBC /* WPpregressHUDBackground@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
