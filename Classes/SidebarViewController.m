@@ -449,7 +449,7 @@
     }
     
 	UIActionSheet *actionSheet = nil;
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         if ([[CameraPlusPickerManager sharedManager] cameraPlusPickerAvailable]) {
             actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
                                                       delegate:self 
