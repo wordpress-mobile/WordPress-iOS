@@ -214,8 +214,6 @@
     CGRect rect = CGRectMake(LEFT_OFFSET, TOP_OFFSET, GRAVATAR_WIDTH, GRAVATAR_HEIGHT);
     
     gravatarImageView = [[UIImageView alloc] initWithFrame:rect];
-    gravatarImageView.layer.cornerRadius = 2.0f;
-    gravatarImageView.layer.masksToBounds = YES;
     
     [self.contentView addSubview:gravatarImageView];
 }
