@@ -50,7 +50,7 @@
     [visibilityList release];
     [statusList release];
     [formatsList release];
-
+    
     [super dealloc];
 }
 
@@ -58,6 +58,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     
     [tableView setBackgroundView:nil];
+    [tableView setBackgroundColor:[UIColor clearColor]]; //Fix for black corners on iOS4. http://stackoverflow.com/questions/1557856/black-corners-on-uitableview-group-style
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
     
     statusTitleLabel.text = NSLocalizedString(@"Status", @"The status of the post. Should be the same as in core WP.");
@@ -70,21 +71,24 @@
     visibilityList = [[NSArray arrayWithObjects:NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."), NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."), NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP."), nil] retain];
     formatsList = [postDetailViewController.post.blog.sortedPostFormatNames retain];
 
+    isShowingKeyboard = NO;
+    
     CGRect pickerFrame;
 	if (IS_IPAD)
-		pickerFrame = CGRectMake(0, 0, 320, 216);  
+		pickerFrame = CGRectMake(0.0f, 0.0f, 320.0f, 216.0f);
 	else 
-		pickerFrame = CGRectMake(0, 40, 320, 216);    
+		pickerFrame = CGRectMake(0.0f, 40.0f, 320.0f, 216.0f);    
+    
     pickerView = [[UIPickerView alloc] initWithFrame:pickerFrame];
     pickerView.delegate = self;
     pickerView.dataSource = self;
     pickerView.showsSelectionIndicator = YES;
-    isShowingKeyboard = NO;
+        
     datePickerView = [[UIDatePicker alloc] initWithFrame:pickerView.frame];
     datePickerView.minuteInterval = 5;
     [datePickerView addTarget:self action:@selector(datePickerChanged) forControlEvents:UIControlEventValueChanged];
-	
-	passwordTextField.returnKeyType = UIReturnKeyDone;
+
+    passwordTextField.returnKeyType = UIReturnKeyDone;
 	passwordTextField.delegate = self;
 	
 	if (postDetailViewController.post) {
@@ -551,29 +555,29 @@
 - (void)showPicker:(UIView *)picker {
     if (isShowingKeyboard)
         [passwordTextField resignFirstResponder];
-    
+
     if (IS_IPAD) {
         if (popover)
             [popover release];
+        
         UIViewController *fakeController = [[UIViewController alloc] init];
         if (picker.tag == TAG_PICKER_DATE) {
-            fakeController.contentSizeForViewInPopover = CGSizeMake(320, 256);
+            fakeController.contentSizeForViewInPopover = CGSizeMake(320.0f, 256.0f);
 
             UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")]];
             publishNowButton.momentary = YES; 
-            publishNowButton.frame = CGRectMake(0, 0, 320, 40);
+            publishNowButton.frame = CGRectMake(0.0f, 0.0f, 320.0f, 40.0f);
             publishNowButton.segmentedControlStyle = UISegmentedControlStyleBar;
             publishNowButton.tintColor = postDetailViewController.toolbar.tintColor;
             [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
             [fakeController.view addSubview:publishNowButton];
             [publishNowButton release];
             CGRect frame = picker.frame;
-            frame.origin.y = 40;
+            frame.origin.y = 40.0f;
             picker.frame = frame;
         } else {
-            fakeController.contentSizeForViewInPopover = CGSizeMake(320, 216);
+            fakeController.contentSizeForViewInPopover = CGSizeMake(320.0f, 216.0f);
         }
-
         
         [fakeController.view addSubview:picker];
         popover = [[UIPopoverController alloc] initWithContentViewController:fakeController];
@@ -589,33 +593,55 @@
         else 
             popoverRect = [self.view convertRect:publishOnDateLabel.frame fromView:[publishOnDateLabel superview]];
 
-        popoverRect.size.width = 100;
+        popoverRect.size.width = 100.0f;
         [popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    } else {        
+        
+    } else {
+    
+        CGFloat width = self.view.frame.size.width;
+        CGFloat height = self.view.frame.size.height + 114.0f;
+        
+        UIView *pickerWrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 260.0f)];
+        pickerWrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        [pickerWrapperView addSubview:picker];
+        
+        CGRect pickerFrame = picker.frame;
+        pickerFrame.size.width = width;
+        
+        // self.interfaceOrientation does not update after rotation for some reason (WTF?) so check the device orientation instead.
+        pickerFrame.size.height = UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation]) ? 216.0f : 162.0f;
+        picker.frame = pickerFrame;
+        
         actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
         [actionSheet setActionSheetStyle:UIActionSheetStyleAutomatic];
-        [actionSheet addSubview:picker];
-		UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")]];
-		closeButton.momentary = YES; 
-		closeButton.frame = CGRectMake(260, 7, 50, 30);
-		closeButton.segmentedControlStyle = UISegmentedControlStyleBar;
-		closeButton.tintColor = [UIColor blackColor];
-		[closeButton addTarget:self action:@selector(hidePicker) forControlEvents:UIControlEventValueChanged];
-		[actionSheet addSubview:closeButton];
-		[closeButton release];
+        [actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)];
+        [actionSheet addSubview:pickerWrapperView];
 
+        UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")]];
+        closeButton.momentary = YES; 
+        CGFloat x = self.view.frame.size.width - 60.0f;
+        closeButton.frame = CGRectMake(x, 7.0f, 50.0f, 30.0f);
+        closeButton.segmentedControlStyle = UISegmentedControlStyleBar;
+        closeButton.tintColor = [UIColor blackColor];
+        [closeButton addTarget:self action:@selector(hidePicker) forControlEvents:UIControlEventValueChanged];
+        closeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+        [pickerWrapperView addSubview:closeButton];
+        [closeButton release];
+        
         if (picker.tag == TAG_PICKER_DATE) {
             UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")]];
             publishNowButton.momentary = YES; 
-            publishNowButton.frame = CGRectMake(10, 7, 129, 30);
+            publishNowButton.frame = CGRectMake(10.0f, 7.0f, 129.0f, 30.0f);
             publishNowButton.segmentedControlStyle = UISegmentedControlStyleBar;
             publishNowButton.tintColor = [UIColor blackColor];
             [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
-            [actionSheet addSubview:publishNowButton];
-            [publishNowButton release];            
+            [pickerWrapperView addSubview:publishNowButton];
+            [publishNowButton release];
         }
-		[actionSheet showInView:[[UIApplication sharedApplication] keyWindow]];
-		[actionSheet setBounds:CGRectMake(0, 0, 320, 485)];
+        
+        [actionSheet showInView:self.view];
+        [actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)]; // Update the bounds again now that its in the view else it won't draw correctly.
+
     }
 }
 
