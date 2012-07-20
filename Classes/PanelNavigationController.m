@@ -284,9 +284,7 @@
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
     [super willAnimateRotationToInterfaceOrientation:interfaceOrientation duration:duration];
 
-    if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
-        [self adjustFramesForRotation];
-    
+    [self adjustFramesForRotation];
     
     if (IS_IPAD)
         [self setStackOffset:[self nearestValidOffsetWithVelocity:0] duration:duration];
@@ -306,9 +304,6 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    
-    if (UIInterfaceOrientationIsPortrait(fromInterfaceOrientation))
-        [self adjustFramesForRotation];
 
     [self relayAppearanceMethod:^(UIViewController *controller) {
         [controller didRotateFromInterfaceOrientation:fromInterfaceOrientation];
