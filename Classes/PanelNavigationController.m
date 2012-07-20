@@ -1461,7 +1461,7 @@
 - (void)pushViewController:(UIViewController *)viewController fromViewController:(UIViewController *)fromViewController animated:(BOOL)animated {
     WPFLogMethod();
     [self popToViewController:fromViewController animated:NO];
-    [self pushViewController:viewController animated:YES];
+    [self pushViewController:viewController animated:animated];
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
