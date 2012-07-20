@@ -154,26 +154,29 @@
 - (BOOL)hasChanges {
     if (![self isRevision])
         return NO;
+    
+    //first let's check if there's no post title or content (in case a cheeky user deleted them both)
+    if ((self.postTitle == nil || [self.postTitle isEqualToString:@""]) && (self.content == nil || [self.content isEqualToString:@""]))
+        return NO;
 
     // We need the extra check since [nil isEqual:nil] returns NO
     if ((self.postTitle != self.original.postTitle)
         && (![self.postTitle isEqual:self.original.postTitle]))
         return YES;
-
     if ((self.content != self.original.content)
-        && (![self.content      isEqual:self.original.content]))
+        && (![self.content isEqual:self.original.content]))
         return YES;
 
     if ((self.status != self.original.status)
-        && (![self.status       isEqual:self.original.status]))
+        && (![self.status isEqual:self.original.status]))
         return YES;
 
     if ((self.password != self.original.password)
-        && (![self.password     isEqual:self.original.password]))
+        && (![self.password isEqual:self.original.password]))
         return YES;
 
     if ((self.dateCreated != self.original.dateCreated)
-        && (![self.dateCreated  isEqual:self.original.dateCreated]))
+        && (![self.dateCreated isEqual:self.original.dateCreated]))
         return YES;
 
 	if ((self.permaLink != self.original.permaLink)

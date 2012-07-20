@@ -132,7 +132,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     tagsTextField.placeholder = NSLocalizedString(@"Separate tags with commas", @"Placeholder text for the tags field. Should be the same as WP core.");
     categoriesLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
     textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
-	textViewPlaceHolderField.textAlignment = UITextAlignmentCenter; 
+	textViewPlaceHolderField.textAlignment = UITextAlignmentCenter;
+    [titleTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 
     if ([textView respondsToSelector:@selector(setInputAccessoryView:)]) {
         CGRect frame;
@@ -513,6 +514,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
     
     UIBarButtonItem *saveButton = [[[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleDone target:self action:@selector(saveAction:)] autorelease];
+    [saveButton setEnabled:NO];
     self.navigationItem.rightBarButtonItem = saveButton;
 }
 
@@ -556,6 +558,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	// workaround for odd text view behavior on iPad
 	[textView setContentOffset:CGPointZero animated:NO];
+    
+    [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
 }
 
 - (void)populateSelectionsControllerWithCategories {
@@ -1060,6 +1064,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
         
     self.undoButton.enabled = [self.textView.undoManager canUndo];
     self.redoButton.enabled = [self.textView.undoManager canRedo];
+    
+    self.apost.content = textView.text;
+    
+    [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
@@ -1083,6 +1091,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
             [self refreshButtons];
 		}
     }
+    
+    [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
@@ -1128,6 +1138,13 @@ NSTimeInterval kAnimationDuration = 0.3f;
         self.post.tags = tagsTextField.text;
     
     [self.apost autosave];
+    
+    [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
+}
+
+- (void)textFieldDidChange:(id)sender {
+    self.apost.postTitle = titleTextField.text;
+    [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
 }
 
 - (void)positionTextView:(NSNotification *)notification {

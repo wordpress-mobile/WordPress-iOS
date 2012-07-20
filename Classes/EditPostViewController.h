@@ -115,6 +115,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)disableInteraction;
 - (void)savePost: (BOOL)upload;
 - (void)dismissAlertViewKeyboard:(NSNotification *)notification;
+- (void)textFieldDidChange: (id)sender;
 
 // Media
 - (void)insertMediaAbove:(NSNotification *)notification;
