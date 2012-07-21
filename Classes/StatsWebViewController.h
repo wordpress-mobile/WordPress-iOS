@@ -12,6 +12,7 @@
     NSMutableString *currentNode;
     NSMutableDictionary *parsedBlog;
     Blog *blog;
+    BOOL authed;
 }
 
 @property (nonatomic, retain) Blog *blog;

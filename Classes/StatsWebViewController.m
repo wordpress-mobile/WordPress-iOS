@@ -181,8 +181,9 @@
         username = [[NSUserDefaults standardUserDefaults] objectForKey:wporgBlogJetpackUsernameKey];
         password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&error];
     }
-    
-    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/my-stats/no-chrome/?blog=%@&unit=1", [blog blogID]];
+
+//    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/my-stats/no-chrome/?blog=%@&unit=1", [blog blogID]];
+    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/?no-chrome#!/my-stats/?unit=1&blog=%@", [blog blogID]];
     NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
     NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
                              [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
@@ -352,5 +353,21 @@
     [self.panelNavigationController popViewControllerAnimated:YES];
 }
 
+
+#pragma mark -
+#pragma mark WPWebView Delegate Methods
+
+- (void)webViewDidFinishLoad:(WPWebView *)wpWebView {
+    [super webViewDidFinishLoad:wpWebView];
+    if (!authed) {
+        authed = YES;
+        // We should authed with good credentials.
+        // So load the stats page.  This is a work around for some weirdness trying to redirect 
+        // to the chromeless newdash stats page.  The auth redirect doesn't seem to like the double ? in the url.
+        NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/?no-chrome#!/my-stats/?unit=1&blog=%@", [blog blogID]];
+        [webView loadPath:pathStr];
+    }
+
+}
 
 @end

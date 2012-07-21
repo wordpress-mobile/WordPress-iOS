@@ -282,6 +282,9 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     self.currentRequest = mRequest;
     self.currentHTTPRequestOperation = [[[AFHTTPRequestOperation alloc] initWithRequest:mRequest] autorelease];
     
+    [[self webView] loadRequest:mRequest];
+    return;
+    
     [currentHTTPRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Check for a redirect.  Make sure the current URL reflects any redirects.
         NSURL *currURL = [[self currentRequest] URL];
@@ -364,7 +367,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 #pragma mark WebViewDelegate Methods
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)aRequest navigationType:(UIWebViewNavigationType)navigationType {    
-    // applewebdata:// urls are a problem. Kill that request and substitute a better one. Assumes a GET request.
+    // applewebdata:// urls are a problem. Kill that request and substitute a better one. Assumes a GET request.    
     if ([@"applewebdata" isEqualToString:aRequest.URL.scheme]) {
         NSString *basepath = [self.baseURLFallback absoluteString];
         basepath = [basepath substringToIndex:[basepath length] - 1]; // remove the trailing slash.
