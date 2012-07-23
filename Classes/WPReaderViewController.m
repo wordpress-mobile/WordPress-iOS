@@ -116,6 +116,8 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
+    
+    self.title = NSLocalizedString(@"Reader", "");
         
     self.webView.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.95 alpha:1.0];
 
