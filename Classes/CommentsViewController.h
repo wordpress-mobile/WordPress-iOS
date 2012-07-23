@@ -23,6 +23,7 @@
 }
 
 @property (nonatomic, retain) NSNumber *wantedCommentId;
+@property (nonatomic, retain) NSNumber *lastSelectedCommentID;
 
 - (IBAction)deleteSelectedComments:(id)sender;
 - (IBAction)approveSelectedComments:(id)sender;

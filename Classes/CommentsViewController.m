@@ -25,6 +25,11 @@
 - (void)confirmDeletingOfComments;
 @end
 
+@interface CommentsViewController (Private)
+- (void)tryToSelectLastComment;
+- (void)showCommentAtIndexPath:(NSIndexPath *)indexPath;
+@end
+
 @implementation CommentsViewController {
     NSMutableArray *_selectedComments;
 }
@@ -32,6 +37,7 @@
 @synthesize wantedCommentId = _wantedCommentId;
 @synthesize commentViewController = _commentViewController;
 @synthesize currentIndexPath = _currentIndexPath;
+@synthesize lastSelectedCommentID = _lastSelectedCommentID;
 
 #pragma mark -
 #pragma mark Memory Management
@@ -157,6 +163,9 @@
     [unapproveButton setEnabled:!editing];
     [spamButton setEnabled:!editing];
 
+    if ( !editing && self.currentIndexPath )
+        [self tryToSelectLastComment];
+
 	[self deselectAllComments];
 }
 
@@ -280,6 +289,50 @@
     [_selectedComments removeAllObjects];
 }
 
+//Just highlight 
+- (void)tryToSelectLastComment {
+    //try to move the comments list on the last user selected comment
+	if(self.lastSelectedCommentID != nil) {
+		NSArray *sections = [self.resultsController sections];
+		int currentSectionIndex = 0;
+		for (currentSectionIndex = 0; currentSectionIndex < [sections count]; currentSectionIndex++) {
+			id <NSFetchedResultsSectionInfo> sectionInfo = nil;
+			sectionInfo = [sections objectAtIndex:currentSectionIndex];
+			
+			int currentCommentIndex = 0;
+			NSArray *commentsForSection = [sectionInfo objects];
+			
+			for (currentCommentIndex = 0; currentCommentIndex < [commentsForSection count]; currentCommentIndex++) {
+				Comment *cmt = [commentsForSection objectAtIndex:currentCommentIndex];
+				//NSLog(@"comment ID == %@", cmt.commentID);
+				//NSLog(@"self.comment ID == %@", self.lastUserSelectedCommentID);
+				if([cmt.commentID  compare:self.lastSelectedCommentID] == NSOrderedSame) { 
+					self.currentIndexPath = [NSIndexPath indexPathForRow:currentCommentIndex inSection:currentSectionIndex];
+					[self.tableView selectRowAtIndexPath:self.currentIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+                    return;
+				}
+			}
+		}
+	}
+    
+    /*Last selected comment is gone, try to select something?
+    Comment *comment;
+    if (self.currentIndexPath) {
+        @try {
+            comment = [self.resultsController objectAtIndexPath:self.currentIndexPath];
+        }
+        @catch (NSException * e) {
+            WPFLog(@"Can't highlight comment at indexPath: (%i,%i)", self.currentIndexPath.section, self.currentIndexPath.row);
+            WPFLog(@"sections: %@", self.resultsController.sections);
+            WPFLog(@"results: %@", self.resultsController.fetchedObjects);
+            comment = nil;
+        }
+    }
+	if(comment)
+        [self.tableView selectRowAtIndexPath:self.currentIndexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+    */
+}
+
 - (void)showCommentAtIndexPath:(NSIndexPath *)indexPath {
 	Comment *comment;
     if (indexPath) {
@@ -296,7 +349,7 @@
     
 	if(comment) {
         self.currentIndexPath = indexPath;
-        
+        self.lastSelectedCommentID = comment.commentID; //store the latest user selection
         BOOL animated = ([self commentViewController] == nil) && IS_IPHONE;
         
         self.commentViewController = [[[CommentViewController alloc] init] autorelease];
