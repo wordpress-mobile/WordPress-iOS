@@ -79,7 +79,8 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelAddWPcomBlogs) 
 												 name:@"didCancelWPcomLogin" object:nil];
     
-    [UIBarButtonItem styleButtonAsPrimary:buttonAddSelected];
+    if ([buttonAddSelected respondsToSelector:@selector(appearance)])
+        [UIBarButtonItem styleButtonAsPrimary:buttonAddSelected];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
