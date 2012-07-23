@@ -239,7 +239,6 @@
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
 	self.currentNode = [NSMutableString string];
-
     if([elementName isEqualToString:@"blog"]) {
         self.parsedBlog = [NSMutableDictionary dictionary];
     }
@@ -258,8 +257,12 @@
         [blog dataSave];
         
     } else if([elementName isEqualToString:@"blog"]) {
-        NSString *url = [parsedBlog objectForKey:@"url"];
-        NSRange range = [url rangeOfString:[blog url]];
+        // We might get a miss-match due to http vs https or a trailing slash
+        // so convert the strings to urls and compare their hosts.
+        NSString *parsedHost = [[NSURL URLWithString:[parsedBlog objectForKey:@"url"]] host];
+        NSString *blogHost = [[NSURL URLWithString:blog.url] host];
+        NSRange range = [parsedHost rangeOfString:blogHost];
+
         if (range.length > 0) {
             NSNumber *blogID = [[parsedBlog objectForKey:@"id"] numericValue];
             if ([blogID isEqualToNumber:[self.blog blogID]]) {
