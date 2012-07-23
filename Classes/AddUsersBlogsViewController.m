@@ -139,23 +139,22 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-	CGRect footerFrame = CGRectMake(0, 0, 320, 50);
+	CGRect footerFrame = CGRectMake(0, 0, self.view.frame.size.width, 50);
 	UIView *footerView = [[[UIView alloc] initWithFrame:footerFrame] autorelease];
 	if(section == 0) {
-		CGRect footerSpinnerFrame = CGRectMake(80, 0, 20, 20);
-		CGRect footerTextFrame = CGRectMake(110, 0, 200, 20);
-		if(IS_IPAD == YES) {
-			footerSpinnerFrame = CGRectMake(190, 0, 20, 20);
-			footerTextFrame = CGRectMake(220, 0, 200, 20);
-		}
+		CGRect footerSpinnerFrame = CGRectMake(0, 26.0f, 20, 20);
+		CGRect footerTextFrame = CGRectMake(0, 0, self.view.frame.size.width, 20);
 		if((usersBlogs.count == 0) && (!hasCompletedGetUsersBlogs)) {
 			UIActivityIndicatorView *footerSpinner = [[UIActivityIndicatorView alloc] initWithFrame:footerSpinnerFrame];
 			footerSpinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
 			[footerSpinner startAnimating];
+            footerSpinner.center = CGPointMake(self.view.center.x, footerSpinner.center.y);
 			[footerView addSubview:footerSpinner];
 			[footerSpinner release];
 			
 			UILabel *footerText = [[UILabel alloc] initWithFrame:footerTextFrame];
+            footerText.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
+            footerText.textAlignment = UITextAlignmentCenter;
 			footerText.backgroundColor = [UIColor clearColor];
 			footerText.textColor = [UIColor darkGrayColor];
 			footerText.text = NSLocalizedString(@"Loading blogs...", @"");
