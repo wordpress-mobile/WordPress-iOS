@@ -178,6 +178,7 @@
         [self.detailView addSubview:wrappedView];
     }
     self.detailView.frame = CGRectMake(0, 0, DETAIL_WIDTH, DETAIL_HEIGHT);
+    [self addShadowTo:self.detailView];
     [self.detailViews addObject:self.detailView];
     [self.detailViewWidths addObject:[NSNumber numberWithFloat:DETAIL_WIDTH]];
     self.masterView.frame = CGRectMake(0, 0, DETAIL_LEDGE_OFFSET, self.view.frame.size.height);
