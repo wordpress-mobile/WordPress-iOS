@@ -43,6 +43,7 @@
 
 // Fits two regular size panels with the sidebar collapsed
 #define IPAD_DETAIL_WIDTH 448.0f
+#define IPAD_DETAIL_SECONDARY_WIDTH 532.0f
 
 // Minimum x position for detail view
 #define DETAIL_OFFSET (IS_IPAD ? IPAD_DETAIL_OFFSET : IPHONE_DETAIL_OFFSET)

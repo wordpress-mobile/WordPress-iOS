@@ -1426,6 +1426,8 @@
         
         if ([self viewControllerExpectsWidePanel:viewController]) {
             newPanelWidth = IPAD_WIDE_PANEL_WIDTH;
+        } else {
+            newPanelWidth = IPAD_DETAIL_SECONDARY_WIDTH;
         }
         
         if (CGRectGetMaxX(topViewFrame) + newPanelWidth > self.view.bounds.size.width) {
