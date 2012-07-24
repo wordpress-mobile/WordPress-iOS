@@ -222,8 +222,8 @@
 }
 
 - (IBAction)spamSelectedComments:(id)sender {
-    [self removeSwipeView:NO];
     [self moderateCommentsWithSelector:@selector(spam)];
+    [self removeSwipeView:NO];
 }
 
 - (void)moderateCommentsWithSelector:(SEL)selector {
