@@ -190,6 +190,14 @@
         password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&error];
     }
     
+    // Skip the auth call to reduce loadtime if its the same username as before.
+    NSString *lastAuthedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:@"statsLastAuthedUsername"];
+    if ([username isEqualToString:lastAuthedUsername]) {
+        authed = YES;
+        [self loadStats];
+        return;
+    }
+    
     NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
     NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@",
                              [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
@@ -206,6 +214,8 @@
     
     [authRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         authed = YES;
+        [[NSUserDefaults standardUserDefaults] setObject:username forKey:@"statsLastAuthedUsername"];
+        [NSUserDefaults resetStandardUserDefaults];
         [self loadStats];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
