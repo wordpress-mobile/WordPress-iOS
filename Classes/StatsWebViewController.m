@@ -415,16 +415,8 @@
 #pragma mark WPWebView Delegate Methods
 
 - (void)webViewDidFinishLoad:(WPWebView *)wpWebView {
-    [super webViewDidFinishLoad:wpWebView];
-    if (!authed) {
-        authed = YES;
-        // We should authed with good credentials.
-        // So load the stats page.  This is a work around for some weirdness trying to redirect 
-        // to the chromeless newdash stats page.  The auth redirect doesn't seem to like the double ? in the url.
-        NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/?no-chrome#!/my-stats/?unit=1&blog=%@", [blog blogID]];
-        [webView loadPath:pathStr];
-    }
-
+    // Override super so we do not change our title.
+    self.title = @"Stats";
 }
 
 @end
