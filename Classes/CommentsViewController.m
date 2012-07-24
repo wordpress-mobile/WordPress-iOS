@@ -163,7 +163,7 @@
     [unapproveButton setEnabled:!editing];
     [spamButton setEnabled:!editing];
 
-    if ( !editing && self.currentIndexPath )
+    if ( IS_IPAD && !editing && self.currentIndexPath )
         [self tryToSelectLastComment];
 
 	[self deselectAllComments];
