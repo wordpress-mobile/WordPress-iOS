@@ -10,12 +10,15 @@
 #import "WordPressAppDelegate.h"
 #import "SFHFKeychainUtils.h"
 #import "WPcomLoginViewController.h"
+#import "AFHTTPRequestOperation.h"
 
 @interface StatsWebViewController () <WPcomLoginViewControllerDelegate> {
     BOOL loadStatsWhenViewAppears;
     BOOL promptCredentialsWhenViewAppears;
+    AFHTTPRequestOperation *authRequest;
 }
 @property (nonatomic, strong) NSString *wporgBlogJetpackUsernameKey;
+@property (nonatomic, strong) AFHTTPRequestOperation *authRequest;
 @end
 
 @implementation StatsWebViewController
@@ -27,12 +30,17 @@
 @synthesize currentNode;
 @synthesize parsedBlog;
 @synthesize wporgBlogJetpackUsernameKey;
+@synthesize authRequest;
 
 - (void)dealloc {
     [blog release];
     [currentNode release];
     [parsedBlog release];
     [wporgBlogJetpackUsernameKey release];
+    if (authRequest && [authRequest isExecuting]) {
+        [authRequest cancel];
+    }
+    [authRequest release];
     
     [super dealloc];
 }
@@ -155,19 +163,19 @@
     
     [currentRequest start];
     [httpClient release];
+    [webView showRefreshingState];
 }
 
 
-- (void)loadStats {
-    if (!self.isViewLoaded || !self.view.window) {
-        loadStatsWhenViewAppears = YES;
+- (void)authStats {
+    if (authed) {
+        [self loadStats];
         return;
     }
-
     
     NSString *username = @"";
     NSString *password = @"";
-    NSError *error;    
+    NSError *error;
     if ([blog isWPcom]) {
         //use set username/pw for wpcom blogs
         username = [blog username];
@@ -181,9 +189,8 @@
         username = [[NSUserDefaults standardUserDefaults] objectForKey:wporgBlogJetpackUsernameKey];
         password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&error];
     }
-
-//    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/my-stats/no-chrome/?blog=%@&unit=1", [blog blogID]];
-    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/?no-chrome#!/my-stats/?unit=1&blog=%@", [blog blogID]];
+    
+    NSString *pathStr = @"http://wordpress.com/?no-chrome";
     NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
     NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
                              [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
@@ -196,6 +203,44 @@
     NSString *userAgent = [NSString stringWithFormat:@"%@",[webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
     [mRequest addValue:userAgent forHTTPHeaderField:@"User-Agent"];
     [mRequest setHTTPMethod:@"POST"];
+    
+    self.authRequest = [[[AFHTTPRequestOperation alloc] initWithRequest:mRequest] autorelease];
+    
+    [authRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        authed = YES;
+        [self loadStats];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                            message:@"There was a problem conneting to your stats. Would you like to retry?"
+                                                           delegate:self
+                                                  cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                                  otherButtonTitles:NSLocalizedString(@"Retry?", nil), nil];
+        [alertView show];
+        [alertView release];
+    }];
+    
+    [authRequest start];
+    [webView showRefreshingState];
+}
+
+
+- (void)loadStats {
+    if (!self.isViewLoaded || !self.view.window) {
+        loadStatsWhenViewAppears = YES;
+        return;
+    }
+    
+    if (!authed) {
+        [self authStats];
+        return;
+    }
+    
+    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/?no-chrome#!/my-stats/?unit=1&blog=%@", [blog blogID]];
+    NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
+    [mRequest setURL:[NSURL URLWithString:pathStr]];
+    [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
+    NSString *userAgent = [NSString stringWithFormat:@"%@",[webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
+    [mRequest addValue:userAgent forHTTPHeaderField:@"User-Agent"];
     
     [webView loadRequest:mRequest];
 }
@@ -259,8 +304,14 @@
     } else if([elementName isEqualToString:@"blog"]) {
         // We might get a miss-match due to http vs https or a trailing slash
         // so convert the strings to urls and compare their hosts.
-        NSString *parsedHost = [[NSURL URLWithString:[parsedBlog objectForKey:@"url"]] host];
-        NSString *blogHost = [[NSURL URLWithString:blog.url] host];
+        NSURL *parsedURL = [NSURL URLWithString:[parsedBlog objectForKey:@"url"]];
+        NSURL *blogURL = [NSURL URLWithString:blog.url];
+        if (![blogURL scheme]) {
+            blogURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", blog.url]];
+        }
+        
+        NSString *parsedHost = [parsedURL host];
+        NSString *blogHost = [blogURL host];
         NSRange range = [parsedHost rangeOfString:blogHost];
 
         if (range.length > 0) {
@@ -335,6 +386,9 @@
             break;
 
         default:
+            if (buttonIndex > 0) {
+                [self loadStats];
+            }
             break;
     }
 }

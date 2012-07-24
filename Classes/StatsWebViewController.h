@@ -23,7 +23,8 @@
 
 - (void)initStats;
 - (void)getUserAPIKey;
-- (void)loadStats;
 - (void)promptForCredentials;
+- (void)authStats;
+- (void)loadStats;
 
 @end
