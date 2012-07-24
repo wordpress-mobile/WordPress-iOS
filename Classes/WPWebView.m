@@ -85,6 +85,15 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     return self;
 }
 
+- (void)didMoveToWindow {
+    [super didMoveToWindow];
+    
+    if (!didSetScrollViewContentSize) {
+        didSetScrollViewContentSize=YES;
+        scrollView.contentSize = self.frame.size;
+    }
+}
+
 #pragma mark -
 #pragma mark Drawing Methods
 
@@ -423,7 +432,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 
     if (delegate && [delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
         [delegate webViewDidFinishLoad:self];
-    }    
+    }
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {

@@ -91,7 +91,7 @@
 #pragma mark WPWebView Delegate Methods
 
 - (BOOL)wpWebView:(WPWebView *)wpWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    // If a link to a new URL is clicked we want to open in a new window. 
+    // If a link to a new URL is clicked we want to open in a new window.
     // This method is also triggered when loading html from a string so we need to handle that case as well.
     if (navigationType == UIWebViewNavigationTypeLinkClicked) {
 

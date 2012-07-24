@@ -14,6 +14,7 @@ extern NSString *refreshedWithOutValidRequestNotification;
 @interface WPWebView : UIView <UIWebViewDelegate, UIAlertViewDelegate, EGORefreshTableHeaderDelegate, UIScrollViewDelegate> {
     id <WPWebViewDelegate>delegate;
     NSURL *baseURLFallback;
+    BOOL didSetScrollViewContentSize;
 }
 
 @property(nonatomic, assign) IBOutlet id<WPWebViewDelegate> delegate;
