@@ -267,7 +267,7 @@
     [controller release];
 
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WordPress.com Stats", @"")
-                                                        message:NSLocalizedString(@"To load stats for your blog you will need to have Jetpack or the WordPress.com Stats plugin installed on your blog.", @"") 
+                                                        message:NSLocalizedString(@"To load stats for your blog you will need to have the JetPack plugin installed and correctly configured as well as your WordPress.com login.", @"") 
                                                        delegate:self 
                                               cancelButtonTitle:NSLocalizedString(@"Learn More", @"")
                                               otherButtonTitles:NSLocalizedString(@"I'm Ready!", @""), nil];

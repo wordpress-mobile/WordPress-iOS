@@ -18,7 +18,6 @@
 #define COMMENT_BODY_TOP        100
 #define COMMENT_BODY_MAX_HEIGHT 4000
 #define COMMENT_BODY_PADDING 20
-#define JUST_TO_AVIID_COMPILER_ERRORS 400
 
 #define kCustomButtonHeight     30.0
 
@@ -57,6 +56,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 
     self.comment = nil;
+    self.delegate = nil;
     [segmentedControl release];
     [segmentBarItem release];
 	[replyToCommentViewController release];
