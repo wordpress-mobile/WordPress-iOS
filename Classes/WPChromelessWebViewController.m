@@ -124,7 +124,7 @@
                 if([currURL.path isEqualToString:reqURL.path]) {
                     if ([currURL.query isEqualToString:reqURL.query]) {
                         // if the detail controller is ourself disregard the click so we don't spam a series of the same page.
-                        [self.panelNavigationController popViewControllerAnimated:YES];
+                        [self.panelNavigationController popToViewController:prevController animated:YES];
                         return NO;
                     }
                 }
@@ -148,17 +148,9 @@
         
         WPChromelessWebViewController *controller = [[WPChromelessWebViewController alloc] init];
         [controller loadPath:request.URL.absoluteString];        
-        if (!IS_IPAD) {
-            [self.panelNavigationController pushViewController:controller animated:YES];
-
-        } else {
-            
-            [self.panelNavigationController popToRootViewControllerAnimated:NO];
-            [self.panelNavigationController pushViewController:controller animated:YES];
-
-        }
-
+        [self.panelNavigationController pushViewController:controller fromViewController:self animated:YES];
         [controller release];
+        
         return NO;
     }
     

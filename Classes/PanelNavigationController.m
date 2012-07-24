@@ -1494,6 +1494,9 @@
             [poppedControllers addObject:self.detailViewController];
             [self setDetailViewController:viewController];
         }
+        // make sure the overlay is not visible.
+        [self wrapViewForViewController:viewController].overlay.alpha = 0.0;
+        
         return [NSArray arrayWithArray:poppedControllers];
     }
 }
