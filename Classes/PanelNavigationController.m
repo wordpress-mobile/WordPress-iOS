@@ -812,8 +812,6 @@
     view.layer.shadowOpacity = 0.8f;
     view.layer.shadowColor = [[UIColor blackColor] CGColor];
     view.layer.shadowOffset = CGSizeZero;
-
-    view.layer.shadowPath = [[UIBezierPath bezierPathWithRoundedRect:view.bounds cornerRadius:PANEL_CORNER_RADIUS] CGPath];
 }
 
 - (void)removeShadowFrom:(UIView *)view {
