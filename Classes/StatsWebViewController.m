@@ -208,7 +208,6 @@ static NSString *_lastAuthedName = nil;
     }
     
     // Skip the auth call to reduce loadtime if its the same username as before.
-//    NSString *lastAuthedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:@"statsLastAuthedUsername"];
     NSString *lastAuthedUsername = [[self class] lastAuthedName];
     if ([username isEqualToString:lastAuthedUsername]) {
         authed = YES;
@@ -220,6 +219,7 @@ static NSString *_lastAuthedName = nil;
     NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&rememberme=forever",
                              [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                              [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+
     [mRequest setURL:[NSURL URLWithString:@"https://wordpress.com/wp-login.php"]];
     [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
     [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
@@ -227,13 +227,11 @@ static NSString *_lastAuthedName = nil;
     NSString *userAgent = [NSString stringWithFormat:@"%@",[webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
     [mRequest addValue:userAgent forHTTPHeaderField:@"User-Agent"];
     [mRequest setHTTPMethod:@"POST"];
-    
+
     self.authRequest = [[[AFHTTPRequestOperation alloc] initWithRequest:mRequest] autorelease];
     
     [authRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         authed = YES;
-//        [[NSUserDefaults standardUserDefaults] setObject:username forKey:@"statsLastAuthedUsername"];
-//        [NSUserDefaults resetStandardUserDefaults];
         [[self class] setLastAuthedName:username];
         [self loadStats];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
