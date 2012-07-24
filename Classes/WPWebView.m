@@ -280,10 +280,13 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
         self.baseURLFallback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/", mRequest.URL.scheme, mRequest.URL.host]];
     
     self.currentRequest = mRequest;
-    self.currentHTTPRequestOperation = [[[AFHTTPRequestOperation alloc] initWithRequest:mRequest] autorelease];
     
     [[self webView] loadRequest:mRequest];
     return;
+    
+    // Webstats is all ajax and does not play nice with AFNetworking requests.
+    // The following code is by-passed for now but saved for future refactoring after the 3.1 release.
+    self.currentHTTPRequestOperation = [[[AFHTTPRequestOperation alloc] initWithRequest:mRequest] autorelease];
     
     [currentHTTPRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Check for a redirect.  Make sure the current URL reflects any redirects.
@@ -396,12 +399,9 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     }
     
     // If we have a delegate listening to this method, let the delegate decide how to handle it.
+    // iFrames can trigger this, so we won't store the request. 
     if (delegate && [delegate respondsToSelector:@selector(wpWebView:shouldStartLoadWithRequest:navigationType:)]) {
-        BOOL should = [delegate wpWebView:self shouldStartLoadWithRequest:aRequest navigationType:navigationType];
-        if(should){
-            self.currentRequest = aRequest;
-        }
-        return should;
+        return [delegate wpWebView:self shouldStartLoadWithRequest:aRequest navigationType:navigationType];
     }
     
     // Check reachibility after the delegates have been checked. Delegates may have their own reachibility check and we don't
@@ -424,7 +424,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    [self stopLoading];
+    [self setLoading:NO];
     self.lastWebViewRefreshDate = [NSDate date];
     [refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView * )scrollView];
 
@@ -434,7 +434,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    [self stopLoading];
+    [self setLoading:NO];
     self.lastWebViewRefreshDate = [NSDate date];
     [refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView * )scrollView];
     

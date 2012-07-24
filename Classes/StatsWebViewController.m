@@ -235,7 +235,7 @@
         return;
     }
     
-    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/?no-chrome#!/my-stats/?unit=1&blog=%@", [blog blogID]];
+    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/?no-chrome#!/my-stats/?blog=%@&unit=1", [blog blogID]];
     NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
     [mRequest setURL:[NSURL URLWithString:pathStr]];
     [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
