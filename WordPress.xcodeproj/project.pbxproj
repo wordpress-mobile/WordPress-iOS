@@ -133,6 +133,8 @@
 		37363A4C15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37363A4A15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active@2x.png */; };
 		37363A4D15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 37363A4B15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active.png */; };
 		373C5184156D0523007C2977 /* SidebarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 373C5183156D0523007C2977 /* SidebarViewController.xib */; };
+		37417FAF15BEFA9C0067DFEA /* sidebar_border_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 37417FAD15BEFA9C0067DFEA /* sidebar_border_bg.png */; };
+		37417FB015BEFA9C0067DFEA /* sidebar_border_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37417FAE15BEFA9C0067DFEA /* sidebar_border_bg@2x.png */; };
 		3744A0DE130ABB0800CE7BE1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */; };
 		3744A0DF130ABB0800CE7BE1 /* HelpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */; };
 		374CB15015B824E200DD0EBC /* navbar_toggle.png in Resources */ = {isa = PBXBuildFile; fileRef = 374CB14E15B824E200DD0EBC /* navbar_toggle.png */; };
@@ -758,6 +760,8 @@
 		37363A4A15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_button_bg_landscape_active@2x.png"; sourceTree = "<group>"; };
 		37363A4B15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_button_bg_landscape_active.png; sourceTree = "<group>"; };
 		373C5183156D0523007C2977 /* SidebarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SidebarViewController.xib; sourceTree = "<group>"; };
+		37417FAD15BEFA9C0067DFEA /* sidebar_border_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_border_bg.png; sourceTree = "<group>"; };
+		37417FAE15BEFA9C0067DFEA /* sidebar_border_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar_border_bg@2x.png"; sourceTree = "<group>"; };
 		3744A0DB130ABB0800CE7BE1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HelpViewController.xib; sourceTree = "<group>"; };
@@ -1710,6 +1714,8 @@
 			children = (
 				374F188A15A5897500524ED0 /* sidebar_bg.png */,
 				374F188B15A5897500524ED0 /* sidebar_bg@2x.png */,
+				37417FAD15BEFA9C0067DFEA /* sidebar_border_bg.png */,
+				37417FAE15BEFA9C0067DFEA /* sidebar_border_bg@2x.png */,
 				374F188C15A5897500524ED0 /* sidebar_camera.png */,
 				374F188D15A5897500524ED0 /* sidebar_camera@2x.png */,
 				37B159F215AC7CEB00333C91 /* sidebar_cell_bg@2x.png */,
@@ -1724,6 +1730,8 @@
 				374F189715A5897500524ED0 /* sidebar_dashboard@2x.png */,
 				374F189C15A5897500524ED0 /* sidebar_footer_bg.png */,
 				374F189D15A5897500524ED0 /* sidebar_footer_bg@2x.png */,
+				30E9683A15AE4EB10047DD84 /* sidebar-logo.png */,
+				30E9683B15AE4EB10047DD84 /* sidebar-logo@2x.png */,
 				374F189E15A5897500524ED0 /* sidebar_pages.png */,
 				374F189F15A5897500524ED0 /* sidebar_pages@2x.png */,
 				374F18A015A5897500524ED0 /* sidebar_posts.png */,
@@ -2228,8 +2236,6 @@
 				5DD8A6F215A6326700A673A4 /* settings_bg.png */,
 				5DD8A6F315A6326A00A673A4 /* settings_bg@2x.png */,
 				374F188915A5895B00524ED0 /* Sidebar */,
-				30E9683A15AE4EB10047DD84 /* sidebar-logo.png */,
-				30E9683B15AE4EB10047DD84 /* sidebar-logo@2x.png */,
 				376EEF5B12F70C9B005CE77A /* stats.png */,
 				376EEF5C12F70C9B005CE77A /* stats@2x.png */,
 				6E8BE56C11BF5782002A13DD /* sync.png */,
@@ -3263,6 +3269,8 @@
 				374CB16015B9363800DD0EBC /* refresh.wav in Resources */,
 				374CB16515B9907600DD0EBC /* WPpregressHUDBackground.png in Resources */,
 				374CB16615B9907600DD0EBC /* WPpregressHUDBackground@2x.png in Resources */,
+				37417FAF15BEFA9C0067DFEA /* sidebar_border_bg.png in Resources */,
+				37417FB015BEFA9C0067DFEA /* sidebar_border_bg@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

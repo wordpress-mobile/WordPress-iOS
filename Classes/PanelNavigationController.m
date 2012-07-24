@@ -29,6 +29,7 @@
 @property (nonatomic, retain) UIButton *detailTapper;
 @property (nonatomic, retain) UIPanGestureRecognizer *panner;
 @property (nonatomic, retain) UIView *popPanelsView;
+@property (nonatomic, retain) UIImageView *sidebarBorderView;
 
 - (void)showSidebar;
 - (void)showSidebarAnimated:(BOOL)animated;
@@ -41,8 +42,6 @@
 - (void)prepareDetailView:(UIView *)view forController:(UIViewController *)controller;
 - (void)addShadowTo:(UIView *)view;
 - (void)removeShadowFrom:(UIView *)view;
-- (void)applyCorners;
-- (void)roundViewCorners: (UIView *)view forCorners: (UIRectCorner)rectCorner;
 - (void)setScrollsToTop:(BOOL)scrollsToTop forView:(UIView *)view;
 - (void)addPanner;
 - (void)removePanner;
@@ -111,6 +110,7 @@
 @synthesize detailTapper = _detailTapper;
 @synthesize panner = _panner;
 @synthesize popPanelsView = _popPanelsView;
+@synthesize sidebarBorderView = _sidebarBorderView;
 @synthesize delegate;
 
 - (void)dealloc {
@@ -124,6 +124,7 @@
     self.detailTapper = nil;
     self.panner = nil;
     self.popPanelsView = nil;
+    self.sidebarBorderView = nil;
     self.delegate = nil;
     [super dealloc];
 }
@@ -183,6 +184,13 @@
     self.masterView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self.view insertSubview:self.masterViewController.view belowSubview:self.detailView];
 
+    //Right border view for sidebar
+    _sidebarBorderView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_border_bg"]];
+    _sidebarBorderView.contentMode = UIViewContentModeScaleToFill;
+    [_sidebarBorderView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
+    _sidebarBorderView.frame = CGRectMake((IS_IPAD) ? SIDEBAR_WIDTH : (SIDEBAR_WIDTH - DETAIL_LEDGE - 4.0f), 0.0f, 2.0f, self.view.bounds.size.height);
+    [self.view insertSubview:_sidebarBorderView atIndex:0];
+    
     _stackOffset = 0;
     if (IS_IPHONE) {
         _stackOffset = DETAIL_LEDGE_OFFSET;
@@ -795,13 +803,12 @@
     if (controller == _detailViewController)
         originX = 0.0f;
     view.frame = CGRectMake(originX, 0.0f, newPanelWidth, DETAIL_HEIGHT);
-    [self applyCorners];
 }
 
 - (void)addShadowTo:(UIView *)view {
     view.layer.masksToBounds = NO;
-    view.layer.shadowRadius = 10.0f;
-    view.layer.shadowOpacity = 0.5f;
+    view.layer.shadowRadius = 6.0f;
+    view.layer.shadowOpacity = 0.8f;
     view.layer.shadowColor = [[UIColor blackColor] CGColor];
     view.layer.shadowOffset = CGSizeZero;
 
@@ -810,38 +817,6 @@
 
 - (void)removeShadowFrom:(UIView *)view {
     view.layer.shadowOpacity = 0.0f;
-}
-
-- (void)applyCorners{
-    if (IS_IPAD) {
-        for (int i=0; i < [self.detailViews count]; i++) {
-            UIView *view = [self.detailViews objectAtIndex:i];
-            if (i == 0 && [self.detailViews count] == 1) {
-                [self roundViewCorners:view forCorners:UIRectCornerAllCorners];
-            }
-            else if (i ==0) {
-                [self roundViewCorners:view forCorners:UIRectCornerTopLeft|UIRectCornerBottomLeft];
-            }
-            else if (i == [self.detailViews count] - 1) {
-                //[self roundViewCorners:view forCorners:UIRectCornerTopRight|UIRectCornerBottomRight];
-                [self addShadowTo:view];
-            }
-            else {
-                view.layer.mask = nil;
-            }
-        }
-    }
-}
-
-- (void)roundViewCorners: (UIView *)view forCorners:(UIRectCorner)rectCorner {
-    
-    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:view.bounds 
-                                                   byRoundingCorners: rectCorner
-                                                         cornerRadii:CGSizeMake(PANEL_CORNER_RADIUS, PANEL_CORNER_RADIUS)];
-    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    maskLayer.frame = view.bounds;
-    maskLayer.path = maskPath.CGPath;
-    view.layer.mask = maskLayer;
 }
 
 - (void)setScrollsToTop:(BOOL)scrollsToTop forView:(UIView *)view {
@@ -954,7 +929,6 @@
                 [self animatePoppedIcon];
                 _isShowingPoppedIcon = NO;
                 [self popToRootViewControllerAnimated:YES];
-                [self applyCorners];
                 [self.delegate resetView];
             }
         } else {
@@ -1453,7 +1427,7 @@
             [viewController vdc_viewDidAppear:animated];
         }
 
-        [self applyCorners];
+        [self addShadowTo:wrappedView];
         
         [UIView animateWithDuration:CLOSE_SLIDE_DURATION(animated) animations:^{
             topView.frame = topViewFrame;
@@ -1544,7 +1518,6 @@
             PanelViewWrapper *overlayView = [_detailView.subviews objectAtIndex:0];
             overlayView.overlay.alpha = 0.0f;
         }
-        [self applyCorners];
         [UIView animateWithDuration:0.5f
                          animations:^{
                              [_popPanelsView setAlpha:0.0f];
