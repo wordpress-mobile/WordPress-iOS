@@ -19,6 +19,10 @@
 }
 @property (nonatomic, strong) NSString *wporgBlogJetpackUsernameKey;
 @property (nonatomic, strong) AFHTTPRequestOperation *authRequest;
+
++ (NSString *)lastAuthedName;
++ (void)setLastAuthedName:(NSString *)str;
+
 @end
 
 @implementation StatsWebViewController
@@ -31,6 +35,19 @@
 @synthesize parsedBlog;
 @synthesize wporgBlogJetpackUsernameKey;
 @synthesize authRequest;
+
+static NSString *_lastAuthedName = nil;
+
++ (NSString *)lastAuthedName {
+    return _lastAuthedName;
+}
+
++ (void)setLastAuthedName:(NSString *)str {
+    if (_lastAuthedName) {
+        [_lastAuthedName release];
+    }
+    _lastAuthedName = [str copy];
+}
 
 - (void)dealloc {
     [blog release];
@@ -190,6 +207,15 @@
         password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&error];
     }
     
+    // Skip the auth call to reduce loadtime if its the same username as before.
+//    NSString *lastAuthedUsername = [[NSUserDefaults standardUserDefaults] stringForKey:@"statsLastAuthedUsername"];
+    NSString *lastAuthedUsername = [[self class] lastAuthedName];
+    if ([username isEqualToString:lastAuthedUsername]) {
+        authed = YES;
+        [self loadStats];
+        return;
+    }
+    
     NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
     NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&rememberme=forever",
                              [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
@@ -206,6 +232,9 @@
     
     [authRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         authed = YES;
+//        [[NSUserDefaults standardUserDefaults] setObject:username forKey:@"statsLastAuthedUsername"];
+//        [NSUserDefaults resetStandardUserDefaults];
+        [[self class] setLastAuthedName:username];
         [self loadStats];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
