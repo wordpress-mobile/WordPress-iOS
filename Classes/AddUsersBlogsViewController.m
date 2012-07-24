@@ -357,7 +357,6 @@
 
     for (NSDictionary *blog in usersBlogs) {
 		if([selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
-            [blog setValue:[NSNumber numberWithBool:YES] forKey:@"isActivated"];
 			[self createBlog:blog];
 		}
 	}
