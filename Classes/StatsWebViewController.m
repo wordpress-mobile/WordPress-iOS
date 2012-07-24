@@ -190,12 +190,10 @@
         password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&error];
     }
     
-    NSString *pathStr = @"http://wordpress.com/?no-chrome";
     NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
-    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
+    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@",
                              [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                             [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                             [pathStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                             [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     [mRequest setURL:[NSURL URLWithString:@"https://wordpress.com/wp-login.php"]];
     [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
     [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
