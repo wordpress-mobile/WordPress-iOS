@@ -43,16 +43,6 @@
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-                       
-        pullSoundID = 0, refreshSoundID = 0;
-        NSURL *toneURLRef = [[NSBundle mainBundle] URLForResource:@"pull"
-                                                    withExtension:@"wav"]; 
-        AudioServicesCreateSystemSoundID((CFURLRef) toneURLRef, &pullSoundID); 
-        toneURLRef = [[NSBundle mainBundle] URLForResource:@"refresh"
-                                             withExtension:@"wav"];
-        AudioServicesCreateSystemSoundID((CFURLRef) toneURLRef, &refreshSoundID); 
-            
-		
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         self.backgroundColor = [UIColor colorWithRed:246.0/255.0 green:246.0/255.0 blue:246.0/255.0 alpha:1.0];
         
@@ -146,7 +136,6 @@
 	
 	switch (aState) {
 		case EGOOPullRefreshPulling:
-            AudioServicesPlaySystemSound(pullSoundID);
             _statusLabel.textColor = TEXT_COLOR_ACTIVE;
 			_statusLabel.text = NSLocalizedString(@"Release to refresh...", @"Release to refresh status");
 			[CATransaction begin];
@@ -158,7 +147,6 @@
 			
 			break;
 		case EGOOPullRefreshNormal:
-			
 			if (_state == EGOOPullRefreshPulling) {
 				[CATransaction begin];
 				[CATransaction setAnimationDuration:FLIP_ANIMATION_DURATION];
@@ -180,7 +168,6 @@
             _lastUpdatedLabel.hidden = YES;
 			break;
 		case EGOOPullRefreshLoading:
-			
 			_statusLabel.text = NSLocalizedString(@"Loading...", @"Loading Status");
 			[_activityView startAnimating];
 			[CATransaction begin];
@@ -245,8 +232,6 @@
 			[_delegate egoRefreshTableHeaderDidTriggerRefresh:self];
 		}
           
-        AudioServicesPlaySystemSound(refreshSoundID);
-        
 		[self setState:EGOOPullRefreshLoading];
 		[UIView beginAnimations:nil context:NULL];
 		[UIView setAnimationDuration:0.2];
