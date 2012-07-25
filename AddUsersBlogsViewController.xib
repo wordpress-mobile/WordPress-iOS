@@ -44,7 +44,7 @@
 					<object class="IBUITableView" id="873029372">
 						<reference key="NSNextResponder" ref="480151027"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{320, 436}</string>
+						<string key="NSFrameSize">{320, 392}</string>
 						<reference key="NSSuperview" ref="480151027"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="865505633"/>
@@ -101,7 +101,7 @@
 				<string key="NSFrame">{{0, 44}, {320, 436}}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
+				<reference key="NSNextKeyView" ref="873029372"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
