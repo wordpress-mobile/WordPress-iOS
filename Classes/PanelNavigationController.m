@@ -1018,10 +1018,6 @@
     CGFloat remainingOffset = offset;
     
     BOOL expectsWidePanels = [self viewControllerExpectsWidePanel:self.detailViewController];
-    CGFloat detailLedgeOffset = DETAIL_LEDGE_OFFSET;
-    if (expectsWidePanels){
-        detailLedgeOffset = 44.0f;
-    }
     
     CGFloat usedOffset = MIN(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET, remainingOffset);
     CGFloat viewX = DETAIL_LEDGE_OFFSET - usedOffset;
@@ -1111,10 +1107,7 @@
     CGFloat remainingOffset = offset;
     
     BOOL expectsWidePanels = [self viewControllerExpectsWidePanel:self.detailViewController];
-    CGFloat detailLedgeOffset = DETAIL_LEDGE_OFFSET;
-    if (expectsWidePanels){
-        detailLedgeOffset = 44.0f;
-    }
+
     CGFloat usedOffset = MIN(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET, remainingOffset);
     CGFloat viewX = DETAIL_LEDGE_OFFSET - usedOffset;
     
@@ -1220,7 +1213,7 @@
         maxSoft = 0.0f;
         if ([self viewControllerExpectsWidePanel:_detailViewController] && UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
             maxSoft = DETAIL_LEDGE_OFFSET - (self.view.bounds.size.width - IPAD_WIDE_PANEL_WIDTH);
-        }    
+        }
     } else {
         maxSoft = DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
         maxSoft+= DETAIL_LEDGE;
