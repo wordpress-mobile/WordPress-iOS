@@ -183,6 +183,10 @@
         && (![self.permaLink  isEqual:self.original.permaLink]))
         return YES;
 	
+    if (self.hasRemote == NO) {
+        return YES;
+    }
+    
     // Relationships are not going to be nil, just empty sets,
     // so we can avoid the extra check
     if (![self.media isEqual:self.original.media])

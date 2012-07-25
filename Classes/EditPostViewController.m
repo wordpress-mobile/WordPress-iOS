@@ -210,7 +210,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     if(self.editMode == kEditPost) {
         [self refreshUIForCurrentPost];
-        
     } else if(self.editMode == kNewPost) {
         [self refreshUIForCompose];
         
@@ -241,7 +240,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
         //set the black tab pointer on iOS 4
         [tabPointer setImage:[UIImage imageNamed:@"tabPointer_black"]];
     }
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -515,6 +513,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     UIBarButtonItem *saveButton = [[[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleDone target:self action:@selector(saveAction:)] autorelease];
     self.navigationItem.rightBarButtonItem = saveButton;
+    
     [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
 }
 
@@ -553,9 +552,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 			textView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more];
 		else	
 			textView.text = self.apost.content;
-		
+
+        
     }
-	
+    
 	// workaround for odd text view behavior on iPad
 	[textView setContentOffset:CGPointZero animated:NO];
     
