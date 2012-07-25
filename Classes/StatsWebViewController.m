@@ -325,7 +325,8 @@ static NSString *_lastAuthedName = nil;
 }
 
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
-
+    static BOOL match = NO;
+    
     if ([elementName isEqualToString:@"apikey"]) {
         [blog setValue:currentNode forKey:@"apiKey"];
         [blog dataSave];
@@ -351,26 +352,10 @@ static NSString *_lastAuthedName = nil;
                 blog.blogID = blogID;
                 [blog dataSave];
             }
-            // All done here.
-            [parser abortParsing];
             
-            /*
-             We've successfully found the wpcom account used for the wporg account's jetpack plugin.
-             To avoid a mismatched credentials case, associate the current defaults value for wpcom_username_preference
-             with a new key for this jetpack account.
-             */
-            NSString *jetpackUsernameKey = [NSString stringWithFormat:@"jetpackblog-%@",[blog hostURL]];
-            NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-            [[NSUserDefaults standardUserDefaults] setValue:username forKey:jetpackUsernameKey];
-            [NSUserDefaults resetStandardUserDefaults];
-            
-            self.currentNode = nil;
-            self.parsedBlog = nil;
-            
-            // Proceed with the credentials we have.
-            [self loadStats];
-            
-            return;
+            // Mark that a match was found but continue.
+            // http://ios.trac.wordpress.org/ticket/1251
+            match = YES;
         }
         
         self.parsedBlog = nil;
@@ -383,7 +368,27 @@ static NSString *_lastAuthedName = nil;
         
     } else if([elementName isEqualToString:@"userinfo"]) {
         [parser abortParsing];
-
+        
+        if (match) {
+            /*
+             We've successfully found the wpcom account used for the wporg account's jetpack plugin.
+             To avoid a mismatched credentials case, associate the current defaults value for wpcom_username_preference
+             with a new key for this jetpack account.
+             */
+            NSString *jetpackUsernameKey = [NSString stringWithFormat:@"jetpackblog-%@", [blog hostURL]];
+            NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+            [[NSUserDefaults standardUserDefaults] setValue:username forKey:jetpackUsernameKey];
+            [NSUserDefaults resetStandardUserDefaults];
+            
+            self.currentNode = nil;
+            self.parsedBlog = nil;
+            
+            // Proceed with the credentials we have.
+            [self loadStats];
+            
+            return;
+        } 
+        
         // We parsed the whole list but did not find a matching blog.
         // This should mean that the user has a self-hosted blog and we searched the api without
         // the correct credentials, or they have not set up Jetpack.
