@@ -36,6 +36,7 @@ extern NSString *refreshedWithOutValidRequestNotification;
 - (NSString *)stringByEvaluatingJavaScriptFromString:(NSString *)script;
 - (void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message;
 - (void)showRefreshingState;
+- (void)hideRefreshingState;
 - (NSURL *)currentURL;
 
 @end
