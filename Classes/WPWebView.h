@@ -23,6 +23,7 @@ extern NSString *refreshedWithOutValidRequestNotification;
 @property(nonatomic, readonly, getter=isLoading) BOOL loading;
 @property(nonatomic, readonly, getter=request) NSURLRequest *request;
 @property(nonatomic) BOOL scalesPageToFit;
+@property(nonatomic) BOOL useWebViewLoading;
 
 - (void)goBack;
 - (void)goForward;

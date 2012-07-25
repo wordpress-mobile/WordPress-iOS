@@ -48,6 +48,8 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 @synthesize webView;
 @synthesize scrollView;
 @synthesize baseURLFallback;
+@synthesize useWebViewLoading;
+
 
 - (void)dealloc {
     self.delegate = nil;
@@ -67,6 +69,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     [super dealloc];
 }
 
+
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
@@ -75,6 +78,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     }
     return self;
 }
+
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
@@ -85,14 +89,17 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     return self;
 }
 
+
 - (void)didMoveToWindow {
     [super didMoveToWindow];
     
     if (!didSetScrollViewContentSize) {
         didSetScrollViewContentSize=YES;
+        // Set the conetnt size so the view's initial state is not scrollable.
         scrollView.contentSize = self.frame.size;
     }
 }
+
 
 #pragma mark -
 #pragma mark Drawing Methods
@@ -115,6 +122,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     }
     [self setDefaultHeader:@"User-Agent" value:userAgent];
 }
+
 
 - (void)setupSubviews {
     self.backgroundColor = [UIColor whiteColor];
@@ -171,6 +179,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 	[defaultHeaders setValue:value forKey:header];
 }
 
+
 - (Reachability *)reachability {
     // lazy load.
     if (!reachability) {
@@ -178,6 +187,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     }
     return reachability;
 }
+
 
 - (NSURLRequest *)request {
     if (currentRequest) {
@@ -187,6 +197,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     }
     return nil;
 }
+
 
 - (void)setCurrentRequest:(NSURLRequest *)req {
     if ([req isEqual:currentRequest]) {
@@ -203,6 +214,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     currentRequest = [req retain];
 }
 
+
 - (void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
                                                         message:message
@@ -213,6 +225,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     [alertView release];
 }
 
+
 - (void)setCurrentHTTPRequestOperation:(AFHTTPRequestOperation *)newCurrentHTTPRequestOperation {
     if (currentHTTPRequestOperation){
         if(currentHTTPRequestOperation.isExecuting) {
@@ -222,6 +235,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     }
     currentHTTPRequestOperation = [newCurrentHTTPRequestOperation retain];
 }
+
 
 - (NSURL *)currentURL {
     return [[self currentRequest] URL];
@@ -236,13 +250,14 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 }
 
 - (void)setLoading:(BOOL)value {
-    if (value == loading) return;
-
     loading = value;
     if (loading) {
         [self showRefreshingState];
+    } else {
+        [self hideRefreshingState];
     }
 }
+
 
 - (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType textEncodingName:(NSString *)encodingName baseURL:(NSURL *)baseURL {
     self.currentHTTPRequestOperation = nil;
@@ -250,11 +265,13 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     [webView loadData:data MIMEType:MIMEType textEncodingName:encodingName baseURL:baseURL];
 }
 
+
 - (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL {
     self.currentHTTPRequestOperation = nil;
     [self setLoading:YES];
     [webView loadHTMLString:string baseURL:baseURL];
 }
+
 
 - (void)loadRequest:(NSURLRequest *)aRequest {
     if (loading) {
@@ -283,11 +300,13 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     
     self.currentRequest = mRequest;
     
-    [[self webView] loadRequest:mRequest];
-    return;
-    
-    // Webstats is all ajax and does not play nice with AFNetworking requests.
-    // The following code is by-passed for now but saved for future refactoring after the 3.1 release.
+    // Controllers can set useWebViewLoading for pages that are ajax powered and do not play nice with AFNetworking requests.
+    // Webstats is a good example.
+    if (useWebViewLoading) {
+        [[self webView] loadRequest:mRequest];
+        return;        
+    }
+
     self.currentHTTPRequestOperation = [[[AFHTTPRequestOperation alloc] initWithRequest:mRequest] autorelease];
     
     [currentHTTPRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -308,6 +327,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     [currentHTTPRequestOperation start];
 }
 
+
 - (void)loadPath:(NSString *)path {
     NSURL *url = [NSURL URLWithString:path];
     if (!url) return;
@@ -316,13 +336,15 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     [self loadRequest:req];
 }
 
+
 - (void)reload {
-    if ([self request]) {
+    if ([self request] && !useWebViewLoading) {
         [self loadRequest:[self request]];
     } else {
         [webView reload];
     }
 }
+
 
 - (void)stopLoading {
     [self setLoading:NO];
@@ -343,25 +365,31 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     return [webView scalesPageToFit];
 }
 
+
 - (void)setScalesPageToFit:(BOOL)value {
     [webView setScalesPageToFit:value];
 }
+
 
 - (BOOL)canGoBack {
     return [webView canGoBack];
 }
 
+
 - (BOOL)canGoForward {
     return [webView canGoForward];
 }
+
 
 - (void)goBack {
     [webView goBack];
 }
 
+
 - (void)goForward {
     [webView goForward];
 }
+
 
 - (NSString *)stringByEvaluatingJavaScriptFromString:(NSString *)script {
     return [webView stringByEvaluatingJavaScriptFromString:script];
@@ -419,26 +447,27 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     return YES;
 }
 
+
 - (void)webViewDidStartLoad:(UIWebView *)webView {
+    [self setLoading:YES];
+    
     if (delegate && [delegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
         [delegate webViewDidStartLoad:self];
     }
 }
 
+
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [self setLoading:NO];
-    self.lastWebViewRefreshDate = [NSDate date];
-    [refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView * )scrollView];
 
     if (delegate && [delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
         [delegate webViewDidFinishLoad:self];
     }
 }
 
+
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [self setLoading:NO];
-    self.lastWebViewRefreshDate = [NSDate date];
-    [refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView * )scrollView];
     
     // If we have a delegate, let it handle the error.
     if (delegate && [delegate respondsToSelector:@selector(webView:didFailLoadWithError:)]) {
@@ -462,6 +491,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     }
 }
 
+
 #pragma mark -
 #pragma mark EGORefreshTableHeaderDelegate Methods
 
@@ -476,14 +506,17 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     [self reload];
 }
 
+
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view {
     return NO;
 	return loading;
 }
 
+
 - (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view {
 	return lastWebViewRefreshDate;
 }
+
 
 // provide a way for web apps to show the native pull to refresh loading indicator
 - (void)showRefreshingState {
@@ -493,12 +526,20 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     [refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
+
+- (void)hideRefreshingState {
+    self.lastWebViewRefreshDate = [NSDate date];
+    [refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView * )scrollView];
+}
+
+
 #pragma mark -
 #pragma mark UIScrollViewDelegate Methods
 
 - (void)scrollViewDidScroll:(UIScrollView *)aScrollView {
 	[refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
 }
+
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)aScrollView willDecelerate:(BOOL)decelerate {
 	[refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
