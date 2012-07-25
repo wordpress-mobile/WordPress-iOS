@@ -514,8 +514,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
     
     UIBarButtonItem *saveButton = [[[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleDone target:self action:@selector(saveAction:)] autorelease];
-    [saveButton setEnabled:NO];
     self.navigationItem.rightBarButtonItem = saveButton;
+    [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
 }
 
 - (void)refreshUIForCompose {
