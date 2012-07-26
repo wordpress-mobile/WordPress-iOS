@@ -591,7 +591,7 @@
             [self.navigationController setViewControllers:[NSArray arrayWithObject:_detailViewController] animated:NO];
             if (sidebarButton == nil) {
                 if (![[UIButton class] respondsToSelector:@selector(appearance)])
-                    sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_menu_white"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)];
+                    sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle_white"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)];
                 else 
                     sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)];
             }

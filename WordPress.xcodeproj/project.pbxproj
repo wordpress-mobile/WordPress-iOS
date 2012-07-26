@@ -179,8 +179,8 @@
 		3768F4911340BBD60075B633 /* blavatar-wpcom@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3768F48D1340BBD60075B633 /* blavatar-wpcom@2x.png */; };
 		3768F4921340BBD60075B633 /* blavatar-wporg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3768F48E1340BBD60075B633 /* blavatar-wporg.png */; };
 		3768F4931340BBD60075B633 /* blavatar-wpcom.png in Resources */ = {isa = PBXBuildFile; fileRef = 3768F48F1340BBD60075B633 /* blavatar-wpcom.png */; };
-		376DDFE815A5A8C90026CB00 /* navbar_menu_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 376DDFE615A5A8C90026CB00 /* navbar_menu_white.png */; };
-		376DDFE915A5A8C90026CB00 /* navbar_menu_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376DDFE715A5A8C90026CB00 /* navbar_menu_white@2x.png */; };
+		376DDFE815A5A8C90026CB00 /* navbar_toggle_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 376DDFE615A5A8C90026CB00 /* navbar_toggle_white.png */; };
+		376DDFE915A5A8C90026CB00 /* navbar_toggle_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376DDFE715A5A8C90026CB00 /* navbar_toggle_white@2x.png */; };
 		376DE02815A5E8360026CB00 /* sidebar_cell_bg_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 376DE02615A5E8360026CB00 /* sidebar_cell_bg_selected@2x.png */; };
 		376DE02915A5E8360026CB00 /* sidebar_cell_bg_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 376DE02715A5E8360026CB00 /* sidebar_cell_bg_selected.png */; };
 		376EEF5D12F70C9B005CE77A /* stats.png in Resources */ = {isa = PBXBuildFile; fileRef = 376EEF5B12F70C9B005CE77A /* stats.png */; };
@@ -808,8 +808,8 @@
 		3768F48D1340BBD60075B633 /* blavatar-wpcom@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blavatar-wpcom@2x.png"; sourceTree = "<group>"; };
 		3768F48E1340BBD60075B633 /* blavatar-wporg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blavatar-wporg.png"; sourceTree = "<group>"; };
 		3768F48F1340BBD60075B633 /* blavatar-wpcom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blavatar-wpcom.png"; sourceTree = "<group>"; };
-		376DDFE615A5A8C90026CB00 /* navbar_menu_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_menu_white.png; sourceTree = "<group>"; };
-		376DDFE715A5A8C90026CB00 /* navbar_menu_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_menu_white@2x.png"; sourceTree = "<group>"; };
+		376DDFE615A5A8C90026CB00 /* navbar_toggle_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_toggle_white.png; sourceTree = "<group>"; };
+		376DDFE715A5A8C90026CB00 /* navbar_toggle_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_toggle_white@2x.png"; sourceTree = "<group>"; };
 		376DE02615A5E8360026CB00 /* sidebar_cell_bg_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar_cell_bg_selected@2x.png"; sourceTree = "<group>"; };
 		376DE02715A5E8360026CB00 /* sidebar_cell_bg_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_cell_bg_selected.png; sourceTree = "<group>"; };
 		376EEF5B12F70C9B005CE77A /* stats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stats.png; sourceTree = "<group>"; };
@@ -1642,6 +1642,8 @@
 		371C161C15A3A3AD00BC653C /* Navigation Bar */ = {
 			isa = PBXGroup;
 			children = (
+				374CB14E15B824E200DD0EBC /* navbar_toggle.png */,
+				374CB14F15B824E200DD0EBC /* navbar_toggle@2x.png */,
 				30B5532F15AFBFD200077318 /* navbar_actions.png */,
 				30B5533015AFBFD200077318 /* navbar_actions@2x.png */,
 				30E9683F15AE60B10047DD84 /* navbar_add.png */,
@@ -1660,8 +1662,8 @@
 				37363A4715AB262500D3A6B4 /* navbar_button_bg_landscape@2x.png */,
 				37363A4B15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active.png */,
 				37363A4A15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active@2x.png */,
-				376DDFE615A5A8C90026CB00 /* navbar_menu_white.png */,
-				376DDFE715A5A8C90026CB00 /* navbar_menu_white@2x.png */,
+				376DDFE615A5A8C90026CB00 /* navbar_toggle_white.png */,
+				376DDFE715A5A8C90026CB00 /* navbar_toggle_white@2x.png */,
 				30F0264715AFAA13006C2163 /* navbar_primary_button_bg.png */,
 				307B242315ABFE9800F09A35 /* navbar_primary_button_bg@2x.png */,
 				E14F77FF15AFA17300D4981B /* navbar_primary_button_bg_active.png */,
@@ -2196,8 +2198,6 @@
 				E151045D14E27F9300CE282B /* list@2x.png */,
 				2A8FF7D80E8A32F7001A9A40 /* lock.png */,
 				83610B1311F4B42D00421116 /* logos */,
-				374CB14E15B824E200DD0EBC /* navbar_toggle.png */,
-				374CB14F15B824E200DD0EBC /* navbar_toggle@2x.png */,
 				371C161C15A3A3AD00BC653C /* Navigation Bar */,
 				30410681144E17AE00E98F07 /* next.png */,
 				30410682144E17AE00E98F07 /* next@2x.png */,
@@ -3120,8 +3120,8 @@
 				374F18CB15A5897500524ED0 /* sidebar_view@2x.png in Resources */,
 				374F18CC15A5897500524ED0 /* SidebarToolbarButton.png in Resources */,
 				374F18CD15A5897500524ED0 /* SidebarToolbarButton@2x.png in Resources */,
-				376DDFE815A5A8C90026CB00 /* navbar_menu_white.png in Resources */,
-				376DDFE915A5A8C90026CB00 /* navbar_menu_white@2x.png in Resources */,
+				376DDFE815A5A8C90026CB00 /* navbar_toggle_white.png in Resources */,
+				376DDFE915A5A8C90026CB00 /* navbar_toggle_white@2x.png in Resources */,
 				5DD8A6E415A5ECDC00A673A4 /* sync_dark.png in Resources */,
 				5DD8A6E515A5ECDC00A673A4 /* sync_dark@2x.png in Resources */,
 				5DD8A6E615A5ECDC00A673A4 /* sync_lite.png in Resources */,
