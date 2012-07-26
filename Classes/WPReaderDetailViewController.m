@@ -37,6 +37,31 @@
     self.webBridge = [WPWebBridge bridge];
     self.webBridge.delegate = self;
     [super viewDidLoad];
+    if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
+        [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateHighlighted];
+        
+        UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+        [btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+        
+        backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+        [btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
+        
+        btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
+        
+        [btn addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    } else {
+        self.optionsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                           target:self
+                                                                           action:@selector(showLinkOptions)];
+    }
+    super.iPadNavBar.topItem.rightBarButtonItem = self.optionsButton;
+    self.optionsButton.enabled = YES;
+    self.navigationItem.rightBarButtonItem = self.optionsButton;
 }
 
 - (void)viewWillAppear:(BOOL)animated

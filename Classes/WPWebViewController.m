@@ -57,39 +57,40 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
    self.navigationItem.title = NSLocalizedString(@"Loading...", @"");
-    isLoading = YES;
+   // isLoading = YES;
     [self setLoading:NO];
     self.backButton.enabled = NO;
     self.forwardButton.enabled = NO;
 
-    if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-
-        [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
-        [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateHighlighted];
-
-        UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-        [btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
-
-        backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-        [btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
-
-        btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
-
-        [btn addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
-
-        self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
-    } else {
-        self.optionsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                                                            target:self
-                                                                            action:@selector(showLinkOptions)];
-    }
-
     if( IS_IPHONE ) {
+        
+        if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
+            [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateHighlighted];
+            
+            UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+            [btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+            
+            backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+            [btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
+            
+            btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
+            
+            [btn addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
+            
+            self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
+        } else {
+            self.optionsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                               target:self
+                                                                               action:@selector(showLinkOptions)];
+        }
+        
         //allows the toolbar to become smaller in landscape mode.
         toolbar.autoresizingMask = toolbar.autoresizingMask | UIViewAutoresizingFlexibleHeight;
-        
         self.navigationItem.rightBarButtonItem = optionsButton;
+        
     } else {
         // We want the refresh button to be borderless, but buttons in navbars want a border.
         // We need to compose the refresh button as a UIButton that is used as the UIBarButtonItem's custom view.
@@ -103,9 +104,6 @@
 
         refreshButton.customView = btn;
         iPadNavBar.topItem.title = NSLocalizedString(@"Loading...", @"");
-        if ([self isMemberOfClass:NSClassFromString(@"WPReaderDetailViewController")]) {
-            iPadNavBar.topItem.rightBarButtonItem = self.optionsButton;
-        }
     }
     
     if ([forwardButton respondsToSelector:@selector(setTintColor:)]) {
@@ -517,7 +515,6 @@
     if (isLoading && ([error code] != -999) && [error code] != 102)
         [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
     [self setLoading:NO];
-    self.optionsButton.enabled = NO;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView {
@@ -527,7 +524,6 @@
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setLoading:NO];
-    self.optionsButton.enabled = YES;;
     if ( !hasLoadedContent && ([aWebView.request.URL.absoluteString rangeOfString:kMobileReaderDetailURL].location == NSNotFound || self.detailContent)) {
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(%@);", self.readerAllItems]];
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent]];
