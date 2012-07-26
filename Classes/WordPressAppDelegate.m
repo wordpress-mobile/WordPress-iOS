@@ -767,39 +767,44 @@ static WordPressAppDelegate *wordPressApp = NULL;
         [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"navbar_back_button_bg_landscape"] stretchableImageWithLeftCapWidth:14.f topCapHeight:0] forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
         [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"navbar_back_button_bg_landscape_active"] stretchableImageWithLeftCapWidth:14.f topCapHeight:0] forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
 
-        [[UIBarButtonItem appearance] setTitleTextAttributes:
-         [NSDictionary dictionaryWithObjectsAndKeys:
-          [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0], 
-          UITextAttributeTextColor, 
-          [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0],
-          UITextAttributeTextShadowColor,  
-          [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
-          UITextAttributeTextShadowOffset,
-          nil] forState:UIControlStateNormal];
-
-        [[UIBarButtonItem appearance] setTitleTextAttributes:
-         [NSDictionary dictionaryWithObjectsAndKeys:
-          [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0],
-          UITextAttributeTextColor,
-          [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0],
-          UITextAttributeTextShadowColor,
-          [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-          UITextAttributeTextShadowOffset,
-          nil] forState:UIControlStateHighlighted];
-
-        [[UIBarButtonItem appearance] setTitleTextAttributes:
-         [NSDictionary dictionaryWithObjectsAndKeys:
-          [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0], 
-          UITextAttributeTextColor, 
-//          [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0], 
-          [UIColor UIColorFromHex:0xeeeeee],
-          UITextAttributeTextShadowColor,  
-          [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
-          UITextAttributeTextShadowOffset,
-          nil] forState:UIControlStateDisabled];
+        NSDictionary *titleTextAttributesForStateNormal = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                           [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0], 
+                                                           UITextAttributeTextColor, 
+                                                           [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0],
+                                                           UITextAttributeTextShadowColor,  
+                                                           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+                                                           UITextAttributeTextShadowOffset,
+                                                           nil];
+        
+        
+        NSDictionary *titleTextAttributesForStateDisabled = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                             [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0], 
+                                                             UITextAttributeTextColor, 
+                                                             //          [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0], 
+                                                             [UIColor UIColorFromHex:0xeeeeee],
+                                                             UITextAttributeTextShadowColor,  
+                                                             [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+                                                             UITextAttributeTextShadowOffset,
+                                                             nil];
+        
+        NSDictionary *titleTextAttributesForStateHighlighted = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                             [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0],
+                                                             UITextAttributeTextColor,
+                                                             [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0],
+                                                             UITextAttributeTextShadowColor,
+                                                             [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
+                                                             UITextAttributeTextShadowOffset,
+                                                             nil]; 
+        
+        
+        [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateNormal];
+        [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateDisabled forState:UIControlStateDisabled];
+        [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateHighlighted forState:UIControlStateHighlighted];
         
         [[UISegmentedControl appearance] setTintColor:[UIColor UIColorFromHex:0xeeeeee]];
-
+        [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateNormal];
+        [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateDisabled forState:UIControlStateDisabled];
+        [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateHighlighted forState:UIControlStateHighlighted];
     }
 }
 
