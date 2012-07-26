@@ -362,6 +362,11 @@
     }
 }
 
+- (void)setBlog:(Blog *)blog {
+    [super setBlog:blog];
+    self.selectedIndexPath = nil;
+}
+
 #pragma mark -
 #pragma mark Fetched results controller
 

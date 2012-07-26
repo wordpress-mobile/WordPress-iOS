@@ -831,6 +831,11 @@
 - (void) processRowSelectionAtIndexPath:(NSIndexPath *)indexPath closingSidebar:(BOOL)closingSidebar {
     WPFLog(@"%@ %@ %@", self, NSStringFromSelector(_cmd), indexPath);
     
+    if (self.currentIndexPath) {
+        if ([indexPath compare:self.currentIndexPath] == NSOrderedSame)
+            return;
+    }
+    
     self.currentIndexPath = indexPath;
     
     NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:indexPath.row], @"row", [NSNumber numberWithInteger:indexPath.section], @"section", nil];
@@ -947,10 +952,10 @@
             if (IS_IPAD) {
                 [self.panelNavigationController showSidebar];
             } else {
-                [self.panelNavigationController popToRootViewControllerAnimated:NO];
                 if ( closingSidebar )
                     [self.panelNavigationController closeSidebar];
             }
+            [self.panelNavigationController popToRootViewControllerAnimated:NO];
             return;
         } else {
             detailViewController = (UIViewController *)[[[controllerClass alloc] init] autorelease];
