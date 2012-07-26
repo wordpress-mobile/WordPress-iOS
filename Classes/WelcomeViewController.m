@@ -72,7 +72,7 @@
             frame.origin.y = 0.0f;
             buttonView.frame = frame;
         }
-        createLabel.text = NSLocalizedString(@"Want to start another blog?", @"");
+        createLabel.text = NSLocalizedString(@"If you want to start another blog:", @"");
     }
 }
 

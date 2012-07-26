@@ -85,7 +85,7 @@
 							<object class="IBUIButton" id="632112488">
 								<reference key="NSNextResponder" ref="483782173"/>
 								<int key="NSvFlags">261</int>
-								<string key="NSFrame">{{20, 174}, {280, 44}}</string>
+								<string key="NSFrame">{{19, 174}, {282, 44}}</string>
 								<reference key="NSSuperview" ref="483782173"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="10693529"/>
@@ -96,26 +96,28 @@
 								<int key="IBUILineBreakMode">4</int>
 								<string key="IBUITitleShadowOffset">{0, 1}</string>
 								<string key="IBUINormalTitle">Privacy Policy</string>
-								<object class="NSColor" key="IBUIHighlightedTitleColor" id="85227070">
+								<object class="NSColor" key="IBUIHighlightedTitleColor" id="709983940">
+									<int key="NSColorSpace">2</int>
+									<bytes key="NSRGB">MC4xMjk0MTE3NzE5IDAuMTI5NDExNzcxOSAwLjEyOTQxMTc3MTkAA</bytes>
+								</object>
+								<object class="NSColor" key="IBUINormalTitleColor" id="454657043">
+									<int key="NSColorSpace">2</int>
+									<bytes key="NSRGB">MC4xMjk0MTE3NzE5IDAuMTI5NDExNzcxOSAwLjEyOTQxMTc3MTkAA</bytes>
+								</object>
+								<object class="NSColor" key="IBUIHighlightedTitleShadowColor" id="85227070">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MQA</bytes>
-								</object>
-								<object class="NSColor" key="IBUINormalTitleColor" id="162518863">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MC4yNQA</bytes>
-									<object class="NSColorSpace" key="NSCustomColorSpace" id="1044175662">
-										<int key="NSID">2</int>
-									</object>
-								</object>
-								<object class="NSColor" key="IBUIHighlightedTitleShadowColor" id="781916324">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MC41AA</bytes>
-									<reference key="NSCustomColorSpace" ref="1044175662"/>
 								</object>
 								<object class="NSColor" key="IBUINormalTitleShadowColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MQA</bytes>
-									<reference key="NSCustomColorSpace" ref="1044175662"/>
+									<object class="NSColorSpace" key="NSCustomColorSpace" id="1044175662">
+										<int key="NSID">2</int>
+									</object>
+								</object>
+								<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage" id="927465827">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">welcome_button_bg_full_highlighted.png</string>
 								</object>
 								<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="214380977">
 									<string key="NSClassName">NSImage</string>
@@ -136,10 +138,10 @@
 							<object class="IBUIButton" id="709755300">
 								<reference key="NSNextResponder" ref="483782173"/>
 								<int key="NSvFlags">261</int>
-								<string key="NSFrame">{{20, 113}, {280, 44}}</string>
+								<string key="NSFrame">{{19, 113}, {282, 44}}</string>
 								<reference key="NSSuperview" ref="483782173"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="632112488"/>
+								<reference key="NSNextKeyView" ref="951854887"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
@@ -147,14 +149,15 @@
 								<int key="IBUILineBreakMode">4</int>
 								<string key="IBUITitleShadowOffset">{0, 1}</string>
 								<string key="IBUINormalTitle">Terms of Service</string>
-								<reference key="IBUIHighlightedTitleColor" ref="85227070"/>
-								<reference key="IBUINormalTitleColor" ref="162518863"/>
-								<reference key="IBUIHighlightedTitleShadowColor" ref="781916324"/>
+								<reference key="IBUIHighlightedTitleColor" ref="709983940"/>
+								<reference key="IBUINormalTitleColor" ref="454657043"/>
+								<reference key="IBUIHighlightedTitleShadowColor" ref="85227070"/>
 								<object class="NSColor" key="IBUINormalTitleShadowColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MQA</bytes>
 									<reference key="NSCustomColorSpace" ref="1044175662"/>
 								</object>
+								<reference key="IBUIHighlightedBackgroundImage" ref="927465827"/>
 								<reference key="IBUINormalBackgroundImage" ref="214380977"/>
 								<reference key="IBUIFontDescription" ref="963160530"/>
 								<reference key="IBUIFont" ref="524796460"/>
@@ -165,16 +168,16 @@
 								<string key="NSFrame">{{20, 0}, {280, 115}}</string>
 								<reference key="NSSuperview" ref="483782173"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="709755300"/>
+								<reference key="NSNextKeyView" ref="632112488"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string type="base64-UTF8" key="IBUIText">UHVibGlzaGVyOiBBdXRvbWF0dGljCkNvcHlyaWdodDogQXV0b21hdHRpYw</string>
-								<object class="NSColor" key="IBUITextColor" id="13787399">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MCAwIDAAA</bytes>
+								<object class="NSColor" key="IBUITextColor">
+									<int key="NSColorSpace">2</int>
+									<bytes key="NSRGB">MC4xMjk0MTE3NzE5IDAuMTI5NDExNzcxOSAwLjEyOTQxMTc3MTkAA</bytes>
 								</object>
 								<reference key="IBUIHighlightedColor" ref="85227070"/>
 								<reference key="IBUIShadowColor" ref="85227070"/>
@@ -200,7 +203,7 @@
 						<string key="NSFrame">{{0, 90}, {320, 312}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="951854887"/>
+						<reference key="NSNextKeyView" ref="709755300"/>
 						<string key="NSReuseIdentifierKey">_NS:10</string>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
@@ -222,7 +225,10 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<string key="IBUIText">WordPress for iOS</string>
-								<reference key="IBUITextColor" ref="13787399"/>
+								<object class="NSColor" key="IBUITextColor">
+									<int key="NSColorSpace">2</int>
+									<bytes key="NSRGB">MC4xMjk0MTE3NzE5IDAuMTI5NDExNzcxOSAwLjEyOTQxMTc3MTkAA</bytes>
+								</object>
 								<reference key="IBUIHighlightedColor" ref="85227070"/>
 								<reference key="IBUIShadowColor" ref="85227070"/>
 								<string key="IBUIShadowOffset">{0, 1}</string>
@@ -426,9 +432,9 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<real value="1"/>
+					<real value="0.0"/>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -547,8 +553,17 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">welcome_button_bg_full.png</string>
-			<string key="NS.object.0">{283, 44}</string>
+			<bool key="EncodedWithXMLCoder">YES</bool>
+			<object class="NSArray" key="dict.sortedKeys">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>welcome_button_bg_full.png</string>
+				<string>welcome_button_bg_full_highlighted.png</string>
+			</object>
+			<object class="NSArray" key="dict.values">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>{282, 44}</string>
+				<string>{282, 44}</string>
+			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">1181</string>
 	</data>
