@@ -271,7 +271,12 @@
 			if(self.shortcode != nil)
 				result = self.shortcode;
 			else if(self.remoteURL != nil) {
-                NSString *linkType = [self.blog getOptionValue:@"image_default_link_type"];
+                NSString *linkType = nil;
+                if( [[self.blog getOptionValue:@"image_default_link_type"] isKindOfClass:[NSString class]] )
+                    linkType = (NSString *)[self.blog getOptionValue:@"image_default_link_type"];
+                else
+                    linkType = @"";
+                
                 if ([linkType isEqualToString:@"none"]) {
                     result = [NSString stringWithFormat:
                               @"<img src=\"%@\" alt=\"%@\" class=\"alignnone size-full\" />",
