@@ -79,7 +79,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelAddWPcomBlogs) 
 												 name:@"didCancelWPcomLogin" object:nil];
     
-    if ([buttonAddSelected respondsToSelector:@selector(appearance)])
+    if ([[UIBarButtonItem class] respondsToSelector:@selector(appearance)])
         [UIBarButtonItem styleButtonAsPrimary:buttonAddSelected];
 }
 
