@@ -178,7 +178,6 @@
         [self.detailView addSubview:wrappedView];
     }
     self.detailView.frame = CGRectMake(0, 0, DETAIL_WIDTH, DETAIL_HEIGHT);
-    [self addShadowTo:self.detailView];
     [self.detailViews addObject:self.detailView];
     [self.detailViewWidths addObject:[NSNumber numberWithFloat:DETAIL_WIDTH]];
     self.masterView.frame = CGRectMake(0, 0, DETAIL_LEDGE_OFFSET, self.view.frame.size.height);
@@ -191,6 +190,7 @@
     [_sidebarBorderView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
     _sidebarBorderView.frame = CGRectMake((IS_IPAD) ? SIDEBAR_WIDTH : (SIDEBAR_WIDTH - DETAIL_LEDGE - 4.0f), 0.0f, 2.0f, self.view.bounds.size.height);
     [self.view insertSubview:_sidebarBorderView atIndex:0];
+    _sidebarBorderView.hidden = YES;
     
     _stackOffset = 0;
     if (IS_IPHONE) {
@@ -320,8 +320,10 @@
     
     // Redraw shadows. This fixes an issue where the 1..n-1 detail view's shadow can be
     // incorrect when there are more than two detail views on the stack.
-    for (UIView *view in self.detailViews) {
-        [self addShadowTo:view];
+    if (self.detailViewController) {
+        for (UIView *view in self.detailViews) {
+            [self addShadowTo:view];
+        }
     }
 }
 
@@ -577,6 +579,10 @@
     }
 
     _detailViewController = detailViewController;
+    
+    [self addShadowTo:_detailView];
+    if (_sidebarBorderView.hidden)
+        _sidebarBorderView.hidden = NO;
 
     if (_detailViewController) {
         [_detailViewController retain];
@@ -684,9 +690,6 @@
 
 - (void)showSidebarAnimated:(BOOL)animated {
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
-        if (IS_IPHONE)
-            [self addShadowTo:self.detailView];
-        
         [self setStackOffset:0 duration:0];
         [self disableDetailView];
     } completion:^(BOOL finished) {
@@ -694,8 +697,6 @@
 }
 
 - (void)showSidebarWithVelocity:(CGFloat)velocity {
-    if (IS_IPHONE)
-        [self addShadowTo:self.detailView];
     [self disableDetailView];
     [self setStackOffset:0.f withVelocity:velocity];
 }
