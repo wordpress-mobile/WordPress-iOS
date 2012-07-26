@@ -7,7 +7,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WelcomeViewController : UIViewController
+@interface WelcomeViewController : UIViewController {
+    BOOL isFirstRun;
+}
 
 @property (nonatomic, retain) IBOutlet UIView *logoView;
 @property (nonatomic, retain) IBOutlet UIView *buttonView;

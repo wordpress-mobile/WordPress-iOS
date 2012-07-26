@@ -91,9 +91,11 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if ([Blog countWithContext:[WordPressAppDelegate sharedWordPressApp].managedObjectContext] <= 0 && ( ![WordPressComApi sharedApi].username ) )
+    if (([Blog countWithContext:[WordPressAppDelegate sharedWordPressApp].managedObjectContext] <= 0 && ( ![WordPressComApi sharedApi].username )) || isFirstRun) {
+        isFirstRun = YES;
         [self.navigationController setNavigationBarHidden:YES animated:animated];
-}   
+    }
+}
 
 - (void)viewWillDisappear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:NO animated:animated];
