@@ -628,8 +628,9 @@
         [pickerWrapperView addSubview:closeButton];
         [closeButton release];
         
+        UISegmentedControl *publishNowButton = nil;
         if (picker.tag == TAG_PICKER_DATE) {
-            UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")]];
+            publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")]];
             publishNowButton.momentary = YES; 
             publishNowButton.frame = CGRectMake(10.0f, 7.0f, 129.0f, 30.0f);
             publishNowButton.segmentedControlStyle = UISegmentedControlStyleBar;
@@ -637,6 +638,30 @@
             [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
             [pickerWrapperView addSubview:publishNowButton];
             [publishNowButton release];
+        }
+        
+        if ([[UISegmentedControl class] respondsToSelector:@selector(appearance)]) {
+            // Since we're requiring a black tint we do not want to use the custom text colors.
+            NSDictionary *titleTextAttributesForStateNormal = [NSDictionary dictionaryWithObjectsAndKeys:
+                                                               [UIColor whiteColor],
+                                                               UITextAttributeTextColor, 
+                                                               [UIColor darkGrayColor],
+                                                               UITextAttributeTextShadowColor,  
+                                                               [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+                                                               UITextAttributeTextShadowOffset,
+                                                               nil];
+            
+            // The UISegmentControl does not show a pressed state for its button so (for now) use the same
+            // state for normal and highlighted.
+            // TODO: It would be nice to refactor this to use a toolbar and buttons instead of a segmented control to get the 
+            // correct look and feel.
+            [closeButton setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateNormal];
+            [closeButton setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateHighlighted];
+            
+            if (publishNowButton) {
+                [publishNowButton setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateNormal];
+                [publishNowButton setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateHighlighted];
+            }
         }
         
         [actionSheet showInView:self.view];
