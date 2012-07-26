@@ -13,6 +13,7 @@
 #import "WPFriendFinderViewController.h"
 #import "JSONKit.h"
 #import "WordPressAppDelegate.h"
+#import "UIBarButtonItem+Styled.h"
 
 typedef void (^DismissBlock)(int buttonIndex);
 typedef void (^CancelBlock)();
@@ -45,6 +46,8 @@ typedef void (^CancelBlock)();
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone 
                                                                                            target:self 
                                                                                            action:@selector(dismissFriendFinder:)] autorelease];
+    if([[UIBarButtonItem class] respondsToSelector:@selector(appearance)])
+       [UIBarButtonItem styleButtonAsPrimary:self.navigationItem.rightBarButtonItem];
 }
 
 - (void)viewDidUnload
