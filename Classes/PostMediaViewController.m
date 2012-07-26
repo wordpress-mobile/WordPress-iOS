@@ -1133,7 +1133,7 @@
 }
 
 - (UIImage *)resizeImage:(UIImage *)original toSize:(MediaResize)resize {
-    NSDictionary* predefDim = [self.postDetailViewController.post.blog getImageResizeDimensions];
+    NSDictionary* predefDim = [self.postDetailViewController.apost.blog getImageResizeDimensions];
     CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
     CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
     CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
