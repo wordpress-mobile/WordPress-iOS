@@ -465,7 +465,6 @@
     
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:NO];
-	[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 }
 
 #pragma mark -
