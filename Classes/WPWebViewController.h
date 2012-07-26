@@ -29,6 +29,7 @@
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *forwardButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *refreshButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *optionsButton;
+@property (nonatomic, retain) UIBarButtonItem *spinnerButton;
 @property (retain, nonatomic) NSTimer *statusTimer;
 
 //reader variables

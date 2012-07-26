@@ -28,7 +28,7 @@
 @synthesize url, wpLoginURL, username, password, detailContent, detailHTML, readerAllItems;
 @synthesize webView, toolbar, statusTimer;
 @synthesize loadingView, loadingLabel, activityIndicator;
-@synthesize iPadNavBar, backButton, forwardButton, refreshButton, optionsButton;
+@synthesize iPadNavBar, backButton, forwardButton, refreshButton, spinnerButton, optionsButton;
 @synthesize linkOptionsActionSheet = _linkOptionsActionSheet;
 
 - (void)dealloc
@@ -45,7 +45,7 @@
     self.statusTimer = nil;
     self.linkOptionsActionSheet.delegate = nil;
     self.linkOptionsActionSheet = nil;
-
+    self.spinnerButton = nil;
     [super dealloc];
 }
 
@@ -176,6 +176,7 @@
     self.refreshButton = nil;
     self.backButton = nil;
     self.forwardButton = nil;
+    self.spinnerButton = nil;
 
 }
 
@@ -345,29 +346,39 @@
         [UIView animateWithDuration:0.2
                          animations:^{self.loadingView.frame = frame;}];
     }
-	if( self.refreshButton ) { //the refresh
+    
+	if( self.refreshButton ) {
         self.refreshButton.enabled = !loading;
+        // If on iPhone (or iPod Touch) swap between spinner and refresh button
         if (IS_IPHONE) {
-            NSMutableArray *newToolbarItems = [[NSMutableArray arrayWithArray:toolbar.items] retain];
-            if (loading) {
-                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 32.0f, 32.0f)];
- 
+            // Build a spinner button if we don't have one
+            if( self.spinnerButton == nil ){
                 UIActivityIndicatorView *spinner = nil;
+                UIActivityIndicatorViewStyle style;
                 if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
-                    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                    style = UIActivityIndicatorViewStyleGray;
                 } else {
-                    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+                    style = UIActivityIndicatorViewStyleWhite;
                 }
+                spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style];
+                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 32.0f, 32.0f)];
                 [spinner setCenter:customView.center];
+                
                 [customView addSubview:spinner];
-                
                 [spinner startAnimating];
-                
-                [newToolbarItems replaceObjectAtIndex:5 withObject:[[[UIBarButtonItem alloc] initWithCustomView:customView] autorelease]];
                 [spinner release];
+                
+                self.spinnerButton = [[[UIBarButtonItem alloc] initWithCustomView:customView] autorelease];
                 [customView release];
-            } else {
-                [newToolbarItems replaceObjectAtIndex:5 withObject:self.refreshButton];
+                
+            }
+            NSMutableArray *newToolbarItems = [NSMutableArray arrayWithArray:toolbar.items];
+            NSUInteger spinnerButtonIndex = [newToolbarItems indexOfObject:self.spinnerButton];
+            NSUInteger refreshButtonIndex = [newToolbarItems indexOfObject:self.refreshButton];
+            if (loading && refreshButtonIndex != NSNotFound) {
+                [newToolbarItems replaceObjectAtIndex:refreshButtonIndex withObject:self.spinnerButton];
+            } else if(spinnerButtonIndex != NSNotFound) {
+                [newToolbarItems replaceObjectAtIndex:spinnerButtonIndex withObject:self.refreshButton];
             }
             toolbar.items = newToolbarItems;
         }
