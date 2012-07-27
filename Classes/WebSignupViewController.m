@@ -31,6 +31,23 @@
 	[self.webView loadRequest:request];
 }
 
+#pragma --
+#pragma mark - UIWebViewDelegate
+- (BOOL)webView:(UIWebView *)theWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    [FileLogger log:@"%@ %@: %@://%@%@", self, NSStringFromSelector(_cmd), [[request URL] scheme], [[request URL] host], [[request URL] path]];
+    
+    NSURL *requestedURL = [request URL];
+    NSString *requestedURLAbsoluteString = [requestedURL absoluteString];
+    
+    if ([requestedURLAbsoluteString rangeOfString:@"wordpress.com"].location != NSNotFound && 
+        [requestedURLAbsoluteString rangeOfString:@"signup"].location != NSNotFound ) {
+        return YES;
+    }
+    
+    [[UIApplication sharedApplication] openURL:requestedURL];
+    return NO;
+}
+
 - (void)webViewDidStartLoad:(UIWebView *)wv {
     [spinner startAnimating];
     self.navigationItem.title = NSLocalizedString(@"Loading...", @"");
