@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1181</string>
+			<string key="NS.object.0">1179</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -314,7 +314,7 @@
 									</object>
 									<object class="IBUITextView" id="320870318">
 										<reference key="NSNextResponder" ref="805652007"/>
-										<int key="NSvFlags">290</int>
+										<int key="NSvFlags">274</int>
 										<string key="NSFrame">{{0, 136}, {320, 236}}</string>
 										<reference key="NSSuperview" ref="805652007"/>
 										<reference key="NSWindow"/>
@@ -462,6 +462,7 @@
 						<string key="NSFrame">{{22, 365}, {19, 9}}</string>
 						<reference key="NSSuperview" ref="546232296"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
@@ -1399,6 +1400,6 @@
 				<string>{24, 24}</string>
 			</object>
 		</object>
-		<string key="IBCocoaTouchPluginVersion">1181</string>
+		<string key="IBCocoaTouchPluginVersion">1179</string>
 	</data>
 </archive>
