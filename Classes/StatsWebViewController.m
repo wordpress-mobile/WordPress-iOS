@@ -75,7 +75,12 @@ static NSString *_lastAuthedName = nil;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+    /*
+    [self.webView stringByEvaluatingJavaScriptFromString:
+     [NSString stringWithFormat:@"%@", 
+      @"window.onerror = function(errorMessage,url,lineNumber) { payload = 'url='+url; payload += '&message=' + errorMessage;  payload += '&line=' + lineNumber; var img = new Image();  img.src = 'http://192.168.1.103/errormonitor.php'+'?error=scriptruntime&'+payload; return true;}"]
+     ];
+     */
     if (promptCredentialsWhenViewAppears) {
         promptCredentialsWhenViewAppears = NO;
         [self promptForCredentials];
@@ -99,6 +104,7 @@ static NSString *_lastAuthedName = nil;
     }
     blog = [aBlog retain];
     if (blog) {
+        [FileLogger log:@"Loading Stats for the following blog: %@", [blog url]];
         if (![blog isWPcom]) {
             self.wporgBlogJetpackUsernameKey = [NSString stringWithFormat:@"jetpackblog-%@",[blog hostURL]];
         }
@@ -122,6 +128,7 @@ static NSString *_lastAuthedName = nil;
 
 
 - (void)initStats {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	if ([blog apiKey] == nil || [[blog blogID] isEqualToNumber:[NSNumber numberWithInt:1]]) {
 		//first run or api key was deleted
 		[self getUserAPIKey];
@@ -135,6 +142,7 @@ static NSString *_lastAuthedName = nil;
 
 
 - (void)getUserAPIKey {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     NSString *username = @"";
     NSString *password = @"";
     NSError *error;
@@ -189,6 +197,7 @@ static NSString *_lastAuthedName = nil;
 
 
 - (void)authStats {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     if (authed) {
         [self loadStats];
         return;
@@ -254,6 +263,7 @@ static NSString *_lastAuthedName = nil;
 
 
 - (void)loadStats {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     if (!self.isViewLoaded || !self.view.window) {
         loadStatsWhenViewAppears = YES;
         return;
@@ -339,7 +349,7 @@ static NSString *_lastAuthedName = nil;
         if (![blogURL scheme]) {
             blogURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", blog.url]];
         }
-        
+        [FileLogger log:@"Blog URL - %@", blogURL];
         NSString *parsedHost = [parsedURL host];
         NSString *blogHost = [blogURL host];
         NSRange range = [parsedHost rangeOfString:blogHost];
@@ -362,10 +372,10 @@ static NSString *_lastAuthedName = nil;
 
     } else if([elementName isEqualToString:@"id"]) {
         [parsedBlog setValue:currentNode forKey:@"id"];
-    
+        [FileLogger log:@"Blog id - %@", currentNode];
     } else if([elementName isEqualToString:@"url"]) {
         [parsedBlog setValue:currentNode forKey:@"url"];
-        
+        [FileLogger log:@"Blog original URL - %@", currentNode];
     } else if([elementName isEqualToString:@"userinfo"]) {
         [parser abortParsing];
         
@@ -449,6 +459,9 @@ static NSString *_lastAuthedName = nil;
 #pragma mark WPWebView Delegate Methods
 
 - (BOOL)wpWebView:(WPWebView *)wpWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    
+    [FileLogger log:@"The following URL was requested: %@", [request.URL absoluteString]]; 
+    
     // On an ajax powered page like stats that manage state via the url hash, if we spawn a new controller when tapping on a link 
     // (like we do in the WPChromelessWebViewController)
     // and then tap on the same link again, the second tap will not trigger the UIWebView delegate methods, and the new page will load
@@ -475,14 +488,21 @@ static NSString *_lastAuthedName = nil;
         }
         
     }
-    
+    [FileLogger log:@"Stats webView is going to load the following URL: %@", [request.URL absoluteString]];
     return YES;
 }
 
 
 - (void)webViewDidFinishLoad:(WPWebView *)wpWebView {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+   
     // Override super so we do not change our title.
     self.title = @"Stats";
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), error];
+    // -999: Canceled AJAX request
 }
 
 @end
