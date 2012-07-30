@@ -15,7 +15,7 @@
 {
     EGORefreshTableHeaderView *_refreshHeaderView;
     NSString *hybridAuthToken;
-
+    BOOL shouldEnablePullToRefresh;
 }
 
 @property (nonatomic, retain) IBOutlet UIWebView *webView;

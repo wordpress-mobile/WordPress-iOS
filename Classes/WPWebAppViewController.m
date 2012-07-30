@@ -43,6 +43,9 @@
     self.webBridge.delegate = self;
     [super viewDidLoad];
     
+    if (shouldEnablePullToRefresh) {
+        [self enablePullToRefresh];
+    }
 }
 
 
@@ -146,6 +149,7 @@
 - (void)enablePullToRefresh
 {
     if (_refreshHeaderView == nil) {
+        shouldEnablePullToRefresh = YES;
         self.scrollView.delegate = self;
 		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.scrollView.bounds.size.height, self.scrollView.frame.size.width, self.scrollView.bounds.size.height)];
 		_refreshHeaderView.delegate = self;
@@ -181,15 +185,15 @@
 #pragma mark -
 #pragma mark EGORefreshTableHeaderDelegate Methods
 
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view {
     [self.webView stringByEvaluatingJavaScriptFromString:@"WPApp.pullToRefresh();"];
 }
 
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view {
 	return self.loading;
 }
 
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view {
 	return self.lastWebViewRefreshDate;
     
 }
@@ -205,16 +209,13 @@
 #pragma mark -
 #pragma mark UIScrollViewDelegate Methods
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
 	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
-
-
-
 
 
 @end

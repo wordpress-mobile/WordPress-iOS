@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <MessageUI/MFMailComposeViewController.h>
-#import "EGORefreshTableHeaderView.h"
 #import "WPReaderTopicsViewController.h"
 #import "WPReaderDetailViewController.h"
 #import "WPFriendFinderNudgeView.h"
