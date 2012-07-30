@@ -3,9 +3,9 @@
 #import "WPSegmentedSelectionTableViewController.h"
 #import "CPopoverManager.h"
 #import "NSString+XMLExtensions.h"
+#import "WPPopoverBackgroundView.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
-
 
 @interface EditPostViewController (Private)
 - (BOOL) isMediaInUploading;
@@ -596,7 +596,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
             } else {
                 navController = [[[UINavigationController alloc] initWithRootViewController:segmentedTableViewController] autorelease];
             }
- 			UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
+ 			UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
+            if ([popover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
+                popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
+            }
             popover.delegate = self;
 			CGRect popoverRect = [self.view convertRect:[categoriesButton frame] fromView:[categoriesButton superview]];
 			popoverRect.size.width = MIN(popoverRect.size.width, 100.0f); // the text field is actually really big
