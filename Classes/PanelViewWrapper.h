@@ -21,5 +21,6 @@
 - (void)setToolbarItems:(NSArray *)items animated:(BOOL)animated;
 - (void)setToolbarHidden:(BOOL)hidden animated:(BOOL)animated;
 - (BOOL)isToolbarHidden;
+- (void)handleToolbarChanged:(NSNotification *)notification;
 
 @end

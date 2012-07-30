@@ -29,12 +29,14 @@
 @synthesize overlay = _overlay;
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     if (self.observerToken) {
         [self.viewController removeObserverWithBlockToken:self.observerToken];
     }
     self.toolbar = nil;
     self.overlay = nil;
     self.viewController = nil;
+    self.observerToken = nil;
     [super dealloc];
 }
 
@@ -89,9 +91,12 @@
 - (void)wrapViewFromController:(UIViewController *)controller {
     [self.viewController removeObserverWithBlockToken:self.observerToken];
     self.viewController = controller;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.observerToken = [self.viewController addObserverForKeyPath:@"toolbarItems" task:^(id obj, NSDictionary *change) {
-        [self setToolbarItems:self.viewController.toolbarItems];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"wpToolbarChanged" object:obj userInfo:nil];
     }];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleToolbarChanged:) name:@"wpToolbarChanged" object:controller];
     
     // Adopt the view's frame and autoresizing mask. 
     UIView *view = controller.view;
@@ -118,6 +123,11 @@
     _overlay.userInteractionEnabled = NO;
     _overlay.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self addSubview:_overlay];
+}
+
+
+- (void)handleToolbarChanged:(NSNotification *)notification {
+    [self setToolbarItems:self.viewController.toolbarItems];
 }
 
 
