@@ -480,6 +480,9 @@
 			UIBarButtonItem *barButton = postDetailViewController.photoButton;
 			if (addPopover == nil) {
 				addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
+                if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
+                    addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
+                }
 				addPopover.delegate = self;
 			}
 			
@@ -523,6 +526,9 @@
 		UIBarButtonItem *barButton = postDetailViewController.movieButton;	
 		if (addPopover == nil) {
 			addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
+            if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
+                addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
+            }
 			addPopover.delegate = self;
 		}
 		[addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -579,6 +585,9 @@
 		if(IS_IPAD == YES) {
             if (addPopover == nil) {
                 addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
+                if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
+                    addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
+                }
                 addPopover.delegate = self;
             }
             

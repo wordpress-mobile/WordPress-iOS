@@ -12,6 +12,7 @@
 #import "Blog.h"
 #import "Media.h"
 #import "CameraPlusPickerManager.h"
+#import "WPPopoverBackgroundView.h"
 
 @interface QuickPhotoViewController () {
     UIPopoverController *popController;
@@ -169,8 +170,10 @@
     picker.delegate = self;
     
     if (IS_IPAD) {
-        //Hmm... what to do here?
         self.popController = [[UIPopoverController alloc] initWithContentViewController:picker];
+        if ([popController respondsToSelector:@selector(popoverBackgroundViewClass)]) {
+            popController.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
+        }
         popController.delegate = self;
         CGRect rect = CGRectMake((self.view.frame.size.width/2), 1.0f, 1.0f, 1.0f); // puts the arrow in the middle of the screen
         [popController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];            

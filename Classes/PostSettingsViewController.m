@@ -1,6 +1,7 @@
 #import "PostSettingsViewController.h"
 #import "WPSelectionTableViewController.h"
 #import "WordPressAppDelegate.h"
+#import "WPPopoverBackgroundView.h"
 
 #define kPasswordFooterSectionHeight         68.0f
 #define kResizePhotoSettingSectionHeight     60.0f
@@ -581,6 +582,9 @@
         
         [fakeController.view addSubview:picker];
         popover = [[UIPopoverController alloc] initWithContentViewController:fakeController];
+        if ([popover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
+            popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
+        }
         [fakeController release];
         
         CGRect popoverRect;
