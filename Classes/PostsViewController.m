@@ -357,7 +357,8 @@
             }
         } else {
             selectedIndexPath = nil;
-            [delegate showContentDetailViewController:nil];
+            if ( IS_IPHONE == NO ) //Fixes #1292. popToViewController:animated was called twice
+                [delegate showContentDetailViewController:nil];
         }
     }
 }
