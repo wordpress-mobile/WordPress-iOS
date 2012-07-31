@@ -249,7 +249,7 @@ static NSString *_lastAuthedName = nil;
         [self loadStats];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"There was a problem conneting to your stats. Would you like to retry?"
+                                                            message:@"There was a problem connecting to your stats. Would you like to retry?"
                                                            delegate:self
                                                   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                                                   otherButtonTitles:NSLocalizedString(@"Retry?", nil), nil];
