@@ -926,7 +926,7 @@
             //[self setStackOffset:nearestOffset duration:DURATION_FAST];
             [self setStackOffset:nearestOffset withVelocity:velocity];
             //pop all extra view controllers if user dragged stack to the right
-            if (offset < 0 && offset <= -120.0f) {
+            if (offset < 0 && offset <= -120.0f && [self.detailViews count] > 1) {
                 [self animatePoppedIcon];
                 _isShowingPoppedIcon = NO;
                 [self popToRootViewControllerAnimated:YES];
