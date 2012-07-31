@@ -55,11 +55,11 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<string key="IBUIText">Please visit the FAQ to get answers to common questions. If you're still having trouble, post in the forums.</string>
-						<object class="NSColor" key="IBUITextColor" id="355921527">
+						<object class="NSColor" key="IBUITextColor" id="745785437">
 							<int key="NSColorSpace">2</int>
 							<bytes key="NSRGB">MC4xMjk0MTE3NzE5IDAuMTI5NDExNzcxOSAwLjEyOTQxMTc3MTkAA</bytes>
 						</object>
-						<reference key="IBUIHighlightedColor" ref="355921527"/>
+						<reference key="IBUIHighlightedColor" ref="745785437"/>
 						<object class="NSColor" key="IBUIShadowColor" id="85227070">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MQA</bytes>
@@ -96,11 +96,11 @@
 						<int key="IBUILineBreakMode">4</int>
 						<string key="IBUITitleShadowOffset">{0, 1}</string>
 						<string key="IBUINormalTitle">Read the FAQ</string>
-						<reference key="IBUIHighlightedTitleColor" ref="355921527"/>
-						<reference key="IBUINormalTitleColor" ref="355921527"/>
+						<reference key="IBUIHighlightedTitleColor" ref="745785437"/>
+						<reference key="IBUINormalTitleColor" ref="745785437"/>
 						<reference key="IBUIHighlightedTitleShadowColor" ref="85227070"/>
 						<reference key="IBUINormalTitleShadowColor" ref="85227070"/>
-						<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage" id="704876774">
+						<object class="NSCustomResource" key="IBUIHighlightedBackgroundImage" id="959359925">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">welcome_button_bg_full_highlighted.png</string>
 						</object>
@@ -133,11 +133,11 @@
 						<int key="IBUILineBreakMode">4</int>
 						<string key="IBUITitleShadowOffset">{0, 1}</string>
 						<string key="IBUINormalTitle">Visit the Forums</string>
-						<reference key="IBUIHighlightedTitleColor" ref="355921527"/>
-						<reference key="IBUINormalTitleColor" ref="355921527"/>
+						<reference key="IBUIHighlightedTitleColor" ref="745785437"/>
+						<reference key="IBUINormalTitleColor" ref="745785437"/>
 						<reference key="IBUIHighlightedTitleShadowColor" ref="85227070"/>
 						<reference key="IBUINormalTitleShadowColor" ref="85227070"/>
-						<reference key="IBUIHighlightedBackgroundImage" ref="704876774"/>
+						<reference key="IBUIHighlightedBackgroundImage" ref="959359925"/>
 						<reference key="IBUINormalBackgroundImage" ref="299260080"/>
 						<reference key="IBUIFontDescription" ref="38981343"/>
 						<reference key="IBUIFont" ref="871967003"/>

@@ -297,6 +297,7 @@ Creation/CXMLNode_CreationExtensions.m -text
 /Icon-Small.png -text
 /Icon-Small@2x.png -text
 /Icon-dev-72.png -text svneol=unset#unset
+/Icon-dev-72@2x.png -text
 /Icon-dev.png -text svneol=unset#unset
 /Icon-dev@2x.png -text svneol=unset#unset
 /Icon.png -text svneol=unset#unset
