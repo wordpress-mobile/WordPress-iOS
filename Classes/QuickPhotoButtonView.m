@@ -63,8 +63,11 @@
     self.button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = self.bounds;
     button.titleLabel.textColor = [UIColor whiteColor];
+    button.titleLabel.shadowColor = [UIColor darkGrayColor];
+    button.titleLabel.shadowOffset = CGSizeMake(0, -1.0f);
     [button.titleLabel setFont:[UIFont boldSystemFontOfSize:15.0f]];
     [button setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButton"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateNormal];
+    [button setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateHighlighted];
     [button setTitle:NSLocalizedString(@"Photo", @"") forState:UIControlStateNormal];
     [button addTarget:self action:@selector(handleButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [button setBackgroundColor:[UIColor clearColor]];
@@ -72,7 +75,7 @@
     [button setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 0.0f)];
     [button setImageEdgeInsets:UIEdgeInsetsMake(3.0f, 5.0f, 0.0f, 0.0f)];
     [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-    [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+    [button setAdjustsImageWhenHighlighted:NO];
     
     button.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     

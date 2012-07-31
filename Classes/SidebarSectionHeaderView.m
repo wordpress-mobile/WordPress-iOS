@@ -46,7 +46,7 @@ CGFloat const BadgeHeight = 24.f;
         _delegate = delegate;        
         self.userInteractionEnabled = YES;
         
-        CGFloat blavatarOffset = (frame.size.height - BlavatarHeight) / 2.f;
+        CGFloat blavatarOffset = (frame.size.height - BlavatarHeight) / 2.f - 1.f;
         blavatarView = [[UIImageView alloc] initWithFrame:CGRectMake(8.f, blavatarOffset, BlavatarHeight, BlavatarHeight)]; // 8.f is the x position calculated from regular row height
         [blavatarView setAlpha:0.5f];
         blavatarView.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -138,7 +138,7 @@ CGFloat const BadgeHeight = 24.f;
 
 -(CGRect)badgeItemFrame:(CGFloat)itemHeight{
     CGRect frame = self.bounds;
-    CGRect itemRect = IS_IPAD ? CGRectMake(frame.size.width - 48.0 , (frame.size.height - itemHeight) / 2.f, 34.0, itemHeight ) : CGRectMake(frame.size.width - 88.0 ,  (frame.size.height - itemHeight) / 2.f, 34.0, itemHeight);
+    CGRect itemRect = IS_IPAD ? CGRectMake(frame.size.width - 48.0 - 6.0 , (frame.size.height - itemHeight) / 2.f, 34.0, itemHeight ) : CGRectMake(frame.size.width - 88.0 - 8.0 ,  (frame.size.height - itemHeight) / 2.f, 34.0, itemHeight);
     
     return itemRect;
 }
@@ -150,14 +150,14 @@ CGFloat const BadgeHeight = 24.f;
     
     if ( IS_IPAD ) {
         if ( isBadgeVisible ) 
-            titleLabelFrame.size.width -= ( 31 + 48 + titleLabelFrame.origin.x ); //the disclosure size + comment badge rect + blavatar size;
+            titleLabelFrame.size.width -= ( 31 + 48 + 8 + titleLabelFrame.origin.x ); //the disclosure size + comment badge rect + blavatar size;
         else
-            titleLabelFrame.size.width -= ( 31 + titleLabelFrame.origin.x ); //the disclosure size + blavatar size
+            titleLabelFrame.size.width -= ( 31 + 8 + titleLabelFrame.origin.x ); //the disclosure size + blavatar size
     } else {
         if ( isBadgeVisible ) 
-            titleLabelFrame.size.width -= ( DETAIL_LEDGE + 4  + 48 + titleLabelFrame.origin.x ); //ledge + padding + comment badge rect + blavatar size;
+            titleLabelFrame.size.width -= ( DETAIL_LEDGE + 4  + 48 + 6 + titleLabelFrame.origin.x ); //ledge + padding + comment badge rect + blavatar size;
         else
-            titleLabelFrame.size.width -= ( DETAIL_LEDGE + 4 + titleLabelFrame.origin.x ); //ledge + padding + blavatar size
+            titleLabelFrame.size.width -= ( DETAIL_LEDGE + 4 + 6 + titleLabelFrame.origin.x ); //ledge + padding + blavatar size
     }
          
     return titleLabelFrame;
@@ -207,11 +207,10 @@ CGFloat const BadgeHeight = 24.f;
     if (self.disclosureButton.selected) {
         [self.titleLabel setTextColor:[UIColor whiteColor]];
         [blavatarView setAlpha:1.0f];
-        blavatarView.layer.shadowOpacity = 1;
     }
     else {
         [self.titleLabel setTextColor:[UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0]];
-        [blavatarView setAlpha:0.5f];
+        [blavatarView setAlpha:0.7f];
     }
     
     // If this was a user action, send the delegate the appropriate message.
@@ -233,10 +232,10 @@ CGFloat const BadgeHeight = 24.f;
     CAGradientLayer *gradient = (CAGradientLayer *)self.layer;
     CGColorRef startColor, endColor;
     if (self.disclosureButton.selected) {
-        startColor = [[UIColor colorWithWhite:0.6f alpha:0.3f] CGColor];
+        startColor = [[UIColor colorWithWhite:0.6f alpha:0.4f] CGColor];
         endColor = [[UIColor colorWithWhite:0.6f alpha:0.0f] CGColor];
     } else {
-        startColor = [[UIColor colorWithWhite:0.6f alpha:0.15f] CGColor];
+        startColor = [[UIColor colorWithWhite:0.6f alpha:0.3f] CGColor];
         endColor = [[UIColor colorWithWhite:0.6f alpha:0.f] CGColor];
     }
     gradient.colors = [NSArray arrayWithObjects:(id)startColor, (id)endColor, nil];

@@ -50,6 +50,8 @@
 		30410687144E17AE00E98F07 /* previous.png in Resources */ = {isa = PBXBuildFile; fileRef = 30410683144E17AE00E98F07 /* previous.png */; };
 		30410688144E17AE00E98F07 /* previous@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30410684144E17AE00E98F07 /* previous@2x.png */; };
 		306BAADB15C7714800F37378 /* Icon-dev-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 306BAADA15C7714800F37378 /* Icon-dev-72@2x.png */; };
+		306BAADF15C78C5400F37378 /* SidebarToolbarButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 306BAADD15C78C5400F37378 /* SidebarToolbarButtonHighlighted.png */; };
+		306BAAE015C78C5400F37378 /* SidebarToolbarButtonHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 306BAADE15C78C5400F37378 /* SidebarToolbarButtonHighlighted@2x.png */; };
 		307B241F15ABE24C00F09A35 /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 307B241D15ABE24C00F09A35 /* background.png */; };
 		307B242015ABE24C00F09A35 /* background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 307B241E15ABE24C00F09A35 /* background@2x.png */; };
 		307B242415ABFE9800F09A35 /* navbar_primary_button_bg_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 307B242215ABFE9800F09A35 /* navbar_primary_button_bg_active@2x.png */; };
@@ -677,6 +679,8 @@
 		30410683144E17AE00E98F07 /* previous.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = previous.png; sourceTree = "<group>"; };
 		30410684144E17AE00E98F07 /* previous@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "previous@2x.png"; sourceTree = "<group>"; };
 		306BAADA15C7714800F37378 /* Icon-dev-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-dev-72@2x.png"; sourceTree = "<group>"; };
+		306BAADD15C78C5400F37378 /* SidebarToolbarButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SidebarToolbarButtonHighlighted.png; sourceTree = "<group>"; };
+		306BAADE15C78C5400F37378 /* SidebarToolbarButtonHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SidebarToolbarButtonHighlighted@2x.png"; sourceTree = "<group>"; };
 		307B241D15ABE24C00F09A35 /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		307B241E15ABE24C00F09A35 /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background@2x.png"; sourceTree = "<group>"; };
 		307B242215ABFE9800F09A35 /* navbar_primary_button_bg_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navbar_primary_button_bg_active@2x.png"; sourceTree = "<group>"; };
@@ -1710,6 +1714,8 @@
 		374F188915A5895B00524ED0 /* Sidebar */ = {
 			isa = PBXGroup;
 			children = (
+				306BAADD15C78C5400F37378 /* SidebarToolbarButtonHighlighted.png */,
+				306BAADE15C78C5400F37378 /* SidebarToolbarButtonHighlighted@2x.png */,
 				374F188A15A5897500524ED0 /* sidebar_bg.png */,
 				374F188B15A5897500524ED0 /* sidebar_bg@2x.png */,
 				37417FAD15BEFA9C0067DFEA /* sidebar_border_bg.png */,
@@ -3275,6 +3281,8 @@
 				30BC6CB815C1980500A1F4D1 /* welcome_button_add.png in Resources */,
 				30BC6CB915C1980500A1F4D1 /* welcome_button_add@2x.png in Resources */,
 				306BAADB15C7714800F37378 /* Icon-dev-72@2x.png in Resources */,
+				306BAADF15C78C5400F37378 /* SidebarToolbarButtonHighlighted.png in Resources */,
+				306BAAE015C78C5400F37378 /* SidebarToolbarButtonHighlighted@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
