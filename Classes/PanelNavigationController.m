@@ -1516,7 +1516,8 @@
             PanelViewWrapper *overlayView = [_detailView.subviews objectAtIndex:0];
             overlayView.overlay.alpha = 0.0f;
         }
-        [self addShadowTo: _detailView];
+        if (self.detailViewController)
+            [self addShadowTo: _detailView];
         [UIView animateWithDuration:0.5f
                          animations:^{
                              [_popPanelsView setAlpha:0.0f];
