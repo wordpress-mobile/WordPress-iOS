@@ -557,6 +557,7 @@
 
     if (_detailViewController) {
         if (self.navigationController) {
+            [self.navigationController setToolbarHidden:YES animated:YES];
             sidebarButton = [_detailViewController.navigationItem.leftBarButtonItem retain];
         } else {
             if (_isAppeared) {
