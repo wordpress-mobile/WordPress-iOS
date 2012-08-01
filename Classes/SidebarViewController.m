@@ -449,6 +449,8 @@
         [quickPhotoActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
     }
     
+    [self.panelNavigationController showSidebar];
+    
 	UIActionSheet *actionSheet = nil;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         if ([[CameraPlusPickerManager sharedManager] cameraPlusPickerAvailable]) {
