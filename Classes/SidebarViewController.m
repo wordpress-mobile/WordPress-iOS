@@ -45,6 +45,7 @@
     BOOL selectionRestored;
     NSUInteger wantedSection;
     BOOL _showingWelcomeScreen;
+    BOOL changingContentForSelectedSection;
 }
 
 @property (nonatomic, retain) Post *currentQuickPost;
@@ -519,7 +520,6 @@
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:quickPhotoViewController];
     if (IS_IPAD) {
-        // TODO: Figure out the best way to present this on the ipad.
         navController.modalPresentationStyle = UIModalPresentationFormSheet;
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self.panelNavigationController presentModalViewController:navController animated:YES];
@@ -835,7 +835,7 @@
     WPFLog(@"%@ %@ %@", self, NSStringFromSelector(_cmd), indexPath);
     
     if (self.currentIndexPath) {
-        if ([indexPath compare:self.currentIndexPath] == NSOrderedSame)
+        if ([indexPath compare:self.currentIndexPath] == NSOrderedSame && !changingContentForSelectedSection)
             return;
     }
     
@@ -1032,12 +1032,13 @@
     }
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     if (indexPath) {
-        if (indexPath.section != wantedSection) {
+        if (indexPath.section != wantedSection || changingContentForSelectedSection) {
             if (wantedSection > 0) {
                 [self selectBlogWithSection:wantedSection];
             } else {
                 [self selectFirstAvailableItem];
             }
+            changingContentForSelectedSection = NO;
         }
     } else {
         [self selectFirstAvailableItem];
@@ -1064,6 +1065,11 @@
     switch (type) {
         case NSFetchedResultsChangeInsert:
             NSLog(@"Inserting row %d: %@", newIndexPath.row, anObject);
+            NSIndexPath *openIndexPath = [self.tableView indexPathForSelectedRow];
+            if (openIndexPath.section == (newIndexPath.row +1)) {
+                // We're swapping the content for the currently selected section and need to update accordingly.
+                changingContentForSelectedSection = YES;
+            }
             [self insertSectionInfoForBlog:anObject atIndex:newIndexPath.row];
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:newIndexPath.row + 1] withRowAnimation:UITableViewRowAnimationFade];
             wantedSection = newIndexPath.row + 1;
