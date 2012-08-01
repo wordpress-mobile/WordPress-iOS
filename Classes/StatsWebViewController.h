@@ -8,6 +8,8 @@
 
 @class Blog;
 
+#define kSelectedBlogChanged @"kSelectedBlogChanged"
+
 @interface StatsWebViewController : WPChromelessWebViewController <NSXMLParserDelegate, UIAlertViewDelegate> {
     NSMutableString *currentNode;
     NSMutableDictionary *parsedBlog;

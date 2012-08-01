@@ -36,11 +36,11 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
     [super viewDidLoad];
       
     if (!saveButton) {
-        self.saveButton = [[UIBarButtonItem alloc] 
+        self.saveButton = [[[UIBarButtonItem alloc] 
                       initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).") 
                       style:UIBarButtonItemStyleDone
                       target:self 
-                      action:@selector(initiateSaveCommentReply:)];
+                      action:@selector(initiateSaveCommentReply:)] autorelease];
         
         self.navigationItem.rightBarButtonItem = saveButton;
      }

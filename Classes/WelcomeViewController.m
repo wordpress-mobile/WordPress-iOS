@@ -218,6 +218,7 @@
     nc.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.navigationController presentModalViewController:nc animated:YES];
     [aboutViewController release];
+    [nc release];
 }
 
 #pragma mark - WPcomLoginViewControllerDelegate

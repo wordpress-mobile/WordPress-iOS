@@ -208,7 +208,7 @@
         _popPanelsView = [[UIView alloc] initWithFrame:CGRectMake(SIDEBAR_WIDTH + 10.0f, (height / 2) - 82.0f, 200.0f, 82.0f)];
         [_popPanelsView setBackgroundColor:[UIColor clearColor]];
         
-        [_popPanelsView addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]]];
+        [_popPanelsView addSubview:[[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]] autorelease]];
         
         UIImageView *popperImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]];
         CGRect frame = popperImageView.frame;
@@ -220,6 +220,9 @@
         [popperImageView addSubview:trashIcon];
         [_popPanelsView addSubview:popperImageView];
         [_popPanelsView setAlpha:0.0f];
+        [trashIcon release];
+        [popperImageView release];
+        
         [self.view addSubview:_popPanelsView];
         [self.view sendSubviewToBack:_popPanelsView];
     }
@@ -449,7 +452,7 @@
     }
     if (isChild && [[self partiallyVisibleViews] containsObject:view]) {
         UIView *nextView = [self viewAfter:view];
-        CGFloat offset;
+        CGFloat offset = 0.0;
         if (CGRectGetMaxX(view.frame) > CGRectGetMaxX(self.view.bounds)) {
             // Partly off-screen, move left
             offset = CGRectGetMaxX(view.frame) - CGRectGetMaxX(self.view.bounds);
@@ -558,7 +561,7 @@
     if (_detailViewController) {
         if (self.navigationController) {
             [self.navigationController setToolbarHidden:YES animated:YES];
-            sidebarButton = [_detailViewController.navigationItem.leftBarButtonItem retain];
+            sidebarButton = [[_detailViewController.navigationItem.leftBarButtonItem retain] autorelease]; // Retained and auto released to address a scenario found by running the analyzer where the object could leak.
         } else {
             if (_isAppeared) {
                 [_detailViewController vdc_viewWillDisappear:NO];
@@ -592,12 +595,12 @@
             [self.navigationController setViewControllers:[NSArray arrayWithObject:_detailViewController] animated:NO];
             if (sidebarButton == nil) {
                 if (![[UIButton class] respondsToSelector:@selector(appearance)])
-                    sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle_white"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)];
+                    sidebarButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle_white"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)] autorelease];
                 else 
-                    sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)];
+                    sidebarButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)] autorelease];
             }
             _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
-            [sidebarButton release];
+
         } else {
             [self addChildViewController:_detailViewController];
 
@@ -1077,7 +1080,7 @@
         velocity *= 0.25f;
 
         overShot = 22.f * (velocity * PANEL_OVERSHOT_FRICTION);
-        distance += ABS(overShot);
+//        distance += ABS(overShot); // added but never used?
         CGFloat overShotDuration = ABS(overShot/(velocity * (1-PANEL_OVERSHOT_FRICTION))) * 1.25;
         [keyTimes addObject:[NSNumber numberWithFloat:(duration/(duration+overShotDuration))]];
         duration += overShotDuration;
@@ -1194,12 +1197,12 @@
         offset += [[self.detailViewWidths objectAtIndex:(viewCount - 2)] floatValue];
         offset -= self.view.bounds.size.width;
         diff = ABS(_stackOffset + remainingVelocity / velocityFactor - offset);
-        remainingVelocity -= remainingVelocity / velocityFactor;
+//        remainingVelocity -= remainingVelocity / velocityFactor; // set but never read?
         if (diff > previousDiff) {
             return previousOffset;
         } else {
             previousOffset = offset;
-            previousDiff = diff;
+//            previousDiff = diff; // set but never read?
         }
     }
     
@@ -1391,12 +1394,10 @@
             topView = [self viewOrViewWrapper:self.topViewController.view];
         }
         CGRect topViewFrame = topView.frame;
-        CGFloat newPanelWidth = DETAIL_WIDTH;
+        CGFloat newPanelWidth = IPAD_DETAIL_SECONDARY_WIDTH;
         
         if ([self viewControllerExpectsWidePanel:viewController]) {
             newPanelWidth = IPAD_WIDE_PANEL_WIDTH;
-        } else {
-            newPanelWidth = IPAD_DETAIL_SECONDARY_WIDTH;
         }
         
         if (CGRectGetMaxX(topViewFrame) + newPanelWidth > self.view.bounds.size.width) {

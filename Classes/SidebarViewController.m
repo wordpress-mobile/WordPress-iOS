@@ -862,7 +862,9 @@
 
     } else {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
-
+        NSString *blogURL = @"";
+        NSString *dashboardURL = @"";
+        
         Class controllerClass = nil;
         //did user select the same item, but for a different blog? If so then just update the data in the view controller.
         switch (indexPath.row) {
@@ -878,9 +880,8 @@
             case 3:
                 controllerClass =  [StatsWebViewController class];//IS_IPAD ? [StatsWebViewController class] : [StatsTableViewController class];
                 break;
-            case 4:
-                controllerClass = [WPWebViewController class];
-                NSString *blogURL = blog.url;
+            case 4 : 
+                blogURL = blog.url;
                 if(![blogURL hasPrefix:@"http"])
                     blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
                 //check if the same site already loaded
@@ -913,8 +914,7 @@
                 }        
                 return;
             case 5:
-                controllerClass = [WPWebViewController class];
-                 NSString *dashboardURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
+                 dashboardURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
                 //dashboard already selected
                 if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPWebViewController class]] 
                     && 
@@ -944,8 +944,12 @@
                 return;
             default:
                 controllerClass = [PostsViewController class];
-                break;
+                break;    
         }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSelectedBlogChanged 
+                                                            object:nil 
+                                                          userInfo:[NSDictionary dictionaryWithObject:blog forKey:@"blog"]];
         
         //Check if the controller is already on the screen
         if ([self.panelNavigationController.detailViewController isMemberOfClass:controllerClass] && [self.panelNavigationController.detailViewController respondsToSelector:@selector(setBlog:)]) {

@@ -18,11 +18,13 @@
 
 - (void)dealloc {
     WPFLogMethod();
-    self.view = nil;
+
     self.webView = nil;
     self.lastWebViewRefreshDate = nil;
     self.webBridge.delegate = nil;
     self.webBridge = nil;
+    [_refreshHeaderView release]; _refreshHeaderView = nil;
+    
     [super dealloc];
     
 }
@@ -39,9 +41,12 @@
 
 - (void)viewDidLoad {
     WPFLogMethod();
-    self.webBridge = [WPWebBridge bridge];
-    self.webBridge.delegate = self;
     [super viewDidLoad];
+    
+    if (!self.webBridge) {
+        self.webBridge = [WPWebBridge bridge];
+        self.webBridge.delegate = self;
+    }
     
     if (shouldEnablePullToRefresh) {
         [self enablePullToRefresh];
@@ -54,6 +59,9 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    self.webView.delegate = nil;
+    self.webView = nil;
+    
     [_refreshHeaderView release]; _refreshHeaderView = nil;
 }
 

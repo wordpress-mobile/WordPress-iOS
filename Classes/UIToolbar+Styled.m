@@ -29,6 +29,7 @@
             shadowImg.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
             shadowImg.tag = shadowTag;
             [self addSubview:shadowImg];
+            [shadowImg release];
         }
     }
 }

@@ -620,6 +620,7 @@
         [actionSheet setActionSheetStyle:UIActionSheetStyleAutomatic];
         [actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)];
         [actionSheet addSubview:pickerWrapperView];
+        [pickerWrapperView release];
 
         UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")]];
         closeButton.momentary = YES; 

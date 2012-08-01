@@ -24,6 +24,9 @@
 + (NSString *)lastAuthedName;
 + (void)setLastAuthedName:(NSString *)str;
 
++ (NSString *)getWporgBlogJetpackUsernameKey:(NSString *)urlPath;
++ (void)blogChangedNotification:(NSNotification *)notification;
+
 @end
 
 @implementation StatsWebViewController
@@ -37,6 +40,11 @@
 @synthesize wporgBlogJetpackUsernameKey;
 @synthesize authRequest;
 
+
++ (void)load {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogChangedNotification:) name:kSelectedBlogChanged object:nil];
+}
+
 static NSString *_lastAuthedName = nil;
 
 + (NSString *)lastAuthedName {
@@ -49,6 +57,56 @@ static NSString *_lastAuthedName = nil;
     }
     _lastAuthedName = [str copy];
 }
+
++ (NSString *)getWporgBlogJetpackUsernameKey:(NSString *)urlPath {
+    return [NSString stringWithFormat:@"jetpackblog-%@", urlPath];
+}
+
++ (void)blogChangedNotification:(NSNotification *)notification {
+    Blog *blog = [[notification userInfo] objectForKey:@"blog"];
+    NSString *username = @"";
+    NSString *password = @"";
+    NSError *error;
+    if ([blog isWPcom]) {
+        //use set username/pw for wpcom blogs
+        username = [blog username];
+        password = [SFHFKeychainUtils getPasswordForUsername:[blog username] andServiceName:[blog hostURL] error:&error];
+        
+    } else {
+        /*
+         The value of wpcom_username_preference can get mismatched if the user gets happy about adding/removing blogs and signing
+         out and back in to load blogs from different wpcom accounts so we don't want to rely on it.
+         */
+        username = [[NSUserDefaults standardUserDefaults] objectForKey:[self getWporgBlogJetpackUsernameKey:[blog hostURL]]];
+        password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&error];
+    }
+    
+    // Skip the auth call to reduce loadtime if its the same username as before.
+    NSString *lastAuthedUsername = [[self class] lastAuthedName];
+    if ([username isEqualToString:lastAuthedUsername]) {
+        return;
+    }
+    
+    NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
+    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&rememberme=forever",
+                             [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+                             [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
+    [mRequest setURL:[NSURL URLWithString:@"https://wordpress.com/wp-login.php"]];
+    [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
+    [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
+    [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
+    [mRequest setHTTPMethod:@"POST"];
+    
+    AFHTTPRequestOperation *authRequest = [[[AFHTTPRequestOperation alloc] initWithRequest:mRequest] autorelease];
+    [authRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self setLastAuthedName:username];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+
+    }];
+    [authRequest start];
+}
+
 
 - (void)dealloc {
     [blog release];
@@ -106,7 +164,7 @@ static NSString *_lastAuthedName = nil;
     if (blog) {
         [FileLogger log:@"Loading Stats for the following blog: %@", [blog url]];
         if (![blog isWPcom]) {
-            self.wporgBlogJetpackUsernameKey = [NSString stringWithFormat:@"jetpackblog-%@",[blog hostURL]];
+            self.wporgBlogJetpackUsernameKey = [[self class] getWporgBlogJetpackUsernameKey:[blog hostURL]];// [NSString stringWithFormat:@"jetpackblog-%@",[blog hostURL]];
         }
         
         WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];

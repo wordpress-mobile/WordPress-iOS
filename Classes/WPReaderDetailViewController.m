@@ -53,11 +53,11 @@
         
         [btn addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
         
-        self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
+        self.optionsButton = [[[UIBarButtonItem alloc] initWithCustomView:btn] autorelease];
     } else {
-        self.optionsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+        self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                            target:self
-                                                                           action:@selector(showLinkOptions)];
+                                                                           action:@selector(showLinkOptions)] autorelease];
     }
     super.iPadNavBar.topItem.rightBarButtonItem = self.optionsButton;
     self.optionsButton.enabled = YES;

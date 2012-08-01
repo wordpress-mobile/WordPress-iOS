@@ -25,44 +25,43 @@
     self = [super init];
     if (self) {
         _challenge = [challenge retain];
-    }
-    
-    [self initWithTitle:NSLocalizedString(@"Authentication required", @"Popup title to ask for user credentials.")
-                                                    message:NSLocalizedString(@"Please enter your credentials", @"Popup message to ask for user credentials (fields shown below).")
-                                                   delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button label.")
-                                          otherButtonTitles:NSLocalizedString(@"Log In", @"Log In button label."), nil];
-    
-    // FIXME: what about iOS 4?
-    if ([self respondsToSelector:@selector(setAlertViewStyle:)]) {
-        self.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
-    } else {
-        if (IS_IPAD) {
-            self.message = [self.message stringByAppendingString:@"\n\n\n\n"];
-        } else {
-            self.message = [self.message stringByAppendingString:@"\n\n\n"];
-        }
-        usernameField = [[UITextField alloc] initWithFrame:CGRectMake(12.0f, 48.0f, 260.0f, 29.0f)];
-        usernameField.placeholder = NSLocalizedString(@"Username", @"Field label for a user's username.");
-        usernameField.backgroundColor = [UIColor whiteColor];
-        usernameField.textColor = [UIColor blackColor];
-        usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-        usernameField.keyboardType = UIKeyboardTypeDefault;
-        usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
-        usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        [self addSubview:usernameField];
+
+        [self initWithTitle:NSLocalizedString(@"Authentication required", @"Popup title to ask for user credentials.")
+                                                        message:NSLocalizedString(@"Please enter your credentials", @"Popup message to ask for user credentials (fields shown below).")
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button label.")
+                                              otherButtonTitles:NSLocalizedString(@"Log In", @"Log In button label."), nil];
         
-        passwordField = [[UITextField alloc]  initWithFrame:CGRectMake(12.0, 82.0, 260.0, 29.0)]; 
-        passwordField.placeholder = NSLocalizedString(@"Password", @"Field label for a user's password.");
-        passwordField.secureTextEntry = YES;
-        passwordField.backgroundColor = [UIColor whiteColor];
-        passwordField.textColor = [UIColor blackColor];
-        passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-        passwordField.keyboardType = UIKeyboardTypeDefault;
-        passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
-        [self addSubview:passwordField];
+        // FIXME: what about iOS 4?
+        if ([self respondsToSelector:@selector(setAlertViewStyle:)]) {
+            self.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+        } else {
+            if (IS_IPAD) {
+                self.message = [self.message stringByAppendingString:@"\n\n\n\n"];
+            } else {
+                self.message = [self.message stringByAppendingString:@"\n\n\n"];
+            }
+            usernameField = [[UITextField alloc] initWithFrame:CGRectMake(12.0f, 48.0f, 260.0f, 29.0f)];
+            usernameField.placeholder = NSLocalizedString(@"Username", @"Field label for a user's username.");
+            usernameField.backgroundColor = [UIColor whiteColor];
+            usernameField.textColor = [UIColor blackColor];
+            usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+            usernameField.keyboardType = UIKeyboardTypeDefault;
+            usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
+            usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+            [self addSubview:usernameField];
+            
+            passwordField = [[UITextField alloc]  initWithFrame:CGRectMake(12.0, 82.0, 260.0, 29.0)]; 
+            passwordField.placeholder = NSLocalizedString(@"Password", @"Field label for a user's password.");
+            passwordField.secureTextEntry = YES;
+            passwordField.backgroundColor = [UIColor whiteColor];
+            passwordField.textColor = [UIColor blackColor];
+            passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+            passwordField.keyboardType = UIKeyboardTypeDefault;
+            passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
+            [self addSubview:passwordField];
+        }
     }
-    
     return self;
 }
 
