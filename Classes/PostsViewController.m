@@ -294,7 +294,8 @@
 }
 
 - (void)showAddPostView {
-		
+    if (IS_IPAD)
+        [self resetView];
     Post *post = [Post newDraftForBlog:self.blog];
     EditPostViewController *editPostViewController = [[[EditPostViewController alloc] initWithPost:[post createRevision]] autorelease];
     editPostViewController.editMode = kNewPost;
