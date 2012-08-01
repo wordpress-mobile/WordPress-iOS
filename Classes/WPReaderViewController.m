@@ -56,6 +56,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     self.password = nil;
     self.detailContentHTML = nil;
     self.refreshTimer = nil;
+    self.topicsViewController.delegate = nil;
     self.topicsViewController = nil;
     self.detailViewController.delegate = nil;
     self.detailViewController = nil;
