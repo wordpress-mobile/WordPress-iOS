@@ -80,8 +80,11 @@
 	if([self.tableView respondsToSelector:@selector(setAccessibilityIdentifier:)]){
 		self.tableView.accessibilityIdentifier = @"Comments";  // required for UIAutomation for iOS 5
 	}
-        
-    _selectedComments = [[NSMutableArray alloc] init];
+    
+    if (_selectedComments == nil)
+        _selectedComments = [[NSMutableArray alloc] init];
+    
+    self.editButtonItem.enabled = ( [[self.resultsController fetchedObjects] count] );
     
     // Do not show row dividers for empty cells.
     self.tableView.tableFooterView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
@@ -104,7 +107,7 @@
         self.navigationItem.rightBarButtonItem = self.editButtonItem;
     } else {
         self.toolbarItems = [NSArray arrayWithObject:self.editButtonItem];
-        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:animated];
+        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
     }
     self.commentViewController.delegate = nil;
     self.commentViewController = nil;
@@ -660,4 +663,10 @@
     [super removeSwipeView:animated];
 }
 
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [super controllerDidChangeContent:controller];
+    
+    self.editButtonItem.enabled = ( [[self.resultsController fetchedObjects] count] );    
+}
 @end
