@@ -266,6 +266,7 @@
 		5D7C22B915A4FCFE00FCE1C2 /* up_dim@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7C22B515A4FCE900FCE1C2 /* up_dim@2x.png */; };
 		5D86498515A6459C00A64FB0 /* welcome_bg_pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D86498315A6459C00A64FB0 /* welcome_bg_pattern.png */; };
 		5D86498615A6459C00A64FB0 /* welcome_bg_pattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D86498415A6459C00A64FB0 /* welcome_bg_pattern@2x.png */; };
+		5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */; };
 		5D9832EC15A77F0700A5E783 /* toolbar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832EA15A77ED900A5E783 /* toolbar_bg.png */; };
 		5D9832ED15A77F0700A5E783 /* toolbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832EB15A77EEF00A5E783 /* toolbar_bg@2x.png */; };
 		5D9832F015A78AB400A5E783 /* UINavigationBar+Styled.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9832EF15A78AB400A5E783 /* UINavigationBar+Styled.m */; };
@@ -906,6 +907,8 @@
 		5D7C22B515A4FCE900FCE1C2 /* up_dim@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "up_dim@2x.png"; sourceTree = "<group>"; };
 		5D86498315A6459C00A64FB0 /* welcome_bg_pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = welcome_bg_pattern.png; sourceTree = "<group>"; };
 		5D86498415A6459C00A64FB0 /* welcome_bg_pattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "welcome_bg_pattern@2x.png"; sourceTree = "<group>"; };
+		5D97C2F115CAF8D8009B44DD /* UINavigationController+KeyboardFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+KeyboardFix.h"; sourceTree = "<group>"; };
+		5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+KeyboardFix.m"; sourceTree = "<group>"; };
 		5D9832EA15A77ED900A5E783 /* toolbar_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_bg.png; sourceTree = "<group>"; };
 		5D9832EB15A77EEF00A5E783 /* toolbar_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbar_bg@2x.png"; sourceTree = "<group>"; };
 		5D9832EE15A78AB400A5E783 /* UINavigationBar+Styled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+Styled.h"; sourceTree = "<group>"; };
@@ -2417,6 +2420,8 @@
 				E1745AA615AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m */,
 				FD75DDAB15B021C70043F12C /* UIViewController+Rotation.h */,
 				FD75DDAC15B021C80043F12C /* UIViewController+Rotation.m */,
+				5D97C2F115CAF8D8009B44DD /* UINavigationController+KeyboardFix.h */,
+				5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -3486,6 +3491,7 @@
 				FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */,
 				5DEB6EF515B471B3004E81F3 /* WPPopoverBackgroundView.m in Sources */,
 				CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */,
+				5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
