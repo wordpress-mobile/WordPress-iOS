@@ -84,7 +84,7 @@
     if (_selectedComments == nil)
         _selectedComments = [[NSMutableArray alloc] init];
     
-    self.editButtonItem.enabled = ( [[self.resultsController fetchedObjects] count] );
+    self.editButtonItem.enabled = [[self.resultsController fetchedObjects] count] > 0 ? YES : NO;
     
     // Do not show row dividers for empty cells.
     self.tableView.tableFooterView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
@@ -667,6 +667,6 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [super controllerDidChangeContent:controller];
     
-    self.editButtonItem.enabled = ( [[self.resultsController fetchedObjects] count] );    
+    self.editButtonItem.enabled =  [[self.resultsController fetchedObjects] count] > 0 ? YES : NO;
 }
 @end
