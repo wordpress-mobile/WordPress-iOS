@@ -385,10 +385,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 				pointerFrame.origin.x = 688;
 		}
 		else {
-			if ([postMediaViewController isDeviceSupportVideo])
-				pointerFrame.origin.x = 198;
-			else
-				pointerFrame.origin.x = 240;
+            pointerFrame.origin.x = [self pointerPositionForAttachmentsTab];
 		}
 	}
 	tabPointer.frame = pointerFrame;
@@ -413,6 +410,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[postPreviewViewController viewDidAppear:YES];
     else if ([newView isEqual:postMediaViewController.view])
 		[postMediaViewController viewDidAppear:YES];
+}
+
+- (NSInteger)pointerPositionForAttachmentsTab {
+    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+        if ([postMediaViewController isDeviceSupportVideo])
+            return 198;
+        else
+            return 240;
+    } else {
+        if ([postMediaViewController isDeviceSupportVideo])
+            return 358;
+        else
+            return 400;
+    }
 }
 
 - (IBAction)switchToEdit {
@@ -1238,15 +1249,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
         }            
     }
     editorToolbar.frame = frame;
+
 }
 
 - (void)deviceDidRotate:(NSNotification *)notification {
     WPFLogMethod();
-	//CGRect infoText = self.addURLSourceAlert;
-	//infoText.text = "test";
     
     if (IS_IPAD) {
         return;
+    }
+    
+    if ([currentView isEqual: postMediaViewController.view]) {
+        CGRect pointerFrame = tabPointer.frame;
+        pointerFrame.origin.x = [self pointerPositionForAttachmentsTab];
+        tabPointer.frame = pointerFrame;
     }
 	
 	// This reinforces text field constraints set above, for when the Link Helper is already showing when the device is rotated.

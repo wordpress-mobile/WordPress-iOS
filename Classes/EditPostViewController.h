@@ -116,7 +116,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)savePost: (BOOL)upload;
 - (void)dismissAlertViewKeyboard:(NSNotification *)notification;
 - (void)textFieldDidChange: (id)sender;
-
+- (NSInteger)pointerPositionForAttachmentsTab;
 // Media
 - (void)insertMediaAbove:(NSNotification *)notification;
 - (void)insertMediaBelow:(NSNotification *)notification;
