@@ -57,7 +57,7 @@
 - (BOOL)isWPcom;
 - (BOOL)isPrivate;
 - (NSArray *)sortedCategories;
-- (NSString *)getOptionValue:(NSString *) name;
+- (id)getOptionValue:(NSString *) name;
 - (NSString *)loginURL;
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
 - (NSString *)fetchPassword;

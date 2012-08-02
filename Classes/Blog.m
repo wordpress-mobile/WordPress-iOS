@@ -395,12 +395,11 @@
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
-- (NSString *)getOptionValue:(NSString *) name {
+- (id)getOptionValue:(NSString *) name {
 	if ( self.options == nil || (self.options.count == 0) ) {
         return nil;
     }
     NSDictionary *currentOption = [self.options objectForKey:name];
-    
     return [currentOption objectForKey:@"value"];
 }
 
