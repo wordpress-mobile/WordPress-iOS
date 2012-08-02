@@ -1148,7 +1148,12 @@
     // This makes sure the lefthand side of the panel is correctly positioned over the sidebar.
     if ([self viewControllerExpectsWidePanel:_detailViewController]) {
         if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            offset = DETAIL_LEDGE_OFFSET - (self.view.bounds.size.width - IPAD_WIDE_PANEL_WIDTH);
+            if (velocity < 0) {
+                return offset;
+            } else {
+                offset = DETAIL_LEDGE_OFFSET - (self.view.bounds.size.width - IPAD_WIDE_PANEL_WIDTH);
+                
+            }
         }
     }
     // if we have a single panel, transition back to its starting offset.
