@@ -99,7 +99,12 @@
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-
+    
+    [_selectedComments release]; _selectedComments = nil;
+    [spamButton release]; spamButton = nil;
+    [unapproveButton release]; unapproveButton = nil;
+    [approveButton release]; approveButton = nil;
+    [deleteButton release]; deleteButton = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
