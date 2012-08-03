@@ -59,8 +59,8 @@
 }
 
 - (void)initObjects {
-	photos = [[NSMutableArray alloc] init];
-	videos = [[NSMutableArray alloc] init];
+	self.photos = [[[NSMutableArray alloc] init] autorelease];
+	self.videos = [[[NSMutableArray alloc] init] autorelease];
 	picker = [[UIImagePickerController alloc] init];
 	picker.delegate = self;
 	picker.allowsEditing = NO;

@@ -288,9 +288,9 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     
     NSMutableURLRequest *mRequest;
     if ([aRequest isKindOfClass:[NSMutableURLRequest class]]) {
-        mRequest = [(NSMutableURLRequest *)aRequest retain];
+        mRequest = (NSMutableURLRequest *)aRequest;
     } else {
-        mRequest = [aRequest mutableCopy];
+        mRequest = [[aRequest mutableCopy] autorelease];
         [mRequest setAllHTTPHeaderFields:self.defaultHeaders];
     }
 

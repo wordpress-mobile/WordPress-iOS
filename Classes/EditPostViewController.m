@@ -35,7 +35,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	self.hasLocation = nil;
-    //	[statuses release];
+	[statuses release];
     [postMediaViewController release];
 	[postPreviewViewController release];
     [postSettingsController release];
@@ -90,7 +90,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    [statuses release]; statuses = nil;
     [spinner release]; spinner = nil;
     self.textView.inputAccessoryView = nil;
     [editorToolbar release];
@@ -167,7 +166,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     self.title = [self editorTitle];
 
-	statuses = [[NSArray arrayWithObjects:NSLocalizedString(@"Local Draft", @"Post status label in the posts list if the post has not yet been synced to the remote server."), NSLocalizedString(@"Draft", @"Post status label in the posts list if the post is a draft."), NSLocalizedString(@"Private", @"Post status label in the posts list if the post is marked as private. Should be the same as WP core."), NSLocalizedString(@"Pending review", @"Post status label in the post list if the post is pending review. Should be the same as WP core."), NSLocalizedString(@"Published", @"Post status to indicate that the post is live and published. Should be the same as WP core."), nil] retain];
+    if (!statuses)
+        statuses = [[NSArray arrayWithObjects:NSLocalizedString(@"Local Draft", @"Post status label in the posts list if the post has not yet been synced to the remote server."), NSLocalizedString(@"Draft", @"Post status label in the posts list if the post is a draft."), NSLocalizedString(@"Private", @"Post status label in the posts list if the post is marked as private. Should be the same as WP core."), NSLocalizedString(@"Pending review", @"Post status label in the post list if the post is pending review. Should be the same as WP core."), NSLocalizedString(@"Published", @"Post status to indicate that the post is live and published. Should be the same as WP core."), nil] retain];
 	
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];

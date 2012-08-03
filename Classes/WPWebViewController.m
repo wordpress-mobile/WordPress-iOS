@@ -46,6 +46,8 @@
     self.linkOptionsActionSheet.delegate = nil;
     self.linkOptionsActionSheet = nil;
     self.spinnerButton = nil;
+    self.optionsButton = nil;
+    
     [super dealloc];
 }
 
@@ -80,11 +82,11 @@
             
             [btn addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
             
-            self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
+            self.optionsButton = [[[UIBarButtonItem alloc] initWithCustomView:btn] autorelease];
         } else {
-            self.optionsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+            self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                                target:self
-                                                                               action:@selector(showLinkOptions)];
+                                                                               action:@selector(showLinkOptions)] autorelease];
         }
         
         //allows the toolbar to become smaller in landscape mode.
