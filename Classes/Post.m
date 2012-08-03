@@ -51,19 +51,6 @@
 @dynamic categories;
 @synthesize specialType;
 
-- (id)init {
-    if (self = [super init]) {
-        appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    }
-    
-    return self;
-}
-
-- (void)dealloc {
-    self.specialType = nil;
-    [super dealloc];
-}
-
 + (Post *)newPostForBlog:(Blog *)blog {
     Post *post = [[Post alloc] initWithEntity:[NSEntityDescription entityForName:@"Post"
                                                           inManagedObjectContext:[blog managedObjectContext]]
@@ -102,6 +89,22 @@
     [post findComments];
     return post;
 }
+
+
+- (void)dealloc {
+    self.specialType = nil;
+    [super dealloc];
+}
+
+
+- (id)init {
+    if (self = [super init]) {
+        appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    }
+    
+    return self;
+}
+
 
 - (void )updateFromDictionary:(NSDictionary *)postInfo {
     self.postTitle      = [postInfo objectForKey:@"title"];
