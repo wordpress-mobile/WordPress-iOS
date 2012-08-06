@@ -10,6 +10,8 @@
 #import "Constants.h"
 #import "PanelNavigationConstants.h"
 
+#define BLAVATAR_ALPHA 0.7f
+
 @interface SidebarSectionHeaderView (Private)
 -(void)receivedCommentsChangedNotification:(NSNotification*)aNotification;
 -(void)updatePendingCommentsIcon;
@@ -48,7 +50,7 @@ CGFloat const BadgeHeight = 24.f;
         
         CGFloat blavatarOffset = (frame.size.height - BlavatarHeight) / 2.f - 1.f;
         blavatarView = [[UIImageView alloc] initWithFrame:CGRectMake(8.f, blavatarOffset, BlavatarHeight, BlavatarHeight)]; // 8.f is the x position calculated from regular row height
-        [blavatarView setAlpha:0.5f];
+        [blavatarView setAlpha:BLAVATAR_ALPHA];
         blavatarView.layer.shadowColor = [UIColor blackColor].CGColor;
         blavatarView.layer.shadowOffset = CGSizeMake(0, 1);
         blavatarView.layer.shadowOpacity = 0.5;
@@ -210,7 +212,7 @@ CGFloat const BadgeHeight = 24.f;
     }
     else {
         [self.titleLabel setTextColor:[UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0]];
-        [blavatarView setAlpha:0.7f];
+        [blavatarView setAlpha:BLAVATAR_ALPHA];
     }
     
     // If this was a user action, send the delegate the appropriate message.
