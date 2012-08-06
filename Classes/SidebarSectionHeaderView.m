@@ -51,6 +51,7 @@ CGFloat const BadgeHeight = 24.f;
         CGFloat blavatarOffset = (frame.size.height - BlavatarHeight) / 2.f - 1.f;
         blavatarView = [[UIImageView alloc] initWithFrame:CGRectMake(8.f, blavatarOffset, BlavatarHeight, BlavatarHeight)]; // 8.f is the x position calculated from regular row height
         [blavatarView setAlpha:BLAVATAR_ALPHA];
+        blavatarView.layer.shouldRasterize = YES;
         blavatarView.layer.shadowColor = [UIColor blackColor].CGColor;
         blavatarView.layer.shadowOffset = CGSizeMake(0, 1);
         blavatarView.layer.shadowOpacity = 0.5;
