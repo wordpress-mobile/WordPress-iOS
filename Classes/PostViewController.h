@@ -31,5 +31,7 @@
 - (void)deletePost;
 - (void)refreshUI;
 - (NSString *)formatString:(NSString *)str;
+- (void)showModalPreview;
+- (void)dismissPreview;
 
 @end

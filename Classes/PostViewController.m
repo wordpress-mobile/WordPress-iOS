@@ -7,6 +7,7 @@
 //
 
 #import "PostViewController.h"
+#import "PostPreviewViewController.h"
 #import "NSString+XMLExtensions.h"
 #import "PanelNavigationConstants.h"
 
@@ -61,30 +62,42 @@
     UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
                                                                                  target:self
                                                                                  action:@selector(showModalEditor)] autorelease];
+    UIBarButtonItem *previewButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.")
+                                                                       style:UIBarButtonSystemItemEdit
+                                                                      target:self
+                                                                      action:@selector(showModalPreview)] autorelease];
     
-    if ([[editButton class] respondsToSelector:@selector(appearance)]) {
-        [editButton setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-        [editButton setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_active"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    UIColor *buttonTintColor = [UIColor UIColorFromHex:0x464646];
+    
+    for (UIBarButtonItem *b in [NSArray arrayWithObjects:editButton, previewButton, nil]) {
+        if ([[b class] respondsToSelector:@selector(appearance)]) {
+            [b setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+            [b setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_active"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+            
+            [b setTitleTextAttributes:
+             [NSDictionary dictionaryWithObjectsAndKeys:
+              [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0], 
+              UITextAttributeTextColor, 
+              [UIColor whiteColor], 
+              UITextAttributeTextShadowColor,  
+              [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+              UITextAttributeTextShadowOffset,
+              nil] forState:UIControlStateNormal];
+            
+            [b setTitleTextAttributes:
+             [NSDictionary dictionaryWithObjectsAndKeys:
+              [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0], 
+              UITextAttributeTextColor, 
+              [UIColor whiteColor], 
+              UITextAttributeTextShadowColor,  
+              [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+              UITextAttributeTextShadowOffset,
+              nil] forState:UIControlStateDisabled];
+        }
         
-        [editButton setTitleTextAttributes:
-         [NSDictionary dictionaryWithObjectsAndKeys:
-          [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0], 
-          UITextAttributeTextColor, 
-          [UIColor whiteColor], 
-          UITextAttributeTextShadowColor,  
-          [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
-          UITextAttributeTextShadowOffset,
-          nil] forState:UIControlStateNormal];
-        
-        [editButton setTitleTextAttributes:
-         [NSDictionary dictionaryWithObjectsAndKeys:
-          [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0], 
-          UITextAttributeTextColor, 
-          [UIColor whiteColor], 
-          UITextAttributeTextShadowColor,  
-          [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
-          UITextAttributeTextShadowOffset,
-          nil] forState:UIControlStateDisabled];
+        if ([b respondsToSelector:@selector(setTintColor:)]) {
+            b.tintColor = buttonTintColor;
+        }
     }
     
     if (IS_IPAD) {
@@ -92,21 +105,16 @@
                                                                                       target:self 
                                                                                       action:@selector(showDeletePostActionSheet:)];
         deleteButton.style = UIBarButtonItemStylePlain;
+        deleteButton.tintColor = buttonTintColor;
         
         UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        self.toolbarItems = [NSArray arrayWithObjects:editButton, spacer, deleteButton, nil];
+        self.toolbarItems = [NSArray arrayWithObjects:editButton, previewButton, spacer, deleteButton, nil];
+        
         [spacer release];
         [deleteButton release];
     } else {
         self.navigationItem.rightBarButtonItem = editButton;
-    }
-
-    if ([editButton respondsToSelector:@selector(setTintColor:)]) {
-        UIColor *color = [UIColor UIColorFromHex:0x464646];
-        editButton.tintColor = color;
-        deleteButton.tintColor = color; //Might be nil but no error if so.
-    }
-    
+    }    
 }
 
 
@@ -225,7 +233,7 @@
 
 - (void)showModalEditor {
     if (self.modalViewController) {
-        NSLog(@"Trying to show editor a second time: bad");
+        NSLog(@"Trying to show modal a second time: bad");
         return;
     }
 	if (self.apost.remoteStatus == AbstractPostRemoteStatusPushing) {
@@ -253,6 +261,36 @@
     [nav release];
 }
 
+- (void)showModalPreview {
+    if (self.modalViewController) {
+        NSLog(@"Trying to show modal a second time: bad");
+        return;
+    }
+
+    EditPostViewController *postViewController;
+	[self checkForNewItem];
+    AbstractPost *postRevision = [self.apost createRevision];
+    postViewController = [self getPostOrPageController: postRevision];
+    postViewController.editMode = kEditPost;
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editorDismissed:) name:@"PostEditorDismissed" object:postViewController];
+
+    PostPreviewViewController *postPreviewViewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController"
+                                                                                                       bundle:nil];
+    postPreviewViewController.postDetailViewController = postViewController;
+
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:postPreviewViewController];
+    nav.modalPresentationStyle = UIModalPresentationPageSheet;
+    nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    //nav.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
+    nav.navigationBar.topItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
+
+    UIBarButtonItem *c = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissPreview)];
+    nav.navigationBar.topItem.leftBarButtonItem = c;
+    [c release];
+    
+    [self presentModalViewController:nav animated:YES];
+    [nav release];
+}
 
 - (EditPostViewController *)getPostOrPageController:(AbstractPost *)revision {
 	return [[[EditPostViewController alloc] initWithPost:revision] autorelease];
@@ -274,6 +312,9 @@
     [self refreshUI];
 }
 
+- (void)dismissPreview {
+    [self.presentedViewController dismissModalViewControllerAnimated:YES];
+}
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     CGPoint point = [[touches anyObject] locationInView:self.view];
