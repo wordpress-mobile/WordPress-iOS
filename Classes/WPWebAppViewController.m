@@ -19,6 +19,8 @@
 - (void)dealloc {
     WPFLogMethod();
 
+    [self.webView stopLoading];
+    self.webView.delegate = nil;
     self.webView = nil;
     self.lastWebViewRefreshDate = nil;
     self.webBridge.delegate = nil;
