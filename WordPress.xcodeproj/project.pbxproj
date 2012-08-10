@@ -435,7 +435,6 @@
 		CC6B3BFE15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFA15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png */; };
 		CC6B3BFF15A35F10005A4523 /* friend_finder_cancel_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFB15A35F10005A4523 /* friend_finder_cancel_btn.png */; };
 		CC6B3C0015A35F10005A4523 /* friend_finder_cancel_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFC15A35F10005A4523 /* friend_finder_cancel_btn@2x.png */; };
-		CC9AF2AE14D2F58400256729 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = CC9AF2AD14D2F58400256729 /* JSONKit.m */; };
 		CCB3A04014C8E12700D43C3F /* WPReaderTopicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB3A03F14C8E12700D43C3F /* WPReaderTopicsViewController.m */; };
 		CCDCBC201590BF2A0040B3B1 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CCDCBC131590BF2A0040B3B1 /* FBDialog.bundle */; };
 		CCDCBC211590BF2A0040B3B1 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCDCBC191590BF2A0040B3B1 /* libfacebook_ios_sdk.a */; };
@@ -470,6 +469,9 @@
 		E12F55F514A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55F014A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m */; };
 		E12F95B9155820A40067A653 /* NSObject+BlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F95B8155820A40067A653 /* NSObject+BlockObservation.m */; };
 		E131D08912C8C9160056BAB9 /* AbstractPost.m in Sources */ = {isa = PBXBuildFile; fileRef = E131D08812C8C9160056BAB9 /* AbstractPost.m */; };
+		E131D20A15D5263A009DFB23 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = E131D20615D5263A009DFB23 /* CHANGELOG.md */; };
+		E131D20B15D5263A009DFB23 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = E131D20815D5263A009DFB23 /* JSONKit.m */; };
+		E131D20C15D5263A009DFB23 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E131D20915D5263A009DFB23 /* README.md */; };
 		E1330B0F151275300010018D /* AFAuthenticationAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1330B0E151275300010018D /* AFAuthenticationAlertView.m */; };
 		E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */ = {isa = PBXBuildFile; fileRef = E13EB7A4157D230000885780 /* WordPressComApi.m */; };
 		E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = E13F23C214FE84600081D9CC /* NSMutableDictionary+Helpers.m */; };
@@ -1138,8 +1140,6 @@
 		CC6B3BFA15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friend_finder_cancel_btn_highlight@2x.png"; sourceTree = "<group>"; };
 		CC6B3BFB15A35F10005A4523 /* friend_finder_cancel_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friend_finder_cancel_btn.png; sourceTree = "<group>"; };
 		CC6B3BFC15A35F10005A4523 /* friend_finder_cancel_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friend_finder_cancel_btn@2x.png"; sourceTree = "<group>"; };
-		CC9AF2AC14D2F58400256729 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
-		CC9AF2AD14D2F58400256729 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		CCB3A03E14C8E12700D43C3F /* WPReaderTopicsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPReaderTopicsViewController.h; sourceTree = "<group>"; };
 		CCB3A03F14C8E12700D43C3F /* WPReaderTopicsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPReaderTopicsViewController.m; sourceTree = "<group>"; };
 		CCDCBC111590BF2A0040B3B1 /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facebook.h; sourceTree = "<group>"; };
@@ -1207,6 +1207,10 @@
 		E12F95B8155820A40067A653 /* NSObject+BlockObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BlockObservation.m"; sourceTree = "<group>"; };
 		E131D08712C8C9150056BAB9 /* AbstractPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPost.h; sourceTree = "<group>"; };
 		E131D08812C8C9160056BAB9 /* AbstractPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractPost.m; sourceTree = "<group>"; };
+		E131D20615D5263A009DFB23 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.md; sourceTree = "<group>"; };
+		E131D20715D5263A009DFB23 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		E131D20815D5263A009DFB23 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		E131D20915D5263A009DFB23 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		E1330B0D151275300010018D /* AFAuthenticationAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFAuthenticationAlertView.h; sourceTree = "<group>"; };
 		E1330B0E151275300010018D /* AFAuthenticationAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFAuthenticationAlertView.m; sourceTree = "<group>"; };
 		E133DB40137AE180003C0AF9 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1552,7 +1556,6 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				CC9AF2AA14D2F53800256729 /* JSON */,
 				8388FA801269580400304909 /* TouchXML */,
 				834CAEA2122D56B7003DDF49 /* UIImage */,
 				E1F808221464205100726BC7 /* WPAFNetworking.h */,
@@ -2426,15 +2429,6 @@
 			name = Categories;
 			sourceTree = "<group>";
 		};
-		CC9AF2AA14D2F53800256729 /* JSON */ = {
-			isa = PBXGroup;
-			children = (
-				CC9AF2AC14D2F58400256729 /* JSONKit.h */,
-				CC9AF2AD14D2F58400256729 /* JSONKit.m */,
-			);
-			name = JSON;
-			sourceTree = "<group>";
-		};
 		CCB3A03814C8DD5100D43C3F /* Reader */ = {
 			isa = PBXGroup;
 			children = (
@@ -2548,6 +2542,7 @@
 		E12F55F714A1F2640060A510 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				E131D20515D5263A009DFB23 /* JSONKit */,
 				E1B4A9DE12FC8B1000EB3F67 /* EGOTableViewPullRefresh */,
 				CCDCBC101590BF2A0040B3B1 /* facebook-ios-sdk */,
 				E12F95B6155820A40067A653 /* KVO+Blocks */,
@@ -2567,6 +2562,18 @@
 			);
 			name = "KVO+Blocks";
 			path = "Vendor/KVO+Blocks";
+			sourceTree = "<group>";
+		};
+		E131D20515D5263A009DFB23 /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				E131D20615D5263A009DFB23 /* CHANGELOG.md */,
+				E131D20715D5263A009DFB23 /* JSONKit.h */,
+				E131D20815D5263A009DFB23 /* JSONKit.m */,
+				E131D20915D5263A009DFB23 /* README.md */,
+			);
+			name = JSONKit;
+			path = Vendor/JSONKit;
 			sourceTree = "<group>";
 		};
 		E159D1011309AAF200F498E2 /* Migrations */ = {
@@ -3288,6 +3295,8 @@
 				306BAADB15C7714800F37378 /* Icon-dev-72@2x.png in Resources */,
 				306BAADF15C78C5400F37378 /* SidebarToolbarButtonHighlighted.png in Resources */,
 				306BAAE015C78C5400F37378 /* SidebarToolbarButtonHighlighted@2x.png in Resources */,
+				E131D20A15D5263A009DFB23 /* CHANGELOG.md in Resources */,
+				E131D20C15D5263A009DFB23 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3459,7 +3468,6 @@
 				E154376314B5B2120038E574 /* WordPressApi.m in Sources */,
 				CCB3A04014C8E12700D43C3F /* WPReaderTopicsViewController.m in Sources */,
 				CCEF153114C9EA050001176D /* WPWebAppViewController.m in Sources */,
-				CC9AF2AE14D2F58400256729 /* JSONKit.m in Sources */,
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
 				E140E623151229DD00900F0C /* AFHTTPClient.m in Sources */,
 				E140E624151229DD00900F0C /* AFJSONRequestOperation.m in Sources */,
@@ -3492,6 +3500,7 @@
 				5DEB6EF515B471B3004E81F3 /* WPPopoverBackgroundView.m in Sources */,
 				CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */,
 				5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */,
+				E131D20B15D5263A009DFB23 /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

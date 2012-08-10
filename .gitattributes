@@ -307,8 +307,6 @@ Creation/CXMLNode_CreationExtensions.m -text
 /Info-beta.plist -text
 /Info-dev.plist -text
 /Info.plist -text
-/JSONKit.h -text
-/JSONKit.m -text
 /MainBackground.png -text
 /MainWindow.xib -text
 /Media.h -text
@@ -481,6 +479,10 @@ Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/littledo
 Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/littledot@2x.png -text svneol=unset#unset
 Vendor/InAppSettings/LICENSE -text
 Vendor/InAppSettings/README.md -text
+Vendor/JSONKit/CHANGELOG.md -text
+Vendor/JSONKit/JSONKit.h -text
+Vendor/JSONKit/JSONKit.m -text
+Vendor/JSONKit/README.md -text
 Vendor/KVO+Blocks/NSObject+BlockObservation.h -text
 Vendor/KVO+Blocks/NSObject+BlockObservation.m -text
 Vendor/Reachability/Reachability.h -text
