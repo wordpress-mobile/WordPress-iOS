@@ -3557,6 +3557,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
 				COMPRESS_PNG_FILES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3597,8 +3598,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Eric Johnson (XH3P9AVPP3)";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: Eric Johnson (XH3P9AVPP3)";
+				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				COMPRESS_PNG_FILES = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3623,8 +3624,7 @@
 					"-Wno-format",
 				);
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "E37CB0CC-C372-413D-95E8-ED140F88238B";
-				"PROVISIONING_PROFILE[sdk=*]" = "E37CB0CC-C372-413D-95E8-ED140F88238B";
+				PROVISIONING_PROFILE = "F932D8CB-EF0B-4A00-A7A5-D787223BC841";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3661,6 +3661,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
 				COMPRESS_PNG_FILES = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3722,6 +3723,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				COMPRESS_PNG_FILES = YES;
 				COPY_PHASE_STRIP = YES;
