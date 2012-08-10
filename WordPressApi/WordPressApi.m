@@ -163,7 +163,7 @@
                 NSRegularExpression *rsdURLRegExp = [NSRegularExpression regularExpressionWithPattern:@"<link\\s+rel=\"EditURI\"\\s+type=\"application/rsd\\+xml\"\\s+title=\"RSD\"\\s+href=\"([^\"]*)\"[^/]*/>" options:NSRegularExpressionCaseInsensitive error:&error];
                 NSArray *matches = [rsdURLRegExp matchesInString:operation.responseString options:0 range:NSMakeRange(0, [operation.responseString length])];
                 NSString *rsdURL = nil;
-                if (matches) {
+                if ([matches count]) {
                     NSRange rsdURLRange = [[matches objectAtIndex:0] rangeAtIndex:1];
                     if(rsdURLRange.location != NSNotFound)
                         rsdURL = [operation.responseString substringWithRange:rsdURLRange];
