@@ -78,7 +78,7 @@
 	if (IS_IPAD)
 		pickerFrame = CGRectMake(0.0f, 0.0f, 320.0f, 216.0f);
 	else 
-		pickerFrame = CGRectMake(0.0f, 40.0f, 320.0f, 216.0f);    
+		pickerFrame = CGRectMake(0.0f, 40.0f, 320.0f, 216.0f);
     
     pickerView = [[UIPickerView alloc] initWithFrame:pickerFrame];
     pickerView.delegate = self;
@@ -612,9 +612,7 @@
         
         CGRect pickerFrame = picker.frame;
         pickerFrame.size.width = width;
-        
-        // self.interfaceOrientation does not update after rotation for some reason (WTF?) so check the device orientation instead.
-        pickerFrame.size.height = UIDeviceOrientationIsPortrait([[UIDevice currentDevice] orientation]) ? 216.0f : 162.0f;
+        pickerFrame.size.height = height;
         picker.frame = pickerFrame;
         
         actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
@@ -670,9 +668,8 @@
             }
         }
         
-        [actionSheet showInView:self.view];
+        [actionSheet showInView:postDetailViewController.view];
         [actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)]; // Update the bounds again now that its in the view else it won't draw correctly.
-
     }
 }
 
