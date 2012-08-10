@@ -86,11 +86,14 @@ static NSString *_lastAuthedName = nil;
     if ([username isEqualToString:lastAuthedUsername]) {
         return;
     }
-    
+
+    // A password that contains an ampersand will not validate unless we swap the anpersand for its hex code
+    password = [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    password = [password stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
     NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
-    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&rememberme=forever",
+    NSString *requestBody = [NSString stringWithFormat:@"rememberme=forever&log=%@&pwd=%@",
                              [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                             [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                             password];
     
     [mRequest setURL:[NSURL URLWithString:@"https://wordpress.com/wp-login.php"]];
     [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
@@ -285,11 +288,14 @@ static NSString *_lastAuthedName = nil;
         [self loadStats];
         return;
     }
-    
+
+    // A password that contains an ampersand will not validate unless we swap the anpersand for its hex code
+    password = [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    password = [password stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
     NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
-    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&rememberme=forever",
+    NSString *requestBody = [NSString stringWithFormat:@"rememberme=forever&log=%@&pwd=%@",
                              [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                             [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                             password];
 
     [mRequest setURL:[NSURL URLWithString:@"https://wordpress.com/wp-login.php"]];
     [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
