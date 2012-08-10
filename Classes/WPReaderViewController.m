@@ -153,6 +153,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 - (void)viewWillDisappear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillDisappear:animated];
+    self.panelNavigationController.delegate = nil;
 }
 
 - (void)viewDidUnload

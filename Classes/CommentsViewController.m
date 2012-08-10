@@ -125,6 +125,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillDisappear:animated];
+    self.panelNavigationController.delegate = nil;
 }
 
 #pragma mark -
