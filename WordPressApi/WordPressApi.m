@@ -179,7 +179,7 @@
                         NSString *cleanedHTML = [rsdHTML XMLStringWithOptions:CXMLDocumentTidyXML];
                         [self logExtraInfo:@"The cleaned doc: %@", cleanedHTML];
                         NSArray *matches = [rsdURLRegExp matchesInString:operation.responseString options:0 range:NSMakeRange(0, [cleanedHTML length])];
-                        if (matches) {
+                        if ([matches count]) {
                             NSRange rsdURLRange = [[matches objectAtIndex:0] rangeAtIndex:1];
                             if (rsdURLRange.location != NSNotFound)
                                 rsdURL = [cleanedHTML substringWithRange:rsdURLRange];
