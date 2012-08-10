@@ -106,7 +106,7 @@ typedef void (^CancelBlock)();
     
     [self alertWithTitle:title
                  message:message
-       cancelButtonTitle:NSLocalizedString(@"Don’t Allow", @"")
+       cancelButtonTitle:NSLocalizedString(@"Don't Allow", @"")
       confirmButtonTitle:NSLocalizedString(@"OK", @"")
             dismissBlock:^(int buttonIndex) {
                 
