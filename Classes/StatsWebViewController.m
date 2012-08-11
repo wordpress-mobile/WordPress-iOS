@@ -12,20 +12,25 @@
 #import "WPcomLoginViewController.h"
 #import "AFHTTPRequestOperation.h"
 #import "WPWebViewController.h"
+#import "WordPressComApi.h"
 
 @interface StatsWebViewController () <WPcomLoginViewControllerDelegate> {
     BOOL loadStatsWhenViewAppears;
     BOOL promptCredentialsWhenViewAppears;
+    BOOL foundMatchingBlogInAPI;
     AFHTTPRequestOperation *authRequest;
 }
-@property (nonatomic, strong) NSString *wporgBlogJetpackUsernameKey;
+@property (nonatomic, strong) NSString *wporgBlogJetpackKey;
 @property (nonatomic, strong) AFHTTPRequestOperation *authRequest;
 
 + (NSString *)lastAuthedName;
 + (void)setLastAuthedName:(NSString *)str;
++ (NSString *)getWporgBlogJetpackKey:(NSString *)urlPath;
++ (void)handleLogoutNotification:(NSNotification *)notification;
 
-+ (NSString *)getWporgBlogJetpackUsernameKey:(NSString *)urlPath;
-+ (void)blogChangedNotification:(NSNotification *)notification;
+- (void)clearCookies;
+- (void)showAuthFailed;
+- (void)showWPcomLogin;
 
 @end
 
@@ -37,15 +42,19 @@
 @synthesize blog;
 @synthesize currentNode;
 @synthesize parsedBlog;
-@synthesize wporgBlogJetpackUsernameKey;
+@synthesize wporgBlogJetpackKey;
 @synthesize authRequest;
 
 
+static NSString *_lastAuthedName = nil;
+
 + (void)load {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogChangedNotification:) name:kSelectedBlogChanged object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutNotification:) name:WordPressComApiDidLogoutNotification object:nil];
 }
 
-static NSString *_lastAuthedName = nil;
++ (void)handleLogoutNotification:(NSNotification *)notification {
+    [self setLastAuthedName:nil];
+}
 
 + (NSString *)lastAuthedName {
     return _lastAuthedName;
@@ -58,64 +67,17 @@ static NSString *_lastAuthedName = nil;
     _lastAuthedName = [str copy];
 }
 
-+ (NSString *)getWporgBlogJetpackUsernameKey:(NSString *)urlPath {
++ (NSString *)getWporgBlogJetpackKey:(NSString *)urlPath {
     return [NSString stringWithFormat:@"jetpackblog-%@", urlPath];
 }
 
-+ (void)blogChangedNotification:(NSNotification *)notification {
-    Blog *blog = [[notification userInfo] objectForKey:@"blog"];
-    NSString *username = @"";
-    NSString *password = @"";
-    NSError *error;
-    if ([blog isWPcom]) {
-        //use set username/pw for wpcom blogs
-        username = [blog username];
-        password = [SFHFKeychainUtils getPasswordForUsername:[blog username] andServiceName:[blog hostURL] error:&error];
-        
-    } else {
-        /*
-         The value of wpcom_username_preference can get mismatched if the user gets happy about adding/removing blogs and signing
-         out and back in to load blogs from different wpcom accounts so we don't want to rely on it.
-         */
-        username = [[NSUserDefaults standardUserDefaults] objectForKey:[self getWporgBlogJetpackUsernameKey:[blog hostURL]]];
-        password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&error];
-    }
-    
-    // Skip the auth call to reduce loadtime if its the same username as before.
-    NSString *lastAuthedUsername = [[self class] lastAuthedName];
-    if ([username isEqualToString:lastAuthedUsername]) {
-        return;
-    }
-
-    // A password that contains an ampersand will not validate unless we swap the anpersand for its hex code
-    password = [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    password = [password stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
-    NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
-    NSString *requestBody = [NSString stringWithFormat:@"rememberme=forever&log=%@&pwd=%@",
-                             [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                             password];
-    
-    [mRequest setURL:[NSURL URLWithString:@"https://wordpress.com/wp-login.php"]];
-    [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
-    [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
-    [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-    [mRequest setHTTPMethod:@"POST"];
-    
-    AFHTTPRequestOperation *authRequest = [[[AFHTTPRequestOperation alloc] initWithRequest:mRequest] autorelease];
-    [authRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self setLastAuthedName:username];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-
-    }];
-    [authRequest start];
-}
 
 
 - (void)dealloc {
     [blog release];
     [currentNode release];
     [parsedBlog release];
-    [wporgBlogJetpackUsernameKey release];
+    [wporgBlogJetpackKey release];
     if (authRequest && [authRequest isExecuting]) {
         [authRequest cancel];
     }
@@ -131,6 +93,7 @@ static NSString *_lastAuthedName = nil;
     
     // Bypass AFNetworking for ajax stats.
     webView.useWebViewLoading = YES;
+    [self.webView showRefreshingState];
 }
 
 
@@ -155,6 +118,48 @@ static NSString *_lastAuthedName = nil;
 #pragma mark -
 #pragma mark Instance Methods
 
+- (void)clearCookies {
+    NSArray *arr = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
+    for(NSHTTPCookie *cookie in arr){
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+    }
+}
+
+
+- (void)showAuthFailed {
+    WPLog(@"Auth Failed, showing login screen");
+    [self showWPcomLogin];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"JetPack Sign In", @"")
+                                                        message:NSLocalizedString(@"Unable to sign in to JetPack. Please update your credentials try again.", @"")
+                                                       delegate:self 
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                              otherButtonTitles:nil];
+    [alertView show];
+    [alertView release];
+}
+
+
+- (void)showWPcomLogin {
+    [self.webView hideRefreshingState];
+    
+    WPcomLoginViewController *controller = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    controller.delegate = self;
+    controller.isCancellable = YES;
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    
+    if(IS_IPAD == YES) {
+        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
+    
+    [self.panelNavigationController presentModalViewController:navController animated:YES];
+    
+    [navController release];
+    [controller release];
+}
+
+
 - (void)setBlog:(Blog *)aBlog {
     if ([blog isEqual:aBlog]) {
         return;
@@ -167,7 +172,7 @@ static NSString *_lastAuthedName = nil;
     if (blog) {
         [FileLogger log:@"Loading Stats for the following blog: %@", [blog url]];
         if (![blog isWPcom]) {
-            self.wporgBlogJetpackUsernameKey = [[self class] getWporgBlogJetpackUsernameKey:[blog hostURL]];// [NSString stringWithFormat:@"jetpackblog-%@",[blog hostURL]];
+            self.wporgBlogJetpackKey = [[self class] getWporgBlogJetpackKey:[blog hostURL]];// [NSString stringWithFormat:@"jetpackblog-%@",[blog hostURL]];
         }
         
         WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
@@ -190,12 +195,15 @@ static NSString *_lastAuthedName = nil;
 
 - (void)initStats {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	if ([blog apiKey] == nil || [[blog blogID] isEqualToNumber:[NSNumber numberWithInt:1]]) {
-		//first run or api key was deleted
+    
+	if ([[blog blogID] isEqualToNumber:[NSNumber numberWithInt:1]]) {
+		// This is a .org blog and we need to look up the blog id assigned by jetpack.
 		[self getUserAPIKey];
-	} else if(![blog isWPcom] && [[NSUserDefaults standardUserDefaults] objectForKey:wporgBlogJetpackUsernameKey] == nil) {
+        
+	} else if(![blog isWPcom] && [[NSUserDefaults standardUserDefaults] objectForKey:wporgBlogJetpackKey] == nil) {
         // self-hosted blog and no associated .com login.
         [self promptForCredentials];
+        
     } else {
         [self loadStats];
 	}
@@ -212,11 +220,10 @@ static NSString *_lastAuthedName = nil;
         username = [blog username];
         password = [SFHFKeychainUtils getPasswordForUsername:[blog username] andServiceName:[blog hostURL] error:&error];
     } else {
-        //use wpcom preference for self-hosted
-        username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+
+        username = [[NSUserDefaults standardUserDefaults] objectForKey:wporgBlogJetpackKey];
         password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&error];
         
-        // Safety-net, but probably not needed since we also check in initStats.
         if (!username) {
             [self promptForCredentials];
             return;
@@ -224,36 +231,66 @@ static NSString *_lastAuthedName = nil;
     }
     
     NSURL *baseURL = [NSURL URLWithString:@"https://public-api.wordpress.com/"];
-    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
     
+    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
     [httpClient setAuthorizationHeaderWithUsername:username password:password];
     
     NSMutableURLRequest *mRequest = [httpClient requestWithMethod:@"GET" path:@"get-user-blogs/1.0" parameters:nil];
     
-    
     AFXMLRequestOperation *currentRequest = [[[AFXMLRequestOperation alloc] initWithRequest:mRequest] autorelease];
     
     [currentRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if(operation.response.statusCode == 200){
+NSLog(@"Skajfajksdkfasdfj asdf asdf");
+        }
         NSXMLParser *parser = (NSXMLParser *)responseObject;
         parser.delegate = self;
         [parser parse];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         WPLog(@"Error calling get-user-blogs : %@", [error description]);
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Service Unavailable", @"")
-                                                            message:NSLocalizedString(@"We were unable to look up information about your blog's stats. The service may be temporarily unavailable.", @"")
-                                                           delegate:self 
-                                                  cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                                  otherButtonTitles:NSLocalizedString(@"Retry", @""), nil];
-        [alertView setTag:kAlertTagAPIKey];
-        [alertView show];
-        [alertView release];
+        
+        if(operation.response.statusCode == 401){
+            // If we failed due to bad credentials...
+            [self showAuthFailed];
+            
+        } else {
+            // For errors that are not related to auth...
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Service Unavailable", @"")
+                                                                message:NSLocalizedString(@"We were unable to look up information about your blog's stats. The service may be temporarily unavailable.", @"")
+                                                               delegate:self 
+                                                      cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                                      otherButtonTitles:NSLocalizedString(@"Retry", @""), nil];
+            [alertView setTag:kAlertTagAPIKey];
+            [alertView show];
+            [alertView release];
+        }
 
     }];
     
     [currentRequest start];
     [httpClient release];
     [webView showRefreshingState];
+}
+
+
+
+- (void)promptForCredentials {
+    if (!self.view.window) {
+        promptCredentialsWhenViewAppears = YES;
+        return;
+    }
+    
+    [self showWPcomLogin];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WordPress.com Stats", @"")
+                                                        message:NSLocalizedString(@"To load stats for your blog you will need to have the Jetpack plugin installed and correctly configured as well as your WordPress.com login.", @"") 
+                                                       delegate:self 
+                                              cancelButtonTitle:NSLocalizedString(@"Learn More", @"")
+                                              otherButtonTitles:NSLocalizedString(@"I'm Ready!", @""), nil];
+    alertView.tag = kAlertTagCredentials;
+    [alertView show];
+    [alertView release];
 }
 
 
@@ -277,7 +314,7 @@ static NSString *_lastAuthedName = nil;
          The value of wpcom_username_preference can get mismatched if the user gets happy about adding/removing blogs and signing
          out and back in to load blogs from different wpcom accounts so we don't want to rely on it.
          */
-        username = [[NSUserDefaults standardUserDefaults] objectForKey:wporgBlogJetpackUsernameKey];
+        username = [[NSUserDefaults standardUserDefaults] objectForKey:wporgBlogJetpackKey];
         password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&error];
     }
     
@@ -293,7 +330,7 @@ static NSString *_lastAuthedName = nil;
     password = [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     password = [password stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
     NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
-    NSString *requestBody = [NSString stringWithFormat:@"rememberme=forever&log=%@&pwd=%@",
+    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@",
                              [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                              password];
 
@@ -301,24 +338,53 @@ static NSString *_lastAuthedName = nil;
     [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
     [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
     [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-    NSString *userAgent = [NSString stringWithFormat:@"%@",[webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
+    NSString *userAgent = [NSString stringWithFormat:@"%@", [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
     [mRequest addValue:userAgent forHTTPHeaderField:@"User-Agent"];
     [mRequest setHTTPMethod:@"POST"];
 
+    // Clear cookies prior to auth so we don't get a false positive on the login cookie being correctly set in some cases.
+    [self clearCookies]; 
+    [[self class] setLastAuthedName:nil];
+    
     self.authRequest = [[[AFHTTPRequestOperation alloc] initWithRequest:mRequest] autorelease];
     
     [authRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        authed = YES;
-        [[self class] setLastAuthedName:username];
-        [self loadStats];
+        
+        // wordpress.com/wp-login.php currently returns http200 even when auth fails.
+        // Sanity check the cookies to make sure we're actually logged in.
+        NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
+        
+        for (NSHTTPCookie *cookie in cookies) {
+            if([cookie.name isEqualToString:@"wordpress_logged_in"]){
+                if ([cookie.value rangeOfString:username].location != NSNotFound) {
+                    // We should be authed.
+                    WPLog(@"Authed. Loading stats.");
+                    authed = YES;
+                    [[self class] setLastAuthedName:username];
+                    [self loadStats];
+                    return;
+                }
+            }
+        }
+
+        [self showAuthFailed];
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"There was a problem connecting to your stats. Would you like to retry?"
-                                                           delegate:self
-                                                  cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                                  otherButtonTitles:NSLocalizedString(@"Retry?", nil), nil];
-        [alertView show];
-        [alertView release];
+        // Just in case .com is ever edited to return a 401 on auth fail...
+        if(operation.response.statusCode == 401){
+            // If we failed due to bad credentials...
+            [self showAuthFailed];
+            
+        } else {
+
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+                                                                message:NSLocalizedString(@"There was a problem connecting to your stats. Would you like to retry?", @"")
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                                      otherButtonTitles:NSLocalizedString(@"Retry?", nil), nil];
+            [alertView show];
+            [alertView release];
+        }
     }];
     
     [authRequest start];
@@ -349,39 +415,6 @@ static NSString *_lastAuthedName = nil;
 }
 
 
-- (void)promptForCredentials {
-    if (!self.view.window) {
-        promptCredentialsWhenViewAppears = YES;
-        return;
-    }
-    
-    WPcomLoginViewController *controller = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    controller.delegate = self;
-    controller.isCancellable = YES;
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    
-    if(IS_IPAD == YES) {
-        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    }
-
-    [self.panelNavigationController presentModalViewController:navController animated:YES];
-
-    [navController release];
-    [controller release];
-
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WordPress.com Stats", @"")
-                                                        message:NSLocalizedString(@"To load stats for your blog you will need to have the Jetpack plugin installed and correctly configured as well as your WordPress.com login.", @"") 
-                                                       delegate:self 
-                                              cancelButtonTitle:NSLocalizedString(@"Learn More", @"")
-                                              otherButtonTitles:NSLocalizedString(@"I'm Ready!", @""), nil];
-    alertView.tag = kAlertTagCredentials;
-    [alertView show];
-    [alertView release];
-}
-
-
 #pragma mark -
 #pragma mark XMLParser Delegate Methods
 
@@ -399,7 +432,6 @@ static NSString *_lastAuthedName = nil;
 }
 
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
-    static BOOL match = NO;
     
     if ([elementName isEqualToString:@"apikey"]) {
         [blog setValue:currentNode forKey:@"apiKey"];
@@ -429,7 +461,8 @@ static NSString *_lastAuthedName = nil;
             
             // Mark that a match was found but continue.
             // http://ios.trac.wordpress.org/ticket/1251
-            match = YES;
+            foundMatchingBlogInAPI = YES;
+            NSLog(@"Matched parsedBlogURL: %@ to blogURL: %@ ", parsedURL, blogURL);
         }
         
         self.parsedBlog = nil;
@@ -443,17 +476,7 @@ static NSString *_lastAuthedName = nil;
     } else if([elementName isEqualToString:@"userinfo"]) {
         [parser abortParsing];
         
-        if (match) {
-            /*
-             We've successfully found the wpcom account used for the wporg account's jetpack plugin.
-             To avoid a mismatched credentials case, associate the current defaults value for wpcom_username_preference
-             with a new key for this jetpack account.
-             */
-            NSString *jetpackUsernameKey = [NSString stringWithFormat:@"jetpackblog-%@", [blog hostURL]];
-            NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-            [[NSUserDefaults standardUserDefaults] setValue:username forKey:jetpackUsernameKey];
-            [NSUserDefaults resetStandardUserDefaults];
-            
+        if (foundMatchingBlogInAPI) {     
             self.currentNode = nil;
             self.parsedBlog = nil;
             
@@ -466,6 +489,8 @@ static NSString *_lastAuthedName = nil;
         // We parsed the whole list but did not find a matching blog.
         // This should mean that the user has a self-hosted blog and we searched the api without
         // the correct credentials, or they have not set up Jetpack.
+        // Clear the saved username and prompt for new credentials.
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:wporgBlogJetpackKey];
         [self promptForCredentials];
     }
     
@@ -509,6 +534,14 @@ static NSString *_lastAuthedName = nil;
     [self dismissModalViewControllerAnimated:YES];
 
     // In theory we should have good wp.com credentials for .org blog's jetpack linkage.
+    // Store the username for later use (we'll clear it if we can't find a matching blog)
+    // and query for the api key and blog ID.
+    if (![self.blog isWPcom]) {
+        // Never should see a .com blog here but...
+        [[NSUserDefaults standardUserDefaults] setObject:username forKey:wporgBlogJetpackKey];
+        [NSUserDefaults resetStandardUserDefaults];        
+    }
+
     [self getUserAPIKey];
 }
 
@@ -552,6 +585,7 @@ static NSString *_lastAuthedName = nil;
         }
         
     }
+
     [FileLogger log:@"Stats webView is going to load the following URL: %@", [request.URL absoluteString]];
     return YES;
 }
@@ -563,6 +597,7 @@ static NSString *_lastAuthedName = nil;
     // Override super so we do not change our title.
     self.title = @"Stats";
 }
+
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), error];
