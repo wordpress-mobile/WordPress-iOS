@@ -201,12 +201,16 @@
 
 - (NSArray *)sortedPostFormatNames {
     NSMutableArray *sortedNames = [NSMutableArray arrayWithCapacity:[self.postFormats count]];
-    [sortedNames addObject:[self.postFormats objectForKey:@"standard"]];
-    [self.postFormats enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        if (![key isEqual:@"standard"]) {
-            [sortedNames addObject:obj];
-        }
-    }];
+    
+    if ([self.postFormats count] != 0) {
+        [sortedNames addObject:[self.postFormats objectForKey:@"standard"]];
+        [self.postFormats enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            if (![key isEqual:@"standard"]) {
+                [sortedNames addObject:obj];
+            }
+        }];
+    }
+    
     return [NSArray arrayWithArray:sortedNames];
 }
 

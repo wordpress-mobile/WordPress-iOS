@@ -315,8 +315,10 @@
 		break;
     case 1: // Post format
         {
-            postFormatLabel.text = postDetailViewController.post.postFormatText;
-            return postFormatTableViewCell;
+            if ([formatsList count] != 0) {
+                postFormatLabel.text = postDetailViewController.post.postFormatText;
+                return postFormatTableViewCell;
+            }
         }
 	case 2: // Geolocation
 		switch (indexPath.row) {
