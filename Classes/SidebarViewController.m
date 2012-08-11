@@ -885,8 +885,12 @@
                 break;
             case 4 : 
                 blogURL = blog.url;
-                if(![blogURL hasPrefix:@"http"])
+                if (![blogURL hasPrefix:@"http"]) {
                     blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
+                } else if ([blog isWPcom] && [blog.url rangeOfString:@"wordpress.com"].location == NSNotFound) {
+                    blogURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
+                }
+                
                 //check if the same site already loaded
                 if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPWebViewController class]]
                     &&
