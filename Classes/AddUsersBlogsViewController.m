@@ -130,12 +130,26 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (isWPcom && [Blog countWithContext:[appDelegate managedObjectContext]] == 0) {
+        return 2;
+    }
     return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return usersBlogs.count;
+    int result = 0; 
+    switch (section) { 
+        case 0: 
+            result = usersBlogs.count; 
+            break; 
+        case 1: 
+            result = 1; 
+            break; 
+        default: 
+            break; 
+    } 
+    return result;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
@@ -177,6 +191,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	if((section == 0) && (usersBlogs.count == 0))
 		return 60;
+    else if(section == 1) 
+        return 100;
 	else
 		return 0;
 }
@@ -203,6 +219,11 @@
                 cell.textLabel.text = [blog valueForKey:@"url"];
             }
 			break;
+        case 1: 
+            cell.textLabel.textAlignment = UITextAlignmentCenter; 
+            cell.accessoryType = UITableViewCellAccessoryNone; 
+            cell.textLabel.text = NSLocalizedString(@"Sign Out", @""); 
+            break;
 		default:
 			break;
 	}
@@ -214,7 +235,7 @@
 #pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if(indexPath.section == 0) {
+	if (indexPath.section == 0) {
 		
 		NSDictionary *selectedBlog = [usersBlogs objectAtIndex:indexPath.row];
 		
@@ -240,7 +261,9 @@
 			[self selectAllBlogs:self];
 		else if(selectedBlogs.count == 0)
 			[self deselectAllBlogs:self];
-	}
+	} else if(indexPath.section == 1) { 
+        [self signOut]; 
+    }
 	
 	[self checkAddSelectedButtonStatus];
 
@@ -267,6 +290,13 @@
 	buttonSelectAll.title = NSLocalizedString(@"Select All", @"");
 	buttonSelectAll.action = @selector(selectAllBlogs:);
 	[self checkAddSelectedButtonStatus];
+}
+
+- (void)signOut { 
+    if (isWPcom) { 
+        [[WordPressComApi sharedApi] signOut]; 
+    } 
+    [self.navigationController popViewControllerAnimated:YES]; 
 }
 
 - (void)refreshBlogs {
