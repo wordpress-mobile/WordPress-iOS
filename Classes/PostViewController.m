@@ -63,7 +63,7 @@
                                                                                  target:self
                                                                                  action:@selector(showModalEditor)] autorelease];
     UIBarButtonItem *previewButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.")
-                                                                       style:UIBarButtonSystemItemEdit
+                                                                       style:UIBarButtonItemStyleBordered
                                                                       target:self
                                                                       action:@selector(showModalPreview)] autorelease];
     
