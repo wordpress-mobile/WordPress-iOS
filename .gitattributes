@@ -727,9 +727,9 @@ de.lproj/Localizable.strings -text svneol=unset#unset
 /down_dim@2x.png -text
 en.lproj/Localizable.strings -text svneol=unset#unset
 es.lproj/Localizable.strings -text svneol=unset#unset
+es.lproj/Localizable.strings.bak -text svneol=unset#unset
 /fix-translation.php -text
 fr.lproj/Localizable.strings -text svneol=unset#unset
-fr.lproj/Localizable.strings.bak -text svneol=unset#unset
 /friend_finder_cancel_btn.png -text
 /friend_finder_cancel_btn@2x.png -text
 /friend_finder_cancel_btn_highlight.png -text
