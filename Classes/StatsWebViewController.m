@@ -330,7 +330,7 @@ NSLog(@"Skajfajksdkfasdfj asdf asdf");
     password = [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     password = [password stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
     NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
-    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@",
+    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=http://wordpress.com",
                              [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                              password];
 
