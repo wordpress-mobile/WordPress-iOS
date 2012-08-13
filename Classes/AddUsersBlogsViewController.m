@@ -176,12 +176,17 @@
 			[footerText release];
 		}
 		else if((usersBlogs.count == 0) && (hasCompletedGetUsersBlogs)) {
-			UILabel *footerText = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 200, 20)];
-			footerText.backgroundColor = [UIColor clearColor];
-			footerText.textColor = [UIColor darkGrayColor];
-			footerText.text = NSLocalizedString(@"No blogs found.", @"");
-			[footerView addSubview:footerText];
-			[footerText release];
+            if (!isWPcom) {
+                UILabel *footerText = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 200, 20)];
+                footerText.backgroundColor = [UIColor clearColor];
+                footerText.textColor = [UIColor darkGrayColor];
+                footerText.text = NSLocalizedString(@"No blogs found.", @"");
+                [footerView addSubview:footerText];
+                [footerText release];
+            } else {
+                //User has no blogs at WPCom but has signed in successfully, lets finish and take them to the reader
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
+            }
 		}
 	}
 
@@ -328,9 +333,8 @@
                         title = [title stringByDecodingXMLCharacters];
                         [obj setValue:title forKey:@"blogName"];
                     }];
-                    
-                    [self.tableView reloadData];
                 }
+                [self.tableView reloadData];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 WPFLog(@"Failed getting user blogs: %@", [error localizedDescription]);
                 hasCompletedGetUsersBlogs = YES; 
