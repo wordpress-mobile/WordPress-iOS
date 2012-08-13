@@ -584,7 +584,6 @@
 
     _detailViewController = detailViewController;
     
-    [self addShadowTo:_detailView];
     if (_sidebarBorderView.hidden)
         _sidebarBorderView.hidden = NO;
 
@@ -643,6 +642,7 @@
             [_detailViewController didMoveToParentViewController:self];
         }
     }
+    [self addShadowTo:_detailView];
 
     if (IS_IPHONE && closingSidebar) {
         [self closeSidebar];
