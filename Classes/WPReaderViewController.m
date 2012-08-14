@@ -272,6 +272,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
                                                                target:self 
                                                                action:@selector(showTopicSelector:)];
     }
+    [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"")];
     
     if ([button respondsToSelector:@selector(setTintColor:)]) {
         UIColor *color = [UIColor UIColorFromHex:0x464646];

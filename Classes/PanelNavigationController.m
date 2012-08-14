@@ -598,6 +598,7 @@
                 else 
                     sidebarButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)] autorelease];
             }
+            sidebarButton.accessibilityLabel = NSLocalizedString(@"Toggle", @"Sidebar toggle button");
             _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
 
         } else {

@@ -67,6 +67,7 @@ float const WPFriendFinderNudgeViewCancelButtonWidth = 46.f;
                 
         [self.cancelButton setImage:[UIImage imageNamed:@"friend_finder_cancel_btn"] forState:UIControlStateNormal];
         [self.cancelButton setImage:[UIImage imageNamed:@"friend_finder_cancel_btn_highlight"] forState:UIControlStateHighlighted];
+        [self.cancelButton setAccessibilityLabel:NSLocalizedString(@"Dismiss Friend Finder", @"")];
         
         self.cancelButton.adjustsImageWhenHighlighted = NO;
         
