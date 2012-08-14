@@ -170,7 +170,7 @@
     picker.delegate = self;
     
     if (IS_IPAD) {
-        self.popController = [[UIPopoverController alloc] initWithContentViewController:picker];
+        self.popController = [[[UIPopoverController alloc] initWithContentViewController:picker] autorelease];
         if ([popController respondsToSelector:@selector(popoverBackgroundViewClass)]) {
             popController.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
         }
@@ -294,7 +294,7 @@
             UIImageWriteToSavedPhotosAlbum(self.photo, nil, nil, nil);
         
         dispatch_async(dispatch_get_main_queue(), ^(void) {
-            Media *media;
+            Media *media = nil;
             
             Blog *blog = self.blogSelector.activeBlog;
             if (post == nil) {
@@ -304,7 +304,7 @@
             if (post.media && [post.media count] > 0) {
                 media = [post.media anyObject];
             } else {
-                media = [Media newMediaForPost:post];
+                media = [[Media newMediaForPost:post] autorelease];
                 int resizePreference = 0;
                 if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
                     resizePreference = [[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] intValue];
@@ -326,7 +326,6 @@
             }
             
             [media save];
-            [media release];
             [postButtonItem setEnabled:YES];
         });
     });

@@ -1007,7 +1007,7 @@
 					   if (err || bytes == 0) {
 						   // Are err and bytes == 0 redundant? Doc says 0 return means 
 						   // error occurred which presumably means NSError is returned.
-						   
+						   free(buf); // Free up memory so we don't leak.
 						   WPLog(@"error from getBytes: %@", err);
 						   
 						   return;

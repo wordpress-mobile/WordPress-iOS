@@ -161,7 +161,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     if (self.refreshHeaderView == nil) {
         scrollView.delegate = self;
         CGRect frm = CGRectMake(0.0f, 0.0f - scrollView.bounds.size.height, scrollView.frame.size.width, scrollView.bounds.size.height);
-		self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:frm];
+		self.refreshHeaderView = [[[EGORefreshTableHeaderView alloc] initWithFrame:frm] autorelease];
 		refreshHeaderView.delegate = self;
 		[scrollView addSubview:refreshHeaderView];
 	}
@@ -318,6 +318,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
             [mReq setURL:respURL];
             self.currentRequest = mReq;
             self.baseURLFallback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/", mReq.URL.scheme, mReq.URL.host]];
+            [mReq release];
         }
         [webView loadData:operation.responseData MIMEType:operation.response.MIMEType textEncodingName:@"utf-8" baseURL:nil];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -409,7 +410,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
         
         // Since we are rewriting the request's url we need to retrigger the load so it is handled correctly,
         // but we also need to respect the wishes of a delegate.
-        NSMutableURLRequest *modRequest = [aRequest mutableCopy];
+        NSMutableURLRequest *modRequest = [[aRequest mutableCopy] autorelease];
         [modRequest setURL:[NSURL URLWithString:path]];
         
         if (delegate && [delegate respondsToSelector:@selector(wpWebView:shouldStartLoadWithRequest:navigationType:)]) {

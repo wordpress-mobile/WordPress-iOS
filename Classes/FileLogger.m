@@ -28,7 +28,8 @@ NSString *FileLoggerPath() {
 }
 
 - (id) init {
-	if (self == [super init]) {
+    self = [super init];
+	if (self) {
 		NSFileManager *fileManager = [NSFileManager defaultManager];
 		if (![fileManager fileExistsAtPath:FileLoggerPath()])
 			[fileManager createFileAtPath:FileLoggerPath()

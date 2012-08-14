@@ -290,6 +290,7 @@
     
     [self presentModalViewController:nav animated:YES];
     [nav release];
+    [postPreviewViewController release];
 }
 
 - (EditPostViewController *)getPostOrPageController:(AbstractPost *)revision {

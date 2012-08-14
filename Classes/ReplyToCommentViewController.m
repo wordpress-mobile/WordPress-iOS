@@ -211,10 +211,10 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	
 	if (IS_IPAD == NO) {
 		self.navigationItem.leftBarButtonItem =
-		[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
+		[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
 										 style:UIBarButtonItemStyleBordered
 										target:self
-										action:@selector(cancelView:)];
+										action:@selector(cancelView:)] autorelease];
 	}
 }
 

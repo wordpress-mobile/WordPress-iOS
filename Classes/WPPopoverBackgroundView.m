@@ -95,6 +95,8 @@
             arrowImageView.frame = CGRectMake(width-1.0f, coordinate, ARROW_BASE, ARROW_HEIGHT); 
             rotation = CGAffineTransformMakeRotation( M_PI_2 );
             break;
+        default:
+            break;
     }
     
     self.borderImageView.frame = CGRectMake(left, top, width, height);

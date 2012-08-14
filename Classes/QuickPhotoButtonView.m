@@ -82,7 +82,7 @@
     [self addSubview:button];
     
     CGRect rect;
-    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    self.spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
     spinner.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     spinner.hidesWhenStopped = YES;
     rect = spinner.frame;
@@ -92,7 +92,7 @@
     spinner.frame = rect;
     [self addSubview:spinner];
     
-    self.label = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.label = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
     label.textColor = [UIColor whiteColor];
     label.backgroundColor = [UIColor clearColor];
     label.textAlignment = UITextAlignmentCenter;
