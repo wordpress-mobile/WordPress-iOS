@@ -368,6 +368,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 #pragma mark - Private Methods
 
 - (void)simulatePullToRefresh {
+    if(!_refreshHeaderView) return;
+    
     CGPoint offset = self.tableView.contentOffset;
     offset.y = - 65.0f;
     [self.tableView setContentOffset:offset];
