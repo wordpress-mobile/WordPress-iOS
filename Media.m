@@ -149,6 +149,9 @@
 
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             AFHTTPRequestOperation *operation = [self.blog.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                if ([self isDeleted] || self.managedObjectContext == nil)
+                    return;
+
                 NSDictionary *response = (NSDictionary *)responseObject;
                 if([response objectForKey:@"videopress_shortcode"] != nil)
                     self.shortcode = [response objectForKey:@"videopress_shortcode"];
@@ -174,6 +177,9 @@
                                                                       userInfo:response];
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                if ([self isDeleted] || self.managedObjectContext == nil)
+                    return;
+
                 self.remoteStatus = MediaRemoteStatusFailed;
                 [_uploadOperation release]; _uploadOperation = nil;
                 if (failure) failure(error);
@@ -213,6 +219,9 @@
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([self isDeleted] || self.managedObjectContext == nil)
+            return;
+
         if (operation.responseString != nil && ![operation.responseString isEmpty]) {
             if ([operation.responseString rangeOfString:@"AtomPub services are disabled"].location != NSNotFound) {
                 if (failure) {
@@ -249,6 +258,9 @@
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if ([self isDeleted] || self.managedObjectContext == nil)
+            return;
+
         self.remoteStatus = MediaRemoteStatusFailed;
         [_uploadOperation release]; _uploadOperation = nil;
         if (failure) failure(error);

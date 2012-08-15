@@ -368,6 +368,9 @@
     }
     AFHTTPRequestOperation *operation = [self.blog.api HTTPRequestOperationWithRequest:request
                                                                                success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                                   if ([self isDeleted] || self.managedObjectContext == nil)
+                                                                                       return;
+
                                                                                    if ([responseObject respondsToSelector:@selector(numericValue)]) {
                                                                                        self.postID = [responseObject numericValue];
                                                                                        self.remoteStatus = AbstractPostRemoteStatusSync;
@@ -386,6 +389,9 @@
                                                                                    }
 
                                                                                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                                   if ([self isDeleted] || self.managedObjectContext == nil)
+                                                                                       return;
+
                                                                                    self.remoteStatus = AbstractPostRemoteStatusFailed;
                                                                                    if (failure) failure(error);
                                                                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
@@ -399,6 +405,9 @@
     [self.blog.api callMethod:@"metaWeblog.getPost"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                          if ([self isDeleted] || self.managedObjectContext == nil)
+                              return;
+
                           [self updateFromDictionary:responseObject];
                           [self save];
                           if (success) success();
@@ -425,11 +434,17 @@
     [self.blog.api callMethod:@"metaWeblog.editPost"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                          if ([self isDeleted] || self.managedObjectContext == nil)
+                              return;
+
                           self.remoteStatus = AbstractPostRemoteStatusSync;
                           [self getPostWithSuccess:nil failure:nil];
                           if (success) success();
                           [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                          if ([self isDeleted] || self.managedObjectContext == nil)
+                              return;
+
                           self.remoteStatus = AbstractPostRemoteStatusFailed;
                           if (failure) failure(error);
                           [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
