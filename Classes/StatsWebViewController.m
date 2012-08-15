@@ -240,9 +240,6 @@ static NSString *_lastAuthedName = nil;
     AFXMLRequestOperation *currentRequest = [[[AFXMLRequestOperation alloc] initWithRequest:mRequest] autorelease];
     
     [currentRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if(operation.response.statusCode == 200){
-NSLog(@"Skajfajksdkfasdfj asdf asdf");
-        }
         NSXMLParser *parser = (NSXMLParser *)responseObject;
         parser.delegate = self;
         [parser parse];
@@ -356,14 +353,12 @@ NSLog(@"Skajfajksdkfasdfj asdf asdf");
         
         for (NSHTTPCookie *cookie in cookies) {
             if([cookie.name isEqualToString:@"wordpress_logged_in"]){
-                if ([cookie.value rangeOfString:username].location != NSNotFound) {
-                    // We should be authed.
-                    WPLog(@"Authed. Loading stats.");
-                    authed = YES;
-                    [[self class] setLastAuthedName:username];
-                    [self loadStats];
-                    return;
-                }
+                // We should be authed.
+                WPLog(@"Authed. Loading stats.");
+                authed = YES;
+                [[self class] setLastAuthedName:username];
+                [self loadStats];
+                return;
             }
         }
 
