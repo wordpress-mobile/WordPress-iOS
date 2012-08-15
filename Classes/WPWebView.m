@@ -54,7 +54,8 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 - (void)dealloc {
     self.delegate = nil;
     webView.delegate = nil;
-    
+    if([webView isLoading])
+        [webView stopLoading];
     [webView release];
     
     [refreshHeaderView release];

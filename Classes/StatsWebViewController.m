@@ -131,7 +131,7 @@ static NSString *_lastAuthedName = nil;
     [self showWPcomLogin];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"JetPack Sign In", @"")
                                                         message:NSLocalizedString(@"Unable to sign in to JetPack. Please update your credentials try again.", @"")
-                                                       delegate:self 
+                                                       delegate:nil
                                               cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                               otherButtonTitles:nil];
     [alertView show];

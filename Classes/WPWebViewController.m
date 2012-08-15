@@ -34,6 +34,7 @@
 - (void)dealloc
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+
     self.url = nil;
     self.wpLoginURL = nil;
     self.username = nil;
@@ -41,6 +42,9 @@
     self.detailContent = nil;
     self.detailHTML = nil;
     self.webView.delegate = nil;
+    if ([webView isLoading]) {
+        [webView stopLoading];
+    }
     self.webView = nil;
     self.statusTimer = nil;
     self.linkOptionsActionSheet.delegate = nil;
