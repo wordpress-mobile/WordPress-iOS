@@ -379,6 +379,7 @@
     UIView *view = [self viewOrViewWrapper:self.detailViewController.view];
     [view removeFromSuperview];
     self.detailViewController = nil;
+    [self removeShadowFrom:self.detailView];
 }
 
 - (PanelViewWrapper *)wrapViewForViewController:(UIViewController *)controller {
