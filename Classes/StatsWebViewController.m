@@ -441,8 +441,8 @@ static NSString *_lastAuthedName = nil;
             blogURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", blog.url]];
         }
         [FileLogger log:@"Blog URL - %@", blogURL];
-        NSString *parsedHost = [parsedURL host];
-        NSString *blogHost = [blogURL host];
+        NSString *parsedHost = [NSString stringWithFormat:@"%@%@",[parsedURL host],[parsedURL path]] ;
+        NSString *blogHost = [NSString stringWithFormat:@"%@%@",[blogURL host], [blogURL path]];
         NSRange range = [parsedHost rangeOfString:blogHost];
 
         if (range.length > 0) {
