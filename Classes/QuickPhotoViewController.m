@@ -81,7 +81,9 @@
     self.titleTextField.placeholder = NSLocalizedString(@"Title (optional)", @"Quick Photo title");
     [self.blogSelector loadBlogsForType:BlogSelectorButtonTypeQuickPhoto];
     self.blogSelector.delegate = self;
-    self.blogSelector.activeBlog = startingBlog;
+    if (self.startingBlog != nil) {
+        self.blogSelector.activeBlog = startingBlog;
+    }
     
     if (self.photo) {
         self.photoImageView.image = self.photo;

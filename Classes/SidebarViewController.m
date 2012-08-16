@@ -511,13 +511,6 @@
     }
     quickPhotoViewController.isCameraPlus = useCameraPlus;
 
-    Blog *startingBlog = nil;
-    if ([self openSection]) {
-        startingBlog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:openSectionIdx-1 inSection:0]];
-    } else {
-        startingBlog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    }
-    quickPhotoViewController.startingBlog = startingBlog;
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:quickPhotoViewController];
     if (IS_IPAD) {
