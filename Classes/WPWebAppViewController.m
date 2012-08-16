@@ -68,6 +68,12 @@
 - (void)viewDidUnload {
     WPFLogMethod();
     [super viewDidUnload];
+    
+    // attempted work around for #1347 to kill UIWebView loading requests
+    if (self.webView.isLoading) {
+        [self.webView stopLoading];
+    }
+    
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     self.webView.delegate = nil;
@@ -191,6 +197,21 @@
 
 #pragma mark - UIWebViewDelegate
 
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    // attempted work around for #1347
+    [self.webView.delegate retain];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    // attempted work around for #1347
+  [self.webView.delegate release];
+    
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    // attempted work around for #1347
+    [self.webView.delegate release];
+}
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {

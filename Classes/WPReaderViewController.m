@@ -513,6 +513,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), error];
+    [super webView:webView didFailLoadWithError:error];
     // -999: Canceled AJAX request
     // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
     if (self.loading && ([error code] != -999) && [error code] != 102)
@@ -522,10 +523,12 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView {
     [FileLogger log:@"%@ %@%@", self, NSStringFromSelector(_cmd), aWebView.request.URL];
+    [super webViewDidStartLoad:aWebView];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [super webViewDidFinishLoad:aWebView];
     [self setLoading:NO];
     
     NSString *wasLocal = [aWebView stringByEvaluatingJavaScriptFromString:@"document.isLocalLoader"];
