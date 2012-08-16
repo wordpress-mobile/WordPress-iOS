@@ -53,6 +53,15 @@
     if (shouldEnablePullToRefresh) {
         [self enablePullToRefresh];
     }
+
+    // setup the webview with a white background by default
+    // prevents the default UIWebView shadow from showing on launch
+    [self setBackgroundColor:[NSDictionary dictionaryWithObjectsAndKeys:
+                              [NSNumber numberWithFloat:1.f], @"red",
+                              [NSNumber numberWithFloat:1.f], @"green",
+                              [NSNumber numberWithFloat:1.f], @"blue",
+                              [NSNumber numberWithFloat:1.f], @"alpha",
+                              nil]];
 }
 
 
