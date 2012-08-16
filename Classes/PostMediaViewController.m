@@ -38,6 +38,7 @@
 	[picker release];
 	[customSizeAlert release];
 	[uniqueID release];
+    addPopover.delegate = nil;
 	[addPopover release];
 	[bottomToolbar release];
 	[videoPressCheckBlogURL release];
@@ -365,6 +366,7 @@
 #pragma mark UIPopover Delegate Methods
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    addPopover.delegate = nil;
     [addPopover release];
     addPopover = nil;
 }
