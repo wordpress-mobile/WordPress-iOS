@@ -145,7 +145,8 @@ static NSString *_lastAuthedName = nil;
     WPcomLoginViewController *controller = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
     controller.delegate = self;
     controller.isCancellable = YES;
-    controller.isStatsInitiated = YES;
+    if (!blog.isWPcom)
+        controller.isStatsInitiated = YES;
     controller.blog = self.blog;
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
