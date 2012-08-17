@@ -62,8 +62,10 @@
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-   self.navigationItem.title = NSLocalizedString(@"Loading...", @"");
-   // isLoading = YES;
+    
+    if (IS_IPHONE)
+        self.navigationItem.title = NSLocalizedString(@"Loading...", @"");
+
     [self setLoading:NO];
     self.backButton.enabled = NO;
     self.forwardButton.enabled = NO;

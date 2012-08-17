@@ -9,6 +9,7 @@
 #import "AddUsersBlogsViewController.h"
 #import "UITableViewActivityCell.h"
 #import "WordPressAppDelegate.h"
+#import "Blog.h"
 
 @protocol WPcomLoginViewControllerDelegate;
 
@@ -18,6 +19,7 @@
 @property (nonatomic, assign) BOOL isStatsInitiated;
 @property (nonatomic, assign) BOOL isCancellable;
 @property (nonatomic, retain) NSString *predefinedUsername;
+@property (nonatomic, retain) Blog *blog;
 
 - (IBAction)cancel:(id)sender;
 

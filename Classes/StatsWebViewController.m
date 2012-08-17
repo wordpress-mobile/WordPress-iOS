@@ -145,6 +145,8 @@ static NSString *_lastAuthedName = nil;
     WPcomLoginViewController *controller = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
     controller.delegate = self;
     controller.isCancellable = YES;
+    controller.isStatsInitiated = YES;
+    controller.blog = self.blog;
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     
@@ -279,15 +281,6 @@ static NSString *_lastAuthedName = nil;
     }
     
     [self showWPcomLogin];
-    
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"WordPress.com Stats", @"")
-                                                        message:NSLocalizedString(@"To load stats for your blog you will need to have the Jetpack plugin installed and correctly configured as well as your WordPress.com login.", @"") 
-                                                       delegate:self 
-                                              cancelButtonTitle:NSLocalizedString(@"Learn More", @"")
-                                              otherButtonTitles:NSLocalizedString(@"I'm Ready!", @""), nil];
-    alertView.tag = kAlertTagCredentials;
-    [alertView show];
-    [alertView release];
 }
 
 
