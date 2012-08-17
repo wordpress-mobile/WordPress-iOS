@@ -91,7 +91,7 @@
     self.remoteStatus   = AbstractPostRemoteStatusSync;
 	self.permaLink      = [postInfo objectForKey:@"permaLink"];
 	self.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];
-	self.mt_text_more	= [postInfo objectForKey:@"mt_text_more"];
+	self.mt_text_more	= [postInfo objectForKey:@"text_more"];
 	self.wp_slug		= [postInfo objectForKey:@"wp_slug"];
 	self.post_thumbnail = [postInfo objectForKey:@"featured_image"];
 }
