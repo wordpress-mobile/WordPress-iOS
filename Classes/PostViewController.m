@@ -214,7 +214,7 @@
     NSRegularExpression *linesBetweenTags = [NSRegularExpression regularExpressionWithPattern:@">\\n+<" options:NSRegularExpressionCaseInsensitive error:&error];
     NSRegularExpression *extraLines = [NSRegularExpression regularExpressionWithPattern:@"\\n{3,}" options:NSRegularExpressionCaseInsensitive error:&error];
     
-    NSString *contentStr = [linesBetweenTags stringByReplacingMatchesInString:str options:0 range:NSMakeRange(0, [self.apost.content length]) withTemplate:@"><"];
+    NSString *contentStr = [linesBetweenTags stringByReplacingMatchesInString:str options:0 range:NSMakeRange(0, [str length]) withTemplate:@"><"];
     contentStr = [extraLines stringByReplacingMatchesInString:contentStr options:0 range:NSMakeRange(0, [contentStr length]) withTemplate:@"\n"];
     
     return contentStr;
