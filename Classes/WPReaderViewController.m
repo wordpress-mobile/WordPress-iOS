@@ -513,12 +513,12 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), error];
-    [super webView:webView didFailLoadWithError:error];
     // -999: Canceled AJAX request
     // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
     if (self.loading && ([error code] != -999) && [error code] != 102)
         [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
     self.loading = NO;
+    [super webView:webView didFailLoadWithError:error];
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView {
@@ -528,7 +528,6 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super webViewDidFinishLoad:aWebView];
     [self setLoading:NO];
     
     NSString *wasLocal = [aWebView stringByEvaluatingJavaScriptFromString:@"document.isLocalLoader"];
@@ -536,7 +535,8 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
         [self refreshWebView];
         return;
     }
-    
+    // Since WPWebAppViewController releases the delegate, call super at the end. See #1356
+    [super webViewDidFinishLoad:aWebView];
 }
 
 #pragma mark -- Friend Finder Button
