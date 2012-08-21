@@ -9,13 +9,12 @@
 #import "Blog.h"
 #import "WordPressAppDelegate.h"
 #import "SFHFKeychainUtils.h"
+#import "WPcomLoginViewController.h"
 #import "AFHTTPRequestOperation.h"
 #import "WPWebViewController.h"
 #import "WordPressComApi.h"
-#import "WPcomLoginViewController.h"
-#import "EditSiteViewController.h"
 
-@interface StatsWebViewController () <EditSiteViewControllerDelegate> {
+@interface StatsWebViewController () <WPcomLoginViewControllerDelegate> {
     BOOL loadStatsWhenViewAppears;
     BOOL promptCredentialsWhenViewAppears;
     BOOL foundMatchingBlogInAPI;
@@ -143,18 +142,12 @@ static NSString *_lastAuthedName = nil;
 - (void)showWPcomLogin {
     [self.webView hideRefreshingState];
     
-//    WPcomLoginViewController *controller = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
-//    controller.delegate = self;
-//    controller.isCancellable = YES;
-//    if (!blog.isWPcom)
-//        controller.isStatsInitiated = YES;
-//    controller.blog = self.blog;
-
-    EditSiteViewController *controller = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];
+    WPcomLoginViewController *controller = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
     controller.delegate = self;
     controller.isCancellable = YES;
+    if (!blog.isWPcom)
+        controller.isStatsInitiated = YES;
     controller.blog = self.blog;
-
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     
@@ -545,14 +538,6 @@ static NSString *_lastAuthedName = nil;
 - (void)loginControllerDidDismiss:(WPcomLoginViewController *)loginController {
     [self dismissModalViewControllerAnimated:YES];
     [self.panelNavigationController popViewControllerAnimated:YES];
-}
-
-
-- (void)controllerDidDismiss:(EditSiteViewController *)controller {
-    [self dismissModalViewControllerAnimated:YES];
-    [self.panelNavigationController popViewControllerAnimated:YES];
-    
-    [self initStats];
 }
 
 
