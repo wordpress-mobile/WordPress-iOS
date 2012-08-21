@@ -1849,6 +1849,7 @@
 		5D63449E159A4B0E00AF402F /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
+				8362C1C5120229BC00599347 /* AddSiteViewController-iPad.xib */,
 				CEFC8B5710057D0A0052604A /* WPProgressHUD.h */,
 				CEFC8B5810057D0A0052604A /* WPProgressHUD.m */,
 			);
@@ -2102,7 +2103,6 @@
 		83F1FCA7123748EF00069F99 /* Blogs */ = {
 			isa = PBXGroup;
 			children = (
-				8362C1C5120229BC00599347 /* AddSiteViewController-iPad.xib */,
 				8362C54512027BC300599347 /* AddUsersBlogsViewController-iPad.xib */,
 				8362C1031201E7CE00599347 /* WebSignupViewController-iPad.xib */,
 			);

@@ -122,13 +122,7 @@
 
 
 - (IBAction)handleOrgBlogTapped:(id)sender {
-    AddSiteViewController *addSiteView;
-    if(IS_IPAD == YES) {
-        addSiteView = [[AddSiteViewController alloc] initWithNibName:@"AddSiteViewController-iPad" bundle:nil];
-    } else {
-        addSiteView = [[AddSiteViewController alloc] initWithNibName:@"AddSiteViewController" bundle:nil];
-    }
-    
+    AddSiteViewController *addSiteView = [[AddSiteViewController alloc] initWithNibName:nil bundle:nil];    
     [self.navigationController pushViewController:addSiteView animated:YES];
     [addSiteView release];
 }
