@@ -114,7 +114,7 @@
         [boldButton setImageName:@"toolbarBold"];
         boldButton.frame = CGRectMake(x, 0, boldButton.imageView.image.size.width + padding, height);
         x += boldButton.frame.size.width + margin;
-        boldButton.actionTag = @"strong";
+        boldButton.actionTag = @"bold";
         boldButton.actionName = NSLocalizedString(@"bold", @"Bold text formatting in the Post Editor. This string will be used in the Undo message if the last change was adding formatting.");
         [boldButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -123,7 +123,7 @@
         [italicsButton setImageName:@"toolbarItalic"];
         italicsButton.frame = CGRectMake(x, 0, italicsButton.imageView.image.size.width + padding, height);
         x += italicsButton.frame.size.width + margin;
-        italicsButton.actionTag = @"em";
+        italicsButton.actionTag = @"italic";
         italicsButton.actionName = NSLocalizedString(@"italic", @"Italic text formatting in the Post Editor. This string will be used in the Undo message if the last change was adding formatting.");
         [italicsButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -141,7 +141,7 @@
         [quoteButton setImageName:@"toolbarBlockquote"];
         quoteButton.frame = CGRectMake(x, 0, quoteButton.imageView.image.size.width + padding, height);
 		x += quoteButton.frame.size.width + margin;
-        quoteButton.actionTag = @"blockquote";
+        quoteButton.actionTag = @"indent";
         quoteButton.actionName = NSLocalizedString(@"quote", @"Blockquote HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding a blockquote.");
         [quoteButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -149,7 +149,8 @@
         delButton = [[WPKeyboardToolbarButtonItem button] retain];
         [delButton setImageName:@"toolbarDel"];
         delButton.frame = CGRectMake(x, 0, delButton.imageView.image.size.width + padding, height);
-        delButton.actionTag = @"del";
+        x += delButton.frame.size.width + margin;
+        delButton.actionTag = @"strikethrough";
         delButton.actionName = NSLocalizedString(@"del", @"<del> (deleted text) HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding a <del> HTML element.");
         [delButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -165,7 +166,7 @@
         [ulButton setImageName:@"toolbarUl"];
         ulButton.frame = CGRectMake(x, 0, ulButton.imageView.image.size.width + padding, height);
         x += ulButton.frame.size.width + margin;
-        ulButton.actionTag = @"ul";
+        ulButton.actionTag = @"insertunorderedlist";
         ulButton.actionName = NSLocalizedString(@"unordered list", @"Unordered list (ul) HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding this formatting.");
         [ulButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -174,7 +175,7 @@
         [olButton setImageName:@"toolbarOl"];
         olButton.frame = CGRectMake(x, 0, olButton.imageView.image.size.width + padding, height);
         x += olButton.frame.size.width + margin;
-        olButton.actionTag = @"ol";
+        olButton.actionTag = @"insertorderedlist";
         olButton.actionName = NSLocalizedString(@"ordered list", @"Ordered list (<ol>) HTML formatting in the Post Editor. This string will be used in the Undo message if the last change was adding this formatting.");
         [olButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -200,6 +201,7 @@
         moreButton = [[WPKeyboardToolbarButtonItem button] retain];
         [moreButton setImageName:@"toolbarMore"];
         moreButton.frame = CGRectMake(x, 0, moreButton.imageView.image.size.width + padding, height);
+        x += moreButton.frame.size.width + margin;
         moreButton.actionTag = @"more";
         moreButton.actionName = NSLocalizedString(@"more", @"Adding a More excerpt cut-off in the Post Editor. This string will be used in the Undo message if the last change was adding this formatting.");
         [moreButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];

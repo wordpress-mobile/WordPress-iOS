@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr">
+    <head>
+        <title>TinyMCE Test</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <meta name="viewport" content="width=device-width, user-scalable=no initial-scale=1.0" />
+        <style type="text/css">
+            body, td, pre {
+                font-family: Helvetica, Arial, Verdana, sans-serif;
+                font-size: 14px;
+                margin: 0;
+            }
+            #content {
+                padding: 10px;
+            }
+            img {
+                max-width: 100%;
+            }
+        </style>   
+        <script>
+            function swapTextForPlaceholder(placeholder, newtext){
+            var el = document.getElementById('content');
+            el.innerHTML = el.innerHTML.replace(placeholder, newtext);
+            }
+        </script>
+    </head>
+    <body>  
+        <div id="content" contentEditable="true">Tap here to edit.</content>        
+    </body>
+</html>

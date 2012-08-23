@@ -19,8 +19,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize selectionTableViewController, segmentedTableViewController;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, initialLocation;
 @synthesize editingDisabled, editCustomFields, statuses, isLocalDraft;
-@synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesButton, titleTextField;
-@synthesize tagsTextField, textViewPlaceHolderField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
+@synthesize contentView, subView, textViewContentView, statusTextField, categoriesButton, titleTextField;
+@synthesize tagsTextField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
 @synthesize locationButton, locationSpinner, createCategoryBarButtonItem, hasLocation;
 @synthesize editMode, apost;
 @synthesize hasSaved, isVisible, isPublishing;
@@ -28,6 +28,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize photoButton, movieButton;
 @synthesize undoButton, redoButton;
 @synthesize currentActionSheet;
+@synthesize richEditWebView, keyboardWindow;
 
 #pragma mark -
 #pragma mark LifeCycle Methods
@@ -64,10 +65,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [segmentedTableViewController release];
     [editorToolbar release];
     [currentActionSheet release];
+    [richEditWebView release];
+    [keyboardWindow release];
     
     [super dealloc];
 }
-
 
 - (id)initWithPost:(AbstractPost *)aPost {
     NSString *nib;
@@ -86,19 +88,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)viewDidUnload {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super viewDidUnload];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     [spinner release]; spinner = nil;
-    self.textView.inputAccessoryView = nil;
     [editorToolbar release];
     editorToolbar = nil;
     
     // Release IBOutlets
     self.locationButton = nil;
     self.locationSpinner = nil;
-    self.textView = nil;
     self.toolbar = nil;
     self.contentView = nil;
     self.subView = nil;
@@ -107,7 +106,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.categoriesButton = nil;
     self.titleTextField = nil;
     self.tagsTextField = nil;
-    self.textViewPlaceHolderField = nil;
     self.tagsLabel = nil;
     self.statusLabel = nil;
     self.categoriesLabel = nil;
@@ -119,22 +117,26 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.undoButton = nil;
     self.redoButton = nil;
     self.currentActionSheet = nil;
+    self.richEditWebView = nil;
+    self.keyboardWindow = nil;
 
+    [super viewDidUnload];
 }
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
 
+    [richEditWebView setDelegate:self];
+    [richEditWebView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"richtext" ofType:@"html"]isDirectory:NO]]];
     titleLabel.text = NSLocalizedString(@"Title:", @"Label for the title of the post field. Should be the same as WP core.");
     tagsLabel.text = NSLocalizedString(@"Tags:", @"Label for the tags field. Should be the same as WP core.");
     tagsTextField.placeholder = NSLocalizedString(@"Separate tags with commas", @"Placeholder text for the tags field. Should be the same as WP core.");
     categoriesLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
     textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
 	textViewPlaceHolderField.textAlignment = UITextAlignmentCenter;
-    [titleTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 
-    if ([textView respondsToSelector:@selector(setInputAccessoryView:)]) {
+    /*if ([textView respondsToSelector:@selector(setInputAccessoryView:)]) {
         CGRect frame;
         if (IS_IPAD) {
             frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_IPAD_PORTRAIT);
@@ -146,8 +148,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
             editorToolbar.delegate = self;
         }
         textView.inputAccessoryView = editorToolbar;
-        textViewPlaceHolderField.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    }
+    }*/
 
     if(!postSettingsController) {
         postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
@@ -228,18 +229,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
         movieButton.tintColor = color;
     }
     
-    // TODO: remove this when sunset support for iOS 4 and either
-    // fix the positioning in the xibs or use a different image for the pointer.
-    // This moves the pointer up 1 pixel to fix its appearance on iOS 5, while preserving
-    // its appearance on iOS 4.
-    if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
-        CGRect frame = tabPointer.frame;
-        frame.origin.y = frame.origin.y - 1;
-        tabPointer.frame = frame;
-    } else {
-        //set the black tab pointer on iOS 4
-        [tabPointer setImage:[UIImage imageNamed:@"tabPointer_black"]];
+}
+
+- (void) loadPostContent {
+    if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0)) {
+        [richEditWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.getElementById('content').innerHTML = '%@';", [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more]]];
     }
+    else {
+        NSString *htmlContent = [self.apost.content stringByReplacingOccurrencesOfString:@"'" withString:@"\\'"];
+        htmlContent = [htmlContent stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+        htmlContent = [htmlContent stringByReplacingOccurrencesOfString:@"\n" withString:@"<br/>"];
+        [richEditWebView stringByEvaluatingJavaScriptFromString: [NSString stringWithFormat:@"document.getElementById('content').innerHTML = '%@';", htmlContent]];
+    }
+    [self refreshUIForCurrentPost];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -492,6 +494,110 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 #pragma mark -
 
+- (void)keyboardWillShow:(NSNotification *)notification {
+    
+    isShowingKeyboard = YES;
+    isEditing = YES;
+    
+    bool isLandscape = NO;
+    
+    if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+        isLandscape = YES;
+    
+    if (![titleTextField isFirstResponder] && ![tagsTextField isFirstResponder]) {
+    
+        if (isEditing) {
+            [self positionTextView:notification];
+            editorToolbar.doneButton.hidden = IS_IPAD && ! isExternalKeyboard;
+        }
+        
+        for (UIWindow *testWindow in [[UIApplication sharedApplication] windows]) {
+            if (![[testWindow class] isEqual:[UIWindow class]]) {
+                keyboardWindow = testWindow;
+                break;
+            }
+        }
+        
+        //[self performSelector:@selector(removeBar) withObject:nil afterDelay:0];
+        
+        //[UIView beginAnimations:nil context:NULL];
+        //[UIView setAnimationDuration:0.3];
+        
+        
+        CGRect frm = keyboardWindow.frame;
+        CGRect toolbarFrame;
+        if (IS_IPAD) {
+            if (isLandscape)
+                toolbarFrame = CGRectMake(0.0f, [UIScreen mainScreen].bounds.size.width, frm.size.width, WPKT_HEIGHT_IPAD_LANDSCAPE);
+            else 
+                toolbarFrame = CGRectMake(0.0f, [UIScreen mainScreen].bounds.size.height, frm.size.width, WPKT_HEIGHT_IPAD_PORTRAIT);
+        }
+        else {
+            if (isLandscape)
+                toolbarFrame = CGRectMake(0.0f, [UIScreen mainScreen].bounds.size.width, frm.size.width, WPKT_HEIGHT_IPHONE_LANDSCAPE);
+            else 
+                toolbarFrame = CGRectMake(0.0f, [UIScreen mainScreen].bounds.size.height, frm.size.width, WPKT_HEIGHT_IPHONE_PORTRAIT);
+        }
+        if (editorToolbar == nil) {
+            editorToolbar = [[WPKeyboardToolbar alloc] initWithFrame:toolbarFrame];
+            editorToolbar.delegate = self;
+        }
+        
+        editorToolbar.frame = toolbarFrame;
+        
+        [keyboardWindow addSubview:editorToolbar];
+        
+        [UIView animateWithDuration:0.25 animations:^{
+
+            if (IS_IPAD) {
+                if (isLandscape) 
+                    editorToolbar.frame = CGRectMake(0.0f, self.view.frame.size.height - 397.0, 1024.0, toolbarFrame.size.height);
+                else
+                    editorToolbar.frame = CGRectMake(0.0f, self.view.frame.size.height - 265.0, 768.0, toolbarFrame.size.height);
+            }
+            else {
+                if (isLandscape)
+                    editorToolbar.frame = CGRectMake(0.0f, self.view.frame.size.height - 175.0, 480.0, toolbarFrame.size.height);
+                else
+                    editorToolbar.frame = CGRectMake(0.0f, self.view.frame.size.height - 240.0, 320.0, toolbarFrame.size.height);
+            }
+            
+        }];
+        
+
+    }
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    
+
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.25];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    [UIView setAnimationDidStopSelector:@selector(toolbarAnimationDidStop:finished:context:)];
+    NSLog(@"screen height: %f", [UIScreen mainScreen].bounds.size.height);
+    if ((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight))
+        editorToolbar.frame = CGRectMake(0.0f, [UIScreen mainScreen].bounds.size.width, editorToolbar.frame.size.width, editorToolbar.frame.size.height);
+    else 
+        editorToolbar.frame = CGRectMake(0.0f, [UIScreen mainScreen].bounds.size.height, editorToolbar.frame.size.width, editorToolbar.frame.size.height);
+    [UIView commitAnimations];
+    
+    isShowingKeyboard = NO;
+    [self positionTextView:notification];
+    
+    
+}
+
+- (void)toolbarAnimationDidStop:(NSString *)animationID finished:(BOOL)finished context:(void *)context {
+    if (!isRotating) {
+        [editorToolbar removeFromSuperview];
+        editorToolbar = nil;
+    } else {
+        isRotating = NO;
+    }
+}
+
 - (void)dismissEditView {
     [self dismissModalViewControllerAnimated:YES];
 	[postSettingsController release]; postSettingsController = nil;
@@ -559,12 +665,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
     else {
         textViewPlaceHolderField.hidden = YES;
-        if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0))
+        if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0)) {
 			textView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more];
-		else	
+            [richEditWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"tinyMCE.activeEditor.setContent('%@');", [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more]]];
+        } else {
 			textView.text = self.apost.content;
-
-        
+            [richEditWebView stringByEvaluatingJavaScriptFromString: [NSString stringWithFormat:@"tinyMCE.activeEditor.setContent('%@');", self.apost.content]];
+        }
+		
     }
     
 	// workaround for odd text view behavior on iPad
@@ -754,7 +862,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)savePost:(BOOL)upload{
 	self.apost.postTitle = titleTextField.text;
-    self.apost.content = textView.text;
+    self.apost.content = [richEditWebView stringByEvaluatingJavaScriptFromString:@"document.getElementById('content').innerHTML;"];
 	if ([self.apost.content rangeOfString:@"<!--more-->"].location != NSNotFound)
 		self.apost.mt_text_more = @"";
     
@@ -781,6 +889,28 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self dismissEditView];
 }
 
+// TODO: IS THIS NEEDED?
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+//    if ([actionSheet tag] == 201) {
+//        if (buttonIndex == 0) {
+//            [self discard];
+//        }
+//        
+//        if (buttonIndex == 1) {  
+//			if ([actionSheet numberOfButtons] == 2)
+//				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
+//			else {
+//				if (![self.apost hasRemote])
+//					[self savePost:NO];
+//				else
+//					[self savePost:YES];
+//			}
+//        }
+//    }
+//    
+//    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+//    [appDelegate setAlertRunning:NO];
+//}
 
 //check if there are media in uploading status
 -(BOOL) isMediaInUploading {
@@ -860,6 +990,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (IBAction)endTextEnteringButtonAction:(id)sender {
     [textView resignFirstResponder];
+    [richEditWebView endEditing:YES];
 	if (IS_IPAD == NO) {
 		if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 			//#615 -- trick to rotate the interface back to portrait. 
@@ -965,7 +1096,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
             //NSString *commentsStr = textView.text;
             //NSRange rangeToReplace = [self selectedLinkRange];
             NSString *urlString = [self validateNewLinkInfo:urlField.text];
-            NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];
+            [richEditWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat: @"document.execCommand('createlink', false, '%@');", urlString]];
+            /*NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];
             
             NSRange range = textView.selectedRange;
             
@@ -990,7 +1122,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
             [textView.undoManager setActionName:@"link"];            
             
             //textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
-			self.apost.content = textView.text;
+			self.apost.content = textView.text;*/
         }
 		
         dismiss = NO;
@@ -1002,41 +1134,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 
-#pragma mark -
-#pragma mark ActionSheet Delegate Methods
-
-- (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
-    self.currentActionSheet = actionSheet;
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    self.currentActionSheet = nil;
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if ([actionSheet tag] == 201) {
-        if (buttonIndex == 0) {
-            [self discard];
-        }
-        
-        if (buttonIndex == 1) {  
-			if ([actionSheet numberOfButtons] == 2)
-				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-			else {
-				if (![self.apost hasRemote])
-					[self savePost:NO];
-				else
-					[self savePost:YES];
-			}
-        }
-    }
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:NO];
-}
-
-#pragma mark - TextView & TextField Delegates
-
+#pragma mark TextView & TextField Delegates
+/*
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
     if (!isTextViewEditing) {
         isTextViewEditing = YES;
@@ -1099,7 +1198,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         isTextViewEditing = NO;
 //		[self positionTextView:nil];
 		
-        self.apost.content = textView.text;
+        self.apost.content = [richEditWebView stringByEvaluatingJavaScriptFromString:@"document.getElementById('content').innerHTML;"];
 		
 		if (!IS_IPAD) {
             [self refreshButtons];
@@ -1154,7 +1253,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self.apost autosave];
     
     [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
-}
+}*/
 
 - (void)textFieldDidChange:(id)sender {
     self.apost.postTitle = titleTextField.text;
@@ -1227,7 +1326,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         }
 	}
 
-    [textView setFrame:newFrame];
+    [richEditWebView setFrame:newFrame];
 	
 	[UIView commitAnimations];
 }
@@ -1354,7 +1453,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[content appendString:[NSString stringWithFormat:@"<br /><br />%@", media.html]];
 		self.apost.content = content;
 	}
+    
+    // Replace the placeholder with the contents of media.html
+    NSString *htmlStr = [media.html stringByReplacingOccurrencesOfString:@"'" withString:@"\'"];
+    [richEditWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"swapTextForPlaceholder('__media__', '%@');", htmlStr]];
+    
     [self refreshUIForCurrentPost];
+//    TODO: NOT SURE IF NEEDED?
+//    [self switchToEdit];
 }
 
 - (void)removeMedia:(NSNotification *)notification {
@@ -1391,11 +1497,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark - Keyboard toolbar
 
 - (void)undo {
-    [self.textView.undoManager undo];
+    //[self.textView.undoManager undo];
 }
 
 - (void)redo {
-    [self.textView.undoManager redo];
+    //[self.textView.undoManager redo];
 }
 
 - (void)restoreText:(NSString *)text withRange:(NSRange)range {
@@ -1448,12 +1554,49 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [self showLinkView];
     } else if ([buttonItem.actionTag isEqualToString:@"done"]) {
         [self endTextEnteringButtonAction:buttonItem];
+    } else if([buttonItem.actionTag isEqualToString:@"code"]) {
+            // Hi jacking this one for some testing. EJ
+            
+            // We need to insert a placemarker if we can't reliably retrieve the caret position.
+            // We will use this to insert the image tag later.
+            
+            NSString *commandStr = [NSString stringWithFormat: @"document.execCommand('inserthtml', false, '__media__');"];
+            [richEditWebView stringByEvaluatingJavaScriptFromString:commandStr];
+            
+            // Dismiss the keyboard.  Its going to be in the way later on if we don't.
+            [richEditWebView endEditing:YES];
+            
+            // Now we need to add the image
+            [self addPhoto:nil];
+            return;
+            [UIView animateWithDuration:0.0 animations:^{
+            	
+            } completion:^(BOOL finished) {
+                [self addPhoto:nil];
+            }];
+            
+            
+        } else if([buttonItem.actionTag isEqualToString:@"more"]) {
+            // Hi jacking this one for some testing. EJ
+            
+            // We need to insert a placemarker if we can't retrieve the caret position.
+            // We will use this to insert the image tag later.
+            NSString *commandStr = [NSString stringWithFormat: @"document.execCommand('inserthtml', false, '__media__');"];
+            [richEditWebView stringByEvaluatingJavaScriptFromString:commandStr];
+            
+            // Dismiss the keyboard.  Its going to be in the way later on if we don't.
+            [richEditWebView endEditing:YES];
+            
+            // Now we need to add the image		// Now we need to add the video
+            [self addVideo:nil];
+            
     } else {
-        NSString *oldText = textView.text;
+        /*NSString *oldText = textView.text;
         NSRange oldRange = textView.selectedRange;
         [self wrapSelectionWithTag:buttonItem.actionTag];
         [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
-        [textView.undoManager setActionName:buttonItem.actionName];    
+        [textView.undoManager setActionName:buttonItem.actionName];*/
+        [richEditWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat: @"document.execCommand('%@');", buttonItem.actionTag]];
     }
 }
 
@@ -1595,7 +1738,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark -
 #pragma mark Keyboard management 
 
-- (void)keyboardWillShow:(NSNotification *)notification {
+/*- (void)keyboardWillShow:(NSNotification *)notification {
     WPFLogMethod();
 	isShowingKeyboard = YES;
     if (isEditing) {
@@ -1608,7 +1751,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     WPFLogMethod();
 	isShowingKeyboard = NO;
     [self positionTextView:notification];
-}
+}*/
 
 #pragma mark -
 #pragma mark UIPickerView delegate
@@ -1641,6 +1784,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
         }
     }
     return YES;
+}
+
+#pragma mark -
+#pragma mark UIWebView delegate
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if (navigationType != UIWebViewNavigationTypeLinkClicked)
+        return YES;
+    
+    return NO;
 }
 
 #pragma mark -
