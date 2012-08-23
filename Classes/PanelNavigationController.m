@@ -99,6 +99,7 @@
     BOOL _isAppeared;
     BOOL _isShowingPoppedIcon;
     BOOL _panned;
+    BOOL _pushing;
 }
 @synthesize detailViewController = _detailViewController;
 @synthesize masterViewController = _masterViewController;
@@ -1330,7 +1331,7 @@
                                 fadeAlpha = 0.f;
                             }
                             CGFloat alphaDifference = ((PanelViewWrapper*) alphaView).overlay.alpha - fadeAlpha;
-                            if (alphaDifference > 0.01f || alphaDifference < -0.01f) {
+                            if ((alphaDifference > 0.01f || alphaDifference < -0.01f) && !_pushing) {
                                 [UIView beginAnimations:@"fadeAnimation" context:nil];
                                 [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
                                 [UIView setAnimationDuration:0.3f];
@@ -1446,8 +1447,10 @@
 
 - (void)pushViewController:(UIViewController *)viewController fromViewController:(UIViewController *)fromViewController animated:(BOOL)animated {
     WPFLogMethod();
+    _pushing = YES;
     [self popToViewController:fromViewController animated:NO];
     [self pushViewController:viewController animated:animated];
+    _pushing = NO;
 }
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated {
