@@ -8,12 +8,11 @@
 #import "WPWebView.h"
 
 @interface WPChromelessWebViewController : UIViewController <WPWebViewDelegate> {
-    NSString *path;
     WPWebView *webView;
 }
 
+@property (nonatomic, retain) NSString *path;
 @property (nonatomic, retain, readonly) WPWebView *webView;
-
 - (void)loadPath:(NSString *)aPath;
 - (NSURL *)currentURL;
 

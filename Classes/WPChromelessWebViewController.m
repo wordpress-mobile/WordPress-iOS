@@ -15,30 +15,26 @@
 
 @implementation WPChromelessWebViewController
 
-@synthesize webView;
+@synthesize webView, path=_path;
 
 #pragma mark -
 #pragma mark Lifecycle Methods
 
 - (void)dealloc {
-    if(path) {
-        [path release]; path = nil;
-    }
+    self.path = nil;
     webView.delegate = nil;
     [webView release];
     
     [super dealloc];
 }
 
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)loadView {
+    [super loadView];
     
     CGRect frame = self.view.bounds;
     self.webView = [[[WPWebView alloc] initWithFrame:frame] autorelease];
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     webView.delegate = self;
-    
     [self.view addSubview:webView];
 }
 
@@ -46,9 +42,8 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    if (path) {
-        [webView loadPath:path];
-        [path release]; path = nil;        
+    if (self.path != nil) {
+        [webView loadPath:self.path];
     }
 }
 
@@ -64,16 +59,20 @@
 #pragma mark -
 #pragma mark Instance Methods
 
-- (void)loadPath:(NSString *)aPath {
-    if ([self isViewLoaded]) {
-        [webView loadPath:aPath];
-    } else {
-        if (path) {
-            [path release];
-            path = nil;
+- (void)setPath:(NSString *)path {
+    if (![_path isEqualToString:path]) {
+        [_path release];
+        _path = [path retain];
+        NSLocalizedString(@"Path is: %@", self.path);
+        if ([self isViewLoaded]) {
+            [webView loadPath:self.path];
         }
-        path = [aPath retain];
+        
     }
+}
+
+- (void)loadPath:(NSString *)aPath {
+    self.path = aPath;
 }
 
 

@@ -321,7 +321,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
             self.baseURLFallback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/", mReq.URL.scheme, mReq.URL.host]];
             [mReq release];
         }
-        [webView loadData:operation.responseData MIMEType:operation.response.MIMEType textEncodingName:@"utf-8" baseURL:nil];
+        [webView loadData:operation.responseData MIMEType:operation.response.MIMEType textEncodingName:@"utf-8" baseURL:aRequest.URL];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self webView:webView didFailLoadWithError:error];
     }];
@@ -401,7 +401,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 #pragma mark - 
 #pragma mark WebViewDelegate Methods
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)aRequest navigationType:(UIWebViewNavigationType)navigationType {    
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)aRequest navigationType:(UIWebViewNavigationType)navigationType {
     // applewebdata:// urls are a problem. Kill that request and substitute a better one. Assumes a GET request.    
     if ([@"applewebdata" isEqualToString:aRequest.URL.scheme]) {
         NSString *basepath = [self.baseURLFallback absoluteString];
@@ -452,7 +452,6 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [self setLoading:YES];
-    
     if (delegate && [delegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
         [delegate webViewDidStartLoad:self];
     }
@@ -476,7 +475,6 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
         [delegate webView:self didFailLoadWithError:error];
         return;
     }
-    
     // No delegate so perform a default action.
     NSString *message = NSLocalizedString(@"There was an error loading the page.", nil);
 //    message = [message stringByAppendingFormat:@"\n%@",[error description]];
