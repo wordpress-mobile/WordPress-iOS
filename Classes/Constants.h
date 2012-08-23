@@ -29,6 +29,8 @@
 #define kAuthorizedHybridHost   @"en.wordpress.com"
 #define kMobileReaderDetailLegacyURL @"https://en.wordpress.com/wp-admin/admin-ajax.php?action=wpcom_load_mobile&template=details&v=2"
 
+#define kNotificationsURL       @"http://wordpress.com/#!/notifications/"
+
 #define kFacebookAppID                   @"249643311490"
 #define kFacebookLoginNotificationName   @"FacebookLogin"
 #define kFacebookNoLoginNotificationName @"FacebookNoLogin"

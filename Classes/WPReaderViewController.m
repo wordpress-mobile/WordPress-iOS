@@ -539,7 +539,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     [super webViewDidFinishLoad:aWebView];
 }
 
-#pragma mark -- Friend Finder Button
+#pragma mark - Friend Finder Button
 
 
 - (BOOL) shouldDisplayfriendFinderNudgeView {
@@ -612,7 +612,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 }
 
-#pragma mark -- View Overrides
+#pragma mark - View Overrides
 
 - (void)setTitle:(NSString *)title {
     

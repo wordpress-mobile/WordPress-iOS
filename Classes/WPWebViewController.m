@@ -30,6 +30,7 @@
 @synthesize loadingView, loadingLabel, activityIndicator;
 @synthesize iPadNavBar, backButton, forwardButton, refreshButton, spinnerButton, optionsButton;
 @synthesize linkOptionsActionSheet = _linkOptionsActionSheet;
+@synthesize hidesLinkOptions;
 
 - (void)dealloc
 {
@@ -97,7 +98,9 @@
         
         //allows the toolbar to become smaller in landscape mode.
         toolbar.autoresizingMask = toolbar.autoresizingMask | UIViewAutoresizingFlexibleHeight;
-        self.navigationItem.rightBarButtonItem = optionsButton;
+        if (!self.hidesLinkOptions) {
+            self.navigationItem.rightBarButtonItem = optionsButton;
+        }
         
     } else {
         // We want the refresh button to be borderless, but buttons in navbars want a border.

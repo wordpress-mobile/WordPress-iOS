@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MFMailComposeViewController.h>
-#import "WPWebAppViewController.h"
 
 @interface WPWebViewController : UIViewController <UIWebViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
     BOOL isLoading, needsLogin, hasLoadedContent;
@@ -31,6 +30,7 @@
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *optionsButton;
 @property (nonatomic, retain) UIBarButtonItem *spinnerButton;
 @property (retain, nonatomic) NSTimer *statusTimer;
+@property (nonatomic) BOOL hidesLinkOptions;
 
 //reader variables
 @property (nonatomic,retain) NSString *detailContent;

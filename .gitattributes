@@ -122,6 +122,8 @@ Classes/NSString+XMLExtensions.h -text
 Classes/NSString+XMLExtensions.m -text
 Classes/NSURL+IDN.h -text
 Classes/NSURL+IDN.m -text
+Classes/NotificationsViewController.h -text
+Classes/NotificationsViewController.m -text
 Classes/Page.h -text
 Classes/Page.m -text
 Classes/PageViewController.h -text
@@ -897,6 +899,8 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /sidebar_expand_up@2x.png -text
 /sidebar_footer_bg.png -text
 /sidebar_footer_bg@2x.png -text
+/sidebar_note.png -text svneol=unset#unset
+/sidebar_note@2x.png -text svneol=unset#unset
 /sidebar_pages.png -text
 /sidebar_pages@2x.png -text
 /sidebar_posts.png -text
