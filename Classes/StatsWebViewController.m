@@ -13,6 +13,8 @@
 #import "AFHTTPRequestOperation.h"
 #import "WPWebViewController.h"
 #import "WordPressComApi.h"
+#import "FileLogger.h"
+#import "AFXMLRequestOperation.h"
 
 @interface StatsWebViewController () <WPcomLoginViewControllerDelegate> {
     BOOL loadStatsWhenViewAppears;
@@ -273,7 +275,11 @@ static NSString *_lastAuthedName = nil;
     [webView showRefreshingState];
 }
 
-
+- (NSString *)percentEscapeString: (NSString *)string {
+    //only use this for escaping parameters
+    NSString *encodedString = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)string, NULL,(CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
+    return encodedString;
+}
 
 - (void)promptForCredentials {
     if (!self.view.window) {
@@ -318,11 +324,10 @@ static NSString *_lastAuthedName = nil;
     }
 
     // A password that contains an ampersand will not validate unless we swap the anpersand for its hex code
-    password = [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    password = [password stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
+    password = [self percentEscapeString:password];
     NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
     NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=http://wordpress.com",
-                             [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
+                             [self percentEscapeString:username],
                              password];
 
     [mRequest setURL:[NSURL URLWithString:@"https://wordpress.com/wp-login.php"]];
