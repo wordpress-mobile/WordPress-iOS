@@ -1218,12 +1218,15 @@ static WordPressAppDelegate *wordPressApp = NULL;
     for (Blog *blog in blogs) {
         if( [blog isWPcom] ) {
             [blogsID addObject:[blog blogID] ];
+        } else {
+            if ( [blog getOptionValue:@"jetpack_client_id"] )
+                [blogsID addObject:[blog getOptionValue:@"jetpack_client_id"] ];
         }
     }
     
     AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
     [api callMethod:@"wpcom.mobile_push_set_blogs_list"
-         parameters:[NSArray arrayWithObjects:username, password, token, blogsID, nil]
+         parameters:[NSArray arrayWithObjects:username, password, token, blogsID, @"apple", nil]
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 WPFLog(@"Sent blogs list (%d blogs)", [blogsID count]);
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -1357,8 +1360,8 @@ static WordPressAppDelegate *wordPressApp = NULL;
 						helpViewController.modalPresentationStyle = UIModalPresentationFormSheet;
 //						[splitViewController presentModalViewController:helpViewController animated:YES];
 					}
-					else
-						[appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
+                    else
+                        [appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
 				}
 				
 				[helpViewController release];

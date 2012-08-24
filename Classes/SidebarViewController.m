@@ -398,13 +398,15 @@
     __block SectionInfo *targetSection;
     __block NSUInteger sectionNumber;
     [self.sectionInfoArray enumerateObjectsUsingBlock:^(SectionInfo *obj, NSUInteger idx, BOOL *stop) {
-        if ([obj.blog.blogID isEqualToNumber:blogId]) {
+        if (([obj.blog isWPcom] && [obj.blog.blogID isEqualToNumber:blogId])
+            ||
+           ( [obj.blog getOptionValue:@"jetpack_client_id"] != nil && [[obj.blog getOptionValue:@"jetpack_client_id"]  isEqualToNumber:blogId] ) ) {
             targetSection = obj;
             sectionNumber = idx;
             *stop = YES;
         }
     }];
-    
+      
     if (targetSection) {
         if (!targetSection.open) {
             [targetSection.headerView toggleOpenWithUserAction:YES];
