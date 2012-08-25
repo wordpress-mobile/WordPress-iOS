@@ -9,14 +9,22 @@
 #import "WordPressApi.h"
 #import "SFHFKeychainUtils.h"
 #import "UIBarButtonItem+Styled.h"
+#import "AFHTTPClient.h"
+#import "HelpViewController.h"
+#import "WPWebViewController.h"
+#import "JetpackAuthUtil.h"
+#import "JetpackSettingsViewController.h"
 
 @interface EditSiteViewController (PrivateMethods)
+
 - (void)validateFields;
 - (void)validationSuccess:(NSString *)xmlrpc;
 - (void)validationDidFail:(id)wrong;
-- (void)handleKeyboardWillShow:(NSNotification *)notification;
+- (void)handleKeyboardDidShow:(NSNotification *)notification;
 - (void)handleKeyboardWillHide:(NSNotification *)notification;
 - (void)handleViewTapped;
+- (void)configureTextField:(UITextField *)textField asPassword:(BOOL)asPassword;
+
 @end
 
 @implementation EditSiteViewController
@@ -24,59 +32,15 @@
 @synthesize password, username, url, geolocationEnabled;
 @synthesize blog, tableView, savingIndicator;
 @synthesize urlCell, usernameCell, passwordCell;
+@synthesize isCancellable;
+@synthesize delegate;
+
 
 #pragma mark -
 #pragma mark View lifecycle
 
-- (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super viewDidLoad];
-    if (blog) {
-        self.navigationItem.title = NSLocalizedString(@"Edit Blog", @"");
-		self.tableView.backgroundColor = [UIColor clearColor];
-		if (IS_IPAD){
-			self.tableView.backgroundView = nil;
-			self.tableView.backgroundColor = [UIColor clearColor];
-		}
-        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
-        
-        NSError *error = nil;
-        self.url = blog.url;
-        self.username = blog.username;
-        self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.hostURL error:&error];
-        self.geolocationEnabled = blog.geolocationEnabled;
-    }
-    
-    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
-    
-    self.navigationItem.rightBarButtonItem = saveButton;
-    
-    if (!IS_IPAD){
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-        
-        UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleViewTapped)];
-        [tableView addGestureRecognizer:tgr];
-        [tgr release];
-        
-    }
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
 - (void)dealloc {
+    self.delegate = nil;
     self.username = nil;
     self.password = nil;
     self.url = nil;
@@ -93,15 +57,81 @@
     [passwordTextField release]; passwordTextField = nil;
     [lastTextField release]; lastTextField = nil;
 	[savingIndicator release];
+    
     [super dealloc];
 }
+
+
+- (void)viewDidLoad {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [super viewDidLoad];
+    
+    if (blog) {
+        self.navigationItem.title = NSLocalizedString(@"Edit Blog", @"");
+		self.tableView.backgroundColor = [UIColor clearColor];
+		if (IS_IPAD){
+			self.tableView.backgroundView = nil;
+			self.tableView.backgroundColor = [UIColor clearColor];
+		}
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
+        
+        NSError *error = nil;
+        self.url = blog.url;
+        self.username = blog.username;
+        self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.hostURL error:&error];
+        self.geolocationEnabled = blog.geolocationEnabled;
+    }
+    
+    if (isCancellable) {
+        UIBarButtonItem *barButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)] autorelease];
+        self.navigationItem.leftBarButtonItem = barButton;
+    }
+    
+    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
+    self.navigationItem.rightBarButtonItem = saveButton;
+    
+    if (!IS_IPAD) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    }
+    
+    UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleViewTapped)];
+    tgr.cancelsTouchesInView = NO;
+    [tableView addGestureRecognizer:tgr];
+    [tgr release];
+
+}
+
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self refreshTable];
+}
+
+
+- (void)viewDidUnload {
+    [super viewDidUnload];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+}
+
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tv {
+    if (blog && ![blog isWPcom]) {
+        return 3;
+    }
     return 2;
 }
+
 
 - (NSInteger)tableView:(UITableView *)tv numberOfRowsInSection:(NSInteger)section {
     switch (section) {
@@ -109,11 +139,31 @@
             return 3;	// URL, username, password
 		case 1:
             return 1;	// Settings
-		default:
-			break;
+        case 2:
+//            if ([JetpackAuthUtil getJetpackUsernameForBlog:blog] != nil) {
+//                return 2;
+//            }
+            return 1;
 	}
 	return 0;
 }
+
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	NSString *result = nil;
+	switch (section) {
+		case 0:
+			result = blog.blogName;
+			break;
+        case 1:
+            result = NSLocalizedString(@"Settings", @"");
+            break;
+        case 2:
+            result = NSLocalizedString(@"Jetpack for Stats", @"");
+	}
+	return result;
+}
+
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath {    
@@ -125,9 +175,7 @@
 				self.urlCell.textLabel.text = NSLocalizedString(@"URL", @"");
 				urlTextField = [self.urlCell.textField retain];
 				urlTextField.placeholder = NSLocalizedString(@"http://example.com", @"");
-				urlTextField.keyboardType = UIKeyboardTypeURL;
-				urlTextField.returnKeyType = UIReturnKeyNext;
-                urlTextField.delegate = self;
+                [self configureTextField:urlTextField asPassword:NO];
 				if(blog.url != nil)
 					urlTextField.text = blog.url;
             }
@@ -141,11 +189,7 @@
 				self.usernameCell.textLabel.text = NSLocalizedString(@"Username", @"");
 				usernameTextField = [self.usernameCell.textField retain];
 				usernameTextField.placeholder = NSLocalizedString(@"WordPress username", @"");
-				usernameTextField.keyboardType = UIKeyboardTypeDefault;
-				usernameTextField.returnKeyType = UIReturnKeyNext;
-                usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-                usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-                usernameTextField.delegate = self;
+                [self configureTextField:usernameTextField asPassword:NO];
 				if(blog.username != nil)
 					usernameTextField.text = blog.username;
 			}
@@ -159,11 +203,7 @@
 				self.passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
 				passwordTextField = [self.passwordCell.textField retain];
 				passwordTextField.placeholder = NSLocalizedString(@"WordPress password", @"");
-				passwordTextField.keyboardType = UIKeyboardTypeDefault;
-				passwordTextField.secureTextEntry = YES;
-                passwordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-                passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-                passwordTextField.delegate = self;
+                [self configureTextField:passwordTextField asPassword:YES];
 				if(password != nil)
 					passwordTextField.text = password;
 			}            
@@ -187,29 +227,30 @@
         switchCell.cellSwitch.on = self.geolocationEnabled;
         [switchCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
         return switchCell;
-	}
+	} else if(indexPath.section == 2) {
+        
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+        if(!cell) {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"Cell"] autorelease];
+        };
+        cell.textLabel.text = NSLocalizedString(@"Configure", @"");
+        if ([JetpackAuthUtil getJetpackUsernameForBlog:blog] != nil) {
+            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Connected as %@", @"Connected to jetpack as the specified usernaem"), [JetpackAuthUtil getJetpackUsernameForBlog:blog]];
+        } else {
+            cell.detailTextLabel.text = NSLocalizedString(@"Not connected", @"Jetpack is not connected yet.");
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
+        
+        return cell;        
+    }
     
     // We shouldn't reach this point, but return an empty cell just in case
     return [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"] autorelease];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	NSString *result = nil;
-	switch (section) {
-		case 0:
-			result = blog.blogName;
-			break;
-        case 1:
-            result = NSLocalizedString(@"Settings", @"");
-            break;
-        case 2:
-            result = NSLocalizedString(@"Advanced", @"");
-            break;
-		default:
-			break;
-	}
-	return result;
-}
 
 #pragma mark -
 #pragma mark Table view delegate
@@ -225,7 +266,15 @@
         }
 	} 
     [tv deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if (indexPath.section == 2) {
+        JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithNibName:nil bundle:nil];
+        controller.blog = blog;
+        [self.navigationController pushViewController:controller animated:YES];
+        [controller release];
+    }
 }
+
 
 #pragma mark -
 #pragma mark UITextField methods
@@ -237,6 +286,7 @@
     }
     lastTextField = [textField retain];
 }
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField.returnKeyType == UIReturnKeyNext) {
@@ -257,6 +307,7 @@
 	return NO;
 }
 
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     UITableViewCell *cell = (UITableViewCell *)[textField superview];
     NSMutableString *result = [NSMutableString stringWithString:textField.text];
@@ -270,6 +321,7 @@
     
     return YES;
 }
+
 
 #pragma mark -
 #pragma mark UIAlertViewDelegate
@@ -303,16 +355,32 @@
 	}
 }
 
+
 #pragma mark -
 #pragma mark Custom methods
+
+- (void)configureTextField:(UITextField *)textField asPassword:(BOOL)asPassword {
+    textField.keyboardType = UIKeyboardTypeDefault;
+    textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    textField.delegate = self;   
+    if (asPassword) {
+        textField.secureTextEntry = YES;
+    } else {
+        textField.returnKeyType = UIReturnKeyNext;
+    }
+}
+
 
 - (void)toggleGeolocation:(id)sender {
     self.geolocationEnabled = switchCell.cellSwitch.on;
 }
 
+
 - (void)refreshTable {
 	[self.tableView reloadData];
 }
+
 
 - (void)checkURL {	
 	NSString *urlToValidate = self.url;
@@ -333,8 +401,11 @@
     [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate];
     // FIXME: add HTTP Auth support back
     // Currently on https://github.com/AFNetworking/AFNetworking/tree/experimental-authentication-challenge
+    //
+    NSString *uname = usernameTextField.text;
+    NSString *pwd = passwordTextField.text;
     [WordPressApi guessXMLRPCURLForSite:urlToValidate success:^(NSURL *xmlrpcURL) {
-        WordPressApi *api = [WordPressApi apiWithXMLRPCEndpoint:xmlrpcURL username:usernameTextField.text password:passwordTextField.text];
+        WordPressApi *api = [WordPressApi apiWithXMLRPCEndpoint:xmlrpcURL username:uname password:pwd];
         [api getBlogsWithSuccess:^(NSArray *blogs) {
             subsites = [blogs retain];
             [self validationSuccess:[xmlrpcURL absoluteString]];
@@ -354,6 +425,7 @@
         }
     }];
 }
+
 
 - (void)validationSuccess:(NSString *)xmlrpc {
 	[savingIndicator stopAnimating];
@@ -375,7 +447,7 @@
 							 andPassword:self.password
 						  forServiceName:blog.hostURL
 						  updateExisting:YES
-								   error:&error];
+								   error:&error];        
 	}
 	
     if (error) {
@@ -383,12 +455,15 @@
     } else {
 		[FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), blog.url];
 	}
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    
+    [self cancel:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 
     saveButton.enabled = YES;
-	[self.navigationItem setHidesBackButton:NO animated:NO];
+    [self.navigationItem setHidesBackButton:NO animated:NO];
+
 }
+
 
 - (void)validationDidFail:(id)wrong {
 	[savingIndicator stopAnimating];
@@ -424,6 +499,7 @@
 	[self.navigationItem setHidesBackButton:NO animated:NO];
 }
 
+
 - (void)validateFields {
     self.url = [NSURL IDNEncodedURL:urlTextField.text];
     NSLog(@"blog url: %@", self.url);
@@ -453,21 +529,18 @@
     }
 }
 
+
 - (void)save:(id)sender {
     [urlTextField resignFirstResponder];
     [usernameTextField resignFirstResponder];
     [passwordTextField resignFirstResponder];
-	
-	if (savingIndicator == nil) {
-		savingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-		[savingIndicator setFrame:CGRectMake(0,0,20,20)];
-		[savingIndicator setCenter:CGPointMake(tableView.center.x, savingIndicator.center.y)];
-		UIView *aView = [[UIView alloc] init];
-		[aView addSubview:savingIndicator];
-		
-		[self.tableView setTableFooterView:aView];
-        [aView release];
-	}
+
+    if (!savingIndicator) {
+        savingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        savingIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        [self.tableView setTableFooterView:savingIndicator];
+    }
+    
 	[savingIndicator setHidden:NO];
 	[savingIndicator startAnimating];
 
@@ -478,35 +551,55 @@
 	
 	if(blog == nil || blog.username == nil) {
 		[self validateFields];
-	} else 
+	} else {
 		if ([self.username isEqualToString:usernameTextField.text]
 			&& [self.password isEqualToString:passwordTextField.text]
 			&& [self.url isEqualToString:urlTextField.text]) {
 			// No need to check if nothing changed
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            [self cancel:nil];
+            
 		} else {
 			[self validateFields];
 		}
+    }
 }
 
-- (void)cancel:(id)sender {
-    [self.navigationController popToRootViewControllerAnimated:YES];
-}
 
-- (void)handleKeyboardWillShow:(NSNotification *)notification {
-    CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+- (IBAction)cancel:(id)sender {
+    if (isCancellable) {
+        [self dismissModalViewControllerAnimated:YES];
+//
+    } else {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
     
+    if (self.delegate){
+        // If sender is not nil then the user tapped the cancel button.
+        BOOL wascancelled = (sender != nil);
+        [self.delegate controllerDidDismiss:self cancelled:wascancelled];
+    }
+}
+
+
+#pragma mark -
+#pragma mark Keyboard Related Methods
+
+- (void)handleKeyboardDidShow:(NSNotification *)notification {    
+    CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, rect.size.height, 0.0);
     tableView.contentInset = contentInsets;
     tableView.scrollIndicatorInsets = contentInsets;
     
     CGRect frame = self.view.frame;
     frame.size.height -= rect.size.height;
-    if (!CGRectContainsPoint(frame, lastTextField.frame.origin)) {
-        CGPoint scrollPoint = CGPointMake(0.0, lastTextField.frame.origin.y - rect.size.height/2.0);
-        [tableView setContentOffset:scrollPoint animated:YES];
+    
+    CGPoint point = [tableView convertPoint:lastTextField.frame.origin fromView:lastTextField];
+    if (!CGRectContainsPoint(frame, point)) {
+        NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:point];
+        [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
     }
 }
+
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
     [UIView animateWithDuration:0.3 animations:^{
@@ -515,9 +608,10 @@
     }];
 }
 
+
 - (void)handleViewTapped {
     [lastTextField resignFirstResponder];
 }
 
-@end
 
+@end

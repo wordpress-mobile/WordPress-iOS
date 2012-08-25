@@ -108,6 +108,11 @@ Classes/FileLogger.h -text
 Classes/FileLogger.m -text
 Classes/HelpViewController.h -text
 Classes/HelpViewController.m -text
+Classes/JetpackAuthUtil.h -text
+Classes/JetpackAuthUtil.m -text
+Classes/JetpackSettingsViewController.h -text
+Classes/JetpackSettingsViewController.m -text
+Classes/JetpackSettingsViewController.xib -text
 Classes/MediaObjectViewController.h -text
 Classes/MediaObjectViewController.m -text
 Classes/MigrateBlogsFromFiles.h -text
@@ -165,6 +170,7 @@ Classes/SectionInfo.h -text
 Classes/SectionInfo.m -text
 Classes/SettingsViewController.h -text
 Classes/SettingsViewController.m -text
+Classes/SettingsViewControllerDelegate.h -text
 Classes/SidebarSectionHeaderView.h -text
 Classes/SidebarSectionHeaderView.m -text
 Classes/SidebarTableViewCell.h -text

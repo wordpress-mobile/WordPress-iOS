@@ -16,7 +16,6 @@
 @interface WPcomLoginViewController : UITableViewController
 
 @property (assign) id<WPcomLoginViewControllerDelegate> delegate;
-@property (nonatomic, assign) BOOL isStatsInitiated;
 @property (nonatomic, assign) BOOL isCancellable;
 @property (nonatomic, retain) NSString *predefinedUsername;
 @property (nonatomic, retain) Blog *blog;
