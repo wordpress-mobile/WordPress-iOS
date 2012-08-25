@@ -585,13 +585,14 @@
 #pragma mark Keyboard Related Methods
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification {    
-    CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, rect.size.height, 0.0);
-    tableView.contentInset = contentInsets;
-    tableView.scrollIndicatorInsets = contentInsets;
-    
+    CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];    
     CGRect frame = self.view.frame;
-    frame.size.height -= rect.size.height;
+    if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        frame.size.height -= rect.size.width;
+    } else {
+        frame.size.height -= rect.size.height;
+    }
+    self.view.frame = frame;
     
     CGPoint point = [tableView convertPoint:lastTextField.frame.origin fromView:lastTextField];
     if (!CGRectContainsPoint(frame, point)) {
@@ -602,9 +603,16 @@
 
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
+    CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect frame = self.view.frame;
+    if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        frame.size.height += rect.size.width;
+    } else {
+        frame.size.height += rect.size.height;
+    }
+
     [UIView animateWithDuration:0.3 animations:^{
-        tableView.contentInset = UIEdgeInsetsZero;
-        tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
+        self.view.frame = frame;
     }];
 }
 
