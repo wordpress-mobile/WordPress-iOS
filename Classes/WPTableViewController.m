@@ -10,6 +10,7 @@
 #import "WPTableViewControllerSubclass.h"
 #import "EGORefreshTableHeaderView.h" 
 #import "WordPressAppDelegate.h"
+#import "EditSiteViewController.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
@@ -34,6 +35,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     UISwipeGestureRecognizer *_rightSwipeGestureRecognizer;
     UISwipeGestureRecognizerDirection _swipeDirection;
     BOOL _animatingRemovalOfModerationSwipeView;
+    BOOL didPromptForCredentials;
 }
 
 @synthesize blog = _blog;
@@ -382,6 +384,24 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     } failure:^(NSError *error) {
         [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync", @"")];
         [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+        if (error.code == 403 && !didPromptForCredentials) {
+            // bad login/pass combination
+            EditSiteViewController *controller = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];
+            controller.blog = self.blog;
+            controller.isCancellable = YES;
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+            
+            if(IS_IPAD == YES) {
+                navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                navController.modalPresentationStyle = UIModalPresentationFormSheet;
+            }
+            
+            [self.panelNavigationController presentModalViewController:navController animated:YES];
+            
+            [navController release];
+            [controller release];
+            didPromptForCredentials = YES;
+        }
     }];
 }
 
