@@ -890,32 +890,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self dismissEditView];
 }
 
-// TODO: IS THIS NEEDED?
-//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-//    if ([actionSheet tag] == 201) {
-//        if (buttonIndex == 0) {
-//            [self discard];
-//        }
-//        
-//        if (buttonIndex == 1) {  
-//			if ([actionSheet numberOfButtons] == 2)
-//				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-//			else {
-//				if (![self.apost hasRemote])
-//					[self savePost:NO];
-//				else
-//					[self savePost:YES];
-//			}
-//        }
-//    }
-//    
-//    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-//    [appDelegate setAlertRunning:NO];
-//}
-
 //check if there are media in uploading status
 -(BOOL) isMediaInUploading {
-	
 	BOOL isMediaInUploading = NO;
 	
 	NSSet *mediaFiles = self.apost.media;
@@ -1489,8 +1465,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [richEditWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"swapTextForPlaceholder('__media__', '%@');", htmlStr]];
     
     [self refreshUIForCurrentPost];
-//    TODO: NOT SURE IF NEEDED?
-//    [self switchToEdit];
 }
 
 - (void)removeMedia:(NSNotification *)notification {
