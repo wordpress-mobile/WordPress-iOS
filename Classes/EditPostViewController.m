@@ -1134,7 +1134,38 @@ NSTimeInterval kAnimationDuration = 0.3f;
     return;
 }
 
-#pragma mark TextView & TextField Delegates
+#pragma mark - ActionSheet Delegate Methods
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
+    self.currentActionSheet = actionSheet;
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    self.currentActionSheet = nil;
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if ([actionSheet tag] == 201) {
+        if (buttonIndex == 0) {
+            [self discard];
+        }
+        
+        if (buttonIndex == 1) {  
+			if ([actionSheet numberOfButtons] == 2)
+				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
+			else {
+				if (![self.apost hasRemote])
+					[self savePost:NO];
+				else
+					[self savePost:YES];
+			}
+        }
+    }
+    
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate setAlertRunning:NO];
+}
+
+#pragma mark - TextView & TextField Delegates
 /*
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
     if (!isTextViewEditing) {
