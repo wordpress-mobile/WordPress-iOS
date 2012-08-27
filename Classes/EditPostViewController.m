@@ -662,18 +662,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     if(self.apost.content == nil || [self.apost.content isEmpty]) {
         textViewPlaceHolderField.hidden = NO;
-        textView.text = @"";
     }
     else {
         textViewPlaceHolderField.hidden = YES;
-        if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0)) {
-			textView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more];
-            [richEditWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"tinyMCE.activeEditor.setContent('%@');", [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more]]];
-        } else {
-			textView.text = self.apost.content;
-            [richEditWebView stringByEvaluatingJavaScriptFromString: [NSString stringWithFormat:@"tinyMCE.activeEditor.setContent('%@');", self.apost.content]];
-        }
-		
     }
     
 	// workaround for odd text view behavior on iPad
@@ -1189,7 +1180,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
 }
-
+*/
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
     WPFLogMethod();
 	currentEditingTextField = nil;
@@ -1203,7 +1194,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
     if (isTextViewEditing) {
         isTextViewEditing = NO;
-//		[self positionTextView:nil];
 		
         self.apost.content = [richEditWebView stringByEvaluatingJavaScriptFromString:@"document.getElementById('content').innerHTML;"];
 		
@@ -1214,7 +1204,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
 }
-
+/*
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     if (textField == textViewPlaceHolderField) {
         return NO;
@@ -1495,6 +1485,15 @@ NSTimeInterval kAnimationDuration = 0.3f;
             [bookMarksArray addObject:dict];
             [dict release];
         }
+    }
+}
+
+#pragma mark - UIWebView Delegate Methods
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0)) {
+        [richEditWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.getElementById('content').innerHTML = '%@';", [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more]]];
+    } else {
+        [richEditWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.getElementById('content').innerHTML = '%@';", self.apost.content]];
     }
 }
 
