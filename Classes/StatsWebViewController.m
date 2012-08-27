@@ -132,8 +132,8 @@ static NSString *_lastAuthedName = nil;
         [alertView show];
         [alertView release];   
     } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"JetPack Sign In", @"")
-                                                            message:NSLocalizedString(@"Unable to sign in to JetPack. Please update your credentials try again.", @"")
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Jetpack Sign In", @"")
+                                                            message:NSLocalizedString(@"Unable to sign in to Jetpack. Please update your credentials try again.", @"")
                                                            delegate:nil
                                                   cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                   otherButtonTitles:nil];

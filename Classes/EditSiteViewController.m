@@ -159,7 +159,7 @@
             result = NSLocalizedString(@"Settings", @"");
             break;
         case 2:
-            result = NSLocalizedString(@"Jetpack for Stats", @"");
+            result = NSLocalizedString(@"Jetpack Stats", @"");
 	}
 	return result;
 }
