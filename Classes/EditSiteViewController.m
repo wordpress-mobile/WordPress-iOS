@@ -538,7 +538,13 @@
     if (!savingIndicator) {
         savingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         savingIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-        [self.tableView setTableFooterView:savingIndicator];
+        CGRect frm = savingIndicator.frame;
+        frm.origin.x = (self.tableView.frame.size.width / 2.0f) - (frm.size.width / 2.0f);
+        savingIndicator.frame = frm;
+        UIView *aView = [[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, frm.size.height)] autorelease];
+        [aView addSubview:savingIndicator];
+        
+        [self.tableView setTableFooterView:aView];
     }
     
 	[savingIndicator setHidden:NO];

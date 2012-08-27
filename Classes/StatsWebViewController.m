@@ -458,7 +458,7 @@ static NSString *_lastAuthedName = nil;
 - (void)jetpackAuthUtil:(JetpackAuthUtil *)util noRecordForBlog:(Blog *)blog {
     [self showBlogSettings];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Could not retrieve stats", @"")
-                                                        message:NSLocalizedString(@"Unable to retrieve stats for this blog. Either the blog is not connected to Jetpack, or the credentials for the wrong WordPress.com credentials were used.", @"")
+                                                        message:NSLocalizedString(@"Unable to retrieve stats. Either the blog is not connected to Jetpack, or its connected to a different account.", @"")
                                                        delegate:nil
                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
                                               otherButtonTitles: nil];

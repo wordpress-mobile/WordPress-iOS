@@ -247,10 +247,14 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if (section == 2) {
         NSString *labelText = labelText = NSLocalizedString(@"Need Jetpack? Tap below and search for 'Jetpack' to install it on your site.", @"");
-        CGRect headerFrame = CGRectMake(0.0f, 0.0f, 0.0f, 50.0f);
+        CGRect headerFrame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 50.0f);
         UIView *footerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
         footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        UILabel *jetpackLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 15.0f, (IS_IPAD) ? 410.0f : 260.0f, 50.0f)];
+        
+        CGFloat width = (IS_IPAD) ? 410.0f : 260.0f;
+        CGFloat x = (headerFrame.size.width / 2.0f) - (width / 2.0f);
+        
+        UILabel *jetpackLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 15.0f, width, 50.0f)];
         [jetpackLabel setBackgroundColor:[UIColor clearColor]];
         [jetpackLabel setTextColor:[UIColor colorWithRed:0.298039f green:0.337255f blue:0.423529f alpha:1.0f]];
         [jetpackLabel setShadowColor:[UIColor whiteColor]];
@@ -259,7 +263,7 @@
         [jetpackLabel setTextAlignment:UITextAlignmentCenter];
         [jetpackLabel setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
         
-        CGSize maximumLabelSize = CGSizeMake(320.0f,200.0f);
+        CGSize maximumLabelSize = CGSizeMake(320.0f, 200.0f);
         CGSize labelSize = [labelText sizeWithFont:jetpackLabel.font constrainedToSize:maximumLabelSize lineBreakMode:jetpackLabel.lineBreakMode];
         
         CGRect newFrame = jetpackLabel.frame;
@@ -604,7 +608,7 @@
 - (void)jetpackAuthUtil:(JetpackAuthUtil *)util noRecordForBlog:(Blog *)blog {
     isTesting = NO;
     
-    self.footerText = NSLocalizedString(@"Unable to retrieve stats for this blog. Either the blog is not connected to Jetpack, or the credentials for the wrong WordPress.com credentials were used.", @"");
+    self.footerText = NSLocalizedString(@"Unable to retrieve stats. Either the blog is not connected to Jetpack, or its connected to a different account.", @"");
     [tableView reloadData];
 }
 
