@@ -572,7 +572,9 @@
             publishNowButton.momentary = YES; 
             publishNowButton.frame = CGRectMake(0.0f, 0.0f, 320.0f, 40.0f);
             publishNowButton.segmentedControlStyle = UISegmentedControlStyleBar;
-            publishNowButton.tintColor = postDetailViewController.toolbar.tintColor;
+            if ([publishNowButton respondsToSelector:@selector(setTintColor:)]) {
+                publishNowButton.tintColor = postDetailViewController.toolbar.tintColor;
+            }
             [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
             [fakeController.view addSubview:publishNowButton];
             [publishNowButton release];
@@ -628,7 +630,9 @@
         CGFloat x = self.view.frame.size.width - 60.0f;
         closeButton.frame = CGRectMake(x, 7.0f, 50.0f, 30.0f);
         closeButton.segmentedControlStyle = UISegmentedControlStyleBar;
-        closeButton.tintColor = [UIColor blackColor];
+        if ([closeButton respondsToSelector:@selector(setTintColor:)]) {
+            closeButton.tintColor = [UIColor blackColor];
+        }
         [closeButton addTarget:self action:@selector(hidePicker) forControlEvents:UIControlEventValueChanged];
         closeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         [pickerWrapperView addSubview:closeButton];
@@ -640,7 +644,9 @@
             publishNowButton.momentary = YES; 
             publishNowButton.frame = CGRectMake(10.0f, 7.0f, 129.0f, 30.0f);
             publishNowButton.segmentedControlStyle = UISegmentedControlStyleBar;
-            publishNowButton.tintColor = [UIColor blackColor];
+            if ([publishNowButton respondsToSelector:@selector(setTintColor:)]) {
+                publishNowButton.tintColor = [UIColor blackColor];
+            }
             [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
             [pickerWrapperView addSubview:publishNowButton];
             [publishNowButton release];
