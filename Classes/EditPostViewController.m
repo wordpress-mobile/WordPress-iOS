@@ -135,6 +135,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     categoriesLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
     textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
 	textViewPlaceHolderField.textAlignment = UITextAlignmentCenter;
+    [titleTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 
     /*if ([textView respondsToSelector:@selector(setInputAccessoryView:)]) {
         CGRect frame;
@@ -1133,7 +1134,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     return;
 }
 
-
 #pragma mark TextView & TextField Delegates
 /*
 - (void)textViewDidChangeSelection:(UITextView *)aTextView {
@@ -1226,7 +1226,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [self textViewDidEndEditing:textView];
     }
 }
-
+*/
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     self.currentEditingTextField = nil;
 #ifdef DEBUGMODE
@@ -1245,7 +1245,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 //        } else {
 //            self.navigationItem.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
 //        }
-
     }
 	else if (textField == tagsTextField)
         self.post.tags = tagsTextField.text;
@@ -1253,7 +1252,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self.apost autosave];
     
     [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
-}*/
+}
 
 - (void)textFieldDidChange:(id)sender {
     self.apost.postTitle = titleTextField.text;
