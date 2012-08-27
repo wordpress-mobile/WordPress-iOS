@@ -5,6 +5,7 @@
 //  Created by Chris Boyd on 7/23/10.
 
 #import "AddSiteViewController.h"
+#import "AddUsersBlogsViewController.h"
 
 @implementation AddSiteViewController
 

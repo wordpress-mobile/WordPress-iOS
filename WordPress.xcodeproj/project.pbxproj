@@ -259,6 +259,9 @@
 		5D27718E15A33A8500F4DCAA /* toolbar_unapprove@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D27717E15A33A8500F4DCAA /* toolbar_unapprove@2x.png */; };
 		5D27719115A3527200F4DCAA /* toolbar_write.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D27718F15A3527000F4DCAA /* toolbar_write.png */; };
 		5D27719215A3527200F4DCAA /* toolbar_write@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D27719015A3527100F4DCAA /* toolbar_write@2x.png */; };
+		5D2B628F15EBF7FF0053361D /* JetpackAuthUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B628A15EBF7FF0053361D /* JetpackAuthUtil.m */; };
+		5D2B629015EBF7FF0053361D /* JetpackSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B628C15EBF7FF0053361D /* JetpackSettingsViewController.m */; };
+		5D2B629115EBF7FF0053361D /* JetpackSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D2B628D15EBF7FF0053361D /* JetpackSettingsViewController.xib */; };
 		5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */; };
 		5D7C22B615A4FCFE00FCE1C2 /* down_dim.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7C22B215A4FCC200FCE1C2 /* down_dim.png */; };
 		5D7C22B715A4FCFE00FCE1C2 /* down_dim@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7C22B315A4FCCE00FCE1C2 /* down_dim@2x.png */; };
@@ -901,6 +904,12 @@
 		5D27717E15A33A8500F4DCAA /* toolbar_unapprove@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbar_unapprove@2x.png"; sourceTree = "<group>"; };
 		5D27718F15A3527000F4DCAA /* toolbar_write.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_write.png; sourceTree = "<group>"; };
 		5D27719015A3527100F4DCAA /* toolbar_write@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toolbar_write@2x.png"; sourceTree = "<group>"; };
+		5D2B628915EBF7FF0053361D /* JetpackAuthUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackAuthUtil.h; sourceTree = "<group>"; };
+		5D2B628A15EBF7FF0053361D /* JetpackAuthUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackAuthUtil.m; sourceTree = "<group>"; };
+		5D2B628B15EBF7FF0053361D /* JetpackSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackSettingsViewController.h; sourceTree = "<group>"; };
+		5D2B628C15EBF7FF0053361D /* JetpackSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackSettingsViewController.m; sourceTree = "<group>"; };
+		5D2B628D15EBF7FF0053361D /* JetpackSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackSettingsViewController.xib; sourceTree = "<group>"; };
+		5D2B628E15EBF7FF0053361D /* SettingsViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewControllerDelegate.h; sourceTree = "<group>"; };
 		5D2B80CF1592447200161F6E /* QuickPhotoButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickPhotoButtonView.h; sourceTree = "<group>"; };
 		5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPhotoButtonView.m; sourceTree = "<group>"; };
 		5D7C22B215A4FCC200FCE1C2 /* down_dim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down_dim.png; sourceTree = "<group>"; };
@@ -1775,6 +1784,12 @@
 		3792259E12F6DBCC00F2176A /* Stats */ = {
 			isa = PBXGroup;
 			children = (
+				5D2B628915EBF7FF0053361D /* JetpackAuthUtil.h */,
+				5D2B628A15EBF7FF0053361D /* JetpackAuthUtil.m */,
+				5D2B628B15EBF7FF0053361D /* JetpackSettingsViewController.h */,
+				5D2B628C15EBF7FF0053361D /* JetpackSettingsViewController.m */,
+				5D2B628D15EBF7FF0053361D /* JetpackSettingsViewController.xib */,
+				5D2B628E15EBF7FF0053361D /* SettingsViewControllerDelegate.h */,
 				5D1392A5157D4D92007D51B8 /* StatsWebViewController.h */,
 				5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */,
 			);
@@ -3297,6 +3312,7 @@
 				306BAAE015C78C5400F37378 /* SidebarToolbarButtonHighlighted@2x.png in Resources */,
 				E131D20A15D5263A009DFB23 /* CHANGELOG.md in Resources */,
 				E131D20C15D5263A009DFB23 /* README.md in Resources */,
+				5D2B629115EBF7FF0053361D /* JetpackSettingsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3501,6 +3517,8 @@
 				CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */,
 				5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */,
 				E131D20B15D5263A009DFB23 /* JSONKit.m in Sources */,
+				5D2B628F15EBF7FF0053361D /* JetpackAuthUtil.m in Sources */,
+				5D2B629015EBF7FF0053361D /* JetpackSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

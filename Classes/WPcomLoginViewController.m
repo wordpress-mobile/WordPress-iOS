@@ -25,7 +25,7 @@
 
 @implementation WPcomLoginViewController
 
-@synthesize footerText, buttonText, isSigningIn, isStatsInitiated, isCancellable, predefinedUsername;
+@synthesize footerText, buttonText, isSigningIn, isCancellable, predefinedUsername;
 @synthesize delegate;
 @synthesize wpComApi = _wpComApi, blog = _blog;
 
@@ -40,6 +40,7 @@
     self.predefinedUsername = nil;
     self.tableView = nil;
     self.blog = nil;
+    
     [super dealloc];
 }
 
@@ -75,34 +76,30 @@
 	[headerView addSubview:logo];
 	[logo release];
 	self.tableView.tableHeaderView = headerView;
-    
-    if (self.isStatsInitiated)
-        self.footerText = NSLocalizedString(@"To access stats, enter the login that was used with the Jetpack plugin.", @"");
-	
+    	
 	if(IS_IPAD)
 		self.tableView.backgroundView = nil;
-
-//	self.tableView.backgroundColor = [UIColor clearColor];
+    
 }
+
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	isSigningIn = NO;
 }
 
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
+
 
 #pragma mark -
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    if (isStatsInitiated)
-        return 4;
-    else
-        return 2;
+    return 2;
 }
 
 
@@ -113,6 +110,7 @@
 		return 1;
 }
 
+
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     if(section == 0)
 		return footerText;
@@ -120,47 +118,6 @@
 		return @"";
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section == 2)
-        return 60.0f;
-    else
-        return 0.0f;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (section == 2) {
-        
-        CGRect headerFrame = CGRectMake(0.0f, 0.0f, 0.0f, 50.0f);
-        UIView *footerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
-        footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        UILabel *jetpackLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 15.0f, (IS_IPAD) ? 410.0f : 260.0f, 50.0f)];
-        [jetpackLabel setBackgroundColor:[UIColor clearColor]];
-        [jetpackLabel setTextColor:[UIColor colorWithRed:0.298039f green:0.337255f blue:0.423529f alpha:1.0f]];
-        [jetpackLabel setShadowColor:[UIColor whiteColor]];
-        [jetpackLabel setShadowOffset:CGSizeMake(0.0f, 1.0f)];
-        [jetpackLabel setFont:[UIFont systemFontOfSize:15.0f]];
-        [jetpackLabel setTextAlignment:UITextAlignmentCenter];
-        [jetpackLabel setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin];
-        
-        NSString *labelText = NSLocalizedString(@"Need Jetpack? Tap below and search for 'Jetpack' to install it on your site.", @"");
-        CGSize maximumLabelSize = CGSizeMake(320.0f,200.0f);
-        CGSize labelSize = [labelText sizeWithFont:jetpackLabel.font constrainedToSize:maximumLabelSize lineBreakMode:jetpackLabel.lineBreakMode];
-        
-        CGRect newFrame = jetpackLabel.frame;
-        newFrame.size.height = labelSize.height;
-        jetpackLabel.frame = newFrame;
-        [jetpackLabel setText:labelText];
-        [jetpackLabel setNumberOfLines:0];
-        [jetpackLabel sizeToFit];
-        
-        [footerView addSubview:jetpackLabel];
-        [jetpackLabel release];
-        
-        return footerView;
-    } else {
-        return nil;
-    }
-}
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -193,37 +150,7 @@
             activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
 		cell = activityCell;
-	} else if (indexPath.section == 2) {
-        UITableViewActivityCell *activityCell = nil;
-        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
-		for(id currentObject in topLevelObjects)
-		{
-			if([currentObject isKindOfClass:[UITableViewActivityCell class]])
-			{
-				activityCell = (UITableViewActivityCell *)currentObject;
-				break;
-			}
-		}
-		
-		activityCell.textLabel.text = NSLocalizedString(@"Install Jetpack", @"");
-
-		cell = activityCell;
-    } else if (indexPath.section == 3) {
-        UITableViewActivityCell *activityCell = nil;
-        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
-		for(id currentObject in topLevelObjects)
-		{
-			if([currentObject isKindOfClass:[UITableViewActivityCell class]])
-			{
-				activityCell = (UITableViewActivityCell *)currentObject;
-				break;
-			}
-		}
-		
-		activityCell.textLabel.text = NSLocalizedString(@"More Information", @"");
-        
-		cell = activityCell;
-    } else {
+	} else {
         if ([indexPath row] == 0) {
             if (loginCell == nil) {
                 loginCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault 
@@ -262,6 +189,7 @@
 
 	return cell;    
 }
+
 
 #pragma mark -
 #pragma mark Table view delegate
@@ -303,8 +231,6 @@
 				[tv reloadData];
 			}
 			else {
-                if (!isStatsInitiated)
-                    self.footerText = @" ";
 				self.buttonText = NSLocalizedString(@"Signing in...", @"");
 				
 				[NSThread sleepForTimeInterval:0.15];
@@ -315,40 +241,11 @@
 				}
 			}
 			break;
-        case 2:
-            if (_blog) {
-                NSString *jetpackURL = [_blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/plugin-install.php"];
-                WPWebViewController *webViewController;
-                if ( IS_IPAD ) {
-                    webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
-                }
-                else {
-                    webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
-                }
-                [webViewController setUrl:[NSURL URLWithString:jetpackURL]];
-                [webViewController setUsername:_blog.username];
-                [webViewController setPassword:[_blog fetchPassword]];
-                [webViewController setWpLoginURL:[NSURL URLWithString:_blog.loginURL]];
-                [self.navigationController pushViewController:webViewController animated:YES];
-            }
-            break;
-        case 3:
-            if (_blog) {
-                WPWebViewController *webViewController;
-                if ( IS_IPAD ) {
-                    webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
-                }
-                else {
-                    webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
-                }
-                [webViewController setUrl:[NSURL URLWithString:@"http://jetpack.me/about/"]];
-                [self.navigationController pushViewController:webViewController animated:YES];
-            }
-            break;
 		default:
 			break;
 	}
 }
+
 
 #pragma mark -
 #pragma mark UITextField delegate methods
@@ -382,6 +279,7 @@
 	return YES;	
 }
 
+
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     UITableViewCell *cell = (UITableViewCell *)[textField superview];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
@@ -404,9 +302,9 @@
 			break;
 	}
 	
-//	[self.tableView reloadData];
 	[textField resignFirstResponder];
 }
+
 
 #pragma mark -
 #pragma mark Custom methods
@@ -426,6 +324,7 @@
                            [self.tableView reloadData];
                        }];
 }
+
 
 - (IBAction)cancel:(id)sender {
     [self.delegate loginControllerDidDismiss:self];

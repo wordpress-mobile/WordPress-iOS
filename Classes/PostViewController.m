@@ -105,7 +105,9 @@
                                                                                       target:self 
                                                                                       action:@selector(showDeletePostActionSheet:)];
         deleteButton.style = UIBarButtonItemStylePlain;
-        deleteButton.tintColor = buttonTintColor;
+        if ([deleteButton respondsToSelector:@selector(setTintColor:)]) {
+            deleteButton.tintColor = buttonTintColor;
+        }
         
         UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         self.toolbarItems = [NSArray arrayWithObjects:editButton, previewButton, spacer, deleteButton, nil];
