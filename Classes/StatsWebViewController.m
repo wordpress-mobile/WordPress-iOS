@@ -220,7 +220,7 @@ static NSString *_lastAuthedName = nil;
 
 - (void)initStats {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    
+    BOOL prompt = NO;
 	if ([[blog blogID] isEqualToNumber:[NSNumber numberWithInt:1]]) {
 		// This is a .org blog and we need to look up the blog id assigned by Jetpack.
         NSString *username = [JetpackAuthUtil getJetpackUsernameForBlog:blog];
@@ -235,16 +235,28 @@ static NSString *_lastAuthedName = nil;
             [jetpackAuthUtil validateCredentialsForBlog:blog withUsername:username andPassword:password];
 
         } else {
-            [self promptForCredentials];
+            prompt = YES;
+            
         }
         
 	} else if(![blog isWPcom] && [JetpackAuthUtil getJetpackUsernameForBlog:blog] == nil) {
         // self-hosted blog and no associated .com login.
-        [self promptForCredentials];
-        
+        prompt = YES;
     } else {
         [self loadStats];
 	}
+    if (prompt) {
+        NSString *msg = kNeedJetpackLogIn;
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Jetpack Needed" 
+                                                            message:msg 
+                                                           delegate:nil 
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK") 
+                                                  otherButtonTitles:nil, nil];
+        [alertView show];
+        [alertView release];
+        
+        [self promptForCredentials];
+    }
 }
 
 

@@ -56,8 +56,6 @@
 
 #define kCheckCredentials NSLocalizedString(@"Verify and Save Credentials", @"");
 #define kCheckingCredentials NSLocalizedString(@"Verifing Credentials", @"");
-#define kDefaultFooterText NSLocalizedString(@"To access stats, enter the WordPress.com log in used with the Jetpack plugin.", @"");
-
 
 #pragma mark -
 #pragma mark LifeCycle Methods
@@ -113,7 +111,7 @@
                                                                               target:self 
                                                                               action:@selector(save:)] autorelease];
 
-    self.footerText = kDefaultFooterText;
+    self.footerText = kNeedJetpackLogIn;
 	self.buttonText = kCheckCredentials;
     
     if (!IS_IPAD) {
@@ -599,7 +597,7 @@
     // Yay! Show that we passed validation.
     isTesting = NO;
     isTestSuccessful = YES;
-    self.footerText = kDefaultFooterText;
+    self.footerText = kNeedJetpackLogIn;
     
     [tableView reloadData];
 }

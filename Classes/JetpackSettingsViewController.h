@@ -12,6 +12,8 @@
 #import "UITableViewTextFieldCell.h"
 #import "SettingsViewControllerDelegate.h"
 
+#define kNeedJetpackLogIn NSLocalizedString(@"To access stats, enter the WordPress.com log in used with the Jetpack plugin.", @"");
+
 @class Blog;
 
 @interface JetpackSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIAlertViewDelegate> {
