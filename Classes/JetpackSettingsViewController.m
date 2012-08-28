@@ -606,7 +606,7 @@
 - (void)jetpackAuthUtil:(JetpackAuthUtil *)util noRecordForBlog:(Blog *)blog {
     isTesting = NO;
     
-    self.footerText = NSLocalizedString(@"Unable to retrieve stats. Either the blog is not connected to Jetpack, or its connected to a different account.", @"");
+    self.footerText = NSLocalizedString(@"Unable to retrieve stats. Either the blog is not connected to Jetpack, or it's connected to a different account.", @"");
     [tableView reloadData];
 }
 
