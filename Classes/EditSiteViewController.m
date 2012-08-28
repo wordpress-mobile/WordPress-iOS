@@ -34,7 +34,7 @@
 @synthesize urlCell, usernameCell, passwordCell;
 @synthesize isCancellable;
 @synthesize delegate;
-
+@synthesize startingPwd, startingUser, startingUrl;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -49,6 +49,9 @@
     self.passwordCell = nil;
     self.tableView = nil;
     self.blog = nil;
+    self.startingUser = nil;
+    self.startingPwd = nil;
+    self.startingUrl = nil;
     [subsites release]; subsites = nil;
     [saveButton release]; saveButton = nil;
     [switchCell release]; switchCell = nil;
@@ -79,6 +82,9 @@
         self.url = blog.url;
         self.username = blog.username;
         self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.hostURL error:&error];
+        self.startingUser = self.username;
+        self.startingPwd = self.password;
+        self.startingUrl = self.url;
         self.geolocationEnabled = blog.geolocationEnabled;
     }
     
@@ -558,9 +564,9 @@
 	if(blog == nil || blog.username == nil) {
 		[self validateFields];
 	} else {
-		if ([self.username isEqualToString:usernameTextField.text]
-			&& [self.password isEqualToString:passwordTextField.text]
-			&& [self.url isEqualToString:urlTextField.text]) {
+		if ([self.startingUser isEqualToString:usernameTextField.text]
+			&& [self.startingPwd isEqualToString:passwordTextField.text]
+			&& [self.startingUrl isEqualToString:urlTextField.text]) {
 			// No need to check if nothing changed
             [self cancel:nil];
             
