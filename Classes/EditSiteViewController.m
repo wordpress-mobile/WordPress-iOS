@@ -7,6 +7,7 @@
 #import "EditSiteViewController.h"
 #import "NSURL+IDN.h"
 #import "WordPressApi.h"
+#import "WordPressComApi.h"
 #import "SFHFKeychainUtils.h"
 #import "UIBarButtonItem+Styled.h"
 #import "AFHTTPClient.h"
@@ -34,7 +35,7 @@
 @synthesize urlCell, usernameCell, passwordCell;
 @synthesize isCancellable;
 @synthesize delegate;
-
+@synthesize startingPwd, startingUser, startingUrl;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -49,6 +50,9 @@
     self.passwordCell = nil;
     self.tableView = nil;
     self.blog = nil;
+    self.startingUser = nil;
+    self.startingPwd = nil;
+    self.startingUrl = nil;
     [subsites release]; subsites = nil;
     [saveButton release]; saveButton = nil;
     [switchCell release]; switchCell = nil;
@@ -78,7 +82,15 @@
         NSError *error = nil;
         self.url = blog.url;
         self.username = blog.username;
-        self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.hostURL error:&error];
+        if ([blog isWPcom]) {
+            self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:@"WordPress.com" error:&error];
+        } else {
+            self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.hostURL error:&error];            
+        }
+
+        self.startingUser = self.username;
+        self.startingPwd = self.password;
+        self.startingUrl = self.url;
         self.geolocationEnabled = blog.geolocationEnabled;
     }
     
@@ -442,6 +454,12 @@
                           forServiceName:@"WordPress.com"
                           updateExisting:YES
                                    error:&error];
+
+        // If this is the account associated with the api, update the singleton's credentials also.
+        WordPressComApi *wpComApi = [WordPressComApi sharedApi];
+        if ([wpComApi.username isEqualToString:blog.username]) {
+            [wpComApi updateCredentailsFromStore];
+        }
 	} else {
 		[SFHFKeychainUtils storeUsername:blog.username
 							 andPassword:self.password
@@ -449,7 +467,7 @@
 						  updateExisting:YES
 								   error:&error];        
 	}
-	
+    
     if (error) {
 		[FileLogger log:@"%@ %@ Error saving password for %@: %@", self, NSStringFromSelector(_cmd), blog.url, error];
     } else {
@@ -558,9 +576,9 @@
 	if(blog == nil || blog.username == nil) {
 		[self validateFields];
 	} else {
-		if ([self.username isEqualToString:usernameTextField.text]
-			&& [self.password isEqualToString:passwordTextField.text]
-			&& [self.url isEqualToString:urlTextField.text]) {
+		if ([self.startingUser isEqualToString:usernameTextField.text]
+			&& [self.startingPwd isEqualToString:passwordTextField.text]
+			&& [self.startingUrl isEqualToString:urlTextField.text]) {
 			// No need to check if nothing changed
             [self cancel:nil];
             

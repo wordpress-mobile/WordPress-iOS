@@ -26,6 +26,7 @@
 
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
 @property (nonatomic, retain) NSString *password, *username, *url;
+@property (nonatomic, copy) NSString *startingPwd, *startingUser, *startingUrl;
 @property (nonatomic, assign) BOOL geolocationEnabled;
 @property (nonatomic, retain) UITableViewTextFieldCell *urlCell, *usernameCell, *passwordCell;
 @property (nonatomic, retain) Blog *blog;

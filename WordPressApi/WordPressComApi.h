@@ -18,4 +18,5 @@
 + (WordPressComApi *)sharedApi;
 - (void)setUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)signOut;
+- (void)updateCredentailsFromStore;
 @end
