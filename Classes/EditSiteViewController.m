@@ -7,6 +7,7 @@
 #import "EditSiteViewController.h"
 #import "NSURL+IDN.h"
 #import "WordPressApi.h"
+#import "WordPressComApi.h"
 #import "SFHFKeychainUtils.h"
 #import "UIBarButtonItem+Styled.h"
 #import "AFHTTPClient.h"
@@ -81,7 +82,12 @@
         NSError *error = nil;
         self.url = blog.url;
         self.username = blog.username;
-        self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.hostURL error:&error];
+        if ([blog isWPcom]) {
+            self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:@"WordPress.com" error:&error];
+        } else {
+            self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.hostURL error:&error];            
+        }
+
         self.startingUser = self.username;
         self.startingPwd = self.password;
         self.startingUrl = self.url;
@@ -448,6 +454,12 @@
                           forServiceName:@"WordPress.com"
                           updateExisting:YES
                                    error:&error];
+
+        // If this is the account associated with the api, update the singleton's credentials also.
+        WordPressComApi *wpComApi = [WordPressComApi sharedApi];
+        if ([wpComApi.username isEqualToString:blog.username]) {
+            [wpComApi updateCredentailsFromStore];
+        }
 	} else {
 		[SFHFKeychainUtils storeUsername:blog.username
 							 andPassword:self.password
@@ -455,7 +467,7 @@
 						  updateExisting:YES
 								   error:&error];        
 	}
-	
+    
     if (error) {
 		[FileLogger log:@"%@ %@ Error saving password for %@: %@", self, NSStringFromSelector(_cmd), blog.url, error];
     } else {

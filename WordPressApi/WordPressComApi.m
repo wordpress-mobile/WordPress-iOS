@@ -94,4 +94,12 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLogoutNotification object:nil];
 }
 
+- (void)updateCredentailsFromStore {
+    self.username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+    NSError *error = nil;
+    self.password = [SFHFKeychainUtils getPasswordForUsername:self.username
+                                          andServiceName:@"WordPress.com"
+                                                   error:&error];
+}
+
 @end
