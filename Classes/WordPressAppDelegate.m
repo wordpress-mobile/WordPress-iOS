@@ -1347,24 +1347,21 @@ static WordPressAppDelegate *wordPressApp = NULL;
 		//Need Help Alert
 		switch(buttonIndex) {
 			case 0: {
-				HelpViewController *helpViewController = [[HelpViewController alloc] init];
-				WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+				HelpViewController *helpViewController = [[[HelpViewController alloc] init] autorelease];
 				
-//				if (IS_IPAD && self.splitViewController.modalViewController) {
 				if (IS_IPAD && self.panelNavigationController.modalViewController) {
 					[self.navigationController pushViewController:helpViewController animated:YES];
 				}
 				else {
+                    UINavigationController *aNavigationController = [[[UINavigationController alloc] initWithRootViewController:helpViewController] autorelease];
 					if (IS_IPAD) {
-						helpViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-						helpViewController.modalPresentationStyle = UIModalPresentationFormSheet;
-//						[splitViewController presentModalViewController:helpViewController animated:YES];
+						aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+						aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 					}
-                    else
-                        [appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
+                    
+                    [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
 				}
 				
-				[helpViewController release];
 				break;
 			}
 			case 1:

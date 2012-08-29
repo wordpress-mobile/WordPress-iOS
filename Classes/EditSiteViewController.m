@@ -345,17 +345,9 @@
                 //Domain Error or malformed response
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://ios.wordpress.org/faq/#faq_3"]];
             } else {
-                HelpViewController *helpViewController = [[HelpViewController alloc] init];
-                WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-                
-                if (IS_IPAD) {
-                    helpViewController.isBlogSetup = YES;
-                    [self.navigationController pushViewController:helpViewController animated:YES];
-                }
-                else
-                    [appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
-                
-                [helpViewController release];
+                HelpViewController *helpViewController = [[[HelpViewController alloc] init] autorelease];
+                helpViewController.isBlogSetup = YES;
+                [self.navigationController pushViewController:helpViewController animated:YES];
             }
 			break;
 		}
