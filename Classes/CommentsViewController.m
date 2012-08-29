@@ -69,8 +69,10 @@
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-    self.swipeActionsEnabled = YES;
-
+    if (!IS_IPAD) {
+        self.swipeActionsEnabled = YES;        
+    }
+    
     self.title = NSLocalizedString(@"Comments", @"");
         
     spamButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_flag"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
