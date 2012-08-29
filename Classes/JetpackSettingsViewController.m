@@ -471,7 +471,8 @@
             else {
                 webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
             }
-            [webViewController setUrl:[NSURL URLWithString:@"http://jetpack.me/about/"]];
+            [webViewController setUrl:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_15"]];
+//            [webViewController setUrl:[NSURL URLWithString:@"http://jetpack.me/about/"]];
             [self.navigationController pushViewController:webViewController animated:YES];
         }
             break; 

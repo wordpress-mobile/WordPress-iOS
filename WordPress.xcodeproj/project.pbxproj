@@ -908,7 +908,7 @@
 		5D2B628A15EBF7FF0053361D /* JetpackAuthUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackAuthUtil.m; sourceTree = "<group>"; };
 		5D2B628B15EBF7FF0053361D /* JetpackSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackSettingsViewController.h; sourceTree = "<group>"; };
 		5D2B628C15EBF7FF0053361D /* JetpackSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackSettingsViewController.m; sourceTree = "<group>"; };
-		5D2B628D15EBF7FF0053361D /* JetpackSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JetpackSettingsViewController.xib; sourceTree = "<group>"; };
+		5D2B628D15EBF7FF0053361D /* JetpackSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JetpackSettingsViewController.xib; path = Classes/JetpackSettingsViewController.xib; sourceTree = "<group>"; };
 		5D2B628E15EBF7FF0053361D /* SettingsViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewControllerDelegate.h; sourceTree = "<group>"; };
 		5D2B80CF1592447200161F6E /* QuickPhotoButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickPhotoButtonView.h; sourceTree = "<group>"; };
 		5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPhotoButtonView.m; sourceTree = "<group>"; };
@@ -1788,7 +1788,6 @@
 				5D2B628A15EBF7FF0053361D /* JetpackAuthUtil.m */,
 				5D2B628B15EBF7FF0053361D /* JetpackSettingsViewController.h */,
 				5D2B628C15EBF7FF0053361D /* JetpackSettingsViewController.m */,
-				5D2B628D15EBF7FF0053361D /* JetpackSettingsViewController.xib */,
 				5D2B628E15EBF7FF0053361D /* SettingsViewControllerDelegate.h */,
 				5D1392A5157D4D92007D51B8 /* StatsWebViewController.h */,
 				5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */,
@@ -2680,6 +2679,7 @@
 				83290399120CF517000A965A /* Media */,
 				ACFF1DC10E231F0B00EC6BF5 /* Post */,
 				8320B5D711FCA4EE00607422 /* Cells */,
+				5D2B628D15EBF7FF0053361D /* JetpackSettingsViewController.xib */,
 				37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */,
 				FD0882EC1445F38C00F51302 /* WPReaderViewController.xib */,
 				E12AAB631513C4CA009D025B /* WPComOAuthController.xib */,
