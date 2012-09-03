@@ -11,6 +11,7 @@
 #import "EGORefreshTableHeaderView.h" 
 #import "WordPressAppDelegate.h"
 #import "EditSiteViewController.h"
+#import "ReachabilityUtils.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
@@ -379,6 +380,12 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction {
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        [_refreshHeaderView performSelector:@selector(egoRefreshScrollViewDataSourceDidFinishedLoading:) withObject:self.tableView afterDelay:0.1];
+        return;
+    }
+    
     [self syncItemsWithUserInteraction:userInteraction success:^{
         [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     } failure:^(NSError *error) {

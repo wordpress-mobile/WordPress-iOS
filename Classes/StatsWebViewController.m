@@ -16,6 +16,7 @@
 #import "JetpackAuthUtil.h"
 #import "JetpackSettingsViewController.h"
 #import "EditSiteViewController.h"
+#import "ReachabilityUtils.h"
 
 @interface StatsWebViewController () <SettingsViewControllerDelegate, JetpackAuthUtilDelegate> {
     BOOL loadStatsWhenViewAppears;
@@ -35,6 +36,7 @@
 - (void)clearCookies;
 - (void)showAuthFailed;
 - (void)showBlogSettings;
+- (void)handleRefreshedWithOutValidRequest:(NSNotification *)notification;
 
 @end
 
@@ -87,7 +89,11 @@ static NSString *_lastAuthedName = nil;
     
     // Bypass AFNetworking for ajax stats.
     webView.useWebViewLoading = YES;
-    [self.webView showRefreshingState];
+
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
+    if( appDelegate.connectionAvailable == YES ) {
+        [self.webView showRefreshingState];
+    }
 }
 
 
@@ -106,6 +112,8 @@ static NSString *_lastAuthedName = nil;
         loadStatsWhenViewAppears = NO;
         [self loadStats];
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRefreshedWithOutValidRequest:) name:refreshedWithOutValidRequestNotification object:nil];
 }
 
 
@@ -191,14 +199,16 @@ static NSString *_lastAuthedName = nil;
         }
         
         WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
-        if( appDelegate.connectionAvailable == NO ) {
-            UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Problem", @"")
-                                                                          message:NSLocalizedString(@"The internet connection appears to be offline.", @"")
-                                                                         delegate:nil 
-                                                                cancelButtonTitle:NSLocalizedString(@"OK", @"") 
-                                                                otherButtonTitles:NSLocalizedString(@"Retry", @""), nil];
-            [connectionFailAlert show];
-            [connectionFailAlert release];
+        if( !appDelegate.connectionAvailable ) {
+            [webView hideRefreshingState];
+            [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
+//            UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Problem", @"")
+//                                                                          message:NSLocalizedString(@"The internet connection appears to be offline.", @"")
+//                                                                         delegate:self
+//                                                                cancelButtonTitle:NSLocalizedString(@"OK", @"") 
+//                                                                otherButtonTitles:NSLocalizedString(@"Retry", @""), nil];
+//            [connectionFailAlert show];
+//            [connectionFailAlert release];
             [webView loadHTMLString:@"<html><head></head><body></body></html>" baseURL:nil];
             
         } else {
@@ -367,6 +377,19 @@ static NSString *_lastAuthedName = nil;
         return;
     }
     
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
+    if( !appDelegate.connectionAvailable ) {
+        [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self]; 
+//        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Problem", @"")
+//                                                                      message:NSLocalizedString(@"The internet connection appears to be offline.", @"")
+//                                                                     delegate:self
+//                                                            cancelButtonTitle:NSLocalizedString(@"OK", @"")
+//                                                            otherButtonTitles:NSLocalizedString(@"Retry", @""), nil];
+//        [connectionFailAlert show];
+//        [connectionFailAlert release];
+        return;
+    }
+
     if (!authed) {
         [self authStats];
         return;
@@ -380,6 +403,11 @@ static NSString *_lastAuthedName = nil;
     [mRequest addValue:userAgent forHTTPHeaderField:@"User-Agent"];
     
     [webView loadRequest:mRequest];
+}
+
+
+- (void)handleRefreshedWithOutValidRequest:(NSNotification *)notification {
+    [self initStats];
 }
 
 

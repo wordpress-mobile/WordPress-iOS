@@ -166,6 +166,8 @@ Classes/QuickPhotoViewController.h -text
 Classes/QuickPhotoViewController.m -text
 Classes/QuickPicturePreviewView.h -text
 Classes/QuickPicturePreviewView.m -text
+Classes/ReachabilityUtils.h -text
+Classes/ReachabilityUtils.m -text
 Classes/SectionInfo.h -text
 Classes/SectionInfo.m -text
 Classes/SettingsViewController.h -text

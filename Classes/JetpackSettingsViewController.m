@@ -10,6 +10,7 @@
 #import "Blog.h"
 #import "SFHFKeychainUtils.h"
 #import "WPWebViewController.h"
+#import "ReachabilityUtils.h"
 
 @interface JetpackSettingsViewController () <JetpackAuthUtilDelegate>
 
@@ -422,6 +423,12 @@
                 [tv reloadData];
                 
             } else {
+                
+                if( ![ReachabilityUtils isInternetReachable] ) {
+                    [ReachabilityUtils showAlertNoInternetConnection];
+                    return;
+                }
+                
                 if (lastTextField) {
                     [lastTextField resignFirstResponder];
                 }

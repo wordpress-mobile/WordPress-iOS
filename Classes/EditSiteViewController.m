@@ -15,6 +15,7 @@
 #import "WPWebViewController.h"
 #import "JetpackAuthUtil.h"
 #import "JetpackSettingsViewController.h"
+#import "ReachabilityUtils.h"
 
 @interface EditSiteViewController (PrivateMethods)
 
@@ -406,6 +407,13 @@
     // FIXME: add HTTP Auth support back
     // Currently on https://github.com/AFNetworking/AFNetworking/tree/experimental-authentication-challenge
     //
+    
+    if(![ReachabilityUtils isInternetReachable]){
+        [ReachabilityUtils showAlertNoInternetConnection];
+        [self validationDidFail:nil];
+        return;
+    }
+    
     NSString *uname = usernameTextField.text;
     NSString *pwd = passwordTextField.text;
     [WordPressApi guessXMLRPCURLForSite:urlToValidate success:^(NSURL *xmlrpcURL) {

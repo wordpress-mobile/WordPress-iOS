@@ -14,6 +14,7 @@
 #import "JSONKit.h"
 #import "WordPressAppDelegate.h"
 #import "UIBarButtonItem+Styled.h"
+#import "ReachabilityUtils.h"
 
 typedef void (^DismissBlock)(int buttonIndex);
 typedef void (^CancelBlock)();
@@ -212,6 +213,11 @@ typedef void (^CancelBlock)();
 
     } else {
         // authorize
+        if( ![ReachabilityUtils isInternetReachable] ) {
+            [ReachabilityUtils showAlertNoInternetConnection];
+            return;
+        }
+        
         [facebook authorize:nil];
     }
     

@@ -6,6 +6,7 @@
 
 #import "WPWebView.h"
 #import "Reachability.h"
+#import "ReachabilityUtils.h"
 #import "AFHTTPRequestOperation.h"
 #import "WordPressAppDelegate.h"
 
@@ -216,17 +217,6 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 }
 
 
-- (void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                        message:message
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil) 
-                                              otherButtonTitles:NSLocalizedString(@"Retry?", nil), nil];
-    [alertView show];
-    [alertView release];
-}
-
-
 - (void)setCurrentHTTPRequestOperation:(AFHTTPRequestOperation *)newCurrentHTTPRequestOperation {
     if (currentHTTPRequestOperation){
         if(currentHTTPRequestOperation.isExecuting) {
@@ -280,8 +270,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     }
 
     if (![[self reachability] isReachable]) {
-        [self showAlertWithTitle:NSLocalizedString(@"Network Unavailable", nil) 
-                      andMessage:NSLocalizedString(@"Please check your device's network connection.", nil)];
+        [ReachabilityUtils showAlertNoInternetConnection];
         return;
     }
     
@@ -439,8 +428,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     // Check reachibility after the delegates have been checked. Delegates may have their own reachibility check and we don't
     // want to conflict. 
     if (![[self reachability] isReachable]) {
-        [self showAlertWithTitle:NSLocalizedString(@"Network Unavailable", nil) 
-                      andMessage:NSLocalizedString(@"Please check your device's network connection.", nil)];
+        [ReachabilityUtils showAlertNoInternetConnection];
         return NO;
     }
         
@@ -476,9 +464,13 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
         return;
     }
     // No delegate so perform a default action.
-    NSString *message = NSLocalizedString(@"There was an error loading the page.", nil);
-//    message = [message stringByAppendingFormat:@"\n%@",[error description]];
-    [self showAlertWithTitle:NSLocalizedString(@"Error loading page", nil) andMessage:message];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error loading page", nil)
+                                                        message:NSLocalizedString(@"There was an error loading the page.", nil)
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil) 
+                                              otherButtonTitles:NSLocalizedString(@"Retry?", nil), nil];
+    [alertView show];
+    [alertView release];
 }
 
 
@@ -496,13 +488,21 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 #pragma mark EGORefreshTableHeaderDelegate Methods
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view {
-    if (currentRequest == nil) {
+    if (![[self reachability] isReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];        
+        [self performSelector:@selector(hideRefreshingState) withObject:nil afterDelay:0.3];
+        return;
+    }
+    
+    if (currentRequest == nil && !simulatingPullToRefresh) {
         // If we pull to refresh when a string or data was loaded then it is the resposibility of the
         // loading object to refresh the content.
         [[NSNotificationCenter defaultCenter] postNotificationName:refreshedWithOutValidRequestNotification object:self userInfo:nil];
         return;
     }
+    
     if (loading) return; //loop breaker.
+    
     [self reload];
 }
 
@@ -520,10 +520,12 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 
 // provide a way for web apps to show the native pull to refresh loading indicator
 - (void)showRefreshingState {
+    simulatingPullToRefresh = YES;
     CGPoint offset = scrollView.contentOffset;
     offset.y = - 65.0f;
     [scrollView setContentOffset:offset];
     [refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    simulatingPullToRefresh = NO;
 }
 
 

@@ -11,6 +11,7 @@
 #import "WordPressApi.h"
 #import "WordPressComApi.h"
 #import "WPWebViewController.h"
+#import "ReachabilityUtils.h"
 
 @interface WPcomLoginViewController () <UITextFieldDelegate> {
     UITableViewTextFieldCell *loginCell, *passwordCell;
@@ -231,6 +232,12 @@
 				[tv reloadData];
 			}
 			else {
+                
+                if (![ReachabilityUtils isInternetReachable]) {
+                    [ReachabilityUtils showAlertNoInternetConnection];
+                    return;
+                }
+                
 				self.buttonText = NSLocalizedString(@"Signing in...", @"");
 				
 				[NSThread sleepForTimeInterval:0.15];

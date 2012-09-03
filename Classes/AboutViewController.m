@@ -7,9 +7,11 @@
 //
 
 #import "AboutViewController.h"
+#import "ReachabilityUtils.h"
 
 @interface AboutViewController (Private) 
 - (void)dismiss;
+- (void)openURLWithString:(NSString *)path;
 @end
 
 @implementation AboutViewController
@@ -54,15 +56,23 @@
 }
 
 -(void)viewTermsOfService:(id)sender {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://wordpress.com/tos/"]];
+	[self openURLWithString:@"http://wordpress.com/tos/"];
 }
 
 -(void)viewPrivacyPolicy:(id)sender {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://automattic.com/privacy/"]];
+	[self openURLWithString:@"http://automattic.com/privacy/"];
 }
 
 -(void)viewWebsite:(id)sender {
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://automattic.com/"]];
+    [self openURLWithString:@"http://automattic.com/"];
+}
+
+- (void)openURLWithString:(NSString *)path {
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:path]];
 }
 
 @end

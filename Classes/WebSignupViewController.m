@@ -7,9 +7,29 @@
 //
 
 #import "WebSignupViewController.h"
+#import "ReachabilityUtils.h"
+
+@interface WebSignupViewController ()
+
+- (void)loadRequest;
+
+@end
 
 @implementation WebSignupViewController
+
 @synthesize webView, spinner;
+
+
+#pragma mark -
+#pragma mark Lifecycle Methods
+
+- (void)dealloc {
+    self.webView.delegate = nil;
+	[webView release];
+	[spinner release];
+    [super dealloc];
+}
+
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -24,15 +44,45 @@
 	buttonItem.customView = spinner;
 	self.navigationItem.rightBarButtonItem = buttonItem;
     [buttonItem release];
-	
+    [self loadRequest];
+}
+
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+}
+
+
+#pragma - 
+#pragma instance methods
+
+- (NSString *)getDocumentTitle {
+    //load the title from the document
+    NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"]; 
+    if ( title != nil && [[title trim] isEqualToString:@""] == false)
+        return title;
+    
+    return NSLocalizedString(@"Sign Up", @"");
+}
+
+
+- (void)loadRequest {
+    if(![ReachabilityUtils isInternetReachable]){
+        [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
+        return;
+    }
+    
 	NSURLRequest *request = [NSURLRequest requestWithURL:
-								[NSURL URLWithString:NSLocalizedString(@"http://wordpress.com/signup?ref=wp-iphone", @"")]];
+                             [NSURL URLWithString:NSLocalizedString(@"http://wordpress.com/signup?ref=wp-iphone", @"")]];
     self.webView.scalesPageToFit = YES;
 	[self.webView loadRequest:request];
 }
 
+
 #pragma --
 #pragma mark - UIWebViewDelegate
+
 - (BOOL)webView:(UIWebView *)theWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     [FileLogger log:@"%@ %@: %@://%@%@", self, NSStringFromSelector(_cmd), [[request URL] scheme], [[request URL] host], [[request URL] path]];
     
@@ -73,30 +123,15 @@
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+
+#pragma mark -
+#pragma mark AlertView delegate methods
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex > 0) {
+        [self loadRequest]; // Retry
+    }
 }
 
-
-- (NSString*) getDocumentTitle {
-    //load the title from the document
-    NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"]; 
-    if ( title != nil && [[title trim] isEqualToString:@""] == false)
-        return title;
-    
-    return NSLocalizedString(@"Sign Up", @"");
-}
-
-- (void)dealloc {
-    self.webView.delegate = nil;
-	[webView release];
-	[spinner release];
-    [super dealloc];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
 
 @end

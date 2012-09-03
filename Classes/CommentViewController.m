@@ -119,6 +119,7 @@
     
     if (self.comment) {
         [self showComment:self.comment];
+        [self reachabilityChanged:self.comment.blog.reachable];
     }
 }
 

@@ -98,7 +98,6 @@
 
 #pragma mark Error Messages
 
-#define kNoInternetErrorMessage                 @"No internet connection."
 #define kBlogExistsErrorMessage                 @"Blog '%@' already configured on this iPhone."
 
 #define PictureObjectUploadedNotificationName @"PictureObjectUploadedNotificationName"

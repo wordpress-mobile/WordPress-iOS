@@ -9,19 +9,18 @@
 #import "EditCommentViewController.h"
 #import "WPProgressHUD.h"
 #import "CommentViewController.h"
+#import "ReachabilityUtils.h"
 
 NSTimeInterval kAnimationDuration3 = 0.3f;
 
 @interface EditCommentViewController (Private)
 
-- (BOOL)isConnectedToHost;
 - (void)initiateSaveCommentReply:(id)sender;
 - (void)saveReplyBackgroundMethod:(id)sender;
 - (void)callBDMSaveCommentEdit:(SEL)selector;
 - (void)endTextEnteringButtonAction:(id)sender;
 - (void)testStringAccess;
 - (void) receivedRotate: (NSNotification*) notification;
-
 
 @end
 
@@ -285,27 +284,18 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 #pragma mark -
 #pragma mark Comment Handling Methods
 
-- (BOOL)isConnectedToHost {
-  WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    if ( appDelegate.currentBlogAvailable == NO ) {
-        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No connection to host.", @"")
-																	  message:NSLocalizedString(@"Operation is not supported now.", @"")
-																	 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-        [connectionFailAlert show];
-        [connectionFailAlert release];
-        return NO;
-    }
-	
-    return YES;
-}
-
 - (void)initiateSaveCommentReply:(id)sender {
 	[self endTextEnteringButtonAction: sender];
 	if(hasChanges == NO) {
         [commentViewController cancelView:self];
 		return;
 	}
+    
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
+    
 	self.comment.content = textView.text;
 	commentViewController.wasLastCommentPending = YES;
 	[commentViewController showComment:comment];

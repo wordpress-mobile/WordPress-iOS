@@ -15,6 +15,7 @@ extern NSString *refreshedWithOutValidRequestNotification;
     id <WPWebViewDelegate>delegate;
     NSURL *baseURLFallback;
     BOOL didSetScrollViewContentSize;
+    BOOL simulatingPullToRefresh;
 }
 
 @property(nonatomic, assign) IBOutlet id<WPWebViewDelegate> delegate;
@@ -34,7 +35,6 @@ extern NSString *refreshedWithOutValidRequestNotification;
 - (void)reload;
 - (void)stopLoading;
 - (NSString *)stringByEvaluatingJavaScriptFromString:(NSString *)script;
-- (void)showAlertWithTitle:(NSString *)title andMessage:(NSString *)message;
 - (void)showRefreshingState;
 - (void)hideRefreshingState;
 - (NSURL *)currentURL;

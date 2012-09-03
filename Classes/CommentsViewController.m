@@ -10,7 +10,7 @@
 #import "CommentTableViewCell.h"
 #import "CommentViewController.h"
 #import "WordPressAppDelegate.h"
-#import "Reachability.h"
+#import "ReachabilityUtils.h"
 #import "ReplyToCommentViewController.h"
 #import "UIColor+Helpers.h"
 #import "UIBarButtonItem+Styled.h"
@@ -222,26 +222,28 @@
 
 - (IBAction)deleteSelectedComments:(id)sender {
     [self moderateCommentsWithSelector:@selector(remove)];
-    [self removeSwipeView:NO];
 }
 
 - (IBAction)approveSelectedComments:(id)sender {
     [self moderateCommentsWithSelector:@selector(approve)];
-    [self removeSwipeView:NO];
 }
 
 - (IBAction)unapproveSelectedComments:(id)sender {
     [self moderateCommentsWithSelector:@selector(unapprove)];
-    [self removeSwipeView:NO];
 }
 
 - (IBAction)spamSelectedComments:(id)sender {
     [self moderateCommentsWithSelector:@selector(spam)];
-    [self removeSwipeView:NO];
 }
 
 - (void)moderateCommentsWithSelector:(SEL)selector {
     [FileLogger log:@"%@ %@%@", self, NSStringFromSelector(_cmd), NSStringFromSelector(selector)];
+    
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
+    
     //If the item shown in the 3rd panel was selected and the (spam|remove) action is called we need to dismiss the 3rd panel, or show another comment there.
     //Dismiss it for now.
     if( IS_IPAD && ( [@"remove" isEqualToString:NSStringFromSelector(selector)] ||  [@"spam" isEqualToString:NSStringFromSelector(selector)] ) 
@@ -258,6 +260,7 @@
     [self deselectAllComments];
     [self updateSelectedComments];
     [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self.blog];
+    [self removeSwipeView:NO];
 }
 
 - (void)updateSelectedComments {
@@ -398,6 +401,14 @@
 }
 
 - (IBAction)replyToSelectedComment:(id)sender {
+    
+    // CommentViewController disables replies when there is no internet connection.
+    // So we won't show the edit/reply screen here either.
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
+    
     Comment *selectedComment = [_selectedComments objectAtIndex:0];
 
     ReplyToCommentViewController *replyToCommentViewController = [[[ReplyToCommentViewController alloc]

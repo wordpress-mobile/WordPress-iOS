@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "WordPressAppDelegate.h"
 
-@interface WebSignupViewController : UIViewController <UIWebViewDelegate>{
+@interface WebSignupViewController : UIViewController <UIWebViewDelegate, UIAlertViewDelegate>{
 	IBOutlet UIWebView *webView;
 	UIActivityIndicatorView *spinner;
 }

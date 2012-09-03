@@ -9,12 +9,12 @@
 #import "ReplyToCommentViewController.h"
 #import "WPProgressHUD.h"
 #import "CommentViewController.h"
+#import "ReachabilityUtils.h"
 
 NSTimeInterval kAnimationDuration2 = 0.3f;
 
 @interface ReplyToCommentViewController (Private)
 
-- (BOOL)isConnectedToHost;
 - (void)initiateSaveCommentReply:(id)sender;
 - (void)saveReplyBackgroundMethod:(id)sender;
 - (void)callBDMSaveCommentReply:(SEL)selector;
@@ -306,20 +306,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 #pragma mark -
 #pragma mark Comment Handling Methods
 
-- (BOOL)isConnectedToHost {
-    WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if (appDelegate.currentBlogAvailable == NO ) {
-        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Problem", @"")
-																	  message:NSLocalizedString(@"The internet connection appears to be offline.", @"")
-																	 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-        [connectionFailAlert show];
-        [connectionFailAlert release];
-        return NO;
-    }
-	
-    return YES;
-}
-
 - (void)initiateSaveCommentReply:(id)sender {
 	//we should call endTextEnteringButtonAction here, bc if you click on reply without clicking on the 'done' btn
 	//within the keyboard, the textViewDidEndEditing is never called
@@ -335,7 +321,12 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
         [connectionFailAlert release];
 		return;
 	}
-	
+    
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
+    
     progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Sending Reply...", @"")];
     [progressAlert show];
     self.comment.content = textView.text;

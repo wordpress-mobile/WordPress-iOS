@@ -10,6 +10,7 @@
 #import "NSString+XMLExtensions.h"
 #import "WordPressComApi.h"
 #import "UIBarButtonItem+Styled.h"
+#import "ReachabilityUtils.h"
 
 @implementation AddUsersBlogsViewController
 @synthesize usersBlogs, isWPcom, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;
@@ -305,6 +306,14 @@
 }
 
 - (void)refreshBlogs {
+    
+    if(![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
+        hasCompletedGetUsersBlogs = YES; 
+        [self.tableView reloadData];
+        return;
+    }
+    
     NSURL *xmlrpc;
     NSString *username, *password;
     if (isWPcom) {
@@ -344,6 +353,7 @@
                                                                    delegate:self
                                                           cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
                                                           otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+                alertView.tag = 1;
                 [alertView show];
                 [alertView release];   
             }];
@@ -353,26 +363,29 @@
 #pragma mark UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
-	switch(buttonIndex) {
-		case 0: {
-			HelpViewController *helpViewController = [[HelpViewController alloc] init];
-						
-			if (IS_IPAD) {
-				helpViewController.isBlogSetup = YES;
-				[self.navigationController pushViewController:helpViewController animated:YES];
-			}
-			else
-				[appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
-			
-			[helpViewController release];
-			break;
-		}
-		case 1:
-			//ok
-			break;
-		default:
-			break;
-	}
+    if (buttonIndex == 0) {
+        if (alertView.tag == 1) {
+            HelpViewController *helpViewController = [[HelpViewController alloc] init];
+            
+            if (IS_IPAD) {
+                helpViewController.isBlogSetup = YES;
+                [self.navigationController pushViewController:helpViewController animated:YES];
+            }
+            else
+                [appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
+            
+            [helpViewController release];
+        }
+    } else {
+        if (alertView.tag == 1) {
+            //OK
+        } else {
+            // Retry
+            hasCompletedGetUsersBlogs = NO; 
+            [self.tableView reloadData];
+            [self performSelector:@selector(refreshBlogs) withObject:nil afterDelay:0.1]; // Short delay so tableview can redraw.
+        }
+    }
 }
 
 - (IBAction)saveSelectedBlogs:(id)sender {

@@ -9,6 +9,7 @@
 #import "WPWebViewController.h"
 #import "WordPressAppDelegate.h"
 #import "PanelNavigationConstants.h"
+#import "ReachabilityUtils.h"
 
 @class WPReaderDetailViewController;
 
@@ -281,6 +282,13 @@
 - (void)refreshWebView {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
+        self.optionsButton.enabled = NO;
+        self.refreshButton.enabled = NO;
+        return;
+    }
+    
     if (!needsLogin && self.username && self.password && ![self canIHazCookie]) {
         WPFLog(@"We have login credentials but no cookie, let's try login first");
         [self retryWithLogin];
@@ -349,9 +357,12 @@
         CGRect frame = self.loadingView.frame;
         if (loading) {
             frame.origin.y -= frame.size.height;
+            [activityIndicator startAnimating];
         } else {
             frame.origin.y += frame.size.height;
+            [activityIndicator stopAnimating];
         }
+        
         [UIView animateWithDuration:0.2
                          animations:^{self.loadingView.frame = frame;}];
     }
@@ -460,6 +471,12 @@
 }
 
 - (void)reload {
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
+        self.optionsButton.enabled = NO;
+        self.refreshButton.enabled = NO;
+        return;
+    }
     [self setLoading:YES];
     [webView reload];
 }
@@ -561,6 +578,17 @@
         hasLoadedContent = YES;
     }
 }
+
+
+#pragma mark -
+#pragma mark AlertView Delegate Methods
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if(buttonIndex > 0) {
+        [self refreshWebView];
+    }
+}
+
 
 #pragma mark - UIActionSheetDelegate
 
