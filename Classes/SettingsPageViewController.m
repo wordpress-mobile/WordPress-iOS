@@ -123,7 +123,7 @@
     
     cell.textLabel.text = [titles objectAtIndex:indexPath.row];
 
-    NSNumber *val = [values objectAtIndex:indexPath.row];
+    NSString *val = [values objectAtIndex:indexPath.row];
     if ([currentValue isEqual:val]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
