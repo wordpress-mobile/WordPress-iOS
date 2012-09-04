@@ -531,7 +531,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 
 - (void)hideRefreshingState {
     self.lastWebViewRefreshDate = [NSDate date];
-    [refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView * )scrollView];
+    [refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:scrollView];
 }
 
 
