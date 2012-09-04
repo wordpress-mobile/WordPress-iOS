@@ -8,7 +8,7 @@
 
 #import "WPWebAppViewController.h"
 #import "WordPressAppDelegate.h"
-
+#import "ReachabilityUtils.h"
 
 @implementation WPWebAppViewController
 
@@ -226,6 +226,12 @@
 #pragma mark EGORefreshTableHeaderDelegate Methods
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view {
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        [self performSelector:@selector(hideRefreshingState) withObject:nil afterDelay:0.3];
+        return;
+    }
+    
     [self.webView stringByEvaluatingJavaScriptFromString:@"WPApp.pullToRefresh();"];
 }
 
@@ -244,6 +250,11 @@
     offset.y = - 65.0f;
     [self.scrollView setContentOffset:offset];
     [_refreshHeaderView egoRefreshScrollViewDidEndDragging:self.scrollView];
+}
+
+- (void)hideRefreshingState {
+    self.lastWebViewRefreshDate = [NSDate date];
+    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.scrollView];
 }
 
 #pragma mark -

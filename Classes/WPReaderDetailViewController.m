@@ -8,6 +8,7 @@
 
 #import "WPReaderDetailViewController.h"
 #import "WPWebBridge.h"
+#import "ReachabilityUtils.h"
 
 @interface WPReaderDetailViewController ()
 
@@ -93,6 +94,11 @@
 
 - (void)loadNextItem:(id)sender
 {
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
+    
     self.currentItem = [self.delegate nextItemForDetailController:self];
     [self prepareViewForItem];
     
@@ -100,6 +106,11 @@
 
 - (void)loadPreviousItem:(id)sender
 {
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
+    
     self.currentItem = [self.delegate previousItemForDetailController:self];
     [self prepareViewForItem];
 }

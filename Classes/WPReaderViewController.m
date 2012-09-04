@@ -12,6 +12,7 @@
 #import "WPFriendFinderViewController.h"
 #import "SFHFKeychainUtils.h"
 #import "JSONKit.h"
+#import "ReachabilityUtils.h"
 
 #ifdef DEBUG
 #define kReaderRefreshThreshold 10*60 // 10min
@@ -325,6 +326,11 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 - (void)showArticleDetails:(id)item
 {
+    if(![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
+    
     NSDictionary *article = (NSDictionary *)item;
     [self.panelNavigationController popToRootViewControllerAnimated:NO];
     self.detailViewController.currentItem = [article JSONString];

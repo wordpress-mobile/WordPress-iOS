@@ -30,6 +30,8 @@
 - (void)loadURL:(NSString *)url;
 - (UIScrollView *)scrollView;
 - (void)showRefreshingState;
+- (void)hideRefreshingState;
 - (void)enablePullToRefresh;
+
 
 @end
