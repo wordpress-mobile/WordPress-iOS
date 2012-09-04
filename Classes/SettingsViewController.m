@@ -35,46 +35,48 @@
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
 #import "AboutViewController.h"
+#import "SettingsPageViewController.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,
     SettingsSectionBlogsAdd,
     SettingsSectionWpcom,
-//    SettingsSectionMedia,
+    SettingsSectionMedia,
     SettingsSectionInfo,
     
     SettingsSectionCount
 } SettingsSection;
 
 @interface SettingsViewController () <NSFetchedResultsControllerDelegate, UIActionSheetDelegate, WPcomLoginViewControllerDelegate>
+
 @property (readonly) NSFetchedResultsController *resultsController;
+@property (nonatomic, strong) NSArray *mediaSettingsArray;
+
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
 - (void)checkCloseButton;
+- (void)setupMedia;
+
 @end
 
 @implementation SettingsViewController {
     NSFetchedResultsController *_resultsController;
 }
 
-- (void)dealloc
-{
-    [_resultsController release];
+@synthesize mediaSettingsArray;
 
+#pragma mark -
+#pragma mark LifeCycle Methods
+
+- (void)dealloc {
+    [_resultsController release];
+    [mediaSettingsArray release];
+    
     [super dealloc];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Settings", @"App Settings");
@@ -89,30 +91,94 @@ typedef enum {
     
     self.tableView.backgroundView = nil;
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
+    [self setupMedia];
 }
 
-- (void)viewDidUnload
-{
+
+- (void)viewDidUnload {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super viewDidUnload];
 }
+
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self checkCloseButton];
     self.editButtonItem.enabled = ([[self.resultsController fetchedObjects] count] > 0); // Disable if we have no blogs.
+    [self.tableView reloadData];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
-#pragma mark - Custom methods
+
+#pragma mark - 
+#pragma mark Custom methods
+
+- (void)setupMedia {
+    if (mediaSettingsArray) return;
+    
+    
+    id obj1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]; 
+    id obj2 = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_api_preference"];
+    id obj3 = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"];
+    id obj4 = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_html_preference"];
+    
+    NSLog(@"%@ - %@ - %@ - %@", [obj1 class], [obj2 class], [obj3 class], [obj4 class]);
+    
+    
+    
+    
+    
+    
+
+    // Construct the media data to mimick how it would appear if a settings bundle plist was loaded
+    // into an NSDictionary
+    // Our settings bundle stored numeric values as strings so we use strings here for backward compatibility.
+    NSDictionary *imageResizeDict = [NSDictionary dictionaryWithObjectsAndKeys:@"0", @"DefaultValue", 
+                                     @"media_resize_preference", @"Key", 
+                                     NSLocalizedString(@"Image Resize", @""), @"Title", 
+                                     [NSArray arrayWithObjects:NSLocalizedString(@"Always Ask", @""), 
+                                      NSLocalizedString(@"Small", @""), 
+                                      NSLocalizedString(@"Medium", @""), 
+                                      NSLocalizedString(@"Large", @""), 
+                                      NSLocalizedString(@"Disabled", @""), nil], @"Titles", 
+                                     [NSArray arrayWithObjects:@"0",@"1",@"2",@"3",@"4", nil], @"Values",
+                                     nil];
+    
+    NSDictionary *videoApiDict = [NSDictionary dictionaryWithObjectsAndKeys:@"2", @"DefaultValue", 
+                                     @"video_api_preference", @"Key", 
+                                     NSLocalizedString(@"Video API", @""), @"Title", 
+                                     [NSArray arrayWithObjects:@"AtomPub",@"XML-RPC", nil ], @"Titles", 
+                                     [NSArray arrayWithObjects:@"1", @"2", nil], @"Values",
+                                     nil];
+    
+    NSDictionary *videoQualityDict = [NSDictionary dictionaryWithObjectsAndKeys:@"1", @"DefaultValue", 
+                                     @"video_quality_preference", @"Key", 
+                                     NSLocalizedString(@"Video Quality", @""), @"Title", 
+                                     [NSArray arrayWithObjects:NSLocalizedString(@"High", @""), 
+                                      @"640x480", 
+                                      NSLocalizedString(@"Medium", @""), 
+                                      NSLocalizedString(@"Low", @""), nil], @"Titles", 
+                                     [NSArray arrayWithObjects:@"0", @"3", @"1", @"2", nil], @"Values",
+                                     nil];
+    
+    NSDictionary *videoContentDict = [NSDictionary dictionaryWithObjectsAndKeys:@"0", @"DefaultValue", 
+                                  @"video_html_preference", @"Key", 
+                                  NSLocalizedString(@"Video Content", @""), @"Title", 
+                                  [NSArray arrayWithObjects:@"HTML 5",@"HTML 4", nil ], @"Titles", 
+                                  [NSArray arrayWithObjects:@"0", @"1", nil], @"Values",
+                                  nil];
+    self.mediaSettingsArray = [NSArray arrayWithObjects:imageResizeDict, videoApiDict, videoQualityDict, videoContentDict, nil];
+}
+
 
 - (void)dismiss {
     [self dismissModalViewControllerAnimated:YES];
 }
+
 
 - (void)checkCloseButton {
     if ([[self.resultsController fetchedObjects] count] == 0 && [WordPressComApi sharedApi].username == nil) {
@@ -126,15 +192,23 @@ typedef enum {
     }
 }
 
-#pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (void)handleExtraDebugChanged:(id)sender {
+    UISwitch *aSwitch = (UISwitch *)sender;
+    [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:@"extra_debug"];
+    [NSUserDefaults resetStandardUserDefaults];
+}
+
+
+#pragma mark - 
+#pragma mark Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return SettingsSectionCount;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case SettingsSectionBlogs:
             return [[self.resultsController fetchedObjects] count];
@@ -142,12 +216,15 @@ typedef enum {
             return 1;
         case SettingsSectionWpcom:
             return [WordPressComApi sharedApi].username ? 2 : 1;
+        case SettingsSectionMedia:
+            return [mediaSettingsArray count];
         case SettingsSectionInfo:
-            return 2;
+            return 3;
         default:
             return 0;
     }
 }
+
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SettingsSectionBlogs) {
@@ -156,18 +233,24 @@ typedef enum {
     return nil;
 }
 
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (section == SettingsSectionBlogs) {
         return NSLocalizedString(@"Blogs", @"");
     } else if (section == SettingsSectionWpcom) {
         return NSLocalizedString(@"WordPress.com", @"");
+    } else if (section == SettingsSectionBlogsAdd) {
+        return nil;    
+    } else if (section == SettingsSectionMedia) {
+        return NSLocalizedString(@"Media", @"");
     } else if (section == SettingsSectionInfo) {
         return NSLocalizedString(@"App Info", @"");
     }
     return nil;
 }
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
     cell.textLabel.textAlignment = UITextAlignmentLeft;
     cell.accessoryType = UITableViewCellAccessoryNone;
     if (indexPath.section == SettingsSectionBlogs) {
@@ -195,18 +278,42 @@ typedef enum {
             cell.textLabel.textAlignment = UITextAlignmentCenter;
             cell.textLabel.text = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
         }
+    } else if (indexPath.section == SettingsSectionMedia){
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
+        NSDictionary *dict = [mediaSettingsArray objectAtIndex:indexPath.row];
+        cell.textLabel.text = [dict objectForKey:@"Title"];
+        NSString *key = [dict objectForKey:@"Key"];
+        NSString *currentVal = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+        if (currentVal == nil) {
+            currentVal = [dict objectForKey:@"DefaultValue"];
+        }
+        
+        NSArray *values = [dict objectForKey:@"Values"];
+        NSInteger index = [values indexOfObject:currentVal];
+        
+        NSArray *titles = [dict objectForKey:@"Titles"];
+        cell.detailTextLabel.text = [titles objectAtIndex:index];
+
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
             cell.textLabel.text = NSLocalizedString(@"Version:", @"");
             NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
             cell.detailTextLabel.text = appversion;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        } else {
+        } else if (indexPath.row == 1) {
             cell.textLabel.text = NSLocalizedString(@"About", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        } else if (indexPath.row == 2) {
+            cell.textLabel.text = NSLocalizedString(@"Extra Debug", @"A lable for the settings switch to enable extra debugging and logging.");
+            UISwitch *aSwitch = [[[UISwitch alloc] initWithFrame:CGRectZero] autorelease]; // Frame is ignored.
+            [aSwitch addTarget:self action:@selector(handleExtraDebugChanged:) forControlEvents:UIControlEventValueChanged];
+            aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
+            cell.accessoryView = aSwitch;
         }
     }
 }
+
 
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath {
     NSString *cellIdentifier = @"Cell";
@@ -220,12 +327,16 @@ typedef enum {
         case SettingsSectionWpcom:
             cellIdentifier = @"WpcomCell";
             cellStyle = UITableViewCellStyleValue1;
+        case SettingsSectionMedia:
+            cellIdentifier = @"Media";
+            cellStyle = UITableViewCellStyleValue1;
         case SettingsSectionInfo:
             if (indexPath.row == 0) {
                 cellIdentifier = @"InfoCell";
                 cellStyle = UITableViewCellStyleValue1;
             }
     }
+    
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellIdentifier] autorelease];
@@ -261,39 +372,27 @@ typedef enum {
     }   
 }
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-#pragma mark - Table view delegate
+#pragma mark - 
+#pragma mark Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     if (indexPath.section == SettingsSectionBlogs) {
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
 
 		EditSiteViewController *editSiteViewController = [[[EditSiteViewController alloc] init] autorelease];
         editSiteViewController.blog = blog;
         [self.navigationController pushViewController:editSiteViewController animated:YES];
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
     } else if (indexPath.section == SettingsSectionBlogsAdd) {
         WelcomeViewController *welcomeViewController;
         welcomeViewController = [[[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil] autorelease]; 
         welcomeViewController.title = NSLocalizedString(@"Add a Blog", @"");
         [self.navigationController pushViewController:welcomeViewController animated:YES];
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
     } else if (indexPath.section == SettingsSectionWpcom) {
         if ([WordPressComApi sharedApi].username) {
             if (indexPath.row == 1) {
@@ -314,17 +413,23 @@ typedef enum {
             loginViewController.delegate = self;
             [self.navigationController pushViewController:loginViewController animated:YES];
         }
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+    } else if (indexPath.section == SettingsSectionMedia) {
+        NSDictionary *dict = [mediaSettingsArray objectAtIndex:indexPath.row];
+        SettingsPageViewController *controller = [[[SettingsPageViewController alloc] initWithDictionary:dict] autorelease];
+        [self.navigationController pushViewController:controller animated:YES];
+    
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 1) {
             AboutViewController *aboutViewController = [[[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil] autorelease]; 
             [self.navigationController pushViewController:aboutViewController animated:YES];
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
         }
     }
 }
 
-#pragma mark - NSFetchedResultsController
+
+#pragma mark - 
+#pragma mark NSFetchedResultsController
 
 - (NSFetchedResultsController *)resultsController {
     if (_resultsController) {
@@ -380,9 +485,11 @@ typedef enum {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
+            
         case NSFetchedResultsChangeDelete:
             [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
             break;
+            
         case NSFetchedResultsChangeUpdate:
             [self configureCell:[self.tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
             break;
@@ -396,13 +503,16 @@ typedef enum {
     }
 }
 
-#pragma mark - WPComLoginViewControllerDelegate
+
+#pragma mark - 
+#pragma mark WPComLoginViewControllerDelegate
 
 - (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithUsername:(NSString *)username {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
     [self.navigationController popToRootViewControllerAnimated:YES];
     [self checkCloseButton];
 }
+
 
 - (void)loginControllerDidDismiss:(WPcomLoginViewController *)loginController {
     [self.navigationController popToRootViewControllerAnimated:YES];
@@ -411,6 +521,7 @@ typedef enum {
 
 #pragma mark -
 #pragma mark Action Sheet Delegate Methods
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if(buttonIndex == 0) {
         // Sign out
@@ -419,4 +530,5 @@ typedef enum {
         [self checkCloseButton];
     }
 }
+
 @end

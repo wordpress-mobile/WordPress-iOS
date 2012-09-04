@@ -270,6 +270,7 @@
 		5D7C22B915A4FCFE00FCE1C2 /* up_dim@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7C22B515A4FCE900FCE1C2 /* up_dim@2x.png */; };
 		5D86498515A6459C00A64FB0 /* welcome_bg_pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D86498315A6459C00A64FB0 /* welcome_bg_pattern.png */; };
 		5D86498615A6459C00A64FB0 /* welcome_bg_pattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D86498415A6459C00A64FB0 /* welcome_bg_pattern@2x.png */; };
+		5D87E10C15F5120C0012C595 /* SettingsPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D87E10A15F5120C0012C595 /* SettingsPageViewController.m */; };
 		5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */; };
 		5D9832EC15A77F0700A5E783 /* toolbar_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832EA15A77ED900A5E783 /* toolbar_bg.png */; };
 		5D9832ED15A77F0700A5E783 /* toolbar_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D9832EB15A77EEF00A5E783 /* toolbar_bg@2x.png */; };
@@ -925,6 +926,8 @@
 		5D7C22B515A4FCE900FCE1C2 /* up_dim@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "up_dim@2x.png"; sourceTree = "<group>"; };
 		5D86498315A6459C00A64FB0 /* welcome_bg_pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = welcome_bg_pattern.png; sourceTree = "<group>"; };
 		5D86498415A6459C00A64FB0 /* welcome_bg_pattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "welcome_bg_pattern@2x.png"; sourceTree = "<group>"; };
+		5D87E10915F5120C0012C595 /* SettingsPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsPageViewController.h; sourceTree = "<group>"; };
+		5D87E10A15F5120C0012C595 /* SettingsPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsPageViewController.m; sourceTree = "<group>"; };
 		5D97C2F115CAF8D8009B44DD /* UINavigationController+KeyboardFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+KeyboardFix.h"; sourceTree = "<group>"; };
 		5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+KeyboardFix.m"; sourceTree = "<group>"; };
 		5D9832EA15A77ED900A5E783 /* toolbar_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_bg.png; sourceTree = "<group>"; };
@@ -1569,7 +1572,6 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				45B71DE4113EDAA100D0A33C /* Entitlements.plist */,
-				83D3DDB71215DC7900600B4B /* Settings.bundle */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -1877,11 +1879,23 @@
 		5D63449E159A4B0E00AF402F /* Deprecated */ = {
 			isa = PBXGroup;
 			children = (
+				83D3DDB71215DC7900600B4B /* Settings.bundle */,
 				8362C1C5120229BC00599347 /* AddSiteViewController-iPad.xib */,
 				CEFC8B5710057D0A0052604A /* WPProgressHUD.h */,
 				CEFC8B5810057D0A0052604A /* WPProgressHUD.m */,
 			);
 			name = Deprecated;
+			sourceTree = "<group>";
+		};
+		5D87E10D15F512380012C595 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				E1AB07AB1578D34300D6AD64 /* SettingsViewController.h */,
+				E1AB07AC1578D34300D6AD64 /* SettingsViewController.m */,
+				5D87E10915F5120C0012C595 /* SettingsPageViewController.h */,
+				5D87E10A15F5120C0012C595 /* SettingsPageViewController.m */,
+			);
+			name = Settings;
 			sourceTree = "<group>";
 		};
 		5DC1F1E015A25CB900177CD3 /* Keyboard */ = {
@@ -2176,6 +2190,7 @@
 				CCB3A03814C8DD5100D43C3F /* Reader */,
 				CC0713B315E56FDA00B60470 /* Notifications */,
 				3792259E12F6DBCC00F2176A /* Stats */,
+				5D87E10D15F512380012C595 /* Settings */,
 				AC512F800E20D28500B7DA32 /* Utils */,
 				8320B5CF11FCA3EA00607422 /* Cells */,
 				A25EBD85156E330600530E3D /* WPTableViewController.h */,
@@ -2183,8 +2198,6 @@
 				E1A38C921581879D00439E55 /* WPTableViewControllerSubclass.h */,
 				E12AAB601513C4B6009D025B /* WPComOAuthController.h */,
 				E12AAB611513C4B6009D025B /* WPComOAuthController.m */,
-				E1AB07AB1578D34300D6AD64 /* SettingsViewController.h */,
-				E1AB07AC1578D34300D6AD64 /* SettingsViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -3559,6 +3572,7 @@
 				CC0713B715E56FF600B60470 /* NotificationsViewController.m in Sources */,
 				5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */,
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
+				5D87E10C15F5120C0012C595 /* SettingsPageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

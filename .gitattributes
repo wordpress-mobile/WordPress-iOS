@@ -170,6 +170,8 @@ Classes/ReachabilityUtils.h -text
 Classes/ReachabilityUtils.m -text
 Classes/SectionInfo.h -text
 Classes/SectionInfo.m -text
+Classes/SettingsPageViewController.h -text
+Classes/SettingsPageViewController.m -text
 Classes/SettingsViewController.h -text
 Classes/SettingsViewController.m -text
 Classes/SettingsViewControllerDelegate.h -text
