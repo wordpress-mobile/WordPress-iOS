@@ -120,20 +120,6 @@ typedef enum {
 - (void)setupMedia {
     if (mediaSettingsArray) return;
     
-    
-    id obj1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]; 
-    id obj2 = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_api_preference"];
-    id obj3 = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"];
-    id obj4 = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_html_preference"];
-    
-    NSLog(@"%@ - %@ - %@ - %@", [obj1 class], [obj2 class], [obj3 class], [obj4 class]);
-    
-    
-    
-    
-    
-    
-
     // Construct the media data to mimick how it would appear if a settings bundle plist was loaded
     // into an NSDictionary
     // Our settings bundle stored numeric values as strings so we use strings here for backward compatibility.
