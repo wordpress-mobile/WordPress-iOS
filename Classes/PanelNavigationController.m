@@ -8,6 +8,7 @@
 
 #import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import "PanelNavigationController.h"
 #import "PanelNavigationConstants.h"
 #import "PanelViewWrapper.h"
@@ -100,6 +101,8 @@
     BOOL _isShowingPoppedIcon;
     BOOL _panned;
     BOOL _pushing;
+    SystemSoundID openPanelSoundID;
+    SystemSoundID closePanelSoundID;
 }
 @synthesize detailViewController = _detailViewController;
 @synthesize masterViewController = _masterViewController;
@@ -158,6 +161,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //set up audio
+    openPanelSoundID = 0, closePanelSoundID = 0;
+    NSURL *toneURLRef = [[NSBundle mainBundle] URLForResource:@"panel-open" withExtension:@"caf"];
+    AudioServicesCreateSystemSoundID((CFURLRef) toneURLRef, &openPanelSoundID);
+    toneURLRef = [[NSBundle mainBundle] URLForResource:@"panel-close" withExtension:@"caf"];
+    AudioServicesCreateSystemSoundID((CFURLRef) toneURLRef, &closePanelSoundID);
 
     self.detailView = [[[UIView alloc] init] autorelease];
     
@@ -696,6 +706,7 @@
 }
 
 - (void)showSidebarAnimated:(BOOL)animated {
+    AudioServicesPlaySystemSound(openPanelSoundID);
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:0 duration:0];
         [self disableDetailView];
@@ -704,6 +715,7 @@
 }
 
 - (void)showSidebarWithVelocity:(CGFloat)velocity {
+    AudioServicesPlaySystemSound(openPanelSoundID);
     [self disableDetailView];
     [self setStackOffset:0.f withVelocity:velocity];
 }
@@ -714,6 +726,7 @@
 }
 
 - (void)closeSidebarAnimated:(BOOL)animated {
+    AudioServicesPlaySystemSound(closePanelSoundID);
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) duration:0];
     } completion:^(BOOL finished) {
@@ -722,6 +735,7 @@
 }
 
 - (void)closeSidebarWithVelocity:(CGFloat)velocity {
+    AudioServicesPlaySystemSound(closePanelSoundID);
     [self enableDetailView];
     [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) withVelocity:velocity];
 }
@@ -929,6 +943,7 @@
     if (sender.state == UIGestureRecognizerStateEnded) {
         CGFloat velocity = [sender velocityInView:self.view].x;
         if (IS_IPAD) {
+            AudioServicesPlaySystemSound(openPanelSoundID);
             CGFloat nearestOffset = [self nearestValidOffsetWithVelocity:-velocity];
             //[self setStackOffset:nearestOffset duration:DURATION_FAST];
             [self setStackOffset:nearestOffset withVelocity:velocity];

@@ -43,6 +43,13 @@
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
+        
+        pullSoundID = 0, refreshSoundID = 0;
+        NSURL *toneURLRef = [[NSBundle mainBundle] URLForResource:@"pull-down" withExtension:@"caf"];
+        AudioServicesCreateSystemSoundID((CFURLRef) toneURLRef, &pullSoundID);
+        toneURLRef = [[NSBundle mainBundle] URLForResource:@"pull-refresh" withExtension:@"caf"];
+        AudioServicesCreateSystemSoundID((CFURLRef) toneURLRef, &refreshSoundID); 
+        
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         self.backgroundColor = [UIColor colorWithRed:246.0/255.0 green:246.0/255.0 blue:246.0/255.0 alpha:1.0];
         
@@ -136,6 +143,7 @@
 	
 	switch (aState) {
 		case EGOOPullRefreshPulling:
+            AudioServicesPlaySystemSound(pullSoundID); 
             _statusLabel.textColor = TEXT_COLOR_ACTIVE;
 			_statusLabel.text = NSLocalizedString(@"Release to refresh...", @"Release to refresh status");
 			[CATransaction begin];
@@ -227,7 +235,8 @@
 	}
 	
 	if (scrollView.contentOffset.y <= - 65.0f && !_loading) {
-		
+		AudioServicesPlaySystemSound(refreshSoundID);
+        
 		if ([_delegate respondsToSelector:@selector(egoRefreshTableHeaderDidTriggerRefresh:)]) {
 			[_delegate egoRefreshTableHeaderDidTriggerRefresh:self];
 		}

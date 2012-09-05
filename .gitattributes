@@ -848,6 +848,8 @@ nl.lproj/Localizable.strings -text svneol=unset#unset
 /page_control_blue_active@2x.png -text
 /pages.png -text
 /pages@2x.png -text
+/panel-close.caf -text
+/panel-open.caf -text
 /panel_icon.png -text
 /panel_icon@2x.png -text
 /paperclip.png -text
@@ -867,6 +869,8 @@ pl.lproj/Localizable.strings -text svneol=unset#unset
 /previous.png -text svneol=unset#unset
 /previous@2x.png -text svneol=unset#unset
 pt.lproj/Localizable.strings -text svneol=unset#unset
+/pull-down.caf -text
+/pull-refresh.caf -text
 /quickPhotoButton.png -text svneol=unset#unset
 /quickPhotoButton@2x.png -text svneol=unset#unset
 /quickPhotoButtonBackground.png -text

@@ -26,6 +26,7 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
+#import <AudioToolbox/AudioToolbox.h> 
 
 typedef enum{
 	EGOOPullRefreshPulling = 0,
@@ -43,6 +44,9 @@ typedef enum{
 	UILabel *_statusLabel;
 	CALayer *_arrowImage;
 	UIActivityIndicatorView *_activityView;
+    
+    SystemSoundID pullSoundID;
+    SystemSoundID refreshSoundID;
 }
 
 @property(nonatomic,assign) id <EGORefreshTableHeaderDelegate> delegate;
