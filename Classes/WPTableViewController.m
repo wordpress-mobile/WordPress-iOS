@@ -12,6 +12,7 @@
 #import "WordPressAppDelegate.h"
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
+#import "WPWebViewController.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
@@ -26,6 +27,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer direction:(UISwipeGestureRecognizerDirection)direction;
 - (void)swipeLeft:(UISwipeGestureRecognizer *)recognizer;
 - (void)swipeRight:(UISwipeGestureRecognizer *)recognizer;
+- (void)dismissModal:(id)sender;
+
 @end
 
 @implementation WPTableViewController {
@@ -368,7 +371,79 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     }
 }
 
+
+#pragma mark -
+#pragma mark UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
+	switch(buttonIndex) {
+		case 0: {
+            HelpViewController *helpViewController = [[[HelpViewController alloc] init] autorelease];
+            helpViewController.isBlogSetup = YES;
+            helpViewController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModal:)] autorelease];
+            // Probably should be modal
+            UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:helpViewController] autorelease];
+            if (IS_IPAD) {
+                navController.modalPresentationStyle = UIModalPresentationFormSheet;
+                navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            }
+            [self.panelNavigationController presentModalViewController:navController animated:YES];
+
+			break;
+		}
+		case 1:
+            if (alertView.tag == 30){
+                NSString *path = nil;
+                NSError *error = NULL;
+                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
+                NSString *msg = [alertView message];
+                NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
+                
+                if (rng.location == NSNotFound) {
+                    path = self.blog.url;
+                    if (![path hasPrefix:@"http"]) {
+                        path = [NSString stringWithFormat:@"http://%@", path];
+                    } else if ([self.blog isWPcom] && [path rangeOfString:@"wordpress.com"].location == NSNotFound) {
+                        path = [self.blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
+                    }
+                    path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
+                    path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
+                    
+                } else {
+                    path = [msg substringWithRange:rng];
+                }
+                
+                WPWebViewController *webViewController;
+                if ( IS_IPAD ) {
+                    webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+                } else {
+                    webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+                }
+                webViewController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModal:)] autorelease];
+                [webViewController setUrl:[NSURL URLWithString:path]];
+                [webViewController setUsername:self.blog.username];
+                [webViewController setPassword:[self.blog fetchPassword]];
+                [webViewController setWpLoginURL:[NSURL URLWithString:self.blog.loginURL]];
+                webViewController.shouldScrollToBottom = YES;
+                // Probably should be modal.
+                UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:webViewController] autorelease];
+                if (IS_IPAD) {
+                    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+                    navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                }
+                [self.panelNavigationController presentModalViewController:navController animated:YES];
+            }
+			break;
+		default:
+			break;
+	}
+}
+
 #pragma mark - Private Methods
+
+- (void)dismissModal:(id)sender {
+    [self dismissModalViewControllerAnimated:YES];
+}
 
 - (void)simulatePullToRefresh {
     if(!_refreshHeaderView) return;
@@ -389,8 +464,22 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     [self syncItemsWithUserInteraction:userInteraction success:^{
         [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     } failure:^(NSError *error) {
-        [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync", @"")];
         [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+        if (error.code == 405) {
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't sync", @"")
+                                                                message:[error localizedDescription]
+                                                               delegate:self
+                                                      cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
+                                                      otherButtonTitles:NSLocalizedString(@"Enable Now", @""), nil];
+            
+            alertView.tag = 30;
+            [alertView show];
+            [alertView release];
+            
+        } else {
+            [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync", @"")];
+        }
         if (error.code == 403 && !didPromptForCredentials) {
             // bad login/pass combination
             EditSiteViewController *controller = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];

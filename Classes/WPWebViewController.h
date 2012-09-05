@@ -36,6 +36,7 @@
 @property (nonatomic,retain) NSString *detailContent;
 @property (nonatomic,retain) NSString *detailHTML;
 @property (nonatomic,retain) NSString *readerAllItems;
+@property (nonatomic) BOOL shouldScrollToBottom;
 
 - (void) showCloseButton;
 - (IBAction) showLinkOptions;

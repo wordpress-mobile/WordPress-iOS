@@ -26,6 +26,7 @@
 - (void)handleKeyboardWillHide:(NSNotification *)notification;
 - (void)handleViewTapped;
 - (void)configureTextField:(UITextField *)textField asPassword:(BOOL)asPassword;
+- (NSString *)getURLToValidate;
 
 @end
 
@@ -353,7 +354,40 @@
 			break;
 		}
 		case 1:
-			//ok
+            if (alertView.tag == 30){
+                NSString *path = nil;
+                NSError *error = NULL;
+                NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
+                NSString *msg = [alertView message];
+                NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
+                
+                if (rng.location == NSNotFound) {
+                    path = [self getURLToValidate];
+                    path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
+                    path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
+                } else {
+                    path = [msg substringWithRange:rng];
+                }
+                
+                NSString *loginPath = [self getURLToValidate];
+                loginPath = [loginPath stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
+                loginPath = [loginPath stringByAppendingFormat:@"/wp-login.php"];
+                
+                WPWebViewController *webViewController;
+                if ( IS_IPAD ) {
+                    webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+                } else {
+                    webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+                }
+                [webViewController setUrl:[NSURL URLWithString:path]];
+                [webViewController setUsername:self.username];
+                [webViewController setPassword:self.password];
+                [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginURL]];
+                webViewController.shouldScrollToBottom = YES;
+                [self.navigationController pushViewController:webViewController animated:YES];
+            } else {
+                //OK
+            }
 			break;
 		default:
 			break;
@@ -387,8 +421,8 @@
 }
 
 
-- (void)checkURL {	
-	NSString *urlToValidate = self.url;
+- (NSString *)getURLToValidate {
+    NSString *urlToValidate = self.url;
 	
     if(![urlToValidate hasPrefix:@"http"])
         urlToValidate = [NSString stringWithFormat:@"http://%@", url];
@@ -403,6 +437,13 @@
     urlToValidate = [wpadmin stringByReplacingMatchesInString:urlToValidate options:0 range:NSMakeRange(0, [urlToValidate length]) withTemplate:@""];
     urlToValidate = [trailingslash stringByReplacingMatchesInString:urlToValidate options:0 range:NSMakeRange(0, [urlToValidate length]) withTemplate:@""];
     
+    return urlToValidate;
+}
+
+
+- (void)checkURL {
+	NSString *urlToValidate = [self getURLToValidate];
+	
     [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate];
     // FIXME: add HTTP Auth support back
     // Currently on https://github.com/AFNetworking/AFNetworking/tree/experimental-authentication-challenge
@@ -498,16 +539,29 @@
 				message = [error localizedDescription];
 			}
 
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
-																message:message
-                                                               delegate:self
-                                                      cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-                                                      otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-            if ( [error code] == NSURLErrorBadURL ) {
-                alertView.tag = 20; // take the user to the FAQ page when hit "Need Help"
+            UIAlertView *alertView = nil;
+            if ([error code] == 405) { // XMLRPC disabled.
+                alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
+                                                       message:message
+                                                      delegate:self
+                                             cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
+                                             otherButtonTitles:NSLocalizedString(@"Enable Now", @""), nil];
+
+                alertView.tag = 30;
             } else {
-                alertView.tag = 10;
+                alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
+                                                       message:message
+                                                      delegate:self
+                                             cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
+                                             otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+                
+                if ( [error code] == NSURLErrorBadURL ) {
+                    alertView.tag = 20; // take the user to the FAQ page when hit "Need Help"
+                } else {
+                    alertView.tag = 10;
+                }
             }
+            
             [alertView show];
             [alertView release];            
         }

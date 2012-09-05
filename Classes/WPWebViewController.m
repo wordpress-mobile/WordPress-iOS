@@ -32,6 +32,7 @@
 @synthesize iPadNavBar, backButton, forwardButton, refreshButton, spinnerButton, optionsButton;
 @synthesize linkOptionsActionSheet = _linkOptionsActionSheet;
 @synthesize hidesLinkOptions;
+@synthesize shouldScrollToBottom;
 
 - (void)dealloc
 {
@@ -576,6 +577,11 @@
         
         
         hasLoadedContent = YES;
+    }
+    if (shouldScrollToBottom == YES) {
+        self.shouldScrollToBottom = NO;
+        CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
+        [self.scrollView setContentOffset:bottomOffset animated:YES];
     }
 }
 
