@@ -313,14 +313,19 @@ typedef enum {
         case SettingsSectionWpcom:
             cellIdentifier = @"WpcomCell";
             cellStyle = UITableViewCellStyleValue1;
+            break;
         case SettingsSectionMedia:
             cellIdentifier = @"Media";
             cellStyle = UITableViewCellStyleValue1;
+            break;
         case SettingsSectionInfo:
             if (indexPath.row == 0) {
                 cellIdentifier = @"InfoCell";
                 cellStyle = UITableViewCellStyleValue1;
             }
+            break;
+        default:
+            break;
     }
     
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
