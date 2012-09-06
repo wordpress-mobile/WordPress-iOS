@@ -181,8 +181,15 @@
             blogURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", blog.url]];
         }
         [FileLogger log:@"Blog URL - %@", blogURL];
-        NSString *parsedHost = [NSString stringWithFormat:@"%@%@",[parsedURL host],[parsedURL path]] ;
-        NSString *blogHost = [NSString stringWithFormat:@"%@%@",[blogURL host], [blogURL path]];
+        
+        NSMutableString *parsedHost = [[[parsedURL host] mutableCopy] autorelease];
+        [parsedHost replaceOccurrencesOfString:@"www." withString:@"" options:0 range:NSMakeRange(0, [parsedHost length])];
+        parsedHost = [NSString stringWithFormat:@"%@%@",parsedHost, [parsedURL path]] ;
+        
+        NSMutableString *blogHost = [[[blogURL host] mutableCopy] autorelease];
+        [blogHost replaceOccurrencesOfString:@"www." withString:@"" options:0 range:NSMakeRange(0, [blogHost length])];
+        blogHost = [NSString stringWithFormat:@"%@%@",blogHost, [blogURL path]];
+        
         NSRange range = [parsedHost rangeOfString:blogHost];
         
         if (range.length > 0) {
