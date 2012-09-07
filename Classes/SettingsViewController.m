@@ -132,6 +132,7 @@ typedef enum {
                                       NSLocalizedString(@"Large", @""), 
                                       NSLocalizedString(@"Disabled", @""), nil], @"Titles", 
                                      [NSArray arrayWithObjects:@"0",@"1",@"2",@"3",@"4", nil], @"Values",
+                                     NSLocalizedString(@"Set default size images should be uploaded.", @""), @"Info",
                                      nil];
     
     NSDictionary *videoApiDict = [NSDictionary dictionaryWithObjectsAndKeys:@"2", @"DefaultValue", 
@@ -139,24 +140,27 @@ typedef enum {
                                      NSLocalizedString(@"Video API", @""), @"Title", 
                                      [NSArray arrayWithObjects:@"AtomPub",@"XML-RPC", nil ], @"Titles", 
                                      [NSArray arrayWithObjects:@"1", @"2", nil], @"Values",
+                                     NSLocalizedString(@"Set whether your blog uses the AtomPub format or the XML-RPC format when syncing data to the app.", @""), @"Info",
                                      nil];
     
     NSDictionary *videoQualityDict = [NSDictionary dictionaryWithObjectsAndKeys:@"1", @"DefaultValue", 
-                                     @"video_quality_preference", @"Key", 
-                                     NSLocalizedString(@"Video Quality", @""), @"Title", 
-                                     [NSArray arrayWithObjects:NSLocalizedString(@"High", @""), 
+                                      @"video_quality_preference", @"Key", 
+                                      NSLocalizedString(@"Video Quality", @""), @"Title", 
+                                      [NSArray arrayWithObjects:NSLocalizedString(@"High", @""), 
                                       @"640x480", 
                                       NSLocalizedString(@"Medium", @""), 
                                       NSLocalizedString(@"Low", @""), nil], @"Titles", 
-                                     [NSArray arrayWithObjects:@"0", @"3", @"1", @"2", nil], @"Values",
-                                     nil];
+                                      [NSArray arrayWithObjects:@"0", @"3", @"1", @"2", nil], @"Values",
+                                      NSLocalizedString(@"Choose the quality at which video should be uploaded when inserting into posts.", @""), @"Info",                                      
+                                      nil];
     
     NSDictionary *videoContentDict = [NSDictionary dictionaryWithObjectsAndKeys:@"0", @"DefaultValue", 
-                                  @"video_html_preference", @"Key", 
-                                  NSLocalizedString(@"Video Content", @""), @"Title", 
-                                  [NSArray arrayWithObjects:@"HTML 5",@"HTML 4", nil ], @"Titles", 
-                                  [NSArray arrayWithObjects:@"0", @"1", nil], @"Values",
-                                  nil];
+                                      @"video_html_preference", @"Key", 
+                                      NSLocalizedString(@"Video Content", @""), @"Title", 
+                                      [NSArray arrayWithObjects:@"HTML 5",@"HTML 4", nil ], @"Titles", 
+                                      [NSArray arrayWithObjects:@"0", @"1", nil], @"Values",
+                                      NSLocalizedString(@"Set which HTML standard video should conform to when added to a post.", @""), @"Info",
+                                      nil];
     self.mediaSettingsArray = [NSArray arrayWithObjects:imageResizeDict, videoApiDict, videoQualityDict, videoContentDict, nil];
 }
 

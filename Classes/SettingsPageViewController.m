@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSArray *values;
 @property (nonatomic, strong) NSString *defaultValue;
 @property (nonatomic, strong) NSString *currentValue;
+@property (nonatomic, strong) NSString *info;
 
 @end
 
@@ -25,6 +26,7 @@
 @synthesize values;
 @synthesize defaultValue;
 @synthesize currentValue;
+@synthesize info;
 
 #pragma mark -
 #pragma mark Lifecycle Methods
@@ -35,13 +37,14 @@
     [key release];
     [defaultValue release];
     [currentValue release];
+    [info release];
     
     [super dealloc];
 }
 
 
 // Dictionary should be a PSMultiValueSpecifier from a settings bundle's plist.
-// matching the following format. (Type is optional).
+// matching the following format. (Type & Info are optional).
 /* 
 {
     DefaultValue = 0;
@@ -62,6 +65,7 @@
                           3,
                           4
                           );
+    Info = ""
 }
 */
 
@@ -75,7 +79,8 @@
         self.values = [dictionary objectForKey:@"Values"];
         self.defaultValue = [dictionary objectForKey:@"DefaultValue"];
         self.currentValue = [[NSUserDefaults standardUserDefaults] objectForKey:key];
-
+        self.info = [dictionary objectForKey:@"Info"];
+        
         if (self.currentValue == nil) {
             self.currentValue = self.defaultValue;
         }
@@ -109,6 +114,11 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
     return [titles count];
+}
+
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    return self.info;
 }
 
 
