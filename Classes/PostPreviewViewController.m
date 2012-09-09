@@ -176,7 +176,7 @@
 			NSDate *postGMTDate = postDetailViewController.apost.date_created_gmt;
 			NSDate *laterDate = postDetailViewController.apost.date_created_gmt;//[currentGMTDate laterDate:postGMTDate];
 			
-			if(isDraft || isPending || isPrivate || isPrivateBlog || (laterDate == postGMTDate)) {
+			if(isDraft || isPending || isPrivate || isPrivateBlog || ([laterDate isEqualToDate:postGMTDate])) {
 				
 				NSString *wpLoginURL = [postDetailViewController.apost.blog loginURL];
 				NSURL *url = [NSURL URLWithString:wpLoginURL]; 
