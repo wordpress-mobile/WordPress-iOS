@@ -405,6 +405,7 @@
 		A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */; };
 		A0E293FE0E21037200C6919C /* WPAddCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */; };
 		A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A25EBD86156E330600530E3D /* WPTableViewController.m */; };
+		A2A14DED1603AA6D0005D358 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A2A14DEC1603AA6D0005D358 /* Default-568h@2x.png */; };
 		A2CDC81114C7681600091CEB /* approve.png in Resources */ = {isa = PBXBuildFile; fileRef = A2CDC80D14C7681600091CEB /* approve.png */; };
 		A2CDC81214C7681600091CEB /* approve@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A2CDC80E14C7681600091CEB /* approve@2x.png */; };
 		A2CDC81314C7681600091CEB /* unapprove.png in Resources */ = {isa = PBXBuildFile; fileRef = A2CDC80F14C7681600091CEB /* unapprove.png */; };
@@ -1105,6 +1106,7 @@
 		A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WPAddCategoryViewController.xib; sourceTree = "<group>"; };
 		A25EBD85156E330600530E3D /* WPTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewController.h; sourceTree = "<group>"; };
 		A25EBD86156E330600530E3D /* WPTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewController.m; sourceTree = "<group>"; };
+		A2A14DEC1603AA6D0005D358 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		A2CDC80D14C7681600091CEB /* approve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = approve.png; sourceTree = "<group>"; };
 		A2CDC80E14C7681600091CEB /* approve@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "approve@2x.png"; sourceTree = "<group>"; };
 		A2CDC80F14C7681600091CEB /* unapprove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unapprove.png; sourceTree = "<group>"; };
@@ -1545,6 +1547,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				A2A14DEC1603AA6D0005D358 /* Default-568h@2x.png */,
 				5D63449E159A4B0E00AF402F /* Deprecated */,
 				2FAE97050E33B21600CA8540 /* license.txt */,
 				E11F949814A3344300277D31 /* WordPressApi */,
@@ -3313,6 +3316,7 @@
 				E131D20A15D5263A009DFB23 /* CHANGELOG.md in Resources */,
 				E131D20C15D5263A009DFB23 /* README.md in Resources */,
 				5D2B629115EBF7FF0053361D /* JetpackSettingsViewController.xib in Resources */,
+				A2A14DED1603AA6D0005D358 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
