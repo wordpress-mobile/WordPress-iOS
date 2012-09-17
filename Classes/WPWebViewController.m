@@ -95,8 +95,6 @@
                                                                                action:@selector(showLinkOptions)] autorelease];
         }
         
-        //allows the toolbar to become smaller in landscape mode.
-        toolbar.autoresizingMask = toolbar.autoresizingMask | UIViewAutoresizingFlexibleHeight;
         self.navigationItem.rightBarButtonItem = optionsButton;
         
     } else {
@@ -140,7 +138,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillAppear:animated];
-        
+    
     if( self.detailContent == nil ) {
         [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
         [[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
