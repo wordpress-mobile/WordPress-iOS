@@ -104,12 +104,12 @@
     
     if (currentRequest) return;
     
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];    
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     foundMatchingBlogInAPI = NO;
     self.blog = aBlog;
     self.username = aUsername;
     self.password = aPassword;
-
+    
     NSURL *baseURL = [NSURL URLWithString:@"https://public-api.wordpress.com/"];
     
     AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:baseURL];
@@ -134,8 +134,8 @@
             [self.delegate jetpackAuthUtil:self errorValidatingCredentials:blog withError:NSLocalizedString(@"The WordPress.com username or password may be incorrect. Please check them and try again.", @"")];
         } else {
             // Some other server error.
-            [self.delegate jetpackAuthUtil:self errorValidatingCredentials:blog withError:NSLocalizedString(@"There was a server error while testing the credentials. Please try again.", @"")];            
-        }        
+            [self.delegate jetpackAuthUtil:self errorValidatingCredentials:blog withError:NSLocalizedString(@"There was a server error while testing the credentials. Please try again.", @"")];
+        }
     }];
     
     [currentRequest start];
@@ -162,7 +162,7 @@
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
 	if (self.currentNode) {
         [self.currentNode appendString:string];
-    }	
+    }
 }
 
 
@@ -174,25 +174,30 @@
         
     } else if([elementName isEqualToString:@"blog"]) {
         // We might get a miss-match due to http vs https or a trailing slash
-        // so convert the strings to urls and compare their hosts.
+        // so convert the strings to urls and compare their hosts + paths.
         NSURL *parsedURL = [NSURL URLWithString:[parsedBlog objectForKey:@"url"]];
         NSURL *blogURL = [NSURL URLWithString:blog.url];
         if (![blogURL scheme]) {
             blogURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", blog.url]];
         }
         [FileLogger log:@"Blog URL - %@", blogURL];
+        [FileLogger log:@"Parsed URL - %@", parsedURL];
         
         NSMutableString *parsedHost = [[[parsedURL host] mutableCopy] autorelease];
         [parsedHost replaceOccurrencesOfString:@"www." withString:@"" options:0 range:NSMakeRange(0, [parsedHost length])];
-        parsedHost = [NSString stringWithFormat:@"%@%@",parsedHost, [parsedURL path]] ;
+        parsedHost = [NSMutableString stringWithFormat:@"%@%@",parsedHost, [parsedURL path]];
+        if (![parsedHost hasSuffix:@"/"]) {
+            [parsedHost appendString:@"/"];
+        }
         
         NSMutableString *blogHost = [[[blogURL host] mutableCopy] autorelease];
         [blogHost replaceOccurrencesOfString:@"www." withString:@"" options:0 range:NSMakeRange(0, [blogHost length])];
-        blogHost = [NSString stringWithFormat:@"%@%@",blogHost, [blogURL path]];
+        blogHost = [NSMutableString stringWithFormat:@"%@%@",blogHost, [blogURL path]];
+        if (![blogHost hasSuffix:@"/"]) {
+            [blogHost appendString:@"/"];
+        }
         
-        NSRange range = [parsedHost rangeOfString:blogHost];
-        
-        if (range.length > 0) {
+        if ([parsedHost isEqualToString:blogHost]) {
             NSNumber *blogID = [[parsedBlog objectForKey:@"id"] numericValue];
             if ([blogID isEqualToNumber:[self.blog blogID]]) {
                 // do nothing.
