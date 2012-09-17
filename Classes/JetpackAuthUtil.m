@@ -174,25 +174,30 @@
         
     } else if([elementName isEqualToString:@"blog"]) {
         // We might get a miss-match due to http vs https or a trailing slash
-        // so convert the strings to urls and compare their hosts.
+        // so convert the strings to urls and compare their hosts + paths.
         NSURL *parsedURL = [NSURL URLWithString:[parsedBlog objectForKey:@"url"]];
         NSURL *blogURL = [NSURL URLWithString:blog.url];
         if (![blogURL scheme]) {
             blogURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", blog.url]];
         }
         [FileLogger log:@"Blog URL - %@", blogURL];
-        
+        [FileLogger log:@"Parsed URL - %@", parsedURL];
+
         NSMutableString *parsedHost = [[[parsedURL host] mutableCopy] autorelease];
         [parsedHost replaceOccurrencesOfString:@"www." withString:@"" options:0 range:NSMakeRange(0, [parsedHost length])];
-        parsedHost = [NSString stringWithFormat:@"%@%@",parsedHost, [parsedURL path]] ;
+        parsedHost = [NSMutableString stringWithFormat:@"%@%@",parsedHost, [parsedURL path]];
+        if (![parsedHost hasSuffix:@"/"]) {
+            [parsedHost appendString:@"/"];
+        }
         
         NSMutableString *blogHost = [[[blogURL host] mutableCopy] autorelease];
         [blogHost replaceOccurrencesOfString:@"www." withString:@"" options:0 range:NSMakeRange(0, [blogHost length])];
-        blogHost = [NSString stringWithFormat:@"%@%@",blogHost, [blogURL path]];
+        blogHost = [NSMutableString stringWithFormat:@"%@%@",blogHost, [blogURL path]];
+        if (![blogHost hasSuffix:@"/"]) {
+            [blogHost appendString:@"/"];
+        }
         
-        NSRange range = [parsedHost rangeOfString:blogHost];
-        
-        if (range.length > 0) {
+        if ([parsedHost isEqualToString:blogHost]) {
             NSNumber *blogID = [[parsedBlog objectForKey:@"id"] numericValue];
             if ([blogID isEqualToNumber:[self.blog blogID]]) {
                 // do nothing.
