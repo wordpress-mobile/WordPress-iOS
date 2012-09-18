@@ -1213,6 +1213,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
         }
         // If we show/hide the navigation bar, the view frame changes so the converted keyboardFrame is not valid anymore
         keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
+        // Assing this again since changing the visibility status of navigation bar changes the view frame (#1386)
+        newFrame = self.normalTextFrame;
 
         if (isShowing) {
             if (wantsFullScreen) {
