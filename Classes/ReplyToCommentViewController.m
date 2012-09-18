@@ -10,8 +10,6 @@
 #import "WPProgressHUD.h"
 #import "CommentViewController.h"
 
-NSTimeInterval kAnimationDuration2 = 0.3f;
-
 @interface ReplyToCommentViewController (Private)
 
 - (BOOL)isConnectedToHost;
@@ -19,7 +17,8 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 - (void)saveReplyBackgroundMethod:(id)sender;
 - (void)callBDMSaveCommentReply:(SEL)selector;
 - (void)endTextEnteringButtonAction:(id)sender;
-- (void)receivedRotate:(NSNotification*)notification;
+- (void)handleKeyboardDidShow:(NSNotification *)notification;
+- (void)handleKeyboardWillHide:(NSNotification *)notification;
 
 @end
 
@@ -28,13 +27,31 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 @synthesize delegate, saveButton, doneButton, comment;
 @synthesize cancelButton, label, hasChanges, textViewText, isTransitioning, isEditing;
 
+
 //TODO: Make sure to give this class a connection to commentDetails and currentIndex from CommentViewController
 
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+- (void)dealloc {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+	self.delegate = nil;
+	[saveButton release];
+	saveButton = nil;
+	[doneButton release];
+	doneButton = nil;
+	[cancelButton release];
+	cancelButton = nil;
+	self.comment = nil;
+	[textViewText release];
+	textViewText = nil;
+    
+    [super dealloc];
+}
+
+
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[super viewDidLoad];
-	//foo = [[NSString alloc] initWithString: textView.text];
 		
 	if (!saveButton) {
 	saveButton = [[UIBarButtonItem alloc] 
@@ -47,16 +64,18 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
     
 	isEditing = YES;
     self.hasChanges = NO;
-	
+    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
 }
 
 
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [super viewWillAppear:animated];
 	
-	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-	[[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(receivedRotate:) name: UIDeviceOrientationDidChangeNotification object: nil];
-
 	//foo = textView.text;//so we can compare to set hasChanges correctly
 	textViewText = [[NSString alloc] initWithString: textView.text];
 	cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelView:)];
@@ -77,41 +96,58 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 
 }
 
-- (void)viewWillDisappear: (BOOL) animated{
+
+- (void)viewWillDisappear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	[[NSNotificationCenter defaultCenter] removeObserver: self];
-	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+    [super viewWillDisappear:animated];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
 }
+
 
 - (void)viewDidUnload {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[super viewDidUnload];
 	
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
-- (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	self.delegate = nil;
-	[saveButton release];
-	saveButton = nil;
-	[doneButton release];
-	doneButton = nil;
-	[cancelButton release];
-	cancelButton = nil;
-	self.comment = nil;
-	[textViewText release];
-	textViewText = nil;
-    [super dealloc];
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
+
+
+#pragma mark -
+#pragma mark KeyboardNotification Methods
+
+- (void)handleKeyboardDidShow:(NSNotification *)notification {
+    NSDictionary *info = notification.userInfo;
+    CGRect frm = self.view.frame;
+
+    if (IS_IPHONE) {
+        CGRect keyFrame = [[info objectForKey:@"UIKeyboardBoundsUserInfoKey"] CGRectValue];
+        frm.size.height = frm.size.height - keyFrame.size.height;
+    } else {
+        CGRect keyFrame = [[info objectForKey:@"UIKeyboardFrameEndUserInfoKey"] CGRectValue];
+        CGRect rect = [self.view convertRect:keyFrame fromView:self.view.window];
+        frm.size.height = rect.origin.y;
+    }
+    
+    textView.frame = frm;
+}
+
+
+- (void)handleKeyboardWillHide:(NSNotification *)notification {
+    CGRect frm = textView.frame;
+    frm.size.height = self.view.frame.size.height;
+    textView.frame = frm;
+}
+
 
 #pragma mark -
 #pragma mark Button Override Methods
@@ -126,6 +162,7 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 		[self dismissModalViewControllerAnimated:YES];
 	}
 }
+
 
 #pragma mark -
 #pragma mark Helper Methods
@@ -144,53 +181,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	isEditing = NO;
 }
 
-- (void)setTextViewHeight:(float)height {
-	[UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:kAnimationDuration2];
-    CGRect frame = textView.frame;
-    frame.size.height = height;
-    textView.frame = frame;
-	[UIView commitAnimations];
-}
-
-/*
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if (IS_IPAD)
-		return YES;
-	else if (self.isTransitioning){
-		return (interfaceOrientation == UIInterfaceOrientationPortrait);
-	}
-    else if (isEditing)
-        return YES;
-	
-	return NO;
-}
- */
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
--(void) receivedRotate: (NSNotification*) notification
-{
-	if (isEditing) {
-		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
-			if (IS_IPAD)
-				[self setTextViewHeight:353];
-			else
-				[self setTextViewHeight:106];
-		}
-		else if (UIInterfaceOrientationIsPortrait(interfaceOrientation)){
-			if (IS_IPAD)
-				[self setTextViewHeight:504];
-			else
-				[self setTextViewHeight:200];
-		}
-	}
-}
-
 
 #pragma mark -
 #pragma mark Text View Delegate Methods
@@ -202,12 +192,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 	}
 	
 	self.isEditing = NO;
-	
-	//make the text view longer !!!! 
-	if (IS_IPAD)
-		[self setTextViewHeight:576];
-	else
-		[self setTextViewHeight:416];
 	
 	if (IS_IPAD == NO) {
 		self.navigationItem.leftBarButtonItem =
@@ -231,7 +215,6 @@ NSTimeInterval kAnimationDuration2 = 0.3f;
 		[self.navigationItem setLeftBarButtonItem:doneButton];
 	}
 	isEditing = YES;
-	[self receivedRotate:nil];
 }
 
 

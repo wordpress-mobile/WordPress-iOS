@@ -10,8 +10,6 @@
 #import "WPProgressHUD.h"
 #import "CommentViewController.h"
 
-NSTimeInterval kAnimationDuration3 = 0.3f;
-
 @interface EditCommentViewController (Private)
 
 - (BOOL)isConnectedToHost;
@@ -20,8 +18,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 - (void)callBDMSaveCommentEdit:(SEL)selector;
 - (void)endTextEnteringButtonAction:(id)sender;
 - (void)testStringAccess;
-- (void) receivedRotate: (NSNotification*) notification;
-
 
 @end
 
@@ -29,6 +25,18 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 
 @synthesize commentViewController, saveButton, doneButton, comment;
 @synthesize cancelButton, label, hasChanges, textViewText, isTransitioning, isEditing;
+
+
+- (void)dealloc {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.comment = nil;
+	[saveButton release];
+	[textViewText release];
+	//[doneButton release];
+    
+    [super dealloc];
+}
 
 
 - (void)viewDidLoad {
@@ -46,14 +54,15 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
      }
      
      self.hasChanges = NO;
- 
- }
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
+}
 
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	
-	[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-	[[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(receivedRotate:) name: UIDeviceOrientationDidChangeNotification object: nil];
+	[super viewWillAppear:animated];
 	
 	cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelView:)];
 	self.navigationItem.leftBarButtonItem = cancelButton;
@@ -66,35 +75,59 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	isEditing = YES;
 }
 
--(void) viewWillDisappear: (BOOL) animated{
+
+- (void)viewWillDisappear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	[[NSNotificationCenter defaultCenter] removeObserver: self];
-	[[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+    [super viewWillDisappear:animated];
+
 }
+
 
 - (void)didReceiveMemoryWarning {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
 }
+
 
 - (void)viewDidUnload {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
+    [super viewDidUnload];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
-- (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    self.comment = nil;
-	[saveButton release];
-	[textViewText release];
-	//[doneButton release];
-    [super dealloc];
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
+
+
+#pragma mark -
+#pragma mark KeyboardNotification Methods
+
+- (void)handleKeyboardDidShow:(NSNotification *)notification {
+    NSDictionary *info = notification.userInfo;
+    CGRect frm = self.view.frame;
+    
+    if (IS_IPHONE) {
+        CGRect keyFrame = [[info objectForKey:@"UIKeyboardBoundsUserInfoKey"] CGRectValue];
+        frm.size.height = frm.size.height - keyFrame.size.height;
+    } else {
+        CGRect keyFrame = [[info objectForKey:@"UIKeyboardFrameEndUserInfoKey"] CGRectValue];
+        CGRect rect = [self.view convertRect:keyFrame fromView:self.view.window];
+        frm.size.height = rect.origin.y;
+    }
+    
+    textView.frame = frm;
+}
+
+
+- (void)handleKeyboardWillHide:(NSNotification *)notification {
+    CGRect frm = textView.frame;
+    frm.size.height = self.view.frame.size.height;
+    textView.frame = frm;
+}
+
 
 #pragma mark -
 #pragma mark Button Override Methods
@@ -130,53 +163,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	isEditing = NO;
 }
 
-- (void)setTextViewHeight:(float)height {
-	[UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:kAnimationDuration3];
-    CGRect frame = textView.frame;
-    frame.size.height = height;
-    textView.frame = frame;
-	[UIView commitAnimations];
-}
-
-/*
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	
-	if (IS_IPAD)
-		return YES;
-	else if (self.isTransitioning){
-        self.comment.content = textView.text;
-		return (interfaceOrientation == UIInterfaceOrientationPortrait);
-	}
-    else if (isEditing) {
-        return YES;
-    }
-	
-	return NO;
-}*/
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
--(void)receivedRotate:(NSNotification *)notification {
-	if (isEditing) {
-		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
-		if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
-			if (IS_IPAD)
-				[self setTextViewHeight:353];
-			else
-				[self setTextViewHeight:106];
-		}
-		else if (UIInterfaceOrientationIsPortrait(interfaceOrientation)){
-			if (IS_IPAD)
-				[self setTextViewHeight:504];
-			else
-				[self setTextViewHeight:200];
-		}
-	}
-}
 
 #pragma mark -
 #pragma mark Text View Delegate Methods
@@ -188,11 +174,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 	}
 	
 	self.isEditing = NO;
-	
-	if (IS_IPAD)
-		[self setTextViewHeight:576];
-	else
-		[self setTextViewHeight:416];
 	
 	if (IS_IPAD == NO) {
 		self.navigationItem.leftBarButtonItem =
@@ -214,7 +195,6 @@ NSTimeInterval kAnimationDuration3 = 0.3f;
 		[self.navigationItem setLeftBarButtonItem:doneButton];
 	}
 	isEditing = YES;
-	[self receivedRotate:nil]; 
 }
 
 //replace "&nbsp" with a space @"&#160;" before Apple's broken TextView handling can do so and break things
