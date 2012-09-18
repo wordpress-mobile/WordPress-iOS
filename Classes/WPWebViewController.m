@@ -189,6 +189,17 @@
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    CGFloat height = self.navigationController.navigationBar.frame.size.height;
+    CGRect customToolbarFrame = self.toolbar.frame;
+    customToolbarFrame.size.height = height;
+    customToolbarFrame.origin.y = self.toolbar.superview.bounds.size.height - height;
+    [UIView animateWithDuration:duration animations:^{
+        self.toolbar.frame = customToolbarFrame;
+    }];
+}
+
 - (BOOL)expectsWidePanel {
     return YES;
 }
