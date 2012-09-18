@@ -325,7 +325,9 @@
     [actionSheet release];
 }
 
-- (IBAction)showPhotoPickerActionSheet:(id)sender {
+- (IBAction)showPhotoPickerActionSheet:(id)sender isFeaturedImage:(BOOL)featured{
+    
+    isPickingFeaturedImage = featured;
     if (currentActionSheet || addPopover) {
         return;
     }
@@ -349,8 +351,11 @@
 	
     actionSheet.tag = TAG_ACTIONSHEET_PHOTO;
     actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-    if (IS_IPAD) { 
-        [actionSheet showFromBarButtonItem:postDetailViewController.photoButton animated:YES];
+    if (IS_IPAD) {
+        if (isPickingFeaturedImage)
+            [actionSheet showFromBarButtonItem:postDetailViewController.settingsButton animated:YES];
+        else
+            [actionSheet showFromBarButtonItem:postDetailViewController.photoButton animated:YES];
     } else {
         [actionSheet showInView:postDetailViewController.view];
     }
@@ -579,7 +584,10 @@
 				}
 			}	
         } else {
-			barButton = postDetailViewController.photoButton;
+            if (isPickingFeaturedImage)
+                barButton = postDetailViewController.settingsButton;
+            else
+                barButton = postDetailViewController.photoButton;
             picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
         }
 		isLibraryMedia = YES;
@@ -592,7 +600,6 @@
                 }
                 addPopover.delegate = self;
             }
-            
             [addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             [[CPopoverManager instance] setCurrentPopoverController:addPopover];
 		}
@@ -1294,24 +1301,36 @@
 	imageMedia.filename = filename;
 	imageMedia.localURL = filepath;
 	imageMedia.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
-	imageMedia.mediaType = @"image";
+    if (isPickingFeaturedImage)
+        imageMedia.mediaType = @"featured";
+    else
+        imageMedia.mediaType = @"image";
 	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
 	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];
 	imageMedia.height = [NSNumber numberWithInt:theImage.size.height];
+    if (isPickingFeaturedImage)
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UploadingFeaturedImage" object:nil];
     [imageMedia uploadWithSuccess:^{
         if ([imageMedia isDeleted]) {
             // FIXME: media deleted during upload should cancel the upload. In the meantime, we'll try not to crash
             NSLog(@"Media deleted while uploading (%@)", imageMedia);
             return;
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:imageMedia];
+        if (!isPickingFeaturedImage) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:imageMedia];
+        }
+        else {
+            
+        }
         [imageMedia save];
     } failure:nil];
 	
 	isAddingMedia = NO;
 	
-	//switch to the attachment view if we're not already there
-	[postDetailViewController switchToMedia];
+	if (isPickingFeaturedImage)
+        [postDetailViewController switchToSettings];
+    else
+        [postDetailViewController switchToMedia];
 	
 	[formatter release];
     [imageMedia release];
@@ -1532,7 +1551,7 @@
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"%@ IN posts", self.postDetailViewController.apost]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"%@ IN posts AND mediaType != 'featured'", self.postDetailViewController.apost]];
     NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorDate, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];

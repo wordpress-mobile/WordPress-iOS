@@ -92,6 +92,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, retain) IBOutlet UIButton *hasLocation, *categoriesButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *photoButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *movieButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *settingsButton;
 @property (nonatomic, retain) NSArray *statuses;
 @property (nonatomic, retain) AbstractPost *apost;
 @property (nonatomic, assign) Post *post;
@@ -103,6 +104,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, retain) IBOutlet UIWebView *richEditWebView;
 @property (nonatomic, retain) UIWindow *keyboardWindow;
 @property (nonatomic, retain) UIActionSheet *currentActionSheet;
+@property (nonatomic, retain) PostSettingsViewController *postSettingsViewController;
 
 - (id)initWithPost:(AbstractPost *)aPost;
 
@@ -124,6 +126,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)insertMediaAbove:(NSNotification *)notification;
 - (void)insertMediaBelow:(NSNotification *)notification;
 - (void)removeMedia:(NSNotification *)notification;
+- (void)setFeaturedImage;
 
 - (IBAction)showAddNewCategoryView:(id)sender;
 

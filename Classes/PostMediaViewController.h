@@ -38,7 +38,7 @@ static inline double radians(double degrees) {
 	IBOutlet UIPopoverController *addPopover;
 	
 	BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet, isShowingCustomSizeAlert;
-	BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability;
+	BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability, isPickingFeaturedImage;
 	NSString *postID, *blogURL, *videoPressCheckBlogURL, *uniqueID;
     Media *currentUpload;
 	
@@ -77,7 +77,7 @@ static inline double radians(double degrees) {
 
 - (void)scaleAndRotateImage:(UIImage *)image;
 - (IBAction)showVideoPickerActionSheet:(id)sender;
-- (IBAction)showPhotoPickerActionSheet:(id)sender;
+- (IBAction)showPhotoPickerActionSheet:(id)sender isFeaturedImage: (BOOL) featured;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex;
 - (void)pickPhotoFromCamera:(id)sender;
 - (void)pickVideoFromCamera:(id)sender;

@@ -200,6 +200,10 @@
 	if ((self.permaLink != self.original.permaLink)
         && (![self.permaLink  isEqual:self.original.permaLink]))
         return YES;
+    
+    if ((self.post_thumbnail != self.original.post_thumbnail)
+        && (![self.post_thumbnail  isEqual:self.original.post_thumbnail]))
+        return YES;
 	
     if (self.hasRemote == NO) {
         return YES;
@@ -286,7 +290,11 @@
     [postParams setValueIfNotNil:self.permaLink forKey:@"permalink"];
     [postParams setValueIfNotNil:self.mt_excerpt forKey:@"mt_excerpt"];
     [postParams setValueIfNotNil:self.wp_slug forKey:@"wp_slug"];
-    [postParams setValueIfNotNil:self.post_thumbnail forKey:@"wp_featured_image"];
+    // To remove a featured image, you have to send an empty string to the API
+    if (self.post_thumbnail == nil)
+        [postParams setValue:@"" forKey:@"wp_post_thumbnail"];
+    else
+        [postParams setValue:self.post_thumbnail forKey:@"wp_post_thumbnail"];
 	
 	if (self.mt_text_more != nil && [self.mt_text_more length] > 0)
         [postParams setObject:self.mt_text_more forKey:@"mt_text_more"];

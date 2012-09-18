@@ -171,14 +171,23 @@
                     [[NSNotificationCenter defaultCenter] postNotificationName:VideoUploadSuccessful
                                                                         object:self
                                                                       userInfo:response];
-                } else {
+                } else if ([self.mediaType isEqualToString:@"image"]){ 
                     [[NSNotificationCenter defaultCenter] postNotificationName:ImageUploadSuccessful
+                                                                        object:self
+                                                                      userInfo:response];
+                } else if ([self.mediaType isEqualToString:@"featured"]){
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageUploadSuccessful
                                                                         object:self
                                                                       userInfo:response];
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 if ([self isDeleted] || self.managedObjectContext == nil)
                     return;
+                
+                if ([self.mediaType isEqualToString:@"featured"]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageUploadFailed
+                                                                        object:self];
+                }
 
                 self.remoteStatus = MediaRemoteStatusFailed;
                 [_uploadOperation release]; _uploadOperation = nil;

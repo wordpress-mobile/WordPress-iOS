@@ -25,10 +25,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize editMode, apost;
 @synthesize hasSaved, isVisible, isPublishing;
 @synthesize toolbar;
-@synthesize photoButton, movieButton;
+@synthesize photoButton, movieButton, settingsButton;
 @synthesize undoButton, redoButton;
 @synthesize currentActionSheet;
 @synthesize richEditWebView, keyboardWindow;
+@synthesize postSettingsViewController;
 
 #pragma mark -
 #pragma mark LifeCycle Methods
@@ -114,6 +115,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.hasLocation = nil;
     self.photoButton = nil;
     self.movieButton = nil;
+    self.settingsButton = nil;
     self.undoButton = nil;
     self.redoButton = nil;
     self.currentActionSheet = nil;
@@ -182,6 +184,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissAlertViewKeyboard:) name:@"DismissAlertViewKeyboard" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadFailed:) name:FeaturedImageUploadFailed object:nil];
 	
 	
     isTextViewEditing = NO;
@@ -463,7 +466,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (IBAction)addPhoto:(id)sender {
-    [postMediaViewController showPhotoPickerActionSheet:sender];
+    [postMediaViewController showPhotoPickerActionSheet:sender isFeaturedImage:NO];
 }
 
 - (IBAction)showCategories:(id)sender {
@@ -471,6 +474,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 - (IBAction)touchTextView:(id)sender {
     [textView becomeFirstResponder];
+}
+
+- (void)setFeaturedImage {
+    [postMediaViewController showPhotoPickerActionSheet:nil isFeaturedImage:YES];
 }
 
 

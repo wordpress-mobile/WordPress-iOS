@@ -49,7 +49,7 @@
 
 @dynamic geolocation, tags, postFormat;
 @dynamic categories;
-@synthesize specialType;
+@synthesize specialType, featuredImageURL;
 
 + (Post *)newPostForBlog:(Blog *)blog {
     Post *post = [[Post alloc] initWithEntity:[NSEntityDescription entityForName:@"Post"
@@ -136,7 +136,9 @@
         self.mt_text_more = nil;
     }
 	self.wp_slug		= [postInfo objectForKey:@"wp_slug"];
-	self.post_thumbnail = [postInfo objectForKey:@"featured_image"];
+	self.post_thumbnail = [[postInfo objectForKey:@"wp_post_thumbnail"] numericValue];
+    if (self.post_thumbnail != nil && [self.post_thumbnail intValue] == 0)
+        self.post_thumbnail = nil;
 	self.postFormat		= [postInfo objectForKey:@"wp_post_format"];
 	
     self.remoteStatus   = AbstractPostRemoteStatusSync;
@@ -290,6 +292,22 @@
     } else {
         [self postPostWithSuccess:success failure:failure];
     }
+}
+
+- (void)getFeaturedImageURLWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    WPFLogMethod();
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, [self.blog fetchPassword], self.post_thumbnail, nil];
+    [self.blog.api callMethod:@"wp.getMediaItem"
+                   parameters:parameters
+                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                          NSDictionary *mediaItem = (NSDictionary *)responseObject;
+                          self.featuredImageURL = [mediaItem objectForKey:@"link"];
+                          if (success) success();
+                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                          if (failure) {
+                              failure(error);
+                          }
+                      }];
 }
 
 @end

@@ -18,7 +18,7 @@
 @end
 
 @implementation PostSettingsViewController
-@synthesize postDetailViewController;
+@synthesize postDetailViewController, postFormatTableViewCell;
 
 #pragma mark -
 #pragma mark Lifecycle Methods
@@ -57,6 +57,12 @@
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showFeaturedImageUploader:) name:@"UploadingFeaturedImage" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadSucceeded:) name:FeaturedImageUploadSuccessful object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadFailed:) name:FeaturedImageUploadFailed object:nil];
     
     [tableView setBackgroundView:nil];
     [tableView setBackgroundColor:[UIColor clearColor]]; //Fix for black corners on iOS4. http://stackoverflow.com/questions/1557856/black-corners-on-uitableview-group-style
@@ -108,10 +114,50 @@
 			[locationManager startUpdatingLocation];
 		}
 	}
+    
+    featuredImageView.layer.shadowOffset = CGSizeMake(0.0, 2.0f);
+    featuredImageView.layer.shadowColor = [[UIColor blackColor] CGColor];
+    featuredImageView.layer.shadowOpacity = 0.8f;
+    featuredImageView.layer.shadowRadius = 2.0f;
+    
+    // Check if blog supports featured images
+    id supportsFeatuedImages = [postDetailViewController.post.blog getOptionValue:@"post_thumbnail"];
+    if (supportsFeatuedImages != nil) {
+        blogSupportsFeaturedImage = (BOOL)supportsFeatuedImages;
+        if (blogSupportsFeaturedImage && postDetailViewController.post.post_thumbnail != nil) {
+            // Download the current featured image
+            [featuredImageView setHidden:YES];
+            [featuredImageLabel setText:NSLocalizedString(@"Loading Featured Image", @"Loading featured image in post settings")];
+            [featuredImageLabel setHidden:NO];
+            [featuredImageSpinner setHidden:NO];
+            if (!featuredImageSpinner.isAnimating)
+                [featuredImageSpinner startAnimating];
+            [tableView reloadData];
+            
+            [postDetailViewController.post getFeaturedImageURLWithSuccess:^{
+                if (postDetailViewController.post.featuredImageURL) {
+                    NSURL *imageURL = [[NSURL alloc] initWithString:postDetailViewController.post.featuredImageURL];
+                    if (imageURL) {
+                        [featuredImageView setImageWithURL:imageURL];
+                        [featuredImageView setHidden:NO];
+                        [featuredImageSpinner stopAnimating];
+                        [featuredImageSpinner setHidden:YES];
+                        [featuredImageLabel setHidden:YES];
+                    }
+                }
+            } failure:^(NSError *error) {
+                [featuredImageView setHidden:YES];
+                [featuredImageSpinner stopAnimating];
+                [featuredImageSpinner setHidden:YES];
+                [featuredImageLabel setText:NSLocalizedString(@"Could not download Featured Image.", @"Featured image could not be downloaded for display in post settings.")];
+            }];
+        }
+    }
 }
 
 - (void)viewDidUnload {
     [super viewDidUnload];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [locationManager stopUpdatingLocation];
@@ -131,21 +177,18 @@
     visibilityTitleLabel = nil;
     postFormatTitleLabel = nil;
     passwordTextField = nil;
+    featuredImageView = nil;
+    featuredImageTableViewCell = nil;
+    featuredImageLabel = nil;
+    featuredImageLabel = nil;
+    postFormatTableViewCell = nil;
 
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];    
     [self reloadData];
 	[statusTableViewCell becomeFirstResponder];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -211,6 +254,8 @@
     NSInteger sections = 1; // Always have the status section
 	if (postDetailViewController.post) {
         sections += 1; // Post formats
+        if (blogSupportsFeaturedImage)
+            sections += 1;
         if (postDetailViewController.post.blog.geolocationEnabled) {
             sections += 1; // Geolocation
         }
@@ -223,7 +268,12 @@
 		return 3;
     } else if (section == 1) {
         return 1;
-	} else if (section == 2) {
+    } else if (section == 2 && blogSupportsFeaturedImage) {
+        if (postDetailViewController.post.post_thumbnail && !isUploadingFeaturedImage)
+            return 2;
+        else
+            return 1;
+	} else if ((section == 2 && !blogSupportsFeaturedImage) || section == 3) {
 		if (postDetailViewController.post.geolocation)
 			return 3; // Add/Update | Map | Remove
 		else
@@ -237,8 +287,10 @@
 	if (section == 0)
 		return NSLocalizedString(@"Publish", @"The grandiose Publish button in the Post Editor! Should use the same translation as core WP.");
 	else if (section == 1)
-		return nil; // Post Format
-	else if (section == 2)
+		return NSLocalizedString(@"Post Format", @"For setting the format of a post.");
+    else if ((section == 2 && blogSupportsFeaturedImage))
+		return NSLocalizedString(@"Featured Image", @"Label for the Featured Image area in post settings.");
+	else if ((section == 2 && !blogSupportsFeaturedImage) || section == 3)
 		return NSLocalizedString(@"Geolocation", @"Label for the geolocation feature (tagging posts by their physical location).");
 	else
 		return nil;
@@ -320,103 +372,164 @@
                 return postFormatTableViewCell;
             }
         }
-	case 2: // Geolocation
-		switch (indexPath.row) {
-			case 0: // Add/update location
-				if (addGeotagTableViewCell == nil) {
-					NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
-					for(id currentObject in topLevelObjects) {
-						if([currentObject isKindOfClass:[UITableViewActivityCell class]]) {
-							addGeotagTableViewCell = (UITableViewActivityCell *)[currentObject retain];
-							break;
-						}
-					}
-				}
-				if (isUpdatingLocation) {
-					addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
-					[addGeotagTableViewCell.spinner startAnimating];
-				} else {
-					[addGeotagTableViewCell.spinner stopAnimating];
-					if (postDetailViewController.post.geolocation) {
-						addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Update Location", @"Gelocation feature to update physical location.");
-					} else {
-						addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Add Location", @"Geolocation feature to add location.");
-					}
-				}
-				return addGeotagTableViewCell;
-				break;
-			case 1:
-				NSLog(@"Reloading map");
-				if (mapGeotagTableViewCell == nil)
-					mapGeotagTableViewCell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 188)];
-				if (mapView == nil)
-					mapView = [[MKMapView alloc] initWithFrame:CGRectMake(10, 0, 300, 130)];
-				[mapView removeAnnotation:annotation];
-				[annotation release];
-				annotation = [[PostAnnotation alloc] initWithCoordinate:postDetailViewController.post.geolocation.coordinate];
-				[mapView addAnnotation:annotation];
-
-				if (addressLabel == nil)
-					addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 130, 280, 30)];
-				if (coordinateLabel == nil)
-					coordinateLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 162, 280, 20)];
-
-				// Set center of map and show a region of around 200x100 meters
-				MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(postDetailViewController.post.geolocation.coordinate, 200, 100);
-				[mapView setRegion:region animated:YES];
-				if (address) {
-					addressLabel.text = address;
-				} else {
-					addressLabel.text = NSLocalizedString(@"Finding address...", @"Used for Geo-tagging posts.");
-					[self geocodeCoordinate:postDetailViewController.post.geolocation.coordinate];
-				}
-				addressLabel.font = [UIFont boldSystemFontOfSize:16];
-				addressLabel.textColor = [UIColor darkGrayColor];
-				CLLocationDegrees latitude = postDetailViewController.post.geolocation.latitude;
-				CLLocationDegrees longitude = postDetailViewController.post.geolocation.longitude;
-				int latD = trunc(fabs(latitude));
-				int latM = trunc((fabs(latitude) - latD) * 60);
-				int lonD = trunc(fabs(longitude));
-				int lonM = trunc((fabs(longitude) - lonD) * 60);
-				NSString *latDir = (latitude > 0) ? NSLocalizedString(@"North", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"South", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
-				NSString *lonDir = (longitude > 0) ? NSLocalizedString(@"East", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"West", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
-				if (latitude == 0.0) latDir = @"";
-				if (longitude == 0.0) lonDir = @"";
-
-				coordinateLabel.text = [NSString stringWithFormat:@"%i°%i' %@, %i°%i' %@",
-										latD, latM, latDir,
-										lonD, lonM, lonDir];
-//				coordinateLabel.text = [NSString stringWithFormat:@"%.6f, %.6f",
-//										postDetailViewController.post.geolocation.latitude,
-//										postDetailViewController.post.geolocation.longitude];
-				coordinateLabel.font = [UIFont italicSystemFontOfSize:13];
-				coordinateLabel.textColor = [UIColor darkGrayColor];
-				
-				[mapGeotagTableViewCell addSubview:mapView];
-				[mapGeotagTableViewCell addSubview:addressLabel];
-				[mapGeotagTableViewCell addSubview:coordinateLabel];
-
-				return mapGeotagTableViewCell;
-				break;
-			case 2:
-				if (removeGeotagTableViewCell == nil)
-					removeGeotagTableViewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RemoveGeotag"];
-				removeGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Remove Location", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
-				removeGeotagTableViewCell.textLabel.textAlignment = UITextAlignmentCenter;
-				return removeGeotagTableViewCell;
-				break;
-
-		}
+	case 2: 
+        if (blogSupportsFeaturedImage) {
+            if (!postDetailViewController.post.post_thumbnail && !isUploadingFeaturedImage) {
+                UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
+                if (activityCell == nil) {
+                    NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
+                    for(id currentObject in topLevelObjects)
+                    {
+                        if([currentObject isKindOfClass:[UITableViewActivityCell class]])
+                        {
+                            activityCell = (UITableViewActivityCell *)currentObject;
+                            break;
+                        }
+                    }
+                }
+                [activityCell.textLabel setText:@"Set Featured Image"];
+                return activityCell;
+                
+                
+            } else {
+                switch (indexPath.row) {
+                    case 0:
+                        if (featuredImageTableViewCell == nil) {
+                            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
+                            for(id currentObject in topLevelObjects) {
+                                if([currentObject isKindOfClass:[UITableViewActivityCell class]]) {
+                                    featuredImageTableViewCell = (UITableViewActivityCell *)[currentObject retain];
+                                    break;
+                                }
+                            }
+                        }
+                        return featuredImageTableViewCell;
+                        break;
+                    case 1: {
+                        UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
+                        if (activityCell == nil) {
+                            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
+                            for(id currentObject in topLevelObjects)
+                            {
+                                if([currentObject isKindOfClass:[UITableViewActivityCell class]])
+                                {
+                                    activityCell = (UITableViewActivityCell *)currentObject;
+                                    break;
+                                }
+                            }
+                        }
+                        [activityCell.textLabel setText: NSLocalizedString(@"Remove Featured Image", "Remove featured image from post")];
+                        return activityCell;
+                        break;
+                    }
+                        
+                }
+            }
+        } else {
+            return [self getGeolactionCellWithIndexPath: indexPath];
+        }
+        break;
+    case 3:
+        return [self getGeolactionCellWithIndexPath: indexPath];
+        break;
 	}
-	
-    // Configure the cell
+    
+    return nil;
+}
+
+- (UITableViewCell*) getGeolactionCellWithIndexPath: (NSIndexPath*)indexPath {
+    switch (indexPath.row) {
+        case 0: // Add/update location
+            if (addGeotagTableViewCell == nil) {
+                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
+                for(id currentObject in topLevelObjects) {
+                    if([currentObject isKindOfClass:[UITableViewActivityCell class]]) {
+                        addGeotagTableViewCell = (UITableViewActivityCell *)[currentObject retain];
+                        break;
+                    }
+                }
+            }
+            if (isUpdatingLocation) {
+                addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
+                [addGeotagTableViewCell.spinner startAnimating];
+            } else {
+                [addGeotagTableViewCell.spinner stopAnimating];
+                if (postDetailViewController.post.geolocation) {
+                    addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Update Location", @"Gelocation feature to update physical location.");
+                } else {
+                    addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Add Location", @"Geolocation feature to add location.");
+                }
+            }
+            return addGeotagTableViewCell;
+            break;
+        case 1:
+            NSLog(@"Reloading map");
+            if (mapGeotagTableViewCell == nil)
+                mapGeotagTableViewCell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 188)];
+            if (mapView == nil)
+                mapView = [[MKMapView alloc] initWithFrame:CGRectMake(10, 0, 300, 130)];
+            [mapView removeAnnotation:annotation];
+            [annotation release];
+            annotation = [[PostAnnotation alloc] initWithCoordinate:postDetailViewController.post.geolocation.coordinate];
+            [mapView addAnnotation:annotation];
+            
+            if (addressLabel == nil)
+                addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 130, 280, 30)];
+            if (coordinateLabel == nil)
+                coordinateLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 162, 280, 20)];
+            
+            // Set center of map and show a region of around 200x100 meters
+            MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(postDetailViewController.post.geolocation.coordinate, 200, 100);
+            [mapView setRegion:region animated:YES];
+            if (address) {
+                addressLabel.text = address;
+            } else {
+                addressLabel.text = NSLocalizedString(@"Finding address...", @"Used for Geo-tagging posts.");
+                [self geocodeCoordinate:postDetailViewController.post.geolocation.coordinate];
+            }
+            addressLabel.font = [UIFont boldSystemFontOfSize:16];
+            addressLabel.textColor = [UIColor darkGrayColor];
+            CLLocationDegrees latitude = postDetailViewController.post.geolocation.latitude;
+            CLLocationDegrees longitude = postDetailViewController.post.geolocation.longitude;
+            int latD = trunc(fabs(latitude));
+            int latM = trunc((fabs(latitude) - latD) * 60);
+            int lonD = trunc(fabs(longitude));
+            int lonM = trunc((fabs(longitude) - lonD) * 60);
+            NSString *latDir = (latitude > 0) ? NSLocalizedString(@"North", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"South", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
+            NSString *lonDir = (longitude > 0) ? NSLocalizedString(@"East", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"West", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
+            if (latitude == 0.0) latDir = @"";
+            if (longitude == 0.0) lonDir = @"";
+            
+            coordinateLabel.text = [NSString stringWithFormat:@"%i°%i' %@, %i°%i' %@",
+                                    latD, latM, latDir,
+                                    lonD, lonM, lonDir];
+            //				coordinateLabel.text = [NSString stringWithFormat:@"%.6f, %.6f",
+            //										postDetailViewController.post.geolocation.latitude,
+            //										postDetailViewController.post.geolocation.longitude];
+            coordinateLabel.font = [UIFont italicSystemFontOfSize:13];
+            coordinateLabel.textColor = [UIColor darkGrayColor];
+            
+            [mapGeotagTableViewCell addSubview:mapView];
+            [mapGeotagTableViewCell addSubview:addressLabel];
+            [mapGeotagTableViewCell addSubview:coordinateLabel];
+            
+            return mapGeotagTableViewCell;
+            break;
+        case 2:
+            if (removeGeotagTableViewCell == nil)
+                removeGeotagTableViewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RemoveGeotag"];
+            removeGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Remove Location", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
+            removeGeotagTableViewCell.textLabel.textAlignment = UITextAlignmentCenter;
+            return removeGeotagTableViewCell;
+            break;
+    }
     return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ((indexPath.section == 0) && (indexPath.row == 1) && (postDetailViewController.apost.password))
         return 88.f;
-    else if ((indexPath.section == 2) && (indexPath.row == 1))
+    else if ((!blogSupportsFeaturedImage && (indexPath.section == 2) && (indexPath.row == 1)) || (blogSupportsFeaturedImage && (postDetailViewController.post.post_thumbnail || isUploadingFeaturedImage) && indexPath.section == 2 && indexPath.row == 0))
 		return 188.0f;
 	else
         return 44.0f;
@@ -469,29 +582,88 @@
             break;
         }
 		case 2:
-			switch (indexPath.row) {
-				case 0:
-					if (!isUpdatingLocation) {
-						// Add or replace geotag
-						isUpdatingLocation = YES;
-						[locationManager startUpdatingLocation];
-					}
-					break;
-				case 2:
-					if (isUpdatingLocation) {
-						// Cancel update
-						isUpdatingLocation = NO;
-						[locationManager stopUpdatingLocation];
-					}
-					postDetailViewController.post.geolocation = nil;
-					postDetailViewController.hasLocation.enabled = NO;
+            if (blogSupportsFeaturedImage) {
+                switch (indexPath.row) {
+                    case 0:
+                        if (!postDetailViewController.post.post_thumbnail) {
+                            [postDetailViewController setFeaturedImage];
+                        }
+                        break;
+                    case 1:
+                        
+                        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Remove this Featured Image?", @"Prompt when removing a featured image from a post") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", "Cancel a prompt") destructiveButtonTitle:NSLocalizedString(@"Remove", @"Remove an image/posts/etc") otherButtonTitles:nil];
+                        [actionSheet showInView:self.view];
+                        break;
+                        
+                }
+            } else {
+                switch (indexPath.row) {
+                    case 0:
+                        if (!isUpdatingLocation) {
+                            // Add or replace geotag
+                            isUpdatingLocation = YES;
+                            [locationManager startUpdatingLocation];
+                        }
+                        break;
+                    case 2:
+                        if (isUpdatingLocation) {
+                            // Cancel update
+                            isUpdatingLocation = NO;
+                            [locationManager stopUpdatingLocation];
+                        }
+                        postDetailViewController.post.geolocation = nil;
+                        postDetailViewController.hasLocation.enabled = NO;
+                        
+                        break;
 					
-					break;
-					
-			}
-			[tableView reloadData];
+                }
+                [tableView reloadData];
+            }
 	}
     [atableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+}
+
+- (void)featuredImageUploadFailed: (NSNotification *)notificationInfo {
+    isUploadingFeaturedImage = NO;
+    
+}
+
+- (void)featuredImageUploadSucceeded: (NSNotification *)notificationInfo {
+    isUploadingFeaturedImage = NO;
+    Media *media = (Media *)[notificationInfo object];
+    if (media) {
+        [featuredImageSpinner stopAnimating];
+        [featuredImageSpinner setHidden:YES];
+        [featuredImageLabel setHidden:YES];
+        [featuredImageView setHidden:NO];
+        self.postDetailViewController.post.post_thumbnail = media.mediaID;
+        [featuredImageView setImage:[UIImage imageWithContentsOfFile:media.localURL]];
+    } else {
+        //reset buttons
+    }
+    [tableView reloadData];
+}
+
+- (void)showFeaturedImageUploader:(NSNotification *)notificationInfo {
+    isUploadingFeaturedImage = YES;
+    [featuredImageView setHidden:YES];
+    [featuredImageLabel setHidden:NO];
+    [featuredImageLabel setText:NSLocalizedString(@"Uploading Image", @"Uploading a featured image in post settings")];
+    [featuredImageSpinner setHidden:NO];
+    if (!featuredImageSpinner.isAnimating)
+        [featuredImageSpinner startAnimating];
+    [tableView reloadData];
+}
+
+#pragma mark -
+#pragma mark UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        postDetailViewController.post.post_thumbnail = nil;
+        [postDetailViewController refreshButtons];
+        [tableView reloadData];
+    }
+    
 }
 
 #pragma mark -

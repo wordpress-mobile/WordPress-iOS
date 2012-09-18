@@ -25,6 +25,7 @@
 @property (nonatomic, retain) NSString * postFormat;
 @property (nonatomic, retain) NSString * postFormatText;
 @property (nonatomic, retain) NSMutableSet * categories;
+@property (nonatomic, retain) NSString *featuredImageURL;
 
 /**
  A tag for specific post workflows. Only QuickPhoto for now.
@@ -79,5 +80,8 @@
  Uploads a new post or changes to an edited post
  */
 - (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+- (void)getFeaturedImageURLWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
 
 @end

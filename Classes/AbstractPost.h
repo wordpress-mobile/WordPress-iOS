@@ -77,5 +77,4 @@ typedef enum {
 
 - (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-
 @end

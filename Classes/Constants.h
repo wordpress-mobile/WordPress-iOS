@@ -105,6 +105,8 @@
 #define VideoUploadChunk @"VideoUploadChunk"
 #define ImageUploadSuccessful @"ImageUploadSuccessful"
 #define ImageUploadFailed @"ImageUploadFailed"
+#define FeaturedImageUploadSuccessful @"FeaturedImageUploadSuccessful"
+#define FeaturedImageUploadFailed @"FeaturedImageUploadFailed"
 #define VideoUploadSuccessful @"VideoUploadSuccessful"
 #define VideoUploadFailed @"VideoUploadFailed"
 #define WPNewCategoryCreatedAndUpdatedInBlogNotificationName @"WPNewCategoryCreatedAndUpdatedInBlog"

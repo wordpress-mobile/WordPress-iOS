@@ -5,12 +5,13 @@
 #import "EditPostViewController.h"
 #import "CPopoverManager.h"
 #import "PostAnnotation.h"
+#import "UIImageView+AFNetworking.h"
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
 #define kOFFSET_FOR_KEYBOARD                    150.0
 
 @class EditPostViewController;
-@interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, MKReverseGeocoderDelegate> {
+@interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, MKReverseGeocoderDelegate, UIActionSheetDelegate> {
     IBOutlet UITableView *tableView;
     IBOutlet UITableViewCell *statusTableViewCell;
     IBOutlet UITableViewCell *visibilityTableViewCell;
@@ -30,7 +31,7 @@
     UIActionSheet *actionSheet;
     UIDatePicker *datePickerView;
     UIPopoverController *popover;
-    BOOL isShowingKeyboard;
+    BOOL isShowingKeyboard, blogSupportsFeaturedImage;
 
 	/* Geotagging */
 	CLLocationManager *locationManager;
@@ -43,13 +44,20 @@
 	IBOutlet UILabel *coordinateLabel;
 	PostAnnotation *annotation;
 	NSString *address;
-	BOOL isUpdatingLocation;
-    IBOutlet UILabel *visibilityTitleLabel, *statusTitleLabel, *postFormatTitleLabel;
+	BOOL isUpdatingLocation, isUploadingFeaturedImage;
+    IBOutlet UILabel *visibilityTitleLabel, *statusTitleLabel, *postFormatTitleLabel, *featuredImageLabel;
+    IBOutlet UIImageView *featuredImageView;
+    IBOutlet UITableViewCell *featuredImageTableViewCell;
+    IBOutlet UIActivityIndicatorView *featuredImageSpinner;
 }
 
 @property (nonatomic, assign) EditPostViewController *postDetailViewController;
+@property (nonatomic, retain) IBOutlet UITableViewCell *postFormatTableViewCell;
 
 - (void)reloadData;
 - (void)endEditingAction:(id)sender;
-
+- (UITableViewCell*) getGeolactionCellWithIndexPath: (NSIndexPath*)indexPath;
+- (void)featuredImageUploadFailed: (NSNotification *)notificationInfo;
+- (void)featuredImageUploadSucceeded: (NSNotification *)notificationInfo;
+- (void)showFeaturedImageUploader: (NSNotification *)notificationInfo;
 @end
