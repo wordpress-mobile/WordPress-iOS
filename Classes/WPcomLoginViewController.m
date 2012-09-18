@@ -50,6 +50,7 @@
     [super viewDidLoad];
 
     self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern"]];
+    self.tableView.backgroundView = nil;
     
     self.wpComApi = [WordPressComApi sharedApi];
 	self.footerText = @" ";
