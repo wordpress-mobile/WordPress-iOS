@@ -472,17 +472,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 
 - (CGRect)normalTextFrame {
-    if (IS_IPAD)
+    if (IS_IPAD) {
         if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
             || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-            return CGRectMake(0, 143, 768, 517);
+            return CGRectMake(0, 143, self.view.bounds.size.width, 517);
         else // Portrait
-            return CGRectMake(0, 143, 768, 753);
-		else if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-				 || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-			return CGRectMake(0, 136, 480, 236);
+            return CGRectMake(0, 143, self.view.bounds.size.width, 753);
+    } else {
+        CGFloat y = 136.f;
+        CGFloat height = self.toolbar.frame.origin.y - y;
+        if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+            || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
+			return CGRectMake(0, y, self.view.bounds.size.width, height);
 		else // Portrait
-			return CGRectMake(0, 136, 320, 236);
+			return CGRectMake(0, y, self.view.bounds.size.width, height);
+    }
 }
 
 
