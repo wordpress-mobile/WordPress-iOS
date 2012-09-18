@@ -206,6 +206,13 @@
     if (active) {
         self.frame = self.superview.bounds;
         selectorImageView.transform = CGAffineTransformMakeRotation(M_PI);
+        
+        // Expand selectorViewController frame to fill the rest of the view
+        CGRect listFrame = self.frame;
+        listFrame.origin.y = normalFrame.size.height;
+        listFrame.size.height = self.frame.size.height - listFrame.origin.y;
+        selectorViewController.view.frame = listFrame;
+        
     } else {
         self.frame = normalFrame;
         selectorImageView.transform = CGAffineTransformMakeRotation(0);
