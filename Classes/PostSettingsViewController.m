@@ -136,7 +136,7 @@
             
             [postDetailViewController.post getFeaturedImageURLWithSuccess:^{
                 if (postDetailViewController.post.featuredImageURL) {
-                    NSURL *imageURL = [[NSURL alloc] initWithString:postDetailViewController.post.featuredImageURL];
+                    NSURL *imageURL = [[[NSURL alloc] initWithString:postDetailViewController.post.featuredImageURL] autorelease];
                     if (imageURL) {
                         [featuredImageView setImageWithURL:imageURL];
                         [featuredImageView setHidden:NO];
