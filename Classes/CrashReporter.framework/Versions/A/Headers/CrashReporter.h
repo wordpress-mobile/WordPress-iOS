@@ -32,6 +32,10 @@
 #import <AvailabilityMacros.h>
 #endif
 
+// This must be included before any other PLCrashReporter includes, as
+// it redefines symbol names
+#import "PLCrashReporterNamespace.h"
+
 #import "PLCrashReporter.h"
 #import "PLCrashReport.h"
 #import "PLCrashReportTextFormatter.h"
