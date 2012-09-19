@@ -107,16 +107,12 @@
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification {
     NSDictionary *info = notification.userInfo;
-    CGRect frm = self.view.frame;
     
-    if (IS_IPHONE) {
-        CGRect keyFrame = [[info objectForKey:@"UIKeyboardBoundsUserInfoKey"] CGRectValue];
-        frm.size.height = frm.size.height - keyFrame.size.height;
-    } else {
-        CGRect keyFrame = [[info objectForKey:@"UIKeyboardFrameEndUserInfoKey"] CGRectValue];
-        CGRect rect = [self.view convertRect:keyFrame fromView:self.view.window];
-        frm.size.height = rect.origin.y;
-    }
+    CGRect keyFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect rect = [self.view convertRect:keyFrame fromView:self.view.window];
+    
+    CGRect frm = self.view.frame;
+    frm.size.height = rect.origin.y;
     
     textView.frame = frm;
 }
