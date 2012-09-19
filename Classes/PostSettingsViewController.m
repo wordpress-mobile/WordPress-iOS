@@ -115,10 +115,10 @@
 		}
 	}
     
-    featuredImageView.layer.shadowOffset = CGSizeMake(0.0, 2.0f);
+    featuredImageView.layer.shadowOffset = CGSizeMake(0.0, 1.0f);
     featuredImageView.layer.shadowColor = [[UIColor blackColor] CGColor];
-    featuredImageView.layer.shadowOpacity = 0.8f;
-    featuredImageView.layer.shadowRadius = 2.0f;
+    featuredImageView.layer.shadowOpacity = 0.5f;
+    featuredImageView.layer.shadowRadius = 1.0f;
     
     // Check if blog supports featured images
     id supportsFeatuedImages = [postDetailViewController.post.blog getOptionValue:@"post_thumbnail"];
