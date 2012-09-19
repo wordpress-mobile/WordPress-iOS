@@ -40,20 +40,14 @@ NSString *CrashFilePath();
 - (void)viewWillDisappear:(BOOL)animated {
 	[[PLCrashReporter sharedReporter] purgePendingCrashReport];
     [[NSFileManager defaultManager] removeItemAtPath:CrashFilePath() error:nil];
-
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    appDelegate.isPortraitOrientationOnly = NO;
     [super viewWillDisappear:animated];
 }
 
-
-- (void)viewWillAppear:(BOOL)animated {
-    // For iOS6 rotation.
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+- (NSUInteger)supportedInterfaceOrientations {
     if (IS_IPHONE) {
-        appDelegate.isPortraitOrientationOnly = YES;
+        return UIInterfaceOrientationMaskPortrait;
     }
-    [super viewWillAppear:animated];
+    return UIInterfaceOrientationMaskAll;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

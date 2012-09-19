@@ -263,6 +263,7 @@
 		5D2B629015EBF7FF0053361D /* JetpackSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B628C15EBF7FF0053361D /* JetpackSettingsViewController.m */; };
 		5D2B629115EBF7FF0053361D /* JetpackSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D2B628D15EBF7FF0053361D /* JetpackSettingsViewController.xib */; };
 		5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */; };
+		5D48D040160A679700FC4C63 /* UINavigationController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D48D03F160A679700FC4C63 /* UINavigationController+Rotation.m */; };
 		5D7C22B615A4FCFE00FCE1C2 /* down_dim.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7C22B215A4FCC200FCE1C2 /* down_dim.png */; };
 		5D7C22B715A4FCFE00FCE1C2 /* down_dim@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7C22B315A4FCCE00FCE1C2 /* down_dim@2x.png */; };
 		5D7C22B815A4FCFE00FCE1C2 /* up_dim.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7C22B415A4FCDE00FCE1C2 /* up_dim.png */; };
@@ -913,6 +914,8 @@
 		5D2B628E15EBF7FF0053361D /* SettingsViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewControllerDelegate.h; sourceTree = "<group>"; };
 		5D2B80CF1592447200161F6E /* QuickPhotoButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickPhotoButtonView.h; sourceTree = "<group>"; };
 		5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPhotoButtonView.m; sourceTree = "<group>"; };
+		5D48D03E160A679700FC4C63 /* UINavigationController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Rotation.h"; sourceTree = "<group>"; };
+		5D48D03F160A679700FC4C63 /* UINavigationController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Rotation.m"; sourceTree = "<group>"; };
 		5D7C22B215A4FCC200FCE1C2 /* down_dim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down_dim.png; sourceTree = "<group>"; };
 		5D7C22B315A4FCCE00FCE1C2 /* down_dim@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down_dim@2x.png"; sourceTree = "<group>"; };
 		5D7C22B415A4FCDE00FCE1C2 /* up_dim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up_dim.png; sourceTree = "<group>"; };
@@ -2442,6 +2445,8 @@
 				FD75DDAC15B021C80043F12C /* UIViewController+Rotation.m */,
 				5D97C2F115CAF8D8009B44DD /* UINavigationController+KeyboardFix.h */,
 				5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */,
+				5D48D03E160A679700FC4C63 /* UINavigationController+Rotation.h */,
+				5D48D03F160A679700FC4C63 /* UINavigationController+Rotation.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -3523,6 +3528,7 @@
 				E131D20B15D5263A009DFB23 /* JSONKit.m in Sources */,
 				5D2B628F15EBF7FF0053361D /* JetpackAuthUtil.m in Sources */,
 				5D2B629015EBF7FF0053361D /* JetpackSettingsViewController.m in Sources */,
+				5D48D040160A679700FC4C63 /* UINavigationController+Rotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

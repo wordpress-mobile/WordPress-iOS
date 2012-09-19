@@ -60,7 +60,6 @@
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) Facebook *facebook;
 @property (nonatomic, retain) PanelNavigationController *panelNavigationController;
-@property (nonatomic) BOOL isPortraitOrientationOnly;
 
 //Connection Reachability variables
 @property (nonatomic, retain) Reachability *internetReachability, *wpcomReachability, *currentBlogReachability;

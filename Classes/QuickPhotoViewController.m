@@ -134,22 +134,14 @@
     self.popController = nil;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    // For iOS6 rotation.
+- (NSUInteger)supportedInterfaceOrientations {
     if (IS_IPHONE) {
-        appDelegate.isPortraitOrientationOnly = YES;
+        return UIInterfaceOrientationMaskPortrait;
     }
-    [super viewWillAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    // For iOS6 rotation.
-    appDelegate.isPortraitOrientationOnly = NO;
-    [super viewWillDisappear:animated];
+    return UIInterfaceOrientationMaskAll;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-
     if (IS_IPAD || interfaceOrientation == UIDeviceOrientationPortrait) 
         return YES;
     else 
