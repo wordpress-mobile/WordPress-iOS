@@ -29,10 +29,16 @@
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)] autorelease];
 }
 
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+}
+
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     if( IS_IPHONE ) {
-        if ( YES == UIInterfaceOrientationIsLandscape(interfaceOrientation) ) {
+        if ( YES == UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ) {
             self.logoView.hidden = YES;
             CGRect frame = buttonsView.frame;
             frame.origin.y = -20.0f;
@@ -44,8 +50,8 @@
             self.buttonsView.frame = frame;
         }
     }
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
+
 
 #pragma mark - Custom methods
 

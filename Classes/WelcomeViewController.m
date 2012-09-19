@@ -95,12 +95,19 @@
         isFirstRun = YES;
         [self.navigationController setNavigationBarHidden:YES animated:animated];
     }
+    
+    if (IS_IPHONE && [Blog countWithContext:[WordPressAppDelegate sharedWordPressApp].managedObjectContext] == 0) {
+        appDelegate.isPortraitOrientationOnly = YES;
+    }
+    [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:NO animated:animated];
+    
+    appDelegate.isPortraitOrientationOnly = NO;
+    [super viewWillDisappear:animated];
 }
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

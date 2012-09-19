@@ -37,6 +37,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
 @synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
 @synthesize facebook;
 @synthesize panelNavigationController;
+@synthesize isPortraitOrientationOnly;
 
 #pragma mark -
 #pragma mark Class Methods
@@ -400,6 +401,15 @@ static WordPressAppDelegate *wordPressApp = NULL;
 	//but seems that the notification is never sent.
 	//we are using a custom notification
 	[[NSNotificationCenter defaultCenter] postNotificationName:DidChangeStatusBarFrame object:nil];
+}
+
+
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    if (IS_IPAD){
+        return  UIInterfaceOrientationMaskAll;
+    } else {
+        return (isPortraitOrientationOnly) ? UIInterfaceOrientationMaskPortrait : UIInterfaceOrientationMaskAllButUpsideDown;
+    }
 }
 
 
