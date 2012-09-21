@@ -376,9 +376,11 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
                               [self.username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                               [self.password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                               [self.url.absoluteString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     loginRequest.HTTPBody = [request_body dataUsingEncoding:NSUTF8StringEncoding];
     loginRequest.HTTPMethod = @"POST";
     [loginRequest setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
+    [loginRequest setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
     [loginRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
     
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:loginRequest delegate:nil];
