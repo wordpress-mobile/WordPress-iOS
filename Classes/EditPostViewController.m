@@ -521,7 +521,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         
         for (UIWindow *testWindow in [[UIApplication sharedApplication] windows]) {
             if (![[testWindow class] isEqual:[UIWindow class]]) {
-                keyboardWindow = testWindow;
+                self.keyboardWindow = testWindow;
                 break;
             }
         }
