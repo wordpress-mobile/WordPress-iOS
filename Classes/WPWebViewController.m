@@ -200,8 +200,13 @@
     CGRect customToolbarFrame = self.toolbar.frame;
     customToolbarFrame.size.height = height;
     customToolbarFrame.origin.y = self.toolbar.superview.bounds.size.height - height;
+        
+    CGRect webFrame = self.webView.frame;
+    webFrame.size.height = customToolbarFrame.origin.y;
+    
     [UIView animateWithDuration:duration animations:^{
         self.toolbar.frame = customToolbarFrame;
+        self.webView.frame = webFrame;
     }];
 }
 

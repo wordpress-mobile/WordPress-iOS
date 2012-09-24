@@ -226,7 +226,9 @@ static WordPressAppDelegate *wordPressApp = NULL;
     
     SidebarViewController *sidebarViewController = [[[SidebarViewController alloc] init] autorelease];
     
-    window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    CGRect bounds = [[UIScreen mainScreen] bounds];
+    [window setFrame:bounds];
+    [window setBounds:bounds]; // for good measure.
     panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:nil masterViewController:sidebarViewController];
     window.rootViewController = panelNavigationController;
 

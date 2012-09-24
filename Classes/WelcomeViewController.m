@@ -95,10 +95,23 @@
         isFirstRun = YES;
         [self.navigationController setNavigationBarHidden:YES animated:animated];
     }
+    [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [super viewWillDisappear:animated];
+}
+
+
+- (NSUInteger)supportedInterfaceOrientations {
+    if (IS_IPHONE) {
+        if ([Blog countWithContext:[WordPressAppDelegate sharedWordPressApp].managedObjectContext] == 0) {
+            return UIInterfaceOrientationMaskPortrait;
+        }
+        return UIInterfaceOrientationMaskAllButUpsideDown;
+    }
+    return UIInterfaceOrientationMaskAll;
 }
 
 

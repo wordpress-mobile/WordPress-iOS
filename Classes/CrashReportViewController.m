@@ -7,8 +7,12 @@
 //
 
 #import "CrashReportViewController.h"
+#import "WordPressAppDelegate.h"
+
 NSString *CrashFilePath();
+
 @implementation CrashReportViewController
+
 @synthesize crashData;
 
 - (void)dealloc {
@@ -36,7 +40,14 @@ NSString *CrashFilePath();
 - (void)viewWillDisappear:(BOOL)animated {
 	[[PLCrashReporter sharedReporter] purgePendingCrashReport];
     [[NSFileManager defaultManager] removeItemAtPath:CrashFilePath() error:nil];
-	[super viewWillDisappear:YES];
+    [super viewWillDisappear:animated];
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+    if (IS_IPHONE) {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    return UIInterfaceOrientationMaskAll;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

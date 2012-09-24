@@ -576,8 +576,9 @@
         {
             pickerView.tag = TAG_PICKER_FORMAT;
             [pickerView reloadAllComponents];
-            if ([formatsList count] != 0)
+            if ([formatsList count] != 0 && ([formatsList indexOfObject:postDetailViewController.post.postFormatText] != NSNotFound)) {
                 [pickerView selectRow:[formatsList indexOfObject:postDetailViewController.post.postFormatText] inComponent:0 animated:NO];
+            }
             [self showPicker:pickerView];
             break;
         }

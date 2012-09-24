@@ -41,6 +41,7 @@
 @synthesize startingBlog;
 @synthesize popController;
 
+
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     self.photoImageView.delegate = nil;
@@ -133,8 +134,14 @@
     self.popController = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (NSUInteger)supportedInterfaceOrientations {
+    if (IS_IPHONE) {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    return UIInterfaceOrientationMaskAll;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     if (IS_IPAD || interfaceOrientation == UIDeviceOrientationPortrait) 
         return YES;
     else 
@@ -189,46 +196,18 @@
 
 
 - (void)handleKeyboardWillShow:(NSNotification *)notification {
-    keyboardFrame = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGRect frame = startingFrame;
 
-    if (!IS_IPAD) {
-        frame.size.height = frame.size.height - keyboardFrame.size.height;
-        [self.view setFrame:frame];
+    NSDictionary *info = notification.userInfo;
 
-    }  else {        
-        /* For the iPad: when the keyboard shwos in portrait orientation the modal continues to 
-         be centered vertically.  When the keyboard shows in landscape orientation the modal is moved to 
-         the top of the screen. */
-        
-        CGFloat h, y, overlap, bottomEdge;
-        if(UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ){
-            // retrieve the height of the window
-            CGFloat winHeight = self.view.window.frame.size.height;
-            
-            // Find the keyboard's top edge by subtracting its height from winHeight.
-            // keyboardFrame.origin.y is unreliable so we don't use it.
-            h = keyboardFrame.size.height;
-            y = winHeight - h;
-            
-            // Find the bottom edge of our view. We should be modal, centered vertically so 
-            // we can find this by doing the math vs pathing up the view hierarchy.
-            CGFloat modalHeight = startingFrame.size.height + 64.0; // adds the nav bar's height.
+    keyboardFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect rect = [self.view convertRect:keyboardFrame fromView:self.view.window];
 
-            bottomEdge = ((winHeight - modalHeight)/2.0f) + modalHeight;
-            overlap = bottomEdge - y;
-            
-        } else {
-            h = keyboardFrame.size.width; // Because we're rotated.
-            bottomEdge = startingFrame.size.height;
-            overlap = bottomEdge - h; // adds the height of the status bar and nav bar
-        }
-        
-        // we will reduce our height by the amount of the overlap
-        frame.size.height -= overlap;
-        [self.view setFrame:frame];
-    }
+    CGRect frm = startingFrame;
+    frm.size.height = rect.origin.y;
+
+    self.view.frame = frm;
 }
+
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
     self.view.frame = startingFrame;
@@ -274,7 +253,6 @@
 
 - (void)dismiss {
     if (IS_IPAD) {
-        //TODO: Hmmm.... 
         [[self sidebarViewController] dismissModalViewControllerAnimated:YES];
     } else {
         [[self sidebarViewController] dismissModalViewControllerAnimated:YES];

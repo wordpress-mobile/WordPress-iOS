@@ -195,6 +195,8 @@ Classes/UINavigationBar+Styled.h -text
 Classes/UINavigationBar+Styled.m -text
 Classes/UINavigationController+KeyboardFix.h -text
 Classes/UINavigationController+KeyboardFix.m -text
+Classes/UINavigationController+Rotation.h -text
+Classes/UINavigationController+Rotation.m -text
 Classes/UIPopoverController+Styled.h -text
 Classes/UIPopoverController+Styled.m -text
 Classes/UITableViewActivityCell.h -text
