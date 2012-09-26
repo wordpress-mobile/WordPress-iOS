@@ -886,7 +886,6 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /read@2x.png -text
 /redoDisabled~ipad.png -text svneol=unset#unset
 /redo~ipad.png -text svneol=unset#unset
-/richtext.html -text
 /right.png -text svneol=unset#unset
 /right@2x.png -text svneol=unset#unset
 /settings.png -text

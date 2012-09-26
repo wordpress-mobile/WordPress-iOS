@@ -7,7 +7,6 @@
 #import "WPProgressHUD.h"
 #import "WPAddCategoryViewController.h"
 #import "Post.h"
-#import "UIDevice-hardware.h"
 #import "WPKeyboardToolbar.h"
 
 #define kSelectionsStatusContext ((void *)1000)
@@ -18,7 +17,7 @@
 @class WPSegmentedSelectionTableViewController, PostSettingsViewController, PostPreviewViewController;
 
 @interface EditPostViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDelegate,UIPopoverControllerDelegate,WPKeyboardToolbarDelegate,UIWebViewDelegate> {
+UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDelegate,UIPopoverControllerDelegate,WPKeyboardToolbarDelegate> {
     BOOL isShowPhotoPickerActionSheet;
     BOOL isTextViewEditing;
     BOOL dismiss;
@@ -27,7 +26,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
     BOOL isNewCategory;
     BOOL editCustomFields;
 	BOOL isLocalDraft;
-    BOOL hasSaved, isVisible, isPublishing, isShowingKeyboard, isShowingLinkAlert, isExternalKeyboard, isRotating;
+    BOOL hasSaved, isVisible, isPublishing, isShowingKeyboard, isShowingLinkAlert, isExternalKeyboard;
 
     IBOutlet UITextView *textView;
     IBOutlet UITextField *titleTextField;
@@ -46,7 +45,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 	IBOutlet UIBarButtonItem *movieButton;
     IBOutlet UIImageView *tabPointer;
     UIActionSheet *currentActionSheet;
-    IBOutlet UIWebView *richEditWebView;
 	
     WPSelectionTableViewController *selectionTableViewController;
     WPSegmentedSelectionTableViewController *segmentedTableViewController;
@@ -65,7 +63,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 	NSUInteger textViewHeightForRotation;
 	CLLocation *initialLocation;
 	NSArray *statuses;
-    UIWindow *keyboardWindow;
         
     UIView *currentView;
     WPKeyboardToolbar *editorToolbar;
@@ -84,9 +81,10 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, retain) CLLocation *initialLocation;
 @property (nonatomic, retain) IBOutlet UIButton *locationButton;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *locationSpinner;
+@property (nonatomic, retain) IBOutlet UITextView *textView;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
-@property (nonatomic, retain) IBOutlet UIView *contentView, *subView, *textViewContentView;
-@property (nonatomic, retain) IBOutlet UITextField *statusTextField, *titleTextField, *tagsTextField;
+@property (nonatomic, retain) IBOutlet UIView *contentView, *subView, *textViewContentView;;
+@property (nonatomic, retain) IBOutlet UITextField *statusTextField, *titleTextField, *tagsTextField, *textViewPlaceHolderField;
 @property (nonatomic, retain) IBOutlet UILabel *tagsLabel, *statusLabel, *categoriesLabel, *titleLabel;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *createCategoryBarButtonItem;
 @property (nonatomic, retain) IBOutlet UIButton *hasLocation, *categoriesButton;
@@ -101,8 +99,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (readonly) BOOL hasChanges;
 @property (readonly) CGRect normalTextFrame;
 @property (nonatomic, retain) UIButton *undoButton, *redoButton;
-@property (nonatomic, retain) IBOutlet UIWebView *richEditWebView;
-@property (nonatomic, retain) UIWindow *keyboardWindow;
 @property (nonatomic, retain) UIActionSheet *currentActionSheet;
 @property (nonatomic, retain) PostSettingsViewController *postSettingsViewController;
 
@@ -121,7 +117,8 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)disableInteraction;
 - (void)savePost: (BOOL)upload;
 - (void)dismissAlertViewKeyboard:(NSNotification *)notification;
-
+- (void)textFieldDidChange: (id)sender;
+- (NSInteger)pointerPositionForAttachmentsTab;
 // Media
 - (void)insertMediaAbove:(NSNotification *)notification;
 - (void)insertMediaBelow:(NSNotification *)notification;
