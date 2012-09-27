@@ -461,7 +461,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (IBAction)addPhoto:(id)sender {
-    [postMediaViewController showPhotoPickerActionSheet:sender isFeaturedImage:YES];
+    [postMediaViewController showPhotoPickerActionSheet:sender isFeaturedImage:NO];
 }
 
 - (IBAction)showCategories:(id)sender {
