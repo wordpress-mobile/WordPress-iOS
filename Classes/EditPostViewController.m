@@ -465,8 +465,16 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (IBAction)showCategories:(id)sender {
+    if (isShowingKeyboard) {
+        if(isTextViewEditing) {
+            [textView resignFirstResponder];
+        } else {
+            [currentEditingTextField resignFirstResponder];
+        }
+    }
     [self populateSelectionsControllerWithCategories];
 }
+
 - (IBAction)touchTextView:(id)sender {
     [textView becomeFirstResponder];
 }
@@ -474,7 +482,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)setFeaturedImage {
     [postMediaViewController showPhotoPickerActionSheet:nil isFeaturedImage:YES];
 }
-
 
 - (CGRect)normalTextFrame {
     if (IS_IPAD)
