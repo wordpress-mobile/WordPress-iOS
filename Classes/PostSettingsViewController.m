@@ -138,6 +138,7 @@
                 if (postDetailViewController.post.featuredImageURL) {
                     NSURL *imageURL = [[[NSURL alloc] initWithString:postDetailViewController.post.featuredImageURL] autorelease];
                     if (imageURL) {
+                        [featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
                         [featuredImageView setImageWithURL:imageURL];
                         [featuredImageView setHidden:NO];
                         [featuredImageSpinner stopAnimating];
@@ -591,11 +592,9 @@
                         }
                         break;
                     case 1:
-                        
                         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Remove this Featured Image?", @"Prompt when removing a featured image from a post") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", "Cancel a prompt") destructiveButtonTitle:NSLocalizedString(@"Remove", @"Remove an image/posts/etc") otherButtonTitles:nil];
                         [actionSheet showInView:self.view];
                         break;
-                        
                 }
             } else {
                 switch (indexPath.row) {
@@ -614,9 +613,7 @@
                         }
                         postDetailViewController.post.geolocation = nil;
                         postDetailViewController.hasLocation.enabled = NO;
-                        
                         break;
-					
                 }
                 [tableView reloadData];
             }
@@ -633,6 +630,7 @@
     isUploadingFeaturedImage = NO;
     Media *media = (Media *)[notificationInfo object];
     if (media) {
+        [featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [featuredImageSpinner stopAnimating];
         [featuredImageSpinner setHidden:YES];
         [featuredImageLabel setHidden:YES];
@@ -660,6 +658,7 @@
 #pragma mark UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
+        [featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleBlue];
         postDetailViewController.post.post_thumbnail = nil;
         [postDetailViewController refreshButtons];
         [tableView reloadData];

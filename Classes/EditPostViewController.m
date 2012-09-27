@@ -180,6 +180,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissAlertViewKeyboard:) name:@"DismissAlertViewKeyboard" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadFailed:) name:FeaturedImageUploadFailed object:nil]; 
 	
 	
     isTextViewEditing = NO;
@@ -460,7 +461,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (IBAction)addPhoto:(id)sender {
-    [postMediaViewController showPhotoPickerActionSheet:sender];
+    [postMediaViewController showPhotoPickerActionSheet:sender isFeaturedImage:YES];
 }
 
 - (IBAction)showCategories:(id)sender {
@@ -468,6 +469,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 - (IBAction)touchTextView:(id)sender {
     [textView becomeFirstResponder];
+}
+
+- (void)setFeaturedImage {
+    [postMediaViewController showPhotoPickerActionSheet:nil isFeaturedImage:YES];
 }
 
 
