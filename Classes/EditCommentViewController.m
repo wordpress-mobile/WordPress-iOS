@@ -297,7 +297,15 @@
     } failure:^(NSError *error) {
         [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
         [progressAlert release];
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:NSLocalizedString(@"Something went wrong posting the comment reply.", @"")];
+        
+        NSString *message = NSLocalizedString(@"Sorry, something went wrong during comment moderation. Please try again.", @"");
+        
+        if (error.code == 405) {
+            // XML-RPC is disabled.
+            message = error.localizedDescription;
+        }
+        
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"CommentUploadFailed" object:message];
     }];
 }
 
