@@ -228,14 +228,14 @@
 
 - (NSDictionary *) getImageResizeDimensions{
     CGSize smallSize, mediumSize, largeSize;
-    int thumbnail_size_w =  ([self getOptionValue:@"thumbnail_size_w"] != nil ? [[self getOptionValue:@"thumbnail_size_w"] intValue] : image_small_size_w);
-    int thumbnail_size_h =  [self getOptionValue:@"thumbnail_size_h"] != nil ? [[self getOptionValue:@"thumbnail_size_h"] intValue] : image_small_size_h;
-    int medium_size_w =     [self getOptionValue:@"medium_size_w"] != nil ? [[self getOptionValue:@"medium_size_w"] intValue] : image_medium_size_w;
-    int medium_size_h =     [self getOptionValue:@"medium_size_h"] != nil ? [[self getOptionValue:@"medium_size_h"] intValue] : image_medium_size_h;
-    int large_size_w =      [self getOptionValue:@"large_size_w"] != nil ? [[self getOptionValue:@"large_size_w"] intValue] : image_large_size_w;
-    int large_size_h =      [self getOptionValue:@"large_size_h"] != nil ? [[self getOptionValue:@"large_size_h"] intValue] : image_large_size_h;
+    int small_size_w =      [[self getOptionValue:@"thumbnail_size_w"] intValue]    > 0 ? [[self getOptionValue:@"thumbnail_size_w"] intValue] : image_small_size_w;
+    int small_size_h =      [[self getOptionValue:@"thumbnail_size_h"] intValue]    > 0 ? [[self getOptionValue:@"thumbnail_size_h"] intValue] : image_small_size_h;
+    int medium_size_w =     [[self getOptionValue:@"medium_size_w"] intValue]       > 0 ? [[self getOptionValue:@"medium_size_w"] intValue] : image_medium_size_w;
+    int medium_size_h =     [[self getOptionValue:@"medium_size_h"] intValue]       > 0 ? [[self getOptionValue:@"medium_size_h"] intValue] : image_medium_size_h;
+    int large_size_w =      [[self getOptionValue:@"large_size_w"] intValue]        > 0 ? [[self getOptionValue:@"large_size_w"] intValue] : image_large_size_w;
+    int large_size_h =      [[self getOptionValue:@"large_size_h"] intValue]        > 0 ? [[self getOptionValue:@"large_size_h"] intValue] : image_large_size_h;
     
-    smallSize = CGSizeMake(thumbnail_size_w, thumbnail_size_h);
+    smallSize = CGSizeMake(small_size_w, small_size_h);
     mediumSize = CGSizeMake(medium_size_w, medium_size_h);
     largeSize = CGSizeMake(large_size_w, large_size_h);
     
