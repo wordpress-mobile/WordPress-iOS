@@ -376,7 +376,13 @@
 
 - (void)postPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPFLogMethod();
-    NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:[self XMLRPCDictionary]];
+    // XML-RPC doesn't like empty post thumbnail ID's for new posts, but it's required to delete them on edit. see #1395
+    // TODO: refactor XMLRPCDictionary to differentiate between posting and editing
+    NSMutableDictionary *xmlrpcDictionary = [NSMutableDictionary dictionaryWithDictionary:[self XMLRPCDictionary]];
+    if ([[xmlrpcDictionary objectForKey:@"wp_post_thumbnail"] isEqual:@""]) {
+        [xmlrpcDictionary removeObjectForKey:@"wp_post_thumbnail"];
+    }
+    NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:xmlrpcDictionary];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
 
     NSMutableURLRequest *request = [self.blog.api requestWithMethod:@"metaWeblog.newPost"
