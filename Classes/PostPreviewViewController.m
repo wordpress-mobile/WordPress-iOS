@@ -158,13 +158,22 @@
 		
 		NSString *link = postDetailViewController.apost.permaLink;
 		
-        if (postDetailViewController.apost.blog.reachable == NO ) {
-			[webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
+        WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        if( appDelegate.connectionAvailable == NO ) {
+            NSString *previewPageHTML = [self buildSimplePreview];
+            NSString *noConnectionMessageHTML = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")];
+            previewPageHTML = [previewPageHTML stringByReplacingOccurrencesOfString:@"<div class=\"page\">" withString:noConnectionMessageHTML];
+            [webView loadHTMLString:previewPageHTML baseURL:nil];
+        } else if ( postDetailViewController.apost.blog.reachable == NO ) {
+            NSString *previewPageHTML = [self buildSimplePreview];
+            NSString *noConnectionMessageHTML = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"TThe internet connection cannot reach your blog.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")];
+            previewPageHTML = [previewPageHTML stringByReplacingOccurrencesOfString:@"<div class=\"page\">" withString:noConnectionMessageHTML];
+            [webView loadHTMLString:previewPageHTML baseURL:nil];
 		} else if (link == nil ) {
 			[webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
 		} else {
 				
-
 			// checks if this a scheduled post
 			
 			/*
