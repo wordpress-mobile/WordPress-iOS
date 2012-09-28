@@ -237,18 +237,31 @@
     }
     post.postFormat = @"image";
     
-    [[NSNotificationCenter defaultCenter] addObserver:post selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:media];        
-    [[NSNotificationCenter defaultCenter] addObserver:post selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:media];
-    
-    appDelegate.isUploadingPost = YES;
-    
-    dispatch_async(dispatch_get_main_queue(), ^(void) {
-        [media uploadWithSuccess:nil failure:nil];
+    if( appDelegate.connectionAvailable == YES ) {
+        [[NSNotificationCenter defaultCenter] addObserver:post selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:media];
+        [[NSNotificationCenter defaultCenter] addObserver:post selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:media];
+        
+        appDelegate.isUploadingPost = YES;
+        
+        dispatch_async(dispatch_get_main_queue(), ^(void) {
+            [media uploadWithSuccess:nil failure:nil];
+            [post save];
+        });
+        
+        [self dismiss];
+        [sidebarViewController uploadQuickPhoto:post];
+    } else {
+        [media setRemoteStatus:MediaRemoteStatusFailed];
         [post save];
-    });
-    
-    [self dismiss];
-    [sidebarViewController uploadQuickPhoto:post];
+        [self dismiss];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
+                                                            message:NSLocalizedString(@"The Internet connection appears to be offline. The post has been saved as a local draft, you can publish it later.", @"")
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                  otherButtonTitles:nil];
+        [alertView show];
+        [alertView release];
+    }
 }
 
 - (void)dismiss {
