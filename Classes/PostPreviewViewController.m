@@ -167,7 +167,7 @@
             [webView loadHTMLString:previewPageHTML baseURL:nil];
         } else if ( postDetailViewController.apost.blog.reachable == NO ) {
             NSString *previewPageHTML = [self buildSimplePreview];
-            NSString *noConnectionMessageHTML = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"TThe internet connection cannot reach your blog.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")];
+            NSString *noConnectionMessageHTML = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection cannot reach your blog.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")];
             previewPageHTML = [previewPageHTML stringByReplacingOccurrencesOfString:@"<div class=\"page\">" withString:noConnectionMessageHTML];
             [webView loadHTMLString:previewPageHTML baseURL:nil];
 		} else if (link == nil ) {
