@@ -484,17 +484,21 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (CGRect)normalTextFrame {
-    if (IS_IPAD)
+    if (IS_IPAD) {
         if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
             || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-            return CGRectMake(0, 143, 768, 517);
+            return CGRectMake(0, 143, self.view.bounds.size.width, 517);
         else // Portrait
-            return CGRectMake(0, 143, 768, 753);
-		else if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
-				 || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-			return CGRectMake(0, 136, 480, 236);
+            return CGRectMake(0, 143, self.view.bounds.size.width, 753);
+    } else {
+        CGFloat y = 136.f;
+        CGFloat height = self.toolbar.frame.origin.y - y;
+        if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
+            || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
+			return CGRectMake(0, y, self.view.bounds.size.width, height);
 		else // Portrait
-			return CGRectMake(0, 136, 320, 236);
+			return CGRectMake(0, y, self.view.bounds.size.width, height);
+    }
 }
 
 
@@ -569,6 +573,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
     }
     else {
         textViewPlaceHolderField.hidden = YES;
+        if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0))
+			textView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more];
+		else
+			textView.text = self.apost.content;
     }
     
 	// workaround for odd text view behavior on iPad
@@ -1212,6 +1220,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
         }
         // If we show/hide the navigation bar, the view frame changes so the converted keyboardFrame is not valid anymore
         keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
+        // Assing this again since changing the visibility status of navigation bar changes the view frame (#1386)
+        newFrame = self.normalTextFrame;
 
         if (isShowing) {
             if (wantsFullScreen) {
