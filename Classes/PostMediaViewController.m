@@ -271,6 +271,14 @@
 	return NSLocalizedString(@"Remove", @"");
 }
 
+//Hide unnecessary row dividers. See http://ios.trac.wordpress.org/ticket/1264
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if ([self numberOfSectionsInTableView:tableView] == (section+1)){
+        return [[UIView new] autorelease];
+    }
+    return nil;
+}
+
 #pragma mark -
 #pragma mark Custom methods
 
