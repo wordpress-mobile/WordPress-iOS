@@ -156,9 +156,10 @@
         // Replace refresh button with options button
         backButton.width = (toolbar.frame.size.width / 2.0f) - 10.0f;
         forwardButton.width = (toolbar.frame.size.width / 2.0f) - 10.0f;
-        NSArray *items = [NSArray arrayWithObjects:backButton,
-                          [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
-                          forwardButton, nil];
+        UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+        NSArray *items = [NSArray arrayWithObjects:spacer,
+                          backButton, spacer,
+                          forwardButton, spacer, nil];
         toolbar.items = items;
     }
 }
