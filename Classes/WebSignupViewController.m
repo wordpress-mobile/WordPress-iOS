@@ -53,7 +53,6 @@
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
-
 #pragma - 
 #pragma instance methods
 
@@ -75,7 +74,6 @@
     
 	NSURLRequest *request = [NSURLRequest requestWithURL:
                              [NSURL URLWithString:NSLocalizedString(@"http://wordpress.com/signup?ref=wp-iphone", @"")]];
-    self.webView.scalesPageToFit = YES;
 	[self.webView loadRequest:request];
 }
 
