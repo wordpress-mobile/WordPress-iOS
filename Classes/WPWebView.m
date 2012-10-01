@@ -116,9 +116,6 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 	NSString *preferredLanguageCodes = [[NSLocale preferredLanguages] componentsJoinedByString:@", "];
 	[self setDefaultHeader:@"Accept-Language" value:[NSString stringWithFormat:@"%@, en-us;q=0.8", preferredLanguageCodes]];
     
-    // Cache-Control Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.9
-	[self setDefaultHeader:@"Cache-Control:" value:@"no-cache"];
-    
     // User-Agent Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.43
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *userAgent = [appDelegate applicationUserAgent];
