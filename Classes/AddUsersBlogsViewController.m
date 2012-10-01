@@ -11,11 +11,24 @@
 #import "WordPressComApi.h"
 #import "UIBarButtonItem+Styled.h"
 #import "ReachabilityUtils.h"
+#import "WebSignupViewController.h"
+
+@interface AddUsersBlogsViewController()
+
+@property (nonatomic, strong) UIView *noblogsView;
+
+- (void)showNoBlogsView;
+- (void)hideNoBlogsView;
+- (void)wpcomSignupNotificationReceived:(NSNotification *)notification;
+
+@end
 
 @implementation AddUsersBlogsViewController
+
 @synthesize usersBlogs, isWPcom, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;
 @synthesize spinner, topAddSelectedButton, geolocationEnabled;
 @synthesize username = _username, password = _password, url = _url;
+@synthesize noblogsView;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -31,6 +44,8 @@
 	[buttonAddSelected release];
 	[buttonSelectAll release];
 	[topAddSelectedButton release];
+    self.noblogsView = nil;
+    
     [super dealloc];
 }
 
@@ -39,7 +54,8 @@
     [super viewDidLoad];
 
 	self.navigationItem.title = NSLocalizedString(@"Select Blogs", @"");
-	selectedBlogs = [[NSMutableArray alloc] init];
+	self.selectedBlogs = [NSMutableArray array];
+    
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 	
 	// Setup WP logo table header
@@ -98,7 +114,10 @@
 		}
 		else if(usersBlogs == nil) {
 			[self refreshBlogs];
-		}
+		} else if([usersBlogs count] == 0){
+            [self refreshBlogs]; //Maybe just returning from creating a blog
+            [self hideNoBlogsView];
+        }
 	}
 	else {
         if (usersBlogs == nil) {
@@ -120,6 +139,17 @@
 	buttonAddSelected.enabled = FALSE;
 	
 	[self checkAddSelectedButtonStatus];
+}
+
+- (void)viewDidUnload {
+    [super viewDidUnload];
+    
+    self.tableView = nil;
+    self.buttonAddSelected = nil;
+    self.buttonSelectAll = nil;
+    self.topAddSelectedButton = nil;
+    self.noblogsView = nil;
+    self.spinner = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -342,10 +372,18 @@
                         title = [title stringByDecodingXMLCharacters];
                         [obj setValue:title forKey:@"blogName"];
                     }];
+                    [self hideNoBlogsView];
+                } else {
+                    
+                    // User blogs count == 0.  Prompt the user to create a blog.
+                    [self showNoBlogsView];
+
                 }
+                
                 [self.tableView reloadData];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 WPFLog(@"Failed getting user blogs: %@", [error localizedDescription]);
+                [self hideNoBlogsView];
                 hasCompletedGetUsersBlogs = YES; 
                 [self.tableView reloadData];
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
@@ -355,8 +393,103 @@
                                                           otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
                 alertView.tag = 1;
                 [alertView show];
-                [alertView release];   
+                [alertView release];
             }];
+}
+
+
+- (void)showNoBlogsView {
+    if(!self.noblogsView) {
+        CGFloat width = 282.0f;
+        CGFloat height = 160.0f;
+        CGFloat x = (self.view.frame.size.width / 2.0f) - (width / 2.0f);
+        CGFloat y = (self.view.frame.size.height / 2.0f) - (height / 2.0f);
+        self.noblogsView = [[[UIView alloc] initWithFrame:CGRectMake(x, y, width, height)] autorelease];
+        self.noblogsView.backgroundColor = [UIColor clearColor];
+
+        self.noblogsView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
+                                            UIViewAutoresizingFlexibleRightMargin |
+                                            UIViewAutoresizingFlexibleTopMargin |
+                                            UIViewAutoresizingFlexibleBottomMargin;
+
+        UIColor *textColor = [UIColor colorWithRed:33.0f/255.0f green:33.0f/255.0f blue:33.0f/255.0f alpha:1.0];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+        label.backgroundColor = [UIColor clearColor];
+        label.numberOfLines = 0;
+        label.lineBreakMode = UILineBreakModeWordWrap;
+        label.font = [UIFont fontWithName:@"Georgia" size:16.0f];
+        label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+        label.textColor = textColor;
+        label.shadowColor = [UIColor whiteColor];
+        label.textAlignment = UITextAlignmentCenter;
+
+        if ([WordPressComApi sharedApi].username) {
+            label.text = NSLocalizedString(@"You do not seem to have any blogs. Would you like to create one now?", @"");
+        } else {
+            label.text = NSLocalizedString(@"You do not seem to have any blogs.", @"");
+        }
+
+        label.frame = CGRectMake(0.0, 0.0, width, 38.0);
+        [self.noblogsView addSubview:label];
+        
+        if ([WordPressComApi sharedApi].username) {            
+            width = 282.0f;
+            height = 44.0f;
+            x = (noblogsView.frame.size.width / 2.0f) - (width / 2.0f);
+            y = label.frame.size.height + 10.0f;
+
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            button.frame = CGRectMake(x, y, width, height);
+            button.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15.0];
+            [button setTitleColor:textColor forState:UIControlStateNormal];
+            [button setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            button.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+            [button setImage:[UIImage imageNamed:@"welcome_button_asterisk.png"] forState:UIControlStateNormal];
+            [button setContentEdgeInsets:UIEdgeInsetsMake(0.0f, 15.0f, 0.0f, 0.0f)];
+            [button setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 0.0f)];
+            [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+            [button setBackgroundImage:[UIImage imageNamed:@"welcome_button_bg_full"] forState:UIControlStateNormal];
+            [button setBackgroundImage:[UIImage imageNamed:@"welcome_button_bg_full_highlighted.png"] forState:UIControlStateHighlighted];
+            [button setTitle:NSLocalizedString(@"Create Wordpress.com Blog", @"") forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(handleCreateBlogTapped:) forControlEvents:UIControlEventTouchUpInside];
+
+            [self.noblogsView addSubview:button];
+        }
+        
+        [self.view addSubview:noblogsView];
+    }
+    self.buttonSelectAll.enabled = NO;
+    self.noblogsView.alpha = 0.0;
+    self.noblogsView.hidden = NO;
+    
+    [UIView animateWithDuration:0.3f animations:^{
+        self.noblogsView.alpha = 1.0f;
+    }];
+}
+
+
+- (void)hideNoBlogsView {
+    if(!self.noblogsView) return;
+    self.noblogsView.hidden = YES;
+    self.buttonSelectAll.enabled = YES;
+}
+
+
+- (void)handleCreateBlogTapped:(id)sender {
+    NSString *newNibName = @"WebSignupViewController";
+    if(IS_IPAD == YES)
+        newNibName = @"WebSignupViewController-iPad";
+    WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:newNibName bundle:[NSBundle mainBundle]];
+    [self.navigationController pushViewController:webSignup animated:YES];
+    [webSignup release];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wpcomSignupNotificationReceived:) name:@"wpcomSignupNotification" object:nil];
+
+   
+}
+
+- (void)wpcomSignupNotificationReceived:(NSNotification *)notification {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"wpcomSignupNotification" object:nil];
+    [self.navigationController popToViewController:self animated:YES]; // Discard the create blog view controller. 
 }
 
 #pragma mark -
