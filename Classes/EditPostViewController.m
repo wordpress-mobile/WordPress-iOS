@@ -25,6 +25,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize editMode, apost;
 @synthesize hasSaved, isVisible, isPublishing;
 @synthesize toolbar;
+@synthesize settingsButton;
 @synthesize photoButton, movieButton;
 @synthesize undoButton, redoButton;
 @synthesize currentActionSheet;
