@@ -106,4 +106,6 @@ static inline double radians(double degrees) {
 - (void)initObjects;
 - (void)addNotifications;
 - (void)removeNotifications;
+- (UITableViewCell *)updateCell:(UITableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath;
+
 @end

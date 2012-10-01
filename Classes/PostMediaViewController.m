@@ -149,6 +149,12 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
 	}
     
+    [self updateCell:cell forIndexPath:indexPath];
+    
+    return cell;
+}
+
+- (UITableViewCell *)updateCell:(UITableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
 	Media *media = [self.resultsController objectAtIndexPath:indexPath];
     cell.imageView.image = [UIImage imageWithData:media.thumbnail];
 	NSString *filesizeString = nil;
@@ -201,9 +207,9 @@
         }
     }
 
-	[cell.imageView setBounds:CGRectMake(0, 0, 75, 75)];
+	[cell.imageView setBounds:CGRectMake(0.0f, 0.0f, 75.0f, 75.0f)];
 	[cell.imageView setClipsToBounds:NO];
-	[cell.imageView setFrame:CGRectMake(0, 0, 75, 75)];
+	[cell.imageView setFrame:CGRectMake(0.0f, 0.0f, 75.0f, 75.0f)];
 	[cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
 	filesizeString = nil;
     
@@ -211,7 +217,7 @@
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath {
-	return 75;
+	return 75.0f;
 }
 
 #pragma mark -
@@ -1591,7 +1597,19 @@
        atIndexPath:(NSIndexPath *)indexPath
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
-    [table reloadData];
+    
+    if (type != NSFetchedResultsChangeUpdate) {
+        // For anything that is not an update just reload the table.
+        [table reloadData];
+        return;
+    }
+    
+    // For updates, update the cell w/o refreshing the whole tableview.
+    UITableViewCell *cell = [self.table cellForRowAtIndexPath:indexPath];
+    if (cell) {
+        [self updateCell:cell forIndexPath:indexPath];
+    }
+
 }
 
 
