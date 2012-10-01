@@ -408,7 +408,7 @@
 }
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
-    // If triggered by a pull to refres, sync categories, post formats, ...
+    // If triggered by a pull to refresh, sync categories, post formats, ...
     if (userInteraction) {
         [self.blog syncBlogPostsWithSuccess:success failure:failure];
     } else {
