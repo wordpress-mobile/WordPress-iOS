@@ -306,10 +306,10 @@
 	if(hasChanges == NO) {
 		if (IS_IPAD == YES) {
 			[textView becomeFirstResponder];
-		}		
-		UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error.", @"")
-																	  message:NSLocalizedString(@"Please type a comment.", @"")
-																	 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
+		}
+		UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"The Reply is Empty", @"")
+                                                                      message:NSLocalizedString(@"Please type a reply to the comment.", @"")
+                                                                     delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
         [connectionFailAlert show];
         [connectionFailAlert release];
 		return;
