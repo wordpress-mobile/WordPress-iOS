@@ -27,7 +27,7 @@
 - (void)handleViewTapped;
 - (void)configureTextField:(UITextField *)textField asPassword:(BOOL)asPassword;
 - (NSString *)getURLToValidate;
-- (void)textFieldDidChange;
+- (void)enableDisableSaveButton;
 
 @end
 
@@ -104,7 +104,6 @@
     
     saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
     self.navigationItem.rightBarButtonItem = saveButton;
-    self.navigationItem.rightBarButtonItem.enabled = FALSE;
     
     if (!IS_IPAD) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
@@ -123,6 +122,7 @@
     [super viewDidAppear:animated];
     
     [self refreshTable];
+    [self enableDisableSaveButton];
 }
 
 
@@ -191,7 +191,7 @@
 				self.urlCell.textLabel.text = NSLocalizedString(@"URL", @"");
 				urlTextField = [self.urlCell.textField retain];
 				urlTextField.placeholder = NSLocalizedString(@"http://example.com", @"");
-                [urlTextField addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
+                [urlTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:urlTextField asPassword:NO];
 				if (blog.url != nil) {
 					urlTextField.text = blog.url;
@@ -209,7 +209,7 @@
 				self.usernameCell.textLabel.text = NSLocalizedString(@"Username", @"");
 				usernameTextField = [self.usernameCell.textField retain];
 				usernameTextField.placeholder = NSLocalizedString(@"WordPress username", @"");
-                [usernameTextField addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
+                [usernameTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:usernameTextField asPassword:NO];
 				if (blog.username != nil) {
 					usernameTextField.text = blog.username;
@@ -227,7 +227,7 @@
 				self.passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
 				passwordTextField = [self.passwordCell.textField retain];
 				passwordTextField.placeholder = NSLocalizedString(@"WordPress password", @"");
-                [passwordTextField addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
+                [passwordTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:passwordTextField asPassword:YES];
 				if (password != nil) {
 					passwordTextField.text = password;
@@ -349,18 +349,6 @@
     
     return YES;
 }
-
-- (void)textFieldDidChange {
-    if ( [urlTextField.text isEqualToString:@""] ||
-         [usernameTextField.text isEqualToString:@""] ||
-         [passwordTextField.text isEqualToString:@""] )
-    {
-        self.navigationItem.rightBarButtonItem.enabled = FALSE;
-    } else {
-        self.navigationItem.rightBarButtonItem.enabled = TRUE;
-    }
-}
-
 
 #pragma mark -
 #pragma mark UIAlertViewDelegate
@@ -683,6 +671,20 @@
     }
 }
 
+- (void)enableDisableSaveButton {
+    BOOL hasContent;
+    
+    if ( [urlTextField.text isEqualToString:@""] ||
+         [usernameTextField.text isEqualToString:@""] ||
+         [passwordTextField.text isEqualToString:@""] )
+    {
+        hasContent = FALSE;
+    } else {
+        hasContent = TRUE;
+    }
+    
+    self.navigationItem.rightBarButtonItem.enabled = hasContent;
+}
 
 #pragma mark -
 #pragma mark Keyboard Related Methods
