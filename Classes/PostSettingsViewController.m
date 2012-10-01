@@ -370,8 +370,8 @@
         {
             if ([formatsList count] != 0) {
                 postFormatLabel.text = postDetailViewController.post.postFormatText;
-                return postFormatTableViewCell;
             }
+            return postFormatTableViewCell;
         }
 	case 2: 
         if (blogSupportsFeaturedImage) {
@@ -575,6 +575,7 @@
 			break;
         case 1:
         {
+            if( [formatsList count] == 0 ) break;
             pickerView.tag = TAG_PICKER_FORMAT;
             [pickerView reloadAllComponents];
             if ([formatsList count] != 0 && ([formatsList indexOfObject:postDetailViewController.post.postFormatText] != NSNotFound)) {
