@@ -27,6 +27,7 @@
 - (void)handleViewTapped;
 - (void)configureTextField:(UITextField *)textField asPassword:(BOOL)asPassword;
 - (NSString *)getURLToValidate;
+- (void)textFieldDidChange;
 
 @end
 
@@ -103,6 +104,7 @@
     
     saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
     self.navigationItem.rightBarButtonItem = saveButton;
+    self.navigationItem.rightBarButtonItem.enabled = FALSE;
     
     if (!IS_IPAD) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
@@ -189,9 +191,13 @@
 				self.urlCell.textLabel.text = NSLocalizedString(@"URL", @"");
 				urlTextField = [self.urlCell.textField retain];
 				urlTextField.placeholder = NSLocalizedString(@"http://example.com", @"");
+                [urlTextField addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:urlTextField asPassword:NO];
-				if(blog.url != nil)
+				if (blog.url != nil) {
 					urlTextField.text = blog.url;
+                } else {
+                    urlTextField.text = @"";
+                }
             }
             
             return self.urlCell;
@@ -203,9 +209,13 @@
 				self.usernameCell.textLabel.text = NSLocalizedString(@"Username", @"");
 				usernameTextField = [self.usernameCell.textField retain];
 				usernameTextField.placeholder = NSLocalizedString(@"WordPress username", @"");
+                [usernameTextField addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:usernameTextField asPassword:NO];
-				if(blog.username != nil)
+				if (blog.username != nil) {
 					usernameTextField.text = blog.username;
+                } else {
+                    usernameTextField.text = @"";
+                }
 			}
             
             return self.usernameCell;
@@ -217,10 +227,14 @@
 				self.passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
 				passwordTextField = [self.passwordCell.textField retain];
 				passwordTextField.placeholder = NSLocalizedString(@"WordPress password", @"");
+                [passwordTextField addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:passwordTextField asPassword:YES];
-				if(password != nil)
+				if (password != nil) {
 					passwordTextField.text = password;
-			}            
+                } else {
+                    passwordTextField.text = @"";
+                }
+			}
             return self.passwordCell;
         }				        
     } else if(indexPath.section == 1) {
@@ -334,6 +348,17 @@
     }
     
     return YES;
+}
+
+- (void)textFieldDidChange {
+    if ( [urlTextField.text isEqualToString:@""] ||
+         [usernameTextField.text isEqualToString:@""] ||
+         [passwordTextField.text isEqualToString:@""] )
+    {
+        self.navigationItem.rightBarButtonItem.enabled = FALSE;
+    } else {
+        self.navigationItem.rightBarButtonItem.enabled = TRUE;
+    }
 }
 
 
