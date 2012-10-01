@@ -121,9 +121,9 @@
     featuredImageView.layer.shadowRadius = 1.0f;
     
     // Check if blog supports featured images
-    id supportsFeatuedImages = [postDetailViewController.post.blog getOptionValue:@"post_thumbnail"];
-    if (supportsFeatuedImages != nil) {
-        blogSupportsFeaturedImage = (BOOL)supportsFeatuedImages;
+    id supportsFeaturedImages = [postDetailViewController.post.blog getOptionValue:@"post_thumbnail"];
+    if (supportsFeaturedImages != nil) {
+        blogSupportsFeaturedImage = [supportsFeaturedImages boolValue];
         if (blogSupportsFeaturedImage && postDetailViewController.post.post_thumbnail != nil) {
             // Download the current featured image
             [featuredImageView setHidden:YES];
