@@ -428,7 +428,11 @@
     Blog *blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
 	blog.geolocationEnabled = self.geolocationEnabled;
 	[blog dataSave];
-    [blog syncBlogWithSuccess:nil failure:nil];
+    [blog syncBlogWithSuccess:^{
+        if( ! [blog isWPcom] )
+            [appDelegate sendPushNotificationBlogsList];
+    }
+                      failure:nil];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 }
 

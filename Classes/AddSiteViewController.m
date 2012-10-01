@@ -82,7 +82,9 @@
             self.blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
 			self.blog.geolocationEnabled = self.geolocationEnabled;
 			[self.blog dataSave];
-            [self.blog syncBlogWithSuccess:nil failure:nil];
+            [self.blog syncBlogWithSuccess:^{
+                [appDelegate sendPushNotificationBlogsList];
+            } failure:nil];
             
             if (IS_IPAD) {
                 [self dismissModalViewControllerAnimated:YES];
