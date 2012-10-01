@@ -401,7 +401,8 @@ static NSString *_lastAuthedName = nil;
     [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
     NSString *userAgent = [NSString stringWithFormat:@"%@",[webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
     [mRequest addValue:userAgent forHTTPHeaderField:@"User-Agent"];
-    
+    [mRequest addValue:@"no-cache" forHTTPHeaderField:@"Cache-Control"];
+
     [webView loadRequest:mRequest];
 }
 
