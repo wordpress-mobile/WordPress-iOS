@@ -72,6 +72,7 @@
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType;
 - (void)postDidUploadSuccessfully:(NSNotification *)notification;
 - (void)postUploadFailed:(NSNotification *)notification;
+- (void)postUploadCancelled:(NSNotification *)notification;
 - (void)setupQuickPhotoButton;
 - (void)tearDownQuickPhotoButton;
 - (void)handleCameraPlusImages:(NSNotification *)notification;
@@ -584,17 +585,24 @@
     [alert release];
 }
 
+- (void)postUploadCancelled:(NSNotification *)notification {
+    self.currentQuickPost = nil;
+    [quickPhotoButton showProgress:NO animated:YES];
+}
+
 - (void)setCurrentQuickPost:(Post *)currentQuickPost {
     if (currentQuickPost != _currentQuickPost) {
         if (_currentQuickPost) {
             [[NSNotificationCenter defaultCenter] removeObserver:self name:@"PostUploaded" object:_currentQuickPost];
             [[NSNotificationCenter defaultCenter] removeObserver:self name:@"PostUploadFailed" object:_currentQuickPost];
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:@"PostUploadCancelled" object:_currentQuickPost];
             [_currentQuickPost release];
         }
         _currentQuickPost = [currentQuickPost retain];
         if (_currentQuickPost) {
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postDidUploadSuccessfully:) name:@"PostUploaded" object:currentQuickPost];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postUploadFailed:) name:@"PostUploadFailed" object:currentQuickPost];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postUploadCancelled:) name:@"PostUploadCancelled" object:currentQuickPost];
         }
     }
 }

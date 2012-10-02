@@ -264,9 +264,15 @@
     Media *media = (Media *)[notification object];
     [media save];
 
-    self.content = [NSString stringWithFormat:@"%@\n\n%@", [media html], self.content];
+    // check if post deleted after media upload started
+    if (self.content == nil) {
+        appDelegate.isUploadingPost = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadCancelled" object:self];
+    } else {
+        self.content = [NSString stringWithFormat:@"%@\n\n%@", [media html], self.content];
         [self uploadWithSuccess:nil failure:nil];
-
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
