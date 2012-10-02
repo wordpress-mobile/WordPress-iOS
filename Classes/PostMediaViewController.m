@@ -20,6 +20,7 @@
 
 @interface PostMediaViewController (Private)
 - (void)getMetadataFromAssetForURL:(NSURL *)url;
+- (UITableViewCell *)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
 
 @implementation PostMediaViewController
@@ -149,12 +150,12 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
 	}
     
-    [self updateCell:cell forIndexPath:indexPath];
+    [self configureCell:cell atIndexPath:indexPath];
     
     return cell;
 }
 
-- (UITableViewCell *)updateCell:(UITableViewCell *)cell forIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
 	Media *media = [self.resultsController objectAtIndexPath:indexPath];
     cell.imageView.image = [UIImage imageWithData:media.thumbnail];
 	NSString *filesizeString = nil;
@@ -1607,7 +1608,7 @@
     // For updates, update the cell w/o refreshing the whole tableview.
     UITableViewCell *cell = [self.table cellForRowAtIndexPath:indexPath];
     if (cell) {
-        [self updateCell:cell forIndexPath:indexPath];
+        [self configureCell:cell atIndexPath:indexPath];
     }
 
 }
