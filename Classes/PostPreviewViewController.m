@@ -1,6 +1,7 @@
 #import "PostPreviewViewController.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+Helpers.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface PostPreviewViewController (Private)
 
@@ -15,7 +16,16 @@
 @synthesize postDetailViewController, webView;
 
 #pragma mark -
-#pragma mark Memory Management
+#pragma mark Lifecycle Methods
+
+- (void)dealloc {
+	[webView stopLoading];
+	webView.delegate = nil;
+	[webView release]; webView = nil;
+    [loadingView release]; loadingView = nil;
+    [super dealloc];
+}
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -32,56 +42,63 @@
     // Release anything that's not essential, such as cached data
 }
 
-#pragma mark -
-#pragma mark View Lifecycle Methods
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	webView.delegate = self;
-	if (activityFooter == nil) {
-		CGRect rect = CGRectMake(0, 0, 30, 30);
-        activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
-        activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-        activityFooter.hidesWhenStopped = YES;
-        activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-    }	
+	if (loadingView == nil) {
+        
+        CGRect frame = self.view.frame;
+        CGFloat sides = 100.0f;
+        CGFloat x = (frame.size.width / 2.0f) - (sides / 2.0f);
+        CGFloat y = (frame.size.height / 2.0f) - (sides / 2.0f);
+
+        loadingView = [[[UIView alloc] initWithFrame:CGRectMake(x, y, sides, sides)] autorelease];
+        loadingView.layer.cornerRadius = 10.0f;
+        loadingView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
+        loadingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
+                                       UIViewAutoresizingFlexibleBottomMargin |
+                                       UIViewAutoresizingFlexibleTopMargin |
+                                       UIViewAutoresizingFlexibleRightMargin;
+        
+        UIActivityIndicatorView *activityView = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
+        activityView.hidesWhenStopped = NO;
+        activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
+                                        UIViewAutoresizingFlexibleBottomMargin |
+                                        UIViewAutoresizingFlexibleTopMargin |
+                                        UIViewAutoresizingFlexibleRightMargin;
+        [activityView startAnimating];
+        
+        CGRect frm = activityView.frame;
+        frm.origin.x = (sides / 2.0f) - (frm.size.width / 2.0f);
+        frm.origin.y = (sides / 2.0f) - (frm.size.height / 2.0f);
+        activityView.frame = frm;
+        [loadingView addSubview:activityView];
+        
+
+    }
 	
-	[self.view addSubview:activityFooter];
+    [self.view addSubview:loadingView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 	[self refreshWebView];
-	if (IS_IPAD)
-		[activityFooter setCenter:CGPointMake(self.view.center.x, self.view.center.y)];
-	else
-		[activityFooter setCenter:CGPointMake(self.view.center.x - 20, self.view.center.y - 20)];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 	[webView stopLoading];
 }
-/*
+
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if (IS_IPAD == YES) {
-		return YES;
-	}
-
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    if ([delegate isAlertRunning] == YES)
-        return NO;
-    
-    // Return YES for supported orientations
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-}
-*/
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
+
+
+#pragma mark -
+#pragma mark Instance Methods
 
 - (NSString *)buildSimplePreview {
 	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
@@ -211,19 +228,22 @@
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-	[activityFooter startAnimating];
+    loadingView.hidden = NO;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)awebView {
-	[activityFooter stopAnimating];
+    loadingView.hidden = YES;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-	[activityFooter stopAnimating];
+    loadingView.hidden = YES;
 }
 
 - (BOOL)webView:(UIWebView *)awebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if (navigationType == UIWebViewNavigationTypeLinkClicked || navigationType == UIWebViewNavigationTypeFormSubmitted) {
+        return NO;
+    }
     return YES;
     //return isWebRefreshRequested || postDetailViewController.navigationItem.rightBarButtonItem != nil;
 }
@@ -236,14 +256,4 @@
 }
 
 
-#pragma mark -
-#pragma mark Dealloc
-
-- (void)dealloc {
-	[webView stopLoading];
-	webView.delegate = nil;
-	[webView release]; webView = nil;
-    [activityFooter release];
-    [super dealloc];
-}
 @end

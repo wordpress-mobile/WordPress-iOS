@@ -3,7 +3,7 @@
 
 @interface PostPreviewViewController : UIViewController <UIWebViewDelegate> {
     IBOutlet UIWebView *webView;
-	UIActivityIndicatorView *activityFooter;
+    UIView *loadingView;
 
     EditPostViewController *postDetailViewController;
 	NSFetchedResultsController *resultsController;
