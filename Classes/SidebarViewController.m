@@ -65,6 +65,7 @@
 - (void)selectFirstAvailableItem;
 - (void)selectFirstAvailableBlog;
 - (void)selectBlogWithSection:(NSUInteger)index;
+- (void)selectBlogWithBlog:(Blog *)blog;
 
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)useCameraPlus withImage:(UIImage *)image;
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)useCameraPlus;
@@ -394,6 +395,20 @@
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
+- (void)selectBlogWithBlog:(Blog *)blog {
+    int currentBlog = 1;
+    
+    for (Blog *tempBlog in [[[self.resultsController sections] objectAtIndex:0] objects]) {
+        if ([blog isEqual:tempBlog]) {
+            NSLog(@"Selecting blog on sidebar: %@", blog.blogName);
+            
+            [self selectBlogWithSection:currentBlog];
+        }
+        
+        currentBlog++;
+    }
+}
+
 - (void)showCommentWithId:(NSNumber *)itemId blogId:(NSNumber *)blogId {
     __block SectionInfo *targetSection;
     __block NSUInteger sectionNumber;
@@ -542,6 +557,10 @@
     if (post != nil) {
         self.currentQuickPost = post;
         [quickPhotoButton showProgress:YES animated:YES];
+        
+        if (IS_IPHONE) {
+            [self selectBlogWithBlog:post.blog];
+        }
     }
 }
 
