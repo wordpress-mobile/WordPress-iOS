@@ -61,11 +61,18 @@
         cancelButton.tintColor = color;
         insertButton.tintColor = color;
     }    
-	if (!IS_IPAD) { 
-		NSMutableArray *items = [[toolbar.items mutableCopy] autorelease]; 
-		[items removeObject: cancelButton]; 
-		toolbar.items = items; 
-	} 
+	if (IS_IPAD) {
+        CGRect rect = self.scrollView.frame;
+        rect.origin.y = 44.0f;
+        rect.size.height = rect.size.height - 44.0f;
+        self.scrollView.frame = rect;
+        
+        UIToolbar *topToolbar = [[[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0f)] autorelease];
+        topToolbar.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
+        UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        topToolbar.items = [NSArray arrayWithObjects:flex, cancelButton, nil];
+        [self.view addSubview:topToolbar];
+	}
 }
 
 - (void)viewDidUnload {
