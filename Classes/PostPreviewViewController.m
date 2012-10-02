@@ -53,7 +53,7 @@
         CGFloat x = (frame.size.width / 2.0f) - (sides / 2.0f);
         CGFloat y = (frame.size.height / 2.0f) - (sides / 2.0f);
 
-        loadingView = [[[UIView alloc] initWithFrame:CGRectMake(x, y, sides, sides)] autorelease];
+        loadingView = [[UIView alloc] initWithFrame:CGRectMake(x, y, sides, sides)];
         loadingView.layer.cornerRadius = 10.0f;
         loadingView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
         loadingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
@@ -74,8 +74,6 @@
         frm.origin.y = (sides / 2.0f) - (frm.size.height / 2.0f);
         activityView.frame = frm;
         [loadingView addSubview:activityView];
-        
-
     }
 	
     [self.view addSubview:loadingView];
