@@ -65,7 +65,7 @@
 - (void)selectFirstAvailableItem;
 - (void)selectFirstAvailableBlog;
 - (void)selectBlogWithSection:(NSUInteger)index;
-- (void)selectBlogWithBlog:(Blog *)blog;
+- (void)selectBlog:(Blog *)blog;
 
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)useCameraPlus withImage:(UIImage *)image;
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)useCameraPlus;
@@ -395,7 +395,7 @@
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
-- (void)selectBlogWithBlog:(Blog *)blog {
+- (void)selectBlog:(Blog *)blog {
     int currentBlog = 1;
     
     for (Blog *tempBlog in [[[self.resultsController sections] objectAtIndex:0] objects]) {
@@ -559,7 +559,7 @@
         [quickPhotoButton showProgress:YES animated:YES];
         
         if (IS_IPHONE) {
-            [self selectBlogWithBlog:post.blog];
+            [self selectBlog:post.blog];
         }
     }
 }
