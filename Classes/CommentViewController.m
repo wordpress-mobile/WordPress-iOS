@@ -462,6 +462,8 @@
     [self.comment performSelector:selector];
     if (!IS_IPAD) {
         [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        [self.panelNavigationController popToRootViewControllerAnimated:YES];
     }
    [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:currentBlog];
 }
