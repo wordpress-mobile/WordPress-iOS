@@ -245,6 +245,9 @@
             nil];
 }
 
+- (BOOL)hasJetpack {
+    return (nil != [self getOptionValue:@"jetpack_version"]);
+}
 
 - (void)awakeFromFetch {
     [self reachability];

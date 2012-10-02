@@ -63,6 +63,7 @@
 - (NSString *)fetchPassword;
 - (int)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
+- (BOOL)hasJetpack;
 
 #pragma mark - 
 

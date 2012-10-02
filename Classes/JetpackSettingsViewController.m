@@ -193,6 +193,9 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tv {
+    if ([self.blog hasJetpack]) {
+        return 3;
+    }
     return 4;
 }
 
@@ -220,7 +223,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (section < 1)
         return 44.0f;
-    if (section == 2)
+    if ((section == 2) && !([self.blog hasJetpack]))
         return 60.0f;
     else
         return 0.0f;
@@ -244,7 +247,7 @@
 
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (section == 2) {
+    if (section == 2 && ![self.blog hasJetpack]) {
         NSString *labelText = labelText = NSLocalizedString(@"Need Jetpack? Tap below and search for 'Jetpack' to install it on your site.", @"");
         CGRect headerFrame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 50.0f);
         UIView *footerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
@@ -362,7 +365,14 @@
                 }
             }
 		}
-		activityCell.textLabel.text = NSLocalizedString(@"Install Jetpack", @"");
+        NSString *jetpackVersion = [self.blog getOptionValue:@"jetpack_version"];
+        if (jetpackVersion) {
+            activityCell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Jetpack version: %@", @""), jetpackVersion];
+            activityCell.selectionStyle = UITableViewCellEditingStyleNone;
+        } else {
+            activityCell.textLabel.text = NSLocalizedString(@"Install Jetpack", @"");
+            activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        }
         
 		return activityCell;
     } else if (indexPath.section == 3) {
@@ -446,6 +456,9 @@
             break;
         case 2:
             if (blog) {
+                if ([blog hasJetpack]) {
+                    break;
+                }
                 NSString *jetpackURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/plugin-install.php"];
                 WPWebViewController *webViewController = nil;
                 if ( IS_IPAD ) {
