@@ -77,7 +77,8 @@ static inline double radians(double degrees) {
 
 - (void)scaleAndRotateImage:(UIImage *)image;
 - (IBAction)showVideoPickerActionSheet:(id)sender;
-- (IBAction)showPhotoPickerActionSheet:(id)sender isFeaturedImage: (BOOL) featured;
+- (IBAction)showPhotoPickerActionSheet:(id)sender;
+- (IBAction)showPhotoPickerActionSheet:(id)sender fromRect:(CGRect)rect isFeaturedImage:(BOOL)featuredImage;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex;
 - (void)pickPhotoFromCamera:(id)sender;
 - (void)pickVideoFromCamera:(id)sender;

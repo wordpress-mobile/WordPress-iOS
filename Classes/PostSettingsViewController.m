@@ -537,7 +537,7 @@
 }
 
 
-- (void)tableView:(UITableView *)atableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
 		case 0:
 			switch (indexPath.row) {
@@ -586,15 +586,16 @@
         }
 		case 2:
             if (blogSupportsFeaturedImage) {
+                UITableViewCell *cell = [aTableView cellForRowAtIndexPath:indexPath];
                 switch (indexPath.row) {
                     case 0:
                         if (!postDetailViewController.post.post_thumbnail) {
-                            [postDetailViewController setFeaturedImage];
+                            [postDetailViewController.postMediaViewController showPhotoPickerActionSheet:self fromRect:cell.frame isFeaturedImage:YES];
                         }
                         break;
                     case 1:
                         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Remove this Featured Image?", @"Prompt when removing a featured image from a post") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", "Cancel a prompt") destructiveButtonTitle:NSLocalizedString(@"Remove", @"Remove an image/posts/etc") otherButtonTitles:nil];
-                        [actionSheet showInView:self.view];
+                        [actionSheet showFromRect:cell.frame inView:self.view animated:YES];
                         break;
                 }
             } else {
@@ -619,7 +620,7 @@
                 [tableView reloadData];
             }
 	}
-    [atableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+    [aTableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 }
 
 - (void)featuredImageUploadFailed: (NSNotification *)notificationInfo {

@@ -101,6 +101,7 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 @property (nonatomic, retain) UIButton *undoButton, *redoButton;
 @property (nonatomic, retain) UIActionSheet *currentActionSheet;
 @property (nonatomic, retain) PostSettingsViewController *postSettingsViewController;
+@property (nonatomic, retain) PostMediaViewController *postMediaViewController;
 
 - (id)initWithPost:(AbstractPost *)aPost;
 
@@ -123,7 +124,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)insertMediaAbove:(NSNotification *)notification;
 - (void)insertMediaBelow:(NSNotification *)notification;
 - (void)removeMedia:(NSNotification *)notification;
-- (void)setFeaturedImage;
 
 - (IBAction)showAddNewCategoryView:(id)sender;
 

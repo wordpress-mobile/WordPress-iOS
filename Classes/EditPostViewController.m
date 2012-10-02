@@ -29,6 +29,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 @synthesize photoButton, movieButton;
 @synthesize undoButton, redoButton;
 @synthesize currentActionSheet;
+@synthesize postMediaViewController = postMediaViewController;
+@synthesize postSettingsViewController = postSettingsController;
 
 #pragma mark -
 #pragma mark LifeCycle Methods
@@ -462,7 +464,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (IBAction)addPhoto:(id)sender {
-    [postMediaViewController showPhotoPickerActionSheet:sender isFeaturedImage:NO];
+    [postMediaViewController showPhotoPickerActionSheet:sender];
 }
 
 - (IBAction)showCategories:(id)sender {
@@ -478,10 +480,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (IBAction)touchTextView:(id)sender {
     [textView becomeFirstResponder];
-}
-
-- (void)setFeaturedImage {
-    [postMediaViewController showPhotoPickerActionSheet:nil isFeaturedImage:YES];
 }
 
 - (CGRect)normalTextFrame {

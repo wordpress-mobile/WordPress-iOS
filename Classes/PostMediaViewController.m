@@ -23,7 +23,9 @@
 - (UITableViewCell *)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
 
-@implementation PostMediaViewController
+@implementation PostMediaViewController {
+    CGRect actionSheetRect;
+}
 @synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, addPopover, picker, customSizeAlert;
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner;
 @synthesize currentImage, currentImageMetadata, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
@@ -66,6 +68,7 @@
 	picker = [[UIImagePickerController alloc] init];
 	picker.delegate = self;
 	picker.allowsEditing = NO;
+    actionSheetRect = CGRectZero;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -340,13 +343,16 @@
     [actionSheet release];
 }
 
-- (IBAction)showPhotoPickerActionSheet:(id)sender isFeaturedImage:(BOOL)featured{
-    
-    isPickingFeaturedImage = featured;
+- (IBAction)showPhotoPickerActionSheet:(id)sender {
+    [self showPhotoPickerActionSheet:sender fromRect:CGRectZero isFeaturedImage:NO];
+}
+
+- (IBAction)showPhotoPickerActionSheet:(id)sender fromRect:(CGRect)rect isFeaturedImage:(BOOL)featuredImage {
     if (currentActionSheet || addPopover) {
         return;
     }
     
+    isPickingFeaturedImage = featuredImage;
     isShowingMediaPickerActionSheet = YES;
 	isAddingMedia = YES;
 	
@@ -367,10 +373,12 @@
     actionSheet.tag = TAG_ACTIONSHEET_PHOTO;
     actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
     if (IS_IPAD) {
-        if (isPickingFeaturedImage)
-            [actionSheet showFromBarButtonItem:postDetailViewController.settingsButton animated:YES];
-        else
+        actionSheetRect = rect;
+        if (!CGRectIsEmpty(rect)) {
+            [actionSheet showFromRect:rect inView:postDetailViewController.postSettingsViewController.view animated:YES];
+        } else {
             [actionSheet showFromBarButtonItem:postDetailViewController.photoButton animated:YES];
+        }
     } else {
         [actionSheet showInView:postDetailViewController.view];
     }
@@ -508,7 +516,11 @@
 				addPopover.delegate = self;
 			}
 			
-			[addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            if (!CGRectIsEmpty(actionSheetRect)) {
+                [addPopover presentPopoverFromRect:actionSheetRect inView:postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            } else {
+                [addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            }
 			[[CPopoverManager instance] setCurrentPopoverController:addPopover];
 		}
 		else {			
@@ -615,7 +627,11 @@
                 }
                 addPopover.delegate = self;
             }
-            [addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            if (!CGRectIsEmpty(actionSheetRect)) {
+                [addPopover presentPopoverFromRect:actionSheetRect inView:postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            } else {
+                [addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            }
             [[CPopoverManager instance] setCurrentPopoverController:addPopover];
 		}
 		else {
