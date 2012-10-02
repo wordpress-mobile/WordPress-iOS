@@ -211,7 +211,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if (section == 0) {
-        return 66.0f; // Enough room for 3 rows of text on the iphone in portrait orientation.
+        return 76.0f; // Enough room for 3 rows of text on the iphone in portrait orientation.
     }
     return 0.0f;
 }
