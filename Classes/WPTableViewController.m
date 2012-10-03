@@ -17,10 +17,13 @@
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 @interface WPTableViewController () <EGORefreshTableHeaderDelegate>
-@property (nonatomic,retain) NSFetchedResultsController *resultsController;
+
+@property (nonatomic, retain) NSFetchedResultsController *resultsController;
 @property (nonatomic) BOOL swipeActionsEnabled;
-@property (nonatomic,retain,readonly) UIView *swipeView;
-@property (nonatomic,retain) UITableViewCell *swipeCell;
+@property (nonatomic, retain, readonly) UIView *swipeView;
+@property (nonatomic, retain) UITableViewCell *swipeCell;
+@property (nonatomic, retain) NSIndexPath *firstVisibleIndexPathBeforeDisappear;
+
 - (void)simulatePullToRefresh;
 - (void)enableSwipeGestureRecognizer;
 - (void)disableSwipeGestureRecognizer;
@@ -47,6 +50,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 @synthesize swipeActionsEnabled = _swipeActionsEnabled;
 @synthesize swipeView = _swipeView;
 @synthesize swipeCell = _swipeCell;
+@synthesize firstVisibleIndexPathBeforeDisappear;
 
 - (void)dealloc
 {
@@ -60,6 +64,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     _resultsController.delegate = nil;
     [_resultsController release];
     [_blog release];
+    self.firstVisibleIndexPathBeforeDisappear = nil;
+    
     [super dealloc];
 }
 
@@ -104,9 +110,20 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    // Scroll to the selected row if the view was restored after a memory warning.
+    if (IS_IPHONE && self.firstVisibleIndexPathBeforeDisappear) {
+        [self.tableView scrollToRowAtIndexPath:self.firstVisibleIndexPathBeforeDisappear atScrollPosition:UITableViewScrollPositionTop animated:NO];
+        self.firstVisibleIndexPathBeforeDisappear = nil;
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
     if( appDelegate.connectionAvailable == NO ) return; //do not start auto-synch if connection is down
+
     NSDate *lastSynced = [self lastSyncDate];
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
         // If table is at the original scroll position, simulate a pull to refresh
@@ -119,10 +136,21 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     }
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if (IS_IPHONE) {
+        NSArray *visibleRows = [self.tableView indexPathsForVisibleRows];
+        if ([visibleRows count] > 0) {
+            self.firstVisibleIndexPathBeforeDisappear = [visibleRows objectAtIndex:0];
+        }
+    }
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
+
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [self removeSwipeView:NO];
