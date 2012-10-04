@@ -382,15 +382,24 @@
                         title = [title stringByDecodingXMLCharacters];
                         [obj setValue:title forKey:@"blogName"];
                     }];
-                    [self hideNoBlogsView];
+                    
+                    if(usersBlogs.count > 1) {
+                        [self hideNoBlogsView];
+                        [self.tableView reloadData];
+                    } else {
+                        [selectedBlogs removeAllObjects];
+                        for(NSDictionary *blog in usersBlogs) {
+                            [selectedBlogs addObject:[blog valueForKey:@"blogid"]];
+                        }
+                        [self saveSelectedBlogs];
+                    }
                 } else {
                     
                     // User blogs count == 0.  Prompt the user to create a blog.
                     [self showNoBlogsView];
-
+                    [self.tableView reloadData];
+                    
                 }
-                
-                [self.tableView reloadData];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 WPFLog(@"Failed getting user blogs: %@", [error localizedDescription]);
                 [self hideNoBlogsView];
@@ -532,30 +541,35 @@
 }
 
 - (IBAction)saveSelectedBlogs:(id)sender {
-	[[NSUserDefaults standardUserDefaults] setBool:true forKey:@"refreshCommentsRequired"];
+    [self saveSelectedBlogs];
+}
+
+- (void)saveSelectedBlogs {
+    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"refreshCommentsRequired"];
 	
     NSError *error = nil;
     if (isWPcom) {
         self.username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
         self.password = [SFHFKeychainUtils getPasswordForUsername:_username
-                                              andServiceName:@"WordPress.com"
-                                                       error:&error];
+                                                   andServiceName:@"WordPress.com"
+                                                            error:&error];
         NSLog(@"saveSelectedBlogs. username: %@, usersBlogs: %@", _username, usersBlogs);
     } else {
         NSLog(@"saveSelectedBlogs. username: %@, usersBlogs: %@", _username, usersBlogs);
     }
-
+    
     for (NSDictionary *blog in usersBlogs) {
 		if([selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
 			[self createBlog:blog];
 		}
 	}
-
+    
     [appDelegate.managedObjectContext save:&error];
     if (error != nil) {
         NSLog(@"Error adding blogs: %@", [error localizedDescription]);
     }
     [self didSaveSelectedBlogsInBackground];
+    
 }
 
 - (void)didSaveSelectedBlogsInBackground {

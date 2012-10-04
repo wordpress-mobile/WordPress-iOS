@@ -36,6 +36,7 @@
 - (IBAction)saveSelectedBlogs:(id)sender;
 - (void)createBlog:(NSDictionary *)blogInfo;
 - (void)cancelAddWPcomBlogs;
+- (void)saveSelectedBlogs;
 - (void)didSaveSelectedBlogsInBackground;
 - (void)signOut;
 - (void)checkAddSelectedButtonStatus;
