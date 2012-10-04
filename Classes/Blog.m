@@ -265,6 +265,9 @@
 - (void)remove {
     WPFLog(@"<Blog:%@> remove", self.hostURL);
     [self.api cancelAllHTTPOperations];
+    _reachability.reachableBlock = nil;
+    _reachability.unreachableBlock = nil;
+    [_reachability stopNotifier];
     [[self managedObjectContext] deleteObject:self];
     [self dataSave];
 }
@@ -320,18 +323,24 @@
 - (Reachability *)reachability {
     if (_reachability == nil) {
         _reachability = [[Reachability reachabilityWithHostname:self.hostname] retain];
+    }
+    if( _reachability.reachableBlock == nil ) {
         _reachability.reachableBlock = ^(Reachability *reach) {
             [self willChangeValueForKey:@"reachable"];
             _isReachable = YES;
             [self didChangeValueForKey:@"reachable"];
         };
+    }
+    if( _reachability.unreachableBlock == nil ) {
         _reachability.unreachableBlock = ^(Reachability *reach) {
             [self willChangeValueForKey:@"reachable"];
             _isReachable = NO;
             [self didChangeValueForKey:@"reachable"];
         };
-        [_reachability startNotifier];
     }
+    
+    if( _reachability.reachabilityObject == nil )
+        [_reachability startNotifier];
     
     return _reachability;
 }
