@@ -12,6 +12,7 @@
 #import "UIBarButtonItem+Styled.h"
 #import "ReachabilityUtils.h"
 #import "WebSignupViewController.h"
+#import "UIImageView+Gravatar.h"
 
 @interface AddUsersBlogsViewController()
 
@@ -254,6 +255,8 @@
             if (!cell.textLabel.text || [cell.textLabel.text isEqualToString:@""]) {
                 cell.textLabel.text = [blog valueForKey:@"url"];
             }
+            NSURL *blogURL = [NSURL URLWithString:[blog valueForKey:@"url"]];
+            [cell.imageView setImageWithBlavatarUrl:[blogURL host] isWPcom:isWPcom];
 			break;
         case 1: 
             cell.textLabel.textAlignment = UITextAlignmentCenter; 
@@ -308,7 +311,14 @@
 
 #pragma mark -
 #pragma mark Custom methods
-									   
+
+- (NSArray *)usersBlogs {
+    return [usersBlogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        NSNumber *hidden = [evaluatedObject objectForKey:@"hidden"];
+        return ((hidden == nil) || [hidden boolValue]);
+    }]];
+}
+
 - (void)selectAllBlogs:(id)sender {
 	[selectedBlogs removeAllObjects];
 	for(NSDictionary *blog in usersBlogs) {
