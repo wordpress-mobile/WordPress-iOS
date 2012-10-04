@@ -677,6 +677,10 @@
         return self.topSectionRowCount;
     } else {
         SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:section - 1];
+        if ([self.sectionInfoArray count] == 1) {
+            // Only one blog, keep the section open
+            sectionInfo.open = YES;
+        }
         return sectionInfo.open ? NUM_ROWS : 0;
     }
     
