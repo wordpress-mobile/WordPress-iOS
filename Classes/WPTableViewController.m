@@ -114,7 +114,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     [super viewWillAppear:animated];
     
     // Scroll to the selected row if the view was restored after a memory warning.
-    if (IS_IPHONE && self.firstVisibleIndexPathBeforeDisappear) {
+    if (IS_IPHONE && self.firstVisibleIndexPathBeforeDisappear && [[self.resultsController sections] count] > 0) {
         [self.tableView scrollToRowAtIndexPath:self.firstVisibleIndexPathBeforeDisappear atScrollPosition:UITableViewScrollPositionTop animated:NO];
         self.firstVisibleIndexPathBeforeDisappear = nil;
     }
