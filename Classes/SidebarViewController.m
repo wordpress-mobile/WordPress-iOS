@@ -1115,6 +1115,7 @@
     
     switch (type) {
         case NSFetchedResultsChangeInsert:
+        {
             NSLog(@"Inserting row %d: %@", newIndexPath.row, anObject);
             NSIndexPath *openIndexPath = [self.tableView indexPathForSelectedRow];
             if (openIndexPath.section == (newIndexPath.row +1)) {
@@ -1125,8 +1126,15 @@
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:newIndexPath.row + 1] withRowAnimation:UITableViewRowAnimationFade];
             wantedSection = newIndexPath.row + 1;
             break;
+        }
         case NSFetchedResultsChangeDelete:
+        {
             NSLog(@"Deleting row %d: %@", indexPath.row, anObject);
+            NSIndexPath *openIndexPath = [self.tableView indexPathForSelectedRow];
+            if (openIndexPath.section == (newIndexPath.row +1)) {
+                // We're swapping the content for the currently selected section and need to update accordingly.
+                changingContentForSelectedSection = YES;
+            }
             SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:indexPath.row];
             if (sectionInfo.open) {
                 NSMutableArray *indexPathsToDelete = [[NSMutableArray alloc] init];                
@@ -1144,6 +1152,7 @@
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.row + 1] withRowAnimation:UITableViewRowAnimationFade];
             //[self showWelcomeScreenIfNeeded];
             break;
+        }
     }
 }
 
