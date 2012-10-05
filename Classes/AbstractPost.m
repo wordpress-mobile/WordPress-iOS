@@ -299,11 +299,17 @@
     [postParams setValueIfNotNil:self.mt_excerpt forKey:@"mt_excerpt"];
     [postParams setValueIfNotNil:self.wp_slug forKey:@"wp_slug"];
     // To remove a featured image, you have to send an empty string to the API
-    if (self.post_thumbnail == nil)
-        [postParams setValue:@"" forKey:@"wp_post_thumbnail"];
-    else
+    if (self.post_thumbnail == nil) {
+        // Including an empty string for wp_post_thumbnail generates
+        // an "Invalid attachment ID" error in the call to wp.newPage
+        if ([self.postID intValue] > 0) {
+            [postParams setValue:@"" forKey:@"wp_post_thumbnail"];
+        }
+
+    } else {
         [postParams setValue:self.post_thumbnail forKey:@"wp_post_thumbnail"];
-	
+	}
+    
 	if (self.mt_text_more != nil && [self.mt_text_more length] > 0)
         [postParams setObject:self.mt_text_more forKey:@"mt_text_more"];
 	
