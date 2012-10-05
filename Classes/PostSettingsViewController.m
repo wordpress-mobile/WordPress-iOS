@@ -84,7 +84,7 @@
 	if (IS_IPAD)
 		pickerFrame = CGRectMake(0.0f, 0.0f, 320.0f, 216.0f);
 	else 
-		pickerFrame = CGRectMake(0.0f, 40.0f, 320.0f, 216.0f);
+		pickerFrame = CGRectMake(0.0f, 44.0f, 320.0f, 216.0f);
     
     pickerView = [[UIPickerView alloc] initWithFrame:pickerFrame];
     pickerView.delegate = self;
@@ -788,26 +788,39 @@
         
     } else {
     
-        CGFloat width = self.view.frame.size.width;
-        CGFloat height = self.view.frame.size.height + 114.0f;
+        CGFloat width = postDetailViewController.view.frame.size.width;
+        CGFloat height = 0.0;
         
-        UIView *pickerWrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 260.0f)];
+        // TODO: Refactor this class to not use UIActionSheets for display.
+        // <rant>Shoehorning a UIPicker inside a UIActionSheet is just madness.</rant>
+        // For now, hardcoding height values for the iPhone so we don't get
+        // a funky gap at the bottom of the screen on the iPhone 5.
+        if(postDetailViewController.view.frame.size.height <= 416.0f) {
+            height = 490.0f;
+        } else {
+            height = 500.0f;
+        }
+        if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation)){
+            height = 460.0f; // Show most of the actionsheet but keep the top of the view visible.
+        }
+        
+        UIView *pickerWrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 260.0f)]; // 216 + 44 (height of the picker and the "tooblar")
         pickerWrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         [pickerWrapperView addSubview:picker];
-        
+                
         CGRect pickerFrame = picker.frame;
         pickerFrame.size.width = width;
-        pickerFrame.size.height = height;
         picker.frame = pickerFrame;
         
         actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
         [actionSheet setActionSheetStyle:UIActionSheetStyleAutomatic];
         [actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)];
+        
         [actionSheet addSubview:pickerWrapperView];
         [pickerWrapperView release];
 
         UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")]];
-        closeButton.momentary = YES; 
+        closeButton.momentary = YES;
         CGFloat x = self.view.frame.size.width - 60.0f;
         closeButton.frame = CGRectMake(x, 7.0f, 50.0f, 30.0f);
         closeButton.segmentedControlStyle = UISegmentedControlStyleBar;
