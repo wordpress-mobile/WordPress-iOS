@@ -626,7 +626,6 @@
 
 - (void)featuredImageUploadFailed: (NSNotification *)notificationInfo {
     isUploadingFeaturedImage = NO;
-    
 }
 
 - (void)featuredImageUploadSucceeded: (NSNotification *)notificationInfo {
@@ -643,6 +642,7 @@
     } else {
         //reset buttons
     }
+    [postDetailViewController refreshButtons];
     [tableView reloadData];
 }
 

@@ -250,10 +250,12 @@
 
     if (![self.categories isEqual:((Post *)self.original).categories]) return YES;
     
-    
-	
 	if ((self.geolocation != ((Post *)self.original).geolocation)
 		 && (![self.geolocation isEqual:((Post *)self.original).geolocation]) )
+        return YES;
+    
+    if ((self.featuredImageURL != ((Post *)self.original).featuredImageURL)
+        && (![self.featuredImageURL isEqual:((Post *)self.original).featuredImageURL]))
         return YES;
 
     return NO;
