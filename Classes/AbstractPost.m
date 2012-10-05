@@ -22,6 +22,8 @@
 @dynamic blog, media;
 @dynamic comments;
 
+@synthesize isFeaturedImageChanged;
+
 + (NSString *)titleForStatus:(NSString *)status {
     if ([status isEqualToString:@"draft"]) {
         return NSLocalizedString(@"Draft", @"");
@@ -135,7 +137,7 @@
     [post cloneFrom:self];
     [post setValue:self forKey:@"original"];
     [post setValue:nil forKey:@"revision"];
-
+    post.isFeaturedImageChanged = self.isFeaturedImageChanged;
     return post;
 }
 
@@ -149,6 +151,7 @@
 - (void)applyRevision {
     if ([self isOriginal]) {
         [self cloneFrom:self.revision];
+        self.isFeaturedImageChanged = self.revision.isFeaturedImageChanged;
         [self deleteRevision];
     }
 }
@@ -176,6 +179,14 @@
     //first let's check if there's no post title or content (in case a cheeky user deleted them both)
     if ((self.postTitle == nil || [self.postTitle isEqualToString:@""]) && (self.content == nil || [self.content isEqualToString:@""]))
         return NO;
+    
+    //Do not move the Featured Image check below in the code.
+    if ((self.post_thumbnail != self.original.post_thumbnail)
+        && (![self.post_thumbnail  isEqual:self.original.post_thumbnail])){
+        self.isFeaturedImageChanged = YES;
+        return YES;
+    } else
+        self.isFeaturedImageChanged = NO;
 
     // We need the extra check since [nil isEqual:nil] returns NO
     if ((self.postTitle != self.original.postTitle)
@@ -199,10 +210,6 @@
 
 	if ((self.permaLink != self.original.permaLink)
         && (![self.permaLink  isEqual:self.original.permaLink]))
-        return YES;
-    
-    if ((self.post_thumbnail != self.original.post_thumbnail)
-        && (![self.post_thumbnail  isEqual:self.original.post_thumbnail]))
         return YES;
 	
     if (self.hasRemote == NO) {

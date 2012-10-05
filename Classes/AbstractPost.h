@@ -46,6 +46,7 @@ typedef enum {
 @property (nonatomic, retain) NSMutableSet * comments;
 
 @property (readonly) BOOL hasChanges;
+@property (nonatomic, assign) BOOL isFeaturedImageChanged;
 
 - (NSArray *)availableStatuses;
 // Does the post exist on the blog?

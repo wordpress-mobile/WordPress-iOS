@@ -239,7 +239,7 @@
 
 - (BOOL)hasChanges {
     if ([super hasChanges]) return YES;
-
+   
     if ((self.tags != ((Post *)self.original).tags)
         && (![self.tags isEqual:((Post *)self.original).tags]))
         return YES;
@@ -252,10 +252,6 @@
     
 	if ((self.geolocation != ((Post *)self.original).geolocation)
 		 && (![self.geolocation isEqual:((Post *)self.original).geolocation]) )
-        return YES;
-    
-    if ((self.featuredImageURL != ((Post *)self.original).featuredImageURL)
-        && (![self.featuredImageURL isEqual:((Post *)self.original).featuredImageURL]))
         return YES;
 
     return NO;
@@ -463,6 +459,12 @@
 
     NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, [self.blog fetchPassword], [self XMLRPCDictionary], nil];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
+    
+    if( self.isFeaturedImageChanged == NO ) {
+        NSMutableDictionary *xmlrpcDictionary = (NSMutableDictionary*) [parameters objectAtIndex:3] ;
+        [xmlrpcDictionary removeObjectForKey:@"wp_post_thumbnail"];
+    }
+    
     [self.blog.api callMethod:@"metaWeblog.editPost"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
