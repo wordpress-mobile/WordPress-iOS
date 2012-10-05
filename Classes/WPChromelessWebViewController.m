@@ -63,7 +63,7 @@
     if (![_path isEqualToString:path]) {
         [_path release];
         _path = [path retain];
-        NSLocalizedString(@"Path is: %@", self.path);
+        NSLog(@"Path is: %@", self.path);
         if ([self isViewLoaded]) {
             [webView loadPath:self.path];
         }

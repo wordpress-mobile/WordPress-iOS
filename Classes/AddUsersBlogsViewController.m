@@ -469,7 +469,7 @@
             [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
             [button setBackgroundImage:[UIImage imageNamed:@"welcome_button_bg_full"] forState:UIControlStateNormal];
             [button setBackgroundImage:[UIImage imageNamed:@"welcome_button_bg_full_highlighted.png"] forState:UIControlStateHighlighted];
-            [button setTitle:NSLocalizedString(@"Create Wordpress.com Blog", @"") forState:UIControlStateNormal];
+            [button setTitle:NSLocalizedString(@"Create WordPress.com Blog", @"") forState:UIControlStateNormal];
             [button addTarget:self action:@selector(handleCreateBlogTapped:) forControlEvents:UIControlEventTouchUpInside];
 
             [self.noblogsView addSubview:button];

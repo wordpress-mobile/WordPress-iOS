@@ -132,7 +132,7 @@ static NSString *_lastAuthedName = nil;
     WPLog(@"Auth Failed, showing login screen");
     [self showBlogSettings];
     if ([blog isWPcom]) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Auth Error", @"")
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Authentication Error", @"")
                                                             message:NSLocalizedString(@"Invalid username/password. Please update your credentials try again.", @"")
                                                            delegate:nil
                                                   cancelButtonTitle:NSLocalizedString(@"OK", @"")
