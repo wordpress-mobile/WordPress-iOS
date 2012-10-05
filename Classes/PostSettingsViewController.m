@@ -590,7 +590,8 @@
                 switch (indexPath.row) {
                     case 0:
                         if (!postDetailViewController.post.post_thumbnail) {
-                            [postDetailViewController.postMediaViewController showPhotoPickerActionSheet:self fromRect:cell.frame isFeaturedImage:YES];
+                            
+                            [postDetailViewController.postMediaViewController showPhotoPickerActionSheet:cell fromRect:cell.frame isFeaturedImage:YES];
                         }
                         break;
                     case 1:
