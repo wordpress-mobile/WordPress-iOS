@@ -641,7 +641,7 @@
         [featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [featuredImageSpinner stopAnimating];
         [featuredImageSpinner setHidden:YES];
-        [featuredImageLabel setHidden:NO];
+        [featuredImageLabel setHidden:YES];
         [featuredImageView setHidden:NO];
         self.postDetailViewController.post.post_thumbnail = media.mediaID;
         [featuredImageView setImage:[UIImage imageWithContentsOfFile:media.localURL]];
