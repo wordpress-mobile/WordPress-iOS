@@ -192,7 +192,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     currentView = editView;
 	writeButton.enabled = NO;
-	if ([self.apost.media count]) attachmentButton.enabled = YES;
+	if ([[self.apost.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaType != 'featured'"]] count]) attachmentButton.enabled = YES;
 	else attachmentButton.enabled = NO;
 
     self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
