@@ -626,6 +626,12 @@
 
 - (void)featuredImageUploadFailed: (NSNotification *)notificationInfo {
     isUploadingFeaturedImage = NO;
+    [featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    [featuredImageSpinner stopAnimating];
+    [featuredImageSpinner setHidden:YES];
+    [featuredImageView setHidden:NO];
+    [tableView reloadData];
+    //The code that shows the error message is available in the failure block in PostMediaViewController.
 }
 
 - (void)featuredImageUploadSucceeded: (NSNotification *)notificationInfo {
@@ -635,7 +641,7 @@
         [featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
         [featuredImageSpinner stopAnimating];
         [featuredImageSpinner setHidden:YES];
-        [featuredImageLabel setHidden:YES];
+        [featuredImageLabel setHidden:NO];
         [featuredImageView setHidden:NO];
         self.postDetailViewController.post.post_thumbnail = media.mediaID;
         [featuredImageView setImage:[UIImage imageWithContentsOfFile:media.localURL]];

@@ -1341,6 +1341,7 @@
 	imageMedia.height = [NSNumber numberWithInt:theImage.size.height];
     if (isPickingFeaturedImage)
         [[NSNotificationCenter defaultCenter] postNotificationName:@"UploadingFeaturedImage" object:nil];
+
     [imageMedia uploadWithSuccess:^{
         if ([imageMedia isDeleted]) {
             // FIXME: media deleted during upload should cancel the upload. In the meantime, we'll try not to crash
@@ -1354,7 +1355,11 @@
             
         }
         [imageMedia save];
-    } failure:nil];
+    } failure:^(NSError *error) {
+        if( isPickingFeaturedImage ) {
+            [WPError showAlertWithError:error title:NSLocalizedString(@"Sorry, 'Featured Image' upload failed.", @"")];
+        }
+    }];
 	
 	isAddingMedia = NO;
 	
