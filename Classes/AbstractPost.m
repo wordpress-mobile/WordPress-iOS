@@ -176,10 +176,6 @@
     if (![self isRevision])
         return NO;
     
-    //first let's check if there's no post title or content (in case a cheeky user deleted them both)
-    if ((self.postTitle == nil || [self.postTitle isEqualToString:@""]) && (self.content == nil || [self.content isEqualToString:@""]))
-        return NO;
-    
     //Do not move the Featured Image check below in the code.
     if ((self.post_thumbnail != self.original.post_thumbnail)
         && (![self.post_thumbnail  isEqual:self.original.post_thumbnail])){
@@ -187,6 +183,11 @@
         return YES;
     } else
         self.isFeaturedImageChanged = NO;
+
+    
+    //first let's check if there's no post title or content (in case a cheeky user deleted them both)
+    if ((self.postTitle == nil || [self.postTitle isEqualToString:@""]) && (self.content == nil || [self.content isEqualToString:@""]))
+        return NO;
 
     // We need the extra check since [nil isEqual:nil] returns NO
     if ((self.postTitle != self.original.postTitle)
