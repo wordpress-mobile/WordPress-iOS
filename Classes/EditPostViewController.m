@@ -12,6 +12,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void) showMediaInUploadingalert;
 - (void)restoreText:(NSString *)text withRange:(NSRange)range;
 - (void)populateSelectionsControllerWithCategories;
+- (BOOL)shouldEnableMediaTab;
 @end
 
 @implementation EditPostViewController
@@ -192,8 +193,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     currentView = editView;
 	writeButton.enabled = NO;
-	if ([[self.apost.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaType != 'featured'"]] count]) attachmentButton.enabled = YES;
-	else attachmentButton.enabled = NO;
+    attachmentButton.enabled = [self shouldEnableMediaTab];
 
     self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	
@@ -303,6 +303,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark -
 #pragma mark Instance Methods
 
+- (BOOL)shouldEnableMediaTab {
+    return ([[self.apost.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaType != 'featured'"]] count] > 0) ;
+}
+
 - (NSString *)editorTitle {
     NSString *title = @"";
     if (self.editMode == kNewPost) {
@@ -349,20 +353,20 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		writeButton.enabled = NO;
 		settingsButton.enabled = YES;
 		previewButton.enabled = YES;
-		if ([self.apost.media count]) attachmentButton.enabled = YES;
-		else attachmentButton.enabled = NO;
+        attachmentButton.enabled = [self shouldEnableMediaTab];
+        
     } else if ([newView isEqual:postSettingsController.view]) {
 		writeButton.enabled = YES;
 		settingsButton.enabled = NO;
 		previewButton.enabled = YES;
-		if ([self.apost.media count]) attachmentButton.enabled = YES;
-		else attachmentButton.enabled = NO;
+        attachmentButton.enabled = [self shouldEnableMediaTab];
+        
     } else if ([newView isEqual:postPreviewViewController.view]) {
 		writeButton.enabled = YES;
 		settingsButton.enabled = YES;
 		previewButton.enabled = NO;
-		if ([self.apost.media count]) attachmentButton.enabled = YES;
-		else attachmentButton.enabled = NO;
+        attachmentButton.enabled = [self shouldEnableMediaTab];
+        
 	} else if ([newView isEqual:postMediaViewController.view]) {
 		writeButton.enabled = YES;
 		settingsButton.enabled = YES;
