@@ -382,10 +382,6 @@
                     path = [msg substringWithRange:rng];
                 }
                 
-                NSString *loginPath = [self getURLToValidate];
-                loginPath = [loginPath stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
-                loginPath = [loginPath stringByAppendingFormat:@"/wp-login.php"];
-                
                 WPWebViewController *webViewController;
                 if ( IS_IPAD ) {
                     webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];

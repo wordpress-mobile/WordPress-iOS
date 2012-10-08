@@ -432,7 +432,7 @@
                                             UIViewAutoresizingFlexibleBottomMargin;
 
         UIColor *textColor = [UIColor colorWithRed:33.0f/255.0f green:33.0f/255.0f blue:33.0f/255.0f alpha:1.0];
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+        UILabel *label = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
         label.backgroundColor = [UIColor clearColor];
         label.numberOfLines = 0;
         label.lineBreakMode = UILineBreakModeWordWrap;
