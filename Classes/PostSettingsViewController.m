@@ -530,7 +530,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ((indexPath.section == 0) && (indexPath.row == 1) && (postDetailViewController.apost.password))
         return 88.f;
-    else if ((!blogSupportsFeaturedImage && (indexPath.section == 2) && (indexPath.row == 1)) || (blogSupportsFeaturedImage && (postDetailViewController.post.post_thumbnail || isUploadingFeaturedImage) && indexPath.section == 2 && indexPath.row == 0))
+    else if (
+             (!blogSupportsFeaturedImage && (indexPath.section == 2) && (indexPath.row == 1))
+             || (blogSupportsFeaturedImage && (postDetailViewController.post.post_thumbnail || isUploadingFeaturedImage) && indexPath.section == 2 && indexPath.row == 0)
+             || (blogSupportsFeaturedImage && (indexPath.section == 3) && (indexPath.row == 1))
+             )
 		return 188.0f;
 	else
         return 44.0f;
@@ -620,6 +624,26 @@
                 }
                 [tableView reloadData];
             }
+          case 3:
+            switch (indexPath.row) {
+                case 0:
+                    if (!isUpdatingLocation) {
+                        // Add or replace geotag
+                        isUpdatingLocation = YES;
+                        [locationManager startUpdatingLocation];
+                    }
+                    break;
+                case 2:
+                    if (isUpdatingLocation) {
+                        // Cancel update
+                        isUpdatingLocation = NO;
+                        [locationManager stopUpdatingLocation];
+                    }
+                    postDetailViewController.post.geolocation = nil;
+                    postDetailViewController.hasLocation.enabled = NO;
+                    break;
+            }
+            [tableView reloadData];
 	}
     [aTableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 }
