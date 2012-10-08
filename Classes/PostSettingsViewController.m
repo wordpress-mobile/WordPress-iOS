@@ -624,6 +624,7 @@
                 }
                 [tableView reloadData];
             }
+            break;
           case 3:
             switch (indexPath.row) {
                 case 0:
@@ -644,6 +645,7 @@
                     break;
             }
             [tableView reloadData];
+            break;
 	}
     [aTableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 }
