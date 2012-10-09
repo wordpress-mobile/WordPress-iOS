@@ -501,9 +501,9 @@ Vendor/KVO+Blocks/NSObject+BlockObservation.m -text
 Vendor/Reachability/Reachability.h -text
 Vendor/Reachability/Reachability.m -text
 Vendor/facebook-ios-sdk/FBConnect.h -text
-Vendor/facebook-ios-sdk/FBDialog.bundle/images/close.png -text svneol=unset#unset
-Vendor/facebook-ios-sdk/FBDialog.bundle/images/close@2x.png -text svneol=unset#unset
-Vendor/facebook-ios-sdk/FBDialog.bundle/images/fbicon.png -text svneol=unset#unset
+Vendor/facebook-ios-sdk/FBDialog.bundle/images/close.png -text
+Vendor/facebook-ios-sdk/FBDialog.bundle/images/close@2x.png -text
+Vendor/facebook-ios-sdk/FBDialog.bundle/images/fbicon.png -text
 Vendor/facebook-ios-sdk/FBDialog.h -text
 Vendor/facebook-ios-sdk/FBFrictionlessRequestSettings.h -text
 Vendor/facebook-ios-sdk/FBLoginDialog.h -text
@@ -516,7 +516,7 @@ Vendor/facebook-ios-sdk/SBJSON.h -text
 Vendor/facebook-ios-sdk/SBJsonBase.h -text
 Vendor/facebook-ios-sdk/SBJsonParser.h -text
 Vendor/facebook-ios-sdk/SBJsonWriter.h -text
-Vendor/facebook-ios-sdk/libfacebook_ios_sdk.a -text svneol=unset#unset
+Vendor/facebook-ios-sdk/libfacebook_ios_sdk.a -text
 Vendor/libraries.txt -text
 Vendor/xmlrpc/Configurations/Common.xcconfig -text
 Vendor/xmlrpc/Configurations/CommonDevelopment.xcconfig -text
