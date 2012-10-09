@@ -53,7 +53,7 @@
 /** The hardware model name (eg, MacBookPro6,1). This may be unavailable, and this property will be nil. */
 @property(nonatomic, readonly) NSString *modelName;
 
-/** The processor type. */
+/** The processor type. This will be unavailable in reports generated prior to PLCrashReporter 1.2, in which case this property will be nil. */
 @property(nonatomic, readonly) PLCrashReportProcessorInfo *processorInfo;
 
 /*

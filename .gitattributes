@@ -90,6 +90,7 @@ Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportSystemInfo.h -te
 Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportTextFormatter.h -text
 Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportThreadInfo.h -text
 Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReporter.h -text
+Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReporterNamespace.h -text
 Classes/CrashReporter.framework/Versions/A/Resources/Info.plist -text
 Classes/CrashReporter.framework/Versions/Current -text
 Classes/DateUtils.h -text
