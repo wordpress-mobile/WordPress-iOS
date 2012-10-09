@@ -335,8 +335,6 @@ Creation/CXMLNode_CreationExtensions.m -text
 /QuickPhotoViewController.xib -text
 Resources-iPad/MainWindow-iPad.xib -text
 /RoundedRectBlack.png -text
-Settings.bundle/Root.plist -text
-Settings.bundle/en.lproj/Root.strings -text
 /SidebarToolbarButton.png -text svneol=unset#unset
 /SidebarToolbarButton@2x.png -text svneol=unset#unset
 /SidebarToolbarButtonHighlighted.png -text
