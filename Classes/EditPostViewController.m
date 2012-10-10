@@ -905,6 +905,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
     if ([regex numberOfMatchesInString:urlText options:0 range:NSMakeRange(0, [urlText length])] > 0) {
         return urlText;
+    } else if([[urlText substringWithRange:NSMakeRange(0, 1)] isEqualToString:@"#"]) {
+        // link to named anchor
+        return urlText;
     } else {
         return [NSString stringWithFormat:@"http://%@", urlText];
     }
