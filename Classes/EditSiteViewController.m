@@ -193,6 +193,7 @@
 				urlTextField.placeholder = NSLocalizedString(@"http://example.com", @"");
                 [urlTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:urlTextField asPassword:NO];
+                urlTextField.keyboardType = UIKeyboardTypeURL;
 				if (blog.url != nil) {
 					urlTextField.text = blog.url;
                 } else {
