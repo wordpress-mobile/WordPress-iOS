@@ -151,6 +151,9 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
             }
         }
     }
+    // Speed up scrolling!
+    self.scrollView.decelerationRate = 1.0f;
+    
     // Nix the scrollview's background.
     for (UIView *view in scrollView.subviews) {
         if ([view isKindOfClass:[UIImageView class]]) {
