@@ -48,7 +48,7 @@
         postToFrame.origin.x = blavatarFrame.size.width + 15;
         postToFrame.origin.y = postToFrame.origin.y + 6;
         postToFrame.size.width -= blavatarFrame.size.width + 10 + 50;
-        postToFrame.size.height = 16.0f;
+        postToFrame.size.height = 18.0f;
         postToLabel = [[UILabel alloc] initWithFrame:postToFrame];
         postToLabel.font = [UIFont systemFontOfSize:15];
         postToLabel.textColor = [UIColor grayColor];
