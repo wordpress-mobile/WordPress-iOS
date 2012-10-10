@@ -1085,6 +1085,11 @@
     } else {
         [self tearDownQuickPhotoButton];
     }
+    
+    if([self.sectionInfoArray count] == 1) {
+        SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:0];
+        sectionInfo.open = YES;
+    }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
