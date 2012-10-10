@@ -15,7 +15,6 @@ typedef enum _SelectionType {
 
     int selectionType;
     BOOL autoReturnInRadioSelectMode;
-    BOOL flag;
 }
 
 @property (nonatomic, assign) BOOL autoReturnInRadioSelectMode;

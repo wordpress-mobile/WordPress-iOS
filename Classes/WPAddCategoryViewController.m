@@ -147,7 +147,9 @@
     [Category createCategory:catName parent:parentCat forBlog:self.blog success:^(Category *category) {
         //re-syncs categories this is necessary because the server can change the name of the category!!!
 		[self.blog syncCategoriesWithSuccess:nil failure:nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:WPNewCategoryCreatedAndUpdatedInBlogNotificationName
+                                                            object:self
+                                                          userInfo:[NSDictionary dictionaryWithObject:category forKey:@"category"]];
         [self clearUI];
         [self removeProgressIndicator];
         [self dismiss];

@@ -24,7 +24,14 @@
 
 @implementation WPSegmentedSelectionTableViewController
 
-//@synthesize objects, selectionStatusOfObjects, originalSelObjects;
+- (void)dealloc {
+    WPFLogMethod();
+    [categoryIndentationLevelsDict release];
+    [rowTextColor release];
+    
+    [super dealloc];
+}
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -32,31 +39,44 @@
         autoReturnInRadioSelectMode = YES;
         categoryIndentationLevelsDict = [[NSMutableDictionary alloc] init];
         rowTextColor = [[UIColor alloc] initWithRed:0.196 green:0.31 blue:0.522 alpha:1.0];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNewCategory:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
     }
 
     return self;
 }
 
-- (void)dealloc {
-    WPFLogMethod();
-    [categoryIndentationLevelsDict release];
-    [rowTextColor release];
-//	[originalSelObjects release];
-//	[selectionStatusOfObjects release];
-//	[objects release];
-    [super dealloc];
-}
-
-- (CGSize)contentSizeForViewInPopover;
-{
-	return CGSizeMake(320.0, [objects count] * 38.0 + 20.0);
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     //Set background to clear for iOS 4. Delete this line when we set iOS 5 as the min OS
     tableView.backgroundColor = [UIColor clearColor];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
+}
+
+
+#pragma mark -
+#pragma mark Instance Methods
+
+- (void)clean {
+    [super clean];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+- (void)handleNewCategory:(NSNotification *)notification {
+    Category *newCat = [[notification userInfo] objectForKey:@"category"];
+    
+    // If a new category was just added mark it selected by default.
+    if ([objects containsObject:newCat]) {
+        NSUInteger idx = [objects indexOfObject:newCat];
+        [selectionStatusOfObjects replaceObjectAtIndex:idx withObject:[NSNumber numberWithBool:YES]];
+    }
+}
+
+
+- (CGSize)contentSizeForViewInPopover;
+{
+	return CGSizeMake(320.0, [objects count] * 38.0 + 20.0);
 }
 
 
@@ -116,8 +136,7 @@
     }
 
     self.originalSelObjects = [[selectionStatusOfObjects copy] autorelease];
-
-    flag = NO;
+    
     [categoryDict release];
     [tableView reloadData];
 }
