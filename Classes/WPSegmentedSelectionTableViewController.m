@@ -59,22 +59,6 @@
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    if (!flag) {
-        if ([selectionDelegate respondsToSelector:@selector(selectionTableViewController:completedSelectionsWithContext:selectedObjects:haveChanges:)]) {
-            NSMutableArray *result = [NSMutableArray array];
-            int i = 0, count = [objects count];
-
-            for (i = 0; i < count; i++) {
-                if ([[self.selectionStatusOfObjects objectAtIndex:i] boolValue] == YES) {
-                    [result addObject:[objects objectAtIndex:i]];
-                }
-            }
-
-            [selectionDelegate selectionTableViewController:self completedSelectionsWithContext:curContext selectedObjects:result haveChanges:[self haveChanges]];
-        }
-    }
-}
 
 - (BOOL)haveChanges {
     int i = 0, count = [objects count];
@@ -192,17 +176,6 @@
 }
 
 #pragma mark TableView Delegate Methods
-
-//- (UITableViewCellAccessoryType)tableView:(UITableView *)aTableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
-//{
-//    int previousRows = indexPath.section + indexPath.row;
-//    int currentSection = indexPath.section;
-//    while ( currentSection > 0 ) {
-//        currentSection--;
-//        previousRows += [self tableView:aTableView numberOfRowsInSection:currentSection] - 1;
-//    }
-//	return (UITableViewCellAccessoryType)( [[selectionStatusOfObjects objectAtIndex:previousRows] boolValue] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone );
-//}
 
 - (UITableViewCellAccessoryType)accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath ofTableView:(UITableView *)aTableView {
     int previousRows = indexPath.section + indexPath.row;

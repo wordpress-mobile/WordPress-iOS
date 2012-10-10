@@ -595,9 +595,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	
 	NSArray *cats = [self.post.blog sortedCategories];
 
-	NSArray *selObject;
-	
-    selObject = [self.post.categories allObjects];
+	NSArray *selObject = [self.post.categories allObjects];
 	
     [segmentedTableViewController populateDataSource:cats    //datasource
 									   havingContext:kSelectionsCategoriesContext
@@ -632,8 +630,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
             popover.popoverContentSize = CGSizeMake(320.0f, 460.0f);
 			[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 			[[CPopoverManager instance] setCurrentPopoverController:popover];
-		}
-		else {
+		
+        } else {
 			self.editMode = kEditPost;
 			[self.navigationController pushViewController:segmentedTableViewController animated:YES];
 		}
@@ -687,7 +685,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged {
     WPFLogMethod();
     if (!isChanged) {
-        [selctionController clean];
         return;
     }
 
@@ -704,7 +701,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
         [categoriesButton setTitle:[NSString decodeXMLCharactersIn:[self.post categoriesText]] forState:UIControlStateNormal];
     }
 	
-    [selctionController clean];
 	[self refreshButtons];
 }
 

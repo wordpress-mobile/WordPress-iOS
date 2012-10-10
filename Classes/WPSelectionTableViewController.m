@@ -12,6 +12,17 @@
 @synthesize autoReturnInRadioSelectMode;
 @synthesize objects, selectionStatusOfObjects, originalSelObjects;
 
+#pragma mark -
+#pragma mark Lifecycle Methods
+
+- (void)dealloc {
+    WPFLogMethod();
+    [originalSelObjects release];
+    [selectionStatusOfObjects release];
+    [objects release];
+    [super dealloc];
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         autoReturnInRadioSelectMode = YES;
@@ -20,12 +31,51 @@
     return self;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [tableView reloadData];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if ([selectionDelegate respondsToSelector:@selector(selectionTableViewController:completedSelectionsWithContext:selectedObjects:haveChanges:)]) {
+        [selectionDelegate selectionTableViewController:self completedSelectionsWithContext:curContext selectedObjects:[self selectedObjects] haveChanges:[self haveChanges]];
+    }
+    
+    if (self.navigationController) {
+        if (![[self.navigationController viewControllers] containsObject:self]) {
+            [self clean];
+        }
+    }
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+    if (parent == nil ) {
+        [self clean];
+    }
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+}
+
+- (void)didReceiveMemoryWarning {
+    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
+    // Release anything that's not essential, such as cached data
+}
+
+#pragma mark -
+#pragma mark Instance Methods
+
 - (CGSize)contentSizeForViewInPopover;
 {
 	return CGSizeMake(320.0, [objects count] * 44.0 + 20.0);
 }
 
-- (void)clean {
+- (void)clean {    
     [objects release];
     objects = nil;
     selectionDelegate = nil;
@@ -35,7 +85,6 @@
     [selectionStatusOfObjects release];
     selectionStatusOfObjects = nil;
 
-    flag = NO;
 }
 
 - (void)populateDataSource:(NSArray *)sourceObjects havingContext:(void *)context selectedObjects:(NSArray *)selObjects selectionType:(WPSelectionType)aType andDelegate:(id)delegate {
@@ -55,7 +104,6 @@
     [originalSelObjects release];
     originalSelObjects = [selectionStatusOfObjects copy];
 
-    flag = NO;
     [tableView reloadData];
 }
 
@@ -89,46 +137,28 @@
     return NO;
 }
 
-// Display another view controller as a modal child. Uses a vertical sheet transition if animated.
-- (void)presentModalViewController:(UIViewController *)modalViewController animated:(BOOL)animated {
-    flag = YES;
-    [super presentModalViewController:modalViewController animated:animated];
-}
 
-- (void)dismissModalViewControllerAnimated:(BOOL)animated {
-    flag = NO;
-    [super dismissModalViewControllerAnimated:(BOOL)animated];
+#pragma mark -
+#pragma mark Modal Wrangling
+
+- (void)gotoPreviousScreen {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    flag = YES;
     if (self.navigationController) {
         [self.navigationController pushViewController:viewController animated:animated];
     }
 }
 
 - (void)popViewControllerAnimated:(BOOL) animated {
-    flag = NO;
     if (self.navigationController) {
         [self.navigationController popViewControllerAnimated:animated];
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    flag = NO;
-    [super viewWillAppear:animated];
-    [tableView reloadData];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-
-    if (!flag) {
-        if ([selectionDelegate respondsToSelector:@selector(selectionTableViewController:completedSelectionsWithContext:selectedObjects:haveChanges:)]) {
-            [selectionDelegate selectionTableViewController:self completedSelectionsWithContext:curContext selectedObjects:[self selectedObjects] haveChanges:[self haveChanges]];
-        }
-    }
-}
+#pragma mark -
+#pragma mark TableView Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -159,9 +189,6 @@
     return cell;
 }
 
-- (void)gotoPreviousScreen {
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     BOOL curStatus = [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue];
@@ -187,33 +214,6 @@
     }
 
     [aTableView deselectRowAtIndexPath:[aTableView indexPathForSelectedRow] animated:YES];
-}
-
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-}
-
-//- (UITableViewCellAccessoryType)tableView:(UITableView *)aTableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
-//{
-//	return (UITableViewCellAccessoryType)( [[selectionStatusOfObjects objectAtIndex:indexPath.row] boolValue] == YES ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone );
-//}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
-- (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-    // Release anything that's not essential, such as cached data
-}
-
-- (void)dealloc {
-    WPFLogMethod();
-    [originalSelObjects release];
-    [selectionStatusOfObjects release];
-    [objects release];
-    [super dealloc];
 }
 
 @end
