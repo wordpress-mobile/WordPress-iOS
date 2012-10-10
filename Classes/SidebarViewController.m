@@ -381,6 +381,7 @@
 }
 
 - (void)selectBlogWithSection:(NSUInteger)index {
+NSLog(@"%@", self.sectionInfoArray);
     SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:index - 1];
     if (!sectionInfo.open) {
         [sectionInfo.headerView toggleOpenWithUserAction:YES];
@@ -1071,7 +1072,11 @@
     if (indexPath) {
         if (indexPath.section != wantedSection || changingContentForSelectedSection) {
             if (wantedSection > 0) {
-                [self selectBlogWithSection:wantedSection];
+                NSUInteger sec = wantedSection;
+                if (wantedSection > indexPath.section) {
+                    sec = indexPath.section; // Prevents an out of index error that was being error trapped, thus hiding a crash.
+                }
+                [self selectBlogWithSection:sec];
             } else {
                 [self selectFirstAvailableItem];
             }
