@@ -265,11 +265,7 @@
 }
 
 - (void)dismiss {
-    if (IS_IPAD) {
-        [[self sidebarViewController] dismissModalViewControllerAnimated:YES];
-    } else {
-        [[self sidebarViewController] dismissModalViewControllerAnimated:YES];
-    }
+    [[self sidebarViewController] dismissModalViewControllerAnimated:YES];
 }
 
 - (void)cancel {
