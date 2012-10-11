@@ -1418,7 +1418,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
     NSString *oldText = textView.text;
     NSRange oldRange = textView.selectedRange;
     textView.scrollEnabled = NO;
-    textView.text = text;
+    // iOS6 seems to have a bug where setting the text like so : textView.text = text;
+    // will cause an infinate loop of undos.  A work around is to perform the selector
+    // on the main thread.
+    // textView.text = text;
+    [textView performSelectorOnMainThread:@selector(setText:) withObject:text waitUntilDone:NO];
     textView.scrollEnabled = YES;
     textView.selectedRange = range;
     [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
