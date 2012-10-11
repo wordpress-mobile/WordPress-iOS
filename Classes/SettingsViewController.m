@@ -134,15 +134,7 @@ typedef enum {
                                      [NSArray arrayWithObjects:@"0",@"1",@"2",@"3",@"4", nil], @"Values",
                                      NSLocalizedString(@"Set default size images should be uploaded.", @""), @"Info",
                                      nil];
-    
-    NSDictionary *videoApiDict = [NSDictionary dictionaryWithObjectsAndKeys:@"2", @"DefaultValue", 
-                                     @"video_api_preference", @"Key", 
-                                     NSLocalizedString(@"Video API", @""), @"Title", 
-                                     [NSArray arrayWithObjects:@"AtomPub",@"XML-RPC", nil ], @"Titles", 
-                                     [NSArray arrayWithObjects:@"1", @"2", nil], @"Values",
-                                     NSLocalizedString(@"Set whether your blog uses the AtomPub format or the XML-RPC format when syncing data to the app.", @""), @"Info",
-                                     nil];
-    
+        
     NSDictionary *videoQualityDict = [NSDictionary dictionaryWithObjectsAndKeys:@"1", @"DefaultValue", 
                                       @"video_quality_preference", @"Key", 
                                       NSLocalizedString(@"Video Quality", @""), @"Title", 
@@ -161,7 +153,7 @@ typedef enum {
                                       [NSArray arrayWithObjects:@"0", @"1", nil], @"Values",
                                       NSLocalizedString(@"Set which HTML standard video should conform to when added to a post.", @""), @"Info",
                                       nil];
-    self.mediaSettingsArray = [NSArray arrayWithObjects:imageResizeDict, videoApiDict, videoQualityDict, videoContentDict, nil];
+    self.mediaSettingsArray = [NSArray arrayWithObjects:imageResizeDict, videoQualityDict, videoContentDict, nil];
 }
 
 
