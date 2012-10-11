@@ -172,6 +172,15 @@
         NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"^.*://" options:NSRegularExpressionCaseInsensitive error:&error];
         hostname = [protocol stringByReplacingMatchesInString:self.url options:0 range:NSMakeRange(0, [self.url length]) withTemplate:@""];
     }
+
+    // NSURL seems to not recongnize some TLDs like .me and .it, which results in hostname returning a full path.
+    // This can break reachibility (among other things) for the blog.
+    // As a saftey net, make sure we drop any path component before returning the hostname.
+    NSArray *parts = [hostname componentsSeparatedByString:@"/"];
+    if([parts count] > 0) {
+        hostname = [parts objectAtIndex:0];
+    }
+    
     return hostname;
 }
 
