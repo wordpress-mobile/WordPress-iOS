@@ -23,6 +23,5 @@
 - (void)promptForCredentials;
 - (void)authStats;
 - (void)loadStats;
-- (NSString *)percentEscapeString:(NSString *)string;
 
 @end

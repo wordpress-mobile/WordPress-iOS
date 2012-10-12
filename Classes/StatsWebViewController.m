@@ -17,6 +17,7 @@
 #import "JetpackSettingsViewController.h"
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
+#import "NSString+Helpers.h"
 
 @interface StatsWebViewController () <SettingsViewControllerDelegate, JetpackAuthUtilDelegate> {
     BOOL loadStatsWhenViewAppears;
@@ -202,13 +203,6 @@ static NSString *_lastAuthedName = nil;
         if( !appDelegate.connectionAvailable ) {
             [webView hideRefreshingState];
             [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
-//            UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Problem", @"")
-//                                                                          message:NSLocalizedString(@"The internet connection appears to be offline.", @"")
-//                                                                         delegate:self
-//                                                                cancelButtonTitle:NSLocalizedString(@"OK", @"") 
-//                                                                otherButtonTitles:NSLocalizedString(@"Retry", @""), nil];
-//            [connectionFailAlert show];
-//            [connectionFailAlert release];
             [webView loadHTMLString:@"<html><head></head><body></body></html>" baseURL:nil];
             
         } else {
@@ -217,14 +211,6 @@ static NSString *_lastAuthedName = nil;
     } else {
         [webView loadHTMLString:@"<html><head></head><body></body></html>" baseURL:nil];
     }
-}
-
-
-- (NSString *)percentEscapeString: (NSString *)string {
-    //only use this for escaping parameters
-    NSString *encodedString = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)string, NULL,(CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
-    [encodedString autorelease];
-    return encodedString; 
 }
 
 
@@ -311,8 +297,8 @@ static NSString *_lastAuthedName = nil;
 
     NSMutableURLRequest *mRequest = [[[NSMutableURLRequest alloc] init] autorelease];
     NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=http://wordpress.com",
-                             [self percentEscapeString:username],
-                             [self percentEscapeString:password]];
+                             [username stringByUrlEncoding],
+                             [password stringByUrlEncoding]];
 
     [mRequest setURL:[NSURL URLWithString:@"https://wordpress.com/wp-login.php"]];
     [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
