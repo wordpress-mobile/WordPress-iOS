@@ -1073,7 +1073,7 @@ NSLog(@"%@", self.sectionInfoArray);
         if (indexPath.section != wantedSection || changingContentForSelectedSection) {
             if (wantedSection > 0) {
                 NSUInteger sec = wantedSection;
-                if (wantedSection > indexPath.section) {
+                if (wantedSection > indexPath.section && indexPath.section > 0) {
                     sec = indexPath.section; // Prevents an out of index error that was being error trapped, thus hiding a crash.
                 }
                 [self selectBlogWithSection:sec];
