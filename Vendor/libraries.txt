@@ -1,7 +1,3 @@
-AFNetworking
-Source: https://github.com/wordpress-mobile/AFNetworking
-Version: 34b7d01af8f87fcadcc29abb87d2e323ed6597aa
-
 XMLRPC
 Source: https://github.com/wordpress-mobile/xmlrpc/tree/wordpress-ios
 Version: 5ac95ed8f77d077e5d3b004a9459ab5d7184a465
@@ -9,10 +5,6 @@ Version: 5ac95ed8f77d077e5d3b004a9459ab5d7184a465
 InAppSettings
 Source: https://github.com/InScopeApps/InAppSettings
 Version: 27706b96b8a7a21132ce8a89d287eff0298db682
-
-Reachability
-Source: https://github.com/tonymillion/Reachability
-Version: 1cf8f0ff987cc473c6be9204eb3abb7f6322a805
 
 KVO+Blocks
 Source: https://gist.github.com/153676
@@ -22,7 +14,3 @@ facebook-ios-sdk
 Source: https://github.com/facebook/facebook-ios-sdk
 Version: 397c0b62b116a9680035e87a07ab936e1c5dfce6
 Note: Built static lib using scripts/build_facebook_ios_sdk_static_lib.sh
-
-JSONKit
-Source: https://github.com/johnezang/JSONKit/
-Version: 82157634ca0ca5b6a4a67a194dd11f15d9b72835

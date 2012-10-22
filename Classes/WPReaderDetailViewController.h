@@ -21,7 +21,7 @@
 
 @interface WPReaderDetailViewController : WPWebViewController
 
-@property (nonatomic, assign) id<WPReaderDetailViewControllerDelegate> delegate;
-@property (nonatomic, retain) id currentItem;
+@property (nonatomic, weak) id<WPReaderDetailViewControllerDelegate> delegate;
+@property (nonatomic, strong) id currentItem;
 
 @end

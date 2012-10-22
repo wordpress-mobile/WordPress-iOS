@@ -14,6 +14,6 @@
 	BetaFeedbackViewController *betaFeedbackViewController;
 }
 
-@property (nonatomic, retain) BetaFeedbackViewController *betaFeedbackViewController;
+@property (nonatomic, strong) BetaFeedbackViewController *betaFeedbackViewController;
 
 @end

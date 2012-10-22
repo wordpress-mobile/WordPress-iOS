@@ -53,22 +53,9 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 
 
 - (void)dealloc {
-    self.delegate = nil;
     webView.delegate = nil;
     if([webView isLoading])
         [webView stopLoading];
-    [webView release];
-    
-    [refreshHeaderView release];
-    [defaultHeaders release];
-    [lastWebViewRefreshDate release];
-    [currentHTTPRequestOperation release];
-    [currentRequest release];
-    [reachability release];
-    [scrollView release];
-    [baseURLFallback release];
-    
-    [super dealloc];
 }
 
 
@@ -132,7 +119,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     CGRect frame = CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height);
 
     // WebView
-    self.webView = [[[UIWebView alloc] initWithFrame:frame] autorelease];
+    self.webView = [[UIWebView alloc] initWithFrame:frame];
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     webView.scalesPageToFit = YES;
     webView.backgroundColor = [UIColor colorWithHue:0.0 saturation:0.0 brightness:0.95 alpha:1.0];
@@ -166,7 +153,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     if (self.refreshHeaderView == nil) {
         scrollView.delegate = self;
         CGRect frm = CGRectMake(0.0f, 0.0f - scrollView.bounds.size.height, scrollView.frame.size.width, scrollView.bounds.size.height);
-		self.refreshHeaderView = [[[EGORefreshTableHeaderView alloc] initWithFrame:frm] autorelease];
+		self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:frm];
 		refreshHeaderView.delegate = self;
 		[scrollView addSubview:refreshHeaderView];
 	}
@@ -214,9 +201,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
         return;
     }
     
-    [currentRequest release];
-    currentRequest = nil;
-    currentRequest = [req retain];
+    currentRequest = req;
 }
 
 
@@ -225,9 +210,9 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
         if(currentHTTPRequestOperation.isExecuting) {
             [currentHTTPRequestOperation cancel];
         }
-        [currentHTTPRequestOperation release]; currentHTTPRequestOperation = nil;
+         currentHTTPRequestOperation = nil;
     }
-    currentHTTPRequestOperation = [newCurrentHTTPRequestOperation retain];
+    currentHTTPRequestOperation = newCurrentHTTPRequestOperation;
 }
 
 
@@ -283,7 +268,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     if ([aRequest isKindOfClass:[NSMutableURLRequest class]]) {
         mRequest = (NSMutableURLRequest *)aRequest;
     } else {
-        mRequest = [[aRequest mutableCopy] autorelease];
+        mRequest = [aRequest mutableCopy];
         [mRequest setAllHTTPHeaderFields:self.defaultHeaders];
     }
 
@@ -300,22 +285,22 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
         return;        
     }
 
-    self.currentHTTPRequestOperation = [[[AFHTTPRequestOperation alloc] initWithRequest:mRequest] autorelease];
+    self.currentHTTPRequestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:mRequest];
     
+    __weak WPWebView *wpWebView = self;
     [currentHTTPRequestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Check for a redirect.  Make sure the current URL reflects any redirects.
-        NSURL *currURL = [[self currentRequest] URL];
+        NSURL *currURL = [[wpWebView currentRequest] URL];
         NSURL *respURL = [[operation response] URL];
         if(![[currURL absoluteString] isEqualToString:[respURL absoluteString]]) {
-            NSMutableURLRequest *mReq = [currentRequest mutableCopy];
+            NSMutableURLRequest *mReq = [wpWebView.currentRequest mutableCopy];
             [mReq setURL:respURL];
             self.currentRequest = mReq;
             self.baseURLFallback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/", mReq.URL.scheme, mReq.URL.host]];
-            [mReq release];
         }
-        [webView loadData:operation.responseData MIMEType:operation.response.MIMEType textEncodingName:@"utf-8" baseURL:aRequest.URL];
+        [wpWebView.webView loadData:operation.responseData MIMEType:operation.response.MIMEType textEncodingName:@"utf-8" baseURL:aRequest.URL];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [self webView:webView didFailLoadWithError:error];
+        [wpWebView webView:wpWebView.webView didFailLoadWithError:error];
     }];
     
     [currentHTTPRequestOperation start];
@@ -403,7 +388,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
         
         // Since we are rewriting the request's url we need to retrigger the load so it is handled correctly,
         // but we also need to respect the wishes of a delegate.
-        NSMutableURLRequest *modRequest = [[aRequest mutableCopy] autorelease];
+        NSMutableURLRequest *modRequest = [aRequest mutableCopy];
         [modRequest setURL:[NSURL URLWithString:path]];
         
         if (delegate && [delegate respondsToSelector:@selector(wpWebView:shouldStartLoadWithRequest:navigationType:)]) {
@@ -473,7 +458,6 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
                                               cancelButtonTitle:NSLocalizedString(@"Cancel", nil) 
                                               otherButtonTitles:NSLocalizedString(@"Retry?", nil), nil];
     [alertView show];
-    [alertView release];
 }
 
 

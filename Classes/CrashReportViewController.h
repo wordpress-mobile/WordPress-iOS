@@ -16,7 +16,7 @@
     IBOutlet UIButton *sendButton, *dontSendButton;
 }
 
-@property (nonatomic, retain) NSData *crashData;
+@property (nonatomic, strong) NSData *crashData;
 
 - (IBAction)yes:(id)sender;
 - (IBAction)no:(id)sender;

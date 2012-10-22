@@ -12,5 +12,5 @@
 }
 + (id)button;
 - (void)setImageName:(NSString *)imageName;
-@property (nonatomic, retain) NSString *actionTag, *actionName;
+@property (nonatomic, strong) NSString *actionTag, *actionName;
 @end

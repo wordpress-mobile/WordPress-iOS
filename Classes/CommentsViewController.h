@@ -22,8 +22,8 @@
     IBOutlet UIBarButtonItem *deleteButton;
 }
 
-@property (nonatomic, retain) NSNumber *wantedCommentId;
-@property (nonatomic, retain) NSNumber *lastSelectedCommentID;
+@property (nonatomic, strong) NSNumber *wantedCommentId;
+@property (nonatomic, strong) NSNumber *lastSelectedCommentID;
 
 - (IBAction)deleteSelectedComments:(id)sender;
 - (IBAction)approveSelectedComments:(id)sender;

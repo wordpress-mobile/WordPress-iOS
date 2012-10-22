@@ -12,7 +12,7 @@
 
 @interface WPReaderDetailViewController ()
 
-@property (nonatomic, retain) WPWebBridge *webBridge;
+@property (nonatomic, strong) WPWebBridge *webBridge;
 
 - (void)loadNextItem:(id)sender;
 - (void)loadPreviousItem:(id)sender;
@@ -29,9 +29,6 @@
 - (void)dealloc
 {
     self.webBridge.delegate = nil;
-    self.webBridge = nil;
-    self.currentItem = nil;
-    [super dealloc];
 }
 
 - (void)viewDidLoad {
@@ -54,11 +51,11 @@
         
         [btn addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
         
-        self.optionsButton = [[[UIBarButtonItem alloc] initWithCustomView:btn] autorelease];
+        self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
     } else {
-        self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+        self.optionsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                            target:self
-                                                                           action:@selector(showLinkOptions)] autorelease];
+                                                                           action:@selector(showLinkOptions)];
     }
     super.iPadNavBar.topItem.rightBarButtonItem = self.optionsButton;
     self.optionsButton.enabled = YES;

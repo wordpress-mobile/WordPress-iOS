@@ -10,7 +10,7 @@
 #import "PanelNavigationConstants.h"
 
 @interface WPChromelessWebViewController ()
-@property (nonatomic, retain) WPWebView *webView;
+@property (nonatomic, strong) WPWebView *webView;
 @end
 
 @implementation WPChromelessWebViewController
@@ -23,16 +23,13 @@
 - (void)dealloc {
     self.path = nil;
     webView.delegate = nil;
-    [webView release];
-    
-    [super dealloc];
 }
 
 - (void)loadView {
     [super loadView];
     
     CGRect frame = self.view.bounds;
-    self.webView = [[[WPWebView alloc] initWithFrame:frame] autorelease];
+    self.webView = [[WPWebView alloc] initWithFrame:frame];
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     webView.delegate = self;
     [self.view addSubview:webView];
@@ -61,8 +58,7 @@
 
 - (void)setPath:(NSString *)path {
     if (![_path isEqualToString:path]) {
-        [_path release];
-        _path = [path retain];
+        _path = path;
         NSLog(@"Path is: %@", self.path);
         if ([self isViewLoaded]) {
             [webView loadPath:self.path];
@@ -135,10 +131,10 @@
         if ([host rangeOfString:@"wordpress.com"].location == NSNotFound) {
             WPWebViewController *controller;
             if (IS_IPAD) {
-                controller = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+                controller = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
             }
             else {
-                controller = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+                controller = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
             }
             [controller setUrl:request.URL];
             [self.panelNavigationController pushViewController:controller animated:YES];
@@ -148,7 +144,6 @@
         WPChromelessWebViewController *controller = [[WPChromelessWebViewController alloc] init];
         [controller loadPath:request.URL.absoluteString];        
         [self.panelNavigationController pushViewController:controller fromViewController:self animated:YES];
-        [controller release];
         
         return NO;
     }

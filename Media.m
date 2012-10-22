@@ -9,6 +9,7 @@
 #import "Media.h"
 #import "UIImage+Resize.h"
 #import "NSString+Helpers.h"
+#import "AFHTTPRequestOperation.h"
 
 @interface Media (PrivateMethods)
 - (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure ;
@@ -35,11 +36,6 @@
 @dynamic blog;
 @dynamic posts;
 @dynamic remoteStatusNumber;
-
-- (void)dealloc {
-    [_uploadOperation release]; _uploadOperation = nil;
-    [super dealloc];
-}
 
 + (Media *)newMediaForPost:(AbstractPost *)post {
     Media *media = [[Media alloc] initWithEntity:[NSEntityDescription entityForName:@"Media"
@@ -115,7 +111,7 @@
 
 - (void)cancelUpload {
     [_uploadOperation cancel];
-    [_uploadOperation release]; _uploadOperation = nil;
+     _uploadOperation = nil;
     self.remoteStatus = MediaRemoteStatusFailed;
 }
 
@@ -159,7 +155,7 @@
                 }
 
                 self.remoteStatus = MediaRemoteStatusSync;
-                [_uploadOperation release]; _uploadOperation = nil;
+                 _uploadOperation = nil;
                 if (success) success();
 
                 if([self.mediaType isEqualToString:@"video"]) {
@@ -185,15 +181,15 @@
                 }
 
                 self.remoteStatus = MediaRemoteStatusFailed;
-                [_uploadOperation release]; _uploadOperation = nil;
+                 _uploadOperation = nil;
                 if (failure) failure(error);
             }];
-            [operation setUploadProgressBlock:^(NSInteger bytesWritten, NSInteger totalBytesWritten, NSInteger totalBytesExpectedToWrite) {
+            [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
                 dispatch_async(dispatch_get_main_queue(), ^(void) {
                     self.progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
                 });
             }];
-            _uploadOperation = [operation retain];
+            _uploadOperation = operation;
             self.remoteStatus = MediaRemoteStatusPushing;
             [self.blog.api enqueueHTTPRequestOperation:operation];
         });
@@ -366,7 +362,6 @@
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [formatter stringFromDate:[NSDate date]]];
-    [formatter release]; formatter = nil;
 	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     [fileManager createFileAtPath:filepath contents:imageData attributes:nil];

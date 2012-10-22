@@ -47,10 +47,6 @@ NSString *CameraPlusExportPhotoMetadataType = @"com.taptaptap.CameraPlus.photoMe
     return self;
 }
 
-- (void)dealloc {
-    self.callbackURLProtocol = nil;
-    [super dealloc];
-}
 
 #pragma mark - Camera+ availability
 
@@ -242,7 +238,7 @@ NSString *CameraPlusExportPhotoMetadataType = @"com.taptaptap.CameraPlus.photoMe
         
         UIPasteboard *pasteboard = [UIPasteboard pasteboardWithName:pasteboardName create:NO];
         if (pasteboard) {
-            CameraPlusPickedImages *images = [[[CameraPlusPickedImages alloc] initWithPasteboard:pasteboard] autorelease];
+            CameraPlusPickedImages *images = [[CameraPlusPickedImages alloc] initWithPasteboard:pasteboard];
 #if NS_BLOCKS_AVAILABLE
             if (block) {
                 block(images);
@@ -273,15 +269,11 @@ NSString *CameraPlusExportPhotoMetadataType = @"com.taptaptap.CameraPlus.photoMe
 
 - (id)initWithPasteboard:(UIPasteboard *)aPasteboard {
     if ((self = [super init])) {
-        pasteboard = [aPasteboard retain];
+        pasteboard = aPasteboard;
     }
     return self;
 }
 
-- (void)dealloc {
-    [pasteboard release];
-    [super dealloc];
-}
 
 - (int)numberOfImages {
     return pasteboard.numberOfItems;

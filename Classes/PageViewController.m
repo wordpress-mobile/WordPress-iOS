@@ -14,7 +14,7 @@
 
 - (void)checkForNewItem {
 	if(!self.apost) //when it was a new page and user clicked on cancel
-		self.apost = [[Page newDraftForBlog:self.blog] autorelease];
+		self.apost = [Page newDraftForBlog:self.blog];
 }
 
 - (void)viewDidLoad {
@@ -28,7 +28,7 @@
 }
 
 - (EditPostViewController *)getPostOrPageController: (AbstractPost *) revision {
-	return [[[EditPageViewController alloc] initWithPost:revision] autorelease];
+	return [[EditPageViewController alloc] initWithPost:revision];
 }
 
 @end

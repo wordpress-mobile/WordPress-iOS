@@ -16,8 +16,8 @@
 #import "UIBarButtonItem+Styled.h"
 
 @interface CommentsViewController () <CommentViewControllerDelegate, UIActionSheetDelegate>
-@property (nonatomic,retain) CommentViewController *commentViewController;
-@property (nonatomic,retain) NSIndexPath *currentIndexPath;
+@property (nonatomic,strong) CommentViewController *commentViewController;
+@property (nonatomic,strong) NSIndexPath *currentIndexPath;
 - (void)updateSelectedComments;
 - (void)deselectAllComments;
 - (void)moderateCommentsWithSelector:(SEL)selector;
@@ -46,16 +46,6 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     self.commentViewController.delegate = nil;
-    self.commentViewController = nil;
-    self.currentIndexPath = nil;
-
-    [_selectedComments release]; _selectedComments = nil;
-    [spamButton release]; spamButton = nil;
-    [unapproveButton release]; unapproveButton = nil;
-    [approveButton release]; approveButton = nil;
-    [deleteButton release]; deleteButton = nil;
-    
-    [super dealloc];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -81,7 +71,7 @@
     deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_delete"] style:UIBarButtonItemStylePlain target:self action:@selector(confirmDeletingOfComments)];
 
     if (IS_IPHONE) {
-        UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         self.toolbarItems = [NSArray arrayWithObjects:approveButton, spacer, unapproveButton, spacer, spamButton, spacer, deleteButton, nil];
     }
 
@@ -96,17 +86,17 @@
     self.editButtonItem.enabled = [[self.resultsController fetchedObjects] count] > 0 ? YES : NO;
     
     // Do not show row dividers for empty cells.
-    self.tableView.tableFooterView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)viewDidUnload {
     [super viewDidUnload];
     
-    [_selectedComments release]; _selectedComments = nil;
-    [spamButton release]; spamButton = nil;
-    [unapproveButton release]; unapproveButton = nil;
-    [approveButton release]; approveButton = nil;
-    [deleteButton release]; deleteButton = nil;
+     _selectedComments = nil;
+     spamButton = nil;
+     unapproveButton = nil;
+     approveButton = nil;
+     deleteButton = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -142,7 +132,6 @@
                                      otherButtonTitles:NSLocalizedString(@"Cancel", @""), nil ];
     actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
     [actionSheet showFromBarButtonItem:deleteButton animated:YES];
-    [actionSheet release];
 }
 
 - (void)cancelReplyToCommentViewController:(id)sender {
@@ -153,7 +142,7 @@
     [super setEditing:editing animated:animated];
     [self deselectAllComments];
     [self updateSelectedComments];
-    UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     if (IS_IPHONE) {
         [self.navigationController setToolbarHidden:!editing animated:animated];
     } else {
@@ -369,7 +358,7 @@
         self.lastSelectedCommentID = comment.commentID; //store the latest user selection
         BOOL animated = ([self commentViewController] == nil) && IS_IPHONE;
         
-        self.commentViewController = [[[CommentViewController alloc] init] autorelease];
+        self.commentViewController = [[CommentViewController alloc] init];
         self.commentViewController.delegate = self;
         [self.commentViewController showComment:comment];
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
@@ -382,7 +371,7 @@
 
 - (void)setWantedCommentId:(NSNumber *)wantedCommentId {
     if (![wantedCommentId isEqual:_wantedCommentId]) {
-        [_wantedCommentId release]; _wantedCommentId = nil;
+         _wantedCommentId = nil;
         if (wantedCommentId) {
             // First check if we already have the comment
             Comment *comment = [self commentWithId:wantedCommentId];
@@ -392,7 +381,7 @@
                 [self showCommentAtIndexPath:wantedIndexPath];
             } else {
                 [self willChangeValueForKey:@"wantedCommentId"];
-                _wantedCommentId = [wantedCommentId retain];
+                _wantedCommentId = wantedCommentId;
                 [self didChangeValueForKey:@"wantedCommentId"];
                 [self syncItemsWithUserInteraction:NO];
             }
@@ -411,15 +400,15 @@
     
     Comment *selectedComment = [_selectedComments objectAtIndex:0];
 
-    ReplyToCommentViewController *replyToCommentViewController = [[[ReplyToCommentViewController alloc]
+    ReplyToCommentViewController *replyToCommentViewController = [[ReplyToCommentViewController alloc]
                                                                    initWithNibName:@"ReplyToCommentViewController"
-                                                                   bundle:nil] autorelease];
+                                                                   bundle:nil];
 
     replyToCommentViewController.delegate = self;
-    replyToCommentViewController.comment = [[selectedComment newReply] autorelease];
+    replyToCommentViewController.comment = [selectedComment newReply];
     replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
 
-    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:replyToCommentViewController] autorelease];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:replyToCommentViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentModalViewController:navController animated:YES];
@@ -591,9 +580,9 @@
 - (NSFetchRequest *)fetchRequest {
     NSFetchRequest *fetchRequest = [super fetchRequest];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, @"spam"]];
-    NSSortDescriptor *sortDescriptorStatus = [[[NSSortDescriptor alloc] initWithKey:@"status" ascending:NO] autorelease];
-    NSSortDescriptor *sortDescriptorDate = [[[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO] autorelease];
-    NSArray *sortDescriptors = [[[NSArray alloc] initWithObjects:sortDescriptorStatus, sortDescriptorDate, nil] autorelease];
+    NSSortDescriptor *sortDescriptorStatus = [[NSSortDescriptor alloc] initWithKey:@"status" ascending:NO];
+    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorStatus, sortDescriptorDate, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
     return fetchRequest;
 }
@@ -605,7 +594,7 @@
 - (UITableViewCell *)newCell {
     // To comply with apple ownership and naming conventions, returned cell should have a retain count > 0, so retain the dequeued cell.
     static NSString *cellIdentifier = @"CommentCell";
-    UITableViewCell *cell = [[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier] retain];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[CommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];

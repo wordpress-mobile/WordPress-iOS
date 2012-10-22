@@ -17,10 +17,10 @@
 #import "WordPressComApi.h"
 
 @interface WelcomeViewController () <WPcomLoginViewControllerDelegate> {
-    WordPressAppDelegate *appDelegate;
+    WordPressAppDelegate *__weak appDelegate;
 }
 
-@property (nonatomic, assign) WordPressAppDelegate *appDelegate;
+@property (nonatomic, weak) WordPressAppDelegate *appDelegate;
 
 - (void)blogsRefreshNotificationReceived:(NSNotification *)notification;
 
@@ -44,16 +44,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-
-    [buttonView release];
-    [logoView release];
-    [infoButton release];
-    [orgBlogButton release];
-    [addBlogButton release];
-    [createBlogButton release];
-    [createLabel release];
-
-    [super dealloc];
 }
 
 
@@ -137,7 +127,6 @@
 - (IBAction)handleOrgBlogTapped:(id)sender {
     AddSiteViewController *addSiteView = [[AddSiteViewController alloc] initWithNibName:nil bundle:nil];    
     [self.navigationController pushViewController:addSiteView animated:YES];
-    [addSiteView release];
 }
 
 
@@ -163,13 +152,11 @@
         [addUsersBlogsView setUsername:username];
         [addUsersBlogsView setPassword:password];
         [self.navigationController pushViewController:addUsersBlogsView animated:YES];
-        [addUsersBlogsView release];
     }
     else {
         WPcomLoginViewController *wpLoginView = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
         wpLoginView.delegate = self;
         [self.navigationController pushViewController:wpLoginView animated:YES];
-        [wpLoginView release];
     }
 }
 
@@ -180,7 +167,6 @@
         newNibName = @"WebSignupViewController-iPad";
     WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:newNibName bundle:[NSBundle mainBundle]];
     [self.navigationController pushViewController:webSignup animated:YES];
-    [webSignup release];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wpcomSignupNotificationReceived:) name:@"wpcomSignupNotification" object:nil];
 }
 
@@ -204,7 +190,6 @@
     wpLoginView.delegate = self;
     wpLoginView.predefinedUsername = [info valueForKey:@"username"];
     [self.navigationController pushViewController:wpLoginView animated:YES];
-    [wpLoginView release];
 }
 
 
@@ -224,8 +209,6 @@
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
     nc.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.navigationController presentModalViewController:nc animated:YES];
-    [aboutViewController release];
-    [nc release];
 }
 
 #pragma mark - WPcomLoginViewControllerDelegate

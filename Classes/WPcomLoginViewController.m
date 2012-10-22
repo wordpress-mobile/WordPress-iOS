@@ -16,9 +16,9 @@
 @interface WPcomLoginViewController () <UITextFieldDelegate> {
     UITableViewTextFieldCell *loginCell, *passwordCell;
 }
-@property (nonatomic, retain) NSString *footerText, *buttonText;
+@property (nonatomic, strong) NSString *footerText, *buttonText;
 @property (nonatomic, assign) BOOL isSigningIn;
-@property (nonatomic, retain) WordPressComApi *wpComApi;
+@property (nonatomic, strong) WordPressComApi *wpComApi;
 
 - (void)signIn:(id)sender;
 @end
@@ -33,19 +33,6 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-- (void)dealloc {
-    self.delegate = nil;
-    self.footerText = nil;
-    self.buttonText = nil;
-    self.wpComApi = nil;
-    self.predefinedUsername = nil;
-    self.tableView = nil;
-    self.blog = nil;
-    
-    [super dealloc];
-}
-
-
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
@@ -59,7 +46,7 @@
 	self.navigationItem.title = NSLocalizedString(@"Sign In", @"");
     
     if (isCancellable) {
-        UIBarButtonItem *barButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)] autorelease];
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
         self.navigationItem.leftBarButtonItem = barButton;
     }
     
@@ -72,11 +59,10 @@
 		logoFrame = CGRectMake(150, 20, 229, 43);
 	}
 
-	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
+	UIView *headerView = [[UIView alloc] initWithFrame:headerFrame];
 	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
 	logo.frame = logoFrame;
 	[headerView addSubview:logo];
-	[logo release];
 	self.tableView.tableHeaderView = headerView;
     	
 	if(IS_IPAD)
@@ -319,16 +305,17 @@
 
 - (void)signIn:(id)sender {
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+    __weak WPcomLoginViewController *loginController = self;
     [self.wpComApi setUsername:loginCell.textField.text
                       password:passwordCell.textField.text
                        success:^{
                            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
-                           [self.delegate loginController:self didAuthenticateWithUsername:self.wpComApi.username];
+                           [self.delegate loginController:loginController didAuthenticateWithUsername:self.wpComApi.username];
                        }
                        failure:^(NSError *error) {
                            self.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
                            self.buttonText = NSLocalizedString(@"Sign In", @"");
-                           isSigningIn = NO;
+                           loginController.isSigningIn = NO;
                            [self.tableView reloadData];
                        }];
 }

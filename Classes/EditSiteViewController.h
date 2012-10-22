@@ -24,14 +24,14 @@
     BOOL isValidating;
 }
 
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) NSString *password, *username, *url;
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) NSString *password, *username, *url;
 @property (nonatomic, copy) NSString *startingPwd, *startingUser, *startingUrl;
 @property (nonatomic, assign) BOOL geolocationEnabled;
-@property (nonatomic, retain) UITableViewTextFieldCell *urlCell, *usernameCell, *passwordCell;
-@property (nonatomic, retain) Blog *blog;
-@property (nonatomic, retain) UIActivityIndicatorView *savingIndicator;
+@property (nonatomic, strong) UITableViewTextFieldCell *urlCell, *usernameCell, *passwordCell;
+@property (nonatomic, strong) Blog *blog;
+@property (nonatomic, strong) UIActivityIndicatorView *savingIndicator;
 @property (nonatomic, assign) BOOL isCancellable;
-@property (nonatomic, assign) id<SettingsViewControllerDelegate>delegate;
+@property (nonatomic, weak) id<SettingsViewControllerDelegate>delegate;
 
 @end

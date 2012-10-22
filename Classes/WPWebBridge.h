@@ -10,7 +10,7 @@
 
 @interface WPWebBridge : NSObject
 
-@property (nonatomic, assign) id delegate;
+@property (nonatomic, weak) id delegate;
 
 + (WPWebBridge *)bridge;
 

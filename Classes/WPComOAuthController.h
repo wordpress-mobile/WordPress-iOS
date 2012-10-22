@@ -14,11 +14,11 @@
 @end
 
 @interface WPComOAuthController : UIViewController<UIWebViewDelegate,NSURLConnectionDelegate>
-@property (nonatomic, retain) IBOutlet UIWebView *webView;
-@property (nonatomic, assign) id<WPComOAuthDelegate> delegate;
-@property (nonatomic, retain) NSString *clientId;
-@property (nonatomic, retain) NSString *redirectUrl;
-@property (nonatomic, retain) NSString *clientSecret;
+@property (nonatomic, strong) IBOutlet UIWebView *webView;
+@property (nonatomic, weak) id<WPComOAuthDelegate> delegate;
+@property (nonatomic, strong) NSString *clientId;
+@property (nonatomic, strong) NSString *redirectUrl;
+@property (nonatomic, strong) NSString *clientSecret;
 
 + (void)presentWithClientId:(NSString *)clientId redirectUrl:(NSString *)redirectUrl clientSecret:(NSString *)clientSecret delegate:(id<WPComOAuthDelegate>)delegate;
 @end

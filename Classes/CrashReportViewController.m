@@ -15,11 +15,6 @@ NSString *CrashFilePath();
 
 @synthesize crashData;
 
-- (void)dealloc {
-	[crashData release], crashData = nil;
-    [super dealloc];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
@@ -66,9 +61,9 @@ NSString *CrashFilePath();
 - (IBAction)yes:(id)sender {
 	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
 	NSError *error;
-	crashData = [[crashReporter loadPendingCrashReportDataAndReturnError: &error] retain];
+	crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
 	if(crashData != nil) {
-		PLCrashReport *report = [[[PLCrashReport alloc] initWithData:crashData error: &error] autorelease];
+		PLCrashReport *report = [[PLCrashReport alloc] initWithData:crashData error: &error];
 		if (report == nil) {
 			NSLog(@"Could not parse crash report");
 		}
@@ -103,7 +98,6 @@ NSString *CrashFilePath();
 			
 			// Present and release
 			[self presentModalViewController:controller animated:NO];
-			[controller release];
 		}
 		else {
 			[self finish];

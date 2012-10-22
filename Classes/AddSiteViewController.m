@@ -12,7 +12,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIImageView *logoImage = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg"]] autorelease];
+    UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg"]];
     logoImage.frame = CGRectMake(0.0f, 0.0f, 320.0f, 70.0f);
     logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     logoImage.contentMode = UIViewContentModeCenter;
@@ -68,7 +68,6 @@
             addUsersBlogsView.password = self.password;
 			addUsersBlogsView.geolocationEnabled = self.geolocationEnabled;
             [self.navigationController pushViewController:addUsersBlogsView animated:YES];
-            [addUsersBlogsView release];
         } else {
             NSMutableDictionary *newBlog;
             if(subsite)

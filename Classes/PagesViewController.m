@@ -46,12 +46,12 @@
 
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
-    self.postDetailViewController = [[[EditPageViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil] autorelease];
+    self.postDetailViewController = [[EditPageViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
     self.postDetailViewController.apost = [apost createRevision];
     self.postDetailViewController.editMode = kEditPost;
     [self.postDetailViewController refreshUIForCurrentPost];
     
-    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:self.postDetailViewController] autorelease];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.postDetailViewController];
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];
 }
@@ -78,13 +78,12 @@
 
 - (void)showAddPostView {
     Page *post = [Page newDraftForBlog:self.blog];
-    EditPageViewController *editPostViewController = [[[EditPageViewController alloc] initWithPost:[post createRevision]] autorelease];
+    EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[post createRevision]];
     editPostViewController.editMode = kNewPost;
     [editPostViewController refreshUIForCompose];
-    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editPostViewController] autorelease];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];
-    [post release];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {

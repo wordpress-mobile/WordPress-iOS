@@ -19,7 +19,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [super dealloc];
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -29,8 +28,8 @@
         self.textLabel.shadowColor = [UIColor blackColor];
         self.textLabel.textColor = [UIColor colorWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0f];
         self.textLabel.font = [UIFont systemFontOfSize:17.0];
-        self.backgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"sidebar_cell_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]] autorelease];
-        self.selectedBackgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_cell_bg_selected"]] autorelease];
+        self.backgroundView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"sidebar_cell_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
+        self.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_cell_bg_selected"]];
     }
     return self;
 }
@@ -52,7 +51,6 @@
             UILabel *commentsLbl = [self commentsBadgeLabel:image.bounds text:(numberOfPendingComments > 99) ? NSLocalizedString(@"99⁺", "") : [NSString stringWithFormat:@"%d", numberOfPendingComments]];
             [image addSubview:commentsLbl];
             self.accessoryView = image;
-            [image release];
             
             [[NSNotificationCenter defaultCenter] addObserver:self
                                                      selector:@selector(receivedCommentsChangedNotification:) 
@@ -79,7 +77,6 @@
             UILabel *commentsLbl = [self commentsBadgeLabel:image.bounds text:(numberOfPendingComments > 99) ? NSLocalizedString(@"99⁺", "") : [NSString stringWithFormat:@"%d", numberOfPendingComments]];
             [image addSubview:commentsLbl];
             self.accessoryView = image;
-            [image release];
         } else {
             self.accessoryView = nil;
         }
@@ -88,7 +85,7 @@
 
 - (UILabel *)commentsBadgeLabel:(CGRect)aRect text:(NSString *) text {
     aRect.origin.y = -1.0f;
-    UILabel *commentsLbl = [[[UILabel alloc]initWithFrame:aRect] autorelease];
+    UILabel *commentsLbl = [[UILabel alloc]initWithFrame:aRect];
     commentsLbl.backgroundColor = [UIColor clearColor];
     commentsLbl.textAlignment = UITextAlignmentCenter;
     commentsLbl.text = text;

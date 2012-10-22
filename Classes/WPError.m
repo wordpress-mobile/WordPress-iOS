@@ -14,7 +14,7 @@ NSString * const WPErrorResponseKey = @"wp_error_response";
 @implementation WPError
 
 + (NSError *)errorWithResponse:(NSHTTPURLResponse *)response error:(NSError *)error {
-    NSMutableDictionary *userInfo = [[error.userInfo mutableCopy] autorelease];
+    NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
     [userInfo setValue:response forKey:WPErrorResponseKey];
     return [NSError errorWithDomain:error.domain code:error.code userInfo:[NSDictionary dictionaryWithDictionary:userInfo]];
 }

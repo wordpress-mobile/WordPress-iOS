@@ -21,29 +21,16 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
 
 @implementation AFXMLRPCRequest
 @synthesize method, parameters;
-- (void)dealloc {
-    self.method = nil;
-    self.parameters = nil;
-
-    [super dealloc];
-}
 @end
 
 @implementation AFXMLRPCRequestOperation
 @synthesize XMLRPCRequest, success, failure;
-- (void)dealloc {
-    self.XMLRPCRequest = nil;
-    self.success = nil;
-    self.failure = nil;
-
-    [super dealloc];
-}
 @end
 
 @interface AFXMLRPCClient ()
-@property (readwrite, nonatomic, retain) NSURL *xmlrpcEndpoint;
-@property (readwrite, nonatomic, retain) NSMutableDictionary *defaultHeaders;
-@property (readwrite, nonatomic, retain) NSOperationQueue *operationQueue;
+@property (readwrite, nonatomic, strong) NSURL *xmlrpcEndpoint;
+@property (readwrite, nonatomic, strong) NSMutableDictionary *defaultHeaders;
+@property (readwrite, nonatomic, strong) NSOperationQueue *operationQueue;
 @end
 
 @implementation AFXMLRPCClient {
@@ -58,7 +45,7 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
 #pragma mark - Creating and Initializing XML-RPC Clients
 
 + (AFXMLRPCClient *)clientWithXMLRPCEndpoint:(NSURL *)xmlrpcEndpoint {
-    return [[[self alloc] initWithXMLRPCEndpoint:xmlrpcEndpoint] autorelease];
+    return [[self alloc] initWithXMLRPCEndpoint:xmlrpcEndpoint];
 }
 
 - (id)initWithXMLRPCEndpoint:(NSURL *)xmlrpcEndpoint {
@@ -82,18 +69,12 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
         [self setDefaultHeader:@"User-Agent" value:[NSString stringWithFormat:@"%@/%@ (%@, %@ %@, %@, Scale/%f)", [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleIdentifierKey], [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey], @"unknown", [[UIDevice currentDevice] systemName], [[UIDevice currentDevice] systemVersion], [[UIDevice currentDevice] model], ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] ? [[UIScreen mainScreen] scale] : 1.0)]];
     }
     
-    self.operationQueue = [[[NSOperationQueue alloc] init] autorelease];
+    self.operationQueue = [[NSOperationQueue alloc] init];
 	[self.operationQueue setMaxConcurrentOperationCount:kAFXMLRPCClientDefaultMaxConcurrentOperationCount];
 
     return self;
 }
 
-- (void)dealloc {
-    [_xmlrpcEndpoint release];
-    [_defaultHeaders release];
-    [_operationQueue release];
-    [super dealloc];
-}
 
 #pragma mark - Managing HTTP Header Values
 
@@ -123,14 +104,13 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method
                                 parameters:(NSArray *)parameters {
-    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:self.xmlrpcEndpoint] autorelease];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:self.xmlrpcEndpoint];
     [request setHTTPMethod:@"POST"];
     [request setAllHTTPHeaderFields:self.defaultHeaders];
     
     XMLRPCEncoder *encoder = [[XMLRPCEncoder alloc] init];
     [encoder setMethod:method withParameters:parameters];
     NSData *body = [[encoder encode] dataUsingEncoding:NSUTF8StringEncoding];
-    [encoder release];
     [request setHTTPBody:body];
     
     return request;
@@ -138,7 +118,7 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
 
 - (NSMutableURLRequest *)streamingRequestWithMethod:(NSString *)method
                                          parameters:(NSArray *)parameters {
-    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:self.xmlrpcEndpoint] autorelease];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:self.xmlrpcEndpoint];
     [request setHTTPMethod:@"POST"];
     [request setAllHTTPHeaderFields:self.defaultHeaders];
     
@@ -146,14 +126,13 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     [encoder setMethod:method withParameters:parameters];
     [request setHTTPBodyStream:[encoder encodedStream]];
     [request setValue:[[encoder encodedLength] stringValue] forHTTPHeaderField:@"Content-Length"];
-    [encoder release];
     
     return request;    
 }
 
 - (AFXMLRPCRequest *)XMLRPCRequestWithMethod:(NSString *)method
                                   parameters:(NSArray *)parameters {
-    AFXMLRPCRequest *request = [[[AFXMLRPCRequest alloc] init] autorelease];
+    AFXMLRPCRequest *request = [[AFXMLRPCRequest alloc] init];
     request.method = method;
     request.parameters = parameters;
 
@@ -165,7 +144,7 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
 - (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)request 
                                                     success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
                                                     failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
-    AFHTTPRequestOperation *operation = [[[AFHTTPRequestOperation alloc] initWithRequest:request] autorelease];
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     
     BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
 #ifndef DEBUG
@@ -196,7 +175,6 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
             }
             
             id object = [[response object] copy];
-            [response release];
 
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 if (err) {
@@ -208,7 +186,6 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
                         success(operation, object);
                     }
                 }
-                [object release];
             });
         });        
     };
@@ -231,13 +208,12 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
             dispatch_async(dispatch_get_main_queue(), ^(void) {
                 AFAuthenticationAlertView *alert = [[AFAuthenticationAlertView alloc] initWithChallenge:challenge];
                 [alert show];
-                [alert release];
             });
         }        
     }];
 
     if ( extra_debug_on == YES ) {
-        NSString *requestString = [[[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding] autorelease];
+        NSString *requestString = [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding];
         if (getenv("WPDebugXMLRPC")) {
             WPFLog(@"[XML-RPC] > %@", requestString);
         } else {
@@ -260,7 +236,7 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
 - (AFXMLRPCRequestOperation *)XMLRPCRequestOperationWithRequest:(AFXMLRPCRequest *)request
                                                         success:(AFXMLRPCRequestOperationSuccessBlock)success
                                                         failure:(AFXMLRPCRequestOperationFailureBlock)failure {
-    AFXMLRPCRequestOperation *operation = [[[AFXMLRPCRequestOperation alloc] init] autorelease];
+    AFXMLRPCRequestOperation *operation = [[AFXMLRPCRequestOperation alloc] init];
     operation.XMLRPCRequest = request;
     operation.success = success;
     operation.failure = failure;

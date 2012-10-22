@@ -10,19 +10,10 @@
 #pragma mark -
 #pragma mark LifeCycle Methods
 
-- (void)dealloc {
-    WPFLogMethod();
-    [super dealloc];
-    if (parentCat != nil) {
-        [parentCat release];
-    }
-}
-
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[super viewDidLoad];
     catTableView.sectionFooterHeight = 0.0;
-    [saveButtonItem retain];
     saveButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:UIBarButtonItemStyleDone target:self action:@selector(saveAddCategory:)];
 
     newCatNameField.font = [UIFont fontWithName:@"Helvetica" size:17];
@@ -87,10 +78,8 @@
     UIBarButtonItem *activityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:aiv];
 	activityButtonItem.title = @"foobar!";
     [aiv startAnimating];
-    [aiv release];
     
     self.navigationItem.rightBarButtonItem = activityButtonItem;
-    [activityButtonItem release];
 }
 
 - (void)removeProgressIndicator {
@@ -123,7 +112,6 @@
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [delegate setAlertRunning:YES];
         
-        [alert2 release];
         return;
     }
     
@@ -136,7 +124,6 @@
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [delegate setAlertRunning:YES];
         
-        [alert2 release];
         return;
     }
     
@@ -174,13 +161,11 @@
         Category *curCat = [selectedObjects lastObject];
 
         if (parentCat) {
-            [parentCat release];
             parentCat = nil;
         }
 
         if (curCat) {
             parentCat = curCat;
-            [parentCat retain];
             parentCatNameField.text = curCat.categoryName;
             [catTableView reloadData];
         }
@@ -207,7 +192,6 @@
     selectionTableViewController.title = NSLocalizedString(@"Parent Category", @"");
 
     [self.navigationController pushViewController:selectionTableViewController animated:YES];
-    [selectionTableViewController release];
 }
 
 #pragma mark - tableviewDelegates/datasources

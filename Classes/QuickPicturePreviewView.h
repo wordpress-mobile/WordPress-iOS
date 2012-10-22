@@ -26,7 +26,7 @@
     CGRect normalFrame, normalImageFrame;
 }
 
-@property (nonatomic, retain) UIImage *image;
-@property (nonatomic, assign) IBOutlet id<QuickPicturePreviewViewDelegate> delegate;
+@property (nonatomic, strong) UIImage *image;
+@property (nonatomic, weak) IBOutlet id<QuickPicturePreviewViewDelegate> delegate;
 
 @end

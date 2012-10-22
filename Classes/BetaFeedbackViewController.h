@@ -22,13 +22,13 @@
 
 }
 
-@property (nonatomic, retain) IBOutlet UITextField *name;
-@property (nonatomic, retain) IBOutlet UITextField *email;
-@property (nonatomic, retain) IBOutlet UITextView *feedback;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *cancelButton;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *sendFeedbackButton;
-@property (nonatomic, retain) UITextField *activeField;
-@property (nonatomic, retain) UIScrollView *scrollView;
+@property (nonatomic, strong) IBOutlet UITextField *name;
+@property (nonatomic, strong) IBOutlet UITextField *email;
+@property (nonatomic, strong) IBOutlet UITextView *feedback;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *cancelButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *sendFeedbackButton;
+@property (nonatomic, strong) UITextField *activeField;
+@property (nonatomic, strong) UIScrollView *scrollView;
 
 -(IBAction) cancel: (id)sender;
 -(IBAction) sendFeedback: (id)sender;

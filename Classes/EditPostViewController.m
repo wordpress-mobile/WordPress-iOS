@@ -36,43 +36,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 #pragma mark -
 #pragma mark LifeCycle Methods
 
-- (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	self.hasLocation = nil;
-	[statuses release];
-    [postMediaViewController release];
-	[postPreviewViewController release];
-    [postSettingsController release];
-    [writeButton release];
-    [settingsButton release];
-	[textView release];
-	[contentView release];
-	[subView release];
-	[textViewContentView release];
-	[statusTextField release];
-	[categoriesButton release];
-	[titleTextField release];
-	[tagsTextField release];
-	[textViewPlaceHolderField release];
-	[tagsLabel release];
-	[statusLabel release];
-	[categoriesLabel release];
-	[titleLabel release];
-	[customFieldsEditButton release];
-	[locationButton release];
-	[locationSpinner release];
-	[createCategoryBarButtonItem release];
-    [infoText release];
-    [urlField release];
-    [bookMarksArray release];
-    [segmentedTableViewController release];
-    [editorToolbar release];
-    [currentActionSheet release];
-    
-    [super dealloc];
-}
-
-
 - (id)initWithPost:(AbstractPost *)aPost {
     NSString *nib;
     if (IS_IPAD) {
@@ -94,9 +57,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    [spinner release]; spinner = nil;
+     spinner = nil;
     self.textView.inputAccessoryView = nil;
-    [editorToolbar release];
     editorToolbar = nil;
     
     // Release IBOutlets
@@ -171,7 +133,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     self.title = [self editorTitle];
 
     if (!statuses)
-        statuses = [[NSArray arrayWithObjects:NSLocalizedString(@"Local Draft", @"Post status label in the posts list if the post has not yet been synced to the remote server."), NSLocalizedString(@"Draft", @"Post status label in the posts list if the post is a draft."), NSLocalizedString(@"Private", @"Post status label in the posts list if the post is marked as private. Should be the same as WP core."), NSLocalizedString(@"Pending review", @"Post status label in the post list if the post is pending review. Should be the same as WP core."), NSLocalizedString(@"Published", @"Post status to indicate that the post is live and published. Should be the same as WP core."), nil] retain];
+        statuses = [NSArray arrayWithObjects:NSLocalizedString(@"Local Draft", @"Post status label in the posts list if the post has not yet been synced to the remote server."), NSLocalizedString(@"Draft", @"Post status label in the posts list if the post is a draft."), NSLocalizedString(@"Private", @"Post status label in the posts list if the post is marked as private. Should be the same as WP core."), NSLocalizedString(@"Pending review", @"Post status label in the post list if the post is pending review. Should be the same as WP core."), NSLocalizedString(@"Published", @"Post status to indicate that the post is live and published. Should be the same as WP core."), nil];
 	
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -511,7 +473,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 - (void)dismissEditView {
     [self dismissModalViewControllerAnimated:YES];
-	[postSettingsController release]; postSettingsController = nil;
+	 postSettingsController = nil;
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     
@@ -524,7 +486,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
                                                                                   target:self
                                                                                   action:@selector(cancelView:)];
     self.navigationItem.leftBarButtonItem = cancelButton;
-    [cancelButton release];
     
     NSString *buttonTitle;
     if(![self.apost hasRemote]) {
@@ -539,7 +500,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
     }
     
-    UIBarButtonItem *saveButton = [[[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleDone target:self action:@selector(saveAction:)] autorelease];
+    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleDone target:self action:@selector(saveAction:)];
     self.navigationItem.rightBarButtonItem = saveButton;
     
     [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
@@ -559,8 +520,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
 //        self.navigationItem.title = self.apost.postTitle;
         self.navigationItem.title = [self editorTitle];
     }
-    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"Back button label.")
-																			 style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"Back button label.")
+																			 style:UIBarButtonItemStyleBordered target:nil action:nil];
 	
     titleTextField.text = self.apost.postTitle;
     if (self.post) {
@@ -618,9 +579,9 @@ NSTimeInterval kAnimationDuration = 0.3f;
             if (segmentedTableViewController.navigationController) {
                 navController = segmentedTableViewController.navigationController;
             } else {
-                navController = [[[UINavigationController alloc] initWithRootViewController:segmentedTableViewController] autorelease];
+                navController = [[UINavigationController alloc] initWithRootViewController:segmentedTableViewController];
             }
- 			UIPopoverController *popover = [[[UIPopoverController alloc] initWithContentViewController:navController] autorelease];
+ 			UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:navController];
             if ([popover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
                 popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
             }
@@ -668,8 +629,8 @@ NSTimeInterval kAnimationDuration = 0.3f;
     selectionTableViewController.title = NSLocalizedString(@"Status", @"");
     selectionTableViewController.navigationItem.rightBarButtonItem = nil;
 	if (IS_IPAD == YES) {
-		UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:selectionTableViewController] autorelease];
-		UIPopoverController *popover = [[[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController] autorelease];
+		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:selectionTableViewController];
+		UIPopoverController *popover = [[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController];
 		CGRect popoverRect = [self.view convertRect:[statusTextField frame] fromView:[statusTextField superview]];
 		popoverRect.size.width = MIN(popoverRect.size.width, 100);
 		[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -679,7 +640,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 		[delegate.navigationController pushViewController:selectionTableViewController animated:YES];
 	}
-    [selectionTableViewController release], selectionTableViewController = nil;
+    selectionTableViewController = nil;
 }
 
 - (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged {
@@ -724,9 +685,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
  	} else {
 		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
 		[segmentedTableViewController presentModalViewController:nc animated:YES];
-		[nc release];
 	}
-    [addCategoryViewController release];
 }
 
 - (void)endEditingAction:(id)sender {
@@ -815,7 +774,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
 																  message:NSLocalizedString(@"A Media file is currently uploading. Please try later.", @"")
 																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
 	[blogIsCurrentlyBusy show];
-	[blogIsCurrentlyBusy release];
 }
 
 - (IBAction)cancelView:(id)sender {
@@ -865,7 +823,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:YES];
     
-    [actionSheet release];
 }
 
 - (IBAction)endTextEnteringButtonAction:(id)sender {
@@ -873,7 +830,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	if (IS_IPAD == NO) {
 		if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
 			//#615 -- trick to rotate the interface back to portrait. 
-				UIViewController *garbageController = [[[UIViewController alloc] init] autorelease]; 
+				UIViewController *garbageController = [[UIViewController alloc] init]; 
 				[self.navigationController pushViewController:garbageController animated:NO]; 
 				[self.navigationController popViewControllerAnimated:NO];
 		}
@@ -951,7 +908,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
     isShowingLinkAlert = YES;
     [addURLSourceAlert setTag:2];
     [addURLSourceAlert show];
-    [addURLSourceAlert release];
 }
 
 - (BOOL)hasChanges {
@@ -1316,7 +1272,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		prefix = @"";
 	}
 	
-	NSMutableString *content = [[[NSMutableString alloc] initWithString:media.html] autorelease];
+	NSMutableString *content = [[NSMutableString alloc] initWithString:media.html];
 	NSRange imgHTML = [textView.text rangeOfString: content];
 	
 	NSRange imgHTMLPre = [textView.text rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br /><br />", content]]; 
@@ -1327,7 +1283,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
         self.apost.content = content;
 	}
 	else { 
-		NSMutableString *processedText = [[[NSMutableString alloc] initWithString:textView.text] autorelease]; 
+		NSMutableString *processedText = [[NSMutableString alloc] initWithString:textView.text]; 
 		if (imgHTMLPre.location != NSNotFound) 
 			[processedText replaceCharactersInRange:imgHTMLPre withString:@""];
 		else if (imgHTMLPost.location != NSNotFound) 
@@ -1350,7 +1306,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		prefix = @"";
 	}
 	
-	NSMutableString *content = [[[NSMutableString alloc] initWithString:self.apost.content] autorelease];
+	NSMutableString *content = [[NSMutableString alloc] initWithString:self.apost.content];
 	NSRange imgHTML = [content rangeOfString: media.html];
 	NSRange imgHTMLPre = [content rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br /><br />", media.html]]; 
  	NSRange imgHTMLPost = [content rangeOfString:[NSString stringWithFormat:@"%@%@", media.html, @"<br /><br />"]];
@@ -1398,7 +1354,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
             [dict setValue:[[bookMarksDict valueForKey:@"URIDictionary"] valueForKey:@"title"] forKey:@"title"];
             [dict setValue:[bookMarksDict valueForKey:@"URLString"] forKey:@"url"];
             [bookMarksArray addObject:dict];
-            [dict release];
         }
     }
 }
@@ -1489,7 +1444,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 		
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 200, 25)];
         label.textAlignment = UITextAlignmentLeft;
@@ -1497,7 +1452,6 @@ NSTimeInterval kAnimationDuration = 0.3f;
         label.font = [UIFont systemFontOfSize:16];
         label.textColor = [UIColor grayColor];
         [cell.contentView addSubview:label];
-        [label release];
     }
 	
     NSUInteger row = [indexPath row];

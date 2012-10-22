@@ -11,9 +11,9 @@
 @interface PanelViewWrapper()
 
 // Assign vs retain cos releasing later gets tricky.
-@property (nonatomic, retain) UIViewController *viewController;
-@property (nonatomic, assign) UIView *wrappedView;
-@property (nonatomic, retain) AMBlockToken *observerToken;
+@property (nonatomic, strong) UIViewController *viewController;
+@property (nonatomic, weak) UIView *wrappedView;
+@property (nonatomic, strong) AMBlockToken *observerToken;
 
 - (void)setup;
 
@@ -33,11 +33,6 @@
     if (self.observerToken) {
         [self.viewController removeObserverWithBlockToken:self.observerToken];
     }
-    self.toolbar = nil;
-    self.overlay = nil;
-    self.viewController = nil;
-    self.observerToken = nil;
-    [super dealloc];
 }
 
 
@@ -77,7 +72,7 @@
     
     CGFloat toolbarHeight = 44.0f;
     CGRect frame = CGRectMake(0.0f, self.frame.size.height, self.frame.size.width, toolbarHeight);
-    self.toolbar = [[[UIToolbar alloc] initWithFrame:frame] autorelease];
+    self.toolbar = [[UIToolbar alloc] initWithFrame:frame];
     self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 
     self.toolbar.barStyle = UIBarStyleBlack;

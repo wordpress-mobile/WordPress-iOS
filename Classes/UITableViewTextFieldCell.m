@@ -12,15 +12,11 @@
 @implementation UITableViewTextFieldCell
 @synthesize textField;
 
-- (void)dealloc {
-    self.textField = nil;
-    [super dealloc];
-}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.textField = [[[UITextField alloc] initWithFrame:self.bounds] autorelease];
+        self.textField = [[UITextField alloc] initWithFrame:self.bounds];
         self.textField.adjustsFontSizeToFitWidth = YES;
         self.textField.textColor = [UIColor blackColor];
         self.textField.backgroundColor = [UIColor clearColor];

@@ -21,14 +21,7 @@
 
     [self.webView stopLoading];
     self.webView.delegate = nil;
-    self.webView = nil;
-    self.lastWebViewRefreshDate = nil;
     self.webBridge.delegate = nil;
-    self.webBridge = nil;
-    [_refreshHeaderView release]; _refreshHeaderView = nil;
-    
-    [super dealloc];
-    
 }
 
 
@@ -79,7 +72,7 @@
     self.webView.delegate = nil;
     self.webView = nil;
     
-    [_refreshHeaderView release]; _refreshHeaderView = nil;
+     _refreshHeaderView = nil;
 }
 
 
@@ -196,22 +189,6 @@
 
 
 #pragma mark - UIWebViewDelegate
-
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    // attempted work around for #1347
-    [self.webView.delegate retain];
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    // attempted work around for #1347
-  [self.webView.delegate release];
-    
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    // attempted work around for #1347
-    [self.webView.delegate release];
-}
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {

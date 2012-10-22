@@ -11,8 +11,8 @@
     WPWebView *webView;
 }
 
-@property (nonatomic, retain) NSString *path;
-@property (nonatomic, retain, readonly) WPWebView *webView;
+@property (nonatomic, strong) NSString *path;
+@property (nonatomic, strong, readonly) WPWebView *webView;
 - (void)loadPath:(NSString *)aPath;
 - (NSURL *)currentURL;
 

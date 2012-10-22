@@ -38,12 +38,11 @@ return(currentPopoverController);
 		if (currentPopoverController != NULL)
 			{
 			[currentPopoverController dismissPopoverAnimated:YES];
-			[currentPopoverController release];
 			currentPopoverController = NULL;	
 			}
 		if (inCurrentPopoverController)
 			{
-			currentPopoverController = [inCurrentPopoverController retain];
+			currentPopoverController = inCurrentPopoverController;
 			}
 		}
 	}

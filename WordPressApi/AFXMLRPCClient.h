@@ -7,19 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@class AFHTTPRequestOperation;
+#import "AFHTTPRequestOperation.h"
 
 typedef void (^AFXMLRPCRequestOperationSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject);
 typedef void (^AFXMLRPCRequestOperationFailureBlock)(AFHTTPRequestOperation *operation, NSError *error);
 
 @interface AFXMLRPCRequest : NSObject
-@property (nonatomic, retain) NSString *method;
-@property (nonatomic, retain) NSArray *parameters;
+@property (nonatomic, strong) NSString *method;
+@property (nonatomic, strong) NSArray *parameters;
 @end
 
 @interface AFXMLRPCRequestOperation : AFHTTPRequestOperation
-@property (nonatomic, retain) AFXMLRPCRequest *XMLRPCRequest;
+@property (nonatomic, strong) AFXMLRPCRequest *XMLRPCRequest;
 @property (nonatomic, copy) AFXMLRPCRequestOperationSuccessBlock success;
 @property (nonatomic, copy) AFXMLRPCRequestOperationFailureBlock failure;
 @end
@@ -36,12 +35,12 @@ typedef void (^AFXMLRPCRequestOperationFailureBlock)(AFHTTPRequestOperation *ope
 /**
  The url used as the XML-RPC endpoint
  */
-@property (readonly, nonatomic, retain) NSURL *xmlrpcEndpoint;
+@property (readonly, nonatomic, strong) NSURL *xmlrpcEndpoint;
 
 /**
  The operation queue which manages operations enqueued by the HTTP client.
  */
-@property (readonly, nonatomic, retain) NSOperationQueue *operationQueue;
+@property (readonly, nonatomic, strong) NSOperationQueue *operationQueue;
 
 ///------------------------------------------------
 /// @name Creating and Initializing XML-RPC Clients

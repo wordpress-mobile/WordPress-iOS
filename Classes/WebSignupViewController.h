@@ -14,7 +14,7 @@
 	UIActivityIndicatorView *spinner;
 }
 
-@property (nonatomic, retain) UIWebView *webView;
-@property (nonatomic, retain) UIActivityIndicatorView *spinner;
+@property (nonatomic, strong) UIWebView *webView;
+@property (nonatomic, strong) UIActivityIndicatorView *spinner;
 
 @end

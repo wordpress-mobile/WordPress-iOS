@@ -10,6 +10,7 @@
 #import "Blog.h"
 #import "SFHFKeychainUtils.h"
 #import "AFHTTPClient.h"
+#import "AFXMLRequestOperation.h"
 
 @interface JetpackAuthUtil() <NSXMLParserDelegate> {
     NSMutableString *currentNode;
@@ -21,12 +22,12 @@
     AFXMLRequestOperation *currentRequest;
 }
 
-@property (nonatomic, retain) Blog *blog;
-@property (nonatomic, retain) NSMutableString *currentNode;
-@property (nonatomic, retain) NSMutableDictionary *parsedBlog;
-@property (nonatomic, retain) NSString *username;
-@property (nonatomic, retain) NSString *password;
-@property (nonatomic, retain) AFXMLRequestOperation *currentRequest;
+@property (nonatomic, strong) Blog *blog;
+@property (nonatomic, strong) NSMutableString *currentNode;
+@property (nonatomic, strong) NSMutableDictionary *parsedBlog;
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *password;
+@property (nonatomic, strong) AFXMLRequestOperation *currentRequest;
 
 - (void)saveCredentials;
 
@@ -81,18 +82,11 @@
 
 
 - (void)dealloc {
-    [blog release];
-    [currentNode release];
-    [parsedBlog release];
-    [username release];
-    [password release];
     
     if ([currentRequest isExecuting]) {
         [currentRequest cancel];
     }
-    [currentRequest release];
     
-    [super dealloc];
 }
 
 
@@ -117,8 +111,9 @@
     
     NSMutableURLRequest *mRequest = [httpClient requestWithMethod:@"GET" path:@"get-user-blogs/1.0" parameters:nil];
     
-    self.currentRequest = [[[AFXMLRequestOperation alloc] initWithRequest:mRequest] autorelease];
+    self.currentRequest = [[AFXMLRequestOperation alloc] initWithRequest:mRequest];
     
+    __weak JetpackAuthUtil *jetpackAuthUtil = self;
     [currentRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.currentRequest = nil;
         NSXMLParser *parser = (NSXMLParser *)responseObject;
@@ -131,15 +126,14 @@
         
         if(operation.response.statusCode == 401){
             // If we failed due to bad credentials...
-            [self.delegate jetpackAuthUtil:self errorValidatingCredentials:blog withError:NSLocalizedString(@"The WordPress.com username or password may be incorrect. Please check them and try again.", @"")];
+            [self.delegate jetpackAuthUtil:jetpackAuthUtil errorValidatingCredentials:jetpackAuthUtil.blog withError:NSLocalizedString(@"The WordPress.com username or password may be incorrect. Please check them and try again.", @"")];
         } else {
             // Some other server error.
-            [self.delegate jetpackAuthUtil:self errorValidatingCredentials:blog withError:NSLocalizedString(@"There was a server error while testing the credentials. Please try again.", @"")];            
+            [self.delegate jetpackAuthUtil:jetpackAuthUtil errorValidatingCredentials:jetpackAuthUtil.blog withError:NSLocalizedString(@"There was a server error while testing the credentials. Please try again.", @"")];
         }        
     }];
     
     [currentRequest start];
-    [httpClient release];
 }
 
 
@@ -183,14 +177,14 @@
         [FileLogger log:@"Blog URL - %@", blogURL];
         [FileLogger log:@"Parsed URL - %@", parsedURL];
 
-        NSMutableString *parsedHost = [[[parsedURL host] mutableCopy] autorelease];
+        NSMutableString *parsedHost = [[parsedURL host] mutableCopy];
         [parsedHost replaceOccurrencesOfString:@"www." withString:@"" options:0 range:NSMakeRange(0, [parsedHost length])];
         parsedHost = [NSMutableString stringWithFormat:@"%@%@",parsedHost, [parsedURL path]];
         if (![parsedHost hasSuffix:@"/"]) {
             [parsedHost appendString:@"/"];
         }
         
-        NSMutableString *blogHost = [[[blogURL host] mutableCopy] autorelease];
+        NSMutableString *blogHost = [[blogURL host] mutableCopy];
         [blogHost replaceOccurrencesOfString:@"www." withString:@"" options:0 range:NSMakeRange(0, [blogHost length])];
         blogHost = [NSMutableString stringWithFormat:@"%@%@",blogHost, [blogURL path]];
         if (![blogHost hasSuffix:@"/"]) {

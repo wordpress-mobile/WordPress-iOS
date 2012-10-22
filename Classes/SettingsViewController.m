@@ -49,7 +49,7 @@ typedef enum {
 
 @interface SettingsViewController () <NSFetchedResultsControllerDelegate, UIActionSheetDelegate, WPcomLoginViewControllerDelegate>
 
-@property (readonly) NSFetchedResultsController *resultsController;
+@property (weak, readonly) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) NSArray *mediaSettingsArray;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
@@ -68,12 +68,6 @@ typedef enum {
 #pragma mark -
 #pragma mark LifeCycle Methods
 
-- (void)dealloc {
-    [_resultsController release];
-    [mediaSettingsArray release];
-    
-    [super dealloc];
-}
 
 
 - (void)viewDidLoad {
@@ -81,7 +75,7 @@ typedef enum {
 
     self.title = NSLocalizedString(@"Settings", @"App Settings");
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)] autorelease];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
     }];
@@ -165,7 +159,7 @@ typedef enum {
 - (void)checkCloseButton {
     if ([[self.resultsController fetchedObjects] count] == 0 && [WordPressComApi sharedApi].username == nil) {
         WelcomeViewController *welcomeViewController;
-        welcomeViewController = [[[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil] autorelease]; 
+        welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil]; 
         [welcomeViewController automaticallyDismissOnLoginActions];
         self.navigationController.navigationBar.hidden = YES;
         [self.navigationController pushViewController:welcomeViewController animated:YES];
@@ -288,7 +282,7 @@ typedef enum {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else if (indexPath.row == 2) {
             cell.textLabel.text = NSLocalizedString(@"Extra Debug", @"A lable for the settings switch to enable extra debugging and logging.");
-            UISwitch *aSwitch = [[[UISwitch alloc] initWithFrame:CGRectZero] autorelease]; // Frame is ignored.
+            UISwitch *aSwitch = [[UISwitch alloc] initWithFrame:CGRectZero]; // Frame is ignored.
             [aSwitch addTarget:self action:@selector(handleExtraDebugChanged:) forControlEvents:UIControlEventValueChanged];
             aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
             cell.accessoryView = aSwitch;
@@ -326,7 +320,7 @@ typedef enum {
     
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellIdentifier];
     }
     
     return cell;
@@ -370,13 +364,13 @@ typedef enum {
     if (indexPath.section == SettingsSectionBlogs) {
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
 
-		EditSiteViewController *editSiteViewController = [[[EditSiteViewController alloc] init] autorelease];
+		EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] init];
         editSiteViewController.blog = blog;
         [self.navigationController pushViewController:editSiteViewController animated:YES];
 
     } else if (indexPath.section == SettingsSectionBlogsAdd) {
         WelcomeViewController *welcomeViewController;
-        welcomeViewController = [[[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil] autorelease]; 
+        welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil]; 
         welcomeViewController.title = NSLocalizedString(@"Add a Blog", @"");
         [self.navigationController pushViewController:welcomeViewController animated:YES];
         
@@ -393,7 +387,6 @@ typedef enum {
                                             destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"")otherButtonTitles:nil, nil ];
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
                 [actionSheet showInView:self.view];
-                [actionSheet release];
             }
         } else {
             WPcomLoginViewController *loginViewController = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -403,12 +396,12 @@ typedef enum {
         
     } else if (indexPath.section == SettingsSectionMedia) {
         NSDictionary *dict = [mediaSettingsArray objectAtIndex:indexPath.row];
-        SettingsPageViewController *controller = [[[SettingsPageViewController alloc] initWithDictionary:dict] autorelease];
+        SettingsPageViewController *controller = [[SettingsPageViewController alloc] initWithDictionary:dict];
         [self.navigationController pushViewController:controller animated:YES];
     
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 1) {
-            AboutViewController *aboutViewController = [[[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil] autorelease]; 
+            AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil]; 
             [self.navigationController pushViewController:aboutViewController animated:YES];
         }
     }
@@ -440,10 +433,8 @@ typedef enum {
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
         WPFLog(@"Couldn't fetch blogs: %@", [error localizedDescription]);
-        [_resultsController release];
         _resultsController = nil;
     }
-    [fetchRequest release];
     return _resultsController;
 }
 

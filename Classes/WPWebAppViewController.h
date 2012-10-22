@@ -18,10 +18,10 @@
     BOOL shouldEnablePullToRefresh;
 }
 
-@property (nonatomic, retain) IBOutlet UIWebView *webView;
+@property (nonatomic, strong) IBOutlet UIWebView *webView;
 @property (nonatomic, assign) BOOL loading;
-@property (nonatomic, retain) NSDate *lastWebViewRefreshDate;
-@property (nonatomic, retain) WPWebBridge *webBridge;
+@property (nonatomic, strong) NSDate *lastWebViewRefreshDate;
+@property (nonatomic, strong) WPWebBridge *webBridge;
 
 - (void)setBackgroundColor:(NSDictionary *)colorWithRGBA;
 - (void)setNavigationBarColor:(NSDictionary *)colorWithRGBA;

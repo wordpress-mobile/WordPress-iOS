@@ -11,8 +11,8 @@
 @interface UITableViewSwitchCell : UITableViewCell {
 }
 
-@property (nonatomic, retain) IBOutlet UILabel *textLabel;
-@property (nonatomic, retain) IBOutlet UISwitch *cellSwitch;
-@property (nonatomic, retain) IBOutlet UIView *viewForBackground;
+@property (nonatomic, strong) IBOutlet UILabel *textLabel;
+@property (nonatomic, strong) IBOutlet UISwitch *cellSwitch;
+@property (nonatomic, strong) IBOutlet UIView *viewForBackground;
 
 @end

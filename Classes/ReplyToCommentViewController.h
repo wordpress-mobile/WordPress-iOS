@@ -35,12 +35,12 @@
 	
 }
 
-@property (nonatomic, retain) id<ReplyToCommentViewControllerDelegate> delegate;
-@property (nonatomic, retain) Comment *comment;
-@property (nonatomic, retain) UIBarButtonItem *saveButton;
-@property (nonatomic, retain) UIBarButtonItem *doneButton;
-@property (nonatomic, retain) UIBarButtonItem *cancelButton;
-@property (nonatomic, retain) UILabel *label;
+@property (nonatomic, strong) id<ReplyToCommentViewControllerDelegate> delegate;
+@property (nonatomic, strong) Comment *comment;
+@property (nonatomic, strong) UIBarButtonItem *saveButton;
+@property (nonatomic, strong) UIBarButtonItem *doneButton;
+@property (nonatomic, strong) UIBarButtonItem *cancelButton;
+@property (nonatomic, strong) UILabel *label;
 @property (nonatomic) BOOL hasChanges;
 @property (nonatomic) BOOL isTransitioning;
 @property (nonatomic) BOOL isEditing;

@@ -21,13 +21,6 @@
 @synthesize delegate;
 @synthesize selectedBlog;
 
-- (void)dealloc
-{
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    self.selectedBlog = nil;
-    [super dealloc];
-}
-
 - (void)didReceiveMemoryWarning
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -107,11 +100,11 @@
     Blog *blog = [resultsController objectAtIndexPath:indexPath];
     
     CGRect frame = CGRectMake(8,8,35,35);
-    UIImageView* asyncImage = [[[UIImageView alloc]
-                                            initWithFrame:frame] autorelease];
+    UIImageView* asyncImage = [[UIImageView alloc]
+                                            initWithFrame:frame];
     
     if (cell == nil) {
-        cell = [[[BlogsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[BlogsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         [cell.imageView removeFromSuperview];
     }
     else {
@@ -169,9 +162,8 @@
                                                                   cacheName:nil];
     resultsController.delegate = self;
     
-    [fetchRequest release];
-    [sortDescriptor release]; sortDescriptor = nil;
-    [sortDescriptors release]; sortDescriptors = nil;
+     sortDescriptor = nil;
+     sortDescriptors = nil;
     
     return resultsController;
 }

@@ -34,16 +34,6 @@
 	
 }
 
-- (void)dealloc {
-	[name release];
-	[email release];
-	[feedback release];
-	[cancelButton release];
-	[sendFeedbackButton release];
-	[activeField release];
-	[scrollView release];
-    [super dealloc];
-}
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	activeField = textField;
@@ -113,7 +103,6 @@
                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     [self dismissModalViewControllerAnimated:YES];
                 } failure:nil];
-        [api release];
 	}
 	else {
 		[sendFeedbackButton setEnabled:YES];

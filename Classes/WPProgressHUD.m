@@ -93,10 +93,5 @@
     [self.appDelegate setAlertRunning:NO];
 }
 
-- (void)dealloc {
-    [activityIndicator release];
-    [progressMessage release];
-    [super dealloc];
-}
 
 @end

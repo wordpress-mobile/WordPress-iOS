@@ -14,18 +14,13 @@ NSString *FileLoggerPath() {
 	if (filePath == nil) {
 		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 		NSString *documentsDirectory = [paths objectAtIndex:0];
-		filePath = [[documentsDirectory stringByAppendingPathComponent:@"wordpress.log"] retain];		
+		filePath = [documentsDirectory stringByAppendingPathComponent:@"wordpress.log"];		
 	}
 	
 	return filePath;
 }
 
 @implementation FileLogger
-
-- (void)dealloc {
-	[logFile dealloc]; logFile = nil;
-	[super dealloc];
-}
 
 - (id) init {
     self = [super init];
@@ -35,7 +30,7 @@ NSString *FileLoggerPath() {
 			[fileManager createFileAtPath:FileLoggerPath()
 								 contents:nil
 							   attributes:nil];
-		logFile = [[NSFileHandle fileHandleForWritingAtPath:FileLoggerPath()] retain];
+		logFile = [NSFileHandle fileHandleForWritingAtPath:FileLoggerPath()];
 		[logFile seekToEndOfFile];
 	}
 	return self;
@@ -61,7 +56,6 @@ NSString *FileLoggerPath() {
 	NSLog(@"# %@", message); // The # symbol indicates that the message will be logged to file, useful when looking at the console
 #endif
 	[[FileLogger sharedInstance] log:message];
-	[message release];
     va_end(ap);
 }
 

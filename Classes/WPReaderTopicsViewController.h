@@ -18,7 +18,7 @@
 
 @interface WPReaderTopicsViewController : WPWebAppViewController
 
-@property (nonatomic, assign) id<WPReaderTopicsViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<WPReaderTopicsViewControllerDelegate> delegate;
 
 - (void)loadTopicsPage;
 - (void)selectTopic:(NSString *)topic :(NSString *) title;

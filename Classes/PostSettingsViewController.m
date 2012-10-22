@@ -28,31 +28,11 @@
 	if (locationManager) {
 		locationManager.delegate = nil;
 		[locationManager stopUpdatingLocation];
-		[locationManager release];
 	}
 	if (reverseGeocoder) {
-		reverseGeocoder.delegate = nil;
-		[reverseGeocoder cancel];
-		[reverseGeocoder release];
+		[reverseGeocoder cancelGeocode];
 	}
-	[address release];
-	[addGeotagTableViewCell release];
-    [mapGeotagTableViewCell release];
-    [removeGeotagTableViewCell release];
 	mapView.delegate = nil;
-	[mapView release];
-	[addressLabel release];
-	[coordinateLabel release];
-	
-    [actionSheet release];
-    [popover release];
-    [pickerView release];
-    [datePickerView release];
-    [visibilityList release];
-    [statusList release];
-    [formatsList release];
-    
-    [super dealloc];
 }
 
 - (void)viewDidLoad {
@@ -74,9 +54,9 @@
     passwordTextField.placeholder = NSLocalizedString(@"Enter a password", @"");
     NSMutableArray *allStatuses = [NSMutableArray arrayWithArray:[postDetailViewController.apost availableStatuses]];
     [allStatuses removeObject:NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
-    statusList = [[NSArray arrayWithArray:allStatuses] retain];
-    visibilityList = [[NSArray arrayWithObjects:NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."), NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."), NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP."), nil] retain];
-    formatsList = [postDetailViewController.post.blog.sortedPostFormatNames retain];
+    statusList = [NSArray arrayWithArray:allStatuses];
+    visibilityList = [NSArray arrayWithObjects:NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."), NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."), NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP."), nil];
+    formatsList = postDetailViewController.post.blog.sortedPostFormatNames;
 
     isShowingKeyboard = NO;
     
@@ -136,7 +116,7 @@
             
             [postDetailViewController.post getFeaturedImageURLWithSuccess:^{
                 if (postDetailViewController.post.featuredImageURL) {
-                    NSURL *imageURL = [[[NSURL alloc] initWithString:postDetailViewController.post.featuredImageURL] autorelease];
+                    NSURL *imageURL = [[NSURL alloc] initWithString:postDetailViewController.post.featuredImageURL];
                     if (imageURL) {
                         [featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
                         [featuredImageView setImageWithURL:imageURL];
@@ -163,15 +143,11 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [locationManager stopUpdatingLocation];
     locationManager.delegate = nil;
-    [locationManager release];
     locationManager = nil;
     
-    [mapView release];
     mapView = nil;
     
-    [reverseGeocoder cancel];
-    reverseGeocoder.delegate = nil;
-    [reverseGeocoder release];
+    [reverseGeocoder cancelGeocode];
     reverseGeocoder = nil;
     
     statusTitleLabel = nil;
@@ -345,7 +321,6 @@
 					[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 					[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
 					publishOnDateLabel.text = [dateFormatter stringFromDate:postDetailViewController.apost.dateCreated];
-					[dateFormatter release];
 				} else {
 					publishOnLabel.text = NSLocalizedString(@"Publish   ", @""); //dorky spacing fix
 					publishOnDateLabel.text = NSLocalizedString(@"Immediately", @"");
@@ -399,7 +374,7 @@
                             NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
                             for(id currentObject in topLevelObjects) {
                                 if([currentObject isKindOfClass:[UITableViewActivityCell class]]) {
-                                    featuredImageTableViewCell = (UITableViewActivityCell *)[currentObject retain];
+                                    featuredImageTableViewCell = (UITableViewActivityCell *)currentObject;
                                     break;
                                 }
                             }
@@ -441,11 +416,12 @@
 - (UITableViewCell*) getGeolactionCellWithIndexPath: (NSIndexPath*)indexPath {
     switch (indexPath.row) {
         case 0: // Add/update location
+        {
             if (addGeotagTableViewCell == nil) {
                 NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
                 for(id currentObject in topLevelObjects) {
                     if([currentObject isKindOfClass:[UITableViewActivityCell class]]) {
-                        addGeotagTableViewCell = (UITableViewActivityCell *)[currentObject retain];
+                        addGeotagTableViewCell = (UITableViewActivityCell *)currentObject;
                         break;
                     }
                 }
@@ -463,14 +439,15 @@
             }
             return addGeotagTableViewCell;
             break;
+        }
         case 1:
+        {
             NSLog(@"Reloading map");
             if (mapGeotagTableViewCell == nil)
                 mapGeotagTableViewCell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 188)];
             if (mapView == nil)
                 mapView = [[MKMapView alloc] initWithFrame:CGRectMake(10, 0, 300, 130)];
             [mapView removeAnnotation:annotation];
-            [annotation release];
             annotation = [[PostAnnotation alloc] initWithCoordinate:postDetailViewController.post.geolocation.coordinate];
             [mapView addAnnotation:annotation];
             
@@ -516,13 +493,16 @@
             
             return mapGeotagTableViewCell;
             break;
+        }
         case 2:
+        {
             if (removeGeotagTableViewCell == nil)
                 removeGeotagTableViewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RemoveGeotag"];
             removeGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Remove Location", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
             removeGeotagTableViewCell.textLabel.textAlignment = UITextAlignmentCenter;
             return removeGeotagTableViewCell;
             break;
+        }
     }
     return nil;
 }
@@ -768,8 +748,6 @@
         [passwordTextField resignFirstResponder];
 
     if (IS_IPAD) {
-        if (popover)
-            [popover release];
         
         UIViewController *fakeController = [[UIViewController alloc] init];
         if (picker.tag == TAG_PICKER_DATE) {
@@ -784,7 +762,6 @@
             }
             [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
             [fakeController.view addSubview:publishNowButton];
-            [publishNowButton release];
             CGRect frame = picker.frame;
             frame.origin.y = 40.0f;
             picker.frame = frame;
@@ -797,7 +774,6 @@
         if ([popover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
             popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
         }
-        [fakeController release];
         
         CGRect popoverRect;
         if (picker.tag == TAG_PICKER_STATUS)
@@ -843,7 +819,6 @@
         [actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)];
         
         [actionSheet addSubview:pickerWrapperView];
-        [pickerWrapperView release];
 
         UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")]];
         closeButton.momentary = YES;
@@ -856,7 +831,6 @@
         [closeButton addTarget:self action:@selector(hidePicker) forControlEvents:UIControlEventValueChanged];
         closeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         [pickerWrapperView addSubview:closeButton];
-        [closeButton release];
         
         UISegmentedControl *publishNowButton = nil;
         if (picker.tag == TAG_PICKER_DATE) {
@@ -869,7 +843,6 @@
             }
             [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
             [pickerWrapperView addSubview:publishNowButton];
-            [publishNowButton release];
         }
         
         if ([[UISegmentedControl class] respondsToSelector:@selector(appearance)]) {
@@ -903,7 +876,7 @@
 
 - (void)hidePicker {
     [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-    [actionSheet release]; actionSheet = nil;
+     actionSheet = nil;
 }
 
 - (void)removeDate {
@@ -961,46 +934,37 @@
 		
 		[self geocodeCoordinate:c.coordinate];
 
-		[c release];
     }
     // else skip the event and process the next one.
 }
 
-#pragma mark -
-#pragma mark MKReverseGeocoderDelegate
-
-- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFindPlacemark:(MKPlacemark *)placemark {
-	if (address)
-		[address release];
-	if (placemark.subLocality) {
-		address = [NSString stringWithFormat:@"%@, %@, %@", placemark.subLocality, placemark.locality, placemark.country];
-	} else {
-		address = [NSString stringWithFormat:@"%@, %@, %@", placemark.locality, placemark.administrativeArea, placemark.country];
-	}
-	addressLabel.text = [address retain];
-}
-
-- (void)reverseGeocoder:(MKReverseGeocoder *)geocoder didFailWithError:(NSError *)error {
-	NSLog(@"Reverse geocoder failed for coordinate (%.6f, %.6f): %@",
-		  geocoder.coordinate.latitude,
-		  geocoder.coordinate.longitude,
-		  [error localizedDescription]);
-	if (address)
-		[address release];
-	
-	address = [NSString stringWithString:NSLocalizedString(@"Location unknown", @"Used when geo-tagging posts, if the geo-tagging failed.")];
-	addressLabel.text = [address retain];
-}
+#pragma mark - CLGecocoder wrapper
 
 - (void)geocodeCoordinate:(CLLocationCoordinate2D)c {
 	if (reverseGeocoder) {
-		if (reverseGeocoder.querying)
-			[reverseGeocoder cancel];
-		[reverseGeocoder release];
+		if (reverseGeocoder.geocoding)
+			[reverseGeocoder cancelGeocode];
 	}
-	reverseGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:c];
-	reverseGeocoder.delegate = self;
-	[reverseGeocoder start];	
+    reverseGeocoder = [[CLGeocoder alloc] init];
+    [reverseGeocoder reverseGeocodeLocation:[[CLLocation alloc] initWithLatitude:c.latitude longitude:c.longitude] completionHandler:^(NSArray *placemarks, NSError *error) {
+        if (placemarks) {
+            CLPlacemark *placemark = [placemarks objectAtIndex:0];
+            if (placemark.subLocality) {
+                address = [NSString stringWithFormat:@"%@, %@, %@", placemark.subLocality, placemark.locality, placemark.country];
+            } else {
+                address = [NSString stringWithFormat:@"%@, %@, %@", placemark.locality, placemark.administrativeArea, placemark.country];
+            }
+            addressLabel.text = address;
+        } else {
+            NSLog(@"Reverse geocoder failed for coordinate (%.6f, %.6f): %@",
+                  c.latitude,
+                  c.longitude,
+                  [error localizedDescription]);
+            
+            address = [NSString stringWithString:NSLocalizedString(@"Location unknown", @"Used when geo-tagging posts, if the geo-tagging failed.")];
+            addressLabel.text = address;
+        }
+    }];
 }
 
 @end

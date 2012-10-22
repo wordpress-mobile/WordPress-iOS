@@ -132,36 +132,36 @@
 #define kNoXMLPrefix 903
 #define kNotificationNewComment 1001
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, MediaType) {
 	kImage,
 	kVideo
-} MediaType;
+};
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, MediaResize) {
 	kResizeSmall,
 	kResizeMedium,
 	kResizeLarge,
 	kResizeOriginal
-} MediaResize;
+};
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, MediaOrientation) {
 	kPortrait,
 	kLandscape
-} MediaOrientation;
+};
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, EditPostMode) {
 	kNewPost,
 	kEditPost,
 	kAutorecoverPost,
 	kRefreshPost
-} EditPostMode;
+};
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, EditPageMode) {
 	kNewPage,
 	kEditPage,
 	kAutorecoverPage,
 	kRefreshPage
-} EditPageMode;
+};
 
 
 //Blog Predefined Options

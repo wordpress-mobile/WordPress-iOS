@@ -10,7 +10,7 @@
 
 @interface WPFriendFinderNudgeView : UIView
 
-@property (nonatomic, retain) UIButton *cancelButton;
-@property (nonatomic, retain) UIButton *confirmButton;
+@property (nonatomic, strong) UIButton *cancelButton;
+@property (nonatomic, strong) UIButton *confirmButton;
 
 @end

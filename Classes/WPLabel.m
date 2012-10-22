@@ -21,9 +21,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [super dealloc];
-}
 
 - (void)setVerticalAlignment:(VerticalAlignment)value {
 	verticalAlignment = value;

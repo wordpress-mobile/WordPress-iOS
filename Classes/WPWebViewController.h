@@ -14,28 +14,28 @@
     UIWebView *webView;
 	NSTimer *statusTimer;   // This timer checks the nav buttons every 0.75 seconds, and updates them
 }
-@property (nonatomic,retain) NSURL *url;
-@property (nonatomic,retain) NSURL *wpLoginURL;
-@property (nonatomic,retain) NSString *username;
-@property (nonatomic,retain) NSString *password;
-@property (nonatomic,retain) IBOutlet UIWebView *webView;
-@property (nonatomic,retain) IBOutlet UIToolbar *toolbar;
-@property (nonatomic,retain) IBOutlet UIView *loadingView;
-@property (nonatomic,retain) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (nonatomic,retain) IBOutlet UILabel *loadingLabel;
-@property (nonatomic, retain) IBOutlet UINavigationBar *iPadNavBar;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *backButton;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *forwardButton;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *refreshButton;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *optionsButton;
-@property (nonatomic, retain) UIBarButtonItem *spinnerButton;
-@property (retain, nonatomic) NSTimer *statusTimer;
+@property (nonatomic,strong) NSURL *url;
+@property (nonatomic,strong) NSURL *wpLoginURL;
+@property (nonatomic,strong) NSString *username;
+@property (nonatomic,strong) NSString *password;
+@property (nonatomic,strong) IBOutlet UIWebView *webView;
+@property (nonatomic,strong) IBOutlet UIToolbar *toolbar;
+@property (nonatomic,strong) IBOutlet UIView *loadingView;
+@property (nonatomic,strong) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (nonatomic,strong) IBOutlet UILabel *loadingLabel;
+@property (nonatomic, strong) IBOutlet UINavigationBar *iPadNavBar;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *backButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *forwardButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *refreshButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *optionsButton;
+@property (nonatomic, strong) UIBarButtonItem *spinnerButton;
+@property (strong, nonatomic) NSTimer *statusTimer;
 @property (nonatomic) BOOL hidesLinkOptions;
 
 //reader variables
-@property (nonatomic,retain) NSString *detailContent;
-@property (nonatomic,retain) NSString *detailHTML;
-@property (nonatomic,retain) NSString *readerAllItems;
+@property (nonatomic,strong) NSString *detailContent;
+@property (nonatomic,strong) NSString *detailHTML;
+@property (nonatomic,strong) NSString *readerAllItems;
 @property (nonatomic) BOOL shouldScrollToBottom;
 
 - (void) showCloseButton;

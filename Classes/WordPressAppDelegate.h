@@ -48,21 +48,21 @@
 
 }
 
-@property (nonatomic, retain) UIWindow *window;
-@property (nonatomic, retain) UINavigationController *navigationController;
+@property (nonatomic, strong) UIWindow *window;
+@property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, getter = isAlertRunning) BOOL alertRunning;
 @property (nonatomic, assign) BOOL isWPcomAuthenticated;
 @property (nonatomic, assign) BOOL isUploadingPost;
-@property (nonatomic, retain) Blog *currentBlog;
-@property (nonatomic, retain) NSString *postID;
-@property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
-@property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, retain) Facebook *facebook;
-@property (nonatomic, retain) PanelNavigationController *panelNavigationController;
+@property (nonatomic, strong) Blog *currentBlog;
+@property (nonatomic, strong) NSString *postID;
+@property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, strong) Facebook *facebook;
+@property (nonatomic, strong) PanelNavigationController *panelNavigationController;
 
 //Connection Reachability variables
-@property (nonatomic, retain) Reachability *internetReachability, *wpcomReachability, *currentBlogReachability;
+@property (nonatomic, strong) Reachability *internetReachability, *wpcomReachability, *currentBlogReachability;
 @property (nonatomic, assign) BOOL connectionAvailable, wpcomAvailable, currentBlogAvailable;
 
 - (NSString *)applicationDocumentsDirectory;

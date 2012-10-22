@@ -14,10 +14,10 @@
 @end
 
 @interface PanelNavigationController : UIViewController {
-    id <DetailViewDelegate> delegate;
+    id <DetailViewDelegate> __weak delegate;
 }
 
-@property (nonatomic, assign) id <DetailViewDelegate> delegate;
+@property (nonatomic, weak) id <DetailViewDelegate> delegate;
 
 #pragma mark - Initialization
 
@@ -43,13 +43,13 @@
 - (void)viewControllerWantsToBeFullyVisible:(UIViewController *)controller;
 
 #pragma mark - Controllers
-@property(nonatomic,retain) UIViewController *detailViewController; // The first detail controller
+@property(nonatomic,strong) UIViewController *detailViewController; // The first detail controller
 - (void)setDetailViewController:(UIViewController *)detailViewController closingSidebar:(BOOL)closingSidebar;
-@property(nonatomic,retain) UIViewController *masterViewController; // The sidebar (left) controller
-@property(nonatomic,readonly,retain) UINavigationController *navigationController; // The navigation controller on iPhone.
-@property(nonatomic,readonly,retain) UIViewController *rootViewController; // The navigation controller on iPhone, masterViewController on iPad
-@property(nonatomic,readonly,retain) UIViewController *topViewController; // The top view controller on the stack.
-@property(nonatomic,readonly,retain) UIViewController *visibleViewController; // Return modal view controller if it exists. Otherwise the top view controller.
+@property(nonatomic,strong) UIViewController *masterViewController; // The sidebar (left) controller
+@property(nonatomic,readonly,strong) UINavigationController *navigationController; // The navigation controller on iPhone.
+@property(nonatomic,readonly,strong) UIViewController *rootViewController; // The navigation controller on iPhone, masterViewController on iPad
+@property(nonatomic,readonly,strong) UIViewController *topViewController; // The top view controller on the stack.
+@property(nonatomic,readonly,strong) UIViewController *visibleViewController; // Return modal view controller if it exists. Otherwise the top view controller.
 
 @property(nonatomic,readonly,copy) NSArray *viewControllers; // The current view controller stack.
 

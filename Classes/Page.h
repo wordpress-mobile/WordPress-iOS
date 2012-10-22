@@ -12,7 +12,7 @@
 @interface Page : AbstractPost {
 
 }
-@property (nonatomic, retain) NSNumber * parentID;
+@property (nonatomic, strong) NSNumber * parentID;
 
 #pragma mark Class Methods
 // Creates an empty local post associated with blog

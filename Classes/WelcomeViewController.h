@@ -11,13 +11,13 @@
     BOOL isFirstRun;
 }
 
-@property (nonatomic, retain) IBOutlet UIView *logoView;
-@property (nonatomic, retain) IBOutlet UIView *buttonView;
-@property (nonatomic, retain) IBOutlet UIButton *infoButton;
-@property (nonatomic, retain) IBOutlet UIButton *orgBlogButton;
-@property (nonatomic, retain) IBOutlet UIButton *addBlogButton;
-@property (nonatomic, retain) IBOutlet UIButton *createBlogButton;
-@property (nonatomic, retain) IBOutlet UILabel *createLabel;
+@property (nonatomic, strong) IBOutlet UIView *logoView;
+@property (nonatomic, strong) IBOutlet UIView *buttonView;
+@property (nonatomic, strong) IBOutlet UIButton *infoButton;
+@property (nonatomic, strong) IBOutlet UIButton *orgBlogButton;
+@property (nonatomic, strong) IBOutlet UIButton *addBlogButton;
+@property (nonatomic, strong) IBOutlet UIButton *createBlogButton;
+@property (nonatomic, strong) IBOutlet UILabel *createLabel;
 
 - (IBAction)handleInfoTapped:(id)sender;
 - (IBAction)handleOrgBlogTapped:(id)sender;

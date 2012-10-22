@@ -44,9 +44,9 @@ typedef void (^CancelBlock)();
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(facebookDidLogIn:) name:kFacebookLoginNotificationName object:nil];
     [nc addObserver:self selector:@selector(facebookDidNotLogIn:) name:kFacebookNoLoginNotificationName object:nil];
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone 
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone 
                                                                                            target:self 
-                                                                                           action:@selector(dismissFriendFinder:)] autorelease];
+                                                                                           action:@selector(dismissFriendFinder:)];
     if([[UIBarButtonItem class] respondsToSelector:@selector(appearance)])
        [UIBarButtonItem styleButtonAsPrimary:self.navigationItem.rightBarButtonItem];
 }
@@ -69,11 +69,9 @@ typedef void (^CancelBlock)();
     NSDictionary *settings = (NSDictionary *)config;
     NSArray *sources = (NSArray *)[settings objectForKey:@"sources"];
     
-    Class tweetComposer = NSClassFromString(@"TWTweetComposeViewController");
-    
     NSMutableArray *available = [NSMutableArray arrayWithObjects:@"address-book", @"facebook", nil];
     
-    if ( [sources containsObject:@"twitter"] && tweetComposer && [tweetComposer performSelector:(@selector(canSendTweet))]){
+    if ( [sources containsObject:@"twitter"] && [TWTweetComposeViewController performSelector:(@selector(canSendTweet))]){
         [available addObject:@"twitter"];
     }
     
@@ -122,9 +120,8 @@ typedef void (^CancelBlock)();
                         ABRecordRef person = CFArrayGetValueAtIndex(people, i);
                         ABMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);
                         for (CFIndex j = 0; j<ABMultiValueGetCount(emails); j++) {
-                            NSString *email = (NSString *)ABMultiValueCopyValueAtIndex(emails, j);
+                            NSString *email = (NSString *)CFBridgingRelease(ABMultiValueCopyValueAtIndex(emails, j));
                             [addresses addObject:email];
-                            [email release];
                         }
                         CFRelease(emails);
                     }
@@ -168,12 +165,12 @@ typedef void (^CancelBlock)();
             NSArray *twitterAccounts = [store accountsWithAccountType:twitterAccountType];
             [twitterAccounts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 ACAccount *account = (ACAccount *)obj;
-                TWRequest *request = [[[TWRequest alloc] initWithURL:followingURL
+                TWRequest *request = [[TWRequest alloc] initWithURL:followingURL
                                                           parameters:params
-                                                       requestMethod:TWRequestMethodGET] autorelease];
+                                                       requestMethod:TWRequestMethodGET];
                 request.account = account;
                 [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-                    NSString *responseJSON = [[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding] autorelease];
+                    NSString *responseJSON = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByTwitterID(%@, '%@')", responseJSON, account.accountDescription]];
                     });
@@ -187,7 +184,6 @@ typedef void (^CancelBlock)();
         
     }];
     
-    [store release];
     
 }
 
@@ -293,7 +289,7 @@ typedef void (^CancelBlock)();
         
         self.dismissBlock = dismiss;
         [alertView show];
-        return [alertView autorelease];
+        return alertView;
 
     }
 

@@ -62,7 +62,7 @@
     Comment *comment = [self findWithBlog:blog andCommentID:[[commentInfo objectForKey:@"comment_id"] numericValue]];
     
     if (comment == nil) {
-        comment = [[Comment newCommentForBlog:blog] autorelease];
+        comment = [Comment newCommentForBlog:blog];
         comment.isNew = YES;
     }
     

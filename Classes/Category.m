@@ -60,7 +60,7 @@
     Category *category = [self findWithBlog:blog andCategoryID:[[categoryInfo objectForKey:@"categoryId"] numericValue]];
     
     if (category == nil) {
-        category = [[Category newCategoryForBlog:blog] autorelease];
+        category = [Category newCategoryForBlog:blog];
     }
     
     category.categoryID     = [[categoryInfo objectForKey:@"categoryId"] numericValue];

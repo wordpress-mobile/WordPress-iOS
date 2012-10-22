@@ -28,12 +28,6 @@
 }
 
 
-- (void)dealloc {
-	[viewForBackground release];
-	[textLabel release];
-	[spinner release];
-    [super dealloc];
-}
 
 
 @end

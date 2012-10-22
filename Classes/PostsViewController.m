@@ -30,17 +30,6 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-- (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    
-    [activityFooter release];
-    [postDetailViewController release];
-	[selectedIndexPath release], selectedIndexPath = nil;
-	[drafts release];
-	
-    [super dealloc];
-}
-
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
@@ -54,13 +43,13 @@
     UIBarButtonItem *composeButtonItem  = nil;
     
     if (IS_IPHONE && [self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        composeButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]style:UIBarButtonItemStyleBordered 
+        composeButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]style:UIBarButtonItemStyleBordered 
                                                              target:self 
-                                                             action:@selector(showAddPostView)] autorelease];
+                                                             action:@selector(showAddPostView)];
     } else {
-        composeButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
+        composeButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
                                                                            target:self 
-                                                                           action:@selector(showAddPostView)] autorelease];
+                                                                           action:@selector(showAddPostView)];
     }
     if ([composeButtonItem respondsToSelector:@selector(setTintColor:)]) {
         composeButtonItem.tintColor = [UIColor UIColorFromHex:0x333333];
@@ -92,7 +81,7 @@
         activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         [activityFooter stopAnimating];
     }
-    UIView *footerView = [[[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 50.0)] autorelease];
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 50.0)];
     footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [footerView addSubview:activityFooter];
     self.tableView.tableFooterView = footerView;
@@ -302,21 +291,20 @@
     if (IS_IPAD)
         [self resetView];
     Post *post = [Post newDraftForBlog:self.blog];
-    EditPostViewController *editPostViewController = [[[EditPostViewController alloc] initWithPost:[post createRevision]] autorelease];
+    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[post createRevision]];
     editPostViewController.editMode = kNewPost;
     [editPostViewController refreshUIForCompose];
-    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editPostViewController] autorelease];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];
-    [post release];
 }
 
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
-    EditPostViewController *editPostViewController = [[[EditPostViewController alloc] initWithPost:[apost createRevision]] autorelease];
+    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[apost createRevision]];
     editPostViewController.editMode = kEditPost;
     [editPostViewController refreshUIForCurrentPost];
-    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editPostViewController] autorelease];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];
 }
@@ -349,12 +337,11 @@
     } else {
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         
-        [selectedIndexPath release];
 
         if (indexPath != nil) {
             @try {
                 [self.resultsController objectAtIndexPath:indexPath];
-                selectedIndexPath = [indexPath retain];
+                selectedIndexPath = indexPath;
                 [self showSelectedPost];
             }
             @catch (NSException *exception) {
@@ -392,12 +379,12 @@
 }
 
 - (NSFetchRequest *)fetchRequest {
-    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:self.blog.managedObjectContext]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(blog == %@) && (original == nil)", self.blog]];
-    NSSortDescriptor *sortDescriptorLocal = [[[NSSortDescriptor alloc] initWithKey:@"remoteStatusNumber" ascending:YES] autorelease];
-    NSSortDescriptor *sortDescriptorDate = [[[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO] autorelease];
-    NSArray *sortDescriptors = [[[NSArray alloc] initWithObjects:sortDescriptorLocal, sortDescriptorDate, nil] autorelease];
+    NSSortDescriptor *sortDescriptorLocal = [[NSSortDescriptor alloc] initWithKey:@"remoteStatusNumber" ascending:YES];
+    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorLocal, sortDescriptorDate, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
 
     return fetchRequest;
@@ -419,7 +406,7 @@
 - (UITableViewCell *)newCell {
     // To comply with apple ownership and naming conventions, returned cell should have a retain count > 0, so retain the dequeued cell.
     NSString *cellIdentifier = @"PostCell";
-    UITableViewCell *cell = [[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier] retain];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[PostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];

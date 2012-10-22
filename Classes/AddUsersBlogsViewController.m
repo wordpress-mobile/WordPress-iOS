@@ -36,18 +36,7 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.username = nil;
-    self.password = nil;
-	[_url release];
-	[usersBlogs release];
-	[selectedBlogs release];
-	[tableView release];
-	[buttonAddSelected release];
-	[buttonSelectAll release];
-	[topAddSelectedButton release];
-    self.noblogsView = nil;
     
-    [super dealloc];
 }
 
 - (void)viewDidLoad {
@@ -65,7 +54,7 @@
         logoFile = @"logo_wpcom@2x.png";
 	}
     
-    UIImageView *logoImage = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]] autorelease];
+    UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
     logoImage.frame = CGRectMake(0.0f, 0.0f, 320.0f, 70.0f);
     logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     logoImage.contentMode = UIViewContentModeCenter;
@@ -107,7 +96,6 @@
 	if((isWPcom) && (!appDelegate.isWPcomAuthenticated)) {
         WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
         [self.navigationController presentModalViewController:wpComLogin animated:YES];
-        [wpComLogin release];
 	}
 	else if(isWPcom) {
 		if((usersBlogs == nil) && ([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"] != nil)) {
@@ -186,7 +174,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
 	CGRect footerFrame = CGRectMake(0, 0, self.view.frame.size.width, 50);
-	UIView *footerView = [[[UIView alloc] initWithFrame:footerFrame] autorelease];
+	UIView *footerView = [[UIView alloc] initWithFrame:footerFrame];
 	if(section == 0) {
 		CGRect footerSpinnerFrame = CGRectMake(0, 26.0f, 20, 20);
 		CGRect footerTextFrame = CGRectMake(0, 0, self.view.frame.size.width, 20);
@@ -196,7 +184,6 @@
 			[footerSpinner startAnimating];
             footerSpinner.center = CGPointMake(self.view.center.x, footerSpinner.center.y);
 			[footerView addSubview:footerSpinner];
-			[footerSpinner release];
 			
 			UILabel *footerText = [[UILabel alloc] initWithFrame:footerTextFrame];
             footerText.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
@@ -205,7 +192,6 @@
 			footerText.textColor = [UIColor darkGrayColor];
 			footerText.text = NSLocalizedString(@"Loading blogs...", @"");
 			[footerView addSubview:footerText];
-			[footerText release];
 		}
 		else if((usersBlogs.count == 0) && (hasCompletedGetUsersBlogs)) {
             if (!isWPcom) {
@@ -214,7 +200,6 @@
                 footerText.textColor = [UIColor darkGrayColor];
                 footerText.text = NSLocalizedString(@"No blogs found.", @"");
                 [footerView addSubview:footerText];
-                [footerText release];
             } else {
                 //User has no blogs at WPCom but has signed in successfully, lets finish and take them to the reader
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
@@ -239,11 +224,12 @@
     
     UITableViewCell *cell = [tv dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
 	
 	switch (indexPath.section) {
 		case 0:
+        {
 			cell.textLabel.textAlignment = UITextAlignmentLeft;
 			
 			NSDictionary *blog = [usersBlogs objectAtIndex:indexPath.row];
@@ -258,14 +244,19 @@
             NSURL *blogURL = [NSURL URLWithString:[blog valueForKey:@"url"]];
             [cell.imageView setImageWithBlavatarUrl:[blogURL host] isWPcom:isWPcom];
 			break;
-        case 1: 
-            cell.textLabel.textAlignment = UITextAlignmentCenter; 
+        }
+        case 1:
+        {
+            cell.textLabel.textAlignment = UITextAlignmentCenter;
             cell.accessoryType = UITableViewCellAccessoryNone; 
             cell.textLabel.text = NSLocalizedString(@"Sign Out", @"");
             cell.imageView.image = nil;
             break;
+        }
 		default:
+        {
 			break;
+        }
 	}
 	
     return cell;
@@ -373,7 +364,7 @@
     [api callMethod:@"wp.getUsersBlogs"
          parameters:[NSArray arrayWithObjects:username, password, nil]
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                usersBlogs = [responseObject retain];
+                usersBlogs = responseObject;
                 hasCompletedGetUsersBlogs = YES;
                 if(usersBlogs.count > 0) {
                     // TODO: Store blog list in Core Data
@@ -413,7 +404,6 @@
                                                           otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
                 alertView.tag = 1;
                 [alertView show];
-                [alertView release];
             }];
 }
 
@@ -424,7 +414,7 @@
         CGFloat height = 160.0f;
         CGFloat x = (self.view.frame.size.width / 2.0f) - (width / 2.0f);
         CGFloat y = (self.view.frame.size.height / 2.0f) - (height / 2.0f);
-        self.noblogsView = [[[UIView alloc] initWithFrame:CGRectMake(x, y, width, height)] autorelease];
+        self.noblogsView = [[UIView alloc] initWithFrame:CGRectMake(x, y, width, height)];
         self.noblogsView.backgroundColor = [UIColor clearColor];
 
         self.noblogsView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
@@ -433,7 +423,7 @@
                                             UIViewAutoresizingFlexibleBottomMargin;
 
         UIColor *textColor = [UIColor colorWithRed:33.0f/255.0f green:33.0f/255.0f blue:33.0f/255.0f alpha:1.0];
-        UILabel *label = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
         label.backgroundColor = [UIColor clearColor];
         label.numberOfLines = 0;
         label.lineBreakMode = UILineBreakModeWordWrap;
@@ -501,7 +491,6 @@
         newNibName = @"WebSignupViewController-iPad";
     WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:newNibName bundle:[NSBundle mainBundle]];
     [self.navigationController pushViewController:webSignup animated:YES];
-    [webSignup release];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wpcomSignupNotificationReceived:) name:@"wpcomSignupNotification" object:nil];
 
    
@@ -527,7 +516,6 @@
             else
                 [appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
             
-            [helpViewController release];
         }
     } else {
         if (alertView.tag == 1) {

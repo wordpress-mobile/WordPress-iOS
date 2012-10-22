@@ -10,40 +10,40 @@
 #import "Blog.h"
 #import "AbstractPost.h"
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
     MediaRemoteStatusPushing,    // Uploading post
     MediaRemoteStatusFailed,      // Upload failed
     MediaRemoteStatusLocal,       // Only local version
     MediaRemoteStatusSync,       // Post uploaded
     MediaRemoteStatusProcessing, // Intermediate status before uploading
-} MediaRemoteStatus;
+};
 
 @interface Media :  NSManagedObject  
 {
 }
 
-@property (nonatomic, retain) NSNumber * mediaID;
-@property (nonatomic, retain) NSString * mediaType;
-@property (nonatomic, readonly) NSString * mediaTypeName;
-@property (nonatomic, retain) NSString * remoteURL;
-@property (nonatomic, retain) NSString * localURL;
-@property (nonatomic, retain) NSString * shortcode;
-@property (nonatomic, retain) NSNumber * length;
-@property (nonatomic, retain) NSString * title;
-@property (nonatomic, retain) NSData * thumbnail;
-@property (nonatomic, retain) NSString * filename;
-@property (nonatomic, retain) NSNumber * filesize;
-@property (nonatomic, retain) NSNumber * width;
-@property (nonatomic, retain) NSNumber * height;
-@property (nonatomic, retain) NSString * orientation;
-@property (nonatomic, retain) NSDate * creationDate;
-@property (nonatomic, readonly) NSString * html;
-@property (nonatomic, retain) NSNumber * remoteStatusNumber;
+@property (nonatomic, strong) NSNumber * mediaID;
+@property (nonatomic, strong) NSString * mediaType;
+@property (weak, nonatomic, readonly) NSString * mediaTypeName;
+@property (nonatomic, strong) NSString * remoteURL;
+@property (nonatomic, strong) NSString * localURL;
+@property (nonatomic, strong) NSString * shortcode;
+@property (nonatomic, strong) NSNumber * length;
+@property (nonatomic, strong) NSString * title;
+@property (nonatomic, strong) NSData * thumbnail;
+@property (nonatomic, strong) NSString * filename;
+@property (nonatomic, strong) NSNumber * filesize;
+@property (nonatomic, strong) NSNumber * width;
+@property (nonatomic, strong) NSNumber * height;
+@property (nonatomic, strong) NSString * orientation;
+@property (nonatomic, strong) NSDate * creationDate;
+@property (weak, nonatomic, readonly) NSString * html;
+@property (nonatomic, strong) NSNumber * remoteStatusNumber;
 @property (nonatomic) MediaRemoteStatus remoteStatus;
 @property (nonatomic) float progress;
 
-@property (nonatomic, retain) Blog * blog;
-@property (nonatomic, retain) NSMutableSet * posts;
+@property (nonatomic, strong) Blog * blog;
+@property (nonatomic, strong) NSMutableSet * posts;
 
 + (Media *)newMediaForPost:(AbstractPost *)post;
 - (void)cancelUpload;

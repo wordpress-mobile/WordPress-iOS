@@ -22,7 +22,7 @@
 	NSInteger sourceGMTOffset = [sourceTimeZone secondsFromGMTForDate:localDate]; 
 	NSInteger destinationGMTOffset = [destinationTimeZone secondsFromGMTForDate:localDate]; 
 	NSTimeInterval interval = destinationGMTOffset - sourceGMTOffset; 
-	return [[[NSDate alloc] initWithTimeInterval:interval sinceDate:localDate] autorelease];
+	return [[NSDate alloc] initWithTimeInterval:interval sinceDate:localDate];
 }
 
 + (NSDate *) GMTDateTolocalDate:(NSDate *)gmtDate {
@@ -31,7 +31,7 @@
 	NSInteger sourceGMTOffset = [sourceTimeZone secondsFromGMTForDate:gmtDate]; 
 	NSInteger destinationGMTOffset = [destinationTimeZone secondsFromGMTForDate:gmtDate]; 
 	NSTimeInterval interval = destinationGMTOffset - sourceGMTOffset; 
-	return [[[NSDate alloc] initWithTimeInterval:interval sinceDate:gmtDate] autorelease];
+	return [[NSDate alloc] initWithTimeInterval:interval sinceDate:gmtDate];
 }
 
 

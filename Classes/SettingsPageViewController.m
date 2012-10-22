@@ -31,16 +31,6 @@
 #pragma mark -
 #pragma mark Lifecycle Methods
 
-- (void)dealloc {
-    [titles release];
-    [values release];
-    [key release];
-    [defaultValue release];
-    [currentValue release];
-    [info release];
-    
-    [super dealloc];
-}
 
 
 // Dictionary should be a PSMultiValueSpecifier from a settings bundle's plist.
@@ -127,7 +117,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];    
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
     cell.accessoryType = UITableViewCellAccessoryNone;
     

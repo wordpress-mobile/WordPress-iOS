@@ -14,17 +14,17 @@
 
 @interface JetpackSettingsViewController () <JetpackAuthUtilDelegate>
 
-@property (nonatomic, retain) NSString *username;
-@property (nonatomic, retain) NSString *password;
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) UITextField *usernameTextField;
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UITextField *lastTextField;
-@property (nonatomic, retain) UITableViewTextFieldCell *usernameCell;
-@property (nonatomic, retain) UITableViewTextFieldCell *passwordCell;
+@property (nonatomic, strong) UITableViewTextFieldCell *usernameCell;
+@property (nonatomic, strong) UITableViewTextFieldCell *passwordCell;
 @property (nonatomic, strong) UITableViewActivityCell *verifyCredentialsActivityCell;
 @property (nonatomic, strong) JetpackAuthUtil *jetpackAuthUtils;
-@property (nonatomic, retain) NSString *footerText;
-@property (nonatomic, retain) NSString *buttonText;
+@property (nonatomic, strong) NSString *footerText;
+@property (nonatomic, strong) NSString *buttonText;
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification;
 - (void)handleKeyboardWillHide:(NSNotification *)notification;
@@ -64,19 +64,8 @@
 - (void)dealloc {
     self.delegate = nil;
     
-    [tableView release];
-    [username release];
-    [password release];
-    [usernameCell release];
-    [passwordCell release];
-    [usernameTextField release];
-    [passwordTextField release];
-    [lastTextField release];
-    [verifyCredentialsActivityCell release];
     jetpackAuthUtils.delegate = nil;
-    [jetpackAuthUtils release];
     
-    [super dealloc];
 }
 
 
@@ -92,14 +81,13 @@
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
     
     if (isCancellable) {
-        UIBarButtonItem *barButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)] autorelease];
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
         self.navigationItem.leftBarButtonItem = barButton;
     }
     
     if (!blog || [blog isWPcom]) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Self-hosted Blog Required" message:@"A self-hosted blog was not specified when loading the settings screen." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alertView show];
-        [alertView release];        
         return;
     }
             
@@ -107,10 +95,10 @@
     self.password = [JetpackAuthUtil getJetpackPasswordForBlog:blog];
         
 
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button to update Jetpack credentials") 
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button to update Jetpack credentials") 
                                                                                style:UIBarButtonItemStyleDone 
                                                                               target:self 
-                                                                              action:@selector(save:)] autorelease];
+                                                                              action:@selector(save:)];
 
     self.footerText = kNeedJetpackLogIn;
 	self.buttonText = kCheckCredentials;
@@ -123,7 +111,6 @@
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleViewTapped)];
     tgr.cancelsTouchesInView = NO;
     [tableView addGestureRecognizer:tgr];
-    [tgr release];
 }
 
 
@@ -250,7 +237,7 @@
     if (section == 2 && ![self.blog hasJetpack]) {
         NSString *labelText = labelText = NSLocalizedString(@"Need Jetpack? Tap below and search for 'Jetpack' to install it on your site.", @"");
         CGRect headerFrame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 50.0f);
-        UIView *footerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
+        UIView *footerView = [[UIView alloc] initWithFrame:headerFrame];
         footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
         CGFloat width = (IS_IPAD) ? 410.0f : 260.0f;
@@ -276,7 +263,6 @@
         [jetpackLabel sizeToFit];
         
         [footerView addSubview:jetpackLabel];
-        [jetpackLabel release];
         
         return footerView;
     } else {
@@ -291,9 +277,9 @@
         if(indexPath.row == 0) {
             self.usernameCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"usernameCell"];
             if (self.usernameCell == nil) {
-                self.usernameCell = [[[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"usernameCell"] autorelease];
+                self.usernameCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"usernameCell"];
 				self.usernameCell.textLabel.text = NSLocalizedString(@"Username", @"");
-				usernameTextField = [self.usernameCell.textField retain];
+				usernameTextField = self.usernameCell.textField;
 				usernameTextField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
                 [self configureTextField:usernameTextField asPassword:NO];
                 if (username != nil) 
@@ -304,9 +290,9 @@
         else if(indexPath.row == 1) {
             self.passwordCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"passwordCell"];
             if (self.passwordCell == nil) {
-                self.passwordCell = [[[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"passwordCell"] autorelease];
+                self.passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"passwordCell"];
 				self.passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
-				passwordTextField = [self.passwordCell.textField retain];
+				passwordTextField = self.passwordCell.textField;
 				passwordTextField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
                 [self configureTextField:passwordTextField asPassword:YES];
 				if(password != nil)
@@ -394,7 +380,7 @@
     }
     
     // We shouldn't reach this point, but return an empty cell just in case
-    return [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"] autorelease];
+    return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
 }
 
 
@@ -462,10 +448,10 @@
                 NSString *jetpackURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/plugin-install.php"];
                 WPWebViewController *webViewController = nil;
                 if ( IS_IPAD ) {
-                    webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+                    webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
                 }
                 else {
-                    webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+                    webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
                 }
                 [webViewController setUrl:[NSURL URLWithString:jetpackURL]];
                 [webViewController setUsername:blog.username];
@@ -479,17 +465,16 @@
                                                           cancelButtonTitle:@"OK" 
                                                           otherButtonTitles:nil, nil];
                 [alertView show];
-                [alertView release];
             }
             break;
         case 3:
         {
             WPWebViewController *webViewController = nil;
             if ( IS_IPAD ) {
-                webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+                webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
             }
             else {
-                webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+                webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
             }
             [webViewController setUrl:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_15"]];
 //            [webViewController setUrl:[NSURL URLWithString:@"http://jetpack.me/about/"]];
@@ -603,7 +588,7 @@
     isTesting = YES;
     
     if (!jetpackAuthUtils) {
-        self.jetpackAuthUtils = [[[JetpackAuthUtil alloc] init] autorelease];
+        self.jetpackAuthUtils = [[JetpackAuthUtil alloc] init];
         self.jetpackAuthUtils.delegate = self;
     }
     

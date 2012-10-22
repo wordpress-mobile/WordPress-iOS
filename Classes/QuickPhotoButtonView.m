@@ -13,9 +13,9 @@
     UIButton *button;
 }
 
-@property (nonatomic, retain) UILabel *label;
-@property (nonatomic, retain) UIActivityIndicatorView *spinner;
-@property (nonatomic, retain) UIButton *button;
+@property (nonatomic, strong) UILabel *label;
+@property (nonatomic, strong) UIActivityIndicatorView *spinner;
+@property (nonatomic, strong) UIButton *button;
 
 - (void)setup;
 - (void)handleButtonTapped:(id)sender;
@@ -30,13 +30,6 @@
 #pragma mark -
 #pragma mark LifeCycle Methods
 
-- (void)dealloc {
-    [label release];
-    [spinner release];
-    [button release];
-    
-    [super dealloc];
-}
 
 
 - (id)initWithFrame:(CGRect)frame {
@@ -82,7 +75,7 @@
     [self addSubview:button];
     
     CGRect rect;
-    self.spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     spinner.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     spinner.hidesWhenStopped = YES;
     rect = spinner.frame;
@@ -92,7 +85,7 @@
     spinner.frame = rect;
     [self addSubview:spinner];
     
-    self.label = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+    self.label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.textColor = [UIColor whiteColor];
     label.backgroundColor = [UIColor clearColor];
     label.textAlignment = UITextAlignmentCenter;

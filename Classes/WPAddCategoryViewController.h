@@ -20,7 +20,7 @@
 
     Category *parentCat;
 }
-@property (nonatomic, retain) Blog *blog;
+@property (nonatomic, strong) Blog *blog;
 
 - (IBAction)cancelAddCategory:(id)sender;
 - (IBAction)saveAddCategory:(id)sender;

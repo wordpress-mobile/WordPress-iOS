@@ -30,12 +30,6 @@
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    self.comment = nil;
-	[saveButton release];
-	[textViewText release];
-	//[doneButton release];
-    
-    [super dealloc];
 }
 
 
@@ -44,11 +38,11 @@
     [super viewDidLoad];
       
     if (!saveButton) {
-        self.saveButton = [[[UIBarButtonItem alloc] 
+        self.saveButton = [[UIBarButtonItem alloc] 
                       initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).") 
                       style:UIBarButtonItemStyleDone
                       target:self 
-                      action:@selector(initiateSaveCommentReply:)] autorelease];
+                      action:@selector(initiateSaveCommentReply:)];
         
         self.navigationItem.rightBarButtonItem = saveButton;
      }
@@ -66,7 +60,6 @@
 	
 	cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelView:)];
 	self.navigationItem.leftBarButtonItem = cancelButton;
-    [cancelButton release];
 	
 	textView.text = self.comment.content;
 	//foo = textView.text;//so we can compare to set hasChanges correctly
@@ -149,7 +142,7 @@
 		UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
 		if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
 			isTransitioning = YES;
-			UIViewController *garbageController = [[[UIViewController alloc] init] autorelease]; 
+			UIViewController *garbageController = [[UIViewController alloc] init]; 
 			[self.navigationController pushViewController:garbageController animated:NO]; 
 			[self.navigationController popViewControllerAnimated:NO];
 			self.isTransitioning = NO;
@@ -173,20 +166,20 @@
 	
 	if (IS_IPAD == NO) {
 		self.navigationItem.leftBarButtonItem =
-            [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
+            [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
 										 style: UIBarButtonItemStyleBordered
 										target:self
-										action:@selector(cancelView:)] autorelease];
+										action:@selector(cancelView:)];
 	}
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
 	if (IS_IPAD == NO) {
-		self.doneButton = [[[UIBarButtonItem alloc] 
+		self.doneButton = [[UIBarButtonItem alloc] 
 					  initWithTitle:NSLocalizedString(@"Done", @"") 
 					  style:UIBarButtonItemStyleDone 
 					  target:self 
-					  action:@selector(endTextEnteringButtonAction:)] autorelease];
+					  action:@selector(endTextEnteringButtonAction:)];
 		
 		[self.navigationItem setLeftBarButtonItem:doneButton];
 	}
@@ -246,13 +239,11 @@
         endRange.location += text.length + replaceCount * 1; // length diff of "&nbsp" and "&#160;" is 1 character
         aTextView.selectedRange = endRange; 
 		
-        [updatedText release];
 		
         // let the textView know that it should ingore the inserted text
         return NO;
     }
 	
-    [updatedText release];
 	
     // let the textView know that it should handle the inserted text
     return YES;
@@ -269,7 +260,6 @@
 																	  message:NSLocalizedString(@"Operation is not supported now.", @"")
 																	 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
         [connectionFailAlert show];
-        [connectionFailAlert release];
         return NO;
     }
 	
@@ -291,12 +281,10 @@
     [progressAlert show];
     [self.comment uploadWithSuccess:^{
         [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-        [progressAlert release];
         self.hasChanges = NO;
         [commentViewController cancelView:self];
     } failure:^(NSError *error) {
         [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-        [progressAlert release];
         
         NSString *message = NSLocalizedString(@"Sorry, something went wrong during comment moderation. Please try again.", @"");
         

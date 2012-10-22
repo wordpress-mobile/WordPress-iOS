@@ -144,7 +144,7 @@
      */
     id _CTidyClass = NSClassFromString(@"CTidy");
     SEL _CTidySelector = NSSelectorFromString(@"tidy");
-    SEL _CTidyTidyStringSelector = NSSelectorFromString(@"tidyString:inputFormat:outputFormat:diagnostics:error:");
+    SEL _CTidyTidyStringSelector = NSSelectorFromString(@"tidyString:inputFormat:outputFormat:encoding:diagnostics:error:");
     
     if (_CTidyClass && [_CTidyClass respondsToSelector:_CTidySelector]) {
         id _CTidyInstance = [_CTidyClass performSelector:_CTidySelector];
@@ -159,8 +159,11 @@
             int format = 1; // TidyFormat_XML
             [invocation setArgument:&format atIndex:3]; // inputFormat:
             [invocation setArgument:&format atIndex:4]; // outputFormat:
+            NSString *encoding = @"utf8";
+            [invocation setArgument:&encoding atIndex:5]; // encoding:
+            // 6 diagnostics: nil
             NSError *err = nil;
-            [invocation setArgument:&err atIndex:6];
+            [invocation setArgument:&err atIndex:7]; // error:
             
             [invocation invoke];
             

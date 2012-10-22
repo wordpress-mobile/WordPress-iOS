@@ -15,21 +15,21 @@
 #pragma mark -
 
 @interface PanelNavigationController () <UIGestureRecognizerDelegate>
-@property (nonatomic, retain) UINavigationController *navigationController;
+@property (nonatomic, strong) UINavigationController *navigationController;
 // FIXME: masterView is a shortcut to masterViewController.view while detailView
 // is a container for detailViewController.view, which can be confusing
-@property (nonatomic, retain) UIView *detailView;
-@property (nonatomic, readonly) UIView *masterView;
-@property (nonatomic, readonly) UIView *rootView;
-@property (nonatomic, readonly) UIView *topView;
-@property (nonatomic, readonly) UIView *lastVisibleView;
-@property (nonatomic, retain) NSMutableArray *detailViewControllers;
-@property (nonatomic, retain) NSMutableArray *detailViews;
-@property (nonatomic, retain) NSMutableArray *detailViewWidths;
-@property (nonatomic, retain) UIButton *detailTapper;
-@property (nonatomic, retain) UIPanGestureRecognizer *panner;
-@property (nonatomic, retain) UIView *popPanelsView;
-@property (nonatomic, retain) UIImageView *sidebarBorderView;
+@property (nonatomic, strong) UIView *detailView;
+@property (weak, nonatomic, readonly) UIView *masterView;
+@property (weak, nonatomic, readonly) UIView *rootView;
+@property (weak, nonatomic, readonly) UIView *topView;
+@property (weak, nonatomic, readonly) UIView *lastVisibleView;
+@property (nonatomic, strong) NSMutableArray *detailViewControllers;
+@property (nonatomic, strong) NSMutableArray *detailViews;
+@property (nonatomic, strong) NSMutableArray *detailViewWidths;
+@property (nonatomic, strong) UIButton *detailTapper;
+@property (nonatomic, strong) UIPanGestureRecognizer *panner;
+@property (nonatomic, strong) UIView *popPanelsView;
+@property (nonatomic, strong) UIImageView *sidebarBorderView;
 
 - (void)showSidebar;
 - (void)showSidebarAnimated:(BOOL)animated;
@@ -118,16 +118,7 @@
     self.detailViewController.panelNavigationController = nil;
     self.detailViewController = nil;
     self.masterViewController = nil;
-    self.navigationController = nil;
-    self.detailViewControllers = nil;
-    self.detailViews = nil;
-    self.detailViewWidths = nil;
-    self.detailTapper = nil;
-    self.panner = nil;
-    self.popPanelsView = nil;
-    self.sidebarBorderView = nil;
     self.delegate = nil;
-    [super dealloc];
 }
 
 - (id)initWithDetailController:(UIViewController *)detailController masterViewController:(UIViewController *)masterController {
@@ -149,7 +140,7 @@
 
 - (void)loadView {
     _isAppeared = NO;
-    self.view = [[[UIView alloc] init] autorelease];
+    self.view = [[UIView alloc] init];
     self.view.frame = [UIScreen mainScreen].applicationFrame;
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.view.autoresizesSubviews = YES;
@@ -159,7 +150,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.detailView = [[[UIView alloc] init] autorelease];
+    self.detailView = [[UIView alloc] init];
     
     if (IS_IPAD) {
         self.detailView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
@@ -209,7 +200,7 @@
         _popPanelsView = [[UIView alloc] initWithFrame:CGRectMake(SIDEBAR_WIDTH + 10.0f, (height / 2) - 82.0f, 200.0f, 82.0f)];
         [_popPanelsView setBackgroundColor:[UIColor clearColor]];
         
-        [_popPanelsView addSubview:[[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]] autorelease]];
+        [_popPanelsView addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]]];
         
         UIImageView *popperImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]];
         CGRect frame = popperImageView.frame;
@@ -221,8 +212,6 @@
         [popperImageView addSubview:trashIcon];
         [_popPanelsView addSubview:popperImageView];
         [_popPanelsView setAlpha:0.0f];
-        [trashIcon release];
-        [popperImageView release];
         
         [self.view addSubview:_popPanelsView];
         [self.view sendSubviewToBack:_popPanelsView];
@@ -402,7 +391,7 @@
     }
     UIView *view = [self wrapViewForViewController:controller];
     if (view == nil) {
-        return [[[PanelViewWrapper alloc] initWithViewController:controller] autorelease];
+        return [[PanelViewWrapper alloc] initWithViewController:controller];
     }
     return view;
 }
@@ -532,7 +521,7 @@
     if (self.navigationController) {
         return self.navigationController.viewControllers;
     } else {
-        NSMutableArray *arr = [[self.detailViewControllers mutableCopy] autorelease];
+        NSMutableArray *arr = [self.detailViewControllers mutableCopy];
         [arr insertObject:self.detailViewController atIndex:0];
         return arr;
     }
@@ -563,7 +552,7 @@
     if (_detailViewController) {
         if (self.navigationController) {
             [self.navigationController setToolbarHidden:YES animated:YES];
-            sidebarButton = [[_detailViewController.navigationItem.leftBarButtonItem retain] autorelease]; // Retained and auto released to address a scenario found by running the analyzer where the object could leak.
+            sidebarButton = _detailViewController.navigationItem.leftBarButtonItem; // Retained and auto released to address a scenario found by running the analyzer where the object could leak.
         } else {
             if (_isAppeared) {
                 [_detailViewController vdc_viewWillDisappear:NO];
@@ -581,7 +570,6 @@
             [_detailViewController didMoveToParentViewController:nil];
 
         }
-        [_detailViewController release];
     }
 
     _detailViewController = detailViewController;
@@ -590,15 +578,14 @@
         _sidebarBorderView.hidden = NO;
 
     if (_detailViewController) {
-        [_detailViewController retain];
         [_detailViewController setPanelNavigationController:self];
         if (self.navigationController) {
             [self.navigationController setViewControllers:[NSArray arrayWithObject:_detailViewController] animated:NO];
             if (sidebarButton == nil) {
                 if (![[UIButton class] respondsToSelector:@selector(appearance)])
-                    sidebarButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle_white"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)] autorelease];
+                    sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle_white"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)];
                 else 
-                    sidebarButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)] autorelease];
+                    sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)];
             }
             sidebarButton.accessibilityLabel = NSLocalizedString(@"Toggle", @"Sidebar toggle button");
             _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
@@ -672,13 +659,11 @@
         [_masterViewController willMoveToParentViewController:nil];
         [_masterViewController setPanelNavigationController:nil];
         [_masterViewController removeFromParentViewController];
-        [_masterViewController release];
     }
 
     _masterViewController = masterViewController;
 
     if (_masterViewController) {
-        [_masterViewController retain];
         [self addChildViewController:_masterViewController];
         [_masterViewController setPanelNavigationController:self];
         [_masterViewController didMoveToParentViewController:self];
@@ -772,7 +757,7 @@
         [self.detailView addSubview:self.detailTapper];
         [self.detailTapper addTarget:self action:@selector(centerTapped) forControlEvents:UIControlEventTouchUpInside];
         self.detailTapper.backgroundColor = [UIColor clearColor];
-        UIPanGestureRecognizer *panner = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)] autorelease];
+        UIPanGestureRecognizer *panner = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)];
         panner.cancelsTouchesInView = YES;
         panner.delegate = self;
         [self.detailTapper addGestureRecognizer:panner];
@@ -973,7 +958,7 @@
 - (void)addPanner {
     [self removePanner];
     
-    UIPanGestureRecognizer *panner = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)] autorelease];
+    UIPanGestureRecognizer *panner = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)];
     panner.cancelsTouchesInView = YES;
     panner.delegate = self;
     self.panner = panner;

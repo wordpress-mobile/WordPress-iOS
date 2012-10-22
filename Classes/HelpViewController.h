@@ -19,9 +19,9 @@
 	BOOL isBlogSetup;
 }
 
-@property (nonatomic, retain) IBOutlet UIButton *faqButton;
-@property (nonatomic, retain) IBOutlet UIButton *forumButton;
-@property (nonatomic, retain) IBOutlet UILabel *helpText;
+@property (nonatomic, strong) IBOutlet UIButton *faqButton;
+@property (nonatomic, strong) IBOutlet UIButton *forumButton;
+@property (nonatomic, strong) IBOutlet UILabel *helpText;
 @property (nonatomic, assign) BOOL isBlogSetup;
 
 -(IBAction)cancel: (id)sender;

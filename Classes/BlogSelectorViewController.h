@@ -19,7 +19,7 @@
 @interface BlogSelectorViewController : UITableViewController<NSFetchedResultsControllerDelegate> {
     NSFetchedResultsController *resultsController;
 }
-@property (nonatomic, assign) id<BlogSelectorViewControllerDelegate> delegate;
-@property (nonatomic, retain) Blog *selectedBlog;
+@property (nonatomic, weak) id<BlogSelectorViewControllerDelegate> delegate;
+@property (nonatomic, strong) Blog *selectedBlog;
 
 @end

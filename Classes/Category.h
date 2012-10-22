@@ -13,11 +13,11 @@
 @interface Category : NSManagedObject {
 
 }
-@property (nonatomic, retain) NSNumber *categoryID;
-@property (nonatomic, retain) NSString *categoryName;
-@property (nonatomic, retain) NSNumber *parentID;
-@property (nonatomic, retain) NSMutableSet *posts;
-@property (nonatomic, retain) Blog *blog;
+@property (nonatomic, strong) NSNumber *categoryID;
+@property (nonatomic, strong) NSString *categoryName;
+@property (nonatomic, strong) NSNumber *parentID;
+@property (nonatomic, strong) NSMutableSet *posts;
+@property (nonatomic, strong) Blog *blog;
 
 + (BOOL)existsName:(NSString *)name forBlog:(Blog *)blog withParentId:(NSNumber *)parentId;
 + (Category *)findWithBlog:(Blog *)blog andCategoryID:(NSNumber *)categoryID;

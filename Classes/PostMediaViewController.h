@@ -27,7 +27,7 @@ static inline double radians(double degrees) {
 }
 
 @interface PostMediaViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UITextFieldDelegate> {
-	EditPostViewController *postDetailViewController;
+	EditPostViewController *__weak postDetailViewController;
 	UIImagePickerController *picker;
 	
 	IBOutlet UITableView *table;
@@ -54,26 +54,26 @@ static inline double radians(double degrees) {
     UIActionSheet *currentActionSheet;
 }
 
-@property (nonatomic, retain) IBOutlet UITableView *table;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *addMediaButton;
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
-@property (nonatomic, retain) IBOutlet UILabel *messageLabel;
-@property (nonatomic, retain) IBOutlet UIToolbar *bottomToolbar;
-@property (nonatomic, retain) IBOutlet UIPopoverController *addPopover;
+@property (nonatomic, strong) IBOutlet UITableView *table;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *addMediaButton;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *spinner;
+@property (nonatomic, strong) IBOutlet UILabel *messageLabel;
+@property (nonatomic, strong) IBOutlet UIToolbar *bottomToolbar;
+@property (nonatomic, strong) IBOutlet UIPopoverController *addPopover;
 @property (nonatomic, assign) BOOL hasPhotos, hasVideos, isAddingMedia, isShowingMediaPickerActionSheet, isShowingChangeOrientationActionSheet, isShowingCustomSizeAlert;
 @property (nonatomic, assign) BOOL isLibraryMedia, didChangeOrientationDuringRecord, isShowingResizeActionSheet, videoEnabled, isCheckingVideoCapability;
-@property (nonatomic, retain) NSString *postID, *blogURL, *videoPressCheckBlogURL, *uniqueID;
-@property (nonatomic, retain) Media *currentUpload;
-@property (nonatomic, retain) NSMutableArray *photos, *videos;
-@property (nonatomic, assign) EditPostViewController *postDetailViewController;
+@property (nonatomic, strong) NSString *postID, *blogURL, *videoPressCheckBlogURL, *uniqueID;
+@property (nonatomic, strong) Media *currentUpload;
+@property (nonatomic, strong) NSMutableArray *photos, *videos;
+@property (nonatomic, weak) EditPostViewController *postDetailViewController;
 @property (nonatomic, assign) MediaOrientation currentOrientation;
-@property (nonatomic, retain) UIImage *currentImage;
-@property (nonatomic, retain) NSDictionary *currentImageMetadata;
-@property (nonatomic, retain) NSMutableDictionary *currentVideo;
-@property (nonatomic, retain) UIImagePickerController *picker;
-@property (readonly) NSFetchedResultsController *resultsController;
-@property (nonatomic, retain) UIAlertView *customSizeAlert;
-@property (nonatomic, retain) UIActionSheet *currentActionSheet;
+@property (nonatomic, strong) UIImage *currentImage;
+@property (nonatomic, strong) NSDictionary *currentImageMetadata;
+@property (nonatomic, strong) NSMutableDictionary *currentVideo;
+@property (nonatomic, strong) UIImagePickerController *picker;
+@property (weak, readonly) NSFetchedResultsController *resultsController;
+@property (nonatomic, strong) UIAlertView *customSizeAlert;
+@property (nonatomic, strong) UIActionSheet *currentActionSheet;
 
 - (void)scaleAndRotateImage:(UIImage *)image;
 - (IBAction)showVideoPickerActionSheet:(id)sender;

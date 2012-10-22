@@ -59,7 +59,6 @@
                                         inManagedObjectContext:[source managedObjectContext]]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"postID == %@", [source valueForKey:@"postID"]]];
 	NSArray *mediaItems = [[source managedObjectContext] executeFetchRequest:fetchRequest error:&err];
-	[fetchRequest release];
 	if (mediaItems && [mediaItems count] > 0) {
 		// We have attachments
 		NSManagedObject *media = [mediaItems objectAtIndex:0];
@@ -74,7 +73,6 @@
 											inManagedObjectContext:destMOC]];
 		[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"url like '*%@*'", blogUrl]];
 		results = [destMOC executeFetchRequest:fetchRequest error:&err];
-		[fetchRequest release];		
 	}
 	
 	if (!results || [results count] == 0) {
@@ -84,7 +82,6 @@
 											inManagedObjectContext:destMOC]];
 		[fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blogID == %@", [[source valueForKey:@"blogID"] numericValue]]];
 		results = [destMOC executeFetchRequest:fetchRequest error:&err];
-		[fetchRequest release];		
 	}
 	
 	WPFLog(@"* Initiating migration for %@", [source valueForKey:@"postTitle"]);	

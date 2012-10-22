@@ -8,6 +8,8 @@
 	#import <UIKit/UIKit.h>
 	#import <CoreLocation/CoreLocation.h>
 	#import <CoreData/CoreData.h>
+    #import <SystemConfiguration/SystemConfiguration.h>
+    #import <MobileCoreServices/MobileCoreServices.h>
 
 	// 3rd Party
     #import "WPAFNetworking.h"

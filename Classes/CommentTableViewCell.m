@@ -68,15 +68,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [nameLabel release];
-    [urlLabel release];
-    [postLabel release];
-    [commentLabel release];
-    [gravatarImageView release];
-    [checkButton release];
-    [super dealloc];
-}
 
 - (BOOL)checked {
     return checked;

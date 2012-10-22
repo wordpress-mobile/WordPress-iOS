@@ -43,8 +43,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         UIImage *img = [[UIImage imageNamed:@"popover_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(CAP_INSET,CAP_INSET,CAP_INSET,CAP_INSET)];
-        self.borderImageView = [[[UIImageView alloc] initWithImage:img] autorelease];
-        self.arrowImageView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"popover_arrow"]] autorelease];
+        self.borderImageView = [[UIImageView alloc] initWithImage:img];
+        self.arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"popover_arrow"]];
         
         [self addSubview:borderImageView];
         [self insertSubview:arrowImageView aboveSubview:borderImageView];

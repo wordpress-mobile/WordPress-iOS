@@ -14,8 +14,8 @@ float const WPFriendFinderNudgeViewPadding = 5.f;
 float const WPFriendFinderNudgeViewCancelButtonWidth = 46.f;
 
 @interface WPFriendFinderNudgeView ()
-@property (nonatomic, retain) CAGradientLayer *gradient;
-@property (nonatomic, retain) CAGradientLayer *gradientHighlight;
+@property (nonatomic, strong) CAGradientLayer *gradient;
+@property (nonatomic, strong) CAGradientLayer *gradientHighlight;
 @end
 
 @implementation WPFriendFinderNudgeView
@@ -101,10 +101,6 @@ float const WPFriendFinderNudgeViewCancelButtonWidth = 46.f;
     return self;
 }
 
-- (void) dealloc {
-    self.gradient = nil;
-    [super dealloc];
-}
 
 - (void) layoutSubviews {
     [super layoutSubviews];

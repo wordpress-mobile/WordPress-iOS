@@ -22,12 +22,12 @@
 }
 
 @property (nonatomic, assign) BOOL hasCompletedGetUsersBlogs, isWPcom;
-@property (nonatomic, retain) NSArray *usersBlogs;
-@property (nonatomic, retain) NSMutableArray *selectedBlogs;
-@property (nonatomic, retain) NSString *username, *url, *password;
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll, *topAddSelectedButton;
-@property (nonatomic, retain) WPProgressHUD *spinner;
+@property (nonatomic, strong) NSArray *usersBlogs;
+@property (nonatomic, strong) NSMutableArray *selectedBlogs;
+@property (nonatomic, strong) NSString *username, *url, *password;
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll, *topAddSelectedButton;
+@property (nonatomic, strong) WPProgressHUD *spinner;
 @property (nonatomic, assign) BOOL geolocationEnabled;
 
 - (IBAction)selectAllBlogs:(id)sender;

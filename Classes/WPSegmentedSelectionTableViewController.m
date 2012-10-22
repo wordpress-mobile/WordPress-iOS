@@ -24,14 +24,6 @@
 
 @implementation WPSegmentedSelectionTableViewController
 
-- (void)dealloc {
-    WPFLogMethod();
-    [categoryIndentationLevelsDict release];
-    [rowTextColor release];
-    
-    [super dealloc];
-}
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
@@ -101,7 +93,6 @@
     [tree getChildrenFromObjects:sourceObjects];
 
     self.objects = [tree getAllObjects];
-    [tree release];
 
     int i = 0, k = 0, count = [self.objects count];
     self.selectionStatusOfObjects = [NSMutableArray arrayWithCapacity:count];
@@ -135,9 +126,8 @@
                                          forKey:[category.categoryID stringValue]];
     }
 
-    self.originalSelObjects = [[selectionStatusOfObjects copy] autorelease];
+    self.originalSelObjects = [selectionStatusOfObjects copy];
     
-    [categoryDict release];
     [tableView reloadData];
 }
 
@@ -166,7 +156,7 @@
     UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:selectionTableRowCell];
 
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:selectionTableRowCell] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:selectionTableRowCell];
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
     }
 

@@ -48,14 +48,14 @@
     BOOL changingContentForSelectedSection;
 }
 
-@property (nonatomic, retain) Post *currentQuickPost;
-@property (nonatomic, retain) QuickPhotoButtonView *quickPhotoButton;
-@property (nonatomic, retain) UIActionSheet *quickPhotoActionSheet;
-@property (nonatomic, retain) NSFetchedResultsController *resultsController;
-@property (nonatomic, assign) SectionInfo *openSection;
+@property (nonatomic, strong) Post *currentQuickPost;
+@property (nonatomic, strong) QuickPhotoButtonView *quickPhotoButton;
+@property (nonatomic, strong) UIActionSheet *quickPhotoActionSheet;
+@property (nonatomic, strong) NSFetchedResultsController *resultsController;
+@property (nonatomic, weak) SectionInfo *openSection;
 @property (nonatomic, strong) NSMutableArray *sectionInfoArray;
 @property (readonly) NSInteger topSectionRowCount;
-@property (nonatomic, retain) NSIndexPath *currentIndexPath;
+@property (nonatomic, strong) NSIndexPath *currentIndexPath;
 
 - (SectionInfo *)sectionInfoForBlog:(Blog *)blog;
 - (void)addSectionInfoForBlog:(Blog *)blog;
@@ -93,15 +93,7 @@
 
 - (void)dealloc {
     self.resultsController.delegate = nil;
-    self.resultsController = nil;
-    self.utililtyView = nil;
-    self.tableView = nil;
-    self.settingsButton = nil;
-    self.quickPhotoButton = nil;
-    self.currentIndexPath = nil;
-    self.quickPhotoActionSheet = nil;
     
-    [super dealloc];
 }
 
 - (void)viewDidLoad {
@@ -125,7 +117,7 @@
     
     // create the sectionInfoArray, stores data for collapsing/expanding sections in the tableView
 	if (self.sectionInfoArray == nil) {
-        self.sectionInfoArray = [[[NSMutableArray alloc] initWithCapacity:[[self.resultsController fetchedObjects] count]] autorelease];
+        self.sectionInfoArray = [[NSMutableArray alloc] initWithCapacity:[[self.resultsController fetchedObjects] count]];
         // For each play, set up a corresponding SectionInfo object to contain the default height for each row.
 		for (Blog *blog in [self.resultsController fetchedObjects]) {
             [self addSectionInfoForBlog:blog];
@@ -251,7 +243,7 @@
 	
 	// We could send the report from here, but we'll just print out
 	// some debugging info instead
-    PLCrashReport *report = [[[PLCrashReport alloc] initWithData: crashData error: &error] autorelease];
+    PLCrashReport *report = [[PLCrashReport alloc] initWithData: crashData error: &error];
     if (report == nil) {
         NSLog(@"Could not parse crash report");
         [crashReporter purgePendingCrashReport];
@@ -262,13 +254,12 @@
             CrashReportViewController *crashReportView = nil;
             crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:[NSBundle mainBundle]];
             
-            UINavigationController *aNavigationController = [[[UINavigationController alloc] initWithRootViewController:crashReportView] autorelease];
+            UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:crashReportView];
             aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
             [self.view setHidden:YES];
             
             [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
-            [crashReportView release];
         }
 		else {
             [crashReporter purgePendingCrashReport];
@@ -335,12 +326,11 @@
             welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
             [welcomeViewController automaticallyDismissOnLoginActions];
             
-            UINavigationController *aNavigationController = [[[UINavigationController alloc] initWithRootViewController:welcomeViewController] autorelease];
+            UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
             aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 
             [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
-            [welcomeViewController release];
         }
     }
 }
@@ -432,8 +422,8 @@ NSLog(@"%@", self.sectionInfoArray);
 }
 
 - (IBAction)showSettings:(id)sender {
-    SettingsViewController *settingsViewController = [[[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
-    UINavigationController *aNavigationController = [[[UINavigationController alloc] initWithRootViewController:settingsViewController] autorelease];
+    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     if (IS_IPAD)
         aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -505,7 +495,6 @@ NSLog(@"%@", self.sectionInfoArray);
         [actionSheet showInView:self.panelNavigationController.view];        
     }
     self.quickPhotoActionSheet = actionSheet;
-    [actionSheet release];
     
 //    [appDelegate setAlertRunning:YES];
 }
@@ -545,8 +534,6 @@ NSLog(@"%@", self.sectionInfoArray);
     } else {
         [self.panelNavigationController presentModalViewController:navController animated:YES];
     }
-    [quickPhotoViewController release];
-    [navController release];
 }
 
 - (void)uploadQuickPhoto:(Post *)post {
@@ -577,7 +564,6 @@ NSLog(@"%@", self.sectionInfoArray);
                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
     [alert show];
-    [alert release];
 }
 
 - (void)postUploadCancelled:(NSNotification *)notification {
@@ -591,9 +577,8 @@ NSLog(@"%@", self.sectionInfoArray);
             [[NSNotificationCenter defaultCenter] removeObserver:self name:@"PostUploaded" object:_currentQuickPost];
             [[NSNotificationCenter defaultCenter] removeObserver:self name:@"PostUploadFailed" object:_currentQuickPost];
             [[NSNotificationCenter defaultCenter] removeObserver:self name:@"PostUploadCancelled" object:_currentQuickPost];
-            [_currentQuickPost release];
         }
-        _currentQuickPost = [currentQuickPost retain];
+        _currentQuickPost = currentQuickPost;
         if (_currentQuickPost) {
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postDidUploadSuccessfully:) name:@"PostUploaded" object:currentQuickPost];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postUploadFailed:) name:@"PostUploadFailed" object:currentQuickPost];
@@ -616,7 +601,7 @@ NSLog(@"%@", self.sectionInfoArray);
     
     // Match the height and y of the settings Button.
     CGRect frame = CGRectMake(10.0f, settingsFrame.origin.y, buttonWidth, settingsFrame.size.height);
-    self.quickPhotoButton = [[[QuickPhotoButtonView alloc] initWithFrame:frame] autorelease];
+    self.quickPhotoButton = [[QuickPhotoButtonView alloc] initWithFrame:frame];
     quickPhotoButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
     quickPhotoButton.delegate = self;
     
@@ -694,7 +679,7 @@ NSLog(@"%@", self.sectionInfoArray);
     Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(section - 1) inSection:0]];
     SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:section - 1];
     if (!sectionInfo.headerView) {
-        sectionInfo.headerView = [[[SidebarSectionHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, SIDEBAR_WIDTH, HEADER_HEIGHT) blog:blog sectionInfo:sectionInfo delegate:self] autorelease];
+        sectionInfo.headerView = [[SidebarSectionHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, SIDEBAR_WIDTH, HEADER_HEIGHT) blog:blog sectionInfo:sectionInfo delegate:self];
     }
 
     return sectionInfo.headerView;
@@ -705,7 +690,7 @@ NSLog(@"%@", self.sectionInfoArray);
     static NSString *CellIdentifier = @"SideBarCell";
     SidebarTableViewCell *cell = (SidebarTableViewCell *)[aTableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[SidebarTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[SidebarTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
     NSString *title = nil;
@@ -718,33 +703,47 @@ NSLog(@"%@", self.sectionInfoArray);
     } else {
         switch (indexPath.row) {
             case 0:
+            {
                 title = NSLocalizedString(@"Posts", @"");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_posts"];
                 break;
+            }
             case 1:
+            {
                 title = NSLocalizedString(@"Pages", @"");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_pages"];
                 break;
+            }
             case 2:
+            {
                 title = NSLocalizedString(@"Comments", @"");
                 Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
                 cell.blog = blog;
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_comments"];
                 break;
+            }
             case 3:
+            {
                 title = NSLocalizedString(@"Stats", @"");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_stats"];
                 break;
+            }
             case 4:
+            {
                 title = NSLocalizedString(@"View Site", @"");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_view"];
                 break;
+            }
             case 5:
+            {
                 title = NSLocalizedString(@"Dashboard", @"Button to load the dashboard in a web view");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_dashboard"];
                 break;
+            }
             default:
+            {
                 break;
+            }
         }
     }
     
@@ -892,7 +891,7 @@ NSLog(@"%@", self.sectionInfoArray);
                 return;
             }
             // Reader
-            WPReaderViewController *readerViewController = [[[WPReaderViewController alloc] init] autorelease];
+            WPReaderViewController *readerViewController = [[WPReaderViewController alloc] init];
             detailViewController = readerViewController;
         }        
 
@@ -938,10 +937,10 @@ NSLog(@"%@", self.sectionInfoArray);
                 } else {
                     WPWebViewController *webViewController;
                     if ( IS_IPAD ) {
-                        webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+                        webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
                     }
                     else {
-                        webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+                        webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
                     }
                     
                     [webViewController setUrl:[NSURL URLWithString:blogURL]];
@@ -970,10 +969,10 @@ NSLog(@"%@", self.sectionInfoArray);
                     
                     WPWebViewController *webViewController;
                     if ( IS_IPAD ) {
-                        webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+                        webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
                     }
                     else {
-                        webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+                        webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
                     }
                     [webViewController setUrl:[NSURL URLWithString:dashboardURL]];
                     [webViewController setUsername:blog.username];
@@ -1003,7 +1002,7 @@ NSLog(@"%@", self.sectionInfoArray);
             [self.panelNavigationController popToRootViewControllerAnimated:NO];
             return;
         } else {
-            detailViewController = (UIViewController *)[[[controllerClass alloc] init] autorelease];
+            detailViewController = (UIViewController *)[[controllerClass alloc] init];
             if ([detailViewController respondsToSelector:@selector(setBlog:)]) {
                 [detailViewController performSelector:@selector(setBlog:) withObject:blog];
             }
@@ -1037,14 +1036,10 @@ NSLog(@"%@", self.sectionInfoArray);
                           cacheName:nil];
     _resultsController.delegate = self;
 
-    [sortDescriptors release];
-    [sortDescriptor release];
-    [fetchRequest release];
 
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
         WPFLog(@"Couldn't fecth blogs: %@", [error localizedDescription]);
-        [_resultsController release];
         _resultsController = nil;
     }
     
@@ -1138,7 +1133,6 @@ NSLog(@"%@", self.sectionInfoArray);
                     [indexPathsToDelete addObject:[NSIndexPath indexPathForRow:i inSection:indexPath.row + 1]];
                 }
                 [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:UITableViewRowAnimationFade];
-                [indexPathsToDelete release];
             }
             if (self.openSection == sectionInfo) {
                 self.openSection = nil;

@@ -21,12 +21,6 @@
     [super setSelected:selected animated:animated];
 }
 
-- (void)dealloc {
-	self.viewForBackground = nil;
-    self.textLabel = nil;
-    self.cellSwitch = nil;
-    [super dealloc];
-}
 
 
 @end

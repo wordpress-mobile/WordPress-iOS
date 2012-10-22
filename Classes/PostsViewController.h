@@ -9,11 +9,11 @@
     UIActivityIndicatorView *activityFooter;
 }
 
-@property (nonatomic, retain) EditPostViewController *postDetailViewController;
-@property (nonatomic, retain) PostViewController *postReaderViewController;
+@property (nonatomic, strong) EditPostViewController *postDetailViewController;
+@property (nonatomic, strong) PostViewController *postReaderViewController;
 @property (nonatomic, assign) BOOL anyMorePosts;
-@property (nonatomic, retain) NSIndexPath *selectedIndexPath;
-@property (nonatomic, retain) NSMutableArray *drafts;
+@property (nonatomic, strong) NSIndexPath *selectedIndexPath;
+@property (nonatomic, strong) NSMutableArray *drafts;
 
 - (void)showAddPostView;
 - (void)reselect;

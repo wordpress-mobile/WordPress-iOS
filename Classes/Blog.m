@@ -28,6 +28,7 @@
 - (void)mergeComments:(NSArray *)newComments;
 - (void)mergePages:(NSArray *)newPages;
 - (void)mergePosts:(NSArray *)newPosts;
+@property (readwrite, assign) BOOL reachable;
 @end
 
 
@@ -72,7 +73,7 @@
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"url like %@ AND username = %@", theURL, username]];
     NSError *error = nil;
     NSArray *results = [moc executeFetchRequest:fetchRequest error:&error];
-    [fetchRequest release]; fetchRequest = nil;
+     fetchRequest = nil;
     
     return (results.count > 0);
 }
@@ -85,9 +86,9 @@
 	blogUrl= [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if (![self blogExistsForURL:blogUrl withContext:moc andUsername: [blogInfo objectForKey:@"username"]]) {
-        blog = [[[Blog alloc] initWithEntity:[NSEntityDescription entityForName:@"Blog"
+        blog = [[Blog alloc] initWithEntity:[NSEntityDescription entityForName:@"Blog"
                                                          inManagedObjectContext:moc]
-              insertIntoManagedObjectContext:moc] autorelease];
+              insertIntoManagedObjectContext:moc];
         
         blog.url = blogUrl;
         blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
@@ -114,7 +115,6 @@
 
     NSError *err = nil;
     NSArray *result = [moc executeFetchRequest:request error:&err];
-    [request release];
     Blog *blog = nil;
     if (err == nil && [result count] > 0 ) {
         blog = [result objectAtIndex:0];
@@ -129,7 +129,6 @@
     
     NSError *err;
     NSUInteger count = [moc countForFetchRequest:request error:&err];
-    [request release];
     if(count == NSNotFound) {
         count = 0;
     }
@@ -143,7 +142,7 @@
             hostUrl = self.xmlrpc;
         }
 		
-        _blavatarUrl = [hostUrl retain];
+        _blavatarUrl = hostUrl;
     }
 
     return _blavatarUrl;
@@ -201,10 +200,10 @@
 }
 
 -(NSArray *)sortedCategories {
-	NSSortDescriptor *sortNameDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"categoryName" 
+	NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName" 
 																		ascending:YES 
-																		 selector:@selector(caseInsensitiveCompare:)] autorelease];
-	NSArray *sortDescriptors = [[[NSArray alloc] initWithObjects:sortNameDescriptor, nil] autorelease];
+																		 selector:@selector(caseInsensitiveCompare:)];
+	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortNameDescriptor, nil];
 	
 	return [[self.categories allObjects] sortedArrayUsingDescriptors:sortDescriptors];
 }
@@ -285,10 +284,10 @@
     [self willChangeValueForKey:@"xmlrpc"];
     [self setPrimitiveValue:xmlrpc forKey:@"xmlrpc"];
     [self didChangeValueForKey:@"xmlrpc"];
-    [_blavatarUrl release]; _blavatarUrl = nil;
+     _blavatarUrl = nil;
 
     // Reset the api client so next time we use the new XML-RPC URL
-    [_api release]; _api = nil;
+     _api = nil;
 }
 
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra {
@@ -331,16 +330,14 @@
 
 - (Reachability *)reachability {
     if (_reachability == nil) {
-        _reachability = [[Reachability reachabilityWithHostname:self.hostname] retain];
+        _reachability = [Reachability reachabilityWithHostname:self.hostname];
+        __weak Blog *blog = self;
+        blog.reachable = YES;
         _reachability.reachableBlock = ^(Reachability *reach) {
-            [self willChangeValueForKey:@"reachable"];
-            _isReachable = YES;
-            [self didChangeValueForKey:@"reachable"];
+            blog.reachable = YES;
         };
         _reachability.unreachableBlock = ^(Reachability *reach) {
-            [self willChangeValueForKey:@"reachable"];
-            _isReachable = NO;
-            [self didChangeValueForKey:@"reachable"];
+            blog.reachable = NO;
         };
         [_reachability startNotifier];
     }
@@ -354,6 +351,10 @@
     return _isReachable;
 }
 
+- (void)setReachable:(BOOL)reachable {
+    _isReachable = reachable;
+}
+
 #pragma mark -
 #pragma mark Synchronization
 
@@ -365,11 +366,9 @@
     [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:YES];
     [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    [sortDescriptor release];
     
     NSError *error = nil;
     NSArray *array = [[self managedObjectContext] executeFetchRequest:request error:&error];
-    [request release];
     if (array == nil) {
         array = [NSArray array];
     }
@@ -501,7 +500,7 @@
     [api callMethod:@"wpcom.getActivationStatus"
          parameters:[NSArray arrayWithObjects:[self hostURL], nil]
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSString *returnData = [responseObject retain];
+                NSString *returnData = responseObject;
                 if ([returnData isKindOfClass:[NSString class]]) {
                     [self setBlogID:[returnData numericValue]];
                     [self setIsActivated:[NSNumber numberWithBool:YES]];
@@ -527,6 +526,26 @@
             }];
 }
 
+- (void)checkVideoPressEnabledWithSuccess:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure {
+    if (!self.isWPcom) {
+        if (success) success(YES);
+        return;
+    }
+    NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
+    AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wpcom.getFeatures" parameters:parameters];
+    AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        BOOL videoEnabled = YES;
+        if(([responseObject isKindOfClass:[NSDictionary class]]) && ([responseObject objectForKey:@"videopress_enabled"] != nil))
+            videoEnabled = [[responseObject objectForKey:@"videopress_enabled"] boolValue];
+        else
+            videoEnabled = YES;
+
+        if (success) success(videoEnabled);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) failure(error);
+    }];
+    [self.api enqueueXMLRPCRequestOperation:operation];
+}
 
 #pragma mark - api accessor
 
@@ -928,11 +947,10 @@
 
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [_blavatarUrl release]; _blavatarUrl = nil;
-    [_api release]; _api = nil;
+     _blavatarUrl = nil;
+     _api = nil;
     [_reachability stopNotifier];
-    [_reachability release]; _reachability = nil;
-    [super dealloc];
+     _reachability = nil;
 }
 
 @end

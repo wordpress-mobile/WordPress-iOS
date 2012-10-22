@@ -23,7 +23,6 @@
                                                                                   target:self 
                                                                                   action:@selector(cancelSelection:)];
     self.navigationItem.rightBarButtonItem = cancelButton;
-    [cancelButton release];
     
     [self loadTopicsPage];
 }
@@ -64,7 +63,6 @@
 - (void)openFriendFinder {
     WPFriendFinderViewController *friendFinder = [[WPFriendFinderViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil];
     [self.navigationController pushViewController:friendFinder animated:YES];
-    [friendFinder release];
     [friendFinder loadURL:kMobileReaderFFURL];
 }
 

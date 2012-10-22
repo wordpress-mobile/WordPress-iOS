@@ -18,20 +18,6 @@
 #pragma mark -
 #pragma mark View lifecycle
 
-- (void)dealloc {
-	[scrollView release], scrollView = nil;
-	[insertButton release], insertButton = nil;
-	[deleteButton release], deleteButton = nil;
-	[media release], media = nil;
-	[imageView release], imageView = nil;
-	[videoPlayer release], videoPlayer = nil;
-	[cancelButton release], cancelButton = nil;
-	[toolbar release];
-    [currentActionSheet release];
-
-    [super dealloc];
-}
-
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
@@ -51,7 +37,7 @@
 		self.navigationItem.title = NSLocalizedString(@"Image", @"");
 		imageView.image = [UIImage imageWithContentsOfFile:media.localURL];
 		if((imageView.image == nil) && (media.remoteURL != nil)) {
-			imageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:media.remoteURL]]];
+            [imageView setImageWithURL:[NSURL URLWithString:media.remoteURL]];
 		}
 	}
 	
@@ -67,9 +53,9 @@
         rect.size.height = rect.size.height - 44.0f;
         self.scrollView.frame = rect;
         
-        UIToolbar *topToolbar = [[[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0f)] autorelease];
+        UIToolbar *topToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0f)];
         topToolbar.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
-        UIBarButtonItem *flex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+        UIBarButtonItem *flex = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         topToolbar.items = [NSArray arrayWithObjects:flex, cancelButton, nil];
         [self.view addSubview:topToolbar];
 	}
@@ -200,7 +186,6 @@
         [deleteActionSheet showInView:self.view];
     }
     self.currentActionSheet = deleteActionSheet;
-	[deleteActionSheet release];
 }
 
 - (IBAction)insertObject:(id)sender {
@@ -221,7 +206,6 @@
         [insertActionSheet showInView:self.view];
     }
     self.currentActionSheet = insertActionSheet;
-    [insertActionSheet release];
 }
 
 - (IBAction)cancelSelection:(id)sender { 

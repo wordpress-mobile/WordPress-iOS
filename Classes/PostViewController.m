@@ -24,19 +24,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    self.apost = nil;
-	self.blog = nil;
-    self.contentView = nil;
-    self.contentWebView = nil;
-    self.titleLabel = nil;
-    self.tagsLabel = nil;
-    self.categoriesLabel = nil;
-    self.titleTitleLabel = nil;
-    self.tagsTitleLabel = nil;
-    self.categoriesTitleLabel = nil;
-	
-    [super dealloc];
 }
 
 
@@ -59,13 +46,13 @@
     self.categoriesTitleLabel.text = NSLocalizedString(@"Categories:", @"");
     
     UIBarButtonItem *deleteButton = nil;
-    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+    UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
                                                                                  target:self
-                                                                                 action:@selector(showModalEditor)] autorelease];
-    UIBarButtonItem *previewButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.")
+                                                                                 action:@selector(showModalEditor)];
+    UIBarButtonItem *previewButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.")
                                                                        style:UIBarButtonItemStyleBordered
                                                                       target:self
-                                                                      action:@selector(showModalPreview)] autorelease];
+                                                                      action:@selector(showModalPreview)];
     
     UIColor *buttonTintColor = [UIColor UIColorFromHex:0x464646];
     
@@ -113,8 +100,6 @@
         UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         self.toolbarItems = [NSArray arrayWithObjects:editButton, previewButton, spacer, deleteButton, nil];
         
-        [spacer release];
-        [deleteButton release];
     } else {
         self.navigationItem.rightBarButtonItem = editButton;
     }    
@@ -163,7 +148,6 @@
                                                    destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
                                                         otherButtonTitles:nil];
         [actionSheet showFromBarButtonItem:sender animated:YES];
-        [actionSheet release];
         isShowingActionSheet = YES;
     }
 }
@@ -246,7 +230,6 @@
 											  cancelButtonTitle:NSLocalizedString(@"OK", @"")
 											  otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 		return;
 	}
     EditPostViewController *postViewController;
@@ -261,7 +244,6 @@
     nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     //nav.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
     [self presentModalViewController:nav animated:YES];
-    [nav release];
 }
 
 - (void)showModalPreview {
@@ -289,21 +271,18 @@
 
     UIBarButtonItem *c = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissPreview)];
     nav.navigationBar.topItem.leftBarButtonItem = c;
-    [c release];
     
     [self presentModalViewController:nav animated:YES];
-    [nav release];
-    [postPreviewViewController release];
 }
 
 - (EditPostViewController *)getPostOrPageController:(AbstractPost *)revision {
-	return [[[EditPostViewController alloc] initWithPost:revision] autorelease];
+	return [[EditPostViewController alloc] initWithPost:revision];
 }
 
 // Subclassed in PageViewController
 - (void)checkForNewItem {
 	if(!self.apost)  //when it was a new post and user clicked on cancel
-		self.apost = [[Post newDraftForBlog:self.blog] autorelease];
+		self.apost = [Post newDraftForBlog:self.blog];
 }
 
 

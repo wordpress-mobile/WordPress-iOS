@@ -63,16 +63,16 @@
 - (void)unApproveComment;
 - (void)addOrRemoveSegmentedControl;
 
-@property (nonatomic, retain) ReplyToCommentViewController *replyToCommentViewController;
-@property (nonatomic, retain) EditCommentViewController *editCommentViewController;
-@property (nonatomic, retain) CommentsViewController *commentsViewController;
-@property (nonatomic, retain) Comment *comment;
-@property (nonatomic, retain) IBOutlet UIButton *commentAuthorUrlButton;
-@property (nonatomic, retain) IBOutlet UIButton *commentAuthorEmailButton;
-@property (nonatomic, retain) IBOutlet UIButton *commentPostTitleButton;
-@property (nonatomic, retain) IBOutlet UILabel *commentPostTitleLabel;
-@property (nonatomic, assign) id<CommentViewControllerDelegate> delegate;
-@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
+@property (nonatomic, strong) ReplyToCommentViewController *replyToCommentViewController;
+@property (nonatomic, strong) EditCommentViewController *editCommentViewController;
+@property (nonatomic, strong) CommentsViewController *commentsViewController;
+@property (nonatomic, strong) Comment *comment;
+@property (nonatomic, strong) IBOutlet UIButton *commentAuthorUrlButton;
+@property (nonatomic, strong) IBOutlet UIButton *commentAuthorEmailButton;
+@property (nonatomic, strong) IBOutlet UIButton *commentPostTitleButton;
+@property (nonatomic, strong) IBOutlet UILabel *commentPostTitleLabel;
+@property (nonatomic, weak) id<CommentViewControllerDelegate> delegate;
+@property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
 
 @property BOOL wasLastCommentPending;
 @property BOOL isVisible;

@@ -19,7 +19,7 @@
     BOOL showPickerAfterRotation;
 }
 
-@property (nonatomic, retain) UIPopoverController *popController;
+@property (nonatomic, strong) UIPopoverController *popController;
 
 - (void)showPicker;
 - (void)handleKeyboardWillShow:(NSNotification *)notification;
@@ -45,18 +45,10 @@
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     self.photoImageView.delegate = nil;
-    self.photoImageView = nil;
-    self.titleTextField = nil;
-    self.contentTextView = nil;
-    self.postButtonItem = nil;
-    self.sidebarViewController = nil;
-    self.startingBlog = nil;
     self.popController.delegate = nil;
-    self.popController = nil;
-    
-    [super dealloc];
 }
 
+#if !__has_feature(objc_arc)
 //stackoverflow.com/questions/945082/uiwebview-in-multithread-viewcontroller
 - (oneway void)release {
     if (![NSThread isMainThread]) {
@@ -65,6 +57,7 @@
         [super release];
     }
 }
+#endif
 
 - (void)didReceiveMemoryWarning {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -92,14 +85,14 @@
     }
     self.photoImageView.delegate = self;
     self.title = NSLocalizedString(@"Quick Photo", @"");
-    self.postButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Publish", @"") 
+    self.postButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Publish", @"") 
                                                             style:UIBarButtonItemStyleDone 
                                                            target:self 
-                                                           action:@selector(post)] autorelease];
+                                                           action:@selector(post)];
 
     [postButtonItem setEnabled:NO];
     self.navigationItem.rightBarButtonItem = self.postButtonItem;
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)] autorelease];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -179,7 +172,7 @@
     picker.delegate = self;
     
     if (IS_IPAD) {
-        self.popController = [[[UIPopoverController alloc] initWithContentViewController:picker] autorelease];
+        self.popController = [[UIPopoverController alloc] initWithContentViewController:picker];
         if ([popController respondsToSelector:@selector(popoverBackgroundViewClass)]) {
             popController.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
         }
@@ -191,7 +184,6 @@
         picker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentModalViewController:picker animated:YES];
     }
-    [picker release];
 }
 
 
@@ -260,7 +252,6 @@
                                                   cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                   otherButtonTitles:nil];
         [alertView show];
-        [alertView release];
     }
 }
 
@@ -293,7 +284,7 @@
             if (post.media && [post.media count] > 0) {
                 media = [post.media anyObject];
             } else {
-                media = [[Media newMediaForPost:post] autorelease];
+                media = [Media newMediaForPost:post];
                 int resizePreference = 0;
                 if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
                     resizePreference = [[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] intValue];

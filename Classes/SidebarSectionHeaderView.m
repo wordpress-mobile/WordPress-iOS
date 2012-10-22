@@ -42,7 +42,6 @@ CGFloat const BadgeHeight = 24.f;
         // Set up the tap gesture recognizer.
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleOpen:)];
         [self addGestureRecognizer:tapGesture];
-        [tapGesture release];
         
         _blog = blog;
         _delegate = delegate;        
@@ -85,7 +84,7 @@ CGFloat const BadgeHeight = 24.f;
         _titleLabel = label;
         
         CGRect commentsBadgedRect = [self badgeItemFrame:BadgeHeight];
-        UIImageView *commentsIconImgView = [[[UIImageView alloc] initWithFrame:commentsBadgedRect] autorelease];
+        UIImageView *commentsIconImgView = [[UIImageView alloc] initWithFrame:commentsBadgedRect];
         if ( numberOfPendingComments > 0 ) {
             UIImage *img = [UIImage imageNamed:@"sidebar_comment_bubble"];
             commentsIconImgView.image = img;
@@ -233,22 +232,19 @@ CGFloat const BadgeHeight = 24.f;
 
 - (void)updateGradient {
     CAGradientLayer *gradient = (CAGradientLayer *)self.layer;
-    CGColorRef startColor, endColor;
+    UIColor *startColor, *endColor;
     if (self.disclosureButton.selected) {
-        startColor = [[UIColor colorWithWhite:0.6f alpha:0.4f] CGColor];
-        endColor = [[UIColor colorWithWhite:0.6f alpha:0.0f] CGColor];
+        startColor = [UIColor colorWithWhite:0.6f alpha:0.4f];
+        endColor = [UIColor colorWithWhite:0.6f alpha:0.0f];
     } else {
-        startColor = [[UIColor colorWithWhite:0.6f alpha:0.3f] CGColor];
-        endColor = [[UIColor colorWithWhite:0.6f alpha:0.f] CGColor];
+        startColor = [UIColor colorWithWhite:0.6f alpha:0.3f];
+        endColor = [UIColor colorWithWhite:0.6f alpha:0.f];
     }
-    gradient.colors = [NSArray arrayWithObjects:(id)startColor, (id)endColor, nil];
+    gradient.colors = @[(id)[startColor CGColor], (id)[endColor CGColor]];
 }
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [background release];
-    [blavatarView release];
-    [super dealloc];
 }
 
 @end

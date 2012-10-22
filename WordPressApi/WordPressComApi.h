@@ -12,8 +12,8 @@
 #define WordPressComApiDidLogoutNotification @"WordPressComApiDidLogout"
 
 @interface WordPressComApi : WordPressApi
-@property (nonatomic,readonly,retain) NSString *username;
-@property (nonatomic,readonly,retain) NSString *password;
+@property (nonatomic,readonly,strong) NSString *username;
+@property (nonatomic,readonly,strong) NSString *password;
 
 + (WordPressComApi *)sharedApi;
 - (void)setUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *error))failure;

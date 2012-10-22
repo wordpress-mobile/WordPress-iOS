@@ -15,7 +15,7 @@
     BOOL authed;
 }
 
-@property (nonatomic, retain) Blog *blog;
+@property (nonatomic, strong) Blog *blog;
 
 - (void)setBlog:(Blog *)blog;
 

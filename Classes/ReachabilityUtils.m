@@ -24,7 +24,6 @@
                                               cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                               otherButtonTitles:nil];
     [alertView show];
-    [alertView release];
 }
 
 
@@ -35,7 +34,6 @@
                                               cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                               otherButtonTitles:NSLocalizedString(@"Retry?", @""), nil];
     [alertView show];
-    [alertView release];
 }
 
 

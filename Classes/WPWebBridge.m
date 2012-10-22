@@ -9,6 +9,7 @@
 #import "WPWebBridge.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "JSONKit.h"
+#import "UIDevice+WordPressIdentifier.h"
 
 @implementation WPWebBridge
 
@@ -16,7 +17,7 @@
 
 + (WPWebBridge *)bridge {
     WPWebBridge *bridge = [[WPWebBridge alloc] init];
-    return [bridge autorelease];
+    return bridge;
 }
 
 /*
@@ -69,8 +70,7 @@
     NSString *token = [defaults stringForKey:kHybridTokenSetting];
     if (token == nil)
     {
-        
-        NSString *concat = [NSString stringWithFormat:@"%@--%d", [[UIDevice currentDevice] uniqueIdentifier], arc4random()];
+        NSString *concat = [NSString stringWithFormat:@"%@--%d", [[UIDevice currentDevice] wordpressIdentifier], arc4random()];
         const char *concat_str = [concat UTF8String];
         unsigned char result[CC_MD5_DIGEST_LENGTH];
         CC_MD5(concat_str, strlen(concat_str), result);
@@ -143,7 +143,7 @@
             [invocation retainArguments];
             invocation.selector = aSelector;
             invocation.target = self.delegate;
-            [args enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [args enumerateObjectsUsingBlock:^(__unsafe_unretained id obj, NSUInteger idx, BOOL *stop) {
                 [invocation setArgument:&obj atIndex:idx + 2];
             }];
         }

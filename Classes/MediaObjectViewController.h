@@ -12,7 +12,7 @@
 #import "Media.h"
 
 @interface MediaObjectViewController : UIViewController <UIActionSheetDelegate, UIScrollViewDelegate> {
-	WordPressAppDelegate *appDelegate;
+	WordPressAppDelegate *__weak appDelegate;
 	Media *media;
 	MPMoviePlayerController *videoPlayer;
 	UIImageView *imageView;
@@ -25,17 +25,17 @@
     UIActionSheet *currentActionSheet;
 }
 
-@property (nonatomic, assign) WordPressAppDelegate *appDelegate;
-@property (nonatomic, retain) Media *media;
-@property (nonatomic, retain) IBOutlet MPMoviePlayerController *videoPlayer;
-@property (nonatomic, retain) IBOutlet UIImageView *imageView;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *deleteButton;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *insertButton;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *cancelButton; 
-@property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
-@property (nonatomic, retain) IBOutlet UIToolbar *toolbar; 
+@property (nonatomic, weak) WordPressAppDelegate *appDelegate;
+@property (nonatomic, strong) Media *media;
+@property (nonatomic, strong) IBOutlet MPMoviePlayerController *videoPlayer;
+@property (nonatomic, strong) IBOutlet UIImageView *imageView;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *deleteButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *insertButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *cancelButton; 
+@property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, strong) IBOutlet UIToolbar *toolbar; 
 @property (nonatomic, assign) BOOL isDeleting, isInserting;
-@property (nonatomic, retain) UIActionSheet *currentActionSheet;
+@property (nonatomic, strong) UIActionSheet *currentActionSheet;
 
 - (IBAction)deleteObject:(id)sender;
 - (IBAction)insertObject:(id)sender;

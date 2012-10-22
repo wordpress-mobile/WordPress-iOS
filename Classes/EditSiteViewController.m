@@ -45,27 +45,6 @@
 
 - (void)dealloc {
     self.delegate = nil;
-    self.username = nil;
-    self.password = nil;
-    self.url = nil;
-    self.urlCell = nil;
-    self.usernameCell = nil;
-    self.passwordCell = nil;
-    self.tableView = nil;
-    self.blog = nil;
-    self.startingUser = nil;
-    self.startingPwd = nil;
-    self.startingUrl = nil;
-    [subsites release]; subsites = nil;
-    [saveButton release]; saveButton = nil;
-    [switchCell release]; switchCell = nil;
-    [urlTextField release]; urlTextField = nil;
-    [usernameTextField release]; usernameTextField = nil;
-    [passwordTextField release]; passwordTextField = nil;
-    [lastTextField release]; lastTextField = nil;
-	[savingIndicator release];
-    
-    [super dealloc];
 }
 
 
@@ -98,7 +77,7 @@
     }
     
     if (isCancellable) {
-        UIBarButtonItem *barButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)] autorelease];
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
         self.navigationItem.leftBarButtonItem = barButton;
     }
     
@@ -113,7 +92,6 @@
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleViewTapped)];
     tgr.cancelsTouchesInView = NO;
     [tableView addGestureRecognizer:tgr];
-    [tgr release];
 
 }
 
@@ -187,9 +165,9 @@
         if (indexPath.row == 0) {
             self.urlCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"UrlCell"];
             if (self.urlCell == nil) {
-                self.urlCell = [[[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UrlCell"] autorelease];
+                self.urlCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UrlCell"];
 				self.urlCell.textLabel.text = NSLocalizedString(@"URL", @"");
-				urlTextField = [self.urlCell.textField retain];
+				urlTextField = self.urlCell.textField;
 				urlTextField.placeholder = NSLocalizedString(@"http://example.com", @"");
                 [urlTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:urlTextField asPassword:NO];
@@ -206,9 +184,9 @@
         else if(indexPath.row == 1) {
             self.usernameCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"UsernameCell"];
             if (self.usernameCell == nil) {
-                self.usernameCell = [[[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"] autorelease];
+                self.usernameCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"];
 				self.usernameCell.textLabel.text = NSLocalizedString(@"Username", @"");
-				usernameTextField = [self.usernameCell.textField retain];
+				usernameTextField = self.usernameCell.textField;
 				usernameTextField.placeholder = NSLocalizedString(@"WordPress username", @"");
                 [usernameTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:usernameTextField asPassword:NO];
@@ -224,9 +202,9 @@
         else if(indexPath.row == 2) {
             self.passwordCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"PasswordCell"];
             if (self.passwordCell == nil) {
-                self.passwordCell = [[[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PasswordCell"] autorelease];
+                self.passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PasswordCell"];
 				self.passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
-				passwordTextField = [self.passwordCell.textField retain];
+				passwordTextField = self.passwordCell.textField;
 				passwordTextField.placeholder = NSLocalizedString(@"WordPress password", @"");
                 [passwordTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:passwordTextField asPassword:YES];
@@ -250,7 +228,6 @@
                 }
             }
         }
-        [switchCell retain];
         switchCell.textLabel.text = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
         switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
         switchCell.cellSwitch.on = self.geolocationEnabled;
@@ -260,7 +237,7 @@
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
         if(!cell) {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"Cell"] autorelease];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"Cell"];
         };
         cell.textLabel.text = NSLocalizedString(@"Configure", @"");
         if ([JetpackAuthUtil getJetpackUsernameForBlog:blog] != nil) {
@@ -277,7 +254,7 @@
     }
     
     // We shouldn't reach this point, but return an empty cell just in case
-    return [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"] autorelease];
+    return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
 }
 
 
@@ -300,7 +277,6 @@
         JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithNibName:nil bundle:nil];
         controller.blog = blog;
         [self.navigationController pushViewController:controller animated:YES];
-        [controller release];
     }
 }
 
@@ -310,10 +286,9 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     if (lastTextField) {
-        [lastTextField release];
         lastTextField = nil;
     }
-    lastTextField = [textField retain];
+    lastTextField = textField;
 }
 
 
@@ -361,7 +336,7 @@
                 //Domain Error or malformed response
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://ios.wordpress.org/faq/#faq_3"]];
             } else {
-                HelpViewController *helpViewController = [[[HelpViewController alloc] init] autorelease];
+                HelpViewController *helpViewController = [[HelpViewController alloc] init];
                 helpViewController.isBlogSetup = YES;
                 [self.navigationController pushViewController:helpViewController animated:YES];
             }
@@ -385,9 +360,9 @@
                 
                 WPWebViewController *webViewController;
                 if ( IS_IPAD ) {
-                    webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+                    webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
                 } else {
-                    webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+                    webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
                 }
                 [webViewController setUrl:[NSURL URLWithString:path]];
                 [webViewController setUsername:self.username];
@@ -470,7 +445,7 @@
     [WordPressApi guessXMLRPCURLForSite:urlToValidate success:^(NSURL *xmlrpcURL) {
         WordPressApi *api = [WordPressApi apiWithXMLRPCEndpoint:xmlrpcURL username:uname password:pwd];
         [api getBlogsWithSuccess:^(NSArray *blogs) {
-            subsites = [blogs retain];
+            subsites = blogs;
             [self validationSuccess:[xmlrpcURL absoluteString]];
         } failure:^(NSError *error) {
             [self validationDidFail:error];
@@ -573,7 +548,6 @@
             }
             
             [alertView show];
-            [alertView release];            
         }
     }    
 
@@ -623,7 +597,7 @@
         CGRect frm = savingIndicator.frame;
         frm.origin.x = (self.tableView.frame.size.width / 2.0f) - (frm.size.width / 2.0f);
         savingIndicator.frame = frm;
-        UIView *aView = [[[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, frm.size.height)] autorelease];
+        UIView *aView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, frm.size.height)];
         [aView addSubview:savingIndicator];
         
         [self.tableView setTableFooterView:aView];

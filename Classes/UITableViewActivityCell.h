@@ -15,8 +15,8 @@
 	IBOutlet UIView *viewForBackground;
 }
 
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
-@property (nonatomic, retain) IBOutlet UILabel *textLabel;
-@property (nonatomic, retain) IBOutlet UIView *viewForBackground;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *spinner;
+@property (nonatomic, strong) IBOutlet UILabel *textLabel;
+@property (nonatomic, strong) IBOutlet UIView *viewForBackground;
 
 @end

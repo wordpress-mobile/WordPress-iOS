@@ -15,10 +15,10 @@
 
 @interface WPcomLoginViewController : UITableViewController
 
-@property (assign) id<WPcomLoginViewControllerDelegate> delegate;
+@property (weak) id<WPcomLoginViewControllerDelegate> delegate;
 @property (nonatomic, assign) BOOL isCancellable;
-@property (nonatomic, retain) NSString *predefinedUsername;
-@property (nonatomic, retain) Blog *blog;
+@property (nonatomic, strong) NSString *predefinedUsername;
+@property (nonatomic, strong) Blog *blog;
 
 - (IBAction)cancel:(id)sender;
 

@@ -38,7 +38,6 @@
 										blogUrl,
 										[blogInfo valueForKey:@"blogName"]]];
 			NSArray *results = [destMOC executeFetchRequest:fetchRequest error:&error];
-			[fetchRequest release];
 			if (results && [results count] > 0) {
 				// Don't duplicate blogs
 				WPFLog(@"! Skipping already imported blog %@", [blogInfo valueForKey:@"blogName"]);

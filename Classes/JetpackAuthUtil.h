@@ -13,10 +13,10 @@
 @protocol JetpackAuthUtilDelegate;
 
 @interface JetpackAuthUtil : NSObject <NSXMLParserDelegate> {
-    id<JetpackAuthUtilDelegate> delegate;
+    id<JetpackAuthUtilDelegate> __weak delegate;
 }
 
-@property (nonatomic, assign) id<JetpackAuthUtilDelegate> delegate;
+@property (nonatomic, weak) id<JetpackAuthUtilDelegate> delegate;
 
 + (NSString *)getJetpackUsernameForBlog:(Blog *)blog;
 + (NSString *)getJetpackPasswordForBlog:(Blog *)blog;

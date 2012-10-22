@@ -32,7 +32,7 @@
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, assign) id<SettingsViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<SettingsViewControllerDelegate> delegate;
 @property (nonatomic, assign) BOOL isCancellable;
 
 @end

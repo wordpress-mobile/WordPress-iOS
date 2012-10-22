@@ -24,7 +24,7 @@
 #define POST_LOCK_IMAGE         @"lock.png"
 
 @interface PostTableViewCell : UITableViewCell {
-    AbstractPost *post;
+    AbstractPost *__weak post;
 
     UILabel *nameLabel;
     UILabel *dateLabel;
@@ -34,7 +34,7 @@
 	BOOL gettingMore;
 }
 
-@property (readwrite, assign) AbstractPost *post;
+@property (readwrite, weak) AbstractPost *post;
 
 - (void)changeCellLabelsForUpdate:(NSString *)postTotalString:(NSString *) loadingString:(BOOL)isLoading;
 - (void)runSpinner:(BOOL)value;

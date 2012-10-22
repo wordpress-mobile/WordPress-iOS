@@ -15,14 +15,6 @@
 #pragma mark -
 #pragma mark Lifecycle Methods
 
-- (void)dealloc {
-    WPFLogMethod();
-    [originalSelObjects release];
-    [selectionStatusOfObjects release];
-    [objects release];
-    [super dealloc];
-}
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
         autoReturnInRadioSelectMode = YES;
@@ -76,32 +68,27 @@
 }
 
 - (void)clean {    
-    [objects release];
     objects = nil;
     selectionDelegate = nil;
     curContext = NULL;
-    [originalSelObjects release];
     originalSelObjects = nil;
-    [selectionStatusOfObjects release];
     selectionStatusOfObjects = nil;
 
 }
 
 - (void)populateDataSource:(NSArray *)sourceObjects havingContext:(void *)context selectedObjects:(NSArray *)selObjects selectionType:(WPSelectionType)aType andDelegate:(id)delegate {
-    objects = [sourceObjects retain];
+    objects = sourceObjects;
     curContext = context;
     selectionType = aType;
     selectionDelegate = delegate;
 
     int i = 0, count = [objects count];
-    [selectionStatusOfObjects release];
-    selectionStatusOfObjects = [[NSMutableArray arrayWithCapacity:count] retain];
+    selectionStatusOfObjects = [NSMutableArray arrayWithCapacity:count];
 
     for (i = 0; i < count; i++) {
         [selectionStatusOfObjects addObject:[NSNumber numberWithBool:[selObjects containsObject:[sourceObjects objectAtIndex:i]]]];
     }
 
-    [originalSelObjects release];
     originalSelObjects = [selectionStatusOfObjects copy];
 
     [tableView reloadData];
@@ -176,7 +163,7 @@
     UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:selectionTableRowCell];
 
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:selectionTableRowCell] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:selectionTableRowCell];
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
     }
 

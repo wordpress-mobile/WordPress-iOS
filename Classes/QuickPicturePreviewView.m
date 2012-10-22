@@ -14,12 +14,6 @@
 @implementation QuickPicturePreviewView
 @synthesize delegate;
 
-- (void)dealloc {
-    [paperClipImageView release]; paperClipImageView = nil;
-    [imageView release]; imageView = nil;
-    [super dealloc];
-}
-
 - (void)setupView {
     zoomed = NO;
     zooming = NO;

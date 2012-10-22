@@ -22,7 +22,7 @@
 - (void)setImageWithGravatarEmail:(NSString *)emailAddress {
     static UIImage *gravatarDefaultImage;
     if (gravatarDefaultImage == nil) {
-        gravatarDefaultImage = [[UIImage imageNamed:GRAVATAR_DEFAULT_IMAGE] retain];
+        gravatarDefaultImage = [UIImage imageNamed:GRAVATAR_DEFAULT_IMAGE];
     }
 
     NSURL *emailURL = [NSURL URLWithString:[NSString stringWithFormat:GRAVATAR_URL, [[emailAddress lowercaseString] md5]]];
@@ -39,10 +39,10 @@
     static UIImage *blavatarDefaultImageWPcom;
     static UIImage *blavatarDefaultImageWPorg;
     if (blavatarDefaultImageWPcom == nil) {
-        blavatarDefaultImageWPcom = [[UIImage imageNamed:BLAVATAR_DEFAULT_IMAGE_WPCOM] retain];
+        blavatarDefaultImageWPcom = [UIImage imageNamed:BLAVATAR_DEFAULT_IMAGE_WPCOM];
     }
     if (blavatarDefaultImageWPorg == nil) {
-        blavatarDefaultImageWPorg = [[UIImage imageNamed:BLAVATAR_DEFAULT_IMAGE_WPORG] retain];
+        blavatarDefaultImageWPorg = [UIImage imageNamed:BLAVATAR_DEFAULT_IMAGE_WPORG];
     }
     
     UIImage *placeholderImage;

@@ -13,14 +13,6 @@
 
 @synthesize helpText, faqButton, forumButton, isBlogSetup;
 
-- (void)dealloc {    
-    [faqButton release];
-    [forumButton release];
-    [navBar release];
-    [helpText release];
-    
-    [super dealloc];
-}
 
 
 - (void)viewDidUnload {
@@ -42,7 +34,6 @@
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
                                                                    style:UIBarButtonItemStyleDone target:self action:@selector(cancel:)];
         self.navigationItem.leftBarButtonItem = doneButton;
-        [doneButton release];
     }
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
@@ -64,10 +55,10 @@
 -(void)helpButtonTap: (id)sender {
     WPWebViewController *webViewController = nil;
     if ( IS_IPAD ) {
-        webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+        webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
     }
     else {
-        webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+        webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
     }
     UIButton *button = (UIButton*)sender;
     if (button.tag == 0)

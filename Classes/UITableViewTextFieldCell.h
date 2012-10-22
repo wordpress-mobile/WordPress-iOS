@@ -10,6 +10,6 @@
 
 
 @interface UITableViewTextFieldCell : UITableViewCell
-@property (nonatomic, retain) UITextField *textField;
+@property (nonatomic, strong) UITextField *textField;
 
 @end

@@ -13,6 +13,6 @@
      Blog *blog;
 }
 
-@property (readwrite, assign) Blog *blog;
+@property (readwrite, weak) Blog *blog;
 
 @end

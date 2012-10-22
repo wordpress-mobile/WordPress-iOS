@@ -83,7 +83,7 @@
     Post *post = [self findWithBlog:blog andPostID:[[postInfo objectForKey:@"postid"] numericValue]];
     
     if (post == nil) {
-        post = [[Post newPostForBlog:blog] autorelease];
+        post = [Post newPostForBlog:blog];
     }
  	[post updateFromDictionary:postInfo];
     [post findComments];
@@ -91,10 +91,6 @@
 }
 
 
-- (void)dealloc {
-    self.specialType = nil;
-    [super dealloc];
-}
 
 
 - (id)init {
@@ -184,7 +180,6 @@
 			self.latitudeID = geo_latitude_id;
 			self.longitudeID = geo_longitude_id;
 			self.publicID = geo_public_id;
-			[c release];
 		}
 	}
 	return;   
@@ -283,7 +278,6 @@
                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
     [alert show];
-    [alert release];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }

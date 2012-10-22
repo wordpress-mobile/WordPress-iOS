@@ -18,11 +18,11 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 @interface WPTableViewController () <EGORefreshTableHeaderDelegate>
 
-@property (nonatomic, retain) NSFetchedResultsController *resultsController;
+@property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic) BOOL swipeActionsEnabled;
-@property (nonatomic, retain, readonly) UIView *swipeView;
-@property (nonatomic, retain) UITableViewCell *swipeCell;
-@property (nonatomic, retain) NSIndexPath *firstVisibleIndexPathBeforeDisappear;
+@property (nonatomic, strong, readonly) UIView *swipeView;
+@property (nonatomic, strong) UITableViewCell *swipeCell;
+@property (nonatomic, strong) NSIndexPath *firstVisibleIndexPathBeforeDisappear;
 
 - (void)simulatePullToRefresh;
 - (void)enableSwipeGestureRecognizer;
@@ -54,24 +54,12 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (void)dealloc
 {
-    [_refreshHeaderView release];
-    [_indexPathSelectedBeforeUpdates release];
-    [_indexPathSelectedAfterUpdates release];
-    [_leftSwipeGestureRecognizer release];
-    [_rightSwipeGestureRecognizer release];
-    [_swipeView release];
-    [_swipeCell release];
     _resultsController.delegate = nil;
-    [_resultsController release];
-    [_blog release];
-    self.firstVisibleIndexPathBeforeDisappear = nil;
-    
-    [super dealloc];
 }
 
 - (id)initWithBlog:(Blog *)blog {
     if (self) {
-        _blog = [blog retain];
+        _blog = blog;
     }
     return self;
 }
@@ -103,7 +91,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 {
     [super viewDidUnload];
 
-    [_refreshHeaderView release]; _refreshHeaderView = nil;
+     _refreshHeaderView = nil;
     
     if (self.swipeActionsEnabled) {
         [self disableSwipeGestureRecognizer];
@@ -164,8 +152,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     if (_blog == blog) 
         return;
 
-    [_blog release];
-    _blog = [blog retain];
+    _blog = blog;
 
     self.resultsController = nil;
     [self.tableView reloadData];
@@ -202,7 +189,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     _swipeView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
     
     UIImage *shadow = [[UIImage imageNamed:@"inner-shadow.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
-    UIImageView *shadowImageView = [[[UIImageView alloc] initWithFrame:_swipeView.frame] autorelease];
+    UIImageView *shadowImageView = [[UIImageView alloc] initWithFrame:_swipeView.frame];
     shadowImageView.alpha = 0.5;
     shadowImageView.image = shadow;
     shadowImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -229,7 +216,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[self newCell] autorelease];
+    UITableViewCell *cell = [self newCell];
 
     if (IS_IPAD || self.tableView.isEditing) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
@@ -291,7 +278,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    _indexPathSelectedBeforeUpdates = [[self.tableView indexPathForSelectedRow] retain];
+    _indexPathSelectedBeforeUpdates = [self.tableView indexPathForSelectedRow];
     [self.tableView beginUpdates];
 }
 
@@ -300,9 +287,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     if (_indexPathSelectedAfterUpdates) {
         [self.tableView selectRowAtIndexPath:_indexPathSelectedAfterUpdates animated:NO scrollPosition:UITableViewScrollPositionNone];
 
-        [_indexPathSelectedBeforeUpdates release];
         _indexPathSelectedBeforeUpdates = nil;
-        [_indexPathSelectedAfterUpdates release];
         _indexPathSelectedAfterUpdates = nil;
     }
 }
@@ -345,7 +330,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
             [self.tableView insertRowsAtIndexPaths:[NSArray
                                                        arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             if ([_indexPathSelectedBeforeUpdates isEqual:indexPath] && _indexPathSelectedAfterUpdates == nil) {
-                _indexPathSelectedAfterUpdates = [newIndexPath retain];
+                _indexPathSelectedAfterUpdates = newIndexPath;
             }
             break;
     }    
@@ -406,11 +391,11 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
 	switch(buttonIndex) {
 		case 0: {
-            HelpViewController *helpViewController = [[[HelpViewController alloc] init] autorelease];
+            HelpViewController *helpViewController = [[HelpViewController alloc] init];
             helpViewController.isBlogSetup = YES;
-            helpViewController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModal:)] autorelease];
+            helpViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModal:)];
             // Probably should be modal
-            UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:helpViewController] autorelease];
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
             if (IS_IPAD) {
                 navController.modalPresentationStyle = UIModalPresentationFormSheet;
                 navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -443,18 +428,18 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                 
                 WPWebViewController *webViewController;
                 if ( IS_IPAD ) {
-                    webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+                    webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
                 } else {
-                    webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+                    webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
                 }
-                webViewController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModal:)] autorelease];
+                webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModal:)];
                 [webViewController setUrl:[NSURL URLWithString:path]];
                 [webViewController setUsername:self.blog.username];
                 [webViewController setPassword:[self.blog fetchPassword]];
                 [webViewController setWpLoginURL:[NSURL URLWithString:self.blog.loginURL]];
                 webViewController.shouldScrollToBottom = YES;
                 // Probably should be modal.
-                UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:webViewController] autorelease];
+                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
                 if (IS_IPAD) {
                     navController.modalPresentationStyle = UIModalPresentationFormSheet;
                     navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -503,7 +488,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
             
             alertView.tag = 30;
             [alertView show];
-            [alertView release];
             
         } else {
             [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync", @"")];
@@ -522,8 +506,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
             
             [self.panelNavigationController presentModalViewController:navController animated:YES];
             
-            [navController release];
-            [controller release];
             didPromptForCredentials = YES;
         }
     }];
@@ -546,13 +528,11 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)disableSwipeGestureRecognizer {
     if (_leftSwipeGestureRecognizer) {
         [self.tableView removeGestureRecognizer:_leftSwipeGestureRecognizer];
-        [_leftSwipeGestureRecognizer release];
         _leftSwipeGestureRecognizer = nil;
     }
 
     if (_rightSwipeGestureRecognizer) {
         [self.tableView removeGestureRecognizer:_rightSwipeGestureRecognizer];
-        [_rightSwipeGestureRecognizer release];
         _rightSwipeGestureRecognizer = nil;
     }
 }
@@ -607,7 +587,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                                                                        _animatingRemovalOfModerationSwipeView = NO;
                                                                        self.swipeCell = nil;
                                                                        [_swipeView removeFromSuperview];
-                                                                       [_swipeView release]; _swipeView = nil;
+                                                                        _swipeView = nil;
                                                                    }];
                                               }];
                          }];
@@ -615,7 +595,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     else
     {
         [self.swipeView removeFromSuperview];
-        [_swipeView release]; _swipeView = nil;
+         _swipeView = nil;
         self.swipeCell.frame = CGRectMake(0,self.swipeCell.frame.origin.y,self.swipeCell.frame.size.width, self.swipeCell.frame.size.height);
         self.swipeCell = nil;
     }
@@ -685,7 +665,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (NSFetchRequest *)fetchRequest {
-    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:self.blog.managedObjectContext]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
 
@@ -711,7 +691,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (UITableViewCell *)newCell {
     // To comply with apple ownership and naming conventions, returned cell should have a retain count > 0, so retain the dequeued cell.
     NSString *cellIdentifier = [NSString stringWithFormat:@"_WPTable_%@_Cell", [self entityName]];
-    UITableViewCell *cell = [[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier] retain];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }

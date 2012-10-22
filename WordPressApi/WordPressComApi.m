@@ -12,8 +12,8 @@
 #import "Constants.h"
 
 @interface WordPressComApi ()
-@property (readwrite, nonatomic, retain) NSString *username;
-@property (readwrite, nonatomic, retain) NSString *password;
+@property (readwrite, nonatomic, strong) NSString *username;
+@property (readwrite, nonatomic, strong) NSString *password;
 @end
 
 @implementation WordPressComApi

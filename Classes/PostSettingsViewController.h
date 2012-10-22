@@ -11,7 +11,7 @@
 #define kOFFSET_FOR_KEYBOARD                    150.0
 
 @class EditPostViewController;
-@interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, MKReverseGeocoderDelegate, UIActionSheetDelegate> {
+@interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, UIActionSheetDelegate> {
     IBOutlet UITableView *tableView;
     IBOutlet UITableViewCell *statusTableViewCell;
     IBOutlet UITableViewCell *visibilityTableViewCell;
@@ -23,7 +23,7 @@
     IBOutlet UITextField *passwordTextField;
     IBOutlet UILabel *publishOnLabel;
     IBOutlet UILabel *publishOnDateLabel;
-    EditPostViewController *postDetailViewController;
+    EditPostViewController *__weak postDetailViewController;
     NSArray *statusList;
     NSArray *visibilityList;
     NSArray *formatsList;
@@ -35,7 +35,7 @@
 
 	/* Geotagging */
 	CLLocationManager *locationManager;
-	MKReverseGeocoder *reverseGeocoder;
+    CLGeocoder *reverseGeocoder;
     UITableViewActivityCell *addGeotagTableViewCell;
     IBOutlet UITableViewCell *mapGeotagTableViewCell;
 	UITableViewCell *removeGeotagTableViewCell;
@@ -51,8 +51,8 @@
     IBOutlet UIActivityIndicatorView *featuredImageSpinner;
 }
 
-@property (nonatomic, assign) EditPostViewController *postDetailViewController;
-@property (nonatomic, retain) IBOutlet UITableViewCell *postFormatTableViewCell;
+@property (nonatomic, weak) EditPostViewController *postDetailViewController;
+@property (nonatomic, strong) IBOutlet UITableViewCell *postFormatTableViewCell;
 
 - (void)reloadData;
 - (void)endEditingAction:(id)sender;

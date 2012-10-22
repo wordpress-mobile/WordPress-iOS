@@ -7,34 +7,35 @@
 
 #import <Foundation/Foundation.h>
 #import <CommonCrypto/CommonDigest.h>
+#import <CoreData/CoreData.h>
 #import "AFXMLRPCClient.h"
 #import "Reachability.h"
 
 @interface Blog : NSManagedObject
 
-@property (nonatomic, retain) NSNumber *blogID;
-@property (nonatomic, retain) NSString *blogName, *username, *password, *xmlrpc, *apiKey;
-@property (readonly) NSString *blavatarUrl;
-@property (nonatomic, assign) NSNumber *isAdmin, *hasOlderPosts, *hasOlderPages;
-@property (nonatomic, retain) NSSet *posts;
-@property (nonatomic, retain) NSSet *categories;
-@property (nonatomic, retain) NSSet *comments;
+@property (nonatomic, strong) NSNumber *blogID;
+@property (nonatomic, strong) NSString *blogName, *username, *password, *xmlrpc, *apiKey;
+@property (weak, readonly) NSString *blavatarUrl;
+@property (nonatomic, strong) NSNumber *isAdmin, *hasOlderPosts, *hasOlderPages;
+@property (nonatomic, strong) NSSet *posts;
+@property (nonatomic, strong) NSSet *categories;
+@property (nonatomic, strong) NSSet *comments;
 @property (nonatomic, assign) BOOL isSyncingPosts;
 @property (nonatomic, assign) BOOL isSyncingPages;
 @property (nonatomic, assign) BOOL isSyncingComments;
-@property (nonatomic, retain) NSDate *lastPostsSync;
-@property (nonatomic, retain) NSDate *lastPagesSync;
-@property (nonatomic, retain) NSDate *lastCommentsSync;
-@property (nonatomic, retain) NSDate *lastStatsSync;
-@property (nonatomic, retain) NSString *lastUpdateWarning;
+@property (nonatomic, strong) NSDate *lastPostsSync;
+@property (nonatomic, strong) NSDate *lastPagesSync;
+@property (nonatomic, strong) NSDate *lastCommentsSync;
+@property (nonatomic, strong) NSDate *lastStatsSync;
+@property (nonatomic, strong) NSString *lastUpdateWarning;
 @property (nonatomic, assign) BOOL geolocationEnabled;
-@property (nonatomic, assign) NSNumber *isActivated;
-@property (nonatomic, retain) NSDictionary *options; //we can store an NSArray or an NSDictionary as a transformable attribute... 
-@property (nonatomic, retain) NSDictionary *postFormats;
-@property (readonly) NSArray *sortedPostFormatNames;
-@property (readonly, nonatomic, retain) AFXMLRPCClient *api;
-@property (readonly) NSString *version;
-@property (readonly) Reachability *reachability;
+@property (nonatomic, weak) NSNumber *isActivated;
+@property (nonatomic, strong) NSDictionary *options; //we can store an NSArray or an NSDictionary as a transformable attribute... 
+@property (nonatomic, strong) NSDictionary *postFormats;
+@property (weak, readonly) NSArray *sortedPostFormatNames;
+@property (readonly, nonatomic, strong) AFXMLRPCClient *api;
+@property (weak, readonly) NSString *version;
+@property (weak, readonly) Reachability *reachability;
 @property (readonly) BOOL reachable;
 
 /**
@@ -43,15 +44,15 @@
 
 // User to display the blog url to the user (IDN decoded, no http:)
 // wp.koke.me/sub
-@property (readonly) NSString *displayURL;
+@property (weak, readonly) NSString *displayURL;
 // alias of displayURL
 // kept for compatibilty, used as a key to store passwords
-@property (readonly) NSString *hostURL;
+@property (weak, readonly) NSString *hostURL;
 // http://wp.koke.me/sub
-@property (nonatomic, retain) NSString *url;
+@property (nonatomic, strong) NSString *url;
 // Used for reachability checks (IDN encoded)
 // wp.koke.me
-@property (readonly) NSString *hostname;
+@property (weak, readonly) NSString *hostname;
 
 
 #pragma mark - Blog information
@@ -85,6 +86,7 @@
 // Syncs posts, categories, options, and post formats
 - (void)syncBlogPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)checkActivationStatusWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)checkVideoPressEnabledWithSuccess:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure;
 
 #pragma mark -
 #pragma mark Class methods

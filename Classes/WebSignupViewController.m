@@ -25,9 +25,6 @@
 
 - (void)dealloc {
     self.webView.delegate = nil;
-	[webView release];
-	[spinner release];
-    [super dealloc];
 }
 
 
@@ -43,7 +40,6 @@
 	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] init];
 	buttonItem.customView = spinner;
 	self.navigationItem.rightBarButtonItem = buttonItem;
-    [buttonItem release];
     [self loadRequest];
 }
 
@@ -117,7 +113,6 @@
 								   cancelButtonTitle:NSLocalizedString(@"OK", @"") 
 								   otherButtonTitles:nil];
         [errorAlert show];
-        [errorAlert release];
     }
 }
 

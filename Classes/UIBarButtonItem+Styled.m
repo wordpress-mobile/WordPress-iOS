@@ -12,8 +12,8 @@
 
 @implementation UIBarButtonItem (Styled)
 
-- (id)styledInitWithImage:(UIImage *)image style:(UIBarButtonItemStyle)style target:(id)target action:(SEL)action {
-    self = [self styledInitWithImage:image style:style target:target action:action];
+- (id)initStyledWithImage:(UIImage *)image style:(UIBarButtonItemStyle)style target:(id)target action:(SEL)action {
+    self = [self initStyledWithImage:image style:style target:target action:action];
     if (self) {
         if (style == UIBarButtonItemStyleDone) {
             [[self class] styleButtonAsPrimary:self];
@@ -28,8 +28,8 @@
     return self;
 }
 
-- (id)styledInitWithImage:(UIImage *)image landscapeImagePhone:(UIImage *)landscapeImagePhone style:(UIBarButtonItemStyle)style target:(id)target action:(SEL)action {
-    self = [self styledInitWithImage:image landscapeImagePhone:landscapeImagePhone style:style target:target action:action];
+- (id)initStyledWithImage:(UIImage *)image landscapeImagePhone:(UIImage *)landscapeImagePhone style:(UIBarButtonItemStyle)style target:(id)target action:(SEL)action {
+    self = [self initStyledWithImage:image landscapeImagePhone:landscapeImagePhone style:style target:target action:action];
     if (self) {
         if (style == UIBarButtonItemStyleDone) {
             [[self class] styleButtonAsPrimary:self];
@@ -38,8 +38,8 @@
     return self;
 }
 
-- (id)styledInitWithTitle:(NSString *)title style:(UIBarButtonItemStyle)style target:(id)target action:(SEL)action {
-    self = [self styledInitWithTitle:title style:style target:target action:action];
+- (id)initStyledWithTitle:(NSString *)title style:(UIBarButtonItemStyle)style target:(id)target action:(SEL)action {
+    self = [self initStyledWithTitle:title style:style target:target action:action];
     if (self) {
         if (style == UIBarButtonItemStyleDone) {
             [[self class] styleButtonAsPrimary:self];
@@ -51,13 +51,13 @@
 + (void)load {
     if ([self respondsToSelector:@selector(appearance)]) {
         Method origMethod = class_getInstanceMethod(self, @selector(initWithImage:style:target:action:));
-        Method newMethod = class_getInstanceMethod(self, @selector(styledInitWithImage:style:target:action:));
+        Method newMethod = class_getInstanceMethod(self, @selector(initStyledWithImage:style:target:action:));
         method_exchangeImplementations(origMethod, newMethod);
         origMethod = class_getInstanceMethod(self, @selector(initWithImage:landscapeImagePhone:style:target:action:));
-        newMethod = class_getInstanceMethod(self, @selector(styledInitWithImage:landscapeImagePhone:style:target:action:));
+        newMethod = class_getInstanceMethod(self, @selector(initStyledWithImage:landscapeImagePhone:style:target:action:));
         method_exchangeImplementations(origMethod, newMethod);
         origMethod = class_getInstanceMethod(self, @selector(initWithTitle:style:target:action:));
-        newMethod = class_getInstanceMethod(self, @selector(styledInitWithTitle:style:target:action:));
+        newMethod = class_getInstanceMethod(self, @selector(initStyledWithTitle:style:target:action:));
         method_exchangeImplementations(origMethod, newMethod);
     }
 }

@@ -20,9 +20,9 @@
     BOOL restoringView;
 }
 
-@property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, retain) IBOutlet UIButton *settingsButton;
-@property (nonatomic, retain) IBOutlet UIView *utililtyView;
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) IBOutlet UIButton *settingsButton;
+@property (nonatomic, strong) IBOutlet UIView *utililtyView;
 
 - (IBAction)showSettings:(id)sender;
 - (void)processRowSelectionAtIndexPath:(NSIndexPath *)indexPath;

@@ -14,8 +14,8 @@
 @class WPReaderDetailViewController;
 
 @interface WPWebViewController ()
-@property (readonly) UIScrollView *scrollView;
-@property (nonatomic, retain) UIActionSheet *linkOptionsActionSheet;
+@property (weak, readonly) UIScrollView *scrollView;
+@property (nonatomic, strong) UIActionSheet *linkOptionsActionSheet;
 - (NSString*) getDocumentPermalink;
 - (NSString*) getDocumentTitle;
 - (void)upgradeButtonsAndLabels:(NSTimer*)timer;
@@ -38,24 +38,12 @@
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 
-    self.url = nil;
-    self.wpLoginURL = nil;
-    self.username = nil;
-    self.password = nil;
-    self.detailContent = nil;
-    self.detailHTML = nil;
     self.webView.delegate = nil;
     if ([webView isLoading]) {
         [webView stopLoading];
     }
-    self.webView = nil;
     self.statusTimer = nil;
     self.linkOptionsActionSheet.delegate = nil;
-    self.linkOptionsActionSheet = nil;
-    self.spinnerButton = nil;
-    self.optionsButton = nil;
-    
-    [super dealloc];
 }
 
 
@@ -91,11 +79,11 @@
             
             [btn addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
             
-            self.optionsButton = [[[UIBarButtonItem alloc] initWithCustomView:btn] autorelease];
+            self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
         } else {
-            self.optionsButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+            self.optionsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                                target:self
-                                                                               action:@selector(showLinkOptions)] autorelease];
+                                                                               action:@selector(showLinkOptions)];
         }
         
         if (!self.hidesLinkOptions) {
@@ -156,7 +144,7 @@
         // Replace refresh button with options button
         backButton.width = (toolbar.frame.size.width / 2.0f) - 10.0f;
         forwardButton.width = (toolbar.frame.size.width / 2.0f) - 10.0f;
-        UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         NSArray *items = [NSArray arrayWithObjects:spacer,
                           backButton, spacer,
                           forwardButton, spacer, nil];
@@ -222,9 +210,8 @@
  //   [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	if (statusTimer && timer != statusTimer) {
 		[statusTimer invalidate];
-		[statusTimer release];
 	}
-	statusTimer = [timer retain];
+	statusTimer = timer;
 }
 
 
@@ -316,7 +303,7 @@
         if ( self.wpLoginURL != nil )
             webURL = self.wpLoginURL;
         else //try to guess the login URL
-            webURL = [[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"] autorelease];
+            webURL = [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
     }
     else
         webURL = self.url;
@@ -336,7 +323,7 @@
         if ( self.wpLoginURL != nil )
             [request setURL: self.wpLoginURL];
         else
-             [request setURL:[[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"] autorelease]];
+             [request setURL:[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"]];
         
         [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
         [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
@@ -354,8 +341,7 @@
 - (void)setUrl:(NSURL *)theURL {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     if (url != theURL) {
-        [url release];
-        url = [theURL retain];
+        url = theURL;
         if (url && self.webView) {
             [self refreshWebView];
         }
@@ -402,10 +388,8 @@
                 
                 [customView addSubview:spinner];
                 [spinner startAnimating];
-                [spinner release];
                 
-                self.spinnerButton = [[[UIBarButtonItem alloc] initWithCustomView:customView] autorelease];
-                [customView release];
+                self.spinnerButton = [[UIBarButtonItem alloc] initWithCustomView:customView];
                 
             }
             NSMutableArray *newToolbarItems = [NSMutableArray arrayWithArray:toolbar.items];
@@ -477,7 +461,7 @@
     
     if( permaLink == nil || [[permaLink trim] isEqualToString:@""] ) return; //this should never happen
     
-    self.linkOptionsActionSheet = [[[UIActionSheet alloc] initWithTitle:permaLink delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open in Safari", @"Open in Safari"), NSLocalizedString(@"Mail Link", @"Mail Link"),  NSLocalizedString(@"Copy Link", @"Copy Link"), nil] autorelease];
+    self.linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:permaLink delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open in Safari", @"Open in Safari"), NSLocalizedString(@"Mail Link", @"Mail Link"),  NSLocalizedString(@"Copy Link", @"Copy Link"), nil];
     self.linkOptionsActionSheet.actionSheetStyle = UIActionSheetStyleDefault;
     if(IS_IPAD ){
         [self.linkOptionsActionSheet showFromBarButtonItem:self.optionsButton animated:YES];
@@ -537,10 +521,10 @@
         
         WPWebViewController *webViewController;
         if (IS_IPAD) {
-            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
         }
         else {
-            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
         }
         [webViewController setUrl:[request URL]];
         if ( self.panelNavigationController  )
@@ -620,7 +604,7 @@
 
 	if (buttonIndex == 0) {
 		NSURL *permaLinkURL;
-		permaLinkURL = [[[NSURL alloc] initWithString:(NSString *)permaLink] autorelease];
+		permaLinkURL = [[NSURL alloc] initWithString:(NSString *)permaLink];
         [[UIApplication sharedApplication] openURL:(NSURL *)permaLinkURL];		
     } else if (buttonIndex == 1) {
         MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
@@ -635,7 +619,6 @@
         if (controller) 
             [self.panelNavigationController presentModalViewController:controller animated:YES];        
         [self setMFMailFieldAsFirstResponder:controller.view mfMailField:@"MFRecipientTextField"];
-        [controller release];
     } else if ( buttonIndex == 2 ) {
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
         pasteboard.string = permaLink;
@@ -681,7 +664,7 @@
 - (void) showCloseButton {
     if ( IS_IPAD ) {
         UINavigationItem *topItem = self.iPadNavBar.topItem;        
-        topItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)] autorelease];
+        topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
     }
 }
 

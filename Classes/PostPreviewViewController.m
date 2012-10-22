@@ -21,9 +21,6 @@
 - (void)dealloc {
 	[webView stopLoading];
 	webView.delegate = nil;
-	[webView release]; webView = nil;
-    [loadingView release]; loadingView = nil;
-    [super dealloc];
 }
 
 
@@ -61,7 +58,7 @@
                                        UIViewAutoresizingFlexibleTopMargin |
                                        UIViewAutoresizingFlexibleRightMargin;
         
-        UIActivityIndicatorView *activityView = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
+        UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         activityView.hidesWhenStopped = NO;
         activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
                                         UIViewAutoresizingFlexibleBottomMargin |

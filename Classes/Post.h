@@ -20,18 +20,18 @@
 /// @name Specific Post properties
 ///-------------------------------
 
-@property (nonatomic, retain) Coordinate * geolocation;
-@property (nonatomic, retain) NSString * tags;
-@property (nonatomic, retain) NSString * postFormat;
-@property (nonatomic, retain) NSString * postFormatText;
-@property (nonatomic, retain) NSMutableSet * categories;
-@property (nonatomic, retain) NSString *featuredImageURL;
+@property (nonatomic, strong) Coordinate * geolocation;
+@property (nonatomic, strong) NSString * tags;
+@property (nonatomic, strong) NSString * postFormat;
+@property (nonatomic, strong) NSString * postFormatText;
+@property (nonatomic, strong) NSMutableSet * categories;
+@property (nonatomic, strong) NSString *featuredImageURL;
 
 /**
  A tag for specific post workflows. Only QuickPhoto for now.
  Used for usage stats only.
  */
-@property (nonatomic, retain) NSString *specialType;
+@property (nonatomic, strong) NSString *specialType;
 
 ///---------------------
 /// @name Helper methods

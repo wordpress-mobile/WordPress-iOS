@@ -14,13 +14,13 @@
     BOOL isShowingActionSheet;
 }
 
-@property (nonatomic, retain) IBOutlet UILabel *titleTitleLabel, *tagsTitleLabel, *categoriesTitleLabel;
-@property (nonatomic, retain) IBOutlet UILabel *titleLabel, *tagsLabel, *categoriesLabel;
-@property (nonatomic, retain) IBOutlet UITextView *contentView;
-@property (nonatomic, retain) IBOutlet UIWebView *contentWebView;
-@property (nonatomic, retain) IBOutlet AbstractPost *apost;
-@property (nonatomic, assign) Post *post;
-@property (nonatomic, assign) Blog * blog;
+@property (nonatomic, strong) IBOutlet UILabel *titleTitleLabel, *tagsTitleLabel, *categoriesTitleLabel;
+@property (nonatomic, strong) IBOutlet UILabel *titleLabel, *tagsLabel, *categoriesLabel;
+@property (nonatomic, strong) IBOutlet UITextView *contentView;
+@property (nonatomic, strong) IBOutlet UIWebView *contentWebView;
+@property (nonatomic, strong) IBOutlet AbstractPost *apost;
+@property (nonatomic, weak) Post *post;
+@property (nonatomic, weak) Blog * blog;
 
 - (id)initWithPost:(AbstractPost *)aPost;
 - (void)showModalEditor;

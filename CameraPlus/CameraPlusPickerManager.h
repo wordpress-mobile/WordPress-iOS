@@ -66,7 +66,7 @@ typedef void (^CameraPlusPickerCancelBlock)();
 /* Set a url protocol for Camera+ to use to launch your app after using the picker. This url protocol
  * must be configured in your Info.plist.
  */
-@property (nonatomic, retain) NSString *callbackURLProtocol;
+@property (nonatomic, strong) NSString *callbackURLProtocol;
 
 /* The picker mode, see the CameraPlusPickerMode enum. Set this before invoking the 
  * openCameraPlusPicker selector. The picker mode is also set before the delegate

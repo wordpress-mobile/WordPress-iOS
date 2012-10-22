@@ -17,15 +17,15 @@
     NSTimer *statusTimer;   // This timer checks the nav buttons every 0.75 seconds, and updates them
     NSTimer *refreshTimer; 
 }
-@property (nonatomic,retain) NSURL *url;
-@property (nonatomic,retain) NSString *username;
-@property (nonatomic,retain) NSString *password;
-@property (nonatomic,retain) NSString *detailContentHTML;
-@property (nonatomic, retain) IBOutlet UINavigationBar *iPadNavBar;
-@property (retain, nonatomic) NSTimer *refreshTimer;
-@property (nonatomic, retain) WPReaderTopicsViewController *topicsViewController;
-@property (nonatomic, retain) WPFriendFinderNudgeView *friendFinderNudgeView;
-@property (nonatomic, retain) UIBarButtonItem *titleButton;
+@property (nonatomic,strong) NSURL *url;
+@property (nonatomic,strong) NSString *username;
+@property (nonatomic,strong) NSString *password;
+@property (nonatomic,strong) NSString *detailContentHTML;
+@property (nonatomic, strong) IBOutlet UINavigationBar *iPadNavBar;
+@property (strong, nonatomic) NSTimer *refreshTimer;
+@property (nonatomic, strong) WPReaderTopicsViewController *topicsViewController;
+@property (nonatomic, strong) WPFriendFinderNudgeView *friendFinderNudgeView;
+@property (nonatomic, strong) UIBarButtonItem *titleButton;
 
 - (void)setSelectedTopic:(NSString *)topicId;
 - (void)setupTopics;

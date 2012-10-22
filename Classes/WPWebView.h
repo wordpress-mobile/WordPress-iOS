@@ -12,17 +12,17 @@ extern NSString *refreshedWithOutValidRequestNotification;
 @protocol WPWebViewDelegate;
 
 @interface WPWebView : UIView <UIWebViewDelegate, UIAlertViewDelegate, EGORefreshTableHeaderDelegate, UIScrollViewDelegate> {
-    id <WPWebViewDelegate>delegate;
+    id <WPWebViewDelegate>__weak delegate;
     NSURL *baseURLFallback;
     BOOL didSetScrollViewContentSize;
     BOOL simulatingPullToRefresh;
 }
 
-@property(nonatomic, assign) IBOutlet id<WPWebViewDelegate> delegate;
+@property(nonatomic, weak) IBOutlet id<WPWebViewDelegate> delegate;
 @property(nonatomic, readonly, getter=canGoBack) BOOL canGoBack;
 @property(nonatomic, readonly, getter=canGoForward) BOOL canGoForward;
 @property(nonatomic, readonly, getter=isLoading) BOOL loading;
-@property(nonatomic, readonly, getter=request) NSURLRequest *request;
+@property(weak, nonatomic, readonly, getter=request) NSURLRequest *request;
 @property(nonatomic) BOOL scalesPageToFit;
 @property(nonatomic) BOOL useWebViewLoading;
 

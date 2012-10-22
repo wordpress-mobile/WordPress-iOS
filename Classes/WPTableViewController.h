@@ -10,7 +10,7 @@
 
 @interface WPTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate>
 
-@property (nonatomic, retain) Blog *blog;
+@property (nonatomic, strong) Blog *blog;
 
 - (id)initWithBlog:(Blog *)blog;
 

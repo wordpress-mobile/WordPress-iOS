@@ -55,22 +55,9 @@
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 
-    self.comment = nil;
     self.delegate = nil;
-    [segmentedControl release];
-    [segmentBarItem release];
-	[replyToCommentViewController release];
-	[editCommentViewController release];
-	[commentsViewController release];
-	[commentAuthorUrlButton release];
-	[commentAuthorEmailButton release];
-	[commentPostTitleButton release];
-	[commentPostTitleLabel release];
 	commentBodyWebView.delegate = nil;
     [commentBodyWebView stopLoading];
-    [commentBodyWebView release];
-    [toolbar release];
-    [super dealloc];
 }
 
 - (void)viewDidLoad {
@@ -109,12 +96,12 @@
 	}
     
     //toolbar items
-    UIBarButtonItem *approveButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_approve"] style:UIBarButtonItemStylePlain target:self action:@selector(approveComment)] autorelease];
-    UIBarButtonItem *deleteButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_delete"] style:UIBarButtonItemStylePlain target:self action:@selector(launchDeleteCommentActionSheet)] autorelease];
-    UIBarButtonItem *spamButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_flag"] style:UIBarButtonItemStylePlain target:self action:@selector(spamComment)] autorelease];
-    UIBarButtonItem *editButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_edit"] style:UIBarButtonItemStylePlain target:self action:@selector(launchEditComment)] autorelease];
-    UIBarButtonItem *replyButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_reply"] style:UIBarButtonItemStylePlain target:self action:@selector(launchReplyToComments)] autorelease];
-    UIBarButtonItem *spacer = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
+    UIBarButtonItem *approveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_approve"] style:UIBarButtonItemStylePlain target:self action:@selector(approveComment)];
+    UIBarButtonItem *deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_delete"] style:UIBarButtonItemStylePlain target:self action:@selector(launchDeleteCommentActionSheet)];
+    UIBarButtonItem *spamButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_flag"] style:UIBarButtonItemStylePlain target:self action:@selector(spamComment)];
+    UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_edit"] style:UIBarButtonItemStylePlain target:self action:@selector(launchEditComment)];
+    UIBarButtonItem *replyButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_reply"] style:UIBarButtonItemStylePlain target:self action:@selector(launchReplyToComments)];
+    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     [toolbar setItems: [NSArray arrayWithObjects:approveButton, spacer, deleteButton, spacer, spamButton, spacer, editButton, spacer, replyButton, nil]];
     
     if (self.comment) {
@@ -127,11 +114,11 @@
     [super viewDidUnload];
     if (_reachabilityToken) {
         [_comment.blog removeObserverWithBlockToken:_reachabilityToken];
-        [_reachabilityToken release]; _reachabilityToken = nil;
+         _reachabilityToken = nil;
     }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [segmentedControl release]; segmentedControl = nil;
-    [gravatarImageView release]; gravatarImageView = nil;
+     segmentedControl = nil;
+     gravatarImageView = nil;
     self.commentAuthorEmailButton = nil;
     self.commentAuthorUrlButton = nil;
 	self.commentPostTitleButton = nil;
@@ -244,7 +231,6 @@
 																  message:NSLocalizedString(@"The blog is syncing with the server. Please try later.", @"")
 																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
 	[blogIsCurrentlyBusy show];
-	[blogIsCurrentlyBusy release];
 }
 
 - (void)launchReplyToComments {
@@ -259,14 +245,14 @@
 		self.replyToCommentViewController.delegate = nil;
 	}
 	
-	self.replyToCommentViewController = [[[ReplyToCommentViewController alloc] 
+	self.replyToCommentViewController = [[ReplyToCommentViewController alloc] 
 									 initWithNibName:@"ReplyToCommentViewController" 
-									 bundle:nil] autorelease];
+									 bundle:nil];
 	replyToCommentViewController.delegate = self;
-	replyToCommentViewController.comment = [[self.comment newReply] autorelease];
+	replyToCommentViewController.comment = [self.comment newReply];
 	replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
 	
-    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:replyToCommentViewController] autorelease];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:replyToCommentViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentModalViewController:navController animated:YES];
@@ -328,7 +314,6 @@
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:YES];
 	
-    [actionSheet release];
 }
 
 - (void)launchEditComment {
@@ -337,14 +322,14 @@
 
 
 - (void)showEditCommentViewWithAnimation:(BOOL)animate {
-	self.editCommentViewController = [[[EditCommentViewController alloc] 
+	self.editCommentViewController = [[EditCommentViewController alloc] 
 									 initWithNibName:@"EditCommentViewController" 
-									 bundle:nil] autorelease];
+									 bundle:nil];
 	editCommentViewController.commentViewController = self;
 	editCommentViewController.comment = self.comment;
 	editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
 
-    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:editCommentViewController] autorelease];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editCommentViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentModalViewController:navController animated:animate];
@@ -411,7 +396,6 @@
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [appDelegate setAlertRunning:YES];
         
-        [actionSheet release];
     }
 }
 
@@ -442,7 +426,6 @@
                                             message:NSLocalizedString(@"Operation is not supported now.", @"Can't do operation (comment moderate/edit) since there's no connection")
                                             delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
         [connectionFailAlert show];
-        [connectionFailAlert release];
         return NO;
     }
 
@@ -459,7 +442,10 @@
 
 - (void)moderateCommentWithSelector:(SEL)selector {
     Blog *currentBlog = self.comment.blog;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [self.comment performSelector:selector];
+#pragma clang diagnostic pop
     if (!IS_IPAD) {
         [self.navigationController popViewControllerAnimated:YES];
     } else {
@@ -587,15 +573,14 @@
 
     [_comment removeObserver:self forKeyPath:@"status"];
     [self willChangeValueForKey:@"comment"];
-    [_comment release];
-    _comment = [comment retain];
+    _comment = comment;
     [self didChangeValueForKey:@"comment"];
     [_comment addObserver:self forKeyPath:@"status" options:0 context:nil];
 
-    _reachabilityToken = [[comment.blog addObserverForKeyPath:@"reachable" task:^(id obj, NSDictionary *change) {
+    _reachabilityToken = [comment.blog addObserverForKeyPath:@"reachable" task:^(id obj, NSDictionary *change) {
         Blog *blog = (Blog *)obj;
         [self reachabilityChanged:blog.reachable];
-    }] retain];
+    }];
 
     [self reachabilityChanged:comment.blog.reachable];
 }
@@ -707,8 +692,6 @@
 		[controller setSubject:[NSString stringWithFormat:NSLocalizedString(@"Re: %@", @""), self.comment.postTitle]]; 
 		[controller setMessageBody:[NSString stringWithFormat:NSLocalizedString(@"Hi %@,", @""), self.comment.author] isHTML:NO];
 		[self presentModalViewController:controller animated:YES];
-		[recipient release];
-		[controller release];
 	}
 }
 
@@ -718,10 +701,10 @@
 	if (url != nil && [[url description] length] > 0) {
         WPWebViewController *webViewController;
         if (IS_IPAD) {
-            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
         }
         else {
-            webViewController = [[[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
         }
         [webViewController setUrl:url];
 

@@ -10,7 +10,7 @@
 
 - (id)initWithParent:(id)aParent {
     if (self = [super init]) {
-        parent = [aParent retain];
+        parent = aParent;
         children = [[NSMutableArray alloc] init];
     }
 
@@ -27,16 +27,10 @@
             WPCategoryTree *child = [[WPCategoryTree alloc] initWithParent:category];
             [child getChildrenFromObjects:collection];
             [children addObject:child];
-            [child release];
         }
     }
 }
 
-- (void)dealloc {
-    [parent release];
-    [children release];
-    [super dealloc];
-}
 
 - (NSArray *)getAllObjects {
     NSMutableArray *allObjects = [NSMutableArray array];

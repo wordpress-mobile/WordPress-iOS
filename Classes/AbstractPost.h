@@ -22,28 +22,28 @@ typedef enum {
 }
 
 // Attributes
-@property (nonatomic, retain) NSNumber * postID;
-@property (nonatomic, retain) NSString * author;
-@property (nonatomic, retain) NSDate * date_created_gmt;
-@property (nonatomic, retain) NSString * postTitle;
-@property (nonatomic, retain) NSString * content;
-@property (nonatomic, retain) NSString * status;
-@property (nonatomic, assign) NSString * statusTitle;
-@property (nonatomic, retain) NSString * password;
-@property (nonatomic, retain) NSString * permaLink;
-@property (nonatomic, retain) NSString * mt_excerpt;
-@property (nonatomic, retain) NSString * mt_text_more;
-@property (nonatomic, retain) NSString * wp_slug;
-@property (nonatomic, retain) NSNumber * remoteStatusNumber;
+@property (nonatomic, strong) NSNumber * postID;
+@property (nonatomic, strong) NSString * author;
+@property (nonatomic, strong) NSDate * date_created_gmt;
+@property (nonatomic, strong) NSString * postTitle;
+@property (nonatomic, strong) NSString * content;
+@property (nonatomic, strong) NSString * status;
+@property (nonatomic, weak) NSString * statusTitle;
+@property (nonatomic, strong) NSString * password;
+@property (nonatomic, strong) NSString * permaLink;
+@property (nonatomic, strong) NSString * mt_excerpt;
+@property (nonatomic, strong) NSString * mt_text_more;
+@property (nonatomic, strong) NSString * wp_slug;
+@property (nonatomic, strong) NSNumber * remoteStatusNumber;
 @property (nonatomic) AbstractPostRemoteStatus remoteStatus;
-@property (nonatomic, retain) NSNumber * post_thumbnail;
+@property (nonatomic, strong) NSNumber * post_thumbnail;
 
 // Relationships
-@property (nonatomic, retain) Blog * blog;
-@property (nonatomic, retain) NSMutableSet * media;
-@property (readonly) AbstractPost *original;
-@property (readonly) AbstractPost *revision;
-@property (nonatomic, retain) NSMutableSet * comments;
+@property (nonatomic, strong) Blog * blog;
+@property (nonatomic, strong) NSMutableSet * media;
+@property (weak, readonly) AbstractPost *original;
+@property (weak, readonly) AbstractPost *revision;
+@property (nonatomic, strong) NSMutableSet * comments;
 
 @property (readonly) BOOL hasChanges;
 @property (nonatomic, assign) BOOL isFeaturedImageChanged;

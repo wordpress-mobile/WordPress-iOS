@@ -11,12 +11,6 @@
 @implementation WPKeyboardToolbarButtonItem
 @synthesize actionTag, actionName;
 
-- (void)dealloc
-{
-    self.actionTag = nil;
-    self.actionName = nil;
-    [super dealloc];
-}
 
 + (id)button {
     return [WPKeyboardToolbarButtonItem buttonWithType:UIButtonTypeCustom];

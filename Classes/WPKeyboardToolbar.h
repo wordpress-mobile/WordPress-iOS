@@ -26,7 +26,7 @@
     WPKeyboardToolbarButtonItem *ulButton, *olButton, *liButton, *codeButton, *moreButton;
     WPKeyboardToolbarButtonItem *doneButton, *toggleButton;
 }
-@property (nonatomic, assign) id<WPKeyboardToolbarDelegate> delegate;
-@property (nonatomic, retain) WPKeyboardToolbarButtonItem *doneButton;
+@property (nonatomic, weak) id<WPKeyboardToolbarDelegate> delegate;
+@property (nonatomic, strong) WPKeyboardToolbarButtonItem *doneButton;
 
 @end

@@ -22,11 +22,10 @@
 - (void)dealloc
 {
     self.activeBlog = nil;
-    [blavatarImageView release]; blavatarImageView = nil;
-    [postToLabel release]; postToLabel = nil;
-    [blogTitleLabel release]; blogTitleLabel = nil;
-    [selectorImageView release]; selectorImageView = nil;
-    [super dealloc];
+     blavatarImageView = nil;
+     postToLabel = nil;
+     blogTitleLabel = nil;
+     selectorImageView = nil;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
@@ -136,9 +135,8 @@
         [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"blogName" ascending:YES];
         [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-        [sortDescriptor release]; sortDescriptor = nil;
+         sortDescriptor = nil;
         NSArray *results = [moc executeFetchRequest:fetchRequest error:&error];
-        [fetchRequest release];
         if (results && ([results count] > 0)) {
             self.activeBlog = [results objectAtIndex:0];
             //Disable selecting a blog if user has only one blog in the app.
@@ -153,8 +151,7 @@
 
 - (void)setActiveBlog:(Blog *)aBlog {
     if (aBlog != activeBlog) {
-        [activeBlog release];
-        activeBlog = [aBlog retain];
+        activeBlog = aBlog;
         [blavatarImageView setImageWithBlavatarUrl:activeBlog.blavatarUrl isWPcom:activeBlog.isWPcom];
         blogTitleLabel.text = activeBlog.blogName;
         if ([blogTitleLabel.text isEqualToString:@""]) {

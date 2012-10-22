@@ -33,19 +33,6 @@
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-	self.delegate = nil;
-	[saveButton release];
-	saveButton = nil;
-	[doneButton release];
-	doneButton = nil;
-	[cancelButton release];
-	cancelButton = nil;
-	self.comment = nil;
-	[textViewText release];
-	textViewText = nil;
-    
-    [super dealloc];
 }
 
 
@@ -80,7 +67,6 @@
 	textViewText = [[NSString alloc] initWithString: textView.text];
 	cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelView:)];
 	self.navigationItem.leftBarButtonItem = cancelButton;
-    [cancelButton release];
 	cancelButton = nil;
 	
 	if ([self.comment.status isEqualToString:@"hold"]) {
@@ -168,7 +154,7 @@
 	UIDeviceOrientation interfaceOrientation = [[UIDevice currentDevice] orientation];
 	if(UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
 		isTransitioning = YES;
-		UIViewController *garbageController = [[[UIViewController alloc] init] autorelease]; 
+		UIViewController *garbageController = [[UIViewController alloc] init]; 
 		[self.navigationController pushViewController:garbageController animated:NO]; 
 		[self.navigationController popViewControllerAnimated:NO];
 		self.isTransitioning = NO;
@@ -191,10 +177,10 @@
 	
 	if (IS_IPAD == NO) {
 		self.navigationItem.leftBarButtonItem =
-		[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
+		[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
 										 style:UIBarButtonItemStyleBordered
 										target:self
-										action:@selector(cancelView:)] autorelease];
+										action:@selector(cancelView:)];
 	}
 }
 
@@ -267,14 +253,12 @@
         endRange.location += text.length + replaceCount * 1; // length diff of "&nbsp" and "&#160;" is 1 character
         aTextView.selectedRange = endRange; 
 		
-        [updatedText release];
 		updatedText = nil;
 		
         // let the textView know that it should ingore the inserted text
         return NO;
     }
 	
-    [updatedText release];
 	updatedText = nil;
 	
     // let the textView know that it should handle the inserted text
@@ -292,7 +276,6 @@
 																	  message:NSLocalizedString(@"The internet connection appears to be offline.", @"")
 																	 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
         [connectionFailAlert show];
-        [connectionFailAlert release];
         return NO;
     }
 	
@@ -311,7 +294,6 @@
                                                                       message:NSLocalizedString(@"Please type a reply to the comment.", @"")
                                                                      delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
         [connectionFailAlert show];
-        [connectionFailAlert release];
 		return;
 	}
 	
@@ -320,7 +302,6 @@
     self.comment.content = textView.text;
     [self.comment uploadWithSuccess:^{
         [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-        [progressAlert release];
         progressAlert = nil;
 		hasChanges = NO;
 		if(delegate && [delegate respondsToSelector:@selector(closeReplyViewAndSelectTheNewComment)]){
@@ -330,7 +311,6 @@
 		}
     } failure:^(NSError *error) {
         [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-        [progressAlert release];
         progressAlert = nil;
         
         NSString *message = NSLocalizedString(@"Sorry, something went wrong posting the comment reply. Please try again.", @"");

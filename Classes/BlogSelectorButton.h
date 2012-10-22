@@ -37,8 +37,8 @@ typedef enum {
     BlogSelectorButtonType blogType;
     CGRect normalFrame;
 }
-@property (nonatomic, retain) Blog *activeBlog;
-@property (nonatomic, assign) id<BlogSelectorButtonDelegate> delegate;
+@property (nonatomic, strong) Blog *activeBlog;
+@property (nonatomic, weak) id<BlogSelectorButtonDelegate> delegate;
 
 - (void)loadBlogsForType:(BlogSelectorButtonType)aType;
 

@@ -62,7 +62,7 @@
     Page *page = [self findWithBlog:blog andPostID:[postInfo objectForKey:@"page_id"]];
     
     if (page == nil) {
-        page = [[Page newPageForBlog:blog] autorelease];
+        page = [Page newPageForBlog:blog];
     }
 	
 	[page updateFromDictionary:postInfo];

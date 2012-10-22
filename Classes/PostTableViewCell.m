@@ -35,13 +35,6 @@ static const float statusLabelMaxWidthPortrait = 100.f;
     return self;
 }
 
-- (void)dealloc {
-    [nameLabel release];
-    [dateLabel release];
-	[statusLabel release];
-    [activityIndicator release];
-    [super dealloc];
-}
 
 - (void)setSaving:(BOOL)value {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -54,7 +47,6 @@ static const float statusLabelMaxWidthPortrait = 100.f;
 
         UIImageView *image = [[UIImageView alloc] initWithImage:[UIImage imageNamed:POST_LOCK_IMAGE]];
         self.accessoryView = image;
-        [image release];
     } else {
         activityIndicator.hidden = YES;
 

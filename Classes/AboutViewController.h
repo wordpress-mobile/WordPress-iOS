@@ -11,8 +11,8 @@
 
 @interface AboutViewController : UIViewController <MFMailComposeViewControllerDelegate>
 
-@property (nonatomic, retain) IBOutlet UIView *logoView;
-@property (nonatomic, retain) IBOutlet UIView *buttonsView;
+@property (nonatomic, strong) IBOutlet UIView *logoView;
+@property (nonatomic, strong) IBOutlet UIView *buttonsView;
 
 - (IBAction)viewTermsOfService:(id)sender;
 - (IBAction)viewPrivacyPolicy:(id)sender;

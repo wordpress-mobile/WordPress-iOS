@@ -27,7 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)] autorelease];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
 
     NSError *error = nil;
     NSString *wpcom_username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
@@ -40,17 +40,16 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:queryUrl]];
     [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
     if (wpcom_username && wpcom_password) {
-        queryUrl = (NSString *)CFURLCreateStringByAddingPercentEscapes(
+        queryUrl = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
                                                                        NULL,
                                                                        (CFStringRef)queryUrl,
                                                                        NULL,
                                                                        (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                       kCFStringEncodingUTF8 );
+                                                                       kCFStringEncodingUTF8 ));
         NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
                                   [wpcom_username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                                   [wpcom_password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                                   queryUrl];
-        [queryUrl release];
         NSLog(@"request_body: %@", request_body);
         [request setURL:[NSURL URLWithString:WPCOM_LOGIN_URL]];
         [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
@@ -94,7 +93,7 @@
                               code];
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
-    AFHTTPRequestOperation *operation = [[[AFHTTPRequestOperation alloc] initWithRequest:request] autorelease];
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSString *responseString = operation.responseString;
         NSDictionary *response = (NSDictionary *)[responseString objectFromJSONString];
@@ -126,7 +125,6 @@
     UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
     UIWindow *window = [[WordPressAppDelegate sharedWordPressApp] window];
     [window.rootViewController presentModalViewController:navigation animated:YES];
-    [navigation release];
 }
 
 #pragma mark - UIWebViewDelegate

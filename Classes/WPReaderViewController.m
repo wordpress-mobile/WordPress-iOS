@@ -40,7 +40,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 // Empty category allows us to define "private" properties
 @interface WPReaderViewController ()
 
-@property (nonatomic, retain) WPReaderDetailViewController *detailViewController; 
+@property (nonatomic, strong) WPReaderDetailViewController *detailViewController; 
 
 @end
 
@@ -52,18 +52,9 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 - (void)dealloc
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    self.url = nil;
-    self.username = nil;
-    self.password = nil;
-    self.detailContentHTML = nil;
     self.refreshTimer = nil;
     self.topicsViewController.delegate = nil;
-    self.topicsViewController = nil;
     self.detailViewController.delegate = nil;
-    self.detailViewController = nil;
-    self.friendFinderNudgeView = nil;
-    self.titleButton = nil;
-    [super dealloc];
 }
 
 - (id)init
@@ -83,12 +74,12 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
         
         [self canIHazCookie];
         
-        self.topicsViewController = [[[WPReaderTopicsViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil] autorelease];
+        self.topicsViewController = [[WPReaderTopicsViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil];
         self.topicsViewController.delegate = self;
         if (IS_IPAD)
-            self.detailViewController = [[[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil] autorelease];
+            self.detailViewController = [[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
         else 
-            self.detailViewController = [[[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil] autorelease];
+            self.detailViewController = [[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
         self.detailViewController.delegate = self;
 
     }
@@ -224,7 +215,6 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     }
    
     [self presentModalViewController:nav animated:YES];
-    [nav release];
 }
 
 - (void)topicsController:(WPReaderTopicsViewController *)topicsController didDismissSelectingTopic:(NSString *)topic withTitle:(NSString *)title
@@ -287,9 +277,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
         UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
         spacer.width = 8.0f;
         self.toolbarItems = [NSArray arrayWithObjects:button, spacer, titleButton, nil];
-        [spacer release];
     }
-    [button release];
     
 }
 
@@ -344,9 +332,8 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     //   [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	if (statusTimer && timer != statusTimer) {
 		[statusTimer invalidate];
-		[statusTimer release];
 	}
-	statusTimer = [timer retain];
+	statusTimer = timer;
 }
 
 - (void)setRefreshTimer:(NSTimer *)timer
@@ -354,9 +341,8 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     //   [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	if (refreshTimer && timer != refreshTimer) {
 		[refreshTimer invalidate];
-		[refreshTimer release];
 	}
-	refreshTimer = [timer retain];
+	refreshTimer = timer;
 }
 
 - (void)loadURL:(NSURL *)webURL {
@@ -376,7 +362,6 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     
     NSURL *loginURL = [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
     NSMutableURLRequest *loginRequest = [[NSMutableURLRequest alloc] initWithURL:loginURL];
-    [loginURL release];
     
     NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&rememberme=forever&redirect_to=%@",
                               [self.username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
@@ -388,9 +373,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     [loginRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
     
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:loginRequest delegate:nil];
-    [loginRequest release];
     [connection start];
-    [connection release];
     
     
     return NO;
@@ -426,8 +409,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 - (void)setUrl:(NSURL *)theURL {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     if (url != theURL) {
-        [url release];
-        url = [theURL retain];
+        url = theURL;
         if (url && self.webView) {
             [self refreshWebView];
         }
@@ -452,10 +434,13 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 - (void)pingStatsEndpoint:(NSString*)statName {
     int x = arc4random();
     NSString *statsURL = [NSString stringWithFormat:@"%@%@%@%@%d" , kMobileReaderURL, @"&template=stats&stats_name=", statName, @"&rnd=", x];
-    NSMutableURLRequest* request = [[[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]] autorelease];
+    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]];
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
     [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-    [[[NSURLConnection alloc] initWithRequest:request delegate:nil] autorelease];
+    @autoreleasepool {
+        NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:nil];
+        [conn start];
+    }
 }
 
 #pragma mark - UIWebViewDelegate
@@ -498,7 +483,6 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
             webViewController.url = [request URL]; 
             [self.panelNavigationController popToRootViewControllerAnimated:NO];
             [self.panelNavigationController pushViewController:detailViewController animated:YES];
-            [webViewController release];
             return NO;
         }
     }
@@ -524,12 +508,10 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     if (self.loading && ([error code] != -999) && [error code] != 102)
         [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
     self.loading = NO;
-    [super webView:webView didFailLoadWithError:error];
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView {
     [FileLogger log:@"%@ %@%@", self, NSStringFromSelector(_cmd), aWebView.request.URL];
-    [super webViewDidStartLoad:aWebView];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
@@ -541,8 +523,6 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
         [self refreshWebView];
         return;
     }
-    // Since WPWebAppViewController releases the delegate, call super at the end. See #1356
-    [super webViewDidFinishLoad:aWebView];
 }
 
 #pragma mark - Friend Finder Button
@@ -568,7 +548,6 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
         CGRect buttonFrame = CGRectMake(0,self.view.frame.size.height,self.view.frame.size.width, 0.f);
         WPFriendFinderNudgeView *nudgeView = [[WPFriendFinderNudgeView alloc] initWithFrame:buttonFrame];
         self.friendFinderNudgeView = nudgeView;
-        [nudgeView release];
         self.friendFinderNudgeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         [self.view addSubview:self.friendFinderNudgeView];
         
@@ -608,13 +587,12 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 - (void)openFriendFinder:(id)sender {
     [self hideFriendFinderNudgeView:sender];
-    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:self.topicsViewController] autorelease];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.topicsViewController];
     WPFriendFinderViewController *friendFinder = [[WPFriendFinderViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil];
     [navController pushViewController:friendFinder animated:NO];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentModalViewController:navController animated:YES];
     [friendFinder loadURL:kMobileReaderFFURL];
-    [friendFinder release];
 
 }
 

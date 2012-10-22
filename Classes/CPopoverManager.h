@@ -14,6 +14,6 @@
 
 + (CPopoverManager *)instance;
 
-@property (readwrite, nonatomic, retain) UIPopoverController *currentPopoverController;
+@property (readwrite, nonatomic, strong) UIPopoverController *currentPopoverController;
 
 @end

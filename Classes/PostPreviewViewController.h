@@ -2,17 +2,17 @@
 #import "EditPostViewController.h"
 
 @interface PostPreviewViewController : UIViewController <UIWebViewDelegate> {
-    IBOutlet UIWebView *webView;
+    IBOutlet UIWebView *__weak webView;
     UIView *loadingView;
 
-    EditPostViewController *postDetailViewController;
+    EditPostViewController *__weak postDetailViewController;
 	NSFetchedResultsController *resultsController;
 	
 	NSMutableData *receivedData;
 }
 
-@property (nonatomic, assign) EditPostViewController *postDetailViewController;
-@property (readonly) UIWebView *webView;
+@property (nonatomic, weak) EditPostViewController *postDetailViewController;
+@property (weak, readonly) UIWebView *webView;
 
 - (void)refreshWebView;
 

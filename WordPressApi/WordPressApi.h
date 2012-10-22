@@ -17,7 +17,7 @@
 /// @name Accessing WordPress API properties
 ///-----------------------------------------
 
-@property (readonly, nonatomic, retain) NSURL *xmlrpc;
+@property (readonly, nonatomic, strong) NSURL *xmlrpc;
 
 ///-------------------------------------------------------
 /// @name Creating and Initializing a WordPress API Client
