@@ -229,6 +229,7 @@ typedef enum {
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
     cell.textLabel.textAlignment = UITextAlignmentLeft;
     cell.accessoryType = UITableViewCellAccessoryNone;
+    cell.accessoryView = nil;
     if (indexPath.section == SettingsSectionBlogs) {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
         cell.textLabel.text = blog.blogName;
