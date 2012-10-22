@@ -1410,7 +1410,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				E1895ECB1607272B007E6DD5 /* Default-568h@2x.png */,
 				5D63449E159A4B0E00AF402F /* Deprecated */,
 				2FAE97050E33B21600CA8540 /* license.txt */,
 				E11F949814A3344300277D31 /* WordPressApi */,
@@ -2032,6 +2031,7 @@
 				6E461BAD11C0C06100B07942 /* check@2x.png */,
 				3704ACFA13128C9800120911 /* Default.png */,
 				3704ACFB13128C9800120911 /* Default@2x.png */,
+				E1895ECB1607272B007E6DD5 /* Default-568h@2x.png */,
 				30FB8B49140D2B9C003BBEC5 /* doneButton.png */,
 				30FB8B48140D2B9C003BBEC5 /* doneButton@2x.png */,
 				30FB8B6A140D32E5003BBEC5 /* doneButtonHighlighted.png */,
