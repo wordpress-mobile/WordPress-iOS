@@ -132,6 +132,9 @@
 #define kNoXMLPrefix 903
 #define kNotificationNewComment 1001
 
+#define kSettingsMuteSoundsKey @"settings_mute_sounds"
+
+
 typedef NS_ENUM(NSUInteger, MediaType) {
 	kImage,
 	kVideo

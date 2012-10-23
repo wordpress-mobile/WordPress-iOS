@@ -20,6 +20,8 @@
     - Video API
     - Video Quality
     - Video Content
+ - Sounds 
+    - Mute Sounds
  - Info
     - Version
     - About
@@ -36,12 +38,14 @@
 #import "WordPressComApi.h"
 #import "AboutViewController.h"
 #import "SettingsPageViewController.h"
+#import "Constants.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,
     SettingsSectionBlogsAdd,
     SettingsSectionWpcom,
     SettingsSectionMedia,
+    SettingsSectionSounds,
     SettingsSectionInfo,
     
     SettingsSectionCount
@@ -56,6 +60,8 @@ typedef enum {
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
 - (void)checkCloseButton;
 - (void)setupMedia;
+- (void)handleExtraDebugChanged:(id)sender;
+- (void)handleMuteSoundsChanged:(id)sender;
 
 @end
 
@@ -176,6 +182,13 @@ typedef enum {
 }
 
 
+- (void)handleMuteSoundsChanged:(id)sender {
+    UISwitch *aSwitch = (UISwitch *)sender;
+    [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:kSettingsMuteSoundsKey];
+    [NSUserDefaults resetStandardUserDefaults];
+}
+
+
 #pragma mark - 
 #pragma mark Table view data source
 
@@ -188,14 +201,22 @@ typedef enum {
     switch (section) {
         case SettingsSectionBlogs:
             return [[self.resultsController fetchedObjects] count];
+            
         case SettingsSectionBlogsAdd:
             return 1;
+            
         case SettingsSectionWpcom:
             return [WordPressComApi sharedApi].username ? 2 : 1;
+            
         case SettingsSectionMedia:
             return [mediaSettingsArray count];
+            
+        case SettingsSectionSounds :
+            return 1;
+            
         case SettingsSectionInfo:
             return 3;
+            
         default:
             return 0;
     }
@@ -212,16 +233,24 @@ typedef enum {
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (section == SettingsSectionBlogs) {
-        return NSLocalizedString(@"Blogs", @"");
+        return NSLocalizedString(@"Blogs", @"Title label for the user blogs in the app settings");
+        
     } else if (section == SettingsSectionWpcom) {
         return NSLocalizedString(@"WordPress.com", @"");
+        
     } else if (section == SettingsSectionBlogsAdd) {
-        return nil;    
+        return nil;
+        
     } else if (section == SettingsSectionMedia) {
-        return NSLocalizedString(@"Media", @"");
+        return NSLocalizedString(@"Media", @"Title label for the media settings section in the app settings");
+    
+    } else if (section == SettingsSectionSounds) {
+        return NSLocalizedString(@"Sounds", @"Title label for the sounds section in the app settings.");
+        
     } else if (section == SettingsSectionInfo) {
-        return NSLocalizedString(@"App Info", @"");
+        return NSLocalizedString(@"App Info", @"Title label for the application information section in the app settings");
     }
+    
     return nil;
 }
 
@@ -235,11 +264,13 @@ typedef enum {
         cell.textLabel.text = blog.blogName;
         cell.detailTextLabel.text = blog.hostURL;
         [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
+        
     } else if (indexPath.section == SettingsSectionBlogsAdd) {
         cell.textLabel.text = NSLocalizedString(@"Add a Blog", @"");
         cell.textLabel.textAlignment = UITextAlignmentCenter;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
     } else if (indexPath.section == SettingsSectionWpcom) {
         if ([WordPressComApi sharedApi].username) {
             if (indexPath.row == 0) {
@@ -255,6 +286,7 @@ typedef enum {
             cell.textLabel.textAlignment = UITextAlignmentCenter;
             cell.textLabel.text = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
         }
+        
     } else if (indexPath.section == SettingsSectionMedia){
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
@@ -271,6 +303,15 @@ typedef enum {
         
         NSArray *titles = [dict objectForKey:@"Titles"];
         cell.detailTextLabel.text = [titles objectAtIndex:index];
+        
+    } else if(indexPath.section == SettingsSectionSounds) {
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.textLabel.text = NSLocalizedString(@"Mute Sounds", @"Title for the setting to mute in-app sounds");
+        UISwitch *aSwitch = [[UISwitch alloc] initWithFrame:CGRectZero]; // Frame is ignored.
+        [aSwitch addTarget:self action:@selector(handleMuteSoundsChanged:) forControlEvents:UIControlEventValueChanged];
+        aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsMuteSoundsKey];
+        cell.accessoryView = aSwitch;
 
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
@@ -301,14 +342,21 @@ typedef enum {
             cellIdentifier = @"BlogCell";
             cellStyle = UITableViewCellStyleSubtitle;
             break;
+            
         case SettingsSectionWpcom:
             cellIdentifier = @"WpcomCell";
             cellStyle = UITableViewCellStyleValue1;
             break;
+            
         case SettingsSectionMedia:
             cellIdentifier = @"Media";
             cellStyle = UITableViewCellStyleValue1;
             break;
+        
+        case SettingsSectionSounds:
+            cellIdentifier = @"Sounds";
+            break;
+            
         case SettingsSectionInfo:
             if (indexPath.row == 0) {
                 cellIdentifier = @"InfoCell";
@@ -400,6 +448,9 @@ typedef enum {
         SettingsPageViewController *controller = [[SettingsPageViewController alloc] initWithDictionary:dict];
         [self.navigationController pushViewController:controller animated:YES];
     
+    } else if (indexPath.section == SettingsSectionSounds) {
+        // nothing to do.
+        
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 1) {
             AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil]; 

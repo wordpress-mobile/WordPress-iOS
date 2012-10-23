@@ -8,10 +8,11 @@
 
 #import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import "PanelNavigationController.h"
 #import "PanelNavigationConstants.h"
 #import "PanelViewWrapper.h"
-#import <AudioToolbox/AudioToolbox.h> 
+#import "Constants.h"
 
 #pragma mark -
 
@@ -692,7 +693,9 @@
 }
 
 - (void)showSidebarAnimated:(BOOL)animated {
-    AudioServicesPlaySystemSound(openPanelSoundID); 
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:kSettingsMuteSoundsKey]) {
+        AudioServicesPlaySystemSound(openPanelSoundID);
+    }
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:0 duration:0];
         [self disableDetailView];
@@ -701,14 +704,18 @@
 }
 
 - (void)showSidebarWithVelocity:(CGFloat)velocity {
-    AudioServicesPlaySystemSound(openPanelSoundID);
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:kSettingsMuteSoundsKey]) {
+        AudioServicesPlaySystemSound(openPanelSoundID);
+    }
     [self disableDetailView];
     [self setStackOffset:0.f withVelocity:velocity];
 }
 
 
 - (void)closeSidebar {
-    AudioServicesPlaySystemSound(closePanelSoundID);
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:kSettingsMuteSoundsKey]) {
+        AudioServicesPlaySystemSound(closePanelSoundID);
+    }
     [self closeSidebarAnimated:YES];
 }
 
@@ -721,7 +728,9 @@
 }
 
 - (void)closeSidebarWithVelocity:(CGFloat)velocity {
-    AudioServicesPlaySystemSound(closePanelSoundID);
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:kSettingsMuteSoundsKey]) {
+        AudioServicesPlaySystemSound(closePanelSoundID);
+    }
     [self enableDetailView];
     [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) withVelocity:velocity];
 }

@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 WordPress. All rights reserved.
 //
 
+#import <AudioToolbox/AudioToolbox.h>
 #import "WPTableViewController.h"
 #import "WPTableViewControllerSubclass.h"
 #import "EGORefreshTableHeaderView.h" 
@@ -13,7 +14,8 @@
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPWebViewController.h"
-#import <AudioToolbox/AudioToolbox.h>  
+#import "Constants.h"
+
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
@@ -370,7 +372,9 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 #pragma mark - EGORefreshTableHeaderDelegate Methods
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view{
-    AudioServicesPlaySystemSound(refreshSoundID);
+    if(![[NSUserDefaults standardUserDefaults] boolForKey:kSettingsMuteSoundsKey]) {
+        AudioServicesPlaySystemSound(refreshSoundID);
+    }
 	[self syncItemsWithUserInteraction:YES];
 }
 
