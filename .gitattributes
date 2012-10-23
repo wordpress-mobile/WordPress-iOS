@@ -958,6 +958,10 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /sidebar_stats@2x.png -text
 /sidebar_view.png -text
 /sidebar_view@2x.png -text
+/snd_pull.caf -text
+/snd_refresh.caf -text
+/snd_success_1.caf -text
+/snd_success_2.caf -text
 /stats.png -text
 /stats@2x.png -text
 sv.lproj/Localizable.strings -text svneol=unset#unset

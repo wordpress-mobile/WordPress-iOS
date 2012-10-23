@@ -11,6 +11,7 @@
 #import "PanelNavigationController.h"
 #import "PanelNavigationConstants.h"
 #import "PanelViewWrapper.h"
+#import <AudioToolbox/AudioToolbox.h> 
 
 #pragma mark -
 
@@ -100,6 +101,9 @@
     BOOL _isShowingPoppedIcon;
     BOOL _panned;
     BOOL _pushing;
+    
+    SystemSoundID openPanelSoundID;
+    SystemSoundID closePanelSoundID;
 }
 @synthesize detailViewController = _detailViewController;
 @synthesize masterViewController = _masterViewController;
@@ -149,6 +153,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //set up audio
+    openPanelSoundID = 0, closePanelSoundID = 0;
+    NSURL *toneURLRef = [[NSBundle mainBundle] URLForResource:@"snd_success_1" withExtension:@"caf"];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef) toneURLRef, &openPanelSoundID);
+    toneURLRef = [[NSBundle mainBundle] URLForResource:@"snd_success_2" withExtension:@"caf"];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef) toneURLRef, &closePanelSoundID);
 
     self.detailView = [[UIView alloc] init];
     
@@ -681,6 +692,7 @@
 }
 
 - (void)showSidebarAnimated:(BOOL)animated {
+    AudioServicesPlaySystemSound(openPanelSoundID); 
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:0 duration:0];
         [self disableDetailView];
@@ -689,12 +701,14 @@
 }
 
 - (void)showSidebarWithVelocity:(CGFloat)velocity {
+    AudioServicesPlaySystemSound(openPanelSoundID);
     [self disableDetailView];
     [self setStackOffset:0.f withVelocity:velocity];
 }
 
 
 - (void)closeSidebar {
+    AudioServicesPlaySystemSound(closePanelSoundID);
     [self closeSidebarAnimated:YES];
 }
 
@@ -707,6 +721,7 @@
 }
 
 - (void)closeSidebarWithVelocity:(CGFloat)velocity {
+    AudioServicesPlaySystemSound(closePanelSoundID);
     [self enableDetailView];
     [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) withVelocity:velocity];
 }

@@ -13,6 +13,7 @@
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPWebViewController.h"
+#import <AudioToolbox/AudioToolbox.h>  
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
@@ -43,7 +44,11 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     UISwipeGestureRecognizerDirection _swipeDirection;
     BOOL _animatingRemovalOfModerationSwipeView;
     BOOL didPromptForCredentials;
+
+    SystemSoundID pullSoundID;
+    SystemSoundID refreshSoundID;
 }
+
 
 @synthesize blog = _blog;
 @synthesize resultsController = _resultsController;
@@ -56,6 +61,20 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 {
     _resultsController.delegate = nil;
 }
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        pullSoundID = 0, refreshSoundID = 0;
+        NSURL *toneURLRef = [[NSBundle mainBundle] URLForResource:@"snd_pull" withExtension:@"caf"];
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef) toneURLRef, &pullSoundID);
+        toneURLRef = [[NSBundle mainBundle] URLForResource:@"snd_refresh" withExtension:@"caf"];
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef) toneURLRef, &refreshSoundID);
+    }
+    return self;
+}
+
 
 - (id)initWithBlog:(Blog *)blog {
     if (self) {
@@ -351,6 +370,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 #pragma mark - EGORefreshTableHeaderDelegate Methods
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view{
+    AudioServicesPlaySystemSound(refreshSoundID);
 	[self syncItemsWithUserInteraction:YES];
 }
 
