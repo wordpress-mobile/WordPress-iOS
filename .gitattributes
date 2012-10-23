@@ -694,6 +694,7 @@ Vendor/xmlrpc/XMLRPCResponse.m -text
 /WelcomeViewController.xib -text
 /WordPress[!!-~]copy-Info.plist -text
 WordPress.xcodeproj/project.pbxproj -text
+WordPress.xcodeproj/xcshareddata/xcschemes/WordPress[!!-~]Internal.xcscheme -text
 WordPress.xcodeproj/xcshareddata/xcschemes/WordPress.xcscheme -text
 WordPress.xcodeproj/xcshareddata/xcschemes/WordPressTest.xcscheme -text
 WordPress.xcworkspace/contents.xcworkspacedata -text
