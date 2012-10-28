@@ -1207,7 +1207,7 @@ static WordPressAppDelegate *wordPressApp = NULL;
     if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
         WPFLog(@"Received notification: %@", remoteNotif);
         SidebarViewController *sidebar = (SidebarViewController *)self.panelNavigationController.masterViewController;
-        [sidebar showCommentWithId:[remoteNotif objectForKey:@"comment_id"] blogId:[remoteNotif objectForKey:@"blog_id"]];
+        [sidebar showCommentWithId:[[remoteNotif objectForKey:@"comment_id"] numericValue] blogId:[[remoteNotif objectForKey:@"blog_id"] numericValue]];
     } else {
         WPFLog(@"Got unsupported notification: %@", remoteNotif);
     }
