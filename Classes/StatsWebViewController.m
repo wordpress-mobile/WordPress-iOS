@@ -24,6 +24,7 @@
     BOOL promptCredentialsWhenViewAppears;
     AFHTTPRequestOperation *authRequest;
     JetpackAuthUtil *jetpackAuthUtil;
+    UIAlertView *retryAlertView;
 }
 
 @property (nonatomic, strong) NSString *wporgBlogJetpackKey;
@@ -74,7 +75,8 @@ static NSString *_lastAuthedName = nil;
     if (authRequest && [authRequest isExecuting]) {
         [authRequest cancel];
     }
-    jetpackAuthUtil.delegate = nil; 
+    jetpackAuthUtil.delegate = nil;
+    retryAlertView.delegate = nil;
 }
 
 
@@ -255,6 +257,19 @@ static NSString *_lastAuthedName = nil;
 
 
 
+- (void)showRetryAlertView:(StatsWebViewController *)statsWebViewController {
+    if (retryAlertView)
+        return;
+
+
+    retryAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+                                                        message:NSLocalizedString(@"There was a problem connecting to your stats. Would you like to retry?", @"")
+                                                       delegate:statsWebViewController
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                              otherButtonTitles:NSLocalizedString(@"Retry?", nil), nil];
+    [retryAlertView show];
+}
+
 - (void)authStats {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     if (authed) {
@@ -329,13 +344,7 @@ static NSString *_lastAuthedName = nil;
             [statsWebViewController showAuthFailed];
             
         } else {
-
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
-                                                                message:NSLocalizedString(@"There was a problem connecting to your stats. Would you like to retry?", @"")
-                                                               delegate:statsWebViewController
-                                                      cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                                      otherButtonTitles:NSLocalizedString(@"Retry?", nil), nil];
-            [alertView show];
+            [statsWebViewController showRetryAlertView:statsWebViewController];
         }
     }];
     
