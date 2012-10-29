@@ -16,6 +16,6 @@
 
 @end
 
-@interface NSNumber (NumericValueHack)
+@interface NSObject (NumericValueHack)
 - (NSNumber *)numericValue;
 @end

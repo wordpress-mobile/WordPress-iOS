@@ -25,8 +25,11 @@
 
 @end
 
-@implementation NSNumber (NumericValueHack)
+@implementation NSObject (NumericValueHack)
 - (NSNumber *)numericValue {
-	return self;
+    if ([self isKindOfClass:[NSNumber class]]) {
+        return (NSNumber *)self;
+    }
+	return nil;
 }
 @end
