@@ -165,7 +165,7 @@
 }
 
 - (NSString *)hostname {
-    NSString *hostname = [[NSURL URLWithString:self.url] host];
+    NSString *hostname = [[NSURL URLWithString:self.xmlrpc] host];
     if (hostname == nil) {
         NSError *error = NULL;
         NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"^.*://" options:NSRegularExpressionCaseInsensitive error:&error];
