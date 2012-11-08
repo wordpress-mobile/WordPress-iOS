@@ -80,7 +80,7 @@ NSString * const WPErrorResponseKey = @"wp_error_response";
         }
     }
     
-    [[WordPressAppDelegate sharedWordPressApp] showAlertWithTitle:title message:message];
+    [[WordPressAppDelegate sharedWordPressApplicationDelegate] showAlertWithTitle:title message:message];
 }
 
 + (void)showAlertWithError:(NSError *)error {

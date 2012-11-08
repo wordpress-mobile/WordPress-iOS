@@ -24,8 +24,6 @@
 
 @implementation WordPressAppDelegate
 
-static WordPressAppDelegate *wordPressApp = NULL;
-
 @synthesize window, currentBlog, postID;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
 @synthesize isUploadingPost;
@@ -36,63 +34,33 @@ static WordPressAppDelegate *wordPressApp = NULL;
 #pragma mark -
 #pragma mark Class Methods
 
-+ (WordPressAppDelegate *)sharedWordPressApp {
-    if (!wordPressApp) {
-        wordPressApp = [[WordPressAppDelegate alloc] init];
-    }
-
-    return wordPressApp;
++ (WordPressAppDelegate *)sharedWordPressApplicationDelegate {
+    return (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 }
-
-#pragma mark -
-#pragma mark LifeCycle Methods
-
-
-- (id)init {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    if (!wordPressApp) {
-        wordPressApp = [super init];
-        
-		if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
-			NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
-			if([tempIsAuthenticated isEqualToString:@"1"])
-				self.isWPcomAuthenticated = YES;
-		}
-		
-		NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-		[[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
-        NSString *defaultUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@) Mobile", 
-                               appVersion,
-                               [[UIDevice currentDevice] systemName], 
-                               [[UIDevice currentDevice] systemVersion], 
-                               [[UIDevice currentDevice] model]
-                               ];
-        
-        NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: defaultUA, @"UserAgent", nil];
-        [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-
-        self.wpcomAvailable = YES; //Set the wpcom availability to YES to avoid issues with lazy reachibility notifier        
-        
-        /* 
-         ( The following "init" code loads the Settings.bundle at startup and it is required from InAppSettings. 
-         We are not using it since at this point the app already loaded the bundle. Keep the code for future reference. )
-         
-         //The user defaults from the Settings.bundle are not initialized on startup, and are only initialized when viewed in the Settings App. 
-         //InAppSettings has a registerDefaults class method that can be called to initialize all of the user defaults from the Settings.bundle. 
-         if([self class] == [WordPressAppDelegate class]){
-         [InAppSettings registerDefaults];
-         }
-         */
-    }
-    
-    return wordPressApp;
-}
-
 
 #pragma mark -
 #pragma mark UIApplicationDelegate Methods
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
+        NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
+        if([tempIsAuthenticated isEqualToString:@"1"])
+            self.isWPcomAuthenticated = YES;
+    }
+
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    [[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
+    NSString *defaultUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@) Mobile",
+                           appVersion,
+                           [[UIDevice currentDevice] systemName],
+                           [[UIDevice currentDevice] systemVersion],
+                           [[UIDevice currentDevice] model]
+                           ];
+
+    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: defaultUA, @"UserAgent", nil];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+
+    self.wpcomAvailable = YES; //Set the wpcom availability to YES to avoid issues with lazy reachibility notifier
 
 #ifdef DEBUG
     WPFLog(@"Notifications: sandbox");

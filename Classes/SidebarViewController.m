@@ -1019,7 +1019,7 @@ NSLog(@"%@", self.sectionInfoArray);
 - (NSFetchedResultsController *)resultsController {
     if (_resultsController != nil) return _resultsController;
 
-    NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApp] managedObjectContext];
+    NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];

@@ -109,7 +109,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if( appDelegate.connectionAvailable == NO ) return; //do not start auto-synch if connection is down
 
     NSDate *lastSynced = [self lastSyncDate];
@@ -156,7 +156,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
     self.resultsController = nil;
     [self.tableView reloadData];
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if ( appDelegate.connectionAvailable == YES && [self.resultsController.fetchedObjects count] == 0 && ![self isSyncing] ) {
         [self simulatePullToRefresh];
     }

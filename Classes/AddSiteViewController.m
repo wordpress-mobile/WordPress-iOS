@@ -49,7 +49,7 @@
 }
 
 - (void)validationSuccess:(NSString *)xmlrpc {
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     NSLog(@"hasSubsites: %@", subsites);
 
     if ([subsites count] > 0) {

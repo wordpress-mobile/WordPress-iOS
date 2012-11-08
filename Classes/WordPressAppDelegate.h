@@ -68,7 +68,7 @@
 - (NSString *)applicationDocumentsDirectory;
 - (NSString *)applicationUserAgent;
 
-+ (WordPressAppDelegate *)sharedWordPressApp;
++ (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
 
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
 - (void)showNotificationErrorAlert:(NSNotification *)notification;

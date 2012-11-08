@@ -54,7 +54,7 @@
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
     // If there are blogs, this is being shown in the Settings.
-    if ([Blog countWithContext:[WordPressAppDelegate sharedWordPressApp].managedObjectContext] > 0) {
+    if ([Blog countWithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext] > 0) {
         // Hide the Logo View on the iPhone, there isn't enough room for that and the navigation bar.
         if (IS_IPHONE) {
             self.logoView.hidden = YES;
@@ -81,7 +81,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if (([Blog countWithContext:[WordPressAppDelegate sharedWordPressApp].managedObjectContext] <= 0 && ( ![WordPressComApi sharedApi].username )) || isFirstRun) {
+    if (([Blog countWithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext] <= 0 && ( ![WordPressComApi sharedApi].username )) || isFirstRun) {
         isFirstRun = YES;
         [self.navigationController setNavigationBarHidden:YES animated:animated];
     }
@@ -96,7 +96,7 @@
 
 - (NSUInteger)supportedInterfaceOrientations {
     if (IS_IPHONE) {
-        if ([Blog countWithContext:[WordPressAppDelegate sharedWordPressApp].managedObjectContext] == 0) {
+        if ([Blog countWithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext] == 0) {
             return UIInterfaceOrientationMaskPortrait;
         }
         return UIInterfaceOrientationMaskAllButUpsideDown;
@@ -109,7 +109,7 @@
 {
     if (IS_IPAD || interfaceOrientation == UIDeviceOrientationPortrait)  
         return YES;
-    else if (IS_IPHONE && [Blog countWithContext:[WordPressAppDelegate sharedWordPressApp].managedObjectContext] > 0)
+    else if (IS_IPHONE && [Blog countWithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext] > 0)
         return YES;
     else
         return NO;

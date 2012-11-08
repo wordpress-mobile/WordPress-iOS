@@ -110,8 +110,8 @@
 - (void)loadBlogsForType:(BlogSelectorButtonType)aType {
     blogType = aType;
     NSString *defaultsKey = [self defaultsKey];
-    NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApp] managedObjectContext];
-    NSPersistentStoreCoordinator *psc = [[WordPressAppDelegate sharedWordPressApp] persistentStoreCoordinator];
+    NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+    NSPersistentStoreCoordinator *psc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] persistentStoreCoordinator];
     NSError *error = nil;
 
     if (defaultsKey != nil) {

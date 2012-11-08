@@ -56,8 +56,8 @@
             [[NSUserDefaults standardUserDefaults] setObject:self.username forKey:@"wpcom_username_preference"];
             [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];
             [[NSUserDefaults standardUserDefaults] synchronize];
-            [WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = YES;
-            [[WordPressAppDelegate sharedWordPressApp] registerForPushNotifications];
+            [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
+            [[WordPressAppDelegate sharedWordPressApplicationDelegate] registerForPushNotifications];
             [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
             if (success) success();
         }
@@ -77,8 +77,8 @@
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_authenticated_flag"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [WordPressAppDelegate sharedWordPressApp].isWPcomAuthenticated = NO;
-    [[WordPressAppDelegate sharedWordPressApp] unregisterApnsToken];
+    [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
+    [[WordPressAppDelegate sharedWordPressApplicationDelegate] unregisterApnsToken];
     self.username = nil;
     self.password = nil;
 

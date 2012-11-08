@@ -87,7 +87,7 @@ static NSString *_lastAuthedName = nil;
     // Bypass AFNetworking for ajax stats.
     webView.useWebViewLoading = YES;
 
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if( appDelegate.connectionAvailable == YES ) {
         [self.webView showRefreshingState];
     }
@@ -190,7 +190,7 @@ static NSString *_lastAuthedName = nil;
             self.wporgBlogJetpackKey = [JetpackAuthUtil getWporgBlogJetpackKey:[blog hostURL]];
         }
         
-        WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
+        WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
         if( !appDelegate.connectionAvailable ) {
             [webView hideRefreshingState];
             [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
@@ -360,7 +360,7 @@ static NSString *_lastAuthedName = nil;
         return;
     }
     
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if( !appDelegate.connectionAvailable ) {
         [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self]; 
 //        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Problem", @"")

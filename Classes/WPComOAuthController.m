@@ -35,7 +35,7 @@
                                                           andServiceName:@"WordPress.com"
                                                                    error:&error];
 
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApp];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     NSString *queryUrl = [NSString stringWithFormat:@"%@/authorize?client_id=%@&redirect_uri=%@&response_type=code", OAUTH_BASE_URL, self.clientId, self.redirectUrl];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:queryUrl]];
     [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
@@ -74,7 +74,7 @@
 #pragma mark -
 
 - (IBAction)cancel:(id)sender {
-    UIWindow *window = [[WordPressAppDelegate sharedWordPressApp] window];
+    UIWindow *window = [[WordPressAppDelegate sharedWordPressApplicationDelegate] window];
     [window.rootViewController dismissModalViewControllerAnimated:YES];
 
     if (self.delegate && [self.delegate respondsToSelector:@selector(controllerDidCancel:)]) {
@@ -85,7 +85,7 @@
 - (void)getTokenForAuthCode:(NSString *)code {
     NSString *tokenUrl = [NSString stringWithFormat:@"%@/token", OAUTH_BASE_URL];
     __block NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:tokenUrl]];
-    [request setValue:[[WordPressAppDelegate sharedWordPressApp] applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
+    [request setValue:[[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
     NSString *request_body = [NSString stringWithFormat:@"client_id=%@&redirect_uri=%@&client_secret=%@&code=%@&grant_type=authorization_code",
                               self.clientId,
                               self.redirectUrl,
@@ -100,7 +100,7 @@
         NSString *token = [response objectForKey:@"access_token"];
         NSString *blogUrl = [response objectForKey:@"blog_url"];
         if (token && blogUrl) {
-            UIWindow *window = [[WordPressAppDelegate sharedWordPressApp] window];
+            UIWindow *window = [[WordPressAppDelegate sharedWordPressApplicationDelegate] window];
             [window.rootViewController dismissModalViewControllerAnimated:YES];
             
             if (self.delegate && [self.delegate respondsToSelector:@selector(controller:didAuthenticateWithToken:blog:)]) {
@@ -123,7 +123,7 @@
     controller.delegate = delegate;
     controller.clientSecret = clientSecret;
     UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
-    UIWindow *window = [[WordPressAppDelegate sharedWordPressApp] window];
+    UIWindow *window = [[WordPressAppDelegate sharedWordPressApplicationDelegate] window];
     [window.rootViewController presentModalViewController:navigation animated:YES];
 }
 
