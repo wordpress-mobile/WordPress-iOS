@@ -41,13 +41,7 @@
 #pragma mark -
 #pragma mark UIApplicationDelegate Methods
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
-        NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
-        if([tempIsAuthenticated isEqualToString:@"1"])
-            self.isWPcomAuthenticated = YES;
-    }
-
+- (void)setupUserAgent {
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     [[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
     NSString *defaultUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@) Mobile",
@@ -59,53 +53,36 @@
 
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: defaultUA, @"UserAgent", nil];
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+}
 
-    self.wpcomAvailable = YES; //Set the wpcom availability to YES to avoid issues with lazy reachibility notifier
+- (void)setupFacebook {
+	//BETA FEEDBACK BAR, COMMENT THIS OUT BEFORE RELEASE
+	//BetaUIWindow *betaWindow = [[BetaUIWindow alloc] initWithFrame:CGRectZero];
+	//betaWindow.hidden = NO;
+	//BETA FEEDBACK BAR
 
-#ifdef DEBUG
-    WPFLog(@"Notifications: sandbox");
-#else
-    WPFLog(@"Notifications: production");
-#endif
-    	
-	if(getenv("NSZombieEnabled"))
-		NSLog(@"NSZombieEnabled!");
-	else if(getenv("NSAutoreleaseFreedObjectCheckEnabled"))
-		NSLog(@"NSAutoreleaseFreedObjectCheckEnabled enabled!");
-
-	// Set current directory for WordPress app
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *currentDirectoryPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"wordpress"];
-	
-	BOOL isDir;
-	
-	if (![fileManager fileExistsAtPath:currentDirectoryPath isDirectory:&isDir] || !isDir) {
-		[fileManager createDirectoryAtPath:currentDirectoryPath withIntermediateDirectories:YES attributes:nil error:nil];
-	}
-    
-	//FIXME: we should handle errors here:
-	/*
-	 NSError *error;
-	 BOOL success = [[NSFileManager defaultManager] createDirectoryAtPath:currentDirectoryPath withIntermediateDirectories:YES attributes:nil error:&error];
-	 if (!success) {
-	 NSLog(@"Error creating data path: %@", [error localizedDescription]);
-	 }
-	 */
-	
-	// set the current dir
-	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
-    
-	// Check for pending crash reports
-	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-	if (![crashReporter hasPendingCrashReport]) {
-        // Empty log file if we didn't crash last time
-        [[FileLogger sharedInstance] reset];
+    facebook = [[Facebook alloc] initWithAppId:kFacebookAppID andDelegate:self];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults objectForKey:kFacebookAccessTokenKey]
+        && [defaults objectForKey:kFacebookExpirationDateKey]) {
+        facebook.accessToken = [defaults objectForKey:kFacebookAccessTokenKey];
+        facebook.expirationDate = [defaults objectForKey:kFacebookExpirationDateKey];
     }
-	[FileLogger log:@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-    [FileLogger log:@"device: %@, iOS %@", [[UIDevice currentDevice] platform], [[UIDevice currentDevice] systemVersion]];
+}
 
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+- (void)setupCoreData {
+    NSManagedObjectContext *context = [self managedObjectContext];
+    if (!context) {
+        WPFLog(@"Could not setup Core Data stack");
+    }
+}
+
+- (void)setupReachability {
+    // Set the wpcom availability to YES to avoid issues with lazy reachibility notifier
+    self.wpcomAvailable = YES;
+    // Same for general internet connection
+    self.connectionAvailable = YES;
+
     // allocate the internet reachability object
     internetReachability = [Reachability reachabilityForInternetConnection];
     
@@ -139,11 +116,55 @@
     };
     // start the notifier which will cause the reachability object to retain itself!
     [wpcomReachability startNotifier];
-        	
-	NSManagedObjectContext *context = [self managedObjectContext];
-    if (!context) {
-        NSLog(@"\nCould not create *context for self");
+}
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [self setupUserAgent];
+
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
+        NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
+        if([tempIsAuthenticated isEqualToString:@"1"])
+            self.isWPcomAuthenticated = YES;
     }
+
+#ifdef DEBUG
+    WPFLog(@"Notifications: sandbox");
+#else
+    WPFLog(@"Notifications: production");
+#endif
+
+	if(getenv("NSZombieEnabled"))
+		NSLog(@"NSZombieEnabled!");
+	else if(getenv("NSAutoreleaseFreedObjectCheckEnabled"))
+		NSLog(@"NSAutoreleaseFreedObjectCheckEnabled enabled!");
+
+	// Set current directory for WordPress app
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *currentDirectoryPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"wordpress"];
+
+	BOOL isDir;
+
+	if (![fileManager fileExistsAtPath:currentDirectoryPath isDirectory:&isDir] || !isDir) {
+		[fileManager createDirectoryAtPath:currentDirectoryPath withIntermediateDirectories:YES attributes:nil error:nil];
+	}
+	// set the current dir
+	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
+    
+	// Check for pending crash reports
+	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+	if (![crashReporter hasPendingCrashReport]) {
+        // Empty log file if we didn't crash last time
+        [[FileLogger sharedInstance] reset];
+    }
+	[FileLogger log:@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
+    [FileLogger log:@"device: %@, iOS %@", [[UIDevice currentDevice] platform], [[UIDevice currentDevice] systemVersion]];
+
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    [self setupReachability];
+
+	[self setupCoreData];
+
 	// Stats use core data, so run them after initialization
 	[self checkIfStatsShouldRun];
 
@@ -158,18 +179,7 @@
 
     [self customizeAppearance];
     
-	//BETA FEEDBACK BAR, COMMENT THIS OUT BEFORE RELEASE
-	//BetaUIWindow *betaWindow = [[BetaUIWindow alloc] initWithFrame:CGRectZero];
-	//betaWindow.hidden = NO;
-	//BETA FEEDBACK BAR
-    
-    facebook = [[Facebook alloc] initWithAppId:kFacebookAppID andDelegate:self];
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults objectForKey:kFacebookAccessTokenKey] 
-        && [defaults objectForKey:kFacebookExpirationDateKey]) {
-        facebook.accessToken = [defaults objectForKey:kFacebookAccessTokenKey];
-        facebook.expirationDate = [defaults objectForKey:kFacebookExpirationDateKey];
-    }
+    [self setupFacebook];
     
     SidebarViewController *sidebarViewController = [[SidebarViewController alloc] init];
     
@@ -179,12 +189,6 @@
     panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:nil masterViewController:sidebarViewController];
     window.rootViewController = panelNavigationController;
 
-	// Add listeners
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(deleteLocalDraft:)
-												 name:@"LocalDraftWasPublishedSuccessfully" object:nil];
-		
-	
 	//listener for XML-RPC errors
 	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:kXML_RPC_ERROR_OCCURS object:nil];
@@ -465,40 +469,6 @@
         [panelNavigationController popToRootViewControllerAnimated:YES];
     }
 }
-
-
-- (void)deleteLocalDraft:(NSNotification *)notification {
-	NSString *uniqueID = [notification object];
-	
-	if(uniqueID != nil) {
-		NSLog(@"deleting local draft: %@", uniqueID);
-		NSEntityDescription *entity = [NSEntityDescription entityForName:@"Post" inManagedObjectContext:self.managedObjectContext];   
-		NSFetchRequest *request = [[NSFetchRequest alloc] init];  
-		[request setEntity:entity];   
-		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateModified" ascending:NO];  
-		NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];  
-		[request setSortDescriptors:sortDescriptors];  
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(uniqueID == %@)", uniqueID];
-		[request setPredicate:predicate];
-		NSError *error;  
-		NSMutableArray *postsToDelete = [[self.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];   
-		
-		if (!postsToDelete) {  
-			// Bad. Srsly.
-		}
-		
-		for (NSManagedObject *post in postsToDelete) {
-			[self.managedObjectContext deleteObject:post];
-		}
-		
-		if (![self.managedObjectContext save:&error]) {
-			WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-			exit(-1);
-		}
-		
-	}
-}
-
 
 #pragma mark -
 #pragma mark Core Data stack
