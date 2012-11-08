@@ -75,7 +75,6 @@
 - (BOOL)isWPcomAuthenticated;
 - (void)checkWPcomAuthentication;
 - (void)showContentDetailViewController:(UIViewController *)viewController;
-- (void)deleteLocalDraft:(NSNotification *)notification;
 - (void)registerForPushNotifications;
 - (void)sendApnsToken;
 - (void)unregisterApnsToken;
