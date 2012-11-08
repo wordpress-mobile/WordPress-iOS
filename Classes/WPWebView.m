@@ -295,8 +295,8 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
         if(![[currURL absoluteString] isEqualToString:[respURL absoluteString]]) {
             NSMutableURLRequest *mReq = [wpWebView.currentRequest mutableCopy];
             [mReq setURL:respURL];
-            self.currentRequest = mReq;
-            self.baseURLFallback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/", mReq.URL.scheme, mReq.URL.host]];
+            wpWebView.currentRequest = mReq;
+            wpWebView.baseURLFallback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@/", mReq.URL.scheme, mReq.URL.host]];
         }
         [wpWebView.webView loadData:operation.responseData MIMEType:operation.response.MIMEType textEncodingName:@"utf-8" baseURL:aRequest.URL];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

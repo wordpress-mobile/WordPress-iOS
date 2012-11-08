@@ -309,14 +309,14 @@
     [self.wpComApi setUsername:loginCell.textField.text
                       password:passwordCell.textField.text
                        success:^{
-                           [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
-                           [self.delegate loginController:loginController didAuthenticateWithUsername:self.wpComApi.username];
+                           [loginController.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+                           [loginController.delegate loginController:loginController didAuthenticateWithUsername:loginController.wpComApi.username];
                        }
                        failure:^(NSError *error) {
-                           self.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
-                           self.buttonText = NSLocalizedString(@"Sign In", @"");
+                           loginController.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
+                           loginController.buttonText = NSLocalizedString(@"Sign In", @"");
                            loginController.isSigningIn = NO;
-                           [self.tableView reloadData];
+                           [loginController.tableView reloadData];
                        }];
 }
 

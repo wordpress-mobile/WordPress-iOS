@@ -78,6 +78,8 @@
 }
 
 - (void)setupReachability {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
     // Set the wpcom availability to YES to avoid issues with lazy reachibility notifier
     self.wpcomAvailable = YES;
     // Same for general internet connection
@@ -116,6 +118,7 @@
     };
     // start the notifier which will cause the reachability object to retain itself!
     [wpcomReachability startNotifier];
+#pragma clang diagnostic pop
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
