@@ -22,12 +22,6 @@
 - (void)customizeAppearance;
 @end
 
-NSString *CrashFilePath() {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    return [documentsDirectory stringByAppendingPathComponent:@"crash_data.txt"];
-}
-
 @implementation WordPressAppDelegate
 
 static WordPressAppDelegate *wordPressApp = NULL;

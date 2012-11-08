@@ -7,9 +7,12 @@
 //
 
 #import "CrashReportViewController.h"
-#import "WordPressAppDelegate.h"
 
-NSString *CrashFilePath();
+NSString *CrashFilePath() {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:@"crash_data.txt"];
+}
 
 @implementation CrashReportViewController
 
