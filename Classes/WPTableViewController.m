@@ -36,6 +36,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 @implementation WPTableViewController {
     EGORefreshTableHeaderView *_refreshHeaderView;
+    EditSiteViewController *editSiteViewController;
     NSIndexPath *_indexPathSelectedBeforeUpdates;
     NSIndexPath *_indexPathSelectedAfterUpdates;
     UISwipeGestureRecognizer *_leftSwipeGestureRecognizer;
@@ -55,6 +56,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)dealloc
 {
     _resultsController.delegate = nil;
+    editSiteViewController.delegate = nil;
 }
 
 - (id)initWithBlog:(Blog *)blog {
@@ -112,6 +114,10 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if( appDelegate.connectionAvailable == NO ) return; //do not start auto-synch if connection is down
 
+    // Don't try to refresh if we just canceled editing credentials
+    if (didPromptForCredentials) {
+        return;
+    }
     NSDate *lastSynced = [self lastSyncDate];
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPTableViewControllerRefreshTimeout) {
         // If table is at the original scroll position, simulate a pull to refresh
@@ -452,6 +458,15 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 	}
 }
 
+#pragma mark - SettingsViewControllerDelegate
+
+- (void)controllerDidDismiss:(UIViewController *)controller cancelled:(BOOL)cancelled {
+    if (editSiteViewController == controller) {
+        didPromptForCredentials = cancelled;
+        editSiteViewController = nil;
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)dismissModal:(id)sender {
@@ -468,6 +483,9 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction {
+    if ([self isSyncing]) {
+        return;
+    }
     if (![ReachabilityUtils isInternetReachable]) {
         [ReachabilityUtils showAlertNoInternetConnection];
         [_refreshHeaderView performSelector:@selector(egoRefreshScrollViewDataSourceDidFinishedLoading:) withObject:self.tableView afterDelay:0.1];
@@ -490,24 +508,28 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
             alertView.tag = 30;
             [alertView show];
             
-        } else {
-            [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync", @"")];
-        }
-        if (error.code == 403 && !didPromptForCredentials) {
+        } else if (error.code == 403 && editSiteViewController == nil) {
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't Connect", @"")
+																message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"")
+															   delegate:nil
+													  cancelButtonTitle:nil
+													  otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+			[alertView show];
+
             // bad login/pass combination
-            EditSiteViewController *controller = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];
-            controller.blog = self.blog;
-            controller.isCancellable = YES;
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-            
+            editSiteViewController = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];
+            editSiteViewController.blog = self.blog;
+            editSiteViewController.isCancellable = YES;
+            editSiteViewController.delegate = self;
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
+
             if(IS_IPAD == YES) {
                 navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 navController.modalPresentationStyle = UIModalPresentationFormSheet;
             }
-            
+
             [self.panelNavigationController presentModalViewController:navController animated:YES];
-            
-            didPromptForCredentials = YES;
+
         }
     }];
 }
