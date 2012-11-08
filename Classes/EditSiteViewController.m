@@ -31,7 +31,9 @@
 
 @end
 
-@implementation EditSiteViewController
+@implementation EditSiteViewController {
+    UIAlertView *failureAlertView;
+}
 
 @synthesize password, username, url, geolocationEnabled;
 @synthesize blog, tableView, savingIndicator;
@@ -45,6 +47,7 @@
 
 - (void)dealloc {
     self.delegate = nil;
+    failureAlertView.delegate = nil;
 }
 
 
@@ -377,6 +380,9 @@
 		default:
 			break;
 	}
+    if (failureAlertView == alertView) {
+        failureAlertView = nil;
+    }
 }
 
 
@@ -524,30 +530,31 @@
 				message = [error localizedDescription];
 			}
 
-            UIAlertView *alertView = nil;
-            if ([error code] == 405) { // XMLRPC disabled.
-                alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
-                                                       message:message
-                                                      delegate:self
-                                             cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-                                             otherButtonTitles:NSLocalizedString(@"Enable Now", @""), nil];
+            if (failureAlertView == nil) {
+                if ([error code] == 405) { // XMLRPC disabled.
+                    failureAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
+                                                                  message:message
+                                                                 delegate:self
+                                                        cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
+                                                        otherButtonTitles:NSLocalizedString(@"Enable Now", @""), nil];
 
-                alertView.tag = 30;
-            } else {
-                alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
-                                                       message:message
-                                                      delegate:self
-                                             cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-                                             otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-                
-                if ( [error code] == NSURLErrorBadURL ) {
-                    alertView.tag = 20; // take the user to the FAQ page when hit "Need Help"
+                    failureAlertView.tag = 30;
                 } else {
-                    alertView.tag = 10;
+                    failureAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
+                                                           message:message
+                                                          delegate:self
+                                                 cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
+                                                 otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+
+                    if ( [error code] == NSURLErrorBadURL ) {
+                        failureAlertView.tag = 20; // take the user to the FAQ page when hit "Need Help"
+                    } else {
+                        failureAlertView.tag = 10;
+                    }
                 }
+
+                [failureAlertView show];
             }
-            
-            [alertView show];
         }
     }    
 

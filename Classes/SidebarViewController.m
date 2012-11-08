@@ -560,7 +560,7 @@ NSLog(@"%@", self.sectionInfoArray);
 
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
                                                     message:NSLocalizedString(@"The photo could not be published. It's been saved as a local draft.", @"")
-                                                   delegate:self
+                                                   delegate:nil
                                           cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                           otherButtonTitles:nil];
     [alert show];

@@ -479,7 +479,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     } failure:^(NSError *error) {
         [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
         if (error.code == 405) {
-            
+            // FIXME: this looks like "Enable XML-RPC" which is going away
+            // If it's not, don't rely on whatever the error message is if we are showing custom actions like 'Enable Now'
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't sync", @"")
                                                                 message:[error localizedDescription]
                                                                delegate:self

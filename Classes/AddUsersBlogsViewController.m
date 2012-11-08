@@ -24,7 +24,9 @@
 
 @end
 
-@implementation AddUsersBlogsViewController
+@implementation AddUsersBlogsViewController {
+    UIAlertView *failureAlertView;
+}
 
 @synthesize usersBlogs, isWPcom, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;
 @synthesize spinner, topAddSelectedButton, geolocationEnabled;
@@ -36,7 +38,7 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
+    failureAlertView.delegate = nil;
 }
 
 - (void)viewDidLoad {
@@ -397,13 +399,15 @@
                 [self hideNoBlogsView];
                 hasCompletedGetUsersBlogs = YES; 
                 [self.tableView reloadData];
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
-                                                                    message:[error localizedDescription]
-                                                                   delegate:self
-                                                          cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-                                                          otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-                alertView.tag = 1;
-                [alertView show];
+                if (failureAlertView == nil) {
+                    failureAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
+                                                                  message:[error localizedDescription]
+                                                                 delegate:self
+                                                        cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
+                                                        otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+                    failureAlertView.tag = 1;
+                    [failureAlertView show];
+                }
             }];
 }
 
@@ -504,7 +508,7 @@
 #pragma mark -
 #pragma mark UIAlertViewDelegate
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         if (alertView.tag == 1) {
             HelpViewController *helpViewController = [[HelpViewController alloc] init];
@@ -526,6 +530,10 @@
             [self.tableView reloadData];
             [self performSelector:@selector(refreshBlogs) withObject:nil afterDelay:0.1]; // Short delay so tableview can redraw.
         }
+    }
+
+    if (failureAlertView == alertView) {
+        failureAlertView = nil;
     }
 }
 

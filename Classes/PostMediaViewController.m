@@ -25,6 +25,7 @@
 
 @implementation PostMediaViewController {
     CGRect actionSheetRect;
+    UIAlertView *currentAlert;
 }
 @synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, addPopover, picker, customSizeAlert;
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner;
@@ -296,13 +297,16 @@
         return;*/
 		isShowingMediaPickerActionSheet = NO;
 		NSString *faultString = NSLocalizedString(@"You can upload videos to your blog with VideoPress. Would you like to learn more about VideoPress now?", @"");
-		UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"VideoPress", @"") 
-												 message:faultString 
-												delegate:self
-									   cancelButtonTitle:NSLocalizedString(@"No", @"") otherButtonTitles:nil];
-		[uploadAlert addButtonWithTitle:NSLocalizedString(@"Yes", @"")];
-		uploadAlert.tag = 101;
-		[uploadAlert show];
+        if (currentAlert == nil) {
+            UIAlertView *uploadAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"VideoPress", @"")
+                                                                  message:faultString
+                                                                 delegate:self
+                                                        cancelButtonTitle:NSLocalizedString(@"No", @"") otherButtonTitles:nil];
+            [uploadAlert addButtonWithTitle:NSLocalizedString(@"Yes", @"")];
+            uploadAlert.tag = 101;
+            [uploadAlert show];
+            currentAlert = uploadAlert;
+        }
 		return;
 	}
 	
@@ -746,79 +750,81 @@
 }
 
 - (void)showCustomSizeAlert {
-	if(self.isShowingCustomSizeAlert == NO) {
-		isShowingCustomSizeAlert = YES;
-		
-		UITextField *textWidth, *textHeight;
-		UILabel *labelWidth, *labelHeight;
-		
-		NSString *lineBreaks;
-		
-		if (IS_IPAD)
-			lineBreaks = @"\n\n\n\n";
-		else 
-			lineBreaks = @"\n\n\n";
-		
-		
-		customSizeAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Custom Size", @"") 
-																  message:lineBreaks // IMPORTANT
-																 delegate:self 
-														cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
-														otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-		
-		labelWidth = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 50.0, 125.0, 25.0)];
-		labelWidth.backgroundColor = [UIColor clearColor];
-		labelWidth.textColor = [UIColor whiteColor];
-		labelWidth.text = NSLocalizedString(@"Width", @"");
-		[customSizeAlert addSubview:labelWidth];
-		
-		textWidth = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 80.0, 125.0, 25.0)]; 
-		[textWidth setBackgroundColor:[UIColor whiteColor]];
-		[textWidth setPlaceholder:NSLocalizedString(@"Width", @"")];
-		[textWidth setKeyboardType:UIKeyboardTypeNumberPad];
-		[textWidth setDelegate:self];
-		[textWidth setTag:123];
-		
-		// Check for previous width setting
-		if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil)
-			[textWidth setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"]];
-		else
-			[textWidth setText:[NSString stringWithFormat:@"%d", (int)currentImage.size.width]];
-		
-		[customSizeAlert addSubview:textWidth];
-		
-		labelHeight = [[UILabel alloc] initWithFrame:CGRectMake(145.0, 50.0, 125.0, 25.0)];
-		labelHeight.backgroundColor = [UIColor clearColor];
-		labelHeight.textColor = [UIColor whiteColor];
-		labelHeight.text = NSLocalizedString(@"Height", @"");
-		[customSizeAlert addSubview:labelHeight];
-		
-		textHeight = [[UITextField alloc] initWithFrame:CGRectMake(145.0, 80.0, 125.0, 25.0)]; 
-		[textHeight setBackgroundColor:[UIColor whiteColor]];
-		[textHeight setPlaceholder:NSLocalizedString(@"Height", @"")];
-		[textHeight setDelegate:self];
-		[textHeight setKeyboardType:UIKeyboardTypeNumberPad];
-		[textHeight setTag:456];
-		
-		// Check for previous height setting
-		if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil)
-			[textHeight setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"]];
-		else
-			[textHeight setText:[NSString stringWithFormat:@"%d", (int)currentImage.size.height]];
-		
-		[customSizeAlert addSubview:textHeight];
-		
-		//fix the dialog position for older devices on iOS 3
-		float version = [[[UIDevice currentDevice] systemVersion] floatValue];
-		if (version <= 3.1)
-		{
-			customSizeAlert.transform = CGAffineTransformTranslate(customSizeAlert.transform, 0.0, 100.0);
-		}
-		
-		[customSizeAlert show];
-		
-		[textWidth becomeFirstResponder];
-	}
+	if(self.isShowingCustomSizeAlert || currentAlert != nil)
+        return;
+
+    isShowingCustomSizeAlert = YES;
+
+    UITextField *textWidth, *textHeight;
+    UILabel *labelWidth, *labelHeight;
+
+    NSString *lineBreaks;
+
+    if (IS_IPAD)
+        lineBreaks = @"\n\n\n\n";
+    else
+        lineBreaks = @"\n\n\n";
+
+
+    customSizeAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Custom Size", @"")
+                                                 message:lineBreaks // IMPORTANT
+                                                delegate:self
+                                       cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                       otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+
+    labelWidth = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 50.0, 125.0, 25.0)];
+    labelWidth.backgroundColor = [UIColor clearColor];
+    labelWidth.textColor = [UIColor whiteColor];
+    labelWidth.text = NSLocalizedString(@"Width", @"");
+    [customSizeAlert addSubview:labelWidth];
+
+    textWidth = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 80.0, 125.0, 25.0)];
+    [textWidth setBackgroundColor:[UIColor whiteColor]];
+    [textWidth setPlaceholder:NSLocalizedString(@"Width", @"")];
+    [textWidth setKeyboardType:UIKeyboardTypeNumberPad];
+    [textWidth setDelegate:self];
+    [textWidth setTag:123];
+
+    // Check for previous width setting
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil)
+        [textWidth setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"]];
+    else
+        [textWidth setText:[NSString stringWithFormat:@"%d", (int)currentImage.size.width]];
+
+    [customSizeAlert addSubview:textWidth];
+
+    labelHeight = [[UILabel alloc] initWithFrame:CGRectMake(145.0, 50.0, 125.0, 25.0)];
+    labelHeight.backgroundColor = [UIColor clearColor];
+    labelHeight.textColor = [UIColor whiteColor];
+    labelHeight.text = NSLocalizedString(@"Height", @"");
+    [customSizeAlert addSubview:labelHeight];
+
+    textHeight = [[UITextField alloc] initWithFrame:CGRectMake(145.0, 80.0, 125.0, 25.0)];
+    [textHeight setBackgroundColor:[UIColor whiteColor]];
+    [textHeight setPlaceholder:NSLocalizedString(@"Height", @"")];
+    [textHeight setDelegate:self];
+    [textHeight setKeyboardType:UIKeyboardTypeNumberPad];
+    [textHeight setTag:456];
+
+    // Check for previous height setting
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil)
+        [textHeight setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"]];
+    else
+        [textHeight setText:[NSString stringWithFormat:@"%d", (int)currentImage.size.height]];
+
+    [customSizeAlert addSubview:textHeight];
+
+    //fix the dialog position for older devices on iOS 3
+    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (version <= 3.1)
+    {
+        customSizeAlert.transform = CGAffineTransformTranslate(customSizeAlert.transform, 0.0, 100.0);
+    }
+
+    [customSizeAlert show];
+    currentAlert = customSizeAlert;
+
+    [textWidth becomeFirstResponder];
 }
 
 
@@ -838,6 +844,10 @@
 				break;
 		}
 	}
+
+    if (currentAlert == alertView) {
+        currentAlert = nil;
+    }
 }
 
 - (void)dismissAlertViewKeyboard: (NSNotification*)notification {
@@ -851,6 +861,9 @@
 
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (currentAlert == alertView) {
+        currentAlert = nil;
+    }
 
 	if (alertView.tag == 101) { //VideoPress Promo Alert
 	
@@ -1428,12 +1441,15 @@
 		[postDetailViewController switchToMedia];
 	}
 	else {
-		UIAlertView *videoAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Copying Video", @"") 
-															 message:NSLocalizedString(@"There was an error copying the video for upload. Please try again.", @"")
-															delegate:self
-												   cancelButtonTitle:NSLocalizedString(@"OK", @"") 
-												   otherButtonTitles:nil];
-		[videoAlert show];
+        if (currentAlert == nil) {
+            UIAlertView *videoAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Copying Video", @"")
+                                                                 message:NSLocalizedString(@"There was an error copying the video for upload. Please try again.", @"")
+                                                                delegate:self
+                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                       otherButtonTitles:nil];
+            [videoAlert show];
+            currentAlert = videoAlert;
+        }
 	}
 }
 
