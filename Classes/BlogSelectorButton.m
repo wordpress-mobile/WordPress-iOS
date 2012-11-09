@@ -187,7 +187,7 @@
         // Setup selection view
         CGRect selectionViewFrame = self.superview.bounds;
         selectionViewFrame.origin.y += self.frame.size.height;
-        selectionViewFrame.size.height -= self.frame.size.height;
+        selectionViewFrame.size.height = 0; // setting the height to 0 will make iOS auto calculate the right height
         if (selectorViewController == nil) {
             selectorViewController = [[BlogSelectorViewController alloc] initWithStyle:UITableViewStylePlain];
             selectorViewController.selectedBlog = self.activeBlog;
