@@ -1250,6 +1250,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField == titleTextField) {
+        self.apost.postTitle = [textField.text stringByReplacingCharactersInRange:range withString:string];
+
+        // FIXME: this should be -[PostsViewController updateTitle]
+        self.navigationItem.title = [self editorTitle];
+
+    } else if (textField == tagsTextField)
+        self.post.tags = [tagsTextField.text stringByReplacingCharactersInRange:range withString:string];
+
+    [self.apost autosave];
+    [self refreshButtons];
     return YES;
 }
 
