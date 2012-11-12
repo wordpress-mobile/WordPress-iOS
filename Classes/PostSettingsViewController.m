@@ -600,6 +600,7 @@
                         }
                         postDetailViewController.post.geolocation = nil;
                         postDetailViewController.hasLocation.enabled = NO;
+                        [postDetailViewController refreshButtons];
                         break;
                 }
                 [tableView reloadData];
@@ -622,6 +623,7 @@
                     }
                     postDetailViewController.post.geolocation = nil;
                     postDetailViewController.hasLocation.enabled = NO;
+                    [postDetailViewController refreshButtons];
                     break;
             }
             [tableView reloadData];
@@ -930,6 +932,7 @@
 			  c.latitude,
 			  c.longitude);
 		[locationManager stopUpdatingLocation];
+        [postDetailViewController refreshButtons];
 		[tableView reloadData];
 		
 		[self geocodeCoordinate:c.coordinate];
