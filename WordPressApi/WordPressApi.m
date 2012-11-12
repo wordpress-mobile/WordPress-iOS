@@ -155,17 +155,23 @@
             [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSError *error = NULL;
                 NSRegularExpression *rsdURLRegExp = [NSRegularExpression regularExpressionWithPattern:@"<link\\s+rel=\"EditURI\"\\s+type=\"application/rsd\\+xml\"\\s+title=\"RSD\"\\s+href=\"([^\"]*)\"[^/]*/>" options:NSRegularExpressionCaseInsensitive error:&error];
-                NSArray *matches = [rsdURLRegExp matchesInString:operation.responseString options:0 range:NSMakeRange(0, [operation.responseString length])];
+                NSString *responseString = operation.responseString;
+                // FIXME: workaround for https://github.com/AFNetworking/AFNetworking/pull/638
+                // remove when it's fixed upstream
+                if (responseString == nil && operation.responseData != nil) {
+                    responseString = [[NSString alloc] initWithData:operation.responseData encoding:NSISOLatin1StringEncoding];
+                }
+                NSArray *matches = [rsdURLRegExp matchesInString:responseString options:0 range:NSMakeRange(0, [responseString length])];
                 NSString *rsdURL = nil;
                 if ([matches count]) {
                     NSRange rsdURLRange = [[matches objectAtIndex:0] rangeAtIndex:1];
                     if(rsdURLRange.location != NSNotFound)
-                        rsdURL = [operation.responseString substringWithRange:rsdURLRange];
+                        rsdURL = [responseString substringWithRange:rsdURLRange];
                 }
 
                 if (rsdURL == nil) {
                     //the RSD link not found using RegExp, try to find it again on a "cleaned" HTML document
-                    [self logExtraInfo:@"The RSD link not found using RegExp, on the following doc: %@", operation.responseString];
+                    [self logExtraInfo:@"The RSD link not found using RegExp, on the following doc: %@", responseString];
                     [self logExtraInfo:@"Try to find it again on a cleaned HTML document"];
                     NSError *htmlError;
                     CTidy *tidy = [CTidy tidy];
