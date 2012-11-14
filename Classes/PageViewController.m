@@ -27,6 +27,18 @@
     self.contentWebView.frame = frame;
 }
 
+- (void)showDeletePostActionSheet:(id)sender {
+    if (!isShowingActionSheet) {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this page?", @"Confirmation dialog when user taps trash icon to delete a page.")
+                                                                 delegate:self
+                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                                   destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
+                                                        otherButtonTitles:nil];
+        [actionSheet showFromBarButtonItem:sender animated:YES];
+        isShowingActionSheet = YES;
+    }
+}
+
 - (EditPostViewController *)getPostOrPageController: (AbstractPost *) revision {
 	return [[EditPageViewController alloc] initWithPost:revision];
 }
