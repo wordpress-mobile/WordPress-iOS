@@ -839,6 +839,7 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /main.m -text
 /movie.png -text svneol=unset#unset
 /movie@2x.png -text svneol=unset#unset
+/n.caf -text
 /navbar_actions.png -text
 /navbar_actions@2x.png -text
 /navbar_add.png -text
@@ -962,6 +963,7 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /sidebar_view@2x.png -text
 /snd_commit.caf -text
 /snd_discard.caf -text
+/snd_pull.caf -text
 /snd_rollup.caf -text
 /snd_swipe.caf -text
 /stats.png -text
