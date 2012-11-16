@@ -9,6 +9,7 @@
 #import "ReachabilityUtils.h"
 #import "AFHTTPRequestOperation.h"
 #import "WordPressAppDelegate.h"
+#import "SoundUtil.h"
 
 NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequestNotification";
 
@@ -53,6 +54,8 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 
 
 - (void)dealloc {
+    if([self.scrollView observationInfo])
+        [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
     webView.delegate = nil;
     if([webView isLoading])
         [webView stopLoading];
@@ -87,6 +90,28 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
         // Set the conetnt size so the view's initial state is not scrollable.
         scrollView.contentSize = self.frame.size;
     }
+}
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if(![keyPath isEqualToString:@"contentOffset"])
+        return;
+    
+    CGPoint newValue = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue];
+    CGPoint oldValue = [[change objectForKey:NSKeyValueChangeOldKey] CGPointValue];
+    
+    if (newValue.y > oldValue.y && newValue.y > -65.0f) {
+        didPlayPullSound = NO;
+    }
+    
+    if(newValue.y == oldValue.y) return;
+    
+    if(newValue.y <= -65.0f && newValue.y < oldValue.y && ![self isLoading] && !didPlayPullSound && !didTriggerRefresh) {
+        // triggered
+        [SoundUtil playPullSound];
+        didPlayPullSound = YES;
+    }
+    
 }
 
 
@@ -160,7 +185,8 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     self.lastWebViewRefreshDate = [NSDate date];
 	//  update the last update date
 	[refreshHeaderView refreshLastUpdatedDate];
-
+    
+    [self.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
 }
 
 
@@ -485,11 +511,12 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
         // If we pull to refresh when a string or data was loaded then it is the resposibility of the
         // loading object to refresh the content.
         [[NSNotificationCenter defaultCenter] postNotificationName:refreshedWithOutValidRequestNotification object:self userInfo:nil];
+        didTriggerRefresh = YES;
         return;
     }
     
     if (loading) return; //loop breaker.
-    
+    didTriggerRefresh = YES;
     [self reload];
 }
 
@@ -519,6 +546,10 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
 - (void)hideRefreshingState {
     self.lastWebViewRefreshDate = [NSDate date];
     [refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:scrollView];
+    if([self window] && didTriggerRefresh) {
+        [SoundUtil playRollupSound];
+    }
+    didTriggerRefresh = NO;
 }
 
 

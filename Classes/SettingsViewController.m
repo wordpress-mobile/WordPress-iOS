@@ -176,6 +176,13 @@ typedef enum {
 }
 
 
+- (void)handleMuteSoundsChanged:(id)sender {
+    UISwitch *aSwitch = (UISwitch *)sender;
+    [[NSUserDefaults standardUserDefaults] setBool:!(aSwitch.on) forKey:kSettingsMuteSoundsKey];
+    [NSUserDefaults resetStandardUserDefaults];
+}
+
+
 #pragma mark - 
 #pragma mark Table view data source
 
@@ -271,6 +278,15 @@ typedef enum {
         
         NSArray *titles = [dict objectForKey:@"Titles"];
         cell.detailTextLabel.text = [titles objectAtIndex:index];
+        
+    } else if(indexPath.section == SettingsSectionSounds) {
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.textLabel.text = NSLocalizedString(@"Enable Sounds", @"Title for the setting to enable in-app sounds");
+        UISwitch *aSwitch = [[UISwitch alloc] initWithFrame:CGRectZero]; // Frame is ignored.
+        [aSwitch addTarget:self action:@selector(handleMuteSoundsChanged:) forControlEvents:UIControlEventValueChanged];
+        aSwitch.on = ![[NSUserDefaults standardUserDefaults] boolForKey:kSettingsMuteSoundsKey];
+        cell.accessoryView = aSwitch;
 
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {

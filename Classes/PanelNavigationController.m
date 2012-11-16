@@ -11,6 +11,7 @@
 #import "PanelNavigationController.h"
 #import "PanelNavigationConstants.h"
 #import "PanelViewWrapper.h"
+#import "SoundUtil.h"
 
 #pragma mark -
 
@@ -101,6 +102,7 @@
     BOOL _panned;
     BOOL _pushing;
 }
+
 @synthesize detailViewController = _detailViewController;
 @synthesize masterViewController = _masterViewController;
 @synthesize navigationController = _navigationController;
@@ -149,7 +151,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.detailView = [[UIView alloc] init];
     
     if (IS_IPAD) {
@@ -681,6 +683,8 @@
 }
 
 - (void)showSidebarAnimated:(BOOL)animated {
+    [SoundUtil playSwipeSound];
+    
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:0 duration:0];
         [self disableDetailView];
@@ -689,6 +693,8 @@
 }
 
 - (void)showSidebarWithVelocity:(CGFloat)velocity {
+    [SoundUtil playSwipeSound];
+
     [self disableDetailView];
     [self setStackOffset:0.f withVelocity:velocity];
 }
@@ -704,11 +710,19 @@
     } completion:^(BOOL finished) {
         [self enableDetailView];
     }];
+    
+    if(IS_IPHONE) {
+        [SoundUtil playSwipeSound];
+    }
 }
 
 - (void)closeSidebarWithVelocity:(CGFloat)velocity {
     [self enableDetailView];
     [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) withVelocity:velocity];
+    
+    if(IS_IPHONE) {
+        [SoundUtil playSwipeSound];
+    }
 }
 
 - (void)toggleSidebar {
@@ -922,6 +936,7 @@
                 [self animatePoppedIcon];
                 _isShowingPoppedIcon = NO;
                 [self popToRootViewControllerAnimated:YES];
+                [SoundUtil playDiscardSound];
                 [self.delegate resetView];
             }
         } else {

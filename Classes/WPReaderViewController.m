@@ -320,7 +320,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     }
     
     NSDictionary *article = (NSDictionary *)item;
-    [self.panelNavigationController popToRootViewControllerAnimated:NO];
+    [self.panelNavigationController popToViewController:self animated:NO];
     self.detailViewController.currentItem = [article JSONString];
     [self.panelNavigationController pushViewController:self.detailViewController animated:YES];
 }

@@ -29,6 +29,7 @@
 #import "QuickPhotoViewController.h"
 #import "QuickPhotoButtonView.h"
 #import "CrashReportViewController.h"
+#import "SoundUtil.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
@@ -950,7 +951,10 @@ NSLog(@"%@", self.sectionInfoArray);
                         [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginURL]];
                     }
                     [self.panelNavigationController setDetailViewController:webViewController closingSidebar:closingSidebar];
-                }        
+                }
+                if (IS_IPAD) {
+                    [SoundUtil playSwipeSound];
+                }
                 return;
             case 5:
                  dashboardURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
@@ -979,11 +983,18 @@ NSLog(@"%@", self.sectionInfoArray);
                     [webViewController setPassword:[blog fetchPassword]];
                     [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginURL]];
                     [self.panelNavigationController setDetailViewController:webViewController closingSidebar:closingSidebar];
-                }                
+                }
+                if (IS_IPAD) {
+                    [SoundUtil playSwipeSound];
+                }
                 return;
             default:
                 controllerClass = [PostsViewController class];
                 break;    
+        }
+        
+        if (IS_IPAD) {
+            [SoundUtil playSwipeSound];
         }
         
         [[NSNotificationCenter defaultCenter] postNotificationName:kSelectedBlogChanged 

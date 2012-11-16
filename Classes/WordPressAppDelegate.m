@@ -12,6 +12,7 @@
 #import "PanelNavigationController.h"
 #import "SidebarViewController.h"
 #import "UIDevice+WordPressIdentifier.h"
+#import "SoundUtil.h"
 
 @interface WordPressAppDelegate (Private)
 - (void)setAppBadge;
@@ -955,7 +956,7 @@
     switch (application.applicationState) {
         case UIApplicationStateActive:
             NSLog(@"app state UIApplicationStateActive"); //application is in foreground
-            //we should show an alert since the OS doesn't show anything in this case. Unfortunately no sound!!
+            //we should show an alert since the OS doesn't show anything in this case. <s>Unfortunately no sound!!</s> Manual sound!
             if([self isAlertRunning] != YES) {
                 id comment = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
                 NSString *message = nil;
@@ -985,6 +986,7 @@
                     }
                     alert.tag = kNotificationNewComment;
                     [alert show];
+                    [SoundUtil playNotificationSound];
                     [self sendPushNotificationBlogsList];
                 }
             }

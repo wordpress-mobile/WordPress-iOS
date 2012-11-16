@@ -13,6 +13,7 @@
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPWebViewController.h"
+#import "SoundUtil.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
@@ -31,6 +32,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)swipeLeft:(UISwipeGestureRecognizer *)recognizer;
 - (void)swipeRight:(UISwipeGestureRecognizer *)recognizer;
 - (void)dismissModal:(id)sender;
+- (void)hideRefreshHeader;
 
 @end
 
@@ -44,6 +46,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     UISwipeGestureRecognizerDirection _swipeDirection;
     BOOL _animatingRemovalOfModerationSwipeView;
     BOOL didPromptForCredentials;
+    BOOL didPlayPullSound;
+    BOOL didTriggerRefresh;
 }
 
 @synthesize blog = _blog;
@@ -55,6 +59,9 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (void)dealloc
 {
+    if([self.tableView observationInfo])
+        [self.tableView removeObserver:self forKeyPath:@"contentOffset"];
+
     _resultsController.delegate = nil;
     editSiteViewController.delegate = nil;
 }
@@ -74,8 +81,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
 		_refreshHeaderView.delegate = self;
 		[self.tableView addSubview:_refreshHeaderView];
-	}
-
+    }
 	
 	//  update the last update date
 	[_refreshHeaderView refreshLastUpdatedDate];
@@ -87,17 +93,23 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     if (self.swipeActionsEnabled) {
         [self enableSwipeGestureRecognizer];
     }
+    
+    [self.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
 }
 
 - (void)viewDidUnload
 {
+    if([self.tableView observationInfo])
+        [self.tableView removeObserver:self forKeyPath:@"contentOffset"];
+    
     [super viewDidUnload];
-
+    
      _refreshHeaderView = nil;
     
     if (self.swipeActionsEnabled) {
         [self disableSwipeGestureRecognizer];
     }
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -151,6 +163,29 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     [super setEditing:editing animated:animated];
     _refreshHeaderView.hidden = editing;
 }
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if(![keyPath isEqualToString:@"contentOffset"])
+        return;
+    
+    CGPoint newValue = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue];
+    CGPoint oldValue = [[change objectForKey:NSKeyValueChangeOldKey] CGPointValue];
+    
+    if (newValue.y > oldValue.y && newValue.y > -65.0f) {
+        didPlayPullSound = NO;
+    }
+    
+    if(newValue.y == oldValue.y) return;
+
+    if(newValue.y <= -65.0f && newValue.y < oldValue.y && ![self isSyncing] && !didPlayPullSound && !didTriggerRefresh) {
+        // triggered
+        [SoundUtil playPullSound];
+        didPlayPullSound = YES;
+    }
+    
+}
+
 
 #pragma mark - Property accessors
 
@@ -357,6 +392,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 #pragma mark - EGORefreshTableHeaderDelegate Methods
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view{
+    didTriggerRefresh = YES;
 	[self syncItemsWithUserInteraction:YES];
 }
 
@@ -469,6 +505,14 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 #pragma mark - Private Methods
 
+- (void)hideRefreshHeader {
+    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+    if ([self isViewLoaded] && self.view.window && didTriggerRefresh) {
+        [SoundUtil playRollupSound];
+    }
+    didTriggerRefresh = NO;
+}
+
 - (void)dismissModal:(id)sender {
     [self dismissModalViewControllerAnimated:YES];
 }
@@ -488,14 +532,14 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     }
     if (![ReachabilityUtils isInternetReachable]) {
         [ReachabilityUtils showAlertNoInternetConnection];
-        [_refreshHeaderView performSelector:@selector(egoRefreshScrollViewDataSourceDidFinishedLoading:) withObject:self.tableView afterDelay:0.1];
+        [self performSelector:@selector(hideRefreshHeader) withObject:nil afterDelay:0.1];
         return;
     }
     
     [self syncItemsWithUserInteraction:userInteraction success:^{
-        [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+        [self hideRefreshHeader];
     } failure:^(NSError *error) {
-        [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+        [self hideRefreshHeader];
         if (error.code == 405) {
             // FIXME: this looks like "Enable XML-RPC" which is going away
             // If it's not, don't rely on whatever the error message is if we are showing custom actions like 'Enable Now'

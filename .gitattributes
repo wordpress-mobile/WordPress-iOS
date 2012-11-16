@@ -154,6 +154,8 @@ Classes/SidebarTableViewCell.h -text
 Classes/SidebarTableViewCell.m -text
 Classes/SidebarViewController.h -text
 Classes/SidebarViewController.m -text
+Classes/SoundUtil.h -text
+Classes/SoundUtil.m -text
 Classes/StatsWebViewController.h -text
 Classes/StatsWebViewController.m -text
 Classes/UIBarButtonItem+Styled.h -text
@@ -958,6 +960,10 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /sidebar_stats@2x.png -text
 /sidebar_view.png -text
 /sidebar_view@2x.png -text
+/snd_commit.caf -text
+/snd_discard.caf -text
+/snd_rollup.caf -text
+/snd_swipe.caf -text
 /stats.png -text
 /stats@2x.png -text
 sv.lproj/Localizable.strings -text svneol=unset#unset

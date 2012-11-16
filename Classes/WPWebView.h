@@ -16,6 +16,8 @@ extern NSString *refreshedWithOutValidRequestNotification;
     NSURL *baseURLFallback;
     BOOL didSetScrollViewContentSize;
     BOOL simulatingPullToRefresh;
+    BOOL didPlayPullSound;
+    BOOL didTriggerRefresh;
 }
 
 @property(nonatomic, weak) IBOutlet id<WPWebViewDelegate> delegate;
