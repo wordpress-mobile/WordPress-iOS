@@ -82,13 +82,7 @@
     self.username = nil;
     self.password = nil;
 
-    // Clear reader caches and cookies
-    // FIXME: this doesn't seem to log out the reader properly
-    NSArray *readerCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:kMobileReaderURL]];
-    for (NSHTTPCookie *cookie in readerCookies) {
-        [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
-    }
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    [self clearReaderCookies];
 
     // Notify the world
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLogoutNotification object:nil];
@@ -100,6 +94,23 @@
     self.password = [SFHFKeychainUtils getPasswordForUsername:self.username
                                           andServiceName:@"WordPress.com"
                                                    error:&error];
+    [self clearReaderCookies];
+    [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLogoutNotification object:nil];
+    [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
+    [[WordPressAppDelegate sharedWordPressApplicationDelegate] registerForPushNotifications];
+    [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
+}
+
+- (void)clearReaderCookies {
+    // Clear reader caches and cookies
+    // FIXME: this doesn't seem to log out the reader properly
+    NSArray *readerCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    for (NSHTTPCookie *cookie in readerCookies) {
+        if ([cookie.domain hasSuffix:@"wordpress.com"]) {
+            [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+        }
+    }
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
 @end
