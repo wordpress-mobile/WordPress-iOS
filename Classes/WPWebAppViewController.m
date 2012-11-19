@@ -28,6 +28,7 @@
     [self.webView stopLoading];
     self.webView.delegate = nil;
     self.webBridge.delegate = nil;
+    self.scrollView.delegate = nil;
 }
 
 
