@@ -11,7 +11,9 @@
 #import "NSString+XMLExtensions.h"
 #import "PanelNavigationConstants.h"
 
-@implementation PostViewController
+@implementation PostViewController {
+    NSString *postObserverToken;
+}
 @synthesize titleTitleLabel, tagsTitleLabel, categoriesTitleLabel;
 @synthesize titleLabel, tagsLabel, categoriesLabel;
 @synthesize contentView;
@@ -24,6 +26,7 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self removePostObserver];
 }
 
 
@@ -114,6 +117,15 @@
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    [self addPostObserver];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self removePostObserver];
+}
 
 #pragma mark -
 #pragma mark Accessors
@@ -128,7 +140,9 @@
 
 
 - (void)setPost:(Post *)aPost {
+    [self removePostObserver];
     self.apost = aPost;
+    [self addPostObserver];
 }
 
 
@@ -139,6 +153,20 @@
 
 #pragma mark -
 #pragma mark Instance Methods
+
+- (void)addPostObserver {
+    __weak PostViewController *postViewController = self;
+    postObserverToken = [self.apost addObserverForKeyPath:@"content" task:^(id obj, NSDictionary *change) {
+        [postViewController refreshUI];
+    }];
+}
+
+- (void)removePostObserver {
+    if (postObserverToken) {
+        [self.apost removeObserverWithBlockToken:postObserverToken];
+        postObserverToken = nil;
+    }
+}
 
 - (void)showDeletePostActionSheet:(id)sender {
     if (!isShowingActionSheet) {
