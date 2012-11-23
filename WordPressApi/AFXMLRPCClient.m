@@ -200,16 +200,34 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     };
     [operation setCompletionBlockWithSuccess:xmlrpcSuccess failure:xmlrpcFailure];
     [operation setAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
-        NSURLCredential *credential = [[NSURLCredentialStorage sharedCredentialStorage] defaultCredentialForProtectionSpace:[challenge protectionSpace]];
-        
-        if ([challenge previousFailureCount] == 0 && credential) {
-            [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
+        if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+            // Handle invalid certificates
+            SecTrustResultType result;
+            OSStatus certificateStatus = SecTrustEvaluate(challenge.protectionSpace.serverTrust, &result);
+            if (certificateStatus == 0 && result == kSecTrustResultRecoverableTrustFailure) {
+                dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    AFAuthenticationAlertView *alert = [[AFAuthenticationAlertView alloc] initWithChallenge:challenge];
+                    [alert show];
+                });
+            } else {
+                [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
+            }
         } else {
-            dispatch_async(dispatch_get_main_queue(), ^(void) {
-                AFAuthenticationAlertView *alert = [[AFAuthenticationAlertView alloc] initWithChallenge:challenge];
-                [alert show];
-            });
-        }        
+            NSURLCredential *credential = [[NSURLCredentialStorage sharedCredentialStorage] defaultCredentialForProtectionSpace:[challenge protectionSpace]];
+
+            if ([challenge previousFailureCount] == 0 && credential) {
+                [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
+            } else {
+                dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    AFAuthenticationAlertView *alert = [[AFAuthenticationAlertView alloc] initWithChallenge:challenge];
+                    [alert show];
+                });
+            }
+        }
+    }];
+    [operation setAuthenticationAgainstProtectionSpaceBlock:^BOOL(NSURLConnection *connection, NSURLProtectionSpace *protectionSpace) {
+        // We can handle any authentication available except Client Certificates
+        return ![protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate];
     }];
 
     if ( extra_debug_on == YES ) {

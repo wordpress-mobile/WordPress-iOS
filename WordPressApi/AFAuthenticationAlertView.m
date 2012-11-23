@@ -15,15 +15,26 @@
 
 
 - (id)initWithChallenge:(NSURLAuthenticationChallenge *)challenge {
-    self = [super initWithTitle:NSLocalizedString(@"Authentication required", @"Popup title to ask for user credentials.")
-                message:NSLocalizedString(@"Please enter your credentials", @"Popup message to ask for user credentials (fields shown below).")
-               delegate:self
-      cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button label.")
-      otherButtonTitles:NSLocalizedString(@"Log In", @"Log In button label."), nil];
+    self = [super initWithTitle:nil
+                        message:nil
+                       delegate:self
+              cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button label.")
+              otherButtonTitles:nil];
+
     if (self) {
         _challenge = challenge;
-        
-        self.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+
+        if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+            self.alertViewStyle = UIAlertViewStyleDefault;
+            self.title = NSLocalizedString(@"Certificate error", @"Popup title for wrong SSL certificate.");
+            self.message = [NSString stringWithFormat:NSLocalizedString(@"The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?", @""), challenge.protectionSpace.host];
+            [self addButtonWithTitle:NSLocalizedString(@"Trust", @"Connect when the SSL certificate is invalid")];
+        } else {
+            self.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+            self.title = NSLocalizedString(@"Authentication required", @"Popup title to ask for user credentials.");
+            self.message = NSLocalizedString(@"Please enter your credentials", @"Popup message to ask for user credentials (fields shown below).");
+            [self addButtonWithTitle:NSLocalizedString(@"Log In", @"Log In button label.")];
+        }
     }
     return self;
 }
@@ -31,16 +42,21 @@
 
 -(void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
     if (buttonIndex == 1) {
-        NSString *username, *password;
-        if ([self respondsToSelector:@selector(setAlertViewStyle:)]) {
-            username = [[self textFieldAtIndex:0] text];
-            password = [[self textFieldAtIndex:1] text];
+        NSURLCredential *credential;
+        if ([_challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+            credential = [NSURLCredential credentialForTrust:_challenge.protectionSpace.serverTrust];
         } else {
-            username = usernameField.text;
-            password = passwordField.text;
+            NSString *username, *password;
+            if ([self respondsToSelector:@selector(setAlertViewStyle:)]) {
+                username = [[self textFieldAtIndex:0] text];
+                password = [[self textFieldAtIndex:1] text];
+            } else {
+                username = usernameField.text;
+                password = passwordField.text;
+            }
+            credential = [NSURLCredential credentialWithUser:username password:password persistence:NSURLCredentialPersistencePermanent];
         }
-        
-        NSURLCredential *credential = [NSURLCredential credentialWithUser:username password:password persistence:NSURLCredentialPersistencePermanent];
+
         [[NSURLCredentialStorage sharedCredentialStorage] setDefaultCredential:credential forProtectionSpace:[_challenge protectionSpace]];
         [[_challenge sender] useCredential:credential forAuthenticationChallenge:_challenge];
     } else {
