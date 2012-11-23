@@ -574,6 +574,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
             [self.panelNavigationController presentModalViewController:navController animated:YES];
 
+        } else if (userInteraction) {
+            [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync", @"")];
         }
     }];
 }
