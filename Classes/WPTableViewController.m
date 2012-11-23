@@ -721,9 +721,10 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 #pragma mark - Subclass methods
 
-#define AssertSubclassMethod() @throw [NSException exceptionWithName:NSInternalInconsistencyException\
-                                                    reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)] \
-                                                    userInfo:nil]
+#define AssertSubclassMethod() NSAssert(false, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wreturn-type"
 
 - (NSString *)entityName {
     AssertSubclassMethod();
@@ -731,18 +732,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (NSDate *)lastSyncDate {
     AssertSubclassMethod();
-}
-
-- (NSFetchRequest *)fetchRequest {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:self.blog.managedObjectContext]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
-
-    return fetchRequest;
-}
-
-- (NSString *)sectionNameKeyPath {
-    return nil;
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
@@ -755,6 +744,20 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (BOOL)isSyncing {
 	AssertSubclassMethod();
+}
+
+#pragma clang diagnostic pop
+
+- (NSFetchRequest *)fetchRequest {
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:self.blog.managedObjectContext]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
+
+    return fetchRequest;
+}
+
+- (NSString *)sectionNameKeyPath {
+    return nil;
 }
 
 - (UITableViewCell *)newCell {
