@@ -8,6 +8,7 @@
 
 #import "AboutViewController.h"
 #import "ReachabilityUtils.h"
+#import "WPWebViewController.h"
 
 @interface AboutViewController (Private) 
 - (void)dismiss;
@@ -77,7 +78,9 @@
         [ReachabilityUtils showAlertNoInternetConnection];
         return;
     }
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:path]];
+    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+    [webViewController setUrl:[NSURL URLWithString:path]];
+    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 @end
