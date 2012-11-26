@@ -209,28 +209,6 @@ static const float statusLabelMaxWidthPortrait = 100.f;
     [self.contentView addSubview:activityIndicator];
 }
 
-- (void)changeCellLabelsForUpdate:(NSString *)postTotalString:(NSString *) loadingString:(BOOL)isLoading{
-	if (isLoading) {
-		nameLabel.textColor = [UIColor grayColor];
-		
-	}else {
-		nameLabel.textColor = LOAD_MORE_DATA_TEXT_COLOR;
-		//nameLabel.textColor = [UIColor blackColor];
-	}
-	
-    nameLabel.font = [UIFont boldSystemFontOfSize:MAIN_FONT_SIZE];
-    dateLabel.textColor = [UIColor grayColor];
-    dateLabel.font = [UIFont systemFontOfSize:DATE_FONT_SIZE];
-    nameLabel.text = loadingString;
-    dateLabel.text = postTotalString;
-    self.accessoryType = UITableViewCellAccessoryNone;
-    self.contentView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
-	
-    CGRect rect = CGRectMake(LEFT_OFFSET, nameLabel.frame.origin.y + LABEL_HEIGHT + VERTICAL_OFFSET -1, 320, DATE_LABEL_HEIGHT);
-    dateLabel.frame = rect;
-	
-}
-
 - (void)runSpinner:(BOOL)value {
 	gettingMore = value;
 	

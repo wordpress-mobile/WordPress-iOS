@@ -36,7 +36,6 @@
 
 @property (readwrite, weak) AbstractPost *post;
 
-- (void)changeCellLabelsForUpdate:(NSString *)postTotalString:(NSString *) loadingString:(BOOL)isLoading;
 - (void)runSpinner:(BOOL)value;
 
 
