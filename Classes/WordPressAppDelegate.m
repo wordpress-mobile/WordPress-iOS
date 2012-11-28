@@ -123,6 +123,36 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    UIDevice *device = [UIDevice currentDevice];
+	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
+    NSInteger crashCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"crashCount"];
+
+	// Check for pending crash reports
+	if (![crashReporter hasPendingCrashReport]) {
+        // Empty log file if we didn't crash last time
+        [[FileLogger sharedInstance] reset];
+    } else {
+        crashCount += 1;
+        [[NSUserDefaults standardUserDefaults] setInteger:crashCount forKey:@"crashCount"];
+    }
+
+    NSString *extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
+    WPFLog(@"===========================================================================");
+	WPFLog(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
+    WPFLog(@"Crashed last time: %@", [crashReporter hasPendingCrashReport] ? @"YES" : @"NO" );
+    WPFLog(@"Crash count:       %d", crashCount);
+#ifdef DEBUG
+    WPFLog(@"Debug mode:  Debug");
+#else
+    WPFLog(@"Debug mode:  Production");
+#endif
+    WPFLog(@"Extra debug: %@", extraDebug);
+    WPFLog(@"Device model: %@", [device platform]);
+    WPFLog(@"OS:        %@ %@", [device systemName], [device systemVersion]);
+    WPFLog(@"UDID:      %@", [device wordpressIdentifier]);
+    WPFLog(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"]);
+    WPFLog(@"===========================================================================");
+
     [self setupUserAgent];
 
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
@@ -130,17 +160,6 @@
         if([tempIsAuthenticated isEqualToString:@"1"])
             self.isWPcomAuthenticated = YES;
     }
-
-#ifdef DEBUG
-    WPFLog(@"Notifications: sandbox");
-#else
-    WPFLog(@"Notifications: production");
-#endif
-
-	if(getenv("NSZombieEnabled"))
-		NSLog(@"NSZombieEnabled!");
-	else if(getenv("NSAutoreleaseFreedObjectCheckEnabled"))
-		NSLog(@"NSAutoreleaseFreedObjectCheckEnabled enabled!");
 
 	// Set current directory for WordPress app
 	NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -155,15 +174,6 @@
 	// set the current dir
 	[fileManager changeCurrentDirectoryPath:currentDirectoryPath];
     
-	// Check for pending crash reports
-	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-	if (![crashReporter hasPendingCrashReport]) {
-        // Empty log file if we didn't crash last time
-        [[FileLogger sharedInstance] reset];
-    }
-	[FileLogger log:@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-    [FileLogger log:@"device: %@, iOS %@", [[UIDevice currentDevice] platform], [[UIDevice currentDevice] systemVersion]];
-
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [self setupReachability];
 
