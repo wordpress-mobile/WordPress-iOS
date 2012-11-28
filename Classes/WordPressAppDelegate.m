@@ -923,13 +923,17 @@
 					 stringByReplacingOccurrencesOfString: @"<" withString: @""]
 					stringByReplacingOccurrencesOfString: @">" withString: @""]
 				   stringByReplacingOccurrencesOfString: @" " withString: @""];
-	
-	// Store the token
-	[[NSUserDefaults standardUserDefaults] setObject:myToken forKey:@"apnsDeviceToken"];
-	NSLog(@"Registered for push notifications and stored device token: %@", 
-		  [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"]);
 
-    [self sendApnsToken];
+    NSLog(@"Registered for push notifications and stored device token: %@",
+          [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"]);
+
+	// Store the token
+    NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
+    if (![previousToken isEqualToString:myToken]) {
+        [[NSUserDefaults standardUserDefaults] setObject:myToken forKey:@"apnsDeviceToken"];
+
+        [self sendApnsToken];
+    }
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
