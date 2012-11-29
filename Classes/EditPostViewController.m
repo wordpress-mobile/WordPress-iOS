@@ -7,6 +7,12 @@
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
+typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
+    EditPostViewControllerAlertTagNone,
+    EditPostViewControllerAlertTagLinkHelper,
+    EditPostViewControllerAlertTagFailedMedia,
+};
+
 @interface EditPostViewController (Private)
 - (BOOL) isMediaInUploading;
 - (void) showMediaInUploadingalert;
@@ -15,7 +21,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (BOOL)shouldEnableMediaTab;
 @end
 
-@implementation EditPostViewController
+@implementation EditPostViewController {
+    UIAlertView *_failedMediaAlertView;
+    UIAlertView *_linkHelperAlertView;
+}
 
 @synthesize selectionTableViewController, segmentedTableViewController;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, initialLocation;
@@ -35,6 +44,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 
 #pragma mark -
 #pragma mark LifeCycle Methods
+
+- (void)dealloc {
+    _failedMediaAlertView.delegate = nil;
+    _linkHelperAlertView.delegate = nil;
+}
 
 - (id)initWithPost:(AbstractPost *)aPost {
     NSString *nib;
@@ -719,6 +733,10 @@ NSTimeInterval kAnimationDuration = 0.3f;
 		[self showMediaInUploadingalert];
 		return;
 	}
+    if ([self hasFailedMedia]) {
+        [self showFailedMediaAlert];
+        return;
+    }
 	[self savePost:YES];
 }
 
@@ -751,9 +769,23 @@ NSTimeInterval kAnimationDuration = 0.3f;
     [self dismissEditView];
 }
 
+- (BOOL)hasFailedMedia {
+	BOOL hasFailedMedia = NO;
+
+	NSSet *mediaFiles = self.apost.media;
+	for (Media *media in mediaFiles) {
+		if(media.remoteStatus == MediaRemoteStatusFailed) {
+			hasFailedMedia = YES;
+			break;
+		}
+	}
+	mediaFiles = nil;
+
+	return hasFailedMedia;
+}
+
 //check if there are media in uploading status
--(BOOL) isMediaInUploading {
-	
+- (BOOL)isMediaInUploading {
 	BOOL isMediaInUploading = NO;
 	
 	NSSet *mediaFiles = self.apost.media;
@@ -768,7 +800,19 @@ NSTimeInterval kAnimationDuration = 0.3f;
 	return isMediaInUploading;
 }
 
--(void) showMediaInUploadingalert {
+- (void)showFailedMediaAlert {
+    if (_failedMediaAlertView)
+        return;
+    _failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Pending media", @"Title for alert when trying to publish a post with failed media items")
+                                                       message:NSLocalizedString(@"There are media items in this post that aren't uploaded to the server. Do you want to continue?", @"")
+                                                      delegate:self
+                                             cancelButtonTitle:NSLocalizedString(@"No", @"")
+                                             otherButtonTitles:NSLocalizedString(@"Post anyway", @""), nil];
+    _failedMediaAlertView.tag = EditPostViewControllerAlertTagFailedMedia;
+    [_failedMediaAlertView show];
+}
+
+- (void)showMediaInUploadingalert {
 	//the post is using the network connection and cannot be stoped, show a message to the user
 	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
 																  message:NSLocalizedString(@"A Media file is currently uploading. Please try later.", @"")
@@ -867,7 +911,11 @@ NSTimeInterval kAnimationDuration = 0.3f;
 }
 
 - (void)showLinkView {
-    UIAlertView *addURLSourceAlert = [[UIAlertView alloc] init];
+    if (_linkHelperAlertView)
+        return;
+
+    // FIXME: we probably can use the iOS5 alert view styles here
+    _linkHelperAlertView = [[UIAlertView alloc] init];
 	if (IS_IPAD || [[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait) {
 		infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 46.0, 260.0, 31.0)];
 		urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 82.0, 260.0, 31.0)];
@@ -897,17 +945,17 @@ NSTimeInterval kAnimationDuration = 0.3f;
     urlField.keyboardAppearance = UIKeyboardAppearanceAlert;
 	infoText.keyboardType = UIKeyboardTypeDefault;
 	urlField.keyboardType = UIKeyboardTypeURL;
-    [addURLSourceAlert addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")];
-    [addURLSourceAlert addButtonWithTitle:NSLocalizedString(@"Insert", @"Insert content (link, media) button")];
-    addURLSourceAlert.title = NSLocalizedString(@"Make a Link\n\n\n\n", @"Title of the Link Helper popup to aid in creating a Link in the Post Editor. DON'T REMOVE the line breaks!");
-    addURLSourceAlert.delegate = self;
-    [addURLSourceAlert addSubview:infoText];
-    [addURLSourceAlert addSubview:urlField];
+    [_linkHelperAlertView addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")];
+    [_linkHelperAlertView addButtonWithTitle:NSLocalizedString(@"Insert", @"Insert content (link, media) button")];
+    _linkHelperAlertView.title = NSLocalizedString(@"Make a Link\n\n\n\n", @"Title of the Link Helper popup to aid in creating a Link in the Post Editor. DON'T REMOVE the line breaks!");
+    _linkHelperAlertView.delegate = self;
+    [_linkHelperAlertView addSubview:infoText];
+    [_linkHelperAlertView addSubview:urlField];
     [infoText becomeFirstResponder];
 	
     isShowingLinkAlert = YES;
-    [addURLSourceAlert setTag:2];
-    [addURLSourceAlert show];
+    _linkHelperAlertView.tag = EditPostViewControllerAlertTagLinkHelper;
+    [_linkHelperAlertView show];
 }
 
 - (BOOL)hasChanges {
@@ -920,7 +968,7 @@ NSTimeInterval kAnimationDuration = 0.3f;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 	
-    if ([alertView tag] == 2) {
+    if (alertView.tag == EditPostViewControllerAlertTagLinkHelper) {
         isShowingLinkAlert = NO;
         if (buttonIndex == 1) {
             if ((urlField.text == nil) || ([urlField.text isEqualToString:@""])) {
@@ -965,6 +1013,14 @@ NSTimeInterval kAnimationDuration = 0.3f;
         dismiss = NO;
         [delegate setAlertRunning:NO];
         [textView touchesBegan:nil withEvent:nil];
+        _linkHelperAlertView = nil;
+    } else if (alertView.tag == EditPostViewControllerAlertTagFailedMedia) {
+        if (buttonIndex == 1) {
+            [self savePost:YES];
+        } else {
+            [self switchToMedia];
+        }
+        _failedMediaAlertView = nil;
     }
 	
     return;
