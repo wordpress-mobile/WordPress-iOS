@@ -580,7 +580,7 @@
                         break;
                     case 1:
                         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Remove this Featured Image?", @"Prompt when removing a featured image from a post") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", "Cancel a prompt") destructiveButtonTitle:NSLocalizedString(@"Remove", @"Remove an image/posts/etc") otherButtonTitles:nil];
-                        [actionSheet showFromRect:cell.frame inView:self.view animated:YES];
+                        [actionSheet showFromRect:cell.frame inView:postDetailViewController.view animated:YES];
                         break;
                 }
             } else {
