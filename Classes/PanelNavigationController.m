@@ -711,7 +711,7 @@
         [self enableDetailView];
     }];
     
-    if(IS_IPHONE) {
+    if(IS_IPHONE && !self.modalViewController) {
         [SoundUtil playSwipeSound];
     }
 }
