@@ -110,9 +110,11 @@
 }
 
 - (void)cancelUpload {
-    [_uploadOperation cancel];
-     _uploadOperation = nil;
-    self.remoteStatus = MediaRemoteStatusFailed;
+    if (self.remoteStatus == MediaRemoteStatusPushing || self.remoteStatus == MediaRemoteStatusProcessing) {
+        [_uploadOperation cancel];
+        _uploadOperation = nil;
+        self.remoteStatus = MediaRemoteStatusFailed;
+    }
 }
 
 - (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
@@ -190,8 +192,12 @@
                 });
             }];
             _uploadOperation = operation;
-            self.remoteStatus = MediaRemoteStatusPushing;
-            [self.blog.api enqueueHTTPRequestOperation:operation];
+
+            // Upload might have been canceled while processing
+            if (self.remoteStatus == MediaRemoteStatusProcessing) {
+                self.remoteStatus = MediaRemoteStatusPushing;
+                [self.blog.api enqueueHTTPRequestOperation:operation];
+            }
         });
     });
 }

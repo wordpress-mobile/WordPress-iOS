@@ -487,14 +487,12 @@
         [self.blog.api callMethod:@"metaWeblog.deletePost"
                        parameters:parameters
                           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                              [[self managedObjectContext] deleteObject:self];
                               if (success) success();
                           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                               if (failure) failure(error);
                           }];
     }
-    [[self managedObjectContext] deleteObject:self];
-    [self save];
+    [self remove];
     if (!remote && success) {
         success();
     }

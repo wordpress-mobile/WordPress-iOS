@@ -7,6 +7,7 @@
 //
 
 #import "AbstractPost.h"
+#import "Media.h"
 #import "NSMutableDictionary+Helpers.h"
 
 @interface AbstractPost(ProtectedMethods)
@@ -82,9 +83,15 @@
     return ((self.postID != nil) && ([self.postID intValue] > 0));
 }
 
-- (BOOL)removeWithError:(NSError **)error {
+- (void)remove {
+    for (Media *media in self.media) {
+        [media cancelUpload];
+    }
+    if (self.remoteStatus == AbstractPostRemoteStatusPushing || self.remoteStatus == AbstractPostRemoteStatusLocal) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadCancelled" object:self];
+    }
     [[self managedObjectContext] deleteObject:self];
-	return YES;
+    [self save];
 }
 
 - (void)save {
