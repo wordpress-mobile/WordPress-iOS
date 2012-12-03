@@ -24,6 +24,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 @property (nonatomic, strong, readonly) UIView *swipeView;
 @property (nonatomic, strong) UITableViewCell *swipeCell;
 @property (nonatomic, strong) NSIndexPath *firstVisibleIndexPathBeforeDisappear;
+@property (nonatomic, strong) UIView *noResultsView;
 
 - (void)simulatePullToRefresh;
 - (void)enableSwipeGestureRecognizer;
@@ -33,12 +34,14 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)swipeRight:(UISwipeGestureRecognizer *)recognizer;
 - (void)dismissModal:(id)sender;
 - (void)hideRefreshHeader;
+- (void)configureNoResultsView;
 
 @end
 
 @implementation WPTableViewController {
     EGORefreshTableHeaderView *_refreshHeaderView;
     EditSiteViewController *editSiteViewController;
+    UIView *noResultsView;
     NSIndexPath *_indexPathSelectedBeforeUpdates;
     NSIndexPath *_indexPathSelectedAfterUpdates;
     UISwipeGestureRecognizer *_leftSwipeGestureRecognizer;
@@ -56,6 +59,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 @synthesize swipeView = _swipeView;
 @synthesize swipeCell = _swipeCell;
 @synthesize firstVisibleIndexPathBeforeDisappear;
+@synthesize noResultsView;
 
 - (void)dealloc
 {
@@ -95,6 +99,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     }
     
     [self.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+    
+    [self configureNoResultsView];
 }
 
 - (void)viewDidUnload
@@ -331,6 +337,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
         _indexPathSelectedBeforeUpdates = nil;
         _indexPathSelectedAfterUpdates = nil;
     }
+    
+    [self configureNoResultsView];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
@@ -394,6 +402,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view{
     didTriggerRefresh = YES;
 	[self syncItemsWithUserInteraction:YES];
+    [noResultsView removeFromSuperview];
 }
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view{
@@ -505,6 +514,65 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 #pragma mark - Private Methods
 
+- (void)configureNoResultsView {
+    if (![self isViewLoaded]) return;
+    
+    if ([[_resultsController fetchedObjects] count] == 0) {
+        // Show no content view.
+        if (self.noResultsView == nil) {
+            
+            NSString *msg = nil;
+            if ([self.entityName isEqualToString:@"Comment"]) {
+                msg = NSLocalizedString(@"Sorry. No %@ yet.", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
+                msg = [NSString stringWithFormat:msg, [self.title lowercaseString]]; // The convention is the view controller's title is the plural of the entity name.
+                
+            } else {
+                msg = NSLocalizedString(@"No %@ yet? Why not create one?", @"A string format that is a call to action. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
+                msg = [NSString stringWithFormat:msg, [self.title lowercaseString]];
+            }
+
+            CGFloat width = self.view.frame.size.width - 20.0f; // 10px padding on either side.
+            UIFont *fnt = [UIFont fontWithName:@"Georgia" size:14.0];
+            CGSize sz = [msg sizeWithFont:fnt constrainedToSize:CGSizeMake(width, 999.0f) lineBreakMode:NSLineBreakByWordWrapping];
+
+            self.noResultsView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, sz.width, sz.height)];
+            noResultsView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
+                                            UIViewAutoresizingFlexibleRightMargin |
+                                            UIViewAutoresizingFlexibleBottomMargin |
+                                            UIViewAutoresizingFlexibleTopMargin;
+            
+            // Message label
+            UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, sz.width, sz.height)];
+            lbl.font = fnt;
+            lbl.textColor = [UIColor darkGrayColor];
+            lbl.textAlignment = NSTextAlignmentCenter;
+            lbl.shadowOffset = CGSizeMake(0, 1);
+            lbl.shadowColor = [UIColor whiteColor];
+            lbl.backgroundColor = [UIColor clearColor];
+            lbl.lineBreakMode = NSLineBreakByWordWrapping;
+            lbl.numberOfLines = 0;
+            lbl.text = msg;
+            [self.noResultsView addSubview:lbl];
+        }
+        
+        // Center
+        CGRect frame = self.tableView.frame;
+        CGFloat x = (frame.size.width / 2.0f) - (noResultsView.frame.size.width / 2.0f);
+        CGFloat y = (frame.size.height / 2.0f) - (noResultsView.frame.size.height / 2.0f);
+        y = 22.0f;
+        
+        frame = noResultsView.frame;
+        frame.origin.x = x;
+        frame.origin.y = y;
+        noResultsView.frame = frame;
+        
+        [self.tableView addSubview:self.noResultsView];
+    } else {
+        [self.noResultsView removeFromSuperview];
+    }
+
+}
+
 - (void)hideRefreshHeader {
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     if ([self isViewLoaded] && self.view.window && didTriggerRefresh) {
@@ -538,6 +606,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     
     [self syncItemsWithUserInteraction:userInteraction success:^{
         [self hideRefreshHeader];
+        [self configureNoResultsView];
     } failure:^(NSError *error) {
         [self hideRefreshHeader];
         if (error.code == 405) {

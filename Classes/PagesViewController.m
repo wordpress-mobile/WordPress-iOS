@@ -20,9 +20,12 @@
 
 @implementation PagesViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    self.title = NSLocalizedString(@"Pages", @"");
+- (id)init {
+    self = [super init];
+    if(self) {
+        self.title = NSLocalizedString(@"Pages", @"");
+    }
+    return self;
 }
 
 - (void)refreshHandler {

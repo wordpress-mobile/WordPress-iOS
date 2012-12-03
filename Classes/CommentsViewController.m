@@ -56,14 +56,21 @@
 #pragma mark -
 #pragma mark View Lifecycle Methods
 
+- (id)init {
+    self = [super init];
+    if(self) {
+        self.title = NSLocalizedString(@"Comments", @"");
+    }
+    return self;
+}
+
+
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
     if (!IS_IPAD) {
         self.swipeActionsEnabled = YES;        
     }
-    
-    self.title = NSLocalizedString(@"Comments", @"");
         
     spamButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_flag"] style:UIBarButtonItemStylePlain target:self action:@selector(spamSelectedComments:)];
     unapproveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_unapprove"] style:UIBarButtonItemStylePlain target:self action:@selector(unapproveSelectedComments:)];

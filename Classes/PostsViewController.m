@@ -30,6 +30,15 @@
 #pragma mark -
 #pragma mark View lifecycle
 
+- (id)init {
+    self = [super init];
+    if(self) {
+        self.title = NSLocalizedString(@"Posts", @"");
+    }
+    return self;
+}
+
+
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
@@ -37,8 +46,6 @@
 	// ShouldRefreshPosts
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
-
-    self.title = NSLocalizedString(@"Posts", @"");
     
     UIBarButtonItem *composeButtonItem  = nil;
     
