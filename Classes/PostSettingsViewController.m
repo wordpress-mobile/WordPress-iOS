@@ -2,6 +2,8 @@
 #import "WPSelectionTableViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPPopoverBackgroundView.h"
+#import "SFHFKeychainUtils.h"
+#import "NSString+Helpers.h"
 
 #define kPasswordFooterSectionHeight         68.0f
 #define kResizePhotoSettingSectionHeight     60.0f
@@ -10,10 +12,13 @@
 #define TAG_PICKER_DATE         2
 #define TAG_PICKER_FORMAT       3
 
-@interface PostSettingsViewController (Private)
+@interface PostSettingsViewController () {
+    BOOL triedAuthOnce;
+}
 
 - (void)showPicker:(UIView *)picker;
 - (void)geocodeCoordinate:(CLLocationCoordinate2D)c;
+- (void)loadFeaturedImage:(NSURL *)imageURL;
 
 @end
 
@@ -119,11 +124,7 @@
                     NSURL *imageURL = [[NSURL alloc] initWithString:postDetailViewController.post.featuredImageURL];
                     if (imageURL) {
                         [featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleNone];
-                        [featuredImageView setImageWithURL:imageURL];
-                        [featuredImageView setHidden:NO];
-                        [featuredImageSpinner stopAnimating];
-                        [featuredImageSpinner setHidden:YES];
-                        [featuredImageLabel setHidden:YES];
+                        [self loadFeaturedImage:imageURL];
                     }
                 }
             } failure:^(NSError *error) {
@@ -188,6 +189,67 @@
 
 #pragma mark -
 #pragma mark Instance Methods
+
+- (void)loadFeaturedImage:(NSURL *)imageURL {
+    
+    NSURLRequest *req = [NSURLRequest requestWithURL:imageURL];
+    AFImageRequestOperation *operation = [[AFImageRequestOperation alloc] initWithRequest:req];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [featuredImageView setImage:responseObject];
+        [featuredImageView setHidden:NO];
+        [featuredImageSpinner stopAnimating];
+        [featuredImageSpinner setHidden:YES];
+        [featuredImageLabel setHidden:YES];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        // private blog, auth needed.
+        if (operation.response.statusCode == 403) {
+            
+            if (!triedAuthOnce) {
+                triedAuthOnce = YES;
+                
+                NSError *error = nil;
+                Blog *blog = self.postDetailViewController.apost.blog;
+                NSString *username = blog.username;
+                NSString *password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.hostURL error:&error];
+                
+                NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
+                NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=",
+                                         [username stringByUrlEncoding],
+                                         [password stringByUrlEncoding]];
+                
+                [mRequest setURL:[NSURL URLWithString:blog.loginURL]];
+                [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
+                [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
+                [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
+                [mRequest setHTTPMethod:@"POST"];
+                
+                AFHTTPRequestOperation *authOp = [[AFHTTPRequestOperation alloc] initWithRequest:mRequest];
+                [authOp setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    // Good auth. We should be able to show the image now.
+                    [self loadFeaturedImage:imageURL];
+                    
+                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    // Rather than duplicate the fail condition, just call the method again and let it fail a second time.
+                    [self loadFeaturedImage:imageURL];
+                    
+                }];
+                [authOp start];
+                
+                return;
+            }    
+        }
+        
+        // Unable to download the image.
+        [featuredImageView setHidden:YES];
+        [featuredImageSpinner stopAnimating];
+        [featuredImageSpinner setHidden:YES];
+        [featuredImageLabel setText:NSLocalizedString(@"Could not download Featured Image.", @"Featured image could not be downloaded for display in post settings.")];
+    }];
+    
+    [operation start];
+}
+
 
 - (void)endEditingAction:(id)sender {
 	if (passwordTextField != nil){
