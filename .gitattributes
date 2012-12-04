@@ -5,7 +5,6 @@
 /AddUsersBlogsViewController-iPad.xib -text
 /AddUsersBlogsViewController.xib -text
 /BetaFeedbackViewController.xib -text
-/BlogSettingsView-iPad.xib -text
 CameraPlus/CameraPlusPickerManager.h -text
 CameraPlus/CameraPlusPickerManager.m -text
 Classes/AboutViewController.h -text
@@ -297,7 +296,6 @@ Classes/stats@2x.png -text
 /Info-beta.plist -text
 /Info-dev.plist -text
 /Info.plist -text
-/MainBackground.png -text
 /MainWindow.xib -text
 /Media.h -text
 /Media.m -text
@@ -489,17 +487,11 @@ Pods/Reachability/Reachability.podspec -text
 /PostViewController-iPad.xib -text
 /QuickPhotoViewController.xib -text
 Resources-iPad/MainWindow-iPad.xib -text
-/RoundedRectBlack.png -text
 /SidebarToolbarButton.png -text svneol=unset#unset
 /SidebarToolbarButton@2x.png -text svneol=unset#unset
 /SidebarToolbarButtonHighlighted.png -text
 /SidebarToolbarButtonHighlighted@2x.png -text
 /SidebarViewController.xib -text
-/StatsTableViewController-iPad.xib -text
-/ToolbarIconCamera.png -text svneol=unset#unset
-/ToolbarIconEye.png -text svneol=unset#unset
-/ToolbarIconGear.png -text svneol=unset#unset
-/ToolbarIconLocation.png -text svneol=unset#unset
 UIAutomationTests/Blog.js -text
 UIAutomationTests/Config.js -text
 UIAutomationTests/Post.js -text
@@ -518,68 +510,6 @@ UIAutomationTests/WPiOSTests.js -text
 /UISegmentBarBlackButtonHighlighted@2x.png -text svneol=unset#unset
 /UITableViewActivityCell.xib -text
 /UITableViewSwitchCell.xib -text
-Vendor/InAppSettings/.hgignore -text
-Vendor/InAppSettings/Gear.chopList -text
-Vendor/InAppSettings/Gear.psd -text svneol=unset#unset
-Vendor/InAppSettings/Images/InAppSettings.png -text svneol=unset#unset
-Vendor/InAppSettings/Images/ibadd.png -text svneol=unset#unset
-Vendor/InAppSettings/Images/sourcetreeadd.png -text svneol=unset#unset
-Vendor/InAppSettings/Images/xcodeadd.png -text svneol=unset#unset
-Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSChildPaneSpecifierCell.h -text
-Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSChildPaneSpecifierCell.m -text
-Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSMultiValueSpecifierCell.h -text
-Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSMultiValueSpecifierCell.m -text
-Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSSliderSpecifierCell.h -text
-Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSSliderSpecifierCell.m -text
-Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSTextFieldSpecifierCell.h -text
-Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSTextFieldSpecifierCell.m -text
-Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSTitleValueSpecifierCell.h -text
-Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSTitleValueSpecifierCell.m -text
-Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSToggleSwitchSpecifierCell.h -text
-Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsPSToggleSwitchSpecifierCell.m -text
-Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsTableCell.h -text
-Vendor/InAppSettings/InAppSettings/Cells/InAppSettingsTableCell.m -text
-Vendor/InAppSettings/InAppSettings/InAppSettings.h -text
-Vendor/InAppSettings/InAppSettings/InAppSettings.m -text
-Vendor/InAppSettings/InAppSettings/InAppSettings.png -text
-Vendor/InAppSettings/InAppSettings/InAppSettings@2x.png -text
-Vendor/InAppSettings/InAppSettings/InAppSettingsConstants.h -text
-Vendor/InAppSettings/InAppSettings/InAppSettingsPSMultiValueSpecifierTable.h -text
-Vendor/InAppSettings/InAppSettings/InAppSettingsPSMultiValueSpecifierTable.m -text
-Vendor/InAppSettings/InAppSettings/InAppSettingsReader.h -text
-Vendor/InAppSettings/InAppSettings/InAppSettingsReader.m -text
-Vendor/InAppSettings/InAppSettings/InAppSettingsSpecifier.h -text
-Vendor/InAppSettings/InAppSettings/InAppSettingsSpecifier.m -text
-Vendor/InAppSettings/InAppSettingsTestApp/Classes/AppDelegate.h -text
-Vendor/InAppSettings/InAppSettingsTestApp/Classes/AppDelegate.m -text
-Vendor/InAppSettings/InAppSettingsTestApp/Classes/RootViewController.h -text
-Vendor/InAppSettings/InAppSettingsTestApp/Classes/RootViewController.m -text
-Vendor/InAppSettings/InAppSettingsTestApp/InAppSettingsTestApp-Info.plist -text
-Vendor/InAppSettings/InAppSettingsTestApp/InAppSettingsTestApp.xcodeproj/project.pbxproj -text
-Vendor/InAppSettings/InAppSettingsTestApp/InAppSettingsTestApp_Prefix.pch -text
-Vendor/InAppSettings/InAppSettingsTestApp/MainWindow.xib -text
-Vendor/InAppSettings/InAppSettingsTestApp/main.m -text
-Vendor/InAppSettings/InAppSettingsTestApp/peter_settings/Settings.bundle/Root.plist -text
-Vendor/InAppSettings/InAppSettingsTestApp/peter_settings/Settings.bundle/en.lproj/Root.strings -text svneol=unset#unset
-Vendor/InAppSettings/InAppSettingsTestApp/peter_settings/Settings.bundle/vehicles.plist -text
-Vendor/InAppSettings/InAppSettingsTestApp/pretty_settings/Settings.bundle/Root.plist -text
-Vendor/InAppSettings/InAppSettingsTestApp/pretty_settings/Settings.bundle/en.lproj/Root.strings -text
-Vendor/InAppSettings/InAppSettingsTestApp/pretty_settings/Settings.bundle/largefont.png -text svneol=unset#unset
-Vendor/InAppSettings/InAppSettingsTestApp/pretty_settings/Settings.bundle/largefont@2x.png -text svneol=unset#unset
-Vendor/InAppSettings/InAppSettingsTestApp/pretty_settings/Settings.bundle/smallfont.png -text svneol=unset#unset
-Vendor/InAppSettings/InAppSettingsTestApp/pretty_settings/Settings.bundle/smallfont@2x.png -text svneol=unset#unset
-Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/ChildPane.plist -text
-Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/InApp.plist -text
-Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/Root.plist -text
-Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/bigdot.png -text svneol=unset#unset
-Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/bigdot@2x.png -text svneol=unset#unset
-Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/en.lproj/ChildPane.strings -text
-Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/en.lproj/InApp.strings -text
-Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/en.lproj/Root.strings -text
-Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/littledot.png -text svneol=unset#unset
-Vendor/InAppSettings/InAppSettingsTestApp/test_settings/Settings.bundle/littledot@2x.png -text svneol=unset#unset
-Vendor/InAppSettings/LICENSE -text
-Vendor/InAppSettings/README.md -text
 Vendor/KVO+Blocks/NSObject+BlockObservation.h -text
 Vendor/KVO+Blocks/NSObject+BlockObservation.m -text
 Vendor/facebook-ios-sdk/FBConnect.h -text
@@ -683,7 +613,6 @@ Vendor/xmlrpc/XMLRPCResponse.h -text
 Vendor/xmlrpc/XMLRPCResponse.m -text
 /WPAFNetworking.h -text
 /WPAddCategoryViewController.xib -text
-/WPCategoriesController.xib -text
 /WPComOAuthController.xib -text
 /WPReaderViewController.xib -text
 /WPSelectionTableViewController.xib -text
@@ -718,10 +647,6 @@ WordPressTest/en.lproj/InfoPlist.strings -text
 WordPressTest/entities.xml -text
 WordPressTest/entitiesDecoded.xml -text
 /WordPress_Prefix.pch -text
-/XMLSignupViewController-iPad.xib -text
-/XMLSignupViewController.xib -text
-/XMLValueDecoder.h -text
-/XMLValueDecoder.m -text
 /approve.png -text svneol=unset#unset
 /approve@2x.png -text svneol=unset#unset
 /attachment.png -text svneol=unset#unset
@@ -742,19 +667,12 @@ WordPressTest/entitiesDecoded.xml -text
 /bold.png -text svneol=unset#unset
 /bold@2x.png -text svneol=unset#unset
 /bold~ipad.png -text svneol=unset#unset
-/camera.png -text svneol=unset#unset
-/camera@2x.png -text svneol=unset#unset
-/categoriesHighlighted.png -text svneol=unset#unset
-/categoriesHighlighted@2x.png -text svneol=unset#unset
 /category_child.png -text
 /category_child@2x.png -text
 /cell_gradient_bg.png -text
 /cell_gradient_bg@2x.png -text
 /check.png -text
 /check@2x.png -text
-/commentDelete.png -text
-/comments.png -text
-/comments@2x.png -text
 de.lproj/Localizable.strings -text svneol=unset#unset
 /defaultPostTemplate.html -text
 /defaultPostTemplate_old.html -text
@@ -762,12 +680,6 @@ de.lproj/Localizable.strings -text svneol=unset#unset
 /doneButton@2x.png -text
 /doneButtonHighlighted.png -text
 /doneButtonHighlighted@2x.png -text
-/doneButtonLandscape.png -text
-/doneButtonLandscape@2x.png -text
-/doneButtonLandscapeHighlighted.png -text
-/doneButtonLandscapeHighlighted@2x.png -text
-/dotted-pattern.png -text svneol=unset#unset
-/dotted-pattern@2x.png -text svneol=unset#unset
 /down.png -text
 /down@2x.png -text
 /downArrow.png -text svneol=unset#unset
@@ -784,9 +696,6 @@ fr.lproj/Localizable.strings -text svneol=unset#unset
 /friend_finder_cancel_btn_highlight@2x.png -text
 /friend_follow_service_icons.png -text svneol=unset#unset
 /friend_follow_service_icons@2x.png -text svneol=unset#unset
-/getLocation.png -text
-/getLocation@2x.png -text
-/gettingLocation.png -text
 /gravatar.jpg -text
 /hasLocation.png -text
 /hasLocation@2x.png -text
@@ -809,10 +718,6 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /keyboardButton@2x.png -text svneol=unset#unset
 /keyboardButtonHighlighted.png -text
 /keyboardButtonHighlighted@2x.png -text
-/keyboardButtonLandscape.png -text
-/keyboardButtonLandscape@2x.png -text
-/keyboardButtonLandscapeHighlighted.png -text
-/keyboardButtonLandscapeHighlighted@2x.png -text
 /keyboardButtoniPad.png -text
 /keyboardButtoniPad@2x.png -text svneol=unset#unset
 /keyboardButtoniPadHighlighted.png -text
@@ -830,8 +735,6 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /loader.html -text
 /localize.py -text
 /lock.png -text
-/logo_welcome.png -text
-/logo_welcome@2x.png -text
 /logo_wpcom.png -text
 /logo_wpcom@2x.png -text
 /logo_wporg.png -text
@@ -868,8 +771,6 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /navbar_primary_button_bg_landscape_active@2x.png -text
 /navbar_read.png -text
 /navbar_read@2x.png -text
-/navbar_read_dim.png -text
-/navbar_read_dim@2x.png -text
 /navbar_shadow.png -text
 /navbar_shadow@2x.png -text
 /navbar_toggle.png -text
@@ -880,12 +781,6 @@ nb.lproj/Localizable.strings -text svneol=unset#unset
 /next.png -text svneol=unset#unset
 /next@2x.png -text svneol=unset#unset
 nl.lproj/Localizable.strings -text svneol=unset#unset
-/page_control_blue.png -text
-/page_control_blue@2x.png -text
-/page_control_blue_active.png -text
-/page_control_blue_active@2x.png -text
-/pages.png -text
-/pages@2x.png -text
 /panel_icon.png -text
 /panel_icon@2x.png -text
 /paperclip.png -text
@@ -898,21 +793,11 @@ pl.lproj/Localizable.strings -text svneol=unset#unset
 /popover_bg.png -text
 /popover_bg@2x.png -text
 /postPreview.html -text
-/posts.png -text
-/posts@2x.png -text
 /preview.png -text
 /preview@2x.png -text
 /previous.png -text svneol=unset#unset
 /previous@2x.png -text svneol=unset#unset
 pt.lproj/Localizable.strings -text svneol=unset#unset
-/quickPhotoButton.png -text svneol=unset#unset
-/quickPhotoButton@2x.png -text svneol=unset#unset
-/quickPhotoButtonBackground.png -text
-/quickPhotoButtonBackground@2x.png -text
-/quickPhotoButtonHighlighted.png -text svneol=unset#unset
-/quickPhotoButtonHighlighted@2x.png -text
-/quickPhotoTextView.png -text svneol=unset#unset
-/quickPhotoTextView@2x.png -text svneol=unset#unset
 /read.png -text
 /read@2x.png -text
 /redoDisabled~ipad.png -text svneol=unset#unset
@@ -941,10 +826,6 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /sidebar_comments@2x.png -text
 /sidebar_dashboard.png -text
 /sidebar_dashboard@2x.png -text
-/sidebar_expand_down.png -text
-/sidebar_expand_down@2x.png -text
-/sidebar_expand_up.png -text
-/sidebar_expand_up@2x.png -text
 /sidebar_footer_bg.png -text
 /sidebar_footer_bg@2x.png -text
 /sidebar_note.png -text svneol=unset#unset
@@ -961,7 +842,6 @@ pt.lproj/Localizable.strings -text svneol=unset#unset
 /sidebar_stats@2x.png -text
 /sidebar_view.png -text
 /sidebar_view@2x.png -text
-/snd_commit.caf -text
 /snd_discard.caf -text
 /snd_pull.caf -text
 /snd_rollup.caf -text
@@ -1094,15 +974,10 @@ tr.lproj/Localizable.strings -text
 /up_dim.png -text
 /up_dim@2x.png -text
 /update-translations.rb -text
-/video_thumbnail.png -text
 /welcome_bg.png -text
 /welcome_bg@2x.png -text
 /welcome_bg_pattern.png -text
 /welcome_bg_pattern@2x.png -text
-/welcome_btn_normal.png -text
-/welcome_btn_normal@2x.png -text
-/welcome_btn_over.png -text
-/welcome_btn_over@2x.png -text
 /welcome_button_add.png -text
 /welcome_button_add@2x.png -text
 /welcome_button_asterisk.png -text
