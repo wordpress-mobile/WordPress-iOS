@@ -517,7 +517,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)configureNoResultsView {
     if (![self isViewLoaded]) return;
     
-    if ([[_resultsController fetchedObjects] count] == 0) {
+    if (self.resultsController && [[_resultsController fetchedObjects] count] == 0) {
         // Show no content view.
         if (self.noResultsView == nil) {
             
