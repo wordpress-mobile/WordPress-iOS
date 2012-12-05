@@ -882,7 +882,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     if (_linkHelperAlertView)
         return;
 
-    // FIXME: we probably can use the iOS5 alert view styles here
     _linkHelperAlertView = [[UIAlertView alloc] init];
 	if (IS_IPAD || [[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait) {
 		infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 46.0, 260.0, 31.0)];
