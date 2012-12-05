@@ -20,7 +20,6 @@
 UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDelegate,UIPopoverControllerDelegate,WPKeyboardToolbarDelegate> {
     BOOL isShowPhotoPickerActionSheet;
     BOOL isTextViewEditing;
-    BOOL dismiss;
     BOOL isEditing;
 	BOOL editingDisabled;
     BOOL isNewCategory;
@@ -117,7 +116,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)showLinkView;
 - (void)disableInteraction;
 - (void)savePost: (BOOL)upload;
-- (void)dismissAlertViewKeyboard:(NSNotification *)notification;
 - (void)textFieldDidChange: (id)sender;
 - (NSInteger)pointerPositionForAttachmentsTab;
 // Media

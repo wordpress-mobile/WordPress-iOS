@@ -14,8 +14,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 };
 
 @interface EditPostViewController (Private)
-- (BOOL) isMediaInUploading;
-- (void) showMediaInUploadingalert;
+- (BOOL)isMediaInUploading;
+- (void)showMediaInUploadingalert;
 - (void)restoreText:(NSString *)text withRange:(NSRange)range;
 - (void)populateSelectionsControllerWithCategories;
 - (BOOL)shouldEnableMediaTab;
@@ -158,10 +158,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissAlertViewKeyboard:) name:@"DismissAlertViewKeyboard" object:nil];
-  /*  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadFailed:) name:FeaturedImageUploadFailed object:nil];*/
-	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];	
 	
     isTextViewEditing = NO;
     spinner = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Saving...", @"Status message to indicate that content is saving (use an ellipsis (...) towards the end)")];
@@ -192,8 +189,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         [self refreshUIForCurrentPost];
     } else if(self.editMode == kNewPost) {
         [self refreshUIForCompose];
-        
-//	} else if (self.editMode == kAutorecoverPost) {
     } else {
         [self refreshUIForCurrentPost];
 	}
@@ -206,19 +201,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         attachmentButton.tintColor = color;
         photoButton.tintColor = color;
         movieButton.tintColor = color;
-    }
-    
-    // TODO: remove this when sunset support for iOS 4 and either
-    // fix the positioning in the xibs or use a different image for the pointer.
-    // This moves the pointer up 1 pixel to fix its appearance on iOS 5, while preserving
-    // its appearance on iOS 4.
-    if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
-        CGRect frame = tabPointer.frame;
-        frame.origin.y = frame.origin.y - 1;
-        tabPointer.frame = frame;
-    } else {
-        //set the black tab pointer on iOS 4
-        [tabPointer setImage:[UIImage imageNamed:@"tabPointer_black"]];
     }
 }
 
@@ -254,7 +236,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     animateWiggleIt.toValue=[NSNumber numberWithFloat:1.0];
 	[textViewPlaceHolderField.layer addAnimation:animateWiggleIt forKey:@"textViewPlaceHolderField"];
 
-//	self.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
 }
 
 - (void)viewWillDisappear:(BOOL)animated {	
@@ -521,7 +502,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 - (void)refreshUIForCompose {
-//	self.navigationItem.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
     self.navigationItem.title = [self editorTitle];
     titleTextField.text = @"";
     textView.text = @"";
@@ -531,7 +511,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
 - (void)refreshUIForCurrentPost {
     if ([self.apost.postTitle length] > 0) {
-//        self.navigationItem.title = self.apost.postTitle;
         self.navigationItem.title = [self editorTitle];
     }
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"Back button label.")
@@ -539,7 +518,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	
     titleTextField.text = self.apost.postTitle;
     if (self.post) {
-        // FIXME: tags should be an array/set of Tag objects
         tagsTextField.text = self.post.tags;
         [categoriesButton setTitle:[NSString decodeXMLCharactersIn:[self.post categoriesText]] forState:UIControlStateNormal];
         [categoriesButton.titleLabel setFont:[UIFont systemFontOfSize:16.0f]];
@@ -881,16 +859,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	}
 }
 
-/*
-- (IBAction)showCategoriesViewAction:(id)sender {
-	//[self showEditPostModalViewWithAnimation:YES];
-    [self populateSelectionsControllerWithCategories];
-}
-
-- (IBAction)showStatusViewAction:(id)sender {
-    [self populateSelectionsControllerWithStatuses];
-}
-*/
 - (void)resignTextView {
 	[textView resignFirstResponder];
 }
@@ -935,8 +903,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     if (range.length > 0)
         infoText.text = [textView.text substringWithRange:range];
     
-    //infoText.enabled = YES;
-	
     infoText.autocapitalizationType = UITextAutocapitalizationTypeNone;
     urlField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     infoText.borderStyle = UITextBorderStyleRoundedRect;
@@ -979,22 +945,14 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
             if ((infoText.text == nil) || ([infoText.text isEqualToString:@""]))
                 infoText.text = urlField.text;
 			
-            //NSString *commentsStr = textView.text;
-            //NSRange rangeToReplace = [self selectedLinkRange];
             NSString *urlString = [self validateNewLinkInfo:urlField.text];
             NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];
             
             NSRange range = textView.selectedRange;
             
-            //NSString *selection = [textView.text substringWithRange:range];
             NSString *oldText = textView.text;
             NSRange oldRange = textView.selectedRange;
-            // Weird. On iOS 4.2.x iPad the selectedRange can be larger than the string's length? #1011-ios 
-            if (range.location > [oldText length]) {
-                textView.text = [textView.text stringByAppendingString:aTagText];
-            } else {
-                textView.text = [textView.text stringByReplacingCharactersInRange:range withString:aTagText];
-            }
+            textView.text = [textView.text stringByReplacingCharactersInRange:range withString:aTagText];
             
             //reset selection back to nothing
             range.length = 0;
@@ -1006,11 +964,9 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
             [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
             [textView.undoManager setActionName:@"link"];            
             
-            //textView.text = [commentsStr stringByReplacingOccurrencesOfString:[commentsStr substringWithRange:rangeToReplace] withString:aTagText options:NSCaseInsensitiveSearch range:rangeToReplace];
 			self.apost.content = textView.text;
         }
 		
-        dismiss = NO;
         [delegate setAlertRunning:NO];
         [textView touchesBegan:nil withEvent:nil];
         _linkHelperAlertView = nil;
@@ -1078,9 +1034,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     WPFLogMethod();
     [textViewPlaceHolderField removeFromSuperview];
 
-//	[self positionTextView:nil];
-    dismiss = NO;
-	
     if (!isTextViewEditing) {
         isTextViewEditing = YES;
     }
@@ -1118,11 +1071,9 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	}
 	
     isEditing = NO;
-    dismiss = NO;
 	
     if (isTextViewEditing) {
         isTextViewEditing = NO;
-//		[self positionTextView:nil];
 		
         self.apost.content = textView.text;
 		
@@ -1163,15 +1114,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	
     if (textField == titleTextField) {
         self.apost.postTitle = textField.text;
-        
-        // FIXME: this should be -[PostsViewController updateTitle]
         self.navigationItem.title = [self editorTitle];
-//        if ([self.apost.postTitle length] > 0) {
-//            self.navigationItem.title = self.apost.postTitle;
-//        } else {
-//            self.navigationItem.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
-//        }
-
     }
 	else if (textField == tagsTextField)
         self.post.tags = tagsTextField.text;
@@ -1308,8 +1251,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if (textField == titleTextField) {
         self.apost.postTitle = [textField.text stringByReplacingCharactersInRange:range withString:string];
-
-        // FIXME: this should be -[PostsViewController updateTitle]
         self.navigationItem.title = [self editorTitle];
 
     } else if (textField == tagsTextField)
@@ -1404,27 +1345,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	self.apost.content = textView.text;
 }
 
-- (void)readBookmarksFile {
-    bookMarksArray = [[NSMutableArray alloc] init];
-    //NSDictionary *bookMarksDict=[NSMutableDictionary dictionaryWithContentsOfFile:@"/Users/sridharrao/Library/Safari/Bookmarks.plist"];
-    NSDictionary *bookMarksDict = [NSMutableDictionary dictionaryWithContentsOfFile:@"/Users/sridharrao/Library/Application%20Support/iPhone%20Simulator/User/Library/Safari/Bookmarks.plist"];
-    NSArray *childrenArray = [bookMarksDict valueForKey:@"Children"];
-    bookMarksDict = [childrenArray objectAtIndex:0];
-    int count = [childrenArray count];
-    childrenArray = [bookMarksDict valueForKey:@"Children"];
-	
-    for (int i = 0; i < count; i++) {
-        bookMarksDict = [childrenArray objectAtIndex:i];
-		
-        if ([[bookMarksDict valueForKey:@"WebBookmarkType"] isEqualToString:@"WebBookmarkTypeLeaf"]) {
-            NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-            [dict setValue:[[bookMarksDict valueForKey:@"URIDictionary"] valueForKey:@"title"] forKey:@"title"];
-            [dict setValue:[bookMarksDict valueForKey:@"URLString"] forKey:@"url"];
-            [bookMarksArray addObject:dict];
-        }
-    }
-}
-
 #pragma mark - Keyboard toolbar
 
 - (void)undo {
@@ -1515,30 +1435,16 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 		
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 200, 25)];
         label.textAlignment = UITextAlignmentLeft;
-        //label.tag = kLabelTag;
         label.font = [UIFont systemFontOfSize:16];
         label.textColor = [UIColor grayColor];
         [cell.contentView addSubview:label];
     }
 	
-    NSUInteger row = [indexPath row];
-	
-    //UILabel *label = (UILabel *)[cell viewWithTag:kLabelTag];
-	
-    if (row == 0) {
-        //label.text = @"Edit Custom Fields";
-        //label.font = [UIFont systemFontOfSize:16 ];
-    } else {
-        //do nothing because we've only got one cell right now
-    }
 	cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
     cell.userInteractionEnabled = YES;
     return cell;
 }
 
-//- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-//    return UITableViewCellAccessoryDisclosureIndicator;
-//}
 
 #pragma mark -
 #pragma mark Table delegate
@@ -1547,90 +1453,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     return nil;
 }
 
-#pragma mark -
-#pragma mark Custom Fields methods
-/*
-- (BOOL)checkCustomFieldsMinusMetadata {
-    BlogDataManager *dm = [BlogDataManager sharedDataManager];
-    NSMutableArray *tempCustomFieldsArray = [dm.currentPost valueForKey:@"custom_fields"];
-	
-    //if there is anything (>=1) in the array, start proceessing, otherwise return NO
-    if (tempCustomFieldsArray.count >= 1) {
-        //strip out any underscore-containing NSDicts inside the array, as this is metadata we don't need
-        int dictsCount = [tempCustomFieldsArray count];
-		
-        for (int i = 0; i < dictsCount; i++) {
-            NSString *tempKey = [[tempCustomFieldsArray objectAtIndex:i] objectForKey:@"key"];
-			
-            //if tempKey contains an underscore, remove that object (NSDict with metadata) from the array and move on
-            if(([tempKey rangeOfString:@"_"].location != NSNotFound) && ([tempKey rangeOfString:@"geo_"].location == NSNotFound)) {
-                [tempCustomFieldsArray removeObjectAtIndex:i];
-                //if I remove one, the count goes down and we stop too soon unless we subtract one from i
-                //and re-set dictsCount.  Doing this keeps us in sync with the actual array.count
-                i--;
-                dictsCount = [tempCustomFieldsArray count];
-            }
-        }
-		
-        //if the count of everything minus the metedata is one or greater, there is at least one custom field on this post, so return YES
-        if (dictsCount >= 1) {
-            return YES;
-        } else {
-            return NO;
-        }
-    } else {
-        return NO;
-    }
-}
-
-#pragma mark -
-#pragma mark Location methods
-
-- (BOOL)isPostGeotagged {
-	if([self getPostLocation] != nil) {
-		return YES;
-	}
-	else
-		return NO;
-}
-
-- (IBAction)showLocationMapView:(id)sender {
-	WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	PostLocationViewController *locationView = [[PostLocationViewController alloc] initWithNibName:@"PostLocationViewController" bundle:nil];
-	[delegate.navigationController presentModalViewController:locationView animated:YES];
-	[locationView release];
-}
-
-- (CLLocation *)getPostLocation {
-	CLLocation *result = nil;
-	double latitude = 0.0;
-	double longitude = 0.0;
-    NSArray *customFieldsArray = [[[BlogDataManager sharedDataManager] currentPost] valueForKey:@"custom_fields"];
-	
-	// Loop through the post's custom fields
-	for(NSDictionary *dict in customFieldsArray)
-	{
-		// Latitude
-		if([[dict objectForKey:@"key"] isEqualToString:@"geo_latitude"])
-			latitude = [[dict objectForKey:@"value"] doubleValue];
-		
-		// Longitude
-		if([[dict objectForKey:@"key"] isEqualToString:@"geo_longitude"])
-			longitude = [[dict objectForKey:@"value"] doubleValue];
-		
-		// If we have both lat and long, we have a geotag
-		if((latitude != 0.0) && (longitude != 0.0))
-		{
-			result = [[[CLLocation alloc] initWithLatitude:latitude longitude:longitude] autorelease];
-			break;
-		}
-		else
-			result = nil;
-	}
-	
-	return result;
-}
-*/
 
 #pragma mark -
 #pragma mark Keyboard management 
@@ -1690,14 +1512,5 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
 }
-
-- (void)dismissAlertViewKeyboard: (NSNotification*)notification {
-    if (isShowingLinkAlert) {
-        [infoText resignFirstResponder];
-        [urlField resignFirstResponder];
-    }
-}
-
-
 
 @end
