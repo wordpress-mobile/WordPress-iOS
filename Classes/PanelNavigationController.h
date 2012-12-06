@@ -1,5 +1,5 @@
 //
-//  PanelNavigationControllerViewController.h
+//  PanelNavigationController.h
 //  WordPress
 //
 //  Created by Jorge Bernal on 5/21/12.
