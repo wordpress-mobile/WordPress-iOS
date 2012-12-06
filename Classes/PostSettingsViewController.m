@@ -18,6 +18,7 @@
 
 - (void)showPicker:(UIView *)picker;
 - (void)geocodeCoordinate:(CLLocationCoordinate2D)c;
+- (void)geolocationCellTapped:(NSIndexPath *)indexPath;
 - (void)loadFeaturedImage:(NSURL *)imageURL;
 
 @end
@@ -478,27 +479,39 @@
     switch (indexPath.row) {
         case 0: // Add/update location
         {
-            if (addGeotagTableViewCell == nil) {
-                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
-                for(id currentObject in topLevelObjects) {
-                    if([currentObject isKindOfClass:[UITableViewActivityCell class]]) {
-                        addGeotagTableViewCell = (UITableViewActivityCell *)currentObject;
-                        break;
+            // If location services are disabled at the app level [CLLocationManager locationServicesEnabled] will be true, but the location will be nil.
+            if(![CLLocationManager locationServicesEnabled] || [locationManager location] == nil) {
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"locationServicesCell"];
+                if (!cell) {
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"locationServicesCell"];
+                    cell.textLabel.text = @"Please enable Location Services";
+                }
+                return cell;
+                
+            } else {
+            
+                if (addGeotagTableViewCell == nil) {
+                    NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
+                    for(id currentObject in topLevelObjects) {
+                        if([currentObject isKindOfClass:[UITableViewActivityCell class]]) {
+                            addGeotagTableViewCell = (UITableViewActivityCell *)currentObject;
+                            break;
+                        }
                     }
                 }
-            }
-            if (isUpdatingLocation) {
-                addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
-                [addGeotagTableViewCell.spinner startAnimating];
-            } else {
-                [addGeotagTableViewCell.spinner stopAnimating];
-                if (postDetailViewController.post.geolocation) {
-                    addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Update Location", @"Gelocation feature to update physical location.");
+                if (isUpdatingLocation) {
+                    addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
+                    [addGeotagTableViewCell.spinner startAnimating];
                 } else {
-                    addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Add Location", @"Geolocation feature to add location.");
+                    [addGeotagTableViewCell.spinner stopAnimating];
+                    if (postDetailViewController.post.geolocation) {
+                        addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Update Location", @"Gelocation feature to update physical location.");
+                    } else {
+                        addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Add Location", @"Geolocation feature to add location.");
+                    }
                 }
+                return addGeotagTableViewCell;
             }
-            return addGeotagTableViewCell;
             break;
         }
         case 1:
@@ -645,52 +658,46 @@
                         break;
                 }
             } else {
-                switch (indexPath.row) {
-                    case 0:
-                        if (!isUpdatingLocation) {
-                            // Add or replace geotag
-                            isUpdatingLocation = YES;
-                            [locationManager startUpdatingLocation];
-                        }
-                        break;
-                    case 2:
-                        if (isUpdatingLocation) {
-                            // Cancel update
-                            isUpdatingLocation = NO;
-                            [locationManager stopUpdatingLocation];
-                        }
-                        postDetailViewController.post.geolocation = nil;
-                        postDetailViewController.hasLocation.enabled = NO;
-                        [postDetailViewController refreshButtons];
-                        break;
-                }
-                [tableView reloadData];
+                [self geolocationCellTapped:indexPath];
             }
             break;
           case 3:
-            switch (indexPath.row) {
-                case 0:
-                    if (!isUpdatingLocation) {
-                        // Add or replace geotag
-                        isUpdatingLocation = YES;
-                        [locationManager startUpdatingLocation];
-                    }
-                    break;
-                case 2:
-                    if (isUpdatingLocation) {
-                        // Cancel update
-                        isUpdatingLocation = NO;
-                        [locationManager stopUpdatingLocation];
-                    }
-                    postDetailViewController.post.geolocation = nil;
-                    postDetailViewController.hasLocation.enabled = NO;
-                    [postDetailViewController refreshButtons];
-                    break;
-            }
-            [tableView reloadData];
+            [self geolocationCellTapped:indexPath];
             break;
 	}
     [aTableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+}
+
+- (void)geolocationCellTapped:(NSIndexPath *)indexPath {
+    switch (indexPath.row) {
+        case 0:
+            // If location services are disabled at the app level [CLLocationManager locationServicesEnabled] will be true, but the location will be nil.
+            if(![CLLocationManager locationServicesEnabled] || [locationManager location] == nil) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Location Unavailable", @"Title of an alert view stating that the user's location is unavailable.")
+                                                                    message:NSLocalizedString(@"Location Services are turned off. \nTo add or update this post's location, please enable Location Services in the Settings app.", @"Message of an alert explaining that location services need to be enabled.")
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil, nil];
+                [alertView show];
+            }
+            if (!isUpdatingLocation) {
+                // Add or replace geotag
+                isUpdatingLocation = YES;
+                [locationManager startUpdatingLocation];
+            }
+            break;
+        case 2:
+            if (isUpdatingLocation) {
+                // Cancel update
+                isUpdatingLocation = NO;
+                [locationManager stopUpdatingLocation];
+            }
+            postDetailViewController.post.geolocation = nil;
+            postDetailViewController.hasLocation.enabled = NO;
+            [postDetailViewController refreshButtons];
+            break;
+    }
+    [tableView reloadData];
 }
 
 - (void)featuredImageUploadFailed: (NSNotification *)notificationInfo {
