@@ -127,8 +127,12 @@
 	self.permaLink      = [postInfo objectForKey:@"permaLink"];
 	self.mt_excerpt		= [postInfo objectForKey:@"mt_excerpt"];
 	self.mt_text_more	= [postInfo objectForKey:@"mt_text_more"];
+    NSString *wp_more_text = [postInfo objectForKey:@"wp_more_text"];
+    if ([wp_more_text length] > 0) {
+        wp_more_text = [@" " stringByAppendingFormat:wp_more_text]; // Give us a little padding.
+    }
     if (self.mt_text_more && self.mt_text_more.length > 0) {
-        self.content = [NSString stringWithFormat:@"%@\n\n<!--more-->\n\n%@", self.content, self.mt_text_more];
+        self.content = [NSString stringWithFormat:@"%@\n\n<!--more%@-->\n\n%@", self.content, wp_more_text, self.mt_text_more];
         self.mt_text_more = nil;
     }
 	self.wp_slug		= [postInfo objectForKey:@"wp_slug"];
