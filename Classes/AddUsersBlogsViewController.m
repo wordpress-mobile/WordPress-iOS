@@ -369,8 +369,6 @@
                 usersBlogs = responseObject;
                 hasCompletedGetUsersBlogs = YES;
                 if(usersBlogs.count > 0) {
-                    // TODO: Store blog list in Core Data
-                    //[[NSUserDefaults standardUserDefaults] setObject:usersBlogs forKey:@"WPcomUsersBlogs"];
                     [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                         NSString *title = [obj valueForKey:@"blogName"];
                         title = [title stringByDecodingXMLCharacters];

@@ -273,7 +273,6 @@
 
 - (void)closeReplyViewAndSelectTheNewComment {
 	[self dismissEditViewController];
-    // TODO: Select new comment or dismiss comment view on iPhone
 }
 
 - (void)cancelView:(id)sender {

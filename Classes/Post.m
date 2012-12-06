@@ -374,8 +374,7 @@
 
 - (void)postPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPFLogMethod();
-    // XML-RPC doesn't like empty post thumbnail ID's for new posts, but it's required to delete them on edit. see #1395
-    // TODO: refactor XMLRPCDictionary to differentiate between posting and editing
+    // XML-RPC doesn't like empty post thumbnail ID's for new posts, but it's required to delete them on edit. see #1395 and #1507
     NSMutableDictionary *xmlrpcDictionary = [NSMutableDictionary dictionaryWithDictionary:[self XMLRPCDictionary]];
     if ([[xmlrpcDictionary objectForKey:@"wp_post_thumbnail"] isEqual:@""]) {
         [xmlrpcDictionary removeObjectForKey:@"wp_post_thumbnail"];
