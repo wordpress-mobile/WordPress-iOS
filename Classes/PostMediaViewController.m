@@ -222,8 +222,7 @@
     } else if (media.remoteStatus == MediaRemoteStatusPushing) {
         [media cancelUpload];
     } else if (media.remoteStatus == MediaRemoteStatusProcessing) {
-        // TODO: can't cancel while processing
-        // do nothing
+        // Do nothing. See trac #1508
     } else {
         MediaObjectViewController *mediaView = [[MediaObjectViewController alloc] initWithNibName:@"MediaObjectView" bundle:nil];
         [mediaView setMedia:media];

@@ -8,7 +8,6 @@
 
 #import "ReplyToCommentViewController.h"
 #import "WPProgressHUD.h"
-#import "CommentViewController.h"
 
 @interface ReplyToCommentViewController (Private)
 
@@ -25,10 +24,8 @@
 @implementation ReplyToCommentViewController
 
 @synthesize delegate, saveButton, doneButton, comment;
-@synthesize cancelButton, label, hasChanges, textViewText, isTransitioning, isEditing;
+@synthesize cancelButton, hasChanges, textViewText, isTransitioning, isEditing;
 
-
-//TODO: Make sure to give this class a connection to commentDetails and currentIndex from CommentViewController
 
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -68,15 +65,6 @@
 	cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelView:)];
 	self.navigationItem.leftBarButtonItem = cancelButton;
 	cancelButton = nil;
-	
-	if ([self.comment.status isEqualToString:@"hold"]) {
-		label.backgroundColor = PENDING_COMMENT_TABLE_VIEW_CELL_BACKGROUND_COLOR;
-		label.hidden = NO;
-	} else {
-		label.hidden = YES;
-		//TODO: JOHNB - code movement of text view upward if this is not a pending comment
-		
-	}
 	
 	[textView becomeFirstResponder];
 

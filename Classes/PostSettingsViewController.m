@@ -856,7 +856,7 @@
         CGFloat width = postDetailViewController.view.frame.size.width;
         CGFloat height = 0.0;
         
-        // TODO: Refactor this class to not use UIActionSheets for display.
+        // Refactor this class to not use UIActionSheets for display. See trac #1509.
         // <rant>Shoehorning a UIPicker inside a UIActionSheet is just madness.</rant>
         // For now, hardcoding height values for the iPhone so we don't get
         // a funky gap at the bottom of the screen on the iPhone 5.
@@ -921,7 +921,7 @@
             
             // The UISegmentControl does not show a pressed state for its button so (for now) use the same
             // state for normal and highlighted.
-            // TODO: It would be nice to refactor this to use a toolbar and buttons instead of a segmented control to get the 
+            // It would be nice to refactor this to use a toolbar and buttons instead of a segmented control to get the 
             // correct look and feel.
             [closeButton setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateNormal];
             [closeButton setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateHighlighted];

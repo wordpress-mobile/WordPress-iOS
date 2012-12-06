@@ -1,5 +1,5 @@
 //
-//  PanelNavigationControllerViewController.m
+//  PanelNavigationController.m
 //  WordPress
 //
 //  Created by Jorge Bernal on 5/21/12.
@@ -192,7 +192,6 @@
     }
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
     if (IS_IPAD) {
-        //TODO: Couldn't get the proper height of the view depending on orientation, help?
         CGFloat height = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? self.view.bounds.size.height: self.view.bounds.size.width;
         //The iOS simulator would pull in the wrong values
         if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && height > self.view.bounds.size.width)
@@ -761,7 +760,6 @@
 - (void)disableDetailView {
     if (IS_IPAD) return;
 
-    // TODO: remove pan recognizer?
     if (!self.detailTapper) {
         self.detailTapper = [UIButton buttonWithType:UIButtonTypeCustom];
         self.detailTapper.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -865,8 +863,7 @@
      
      When a soft limit is reached, we add elasticity
      Views can't move over hard limits
-     
-     TODO: store lastFullyVisible for rotation
+
      */
     if (sender.state == UIGestureRecognizerStateBegan) {
         _panned = YES;
@@ -938,7 +935,6 @@
                 [self.delegate resetView];
             }
         } else {
-            // TODO: multiple panel panning
             if (ABS(velocity) < 300) {
                 if (offset < DETAIL_LEDGE_OFFSET / 3) {
                     [self showSidebarWithVelocity:velocity];

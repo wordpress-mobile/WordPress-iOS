@@ -169,8 +169,8 @@
 
 					}
 				}
-				// TODO: Import media items here
-				WPFLog(@"* TODO: import media items");
+				// See #1510: Import media items here
+				WPFLog(@"* See trac #1510: import media items");
 			}
 			if ([apost validateForInsert:&err]) {
 				WPFLog(@"* Migrated post %@ for blog %@", [apost valueForKey:@"postTitle"], [blog valueForKey:@"blogName"]);

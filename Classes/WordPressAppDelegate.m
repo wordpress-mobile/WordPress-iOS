@@ -206,7 +206,6 @@
 	//listener for XML-RPC errors
 	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:kXML_RPC_ERROR_OCCURS object:nil];
-	//TODO: we should add a screen? in which print the error msgs that are from async uploading errors --> PostUploadFailed
 	
 	// another notification message came from comments --> CommentUploadFailed
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"CommentUploadFailed" object:nil];
@@ -356,7 +355,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ApplicationDidBecomeActive" object:nil];
     
     // Clear notifications badge and update server
-    // TODO: read/unread management when there's an API for it
     [self setAppBadge];
     [self sendPushNotificationBlogsList];
 }
@@ -840,7 +838,6 @@
 	//NSLog(@"device_model: %@", deviceModel);
 	
 	//handle data coming back
-	// ** TODO @frsh: This needs to be completely redone with a custom helper class. ***
 	statsData = [[NSMutableData alloc] init];
 	
 	NSMutableURLRequest *theRequest=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://api.wordpress.org/iphoneapp/update-check/1.0/"]

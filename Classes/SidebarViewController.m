@@ -180,8 +180,8 @@
         // In iOS 5, the first detailViewController that we load during launch does not
         // see its viewWillAppear and viewDidAppear methods fire. As a work around, we can
         // present our content with a slight delay, and then the events fire.
-        // TODO: Find a true fix and remove this workaround.
-        // See http://ios.trac.wordpress.org/ticket/1114
+        // Need to find a true fix and remove this workaround.
+        // See http://ios.trac.wordpress.org/ticket/1114 and #1135
         if (IS_IPHONE && !( [[self.resultsController fetchedObjects] count] == 0 && ! [WordPressComApi sharedApi].username )) {
             // Don't delay presentation on iPhone, or the sidebar is briefly visible after launch
             [self presentContent];

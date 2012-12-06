@@ -16,7 +16,6 @@
     UIAlertView *progressAlert;
 
     IBOutlet UITextView *textView;
-    IBOutlet UILabel *label;
     UIBarButtonItem *saveButton;
     UIBarButtonItem *doneButton;
     UIBarButtonItem *cancelButton;
@@ -31,7 +30,6 @@
 @property (nonatomic, strong) UIBarButtonItem *doneButton;
 @property (nonatomic, strong) UIBarButtonItem *cancelButton;
 @property (nonatomic, strong) CommentViewController *commentViewController;
-@property (nonatomic, strong) UILabel *label;
 @property (nonatomic) BOOL hasChanges;
 @property (nonatomic) BOOL isTransitioning;
 @property (nonatomic) BOOL isEditing;

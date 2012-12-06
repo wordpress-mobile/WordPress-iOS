@@ -24,7 +24,7 @@
 @implementation EditCommentViewController
 
 @synthesize commentViewController, saveButton, doneButton, comment;
-@synthesize cancelButton, label, hasChanges, textViewText, isTransitioning, isEditing;
+@synthesize cancelButton, hasChanges, textViewText, isTransitioning, isEditing;
 
 
 - (void)dealloc {
