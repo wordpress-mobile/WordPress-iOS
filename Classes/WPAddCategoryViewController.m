@@ -127,8 +127,6 @@
         return;
     }
     
-	//FIXME: At the first attempt the remoteHostStatus == NotReachable even if the connection is available. 
-	// if ([[ sharedReachability] remoteHostStatus] != NotReachable)
     [self addProgressIndicator];
     
     [Category createCategory:catName parent:parentCat forBlog:self.blog success:^(Category *category) {

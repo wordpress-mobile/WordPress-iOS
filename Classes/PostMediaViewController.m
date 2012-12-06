@@ -213,7 +213,6 @@
     if (media.remoteStatus == MediaRemoteStatusFailed) {
         [media uploadWithSuccess:^{
             if (([media isDeleted])) {
-                // FIXME: media deleted during upload should cancel the upload. In the meantime, we'll try not to crash
                 NSLog(@"Media deleted while uploading (%@)", media);
                 return;
             }
@@ -1331,7 +1330,6 @@
 
     [imageMedia uploadWithSuccess:^{
         if ([imageMedia isDeleted]) {
-            // FIXME: media deleted during upload should cancel the upload. In the meantime, we'll try not to crash
             NSLog(@"Media deleted while uploading (%@)", imageMedia);
             return;
         }
@@ -1428,7 +1426,6 @@
 
 		[videoMedia uploadWithSuccess:^{
             if ([videoMedia isDeleted]) {
-                // FIXME: media deleted during upload should cancel the upload. In the meantime, we'll try not to crash
                 NSLog(@"Media deleted while uploading (%@)", videoMedia);
                 return;
             }
@@ -1471,7 +1468,6 @@
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
     Media *media = (Media *)[notification object];
     if ((media == nil) || ([media isDeleted])) {
-        // FIXME: media deleted during upload should cancel the upload. In the meantime, we'll try not to crash
         NSLog(@"Media deleted while uploading (%@)", media);
         return;
     }
@@ -1481,8 +1477,6 @@
 }
 
 - (void)mediaUploadFailed:(NSNotification *)notification {
-    /*Media *media = (Media *)[notification object];
-    [media remove];*/
 	self.isAddingMedia = NO;
 }
 

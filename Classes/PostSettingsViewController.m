@@ -89,10 +89,9 @@
 		locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
 		locationManager.distanceFilter = 10;
 		
-		// FIXME: only add tag if it's a new post. If user removes tag we shouldn't try to add it again
+		// Only add tag if it's a new post. If user removes tag we shouldn't try to add it again
 		if (postDetailViewController.post.geolocation == nil // Only if there is no geotag
-//			&& ![postDetailViewController.post hasRemote]    // and post is new (don't follow this way, instead tale look the line below)
-			&& [postDetailViewController isAFreshlyCreatedDraft] //just a fresh draft. the line above doesn't take in consideration the case of a local draft without location
+			&& [postDetailViewController isAFreshlyCreatedDraft] // and just a fresh draft.
 			&& [CLLocationManager locationServicesEnabled]
 			&& postDetailViewController.post.blog.geolocationEnabled) {
 			isUpdatingLocation = YES;
