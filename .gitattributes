@@ -33,8 +33,6 @@ Classes/Category.h -text
 Classes/Category.m -text
 Classes/Comment.h -text
 Classes/Comment.m -text
-Classes/CommentModerationUtils.h -text
-Classes/CommentModerationUtils.m -text
 Classes/CommentTableViewCell.h -text
 Classes/CommentTableViewCell.m -text
 Classes/CommentViewController.h -text
@@ -120,8 +118,6 @@ Classes/PostMediaViewController.h -text
 Classes/PostMediaViewController.m -text
 Classes/PostPreviewViewController.h -text
 Classes/PostPreviewViewController.m -text
-Classes/PostSettingsHelpViewController.h -text
-Classes/PostSettingsHelpViewController.m -text
 Classes/PostSettingsViewController.h -text
 Classes/PostSettingsViewController.m -text
 Classes/PostTableViewCell.h -text
@@ -173,8 +169,6 @@ Classes/UINavigationController+KeyboardFix.h -text
 Classes/UINavigationController+KeyboardFix.m -text
 Classes/UINavigationController+Rotation.h -text
 Classes/UINavigationController+Rotation.m -text
-Classes/UIPopoverController+Styled.h -text
-Classes/UIPopoverController+Styled.m -text
 Classes/UITableViewActivityCell.h -text
 Classes/UITableViewActivityCell.m -text
 Classes/UITableViewSwitchCell.h -text
@@ -187,12 +181,8 @@ Classes/UIViewController+Rotation.h -text
 Classes/UIViewController+Rotation.m -text
 Classes/UIViewController+Styled.h -text
 Classes/UIViewController+Styled.m -text
-Classes/UIViewController_iPadExtensions.h -text
-Classes/UIViewController_iPadExtensions.m -text
 Classes/WPAddCategoryViewController.h -text
 Classes/WPAddCategoryViewController.m -text
-Classes/WPCategoriesController.h -text
-Classes/WPCategoriesController.m -text
 Classes/WPCategoryTree.h -text
 Classes/WPCategoryTree.m -text
 Classes/WPChromelessWebViewController.h -text
@@ -205,8 +195,6 @@ Classes/WPFriendFinderNudgeView.h -text
 Classes/WPFriendFinderNudgeView.m -text
 Classes/WPFriendFinderViewController.h -text
 Classes/WPFriendFinderViewController.m -text
-Classes/WPImagePickerController.h -text
-Classes/WPImagePickerController.m -text
 Classes/WPKeyboardToolbar.h -text
 Classes/WPKeyboardToolbar.m -text
 Classes/WPKeyboardToolbarButtonItem.h -text
@@ -262,12 +250,6 @@ Classes/WordPress.xcdatamodeld/WordPress.xcdatamodel/elements -text
 Classes/WordPress.xcdatamodeld/WordPress.xcdatamodel/layout -text
 Classes/WordPressAppDelegate.h -text
 Classes/WordPressAppDelegate.m -text
-Classes/XMLSignupViewController.h -text
-Classes/XMLSignupViewController.m -text
-Classes/fabric.png -text svneol=unset#unset
-Classes/fabric@2x.png -text svneol=unset#unset
-Classes/stats.png -text
-Classes/stats@2x.png -text
 /CommentViewController.xib -text
 /CrashReportView.xib -text
 /Default-568h@2x.png -text
