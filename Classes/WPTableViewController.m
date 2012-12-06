@@ -527,12 +527,12 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                 msg = [NSString stringWithFormat:msg, [self.title lowercaseString]]; // The convention is the view controller's title is the plural of the entity name.
                 
             } else {
-                msg = NSLocalizedString(@"No %@ yet? Why not create one?", @"A string format that is a call to action. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
+                msg = NSLocalizedString(@"No %@ yet. \nWhy not create one?", @"A string format that is a call to action. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
                 msg = [NSString stringWithFormat:msg, [self.title lowercaseString]];
             }
 
             CGFloat width = self.view.frame.size.width - 20.0f; // 10px padding on either side.
-            UIFont *fnt = [UIFont fontWithName:@"Georgia" size:14.0];
+            UIFont *fnt = [UIFont fontWithName:@"Helvetica" size:14.0];
             CGSize sz = [msg sizeWithFont:fnt constrainedToSize:CGSizeMake(width, 999.0f) lineBreakMode:NSLineBreakByWordWrapping];
 
             self.noResultsView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, sz.width, sz.height)];
