@@ -195,6 +195,9 @@ Classes/WPFriendFinderNudgeView.h -text
 Classes/WPFriendFinderNudgeView.m -text
 Classes/WPFriendFinderViewController.h -text
 Classes/WPFriendFinderViewController.m -text
+Classes/WPInfoView.h -text
+Classes/WPInfoView.m -text
+Classes/WPInfoView.xib -text
 Classes/WPKeyboardToolbar.h -text
 Classes/WPKeyboardToolbar.m -text
 Classes/WPKeyboardToolbarButtonItem.h -text
@@ -687,6 +690,8 @@ hr.lproj/Localizable.strings -text svneol=unset#unset
 hu.lproj/Localizable.strings -text svneol=unset#unset
 /i18n_download -text
 /iTunesArtwork -text
+/icon_info_message.png -text
+/icon_info_message@2x.png -text
 id.lproj/Localizable.strings -text
 /info_button.png -text
 /info_button@2x.png -text

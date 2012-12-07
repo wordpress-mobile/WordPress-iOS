@@ -14,6 +14,7 @@
 #import "ReachabilityUtils.h"
 #import "WPWebViewController.h"
 #import "SoundUtil.h"
+#import "WPInfoView.h"
 
 NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
@@ -518,53 +519,18 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     if (![self isViewLoaded]) return;
     
     if (self.resultsController && [[_resultsController fetchedObjects] count] == 0) {
-        // Show no content view.
-        if (self.noResultsView == nil) {
-            
-            NSString *msg = nil;
-            if ([self.entityName isEqualToString:@"Comment"]) {
-                msg = NSLocalizedString(@"Sorry. No %@ yet.", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
-                msg = [NSString stringWithFormat:msg, [self.title lowercaseString]]; // The convention is the view controller's title is the plural of the entity name.
-                
-            } else {
-                msg = NSLocalizedString(@"No %@ yet. \nWhy not create one?", @"A string format that is a call to action. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
-                msg = [NSString stringWithFormat:msg, [self.title lowercaseString]];
-            }
+        // Show no results view.
 
-            CGFloat width = self.view.frame.size.width - 20.0f; // 10px padding on either side.
-            UIFont *fnt = [UIFont fontWithName:@"Helvetica" size:14.0];
-            CGSize sz = [msg sizeWithFont:fnt constrainedToSize:CGSizeMake(width, 999.0f) lineBreakMode:NSLineBreakByWordWrapping];
+        NSString *ttl = NSLocalizedString(@"No %@ yet", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
+        ttl = [NSString stringWithFormat:ttl, [self.title lowercaseString]];
 
-            self.noResultsView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, sz.width, sz.height)];
-            noResultsView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
-                                            UIViewAutoresizingFlexibleRightMargin |
-                                            UIViewAutoresizingFlexibleBottomMargin |
-                                            UIViewAutoresizingFlexibleTopMargin;
-            
-            // Message label
-            UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, sz.width, sz.height)];
-            lbl.font = fnt;
-            lbl.textColor = [UIColor darkGrayColor];
-            lbl.textAlignment = NSTextAlignmentCenter;
-            lbl.shadowOffset = CGSizeMake(0, 1);
-            lbl.shadowColor = [UIColor whiteColor];
-            lbl.backgroundColor = [UIColor clearColor];
-            lbl.lineBreakMode = NSLineBreakByWordWrapping;
-            lbl.numberOfLines = 0;
-            lbl.text = msg;
-            [self.noResultsView addSubview:lbl];
+        NSString *msg = @"";
+        if (![self.entityName isEqualToString:@"Comment"]) {
+            msg = NSLocalizedString(@"Why not create one?", @"A call to action to create a post or page.");
         }
-        
-        // Center
-        CGRect frame = self.tableView.frame;
-        CGFloat x = (frame.size.width / 2.0f) - (noResultsView.frame.size.width / 2.0f);
-        CGFloat y = (frame.size.height / 2.0f) - (noResultsView.frame.size.height / 2.0f);
-        y = 22.0f;
-        
-        frame = noResultsView.frame;
-        frame.origin.x = x;
-        frame.origin.y = y;
-        noResultsView.frame = frame;
+        self.noResultsView = [WPInfoView WPInfoViewWithTitle:ttl
+                                                     message:msg
+                                                cancelButton:nil];
         
         [self.tableView addSubview:self.noResultsView];
     } else {
