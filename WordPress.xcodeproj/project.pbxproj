@@ -263,6 +263,10 @@
 		5D27719215A3527200F4DCAA /* toolbar_write@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D27719015A3527100F4DCAA /* toolbar_write@2x.png */; };
 		5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */; };
 		5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D3E334D15EEBB6B005FC6F2 /* ReachabilityUtils.m */; };
+		5D4DE6EE167165060030518D /* icon_info_message.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D4DE6EC167165060030518D /* icon_info_message.png */; };
+		5D4DE6EF167165060030518D /* icon_info_message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D4DE6ED167165060030518D /* icon_info_message@2x.png */; };
+		5D4DE6F4167177560030518D /* WPInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D4DE6F2167177560030518D /* WPInfoView.m */; };
+		5D4DE6F5167177560030518D /* WPInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D4DE6F3167177560030518D /* WPInfoView.xib */; };
 		5D66514C1637325800EBDA7D /* snd_swipe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D6651481637325800EBDA7D /* snd_swipe.caf */; };
 		5D66514D1637325800EBDA7D /* snd_rollup.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D6651491637325800EBDA7D /* snd_rollup.caf */; };
 		5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D69DBC3165428CA00A2D1F7 /* n.caf */; };
@@ -873,6 +877,11 @@
 		5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPhotoButtonView.m; sourceTree = "<group>"; };
 		5D3E334C15EEBB6B005FC6F2 /* ReachabilityUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReachabilityUtils.h; sourceTree = "<group>"; };
 		5D3E334D15EEBB6B005FC6F2 /* ReachabilityUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReachabilityUtils.m; sourceTree = "<group>"; };
+		5D4DE6EC167165060030518D /* icon_info_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_info_message.png; sourceTree = "<group>"; };
+		5D4DE6ED167165060030518D /* icon_info_message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_info_message@2x.png"; sourceTree = "<group>"; };
+		5D4DE6F1167177560030518D /* WPInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPInfoView.h; sourceTree = "<group>"; };
+		5D4DE6F2167177560030518D /* WPInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPInfoView.m; sourceTree = "<group>"; };
+		5D4DE6F3167177560030518D /* WPInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPInfoView.xib; sourceTree = "<group>"; };
 		5D6651481637325800EBDA7D /* snd_swipe.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = snd_swipe.caf; sourceTree = "<group>"; };
 		5D6651491637325800EBDA7D /* snd_rollup.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = snd_rollup.caf; sourceTree = "<group>"; };
 		5D69DBC3165428CA00A2D1F7 /* n.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = n.caf; sourceTree = "<group>"; };
@@ -1371,6 +1380,9 @@
 		031662E60FFB14C60045D052 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5D4DE6F1167177560030518D /* WPInfoView.h */,
+				5D4DE6F2167177560030518D /* WPInfoView.m */,
+				5D4DE6F3167177560030518D /* WPInfoView.xib */,
 				5DEB6EF315B471B3004E81F3 /* WPPopoverBackgroundView.h */,
 				5DEB6EF415B471B3004E81F3 /* WPPopoverBackgroundView.m */,
 				031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */,
@@ -2035,6 +2047,8 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5D4DE6EC167165060030518D /* icon_info_message.png */,
+				5D4DE6ED167165060030518D /* icon_info_message@2x.png */,
 				E1EE23E712E628F6000B2BE6 /* attachment.png */,
 				E1EE23E812E628F6000B2BE6 /* attachment@2x.png */,
 				83D3DCFA1215CF8400600B4B /* autosave.png */,
@@ -3069,6 +3083,9 @@
 				5D84608D1639CC520023E969 /* snd_discard.caf in Resources */,
 				5D84608E1639CC520023E969 /* snd_pull.caf in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
+				5D4DE6EE167165060030518D /* icon_info_message.png in Resources */,
+				5D4DE6EF167165060030518D /* icon_info_message@2x.png in Resources */,
+				5D4DE6F5167177560030518D /* WPInfoView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3244,6 +3261,7 @@
 				E1A0FAE7162F11CF0063B098 /* UIDevice+WordPressIdentifier.m in Sources */,
 				E10466081630961700E8EDDA /* WPRSDParser.m in Sources */,
 				5DD91BC5163983670053E560 /* SoundUtil.m in Sources */,
+				5D4DE6F4167177560030518D /* WPInfoView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
