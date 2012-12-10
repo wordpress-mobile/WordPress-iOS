@@ -436,9 +436,6 @@
 	NSString *urlToValidate = [self getURLToValidate];
 	
     [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate];
-    // FIXME: add HTTP Auth support back
-    // Currently on https://github.com/AFNetworking/AFNetworking/tree/experimental-authentication-challenge
-    //
     
     if(![ReachabilityUtils isInternetReachable]){
         [ReachabilityUtils showAlertNoInternetConnection];
@@ -460,9 +457,8 @@
         if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
             [self validationDidFail:nil];
         } else {
-            // FIXME: find a better error
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                      NSLocalizedString(@"Unable to read the WordPress site on that URL. Tap Need Help? to learn more and resolve this error.", @""),NSLocalizedDescriptionKey,
+                                      NSLocalizedString(@"Unable to find a WordPress site at that URL. Tap 'Need Help?' to view the FAQ.", @""), NSLocalizedDescriptionKey,
                                       nil];
             NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadURL userInfo:userInfo];
             [self validationDidFail:err];

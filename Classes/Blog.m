@@ -318,8 +318,10 @@
                                               andServiceName:self.hostURL
                                                        error:&err];
 	}
+    // The result of fetchPassword is stored in NSArrays in several places.
+    // Make sure we return an empty string instead of nil to prevent a crash.
 	if (password == nil)
-		password = @""; // FIXME: not good either, but prevents from crashing
+		password = @"";
 
 	return password;
 }

@@ -102,8 +102,6 @@
 }
 
 - (void)clearReaderCookies {
-    // Clear reader caches and cookies
-    // FIXME: this doesn't seem to log out the reader properly
     NSArray *readerCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     for (NSHTTPCookie *cookie in readerCookies) {
         if ([cookie.domain hasSuffix:@"wordpress.com"]) {

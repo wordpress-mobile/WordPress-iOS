@@ -86,12 +86,6 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
 	[self.defaultHeaders setValue:value forKey:header];
 }
 
-- (void)setAuthorizationHeaderWithUsername:(NSString *)username password:(NSString *)password {
-    // TODO: not implemented yet
-//	NSString *basicAuthCredentials = [NSString stringWithFormat:@"%@:%@", username, password];
-//    [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Basic %@", AFBase64EncodedStringFromString(basicAuthCredentials)]];
-}
-
 - (void)setAuthorizationHeaderWithToken:(NSString *)token {
     [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Token token=\"%@\"", token]];
 }
