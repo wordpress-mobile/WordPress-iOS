@@ -58,7 +58,6 @@ static char kAFImageRequestOperationObjectKey;
 
 + (NSOperationQueue *)af_sharedImageRequestOperationQueue {
     static NSOperationQueue *_af_imageRequestOperationQueue = nil;
-    
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _af_imageRequestOperationQueue = [[NSOperationQueue alloc] init];
@@ -115,26 +114,24 @@ static char kAFImageRequestOperationObjectKey;
         AFImageRequestOperation *requestOperation = [[AFImageRequestOperation alloc] initWithRequest:urlRequest];
         [requestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             if ([[urlRequest URL] isEqual:[[self.af_imageRequestOperation request] URL]]) {
-                self.image = responseObject;
+                if (success) {
+                    success(operation.request, operation.response, responseObject);
+                } else {
+                    self.image = responseObject;
+                }
+                
                 self.af_imageRequestOperation = nil;
-            }
-
-            if (success) {
-                success(operation.request, operation.response, responseObject);
             }
 
             [[[self class] af_sharedImageCache] cacheImage:responseObject forRequest:urlRequest];
-            
-
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             if ([[urlRequest URL] isEqual:[[self.af_imageRequestOperation request] URL]]) {
+                if (failure) {
+                    failure(operation.request, operation.response, error);
+                }
+                
                 self.af_imageRequestOperation = nil;
             }
-
-            if (failure) {
-                failure(operation.request, operation.response, error);
-            }
-            
         }];
         
         self.af_imageRequestOperation = requestOperation;

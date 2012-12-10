@@ -184,11 +184,7 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
     self.request = urlRequest;
     
     self.outputStream = [NSOutputStream outputStreamToMemory];
-    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-    for (NSString *runLoopMode in self.runLoopModes) {
-        [self.outputStream scheduleInRunLoop:runLoop forMode:runLoopMode];
-    }
-    
+
     self.state = AFOperationReadyState;
 	
     return self;
@@ -217,10 +213,10 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
     if (!block) {
         [super setCompletionBlock:nil];
     } else {
-        __unsafe_unretained id _blockSelf = self;
+        __weak __typeof(&*self)weakSelf = self;
         [super setCompletionBlock:^ {
             block();
-            [_blockSelf setCompletionBlock:nil];
+            [weakSelf setCompletionBlock:nil];
         }];
     }
     [self.lock unlock];
@@ -244,7 +240,6 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
     }
     
     [self willChangeValueForKey:@"outputStream"];
-    
     if (_outputStream) {
         [_outputStream close];
     }
@@ -257,15 +252,20 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
     [self.lock lock];
     if (!self.backgroundTaskIdentifier) {    
         UIApplication *application = [UIApplication sharedApplication];
+        __weak __typeof(&*self)weakSelf = self;
         self.backgroundTaskIdentifier = [application beginBackgroundTaskWithExpirationHandler:^{
+            __strong __typeof(&*weakSelf)strongSelf = weakSelf;
+            
             if (handler) {
                 handler();
             }
             
-            [self cancel];
-            
-            [application endBackgroundTask:self.backgroundTaskIdentifier];
-            self.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+            if (strongSelf) {
+                [strongSelf cancel];
+                
+                [application endBackgroundTask:strongSelf.backgroundTaskIdentifier];
+                strongSelf.backgroundTaskIdentifier = UIBackgroundTaskInvalid;
+            }
         }];
     }
     [self.lock unlock];
@@ -325,12 +325,15 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
 - (NSString *)responseString {
     [self.lock lock];
     if (!_responseString && self.response && self.responseData) {
-        NSStringEncoding textEncoding = NSUTF8StringEncoding;
+        NSStringEncoding stringEncoding = NSUTF8StringEncoding;
         if (self.response.textEncodingName) {
-            textEncoding = CFStringConvertEncodingToNSStringEncoding(CFStringConvertIANACharSetNameToEncoding((__bridge CFStringRef)self.response.textEncodingName));
+            CFStringEncoding IANAEncoding = CFStringConvertIANACharSetNameToEncoding((__bridge CFStringRef)self.response.textEncodingName);
+            if (IANAEncoding != kCFStringEncodingInvalidId) {
+                stringEncoding = CFStringConvertEncodingToNSStringEncoding(IANAEncoding);
+            }
         }
         
-        self.responseString = [[NSString alloc] initWithData:self.responseData encoding:textEncoding];
+        self.responseString = [[NSString alloc] initWithData:self.responseData encoding:stringEncoding];
     }
     [self.lock unlock];
     
