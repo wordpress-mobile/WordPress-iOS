@@ -460,7 +460,7 @@
 					<object class="IBUIImageView" id="340444675">
 						<reference key="NSNextResponder" ref="546232296"/>
 						<int key="NSvFlags">264</int>
-						<string key="NSFrame">{{22, 364}, {19, 9}}</string>
+						<string key="NSFrame">{{22, 365}, {19, 9}}</string>
 						<reference key="NSSuperview" ref="546232296"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -1067,9 +1067,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addPhoto:</string>
 							<string>addVideo:</string>
-							<string>cancelView:</string>
 							<string>endTextEnteringButtonAction:</string>
-							<string>saveAction:</string>
 							<string>showAddNewCategoryView:</string>
 							<string>showCategories:</string>
 							<string>switchToEdit</string>
@@ -1090,8 +1088,6 @@
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
-							<string>id</string>
-							<string>id</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="actionInfosByName">
@@ -1100,9 +1096,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>addPhoto:</string>
 							<string>addVideo:</string>
-							<string>cancelView:</string>
 							<string>endTextEnteringButtonAction:</string>
-							<string>saveAction:</string>
 							<string>showAddNewCategoryView:</string>
 							<string>showCategories:</string>
 							<string>switchToEdit</string>
@@ -1122,15 +1116,7 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
-								<string key="name">cancelView:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
 								<string key="name">endTextEnteringButtonAction:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">saveAction:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
