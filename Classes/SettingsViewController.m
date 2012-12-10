@@ -427,8 +427,8 @@ typedef enum {
         if ([WordPressComApi sharedApi].username) {
             if (indexPath.row == 1) {
                 // Present the Sign out ActionSheet
-                NSString *signOutTitle = NSLocalizedString(@"You are logged in as", @"");
-                signOutTitle = [NSString stringWithFormat:@"%@ %@", signOutTitle, [WordPressComApi sharedApi].username];
+                NSString *signOutTitle = NSLocalizedString(@"You are logged in as %@", @"");
+                signOutTitle = [NSString stringWithFormat:signOutTitle, [WordPressComApi sharedApi].username];
                 UIActionSheet *actionSheet;
                 actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle 
                                                           delegate:self 
