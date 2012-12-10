@@ -384,10 +384,7 @@
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    self.currentActionSheet = nil;
-}
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if(isShowingMediaPickerActionSheet == YES) {
 		switch (actionSheet.numberOfButtons) {
 			case 2:
@@ -471,6 +468,8 @@
     
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:NO];
+    
+    self.currentActionSheet = nil;
 }
 
 #pragma mark -
