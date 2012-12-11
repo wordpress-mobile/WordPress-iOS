@@ -10,8 +10,6 @@
 
 @interface PostsViewController (Private)
 
-- (void)syncPostsWithBlogInfo:(BOOL)blogInfo;
-- (void)syncPosts;
 - (BOOL)handleAutoSavedContext:(NSInteger)tag;
 - (void)deletePostAtIndexPath:(NSIndexPath *)indexPath;
 - (void)editPost:(AbstractPost *)apost;
@@ -275,7 +273,7 @@
     [post deletePostWithSuccess:nil failure:^(NSError *error) {
         NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
-        [self syncPosts];
+        [self syncItemsWithUserInteraction:NO];
         if(IS_IPAD && self.postReaderViewController) {
             if(self.postReaderViewController.apost == post) {
                 //push an the W logo on the right. 

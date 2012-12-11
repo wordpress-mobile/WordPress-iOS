@@ -14,7 +14,6 @@
 
 @interface PagesViewController (PrivateMethods)
 - (void)syncFinished;
-- (void)syncPosts;
 - (BOOL)isSyncing;
 @end
 
@@ -26,21 +25,6 @@
         self.title = NSLocalizedString(@"Pages", @"");
     }
     return self;
-}
-
-- (void)refreshHandler {
-    if ([self isSyncing])
-        return;
-    [self syncPosts];
-}
-
-- (void)syncPosts {
-    [self.blog syncPagesWithSuccess:^{
-        [self syncFinished];
-    } failure:^(NSError *error) {
-        [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync pages", @"")];
-        [self syncFinished];
-    } loadMore:NO];
 }
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
