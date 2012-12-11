@@ -20,7 +20,7 @@
 }
 
 - (NSNumber *)numericValue {
-    return [NSNumber numberWithInt:[self intValue]];
+    return [NSNumber numberWithUnsignedLongLong:[self longLongValue]];
 }
 
 @end
