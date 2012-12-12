@@ -473,6 +473,7 @@ Pods/Reachability/Reachability.podspec -text
 /PostSettingsViewController.xib -text
 /PostViewController-iPad.xib -text
 /QuickPhotoViewController.xib -text
+/README -text
 Resources-iPad/MainWindow-iPad.xib -text
 /SidebarToolbarButton.png -text svneol=unset#unset
 /SidebarToolbarButton@2x.png -text svneol=unset#unset
