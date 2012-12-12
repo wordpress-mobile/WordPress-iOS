@@ -295,7 +295,7 @@
         sections += 1; // Post formats
         if (blogSupportsFeaturedImage)
             sections += 1;
-        if (postDetailViewController.post.blog.geolocationEnabled) {
+        if (postDetailViewController.post.blog.geolocationEnabled || postDetailViewController.post.geolocation) {
             sections += 1; // Geolocation
         }
 	}
@@ -480,11 +480,21 @@
         case 0: // Add/update location
         {
             // If location services are disabled at the app level [CLLocationManager locationServicesEnabled] will be true, but the location will be nil.
-            if(![CLLocationManager locationServicesEnabled] || [locationManager location] == nil) {
+            if(!postDetailViewController.post.blog.geolocationEnabled) {
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GeolocationDisabledCell"];
+                if (!cell) {
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GeolocationDisabledCell"];
+                    cell.textLabel.text = NSLocalizedString(@"Enable Geotagging to Edit", @"Prompt the user to enable geolocation tagging on their blog.");
+                    cell.textLabel.textAlignment = UITextAlignmentCenter;
+                }
+                return cell;
+                
+            } else if(![CLLocationManager locationServicesEnabled] || [locationManager location] == nil) {
                 UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"locationServicesCell"];
                 if (!cell) {
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"locationServicesCell"];
-                    cell.textLabel.text = @"Please enable Location Services";
+                    cell.textLabel.text = NSLocalizedString(@"Please Enable Location Services", @"Prompt the user to enable location services on their device.");
+                    cell.textLabel.textAlignment = UITextAlignmentCenter;
                 }
                 return cell;
                 
@@ -671,6 +681,17 @@
 - (void)geolocationCellTapped:(NSIndexPath *)indexPath {
     switch (indexPath.row) {
         case 0:
+            
+            if(!postDetailViewController.post.blog.geolocationEnabled) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Enable Geotagging", @"Title of an alert view stating the user needs to turn on geotagging.")
+                                                                    message:NSLocalizedString(@"Geotagging is turned off. \nTo update this post's location, please enable geotagging in this blog's settings.", @"Message of an alert explaining that geotagging need to be enabled.")
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil, nil];
+                [alertView show];
+                return;
+            }
+            
             // If location services are disabled at the app level [CLLocationManager locationServicesEnabled] will be true, but the location will be nil.
             if(![CLLocationManager locationServicesEnabled] || [locationManager location] == nil) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Location Unavailable", @"Title of an alert view stating that the user's location is unavailable.")
@@ -679,7 +700,9 @@
                                                           cancelButtonTitle:@"OK"
                                                           otherButtonTitles:nil, nil];
                 [alertView show];
+                return;
             }
+
             if (!isUpdatingLocation) {
                 // Add or replace geotag
                 isUpdatingLocation = YES;
