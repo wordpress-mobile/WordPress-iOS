@@ -29,7 +29,7 @@
 		videoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL fileURLWithPath:media.localURL]];
 		[videoPlayer prepareToPlay];
 		videoPlayer.view.frame = scrollView.frame;
-		videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		[self.view insertSubview:videoPlayer.view belowSubview:toolbar];
 		[scrollView removeFromSuperview];
 	}
