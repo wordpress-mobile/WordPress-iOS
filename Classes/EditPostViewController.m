@@ -1342,6 +1342,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	textView.text = [textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@<br /><br />", media.html] withString:@""];
 	textView.text = [textView.text stringByReplacingOccurrencesOfString:media.html withString:@""];
 	self.apost.content = textView.text;
+    [self refreshUIForCurrentPost];
 }
 
 #pragma mark - Keyboard toolbar
