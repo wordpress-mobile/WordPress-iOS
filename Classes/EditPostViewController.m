@@ -1040,19 +1040,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
 - (void)textViewDidChange:(UITextView *)aTextView {
     
-    //replace character entities with character numbers for trac #871
-    
-    NSString *str = aTextView.text;
-    
-    if ([str rangeOfString:@"&nbsp"].location != NSNotFound || [str rangeOfString:@"&gt"].location != NSNotFound || [str rangeOfString:@"&lt"].location != NSNotFound) {
-    
-        str = [[aTextView text] stringByReplacingOccurrencesOfString: @"&nbsp" withString: @" "];
-        str = [str stringByReplacingOccurrencesOfString: @"&lt" withString: @"<"];
-        str = [str stringByReplacingOccurrencesOfString: @"&gt" withString: @">"];
-    
-        aTextView.text = str;
-    }
-        
     self.undoButton.enabled = [self.textView.undoManager canUndo];
     self.redoButton.enabled = [self.textView.undoManager canRedo];
     
