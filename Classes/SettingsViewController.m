@@ -29,6 +29,7 @@
 
  */
 
+#import <QuartzCore/QuartzCore.h>
 #import "SettingsViewController.h"
 #import "WordPressAppDelegate.h"
 #import "EditSiteViewController.h"
@@ -62,6 +63,7 @@ typedef enum {
 - (void)setupMedia;
 - (void)handleExtraDebugChanged:(id)sender;
 - (void)handleMuteSoundsChanged:(id)sender;
+- (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner;
 
 @end
 
@@ -188,6 +190,15 @@ typedef enum {
     [NSUserDefaults resetStandardUserDefaults];
 }
 
+- (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner {
+    CGRect frame = CGRectMake(0.0, 0.0, 43.0, 43.0);
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:frame
+                                               byRoundingCorners:corner cornerRadii:CGSizeMake(7.0f, 7.0f)];
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = frame;
+    maskLayer.path = path.CGPath;
+    imageView.layer.mask = maskLayer;
+}
 
 #pragma mark - 
 #pragma mark Table view data source
@@ -264,6 +275,14 @@ typedef enum {
         cell.textLabel.text = blog.blogName;
         cell.detailTextLabel.text = blog.hostURL;
         [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
+        
+        if (indexPath.row == 0) {
+            [self maskImageView:cell.imageView corner:UIRectCornerTopLeft];
+        } else if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] -1)) {
+            [self maskImageView:cell.imageView corner:UIRectCornerBottomLeft];
+        } else {
+            cell.imageView.layer.mask = NULL;
+        }
         
     } else if (indexPath.section == SettingsSectionBlogsAdd) {
         cell.textLabel.text = NSLocalizedString(@"Add a Blog", @"");
