@@ -252,6 +252,13 @@
             }
         }
     }
+    
+    if([self isSyncing]) {
+        [self.blog.api cancelAllHTTPOperations];
+        // Implemented by the super class but the interface is hidden.
+        [self performSelector:@selector(hideRefreshHeader)];
+    }
+    
     [_selectedComments makeObjectsPerformSelector:selector];
     [self deselectAllComments];
     [self updateSelectedComments];

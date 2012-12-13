@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "AFHTTPRequestOperation.h"
 
+#define kAllHTTPOperationsCancelledNotification @"kAllHTTPOperationsCancelledNotification"
+
 typedef void (^AFXMLRPCRequestOperationSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject);
 typedef void (^AFXMLRPCRequestOperationFailureBlock)(AFHTTPRequestOperation *operation, NSError *error);
 

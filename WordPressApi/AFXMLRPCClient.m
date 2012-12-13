@@ -329,6 +329,8 @@ static NSUInteger const kAFXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     for (AFHTTPRequestOperation *operation in [self.operationQueue operations]) {
         [operation cancel];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAllHTTPOperationsCancelledNotification object:nil];
 }
 
 #pragma mark - Making XML-RPC Requests

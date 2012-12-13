@@ -28,6 +28,8 @@
 - (void)mergeComments:(NSArray *)newComments;
 - (void)mergePages:(NSArray *)newPages;
 - (void)mergePosts:(NSArray *)newPosts;
+- (void)handleAllHTTPOperationsCancelled:(NSNotification *)notification;
+
 @property (readwrite, assign) BOOL reachable;
 @end
 
@@ -38,6 +40,7 @@
     Reachability *_reachability;
     BOOL _isReachable;
 }
+
 @dynamic blogID, blogName, url, username, password, xmlrpc, apiKey;
 @dynamic isAdmin, hasOlderPosts, hasOlderPages;
 @dynamic posts, categories, comments; 
@@ -45,7 +48,21 @@
 @synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
 @dynamic geolocationEnabled, options, postFormats, isActivated;
 
-- (BOOL)geolocationEnabled 
+#pragma mark -
+#pragma mark Dealloc
+
+- (void)dealloc {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    _blavatarUrl = nil;
+    _api = nil;
+    [_reachability stopNotifier];
+    _reachability = nil;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+- (BOOL)geolocationEnabled
 {
     BOOL tmpValue;
     
@@ -260,6 +277,7 @@
 
 - (void)awakeFromFetch {
     [self reachability];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAllHTTPOperationsCancelled:) name:kAllHTTPOperationsCancelledNotification object:nil];
 }
 
 - (void)dataSave {
@@ -944,15 +962,11 @@
     [self dataSave];
 }
 
-#pragma mark -
-#pragma mark Dealloc
-
-- (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-     _blavatarUrl = nil;
-     _api = nil;
-    [_reachability stopNotifier];
-     _reachability = nil;
+- (void)handleAllHTTPOperationsCancelled:(NSNotification *)notification {
+    self.isSyncingComments = NO;
+    self.isSyncingPages = NO;
+    self.isSyncingPosts = NO;
 }
+
 
 @end
