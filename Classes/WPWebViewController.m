@@ -100,9 +100,21 @@
         btn.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
         btn.autoresizingMask =  UIViewAutoresizingFlexibleHeight;
         [btn addTarget:self action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
-
         refreshButton.customView = btn;
-        iPadNavBar.topItem.title = NSLocalizedString(@"Loading...", @"");
+        
+        if(self.navigationController && self.navigationController.navigationBarHidden == NO) {
+            CGRect frame = webView.frame;
+            frame.origin.y -= iPadNavBar.frame.size.height;
+            frame.size.height += iPadNavBar.frame.size.height;
+            webView.frame = frame;
+            self.navigationItem.rightBarButtonItem = refreshButton;
+            self.title = NSLocalizedString(@"Loading...", @"");
+            [iPadNavBar removeFromSuperview];
+            self.iPadNavBar = self.navigationController.navigationBar;
+        } else {
+            refreshButton.customView = btn;
+            iPadNavBar.topItem.title = NSLocalizedString(@"Loading...", @"");
+        }
     }
     
     if ([forwardButton respondsToSelector:@selector(setTintColor:)]) {
@@ -220,7 +232,11 @@
     self.forwardButton.enabled = webView.canGoForward;
     if (!isLoading) {
         if (IS_IPAD) {
-            [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
+            if(self.navigationController.navigationBarHidden == NO) {
+                self.title = [self getDocumentTitle];
+            } else {
+                [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
+            }
         }
         else
             self.title = [self getDocumentTitle];
@@ -419,7 +435,11 @@
             self.backButton.enabled = YES;
         self.forwardButton.enabled = YES;
         if (IS_IPAD) {
-            [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
+            if(self.navigationController.navigationBarHidden == NO) {
+                self.title = [self getDocumentTitle];
+            } else {
+                [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
+            }
         }
         else
             self.title = [self getDocumentTitle];
@@ -440,7 +460,11 @@
             self.forwardButton.enabled = YES;
         self.backButton.enabled = YES;
         if (IS_IPAD) {
-            [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
+            if(self.navigationController.navigationBarHidden == NO) {
+                self.title = [self getDocumentTitle];
+            } else {
+                [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
+            }
         }
         else
             self.title = [self getDocumentTitle];
@@ -556,7 +580,11 @@
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(%@);", self.readerAllItems]];
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent]];
         if (IS_IPAD) {
-            [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
+            if(self.navigationController.navigationBarHidden == NO) {
+                self.title = [self getDocumentTitle];
+            } else {
+                [iPadNavBar.topItem setTitle:[self getDocumentTitle]];
+            }
         }
         else
             self.navigationItem.title = [self getDocumentTitle];
@@ -661,10 +689,12 @@
 }
 
 
-- (void) showCloseButton {
+- (void)showCloseButton {
     if ( IS_IPAD ) {
-        UINavigationItem *topItem = self.iPadNavBar.topItem;        
-        topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+        if(self.navigationController.navigationBarHidden) {
+            UINavigationItem *topItem = self.iPadNavBar.topItem;
+            topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+        }
     }
 }
 
