@@ -11,7 +11,9 @@
 #import "ReachabilityUtils.h"
 #import "SoundUtil.h"
 
-@implementation WPWebAppViewController
+@implementation WPWebAppViewController {
+    BOOL _pullToRefreshEnabled;
+}
 
 @synthesize webView, loading, lastWebViewRefreshDate, webBridge;
 
@@ -20,9 +22,7 @@
 - (void)dealloc {
     WPFLogMethod();
 
-    // dealloc is getting called multiple times (wtf?), so
-    // only remove the observer once so we don't crash.
-    if([self.scrollView observationInfo])
+    if(_pullToRefreshEnabled)
         [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
 
     [self.webView stopLoading];
@@ -68,10 +68,12 @@
 - (void)viewDidUnload {
     WPFLogMethod();
     [super viewDidUnload];
-    
-    if([self.scrollView observationInfo])
+
+    if (_pullToRefreshEnabled) {
         [self.scrollView removeObserver:self forKeyPath:@"contentOffset"];
-    
+        _pullToRefreshEnabled = NO;
+    }
+
     // attempted work around for #1347 to kill UIWebView loading requests
     if (self.webView.isLoading) {
         [self.webView stopLoading];
@@ -209,9 +211,10 @@
     self.lastWebViewRefreshDate = [NSDate date];
 	//  update the last update date
 	[_refreshHeaderView refreshLastUpdatedDate];
-    [self.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
-    
-
+    if (!_pullToRefreshEnabled) {
+        [self.scrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+        _pullToRefreshEnabled = YES;
+    }
 }
 
 
