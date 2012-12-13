@@ -8,10 +8,13 @@
 
 #import "WebSignupViewController.h"
 #import "ReachabilityUtils.h"
+#import "SFHFKeychainUtils.h"
+#import "NSString+Helpers.h"
 
 @interface WebSignupViewController ()
 
 - (void)loadRequest;
+- (void)checkAuth;
 
 @end
 
@@ -40,7 +43,7 @@
 	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] init];
 	buttonItem.customView = spinner;
 	self.navigationItem.rightBarButtonItem = buttonItem;
-    [self loadRequest];
+    [self checkAuth];
 }
 
 
@@ -59,6 +62,60 @@
         return title;
     
     return NSLocalizedString(@"Sign Up", @"");
+}
+
+
+- (void)checkAuth {
+    // See if we need to authenticate a .com account so the user doesn't see a sign up screen by mistake. 
+    
+    if(![ReachabilityUtils isInternetReachable]){
+        [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
+        return;
+    }
+
+    // If we're already authed no need to re-auth.
+    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@"http://wordpress.com"]];
+    for (NSHTTPCookie *cookie in cookies) {
+        if([cookie.name isEqualToString:@"wordpress_logged_in"]){
+            [self loadRequest];
+            return;
+        }
+    }
+    
+    // If we don't have a user name don't try to auth.
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+    if (!username) {
+        [self loadRequest];
+        return;
+    }
+    
+    // Okay.  Try to auth.
+    NSError *error;
+    NSString *password = [SFHFKeychainUtils getPasswordForUsername:username andServiceName:@"WordPress.com" error:&error];
+    
+    NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
+    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=http://wordpress.com",
+                             [username stringByUrlEncoding],
+                             [password stringByUrlEncoding]];
+    
+    [mRequest setURL:[NSURL URLWithString:@"https://wordpress.com/wp-login.php"]];
+    [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
+    [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
+    [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
+    NSString *userAgent = [NSString stringWithFormat:@"%@", [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
+    [mRequest addValue:userAgent forHTTPHeaderField:@"User-Agent"];
+    [mRequest setHTTPMethod:@"POST"];
+    
+     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:mRequest];
+
+    __weak WebSignupViewController *controller = self;
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [controller loadRequest];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [controller loadRequest];
+    }];
+
+    [operation start];
 }
 
 
