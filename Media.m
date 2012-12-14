@@ -188,6 +188,8 @@
             }];
             [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
                 dispatch_async(dispatch_get_main_queue(), ^(void) {
+                    if ([self isDeleted] || self.managedObjectContext == nil)
+                        return;
                     self.progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
                 });
             }];
