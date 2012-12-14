@@ -161,7 +161,10 @@
                 if (responseString == nil && operation.responseData != nil) {
                     responseString = [[NSString alloc] initWithData:operation.responseData encoding:NSISOLatin1StringEncoding];
                 }
-                NSArray *matches = [rsdURLRegExp matchesInString:responseString options:0 range:NSMakeRange(0, [responseString length])];
+                NSArray *matches;
+                if (responseString) {
+                    matches = [rsdURLRegExp matchesInString:responseString options:0 range:NSMakeRange(0, [responseString length])];
+                }
                 NSString *rsdURL = nil;
                 if ([matches count]) {
                     NSRange rsdURLRange = [[matches objectAtIndex:0] rangeAtIndex:1];
