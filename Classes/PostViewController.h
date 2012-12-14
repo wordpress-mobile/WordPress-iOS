@@ -10,7 +10,7 @@
 #import "EditPostViewController.h"
 #import "Post.h"
 
-@interface PostViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate, UIWebViewDelegate, UIActionSheetDelegate> {
+@interface PostViewController : UIViewController <UIGestureRecognizerDelegate, UITextFieldDelegate, UITextViewDelegate, UIWebViewDelegate, UIActionSheetDelegate> {
     BOOL isShowingActionSheet;
 }
 

@@ -102,12 +102,18 @@
         
         UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         self.toolbarItems = [NSArray arrayWithObjects:editButton, previewButton, spacer, deleteButton, nil];
+     
+        // When content is long enough to scroll the contentWebView will be enabled for user interaction. In this case,
+        // touchesEnded: withEvent: will not be called.  Use a TapGestureRecognizer to detect taps in this case.
+        // If the webView is not enabled for interations, the recognizer won't detect taps and so won't interefer with touchesEnded: withEvent:.
+        UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleWebViewTapped:)];
+        tgr.delegate = self;
+        [contentWebView addGestureRecognizer:tgr];
         
     } else {
         self.navigationItem.rightBarButtonItem = editButton;
-    }    
+    }
 }
-
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -153,6 +159,14 @@
 
 #pragma mark -
 #pragma mark Instance Methods
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
+}
+
+- (void)handleWebViewTapped:(id)sender {
+    [self showModalEditor];
+}
 
 - (void)addPostObserver {
     __weak PostViewController *postViewController = self;
