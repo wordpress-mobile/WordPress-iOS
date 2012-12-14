@@ -96,7 +96,11 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	
+
+	if (usersBlogs.count == 0) {
+		buttonSelectAll.enabled = FALSE;
+	}
+
 	if((isWPcom) && (!appDelegate.isWPcomAuthenticated)) {
         WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
         [self.navigationController presentModalViewController:wpComLogin animated:YES];
@@ -390,6 +394,7 @@
                 usersBlogs = responseObject;
                 hasCompletedGetUsersBlogs = YES;
                 if(usersBlogs.count > 0) {
+                    buttonSelectAll.enabled = TRUE;
                     [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                         NSString *title = [obj valueForKey:@"blogName"];
                         title = [title stringByDecodingXMLCharacters];
