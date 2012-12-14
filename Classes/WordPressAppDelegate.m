@@ -43,16 +43,19 @@
 #pragma mark UIApplicationDelegate Methods
 
 - (void)setupUserAgent {
+    // Keep a copy of the original userAgent for use with certain webviews in the app.
+    UIWebView *webView = [[UIWebView alloc] init];
+    NSString *defaultUA = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     [[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
-    NSString *defaultUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@) Mobile",
+    NSString *appUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@) Mobile",
                            appVersion,
                            [[UIDevice currentDevice] systemName],
                            [[UIDevice currentDevice] systemVersion],
                            [[UIDevice currentDevice] model]
                            ];
-
-    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: defaultUA, @"UserAgent", nil];
+    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: appUA, @"UserAgent", defaultUA, @"DefaultUserAgent", appUA, @"AppUserAgent", nil];
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
 }
 
@@ -480,6 +483,23 @@
     } else {
         [panelNavigationController popToRootViewControllerAnimated:YES];
     }
+}
+
+- (void)useDefaultUserAgent {
+    NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultUserAgent"];
+    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
+    // We have to call registerDefaults else the change isn't picked up by UIWebViews.
+    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+    WPLog(@"User-Agent set to: %@", ua);
+}
+
+- (void)useAppUserAgent {
+    NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppUserAgent"];
+    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
+    // We have to call registerDefaults else the change isn't picked up by UIWebViews.
+    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
+    
+    WPLog(@"User-Agent set to: %@", ua);
 }
 
 #pragma mark -
@@ -1357,6 +1377,4 @@
 {
 }
 
-
 @end
-

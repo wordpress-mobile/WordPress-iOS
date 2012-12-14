@@ -19,19 +19,11 @@
 #pragma mark Lifecycle Methods
 
 - (void)dealloc {
+    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
 	[webView stopLoading];
 	webView.delegate = nil;
 }
 
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        // Initialization code
-		webView.delegate = self;
-    }
-    return self;
-}
- 
 
 - (void)didReceiveMemoryWarning {
     WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
@@ -41,6 +33,7 @@
 
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	webView.delegate = self;
 	if (loadingView == nil) {
@@ -78,11 +71,13 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-	[self refreshWebView];
+    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useDefaultUserAgent];
+    [self refreshWebView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
 	[webView stopLoading];
 }
 
@@ -147,7 +142,6 @@
 #pragma mark Webkit View Delegate Methods
 
 - (void)refreshWebView {
-	
 	BOOL edited = [self.postDetailViewController hasChanges];
 	NSString *status = postDetailViewController.apost.status;
 	
