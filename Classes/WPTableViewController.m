@@ -24,7 +24,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 @property (nonatomic) BOOL swipeActionsEnabled;
 @property (nonatomic, strong, readonly) UIView *swipeView;
 @property (nonatomic, strong) UITableViewCell *swipeCell;
-@property (nonatomic, strong) NSIndexPath *firstVisibleIndexPathBeforeDisappear;
 @property (nonatomic, strong) UIView *noResultsView;
 
 - (void)simulatePullToRefresh;
@@ -52,6 +51,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     BOOL didPromptForCredentials;
     BOOL didPlayPullSound;
     BOOL didTriggerRefresh;
+    CGPoint savedScrollOffset;
 }
 
 @synthesize blog = _blog;
@@ -59,7 +59,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 @synthesize swipeActionsEnabled = _swipeActionsEnabled;
 @synthesize swipeView = _swipeView;
 @synthesize swipeCell = _swipeCell;
-@synthesize firstVisibleIndexPathBeforeDisappear;
 @synthesize noResultsView;
 
 - (void)dealloc
@@ -121,11 +120,11 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    // Scroll to the selected row if the view was restored after a memory warning.
-    if (IS_IPHONE && self.firstVisibleIndexPathBeforeDisappear && [[self.resultsController sections] count] > 0) {
-        [self.tableView scrollToRowAtIndexPath:self.firstVisibleIndexPathBeforeDisappear atScrollPosition:UITableViewScrollPositionTop animated:NO];
-        self.firstVisibleIndexPathBeforeDisappear = nil;
+    CGSize contentSize = self.tableView.contentSize;
+    if(contentSize.height > savedScrollOffset.y) {
+        [self.tableView scrollRectToVisible:CGRectMake(savedScrollOffset.x, savedScrollOffset.y, 0.0, 0.0) animated:NO];
+    } else {
+        [self.tableView scrollRectToVisible:CGRectMake(0.0, contentSize.height, 0.0, 0.0) animated:NO];
     }
 }
 
@@ -152,10 +151,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     if (IS_IPHONE) {
-        NSArray *visibleRows = [self.tableView indexPathsForVisibleRows];
-        if ([visibleRows count] > 0) {
-            self.firstVisibleIndexPathBeforeDisappear = [visibleRows objectAtIndex:0];
-        }
+        savedScrollOffset = self.tableView.contentOffset;
     }
 }
 
