@@ -27,11 +27,11 @@
 	if((media != nil) && ([media.mediaType isEqualToString:@"video"])) {
 		self.navigationItem.title = NSLocalizedString(@"Video", @"");
 		videoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL fileURLWithPath:media.localURL]];
-		[videoPlayer prepareToPlay];
 		videoPlayer.view.frame = scrollView.frame;
 		videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		[self.view insertSubview:videoPlayer.view belowSubview:toolbar];
 		[scrollView removeFromSuperview];
+		[videoPlayer prepareToPlay];
 	}
 	else if((media != nil) && ([media.mediaType isEqualToString:@"image"])) {
 		self.navigationItem.title = NSLocalizedString(@"Image", @"");
@@ -76,7 +76,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    if (videoPlayer) {
+    if (videoPlayer && !videoPlayer.fullscreen) {
         [videoPlayer stop];
     }
 }
