@@ -336,6 +336,9 @@ typedef enum {
         if (indexPath.row == 0) {
             cell.textLabel.text = NSLocalizedString(@"Version:", @"");
             NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+#if DEBUG
+            appversion = [appversion stringByAppendingString:@" (DEV)"];
+#endif
             cell.detailTextLabel.text = appversion;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else if (indexPath.row == 1) {
