@@ -13,6 +13,7 @@
 #import "SidebarViewController.h"
 #import "UIDevice+WordPressIdentifier.h"
 #import "SoundUtil.h"
+#import "WordPressComApi.h"
 
 @interface WordPressAppDelegate (Private)
 - (void)setAppBadge;
@@ -620,26 +621,24 @@
     persistentStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
 		WPFLog(@"Error opening the database. %@\nDeleting the file and trying again", error);
-#ifdef DEBUGMODE 
+#ifdef CORE_DATA_MIGRATION_DEBUG
 		// Don't delete the database on debug builds
 		// Makes migration debugging less of a pain
 		abort();
 #endif
-		
-		//delete the sqlite file and try again
+
+        // make a backup of the old database
+        [[NSFileManager defaultManager] copyItemAtPath:storeURL.path toPath:[storeURL.path stringByAppendingString:@"~"] error:&error];
+        // delete the sqlite file and try again
 		[[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:nil];
 		if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
 			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 			abort();
 		}
-		
-		//if the app did not quit, show the alert to inform the users that the data have been deleted
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error establishing database connection.", @"") 
-														 message:NSLocalizedString(@"Please delete the app and reinstall.", @"") 
-														delegate:nil 
-											   cancelButtonTitle:NSLocalizedString(@"OK", @"") 
-											   otherButtonTitles:nil];
-		[alert show];
+
+        // If everything went wrong and we lost the DB, we sign out and simulate a fresh install
+        // It's equally annoying, but it's more confusing to stay logged in to the reader having lost all the blogs in the app
+        [[WordPressComApi sharedApi] signOut];
     } else {
 		// If there are no blogs and blogs.archive still exists, force import of blogs
 		NSFileManager *fileManager = [NSFileManager defaultManager];
