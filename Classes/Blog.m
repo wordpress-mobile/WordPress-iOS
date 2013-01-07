@@ -657,20 +657,21 @@
             return;
 
         [self mergeComments:responseObject];
+        self.isSyncingComments = NO;
+        self.lastCommentsSync = [NSDate date];
+
         if (success) {
             success();
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
-        self.isSyncingComments = NO;
-        self.lastCommentsSync = [NSDate date];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         WPFLog(@"Error syncing comments: %@", [error localizedDescription]);
+        self.isSyncingComments = NO;
 
         if (failure) {
             failure(error);
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
-        self.isSyncingComments = NO;
     }];
     
     return operation;
@@ -736,16 +737,17 @@
 
         self.lastPostsSync = [NSDate date];
         self.isSyncingPosts = NO;
+
         if (success) {
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         WPFLog(@"Error syncing posts: %@", [error localizedDescription]);
-        
+        self.isSyncingPosts = NO;
+
         if (failure) {
             failure(error);
         }
-        self.isSyncingPosts = NO;
     }];
     
     return operation;        
@@ -787,19 +789,18 @@
         }
 
         [self mergePages:pages];
+        self.lastPagesSync = [NSDate date];
+        self.isSyncingPages = NO;
         if (success) {
             success();
         }
-
-        self.lastPagesSync = [NSDate date];
-        self.isSyncingPages = NO;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         WPFLog(@"Error syncing pages: %@", [error localizedDescription]);
+        self.isSyncingPages = NO;
 
         if (failure) {
             failure(error);
         }
-        self.isSyncingPages = NO;
     }];
 
     return operation;
