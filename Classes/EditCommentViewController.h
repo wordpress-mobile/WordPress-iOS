@@ -11,19 +11,7 @@
 
 @class CommentViewController;
 
-@interface EditCommentViewController : UIViewController <UIActionSheetDelegate> {
-    CommentViewController *commentViewController;
-    UIAlertView *progressAlert;
-
-    IBOutlet UITextView *textView;
-    UIBarButtonItem *saveButton;
-    UIBarButtonItem *doneButton;
-    UIBarButtonItem *cancelButton;
-    BOOL hasChanges, isTransitioning, isEditing;
-    NSString *textViewText; //to compare for hasChanges
-
-}
-	
+@interface EditCommentViewController : UIViewController <UIActionSheetDelegate>
 	
 @property (nonatomic, strong) Comment *comment;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
@@ -33,8 +21,17 @@
 @property (nonatomic) BOOL hasChanges;
 @property (nonatomic) BOOL isTransitioning;
 @property (nonatomic) BOOL isEditing;
+@property (nonatomic, strong) IBOutlet UITextView *textView;
 @property (nonatomic, strong) NSString *textViewText;
-    
--(void)cancelView:(id)sender;
+@property (nonatomic, strong) UIAlertView *progressAlert;
+
+- (void)handleKeyboardDidShow:(NSNotification *)notification;
+- (void)handleKeyboardWillHide:(NSNotification *)notification;
+- (void)endTextEnteringButtonAction:(id)sender;
+- (void)textViewDidEndEditing:(UITextView *)aTextView;
+- (void)textViewDidBeginEditing:(UITextView *)aTextView;
+- (BOOL)isConnectedToHost;
+- (void)initiateSaveCommentReply:(id)sender;
+- (void)cancelView:(id)sender;
 
 @end

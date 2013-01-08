@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Comment.h"
+#import "EditCommentViewController.h"
 
 @class CommentViewController;
 
@@ -16,34 +17,15 @@
 - (void)cancelReplyToCommentViewController:(id)sender;
 
 @optional
+
 - (void)closeReplyViewAndSelectTheNewComment;
 
 @end
 
-@interface ReplyToCommentViewController : UIViewController <UIActionSheetDelegate>{
-	
-	id <ReplyToCommentViewControllerDelegate> delegate;
-	UIAlertView *progressAlert;
-	
-	IBOutlet UITextView *textView;
-	UIBarButtonItem *saveButton;
-	UIBarButtonItem *doneButton;
-	UIBarButtonItem *cancelButton;
-	BOOL hasChanges, isTransitioning, isEditing;
-	NSString *textViewText; //to compare for hasChanges
-	
-}
+@interface ReplyToCommentViewController : EditCommentViewController
 
 @property (nonatomic, strong) id<ReplyToCommentViewControllerDelegate> delegate;
-@property (nonatomic, strong) Comment *comment;
-@property (nonatomic, strong) UIBarButtonItem *saveButton;
-@property (nonatomic, strong) UIBarButtonItem *doneButton;
-@property (nonatomic, strong) UIBarButtonItem *cancelButton;
-@property (nonatomic) BOOL hasChanges;
-@property (nonatomic) BOOL isTransitioning;
-@property (nonatomic) BOOL isEditing;
-@property (nonatomic, copy) NSString *textViewText;
 
--(void)cancelView:(id)sender;
+- (void)cancelView:(id)sender;
 
 @end
