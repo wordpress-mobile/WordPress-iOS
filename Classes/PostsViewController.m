@@ -435,4 +435,9 @@
     }
 }
 
+- (BOOL)userCanCreateEntity {
+	return YES;
+}
+
+
 @end
