@@ -12,7 +12,7 @@
 
 #define BLAVATAR_DEFAULT_IMAGE_WPORG @"blavatar-wporg.png"
 #define BLAVATAR_DEFAULT_IMAGE_WPCOM @"blavatar-wpcom.png"
-#define BLAVATAR_URL @"http://gravatar.com/blavatar/%@?s=70&d=404"
+#define BLAVATAR_URL @"http://gravatar.com/blavatar/%@?s=86&d=404"
 
 #define GRAVATAR_DEFAULT_IMAGE  @"gravatar.jpg"
 #define GRAVATAR_URL            @"http://www.gravatar.com/avatar/%@?s=160&d=404"
