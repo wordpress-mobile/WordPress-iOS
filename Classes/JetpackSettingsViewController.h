@@ -12,7 +12,7 @@
 #import "UITableViewTextFieldCell.h"
 #import "SettingsViewControllerDelegate.h"
 
-#define kNeedJetpackLogIn NSLocalizedString(@"To access stats, enter the WordPress.com log in used with the Jetpack plugin.", @"");
+#define kNeedJetpackLogIn NSLocalizedString(@"To access stats, enter the WordPress.com login used with the Jetpack plugin.", @"");
 
 @class Blog;
 

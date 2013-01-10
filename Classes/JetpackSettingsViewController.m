@@ -183,14 +183,18 @@
     if ([self.blog hasJetpack]) {
         return 3;
     }
-    return 4;
+    return 2;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tv numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case 0:
-            return 2;   // username, password
+			if ([self.blog hasJetpack]) {
+				return 2;   // username, password
+			} else {
+				return 1;
+			}
 		default:
             return 1;   // test, install, more info
 			break;
@@ -200,7 +204,7 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (section == 0) {
+    if (section == 0 && [self.blog hasJetpack]) {
         return 76.0f; // Enough room for 3 rows of text on the iphone in portrait orientation.
     }
     return 0.0f;
@@ -208,17 +212,20 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (section < 1)
-        return 44.0f;
-    if ((section == 2) && !([self.blog hasJetpack]))
-        return 60.0f;
-    else
-        return 0.0f;
+	if (section == 0) {
+		if ([self.blog hasJetpack]) {
+			return 44.0f;
+		} else {
+			return 82.0f;
+		}
+	}
+	
+	return 0.0f;
 }
 
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    if (section == 0) {
+    if (section == 0 && [self.blog hasJetpack]) {
         return self.footerText;
     }
     return @"";
@@ -226,7 +233,7 @@
 
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
+    if (section == 0 && [self.blog hasJetpack]) {
         return NSLocalizedString(@"WordPress.com Credentials", @"");
     }
     return nil;
@@ -234,8 +241,8 @@
 
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (section == 2 && ![self.blog hasJetpack]) {
-        NSString *labelText = labelText = NSLocalizedString(@"Need Jetpack? Tap below and search for 'Jetpack' to install it on your site.", @"");
+    if (section == 0 && ![self.blog hasJetpack]) {
+        NSString *labelText = labelText = NSLocalizedString(@"Jetpack 1.8.2 or later is required for stats. Tap below and search for 'Jetpack' to install it on your site.", @"");
         CGRect headerFrame = CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 50.0f);
         UIView *footerView = [[UIView alloc] initWithFrame:headerFrame];
         footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -272,113 +279,138 @@
 
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath {    
-    if (indexPath.section == 0) {
-        if(indexPath.row == 0) {
-            self.usernameCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"usernameCell"];
-            if (self.usernameCell == nil) {
-                self.usernameCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"usernameCell"];
-				self.usernameCell.textLabel.text = NSLocalizedString(@"Username", @"");
-				usernameTextField = self.usernameCell.textField;
-				usernameTextField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
-                [self configureTextField:usernameTextField asPassword:NO];
-                if (username != nil) 
-                    usernameTextField.text = username;
+- (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	if ([self.blog hasJetpack]) {
+
+		if (indexPath.section == 0) {
+			if(indexPath.row == 0) {
+				self.usernameCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"usernameCell"];
+				if (self.usernameCell == nil) {
+					self.usernameCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"usernameCell"];
+					self.usernameCell.textLabel.text = NSLocalizedString(@"Username", @"");
+					usernameTextField = self.usernameCell.textField;
+					usernameTextField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
+					[self configureTextField:usernameTextField asPassword:NO];
+					if (username != nil)
+						usernameTextField.text = username;
+				}
+				return self.usernameCell;
 			}
-            return self.usernameCell;
-        }
-        else if(indexPath.row == 1) {
-            self.passwordCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"passwordCell"];
-            if (self.passwordCell == nil) {
-                self.passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"passwordCell"];
-				self.passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
-				passwordTextField = self.passwordCell.textField;
-				passwordTextField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
-                [self configureTextField:passwordTextField asPassword:YES];
-				if(password != nil)
-					passwordTextField.text = password;
-			}            
-            return self.passwordCell;
-        }
-    } else if (indexPath.section == 1) {
-        
-        // Cell's reuse identifier is defined in its xib.
-        UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
-        if (activityCell == nil) {
-            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
-            for(id currentObject in topLevelObjects)
-            {
-                if([currentObject isKindOfClass:[UITableViewActivityCell class]])
-                {
-                    activityCell = (UITableViewActivityCell *)currentObject;
-                    break;
-                }
-            }
-        }
-        if(isTesting) {
-			[activityCell.spinner startAnimating];
-			self.buttonText = kCheckingCredentials;
-		}
-		else {
-			[activityCell.spinner stopAnimating];
-            if (isTestSuccessful) {
-                self.buttonText = NSLocalizedString(@"Credentials Verified", @"");
-            } else {
-                self.buttonText = kCheckCredentials;
-            }
+			else if(indexPath.row == 1) {
+				self.passwordCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"passwordCell"];
+				if (self.passwordCell == nil) {
+					self.passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"passwordCell"];
+					self.passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
+					passwordTextField = self.passwordCell.textField;
+					passwordTextField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
+					[self configureTextField:passwordTextField asPassword:YES];
+					if(password != nil)
+						passwordTextField.text = password;
+				}
+				return self.passwordCell;
+			}
+		} else if (indexPath.section == 1) {
+			
+			// Cell's reuse identifier is defined in its xib.
+			UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
+			if (activityCell == nil) {
+				NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
+				for(id currentObject in topLevelObjects)
+				{
+					if([currentObject isKindOfClass:[UITableViewActivityCell class]])
+					{
+						activityCell = (UITableViewActivityCell *)currentObject;
+						break;
+					}
+				}
+			}
+			if(isTesting) {
+				[activityCell.spinner startAnimating];
+				self.buttonText = kCheckingCredentials;
+			}
+			else {
+				[activityCell.spinner stopAnimating];
+				if (isTestSuccessful) {
+					self.buttonText = NSLocalizedString(@"Credentials Verified", @"");
+				} else {
+					self.buttonText = kCheckCredentials;
+				}
+			}
+			
+			activityCell.textLabel.text = self.buttonText;
+			if (isTesting) {
+				activityCell.selectionStyle = UITableViewCellSelectionStyleNone;
+			} else {
+				activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+			}
+			self.verifyCredentialsActivityCell = activityCell;
+			
+			return activityCell;
+			
+		} else if (indexPath.section == 2) {
+			UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
+			if (activityCell == nil) {
+				NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
+				for(id currentObject in topLevelObjects)
+				{
+					if([currentObject isKindOfClass:[UITableViewActivityCell class]])
+					{
+						activityCell = (UITableViewActivityCell *)currentObject;
+						break;
+					}
+				}
+			}
+			NSString *jetpackVersion = [self.blog getOptionValue:@"jetpack_version"];
+			activityCell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Jetpack version: %@", @""), jetpackVersion];
+			activityCell.selectionStyle = UITableViewCellEditingStyleNone;
+						
+			return activityCell;
 		}
 		
-		activityCell.textLabel.text = self.buttonText;
-        if (isTesting) {
-            activityCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        } else {
-            activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        }
-        self.verifyCredentialsActivityCell = activityCell;
-        
-		return activityCell;
-        
-	} else if (indexPath.section == 2) {
-        UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
-        if (activityCell == nil) {
-            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
-            for(id currentObject in topLevelObjects)
-            {
-                if([currentObject isKindOfClass:[UITableViewActivityCell class]])
-                {
-                    activityCell = (UITableViewActivityCell *)currentObject;
-                    break;
-                }
-            }
+		
+	} else {
+		
+		if (indexPath.section == 0) {
+			UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
+			if (activityCell == nil) {
+				NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
+				for(id currentObject in topLevelObjects)
+				{
+					if([currentObject isKindOfClass:[UITableViewActivityCell class]])
+					{
+						activityCell = (UITableViewActivityCell *)currentObject;
+						break;
+					}
+				}
+			
+			}
+				
+			activityCell.textLabel.text = NSLocalizedString(@"Install Jetpack", @"");
+			activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+			
+			return activityCell;
+			
+		} else if (indexPath.section == 1) {
+			UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
+			if (activityCell == nil) {
+				NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
+				for(id currentObject in topLevelObjects)
+				{
+					if([currentObject isKindOfClass:[UITableViewActivityCell class]])
+					{
+						activityCell = (UITableViewActivityCell *)currentObject;
+						break;
+					}
+				}
+			}
+			activityCell.textLabel.text = NSLocalizedString(@"More Information", @"");
+			
+			return activityCell;
 		}
-        NSString *jetpackVersion = [self.blog getOptionValue:@"jetpack_version"];
-        if (jetpackVersion) {
-            activityCell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Jetpack version: %@", @""), jetpackVersion];
-            activityCell.selectionStyle = UITableViewCellEditingStyleNone;
-        } else {
-            activityCell.textLabel.text = NSLocalizedString(@"Install Jetpack", @"");
-            activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        }
-        
-		return activityCell;
-    } else if (indexPath.section == 3) {
-        UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
-        if (activityCell == nil) {
-            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewActivityCell" owner:nil options:nil];
-            for(id currentObject in topLevelObjects)
-            {
-                if([currentObject isKindOfClass:[UITableViewActivityCell class]])
-                {
-                    activityCell = (UITableViewActivityCell *)currentObject;
-                    break;
-                }
-            }
-		}
-		activityCell.textLabel.text = NSLocalizedString(@"More Information", @"");
-        
-		return activityCell;
-    }
-    
+		
+	}
+	    
     // We shouldn't reach this point, but return an empty cell just in case
     return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
 }
@@ -396,95 +428,97 @@
                 break;
             }
         }
-	} 
+	}
     [tv deselectRowAtIndexPath:indexPath animated:YES];
     
-    switch (indexPath.section) {
-        case 0:
-            
-            break;
-        case 1:
-            if (isTesting) {
-                break;
-            }
-            
-            if([usernameTextField.text length] == 0) {
-                self.footerText = NSLocalizedString(@"Username is required.", @"");
-                self.buttonText = kCheckCredentials;
-                [tv reloadData];
-                
-            } else if([passwordTextField.text length] == 0) {
-                self.footerText = NSLocalizedString(@"Password is required.", @"");
-                self.buttonText = kCheckCredentials;
-                [tv reloadData];
-                
-            } else {
-                
-                if( ![ReachabilityUtils isInternetReachable] ) {
-                    [ReachabilityUtils showAlertNoInternetConnection];
-                    return;
-                }
-                
-                if (lastTextField) {
-                    [lastTextField resignFirstResponder];
-                }
-                self.footerText = NSLocalizedString(@"Checking credentials...", @"");
-                self.buttonText = kCheckingCredentials;
-                
-                self.username = usernameTextField.text;
-                self.password = passwordTextField.text;
-                
-                [NSThread sleepForTimeInterval:0.15];
-                [tv reloadData];
-                [self testJetpack];
-                
-            }
-            break;
-        case 2:
-            if (blog) {
-                if ([blog hasJetpack]) {
-                    break;
-                }
-                NSString *jetpackURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/plugin-install.php"];
-                WPWebViewController *webViewController = nil;
-                if ( IS_IPAD ) {
-                    webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
-                }
-                else {
-                    webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-                }
-                [webViewController setUrl:[NSURL URLWithString:jetpackURL]];
-                [webViewController setUsername:blog.username];
-                [webViewController setPassword:[blog fetchPassword]];
-                [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginURL]];
-                [self.navigationController pushViewController:webViewController animated:YES];
-            } else {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"No Blog Yet" 
-                                                                    message:NSLocalizedString(@"Please enter and save your blog's info before trying to install Jetpack.", @"") 
-                                                                   delegate:nil 
-                                                          cancelButtonTitle:@"OK" 
-                                                          otherButtonTitles:nil, nil];
-                [alertView show];
-            }
-            break;
-        case 3:
-        {
-            WPWebViewController *webViewController = nil;
-            if ( IS_IPAD ) {
-                webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
-            }
-            else {
-                webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-            }
-            [webViewController setUrl:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_15"]];
-//            [webViewController setUrl:[NSURL URLWithString:@"http://jetpack.me/about/"]];
-            [self.navigationController pushViewController:webViewController animated:YES];
-        }
-            break; 
-            
-        default:
-            break;
-    }
+	if ([self.blog hasJetpack]) {
+		switch (indexPath.section) {
+			case 0:
+				
+				break;
+			case 1:
+				if (isTesting) {
+					break;
+				}
+				
+				if([usernameTextField.text length] == 0) {
+					self.footerText = NSLocalizedString(@"Username is required.", @"");
+					self.buttonText = kCheckCredentials;
+					[tv reloadData];
+					
+				} else if([passwordTextField.text length] == 0) {
+					self.footerText = NSLocalizedString(@"Password is required.", @"");
+					self.buttonText = kCheckCredentials;
+					[tv reloadData];
+					
+				} else {
+					
+					if( ![ReachabilityUtils isInternetReachable] ) {
+						[ReachabilityUtils showAlertNoInternetConnection];
+						return;
+					}
+					
+					if (lastTextField) {
+						[lastTextField resignFirstResponder];
+					}
+					self.footerText = NSLocalizedString(@"Checking credentials...", @"");
+					self.buttonText = kCheckingCredentials;
+					
+					self.username = usernameTextField.text;
+					self.password = passwordTextField.text;
+					
+					[NSThread sleepForTimeInterval:0.15];
+					[tv reloadData];
+					[self testJetpack];
+					
+				}
+				break;
+				
+			default:
+				break;
+		}
+
+	} else {
+		switch (indexPath.section) {
+			case 0:
+				{
+
+					NSString *jetpackURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/plugin-install.php"];
+					WPWebViewController *webViewController = nil;
+					if ( IS_IPAD ) {
+						webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
+					}
+					else {
+						webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+					}
+					[webViewController setUrl:[NSURL URLWithString:jetpackURL]];
+					[webViewController setUsername:blog.username];
+					[webViewController setPassword:[blog fetchPassword]];
+					[webViewController setWpLoginURL:[NSURL URLWithString:blog.loginURL]];
+					[self.navigationController pushViewController:webViewController animated:YES];
+				}
+				break;
+			case 1:
+			{
+				WPWebViewController *webViewController = nil;
+				if ( IS_IPAD ) {
+					webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
+				}
+				else {
+					webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+				}
+				[webViewController setUrl:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_15"]];
+				
+				[self.navigationController pushViewController:webViewController animated:YES];
+			}
+				break;
+				
+			default:
+				break;
+		}
+	}
+	
+	
 }
 
 #pragma mark -
@@ -612,7 +646,7 @@
 - (void)jetpackAuthUtil:(JetpackAuthUtil *)util noRecordForBlog:(Blog *)blog {
     isTesting = NO;
     
-    self.footerText = NSLocalizedString(@"Unable to retrieve stats. Either the blog is not connected to Jetpack, or it's connected to a different account.", @"");
+    self.footerText = NSLocalizedString(@"Unable to retrieve stats. Make sure the blog has Jetpack 1.8.2 or later installed, and is connected to this account.", @"");
     [tableView reloadData];
 }
 

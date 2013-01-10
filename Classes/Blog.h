@@ -66,6 +66,7 @@
 - (int)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)hasJetpack;
+- (NSNumber *)jetpackClientID;
 
 #pragma mark - 
 

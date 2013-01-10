@@ -45,12 +45,12 @@
 @synthesize currentRequest;
 
 + (NSString *)getWporgBlogJetpackKey:(NSString *)urlPath {
-    return [NSString stringWithFormat:@"jetpackblog-%@", urlPath];
+	return [NSString stringWithFormat:@"jetpackblog-%@", urlPath];
 }
 
 
 + (NSString *)getJetpackUsernameForBlog:(Blog *)blog {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:[self getWporgBlogJetpackKey:blog.url]];
+	return [[NSUserDefaults standardUserDefaults] objectForKey:[self getWporgBlogJetpackKey:blog.url]];
 }
 
 
@@ -173,62 +173,17 @@
         [FileLogger log:@"Blog URL - %@", blogURL];
         [FileLogger log:@"Parsed URL - %@", parsedURL];
         
-        //Try to match the ID first. The WordPress.com ID of the Jetpack blog was introduced in options in Jetpack 1.9 or higher
+        //Try to match the Jetpack ID. The WordPress.com ID of the Jetpack blog was introduced in options in Jetpack 1.8.2 or higher
         if ( [blog getOptionValue:@"jetpack_client_id"] ) {
-            NSNumber *jetpackClientID = [[blog getOptionValue:@"jetpack_client_id"] numericValue];
+            NSNumber *jetpackClientID = [blog jetpackClientID];
             NSNumber *blogID = [[parsedBlog objectForKey:@"id"] numericValue];
 
             if ([jetpackClientID isEqualToNumber:blogID]) {
-                //we found the blog, check if we need to store the info
-                if ([jetpackClientID isEqualToNumber:[self.blog blogID]]) {
-                    // do nothing.
-                } else {
-                    blog.blogID = jetpackClientID;
-                    [blog dataSave];
-                }
-                
                 // Mark that a match was found but continue.
                 // http://ios.trac.wordpress.org/ticket/1251
                 foundMatchingBlogInAPI = YES;
                 NSLog(@"Matched parsedBlogURL: %@ to blogURL: %@ ", parsedURL, blogURL);
                 NSLog(@"Matched parsedBlogID: %@", [blogID stringValue]);
-            }
-        } else {
-            //old version of Jetpack
-            
-            // We might get a miss-match due to http vs https or a trailing slash
-            // so convert the strings to urls and compare their hosts + paths.
-            if (![blogURL scheme]) {
-                blogURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", blog.url]];
-            }
-            
-            NSMutableString *parsedHost = [[[parsedURL host] lowercaseString] mutableCopy];
-            [parsedHost replaceOccurrencesOfString:@"www." withString:@"" options:0 range:NSMakeRange(0, [parsedHost length])];
-            parsedHost = [NSMutableString stringWithFormat:@"%@%@",parsedHost, [parsedURL path]];
-            if (![parsedHost hasSuffix:@"/"]) {
-                [parsedHost appendString:@"/"];
-            }
-            
-            NSMutableString *blogHost = [[[blogURL host] lowercaseString] mutableCopy];
-            [blogHost replaceOccurrencesOfString:@"www." withString:@"" options:0 range:NSMakeRange(0, [blogHost length])];
-            blogHost = [NSMutableString stringWithFormat:@"%@%@",blogHost, [blogURL path]];
-            if (![blogHost hasSuffix:@"/"]) {
-                [blogHost appendString:@"/"];
-            }
-            
-            if ([parsedHost isEqualToString:blogHost]) {
-                NSNumber *blogID = [[parsedBlog objectForKey:@"id"] numericValue];
-                if ([blogID isEqualToNumber:[self.blog blogID]]) {
-                    // do nothing.
-                } else {
-                    blog.blogID = blogID;
-                    [blog dataSave];
-                }
-                
-                // Mark that a match was found but continue.
-                // http://ios.trac.wordpress.org/ticket/1251
-                foundMatchingBlogInAPI = YES;
-                NSLog(@"Matched parsedBlogURL: %@ to blogURL: %@ ", parsedURL, blogURL);
             }
         }
         self.parsedBlog = nil;

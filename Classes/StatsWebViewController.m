@@ -207,31 +207,44 @@ static NSString *_lastAuthedName = nil;
 
 - (void)initStats {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    BOOL prompt = NO;
-	if ([[blog blogID] isEqualToNumber:[NSNumber numberWithInt:1]]) {
-		// This is a .org blog and we need to look up the blog id assigned by Jetpack.
-        NSString *username = [JetpackAuthUtil getJetpackUsernameForBlog:blog];
-        NSString *password = [JetpackAuthUtil getJetpackPasswordForBlog:blog];
-
-        if ([username length] > 0 && [password length] > 0) {
-            // try to validate
-            if (!jetpackAuthUtil) {
-                self.jetpackAuthUtil = [[JetpackAuthUtil alloc] init];
-                jetpackAuthUtil.delegate = self;
-            }
-            [jetpackAuthUtil validateCredentialsForBlog:blog withUsername:username andPassword:password];
-
-        } else {
-            prompt = YES;
-            
-        }
-        
-	} else if(![blog isWPcom] && [JetpackAuthUtil getJetpackUsernameForBlog:blog] == nil) {
-        // self-hosted blog and no associated .com login.
-        prompt = YES;
-    } else {
-        [self loadStats];
+    
+	if ([blog isWPcom]) {
+		[self loadStats];
+		return;
 	}
+
+	// Looking for a self-hosted blog with a jetpackClientId and good crednetials.
+	BOOL prompt = NO;
+	
+	if (![blog jetpackClientID]) {
+		// needs latest jetpack
+		prompt = YES;
+		
+	} else {
+		// Check for credentials.
+		if ([JetpackAuthUtil getJetpackUsernameForBlog:blog] == nil) {
+			prompt = YES;
+			
+		} else {
+			// Verify credentials are good
+			NSString *username = [JetpackAuthUtil getJetpackUsernameForBlog:blog];
+			NSString *password = [JetpackAuthUtil getJetpackPasswordForBlog:blog];
+			
+			if ([username length] > 0 && [password length] > 0) {
+				// try to validate
+				if (!jetpackAuthUtil) {
+					self.jetpackAuthUtil = [[JetpackAuthUtil alloc] init];
+					jetpackAuthUtil.delegate = self;
+				}
+				[jetpackAuthUtil validateCredentialsForBlog:blog withUsername:username andPassword:password];
+				
+			} else {
+				prompt = YES;
+				
+			}
+		}
+	}
+		
     if (prompt) {
         NSString *msg = kNeedJetpackLogIn;
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Jetpack Needed" 
@@ -363,13 +376,6 @@ static NSString *_lastAuthedName = nil;
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if( !appDelegate.connectionAvailable ) {
         [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self]; 
-//        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Problem", @"")
-//                                                                      message:NSLocalizedString(@"The internet connection appears to be offline.", @"")
-//                                                                     delegate:self
-//                                                            cancelButtonTitle:NSLocalizedString(@"OK", @"")
-//                                                            otherButtonTitles:NSLocalizedString(@"Retry", @""), nil];
-//        [connectionFailAlert show];
-//        [connectionFailAlert release];
         return;
     }
 
@@ -378,7 +384,12 @@ static NSString *_lastAuthedName = nil;
         return;
     }
     
-    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/?no-chrome#!/my-stats/?blog=%@&unit=1", [blog blogID]];
+	NSNumber *blogID = [blog blogID];
+	if(![blog isWPcom]) {
+		blogID = [blog jetpackClientID];
+	}
+	
+    NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/?no-chrome#!/my-stats/?blog=%@&unit=1", blogID];
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
     [mRequest setURL:[NSURL URLWithString:pathStr]];
     [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
@@ -474,14 +485,14 @@ static NSString *_lastAuthedName = nil;
 #pragma mark JetpackUtilDelegate
 
 - (void)jetpackAuthUtil:(JetpackAuthUtil *)util didValidateCredentailsForBlog:(Blog *)blog {
-    [self initStats];
+    [self loadStats];
 }
 
 
 - (void)jetpackAuthUtil:(JetpackAuthUtil *)util noRecordForBlog:(Blog *)blog {
     [self showBlogSettings];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Could not retrieve stats", @"")
-                                                        message:NSLocalizedString(@"Unable to retrieve stats. Either the blog is not connected to Jetpack, or it's connected to a different account.", @"")
+                                                        message:NSLocalizedString(@"Unable to retrieve stats. Make sure the blog has Jetpack 1.8.2 or later installed, and is connected to right account.", @"")
                                                        delegate:nil
                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
                                               otherButtonTitles: nil];
