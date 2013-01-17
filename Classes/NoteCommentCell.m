@@ -77,8 +77,13 @@ const CGFloat NoteCommentCellHeight = 102.f;
 }
 
 - (void)setFollowButton:(FollowButton *)followButton {
-    _followButton = followButton;
-    [self.contentView addSubview:self.followButton];
+    if (_followButton != followButton) {
+        if(_followButton.superview == self.contentView)
+            [_followButton removeFromSuperview];
+
+        _followButton = followButton;
+        [self.contentView addSubview:self.followButton];
+    }
 }
 
 - (void)layoutSubviews {
