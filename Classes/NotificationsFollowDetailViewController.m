@@ -13,7 +13,6 @@
 #import "NSString+Helpers.h"
 #import "NotificationsFollowTableViewCell.h"
 #import "WPWebViewController.h"
-#import "FollowButton.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface NotificationsFollowDetailViewController ()
