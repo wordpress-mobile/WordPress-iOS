@@ -5,6 +5,7 @@
 //
 
 #import "NotificationsTableViewCell.h"
+#import "NSString+XMLExtensions.h"
 
 @interface NotificationsTableViewCell ()
 @property (nonatomic, strong) UIImageView *iconImageView;
@@ -43,11 +44,11 @@
     
     self.imageView.image = note.noteIconImage;
     // make room for the icon
-    self.textLabel.text = [NSString stringWithFormat:@"     %@",  note.subject];
+    self.textLabel.text = [NSString stringWithFormat:@"     %@", [NSString decodeXMLCharactersIn: note.subject]];
     
     self.iconImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"note_icon_%@", note.type]];
     
-    self.commentLabel.text = note.commentText;
+    self.commentLabel.text = [NSString decodeXMLCharactersIn: note.commentText];
     
     self.unreadIndicator.hidden = [note isRead];
     self.commentLabel.hidden = ![self.note isComment];
