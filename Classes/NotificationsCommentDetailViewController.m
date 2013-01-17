@@ -82,32 +82,6 @@
         [_noteImageView setImageWithURL:[NSURL URLWithString:_note.icon]
                        placeholderImage:[UIImage imageNamed:@"note_icon_placeholder"]];
         
-        // Show Follow button if user has a blog that can be followed
-        NSDictionary *followItem = [[[[[_note getNoteData] objectForKey:@"body"] objectForKey:@"items"] objectAtIndex:0] objectForKey:@"action"];
-        if (followItem) {
-            NSDictionary *followParams = [followItem objectForKey:@"params"];
-            NSString *noteType = [followItem objectForKey:@"type"];
-            if (noteType && [noteType isEqualToString:@"follow"]) {
-                [_followButton setHidden:NO];
-                if (![[followParams objectForKey:@"blog_title"] isEqualToString:@""]) {
-                    [_followButton setTitle:[NSString decodeXMLCharactersIn: [followParams objectForKey:@"blog_title"]] forState:UIControlStateNormal];
-                    if ([[followParams objectForKey:@"is_following"] intValue] == 1) {
-                        _isFollowingBlog = YES;
-                    } else {
-                        _isFollowingBlog = NO;
-                    }
-                    [self setFollowButtonState:_isFollowingBlog];
-                } else {
-                    NSString *blogTitle = [followItem objectForKey:@"header"];
-                    if (blogTitle && [blogTitle length] > 0)
-                        blogTitle = [blogTitle stringByReplacingOccurrencesOfString:@"<.+?>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, blogTitle.length)];
-                    else
-                        blogTitle = NSLocalizedString(@"(No Title)", @"Blog with no title");
-                    [_followButton setTitle:blogTitle forState:UIControlStateNormal];
-                } 
-            }
-        }
-        
         // Set the status of the comment buttons
         _commentActions = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"actions"];
         for (int i=0; i < [_commentActions count]; i++) {

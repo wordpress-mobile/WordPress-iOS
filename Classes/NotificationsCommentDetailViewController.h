@@ -9,29 +9,47 @@
 #import <UIKit/UIKit.h>
 #import "Note.h"
 #import "WordPressComApi.h"
+#import "NoteCommentPostBanner.h"
+#import "FollowButton.h"
 
-@interface NotificationsCommentDetailViewController : UIViewController
+@interface NotificationsCommentDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UILabel *authorLabel;
 
-@property (nonatomic, strong) IBOutlet UIButton *followButton;
+@property (nonatomic, strong) IBOutlet UIButton *approveButton;
+@property (nonatomic, strong) IBOutlet UIButton *trashButton;
+@property (nonatomic, strong) IBOutlet UIButton *spamButton;
+@property (nonatomic, strong) IBOutlet UIButton *replyButton;
 @property (nonatomic, strong) IBOutlet UIButton *sendReplyButton;
+
+@property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
+
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *toggleApproveBarButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *deleteBarButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *spamBarButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *replyBarButton;
 
 @property (nonatomic, strong) IBOutlet UITextView *commentTextView;
 @property (nonatomic, strong) IBOutlet UITextView *replyTextView;
 
 @property (nonatomic, strong) IBOutlet UIImageView *noteImageView;
 
-@property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
+@property (nonatomic, strong) IBOutlet NoteCommentPostBanner *postBanner;
+
+@property (nonatomic, strong) IBOutlet UITextView *replyField;
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
+
+@property (nonatomic, strong) FollowButton *followButton;
 
 @property (nonatomic, strong) Note *note;
 
 @property (nonatomic, strong) WordPressApi *user;
+- (IBAction)toggleApproval:(id)sender;
+- (IBAction)deleteComment:(id)sender;
+- (IBAction)markAsSpam:(id)sender;
+- (IBAction)replyToComment:(id)sender;
 
-- (IBAction) followBlog;
-- (IBAction) moderateComment: (id)sender;
-- (IBAction) replyToComment;
-- (void)setFollowButtonState:(bool)isFollowing;
+- (IBAction)visitPostURL:(id)sender;
 - (void)displayNote;
 
 @end

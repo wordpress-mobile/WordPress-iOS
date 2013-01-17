@@ -7,14 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WordPressComApi.h"
 
 typedef NS_ENUM(NSInteger, FollowButtonState){
     FollowButtonStateNotFollowing,
     FollowButtonStateFollowing
 };
 
-@interface FollowButton : UIButton
+@interface FollowButton : UIView
 
-@property FollowButtonState followState;
+@property (nonatomic) FollowButtonState followState;
+@property (nonatomic, strong) NSNumber *siteID;
+@property (nonatomic, strong) WordPressComApi *user;
+@property (nonatomic, strong) NSString *label;
+@property (nonatomic) CGFloat maxButtonWidth;
+
++ (FollowButton *)buttonWithLabel:(NSString *)label andApi:(WordPressComApi *)user andSiteID:(NSNumber *)siteID andFollowing:(FollowButtonState)following;
+
++ (FollowButton *)buttonFromAction:(NSDictionary *)action withApi:(WordPressComApi *)user;
+
+- initWithLabel:(NSString *)label andApi:(WordPressComApi *)user andSiteID:(NSNumber *)siteId andFollowing:(FollowButtonState)following;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "NotificationsFollowTableViewCell.h"
+#import "FollowButton.h"
 
 @implementation NotificationsFollowTableViewCell
 
