@@ -63,11 +63,11 @@
     [_postTitleView.layer setShadowRadius:2.0f];
     [_postTitleView.layer setShadowOpacity:0.3f];
     
-    [_tableView.layer setMasksToBounds:NO];
+    /*[_tableView.layer setMasksToBounds:NO];
     [_tableView.layer setShadowColor:[[UIColor blackColor] CGColor]];
     [_tableView.layer setShadowOffset:CGSizeMake(0.0, -1.0)];
     [_tableView.layer setShadowRadius:1.0f];
-    [_tableView.layer setShadowOpacity:0.3f];
+    [_tableView.layer setShadowOpacity:0.3f];*/
     
     [_tableView setDelegate: self];
 
