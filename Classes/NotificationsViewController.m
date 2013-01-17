@@ -279,7 +279,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
     NotificationsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
     if (cell == nil) {
-        cell = (NotificationsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:NotificationsTableViewNoteCellIdentifier];
+        cell = [[NotificationsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
         [cell setBackgroundView:imageView];
     }
@@ -308,7 +308,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
  */
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Note *note = [self.notesFetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];
-    return [note.type isEqualToString:@"comment"] ? 110.f : 63.f;
+    return [note.type isEqualToString:@"comment"] ? 140.f : 73.f;
     
 }
 

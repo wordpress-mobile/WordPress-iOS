@@ -10,9 +10,10 @@
 
 @interface NotificationsTableViewCell ()
 @property (nonatomic, strong) UIImageView *iconImageView;
-@property (nonatomic, strong) UILabel *commentLabel;
 @property (nonatomic, strong) UIImageView *unreadIndicator;
 @end
+
+const CGFloat NotificationsTableViewCellFontSize = 15;
 
 @implementation NotificationsTableViewCell
 
@@ -21,22 +22,28 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        self.textLabel.numberOfLines = 2;
-        self.textLabel.font = [UIFont systemFontOfSize:[UIFont labelFontSize]];
+        self.textLabel.numberOfLines = 3;
+        self.textLabel.font = [UIFont systemFontOfSize:NotificationsTableViewCellFontSize];
         self.textLabel.backgroundColor = [UIColor clearColor];
         self.imageView.frame = CGRectMake(0.f, 0.f, 47.f, 47.f);
         self.iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.f, 0.f, 19.f, 19.f)];
-        self.commentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        self.commentLabel.numberOfLines = 2;
-        self.commentLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
-        self.commentLabel.textColor = [UIColor darkGrayColor];
-        self.commentLabel.backgroundColor = [UIColor clearColor];
+        self.detailTextLabel.numberOfLines = 3;
+        self.detailTextLabel.font = [UIFont systemFontOfSize:NotificationsTableViewCellFontSize];
+        self.detailTextLabel.textColor = [UIColor darkGrayColor];
+        self.detailTextLabel.backgroundColor = [UIColor clearColor];
         self.unreadIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"note_unread_indicator"]];
-        [self addSubview:self.commentLabel];
+        [self addSubview:self.detailTextLabel];
         [self addSubview:self.iconImageView];
         [self addSubview:self.unreadIndicator];
     }
     return self;
+}
+
+- (void)prepareForReuse {
+    self.detailTextLabel.hidden = YES;
+    self.unreadIndicator.hidden = YES;
+    self.iconImageView.hidden = YES;
+    self.iconImageView.image = nil;
 }
 
 /*
@@ -58,15 +65,14 @@
         self.iconImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"note_icon_%@", note.type]];
         self.textLabel.text = [NSString stringWithFormat:@"     %@", [NSString decodeXMLCharactersIn: note.subject]];
     } else {
-        self.iconImageView.hidden = YES;
         self.textLabel.text = [NSString decodeXMLCharactersIn:note.subject];
     }
     
-    self.commentLabel.text = [NSString decodeXMLCharactersIn: note.commentText];
+    self.detailTextLabel.text = [NSString decodeXMLCharactersIn: note.commentText];
     
     self.unreadIndicator.hidden = [note isRead];
-    if (![self.note isComment])
-        self.commentLabel.hidden = YES;
+    if ([self.note isComment])
+        self.detailTextLabel.hidden = NO;
 
 }
 
@@ -88,7 +94,7 @@
     if ([self.note isComment]) {
         CGRect commentFrame = self.textLabel.frame;
         commentFrame.origin.y = CGRectGetMaxY(commentFrame) + 5.f;
-        self.commentLabel.frame = commentFrame;
+        self.detailTextLabel.frame = commentFrame;
         
     }
     
