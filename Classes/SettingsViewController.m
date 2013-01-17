@@ -319,7 +319,7 @@ typedef enum {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
     } else if (indexPath.section == SettingsSectionWpcom) {
-        if ([WordPressComApi sharedApi].username) {
+        if ([[WordPressComApi sharedApi] hasCredentials]) {
             if (indexPath.row == 0) {
                 cell.textLabel.text = NSLocalizedString(@"Username:", @"");
                 cell.detailTextLabel.text = [WordPressComApi sharedApi].username;
@@ -332,6 +332,7 @@ typedef enum {
         } else {
             cell.textLabel.textAlignment = UITextAlignmentCenter;
             cell.textLabel.text = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
         
     } else if (indexPath.section == SettingsSectionMedia){
@@ -399,8 +400,13 @@ typedef enum {
             break;
             
         case SettingsSectionWpcom:
-            cellIdentifier = @"WpcomCell";
-            cellStyle = UITableViewCellStyleValue1;
+            if ([[WordPressComApi sharedApi] hasCredentials] && indexPath.row == 0) {
+                cellIdentifier = @"WpcomUsernameCell";
+                cellStyle = UITableViewCellStyleValue1;
+            } else {
+                cellIdentifier = @"WpcomCell";
+                cellStyle = UITableViewCellStyleDefault;
+            }
             break;
             
         case SettingsSectionMedia:
@@ -479,7 +485,7 @@ typedef enum {
         [self.navigationController pushViewController:welcomeViewController animated:YES];
         
     } else if (indexPath.section == SettingsSectionWpcom) {
-        if ([WordPressComApi sharedApi].username) {
+        if ([[WordPressComApi sharedApi] hasCredentials]) {
             if (indexPath.row == 1) {
                 // Present the Sign out ActionSheet
                 NSString *signOutTitle = NSLocalizedString(@"You are logged in as %@", @"");
