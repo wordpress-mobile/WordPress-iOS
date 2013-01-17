@@ -210,7 +210,9 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     if (self.hasScrollBackView) return;
     self.hasScrollBackView = YES;
     CGRect frame = self.view.bounds;
+    frame.size.height += 1200.f;
     UIView *scrollBackView = [[UIView alloc] initWithFrame:CGRectOffset(frame, 0.f, -CGRectGetHeight(frame))];
+    scrollBackView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     scrollBackView.backgroundColor = [NoteCommentCell darkBackgroundColor];
     [self.tableView addSubview:scrollBackView];
 }
@@ -399,7 +401,11 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
         
     } else {
         // it's a parent comment
-        [cell displayAsParentComment];
+        if (indexPath.row == [self.commentThread count]-2) {
+            [cell displayAsParentComment];
+        } else {
+            [cell displayAsGrandparentComment];
+        }
         if (!comment.isLoaded) {
             cell.imageView.hidden = YES;
             [cell showLoadingIndicator];
@@ -454,7 +460,7 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
         // it's a parent comment
         if (!comment.isLoaded) {
             // it's loading, we have no content for it
-            return 30.f;
+            return 42.f;
         } else {
             NSAttributedString *content = [self convertHTMLToAttributedString:[comment.commentData valueForKeyPath:@"content"]];
             return [NoteCommentCell heightForCellWithTextContent:content constrainedToWidth:self.tableView.bounds.size.width];

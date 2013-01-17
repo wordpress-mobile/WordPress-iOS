@@ -30,6 +30,7 @@
 - (void)setAvatarURL:(NSURL *)avatarURL;
 - (void)showLoadingIndicator;
 - (void)displayAsParentComment;
+- (void)displayAsGrandparentComment;
 
 + (CGFloat)heightForCellWithTextContent:(NSAttributedString *)textContent constrainedToWidth:(CGFloat)width;
 
