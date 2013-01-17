@@ -6,6 +6,7 @@
 
 #import "AddSiteViewController.h"
 #import "AddUsersBlogsViewController.h"
+#import "WordPressComApi.h"
 
 @interface EditSiteViewController (PrivateMethods)
 - (void)validationDidFail:(id)wrong;
@@ -86,7 +87,7 @@
 			self.blog.geolocationEnabled = self.geolocationEnabled;
 			[self.blog dataSave];
             [self.blog syncBlogWithSuccess:^{
-                [appDelegate sendPushNotificationBlogsList];
+                [[WordPressComApi sharedApi] syncPushNotificationInfo];
             } failure:nil];
             
             if (IS_IPAD) {

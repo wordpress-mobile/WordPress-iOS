@@ -11,6 +11,7 @@
 #import "AFXMLRPCClient.h"
 #import "EGORefreshTableHeaderView.h"
 #import "WordPressAppDelegate.h"
+#import "WordPressComApi.h"
 
 @interface NotificationSettingsViewController () <EGORefreshTableHeaderDelegate>
 
@@ -21,6 +22,8 @@
 @end
 
 @implementation NotificationSettingsViewController
+
+BOOL hasChanges;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -43,12 +46,16 @@
     refreshFrame.origin.y = -refreshFrame.size.height;
     self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:refreshFrame];
     self.refreshHeaderView.delegate = self;
-    
     [self.tableView addSubview:self.refreshHeaderView];
-    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    hasChanges = NO;
     _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
     if (_notificationPreferences) {
         _notificationPrefArray = [_notificationPreferences allKeys];
+        [self.tableView reloadData];
     } else {
         // Trigger a refresh to download the notification settings
         CGPoint offset = self.tableView.contentOffset;
@@ -59,64 +66,11 @@
 }
 
 - (void)getNotificationSettings {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
-    
-    NSString *authURL = kNotificationAuthURL;
-    NSError *error = nil;
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] == nil) return;
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-    NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                    andServiceName:@"WordPress.com"
-                                                             error:&error];
-
-    AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-    //Update supported notifications dictionary
-    [api callMethod:@"wpcom.get_mobile_push_notification_settings"
-         parameters:[NSArray arrayWithObjects:username, password, token, @"apple", nil]
-            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
-                [[NSUserDefaults standardUserDefaults] setObject:supportedNotifications forKey:@"notification_preferences"];
-                [self notificationsDidFinishRefreshingWithError:nil];
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                [self notificationsDidFinishRefreshingWithError:error];
+    [[WordPressComApi sharedApi] getNotificationSettings:^{
+        [self notificationsDidFinishRefreshingWithError: nil];
+    } failure:^(NSError *error) {
+        [self notificationsDidFinishRefreshingWithError: error];
     }];
-    
-}
-
-- (void)setNotificationSettings {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
-    // Build the dictionary to send in the API call
-    NSMutableDictionary *updatedSettings = [[NSMutableDictionary alloc] init];
-    for (int i = 0; i < [_notificationPrefArray count]; i++) {
-        NSDictionary *updatedSetting = [_notificationPreferences objectForKey:[_notificationPrefArray objectAtIndex:i]];
-        [updatedSettings setValue:[updatedSetting objectForKey:@"value"] forKey:[_notificationPrefArray objectAtIndex:i]];
-    }
-    
-    if ([updatedSettings count] == 0)
-        return;
-    
-    NSString *authURL = kNotificationAuthURL;
-    NSError *error = nil;
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] == nil) return;
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-    NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                    andServiceName:@"WordPress.com"
-                                                             error:&error];
-    
-    AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-    //Update supported notifications dictionary
-    [api callMethod:@"wpcom.set_mobile_push_notification_settings"
-         parameters:[NSArray arrayWithObjects:username, password, updatedSettings, token, @"apple", nil]
-            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                // Hooray!
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Error", @" Connection error title for alert prompt")
-                                                                message:NSLocalizedString(@"Notification settings could not be saved due to a network error. Please try again later.", @"Network save error on notification settings view.")
-                                                               delegate:nil
-                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label.")
-                                                      otherButtonTitles:nil, nil];
-                [alert show];
-            }];
 }
 
 - (void)reloadNotificationSettings {
@@ -125,6 +79,24 @@
         _notificationPrefArray = [_notificationPreferences allKeys];
         [self.tableView reloadData];
     }
+}
+
+- (void)notificationSettingChanged:(id)sender {
+    hasChanges = YES;
+    UISwitch *cellSwitch = (UISwitch *)sender;
+    
+    NSMutableDictionary *updatedPreference = [[_notificationPreferences objectForKey:[_notificationPrefArray objectAtIndex:cellSwitch.tag]] mutableCopy];
+    
+    [updatedPreference setValue:[NSNumber numberWithBool:cellSwitch.on] forKey:@"value"];
+    
+    [_notificationPreferences setValue:updatedPreference forKey:[_notificationPrefArray objectAtIndex:cellSwitch.tag]];
+    [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    if (hasChanges)
+        [[WordPressComApi sharedApi] setNotificationSettings];
+    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -173,19 +145,6 @@
     return cell;
 }
 
-- (void)notificationSettingChanged:(id)sender {
-    UISwitch *cellSwitch = (UISwitch *)sender;
-    
-    NSMutableDictionary *updatedPreference = [[_notificationPreferences objectForKey:[_notificationPrefArray objectAtIndex:cellSwitch.tag]] mutableCopy];
-    
-    [updatedPreference setValue:[NSNumber numberWithBool:cellSwitch.on] forKey:@"value"];
-        
-    [_notificationPreferences setValue:updatedPreference forKey:[_notificationPrefArray objectAtIndex:cellSwitch.tag]];
-    [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
-    
-     [self setNotificationSettings];
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return NSLocalizedString(@"Send notifications for:", @"");
 }
@@ -197,7 +156,7 @@
     
 }
 
-#pragma mark - UIScrollViewDelegate
+#pragma mark - Pull to Refresh delegate
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
     return self.isRefreshing;
@@ -225,8 +184,8 @@
         [self reloadNotificationSettings];
     }
     else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Connection Error", @" Connection error title for alert prompt")
-                                                        message:NSLocalizedString(@"Notification settings could not be loaded due to a network error. Please try again.", @"Network error on notification settings view.")
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+                                                        message:error.localizedDescription
                                                        delegate:nil
                                               cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label.")
                                               otherButtonTitles:nil, nil];

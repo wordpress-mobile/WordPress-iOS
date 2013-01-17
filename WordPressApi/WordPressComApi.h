@@ -75,6 +75,12 @@ extern NSString *const WordPressComApiUnseenNoteCountInfoKey;
 
 - (BOOL)hasAuthorizationToken;
 
+- (void)setNotificationSettings;
+
+- (void)getNotificationSettings: (void (^)())success failure:(void (^)(NSError *error))failure;
+
+- (void)syncPushNotificationInfo;
+
 + (NSString *)WordPressAppId;
 + (NSString *)WordPressAppSecret;
 

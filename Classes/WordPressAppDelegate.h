@@ -78,7 +78,6 @@
 - (void)registerForPushNotifications;
 - (void)sendApnsToken;
 - (void)unregisterApnsToken;
-- (void)sendPushNotificationBlogsList;
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif;
 - (void)useDefaultUserAgent;
 - (void)useAppUserAgent;

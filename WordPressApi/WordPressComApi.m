@@ -325,5 +325,106 @@ NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
     return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"WPComAppSecret"];
 }
 
+#pragma mark - XML-RPC Methods
+
+- (void)setNotificationSettings {
+    NSDictionary *notificationPreferences = [[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"];
+    if (!notificationPreferences)
+        return;
+    
+    NSArray *notificationPrefArray = [notificationPreferences allKeys];
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
+    // Build the dictionary to send in the API call
+    NSMutableDictionary *updatedSettings = [[NSMutableDictionary alloc] init];
+    for (int i = 0; i < [notificationPrefArray count]; i++) {
+        NSDictionary *updatedSetting = [notificationPreferences objectForKey:[notificationPrefArray objectAtIndex:i]];
+        [updatedSettings setValue:[updatedSetting objectForKey:@"value"] forKey:[notificationPrefArray objectAtIndex:i]];
+    }
+    
+    if ([updatedSettings count] == 0)
+        return;
+    
+    AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:kWPcomXMLRPCUrl]];
+    //Update supported notifications dictionary
+    [api callMethod:@"wpcom.set_mobile_push_notification_settings"
+         parameters:[NSArray arrayWithObjects:self.username, self.password, updatedSettings, token, @"apple", nil]
+            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                // Hooray!
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                
+            }];
+}
+
+- (void)getNotificationSettings: (void (^)())success failure:(void (^)(NSError *error))failure {
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
+    AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:kWPcomXMLRPCUrl]];
+    [api callMethod:@"wpcom.get_mobile_push_notification_settings"
+         parameters:[NSArray arrayWithObjects:self.username, self.password, token, @"apple", nil]
+            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
+                [[NSUserDefaults standardUserDefaults] setObject:supportedNotifications forKey:@"notification_preferences"];
+                if (success)
+                    success();
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                if (failure)
+                    failure(error);
+            }];
+}
+
+- (void)syncPushNotificationInfo {
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
+    if( nil == token ) return; //no apns token available
+    
+    NSString *authURL = kNotificationAuthURL;
+    NSError *error;
+    NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:context]];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"blogName" ascending:YES];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    NSArray *blogs = [context executeFetchRequest:fetchRequest error:&error];
+    
+    NSMutableArray *blogsID = [NSMutableArray array];
+    
+    //get a references to media files linked in a post
+    for (Blog *blog in blogs) {
+        if( [blog isWPcom] ) {
+            [blogsID addObject:[blog blogID] ];
+        } else {
+            if ( [blog getOptionValue:@"jetpack_client_id"] )
+                [blogsID addObject:[blog getOptionValue:@"jetpack_client_id"] ];
+        }
+    }
+    
+    // Send a multicall for the blogs list and retrieval of push notification settings
+    NSMutableArray *operations = [NSMutableArray arrayWithCapacity:2];
+    AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+    ;
+    NSArray *blogsListParameters = [NSArray arrayWithObjects:self.username, self.password, token, blogsID, @"apple", nil];
+    AFXMLRPCRequest *blogsListRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_set_blogs_list" parameters:blogsListParameters];
+    AFXMLRPCRequestOperation *blogsListOperation = [api XMLRPCRequestOperationWithRequest:blogsListRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        WPFLog(@"Sent blogs list (%d blogs)", [blogsID count]);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WPFLog(@"Failed registering blogs list: %@", [error localizedDescription]);
+    }];
+    
+    [operations addObject:blogsListOperation];
+    
+    NSArray *settingsParameters = [NSArray arrayWithObjects:self.username, self.password, token, @"apple", nil];
+    AFXMLRPCRequest *settingsRequest = [api XMLRPCRequestWithMethod:@"wpcom.get_mobile_push_notification_settings" parameters:settingsParameters];
+    AFXMLRPCRequestOperation *settingsOperation = [api XMLRPCRequestOperationWithRequest:settingsRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
+        [[NSUserDefaults standardUserDefaults] setObject:supportedNotifications forKey:@"notification_preferences"];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WPFLog(@"Failed to receive supported notification list: %@", [error localizedDescription]);
+    }];
+    
+    [operations addObject:settingsOperation];
+    
+    AFHTTPRequestOperation *combinedOperation = [api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {} failure:^(AFHTTPRequestOperation *operation, NSError *error) {}];
+    [api enqueueHTTPRequestOperation:combinedOperation];
+}
+
 
 @end

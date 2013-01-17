@@ -360,7 +360,7 @@
     
     // Clear notifications badge and update server
     [self setAppBadge];
-    [self sendPushNotificationBlogsList];
+    [[WordPressComApi sharedApi] syncPushNotificationInfo];
 }
 
 
@@ -1034,7 +1034,7 @@
                     
                     [alert show];
                     [SoundUtil playNotificationSound];
-                    [self sendPushNotificationBlogsList];
+                    [[WordPressComApi sharedApi] syncPushNotificationInfo];
                 }
             }
             break;
@@ -1090,7 +1090,7 @@
                  parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         WPFLog(@"Registered token %@, sending blogs list", token);
-                        [self sendPushNotificationBlogsList];
+                        [[WordPressComApi sharedApi] syncPushNotificationInfo];
                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                         WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
                     }];
@@ -1134,78 +1134,6 @@
                     }];
         } 
 	}
-}
-
-- (void)sendPushNotificationBlogsList {    
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
-    if( nil == token ) return; //no apns token available
-    
-    NSString *authURL = kNotificationAuthURL;   	
-    NSError *error = nil;
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] == nil) return;
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil) {
-        // Migrate password to keychain
-        [SFHFKeychainUtils storeUsername:username
-                             andPassword:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]
-                          forServiceName:@"WordPress.com"
-                          updateExisting:YES error:&error];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-    NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                    andServiceName:@"WordPress.com"
-                                                             error:&error];
-    if (password == nil) return;
-    
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:self.managedObjectContext]];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"blogName" ascending:YES];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
-    NSArray *blogs = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-        
-    NSMutableArray *blogsID = [NSMutableArray array];
-    
-    //get a references to media files linked in a post
-    for (Blog *blog in blogs) {
-        if( [blog isWPcom] ) {
-            [blogsID addObject:[blog blogID] ];
-        } else {
-            if ( [blog getOptionValue:@"jetpack_client_id"] )
-                [blogsID addObject:[blog getOptionValue:@"jetpack_client_id"] ];
-        }
-    }
-    
-    // Send a multicall for the blogs list and retrieval of push notification settings
-    NSMutableArray *operations = [NSMutableArray arrayWithCapacity:2];
-    AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-    ;
-    NSArray *blogsListParameters = [NSArray arrayWithObjects:username, password, token, blogsID, @"apple", nil];
-    AFXMLRPCRequest *blogsListRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_set_blogs_list" parameters:blogsListParameters];
-    AFXMLRPCRequestOperation *blogsListOperation = [api XMLRPCRequestOperationWithRequest:blogsListRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        WPFLog(@"Sent blogs list (%d blogs)", [blogsID count]);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Failed registering blogs list: %@", [error localizedDescription]);
-    }];
-    
-    [operations addObject:blogsListOperation];
-    
-    NSArray *settingsParameters = [NSArray arrayWithObjects:username, password, token, @"apple", nil];
-    AFXMLRPCRequest *settingsRequest = [api XMLRPCRequestWithMethod:@"wpcom.get_mobile_push_notification_settings" parameters:settingsParameters];
-    AFXMLRPCRequestOperation *settingsOperation = [api XMLRPCRequestOperationWithRequest:settingsRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
-        [[NSUserDefaults standardUserDefaults] setObject:supportedNotifications forKey:@"notification_preferences"];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Failed to receive supported notification list: %@", [error localizedDescription]);
-    }];
-    
-    [operations addObject:settingsOperation];
-    
-    AFHTTPRequestOperation *combinedOperation = [api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {} failure:^(AFHTTPRequestOperation *operation, NSError *error) {}];
-    [api enqueueHTTPRequestOperation:combinedOperation];
-    
-    
 }
 
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {

@@ -15,7 +15,6 @@
 
 - (void)notificationSettingChanged:(id)sender;
 - (void)getNotificationSettings;
-- (void)setNotificationSettings;
 - (void)reloadNotificationSettings;
 
 @end
