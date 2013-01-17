@@ -1555,6 +1555,63 @@
     }
 }
 
+#pragma mark - Toast Message Overlay methods
+
+- (void)showToastWithMessage:(NSString *)toastMessage andImage:(UIImage *)toastImage {
+    UIView *toastView = [[[NSBundle mainBundle] loadNibNamed:@"ToastView" owner:self options:nil] objectAtIndex:0];
+    [toastView setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.height, self.view.frame.size.height)];
+    [toastView setAlpha:0.1f];
+    [toastView setCenter:CGPointMake(self.view.bounds.size.width / 2, self.view.bounds.size.height / 2)];
+    [toastView.layer setCornerRadius:20.0f];
+    [self.view addSubview:toastView];
+    
+    UILabel *toastLabel = [[toastView subviews] objectAtIndex:0];
+    toastLabel.text = toastMessage;
+    toastLabel.alpha = 0.0f;
+    
+    UIImageView *toastIcon = [[toastView subviews] objectAtIndex:1];
+    toastIcon.image = toastImage;
+    toastIcon.alpha = 0.0f;
+    
+    [UIView beginAnimations:@"toast_fade_in" context:(__bridge void *)(toastView)];
+    
+    [UIView setAnimationDuration:0.3f];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    toastView.alpha= 0.9f;
+    CGFloat toastOffset = 95.0f;
+    if (IS_IPHONE && UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+        toastOffset = 125.0f;
+    toastView.frame = CGRectMake((self.view.bounds.size.width / 2) - 95.0f, (self.view.bounds.size.height / 2) - toastOffset, 190.0f, 190.0f);
+    [UIView commitAnimations];
+}
+
+- (void)animationDidStop:(NSString*)animationID finished:(BOOL)finished context:(void *)context {
+    UIView *toastView = (__bridge UIView *)context;
+    if([animationID isEqualToString:@"toast_fade_in"]) {
+        UILabel *toastLabel = [[toastView subviews] objectAtIndex:0];
+        UIImageView *toastIcon = [[toastView subviews] objectAtIndex:1];
+        [UIView beginAnimations:@"container_fade_in" context:(__bridge void *)(toastView)];
+        [UIView setAnimationDuration:0.35f];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+        toastLabel.alpha = 1.0f;
+        toastIcon.alpha = 1.0f;
+        [UIView commitAnimations];
+        
+        [UIView beginAnimations:@"toast_fade_out" context:(__bridge void *)(toastView)];
+        [UIView setAnimationDelay:1.7f];
+        [UIView setAnimationDuration:0.3f];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        toastView.alpha = 0.0f;
+        [UIView commitAnimations];
+    } else if ([animationID isEqualToString:@"toast_fade_out"]) {
+        [toastView removeFromSuperview];
+    }
+}
+
 
 #pragma mark - Navigation methods
 

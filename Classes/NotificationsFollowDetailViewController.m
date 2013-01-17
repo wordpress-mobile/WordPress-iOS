@@ -167,10 +167,14 @@
                 if ([[followResponse objectForKey:@"is_following"] intValue] == 1) {
                     [cell setFollowing: YES];
                     [noteDetails setValue:[NSNumber numberWithInt:1] forKey:@"is_following"];
+                    if (self.panelNavigationController)
+                        [self.panelNavigationController showToastWithMessage:NSLocalizedString(@"Followed", @"User followed a blog") andImage:[UIImage imageNamed:@"action_icon_followed"]];
                 }
                 else {
                     [cell setFollowing: NO];
                     [noteDetails setValue:[NSNumber numberWithInt:0] forKey:@"is_following"];
+                    if (self.panelNavigationController)
+                        [self.panelNavigationController showToastWithMessage:NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") andImage:[UIImage imageNamed:@"action_icon_unfollowed"]];
                 }
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

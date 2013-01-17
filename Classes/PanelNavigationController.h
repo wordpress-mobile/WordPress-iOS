@@ -47,6 +47,9 @@
 - (void)showNotificationsView;
 - (bool)isShowingNotificationButton;
 
+// Toast Message
+- (void)showToastWithMessage:(NSString *)toastMessage andImage:(UIImage *)toastImage;
+
 - (UIToolbar *)toolbarForViewController:(UIViewController *)controller;
 - (BOOL)isToolbarHiddenForViewController:(UIViewController *)controller;
 - (void)setToolbarHidden:(BOOL)hidden forViewController:(UIViewController *)controller;

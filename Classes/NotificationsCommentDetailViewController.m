@@ -155,9 +155,13 @@
             if ([[followResponse objectForKey:@"is_following"] intValue] == 1) {
                 _isFollowingBlog = YES;
                 [self setFollowButtonState:_isFollowingBlog];
+                if (self.panelNavigationController)
+                    [self.panelNavigationController showToastWithMessage:NSLocalizedString(@"Followed", @"User followed a blog") andImage:[UIImage imageNamed:@"action_icon_followed"]];
             } else {
                 _isFollowingBlog = NO;
                 [self setFollowButtonState:_isFollowingBlog];
+                if (self.panelNavigationController)
+                    [self.panelNavigationController showToastWithMessage:NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") andImage:[UIImage imageNamed:@"action_icon_unfollowed"]];
             }
             if (_followDetails)
                 [_followDetails setValue:[NSNumber numberWithBool:_isFollowingBlog] forKey:@"is_following"];
