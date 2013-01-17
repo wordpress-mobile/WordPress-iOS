@@ -64,6 +64,12 @@ const NSUInteger NoteKeepCount = 20;
 }
 
 + (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context {
+    NSError *error;
+
+    // For some strange reason, core data objects with changes are ignored when using fetchOffset
+    // Even if you have 20 notes and fetchOffset is 20, any object with uncommitted changes would show up as a result
+    // To avoid that we make sure to commit all changes before doing our request
+    [context save:&error];
     NSUInteger keepCount = NoteKeepCount;
     if (timestamp) {
         NSFetchRequest *countRequest = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
@@ -81,7 +87,6 @@ const NSUInteger NoteKeepCount = 20;
     request.fetchOffset = keepCount;
     NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
     request.sortDescriptors = @[ dateSortDescriptor ];
-    NSError *error;
     NSArray *notes = [context executeFetchRequest:request error:&error];
     if (error) {
         WPFLog(@"Error pruning old notes: %@", error);
@@ -93,6 +98,7 @@ const NSUInteger NoteKeepCount = 20;
     if(![context save:&error]){
         WPFLog(@"Failed to save after pruning notes: %@", error);
     }
+    [context save:&error];
 }
 
 - (NSDictionary *)getNoteData {
