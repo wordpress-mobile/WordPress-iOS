@@ -73,6 +73,9 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
     [super viewDidLoad];
     
     [self reloadNotes];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
     [self refreshNotifications];
 }
 
