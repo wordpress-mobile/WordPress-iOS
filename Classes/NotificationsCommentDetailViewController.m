@@ -147,7 +147,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     
     // pull out the follow action and set up the follow button
     self.followAction = [[items lastObject] valueForKeyPath:@"action"];
-    if (![self.followAction isEqual:@0]) {
+    if (self.followAction && ![self.followAction isEqual:@0]) {
         self.followButton = [FollowButton buttonFromAction:self.followAction withApi:self.user];
     }
     
@@ -237,8 +237,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     [self.toolbar setItems:buttons animated:YES];
     
     self.commentActions = indexedActions;
-    
-    
     
     NSLog(@"available actions: %@", indexedActions);
     
@@ -455,7 +453,18 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
                 offset.y += offsetFix;
                 self.tableView.contentOffset = offset;
             }
-        } failure:nil];
+            
+            [self.tableView reloadData];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+            BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
+#ifndef DEBUG
+            NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
+            if ([extra_debug boolValue]) extra_debug_on = YES;
+#endif
+            if ( extra_debug_on == YES ) {
+                WPFLog(@"[updateCommentThread] ! %@", [error localizedDescription]);
+            }
+        }];
         
     }
 }
