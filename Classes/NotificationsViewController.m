@@ -89,7 +89,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 
 - (void)viewDidAppear:(BOOL)animated {
     [self refreshNotifications];
-    [self refreshVisibleNotes];
+    [self refreshVisibleUnreadNotes];
 }
 
 - (void)displayOauthController:(NSNotification *)note {
@@ -177,14 +177,16 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
     [self loadNotificationsAfterNote:[self.notesFetchedResultsController.fetchedObjects lastObject]];
 }
 
-- (void)refreshVisibleNotes {
+- (void)refreshVisibleUnreadNotes {
     
     // figure out which notifications are
     NSArray *cells = [self.tableView visibleCells];
     NSMutableArray *notes = [NSMutableArray arrayWithCapacity:[cells count]];
     [cells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         Note *note = [(NotificationsTableViewCell *)obj note];
-        [notes addObject:note];
+        if ([note isUnread]) {
+            [notes addObject:note];
+        }
     }];
     
     [self.user refreshNotifications:notes success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -204,8 +206,12 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
     if (decelerate == NO) {
-        [self refreshVisibleNotes];
+        [self refreshVisibleUnreadNotes];
     }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self refreshVisibleUnreadNotes];
 }
 
 - (void)notificationsDidFinishRefreshingWithError:(NSError *)error {
