@@ -142,7 +142,7 @@ NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
  * If we have unseen notes we post a WordPressComApiUnseenNotesNotification 
  */
 - (void)checkForNewUnseenNotifications {
-    NSDictionary *params = @{ @"unread":@"true", @"number":@"20" };
+    NSDictionary *params = @{ @"unread":@"true", @"number":@"20", @"fields" : WordPressComApiNotificationFields };
     [self.restClient getPath:@"notifications" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSNumber *last_seen_time = [responseObject objectForKey:@"last_seen_time"];
         NSArray *notes = [responseObject objectForKey:@"notes"];
