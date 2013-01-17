@@ -11,7 +11,6 @@
 
 #define WordPressComApiDidLoginNotification @"WordPressComApiDidLogin"
 #define WordPressComApiDidLogoutNotification @"WordPressComApiDidLogout"
-#define WordPressComApiNeedsAuthTokenNotification @"WordPressComApiNeedsAuthToken"
 
 typedef void (^WordPressComApiRestSuccessResponseBlock)(AFHTTPRequestOperation *operation, id responseObject);
 typedef void (^WordPressComApiRestSuccessFailureBlock)(AFHTTPRequestOperation *operation, NSError *error);

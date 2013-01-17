@@ -19,7 +19,7 @@
 NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
-@interface NotificationsViewController () <WPComOAuthDelegate>
+@interface NotificationsViewController ()
 
 @property (nonatomic, strong) id authListener;
 @property (nonatomic, strong) WordPressComApi *user;
@@ -55,12 +55,6 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     if ([self.tableView respondsToSelector:@selector(registerClass:forCellReuseIdentifier:)]) {
         [self.tableView registerClass:[NotificationsTableViewCell class] forCellReuseIdentifier:NotificationsTableViewNoteCellIdentifier];
     }
-
-    // If we don't have a valid auth token we need to intitiate Oauth, this listens for invalid tokens
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(displayOauthController:)
-                                                 name:WordPressComApiNeedsAuthTokenNotification
-                                               object:self.user];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -133,31 +127,6 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 - (void)refreshFromPushNotification {
     [self syncItemsWithUserInteraction:NO];
     [self refreshVisibleUnreadNotes];
-}
-
-#pragma mark - OAuth controller delegate
-
-- (void)displayOauthController:(NSNotification *)note {
-    
-    [WPComOAuthController presentWithClientId:[WordPressComApi WordPressAppId]
-                                  redirectUrl:@"http://wordpress.com/"
-                                 clientSecret:[WordPressComApi WordPressAppSecret]
-                                       blogId:@"0"
-                                        scope:@"global"
-                                     delegate:self];
-}
-
-- (void)controller:(WPComOAuthController *)controller didAuthenticateWithToken:(NSString *)token blog:(NSString *)blogUrl scope:(NSString *)scope {
-    // give the user the new auth token
-    [self.user signInWithToken:token];
-    
-}
-
-- (void)controllerDidCancel:(WPComOAuthController *)controller {
-    // let's not keep looping, they obviously didn't want to authorize for some reason
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    // TODO: Show a message that they need to authorize to see the notifications
 }
 
 #pragma mark - UITableViewDelegate
