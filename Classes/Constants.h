@@ -136,11 +136,13 @@
 /**
  Notification type could be one of the following values:
  - pl : Post like
+ - c  : New Comment (New comment on blog that isn't within the app)
  - cl : Comment like
  - cr : Comment Reply
  - sb : Subscription to a blog
  - rb : reblog
  */
+#define kNotificationTypeComment @"c"
 #define kNotificationTypeCommentReply @"cr"
 #define kNotificationTypeCommentLike @"cl"
 #define kNotificationTypePostLike @"pl"

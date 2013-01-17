@@ -1200,6 +1200,12 @@
              [remoteNotif objectForKey:@"post_id"]
              [remoteNotif objectForKey:@"liker_id"]
              */
+        } else if([nType isEqualToString:kNotificationTypeComment]){
+            //new comment
+            /*
+             [remoteNotif objectForKey:@"blog_id"]
+             [remoteNotif objectForKey:@"comment_id"]
+             */
         } else if([nType isEqualToString:kNotificationTypeCommentReply]){
             //comment reply when you're not the author of the post.
             /*
