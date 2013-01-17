@@ -707,15 +707,19 @@
     UIImage *noteIcon = [UIImage imageNamed: [NSString stringWithFormat:@"note_navbar_icon_%@", noteType]];
     if (noteIcon == nil)
         noteIcon = [UIImage imageNamed:@"note_navbar_icon_comment"];
-    [_notificationButton setImage:noteIcon forState:UIControlStateNormal];
     
-    if (_menuView.frame.size.width > MENU_BUTTON_WIDTH) {
+    if ([self isShowingNotificationButton]) {
+        //already showing a notification in the button
         [UIView animateWithDuration:0.3f delay:0 options: 0 animations:^{
-            [_dividerImageView setAlpha:0.0f];
+            [_notificationButton.imageView setAlpha:0.0f];
         } completion:^(BOOL finished){
-            [self completeButtonAnimation];
+            [_notificationButton setImage:noteIcon forState:UIControlStateNormal];
+            [UIView animateWithDuration:0.3f delay:0 options: 0 animations:^{
+                [_notificationButton.imageView setAlpha:1.0f];
+            } completion:^(BOOL finished){ }];
         }];
     } else {
+        [_notificationButton setImage:noteIcon forState:UIControlStateNormal];
         [UIView animateWithDuration:0.3f delay:0 options: 0 animations:^{
             [self completeButtonAnimation];
         } completion:^(BOOL finished){
@@ -730,7 +734,7 @@
     [UIView animateWithDuration:0.4f delay:0 options: UIViewAnimationOptionCurveEaseOut animations:^{
         CGFloat newSizeX = MENU_BUTTON_WIDTH;
         CGFloat newNotificationButtonX = 5.0f;
-        if (_menuView.frame.size.width == MENU_BUTTON_WIDTH) {
+        if (![self isShowingNotificationButton]) {
             newSizeX += 30.0f;
             newNotificationButtonX += 30.0f;
             [_menuButton setBackgroundImage:[UIImage imageNamed:@"menu_notification_left_bg"] forState:UIControlStateNormal];
@@ -742,7 +746,7 @@
         [_menuView setFrame:CGRectMake(_menuView.frame.origin.x, _menuView.frame.origin.y, newSizeX, _menuView.frame.size.height)];
         [_notificationButton setFrame:CGRectMake(newNotificationButtonX, _notificationButton.frame.origin.y, _notificationButton.frame.size.width, _notificationButton.frame.size.height)];
     }  completion:^(BOOL finished){
-        if (_menuView.frame.size.width > MENU_BUTTON_WIDTH) {
+        if ([self isShowingNotificationButton]) {
             [UIView animateWithDuration:0.5f delay:0.5f options: 0 animations:^{
                 [_notificationButton.imageView setAlpha:0.0f];
             } completion:^(BOOL finished){
