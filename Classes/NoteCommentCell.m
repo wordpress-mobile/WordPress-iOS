@@ -81,6 +81,7 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
     [self.loadingIndicator removeFromSuperview];
     self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
     self.backgroundView.backgroundColor = [UIColor whiteColor];
+    self.textContentView.backgroundColor = [UIColor whiteColor];
     self.textContentView.hidden = NO;
     self.profileButton.hidden = YES;
     self.emailButton.hidden = YES;
