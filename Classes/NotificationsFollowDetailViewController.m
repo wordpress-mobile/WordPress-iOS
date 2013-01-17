@@ -300,7 +300,8 @@
             else {
                 webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
             }
-
+            [webViewController setUsername:[WordPressComApi sharedApi].username];
+            [webViewController setPassword:[WordPressComApi sharedApi].password];
             [webViewController setUrl:blogURL];
             [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
         } else {
