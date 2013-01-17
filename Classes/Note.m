@@ -150,6 +150,8 @@ const NSUInteger NoteKeepCount = 20;
     self.noteData = [self.payload mutableObjectFromJSONData];
     self.type = [noteData objectForKey:@"type"];
     NSString *subject = [[noteData objectForKey:@"subject"] objectForKey:@"text"];
+    if (!subject)
+        subject = [[noteData objectForKey:@"subject"] objectForKey:@"html"];
     self.subject = [subject trim];
     self.icon = [[noteData objectForKey:@"subject"] objectForKey:@"icon"];
     NSInteger timestamp = [[noteData objectForKey:@"timestamp"] integerValue];
