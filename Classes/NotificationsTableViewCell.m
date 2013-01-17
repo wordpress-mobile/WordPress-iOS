@@ -30,6 +30,7 @@ const CGFloat NotificationsTableViewCellFontSize = 17.0f;
         self.textLabel.backgroundColor = [UIColor clearColor];
         self.imageView.frame = CGRectMake(0.f, 0.f, 47.f, 47.f);
         self.iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.f, 0.f, 16.f, 16.f)];
+        self.iconImageView.contentMode = UIViewContentModeRight;
         self.detailTextLabel.numberOfLines = 2;
         self.detailTextLabel.font = [UIFont systemFontOfSize:NotificationsTableViewCellFontSize - 2.0f];
         self.detailTextLabel.textColor = [UIColor UIColorFromHex:0x323232];
@@ -110,7 +111,7 @@ const CGFloat NotificationsTableViewCellFontSize = 17.0f;
     self.textLabel.frame = labelFrame;
 
     CGRect iconFrame = self.iconImageView.frame;
-    iconFrame.origin.x = self.frame.size.width - 22.0f;
+    iconFrame.origin.x = self.frame.size.width - 23.0f;
     iconFrame.origin.y = 5.0f;
     self.iconImageView.frame = iconFrame;
     
@@ -121,7 +122,7 @@ const CGFloat NotificationsTableViewCellFontSize = 17.0f;
     }
 
     CGRect indicatorFrame = self.unreadIndicator.frame;
-    indicatorFrame.origin.x = self.frame.size.width - 30.0f;
+    indicatorFrame.origin.x = self.frame.size.width - 32.0f;
     self.unreadIndicator.frame = indicatorFrame;
 }
 
