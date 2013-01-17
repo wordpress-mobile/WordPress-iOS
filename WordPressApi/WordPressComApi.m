@@ -132,6 +132,8 @@ NSString *const WordPressComApiNotesUserInfoKey = @"notes";
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
+
+#pragma mark - Notifications REST API methods
 /*
  * Queries the REST Api for unread notes and determines if the user has
  * seen them using the response's last_seen_time timestamp.
@@ -230,6 +232,19 @@ NSString *const WordPressComApiNotesUserInfoKey = @"notes";
         if (success != nil) success(operation, response);
     } failure:failure ];
 }
+
+- (void)markNoteAsRead:(Note *)note success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    
+    NSDictionary *params = @{ @"counts" : @{ note.noteID : note.unread } };
+    
+    [self.restClient postPath:@"notifications/read"
+                   parameters:params
+                      success:success
+                      failure:failure];
+    
+}
+
+#pragma mark - Oauth methods
 
 - (BOOL)hasAuthorizationToken {
     return self.authToken != nil;
