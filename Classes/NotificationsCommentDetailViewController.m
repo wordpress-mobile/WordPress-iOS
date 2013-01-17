@@ -12,6 +12,7 @@
 #import "WordPressAppDelegate.h"
 #import "NSString+XMLExtensions.h"
 #import "UIBarButtonItem+Styled.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define APPROVE_BUTTON_TAG 1
 #define TRASH_BUTTON_TAG 2
@@ -48,6 +49,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _replyTextView.layer.borderColor = [[UIColor UIColorFromHex:0x464646] CGColor];
+    _replyTextView.layer.borderWidth = 1.0f;
+    _replyTextView.layer.cornerRadius = 5;
+    _replyTextView.clipsToBounds = YES;
     
     //set toolbar items
     UIBarButtonItem *approveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_approve"] style:UIBarButtonItemStylePlain target:self action:@selector(moderateComment:)];
@@ -237,7 +243,7 @@
 - (void)setFollowButtonState:(bool)isFollowing {
     if (isFollowing) {
         [_followButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_followButton setImage:[UIImage imageNamed:@"note_following_checkmark"] forState:UIControlStateNormal];
+        [_followButton setImage:[UIImage imageNamed:@"note_icon_following"] forState:UIControlStateNormal];
         [_followButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
         [_followButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
     } else {

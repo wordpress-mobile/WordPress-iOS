@@ -804,8 +804,12 @@ nb.lproj/Localizable.strings -text svneol=unset#unset
 /next.png -text svneol=unset#unset
 /next@2x.png -text svneol=unset#unset
 nl.lproj/Localizable.strings -text svneol=unset#unset
-/note_following_checkmark.png -text svneol=unset#unset
-/note_following_checkmark@2x.png -text svneol=unset#unset
+/note_button_icon_follow.png -text svneol=unset#unset
+/note_button_icon_follow@2x.png -text svneol=unset#unset
+/note_button_icon_following.png -text svneol=unset#unset
+/note_button_icon_following@2x.png -text svneol=unset#unset
+/note_icon_award.png -text svneol=unset#unset
+/note_icon_award@2x.png -text svneol=unset#unset
 /note_icon_comment.png -text svneol=unset#unset
 /note_icon_comment@2x.png -text svneol=unset#unset
 /note_icon_follow.png -text svneol=unset#unset
@@ -816,8 +820,8 @@ nl.lproj/Localizable.strings -text svneol=unset#unset
 /note_icon_placeholder@2x.png -text svneol=unset#unset
 /note_icon_reblog.png -text svneol=unset#unset
 /note_icon_reblog@2x.png -text svneol=unset#unset
-/note_unread_indicator.png -text svneol=unset#unset
-/note_unread_indicator@2x.png -text svneol=unset#unset
+/note_icon_stats.png -text svneol=unset#unset
+/note_icon_stats@2x.png -text svneol=unset#unset
 /panel_icon.png -text
 /panel_icon@2x.png -text
 /paperclip.png -text

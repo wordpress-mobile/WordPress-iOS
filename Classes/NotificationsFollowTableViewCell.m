@@ -39,7 +39,7 @@
 - (void)setFollowing:(BOOL)isFollowing {
     if (isFollowing) {
         [actionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [actionButton setImage:[UIImage imageNamed:@"note_following_checkmark"] forState:UIControlStateNormal];
+        [actionButton setImage:[UIImage imageNamed:@"note_icon_following"] forState:UIControlStateNormal];
         [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
         [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
     } else {

@@ -151,7 +151,7 @@
 					<object class="IBUITextView" id="546915434">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{11, 369}, {299, 59}}</string>
+						<string key="NSFrame">{{11, 369}, {299, 34}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="604293582"/>
@@ -202,7 +202,7 @@
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
-					<object class="IBUIToolbar" id="799243982">
+					<object class="IBUIToolbar" id="408528182">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">266</int>
 						<string key="NSFrame">{{0, 504}, {320, 44}}</string>
@@ -309,7 +309,7 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">toolbar</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="799243982"/>
+						<reference key="destination" ref="408528182"/>
 					</object>
 					<int key="connectionID">229</int>
 				</object>
@@ -350,7 +350,7 @@
 							<reference ref="844821717"/>
 							<reference ref="523552579"/>
 							<reference ref="604293582"/>
-							<reference ref="799243982"/>
+							<reference ref="408528182"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -402,7 +402,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">227</int>
-						<reference key="object" ref="799243982"/>
+						<reference key="object" ref="408528182"/>
 						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
@@ -453,23 +453,15 @@
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="approveButton">UIButton</string>
 						<string key="authorLabel">UILabel</string>
 						<string key="commentTextView">UITextView</string>
 						<string key="followButton">UIButton</string>
 						<string key="noteImageView">UIImageView</string>
-						<string key="replyButton">UIButton</string>
 						<string key="replyTextView">UITextView</string>
 						<string key="sendReplyButton">UIButton</string>
-						<string key="spamButton">UIButton</string>
 						<string key="toolbar">UIToolbar</string>
-						<string key="trashButton">UIButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="approveButton">
-							<string key="name">approveButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="authorLabel">
 							<string key="name">authorLabel</string>
 							<string key="candidateClassName">UILabel</string>
@@ -486,10 +478,6 @@
 							<string key="name">noteImageView</string>
 							<string key="candidateClassName">UIImageView</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="replyButton">
-							<string key="name">replyButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="replyTextView">
 							<string key="name">replyTextView</string>
 							<string key="candidateClassName">UITextView</string>
@@ -498,17 +486,9 @@
 							<string key="name">sendReplyButton</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="spamButton">
-							<string key="name">spamButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="toolbar">
 							<string key="name">toolbar</string>
 							<string key="candidateClassName">UIToolbar</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="trashButton">
-							<string key="name">trashButton</string>
-							<string key="candidateClassName">UIButton</string>
 						</object>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
