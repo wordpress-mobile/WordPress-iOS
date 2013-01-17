@@ -49,9 +49,16 @@
     [self.imageView setImageWithURL:[NSURL URLWithString:self.note.icon]
                    placeholderImage:[UIImage imageNamed:@"note_icon_placeholder"]];
     // make room for the icon
-    self.textLabel.text = [NSString stringWithFormat:@"     %@", [NSString decodeXMLCharactersIn: note.subject]];
     
-    self.iconImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"note_icon_%@", note.type]];
+    UIImage *iconImage = [UIImage imageNamed:[NSString stringWithFormat:@"note_icon_%@", note.type]];
+    if (iconImage != nil) {
+        self.iconImageView.hidden = NO;
+        self.iconImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"note_icon_%@", note.type]];
+        self.textLabel.text = [NSString stringWithFormat:@"     %@", [NSString decodeXMLCharactersIn: note.subject]];
+    } else {
+        self.iconImageView.hidden = YES;
+        self.textLabel.text = [NSString decodeXMLCharactersIn:note.subject];
+    }
     
     self.commentLabel.text = [NSString decodeXMLCharactersIn: note.commentText];
     
