@@ -33,7 +33,7 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
     textContentView.edgeInsets = UIEdgeInsetsMake(0.f, 10.f, 5.f, 10.f);
     textContentView.attributedString = textContent;
     CGSize size = [textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width];
-    return size.height + NoteCommentCellTextVerticalOffset + 30.f;
+    return size.height + NoteCommentCellTextVerticalOffset + 40.f;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -78,12 +78,10 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
 
 - (void)prepareForReuse {
     self.delegate = nil;
-    self.imageView.hidden = YES;
     [self.followButton removeFromSuperview];
     self.followButton = nil;
     [self.loadingIndicator removeFromSuperview];
-    self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.backgroundView.backgroundColor = [UIColor whiteColor];
+    [self.backgroundView removeFromSuperview];
     self.textContentView.backgroundColor = [UIColor whiteColor];
     self.textLabel.backgroundColor = [UIColor whiteColor];
     self.textContentView.hidden = NO;
@@ -161,12 +159,23 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
 }
 
 - (void)displayAsParentComment {
+    [self displayReplyIndicatorBackgroundWithImageNamed:@"note-comment-parent-footer"];
+}
+
+- (void)displayAsGrandparentComment {
+    [self displayReplyIndicatorBackgroundWithImageNamed:@"note-comment-grandparent-footer"];
+}
+
+- (void)displayReplyIndicatorBackgroundWithImageNamed:(NSString *)imageName {
     UIColor *parentGrayColor = [[self class] darkBackgroundColor];
     self.parentComment = YES;
-    self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+    UIEdgeInsets insets = UIEdgeInsetsMake(0.f, 68.f, 14.f, 0.f);
+    UIImage *image = [[UIImage imageNamed:imageName] resizableImageWithCapInsets:insets];
+    self.backgroundView = [[UIImageView alloc] initWithImage:image];
     self.backgroundView.backgroundColor = parentGrayColor;
     self.textContentView.backgroundColor = parentGrayColor;
     self.textLabel.backgroundColor = parentGrayColor;
+
 }
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {

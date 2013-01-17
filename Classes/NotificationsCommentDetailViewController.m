@@ -30,10 +30,12 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 @property NSDictionary *commentActions;
 @property NSDictionary *followDetails;
 @property NSDictionary *comment;
+@property NSDictionary *post;
 @property NSMutableArray *commentThread;
 @property NSNumber *siteID;
 @property NSDictionary *followAction;
 @property NSURL *headerURL;
+@property BOOL hasScrollBackView;
 @property (getter = isWritingReply) BOOL writingReply;
 
 @end
@@ -47,6 +49,7 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
         // Custom initialization
         self.title = NSLocalizedString(@"Notification", @"Title for notification detail view");
         self.writingReply = NO;
+        self.hasScrollBackView = NO;
     }
     return self;
 }
@@ -58,7 +61,6 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 
 - (void)viewDidLoad
 {
-    
     self.commentThread = [[NSMutableArray alloc] initWithCapacity:1];
     
     [super viewDidLoad];
@@ -106,12 +108,8 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
                name:UIKeyboardWillHideNotification
              object:nil];
     
-        
-    NSDictionary *item = [[self.note.noteData valueForKeyPath:@"body.items"] objectAtIndex:0];
+    self.title = NSLocalizedString(@"Comment", @"Title for detail view of a comment notification");
 
-    self.postBanner.titleLabel.text = [item objectForKey:@"header_text"];
-    [self.postBanner.avatarImageView setImageWithURL:[NSURL URLWithString:[item objectForKey:@"icon"]]];
-    self.headerURL = [NSURL URLWithString:[item objectForKey:@"header_link"]];
     [self displayNote];
     
     // start fetching the thread
@@ -120,12 +118,8 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 }
 
 - (void)displayNote {
-    
-    
-    self.title = self.note.subject;
-
-    
-    // let's get the real comment off of the api
+        
+    // get the note's actions
     NSArray *actions = [self.note.noteData valueForKeyPath:@"body.actions"];
     NSDictionary *action = [actions objectAtIndex:0];
     NSArray *items = [self.note.noteData valueForKeyPath:@"body.items"];
@@ -134,17 +128,40 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     NoteComment *comment = [[NoteComment alloc] initWithCommentID:[action valueForKeyPath:@"params.comment_id"]];
     [self.commentThread addObject:comment];
     
+    // pull out the follow action and set up the follow button
     self.followAction = [[items lastObject] valueForKeyPath:@"action"];
     if (![self.followAction isEqual:@0]) {
         self.followButton = [FollowButton buttonFromAction:self.followAction withApi:self.user];
     }
     
     
+    // disable the buttons until we can determine which ones can be used
+    // with this note
     self.spamBarButton.enabled = NO;
     self.trashBarButton.enabled = NO;
     self.approveBarButton.enabled = NO;
     
+    NSString *postPath = [NSString stringWithFormat:@"sites/%@/posts/%@", [action valueForKeyPath:@"params.blog_id"], [action valueForKeyPath:@"params.post_id"]];
     
+    // if we don't have post information fetch it from the api
+    if (self.post == nil) {
+        [self.user getPath:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            self.post = responseObject;
+            self.postBanner.titleLabel.text = [self.post valueForKeyPath:@"title"];
+            id authorAvatarURL = [self.post valueForKeyPath:@"author.avatar_URL"];
+            if ([authorAvatarURL isKindOfClass:[NSString class]]) {
+                [self.postBanner.avatarImageView setImageWithURL:[NSURL URLWithString:authorAvatarURL]];
+            }
+            
+            self.postBanner.userInteractionEnabled = YES;
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        }];
+    }
+
+    
+    // figure out the actions available for the note
+
     NSMutableDictionary *indexedActions = [[NSMutableDictionary alloc] initWithCapacity:[actions count]];
     [actions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSString *actionType = [obj valueForKey:@"type"];
@@ -189,18 +206,18 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     return nil;
 }
 
+- (void)addScrollBackView {
+    if (self.hasScrollBackView) return;
+    self.hasScrollBackView = YES;
+    CGRect frame = self.view.bounds;
+    UIView *scrollBackView = [[UIView alloc] initWithFrame:CGRectOffset(frame, 0.f, -CGRectGetHeight(frame))];
+    scrollBackView.backgroundColor = [NoteCommentCell darkBackgroundColor];
+    [self.tableView addSubview:scrollBackView];
+}
+
 
 #pragma mark - IBAction
 
--(void)toggleApproval:(id)sender {
-    NSDictionary *approveAction = [self getActionByType:@"approve-comment"];
-    NSDictionary *unapproveAction = [self getActionByType:@"unapprove-comment"];
-    if (approveAction != nil) {
-        NSLog(@"Approve: %@", approveAction);
-    } else if(unapproveAction != nil){
-        NSLog(@"Unapprove: %@", unapproveAction);
-    }
-}
 
 - (void)visitPostURL:(id)sender {
     [self pushToURL:self.headerURL];
@@ -295,8 +312,8 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
         NSString *commentPath = [NSString stringWithFormat:@"sites/%@/comments/%@", self.siteID, comment.commentID];
         comment.loading = YES;
         [self.user getPath:commentPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSUInteger section = [self.commentThread indexOfObject:comment];
-            NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:0  inSection:section];
+            NSUInteger row = [self.commentThread indexOfObject:comment];
+            NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:row inSection:0];
             CGFloat oldCommentHeight = [self tableView:self.tableView heightForRowAtIndexPath:commentIndexPath];
             comment.commentData = responseObject;
             comment.loading = NO;
@@ -306,24 +323,22 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
             id parent = [responseObject objectForKey:@"parent"];
             NoteComment *parentComment;
             if (![parent isEqual:@0]) {
+                [self addScrollBackView];
                 parentComment = [[NoteComment alloc] initWithCommentID:[parent valueForKey:@"ID"]];
-                self.tableView.backgroundColor = [NoteCommentCell darkBackgroundColor];
             }
             
             CGPoint offset = self.tableView.contentOffset;
             
-            if (offset.y <= 0.f && section == [self.commentThread count] - 1) {
+            if (offset.y <= 0.f && row == [self.commentThread count] - 1) {
                 
                 // animate
                 [self.tableView beginUpdates];
-                
-//                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
-                
-                [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:section]] withRowAnimation:UITableViewRowAnimationAutomatic];
+                                
+                [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 
                 if (parentComment) {
                     [self.commentThread insertObject:parentComment atIndex:0];
-                    [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
+                    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
                 }
          
                 [self.tableView endUpdates];
@@ -336,7 +351,7 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
                     // height for new section
                     NSIndexPath *parentIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                     [self.commentThread insertObject:parentComment atIndex:0];
-                    offsetFix += [self tableView:self.tableView heightForFooterInSection:0] + [self tableView:self.tableView heightForRowAtIndexPath:parentIndexPath];
+                    offsetFix += [self tableView:self.tableView heightForRowAtIndexPath:parentIndexPath];
                     
                 }
                 [self.tableView reloadData];
@@ -359,12 +374,9 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 #pragma mark - UITableViewDataSource
 
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self.commentThread count];
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return [self.commentThread count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -375,8 +387,8 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
                                                        reuseIdentifier:cellIdentifier];
     }
     cell.delegate = self;
-    NoteComment *comment = [self.commentThread objectAtIndex:indexPath.section];
-    if (indexPath.section == [self.commentThread count]-1) {
+    NoteComment *comment = [self.commentThread objectAtIndex:indexPath.row];
+    if (indexPath.row == [self.commentThread count]-1) {
         // it's the main comment
         cell.imageView.hidden = NO;
         cell.avatarURL = [NSURL URLWithString:self.note.icon];
@@ -416,43 +428,16 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    NoteComment *comment = [self.commentThread objectAtIndex:indexPath.section];
+    NoteComment *comment = [self.commentThread objectAtIndex:indexPath.row];
     if (comment.needsData) {
         [self updateCommentThread];
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (section == [self.commentThread count]-1) {
-        // last comment, no reply indicator
-        return 0.f;
-    } else {
-        return 18.f;
-    }
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (section == [self.commentThread count]-1) {
-        return nil;
-    } else {
-        UIImage *footerImage;
-        if (section < [self.commentThread count]-2) {
-            footerImage = [UIImage imageNamed:@"note-comment-grandparent-footer"];
-        } else {
-            footerImage = [UIImage imageNamed:@"note-comment-parent-footer"];
-        }
-        UIImage *image = [footerImage resizableImageWithCapInsets:UIEdgeInsetsMake(0.f, 68.f, 5.f, 0.f)];
-        UIImageView *indicator = [[UIImageView alloc] initWithImage:image];
-        indicator.backgroundColor = [UIColor clearColor];
-        return indicator;
-    }
-
-}
-
 // the height of the comments
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NoteComment *comment = [self.commentThread objectAtIndex:indexPath.section];
-    if (indexPath.section == [self.commentThread count]-1) {
+    NoteComment *comment = [self.commentThread objectAtIndex:indexPath.row];
+    if (indexPath.row == [self.commentThread count]-1) {
         // it's the main comment
         CGFloat minHeight = 112.f; //tableView.frame.size.height - tableView.tableFooterView.frame.size.height;
         if (!comment.isLoaded) {
