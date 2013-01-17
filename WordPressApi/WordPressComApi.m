@@ -332,14 +332,29 @@ NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
     if (!notificationPreferences)
         return;
     
-    NSArray *notificationPrefArray = [notificationPreferences allKeys];
+    NSMutableArray *notificationPrefArray = [[notificationPreferences allKeys] mutableCopy];
+    if ([notificationPrefArray indexOfObject:@"muted_blogs"] != NSNotFound)
+        [notificationPrefArray removeObjectAtIndex:[notificationPrefArray indexOfObject:@"muted_blogs"]];
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
+    
     // Build the dictionary to send in the API call
     NSMutableDictionary *updatedSettings = [[NSMutableDictionary alloc] init];
     for (int i = 0; i < [notificationPrefArray count]; i++) {
         NSDictionary *updatedSetting = [notificationPreferences objectForKey:[notificationPrefArray objectAtIndex:i]];
         [updatedSettings setValue:[updatedSetting objectForKey:@"value"] forKey:[notificationPrefArray objectAtIndex:i]];
     }
+    
+    NSArray *blogsArray = [[notificationPreferences objectForKey:@"muted_blogs"] objectForKey:@"value"];
+    NSMutableArray *mutedBlogsArray = [[NSMutableArray alloc] init];
+    for (int i=0; i < [blogsArray count]; i++) {
+        NSDictionary *userBlog = [blogsArray objectAtIndex:i];
+        if ([[userBlog objectForKey:@"value"] intValue] == 1) {
+            [mutedBlogsArray addObject:userBlog];
+        }
+    }
+    
+    if ([mutedBlogsArray count] > 0)
+        [updatedSettings setValue:mutedBlogsArray forKey:@"muted_blogs"];
     
     if ([updatedSettings count] == 0)
         return;

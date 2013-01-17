@@ -10,10 +10,12 @@
 
 @interface NotificationSettingsViewController : UITableViewController
 
-@property (nonatomic, strong) NSArray *notificationPrefArray;
 @property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
+@property (nonatomic, strong) NSMutableArray *notificationPrefArray;
+@property (nonatomic, strong) NSMutableArray *mutedBlogsArray;
 
 - (void)notificationSettingChanged:(id)sender;
+- (void)muteBlogSettingChanged:(id)sender;
 - (void)getNotificationSettings;
 - (void)reloadNotificationSettings;
 

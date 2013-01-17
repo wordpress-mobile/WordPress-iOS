@@ -12,6 +12,7 @@
 #import "EGORefreshTableHeaderView.h"
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
+#import "NSString+XMLExtensions.h"
 
 @interface NotificationSettingsViewController () <EGORefreshTableHeaderDelegate>
 
@@ -54,8 +55,7 @@ BOOL hasChanges;
     hasChanges = NO;
     _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
     if (_notificationPreferences) {
-        _notificationPrefArray = [_notificationPreferences allKeys];
-        [self.tableView reloadData];
+        [self reloadNotificationSettings];
     } else {
         // Trigger a refresh to download the notification settings
         CGPoint offset = self.tableView.contentOffset;
@@ -76,7 +76,11 @@ BOOL hasChanges;
 - (void)reloadNotificationSettings {
     _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
     if (_notificationPreferences) {
-        _notificationPrefArray = [_notificationPreferences allKeys];
+        _notificationPrefArray = [[_notificationPreferences allKeys] mutableCopy];
+        if ([_notificationPrefArray indexOfObject:@"muted_blogs"] != NSNotFound) {
+            [_notificationPrefArray removeObjectAtIndex:[_notificationPrefArray indexOfObject:@"muted_blogs"]];
+            _mutedBlogsArray = [[[_notificationPreferences objectForKey:@"muted_blogs"] objectForKey:@"value"] mutableCopy];
+        }
         [self.tableView reloadData];
     }
 }
@@ -90,6 +94,22 @@ BOOL hasChanges;
     [updatedPreference setValue:[NSNumber numberWithBool:cellSwitch.on] forKey:@"value"];
     
     [_notificationPreferences setValue:updatedPreference forKey:[_notificationPrefArray objectAtIndex:cellSwitch.tag]];
+    [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
+}
+
+- (void)muteBlogSettingChanged:(id)sender {
+    hasChanges = YES;
+    UISwitch *cellSwitch = (UISwitch *)sender;
+    
+    NSMutableDictionary *updatedPreference = [[_mutedBlogsArray objectAtIndex:cellSwitch.tag] mutableCopy];
+    [updatedPreference setValue:[NSNumber numberWithBool:!cellSwitch.on] forKey:@"value"];
+    
+    [_mutedBlogsArray setObject:updatedPreference atIndexedSubscript:cellSwitch.tag];
+    
+    NSMutableDictionary *mutedBlogsDictionary = [[_notificationPreferences objectForKey:@"muted_blogs"] mutableCopy];
+    [mutedBlogsDictionary setValue:_mutedBlogsArray forKey:@"value"];
+    
+    [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
 }
 
@@ -110,7 +130,9 @@ BOOL hasChanges;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    if (_notificationPrefArray)
+    if (_notificationPrefArray && _mutedBlogsArray)
+        return 2;
+    else if (_notificationPrefArray)
         return 1;
     else
         return 0;
@@ -119,7 +141,12 @@ BOOL hasChanges;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [_notificationPrefArray count];
+    if (section == 0)
+        return [_notificationPrefArray count];
+    else if (section == 1)
+        return [_mutedBlogsArray count];
+    else
+        return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -130,23 +157,37 @@ BOOL hasChanges;
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         UISwitch *cellSwitch = [[UISwitch alloc] initWithFrame:CGRectZero]; // Frame is ignored.
-        [cellSwitch addTarget:self action:@selector(notificationSettingChanged:) forControlEvents:UIControlEventValueChanged];
         cell.accessoryView = cellSwitch;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     UISwitch *cellSwitch = (UISwitch *)cell.accessoryView;
     cellSwitch.tag = indexPath.row;
-   
-    NSDictionary *notificationPreference = [_notificationPreferences objectForKey:[_notificationPrefArray objectAtIndex:indexPath.row]];
+    [cellSwitch removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     
-    cell.textLabel.text =  [notificationPreference objectForKey:@"desc"];
-    cellSwitch.on = [[notificationPreference objectForKey:@"value"] boolValue];
+    if (indexPath.section == 0) {
+        [cellSwitch addTarget:self action:@selector(notificationSettingChanged:) forControlEvents:UIControlEventValueChanged];
+        NSDictionary *notificationPreference = [_notificationPreferences objectForKey:[_notificationPrefArray objectAtIndex:indexPath.row]];
+        
+        cell.textLabel.text = [[notificationPreference objectForKey:@"desc"] stringByDecodingXMLCharacters];
+        cellSwitch.on = [[notificationPreference objectForKey:@"value"] boolValue];
+    } else {
+        [cellSwitch addTarget:self action:@selector(muteBlogSettingChanged:) forControlEvents:UIControlEventValueChanged];
+        NSDictionary *muteBlogSetting = [_mutedBlogsArray objectAtIndex:indexPath.row];
+        NSString *blogName = [muteBlogSetting objectForKey:@"blog_name"];
+        if ([blogName length] == 0)
+            blogName = [muteBlogSetting objectForKey:@"url"];
+        cell.textLabel.text = [blogName stringByDecodingXMLCharacters];
+        cellSwitch.on = ![[muteBlogSetting objectForKey:@"value"] boolValue];
+    }
     return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return NSLocalizedString(@"Send notifications for:", @"");
+    if (section == 0)
+        return nil;
+    else
+        return NSLocalizedString(@"Blogs", @"");
 }
 
 #pragma mark - Table view delegate

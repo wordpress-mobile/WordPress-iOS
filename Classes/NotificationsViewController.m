@@ -64,6 +64,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     // If table is at the top, simulate a pull to refresh
     BOOL simulatePullToRefresh = (self.tableView.contentOffset.y == 0);
     [self syncItemsWithUserInteraction:simulatePullToRefresh];
