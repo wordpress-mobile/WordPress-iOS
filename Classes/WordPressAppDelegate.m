@@ -12,12 +12,12 @@
 #import "PanelNavigationController.h"
 #import "SidebarViewController.h"
 #import "UIDevice+WordPressIdentifier.h"
-#import "SoundUtil.h"
 #import "WordPressComApi.h"
 #import "PostsViewController.h"
 #import "CommentsViewController.h"
 #import "StatsWebViewController.h"
 #import "WPReaderViewController.h"
+#import "SoundUtil.h"
 
 @interface WordPressAppDelegate (Private)
 - (void)setAppBadge;
@@ -988,64 +988,6 @@
     switch (application.applicationState) {
         case UIApplicationStateActive:
             NSLog(@"app state UIApplicationStateActive"); //application is in foreground
-            
-            //If we're on the iPhone and on a compatible view controller is visible, show the menu icon notification instead of an alert
-            if (IS_IPHONE && self.panelNavigationController) {
-                UIViewController *visibleViewController = [self.panelNavigationController visibleViewController];
-                if ([visibleViewController isKindOfClass:[PostsViewController class]] ||
-                    [visibleViewController isKindOfClass:[CommentsViewController class]] ||
-                    [visibleViewController isKindOfClass:[StatsWebViewController class]] ||
-                    [visibleViewController isKindOfClass:[WPReaderViewController class]] ||
-                    [visibleViewController isKindOfClass:[WPWebViewController class]]) {
-                    [[WordPressComApi sharedApi] checkForNewUnseenNotifications];
-                    return;
-                }
-            }
-            
-            //we should show an alert since the OS doesn't show anything in this case. Unfortunately no sound!!
-            if([self isAlertRunning] != YES) {
-                id comment = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
-                NSString *message = nil;
-                if ([comment isKindOfClass:[NSString class]]) {
-                    message = (NSString *)comment;
-                } else if ([comment isKindOfClass:[NSDictionary class]]) {
-                    // Might be used in the future
-                    WPLog(@"Received NSDictionary from Push Notification");
-                }
-                if (message && [message length] > 0) {
-                    [self setAlertRunning:YES];
-                    lastNotificationInfo = userInfo;
-                    UIAlertView *alert = nil;
-                    
-                    if ([userInfo objectForKey:@"blog_id"] && [userInfo objectForKey:@"comment_id"]) {
-                        alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New comment", @"Popup title for a new push notification (shown when you receive a push notification and the phone is not locked).")
-                                                           message:message
-                                                          delegate:self
-                                                 cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Popup dismiss button for a new push notification (shown when you receive a push notification and the phone is not locked).")
-                                                 otherButtonTitles:NSLocalizedString(@"View", @"Popup view push notification button for a new push notification (shown when you receive a push notification and the phone is not locked)."), nil];
-                        alert.tag = kNotificationNewComment;
-                    } else if ([userInfo objectForKey:@"type"]) {
-                        alert = [[UIAlertView alloc] initWithTitle:nil
-                                                           message:message
-                                                          delegate:self
-                                                 cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Popup dismiss button for a new push notification (shown when you receive a push notification and the phone is not locked).")
-                                                 otherButtonTitles:NSLocalizedString(@"View", @"Popup view push notification button for a new push notification (shown when you receive a push notification and the phone is not locked)."), nil];
-                         alert.tag = kNotificationNewSocial;
-                    } else {
-                        // Unsupported notification: show it but do nothing when it's dismissed
-                        alert = [[UIAlertView alloc] initWithTitle:nil
-                                                           message:message
-                                                          delegate:self
-                                                 cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Popup dismiss button for a new push notification (shown when you receive a push notification and the phone is not locked).")
-                                                 otherButtonTitles:nil];
-                         alert.tag = kNotificationNewComment;
-                    }
-                    
-                    [alert show];
-                    [SoundUtil playNotificationSound];
-                    [[WordPressComApi sharedApi] syncPushNotificationInfo];
-                }
-            }
             [[WordPressComApi sharedApi] checkForNewUnseenNotifications];
             [[WordPressComApi sharedApi] syncPushNotificationInfo];
             [SoundUtil playNotificationSound];

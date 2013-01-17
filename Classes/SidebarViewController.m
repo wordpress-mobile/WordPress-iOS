@@ -28,8 +28,8 @@
 #import "QuickPhotoViewController.h"
 #import "QuickPhotoButtonView.h"
 #import "CrashReportViewController.h"
-#import "SoundUtil.h"
 #import "NotificationsViewController.h"
+#import "SoundUtil.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f

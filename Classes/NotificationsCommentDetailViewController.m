@@ -415,6 +415,14 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 
 }
 
+- (IBAction)highlightHeader:(id)sender {
+    [_postBanner setBackgroundColor:[UIColor UIColorFromHex:0xE3E3E3]];
+}
+
+- (IBAction)resetHeader:(id)sender {
+    [_postBanner setBackgroundColor:[UIColor UIColorFromHex:0xF2F2F2]];
+}
+
 #pragma mark - REST API
 
 - (void)updateCommentThread {

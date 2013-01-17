@@ -51,6 +51,8 @@
 - (IBAction)cancelReply:(id)sender;
 - (IBAction)publishReply:(id)sender;
 - (IBAction)startReply:(id)sender;
+- (IBAction)highlightHeader:(id)sender;
+- (IBAction)resetHeader:(id)sender;
 
 - (IBAction)visitPostURL:(id)sender;
 - (void)displayNote;

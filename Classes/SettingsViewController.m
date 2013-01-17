@@ -39,7 +39,6 @@
 #import "WordPressComApi.h"
 #import "AboutViewController.h"
 #import "SettingsPageViewController.h"
-#import "Constants.h"
 #import "NotificationSettingsViewController.h"
 
 typedef enum {
@@ -47,8 +46,8 @@ typedef enum {
     SettingsSectionBlogsAdd,
     SettingsSectionWpcom,
     SettingsSectionMedia,
-    SettingsSectionSounds,
     SettingsSectionNotifications,
+    SettingsSectionSounds,
     SettingsSectionInfo,
     
     SettingsSectionCount
@@ -242,15 +241,15 @@ typedef enum {
             
         case SettingsSectionMedia:
             return [mediaSettingsArray count];
-            
-        case SettingsSectionSounds :
-            return 1;
-            
         case SettingsSectionNotifications:
             if ([[WordPressComApi sharedApi] hasCredentials])
                 return 1;
             else
                 return 0;
+            
+        case SettingsSectionSounds :
+            return 1;
+            
         case SettingsSectionInfo:
             return 3;
             
@@ -279,16 +278,15 @@ typedef enum {
         
     } else if (section == SettingsSectionMedia) {
         return NSLocalizedString(@"Media", @"Title label for the media settings section in the app settings");
-    
-    } else if (section == SettingsSectionSounds) {
-        return NSLocalizedString(@"Sounds", @"Title label for the sounds section in the app settings.");
-        
-        return NSLocalizedString(@"Media", @"");
     } else if (section == SettingsSectionNotifications) {
         if ([[WordPressComApi sharedApi] hasCredentials])
             return NSLocalizedString(@"Notifications", @"");
         else
             return nil;
+    
+    } else if (section == SettingsSectionSounds) {
+        return NSLocalizedString(@"Sounds", @"Title label for the sounds section in the app settings.");
+        
     } else if (section == SettingsSectionInfo) {
         return NSLocalizedString(@"App Info", @"Title label for the application information section in the app settings");
     }
@@ -512,11 +510,11 @@ typedef enum {
         SettingsPageViewController *controller = [[SettingsPageViewController alloc] initWithDictionary:dict];
         [self.navigationController pushViewController:controller animated:YES];
     
-    } else if (indexPath.section == SettingsSectionSounds) {
-        // nothing to do.
     } else if (indexPath.section == SettingsSectionNotifications) {
         NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
         [self.navigationController pushViewController:notificationSettingsViewController animated:YES];
+    } else if (indexPath.section == SettingsSectionSounds) {
+        // nothing to do.
         
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 1) {

@@ -11,7 +11,6 @@
 #import "PanelNavigationController.h"
 #import "PanelNavigationConstants.h"
 #import "PanelViewWrapper.h"
-#import "SoundUtil.h"
 #import "WordPressComApi.h"
 #import "WPToast.h"
 #import "NotificationsViewController.h"
@@ -19,6 +18,7 @@
 #import "Constants.h"
 
 #define MENU_BUTTON_WIDTH 38.0f
+#import "SoundUtil.h"
 
 #pragma mark -
 
@@ -159,7 +159,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     self.detailViewContainer = [[UIView alloc] init];
     
     if (IS_IPAD) {

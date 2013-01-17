@@ -51,10 +51,10 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     UIActivityIndicatorView *_activityFooter;
     BOOL _animatingRemovalOfModerationSwipeView;
     BOOL didPromptForCredentials;
+    BOOL _isSyncing;
     BOOL didPlayPullSound;
     BOOL didTriggerRefresh;
     CGPoint savedScrollOffset;
-    BOOL _isSyncing;
 }
 
 @synthesize blog = _blog;
@@ -94,11 +94,11 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     if (self.swipeActionsEnabled) {
         [self enableSwipeGestureRecognizer];
     }
-    
+
     if (self.infiniteScrollEnabled) {
         [self enableInfiniteScrolling];
     }
-
+    
     [self.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
     
     [self configureNoResultsView];
@@ -110,7 +110,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
         [self.tableView removeObserver:self forKeyPath:@"contentOffset"];
     
     [super viewDidUnload];
-    
+
      _refreshHeaderView = nil;
     
     if (self.swipeActionsEnabled) {
@@ -574,7 +574,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
         ttl = [NSString stringWithFormat:ttl, [self.title lowercaseString]];
 
         NSString *msg = @"";
-		if ([self userCanCreateEntity]) {
+        if ([self userCanCreateEntity]) {
             msg = NSLocalizedString(@"Why not create one?", @"A call to action to create a post or page.");
         }
         self.noResultsView = [WPInfoView WPInfoViewWithTitle:ttl
@@ -625,13 +625,12 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
         _isSyncing = NO;
         [self configureNoResultsView];
     } failure:^(NSError *error) {
-        [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+        [self hideRefreshHeader];
         _isSyncing = NO;
         [self configureNoResultsView];
         if (self.blog) {
             if (error.code == 405) {
-                // FIXME: this looks like "Enable XML-RPC" which is going away
-                // If it's not, don't rely on whatever the error message is if we are showing custom actions like 'Enable Now'
+                // Prompt to enable XML-RPC using the default message provided from the WordPress site.
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't sync", @"")
                                                                     message:[error localizedDescription]
                                                                    delegate:self
@@ -662,10 +661,13 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                 }
 
                 [self.panelNavigationController presentModalViewController:navController animated:YES];
+
+            } else if (userInteraction) {
+                [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync", @"")];
             }
         } else {
-            // For non-blog tables (notifications), just show the error for now
-            [WPError showAlertWithError:error];
+          // For non-blog tables (notifications), just show the error for now
+          [WPError showAlertWithError:error];
         }
     }];
 }
@@ -837,11 +839,10 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 #define AssertSubclassMethod() NSAssert(false, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))
+#define AssertNoBlogSubclassMethod() NSAssert(self.blog, @"You must override %@ in a subclass if there is no blog", NSStringFromSelector(_cmd))
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wreturn-type"
-
-#define AssertNoBlogSubclassMethod() NSAssert(self.blog, @"You must override %@ in a subclass if there is no blog", NSStringFromSelector(_cmd))
 
 - (NSString *)entityName {
     AssertSubclassMethod();
@@ -849,6 +850,21 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (NSDate *)lastSyncDate {
     AssertSubclassMethod();
+}
+
+#pragma clang diagnostic pop
+
+- (NSFetchRequest *)fetchRequest {
+    AssertNoBlogSubclassMethod();
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:self.blog.managedObjectContext]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
+
+    return fetchRequest;
+}
+
+- (NSString *)sectionNameKeyPath {
+    return nil;
 }
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
@@ -861,20 +877,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (BOOL)isSyncing {
     return _isSyncing;
-}
-
-#pragma clang diagnostic pop
-
-- (NSFetchRequest *)fetchRequest {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:self.blog.managedObjectContext]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
-
-    return fetchRequest;
-}
-
-- (NSString *)sectionNameKeyPath {
-    return nil;
 }
 
 - (UITableViewCell *)newCell {

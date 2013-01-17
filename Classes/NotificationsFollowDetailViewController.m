@@ -64,7 +64,7 @@
         [headerLabel setTextAlignment:NSTextAlignmentCenter];
         [headerLabel setTextColor:[UIColor UIColorFromHex:0x5F5F5F]];
         [headerLabel setFont:[UIFont systemFontOfSize:13.0f]];
-        [headerLabel setText: headerText];
+        [headerLabel setText: [headerText stringByDecodingXMLCharacters]];
         [self.tableView setTableHeaderView:headerLabel];
         [self.view bringSubviewToFront:_postTitleView];
         
@@ -82,7 +82,7 @@
         // Silly way to get the post title until we get it from the API directly
         NSArray *quotedText = [_note.subject componentsSeparatedByString: @"\""];
         if ([quotedText count] >= 3) {
-            NSString *postTitle = [quotedText objectAtIndex:[quotedText count] - 2];
+            NSString *postTitle = [[quotedText objectAtIndex:[quotedText count] - 2] stringByDecodingXMLCharacters];
             [_postTitleLabel setText:postTitle];
         }
     }
@@ -280,7 +280,7 @@
 }
 
 - (IBAction)highlightButton:(id)sender {
-    [_postTitleButton setBackgroundColor:[UIColor UIColorFromHex:0xEDEDED]];
+    [_postTitleButton setBackgroundColor:[UIColor UIColorFromHex:0xE3E3E3]];
 }
 
 - (IBAction)resetButton:(id)sender {
