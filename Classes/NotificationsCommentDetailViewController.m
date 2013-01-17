@@ -246,6 +246,9 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 }
 
 - (void)pushToURL:(NSURL *)url {
+    if (IS_IPHONE) {
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+    }
     WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:nil bundle:nil];
     [webViewController setUsername:[WordPressComApi sharedApi].username];
     [webViewController setPassword:[WordPressComApi sharedApi].password];
@@ -306,6 +309,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     
     NSDictionary *action = [self.commentActions objectForKey:@"replyto-comment"];
     if (action){
+        self.replyActivityView.hidden = NO;
         NSString *approvePath = [NSString stringWithFormat:@"/rest/v1%@", [action valueForKeyPath:@"params.rest_path"]];
         NSString *replyPath = [NSString stringWithFormat:@"%@/replies/new", approvePath];
         NSDictionary *params = @{@"content" : self.replyTextView.text };
@@ -315,18 +319,37 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             } failure:nil];
         }
         
-        
+        self.writingReply = NO;
+        [self.replyTextView resignFirstResponder];
+        self.replyTextView.editable = NO;
         [self.user postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"Response: %@", responseObject);
             self.replyTextView.editable = YES;
             self.replyTextView.text = nil;
-            self.writingReply = NO;
-            [self.replyTextView resignFirstResponder];
+            self.replyActivityView.hidden = YES;
+            self.tableView.tableFooterView = self.tableFooterView;
+            [self resetReplyView];
+
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"Failure %@", error);
             self.replyTextView.editable = YES;
+            self.replyActivityView.hidden = YES;
         }];
     }
+
+}
+
+- (void)resetReplyView {
+
+    [UIView animateWithDuration:0.2f animations:^{
+        if (![self replyTextViewHasText]) {
+            self.replyPlaceholder.hidden = NO;
+            CGRect tableFooterFrame = self.tableFooterView.frame;
+            tableFooterFrame.size.height = NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight;
+            self.tableFooterView.frame = tableFooterFrame;
+            self.tableView.tableFooterView = self.tableFooterView;
+        }
+    }];
 
 }
 

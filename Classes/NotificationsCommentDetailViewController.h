@@ -28,7 +28,7 @@
 @property (nonatomic, strong) IBOutlet UITextView *replyTextView;
 @property (nonatomic, strong) IBOutlet UIImageView *replyBackgroundImageView;
 @property (nonatomic, strong) IBOutlet UIView *tableFooterView;
-
+@property (nonatomic, strong) IBOutlet UIView *replyActivityView;
 @property (nonatomic, strong) IBOutlet UIImageView *noteImageView;
 
 @property (nonatomic, strong) IBOutlet NoteCommentPostBanner *postBanner;

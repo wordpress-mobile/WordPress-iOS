@@ -12,6 +12,7 @@
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
+			<string>IBUIActivityIndicatorView</string>
 			<string>IBUIBarButtonItem</string>
 			<string>IBUIImageView</string>
 			<string>IBUILabel</string>
@@ -127,6 +128,7 @@
 						<string key="NSFrame">{{0, 460}, {320, 44}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -224,6 +226,7 @@
 						<string key="NSFrame">{{15, 10}, {290, 44}}</string>
 						<reference key="NSSuperview" ref="632182236"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -241,11 +244,45 @@
 						<reference key="IBUIFont" ref="653880242"/>
 						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
+					<object class="IBUIView" id="657134904">
+						<reference key="NSNextResponder" ref="632182236"/>
+						<int key="NSvFlags">-2147483374</int>
+						<array class="NSMutableArray" key="NSSubviews">
+							<object class="IBUIActivityIndicatorView" id="379387488">
+								<reference key="NSNextResponder" ref="657134904"/>
+								<int key="NSvFlags">301</int>
+								<string key="NSFrame">{{150, 24}, {20, 20}}</string>
+								<reference key="NSSuperview" ref="657134904"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="769635606"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIOpaque">NO</bool>
+								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<bool key="IBUIHidesWhenStopped">NO</bool>
+								<bool key="IBUIAnimating">YES</bool>
+								<int key="IBUIStyle">2</int>
+								<object class="NSColor" key="IBUIColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MC4xMTQxOTQxMjM2IDAuMTE0MTk0MTIzNiAwLjExNDE5NDEyMzYAA</bytes>
+								</object>
+							</object>
+						</array>
+						<string key="NSFrameSize">{320, 64}</string>
+						<reference key="NSSuperview" ref="632182236"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="379387488"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MSAxIDEgMC41NwA</bytes>
+						</object>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+					</object>
 				</array>
 				<string key="NSFrameSize">{320, 64}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="769635606"/>
+				<reference key="NSNextKeyView" ref="657134904"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -261,6 +298,7 @@
 				<string key="NSFrameSize">{320, 44}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<array key="IBUIItems">
@@ -382,6 +420,14 @@
 						<reference key="destination" ref="332512438"/>
 					</object>
 					<int key="connectionID">283</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">replyActivityView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="657134904"/>
+					</object>
+					<int key="connectionID">286</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -515,6 +561,7 @@
 							<reference ref="498663705"/>
 							<reference ref="769635606"/>
 							<reference ref="269444266"/>
+							<reference ref="657134904"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -560,6 +607,19 @@
 						<reference key="object" ref="269444266"/>
 						<reference key="parent" ref="632182236"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">284</int>
+						<reference key="object" ref="657134904"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="379387488"/>
+						</array>
+						<reference key="parent" ref="632182236"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">285</int>
+						<reference key="object" ref="379387488"/>
+						<reference key="parent" ref="657134904"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -582,12 +642,14 @@
 				<string key="275.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="276.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="279.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="284.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="285.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">283</int>
+			<int key="maxID">286</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -620,7 +682,6 @@
 						<string key="cancelReply:">id</string>
 						<string key="moderateComment:">id</string>
 						<string key="publishReply:">id</string>
-						<string key="replyToComment:">id</string>
 						<string key="startReply:">id</string>
 						<string key="visitPostURL:">id</string>
 					</dictionary>
@@ -637,10 +698,6 @@
 							<string key="name">publishReply:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-						<object class="IBActionInfo" key="replyToComment:">
-							<string key="name">replyToComment:</string>
-							<string key="candidateClassName">id</string>
-						</object>
 						<object class="IBActionInfo" key="startReply:">
 							<string key="name">startReply:</string>
 							<string key="candidateClassName">id</string>
@@ -655,6 +712,7 @@
 						<string key="authorLabel">UILabel</string>
 						<string key="noteImageView">UIImageView</string>
 						<string key="postBanner">NoteCommentPostBanner</string>
+						<string key="replyActivityView">UIView</string>
 						<string key="replyBackgroundImageView">UIImageView</string>
 						<string key="replyBarButton">UIBarButtonItem</string>
 						<string key="replyCancelBarButton">UIBarButtonItem</string>
@@ -663,7 +721,6 @@
 						<string key="replyPlaceholder">UILabel</string>
 						<string key="replyPublishBarButton">UIBarButtonItem</string>
 						<string key="replyTextView">UITextView</string>
-						<string key="sendReplyButton">UIButton</string>
 						<string key="spamBarButton">UIBarButtonItem</string>
 						<string key="tableFooterView">UIView</string>
 						<string key="tableView">UITableView</string>
@@ -686,6 +743,10 @@
 						<object class="IBToOneOutletInfo" key="postBanner">
 							<string key="name">postBanner</string>
 							<string key="candidateClassName">NoteCommentPostBanner</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="replyActivityView">
+							<string key="name">replyActivityView</string>
+							<string key="candidateClassName">UIView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="replyBackgroundImageView">
 							<string key="name">replyBackgroundImageView</string>
@@ -718,10 +779,6 @@
 						<object class="IBToOneOutletInfo" key="replyTextView">
 							<string key="name">replyTextView</string>
 							<string key="candidateClassName">UITextView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="sendReplyButton">
-							<string key="name">sendReplyButton</string>
-							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="spamBarButton">
 							<string key="name">spamBarButton</string>
