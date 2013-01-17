@@ -7,7 +7,6 @@
 //
 
 #import "Note.h"
-#import "AFImageRequestOperation.h"
 #import "NSString+Helpers.h"
 #import "JSONKit.h"
 
@@ -31,7 +30,6 @@
 
 @interface Note ()
 @property (nonatomic, strong) NSDictionary *noteData;
-@property (nonatomic, strong) AFImageRequestOperation *operation;
 @property (readwrite, nonatomic, strong) NSString *commentText;
 
 @end
@@ -45,7 +43,7 @@
 @dynamic unread;
 @dynamic icon;
 @dynamic noteID;
-@synthesize noteIconImage = _noteIconImage, operation, commentText = _commentText, noteData = _noteData;
+@synthesize commentText = _commentText, noteData = _noteData;
 
 
 + (BOOL)syncNotesWithResponse:(NSArray *)notesData withManagedObjectContext:(NSManagedObjectContext *)context {
@@ -105,10 +103,6 @@
     [self parseComment];
 }
 
-- (void)dealloc {
-    [self.operation cancel];
-}
-
 - (BOOL)isComment {
     return [self.type isEqualToString:@"comment"];
 }
@@ -141,30 +135,6 @@
         _noteData = [self.payload objectFromJSONData];
     }
     return _noteData;
-}
-
-#pragma mark - Icon image loading
-
-- (UIImage *)noteIconImage {
-    if (_noteIconImage == nil) {
-        [self loadImage];
-        return [UIImage imageNamed:@"note_icon_placeholder"];
-    }
-    return _noteIconImage;
-}
-
-/*
- * TODO: image caching to disk?
- */
-- (void)loadImage {
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.icon]];
-    if (self.operation != nil) {
-        [self.operation cancel];
-    }
-    self.operation = [AFImageRequestOperation imageRequestOperationWithRequest:request success:^(UIImage *image) {
-        self.noteIconImage = image;
-    }];
-    [self.operation start];
 }
 
 #pragma mark - Comment HTML parsing

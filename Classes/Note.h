@@ -19,7 +19,6 @@
 @property (nonatomic, retain) NSNumber *unread;
 @property (nonatomic, retain) NSString * icon;
 @property (nonatomic, retain) NSString * noteID;
-@property (nonatomic, strong) UIImage *noteIconImage;
 @property (nonatomic, strong, readonly) NSString *commentText;
 
 - (BOOL)isComment;

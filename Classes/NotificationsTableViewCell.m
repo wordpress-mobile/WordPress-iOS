@@ -6,6 +6,7 @@
 
 #import "NotificationsTableViewCell.h"
 #import "NSString+XMLExtensions.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface NotificationsTableViewCell ()
 @property (nonatomic, strong) UIImageView *iconImageView;
@@ -22,6 +23,7 @@
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         self.textLabel.numberOfLines = 2;
         self.textLabel.font = [UIFont systemFontOfSize:[UIFont labelFontSize]];
+        self.imageView.frame = CGRectMake(0.f, 0.f, 47.f, 47.f);
         self.iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.f, 0.f, 19.f, 19.f)];
         self.commentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         self.commentLabel.numberOfLines = 2;
@@ -35,14 +37,17 @@
     return self;
 }
 
+/*
+ * Setting the note will update all of the necessary views in the cell
+ */
 - (void)setNote:(Note *)note {
-    if ( _note != note ) {
-        [_note removeObserver:self forKeyPath:@"noteIconImage"];
-        _note = note;
-        [note addObserver:self forKeyPath:@"noteIconImage" options:NSKeyValueObservingOptionNew context:nil];
-    }
     
-    self.imageView.image = note.noteIconImage;
+    if ( _note != note) {
+        _note = note;
+    }
+
+    [self.imageView setImageWithURL:[NSURL URLWithString:self.note.icon]
+                   placeholderImage:[UIImage imageNamed:@"note_icon_placeholder"]];
     // make room for the icon
     self.textLabel.text = [NSString stringWithFormat:@"     %@", [NSString decodeXMLCharactersIn: note.subject]];
     
@@ -92,11 +97,5 @@
     // Configure the view for the selected state
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ( [keyPath isEqualToString:@"noteIconImage"] ) {
-        self.imageView.image = self.note.noteIconImage;
-        [self layoutSubviews];
-    }
-}
 
 @end
