@@ -845,7 +845,7 @@ NSLog(@"%@", self.sectionInfoArray);
 
 - (void)didReceiveUnseenNotesNotification {
     NSIndexPath *notificationsIndexPath = [NSIndexPath indexPathForRow: 1 inSection:0];
-    if (notificationsIndexPath && self.currentIndexPath != notificationsIndexPath) {
+    if (notificationsIndexPath && [notificationsIndexPath compare:self.currentIndexPath] != NSOrderedSame) {
         self.hasUnseenNotes = YES;
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:notificationsIndexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
