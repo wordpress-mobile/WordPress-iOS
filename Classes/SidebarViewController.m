@@ -367,6 +367,7 @@
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
         [self processRowSelectionAtIndexPath:indexPath];
         [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        self.currentIndexPath = indexPath;
     } else {
         [self selectFirstAvailableBlog];
     }
@@ -388,6 +389,7 @@ NSLog(@"%@", self.sectionInfoArray);
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:index];
     [self processRowSelectionAtIndexPath:indexPath closingSidebar:NO];
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    self.currentIndexPath = indexPath;
 }
 
 - (void)selectBlog:(Blog *)blog {
@@ -449,6 +451,7 @@ NSLog(@"%@", self.sectionInfoArray);
     if (preservedIndexPath.section == 0 && preservedIndexPath.row == 1) {
         [self processRowSelectionAtIndexPath:preservedIndexPath closingSidebar:NO];
         [self.tableView selectRowAtIndexPath:preservedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        self.currentIndexPath = preservedIndexPath;
     }
     else if (preservedIndexPath.section > 0 && ((preservedIndexPath.section - 1) < [self.resultsController.fetchedObjects count] )) {
         if ([self.sectionInfoArray count] > (preservedIndexPath.section - 1)) {
@@ -459,11 +462,13 @@ NSLog(@"%@", self.sectionInfoArray);
             
             [self processRowSelectionAtIndexPath:preservedIndexPath closingSidebar:NO];
             [self.tableView selectRowAtIndexPath:preservedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            self.currentIndexPath = preservedIndexPath;
         }
     } else {
         if (preservedIndexPath.row > 0) {
             [self.tableView selectRowAtIndexPath:preservedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
             [self processRowSelectionAtIndexPath:preservedIndexPath];
+            self.currentIndexPath = preservedIndexPath;
         } else {
             [self selectFirstAvailableItem];
         }
