@@ -26,6 +26,7 @@
         [actionButton.imageView setContentMode:UIViewContentModeLeft];
         [actionButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
         [actionButton.titleLabel setLineBreakMode:UILineBreakModeTailTruncation];
+        [actionButton.titleLabel setShadowOffset:CGSizeMake(0.0f, 1.0f)];
         [self addSubview:actionButton];
         
         [self.textLabel setTextColor:[UIColor UIColorFromHex:0x030303]];
@@ -51,11 +52,13 @@
         [actionButton setImage:[UIImage imageNamed:@"note_button_icon_following"] forState:UIControlStateNormal];
         [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
         [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
+        [actionButton.titleLabel setShadowColor:[UIColor blackColor]];
     } else {
         [actionButton setTitleColor:[UIColor UIColorFromHex:0x1A1A1A] forState:UIControlStateNormal];
         [actionButton setImage:[UIImage imageNamed:@"note_button_icon_follow"] forState:UIControlStateNormal];
         [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
         [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
+        [actionButton.titleLabel setShadowColor:[UIColor whiteColor]];
     }
     CGSize textSize = [[actionButton.titleLabel text] sizeWithFont:[actionButton.titleLabel font]];
     CGFloat buttonWidth = textSize.width + 40.0f;
