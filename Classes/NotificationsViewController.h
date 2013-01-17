@@ -8,11 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "NotificationsTableViewDatasource.h"
+#import "WPTableViewController.h"
 
-@interface NotificationsViewController : UITableViewController <UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource> {
-    @private
-    UIActivityIndicatorView *activityFooter;
-}
+@interface NotificationsViewController : WPTableViewController
 
 -(void)refreshFromPushNotification;
 
