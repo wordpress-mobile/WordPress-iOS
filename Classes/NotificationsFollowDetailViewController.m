@@ -48,14 +48,22 @@
     if (_note) {
         _noteData = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"items"];
     }
-
-    _headerLabel.text = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"header"];
     
     [_postTitleView.layer setMasksToBounds:NO];
     [_postTitleView.layer setShadowColor:[[UIColor blackColor] CGColor]];
     [_postTitleView.layer setShadowOffset:CGSizeMake(0.0, 2.0)];
     [_postTitleView.layer setShadowRadius:2.0f];
     [_postTitleView.layer setShadowOpacity:0.3f];
+    
+    
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 40.0f)];
+    [headerLabel setBackgroundColor:[UIColor UIColorFromHex:0xDEDEDE]];
+    [headerLabel setTextAlignment:NSTextAlignmentCenter];
+    [headerLabel setTextColor:[UIColor UIColorFromHex:0x5F5F5F]];
+    [headerLabel setFont:[UIFont systemFontOfSize:13.0f]];
+    [headerLabel setText: [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"header"]];
+    [self.tableView setTableHeaderView:headerLabel];
+    [self.view bringSubviewToFront:_postTitleView];
     
     /*[_tableView.layer setMasksToBounds:NO];
     [_tableView.layer setShadowColor:[[UIColor blackColor] CGColor]];
