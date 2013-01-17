@@ -33,4 +33,6 @@
 
 + (CGFloat)heightForCellWithTextContent:(NSAttributedString *)textContent constrainedToWidth:(CGFloat)width;
 
++ darkBackgroundColor;
+
 @end

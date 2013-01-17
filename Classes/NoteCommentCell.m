@@ -21,17 +21,18 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
 
 @implementation NoteCommentCell
 
++ darkBackgroundColor {
+    return [UIColor UIColorFromHex:0xD5D6D5];
+}
+
 + (CGFloat)heightForCellWithTextContent:(NSAttributedString *)textContent constrainedToWidth:(CGFloat)width {
     DTAttributedTextContentView *textContentView;
     [DTAttributedTextContentView setLayerClass:[CATiledLayer class]];
     textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.f, 0.f, width, 0.f)];
     textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    textContentView.edgeInsets = UIEdgeInsetsMake(10.f, 10.f, 10.f, 10.f);
+    textContentView.edgeInsets = UIEdgeInsetsMake(0.f, 10.f, 5.f, 10.f);
     textContentView.attributedString = textContent;
-    NSLog(@"Asking for height with constraint: %f %@", width, [textContent string]);
     CGSize size = [textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width];
-    NSLog(@"Suggested size: %@", NSStringFromCGSize(size));
-    NSLog(@"View: %@", textContentView);
     return size.height + NoteCommentCellTextVerticalOffset + 30.f;
 }
 
@@ -61,7 +62,9 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
         
         self.textLabel.font = [UIFont systemFontOfSize:[UIFont labelFontSize]];
         
-    }
+        self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+        self.backgroundView.backgroundColor = [UIColor whiteColor];
+  }
     return self;
 }
 
@@ -75,16 +78,19 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
 
 - (void)prepareForReuse {
     self.delegate = nil;
-    self.imageView.hidden = NO;
+    self.imageView.hidden = YES;
     [self.followButton removeFromSuperview];
     self.followButton = nil;
     [self.loadingIndicator removeFromSuperview];
-    self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
+    self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
     self.backgroundView.backgroundColor = [UIColor whiteColor];
     self.textContentView.backgroundColor = [UIColor whiteColor];
+    self.textLabel.backgroundColor = [UIColor whiteColor];
     self.textContentView.hidden = NO;
     self.profileButton.hidden = YES;
     self.emailButton.hidden = YES;
+    self.textLabel.text = @"";
+    self.imageView.image = nil;
 }
 
 - (void)setFollowButton:(FollowButton *)followButton {
@@ -117,7 +123,7 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
     }
     
     if (self.profileURL != nil) {
-        [self.profileButton setTitle:[self.profileURL absoluteString] forState:UIControlStateNormal];
+        [self.profileButton setTitle:self.profileURL.host forState:UIControlStateNormal];
         self.profileButton.hidden = NO;
         labelFrame.origin.y += labelFrame.size.height;
         self.profileButton.frame = labelFrame;
@@ -148,16 +154,19 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
         
         self.loadingIndicator = activity;
     }
+    self.imageView.hidden = YES;
+    self.textLabel.hidden = YES;
     [self.contentView addSubview:self.loadingIndicator];
     [self.loadingIndicator startAnimating];
 }
 
 - (void)displayAsParentComment {
+    UIColor *parentGrayColor = [[self class] darkBackgroundColor];
     self.parentComment = YES;
-    UIImage *backgroundImage = [[UIImage imageNamed:@"note_comment_parent_indicator"] resizableImageWithCapInsets:UIEdgeInsetsMake(1.f, 65.f, 13.f, 2.f)];
-    self.backgroundView = [[UIImageView alloc] initWithImage:backgroundImage];
-    self.backgroundView.backgroundColor = [UIColor whiteColor];
-    self.textContentView.backgroundColor = [UIColor UIColorFromHex:0xD5D6D5];
+    self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.backgroundView.backgroundColor = parentGrayColor;
+    self.textContentView.backgroundColor = parentGrayColor;
+    self.textLabel.backgroundColor = parentGrayColor;
 }
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
