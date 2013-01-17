@@ -14,4 +14,6 @@
     UIActivityIndicatorView *activityFooter;
 }
 
+-(void)refreshFromPushNotification;
+
 @end

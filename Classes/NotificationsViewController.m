@@ -221,6 +221,11 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
     
 }
 
+- (void)refreshFromPushNotification {
+    [self refreshNotifications];
+    [self refreshVisibleUnreadNotes];
+}
+
 
 #pragma mark - UIScrollViewDelegate
 

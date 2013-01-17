@@ -797,6 +797,8 @@
 - (void)showNotificationsView: (BOOL)isFromPushNotification {
     // Break if we're already looking at the notifications view
     if ([self.detailViewController isMemberOfClass:[NotificationsViewController class]]) {
+        NotificationsViewController *notificationsViewController = (NotificationsViewController *)self.detailViewController;
+        [notificationsViewController refreshFromPushNotification];
         if ([self isShowingNotificationButton]) {
             [self completeButtonAnimation];
         }
