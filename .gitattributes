@@ -790,6 +790,8 @@ nl.lproj/Localizable.strings -text svneol=unset#unset
 /note_icon_like@2x.png -text svneol=unset#unset
 /note_icon_placeholder.png -text svneol=unset#unset
 /note_icon_placeholder@2x.png -text svneol=unset#unset
+/note_icon_reblog.png -text svneol=unset#unset
+/note_icon_reblog@2x.png -text svneol=unset#unset
 /note_unread_indicator.png -text svneol=unset#unset
 /note_unread_indicator@2x.png -text svneol=unset#unset
 /panel_icon.png -text
