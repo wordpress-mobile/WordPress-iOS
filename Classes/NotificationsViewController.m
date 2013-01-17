@@ -211,7 +211,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 - (void)updateLastSeenTime {
     // get the most recent note
     NSArray *notes = self.notesFetchedResultsController.fetchedObjects;
-    if (notes > 0) {
+    if ([notes count] > 0) {
         Note *note = [notes objectAtIndex:0];
         [self.user updateNoteLastSeenTime:note.timestamp success:nil failure:nil];
     }
