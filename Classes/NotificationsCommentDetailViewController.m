@@ -313,7 +313,7 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
         CGPoint offset = self.tableView.contentOffset;
         offset.y += newHeight - initialHeight;
         [self.tableView reloadData];
-        if([self.commentThread count] > 1)
+        if([self.commentThread count] > 1 && !self.isWritingReply)
             [self.tableView setContentOffset:offset animated:NO];
         
         
