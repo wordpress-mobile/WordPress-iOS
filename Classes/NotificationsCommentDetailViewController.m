@@ -299,11 +299,6 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     [self.tableView beginUpdates];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
     [self.tableView endUpdates];
-    if ([self.commentThread count] > 1) {
-        UIImage *image = [[UIImage imageNamed:@"note_comment_table_threaded"] resizableImageWithCapInsets:UIEdgeInsetsMake(200.f, 0.f, 200.f, 0.f)];
-        UIImageView *tableBackgroundImage = [[UIImageView alloc] initWithImage:image];
-        self.tableView.backgroundView = tableBackgroundImage;
-    }
     NSString *commentPath = [NSString stringWithFormat:@"sites/%@/comments/%@", self.siteID, commentID];
     [self.user.restClient getPath:commentPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.comment = responseObject;
