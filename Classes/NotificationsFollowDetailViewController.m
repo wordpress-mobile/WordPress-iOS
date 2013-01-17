@@ -266,7 +266,7 @@
         }
         
         [webViewController setUrl:webViewURL];
-        [self.panelNavigationController pushViewController:webViewController animated:YES];
+        [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
     }
     
 }
@@ -302,7 +302,7 @@
             }
 
             [webViewController setUrl:blogURL];
-            [self.panelNavigationController pushViewController:webViewController animated:YES];
+            [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
         } else {
             [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         }
