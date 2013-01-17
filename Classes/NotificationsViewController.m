@@ -146,7 +146,8 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
-    if ([self noteHasDetailView:note]) {
+    BOOL hasDetailsView = [self noteHasDetailView:note];
+    if (hasDetailsView) {
         _isPushingViewController = YES;
         if ([note isComment]) {
             NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];
@@ -164,7 +165,10 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     if(note.isUnread) {
         note.unread = [NSNumber numberWithInt:0];
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+
+        if(hasDetailsView)
+            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        
         [self.user markNoteAsRead:note.noteID success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"WordPressComUpdateNoteCount"
                                                                 object:nil
