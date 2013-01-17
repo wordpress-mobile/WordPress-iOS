@@ -306,7 +306,7 @@
         self.footerText = NSLocalizedString(@"Password is required.", @"");
     } else {
         isSigningIn = YES;
-        self.footerText = @"";
+        self.footerText = @" ";
         [self.wpComApi signInWithUsername:username
                                  password:password
                                   success:^{
