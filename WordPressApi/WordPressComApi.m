@@ -156,6 +156,10 @@ NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subjec
 }
 
 - (void)refreshNotifications:(NSArray *)notes success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    // No notes? Then there's nothing to sync
+    if ([notes count] == 0) {
+        return;
+    }
     NSMutableArray *noteIDs = [[NSMutableArray alloc] initWithCapacity:[notes count]];
     [notes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [noteIDs addObject:[(Note *)obj noteID]];
