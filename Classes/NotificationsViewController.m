@@ -135,6 +135,10 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 #pragma mark - UITableViewDelegate
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.0f;
+}
+
 /*
  * Comments are taller to show comment text
  * TODO: calculate the height of the comment text area by using sizeWithFont:forWidth:lineBreakMode:
