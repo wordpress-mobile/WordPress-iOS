@@ -7,9 +7,7 @@
 //
 
 #import "FollowButton.h"
-#import "DTCoreText.h"
 #import "NSString+XMLExtensions.h"
-#import "Constants.h"
 
 @interface FollowButton ()
 @property (nonatomic, strong) UIButton *button;
@@ -72,46 +70,19 @@
 }
 
 - (void)toggleFollowState:(id)sender {
-    switch (self.followState) {
-        case FollowButtonStateFollowing:
-        {
-            self.followState = FollowButtonStateNotFollowing;
-            [self.user postPath:self.unfollowURL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                [self postEvent:UnfollowedBlogEvent];
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-                self.followState = FollowButtonStateFollowing;
-            }];
-            break;
-        }
-        case FollowButtonStateNotFollowing:
-        {
-            self.followState = FollowButtonStateFollowing;
-            [self.user postPath:self.followURL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                [self postEvent:FollowedBlogEvent];
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-                self.followState = FollowButtonStateNotFollowing;
-            }];
-            break;
-        }
-    }
     
-}
-
-- (void)postEvent:(NSString *)eventName {
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:eventName
-     object:self
-     userInfo:@{
-        @"siteID": self.siteID
-     }];
-}
-
-- (NSString *)followURL {
-    return [NSString stringWithFormat:@"sites/%@/follows/new", self.siteID];
-}
-
-- (NSString *)unfollowURL {
-    return [NSString stringWithFormat:@"sites/%@/follows/mine/delete", self.siteID];
+    BOOL isFollowing = self.followState == FollowButtonStateFollowing;
+    // update the button to the new state
+    self.followState = isFollowing ? FollowButtonStateNotFollowing : FollowButtonStateFollowing;
+    
+    [self.user followBlog:[self.siteID intValue] isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id followResponse){
+        BOOL following = [[followResponse objectForKey:@"is_following"] intValue] == 1;
+        self.followState = following ? FollowButtonStateFollowing : FollowButtonStateNotFollowing;
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        // flip the button back since it failed
+        self.followState = isFollowing ? FollowButtonStateNotFollowing : FollowButtonStateFollowing;
+    }];
+    
 }
 
 - (void)setFollowState:(FollowButtonState)followState {

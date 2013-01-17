@@ -224,10 +224,6 @@
     
     [cell setFollowing: !isFollowing];
 
-    if (self.panelNavigationController) {
-        NSString *notificationName = isFollowing ? UnfollowedBlogEvent : FollowedBlogEvent;
-        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:nil];
-    }
     
     NSUInteger blogID = [[noteDetails objectForKey:@"blog_id"] intValue];
     if (blogID) {

@@ -27,6 +27,12 @@ NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
 NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
 NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 
+NSString *const WordPressComApiFollowedBlogEvent = @"FollowedBlogEvent";
+NSString *const WordPressComApiUnfollowedBlogEvent = @"UnfollowedBlogEvent";
+
+#define UnfollowedBlogEvent @"UnfollowedBlogEvent"
+
+
 // AFJSONRequestOperation requires that a URI end with .json in order to match
 // This will match all public-api.wordpress.com/rest/v1/ URI's and parse them as JSON
 @interface WPJSONRequestOperation : AFJSONRequestOperation
@@ -476,9 +482,17 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
         followPath = [followPath stringByReplacingOccurrencesOfString:@"new" withString:@"mine/delete"];
     
     [self postPath:followPath
-                   parameters:nil
-                      success:success
-                      failure:failure];
+        parameters:nil
+           success:^(AFHTTPRequestOperation *operation, id responseObject){
+               // post the notification
+               NSString *notificationName = following ? WordPressComApiUnfollowedBlogEvent : WordPressComApiFollowedBlogEvent;
+               [[NSNotificationCenter defaultCenter]
+                postNotificationName:notificationName
+                object:self
+                userInfo:@{ @"siteID":[NSNumber numberWithInt:blogID] }];
+               if (success != nil) success(operation, responseObject);
+           }
+           failure:failure];
 }
 
 - (void)moderateComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withStatus:(NSString *)commentStatus success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {

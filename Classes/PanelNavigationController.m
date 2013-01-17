@@ -155,8 +155,8 @@
     self.view.autoresizesSubviews = YES;
     self.view.clipsToBounds = YES;
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(showFollowToast:) name:FollowedBlogEvent object:nil];
-    [nc addObserver:self selector:@selector(showFollowToast:) name:UnfollowedBlogEvent object:nil];
+    [nc addObserver:self selector:@selector(showFollowToast:) name:WordPressComApiFollowedBlogEvent object:nil];
+    [nc addObserver:self selector:@selector(showFollowToast:) name:WordPressComApiUnfollowedBlogEvent object:nil];
 }
 
 - (void)viewDidLoad {
@@ -1642,7 +1642,7 @@
 }
 
 - (void)showFollowToast:(NSNotification *)notification {
-    BOOL unfollowed = [notification.name isEqualToString:UnfollowedBlogEvent];
+    BOOL unfollowed = [notification.name isEqualToString:WordPressComApiUnfollowedBlogEvent];
     NSString *message = (unfollowed) ?
         NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") :
         NSLocalizedString(@"Followed", @"User followed a blog");

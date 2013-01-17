@@ -105,8 +105,6 @@
 #define VideoUploadChunk @"VideoUploadChunk"
 #define ImageUploadSuccessful @"ImageUploadSuccessful"
 #define ImageUploadFailed @"ImageUploadFailed"
-#define FollowedBlogEvent @"FollowedBlogEvent"
-#define UnfollowedBlogEvent @"UnfollowedBlogEvent"
 #define FeaturedImageUploadSuccessful @"FeaturedImageUploadSuccessful"
 #define FeaturedImageUploadFailed @"FeaturedImageUploadFailed"
 #define VideoUploadSuccessful @"VideoUploadSuccessful"
