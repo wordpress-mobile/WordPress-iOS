@@ -62,7 +62,7 @@
     
     button.frame = self.bounds;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    button.titleEdgeInsets = UIEdgeInsetsMake(0.f, 10.f, 0.f, 0.f);
+    button.titleEdgeInsets = UIEdgeInsetsMake(-1.0f, 10.f, 0.f, 0.f);
     button.titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
     button.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     button.imageEdgeInsets = UIEdgeInsetsMake(0.f, 5.f, 0.f, 0.f);
