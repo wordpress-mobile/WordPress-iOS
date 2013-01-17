@@ -69,21 +69,24 @@ const CGFloat NotificationsTableViewCellFontSize = 17.0f;
     [self.imageView setImageWithURL:[NSURL URLWithString:self.note.icon]
                    placeholderImage:[UIImage imageNamed:@"note_icon_placeholder"]];
     
-    NSString *noteType = note.type;
+    self.textLabel.text = [NSString decodeXMLCharactersIn:note.subject];
+    
+    self.detailTextLabel.text = [NSString decodeXMLCharactersIn: note.commentText];
+    
+    NSString *noteType = _note.type;
     if ([noteType rangeOfString:@"achievement"].location != NSNotFound)
         noteType = @"achievement";
     else if ([noteType rangeOfString:@"best"].location != NSNotFound)
         noteType = @"stats";
     
     UIImage *iconImage = [UIImage imageNamed:[NSString stringWithFormat:@"note_icon_%@", noteType]];
-    if (iconImage != nil) {
+    if (iconImage) {
         self.iconImageView.hidden = NO;
-        self.iconImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"note_icon_%@", noteType]];
+        self.iconImageView.image = iconImage;
     }
-    
-    self.textLabel.text = [NSString decodeXMLCharactersIn:note.subject];
-    
-    self.detailTextLabel.text = [NSString decodeXMLCharactersIn: note.commentText];
+    UIImage *highlightedIconImage = [UIImage imageNamed:[NSString stringWithFormat:@"note_icon_%@_highlighted", noteType]];
+    if (highlightedIconImage)
+        self.iconImageView.highlightedImage = highlightedIconImage;
     
     self.unreadIndicator.hidden = [note isRead];
     if ([self.note isComment])
@@ -117,14 +120,5 @@ const CGFloat NotificationsTableViewCellFontSize = 17.0f;
     indicatorFrame.origin.x = self.frame.size.width - 30.0f;
     self.unreadIndicator.frame = indicatorFrame;
 }
-
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
 
 @end
