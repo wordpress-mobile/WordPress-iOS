@@ -46,7 +46,7 @@
 - (void)showNotificationForNoteType: (NSString *)noteType;
 - (void)notificationButtonTap;
 - (void)showNotificationsView: (BOOL)isFromPushNotification;
-- (bool)isShowingNotificationButton;
+- (BOOL)isShowingNotificationButton;
 
 // Toast Message
 - (void)showToastWithMessage:(NSString *)toastMessage andImage:(UIImage *)toastImage;

@@ -592,10 +592,7 @@
         if (self.navigationController) {
             [self.navigationController setViewControllers:[NSArray arrayWithObject:_detailViewController] animated:NO];
             if (sidebarButton == nil) {
-                if (![[UIButton class] respondsToSelector:@selector(appearance)])
-                    sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle_white"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)];
-                else 
-                    sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)];
+                sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)];
             }
             sidebarButton.accessibilityLabel = NSLocalizedString(@"Toggle", @"Sidebar toggle button");
             
@@ -691,8 +688,11 @@
 #pragma mark - Notifications
 
 - (void)didReceiveNotesNotification: (NSNotification *)notification {
-    if ([self.detailViewController isMemberOfClass:[NotificationsViewController class]])
+    if ([self.detailViewController isMemberOfClass:[NotificationsViewController class]]) {
+        NotificationsViewController *notesViewController = (NotificationsViewController *)self.detailViewController;
+        [notesViewController refreshFromPushNotification];
         return;
+    }
     
     NSDictionary *notesDictionary = (NSDictionary *)[notification userInfo];
     NSMutableArray *unreadNotes = [notesDictionary objectForKey:@"notes"];
@@ -707,9 +707,9 @@
 }
 
 - (void)showNotificationForNoteType: (NSString *)noteType {
-    UIImage *noteIcon = [UIImage imageNamed: [NSString stringWithFormat:@"note_icon_%@", noteType]];
+    UIImage *noteIcon = [UIImage imageNamed: [NSString stringWithFormat:@"note_navbar_icon_%@", noteType]];
     if (noteIcon == nil)
-        noteIcon = [UIImage imageNamed:@"note_icon_comment"];
+        noteIcon = [UIImage imageNamed:@"note_navbar_icon_comment"];
     [_notificationButton setImage:noteIcon forState:UIControlStateNormal];
     
     if (_menuView.frame.size.width > MENU_BUTTON_WIDTH) {
@@ -821,7 +821,7 @@
     }
 }
 
-- (bool)isShowingNotificationButton {
+- (BOOL)isShowingNotificationButton {
     return _menuView.frame.size.width > MENU_BUTTON_WIDTH;
 }
 

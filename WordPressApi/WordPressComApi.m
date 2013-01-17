@@ -228,8 +228,10 @@ NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
         NSError *error;
         NSArray *notesData = [response objectForKey:@"notes"];
         for (int i=0; i < [notes count]; i++) {
-            Note *note = [notes objectAtIndex:i];
-            [note syncAttributes:[notesData objectAtIndex:i]];
+            if ([notesData count] > i) {
+                Note *note = [notes objectAtIndex:i];
+                [note syncAttributes:[notesData objectAtIndex:i]];
+            }
         }
         if(![context save:&error]){
             NSLog(@"Unable to update note: %@", error);

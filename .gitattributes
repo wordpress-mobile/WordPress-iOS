@@ -976,10 +976,6 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /navbar_read@2x.png -text
 /navbar_shadow.png -text
 /navbar_shadow@2x.png -text
-/navbar_toggle.png -text
-/navbar_toggle@2x.png -text
-/navbar_toggle_white.png -text
-/navbar_toggle_white@2x.png -text
 nb.lproj/Localizable.strings -text svneol=unset#unset
 /next.png -text svneol=unset#unset
 /next@2x.png -text svneol=unset#unset
@@ -1011,6 +1007,18 @@ nl.lproj/Localizable.strings -text svneol=unset#unset
 /note_icon_reblog@2x.png -text svneol=unset#unset
 /note_icon_stats.png -text svneol=unset#unset
 /note_icon_stats@2x.png -text svneol=unset#unset
+/note_navbar_icon_achievement.png -text svneol=unset#unset
+/note_navbar_icon_achievement@2x.png -text svneol=unset#unset
+/note_navbar_icon_comment.png -text svneol=unset#unset
+/note_navbar_icon_comment@2x.png -text svneol=unset#unset
+/note_navbar_icon_follow.png -text svneol=unset#unset
+/note_navbar_icon_follow@2x.png -text svneol=unset#unset
+/note_navbar_icon_like.png -text svneol=unset#unset
+/note_navbar_icon_like@2x.png -text svneol=unset#unset
+/note_navbar_icon_reblog.png -text svneol=unset#unset
+/note_navbar_icon_reblog@2x.png -text svneol=unset#unset
+/note_navbar_icon_stats.png -text svneol=unset#unset
+/note_navbar_icon_stats@2x.png -text svneol=unset#unset
 /panel_icon.png -text
 /panel_icon@2x.png -text
 /paperclip.png -text
