@@ -393,7 +393,7 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     if (indexPath.row == [self.commentThread count]-1) {
         // it's the main comment
         cell.imageView.hidden = NO;
-        cell.avatarURL = [NSURL URLWithString:self.note.icon];
+        cell.avatarURL = [NSURL URLWithString:[self increaseGravatarSizeForURL: self.note.icon]];
         cell.followButton = self.followButton;
         if (!comment.isLoaded) {
             return cell;
@@ -412,7 +412,7 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
             return cell;
         } else {
             cell.imageView.hidden = NO;
-            cell.avatarURL = [NSURL URLWithString:[comment.commentData valueForKeyPath:@"author.avatar_URL"]];
+            cell.avatarURL = [NSURL URLWithString:[self increaseGravatarSizeForURL:[comment.commentData valueForKeyPath:@"author.avatar_URL"]]];
         }
         
         // set the content
@@ -429,6 +429,11 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     cell.textContentView.attributedString = content;
     
     return cell;
+}
+
+- (NSString *)increaseGravatarSizeForURL:(NSString *)originalURL {
+    // REST API returns 96 by default, let's make it bigger
+    return [originalURL stringByReplacingOccurrencesOfString:@"s=96" withString:@"s=184"];
 }
 
 #pragma mark - UITableViewDelegate
