@@ -3714,8 +3714,6 @@
 				37B7924D16768FCC0021B3A4 /* NotificationSettingsViewController.m in Sources */,
 				CC669B3A167AA82A009E16F8 /* NoteComment.m in Sources */,
 				E1756E651694A99400D9EC00 /* WordPressComApiCredentials.m in Sources */,
-				5DD91BC5163983670053E560 /* SoundUtil.m in Sources */,
-				5D4DE6F4167177560030518D /* WPInfoView.m in Sources */,
 				CC5B0F23169B896300AA0291 /* NoteCommentLoadingCell.m in Sources */,
 				CC5B0F27169BDC4000AA0291 /* NoteCommentContentCell.m in Sources */,
 			);
