@@ -336,6 +336,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
         if ([note isComment]) {
             NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];
             detailViewController.note = note;
+            detailViewController.user = self.user;
             [self.panelNavigationController pushViewController:detailViewController animated:YES];
         } else {
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNibName:@"NotificationsFollowDetailViewController" bundle:nil];
