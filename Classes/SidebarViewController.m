@@ -29,6 +29,7 @@
 #import "QuickPhotoButtonView.h"
 #import "CrashReportViewController.h"
 #import "SoundUtil.h"
+#import "NotificationsViewController.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
@@ -287,8 +288,8 @@
 
 - (NSInteger)topSectionRowCount {
     if ([WordPressComApi sharedApi].username) {
-        // just the reader
-        return 1;
+        // reader and notifications
+        return 2;
     } else {
         return 0;
     }
@@ -699,6 +700,9 @@ NSLog(@"%@", self.sectionInfoArray);
         if (indexPath.row == 0) {
             title = NSLocalizedString(@"Reader", @"");
             cell.imageView.image = [UIImage imageNamed:@"sidebar_read"];
+        } else if(indexPath.row == 1){
+            title = NSLocalizedString(@"Notifications", @"");
+            cell.imageView.image = [UIImage imageNamed:@"sidebar_note"];
         }
     } else {
         switch (indexPath.row) {
@@ -893,7 +897,14 @@ NSLog(@"%@", self.sectionInfoArray);
             // Reader
             WPReaderViewController *readerViewController = [[WPReaderViewController alloc] init];
             detailViewController = readerViewController;
-        }        
+        } else if(indexPath.row == 1){
+            if ([self.panelNavigationController.detailViewController isMemberOfClass:[NotificationsViewController class]]) {
+                [self.panelNavigationController closeSidebar];
+                return;
+            }
+            NotificationsViewController *notificationsViewController = [[NotificationsViewController alloc] init];
+            detailViewController = notificationsViewController;
+        }
 
     } else {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];

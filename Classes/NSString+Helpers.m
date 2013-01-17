@@ -10,6 +10,8 @@
 #import "NSData+Base64.h"
 #import <CommonCrypto/CommonDigest.h>
 
+@class XMLParserCollecter;
+
 @implementation NSString (Helpers)
 
 #pragma mark Helpers
@@ -66,4 +68,17 @@
     return result;
 }
 
+/*
+ * Uses a RegEx to strip all HTML tags from a string and unencode entites
+ */
+- (NSString *)stringByStrippingHTML {
+    NSRange r;
+    NSString *s = [self copy];
+    while ((r = [s rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
+        s = [s stringByReplacingCharactersInRange:r withString:@""];
+        
+    return s;
+}
+
 @end
+

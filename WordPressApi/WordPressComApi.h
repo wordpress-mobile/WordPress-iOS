@@ -7,16 +7,27 @@
 //
 
 #import "WordPressApi.h"
+#import "WordPressComRestClient.h"
 
 #define WordPressComApiDidLoginNotification @"WordPressComApiDidLogin"
 #define WordPressComApiDidLogoutNotification @"WordPressComApiDidLogout"
+#define WordPressComApiNeedsAuthTokenNotification @"WordPressComApiNeedsAuthToken"
+
+typedef void (^WordPressComApiRestSuccessResponseBlock)(AFHTTPRequestOperation *operation, id responseObject);
+typedef void (^WordPressComApiRestSuccessFailureBlock)(AFHTTPRequestOperation *operation, NSError *error);
 
 @interface WordPressComApi : WordPressApi
 @property (nonatomic,readonly,strong) NSString *username;
 @property (nonatomic,readonly,strong) NSString *password;
+@property (nonatomic,strong) NSString *authToken;
+@property (readonly, nonatomic, strong) WordPressComRestClient *restClient;
+
 
 + (WordPressComApi *)sharedApi;
 - (void)setUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)signOut;
 - (void)updateCredentailsFromStore;
+
+- (void)checkNotificationsSuccess:(WordPressComApiRestSuccessResponseBlock)callback failure:(WordPressComApiRestSuccessFailureBlock)failure;
+- (void)getNotificationsBefore:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure;
 @end

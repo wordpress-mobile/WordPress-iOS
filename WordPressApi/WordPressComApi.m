@@ -11,12 +11,16 @@
 #import "WordPressAppDelegate.h"
 #import "Constants.h"
 
-@interface WordPressComApi ()
+NSString *const WordPressComApiOauthServiceName = @"public-api.wordpress.com";
+NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp";
+
+@interface WordPressComApi () <WordPressComRestClientDelegate>
 @property (readwrite, nonatomic, strong) NSString *username;
 @property (readwrite, nonatomic, strong) NSString *password;
+@property (readwrite, nonatomic, strong) WordPressComRestClient *restClient;
 @end
 
-@implementation WordPressComApi
+@implementation WordPressComApi 
 @dynamic username;
 @dynamic password;
 
@@ -26,17 +30,32 @@
     dispatch_once(&oncePredicate, ^{
         NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
         NSString *password = nil;
+        NSString *authToken = nil;
         if (username) {
             NSError *error = nil;
             password = [SFHFKeychainUtils getPasswordForUsername:username
                                                   andServiceName:@"WordPress.com"
                                                            error:&error];
+            authToken = [SFHFKeychainUtils getPasswordForUsername:username
+                                                   andServiceName:WordPressComApiOauthServiceName
+                                                            error:nil];
         }
         _sharedApi = [[self alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:kWPcomXMLRPCUrl] username:username password:password];
+        _sharedApi.restClient = [[WordPressComRestClient alloc] initWithBaseURL:[NSURL URLWithString:WordPressComRestClientEndpointURL] ];
+        _sharedApi.restClient.authToken = authToken;
+        _sharedApi.restClient.delegate = _sharedApi;
+        
+        [_sharedApi checkNotifications];
+        
     });
+    
     
     return _sharedApi;
 
+}
+
+- (void)dealloc {
+    self.restClient.delegate = nil;
 }
 
 - (void)setUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *error))failure {
@@ -109,6 +128,43 @@
         }
     }
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
+}
+
+- (void)checkNotifications {
+    [self checkNotificationsSuccess:nil failure:nil];
+}
+
+- (void)checkNotificationsSuccess:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    NSDictionary *parameters = @{ @"fields" : WordPressComApiNotificationFields };
+    [self.restClient getPath:@"notifications/" parameters:parameters success:success failure:failure];
+}
+
+- (void)getNotificationsBefore:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    NSDictionary *parameters= @{ @"before": timestamp };
+    [self.restClient getPath:@"notifications/" parameters:parameters success:success failure:failure];
+}
+
+- (BOOL)hasAuthorizationToken {
+    return self.authToken != nil;
+}
+
+- (NSString *)authToken {
+    return self.restClient.authToken;
+}
+
+- (void)setAuthToken:(NSString *)authToken {
+    NSError *error;
+    [SFHFKeychainUtils storeUsername:self.username
+                         andPassword:authToken
+                      forServiceName:WordPressComApiOauthServiceName
+                      updateExisting:YES
+                               error:&error];
+    self.restClient.authToken = authToken;
+}
+
+- (void)restClientDidFailAuthorization:(WordPressComRestClient *)client {
+    // let the world know we need an auth token
+    [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiNeedsAuthTokenNotification object:self];
 }
 
 @end
