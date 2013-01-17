@@ -29,9 +29,7 @@ NSString *const WordPressComRestClientEndpointURL = @"https://public-api.wordpre
 
 @implementation WPJSONRequestOperation
 
-+(BOOL)canProcessRequest:(NSURLRequest *)urlRequest {
-    NSLog(@"Checking request: %@", urlRequest.URL);
-    
++(BOOL)canProcessRequest:(NSURLRequest *)urlRequest {    
     return [[urlRequest.URL host] isEqualToString:@"public-api.wordpress.com"] && [urlRequest.URL.path rangeOfString:@"/rest/v1/"].location == 0;
 }
 
@@ -62,10 +60,6 @@ NSString *const WordPressComRestClientEndpointURL = @"https://public-api.wordpre
     self.authorized = YES;
 }
 
-/*
- * 
- 
- */
 - (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)urlRequest success:(void (^)(AFHTTPRequestOperation *, id))success failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure {
     // wrap each failure with our own failure to detect a 403
     return [super HTTPRequestOperationWithRequest:urlRequest success:success failure:^(AFHTTPRequestOperation *operation, NSError *error){

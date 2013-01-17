@@ -7,6 +7,7 @@
 //
 
 #import "NotificationsViewController.h"
+#import "WordPressAppDelegate.h"
 #import "WPComOAuthController.h"
 #import "WordPressComApi.h"
 #import "EGORefreshTableHeaderView.h"
@@ -14,7 +15,7 @@
 
 NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 
-@interface NotificationsViewController () <WPComOAuthDelegate, EGORefreshTableHeaderDelegate>
+@interface NotificationsViewController () <WPComOAuthDelegate, EGORefreshTableHeaderDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) id authListener;
 @property (nonatomic, strong) WordPressComApi *user;
@@ -22,6 +23,8 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 @property (nonatomic, strong) NSMutableArray *notes;
 @property (readwrite, nonatomic, strong) NSDate *lastRefreshDate;
 @property (readwrite, getter = isRefreshing) BOOL refreshing;
+@property (readwrite, getter = isLoading) BOOL loading;
+@property (nonatomic, strong) NSFetchedResultsController *notesFetchedResultsController;
 
 @end
 
@@ -58,7 +61,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
     refreshFrame.origin.y = -refreshFrame.size.height;
     self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:refreshFrame];
     self.refreshHeaderView.delegate = self;
-    NSLog(@"Refresh header view delegate: %@", self.refreshHeaderView.delegate);
+
     [self.tableView addSubview:self.refreshHeaderView];
     self.tableView.delegate = self; // UIScrollView methods
     
@@ -69,6 +72,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
                                                object:self.user];
     [super viewDidLoad];
     
+    [self reloadNotes];
     [self refreshNotifications];
 }
 
@@ -103,6 +107,18 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 #pragma mark - Notification loading
 
 /*
+ * Load notes from local coredata store
+ */
+- (void)reloadNotes {
+    self.notesFetchedResultsController = nil;
+    NSError *error;
+    if(![self.notesFetchedResultsController performFetch:&error]){
+        NSLog(@"Failed fetch request: %@", error);
+    }
+    [self.tableView reloadData];
+}
+
+/*
  * Ask the user to check for new notifications
  * TODO: handle failure
  */
@@ -114,15 +130,9 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
     self.refreshing = YES;
     [self.user checkNotificationsSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.lastRefreshDate = [NSDate new];
-        NSArray *noteData = (NSArray *)[responseObject objectForKey:@"notes"];
-        NSMutableArray *newNotes = [[NSMutableArray alloc] initWithCapacity:[noteData count]];
-        [noteData enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            Note *note = [[Note alloc] initWithNoteData:(NSDictionary*)obj];
-            [newNotes addObject:note];
-        }];
-        self.notes = newNotes;
         self.refreshing = NO;
         [self notificationsDidFinishRefreshingWithError:nil];
+        [self reloadNotes];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         self.refreshing = NO;
         [self notificationsDidFinishRefreshingWithError:error];
@@ -132,12 +142,21 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 /*
  * For loading of additional notifications
  */
-- (void)loadNotificationsAfterNote:(id)note {
-    [self.user getNotificationsBefore:[note objectForKey:@"timestamp"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
+- (void)loadNotificationsAfterNote:(Note *)note {
+    if (note == nil) {
+        return;
+    }
+    self.loading = YES;
+    [self.user getNotificationsBefore:note.timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        self.loading = NO;
+        [self reloadNotes];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        self.loading = NO;
     }];
+}
+
+- (void)loadNotificationsAfterLastNote {
+    [self loadNotificationsAfterNote:[self.notesFetchedResultsController.fetchedObjects lastObject]];
 }
 
 
@@ -147,6 +166,12 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
     [self.refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
 }
 
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    // if we're at the bottom try to load more
+    if (scrollView.bounds.size.height + scrollView.contentOffset.y >= scrollView.contentSize.height) {
+        [self loadNotificationsAfterLastNote];
+    }
+}
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
@@ -183,7 +208,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
  * Number of rows is equal to number of notes
  */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.notes count];
+    return [self.notesFetchedResultsController.fetchedObjects count];
 }
 
 /*
@@ -191,7 +216,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
  */
 -  (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NotificationsTableViewCell *cell = (NotificationsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:NotificationsTableViewNoteCellIdentifier];
-    cell.note = [self.notes objectAtIndex:indexPath.row];
+    cell.note = [self.notesFetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];
     return cell;
 }
 
@@ -202,11 +227,29 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
  * TODO: calculate the height of the comment text area by using sizeWithFont:forWidth:lineBreakMode:
  */
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    Note *note = [self.notes objectAtIndex:indexPath.row];
+    Note *note = [self.notesFetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];
     return [note.type isEqualToString:@"comment"] ? 110.f : 63.f;
     
 }
 
+#pragma mark - NSFetchedResultsController
+
+- (NSFetchedResultsController *)notesFetchedResultsController {
+    if (_notesFetchedResultsController == nil) {
+        NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
+        NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
+        fetchRequest.sortDescriptors = @[ dateSortDescriptor ];
+        NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+        self.notesFetchedResultsController = [[NSFetchedResultsController alloc]
+                                              initWithFetchRequest:fetchRequest
+                                              managedObjectContext:context
+                                              sectionNameKeyPath:nil
+                                              cacheName:nil];
+        
+        self.notesFetchedResultsController.delegate = self;
+    }
+    return _notesFetchedResultsController;
+}
 
 
 

@@ -2,23 +2,32 @@
 //  Note.h
 //  WordPress
 //
+//  Created by Beau Collins on 11/18/12.
+//  Copyright (c) 2012 WordPress. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
-@interface Note : NSObject
 
-@property (nonatomic, strong) NSDictionary *noteData;
+@interface Note : NSManagedObject
+
+@property (nonatomic, retain) NSNumber * timestamp;
+@property (nonatomic, retain) NSString * type;
+@property (nonatomic, retain) NSString * subject;
+@property (nonatomic, retain) NSData * payload;
+@property (nonatomic, retain) NSNumber *unread;
+@property (nonatomic, retain) NSString * icon;
+@property (nonatomic, retain) NSString * noteID;
 @property (nonatomic, strong) UIImage *noteIconImage;
-@property (readonly) NSString *subject;
-@property (readonly) NSString *type;
-@property (readonly, nonatomic, strong) NSString *commentText;
+@property (nonatomic, strong, readonly) NSString *commentText;
 
-- (id)initWithNoteData:(NSDictionary *)noteData;
 - (BOOL)isComment;
 - (BOOL)isLike;
 - (BOOL)isFollow;
-- (BOOL)isUnread;
 - (BOOL)isRead;
+- (BOOL)isUnread;
+
++ (BOOL)syncNotesWithResponse:(NSArray *)notesData withManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end

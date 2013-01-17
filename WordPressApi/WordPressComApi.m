@@ -10,6 +10,7 @@
 #import "SFHFKeychainUtils.h"
 #import "WordPressAppDelegate.h"
 #import "Constants.h"
+#import "Note.h"
 
 NSString *const WordPressComApiOauthServiceName = @"public-api.wordpress.com";
 NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp";
@@ -130,18 +131,28 @@ NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subjec
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
+
 - (void)checkNotifications {
     [self checkNotificationsSuccess:nil failure:nil];
 }
 
 - (void)checkNotificationsSuccess:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    NSDictionary *parameters = @{ @"fields" : WordPressComApiNotificationFields };
-    [self.restClient getPath:@"notifications/" parameters:parameters success:success failure:failure];
+    [self getNotificationsBefore:nil success:success failure:failure];
 }
 
 - (void)getNotificationsBefore:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    NSDictionary *parameters= @{ @"before": timestamp };
-    [self.restClient getPath:@"notifications/" parameters:parameters success:success failure:failure];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{ @"fields": WordPressComApiNotificationFields } ];
+    if( timestamp != nil ){
+        [parameters setObject:timestamp forKey:@"before"];
+    }
+    [self.restClient getPath:@"notifications/" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject){
+        // save the notes
+        NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+        [Note syncNotesWithResponse:[responseObject objectForKey:@"notes"] withManagedObjectContext:context];
+        if (success != nil ) success( operation, responseObject );
+        // TODO: Check for unread notifications and notify with the number of unread notifications
+        
+    } failure:failure];
 }
 
 - (BOOL)hasAuthorizationToken {

@@ -38,13 +38,6 @@
     self.refreshing = YES;
     [self.user checkNotificationsSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.lastRefreshDate = [NSDate new];
-        NSArray *noteData = (NSArray *)[responseObject objectForKey:@"notes"];
-        NSMutableArray *newNotes = [[NSMutableArray alloc] initWithCapacity:[noteData count]];
-        [noteData enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            Note *note = [[Note alloc] initWithNoteData:(NSDictionary*)obj];
-            [newNotes addObject:note];
-        }];
-        self.notes = newNotes;
         self.refreshing = NO;
         [self.delegate notificationsDidFinishRefreshing:self withError:nil];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

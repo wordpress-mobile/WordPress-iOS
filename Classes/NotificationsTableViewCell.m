@@ -47,7 +47,6 @@
     
     self.iconImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"note_icon_%@", note.type]];
     
-    NSLog(@"Detail: %@  %@", self.commentLabel, note.commentText);
     self.commentLabel.text = note.commentText;
     
     self.unreadIndicator.hidden = [note isRead];
@@ -59,12 +58,11 @@
     [super layoutSubviews];
     
     self.imageView.frame = CGRectMake(7.f, 7.f, 47.f, 47.f);
-    CGFloat labelWidth = self.textLabel.frame.size.width;
     [self.textLabel sizeToFit];
     CGRect labelFrame = self.textLabel.frame;
     labelFrame.origin.x = CGRectGetMaxX(self.imageView.frame) + 8.f;
     labelFrame.origin.y = 8.f;
-    labelFrame.size.width = labelWidth;
+    labelFrame.size.width = self.bounds.size.width - 40.f - CGRectGetMaxX(self.imageView.frame);
     self.textLabel.frame = labelFrame;
     CGRect iconFrame = self.iconImageView.frame;
     iconFrame.origin.x = CGRectGetMaxX(self.imageView.frame) + 8.f;

@@ -2,12 +2,14 @@
 //  Note.m
 //  WordPress
 //
+//  Created by Beau Collins on 11/18/12.
+//  Copyright (c) 2012 WordPress. All rights reserved.
 //
 
 #import "Note.h"
 #import "AFImageRequestOperation.h"
 #import "NSString+Helpers.h"
-
+#import "JSONKit.h"
 
 @interface XMLParserCollecter : NSObject <NSXMLParserDelegate>
 @property (nonatomic, strong) NSMutableString *result;
@@ -28,7 +30,7 @@
 @end
 
 @interface Note ()
-
+@property (nonatomic, strong) NSDictionary *noteData;
 @property (nonatomic, strong) AFImageRequestOperation *operation;
 @property (readwrite, nonatomic, strong) NSString *commentText;
 
@@ -36,29 +38,70 @@
 
 @implementation Note
 
-- (id)initWithNoteData:(NSDictionary *)noteData {
-    if (self = [super init]) {
-        self.noteData = noteData;
-        self.noteIconImage = [UIImage imageNamed:@"note_icon_placeholder"];
+@dynamic timestamp;
+@dynamic type;
+@dynamic subject;
+@dynamic payload;
+@dynamic unread;
+@dynamic icon;
+@dynamic noteID;
+@synthesize noteIconImage = _noteIconImage, operation, commentText = _commentText, noteData = _noteData;
+
+
++ (BOOL)syncNotesWithResponse:(NSArray *)notesData withManagedObjectContext:(NSManagedObjectContext *)context {
+    
+    [notesData enumerateObjectsUsingBlock:^(id noteData, NSUInteger idx, BOOL *stop) {
+        [self createOrUpdateNoteWithData:noteData withManagedObjectContext:context];
+    }];
+    
+    NSError *error;
+    if(![context save:&error]){
+        NSLog(@"Failed to sync notes: %@", error);
+        return NO;
+    } else {
+        return YES;
     }
-    return self;
+    
+    
 }
 
-- (void)setNoteData:(NSDictionary *)noteData {
-    if (_noteData != noteData) {
-        _noteData = noteData;
-        [self loadImage];
-        [self parseComment];
++ (void)createOrUpdateNoteWithData:(NSDictionary *)noteData withManagedObjectContext:(NSManagedObjectContext *)context {
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
+    request.predicate = [NSPredicate predicateWithFormat:@"noteID = %@", [noteData objectForKey:@"id"]];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
+    request.fetchLimit = 1;
+    
+    NSError *error;
+    NSArray *results = [context executeFetchRequest:request error:&error];
+    if(error != nil){
+        NSLog(@"Error finding note: %@", error);
+        return;
     }
+    Note *note;
+    if ([results count] > 0) { // find a note so just update it
+        note = (Note *)[results objectAtIndex:0];
+    } else {
+        note = (Note *)[NSEntityDescription insertNewObjectForEntityForName:@"Note"
+                                                     inManagedObjectContext:context];
+        
+        note.noteID = [noteData objectForKey:@"id"];
+    }
+    
+    note.payload = [noteData JSONData];
+    note.type = [noteData objectForKey:@"type"];
+    NSString *subject = [[noteData objectForKey:@"subject"] objectForKey:@"text"];
+    note.subject = [subject trim];
+    note.icon = [[noteData objectForKey:@"subject"] objectForKey:@"icon"];
+    NSInteger timestamp = [[noteData objectForKey:@"timestamp"] integerValue];
+    note.timestamp = [NSNumber numberWithInteger:timestamp];
+    NSInteger unread = [[noteData objectForKey:@"unread"] integerValue];
+    note.unread = [NSNumber numberWithInteger:unread];
+
 }
 
-- (NSString *)subject {
-    NSString *subject = (NSString *)[[self.noteData objectForKey:@"subject"] objectForKey:@"text"];
-    return [subject stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-}
-
-- (NSString *)type {
-    return [self.noteData objectForKey:@"type"];
+- (void)dealloc {
+    [self.operation cancel];
 }
 
 - (BOOL)isComment {
@@ -74,20 +117,42 @@
 }
 
 - (BOOL)isUnread {
-    NSString *unread = (NSString*)[self.noteData objectForKey:@"unread"];
-    return [unread isEqualToString:@"1"];
+    return [self.unread boolValue];
 }
 
 - (BOOL)isRead {
     return ![self isUnread];
 }
 
+- (NSString *)commentText {
+    if (_commentText == nil) {
+        [self parseComment];
+    }
+    return _commentText;
+}
+
+- (id)noteData {
+    if (_noteData == nil) {
+        _noteData = [self.payload objectFromJSONData];
+    }
+    return _noteData;
+}
+
+#pragma mark - Icon image loading
+
+- (UIImage *)noteIconImage {
+    if (_noteIconImage == nil) {
+        [self loadImage];
+        return [UIImage imageNamed:@"note_icon_placeholder"];
+    }
+    return _noteIconImage;
+}
+
 /*
  * TODO: image caching to disk?
  */
 - (void)loadImage {
-    NSString *url = [[self.noteData objectForKey:@"subject"] objectForKey:@"icon"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.icon]];
     if (self.operation != nil) {
         [self.operation cancel];
     }
@@ -97,8 +162,10 @@
     [self.operation start];
 }
 
+#pragma mark - Comment HTML parsing
+
 /*
- * Strips HTML Tags and converst html entites
+ * Strips HTML Tags and converts html entites
  */
 - (void)parseComment {
     
@@ -113,11 +180,11 @@
         XMLParserCollecter *collector = [[XMLParserCollecter alloc] init];
         parser.delegate = collector;
         [parser parse];
-                
+        
         self.commentText = collector.result;
-
+        
     }
-
+    
 }
 
 @end
