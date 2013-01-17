@@ -627,6 +627,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     } failure:^(NSError *error) {
         [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
         _isSyncing = NO;
+        [self configureNoResultsView];
         if (self.blog) {
             if (error.code == 405) {
                 // FIXME: this looks like "Enable XML-RPC" which is going away
