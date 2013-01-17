@@ -227,6 +227,8 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 
 - (void)pushToURL:(NSURL *)url {
     WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:nil bundle:nil];
+    [webViewController setUsername:[WordPressComApi sharedApi].username];
+    [webViewController setPassword:[WordPressComApi sharedApi].password];
     [webViewController setUrl:url];
     [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
 }
