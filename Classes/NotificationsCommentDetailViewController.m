@@ -8,7 +8,6 @@
 
 #import "NotificationsCommentDetailViewController.h"
 #import "UIImageView+AFNetworking.h"
-#import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+XMLExtensions.h"
 #import "UIBarButtonItem+Styled.h"

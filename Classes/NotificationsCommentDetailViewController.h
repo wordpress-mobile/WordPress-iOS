@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Note.h"
+#import "WordPressComApi.h"
 
 @interface NotificationsCommentDetailViewController : UIViewController
 
@@ -24,6 +25,8 @@
 @property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
 
 @property (nonatomic, strong) Note *note;
+
+@property (nonatomic, strong) WordPressApi *user;
 
 - (IBAction) followBlog;
 - (IBAction) moderateComment: (id)sender;
