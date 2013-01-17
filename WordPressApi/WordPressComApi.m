@@ -58,6 +58,8 @@ NSString *const WordPressComApiUnfollowedBlogEvent = @"UnfollowedBlogEvent";
             NSString *error = [self.responseJSON objectForKey:@"error"];
             if ([error isEqualToString:@"invalid_token"]) {
                 errorCode = WordPressComApiErrorInvalidToken;
+            } else if ([error isEqualToString:@"authorization_required"]) {
+                errorCode = WordPressComApiErrorAuthorizationRequired;
             }
             return [NSError errorWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey: errorMessage, WordPressComApiErrorCodeKey: error}];
         }
@@ -95,9 +97,13 @@ NSString *const WordPressComApiUnfollowedBlogEvent = @"UnfollowedBlogEvent";
         _sharedApi = [[self alloc] initWithBaseURL:[NSURL URLWithString:WordPressComApiClientEndpointURL] ];
         _sharedApi.username = username;
         _sharedApi.password = password;
-        _sharedApi.authToken = authToken;
         [_sharedApi registerHTTPOperationClass:[WPJSONRequestOperation class]];
         [_sharedApi setDefaultHeader:@"User-Agent" value:[[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent]];
+        if (authToken) {
+            _sharedApi.authToken = authToken;
+        } else {
+            [_sharedApi signInWithUsername:username password:password success:nil failure:nil];
+        }
 
 //        [_sharedApi checkForNewUnseenNotifications];
     });

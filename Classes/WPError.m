@@ -69,7 +69,7 @@ NSString * const WPErrorResponseKey = @"wp_error_response";
         }
     } else if ([error.domain isEqualToString:WordPressComApiErrorDomain]) {
         WPFLog(@"wp.com API error: %@: %@", [error.userInfo objectForKey:WordPressComApiErrorCodeKey], [error localizedDescription]);
-        if (error.code == WordPressComApiErrorInvalidToken) {
+        if (error.code == WordPressComApiErrorInvalidToken || error.code == WordPressComApiErrorAuthorizationRequired) {
             [[WordPressComApi sharedApi] refreshTokenWithSuccess:nil failure:^(NSError *error) {
                 [self showAlertWithError:error];
             }];
