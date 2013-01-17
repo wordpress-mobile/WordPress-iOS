@@ -107,8 +107,6 @@ Classes/NoteCommentCell.h -text
 Classes/NoteCommentCell.m -text
 Classes/NoteCommentPostBanner.h -text
 Classes/NoteCommentPostBanner.m -text
-Classes/NoteCommentView.h -text
-Classes/NoteCommentView.m -text
 Classes/NotificationsCommentDetailViewController.h -text
 Classes/NotificationsCommentDetailViewController.m -text
 Classes/NotificationsFollowDetailViewController.h -text
