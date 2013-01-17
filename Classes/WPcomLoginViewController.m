@@ -306,12 +306,15 @@
 - (void)signIn:(id)sender {
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
     __weak WPcomLoginViewController *loginController = self;
-    [self.wpComApi signInWithUsername:loginCell.textField.text
-                             password:passwordCell.textField.text
+    NSString *username = loginCell.textField.text;
+    NSString *password = passwordCell.textField.text;
+    [self.wpComApi signInWithUsername:username
+                             password:password
                               success:^{
                                   [loginController.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
                                   [loginController.delegate loginController:loginController didAuthenticateWithUsername:loginController.wpComApi.username];
                               } failure:^(NSError *error) {
+                                  WPFLog(@"Login failed with username %@: %@", username, error);
                                   loginController.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
                                   loginController.buttonText = NSLocalizedString(@"Sign In", @"");
                                   loginController.isSigningIn = NO;
