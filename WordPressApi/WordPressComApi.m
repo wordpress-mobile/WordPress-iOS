@@ -142,8 +142,6 @@ NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
             if (success) success();
         }
     };
-    // When support is added, this should be the only sign in method
-#ifdef GRANT_TYPE_PASSWORD_SUPPORTED
     AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:WordPressComApiOauthBaseUrl]];
     [client registerHTTPOperationClass:[WPJSONRequestOperation class]];
     [client setDefaultHeader:@"User-Agent" value:[[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent]];
@@ -164,64 +162,6 @@ NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
                  self.password = nil;
                  if (failure) failure(error);
              }];
-    return;
-#endif
-    // Workaround
-    NSString *queryUrl = [NSString stringWithFormat:@"%@/authorize?client_id=%@&redirect_uri=%@&response_type=code&scope=global&blog_id=0", WordPressComApiOauthBaseUrl, [WordPressComApi WordPressAppId], WordPressComApiOauthRedirectUrl];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:queryUrl]];
-    [request setValue:[[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-    queryUrl = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
-                                                                                     NULL,
-                                                                                     (CFStringRef)queryUrl,
-                                                                                     NULL,
-                                                                                     (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                                     kCFStringEncodingUTF8 ));
-    NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
-                              [username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                              [password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                              queryUrl];
-    [request setURL:[NSURL URLWithString:WordPressComApiLoginUrl]];
-    [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
-    [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
-    [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-    [request setHTTPMethod:@"POST"];
-    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:request
-                                                                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                                                                          if (![[operation.request.URL absoluteString] hasPrefix:WordPressComApiOauthRedirectUrl]) {
-                                                                              NSError *error = [NSError errorWithDomain:WordPressComApiErrorDomain code:WordPressComApiErrorLoginFailed userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Login failed", @"")}];
-                                                                              if (failure) failure(error);
-                                                                          }
-                                                                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                                                          if (failure) failure(error);
-                                                                      }];
-    [operation setRedirectResponseBlock:^NSURLRequest *(NSURLConnection *connection, NSURLRequest *request, NSURLResponse *redirectResponse) {
-        NSURL *redirectURL = request.URL;
-        if ([[redirectURL absoluteString] hasPrefix:WordPressComApiOauthRedirectUrl]) {
-            NSString *query = [redirectURL query];
-            NSDictionary *parameters = [query dictionaryFromQueryString];
-            NSString *code = [parameters objectForKey:@"code"];
-            if (code) {
-                [connection cancel];
-
-                NSDictionary *params = @{
-                                         @"client_id": [WordPressComApi WordPressAppId],
-                                         @"redirect_uri": WordPressComApiOauthRedirectUrl,
-                                         @"client_secret": [WordPressComApi WordPressAppSecret],
-                                         @"code": code,
-                                         @"grant_type": @"authorization_code"
-                                         };
-                [self postPath:@"/oauth2/token"
-                    parameters:params
-                       success:successBlock failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                           self.username = nil;
-                           self.password = nil;
-                           if (failure) failure(error);
-                       }];
-            }
-        }
-        return request;
-    }];
-    [self enqueueHTTPRequestOperation:operation];
 }
 
 - (void)signInWithToken:(NSString *)token {
