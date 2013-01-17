@@ -33,4 +33,13 @@
 
 + (BOOL)syncNotesWithResponse:(NSArray *)notesData withManagedObjectContext:(NSManagedObjectContext *)context;
 
+/**
+ Remove old notes from Core Data storage
+
+ It will keep at least the 40 latest notes
+ @param timestamp if not nil, it well keep all notes newer this timestamp.
+ @param context The context which contains the notes to delete.
+ */
++ (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context;
+
 @end

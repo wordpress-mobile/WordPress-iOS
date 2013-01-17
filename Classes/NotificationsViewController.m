@@ -70,6 +70,10 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     [self refreshVisibleUnreadNotes];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [self pruneOldNotes];
+}
+
 #pragma mark - Custom methods
 
 - (void)refreshVisibleUnreadNotes {
@@ -99,6 +103,27 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:[NSDate date] forKey:NotificationsLastSyncDateKey];
     [defaults synchronize];
+}
+
+- (void)pruneOldNotes {
+    NSNumber *pruneBefore;
+    Note *lastVisibleNote = [[[self.tableView visibleCells] lastObject] note];
+    if (lastVisibleNote) {
+        pruneBefore = lastVisibleNote.timestamp;
+    }
+
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+    if (selectedIndexPath) {
+        Note *selectedNote = [self.resultsController objectAtIndexPath:selectedIndexPath];
+        if (selectedNote) {
+            // NSOrderedSame could mean either same timestamp, or lastVisibleNote is nil
+            // so we overwrite the value
+            if ([pruneBefore compare:selectedNote.timestamp] != NSOrderedAscending) {
+                pruneBefore = selectedNote.timestamp;
+            }
+        }
+    }
+    [Note pruneOldNotesBefore:pruneBefore withContext:self.resultsController.managedObjectContext];
 }
 
 #pragma mark - Public methods
@@ -223,6 +248,9 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 }
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    if (userInteraction) {
+        [self pruneOldNotes];
+    }
     NSNumber *timestamp;
     NSArray *notes = [self.resultsController fetchedObjects];
     if ([notes count] > 0) {

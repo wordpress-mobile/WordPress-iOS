@@ -10,6 +10,8 @@
 #import "NSString+Helpers.h"
 #import "JSONKit.h"
 
+const NSUInteger NoteKeepCount = 20;
+
 @interface XMLParserCollecter : NSObject <NSXMLParserDelegate>
 @property (nonatomic, strong) NSMutableString *result;
 @end
@@ -59,8 +61,38 @@
     } else {
         return YES;
     }
-    
-    
+}
+
++ (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context {
+    NSUInteger keepCount = NoteKeepCount;
+    if (timestamp) {
+        NSFetchRequest *countRequest = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
+        countRequest.predicate = [NSPredicate predicateWithFormat:@"timestamp >= %@", timestamp];
+        NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
+        countRequest.sortDescriptors = @[ dateSortDescriptor ];
+        NSError *error;
+        NSUInteger notesCount = [context countForFetchRequest:countRequest error:&error];
+        if (notesCount != NSNotFound) {
+            keepCount = MAX(keepCount, notesCount);
+        }
+    }
+
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
+    request.fetchOffset = keepCount;
+    NSSortDescriptor *dateSortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO];
+    request.sortDescriptors = @[ dateSortDescriptor ];
+    NSError *error;
+    NSArray *notes = [context executeFetchRequest:request error:&error];
+    if (error) {
+        WPFLog(@"Error pruning old notes: %@", error);
+        return;
+    }
+    for (Note *note in notes) {
+        [context deleteObject:note];
+    }
+    if(![context save:&error]){
+        WPFLog(@"Failed to save after pruning notes: %@", error);
+    }
 }
 
 - (NSDictionary *)getNoteData {
