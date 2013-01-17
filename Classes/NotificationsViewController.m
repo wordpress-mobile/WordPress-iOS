@@ -97,12 +97,14 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 - (void)displayOauthController:(NSNotification *)note {
     
     [WPComOAuthController presentWithClientId:[WordPressComApi WordPressAppId]
-                                  redirectUrl:@"wpios://oauth/connect"
+                                  redirectUrl:@"http://wordpress.com/"
                                  clientSecret:[WordPressComApi WordPressAppSecret]
+                                       blogId:@"0"
+                                        scope:@"global"
                                      delegate:self];
 }
 
-- (void)controller:(WPComOAuthController *)controller didAuthenticateWithToken:(NSString *)token blog:(NSString *)blogUrl {
+- (void)controller:(WPComOAuthController *)controller didAuthenticateWithToken:(NSString *)token blog:(NSString *)blogUrl scope:(NSString *)scope {
     // give the user the new auth token
     self.user.authToken = token;
     

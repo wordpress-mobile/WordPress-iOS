@@ -16,11 +16,6 @@
 #define WPCOM_LOGIN_URL @"https://wordpress.com/wp-login.php"
 
 @implementation WPComOAuthController
-@synthesize webView;
-@synthesize delegate;
-@synthesize clientId;
-@synthesize redirectUrl;
-@synthesize clientSecret;
 
 #pragma mark - View lifecycle
 
@@ -36,7 +31,10 @@
                                                                    error:&error];
 
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    NSString *queryUrl = [NSString stringWithFormat:@"%@/authorize?client_id=%@&redirect_uri=%@&response_type=code", OAUTH_BASE_URL, self.clientId, self.redirectUrl];
+    NSString *queryUrl = [NSString stringWithFormat:@"%@/authorize?client_id=%@&redirect_uri=%@&response_type=code&scope=%@", OAUTH_BASE_URL, self.clientId, self.redirectUrl, self.scope];
+    if (self.blogId != nil) {
+        queryUrl = [queryUrl stringByAppendingFormat:@"&blog_id=%@", self.blogId];
+    }
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:queryUrl]];
     [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
     if (wpcom_username && wpcom_password) {
@@ -99,12 +97,13 @@
         NSDictionary *response = (NSDictionary *)[responseString objectFromJSONString];
         NSString *token = [response objectForKey:@"access_token"];
         NSString *blogUrl = [response objectForKey:@"blog_url"];
+        NSString *scope = [response objectForKey:@"scope"];
         if (token && blogUrl) {
             UIWindow *window = [[WordPressAppDelegate sharedWordPressApplicationDelegate] window];
             [window.rootViewController dismissModalViewControllerAnimated:YES];
             
-            if (self.delegate && [self.delegate respondsToSelector:@selector(controller:didAuthenticateWithToken:blog:)]) {
-                [self.delegate controller:self didAuthenticateWithToken:token blog:blogUrl];
+            if (self.delegate && [self.delegate respondsToSelector:@selector(controller:didAuthenticateWithToken:blog:scope:)]) {
+                [self.delegate controller:self didAuthenticateWithToken:token blog:blogUrl scope:scope];
             }
         } else {
             [self cancel:nil];
@@ -112,16 +111,18 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [self cancel:nil];
     }];
-    [webView loadHTMLString:@"Access granted, getting permament access..." baseURL:[NSURL URLWithString:OAUTH_BASE_URL]];
+    [self.webView loadHTMLString:@"Access granted, getting permament access..." baseURL:[NSURL URLWithString:OAUTH_BASE_URL]];
     [operation start];
 }
 
-+ (void)presentWithClientId:(NSString *)clientId redirectUrl:(NSString *)redirectUrl clientSecret:(NSString *)clientSecret delegate:(id<WPComOAuthDelegate>)delegate {
++ (void)presentWithClientId:(NSString *)clientId redirectUrl:(NSString *)redirectUrl clientSecret:(NSString *)clientSecret blogId:(NSString *)blogId scope:(NSString *)scope delegate:(id<WPComOAuthDelegate>)delegate {
     WPComOAuthController *controller = [[WPComOAuthController alloc] init];
     controller.clientId = clientId;
     controller.redirectUrl = redirectUrl;
     controller.delegate = delegate;
     controller.clientSecret = clientSecret;
+    controller.scope = scope;
+    controller.blogId = blogId;
     UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
     UIWindow *window = [[WordPressAppDelegate sharedWordPressApplicationDelegate] window];
     if (IS_IPAD) {
@@ -129,6 +130,11 @@
 		navigation.modalPresentationStyle = UIModalPresentationFormSheet;
     }
     [window.rootViewController presentModalViewController:navigation animated:YES];
+
+}
+
++ (void)presentWithClientId:(NSString *)clientId redirectUrl:(NSString *)redirectUrl clientSecret:(NSString *)clientSecret delegate:(id<WPComOAuthDelegate>)delegate {
+    [self presentWithClientId:clientId redirectUrl:redirectUrl clientSecret:clientSecret blogId:nil scope:nil delegate:delegate];
 }
 
 #pragma mark - UIWebViewDelegate

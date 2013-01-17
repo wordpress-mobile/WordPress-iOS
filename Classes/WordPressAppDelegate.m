@@ -1310,7 +1310,7 @@
     NSURL *callback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://wordpress-sso", oauthCallback]];
     [[UIApplication sharedApplication] openURL:callback];
 }
-- (void)controller:(WPComOAuthController *)controller didAuthenticateWithToken:(NSString *)token blog:(NSString *)blogUrl {
+- (void)controller:(WPComOAuthController *)controller didAuthenticateWithToken:(NSString *)token blog:(NSString *)blogUrl scope:(NSString *)scope {
     NSLog(@"OAuth successful. Token %@ Blog %@", token, blogUrl);
     NSString *encodedToken = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
                                                                                  NULL,
