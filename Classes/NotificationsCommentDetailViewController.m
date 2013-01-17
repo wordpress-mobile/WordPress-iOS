@@ -16,16 +16,18 @@
 #import "NoteComment.h"
 
 #define APPROVE_BUTTON_TAG 1
-#define TRASH_BUTTON_TAG 2
-#define SPAM_BUTTON_TAG 3
+#define UNAPPROVE_BUTTON_TAG 2
+#define TRASH_BUTTON_TAG 3
+#define UNTRASH_BUTTON_TAG 4
+#define SPAM_BUTTON_TAG 5
+#define UNSPAM_BUTTON_TAG 6
 
 const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight = 64.f;
 
 @interface NotificationsCommentDetailViewController () <NoteCommentCellDelegate>
 
 @property NSUInteger followBlogID;
-@property BOOL canApprove, canTrash, canSpam;
-@property NSArray *commentActions;
+@property NSDictionary *commentActions;
 @property NSDictionary *followDetails;
 @property NSDictionary *comment;
 @property NSDictionary *post;
@@ -63,6 +65,7 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     
     self.approveBarButton = [self barButtonItemWithImageNamed:@"toolbar_approve"
                                                           andAction:@selector(moderateComment:)];
+
     self.trashBarButton = [self barButtonItemWithImageNamed:@"toolbar_delete"
                                                    andAction:@selector(moderateComment:)];
     self.spamBarButton = [self barButtonItemWithImageNamed:@"toolbar_flag"
@@ -70,9 +73,6 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     self.replyBarButton = [self barButtonItemWithImageNamed:@"toolbar_reply"
                                                   andAction:@selector(startReply:)];
     
-    self.approveBarButton.tag = APPROVE_BUTTON_TAG;
-    self.trashBarButton.tag = TRASH_BUTTON_TAG;
-    self.spamBarButton.tag = SPAM_BUTTON_TAG;
 
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc]
                                initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -125,7 +125,6 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     
     // let's get the real comment off of the api
     NSArray *actions = [self.note.noteData valueForKeyPath:@"body.actions"];
-    self.commentActions = actions;
     NSDictionary *action = [actions objectAtIndex:0];
     NSArray *items = [self.note.noteData valueForKeyPath:@"body.items"];
     self.siteID = [action valueForKeyPath:@"params.blog_id"];
@@ -156,25 +155,39 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         }];
     }
+        
+    self.spamBarButton.enabled = NO;
+    self.trashBarButton.enabled = NO;
+    self.approveBarButton.enabled = NO;
     
-    self.canApprove = NO;
-    self.canTrash = NO;
-    self.canSpam = NO;
+    
+    NSMutableDictionary *indexedActions = [[NSMutableDictionary alloc] initWithCapacity:[actions count]];
     [actions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSDictionary *action = obj;
-        NSString *type = [action valueForKeyPath:@"type"];
-        if ([type isEqualToString:@"unapprove-comment"]) {
-            self.canApprove = YES;
-        } else if ([type isEqualToString:@"spam-comment"]){
-            self.canSpam = YES;
-        } else if ([type isEqualToString:@"trash-comment"]){
-            self.canTrash = YES;
+        NSString *actionType = [obj valueForKey:@"type"];
+        [indexedActions setObject:obj forKey:actionType];
+        if ([actionType isEqualToString:@"approve-comment"]) {
+            self.approveBarButton.enabled = YES;
+            self.approveBarButton.customView.tag = APPROVE_BUTTON_TAG;
+        } else if ([actionType isEqualToString:@"unapprove-comment"]){
+            self.approveBarButton.enabled = YES;
+            self.approveBarButton.customView.tag = UNAPPROVE_BUTTON_TAG;
+        } else if ([actionType isEqualToString:@"spam-comment"]){
+            self.spamBarButton.enabled = YES;
+            self.spamBarButton.customView.tag = SPAM_BUTTON_TAG;
+        } else if ([actionType isEqualToString:@"unspam-comment"]){
+            self.spamBarButton.enabled = YES;
+            self.spamBarButton.customView.tag = UNSPAM_BUTTON_TAG;
+        } else if ([actionType isEqualToString:@"trash-comment"]){
+            self.trashBarButton.enabled = YES;
+            self.trashBarButton.customView.tag = TRASH_BUTTON_TAG;
+        } else if ([actionType isEqualToString:@"untrash-comment"]){
+            self.trashBarButton.enabled = YES;
+            self.trashBarButton.customView.tag = UNTRASH_BUTTON_TAG;
         }
     }];
     
-    self.spamBarButton.enabled = self.canSpam;
-    self.trashBarButton.enabled = self.canTrash;
-    self.approveBarButton.enabled = self.canApprove;
+    self.commentActions = indexedActions;
+    
 }
 
 - (UIBarButtonItem *)barButtonItemWithImageNamed:(NSString *)image andAction:(SEL)action {
@@ -216,41 +229,30 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 }
 
 - (IBAction)moderateComment:(id)sender {
-    
     if (self.commentActions == nil || [self.commentActions count] == 0)
         return;
-    
-    // Get blog_id and comment_id for api call
-    NSDictionary *commentAction = [[self.commentActions objectAtIndex:0] objectForKey:@"params"];
-    NSUInteger blogID = [[commentAction objectForKey:@"blog_id"] intValue];
-    NSUInteger commentID = [[commentAction objectForKey:@"comment_id"] intValue];
-    
-    if (!blogID || !commentID)
-        return;
-    
+            
+    NSDictionary *commentAction;
     UIButton *button = (UIButton *)sender;
-    NSString *commentStatus = @"approved";
+    
     if (button.tag == APPROVE_BUTTON_TAG) {
-        if (self.canApprove)
-            commentStatus = @"approved";
-        else
-            commentStatus = @"unapproved";
-    } else if (button.tag == SPAM_BUTTON_TAG) {
-        if (self.canSpam)
-            commentStatus = @"spam";
-        else
-            commentStatus = @"unspam";
-    } else if (button.tag == TRASH_BUTTON_TAG) {
-        if (self.canTrash)
-            commentStatus = @"trash";
-        else
-            commentStatus = @"untrash";
+        commentAction = [self.commentActions objectForKey:@"approve-comment"];
+    } else if (button.tag == UNAPPROVE_BUTTON_TAG) {
+        commentAction = [self.commentActions objectForKey:@"unapprove-comment"];
+    } else if (button.tag == TRASH_BUTTON_TAG){
+        commentAction = [self.commentActions objectForKey:@"trash-comment"];
+    } else if (button.tag == UNTRASH_BUTTON_TAG){
+        commentAction = [self.commentActions objectForKey:@"untrash-comment"];
+    } else if (button.tag == SPAM_BUTTON_TAG){
+        commentAction = [self.commentActions objectForKey:@"spam-comment"];
+    } else if (button.tag == UNSPAM_BUTTON_TAG){
+        commentAction = [self.commentActions objectForKey:@"unspam-comment"];
     }
     
-    [button setEnabled:NO];
+    button.enabled = NO;
     
-    [[WordPressComApi sharedApi] moderateComment:blogID forCommentID:commentID withStatus:commentStatus success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        // Update note to have new status
+    NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
+    [self.user.restClient postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *response = (NSDictionary *)responseObject;
         if (response) {
             NSArray *noteArray = [NSArray arrayWithObject:_note];
@@ -260,12 +262,9 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
                 [self displayNote];
             }];
         }
-        [button setEnabled:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [button setEnabled:YES];
+        button.enabled = YES;
     }];
-    
-    
     
 }
 
@@ -275,7 +274,7 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     if ([replyText length] > 0) {
         
         // Get blog_id and comment_id for api call
-        NSDictionary *commentAction = [[_commentActions objectAtIndex:0] objectForKey:@"params"];
+        NSDictionary *commentAction = [self.commentActions objectForKey:@"reply"];
         NSUInteger blogID = [[commentAction objectForKey:@"blog_id"] intValue];
         NSUInteger commentID = [[commentAction objectForKey:@"comment_id"] intValue];
         
