@@ -175,7 +175,7 @@ NSString *const WordPressComApiNotesUserInfoKey = @"notes";
     if (timestamp != nil) {
         parameters = @{ @"since" : timestamp };
     }
-    [self getNotificationsWithParameters:@{ @"since" : timestamp } success:success failure:failure];
+    [self getNotificationsWithParameters:parameters success:success failure:failure];
     
 }
 
