@@ -17,6 +17,7 @@
 @interface NotificationsFollowDetailViewController ()
 
 @property NSMutableArray *noteData;
+@property BOOL hasFooter;
 
 - (void)followBlog:(id)sender;
 
@@ -69,14 +70,7 @@
     
     NSString *footerText = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer_text"];
     if (footerText && ![footerText isEqualToString:@""]) {
-        UIButton *footerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [footerButton setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 40.0f)];
-        [footerButton setBackgroundColor:[UIColor UIColorFromHex:0xDEDEDE]];
-        [footerButton setTitleColor:[UIColor UIColorFromHex:0x5F5F5F] forState:UIControlStateNormal];
-        [footerButton.titleLabel setFont:[UIFont systemFontOfSize:13.0f]];
-        [footerButton setTitle:footerText forState:UIControlStateNormal];
-        [footerButton addTarget:self action:@selector(viewFooterURL) forControlEvents:UIControlEventTouchUpInside];
-        [_tableView setTableFooterView:footerButton];
+        _hasFooter = YES;
     }
     
     
@@ -100,72 +94,99 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    if (_hasFooter)
+        return 2;
+    else
+        return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [_noteData count];
+    if (section == 0)
+        return [_noteData count];
+    else
+        return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 100.0f;
+    if (indexPath.section == 0)
+        return 100.0f;
+    else
+        return 60.0f;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"FollowCell";
-    NotificationsFollowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[NotificationsFollowTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        [cell.actionButton addTarget:self action:@selector(followBlog:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    
-    cell.textLabel.text = @"";
-    cell.detailTextLabel.text = @"";
-    [cell.actionButton setHidden:NO];
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    
-    NSDictionary *selectedNote = [_noteData objectAtIndex:indexPath.row];
-    NSDictionary *noteAction = [selectedNote objectForKey:@"action"];
-    NSDictionary *noteActionDetails;
-    if ([noteAction isKindOfClass:[NSDictionary class]])
-        noteActionDetails = [noteAction objectForKey:@"params"];
-    if (noteActionDetails) {
-        if ([[noteAction objectForKey:@"type"] isEqualToString:@"follow"]) {
-             if (![[noteActionDetails objectForKey:@"blog_title"] isEqualToString:@""]) {
-                 [cell.actionButton setTitle:[NSString decodeXMLCharactersIn: [noteActionDetails objectForKey:@"blog_title"]] forState:UIControlStateNormal];
-                 if ([[noteActionDetails objectForKey:@"is_following"] intValue] == 1) {
-                     [cell setFollowing: YES];
-                 } else {
-                     [cell setFollowing: NO];
-                 }
+    if (indexPath.section == 0) {
+        static NSString *CellIdentifier = @"FollowCell";
+        NotificationsFollowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[NotificationsFollowTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+            [cell.actionButton addTarget:self action:@selector(followBlog:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
+        cell.textLabel.text = @"";
+        cell.detailTextLabel.text = @"";
+        [cell.actionButton setHidden:NO];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        
+        NSDictionary *selectedNote = [_noteData objectAtIndex:indexPath.row];
+        NSDictionary *noteAction = [selectedNote objectForKey:@"action"];
+        NSDictionary *noteActionDetails;
+        if ([noteAction isKindOfClass:[NSDictionary class]])
+            noteActionDetails = [noteAction objectForKey:@"params"];
+        if (noteActionDetails) {
+            if ([[noteAction objectForKey:@"type"] isEqualToString:@"follow"]) {
+                 if (![[noteActionDetails objectForKey:@"blog_title"] isEqualToString:@""]) {
+                     [cell.actionButton setTitle:[NSString decodeXMLCharactersIn: [noteActionDetails objectForKey:@"blog_title"]] forState:UIControlStateNormal];
+                     if ([[noteActionDetails objectForKey:@"is_following"] intValue] == 1) {
+                         [cell setFollowing: YES];
+                     } else {
+                         [cell setFollowing: NO];
+                     }
+                } else {
+                     NSString *blogTitle = [selectedNote objectForKey:@"header_text"];
+                     if ([blogTitle length] == 0)
+                         blogTitle = NSLocalizedString(@"(No Title)", @"Blog with no title");
+                     [cell.actionButton setTitle:blogTitle forState:UIControlStateNormal];
+                }
+                [cell.actionButton setTag:indexPath.row];
+                if ([noteActionDetails objectForKey:@"blog_url"]) {
+                    cell.detailTextLabel.text = [[NSString decodeXMLCharactersIn:[noteActionDetails objectForKey:@"blog_url"]] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                }
             } else {
-                 NSString *blogTitle = [selectedNote objectForKey:@"header_text"];
-                 if ([blogTitle length] == 0)
-                     blogTitle = NSLocalizedString(@"(No Title)", @"Blog with no title");
-                 [cell.actionButton setTitle:blogTitle forState:UIControlStateNormal];
-            }
-            [cell.actionButton setTag:indexPath.row];
-            if ([noteActionDetails objectForKey:@"blog_url"]) {
-                cell.detailTextLabel.text = [[NSString decodeXMLCharactersIn:[noteActionDetails objectForKey:@"blog_url"]] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                [cell.actionButton setHidden:YES];
             }
         } else {
+            // No action available for this user
             [cell.actionButton setHidden:YES];
+            cell.textLabel.text = [selectedNote objectForKey:@"header_text"];
         }
+        if ([selectedNote objectForKey:@"icon"]) {
+            NSString *imageURL = [[selectedNote objectForKey:@"icon"] stringByReplacingOccurrencesOfString:@"s=32" withString:@"s=160"];
+            [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"note_icon_placeholder"]];
+        }
+        return cell;
     } else {
-        // No action available for this user
-        [cell.actionButton setHidden:YES];
-        cell.textLabel.text = [selectedNote objectForKey:@"header_text"];
-    }
-    if ([selectedNote objectForKey:@"icon"]) {
-        NSString *imageURL = [[selectedNote objectForKey:@"icon"] stringByReplacingOccurrencesOfString:@"s=32" withString:@"s=160"];
-        [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"note_icon_placeholder"]];
+        static NSString *CellIdentifier = @"FooterCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
+            cell.backgroundView = imageView;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.backgroundColor = [UIColor clearColor];
+            cell.textLabel.textColor = [UIColor UIColorFromHex:0x0074A2];
+            cell.textLabel.font = [UIFont boldSystemFontOfSize:15.0f];
+        }
+        NSString *footerText = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer_text"];
+        cell.textLabel.text = footerText;
+        return cell;
     }
     
-    return cell;
+    return nil;
 }
 
 - (void)followBlog:(id)sender {
@@ -232,27 +253,31 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *noteAction = [[_noteData objectAtIndex:indexPath.row] objectForKey:@"action"];
-    NSDictionary *likeDetails;
-    if ([noteAction isKindOfClass:[NSDictionary class]])
-        likeDetails = [noteAction objectForKey:@"params"];
-    if (likeDetails) {
-        NSString *blogURLString = [likeDetails objectForKey:@"blog_url"];
-        NSURL *blogURL = [NSURL URLWithString:blogURLString];
-        if (!blogURL)
-            return;
-        WPWebViewController *webViewController = nil;
-        if ( IS_IPAD ) {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
-        }
-        else {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-        }
+    if (indexPath.section == 0) {
+        NSDictionary *noteAction = [[_noteData objectAtIndex:indexPath.row] objectForKey:@"action"];
+        NSDictionary *likeDetails;
+        if ([noteAction isKindOfClass:[NSDictionary class]])
+            likeDetails = [noteAction objectForKey:@"params"];
+        if (likeDetails) {
+            NSString *blogURLString = [likeDetails objectForKey:@"blog_url"];
+            NSURL *blogURL = [NSURL URLWithString:blogURLString];
+            if (!blogURL)
+                return;
+            WPWebViewController *webViewController = nil;
+            if ( IS_IPAD ) {
+                webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
+            }
+            else {
+                webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+            }
 
-        [webViewController setUrl:blogURL];
-        [self.panelNavigationController pushViewController:webViewController animated:YES];
+            [webViewController setUrl:blogURL];
+            [self.panelNavigationController pushViewController:webViewController animated:YES];
+        } else {
+            [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+        }
     } else {
-        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+        [self viewFooterURL];
     }
     
 }
