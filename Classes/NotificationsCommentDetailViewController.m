@@ -227,7 +227,7 @@
     
 }
 
-- (IBAction)replyToComment {
+- (IBAction)replyToComment:(id)sender {
     NSString *replyText = _replyTextView.text;
     
     if ([replyText length] > 0) {
