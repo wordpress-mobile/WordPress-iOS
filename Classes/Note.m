@@ -205,6 +205,8 @@ const NSUInteger NoteKeepCount = 20;
     if ([self isComment]) {
         NSDictionary *bodyItem = [[[self.noteData objectForKey:@"body"] objectForKey:@"items"] lastObject];
         NSString *comment = [bodyItem objectForKey:@"html"];
+        if (comment == (id)[NSNull null] || comment.length == 0 )
+            return;
         comment = [comment stringByStrippingHTML];
         
         NSString *xmlString = [NSString stringWithFormat:@"<d>%@</d>", comment];

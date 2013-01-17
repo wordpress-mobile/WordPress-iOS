@@ -157,7 +157,11 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     if (self.post == nil) {
         [self.user getPath:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             self.post = responseObject;
-            self.postBanner.titleLabel.text = [self.post valueForKeyPath:@"title"];
+            self.disclosureIndicator.hidden = NO;
+            NSString *postTitle = [[self.post valueForKeyPath:@"title"] stringByDecodingXMLCharacters];
+            if (!postTitle || [postTitle isEqualToString:@""])
+                postTitle = NSLocalizedString(@"Unitled Post", @"Used when a post has no title");
+            self.postBanner.titleLabel.text = postTitle;
             id authorAvatarURL = [self.post valueForKeyPath:@"author.avatar_URL"];
             if ([authorAvatarURL isKindOfClass:[NSString class]]) {
                 [self.postBanner.avatarImageView setImageWithURL:[NSURL URLWithString:authorAvatarURL]];
@@ -264,10 +268,9 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     frame.origin.y = self.tableView.contentSize.height;
     UIView *scrollBackView = [[UIView alloc] initWithFrame:frame];
     scrollBackView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-    scrollBackView.backgroundColor = [UIColor greenColor];
     //[self.tableView addSubview:scrollBackView];
     self.tableView.backgroundView = [[UIView alloc] initWithFrame:self.tableView.bounds];
-    self.tableView.backgroundView.backgroundColor = [NoteCommentCell darkBackgroundColor];
+    self.tableView.backgroundView.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
 }
 
 
@@ -411,6 +414,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             if (![parent isEqual:@0]) {
                 [self addScrollBackView];
                 parentComment = [[NoteComment alloc] initWithCommentID:[parent valueForKey:@"ID"]];
+                parentComment.isParentComment = YES;
             }
             
             CGPoint offset = self.tableView.contentOffset;
@@ -426,7 +430,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
                 // animate
                 [self.tableView beginUpdates];
                                 
-                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:commentIndexPath.section] withRowAnimation:UITableViewRowAnimationNone];
+                //[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:commentIndexPath.section] withRowAnimation:UITableViewRowAnimationNone];
 
                 if (parentComment) {
                     [self.commentThread insertObject:parentComment atIndex:0];
@@ -494,6 +498,8 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
                 if (headerCell == nil) {
                     headerCell = [[NoteCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NotificationsCommentHeaderCellIdentifiter];
                 }
+                if ([comment isParentComment])
+                    [headerCell displayAsParentComment];
                 headerCell.delegate = self;
                 [self prepareCommentHeaderCell:headerCell forCommment:comment];
                 cell = headerCell;
@@ -519,10 +525,14 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             }
             [self.contentCache setObject:contentCell forKey:comment];
             NSString *html = [comment.commentData valueForKey:@"content"];
+            if (!html)
+                html = self.note.commentText;
             if (html != nil) {
                 contentCell.attributedString = [self convertHTMLToAttributedString:html];
                 contentCell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
+            if ([comment isParentComment])
+                [contentCell displayAsParentComment];
             cell = contentCell;
             break;
         }
@@ -571,13 +581,13 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         return nil;
     } else {
         NSString *imageName;
-//        if (section == [self.commentThread count]-2) {
-//           // white
-//            imageName = @"note-comment-parent-footer";
-//        } else {
-//            imageName = @"note-comment-grandparent-footer";
-//        }
-        imageName = @"note-comment-parent-footer";
+        if (section == [self.commentThread count]-2) {
+           // white
+            imageName = @"note-comment-parent-footer";
+        } else {
+            imageName = @"note-comment-grandparent-footer";
+        }
+        //imageName = @"note-comment-parent-footer";
         UIEdgeInsets insets = UIEdgeInsetsMake(0.f, 68.f, 19.f, 0.f);
         UIImage *image = [[UIImage imageNamed:imageName] resizableImageWithCapInsets:insets];
         return [[UIImageView alloc] initWithImage:image];
@@ -598,7 +608,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     CGFloat height;
     switch (indexPath.row) {
         case NotificationCommentCellTypeHeader:
-            height = (comment.isLoaded || mainComment) ? NoteCommentCellHeight : NoteCommentLoadingCellHeight;
+            height = (comment.isLoaded || mainComment) ? (comment.isParentComment) ? NoteCommentCellHeight - 36.0f : NoteCommentCellHeight : NoteCommentLoadingCellHeight;
             break;
         case NotificationCommentCellTypeContent:
         {

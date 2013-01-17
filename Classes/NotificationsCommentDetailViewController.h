@@ -33,6 +33,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView *noteImageView;
 
 @property (nonatomic, strong) IBOutlet NoteCommentPostBanner *postBanner;
+@property (nonatomic, strong) IBOutlet UITableViewCell *disclosureIndicator;
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 

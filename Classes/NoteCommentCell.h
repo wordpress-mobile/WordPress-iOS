@@ -30,6 +30,4 @@ extern const CGFloat NoteCommentCellHeight;
 - (void)displayAsParentComment;
 - (void)showLoadingIndicator;
 
-+ darkBackgroundColor;
-
 @end

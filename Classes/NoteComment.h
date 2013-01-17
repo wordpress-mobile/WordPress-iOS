@@ -17,6 +17,7 @@
 @property (readonly) BOOL needsData;
 @property (readonly, getter=isLoaded) BOOL loaded;
 @property BOOL loading;
+@property BOOL isParentComment;
 
 - (id)initWithCommentID:(NSDictionary *)commentID;
 

@@ -20,10 +20,6 @@ const CGFloat NoteCommentCellHeight = 102.f;
 
 @implementation NoteCommentCell
 
-+ darkBackgroundColor {
-    return [UIColor UIColorFromHex:0xD5D6D5];
-}
-
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -39,13 +35,12 @@ const CGFloat NoteCommentCellHeight = 102.f;
         [self prepareButton:self.emailButton];
         [self.contentView addSubview:self.profileButton];
         [self.contentView addSubview:self.emailButton];
-        
         [self.profileButton addTarget:self action:@selector(openProfileURL:) forControlEvents:UIControlEventTouchUpInside];
         
         self.textLabel.font = [UIFont systemFontOfSize:[UIFont labelFontSize]];
         
-//        self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
-//        self.backgroundView.backgroundColor = [UIColor whiteColor];
+        self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
+        self.backgroundView.backgroundColor = [UIColor whiteColor];
   }
     return self;
 }
@@ -58,7 +53,7 @@ const CGFloat NoteCommentCellHeight = 102.f;
     button.titleLabel.textAlignment = NSTextAlignmentLeft;
     button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-    [button setTitleColor:[UIColor UIColorFromHex:0x0074A2] forState:UIControlStateNormal];
+    [button setTitleColor:WP_LINK_COLOR forState:UIControlStateNormal];
     [button setTitleColor:[UIColor UIColorFromHex:0x5F5F5F] forState:UIControlStateHighlighted];
     button.backgroundColor = [UIColor whiteColor];
     button.hidden = YES;
@@ -66,6 +61,7 @@ const CGFloat NoteCommentCellHeight = 102.f;
 
 - (void)prepareForReuse {
     self.delegate = nil;
+    self.parentComment = NO;
     self.backgroundView.backgroundColor = [UIColor whiteColor];
     self.textLabel.backgroundColor = [UIColor whiteColor];
     self.emailButton.backgroundColor = [UIColor whiteColor];
@@ -74,6 +70,7 @@ const CGFloat NoteCommentCellHeight = 102.f;
     self.emailButton.hidden = YES;
     self.textLabel.text = @"";
     self.imageView.hidden = YES;
+    self.imageView.frame = CGRectMake(10.f, 10.f, 92.f, 92.f);
 }
 
 - (void)setFollowButton:(FollowButton *)followButton {
@@ -90,7 +87,10 @@ const CGFloat NoteCommentCellHeight = 102.f;
 
     [super layoutSubviews];
     self.imageView.backgroundColor = [UIColor grayColor];
-    self.imageView.frame = CGRectMake(10.f, 10.f, 92.f, 92.f);
+    CGFloat gravatarSize = 92.0f;
+    if (self.parentComment)
+        gravatarSize = 58.0f;
+    self.imageView.frame = CGRectMake(10.f, 10.f, gravatarSize, gravatarSize);
     CGFloat metaX = CGRectGetMaxX(self.imageView.frame);
     CGFloat availableWidth = self.bounds.size.width - metaX;
     CGRect labelFrame = CGRectInset( CGRectMake(metaX, self.imageView.frame.origin.y, availableWidth, 30.f), 10.f, 0.f);
@@ -129,13 +129,11 @@ const CGFloat NoteCommentCellHeight = 102.f;
 
 
 - (void)displayAsParentComment {
-    UIColor *parentGrayColor = [[self class] darkBackgroundColor];
     self.parentComment = YES;
-    self.backgroundView.backgroundColor = parentGrayColor;
-    self.textLabel.backgroundColor = parentGrayColor;
-    self.profileButton.backgroundColor = parentGrayColor;
-    self.emailButton.backgroundColor = parentGrayColor;
-
+    self.backgroundView.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
+    self.textLabel.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
+    self.profileButton.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
+    self.emailButton.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
 }
 
 - (void)linkPushed:(id)sender {

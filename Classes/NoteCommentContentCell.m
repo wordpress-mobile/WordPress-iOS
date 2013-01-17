@@ -25,15 +25,17 @@
         self.attributedTextView.edgeInsets = UIEdgeInsetsMake(10.f, 10.f, 20.f, 10.f);
         self.attributedTextView.shouldDrawLinks = NO;
         self.attributedTextView.delegate = self;
+        self.attributedTextView.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:self.attributedTextView];
-
+        self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
+        self.backgroundView.backgroundColor = [UIColor whiteColor];
     }
     return self;
 }
 
 
 - (NSAttributedString *)attributedString {
-    return  self.attributedTextView.attributedString;
+    return self.attributedTextView.attributedString;
 }
 
 - (void)setAttributedString:(NSAttributedString *)attributedString {
@@ -44,13 +46,18 @@
     NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
     
     DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
-    button.attributedString = string;
     button.URL = [attributes objectForKey:DTLinkAttribute];
     button.GUID = [attributes objectForKey:DTGUIDAttribute];
     
+    NSMutableAttributedString *attributedString = [string mutableCopy];
+    NSRange range = NSMakeRange(0, [attributedString length]);
+	NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:(__bridge id)WP_LINK_COLOR.CGColor forKey:(id)kCTForegroundColorAttributeName];
+    
+    [attributedString addAttributes:stringAttributes range:range];
+    button.attributedString = attributedString;
+    
     NSMutableAttributedString *highlightedString = [string mutableCopy];
-    NSRange range = NSMakeRange(0, [highlightedString length]);
-	NSDictionary *highlightedAttributes = [NSDictionary dictionaryWithObject:(__bridge id)[UIColor redColor].CGColor forKey:(id)kCTForegroundColorAttributeName];
+	NSDictionary *highlightedAttributes = [NSDictionary dictionaryWithObject:(__bridge id)[UIColor darkGrayColor].CGColor forKey:(id)kCTForegroundColorAttributeName];
     
     [highlightedString addAttributes:highlightedAttributes range:range];
     
@@ -70,6 +77,18 @@
     if ([self.delegate respondsToSelector:@selector(commentCell:didTapURL:)]) {
         [self.delegate commentCell:self didTapURL:url];
     }
+}
+
+- (void)displayAsParentComment {
+    self.isParentComment = YES;
+    
+    NSMutableAttributedString *colorString = [self.attributedString mutableCopy];
+    NSRange range = NSMakeRange(0, [colorString length]);
+    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:(__bridge id)[UIColor UIColorFromHex:0x494949].CGColor forKey:(id)kCTForegroundColorAttributeName];
+    [colorString addAttributes:stringAttributes range:range];
+    self.attributedTextView.attributedString = colorString;
+    
+    self.backgroundView.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
 }
 
 @end

@@ -23,5 +23,8 @@
 
 @property (assign) id <NoteCommentContentCellDelegate> delegate;
 @property (nonatomic, strong) NSAttributedString *attributedString;
+@property (nonatomic, assign) BOOL isParentComment;
+
+- (void)displayAsParentComment;
 
 @end

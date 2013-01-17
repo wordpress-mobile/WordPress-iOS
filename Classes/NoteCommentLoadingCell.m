@@ -24,7 +24,7 @@ CGFloat const NoteCommentLoadingCellHeight = 30.f;
         // Initialization code
         [self setupLoadingIndicator];
         self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
-        self.backgroundView.backgroundColor = [UIColor whiteColor];
+        self.backgroundView.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
     }
     return self;
 }

@@ -34,7 +34,7 @@
         [self.textLabel setFont:[UIFont boldSystemFontOfSize:16.0f]];
         
         [self.detailTextLabel setFont:[UIFont systemFontOfSize:14.0f]];
-        [self.detailTextLabel setTextColor:[UIColor UIColorFromHex:0x0074A2]];
+        [self.detailTextLabel setTextColor:WP_LINK_COLOR];
         [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
         [self.detailTextLabel setNumberOfLines:1];
         [self.detailTextLabel setAdjustsFontSizeToFitWidth:NO];
