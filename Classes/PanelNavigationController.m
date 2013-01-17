@@ -717,9 +717,11 @@
         }];
     } else {
         [UIView animateWithDuration:0.3f delay:0 options: 0 animations:^{
-            [_dividerImageView setAlpha:1.0f];
-        } completion:^(BOOL finished){
             [self completeButtonAnimation];
+        } completion:^(BOOL finished){
+            [UIView animateWithDuration:1.0f delay:0 options: 0 animations:^{
+                [_dividerImageView setAlpha:1.0f];
+            } completion:^(BOOL finished){ }];
         }];
     }
 }
