@@ -18,9 +18,14 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
         [actionButton setFrame:CGRectMake(100.0f, 20.0f, 80.0f, 30.0f)];
+        [actionButton setImageEdgeInsets:UIEdgeInsetsMake(0.0f, 6.0f, 0.0f, 0.0f)];
         [actionButton.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0f]];
-        //[actionButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 0.0f)];
+        [actionButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 9.0f, 0.0f, 2.0f)];
+        [actionButton.imageView setContentMode:UIViewContentModeLeft];
+        [actionButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
+        [actionButton.titleLabel setLineBreakMode:UILineBreakModeTailTruncation];
         [self addSubview:actionButton];
         
         [self.textLabel setTextColor:[UIColor UIColorFromHex:0x030303]];
