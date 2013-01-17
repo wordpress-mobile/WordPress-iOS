@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Categories/NSImage(HTML).html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cat/NSImage(HTML)</TokenIdentifier>
+			<Abstract>Category used to have the same method available for unit testing on Mac on iOS.</Abstract>
+			<DeclaredIn>DTImage+HTML.h</DeclaredIn>
+			
+			<NodeRef refid="27"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSImage(HTML)/dataForPNGRepresentation</TokenIdentifier>
+			<Abstract>Retrieve the NSData representation of a NSImage.</Abstract>
+			<DeclaredIn>DTImage+HTML.h</DeclaredIn>			
+			
+			<Declaration>- (NSData *)dataForPNGRepresentation</Declaration>
+			
+			<ReturnValue><Abstract>The NSData representation of the NSImage instance receiving this message.</Abstract></ReturnValue>
+			<Anchor>//api/name/dataForPNGRepresentation</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

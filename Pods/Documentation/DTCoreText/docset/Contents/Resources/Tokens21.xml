@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Categories/NSAttributedString(DTCoreText).html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cat/NSAttributedString(DTCoreText)</TokenIdentifier>
+			<Abstract>Convenience Methods that mimick similar methods available on Mac</Abstract>
+			<DeclaredIn>NSAttributedString+DTCoreText.h</DeclaredIn>
+			
+			<NodeRef refid="21"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSAttributedString(DTCoreText)/textAttachmentsWithPredicate:</TokenIdentifier>
+			<Abstract>Retrieves the DTTextAttachment objects that match the given predicate.</Abstract>
+			<DeclaredIn>NSAttributedString+DTCoreText.h</DeclaredIn>			
+			
+			<Declaration>- (NSArray *)textAttachmentsWithPredicate:(NSPredicate *)predicate</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>predicate</Name>
+					<Abstract>The predicate to apply for filtering or nil for all attachments.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>The filtered array of attachments</Abstract></ReturnValue>
+			<Anchor>//api/name/textAttachmentsWithPredicate:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSAttributedString(DTCoreText)/itemNumberInTextList:atIndex:</TokenIdentifier>
+			<Abstract>Returns the index of the item at the given location within the list.</Abstract>
+			<DeclaredIn>NSAttributedString+DTCoreText.h</DeclaredIn>			
+			
+			<Declaration>- (NSInteger)itemNumberInTextList:(DTCSSListStyle *)list atIndex:(NSUInteger)location</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>list</Name>
+					<Abstract>The text list.</Abstract>
+				</Parameter><Parameter>
+					<Name>location</Name>
+					<Abstract>The location of the item.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>Returns the index within the list.</Abstract></ReturnValue>
+			<Anchor>//api/name/itemNumberInTextList:atIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSAttributedString(DTCoreText)/rangeOfTextList:atIndex:</TokenIdentifier>
+			<Abstract>Returns the range of the given text list that contains the given location.</Abstract>
+			<DeclaredIn>NSAttributedString+DTCoreText.h</DeclaredIn>			
+			
+			<Declaration>- (NSRange)rangeOfTextList:(DTCSSListStyle *)list atIndex:(NSUInteger)location</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>list</Name>
+					<Abstract>The text list.</Abstract>
+				</Parameter><Parameter>
+					<Name>location</Name>
+					<Abstract>The location in the text.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>The range of the given text list containing the location.</Abstract></ReturnValue>
+			<Anchor>//api/name/rangeOfTextList:atIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSAttributedString(DTCoreText)/rangeOfTextBlock:atIndex:</TokenIdentifier>
+			<Abstract>Returns the range of the given text block that contains the given location.</Abstract>
+			<DeclaredIn>NSAttributedString+DTCoreText.h</DeclaredIn>			
+			
+			<Declaration>- (NSRange)rangeOfTextBlock:(DTTextBlock *)textBlock atIndex:(NSUInteger)location</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>textBlock</Name>
+					<Abstract>The text block.</Abstract>
+				</Parameter><Parameter>
+					<Name>location</Name>
+					<Abstract>The location in the text.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>The range of the given text block containing the location.</Abstract></ReturnValue>
+			<Anchor>//api/name/rangeOfTextBlock:atIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSAttributedString(DTCoreText)/rangeOfAnchorNamed:</TokenIdentifier>
+			<Abstract>Returns the range of the given href anchor.</Abstract>
+			<DeclaredIn>NSAttributedString+DTCoreText.h</DeclaredIn>			
+			
+			<Declaration>- (NSRange)rangeOfAnchorNamed:(NSString *)anchorName</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>anchorName</Name>
+					<Abstract>The name of the anchor.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>The range of the given anchor.</Abstract></ReturnValue>
+			<Anchor>//api/name/rangeOfAnchorNamed:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSAttributedString(DTCoreText)/htmlString</TokenIdentifier>
+			<Abstract>Encodes the receiver into a generic HTML prepresentation.</Abstract>
+			<DeclaredIn>NSAttributedString+DTCoreText.h</DeclaredIn>			
+			
+			<Declaration>- (NSString *)htmlString</Declaration>
+			
+			<ReturnValue><Abstract>An HTML string.</Abstract></ReturnValue>
+			<Anchor>//api/name/htmlString</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSAttributedString(DTCoreText)/plainTextString</TokenIdentifier>
+			<Abstract>Converts the receiver into plain text.</Abstract>
+			<DeclaredIn>NSAttributedString+DTCoreText.h</DeclaredIn>			
+			
+			<Declaration>- (NSString *)plainTextString</Declaration>
+			
+			<ReturnValue><Abstract>The receiver converted to plain text.</Abstract></ReturnValue>
+			<Anchor>//api/name/plainTextString</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSAttributedString(DTCoreText)/prefixForListItemWithCounter:listStyle:listIndent:attributes:</TokenIdentifier>
+			<Abstract>Create a prefix for a paragraph in a list</Abstract>
+			<DeclaredIn>NSAttributedString+DTCoreText.h</DeclaredIn>			
+			
+			<Declaration>+ (NSAttributedString *)prefixForListItemWithCounter:(NSUInteger)listCounter listStyle:(DTCSSListStyle *)listStyle listIndent:(CGFloat)listIndent attributes:(NSDictionary *)attributes</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>listCounter</Name>
+					<Abstract>The value for the list item.</Abstract>
+				</Parameter><Parameter>
+					<Name>listStyle</Name>
+					<Abstract>The list style</Abstract>
+				</Parameter><Parameter>
+					<Name>listIndent</Name>
+					<Abstract>The amount in px to indent the list</Abstract>
+				</Parameter><Parameter>
+					<Name>attributes</Name>
+					<Abstract>The attribute dictionary for the text to be prefixed</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>An attributed string with the list prefix</Abstract></ReturnValue>
+			<Anchor>//api/name/prefixForListItemWithCounter:listStyle:listIndent:attributes:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

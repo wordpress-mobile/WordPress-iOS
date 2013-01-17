@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/DTCSSListStyle.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/DTCSSListStyle</TokenIdentifier>
+			<Abstract>This class is the equivalent of NSTextList on Mac with the added handling of the marker position.</Abstract>
+			<DeclaredIn>DTCSSListStyle.h</DeclaredIn>
+			
+			<NodeRef refid="4"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/DTCSSListStyle/listStyleTypeFromString:</TokenIdentifier>
+			<Abstract>Convert a string into a list style type.</Abstract>
+			<DeclaredIn>DTCSSListStyle.h</DeclaredIn>			
+			
+			<Declaration>+ (DTCSSListStyleType)listStyleTypeFromString:(NSString *)string</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>string</Name>
+					<Abstract>The string to convert</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/listStyleTypeFromString:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/DTCSSListStyle/listStylePositionFromString:</TokenIdentifier>
+			<Abstract>Convert a string into a marker position.</Abstract>
+			<DeclaredIn>DTCSSListStyle.h</DeclaredIn>			
+			
+			<Declaration>+ (DTCSSListStylePosition)listStylePositionFromString:(NSString *)string</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>string</Name>
+					<Abstract>The string to convert</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/listStylePositionFromString:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCSSListStyle/initWithStyles:</TokenIdentifier>
+			<Abstract>Creates a list style from the passed CSS style dictionary</Abstract>
+			<DeclaredIn>DTCSSListStyle.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithStyles:(NSDictionary *)styles</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>styles</Name>
+					<Abstract>A CSS style dictionary from which the construct a suitable list style</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/initWithStyles:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCSSListStyle/updateFromStyleDictionary:</TokenIdentifier>
+			<Abstract>Update the receiver from the CSS styles dictionary passed</Abstract>
+			<DeclaredIn>DTCSSListStyle.h</DeclaredIn>			
+			
+			<Declaration>- (void)updateFromStyleDictionary:(NSDictionary *)styles</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>styles</Name>
+					<Abstract>A dictionary of CSS styles.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/updateFromStyleDictionary:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCSSListStyle/prefixWithCounter:</TokenIdentifier>
+			<Abstract>Returns the prefix for lists of the receiver's settings.</Abstract>
+			<DeclaredIn>DTCSSListStyle.h</DeclaredIn>			
+			
+			<Declaration>- (NSString *)prefixWithCounter:(NSInteger)counter</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>counter</Name>
+					<Abstract>The counter value to use for ordered lists.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>The prefix string to prepend to list items.</Abstract></ReturnValue>
+			<Anchor>//api/name/prefixWithCounter:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCSSListStyle/setStartingItemNumber:</TokenIdentifier>
+			<Abstract>Sets the starting item number for the text list.</Abstract>
+			<DeclaredIn>DTCSSListStyle.h</DeclaredIn>			
+			
+			<Declaration>- (void)setStartingItemNumber:(NSInteger)itemNum</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>itemNum</Name>
+					<Abstract>The item number.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/setStartingItemNumber:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCSSListStyle/startingItemNumber</TokenIdentifier>
+			<Abstract>Returns the starting item number for the text list.</Abstract>
+			<DeclaredIn>DTCSSListStyle.h</DeclaredIn>			
+			
+			<Declaration>- (NSInteger)startingItemNumber</Declaration>
+			
+			<ReturnValue><Abstract>The item number.</Abstract></ReturnValue>
+			<Anchor>//api/name/startingItemNumber</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCSSListStyle/isOrdered</TokenIdentifier>
+			<Abstract>Returns if the receiver is an ordered or unordered list</Abstract>
+			<DeclaredIn>DTCSSListStyle.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)isOrdered</Declaration>
+			
+			<ReturnValue><Abstract>YES if the receiver is ordered, NO if it is unordered</Abstract></ReturnValue>
+			<Anchor>//api/name/isOrdered</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTCSSListStyle/inherit</TokenIdentifier>
+			<Abstract>If the list style is inherited.</Abstract>
+			<DeclaredIn>DTCSSListStyle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign) BOOL inherit</Declaration>
+			
+			
+			<Anchor>//api/name/inherit</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTCSSListStyle/type</TokenIdentifier>
+			<Abstract>The type of the text list</Abstract>
+			<DeclaredIn>DTCSSListStyle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign) DTCSSListStyleType type</Declaration>
+			
+			
+			<Anchor>//api/name/type</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTCSSListStyle/position</TokenIdentifier>
+			<Abstract>The position of the marker in the prefix.</Abstract>
+			<DeclaredIn>DTCSSListStyle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign) DTCSSListStylePosition position</Declaration>
+			
+			
+			<Anchor>//api/name/position</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTCSSListStyle/imageName</TokenIdentifier>
+			<Abstract>The image name to use for the marker</Abstract>
+			<DeclaredIn>DTCSSListStyle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, copy) NSString *imageName</Declaration>
+			
+			
+			<Anchor>//api/name/imageName</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

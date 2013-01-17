@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/DTAttributedTextView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/DTAttributedTextView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextView.h</DeclaredIn>
+			
+			<NodeRef refid="3"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextView/attributedString</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, strong) NSAttributedString *attributedString</Declaration>
+			
+			
+			<Anchor>//api/name/attributedString</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextView/contentView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, strong, readonly) DTAttributedTextContentView *contentView</Declaration>
+			
+			
+			<Anchor>//api/name/contentView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextView/backgroundView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, strong) IBOutlet UIView *backgroundView</Declaration>
+			
+			
+			<Anchor>//api/name/backgroundView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextView/id</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, unsafe_unretained) IBOutlet&lt;&gt; id</Declaration>
+			
+			
+			<Anchor>//api/name/id</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTAttributedTextView/scrollToAnchorNamed:animated:</TokenIdentifier>
+			<Abstract>Scrolls the receiver to the anchor with the given name to the top.</Abstract>
+			<DeclaredIn>DTAttributedTextView.h</DeclaredIn>			
+			
+			<Declaration>- (void)scrollToAnchorNamed:(NSString *)anchorName animated:(BOOL)animated</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>anchorName</Name>
+					<Abstract>The name of the href anchor.</Abstract>
+				</Parameter><Parameter>
+					<Name>animated</Name>
+					<Abstract>YES if the movement should be animated.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/scrollToAnchorNamed:animated:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

@@ -1,0 +1,626 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>DTTextAttachment Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 737)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">DTCoreText 1.0.2 </a></h1>
+				<a id="developerHome" href="../index.html">Oliver Drobnik</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">DTTextAttachment Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/attributes">&nbsp;&nbsp;&nbsp;&nbsp;attributes</option>
+	
+	<option value="//api/name/contentType">&nbsp;&nbsp;&nbsp;&nbsp;contentType</option>
+	
+	<option value="//api/name/contentURL">&nbsp;&nbsp;&nbsp;&nbsp;contentURL</option>
+	
+	<option value="//api/name/contents">&nbsp;&nbsp;&nbsp;&nbsp;contents</option>
+	
+	<option value="//api/name/displaySize">&nbsp;&nbsp;&nbsp;&nbsp;displaySize</option>
+	
+	<option value="//api/name/hyperLinkGUID">&nbsp;&nbsp;&nbsp;&nbsp;hyperLinkGUID</option>
+	
+	<option value="//api/name/hyperLinkURL">&nbsp;&nbsp;&nbsp;&nbsp;hyperLinkURL</option>
+	
+	<option value="//api/name/originalSize">&nbsp;&nbsp;&nbsp;&nbsp;originalSize</option>
+	
+	<option value="//api/name/verticalAlignment">&nbsp;&nbsp;&nbsp;&nbsp;verticalAlignment</option>
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/textAttachmentWithElement:options:">&nbsp;&nbsp;&nbsp;&nbsp;+ textAttachmentWithElement:options:</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/adjustVerticalAlignmentForFont:">&nbsp;&nbsp;&nbsp;&nbsp;- adjustVerticalAlignmentForFont:</option>
+	
+	<option value="//api/name/ascentForLayout">&nbsp;&nbsp;&nbsp;&nbsp;- ascentForLayout</option>
+	
+	<option value="//api/name/dataURLRepresentation">&nbsp;&nbsp;&nbsp;&nbsp;- dataURLRepresentation</option>
+	
+	<option value="//api/name/descentForLayout">&nbsp;&nbsp;&nbsp;&nbsp;- descentForLayout</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/attributes">attributes</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/contentType">contentType</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/contentURL">contentURL</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/contents">contents</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/displaySize">displaySize</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hyperLinkGUID">hyperLinkGUID</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hyperLinkURL">hyperLinkURL</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/originalSize">originalSize</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/verticalAlignment">verticalAlignment</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/textAttachmentWithElement:options:">textAttachmentWithElement:options:</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/adjustVerticalAlignmentForFont:">adjustVerticalAlignmentForFont:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/ascentForLayout">ascentForLayout</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dataURLRepresentation">dataURLRepresentation</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/descentForLayout">descentForLayout</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="DTTextAttachment Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">DTTextAttachment Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">NSObject</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">DTTextAttachment.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>An object to represent an attachment in an HTML/rich text view.</p>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/originalSize">&nbsp;&nbsp;originalSize</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/displaySize">&nbsp;&nbsp;displaySize</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/contents">&nbsp;&nbsp;contents</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/contentType">&nbsp;&nbsp;contentType</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/contentURL">&nbsp;&nbsp;contentURL</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/hyperLinkURL">&nbsp;&nbsp;hyperLinkURL</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/hyperLinkGUID">&nbsp;&nbsp;hyperLinkGUID</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/attributes">&nbsp;&nbsp;attributes</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/verticalAlignment">&nbsp;&nbsp;verticalAlignment</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/textAttachmentWithElement:options:">+&nbsp;textAttachmentWithElement:options:</a></code>
+		<span class="tooltip"><p>Initialize and return a <a href="DTTextAttachment.html">DTTextAttachment</a> with the specified <a href="../Classes/DTHTMLElement.html">DTHTMLElement</a> and options. Convenience initializer.</p>
+
+<pre><code>The element must have a valid tagName. The size of the returned text attachment is determined by the element, constrained by the option's key for DTMaxImageSize. Any valid image resource included in the element (denoted by the method attributeForKey: "src") is loaded and determines the text attachment size if it was not known before. If a size is too large the image is downsampled with sizeThatFitsKeepingAspectRatio() which preserves the aspect ratio. 
+</code></pre></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dataURLRepresentation">&ndash;&nbsp;dataURLRepresentation</a></code>
+		<span class="tooltip"><p>Retrieves a string which is in the format &ldquo;data:image/png;base64,%@&rdquo; with this DTTextAttachment&rsquo;s content&rsquo;s data representation encoded in Base64 string encoding. For image <a href="#//api/name/contents">contents</a> only.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/adjustVerticalAlignmentForFont:">&ndash;&nbsp;adjustVerticalAlignmentForFont:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/ascentForLayout">&ndash;&nbsp;ascentForLayout</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/descentForLayout">&ndash;&nbsp;descentForLayout</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/attributes" title="attributes"></a>
+	<h3 class="subsubtitle method-title">attributes</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/contentType" title="contentType"></a>
+	<h3 class="subsubtitle method-title">contentType</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/contentURL" title="contentURL"></a>
+	<h3 class="subsubtitle method-title">contentURL</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/contents" title="contents"></a>
+	<h3 class="subsubtitle method-title">contents</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/displaySize" title="displaySize"></a>
+	<h3 class="subsubtitle method-title">displaySize</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/hyperLinkGUID" title="hyperLinkGUID"></a>
+	<h3 class="subsubtitle method-title">hyperLinkGUID</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/hyperLinkURL" title="hyperLinkURL"></a>
+	<h3 class="subsubtitle method-title">hyperLinkURL</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/originalSize" title="originalSize"></a>
+	<h3 class="subsubtitle method-title">originalSize</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/verticalAlignment" title="verticalAlignment"></a>
+	<h3 class="subsubtitle method-title">verticalAlignment</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/textAttachmentWithElement:options:" title="textAttachmentWithElement:options:"></a>
+	<h3 class="subsubtitle method-title">textAttachmentWithElement:options:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Initialize and return a <a href="DTTextAttachment.html">DTTextAttachment</a> with the specified <a href="../Classes/DTHTMLElement.html">DTHTMLElement</a> and options. Convenience initializer.</p>
+
+<pre><code>The element must have a valid tagName. The size of the returned text attachment is determined by the element, constrained by the option's key for DTMaxImageSize. Any valid image resource included in the element (denoted by the method attributeForKey: "src") is loaded and determines the text attachment size if it was not known before. If a size is too large the image is downsampled with sizeThatFitsKeepingAspectRatio() which preserves the aspect ratio. 
+</code></pre>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>+ (DTTextAttachment *)textAttachmentWithElement:(DTHTMLElement *)<em>element</em> options:(NSDictionary *)<em>options</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>element</em></dt>
+			<dd><p>A <a href="../Classes/DTHTMLElement.html">DTHTMLElement</a> that must have a valid tag name and should have a size. Any element <a href="#//api/name/attributes">attributes</a> are copied to the text attachment&rsquo;s elements.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>options</em></dt>
+			<dd><p>An NSDictionary of options. Used to specify the max image size with the key DTMaxImageSize.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Returns an initialized <a href="DTTextAttachment.html">DTTextAttachment</a> built using the element and options parameters.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Initialize and return a <a href="DTTextAttachment.html">DTTextAttachment</a> with the specified <a href="../Classes/DTHTMLElement.html">DTHTMLElement</a> and options. Convenience initializer.</p>
+
+<pre><code>The element must have a valid tagName. The size of the returned text attachment is determined by the element, constrained by the option's key for DTMaxImageSize. Any valid image resource included in the element (denoted by the method attributeForKey: "src") is loaded and determines the text attachment size if it was not known before. If a size is too large the image is downsampled with sizeThatFitsKeepingAspectRatio() which preserves the aspect ratio. 
+</code></pre>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTTextAttachment.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/adjustVerticalAlignmentForFont:" title="adjustVerticalAlignmentForFont:"></a>
+	<h3 class="subsubtitle method-title">adjustVerticalAlignmentForFont:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/ascentForLayout" title="ascentForLayout"></a>
+	<h3 class="subsubtitle method-title">ascentForLayout</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/dataURLRepresentation" title="dataURLRepresentation"></a>
+	<h3 class="subsubtitle method-title">dataURLRepresentation</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Retrieves a string which is in the format &ldquo;data:image/png;base64,%@&rdquo; with this DTTextAttachment&rsquo;s content&rsquo;s data representation encoded in Base64 string encoding. For image <a href="#//api/name/contents">contents</a> only.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)dataURLRepresentation</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A Base64 encoded string of the png data representation of this text attachment&rsquo;s image <a href="#//api/name/contents">contents</a>.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Retrieves a string which is in the format &ldquo;data:image/png;base64,%@&rdquo; with this DTTextAttachment&rsquo;s content&rsquo;s data representation encoded in Base64 string encoding. For image <a href="#//api/name/contents">contents</a> only.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTTextAttachment.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/descentForLayout" title="descentForLayout"></a>
+	<h3 class="subsubtitle method-title">descentForLayout</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2012 Oliver Drobnik. All rights reserved. (Last updated: 2012-12-05)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 737)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

@@ -1,0 +1,707 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>DTCoreTextLayoutLine Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 737)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">DTCoreText 1.0.2 </a></h1>
+				<a id="developerHome" href="../index.html">Oliver Drobnik</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">DTCoreTextLayoutLine Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/ascent">&nbsp;&nbsp;&nbsp;&nbsp;ascent</option>
+	
+	<option value="//api/name/baselineOrigin">&nbsp;&nbsp;&nbsp;&nbsp;baselineOrigin</option>
+	
+	<option value="//api/name/descent">&nbsp;&nbsp;&nbsp;&nbsp;descent</option>
+	
+	<option value="//api/name/frame">&nbsp;&nbsp;&nbsp;&nbsp;frame</option>
+	
+	<option value="//api/name/glyphRuns">&nbsp;&nbsp;&nbsp;&nbsp;glyphRuns</option>
+	
+	<option value="//api/name/leading">&nbsp;&nbsp;&nbsp;&nbsp;leading</option>
+	
+	<option value="//api/name/trailingWhitespaceWidth">&nbsp;&nbsp;&nbsp;&nbsp;trailingWhitespaceWidth</option>
+	
+	
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/correctAttachmentHeights:">&nbsp;&nbsp;&nbsp;&nbsp;- correctAttachmentHeights:</option>
+	
+	<option value="//api/name/drawInContext:">&nbsp;&nbsp;&nbsp;&nbsp;- drawInContext:</option>
+	
+	<option value="//api/name/frameOfGlyphAtIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- frameOfGlyphAtIndex:</option>
+	
+	<option value="//api/name/frameOfGlyphsWithRange:">&nbsp;&nbsp;&nbsp;&nbsp;- frameOfGlyphsWithRange:</option>
+	
+	<option value="//api/name/glyphRunsWithRange:">&nbsp;&nbsp;&nbsp;&nbsp;- glyphRunsWithRange:</option>
+	
+	<option value="//api/name/imageBoundsInContext:">&nbsp;&nbsp;&nbsp;&nbsp;- imageBoundsInContext:</option>
+	
+	<option value="//api/name/initWithLine:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithLine:</option>
+	
+	<option value="//api/name/justifiedLineWithFactor:justificationWidth:">&nbsp;&nbsp;&nbsp;&nbsp;- justifiedLineWithFactor:justificationWidth:</option>
+	
+	<option value="//api/name/numberOfGlyphs">&nbsp;&nbsp;&nbsp;&nbsp;- numberOfGlyphs</option>
+	
+	<option value="//api/name/offsetForStringIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- offsetForStringIndex:</option>
+	
+	<option value="//api/name/stringIndexForPosition:">&nbsp;&nbsp;&nbsp;&nbsp;- stringIndexForPosition:</option>
+	
+	<option value="//api/name/stringIndices">&nbsp;&nbsp;&nbsp;&nbsp;- stringIndices</option>
+	
+	<option value="//api/name/stringRange">&nbsp;&nbsp;&nbsp;&nbsp;- stringRange</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Creating Variants">Creating Variants</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/ascent">ascent</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/baselineOrigin">baselineOrigin</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/descent">descent</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/frame">frame</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/glyphRuns">glyphRuns</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/leading">leading</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/trailingWhitespaceWidth">trailingWhitespaceWidth</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/correctAttachmentHeights:">correctAttachmentHeights:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/drawInContext:">drawInContext:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/frameOfGlyphAtIndex:">frameOfGlyphAtIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/frameOfGlyphsWithRange:">frameOfGlyphsWithRange:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/glyphRunsWithRange:">glyphRunsWithRange:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/imageBoundsInContext:">imageBoundsInContext:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithLine:">initWithLine:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/justifiedLineWithFactor:justificationWidth:">justifiedLineWithFactor:justificationWidth:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/numberOfGlyphs">numberOfGlyphs</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/offsetForStringIndex:">offsetForStringIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/stringIndexForPosition:">stringIndexForPosition:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/stringIndices">stringIndices</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/stringRange">stringRange</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="DTCoreTextLayoutLine Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">DTCoreTextLayoutLine Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">NSObject</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">DTCoreTextLayoutLine.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithLine:">&ndash;&nbsp;initWithLine:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/stringRange">&ndash;&nbsp;stringRange</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/numberOfGlyphs">&ndash;&nbsp;numberOfGlyphs</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/frameOfGlyphAtIndex:">&ndash;&nbsp;frameOfGlyphAtIndex:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/glyphRunsWithRange:">&ndash;&nbsp;glyphRunsWithRange:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/frameOfGlyphsWithRange:">&ndash;&nbsp;frameOfGlyphsWithRange:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/imageBoundsInContext:">&ndash;&nbsp;imageBoundsInContext:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/stringIndices">&ndash;&nbsp;stringIndices</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/offsetForStringIndex:">&ndash;&nbsp;offsetForStringIndex:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/stringIndexForPosition:">&ndash;&nbsp;stringIndexForPosition:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Creating Variants" name="task_Creating Variants"></a>
+						<h3 class="subsubtitle task-title">Creating Variants</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/justifiedLineWithFactor:justificationWidth:">&ndash;&nbsp;justifiedLineWithFactor:justificationWidth:</a></code>
+		<span class="tooltip"><p>Creates a version of the receiver that is justified to the given width.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/drawInContext:">&ndash;&nbsp;drawInContext:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/correctAttachmentHeights:">&ndash;&nbsp;correctAttachmentHeights:</a></code>
+		<span class="tooltip"><p>Adjust the baselines of all lines in this layout <a href="#//api/name/frame">frame</a> to fit the heights of text attachments.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/frame">&nbsp;&nbsp;frame</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/glyphRuns">&nbsp;&nbsp;glyphRuns</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/ascent">&nbsp;&nbsp;ascent</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/descent">&nbsp;&nbsp;descent</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/leading">&nbsp;&nbsp;leading</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/trailingWhitespaceWidth">&nbsp;&nbsp;trailingWhitespaceWidth</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/baselineOrigin">&nbsp;&nbsp;baselineOrigin</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/ascent" title="ascent"></a>
+	<h3 class="subsubtitle method-title">ascent</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/baselineOrigin" title="baselineOrigin"></a>
+	<h3 class="subsubtitle method-title">baselineOrigin</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/descent" title="descent"></a>
+	<h3 class="subsubtitle method-title">descent</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/frame" title="frame"></a>
+	<h3 class="subsubtitle method-title">frame</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/glyphRuns" title="glyphRuns"></a>
+	<h3 class="subsubtitle method-title">glyphRuns</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/leading" title="leading"></a>
+	<h3 class="subsubtitle method-title">leading</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/trailingWhitespaceWidth" title="trailingWhitespaceWidth"></a>
+	<h3 class="subsubtitle method-title">trailingWhitespaceWidth</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/correctAttachmentHeights:" title="correctAttachmentHeights:"></a>
+	<h3 class="subsubtitle method-title">correctAttachmentHeights:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Adjust the baselines of all lines in this layout <a href="#//api/name/frame">frame</a> to fit the heights of text attachments.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)correctAttachmentHeights:(CGFloat *)<em>downShift</em></code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if the line needed an adjustment, <code>NO</code> if no adjustment was carried out</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Adjust the baselines of all lines in this layout <a href="#//api/name/frame">frame</a> to fit the heights of text attachments.</p>
+
+<p>This is used to work around a CoreText bug that was fixed in iOS 4.2</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutLine.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/drawInContext:" title="drawInContext:"></a>
+	<h3 class="subsubtitle method-title">drawInContext:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/frameOfGlyphAtIndex:" title="frameOfGlyphAtIndex:"></a>
+	<h3 class="subsubtitle method-title">frameOfGlyphAtIndex:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/frameOfGlyphsWithRange:" title="frameOfGlyphsWithRange:"></a>
+	<h3 class="subsubtitle method-title">frameOfGlyphsWithRange:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/glyphRunsWithRange:" title="glyphRunsWithRange:"></a>
+	<h3 class="subsubtitle method-title">glyphRunsWithRange:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/imageBoundsInContext:" title="imageBoundsInContext:"></a>
+	<h3 class="subsubtitle method-title">imageBoundsInContext:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithLine:" title="initWithLine:"></a>
+	<h3 class="subsubtitle method-title">initWithLine:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/justifiedLineWithFactor:justificationWidth:" title="justifiedLineWithFactor:justificationWidth:"></a>
+	<h3 class="subsubtitle method-title">justifiedLineWithFactor:justificationWidth:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Creates a version of the receiver that is justified to the given width.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (DTCoreTextLayoutLine *)justifiedLineWithFactor:(CGFloat)<em>justificationFactor</em> justificationWidth:(CGFloat)<em>justificationWidth</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>justificationFactor</em></dt>
+			<dd><p>Full or partial justification. When set to <code>1.0</code> or greater, full justification is performed. If this parameter is set to less than <code>1.0</code>, varying degrees of partial justification are performed. If it is set to <code>0</code> or less, no justification is performed.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>justificationWidth</em></dt>
+			<dd><p>The width to which the resultant line is justified. If justificationWidth is less than the actual width of the line, then negative justification is performed (that is, glyphs are squeezed together).</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Creates a version of the receiver that is justified to the given width.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutLine.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/numberOfGlyphs" title="numberOfGlyphs"></a>
+	<h3 class="subsubtitle method-title">numberOfGlyphs</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/offsetForStringIndex:" title="offsetForStringIndex:"></a>
+	<h3 class="subsubtitle method-title">offsetForStringIndex:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/stringIndexForPosition:" title="stringIndexForPosition:"></a>
+	<h3 class="subsubtitle method-title">stringIndexForPosition:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/stringIndices" title="stringIndices"></a>
+	<h3 class="subsubtitle method-title">stringIndices</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/stringRange" title="stringRange"></a>
+	<h3 class="subsubtitle method-title">stringRange</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2012 Oliver Drobnik. All rights reserved. (Last updated: 2012-12-05)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 737)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

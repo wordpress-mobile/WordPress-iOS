@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Categories/NSString(Paragraphs).html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cat/NSString(Paragraphs)</TokenIdentifier>
+			<Abstract>Methods simplifying dealing with text that is in paragraphs.</Abstract>
+			<DeclaredIn>NSString+Paragraphs.h</DeclaredIn>
+			
+			<NodeRef refid="34"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(Paragraphs)/rangeOfParagraphsContainingRange:parBegIndex:parEndIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>NSString+Paragraphs.h</DeclaredIn>			
+			
+			<Declaration>- (NSRange)rangeOfParagraphsContainingRange:(NSRange)range parBegIndex:(NSUInteger *)parBegIndex parEndIndex:(NSUInteger *)parEndIndex</Declaration>
+			
+			
+			<Anchor>//api/name/rangeOfParagraphsContainingRange:parBegIndex:parEndIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(Paragraphs)/indexIsAtBeginningOfParagraph:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>NSString+Paragraphs.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)indexIsAtBeginningOfParagraph:(NSUInteger)index</Declaration>
+			
+			
+			<Anchor>//api/name/indexIsAtBeginningOfParagraph:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(Paragraphs)/rangeOfParagraphAtIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>NSString+Paragraphs.h</DeclaredIn>			
+			
+			<Declaration>- (NSRange)rangeOfParagraphAtIndex:(NSUInteger)index</Declaration>
+			
+			
+			<Anchor>//api/name/rangeOfParagraphAtIndex:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Categories/NSString(CSS).html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cat/NSString(CSS)</TokenIdentifier>
+			<Abstract>Methods to make dealing with CSS strings easier. Extract shadows from this string, extract CSS styles found in this string, extract the pixel size of a CSS measurement relative to the current text size, and extract the CSS pixel measurement of this string.</Abstract>
+			<DeclaredIn>NSString+CSS.h</DeclaredIn>
+			
+			<NodeRef refid="31"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(CSS)/dictionaryOfCSSStyles</TokenIdentifier>
+			<Abstract>Examine a string for all CSS styles that are applied to it and return a dictionary of those styles. Implemented using scanCSSAttribute: which is defined in NSScanner+HTML.h.</Abstract>
+			<DeclaredIn>NSString+CSS.h</DeclaredIn>			
+			
+			<Declaration>- (NSDictionary *)dictionaryOfCSSStyles</Declaration>
+			
+			<ReturnValue><Abstract>A dictionary of strings containing the CSS styles which are applied to this string.</Abstract></ReturnValue>
+			<Anchor>//api/name/dictionaryOfCSSStyles</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(CSS)/pixelSizeOfCSSMeasureRelativeToCurrentTextSize:</TokenIdentifier>
+			<Abstract>Takes a textSize and modifies the current string's pixel measurement to be modified by it. Used in DTHTMLElement.</Abstract>
+			<DeclaredIn>NSString+CSS.h</DeclaredIn>			
+			
+			<Declaration>- (CGFloat)pixelSizeOfCSSMeasureRelativeToCurrentTextSize:(CGFloat)textSize</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>textSize</Name>
+					<Abstract>The current size which the CSS size is relative to.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>A float that is the size textSize be it %, em or just numbers .</Abstract></ReturnValue>
+			<Anchor>//api/name/pixelSizeOfCSSMeasureRelativeToCurrentTextSize:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(CSS)/arrayOfCSSShadowsWithCurrentTextSize:currentColor:</TokenIdentifier>
+			<Abstract>Parse CSS shadow styles, consisting of color, blur, and offset, out of this string. The input string must be comma delimited in the format: length length length? color? where the third length and the color are not required per CSS shadows. To calculate the sizes of the blur and offset pixelSizeOfCSSMeasureRelativeToCurrentTextSize is used. Used in DTHTMLElement.</Abstract>
+			<DeclaredIn>NSString+CSS.h</DeclaredIn>			
+			
+			<Declaration>- (NSArray *)arrayOfCSSShadowsWithCurrentTextSize:(CGFloat)textSize currentColor:(DTColor *)color</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>textSize</Name>
+					<Abstract>In order to determine the shadow offset we need what text size it will be displayed at.</Abstract>
+				</Parameter><Parameter>
+					<Name>color</Name>
+					<Abstract>Used if no shadow attribute color is found.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>An array of dictionaries, each of which is a shadow consisting of color, blur, and offset keys value pairs.</Abstract></ReturnValue>
+			<Anchor>//api/name/arrayOfCSSShadowsWithCurrentTextSize:currentColor:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(CSS)/CSSpixelSize</TokenIdentifier>
+			<Abstract>If this string ends with 'px' return the float value stored therein. Ex: The following '17.0px;' will return 17.0. I DON'T KNOW WHAT USES THIS METHOD IF ANYTHING AT ALL-grep returned just this class</Abstract>
+			<DeclaredIn>NSString+CSS.h</DeclaredIn>			
+			
+			<Declaration>- (CGFloat)CSSpixelSize</Declaration>
+			
+			<ReturnValue><Abstract>The float value stored in this string.</Abstract></ReturnValue>
+			<Anchor>//api/name/CSSpixelSize</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(CSS)/stringByDecodingCSSContentAttribute</TokenIdentifier>
+			<Abstract>Decodes a content attribute which might contained unicode sequences.</Abstract>
+			<DeclaredIn>NSString+CSS.h</DeclaredIn>			
+			
+			<Declaration>- (NSString *)stringByDecodingCSSContentAttribute</Declaration>
+			
+			
+			<Anchor>//api/name/stringByDecodingCSSContentAttribute</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

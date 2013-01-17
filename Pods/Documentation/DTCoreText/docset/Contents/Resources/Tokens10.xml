@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/DTCoreTextLayoutLine.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/DTCoreTextLayoutLine</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>
+			
+			<NodeRef refid="10"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextLayoutLine/initWithLine:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithLine:(CTLineRef)line</Declaration>
+			
+			
+			<Anchor>//api/name/initWithLine:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextLayoutLine/stringRange</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>- (NSRange)stringRange</Declaration>
+			
+			
+			<Anchor>//api/name/stringRange</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextLayoutLine/numberOfGlyphs</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>- (NSInteger)numberOfGlyphs</Declaration>
+			
+			
+			<Anchor>//api/name/numberOfGlyphs</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextLayoutLine/frameOfGlyphAtIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>- (CGRect)frameOfGlyphAtIndex:(NSInteger)index</Declaration>
+			
+			
+			<Anchor>//api/name/frameOfGlyphAtIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextLayoutLine/glyphRunsWithRange:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>- (NSArray *)glyphRunsWithRange:(NSRange)range</Declaration>
+			
+			
+			<Anchor>//api/name/glyphRunsWithRange:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextLayoutLine/frameOfGlyphsWithRange:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>- (CGRect)frameOfGlyphsWithRange:(NSRange)range</Declaration>
+			
+			
+			<Anchor>//api/name/frameOfGlyphsWithRange:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextLayoutLine/imageBoundsInContext:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>- (CGRect)imageBoundsInContext:(CGContextRef)context</Declaration>
+			
+			
+			<Anchor>//api/name/imageBoundsInContext:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextLayoutLine/stringIndices</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>- (NSArray *)stringIndices</Declaration>
+			
+			
+			<Anchor>//api/name/stringIndices</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextLayoutLine/offsetForStringIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>- (CGFloat)offsetForStringIndex:(NSInteger)index</Declaration>
+			
+			
+			<Anchor>//api/name/offsetForStringIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextLayoutLine/stringIndexForPosition:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>- (NSInteger)stringIndexForPosition:(CGPoint)position</Declaration>
+			
+			
+			<Anchor>//api/name/stringIndexForPosition:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextLayoutLine/justifiedLineWithFactor:justificationWidth:</TokenIdentifier>
+			<Abstract>Creates a version of the receiver that is justified to the given width.</Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>- (DTCoreTextLayoutLine *)justifiedLineWithFactor:(CGFloat)justificationFactor justificationWidth:(CGFloat)justificationWidth</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>justificationFactor</Name>
+					<Abstract>Full or partial justification. When set to 1.0 or greater, full justification is performed. If this parameter is set to less than 1.0, varying degrees of partial justification are performed. If it is set to 0 or less, no justification is performed.</Abstract>
+				</Parameter><Parameter>
+					<Name>justificationWidth</Name>
+					<Abstract>The width to which the resultant line is justified. If justificationWidth is less than the actual width of the line, then negative justification is performed (that is, glyphs are squeezed together).</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/justifiedLineWithFactor:justificationWidth:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextLayoutLine/drawInContext:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>- (void)drawInContext:(CGContextRef)context</Declaration>
+			
+			
+			<Anchor>//api/name/drawInContext:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextLayoutLine/correctAttachmentHeights:</TokenIdentifier>
+			<Abstract>Adjust the baselines of all lines in this layout frame to fit the heights of text attachments.</Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)correctAttachmentHeights:(CGFloat *)downShift</Declaration>
+			
+			<ReturnValue><Abstract>YES if the line needed an adjustment, NO if no adjustment was carried out</Abstract></ReturnValue>
+			<Anchor>//api/name/correctAttachmentHeights:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTCoreTextLayoutLine/frame</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign) CGRect frame</Declaration>
+			
+			
+			<Anchor>//api/name/frame</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTCoreTextLayoutLine/glyphRuns</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, strong, readonly) NSArray *glyphRuns</Declaration>
+			
+			
+			<Anchor>//api/name/glyphRuns</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTCoreTextLayoutLine/ascent</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign) CGFloat ascent</Declaration>
+			
+			
+			<Anchor>//api/name/ascent</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTCoreTextLayoutLine/descent</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign, readonly) CGFloat descent</Declaration>
+			
+			
+			<Anchor>//api/name/descent</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTCoreTextLayoutLine/leading</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign, readonly) CGFloat leading</Declaration>
+			
+			
+			<Anchor>//api/name/leading</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTCoreTextLayoutLine/trailingWhitespaceWidth</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign, readonly) CGFloat trailingWhitespaceWidth</Declaration>
+			
+			
+			<Anchor>//api/name/trailingWhitespaceWidth</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTCoreTextLayoutLine/baselineOrigin</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextLayoutLine.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign) CGPoint baselineOrigin</Declaration>
+			
+			
+			<Anchor>//api/name/baselineOrigin</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

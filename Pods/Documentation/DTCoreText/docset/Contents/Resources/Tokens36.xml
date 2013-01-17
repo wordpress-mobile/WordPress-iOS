@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Categories/UIDevice(DTSimpleVersion).html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cat/UIDevice(DTSimpleVersion)</TokenIdentifier>
+			<Abstract>Convenience method to return the current OS version as a struct of three NSIntegers. Using UIDevice's currentDevice method and the current device's systemVersion returns a string delimited by a period which can then be split into an array. This method returns a struct storing each value instead of a string or array. Used in DTCoreTextLayoutFrame to workaround the way iOS 4.2 handles images.</Abstract>
+			<DeclaredIn>UIDevice+DTSimpleVersion.h</DeclaredIn>
+			
+			<NodeRef refid="36"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/UIDevice(DTSimpleVersion)/osVersion</TokenIdentifier>
+			<Abstract>Returns the current OS version of the device.</Abstract>
+			<DeclaredIn>UIDevice+DTSimpleVersion.h</DeclaredIn>			
+			
+			<Declaration>- (DTSimpleVersion)osVersion</Declaration>
+			
+			<ReturnValue><Abstract>A DTSimpleVersion struct with three fields each of type NSInteger storing the major, minor, and point numbers identifying this OS version.</Abstract></ReturnValue>
+			<Anchor>//api/name/osVersion</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

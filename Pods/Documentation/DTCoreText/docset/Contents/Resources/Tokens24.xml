@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Categories/NSCharacterSet(HTML).html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cat/NSCharacterSet(HTML)</TokenIdentifier>
+			<Abstract>Category on NSCharacterSet to create character sets frequently used and relevant to HTML and CSS string manipulations. Each character set is only initialized once.</Abstract>
+			<DeclaredIn>NSCharacterSet+HTML.h</DeclaredIn>
+			
+			<NodeRef refid="24"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSCharacterSet(HTML)/tagNameCharacterSet</TokenIdentifier>
+			<Abstract>Creates an alpha-numeric character set, appropriate for tag names.</Abstract>
+			<DeclaredIn>NSCharacterSet+HTML.h</DeclaredIn>			
+			
+			<Declaration>+ (NSCharacterSet *)tagNameCharacterSet</Declaration>
+			
+			<ReturnValue><Abstract>An NSCharacterSet with alpha-numeric characters. a-Z, 0-9.</Abstract></ReturnValue>
+			<Anchor>//api/name/tagNameCharacterSet</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSCharacterSet(HTML)/tagAttributeNameCharacterSet</TokenIdentifier>
+			<Abstract>Creates an alpha-numeric character set just as tagNameCharacterSet does but also with colon, dash, and underscore characters, appropriate for tag attribute names.</Abstract>
+			<DeclaredIn>NSCharacterSet+HTML.h</DeclaredIn>			
+			
+			<Declaration>+ (NSCharacterSet *)tagAttributeNameCharacterSet</Declaration>
+			
+			<ReturnValue><Abstract>An NSCharacterSet with alpha-numeric characters and colon :, dash -, and underscore _'.</Abstract></ReturnValue>
+			<Anchor>//api/name/tagAttributeNameCharacterSet</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSCharacterSet(HTML)/quoteCharacterSet</TokenIdentifier>
+			<Abstract>Creates a character set with the apostrophe character ' (used as single quote agnostic of direction) and double quote character " (agnostic of direction).</Abstract>
+			<DeclaredIn>NSCharacterSet+HTML.h</DeclaredIn>			
+			
+			<Declaration>+ (NSCharacterSet *)quoteCharacterSet</Declaration>
+			
+			<ReturnValue><Abstract>An NSCharacterSet with the single quote and double quote characters: ', ".</Abstract></ReturnValue>
+			<Anchor>//api/name/quoteCharacterSet</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSCharacterSet(HTML)/nonQuotedAttributeEndCharacterSet</TokenIdentifier>
+			<Abstract>Creates a character set with the characters forward slash / and closing angle bracket aka greater than sign , then forms the union of this character set with the whitespace character set which includes space, tab, newline, and nextline characters. Useful to find the end of an attribute.</Abstract>
+			<DeclaredIn>NSCharacterSet+HTML.h</DeclaredIn>			
+			
+			<Declaration>+ (NSCharacterSet *)nonQuotedAttributeEndCharacterSet</Declaration>
+			
+			<ReturnValue><Abstract>An NSCharacterSet with the forward slash, closing angle bracket characters, tab, space, newline, and nextline characters.</Abstract></ReturnValue>
+			<Anchor>//api/name/nonQuotedAttributeEndCharacterSet</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSCharacterSet(HTML)/cssStyleAttributeNameCharacterSet</TokenIdentifier>
+			<Abstract>Creates an alpha-numeric character set just as tagNameCharacterSet does but also with the dash and underscore characters. Does not contain the colon character because it will mess up parsing of CSS style attributes. Useful for CSS attribute names.</Abstract>
+			<DeclaredIn>NSCharacterSet+HTML.h</DeclaredIn>			
+			
+			<Declaration>+ (NSCharacterSet *)cssStyleAttributeNameCharacterSet</Declaration>
+			
+			<ReturnValue><Abstract>An NSCharacterSet with alpha-numeric characters, dash, and underscore characters.</Abstract></ReturnValue>
+			<Anchor>//api/name/cssStyleAttributeNameCharacterSet</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

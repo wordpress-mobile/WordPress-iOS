@@ -1,0 +1,771 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>DTCoreTextFontDescriptor Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 737)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">DTCoreText 1.0.2 </a></h1>
+				<a id="developerHome" href="../index.html">Oliver Drobnik</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">DTCoreTextFontDescriptor Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/UIoptimizedTrait">&nbsp;&nbsp;&nbsp;&nbsp;UIoptimizedTrait</option>
+	
+	<option value="//api/name/boldTrait">&nbsp;&nbsp;&nbsp;&nbsp;boldTrait</option>
+	
+	<option value="//api/name/condensedTrait">&nbsp;&nbsp;&nbsp;&nbsp;condensedTrait</option>
+	
+	<option value="//api/name/expandedTrait">&nbsp;&nbsp;&nbsp;&nbsp;expandedTrait</option>
+	
+	<option value="//api/name/fontFamily">&nbsp;&nbsp;&nbsp;&nbsp;fontFamily</option>
+	
+	<option value="//api/name/fontName">&nbsp;&nbsp;&nbsp;&nbsp;fontName</option>
+	
+	<option value="//api/name/italicTrait">&nbsp;&nbsp;&nbsp;&nbsp;italicTrait</option>
+	
+	<option value="//api/name/monospaceTrait">&nbsp;&nbsp;&nbsp;&nbsp;monospaceTrait</option>
+	
+	<option value="//api/name/pointSize">&nbsp;&nbsp;&nbsp;&nbsp;pointSize</option>
+	
+	<option value="//api/name/smallCapsFeature">&nbsp;&nbsp;&nbsp;&nbsp;smallCapsFeature</option>
+	
+	<option value="//api/name/stylisticClass">&nbsp;&nbsp;&nbsp;&nbsp;stylisticClass</option>
+	
+	<option value="//api/name/symbolicTraits">&nbsp;&nbsp;&nbsp;&nbsp;symbolicTraits</option>
+	
+	<option value="//api/name/verticalTrait">&nbsp;&nbsp;&nbsp;&nbsp;verticalTrait</option>
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/fontDescriptorForCTFont:">&nbsp;&nbsp;&nbsp;&nbsp;+ fontDescriptorForCTFont:</option>
+	
+	<option value="//api/name/fontDescriptorWithFontAttributes:">&nbsp;&nbsp;&nbsp;&nbsp;+ fontDescriptorWithFontAttributes:</option>
+	
+	<option value="//api/name/overrideFontNameforFontFamily:bold:italic:">&nbsp;&nbsp;&nbsp;&nbsp;+ overrideFontNameforFontFamily:bold:italic:</option>
+	
+	<option value="//api/name/setOverrideFontName:forFontFamily:bold:italic:">&nbsp;&nbsp;&nbsp;&nbsp;+ setOverrideFontName:forFontFamily:bold:italic:</option>
+	
+	<option value="//api/name/setSmallCapsFontName:forFontFamily:bold:italic:">&nbsp;&nbsp;&nbsp;&nbsp;+ setSmallCapsFontName:forFontFamily:bold:italic:</option>
+	
+	<option value="//api/name/smallCapsFontNameforFontFamily:bold:italic:">&nbsp;&nbsp;&nbsp;&nbsp;+ smallCapsFontNameforFontFamily:bold:italic:</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/cssStyleRepresentation">&nbsp;&nbsp;&nbsp;&nbsp;- cssStyleRepresentation</option>
+	
+	<option value="//api/name/fontAttributes">&nbsp;&nbsp;&nbsp;&nbsp;- fontAttributes</option>
+	
+	<option value="//api/name/initWithCTFont:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithCTFont:</option>
+	
+	<option value="//api/name/initWithCTFontDescriptor:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithCTFontDescriptor:</option>
+	
+	<option value="//api/name/initWithFontAttributes:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithFontAttributes:</option>
+	
+	<option value="//api/name/newMatchingFont">&nbsp;&nbsp;&nbsp;&nbsp;- newMatchingFont</option>
+	
+	<option value="//api/name/setFontAttributes:">&nbsp;&nbsp;&nbsp;&nbsp;- setFontAttributes:</option>
+	
+	<option value="//api/name/supportsNativeSmallCaps">&nbsp;&nbsp;&nbsp;&nbsp;- supportsNativeSmallCaps</option>
+	
+	<option value="//api/name/symbolicTraits">&nbsp;&nbsp;&nbsp;&nbsp;- symbolicTraits</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/UIoptimizedTrait">UIoptimizedTrait</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/boldTrait">boldTrait</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/condensedTrait">condensedTrait</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/expandedTrait">expandedTrait</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/fontFamily">fontFamily</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/fontName">fontName</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/italicTrait">italicTrait</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/monospaceTrait">monospaceTrait</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/pointSize">pointSize</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/smallCapsFeature">smallCapsFeature</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/stylisticClass">stylisticClass</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/symbolicTraits">symbolicTraits</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/verticalTrait">verticalTrait</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/fontDescriptorForCTFont:">fontDescriptorForCTFont:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/fontDescriptorWithFontAttributes:">fontDescriptorWithFontAttributes:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/overrideFontNameforFontFamily:bold:italic:">overrideFontNameforFontFamily:bold:italic:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setOverrideFontName:forFontFamily:bold:italic:">setOverrideFontName:forFontFamily:bold:italic:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setSmallCapsFontName:forFontFamily:bold:italic:">setSmallCapsFontName:forFontFamily:bold:italic:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/smallCapsFontNameforFontFamily:bold:italic:">smallCapsFontNameforFontFamily:bold:italic:</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/cssStyleRepresentation">cssStyleRepresentation</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/fontAttributes">fontAttributes</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithCTFont:">initWithCTFont:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithCTFontDescriptor:">initWithCTFontDescriptor:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithFontAttributes:">initWithFontAttributes:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/newMatchingFont">newMatchingFont</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setFontAttributes:">setFontAttributes:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/supportsNativeSmallCaps">supportsNativeSmallCaps</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/symbolicTraits">symbolicTraits</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="DTCoreTextFontDescriptor Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">DTCoreTextFontDescriptor Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">NSObject</td>
+</tr><tr>
+	<td class="specification-title">Conforms to</td>
+	<td class="specification-value">NSCoding<br />NSCopying</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">DTCoreTextFontDescriptor.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setSmallCapsFontName:forFontFamily:bold:italic:">+&nbsp;setSmallCapsFontName:forFontFamily:bold:italic:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/smallCapsFontNameforFontFamily:bold:italic:">+&nbsp;smallCapsFontNameforFontFamily:bold:italic:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setOverrideFontName:forFontFamily:bold:italic:">+&nbsp;setOverrideFontName:forFontFamily:bold:italic:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/overrideFontNameforFontFamily:bold:italic:">+&nbsp;overrideFontNameforFontFamily:bold:italic:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/fontDescriptorWithFontAttributes:">+&nbsp;fontDescriptorWithFontAttributes:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/fontDescriptorForCTFont:">+&nbsp;fontDescriptorForCTFont:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithFontAttributes:">&ndash;&nbsp;initWithFontAttributes:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithCTFontDescriptor:">&ndash;&nbsp;initWithCTFontDescriptor:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithCTFont:">&ndash;&nbsp;initWithCTFont:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setFontAttributes:">&ndash;&nbsp;setFontAttributes:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/symbolicTraits">&ndash;&nbsp;symbolicTraits</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/fontAttributes">&ndash;&nbsp;fontAttributes</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/newMatchingFont">&ndash;&nbsp;newMatchingFont</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/supportsNativeSmallCaps">&ndash;&nbsp;supportsNativeSmallCaps</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/cssStyleRepresentation">&ndash;&nbsp;cssStyleRepresentation</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/fontFamily">&nbsp;&nbsp;fontFamily</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/fontName">&nbsp;&nbsp;fontName</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/pointSize">&nbsp;&nbsp;pointSize</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/boldTrait">&nbsp;&nbsp;boldTrait</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/italicTrait">&nbsp;&nbsp;italicTrait</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/expandedTrait">&nbsp;&nbsp;expandedTrait</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/condensedTrait">&nbsp;&nbsp;condensedTrait</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/monospaceTrait">&nbsp;&nbsp;monospaceTrait</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/verticalTrait">&nbsp;&nbsp;verticalTrait</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/UIoptimizedTrait">&nbsp;&nbsp;UIoptimizedTrait</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/symbolicTraits">&nbsp;&nbsp;symbolicTraits</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/stylisticClass">&nbsp;&nbsp;stylisticClass</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/smallCapsFeature">&nbsp;&nbsp;smallCapsFeature</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/UIoptimizedTrait" title="UIoptimizedTrait"></a>
+	<h3 class="subsubtitle method-title">UIoptimizedTrait</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/boldTrait" title="boldTrait"></a>
+	<h3 class="subsubtitle method-title">boldTrait</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/condensedTrait" title="condensedTrait"></a>
+	<h3 class="subsubtitle method-title">condensedTrait</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/expandedTrait" title="expandedTrait"></a>
+	<h3 class="subsubtitle method-title">expandedTrait</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/fontFamily" title="fontFamily"></a>
+	<h3 class="subsubtitle method-title">fontFamily</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/fontName" title="fontName"></a>
+	<h3 class="subsubtitle method-title">fontName</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/italicTrait" title="italicTrait"></a>
+	<h3 class="subsubtitle method-title">italicTrait</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/monospaceTrait" title="monospaceTrait"></a>
+	<h3 class="subsubtitle method-title">monospaceTrait</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/pointSize" title="pointSize"></a>
+	<h3 class="subsubtitle method-title">pointSize</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/smallCapsFeature" title="smallCapsFeature"></a>
+	<h3 class="subsubtitle method-title">smallCapsFeature</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/stylisticClass" title="stylisticClass"></a>
+	<h3 class="subsubtitle method-title">stylisticClass</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/symbolicTraits" title="symbolicTraits"></a>
+	<h3 class="subsubtitle method-title">symbolicTraits</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/verticalTrait" title="verticalTrait"></a>
+	<h3 class="subsubtitle method-title">verticalTrait</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/fontDescriptorForCTFont:" title="fontDescriptorForCTFont:"></a>
+	<h3 class="subsubtitle method-title">fontDescriptorForCTFont:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/fontDescriptorWithFontAttributes:" title="fontDescriptorWithFontAttributes:"></a>
+	<h3 class="subsubtitle method-title">fontDescriptorWithFontAttributes:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/overrideFontNameforFontFamily:bold:italic:" title="overrideFontNameforFontFamily:bold:italic:"></a>
+	<h3 class="subsubtitle method-title">overrideFontNameforFontFamily:bold:italic:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setOverrideFontName:forFontFamily:bold:italic:" title="setOverrideFontName:forFontFamily:bold:italic:"></a>
+	<h3 class="subsubtitle method-title">setOverrideFontName:forFontFamily:bold:italic:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setSmallCapsFontName:forFontFamily:bold:italic:" title="setSmallCapsFontName:forFontFamily:bold:italic:"></a>
+	<h3 class="subsubtitle method-title">setSmallCapsFontName:forFontFamily:bold:italic:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/smallCapsFontNameforFontFamily:bold:italic:" title="smallCapsFontNameforFontFamily:bold:italic:"></a>
+	<h3 class="subsubtitle method-title">smallCapsFontNameforFontFamily:bold:italic:</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/cssStyleRepresentation" title="cssStyleRepresentation"></a>
+	<h3 class="subsubtitle method-title">cssStyleRepresentation</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/fontAttributes" title="fontAttributes"></a>
+	<h3 class="subsubtitle method-title">fontAttributes</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithCTFont:" title="initWithCTFont:"></a>
+	<h3 class="subsubtitle method-title">initWithCTFont:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithCTFontDescriptor:" title="initWithCTFontDescriptor:"></a>
+	<h3 class="subsubtitle method-title">initWithCTFontDescriptor:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithFontAttributes:" title="initWithFontAttributes:"></a>
+	<h3 class="subsubtitle method-title">initWithFontAttributes:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/newMatchingFont" title="newMatchingFont"></a>
+	<h3 class="subsubtitle method-title">newMatchingFont</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setFontAttributes:" title="setFontAttributes:"></a>
+	<h3 class="subsubtitle method-title">setFontAttributes:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/supportsNativeSmallCaps" title="supportsNativeSmallCaps"></a>
+	<h3 class="subsubtitle method-title">supportsNativeSmallCaps</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/symbolicTraits" title="symbolicTraits"></a>
+	<h3 class="subsubtitle method-title">symbolicTraits</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2012 Oliver Drobnik. All rights reserved. (Last updated: 2012-12-05)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 737)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

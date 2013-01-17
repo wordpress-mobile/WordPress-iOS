@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/DTWebVideoViewDelegate.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/DTWebVideoViewDelegate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTWebVideoView.h</DeclaredIn>
+			
+			<NodeRef refid="41"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/DTWebVideoViewDelegate/videoView:shouldOpenExternalURL:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTWebVideoView.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)videoView:(DTWebVideoView *)videoView shouldOpenExternalURL:(NSURL *)url</Declaration>
+			
+			
+			<Anchor>//api/name/videoView:shouldOpenExternalURL:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

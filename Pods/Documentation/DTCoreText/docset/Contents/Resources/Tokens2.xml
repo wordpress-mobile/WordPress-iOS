@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/DTAttributedTextContentView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/DTAttributedTextContentView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>
+			
+			<NodeRef refid="2"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTAttributedTextContentView/initWithAttributedString:width:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithAttributedString:(NSAttributedString *)attributedString width:(CGFloat)width</Declaration>
+			
+			
+			<Anchor>//api/name/initWithAttributedString:width:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTAttributedTextContentView/layoutSubviewsInRect:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>- (void)layoutSubviewsInRect:(CGRect)rect</Declaration>
+			
+			
+			<Anchor>//api/name/layoutSubviewsInRect:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTAttributedTextContentView/relayoutText</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>- (void)relayoutText</Declaration>
+			
+			
+			<Anchor>//api/name/relayoutText</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTAttributedTextContentView/removeAllCustomViews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeAllCustomViews</Declaration>
+			
+			
+			<Anchor>//api/name/removeAllCustomViews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTAttributedTextContentView/removeAllCustomViewsForLinks</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeAllCustomViewsForLinks</Declaration>
+			
+			
+			<Anchor>//api/name/removeAllCustomViewsForLinks</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTAttributedTextContentView/attributedStringSizeThatFits:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>- (CGSize)attributedStringSizeThatFits:(CGFloat)width</Declaration>
+			
+			
+			<Anchor>//api/name/attributedStringSizeThatFits:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTAttributedTextContentView/suggestedFrameSizeToFitEntireStringConstraintedToWidth:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>- (CGSize)suggestedFrameSizeToFitEntireStringConstraintedToWidth:(CGFloat)width</Declaration>
+			
+			
+			<Anchor>//api/name/suggestedFrameSizeToFitEntireStringConstraintedToWidth:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextContentView/layouter</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>@property (atomic, strong) DTCoreTextLayouter *layouter</Declaration>
+			
+			
+			<Anchor>//api/name/layouter</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextContentView/layoutFrame</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>@property (atomic, strong) DTCoreTextLayoutFrame *layoutFrame</Declaration>
+			
+			
+			<Anchor>//api/name/layoutFrame</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextContentView/customViews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, strong) NSMutableSet *customViews</Declaration>
+			
+			
+			<Anchor>//api/name/customViews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextContentView/attributedString</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, copy) NSAttributedString *attributedString</Declaration>
+			
+			
+			<Anchor>//api/name/attributedString</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextContentView/edgeInsets</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic) UIEdgeInsets edgeInsets</Declaration>
+			
+			
+			<Anchor>//api/name/edgeInsets</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextContentView/drawDebugFrames</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic) BOOL drawDebugFrames</Declaration>
+			
+			
+			<Anchor>//api/name/drawDebugFrames</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextContentView/shouldDrawImages</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic) BOOL shouldDrawImages</Declaration>
+			
+			
+			<Anchor>//api/name/shouldDrawImages</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextContentView/shouldDrawLinks</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic) BOOL shouldDrawLinks</Declaration>
+			
+			
+			<Anchor>//api/name/shouldDrawLinks</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextContentView/shouldLayoutCustomSubviews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic) BOOL shouldLayoutCustomSubviews</Declaration>
+			
+			
+			<Anchor>//api/name/shouldLayoutCustomSubviews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextContentView/layoutOffset</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic) CGPoint layoutOffset</Declaration>
+			
+			
+			<Anchor>//api/name/layoutOffset</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextContentView/backgroundOffset</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic) CGSize backgroundOffset</Declaration>
+			
+			
+			<Anchor>//api/name/backgroundOffset</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextContentView/id</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign) IBOutlet&lt;&gt; id</Declaration>
+			
+			
+			<Anchor>//api/name/id</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTAttributedTextContentView/selfLock</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign) dispatch_semaphore_t selfLock</Declaration>
+			
+			
+			<Anchor>//api/name/selfLock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/DTAttributedTextContentView/setLayerClass:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>+ (void)setLayerClass:(Class)layerClass</Declaration>
+			
+			
+			<Anchor>//api/name/setLayerClass:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/DTAttributedTextContentView/layerClass</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTAttributedTextContentView.h</DeclaredIn>			
+			
+			<Declaration>+ (Class)layerClass</Declaration>
+			
+			
+			<Anchor>//api/name/layerClass</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/DTCoreTextFontCollection.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/DTCoreTextFontCollection</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextFontCollection.h</DeclaredIn>
+			
+			<NodeRef refid="6"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/DTCoreTextFontCollection/availableFontsCollection</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextFontCollection.h</DeclaredIn>			
+			
+			<Declaration>+ (DTCoreTextFontCollection *)availableFontsCollection</Declaration>
+			
+			
+			<Anchor>//api/name/availableFontsCollection</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextFontCollection/initWithAvailableFonts</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextFontCollection.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithAvailableFonts</Declaration>
+			
+			
+			<Anchor>//api/name/initWithAvailableFonts</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextFontCollection/fontFamilyNames</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextFontCollection.h</DeclaredIn>			
+			
+			<Declaration>- (NSArray *)fontFamilyNames</Declaration>
+			
+			
+			<Anchor>//api/name/fontFamilyNames</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextFontCollection/fontDescriptors</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextFontCollection.h</DeclaredIn>			
+			
+			<Declaration>- (NSArray *)fontDescriptors</Declaration>
+			
+			
+			<Anchor>//api/name/fontDescriptors</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/DTCoreTextFontCollection/matchingFontDescriptorForFontDescriptor:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>DTCoreTextFontCollection.h</DeclaredIn>			
+			
+			<Declaration>- (DTCoreTextFontDescriptor *)matchingFontDescriptorForFontDescriptor:(DTCoreTextFontDescriptor *)descriptor</Declaration>
+			
+			
+			<Anchor>//api/name/matchingFontDescriptorForFontDescriptor:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

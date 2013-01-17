@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/DTLinkButton.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/DTLinkButton</TokenIdentifier>
+			<Abstract>A button that corresponds to a hyperlink.</Abstract>
+			<DeclaredIn>DTLinkButton.h</DeclaredIn>
+			
+			<NodeRef refid="17"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTLinkButton/URL</TokenIdentifier>
+			<Abstract>The URL that this button corresponds to.</Abstract>
+			<DeclaredIn>DTLinkButton.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, copy) NSURL *URL</Declaration>
+			
+			
+			<Anchor>//api/name/URL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTLinkButton/GUID</TokenIdentifier>
+			<Abstract>The unique identifier (GUID that all parts of the same hyperlink have in common.</Abstract>
+			<DeclaredIn>DTLinkButton.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, copy) NSString *GUID</Declaration>
+			
+			
+			<Anchor>//api/name/GUID</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTLinkButton/minimumHitSize</TokenIdentifier>
+			<Abstract>The minimum size that the receiver should respond on hits with. Adjusts the bounds if they are smaller than the passed size.</Abstract>
+			<DeclaredIn>DTLinkButton.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign) CGSize minimumHitSize</Declaration>
+			
+			
+			<Anchor>//api/name/minimumHitSize</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTLinkButton/showsTouchWhenHighlighted</TokenIdentifier>
+			<Abstract>A Boolean value that determines whether tapping the button causes it to show a gray rounded rectangle. Default is YES.</Abstract>
+			<DeclaredIn>DTLinkButton.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic) BOOL showsTouchWhenHighlighted</Declaration>
+			
+			
+			<Anchor>//api/name/showsTouchWhenHighlighted</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTLinkButton/attributedString</TokenIdentifier>
+			<Abstract>The attributed string to be drawn for the link button.</Abstract>
+			<DeclaredIn>DTLinkButton.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSAttributedString *attributedString</Declaration>
+			
+			
+			<Anchor>//api/name/attributedString</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/DTLinkButton/highlightedAttributedString</TokenIdentifier>
+			<Abstract>The attributed string to be drawn for the link button while it is highlighted.</Abstract>
+			<DeclaredIn>DTLinkButton.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSAttributedString *highlightedAttributedString</Declaration>
+			
+			
+			<Anchor>//api/name/highlightedAttributedString</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

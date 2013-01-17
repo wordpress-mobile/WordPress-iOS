@@ -1,0 +1,509 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>UIColor(HTML) Category Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 737)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">DTCoreText 1.0.2 </a></h1>
+				<a id="developerHome" href="../index.html">Oliver Drobnik</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">UIColor(HTML) Category Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/colorWithHTMLName:">&nbsp;&nbsp;&nbsp;&nbsp;+ colorWithHTMLName:</option>
+	
+	<option value="//api/name/colorWithHexString:">&nbsp;&nbsp;&nbsp;&nbsp;+ colorWithHexString:</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/alphaComponent">&nbsp;&nbsp;&nbsp;&nbsp;- alphaComponent</option>
+	
+	<option value="//api/name/htmlHexString">&nbsp;&nbsp;&nbsp;&nbsp;- htmlHexString</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+</ul></li>
+
+
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/colorWithHTMLName:">colorWithHTMLName:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/colorWithHexString:">colorWithHexString:</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/alphaComponent">alphaComponent</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/htmlHexString">htmlHexString</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="UIColor(HTML) Category Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">UIColor(HTML) Category Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">DTColor+HTML.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>Methods used to work with HTML representations of colors.</p>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/colorWithHexString:">+&nbsp;colorWithHexString:</a></code>
+		<span class="tooltip"><p>Takes a CSS color string (&lsquo;333&rsquo;, &lsquo;F9FFF9&rsquo;), determines the RGB values used, and returns a UIColor object of that color.
+For each part of the RGB color those numbers for that color are converted to a number using a category on NSString. Then that number is divided by the maximum value, 15 for 3 character strings and 255 for 6 character strings, making the color a percentage and within the range 0.0 and 1.0 that UIColor uses.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/colorWithHTMLName:">+&nbsp;colorWithHTMLName:</a></code>
+		<span class="tooltip"><p>Takes an English string representing a color and maps it to a numeric RGB value as declared by the HTML and CSS specifications (see <a href="http://www.w3schools.com/html/html_colornames.asp">http://www.w3schools.com/html/html_colornames.asp).</a>.) Also accepts CSS <code>#</code> hexadecimal colors, <code>rgba</code>, and <code>rgb</code> and does the right thing returning a corresponding UIColor.
+If a color begins with a <code>#</code> we know that it is a hexadecimal color and send it to <a href="#//api/name/colorWithHexString:">colorWithHexString:</a>. If the string is an <code>rgba()</code> color declaration the comma delimited r, g, b, and a values are made into percentages and then made into a UIColor which is returned. If the string is an <code>rgb()</code> color declaration the same process happens except with an alpha of 1.0.
+The last case is that the color string is not a numeric declaration <code>#</code>, nor a <code>rgba</code> or <code>rgb</code> declaration so the CSS color value matching the English string is found in a lookup dictionary and then passed to <a href="#//api/name/colorWithHexString:">colorWithHexString:</a> which will make a UIColor out of the hexadecimal string.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/htmlHexString">&ndash;&nbsp;htmlHexString</a></code>
+		<span class="tooltip"><p>Return a string hexadecimal representation of this UIColor. Splits the color into components with CGColor methods, re-maps them from percentages to the range 0-255, and depending on the number of components returns a grayscale (repeating string of two characters) or color RGB (alpha is stripped) six character string. In the event of a non-2 or non-4 component color nil is returned as it is from an unsupported color space.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/alphaComponent">&ndash;&nbsp;alphaComponent</a></code>
+		<span class="tooltip"><p>A quick method to return the alpha component of this UIColor by using the CGColorGetAlpha method.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/colorWithHTMLName:" title="colorWithHTMLName:"></a>
+	<h3 class="subsubtitle method-title">colorWithHTMLName:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Takes an English string representing a color and maps it to a numeric RGB value as declared by the HTML and CSS specifications (see <a href="http://www.w3schools.com/html/html_colornames.asp">http://www.w3schools.com/html/html_colornames.asp).</a>.) Also accepts CSS <code>#</code> hexadecimal colors, <code>rgba</code>, and <code>rgb</code> and does the right thing returning a corresponding UIColor.
+If a color begins with a <code>#</code> we know that it is a hexadecimal color and send it to <a href="#//api/name/colorWithHexString:">colorWithHexString:</a>. If the string is an <code>rgba()</code> color declaration the comma delimited r, g, b, and a values are made into percentages and then made into a UIColor which is returned. If the string is an <code>rgb()</code> color declaration the same process happens except with an alpha of 1.0.
+The last case is that the color string is not a numeric declaration <code>#</code>, nor a <code>rgba</code> or <code>rgb</code> declaration so the CSS color value matching the English string is found in a lookup dictionary and then passed to <a href="#//api/name/colorWithHexString:">colorWithHexString:</a> which will make a UIColor out of the hexadecimal string.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>+ (UIColor *)colorWithHTMLName:(NSString *)<em>name</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>name</em></dt>
+			<dd><p>The CSS color string that we want to map from a name into an RGB color.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A UIColor object representing the name parameter as numeric values declared by the HTML and CSS specifications, a <code>rgba()</code> color, or a <code>rgb()</code> color.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Takes an English string representing a color and maps it to a numeric RGB value as declared by the HTML and CSS specifications (see <a href="http://www.w3schools.com/html/html_colornames.asp">http://www.w3schools.com/html/html_colornames.asp).</a>.) Also accepts CSS <code>#</code> hexadecimal colors, <code>rgba</code>, and <code>rgb</code> and does the right thing returning a corresponding UIColor.
+If a color begins with a <code>#</code> we know that it is a hexadecimal color and send it to <a href="#//api/name/colorWithHexString:">colorWithHexString:</a>. If the string is an <code>rgba()</code> color declaration the comma delimited r, g, b, and a values are made into percentages and then made into a UIColor which is returned. If the string is an <code>rgb()</code> color declaration the same process happens except with an alpha of 1.0.
+The last case is that the color string is not a numeric declaration <code>#</code>, nor a <code>rgba</code> or <code>rgb</code> declaration so the CSS color value matching the English string is found in a lookup dictionary and then passed to <a href="#//api/name/colorWithHexString:">colorWithHexString:</a> which will make a UIColor out of the hexadecimal string.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTColor+HTML.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/colorWithHexString:" title="colorWithHexString:"></a>
+	<h3 class="subsubtitle method-title">colorWithHexString:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Takes a CSS color string (&lsquo;333&rsquo;, &lsquo;F9FFF9&rsquo;), determines the RGB values used, and returns a UIColor object of that color.
+For each part of the RGB color those numbers for that color are converted to a number using a category on NSString. Then that number is divided by the maximum value, 15 for 3 character strings and 255 for 6 character strings, making the color a percentage and within the range 0.0 and 1.0 that UIColor uses.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>+ (UIColor *)colorWithHexString:(NSString *)<em>hex</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>hex</em></dt>
+			<dd><p>A CSS hexadecimal color string of length 6 or 3.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A UIColor object generated from the hexadecimal color string with alpha 1.0.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Takes a CSS color string (&lsquo;333&rsquo;, &lsquo;F9FFF9&rsquo;), determines the RGB values used, and returns a UIColor object of that color.
+For each part of the RGB color those numbers for that color are converted to a number using a category on NSString. Then that number is divided by the maximum value, 15 for 3 character strings and 255 for 6 character strings, making the color a percentage and within the range 0.0 and 1.0 that UIColor uses.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTColor+HTML.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/alphaComponent" title="alphaComponent"></a>
+	<h3 class="subsubtitle method-title">alphaComponent</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>A quick method to return the alpha component of this UIColor by using the CGColorGetAlpha method.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (CGFloat)alphaComponent</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The floating point alpha value of this UIColor.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>A quick method to return the alpha component of this UIColor by using the CGColorGetAlpha method.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTColor+HTML.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/htmlHexString" title="htmlHexString"></a>
+	<h3 class="subsubtitle method-title">htmlHexString</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Return a string hexadecimal representation of this UIColor. Splits the color into components with CGColor methods, re-maps them from percentages to the range 0-255, and depending on the number of components returns a grayscale (repeating string of two characters) or color RGB (alpha is stripped) six character string. In the event of a non-2 or non-4 component color nil is returned as it is from an unsupported color space.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)htmlHexString</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A CSS hexadecimal NSString specifying this UIColor.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Return a string hexadecimal representation of this UIColor. Splits the color into components with CGColor methods, re-maps them from percentages to the range 0-255, and depending on the number of components returns a grayscale (repeating string of two characters) or color RGB (alpha is stripped) six character string. In the event of a non-2 or non-4 component color nil is returned as it is from an unsupported color space.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTColor+HTML.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2012 Oliver Drobnik. All rights reserved. (Last updated: 2012-12-05)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 737)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

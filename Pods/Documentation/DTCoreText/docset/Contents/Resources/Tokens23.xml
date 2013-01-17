@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Categories/NSAttributedString(SmallCaps).html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cat/NSAttributedString(SmallCaps)</TokenIdentifier>
+			<Abstract>Methods that generated an attributed string with Small Caps, even if the used fonts don't support them natively.</Abstract>
+			<DeclaredIn>NSAttributedString+SmallCaps.h</DeclaredIn>
+			
+			<NodeRef refid="23"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSAttributedString(SmallCaps)/synthesizedSmallCapsAttributedStringWithText:attributes:</TokenIdentifier>
+			<Abstract>Creates an NSAttributedString from the given text and attributes and synthesizes small caps. On iPad there is only one font that has native small caps, for all other fonts the small caps are synthesized by reduzing the font size for all lowercase characters.</Abstract>
+			<DeclaredIn>NSAttributedString+SmallCaps.h</DeclaredIn>			
+			
+			<Declaration>+ (NSAttributedString *)synthesizedSmallCapsAttributedStringWithText:(NSString *)text attributes:(NSDictionary *)attributes</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>text</Name>
+					<Abstract>The string to convert into an attributed string</Abstract>
+				</Parameter><Parameter>
+					<Name>attributes</Name>
+					<Abstract>A dictionary with attributes for the attributed string</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>An attributed string with synthesized small caps.</Abstract></ReturnValue>
+			<Anchor>//api/name/synthesizedSmallCapsAttributedStringWithText:attributes:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

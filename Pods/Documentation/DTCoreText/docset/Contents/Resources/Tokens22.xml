@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Categories/NSAttributedString(HTML).html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cat/NSAttributedString(HTML)</TokenIdentifier>
+			<Abstract>Methods for generating an NSAttributedString from HTML data. Those methods exist on Mac but have not been ported (publicly) to iOS. This project aims to remedy this.</Abstract>
+			<DeclaredIn>NSAttributedString+HTML.h</DeclaredIn>
+			
+			<NodeRef refid="22"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSAttributedString(HTML)/initWithHTMLData:documentAttributes:</TokenIdentifier>
+			<Abstract>Initializes and returns a new NSAttributedString object from the HTML contained in the given object and base URL.</Abstract>
+			<DeclaredIn>NSAttributedString+HTML.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithHTMLData:(NSData *)data documentAttributes:(NSDictionary **)docAttributes</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>data</Name>
+					<Abstract>The data in HTML format from which to create the attributed string.</Abstract>
+				</Parameter><Parameter>
+					<Name>docAttributes</Name>
+					<Abstract>Currently not in used.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>Returns an initialized object, or nil if the data can’t be decoded.</Abstract></ReturnValue>
+			<Anchor>//api/name/initWithHTMLData:documentAttributes:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSAttributedString(HTML)/initWithHTMLData:baseURL:documentAttributes:</TokenIdentifier>
+			<Abstract>Initializes and returns a new NSAttributedString object from the HTML contained in the given object and base URL.</Abstract>
+			<DeclaredIn>NSAttributedString+HTML.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithHTMLData:(NSData *)data baseURL:(NSURL *)baseURL documentAttributes:(NSDictionary **)docAttributes</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>data</Name>
+					<Abstract>The data in HTML format from which to create the attributed string.</Abstract>
+				</Parameter><Parameter>
+					<Name>baseURL</Name>
+					<Abstract>An NSURL that represents the base URL for all links within the HTML.</Abstract>
+				</Parameter><Parameter>
+					<Name>docAttributes</Name>
+					<Abstract>Currently not in used.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>Returns an initialized object, or nil if the data can’t be decoded.</Abstract></ReturnValue>
+			<Anchor>//api/name/initWithHTMLData:baseURL:documentAttributes:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSAttributedString(HTML)/initWithHTMLData:options:documentAttributes:</TokenIdentifier>
+			<Abstract>Initializes and returns a new NSAttributedString object from the HTML contained in the given object and base URL.</Abstract>
+			<DeclaredIn>NSAttributedString+HTML.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithHTMLData:(NSData *)data options:(NSDictionary *)options documentAttributes:(NSDictionary **)docAttributes</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>data</Name>
+					<Abstract>The data in HTML format from which to create the attributed string.</Abstract>
+				</Parameter><Parameter>
+					<Name>options</Name>
+					<Abstract>Specifies how the document should be loaded. Contains values described in “Option keys for importing documents.”</Abstract>
+				</Parameter><Parameter>
+					<Name>docAttributes</Name>
+					<Abstract>Currently not in used.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>Returns an initialized object, or nil if the data can’t be decoded.</Abstract></ReturnValue>
+			<Anchor>//api/name/initWithHTMLData:options:documentAttributes:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

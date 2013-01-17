@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DocSetNodes version="1.0">
+    <TOC>
+        <Node type="folder">
+            <Name>DTCoreText 1.0.2</Name>
+            <Path>index.html</Path>
+			<Subnodes>
+				
+				<Node type="folder">
+					<Name>Classes</Name>
+					<Path>index.html</Path>
+					<Subnodes>
+						<NodeRef refid="1"/>
+						<NodeRef refid="2"/>
+						<NodeRef refid="3"/>
+						<NodeRef refid="4"/>
+						<NodeRef refid="5"/>
+						<NodeRef refid="6"/>
+						<NodeRef refid="7"/>
+						<NodeRef refid="8"/>
+						<NodeRef refid="9"/>
+						<NodeRef refid="10"/>
+						<NodeRef refid="11"/>
+						<NodeRef refid="12"/>
+						<NodeRef refid="13"/>
+						<NodeRef refid="14"/>
+						<NodeRef refid="15"/>
+						<NodeRef refid="16"/>
+						<NodeRef refid="17"/>
+						<NodeRef refid="18"/>
+						<NodeRef refid="19"/>
+						<NodeRef refid="20"/>
+						
+					</Subnodes>
+				</Node>
+				
+				
+				<Node type="folder">
+					<Name>Categories</Name>
+					<Path>index.html</Path>
+					<Subnodes>
+						<NodeRef refid="21"/>
+						<NodeRef refid="22"/>
+						<NodeRef refid="23"/>
+						<NodeRef refid="24"/>
+						<NodeRef refid="25"/>
+						<NodeRef refid="26"/>
+						<NodeRef refid="27"/>
+						<NodeRef refid="28"/>
+						<NodeRef refid="29"/>
+						<NodeRef refid="30"/>
+						<NodeRef refid="31"/>
+						<NodeRef refid="32"/>
+						<NodeRef refid="33"/>
+						<NodeRef refid="34"/>
+						<NodeRef refid="35"/>
+						<NodeRef refid="36"/>
+						<NodeRef refid="37"/>
+						
+					</Subnodes>
+				</Node>
+				
+				
+				<Node type="folder">
+					<Name>Protocols</Name>
+					<Path>index.html</Path>
+					<Subnodes>
+						<NodeRef refid="38"/>
+						<NodeRef refid="39"/>
+						<NodeRef refid="40"/>
+						<NodeRef refid="41"/>
+						
+					</Subnodes>
+				</Node>
+				
+			</Subnodes>
+        </Node>
+    </TOC>
+	<Library>
+		<Node id="1">
+			<Name>DTAttributedTextCell</Name>
+			<Path>Classes/DTAttributedTextCell.html</Path>
+		</Node>
+		<Node id="2">
+			<Name>DTAttributedTextContentView</Name>
+			<Path>Classes/DTAttributedTextContentView.html</Path>
+		</Node>
+		<Node id="3">
+			<Name>DTAttributedTextView</Name>
+			<Path>Classes/DTAttributedTextView.html</Path>
+		</Node>
+		<Node id="4">
+			<Name>DTCSSListStyle</Name>
+			<Path>Classes/DTCSSListStyle.html</Path>
+		</Node>
+		<Node id="5">
+			<Name>DTCSSStylesheet</Name>
+			<Path>Classes/DTCSSStylesheet.html</Path>
+		</Node>
+		<Node id="6">
+			<Name>DTCoreTextFontCollection</Name>
+			<Path>Classes/DTCoreTextFontCollection.html</Path>
+		</Node>
+		<Node id="7">
+			<Name>DTCoreTextFontDescriptor</Name>
+			<Path>Classes/DTCoreTextFontDescriptor.html</Path>
+		</Node>
+		<Node id="8">
+			<Name>DTCoreTextGlyphRun</Name>
+			<Path>Classes/DTCoreTextGlyphRun.html</Path>
+		</Node>
+		<Node id="9">
+			<Name>DTCoreTextLayoutFrame</Name>
+			<Path>Classes/DTCoreTextLayoutFrame.html</Path>
+		</Node>
+		<Node id="10">
+			<Name>DTCoreTextLayoutLine</Name>
+			<Path>Classes/DTCoreTextLayoutLine.html</Path>
+		</Node>
+		<Node id="11">
+			<Name>DTCoreTextLayouter</Name>
+			<Path>Classes/DTCoreTextLayouter.html</Path>
+		</Node>
+		<Node id="12">
+			<Name>DTCoreTextParagraphStyle</Name>
+			<Path>Classes/DTCoreTextParagraphStyle.html</Path>
+		</Node>
+		<Node id="13">
+			<Name>DTHTMLAttributedStringBuilder</Name>
+			<Path>Classes/DTHTMLAttributedStringBuilder.html</Path>
+		</Node>
+		<Node id="14">
+			<Name>DTHTMLElement</Name>
+			<Path>Classes/DTHTMLElement.html</Path>
+		</Node>
+		<Node id="15">
+			<Name>DTHTMLParser</Name>
+			<Path>Classes/DTHTMLParser.html</Path>
+		</Node>
+		<Node id="16">
+			<Name>DTLazyImageView</Name>
+			<Path>Classes/DTLazyImageView.html</Path>
+		</Node>
+		<Node id="17">
+			<Name>DTLinkButton</Name>
+			<Path>Classes/DTLinkButton.html</Path>
+		</Node>
+		<Node id="18">
+			<Name>DTTextAttachment</Name>
+			<Path>Classes/DTTextAttachment.html</Path>
+		</Node>
+		<Node id="19">
+			<Name>DTTextBlock</Name>
+			<Path>Classes/DTTextBlock.html</Path>
+		</Node>
+		<Node id="20">
+			<Name>DTWebVideoView</Name>
+			<Path>Classes/DTWebVideoView.html</Path>
+		</Node>
+		
+		<Node id="21">
+			<Name>NSAttributedString(DTCoreText)</Name>
+			<Path>Categories/NSAttributedString(DTCoreText).html</Path>
+		</Node>
+		<Node id="22">
+			<Name>NSAttributedString(HTML)</Name>
+			<Path>Categories/NSAttributedString(HTML).html</Path>
+		</Node>
+		<Node id="23">
+			<Name>NSAttributedString(SmallCaps)</Name>
+			<Path>Categories/NSAttributedString(SmallCaps).html</Path>
+		</Node>
+		<Node id="24">
+			<Name>NSCharacterSet(HTML)</Name>
+			<Path>Categories/NSCharacterSet(HTML).html</Path>
+		</Node>
+		<Node id="25">
+			<Name>NSColor(HTML)</Name>
+			<Path>Categories/NSColor(HTML).html</Path>
+		</Node>
+		<Node id="26">
+			<Name>NSData(DTBase64)</Name>
+			<Path>Categories/NSData(DTBase64).html</Path>
+		</Node>
+		<Node id="27">
+			<Name>NSImage(HTML)</Name>
+			<Path>Categories/NSImage(HTML).html</Path>
+		</Node>
+		<Node id="28">
+			<Name>NSMutableAttributedString(HTML)</Name>
+			<Path>Categories/NSMutableAttributedString(HTML).html</Path>
+		</Node>
+		<Node id="29">
+			<Name>NSMutableString(HTML)</Name>
+			<Path>Categories/NSMutableString(HTML).html</Path>
+		</Node>
+		<Node id="30">
+			<Name>NSScanner(HTML)</Name>
+			<Path>Categories/NSScanner(HTML).html</Path>
+		</Node>
+		<Node id="31">
+			<Name>NSString(CSS)</Name>
+			<Path>Categories/NSString(CSS).html</Path>
+		</Node>
+		<Node id="32">
+			<Name>NSString(HTML)</Name>
+			<Path>Categories/NSString(HTML).html</Path>
+		</Node>
+		<Node id="33">
+			<Name>NSString(MalformedUTF8Additions)</Name>
+			<Path>Categories/NSString(MalformedUTF8Additions).html</Path>
+		</Node>
+		<Node id="34">
+			<Name>NSString(Paragraphs)</Name>
+			<Path>Categories/NSString(Paragraphs).html</Path>
+		</Node>
+		<Node id="35">
+			<Name>UIColor(HTML)</Name>
+			<Path>Categories/UIColor(HTML).html</Path>
+		</Node>
+		<Node id="36">
+			<Name>UIDevice(DTSimpleVersion)</Name>
+			<Path>Categories/UIDevice(DTSimpleVersion).html</Path>
+		</Node>
+		<Node id="37">
+			<Name>UIImage(HTML)</Name>
+			<Path>Categories/UIImage(HTML).html</Path>
+		</Node>
+		
+		<Node id="38">
+			<Name>DTAttributedTextContentViewDelegate</Name>
+			<Path>Protocols/DTAttributedTextContentViewDelegate.html</Path>
+		</Node>
+		<Node id="39">
+			<Name>DTHTMLParserDelegate</Name>
+			<Path>Protocols/DTHTMLParserDelegate.html</Path>
+		</Node>
+		<Node id="40">
+			<Name>DTLazyImageViewDelegate</Name>
+			<Path>Protocols/DTLazyImageViewDelegate.html</Path>
+		</Node>
+		<Node id="41">
+			<Name>DTWebVideoViewDelegate</Name>
+			<Path>Protocols/DTWebVideoViewDelegate.html</Path>
+		</Node>
+		
+	</Library>
+</DocSetNodes>

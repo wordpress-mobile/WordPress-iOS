@@ -1,0 +1,1816 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>DTCoreTextLayoutFrame Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 737)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">DTCoreText 1.0.2 </a></h1>
+				<a id="developerHome" href="../index.html">Oliver Drobnik</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">DTCoreTextLayoutFrame Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/frame">&nbsp;&nbsp;&nbsp;&nbsp;frame</option>
+	
+	<option value="//api/name/lines">&nbsp;&nbsp;&nbsp;&nbsp;lines</option>
+	
+	<option value="//api/name/paragraphRanges">&nbsp;&nbsp;&nbsp;&nbsp;paragraphRanges</option>
+	
+	<option value="//api/name/textBlockHandler">&nbsp;&nbsp;&nbsp;&nbsp;textBlockHandler</option>
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/setShouldDrawDebugFrames:">&nbsp;&nbsp;&nbsp;&nbsp;+ setShouldDrawDebugFrames:</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/attributedStringFragment">&nbsp;&nbsp;&nbsp;&nbsp;- attributedStringFragment</option>
+	
+	<option value="//api/name/baselineOriginToPositionLine:afterLine:">&nbsp;&nbsp;&nbsp;&nbsp;- baselineOriginToPositionLine:afterLine:</option>
+	
+	<option value="//api/name/drawInContext:drawImages:drawLinks:">&nbsp;&nbsp;&nbsp;&nbsp;- drawInContext:drawImages:drawLinks:</option>
+	
+	<option value="//api/name/frameOfGlyphAtIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- frameOfGlyphAtIndex:</option>
+	
+	<option value="//api/name/initWithFrame:layouter:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithFrame:layouter:</option>
+	
+	<option value="//api/name/initWithFrame:layouter:range:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithFrame:layouter:range:</option>
+	
+	<option value="//api/name/isLineFirstInParagraph:">&nbsp;&nbsp;&nbsp;&nbsp;- isLineFirstInParagraph:</option>
+	
+	<option value="//api/name/isLineLastInParagraph:">&nbsp;&nbsp;&nbsp;&nbsp;- isLineLastInParagraph:</option>
+	
+	<option value="//api/name/lineContainingIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- lineContainingIndex:</option>
+	
+	<option value="//api/name/lineIndexForGlyphIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- lineIndexForGlyphIndex:</option>
+	
+	<option value="//api/name/linesContainedInRect:">&nbsp;&nbsp;&nbsp;&nbsp;- linesContainedInRect:</option>
+	
+	<option value="//api/name/linesInParagraphAtIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- linesInParagraphAtIndex:</option>
+	
+	<option value="//api/name/linesVisibleInRect:">&nbsp;&nbsp;&nbsp;&nbsp;- linesVisibleInRect:</option>
+	
+	<option value="//api/name/paragraphIndexContainingStringIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- paragraphIndexContainingStringIndex:</option>
+	
+	<option value="//api/name/paragraphRangeContainingStringRange:">&nbsp;&nbsp;&nbsp;&nbsp;- paragraphRangeContainingStringRange:</option>
+	
+	<option value="//api/name/stringIndices">&nbsp;&nbsp;&nbsp;&nbsp;- stringIndices</option>
+	
+	<option value="//api/name/textAttachments">&nbsp;&nbsp;&nbsp;&nbsp;- textAttachments</option>
+	
+	<option value="//api/name/textAttachmentsWithPredicate:">&nbsp;&nbsp;&nbsp;&nbsp;- textAttachmentsWithPredicate:</option>
+	
+	<option value="//api/name/visibleStringRange">&nbsp;&nbsp;&nbsp;&nbsp;- visibleStringRange</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Creating Layout Frames">Creating Layout Frames</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Getting Information">Getting Information</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Drawing">Drawing</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Working with Glyphs">Working with Glyphs</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Working with Text Lines">Working with Text Lines</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Text Attachments">Text Attachments</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Getting Paragraph Info">Getting Paragraph Info</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Debugging">Debugging</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/frame">frame</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/lines">lines</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/paragraphRanges">paragraphRanges</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/textBlockHandler">textBlockHandler</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setShouldDrawDebugFrames:">setShouldDrawDebugFrames:</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/attributedStringFragment">attributedStringFragment</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/baselineOriginToPositionLine:afterLine:">baselineOriginToPositionLine:afterLine:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/drawInContext:drawImages:drawLinks:">drawInContext:drawImages:drawLinks:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/frameOfGlyphAtIndex:">frameOfGlyphAtIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithFrame:layouter:">initWithFrame:layouter:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithFrame:layouter:range:">initWithFrame:layouter:range:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isLineFirstInParagraph:">isLineFirstInParagraph:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isLineLastInParagraph:">isLineLastInParagraph:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/lineContainingIndex:">lineContainingIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/lineIndexForGlyphIndex:">lineIndexForGlyphIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/linesContainedInRect:">linesContainedInRect:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/linesInParagraphAtIndex:">linesInParagraphAtIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/linesVisibleInRect:">linesVisibleInRect:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/paragraphIndexContainingStringIndex:">paragraphIndexContainingStringIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/paragraphRangeContainingStringRange:">paragraphRangeContainingStringRange:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/stringIndices">stringIndices</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/textAttachments">textAttachments</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/textAttachmentsWithPredicate:">textAttachmentsWithPredicate:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/visibleStringRange">visibleStringRange</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="DTCoreTextLayoutFrame Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">DTCoreTextLayoutFrame Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">NSObject</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">DTCoreTextLayoutFrame.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>This class represents a single <a href="#//api/name/frame">frame</a> of text and basically wraps CTFrame. It provides an array of text <a href="#//api/name/lines">lines</a> that fit in the given rectangle.</p>
+
+<p>Both styles of layouting are supported: open ended (suitable for scroll views) and limited to a given rectangle. To use the open-ended style specify <code>CGFLOAT_OPEN_HEIGHT</code> for the <a href="#//api/name/frame">frame</a> height when creating a layout <a href="#//api/name/frame">frame</a>.</p>
+
+<p>The array of <a href="#//api/name/lines">lines</a> is built lazily the first time it is accessed or &ndash; for open-ended frames &ndash; when the <a href="#//api/name/frame">frame</a> property is being queried.</p>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						<a title="Creating Layout Frames" name="task_Creating Layout Frames"></a>
+						<h3 class="subsubtitle task-title">Creating Layout Frames</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithFrame:layouter:">&ndash;&nbsp;initWithFrame:layouter:</a></code>
+		<span class="tooltip"><p>Creates a Layout Frame with the given <a href="#//api/name/frame">frame</a> using the attributed string loaded into the layouter.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithFrame:layouter:range:">&ndash;&nbsp;initWithFrame:layouter:range:</a></code>
+		<span class="tooltip"><p>Creates a Layout Frame with the given <a href="#//api/name/frame">frame</a> using the attributed string loaded into the layouter.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Getting Information" name="task_Getting Information"></a>
+						<h3 class="subsubtitle task-title">Getting Information</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/visibleStringRange">&ndash;&nbsp;visibleStringRange</a></code>
+		<span class="tooltip"><p>The string range that is visible i.e. fits into the given rectangle. For open-ended frames this is typically the entire string. For frame-contrained layout frames it is the substring that fits.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/attributedStringFragment">&ndash;&nbsp;attributedStringFragment</a></code>
+		<span class="tooltip"><p>This is a copy of the attributed string owned by the layouter of the receiver.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/stringIndices">&ndash;&nbsp;stringIndices</a></code>
+		<span class="tooltip"><p>An array that maps glyphs with string indices.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/frame">&nbsp;&nbsp;frame</a></code>
+		<span class="tooltip"><p>The <a href="#//api/name/frame">frame</a> rectangle for the layout <a href="#//api/name/frame">frame</a>.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+						
+						<a title="Drawing" name="task_Drawing"></a>
+						<h3 class="subsubtitle task-title">Drawing</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/drawInContext:drawImages:drawLinks:">&ndash;&nbsp;drawInContext:drawImages:drawLinks:</a></code>
+		<span class="tooltip"><p>Draws the entire layout <a href="#//api/name/frame">frame</a> into the given graphics context.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/textBlockHandler">&nbsp;&nbsp;textBlockHandler</a></code>
+		<span class="tooltip"><p>Set a custom handler to be executed before text belonging to a text block is drawn.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+						
+						<a title="Working with Glyphs" name="task_Working with Glyphs"></a>
+						<h3 class="subsubtitle task-title">Working with Glyphs</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/lineIndexForGlyphIndex:">&ndash;&nbsp;lineIndexForGlyphIndex:</a></code>
+		<span class="tooltip"><p>Retrieves the index of the text line that contains the given glyph index.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/frameOfGlyphAtIndex:">&ndash;&nbsp;frameOfGlyphAtIndex:</a></code>
+		<span class="tooltip"><p>Retrieves the <a href="#//api/name/frame">frame</a> of the glyph at the given glyph index.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Working with Text Lines" name="task_Working with Text Lines"></a>
+						<h3 class="subsubtitle task-title">Working with Text Lines</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/lines">&nbsp;&nbsp;lines</a></code>
+		<span class="tooltip"><p>The text <a href="#//api/name/lines">lines</a> that belong to the receiver.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/linesVisibleInRect:">&ndash;&nbsp;linesVisibleInRect:</a></code>
+		<span class="tooltip"><p>The text <a href="#//api/name/lines">lines</a> that are visible inside the given rectangle. Also incomplete <a href="#//api/name/lines">lines</a> are included.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/linesContainedInRect:">&ndash;&nbsp;linesContainedInRect:</a></code>
+		<span class="tooltip"><p>The text <a href="#//api/name/lines">lines</a> that are visible inside the given rectangle. Only fully visible <a href="#//api/name/lines">lines</a> are included.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/lineContainingIndex:">&ndash;&nbsp;lineContainingIndex:</a></code>
+		<span class="tooltip"><p>The layout line that contains the given string index.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isLineFirstInParagraph:">&ndash;&nbsp;isLineFirstInParagraph:</a></code>
+		<span class="tooltip"><p>Determins if the given line is the first in a paragraph.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isLineLastInParagraph:">&ndash;&nbsp;isLineLastInParagraph:</a></code>
+		<span class="tooltip"><p>Determins if the given line is the last in a paragraph.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/baselineOriginToPositionLine:afterLine:">&ndash;&nbsp;baselineOriginToPositionLine:afterLine:</a></code>
+		<span class="tooltip"><p>Finds the appropriate baseline origin for a line to position it at the correct distance from a previous line.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Text Attachments" name="task_Text Attachments"></a>
+						<h3 class="subsubtitle task-title">Text Attachments</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/textAttachments">&ndash;&nbsp;textAttachments</a></code>
+		<span class="tooltip"><p>The array of all <a href="../Classes/DTTextAttachment.html">DTTextAttachment</a> instances that belong to the receiver.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/textAttachmentsWithPredicate:">&ndash;&nbsp;textAttachmentsWithPredicate:</a></code>
+		<span class="tooltip"><p>The array of all <a href="../Classes/DTTextAttachment.html">DTTextAttachment</a> instances that belong to the receiver which also match the specified predicate.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Getting Paragraph Info" name="task_Getting Paragraph Info"></a>
+						<h3 class="subsubtitle task-title">Getting Paragraph Info</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/paragraphIndexContainingStringIndex:">&ndash;&nbsp;paragraphIndexContainingStringIndex:</a></code>
+		<span class="tooltip"><p>Finding which paragraph a given string index belongs to.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/paragraphRangeContainingStringRange:">&ndash;&nbsp;paragraphRangeContainingStringRange:</a></code>
+		<span class="tooltip"><p>Determines the paragraph range (of paragraph indexes) that encompass the entire given string Range.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/linesInParagraphAtIndex:">&ndash;&nbsp;linesInParagraphAtIndex:</a></code>
+		<span class="tooltip"><p>The text <a href="#//api/name/lines">lines</a> that belong to the specified paragraph.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/paragraphRanges">&nbsp;&nbsp;paragraphRanges</a></code>
+		<span class="tooltip"><p>An array of <code>NSRange</code> values encapsulated in <code>NSValue</code> instances. Each range is the string range contained in the corresponding paragraph.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+						
+						<a title="Debugging" name="task_Debugging"></a>
+						<h3 class="subsubtitle task-title">Debugging</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setShouldDrawDebugFrames:">+&nbsp;setShouldDrawDebugFrames:</a></code>
+		<span class="tooltip"><p>Switches on the debug drawing mode where individual glph runs, base<a href="#//api/name/lines">lines</a>, et ceter get individually marked.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/frame" title="frame"></a>
+	<h3 class="subsubtitle method-title">frame</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The <a href="#//api/name/frame">frame</a> rectangle for the layout <a href="#//api/name/frame">frame</a>.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, assign, readonly) CGRect frame</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The <a href="#//api/name/frame">frame</a> rectangle for the layout <a href="#//api/name/frame">frame</a>.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/lines" title="lines"></a>
+	<h3 class="subsubtitle method-title">lines</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The text <a href="#//api/name/lines">lines</a> that belong to the receiver.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, strong, readonly) NSArray *lines</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The text <a href="#//api/name/lines">lines</a> that belong to the receiver.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/paragraphRanges" title="paragraphRanges"></a>
+	<h3 class="subsubtitle method-title">paragraphRanges</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>An array of <code>NSRange</code> values encapsulated in <code>NSValue</code> instances. Each range is the string range contained in the corresponding paragraph.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, strong, readonly) NSArray *paragraphRanges</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>An array of <code>NSRange</code> values encapsulated in <code>NSValue</code> instances. Each range is the string range contained in the corresponding paragraph.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/textBlockHandler" title="textBlockHandler"></a>
+	<h3 class="subsubtitle method-title">textBlockHandler</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Set a custom handler to be executed before text belonging to a text block is drawn.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, copy) DTCoreTextLayoutFrameTextBlockHandler textBlockHandler</code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>handler</em></dt>
+			<dd><p>A DTCoreTextLayoutFrameTextBlockHandler block.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Set a custom handler to be executed before text belonging to a text block is drawn.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/setShouldDrawDebugFrames:" title="setShouldDrawDebugFrames:"></a>
+	<h3 class="subsubtitle method-title">setShouldDrawDebugFrames:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Switches on the debug drawing mode where individual glph runs, base<a href="#//api/name/lines">lines</a>, et ceter get individually marked.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>+ (void)setShouldDrawDebugFrames:(BOOL)<em>debugFrames</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>debugFrames</em></dt>
+			<dd><p>if the debug drawing should occur</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Switches on the debug drawing mode where individual glph runs, base<a href="#//api/name/lines">lines</a>, et ceter get individually marked.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/attributedStringFragment" title="attributedStringFragment"></a>
+	<h3 class="subsubtitle method-title">attributedStringFragment</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>This is a copy of the attributed string owned by the layouter of the receiver.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSAttributedString *)attributedStringFragment</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>This is a copy of the attributed string owned by the layouter of the receiver.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/baselineOriginToPositionLine:afterLine:" title="baselineOriginToPositionLine:afterLine:"></a>
+	<h3 class="subsubtitle method-title">baselineOriginToPositionLine:afterLine:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Finds the appropriate baseline origin for a line to position it at the correct distance from a previous line.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (CGPoint)baselineOriginToPositionLine:(DTCoreTextLayoutLine *)<em>line</em> afterLine:(DTCoreTextLayoutLine *)<em>previousLine</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>line</em></dt>
+			<dd><p>The line</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>previousLine</em></dt>
+			<dd><p>The line after which to position the line.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The correct baseline origin for the line.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Finds the appropriate baseline origin for a line to position it at the correct distance from a previous line.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/drawInContext:drawImages:drawLinks:" title="drawInContext:drawImages:drawLinks:"></a>
+	<h3 class="subsubtitle method-title">drawInContext:drawImages:drawLinks:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Draws the entire layout <a href="#//api/name/frame">frame</a> into the given graphics context.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (void)drawInContext:(CGContextRef)<em>context</em> drawImages:(BOOL)<em>drawImages</em> drawLinks:(BOOL)<em>drawLinks</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>context</em></dt>
+			<dd><p>A graphics context to draw into</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>drawImages</em></dt>
+			<dd><p>Whether hyperlinks should be drawn together with the text. If you specify <code>NO</code> then space is left blank where links would go and you have to add your own views to display these links.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Draws the entire layout <a href="#//api/name/frame">frame</a> into the given graphics context.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/frameOfGlyphAtIndex:" title="frameOfGlyphAtIndex:"></a>
+	<h3 class="subsubtitle method-title">frameOfGlyphAtIndex:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Retrieves the <a href="#//api/name/frame">frame</a> of the glyph at the given glyph index.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (CGRect)frameOfGlyphAtIndex:(NSInteger)<em>index</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>index</em></dt>
+			<dd><p>The index of the glyph</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The <a href="#//api/name/frame">frame</a> of this glyph</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Retrieves the <a href="#//api/name/frame">frame</a> of the glyph at the given glyph index.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithFrame:layouter:" title="initWithFrame:layouter:"></a>
+	<h3 class="subsubtitle method-title">initWithFrame:layouter:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Creates a Layout Frame with the given <a href="#//api/name/frame">frame</a> using the attributed string loaded into the layouter.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (id)initWithFrame:(CGRect)<em>frame</em> layouter:(DTCoreTextLayouter *)<em>layouter</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>frame</em></dt>
+			<dd><p>The rectangle specifying origin and size of available for text. Specify <code>CGFLOAT_OPEN_HEIGHT</code> to not limit the height.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>layouter</em></dt>
+			<dd><p>A reference to the layouter for this text box.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Creates a Layout Frame with the given <a href="#//api/name/frame">frame</a> using the attributed string loaded into the layouter.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithFrame:layouter:range:" title="initWithFrame:layouter:range:"></a>
+	<h3 class="subsubtitle method-title">initWithFrame:layouter:range:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Creates a Layout Frame with the given <a href="#//api/name/frame">frame</a> using the attributed string loaded into the layouter.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (id)initWithFrame:(CGRect)<em>frame</em> layouter:(DTCoreTextLayouter *)<em>layouter</em> range:(NSRange)<em>range</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>frame</em></dt>
+			<dd><p>The rectangle specifying origin and size of available for text. Specify <code>CGFLOAT_OPEN_HEIGHT</code> to not limit the height.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>layouter</em></dt>
+			<dd><p>A reference to the layouter for the receiver. Note: The layouter owns the attributed string.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>range</em></dt>
+			<dd><p>The range within the attributed string to layout into the receiver.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Creates a Layout Frame with the given <a href="#//api/name/frame">frame</a> using the attributed string loaded into the layouter.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isLineFirstInParagraph:" title="isLineFirstInParagraph:"></a>
+	<h3 class="subsubtitle method-title">isLineFirstInParagraph:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Determins if the given line is the first in a paragraph.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)isLineFirstInParagraph:(DTCoreTextLayoutLine *)<em>line</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>line</em></dt>
+			<dd><p>The Line</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if the given line is the first in a paragraph</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Determins if the given line is the first in a paragraph.</p>
+
+<p>This is needed for example to determine whether paragraphSpaceBefore needs to be applied before it.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isLineLastInParagraph:" title="isLineLastInParagraph:"></a>
+	<h3 class="subsubtitle method-title">isLineLastInParagraph:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Determins if the given line is the last in a paragraph.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (BOOL)isLineLastInParagraph:(DTCoreTextLayoutLine *)<em>line</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>line</em></dt>
+			<dd><p>The Line</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p><code>YES</code> if the given line is the last in a paragraph</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Determins if the given line is the last in a paragraph.</p>
+
+<p>This is needed for example to determine whether paragraph spacing needs to be applied after it.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/lineContainingIndex:" title="lineContainingIndex:"></a>
+	<h3 class="subsubtitle method-title">lineContainingIndex:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The layout line that contains the given string index.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (DTCoreTextLayoutLine *)lineContainingIndex:(NSUInteger)<em>index</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>index</em></dt>
+			<dd><p>The string index</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The layout line that this index belongs to</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The layout line that contains the given string index.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/lineIndexForGlyphIndex:" title="lineIndexForGlyphIndex:"></a>
+	<h3 class="subsubtitle method-title">lineIndexForGlyphIndex:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Retrieves the index of the text line that contains the given glyph index.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSInteger)lineIndexForGlyphIndex:(NSInteger)<em>index</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>index</em></dt>
+			<dd><p>The index of the glyph</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The index of the line containing this glyph</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Retrieves the index of the text line that contains the given glyph index.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/linesContainedInRect:" title="linesContainedInRect:"></a>
+	<h3 class="subsubtitle method-title">linesContainedInRect:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The text <a href="#//api/name/lines">lines</a> that are visible inside the given rectangle. Only fully visible <a href="#//api/name/lines">lines</a> are included.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSArray *)linesContainedInRect:(CGRect)<em>rect</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>rect</em></dt>
+			<dd><p>The rectangle</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>An array, sorted from top to bottom, of <a href="#//api/name/lines">lines</a> fully visible</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The text <a href="#//api/name/lines">lines</a> that are visible inside the given rectangle. Only fully visible <a href="#//api/name/lines">lines</a> are included.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/linesInParagraphAtIndex:" title="linesInParagraphAtIndex:"></a>
+	<h3 class="subsubtitle method-title">linesInParagraphAtIndex:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The text <a href="#//api/name/lines">lines</a> that belong to the specified paragraph.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSArray *)linesInParagraphAtIndex:(NSUInteger)<em>index</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>index</em></dt>
+			<dd><p>The index of the paragraph</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>An array, sorted from top to bottom, of <a href="#//api/name/lines">lines</a> in this paragraph</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The text <a href="#//api/name/lines">lines</a> that belong to the specified paragraph.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/linesVisibleInRect:" title="linesVisibleInRect:"></a>
+	<h3 class="subsubtitle method-title">linesVisibleInRect:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The text <a href="#//api/name/lines">lines</a> that are visible inside the given rectangle. Also incomplete <a href="#//api/name/lines">lines</a> are included.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSArray *)linesVisibleInRect:(CGRect)<em>rect</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>rect</em></dt>
+			<dd><p>The rectangle</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>An array, sorted from top to bottom, of <a href="#//api/name/lines">lines</a> at least partially visible</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The text <a href="#//api/name/lines">lines</a> that are visible inside the given rectangle. Also incomplete <a href="#//api/name/lines">lines</a> are included.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/paragraphIndexContainingStringIndex:" title="paragraphIndexContainingStringIndex:"></a>
+	<h3 class="subsubtitle method-title">paragraphIndexContainingStringIndex:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Finding which paragraph a given string index belongs to.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSUInteger)paragraphIndexContainingStringIndex:(NSUInteger)<em>stringIndex</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>stringIndex</em></dt>
+			<dd><p>The index in the string to look for</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The index of the paragraph, numbered from 0</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Finding which paragraph a given string index belongs to.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/paragraphRangeContainingStringRange:" title="paragraphRangeContainingStringRange:"></a>
+	<h3 class="subsubtitle method-title">paragraphRangeContainingStringRange:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Determines the paragraph range (of paragraph indexes) that encompass the entire given string Range.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSRange)paragraphRangeContainingStringRange:(NSRange)<em>stringRange</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>stringRange</em></dt>
+			<dd><p>The string range for which the paragraph range is sought for</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The range of paragraphs that fully enclose the string range</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Determines the paragraph range (of paragraph indexes) that encompass the entire given string Range.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/stringIndices" title="stringIndices"></a>
+	<h3 class="subsubtitle method-title">stringIndices</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>An array that maps glyphs with string indices.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSArray *)stringIndices</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>An array that maps glyphs with string indices.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/textAttachments" title="textAttachments"></a>
+	<h3 class="subsubtitle method-title">textAttachments</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The array of all <a href="../Classes/DTTextAttachment.html">DTTextAttachment</a> instances that belong to the receiver.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSArray *)textAttachments</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>All text attachments of the receiver.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The array of all <a href="../Classes/DTTextAttachment.html">DTTextAttachment</a> instances that belong to the receiver.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/textAttachmentsWithPredicate:" title="textAttachmentsWithPredicate:"></a>
+	<h3 class="subsubtitle method-title">textAttachmentsWithPredicate:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The array of all <a href="../Classes/DTTextAttachment.html">DTTextAttachment</a> instances that belong to the receiver which also match the specified predicate.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSArray *)textAttachmentsWithPredicate:(NSPredicate *)<em>predicate</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>predicate</em></dt>
+			<dd><p>A predicate that uses properties of <a href="../Classes/DTTextAttachment.html">DTTextAttachment</a> to reduce the returned array</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>A filtered array of text attachments.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The array of all <a href="../Classes/DTTextAttachment.html">DTTextAttachment</a> instances that belong to the receiver which also match the specified predicate.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/visibleStringRange" title="visibleStringRange"></a>
+	<h3 class="subsubtitle method-title">visibleStringRange</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The string range that is visible i.e. fits into the given rectangle. For open-ended frames this is typically the entire string. For frame-contrained layout frames it is the substring that fits.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSRange)visibleStringRange</code></div>
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The string range that is visible i.e. fits into the given rectangle. For open-ended frames this is typically the entire string. For frame-contrained layout frames it is the substring that fits.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">DTCoreTextLayoutFrame.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2012 Oliver Drobnik. All rights reserved. (Last updated: 2012-12-05)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 737)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

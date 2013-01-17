@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Categories/NSString(HTML).html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cat/NSString(HTML)</TokenIdentifier>
+			<Abstract>Methods for making HTML strings easier and quicker to handle.</Abstract>
+			<DeclaredIn>NSString+HTML.h</DeclaredIn>
+			
+			<NodeRef refid="32"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(HTML)/integerValueFromHex</TokenIdentifier>
+			<Abstract>Extract the numbers from this string and return them as an NSUInteger.</Abstract>
+			<DeclaredIn>NSString+HTML.h</DeclaredIn>			
+			
+			<Declaration>- (NSUInteger)integerValueFromHex</Declaration>
+			
+			<ReturnValue><Abstract>An NSUInteger of the number characters in this string.</Abstract></ReturnValue>
+			<Anchor>//api/name/integerValueFromHex</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(HTML)/isNumeric</TokenIdentifier>
+			<Abstract>Test whether or not this string is numeric only.</Abstract>
+			<DeclaredIn>NSString+HTML.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)isNumeric</Declaration>
+			
+			<ReturnValue><Abstract>If this string consists only of numeric characters 0-9.</Abstract></ReturnValue>
+			<Anchor>//api/name/isNumeric</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(HTML)/percentValue</TokenIdentifier>
+			<Abstract>Read through this string and store the numbers included, then divide them by 100 giving a percentage.</Abstract>
+			<DeclaredIn>NSString+HTML.h</DeclaredIn>			
+			
+			<Declaration>- (float)percentValue</Declaration>
+			
+			<ReturnValue><Abstract>The numbers contained in this string, as a percentage.</Abstract></ReturnValue>
+			<Anchor>//api/name/percentValue</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(HTML)/stringByNormalizingWhitespace</TokenIdentifier>
+			<Abstract>Return a copy of this string with all whitespace characters replaced by space characters.</Abstract>
+			<DeclaredIn>NSString+HTML.h</DeclaredIn>			
+			
+			<Declaration>- (NSString *)stringByNormalizingWhitespace</Declaration>
+			
+			<ReturnValue><Abstract>A copy of this string with only space characters for whitespace.</Abstract></ReturnValue>
+			<Anchor>//api/name/stringByNormalizingWhitespace</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(HTML)/hasPrefixCharacterFromSet:</TokenIdentifier>
+			<Abstract>Determines if the first character of this string is in the parameter characterSet.</Abstract>
+			<DeclaredIn>NSString+HTML.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)hasPrefixCharacterFromSet:(NSCharacterSet *)characterSet</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>characterSet</Name>
+					<Abstract>The character set to compare the first character of this string against.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>If the first character of this string is in character set.</Abstract></ReturnValue>
+			<Anchor>//api/name/hasPrefixCharacterFromSet:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(HTML)/hasSuffixCharacterFromSet:</TokenIdentifier>
+			<Abstract>Determines if the last character of this string is in the parameter characterSet.</Abstract>
+			<DeclaredIn>NSString+HTML.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)hasSuffixCharacterFromSet:(NSCharacterSet *)characterSet</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>characterSet</Name>
+					<Abstract>The character set to compare the last character of this string against.</Abstract>
+				</Parameter>
+			</Parameters>
+			<ReturnValue><Abstract>If the last character of this string is in the character set.</Abstract></ReturnValue>
+			<Anchor>//api/name/hasSuffixCharacterFromSet:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(HTML)/stringByAddingHTMLEntities</TokenIdentifier>
+			<Abstract>Convert a string into a proper HTML string by converting special characters into HTML entities. For example: an ellipsis … is represented by the entity &hellip; in order to display it correctly across text encodings.</Abstract>
+			<DeclaredIn>NSString+HTML.h</DeclaredIn>			
+			
+			<Declaration>- (NSString *)stringByAddingHTMLEntities</Declaration>
+			
+			<ReturnValue><Abstract>A string containing HTML that now uses proper HTML entities.</Abstract></ReturnValue>
+			<Anchor>//api/name/stringByAddingHTMLEntities</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(HTML)/stringByReplacingHTMLEntities</TokenIdentifier>
+			<Abstract>Convert a string from HTML entities into correct character representations using UTF8 encoding. For example: an ellipsis entity representy by &hellip; is converted into ….</Abstract>
+			<DeclaredIn>NSString+HTML.h</DeclaredIn>			
+			
+			<Declaration>- (NSString *)stringByReplacingHTMLEntities</Declaration>
+			
+			<ReturnValue><Abstract>A string without HTML entities, instead having the actual characters formerly represented by HTML entities.</Abstract></ReturnValue>
+			<Anchor>//api/name/stringByReplacingHTMLEntities</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/NSString(HTML)/guid</TokenIdentifier>
+			<Abstract>Create a globally unique identifier to uniquely identify something. Used to create a GUID, store it in a dictionary or other data structure and retrieve it to uniquely identifiy something. In DTLinkButton multiple parts of the same hyperlink synchronize their looks through the GUID.</Abstract>
+			<DeclaredIn>NSString+HTML.h</DeclaredIn>			
+			
+			<Declaration>+ (NSString *)guid</Declaration>
+			
+			<ReturnValue><Abstract>GUID assigned to this string to easily and uniquely identify it..</Abstract></ReturnValue>
+			<Anchor>//api/name/guid</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

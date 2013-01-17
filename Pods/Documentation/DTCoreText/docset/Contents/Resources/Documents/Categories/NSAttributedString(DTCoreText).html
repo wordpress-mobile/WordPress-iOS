@@ -1,0 +1,826 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>NSAttributedString(DTCoreText) Category Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 737)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">DTCoreText 1.0.2 </a></h1>
+				<a id="developerHome" href="../index.html">Oliver Drobnik</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">NSAttributedString(DTCoreText) Category Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/prefixForListItemWithCounter:listStyle:listIndent:attributes:">&nbsp;&nbsp;&nbsp;&nbsp;+ prefixForListItemWithCounter:listStyle:listIndent:attributes:</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/htmlString">&nbsp;&nbsp;&nbsp;&nbsp;- htmlString</option>
+	
+	<option value="//api/name/itemNumberInTextList:atIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- itemNumberInTextList:atIndex:</option>
+	
+	<option value="//api/name/plainTextString">&nbsp;&nbsp;&nbsp;&nbsp;- plainTextString</option>
+	
+	<option value="//api/name/rangeOfAnchorNamed:">&nbsp;&nbsp;&nbsp;&nbsp;- rangeOfAnchorNamed:</option>
+	
+	<option value="//api/name/rangeOfTextBlock:atIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- rangeOfTextBlock:atIndex:</option>
+	
+	<option value="//api/name/rangeOfTextList:atIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- rangeOfTextList:atIndex:</option>
+	
+	<option value="//api/name/textAttachmentsWithPredicate:">&nbsp;&nbsp;&nbsp;&nbsp;- textAttachmentsWithPredicate:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Working with Text Attachments">Working with Text Attachments</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Calculating Ranges">Calculating Ranges</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Converting to Other Representations">Converting to Other Representations</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Creating Special Attributed Strings">Creating Special Attributed Strings</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/prefixForListItemWithCounter:listStyle:listIndent:attributes:">prefixForListItemWithCounter:listStyle:listIndent:attributes:</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/htmlString">htmlString</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/itemNumberInTextList:atIndex:">itemNumberInTextList:atIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/plainTextString">plainTextString</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/rangeOfAnchorNamed:">rangeOfAnchorNamed:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/rangeOfTextBlock:atIndex:">rangeOfTextBlock:atIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/rangeOfTextList:atIndex:">rangeOfTextList:atIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/textAttachmentsWithPredicate:">textAttachmentsWithPredicate:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="NSAttributedString(DTCoreText) Category Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">NSAttributedString(DTCoreText) Category Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">NSAttributedString+DTCoreText.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>Convenience Methods that mimick similar methods available on Mac</p>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						<a title="Working with Text Attachments" name="task_Working with Text Attachments"></a>
+						<h3 class="subsubtitle task-title">Working with Text Attachments</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/textAttachmentsWithPredicate:">&ndash;&nbsp;textAttachmentsWithPredicate:</a></code>
+		<span class="tooltip"><p>Retrieves the <a href="../Classes/DTTextAttachment.html">DTTextAttachment</a> objects that match the given predicate.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Calculating Ranges" name="task_Calculating Ranges"></a>
+						<h3 class="subsubtitle task-title">Calculating Ranges</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/itemNumberInTextList:atIndex:">&ndash;&nbsp;itemNumberInTextList:atIndex:</a></code>
+		<span class="tooltip"><p>Returns the index of the item at the given location within the list.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/rangeOfTextList:atIndex:">&ndash;&nbsp;rangeOfTextList:atIndex:</a></code>
+		<span class="tooltip"><p>Returns the range of the given text list that contains the given location.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/rangeOfTextBlock:atIndex:">&ndash;&nbsp;rangeOfTextBlock:atIndex:</a></code>
+		<span class="tooltip"><p>Returns the range of the given text block that contains the given location.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/rangeOfAnchorNamed:">&ndash;&nbsp;rangeOfAnchorNamed:</a></code>
+		<span class="tooltip"><p>Returns the range of the given href anchor.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Converting to Other Representations" name="task_Converting to Other Representations"></a>
+						<h3 class="subsubtitle task-title">Converting to Other Representations</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/htmlString">&ndash;&nbsp;htmlString</a></code>
+		<span class="tooltip"><p>Encodes the receiver into a generic HTML prepresentation.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/plainTextString">&ndash;&nbsp;plainTextString</a></code>
+		<span class="tooltip"><p>Converts the receiver into plain text.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Creating Special Attributed Strings" name="task_Creating Special Attributed Strings"></a>
+						<h3 class="subsubtitle task-title">Creating Special Attributed Strings</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/prefixForListItemWithCounter:listStyle:listIndent:attributes:">+&nbsp;prefixForListItemWithCounter:listStyle:listIndent:attributes:</a></code>
+		<span class="tooltip"><p>Create a prefix for a paragraph in a list</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/prefixForListItemWithCounter:listStyle:listIndent:attributes:" title="prefixForListItemWithCounter:listStyle:listIndent:attributes:"></a>
+	<h3 class="subsubtitle method-title">prefixForListItemWithCounter:listStyle:listIndent:attributes:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Create a prefix for a paragraph in a list</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>+ (NSAttributedString *)prefixForListItemWithCounter:(NSUInteger)<em>listCounter</em> listStyle:(DTCSSListStyle *)<em>listStyle</em> listIndent:(CGFloat)<em>listIndent</em> attributes:(NSDictionary *)<em>attributes</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>listCounter</em></dt>
+			<dd><p>The value for the list item.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>listStyle</em></dt>
+			<dd><p>The list style</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>listIndent</em></dt>
+			<dd><p>The amount in px to indent the list</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>attributes</em></dt>
+			<dd><p>The attribute dictionary for the text to be prefixed</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>An attributed string with the list prefix</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Create a prefix for a paragraph in a list</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">NSAttributedString+DTCoreText.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/htmlString" title="htmlString"></a>
+	<h3 class="subsubtitle method-title">htmlString</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Encodes the receiver into a generic HTML prepresentation.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)htmlString</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>An HTML string.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Encodes the receiver into a generic HTML prepresentation.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">NSAttributedString+DTCoreText.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/itemNumberInTextList:atIndex:" title="itemNumberInTextList:atIndex:"></a>
+	<h3 class="subsubtitle method-title">itemNumberInTextList:atIndex:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the index of the item at the given location within the list.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSInteger)itemNumberInTextList:(DTCSSListStyle *)<em>list</em> atIndex:(NSUInteger)<em>location</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>list</em></dt>
+			<dd><p>The text list.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>location</em></dt>
+			<dd><p>The location of the item.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>Returns the index within the list.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Returns the index of the item at the given location within the list.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">NSAttributedString+DTCoreText.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/plainTextString" title="plainTextString"></a>
+	<h3 class="subsubtitle method-title">plainTextString</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Converts the receiver into plain text.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSString *)plainTextString</code></div>
+	
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The receiver converted to plain text.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Converts the receiver into plain text.</p>
+
+<p>This is different from the <code>string</code> method of <code>NSAttributedString</code> by also erasing placeholders for text attachments.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">NSAttributedString+DTCoreText.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/rangeOfAnchorNamed:" title="rangeOfAnchorNamed:"></a>
+	<h3 class="subsubtitle method-title">rangeOfAnchorNamed:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the range of the given href anchor.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSRange)rangeOfAnchorNamed:(NSString *)<em>anchorName</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>anchorName</em></dt>
+			<dd><p>The name of the anchor.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The range of the given anchor.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Returns the range of the given href anchor.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">NSAttributedString+DTCoreText.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/rangeOfTextBlock:atIndex:" title="rangeOfTextBlock:atIndex:"></a>
+	<h3 class="subsubtitle method-title">rangeOfTextBlock:atIndex:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the range of the given text block that contains the given location.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSRange)rangeOfTextBlock:(DTTextBlock *)<em>textBlock</em> atIndex:(NSUInteger)<em>location</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>textBlock</em></dt>
+			<dd><p>The text block.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>location</em></dt>
+			<dd><p>The location in the text.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The range of the given text block containing the location.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Returns the range of the given text block that contains the given location.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">NSAttributedString+DTCoreText.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/rangeOfTextList:atIndex:" title="rangeOfTextList:atIndex:"></a>
+	<h3 class="subsubtitle method-title">rangeOfTextList:atIndex:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the range of the given text list that contains the given location.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSRange)rangeOfTextList:(DTCSSListStyle *)<em>list</em> atIndex:(NSUInteger)<em>location</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>list</em></dt>
+			<dd><p>The text list.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>location</em></dt>
+			<dd><p>The location in the text.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The range of the given text list containing the location.</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Returns the range of the given text list that contains the given location.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">NSAttributedString+DTCoreText.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/textAttachmentsWithPredicate:" title="textAttachmentsWithPredicate:"></a>
+	<h3 class="subsubtitle method-title">textAttachmentsWithPredicate:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Retrieves the <a href="../Classes/DTTextAttachment.html">DTTextAttachment</a> objects that match the given predicate.</p>
+	</div>		
+	
+	
+	<div class="method-subsection method-declaration"><code>- (NSArray *)textAttachmentsWithPredicate:(NSPredicate *)<em>predicate</em></code></div>
+	
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>predicate</em></dt>
+			<dd><p>The predicate to apply for filtering or <code>nil</code> for all attachments.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The filtered array of attachments</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>Retrieves the <a href="../Classes/DTTextAttachment.html">DTTextAttachment</a> objects that match the given predicate.</p>
+
+<p>With this method you can for example find all images that have a certain URL.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">NSAttributedString+DTCoreText.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2012 Oliver Drobnik. All rights reserved. (Last updated: 2012-12-05)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 737)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>
