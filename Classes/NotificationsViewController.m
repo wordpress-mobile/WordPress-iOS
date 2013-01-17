@@ -53,6 +53,8 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 
 - (void)viewDidLoad
 {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [super viewDidLoad];
     [[self class] registerTableViewCells:self.tableView];
     
     CGRect refreshFrame = self.tableView.bounds;
@@ -68,7 +70,19 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
                                              selector:@selector(displayOauthController:)
                                                  name:WordPressComApiNeedsAuthTokenNotification
                                                object:self.user];
-    [super viewDidLoad];
+    
+    if (activityFooter == nil) {
+        CGRect rect = CGRectMake(145.0, 10.0, 30.0, 30.0);
+        activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
+        activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+        activityFooter.hidesWhenStopped = YES;
+        activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        [activityFooter stopAnimating];
+    }
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 50.0)];
+    footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [footerView addSubview:activityFooter];
+    self.tableView.tableFooterView = footerView;
     
     [self reloadNotes];
 }
@@ -150,9 +164,11 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
     }
     self.loading = YES;
     [self.user getNotificationsBefore:note.timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [activityFooter stopAnimating];
         self.loading = NO;
         [self reloadNotes];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [activityFooter stopAnimating];
         self.loading = NO;
     }];
 }
@@ -183,13 +199,6 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     [self.refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    if (scrollView.bounds.size.height + scrollView.contentOffset.y >= scrollView.contentSize.height) {
-        [self loadNotificationsAfterLastNote];
-    }
-    [self refreshVisibleNotes];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
@@ -241,6 +250,19 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 }
 
 #pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    // Are we approaching the end of the table?
+    if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) && [self tableView:tableView numberOfRowsInSection:indexPath.section] > 9) {
+        // Only 3 rows till the end of table
+        if (!self.loading) {
+            [activityFooter startAnimating];
+            [self loadNotificationsAfterLastNote];
+        }
+    }
+}
+
 
 /*
  * Comments are taller to show comment text

@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "NotificationsTableViewDatasource.h"
 
-@interface NotificationsViewController : UITableViewController <UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface NotificationsViewController : UITableViewController <UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource> {
+    @private
+    UIActivityIndicatorView *activityFooter;
+}
 
 @end
