@@ -45,7 +45,7 @@ typedef NS_ENUM(NSUInteger, WordPressComApiError) {
  
  Since WordPressComApi uses tokens now, this shouldn't be necessary and will be removed in the future
  */
-- (void)updateCredentailsFromStore DEPRECATED_ATTRIBUTE;
+- (void)updateCredentailsFromStore;
 
 ///--------------------
 /// @name Notifications
