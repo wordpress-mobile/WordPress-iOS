@@ -185,7 +185,7 @@ BOOL hasChanges;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (section == 0)
-        return nil;
+       return NSLocalizedString(@"Push Notifications", @"");
     else
         return NSLocalizedString(@"Blogs", @"");
 }
