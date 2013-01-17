@@ -480,16 +480,17 @@ NSString *const WordPressComApiUnfollowedBlogEvent = @"UnfollowedBlogEvent";
     NSString *followPath = [NSString stringWithFormat: @"sites/%d/follows/new", blogID];
     if (following)
         followPath = [followPath stringByReplacingOccurrencesOfString:@"new" withString:@"mine/delete"];
+
+    // post the notification
+    NSString *notificationName = following ? WordPressComApiUnfollowedBlogEvent : WordPressComApiFollowedBlogEvent;
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:notificationName
+     object:self
+     userInfo:@{ @"siteID":[NSNumber numberWithInt:blogID] }];
     
     [self postPath:followPath
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject){
-               // post the notification
-               NSString *notificationName = following ? WordPressComApiUnfollowedBlogEvent : WordPressComApiFollowedBlogEvent;
-               [[NSNotificationCenter defaultCenter]
-                postNotificationName:notificationName
-                object:self
-                userInfo:@{ @"siteID":[NSNumber numberWithInt:blogID] }];
                if (success != nil) success(operation, responseObject);
            }
            failure:failure];
