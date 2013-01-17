@@ -818,6 +818,9 @@ WordPressApi/WordPressApi.h -text
 WordPressApi/WordPressApi.m -text
 WordPressApi/WordPressComApi.h -text
 WordPressApi/WordPressComApi.m -text
+WordPressApi/WordPressComApiCredentials.h -text
+WordPressApi/WordPressComApiCredentials.m -text
+WordPressApi/gencredentials.rb -text
 WordPressTest/WordPressTest-Info.plist -text
 WordPressTest/WordPressTest-Prefix.pch -text
 WordPressTest/WordPressTest.h -text

@@ -597,6 +597,7 @@
 		E17078FD130A95B600F30433 /* WordPress-1-2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E17078FC130A95B600F30433 /* WordPress-1-2.xcmappingmodel */; };
 		E1745A9A15AF49C000A3F7C5 /* UIViewController+Styled.m in Sources */ = {isa = PBXBuildFile; fileRef = E1745A9915AF49C000A3F7C5 /* UIViewController+Styled.m */; };
 		E1745AA715AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m in Sources */ = {isa = PBXBuildFile; fileRef = E1745AA615AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m */; };
+		E1756E651694A99400D9EC00 /* WordPressComApiCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = E1756E641694A99400D9EC00 /* WordPressComApiCredentials.m */; };
 		E1764A36149A12BA0012F7E4 /* XMLRPCDataCleaner.m in Sources */ = {isa = PBXBuildFile; fileRef = E1764A35149A12BA0012F7E4 /* XMLRPCDataCleaner.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E177087913AAAD5800EA6C72 /* keyboardButton~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E177087813AAAD5800EA6C72 /* keyboardButton~ipad.png */; };
 		E177087E13AAC19700EA6C72 /* redo~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E177087A13AAC19700EA6C72 /* redo~ipad.png */; };
@@ -1426,6 +1427,10 @@
 		E1745A9915AF49C000A3F7C5 /* UIViewController+Styled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Styled.m"; sourceTree = "<group>"; };
 		E1745AA515AF4E5900A3F7C5 /* UIBarButtonItem+Styled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+Styled.h"; sourceTree = "<group>"; };
 		E1745AA615AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Styled.m"; sourceTree = "<group>"; };
+		E1756DD41694560100D9EC00 /* WordPressComApiCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressComApiCredentials.h; sourceTree = "<group>"; };
+		E1756DD51694560100D9EC00 /* WordPressComApiCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressComApiCredentials.m; sourceTree = "<group>"; };
+		E1756E621694A08200D9EC00 /* gencredentials.rb */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; path = gencredentials.rb; sourceTree = "<group>"; };
+		E1756E641694A99400D9EC00 /* WordPressComApiCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressComApiCredentials.m; sourceTree = "<group>"; };
 		E1764A34149A12BA0012F7E4 /* XMLRPCDataCleaner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLRPCDataCleaner.h; sourceTree = "<group>"; };
 		E1764A35149A12BA0012F7E4 /* XMLRPCDataCleaner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLRPCDataCleaner.m; sourceTree = "<group>"; };
 		E177087813AAAD5800EA6C72 /* keyboardButton~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboardButton~ipad.png"; sourceTree = "<group>"; };
@@ -1629,6 +1634,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				E1756E661694AA1500D9EC00 /* Derived Sources */,
 				5D63449E159A4B0E00AF402F /* Deprecated */,
 				2FAE97050E33B21600CA8540 /* license.txt */,
 				E11F949814A3344300277D31 /* WordPressApi */,
@@ -2725,6 +2731,7 @@
 		E11F949814A3344300277D31 /* WordPressApi */ = {
 			isa = PBXGroup;
 			children = (
+				E1756E621694A08200D9EC00 /* gencredentials.rb */,
 				E11F949914A3344300277D31 /* AFXMLRPCClient.h */,
 				E11F949A14A3344300277D31 /* AFXMLRPCClient.m */,
 				E154376114B5B2120038E574 /* WordPressApi.h */,
@@ -2735,6 +2742,8 @@
 				E13EB7A4157D230000885780 /* WordPressComApi.m */,
 				E10466061630961700E8EDDA /* WPRSDParser.h */,
 				E10466071630961700E8EDDA /* WPRSDParser.m */,
+				E1756DD41694560100D9EC00 /* WordPressComApiCredentials.h */,
+				E1756DD51694560100D9EC00 /* WordPressComApiCredentials.m */,
 			);
 			path = WordPressApi;
 			sourceTree = "<group>";
@@ -2852,6 +2861,15 @@
 			name = "Test Data";
 			sourceTree = "<group>";
 		};
+		E1756E661694AA1500D9EC00 /* Derived Sources */ = {
+			isa = PBXGroup;
+			children = (
+				E1756E641694A99400D9EC00 /* WordPressComApiCredentials.m */,
+			);
+			name = "Derived Sources";
+			path = /private/tmp/WordPress.build;
+			sourceTree = "<absolute>";
+		};
 		E19472D8134E3E4A00879F63 /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -2926,9 +2944,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "WordPress" */;
 			buildPhases = (
-				CC1D80421658BA1D002A542F /* WordPress.com API App Credentials */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				832D4F01120A6F7C001708D4 /* CopyFiles */,
+				E1756E61169493AD00D9EC00 /* Generate WP.com credentials */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
 				79289B3ECCA2441197B8D7F6 /* Copy Pods Resources */,
@@ -3507,21 +3525,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
 		};
-		CC1D80421658BA1D002A542F /* WordPress.com API App Credentials */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "WordPress.com API App Credentials";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "echo $HOME\nWPCOM_CONFIG=$HOME/.wpcom_app_credentials\necho \"Checking for WordPress.com Oauth App Secret in $WPCOM_CONFIG\"\nif [ -a $WPCOM_CONFIG ]\nthen\n    echo \"Loading config\"\n    source $WPCOM_CONFIG\nelse\n    echo \"No config found\"\nfi\n\nif [ -z $WPCOM_APP_ID ]\nthen\necho \"warning: Missing WPCOM_APP_ID\"\nfi\nif [ -z $WPCOM_APP_SECRET ]\nthen\necho \"warning: Missing WPCOM_APP_SECRET\"\nfi\n\n# Set the CFBundleVersion in the generated Info.plist (stripping off the leading \"v\").\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"WPComAppID\" \"${WPCOM_APP_ID}\"\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"WPComAppSecret\" \"${WPCOM_APP_SECRET}\"\n\n";
-			showEnvVarsInLog = 0;
-		};
 		E16AB92814D978240047A2E5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3534,6 +3537,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		E1756E61169493AD00D9EC00 /* Generate WP.com credentials */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/WordPressApi/gencredentials.rb",
+			);
+			name = "Generate WP.com credentials";
+			outputPaths = (
+				/tmp/WordPress.build/WordPressComApiCredentials.m,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "DERIVED_TMP_DIR=/tmp/WordPress.build\ncp ${SOURCE_ROOT}/WordPressApi/WordPressComApiCredentials.m ${DERIVED_TMP_DIR}/WordPressComApiCredentials.m\n\nWPCOM_CONFIG=$HOME/.wpcom_app_credentials\necho \"Checking for WordPress.com Oauth App Secret in $WPCOM_CONFIG\"\nif [ -a $WPCOM_CONFIG ]\nthen\necho \"Config found\"\nsource $WPCOM_CONFIG\nelse\necho \"No config found\"\nexit 0\nfi\n\nif [ -z $WPCOM_APP_ID ]\nthen\necho \"warning: Missing WPCOM_APP_ID\"\nexit 1\nfi\nif [ -z $WPCOM_APP_SECRET ]\nthen\necho \"warning: Missing WPCOM_APP_SECRET\"\nexit 1\nfi\n\necho \"Generating credentials file in ${DERIVED_TMP_DIR}/WordPressComApiCredentials.m\"\nruby ${SOURCE_ROOT}/WordPressApi/gencredentials.rb > ${DERIVED_TMP_DIR}/WordPressComApiCredentials.m\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -3682,6 +3702,7 @@
 				CC669B261672C335009E16F8 /* NoteCommentPostBanner.m in Sources */,
 				37B7924D16768FCC0021B3A4 /* NotificationSettingsViewController.m in Sources */,
 				CC669B3A167AA82A009E16F8 /* NoteComment.m in Sources */,
+				E1756E651694A99400D9EC00 /* WordPressComApiCredentials.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

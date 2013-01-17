@@ -7,6 +7,7 @@
 //
 
 #import "WordPressComApi.h"
+#import "WordPressComApiCredentials.h"
 #import "SFHFKeychainUtils.h"
 #import "WordPressAppDelegate.h"
 #import "Constants.h"
@@ -518,11 +519,11 @@ NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
 }
 
 + (NSString *)WordPressAppId {
-    return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"WPComAppID"];
+    return [WordPressComApiCredentials client];
 }
 
 + (NSString *)WordPressAppSecret {
-    return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"WPComAppSecret"];
+    return [WordPressComApiCredentials secret];
 }
 
 @end
