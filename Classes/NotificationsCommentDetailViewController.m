@@ -356,6 +356,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         self.replyTextView.editable = NO;
         [self.user postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"Response: %@", responseObject);
+            [self.panelNavigationController showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment") andImage:[UIImage imageNamed:@"action_icon_replied"]];
             self.replyTextView.editable = YES;
             self.replyTextView.text = nil;
             self.replyActivityView.hidden = YES;
