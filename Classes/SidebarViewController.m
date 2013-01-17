@@ -150,13 +150,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissCrashReporter:) name:@"CrashReporterIsFinished" object:nil];
     
     //WPCom notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countUnreadNotes)
-												 name:@"WordPressComUpdateNoteCount" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectNotificationsRow)
 												 name:@"SelectNotificationsRow" object:nil];
-    
-    if ([WordPressComApi sharedApi].username)
-        [self countUnreadNotes];
     
     if (currentIndexPath) {
         // If we are restoring the view after a memory warning we want to try to set the tableview back to the selected row and section
@@ -480,23 +475,6 @@ NSLog(@"%@", self.sectionInfoArray);
     }
 }
 
-- (void)countUnreadNotes {
-    // Count the number of unread notes and update the sidebar
-    NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Note" inManagedObjectContext:context]];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unread == %d", 1];
-    [request setPredicate:predicate];
-    
-    NSError *err;
-    NSUInteger count = [context countForFetchRequest:request error:&err];
-    _unreadNoteCount = count;
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-    // Re-select current index path. If notifications was selected, reloading content would deselect it
-    // If something else was selected it should have no effect
-    [self.tableView selectRowAtIndexPath:currentIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-}
-
 #pragma mark - Quick Photo Methods
 
 - (void)quickPhotoButtonViewTapped:(QuickPhotoButtonView *)sender {
@@ -743,13 +721,6 @@ NSLog(@"%@", self.sectionInfoArray);
         } else if(indexPath.row == 1){
             title = NSLocalizedString(@"Notifications", @"");
             cell.imageView.image = [UIImage imageNamed:@"sidebar_note"];
-            if (_unreadNoteCount > 0) {
-                UIImage *img = [UIImage imageNamed:@"sidebar_comment_bubble"];
-                UIImageView *image = [[UIImageView alloc] initWithImage:img];
-                UILabel *commentsLbl = [cell commentsBadgeLabel:image.bounds text:(_unreadNoteCount > 99) ? NSLocalizedString(@"99⁺", "") : [NSString stringWithFormat:@"%d", _unreadNoteCount]];
-                [image addSubview:commentsLbl];
-                cell.accessoryView = image;
-            }
         }
     } else {
         switch (indexPath.row) {

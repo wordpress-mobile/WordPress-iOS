@@ -202,9 +202,6 @@ NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
         // save the notes
         NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
         [Note syncNotesWithResponse:[responseObject objectForKey:@"notes"] withManagedObjectContext:context];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"WordPressComUpdateNoteCount"
-                                                            object:nil
-                                                          userInfo:nil];
         if (success != nil ) success( operation, responseObject );
         
     } failure:failure];
@@ -236,10 +233,6 @@ NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
         if(![context save:&error]){
             NSLog(@"Unable to update note: %@", error);
         }
-        // Update sidebar unread count
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"WordPressComUpdateNoteCount"
-                                                            object:nil
-                                                          userInfo:nil];
         if (success != nil) success(operation, response);
     } failure:failure ];
 }

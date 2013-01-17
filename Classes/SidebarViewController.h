@@ -29,7 +29,6 @@
 - (void)processRowSelectionAtIndexPath:(NSIndexPath *)indexPath closingSidebar:(BOOL)closingSidebar;
 - (void)showCommentWithId:(NSNumber *)itemId blogId:(NSNumber *)blogId;
 - (void)selectNotificationsRow;
-- (void)countUnreadNotes;
 
 - (void)uploadQuickPhoto:(Post *)post;
 - (void)restorePreservedSelection;
