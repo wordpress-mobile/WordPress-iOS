@@ -244,6 +244,12 @@ NSString *const WordPressComApiNotesUserInfoKey = @"notes";
     
 }
 
+- (void)updateNoteLastSeenTime:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    
+    [self.restClient postPath:@"notifications/seen" parameters:@{ @"time" : timestamp } success:success failure:failure];
+    
+}
+
 #pragma mark - Oauth methods
 
 - (BOOL)hasAuthorizationToken {

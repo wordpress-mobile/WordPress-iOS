@@ -54,6 +54,9 @@ typedef void (^WordPressComApiRestSuccessFailureBlock)(AFHTTPRequestOperation *o
                success:(WordPressComApiRestSuccessResponseBlock)success
                failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
+- (void)updateNoteLastSeenTime:(NSNumber *)timestamp
+                          success:(WordPressComApiRestSuccessResponseBlock)success
+                          failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 
 + (NSString *)WordPressAppId;
