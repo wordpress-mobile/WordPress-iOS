@@ -976,6 +976,8 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /navbar_read@2x.png -text
 /navbar_shadow.png -text
 /navbar_shadow@2x.png -text
+/navbar_toggle.png -text svneol=unset#unset
+/navbar_toggle@2x.png -text svneol=unset#unset
 nb.lproj/Localizable.strings -text svneol=unset#unset
 /next.png -text svneol=unset#unset
 /next@2x.png -text svneol=unset#unset
