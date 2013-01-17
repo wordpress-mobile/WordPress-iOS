@@ -247,7 +247,8 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 
 - (void)pushToURL:(NSURL *)url {
     if (IS_IPHONE) {
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        self.writingReply = NO;
+        [self.replyTextView resignFirstResponder];
     }
     WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:nil bundle:nil];
     [webViewController setUsername:[WordPressComApi sharedApi].username];
