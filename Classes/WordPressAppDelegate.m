@@ -1201,16 +1201,12 @@
              [remoteNotif objectForKey:@"liker_id"]
              */
         } else if([nType isEqualToString:kNotificationTypeComment]){
-            //new comment
+            //comment
             /*
              [remoteNotif objectForKey:@"blog_id"]
              [remoteNotif objectForKey:@"comment_id"]
-             */
-        } else if([nType isEqualToString:kNotificationTypeCommentReply]){
-            //comment reply when you're not the author of the post.
-            /*
-             [remoteNotif objectForKey:@"blog_id"]
-             [remoteNotif objectForKey:@"comment_id"]
+             
+             if it's a reply the dictionary also contains:
              [remoteNotif objectForKey:@"parent_comment_id"]
              [remoteNotif objectForKey:@"commenter_id"]
              */
