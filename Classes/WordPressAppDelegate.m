@@ -1150,57 +1150,8 @@
 }
 
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {
-    if ([remoteNotif objectForKey:@"type"]) {
+    if ([remoteNotif objectForKey:@"type"]) { //new social PNs
         WPFLog(@"Received new notification: %@", remoteNotif);
-        //new social PNs
-        NSString *nType = [remoteNotif objectForKey:@"type"];
-                
-        if([nType isEqualToString:kNotificationTypePostLike]){
-            //post like
-            /*
-             [remoteNotif objectForKey:@"blog_id"]
-             [remoteNotif objectForKey:@"post_id"]
-             [remoteNotif objectForKey:@"liker_id"]
-             */
-        } else if([nType isEqualToString:kNotificationTypeComment]){
-            //comment
-            /*
-             [remoteNotif objectForKey:@"blog_id"]
-             [remoteNotif objectForKey:@"comment_id"]
-             
-             if it's a reply the dictionary also contains:
-             [remoteNotif objectForKey:@"parent_comment_id"]
-             [remoteNotif objectForKey:@"commenter_id"]
-             */
-        } else if([nType isEqualToString:kNotificationTypeCommentLike]){
-            //comment like
-            /*
-             [remoteNotif objectForKey:@"blog_id"]
-             [remoteNotif objectForKey:@"comment_id"]
-             [remoteNotif objectForKey:@"liker_id"]
-             */
-        } else if([nType isEqualToString:kNotificationTypeFollowBlog]){
-            //logged-in follow blog
-            /*
-             [remoteNotif objectForKey:@"blog_id"]
-             [remoteNotif objectForKey:@"subscriber_id"]
-             */
-        } else if([nType isEqualToString:kNotificationTypeReblog]){
-            //reblog
-            /*
-             [remoteNotif objectForKey:@"blog_id"]
-             [remoteNotif objectForKey:@"post_id"] //original postID
-             */
-            
-        } else if([nType isEqualToString:kNotificationTypeAchievement]){
-            //achievement reached
-            /* 
-             [remoteNotif objectForKey:@"achievement"] //textual description of the achievement
-             [remoteNotif objectForKey:@"blog_id"] //optional
-             */
-        } else {
-            WPFLog(@"Got unsupported notification: %@", remoteNotif);
-        }
         
         if( self.panelNavigationController )
             [self.panelNavigationController showNotificationsView:YES];

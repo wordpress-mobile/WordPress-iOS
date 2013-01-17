@@ -816,6 +816,7 @@ WordPress.xcodeproj/xcshareddata/xcschemes/WordPress[!!-~]Internal.xcscheme -tex
 WordPress.xcodeproj/xcshareddata/xcschemes/WordPress.xcscheme -text
 WordPress.xcodeproj/xcshareddata/xcschemes/WordPressTest.xcscheme -text
 WordPress.xcworkspace/contents.xcworkspacedata -text
+WordPress.xcworkspace/xcuserdata/daniloercoli.xcuserdatad/UserInterfaceState.xcuserstate -text svneol=unset#unset
 WordPressApi/AFAuthenticationAlertView.h -text
 WordPressApi/AFAuthenticationAlertView.m -text
 WordPressApi/AFXMLRPCClient.h -text
