@@ -8,5 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+extern CGFloat const NoteCommentLoadingCellHeight;
+
 @interface NoteCommentLoadingCell : UITableViewCell
 @end

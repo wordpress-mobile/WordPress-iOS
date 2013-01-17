@@ -508,6 +508,7 @@
 		CC313AD115A4360800F7B7C6 /* friend_follow_service_icons.png in Resources */ = {isa = PBXBuildFile; fileRef = CC313ACF15A4360800F7B7C6 /* friend_follow_service_icons.png */; };
 		CC313AD215A4360800F7B7C6 /* friend_follow_service_icons@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC313AD015A4360800F7B7C6 /* friend_follow_service_icons@2x.png */; };
 		CC5B0F23169B896300AA0291 /* NoteCommentLoadingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD1921F16850C4900CA3011 /* NoteCommentLoadingCell.m */; };
+		CC5B0F27169BDC4000AA0291 /* NoteCommentContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5B0F26169BDC4000AA0291 /* NoteCommentContentCell.m */; };
 		CC669B1F1672C305009E16F8 /* FollowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CC669B1E1672C305009E16F8 /* FollowButton.m */; };
 		CC669B231672C328009E16F8 /* NoteCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC669B221672C328009E16F8 /* NoteCommentCell.m */; };
 		CC669B261672C335009E16F8 /* NoteCommentPostBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = CC669B251672C335009E16F8 /* NoteCommentPostBanner.m */; };
@@ -1269,6 +1270,8 @@
 		CC24E5F41577E16B00A6D5B5 /* Accounts.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		CC313ACF15A4360800F7B7C6 /* friend_follow_service_icons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friend_follow_service_icons.png; sourceTree = "<group>"; };
 		CC313AD015A4360800F7B7C6 /* friend_follow_service_icons@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friend_follow_service_icons@2x.png"; sourceTree = "<group>"; };
+		CC5B0F25169BDC4000AA0291 /* NoteCommentContentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteCommentContentCell.h; sourceTree = "<group>"; };
+		CC5B0F26169BDC4000AA0291 /* NoteCommentContentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteCommentContentCell.m; sourceTree = "<group>"; };
 		CC669B1D1672C305009E16F8 /* FollowButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowButton.h; sourceTree = "<group>"; };
 		CC669B1E1672C305009E16F8 /* FollowButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowButton.m; sourceTree = "<group>"; };
 		CC669B211672C328009E16F8 /* NoteCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteCommentCell.h; sourceTree = "<group>"; };
@@ -2160,6 +2163,8 @@
 				CC669B221672C328009E16F8 /* NoteCommentCell.m */,
 				CCD1921E16850C4900CA3011 /* NoteCommentLoadingCell.h */,
 				CCD1921F16850C4900CA3011 /* NoteCommentLoadingCell.m */,
+				CC5B0F25169BDC4000AA0291 /* NoteCommentContentCell.h */,
+				CC5B0F26169BDC4000AA0291 /* NoteCommentContentCell.m */,
 				031666AC0FFC3E130045D052 /* CommentTableViewCell.h */,
 				031666AD0FFC3E130045D052 /* CommentTableViewCell.m */,
 				031663050FFB151A0045D052 /* PostTableViewCell.h */,
@@ -3712,6 +3717,7 @@
 				5DD91BC5163983670053E560 /* SoundUtil.m in Sources */,
 				5D4DE6F4167177560030518D /* WPInfoView.m in Sources */,
 				CC5B0F23169B896300AA0291 /* NoteCommentLoadingCell.m in Sources */,
+				CC5B0F27169BDC4000AA0291 /* NoteCommentContentCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

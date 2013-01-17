@@ -107,6 +107,8 @@ Classes/NoteComment.h -text
 Classes/NoteComment.m -text
 Classes/NoteCommentCell.h -text
 Classes/NoteCommentCell.m -text
+Classes/NoteCommentContentCell.h -text
+Classes/NoteCommentContentCell.m -text
 Classes/NoteCommentLoadingCell.h -text
 Classes/NoteCommentLoadingCell.m -text
 Classes/NoteCommentPostBanner.h -text

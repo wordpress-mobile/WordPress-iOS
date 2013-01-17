@@ -10,27 +10,25 @@
 #import <FollowButton.h>
 #import "DTCoreText.h"
 
-@class NoteCommentCell;
+extern const CGFloat NoteCommentCellHeight;
 
 @protocol NoteCommentCellDelegate <NSObject>
 
 @optional
 
-- (void)commentCell:(NoteCommentCell *)cell didTapURL:(NSURL *)url;
+- (void)commentCell:(UITableViewCell *)cell didTapURL:(NSURL *)url;
 
 @end
 
 @interface NoteCommentCell : UITableViewCell
 @property BOOL parentComment;
 @property (nonatomic, strong) FollowButton *followButton;
-@property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) NSURL *profileURL;
 @property (nonatomic, strong) NSString *email;
 @property (nonatomic, assign) id <NoteCommentCellDelegate> delegate;
 - (void)setAvatarURL:(NSURL *)avatarURL;
 - (void)displayAsParentComment;
-
-+ (CGFloat)heightForCellWithTextContent:(NSAttributedString *)textContent constrainedToWidth:(CGFloat)width;
+- (void)showLoadingIndicator;
 
 + darkBackgroundColor;
 

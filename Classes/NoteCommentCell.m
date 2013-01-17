@@ -10,29 +10,18 @@
 #import "NoteCommentCell.h"
 #import "UIColor+Helpers.h"
 
-@interface NoteCommentCell () <DTAttributedTextContentViewDelegate>
+@interface NoteCommentCell ()
 @property (nonatomic) BOOL loading;
 @property (nonatomic, strong) UIButton *profileButton;
 @property (nonatomic, strong) UIButton *emailButton;
 @end
 
-const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
+const CGFloat NoteCommentCellHeight = 102.f;
 
 @implementation NoteCommentCell
 
 + darkBackgroundColor {
     return [UIColor UIColorFromHex:0xD5D6D5];
-}
-
-+ (CGFloat)heightForCellWithTextContent:(NSAttributedString *)textContent constrainedToWidth:(CGFloat)width {
-    DTAttributedTextContentView *textContentView;
-    [DTAttributedTextContentView setLayerClass:[CATiledLayer class]];
-    textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.f, 0.f, width, 0.f)];
-    textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    textContentView.edgeInsets = UIEdgeInsetsMake(0.f, 10.f, 5.f, 10.f);
-    textContentView.attributedString = textContent;
-    CGSize size = [textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width];
-    return size.height + NoteCommentCellTextVerticalOffset + 20.f;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -44,12 +33,6 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         [DTAttributedTextContentView setLayerClass:[CATiledLayer class]];
-        self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.f, NoteCommentCellTextVerticalOffset, 320.f, 0.f)];
-        self.textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        self.textContentView.edgeInsets = UIEdgeInsetsMake(10.f, 10.f, 10.f, 10.f);
-        self.textContentView.shouldDrawLinks = NO;
-        self.textContentView.delegate = self;
-        [self.contentView addSubview:self.textContentView];
         self.profileButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.emailButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self prepareButton:self.profileButton];
@@ -67,6 +50,10 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
     return self;
 }
 
+- (void)showLoadingIndicator {
+    
+}
+
 - (void)prepareButton:(UIButton *)button {
     button.titleLabel.textAlignment = NSTextAlignmentLeft;
     button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -79,26 +66,19 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
 
 - (void)prepareForReuse {
     self.delegate = nil;
-    [self.followButton removeFromSuperview];
-    self.followButton = nil;
     self.backgroundView.backgroundColor = [UIColor whiteColor];
     self.textLabel.backgroundColor = [UIColor whiteColor];
-    self.textContentView.hidden = NO;
     self.emailButton.backgroundColor = [UIColor whiteColor];
     self.profileButton.backgroundColor = [UIColor whiteColor];
     self.profileButton.hidden = YES;
     self.emailButton.hidden = YES;
     self.textLabel.text = @"";
     self.imageView.hidden = YES;
-    self.imageView.image = nil;
 }
 
 - (void)setFollowButton:(FollowButton *)followButton {
-    if (_followButton != followButton) {
-        [_followButton removeFromSuperview];
-        _followButton = followButton;
-        [self.contentView addSubview:self.followButton];
-    }
+    _followButton = followButton;
+    [self.contentView addSubview:self.followButton];
 }
 
 - (void)layoutSubviews {
@@ -128,7 +108,6 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
         self.profileButton.frame = labelFrame;
     }
     
-    self.textContentView.hidden = self.textContentView.attributedString == nil;
 }
 
 
@@ -148,32 +127,10 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
     UIColor *parentGrayColor = [[self class] darkBackgroundColor];
     self.parentComment = YES;
     self.backgroundView.backgroundColor = parentGrayColor;
-    self.textContentView.backgroundColor = parentGrayColor;
     self.textLabel.backgroundColor = parentGrayColor;
     self.profileButton.backgroundColor = parentGrayColor;
     self.emailButton.backgroundColor = parentGrayColor;
 
-}
-
-
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
-    NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
-    
-    DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
-    button.attributedString = string;
-    button.URL = [attributes objectForKey:DTLinkAttribute];
-    button.GUID = [attributes objectForKey:DTGUIDAttribute];
-    
-    NSMutableAttributedString *highlightedString = [string mutableCopy];
-    NSRange range = NSMakeRange(0, [highlightedString length]);
-	NSDictionary *highlightedAttributes = [NSDictionary dictionaryWithObject:(__bridge id)[UIColor redColor].CGColor forKey:(id)kCTForegroundColorAttributeName];
-    
-    [highlightedString addAttributes:highlightedAttributes range:range];
-    
-    button.highlightedAttributedString = highlightedString;
-    
-    [button addTarget:self action:@selector(linkPushed:) forControlEvents:UIControlEventTouchUpInside];
-    return button;
 }
 
 - (void)linkPushed:(id)sender {

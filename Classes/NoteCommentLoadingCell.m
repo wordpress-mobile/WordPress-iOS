@@ -8,6 +8,8 @@
 
 #import "NoteCommentLoadingCell.h"
 
+CGFloat const NoteCommentLoadingCellHeight = 30.f;
+
 @interface NoteCommentLoadingCell ()
 @property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
 
@@ -21,7 +23,8 @@
     if (self) {
         // Initialization code
         [self setupLoadingIndicator];
-
+        self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+        self.backgroundView.backgroundColor = [UIColor whiteColor];
     }
     return self;
 }
@@ -32,7 +35,7 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.loadingIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    self.loadingIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), 20.f);
 }
 
 - (void)setupLoadingIndicator {
