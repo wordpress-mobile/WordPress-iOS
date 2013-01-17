@@ -271,26 +271,6 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     
 }
 
-- (IBAction)replyToComment:(id)sender {
-    NSString *replyText = _replyTextView.text;
-    
-    if ([replyText length] > 0) {
-        
-        // Get blog_id and comment_id for api call
-        NSDictionary *commentAction = [self.commentActions objectForKey:@"reply"];
-        NSUInteger blogID = [[commentAction objectForKey:@"blog_id"] intValue];
-        NSUInteger commentID = [[commentAction objectForKey:@"comment_id"] intValue];
-        
-        [self.sendReplyButton setEnabled:NO];
-        [[WordPressComApi sharedApi] replyToComment:blogID forCommentID:commentID withReply:replyText success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            [self.sendReplyButton setEnabled:YES];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            [self.sendReplyButton setEnabled:YES];
-        }];
-    }
-    
-}
-
 - (void)startReply:(id)sender {
     [self.replyTextView becomeFirstResponder];
 }
@@ -301,7 +281,25 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 }
 
 - (void)publishReply:(id)sender {
-
+    NSString *replyText = _replyTextView.text;
+    
+    if ([replyText length] > 0) {
+        // Get blog_id and comment_id for api call
+        NSDictionary *replyAction = [[self.commentActions objectForKey:@"replyto-comment"] objectForKey:@"params"];
+        if (replyAction) {
+            NSUInteger blogID = [[replyAction objectForKey:@"blog_id"] intValue];
+            NSUInteger commentID = [[replyAction objectForKey:@"comment_id"] intValue];
+            [self.replyPublishBarButton setEnabled:NO];
+            [[WordPressComApi sharedApi] replyToComment:blogID forCommentID:commentID withReply:replyText success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                self.writingReply = NO;
+                [_replyTextView resignFirstResponder];
+                [self.panelNavigationController showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment") andImage:[UIImage imageNamed:@"action_icon_replied"]];
+                [self.replyPublishBarButton setEnabled:YES];
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                [self.replyPublishBarButton setEnabled:YES];
+            }];
+        }
+    }
 }
 
 #pragma mark - REST API

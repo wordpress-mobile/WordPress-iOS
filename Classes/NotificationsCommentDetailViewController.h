@@ -20,8 +20,6 @@
 
 @property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
 
-@property (nonatomic, strong) IBOutlet UIButton *sendReplyButton;
-
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *approveBarButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *trashBarButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *spamBarButton;
