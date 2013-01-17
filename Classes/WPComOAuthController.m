@@ -48,7 +48,6 @@
                                   [wpcom_username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                                   [wpcom_password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
                                   queryUrl];
-        NSLog(@"request_body: %@", request_body);
         [request setURL:[NSURL URLWithString:WPCOM_LOGIN_URL]];
         [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
         [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
