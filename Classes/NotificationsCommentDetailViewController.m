@@ -20,6 +20,7 @@
 @property NSUInteger followBlogID;
 @property bool isFollowingBlog;
 @property NSArray *commentActions;
+@property NSDictionary *followDetails;
 
 @end
 
@@ -67,12 +68,12 @@
             NSString *noteType = [followItem objectForKey:@"type"];
             if (noteType && [noteType isEqualToString:@"follow"]) {
                 [_followButton setHidden:NO];
-                NSDictionary *followDetails = [followItem objectForKey:@"params"];
-                if ([[followDetails objectForKey:@"is_following"] intValue] == 1)
+                _followDetails = [followItem objectForKey:@"params"];
+                if ([[_followDetails objectForKey:@"is_following"] intValue] == 1)
                     _isFollowingBlog = YES;
                 [self setFollowButtonState:_isFollowingBlog];
                 
-                _followBlogID = [[followDetails objectForKey:@"blog_id"] integerValue];
+                _followBlogID = [[_followDetails objectForKey:@"blog_id"] integerValue];
             }
         }
         
@@ -113,10 +114,14 @@
         _isFollowingBlog = !_isFollowingBlog;
         NSDictionary *followResponse = (NSDictionary *)responseObject;
         if (followResponse && [[followResponse objectForKey:@"success"] intValue] == 1) {
-            if ([[followResponse objectForKey:@"is_following"] intValue] == 1)
+            if ([[followResponse objectForKey:@"is_following"] intValue] == 1) {
                 _isFollowingBlog = YES;
-            else
+                
+            } else {
                 _isFollowingBlog = NO;
+            }
+            if (_followDetails)
+                [_followDetails setValue:[NSNumber numberWithBool:_isFollowingBlog] forKey:@"is_following"];
             [self setFollowButtonState:_isFollowingBlog];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
