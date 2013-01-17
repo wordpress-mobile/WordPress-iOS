@@ -63,6 +63,10 @@
     
 }
 
+- (NSDictionary *)getNoteData {
+    return self.noteData;
+}
+
 + (void)createOrUpdateNoteWithData:(NSDictionary *)noteData withManagedObjectContext:(NSManagedObjectContext *)context {
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];

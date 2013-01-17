@@ -101,6 +101,8 @@ Classes/NSString+XMLExtensions.h -text
 Classes/NSString+XMLExtensions.m -text
 Classes/Note.h -text
 Classes/Note.m -text
+Classes/NotificationsDetailViewController.h -text
+Classes/NotificationsDetailViewController.m -text
 Classes/NotificationsTableViewCell.h -text
 Classes/NotificationsTableViewCell.m -text
 Classes/NotificationsTableViewDatasource.h -text
@@ -297,6 +299,7 @@ Classes/WordPressAppDelegate.m -text
 /Media.h -text
 /Media.m -text
 /MediaObjectView.xib -text
+/NotificationsDetailViewController.xib -text
 /NotificationsViewController.xib -text
 /Podfile -text
 /Podfile.lock -text

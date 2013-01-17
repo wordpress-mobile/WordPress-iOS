@@ -61,6 +61,7 @@ extern NSString *const WordPressComApiUnseenNoteCountInfoKey;
                           success:(WordPressComApiRestSuccessResponseBlock)success
                           failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
+- (void)followBlog:(NSUInteger)blogID isFollowing:(bool)following success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 + (NSString *)WordPressAppId;
 + (NSString *)WordPressAppSecret;

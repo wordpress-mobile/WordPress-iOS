@@ -12,6 +12,7 @@
 #import "WordPressComApi.h"
 #import "EGORefreshTableHeaderView.h"
 #import "NotificationsTableViewCell.h"
+#import "NotificationsDetailViewController.h"
 
 NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 
@@ -305,7 +306,9 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Note *note = [self.notesFetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];
     if ([self noteHasDetailView:note]) {
-        // TODO: show detail view
+        NotificationsDetailViewController *detailViewController = [[NotificationsDetailViewController alloc] initWithNibName:@"NotificationsDetailViewController" bundle:nil];
+        detailViewController.note = note;
+        [self.panelNavigationController pushViewController:detailViewController animated:YES];
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }

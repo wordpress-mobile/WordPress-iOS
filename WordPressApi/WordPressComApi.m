@@ -259,6 +259,18 @@ NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
     
 }
 
+- (void)followBlog:(NSUInteger)blogID isFollowing:(bool)following success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    
+    NSString *followPath = [NSString stringWithFormat: @"sites/%d/follows/new", blogID];
+    if (following)
+        followPath = [followPath stringByReplacingOccurrencesOfString:@"new" withString:@"mine/delete"];
+    
+    [self.restClient postPath:followPath
+                   parameters:nil
+                      success:success
+                      failure:failure];
+}
+
 #pragma mark - Oauth methods
 
 - (BOOL)hasAuthorizationToken {
