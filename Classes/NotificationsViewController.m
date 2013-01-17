@@ -142,9 +142,14 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
     if (self.isRefreshing) {
         return;
     }
+    
     [self notificationsWillRefresh];
     self.refreshing = YES;
-    [self.user checkNotificationsSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    Note *note;
+    if ([self.notesFetchedResultsController.fetchedObjects count] > 0) {
+        note = [self.notesFetchedResultsController.fetchedObjects objectAtIndex:0];
+    }
+    [self.user  getNotificationsSince:note.timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.lastRefreshDate = [NSDate new];
         self.refreshing = NO;
         [self notificationsDidFinishRefreshingWithError:nil];

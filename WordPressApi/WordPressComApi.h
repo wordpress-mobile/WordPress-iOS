@@ -8,6 +8,7 @@
 
 #import "WordPressApi.h"
 #import "WordPressComRestClient.h"
+#import "Note.h"
 
 #define WordPressComApiDidLoginNotification @"WordPressComApiDidLogin"
 #define WordPressComApiDidLogoutNotification @"WordPressComApiDidLogout"
@@ -28,15 +29,31 @@ typedef void (^WordPressComApiRestSuccessFailureBlock)(AFHTTPRequestOperation *o
 - (void)signOut;
 - (void)updateCredentailsFromStore;
 
-- (void)checkNotificationsSuccess:(WordPressComApiRestSuccessResponseBlock)callback
+- (void)checkForNewUnseenNotifications;
+
+- (void)checkNotificationsSuccess:(WordPressComApiRestSuccessResponseBlock)success
                           failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
 - (void)getNotificationsBefore:(NSNumber *)timestamp
                        success:(WordPressComApiRestSuccessResponseBlock)success
                        failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
+- (void)getNotificationsSince:(NSNumber *)timestamp
+                      success:(WordPressComApiRestSuccessResponseBlock)success
+                      failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
 - (void)refreshNotifications:(NSArray *)notes
                      success:(WordPressComApiRestSuccessResponseBlock)success
                      failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
+- (void)getNotificationsWithParameters:(NSDictionary *)parameters
+                               success:(WordPressComApiRestSuccessResponseBlock)success
+                               failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
+- (void)markNoteAsRead:(Note *)note
+               success:(WordPressComApiRestSuccessResponseBlock)success
+               failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
 
 
 + (NSString *)WordPressAppId;

@@ -10,10 +10,11 @@
 #import "SFHFKeychainUtils.h"
 #import "WordPressAppDelegate.h"
 #import "Constants.h"
-#import "Note.h"
 
 NSString *const WordPressComApiOauthServiceName = @"public-api.wordpress.com";
 NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp";
+NSString *const WordPressComApiUnseenNotesNotification = @"WordPressComUnseenNotes";
+NSString *const WordPressComApiNotesUserInfoKey = @"notes";
 
 @interface WordPressComApi () <WordPressComRestClientDelegate>
 @property (readwrite, nonatomic, strong) NSString *username;
@@ -46,7 +47,7 @@ NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subjec
         _sharedApi.restClient.authToken = authToken;
         _sharedApi.restClient.delegate = _sharedApi;
         
-        [_sharedApi checkNotifications];
+        [_sharedApi checkForNewUnseenNotifications];
         
     });
     
@@ -131,28 +132,75 @@ NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subjec
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 }
 
-
-- (void)checkNotifications {
-    [self checkNotificationsSuccess:nil failure:nil];
+/*
+ * Queries the REST Api for unread notes and determines if the user has
+ * seen them using the response's last_seen_time timestamp.
+ *
+ * If we have unseen notes we post a WordPressComApiUnseenNotesNotification 
+ */
+- (void)checkForNewUnseenNotifications {
+    NSDictionary *params = @{ @"unread":@"true", @"number":@"20" };
+    [self.restClient getPath:@"notifications" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSNumber *last_seen_time = [responseObject objectForKey:@"last_seen_time"];
+        NSArray *notes = [responseObject objectForKey:@"notes"];
+        if ([notes count] > 0) {
+            NSMutableArray *unseenNotes = [[NSMutableArray alloc] initWithCapacity:[notes count]];
+            [notes enumerateObjectsUsingBlock:^(id noteData, NSUInteger idx, BOOL *stop) {
+                NSNumber *timestamp = [noteData objectForKey:@"timestamp"];
+                if ([timestamp compare:last_seen_time] == NSOrderedDescending) {
+                    [unseenNotes addObject:noteData];
+                }
+            }];
+            if ([unseenNotes count] > 0) {
+                NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+                [nc postNotificationName:WordPressComApiUnseenNotesNotification
+                                  object:self
+                                userInfo:@{ WordPressComApiNotesUserInfoKey : unseenNotes }];
+            }
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 }
 
 - (void)checkNotificationsSuccess:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
     [self getNotificationsBefore:nil success:success failure:failure];
 }
 
-- (void)getNotificationsBefore:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{ @"fields": WordPressComApiNotificationFields } ];
-    if( timestamp != nil ){
-        [parameters setObject:timestamp forKey:@"before"];
+- (void)getNotificationsSince:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    NSDictionary *parameters;
+    if (timestamp != nil) {
+        parameters = @{ @"since" : timestamp };
     }
-    [self.restClient getPath:@"notifications/" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject){
+    [self getNotificationsWithParameters:@{ @"since" : timestamp } success:success failure:failure];
+    
+}
+
+- (void)getNotificationsBefore:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    NSDictionary *parameters;
+    if (timestamp != nil) {
+        parameters = @{ @"before" : timestamp };
+    }
+    [self getNotificationsWithParameters:parameters success:success failure:failure];
+}
+
+- (void)getNotificationsWithParameters:(NSDictionary *)parameters success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    NSMutableDictionary *requestParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
+    
+    [requestParameters setObject:WordPressComApiNotificationFields forKey:@"fields"];
+    [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"number"];
+    // TODO: Check for unread notifications and notify with the number of unread notifications
+
+    [self.restClient getPath:@"notifications/" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject){
         // save the notes
         NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
         [Note syncNotesWithResponse:[responseObject objectForKey:@"notes"] withManagedObjectContext:context];
         if (success != nil ) success( operation, responseObject );
-        // TODO: Check for unread notifications and notify with the number of unread notifications
         
     } failure:failure];
+
+    
 }
 
 - (void)refreshNotifications:(NSArray *)notes success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
