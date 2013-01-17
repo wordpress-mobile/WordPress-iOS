@@ -143,7 +143,6 @@
 		371C3683156CD12D007EA03E /* SidebarSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 371C367A156CCFDD007EA03E /* SidebarSectionHeaderView.m */; };
 		37245ADC13FC23FF006CDBE3 /* WPWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */; };
 		372AD15516682BA100F21BC1 /* NotificationsFollowDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 372AD15316682BA100F21BC1 /* NotificationsFollowDetailViewController.m */; };
-		372AD15616682BA100F21BC1 /* NotificationsFollowDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 372AD15416682BA100F21BC1 /* NotificationsFollowDetailViewController.xib */; };
 		37363A3915AB0DE000D3A6B4 /* cell_gradient_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 37363A3715AB0DE000D3A6B4 /* cell_gradient_bg.png */; };
 		37363A3D15AB105200D3A6B4 /* cell_gradient_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37363A3C15AB105200D3A6B4 /* cell_gradient_bg@2x.png */; };
 		37363A4815AB262500D3A6B4 /* navbar_button_bg_landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 37363A4615AB262500D3A6B4 /* navbar_button_bg_landscape.png */; };
@@ -783,7 +782,6 @@
 		37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPWebViewController.xib; sourceTree = "<group>"; };
 		372AD15216682BA100F21BC1 /* NotificationsFollowDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsFollowDetailViewController.h; sourceTree = "<group>"; };
 		372AD15316682BA100F21BC1 /* NotificationsFollowDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsFollowDetailViewController.m; sourceTree = "<group>"; };
-		372AD15416682BA100F21BC1 /* NotificationsFollowDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NotificationsFollowDetailViewController.xib; path = Classes/NotificationsFollowDetailViewController.xib; sourceTree = "<group>"; };
 		37363A3715AB0DE000D3A6B4 /* cell_gradient_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cell_gradient_bg.png; sourceTree = "<group>"; };
 		37363A3C15AB105200D3A6B4 /* cell_gradient_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell_gradient_bg@2x.png"; sourceTree = "<group>"; };
 		37363A4615AB262500D3A6B4 /* navbar_button_bg_landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navbar_button_bg_landscape.png; sourceTree = "<group>"; };
@@ -1652,7 +1650,6 @@
 			children = (
 				CC1D80151656DE28002A542F /* NotificationsViewController.xib */,
 				37195B81166A5DDC005F2292 /* NotificationsCommentDetailViewController.xib */,
-				372AD15416682BA100F21BC1 /* NotificationsFollowDetailViewController.xib */,
 			);
 			name = Notifications;
 			sourceTree = "<group>";
@@ -3260,7 +3257,6 @@
 				37158C901669408200732B2D /* menu_notification_spacer_down@2x.png in Resources */,
 				37158C911669408200732B2D /* menu_notification_spacer_down.png in Resources */,
 				37195B82166A5DDC005F2292 /* NotificationsCommentDetailViewController.xib in Resources */,
-				372AD15616682BA100F21BC1 /* NotificationsFollowDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
