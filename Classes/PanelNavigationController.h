@@ -36,6 +36,17 @@
 - (void)teaseSidebar;
 - (void)clearDetailViewController;
 
+// Notifications
+- (void)didReceiveNotesNotification: (NSNotification *)notification;
+- (void)showNotificationForNoteType: (NSString *)noteType;
+- (void)showNotificationButton;
+- (void)resetMenuButton: (id)sender;
+- (void)highlightMenuButton: (id)sender;
+- (void)completeButtonAnimation;
+- (void)showNotificationForNoteType: (NSString *)noteType;
+- (void)showNotificationsView;
+- (bool)isShowingNotificationButton;
+
 - (UIToolbar *)toolbarForViewController:(UIViewController *)controller;
 - (BOOL)isToolbarHiddenForViewController:(UIViewController *)controller;
 - (void)setToolbarHidden:(BOOL)hidden forViewController:(UIViewController *)controller;

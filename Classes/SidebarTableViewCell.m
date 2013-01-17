@@ -11,7 +11,6 @@
 @interface SidebarTableViewCell (Private)
 
 - (void)receivedCommentsChangedNotification:(NSNotification*)aNotification;
-- (UILabel *)commentsBadgeLabel:(CGRect)aRect text:(NSString *) text;
 
 @end;
 

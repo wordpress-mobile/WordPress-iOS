@@ -57,6 +57,7 @@
 @property (nonatomic, strong) NSMutableArray *sectionInfoArray;
 @property (readonly) NSInteger topSectionRowCount;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
+@property (readonly) NSNumber *unreadNoteCount;
 
 - (SectionInfo *)sectionInfoForBlog:(Blog *)blog;
 - (void)addSectionInfoForBlog:(Blog *)blog;
@@ -148,6 +149,12 @@
     //Crash Report Notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissCrashReporter:) name:@"CrashReporterIsFinished" object:nil];
     
+    //WPCom notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotesNotification:)
+												 name:@"WordPressComUnseenNotes" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectNotificationsRow)
+												 name:@"SelectNotificationsRow" object:nil];
+    
     if (currentIndexPath) {
         // If we are restoring the view after a memory warning we want to try to set the tableview back to the selected row and section
         // Since controllerDidChangeContent will be triggered after the view is recreated, we want to restore our place from there, 
@@ -192,7 +199,7 @@
     }
 }
 
-- (void) viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated]; 
 
     if (IS_IPHONE && _showingWelcomeScreen) {
@@ -457,6 +464,18 @@ NSLog(@"%@", self.sectionInfoArray);
     }
 }
 
+- (void)selectNotificationsRow {
+    NSIndexPath *notificationsIndexPath = [NSIndexPath indexPathForRow: 1 inSection:0];
+    if (notificationsIndexPath)
+        [self.tableView selectRowAtIndexPath:notificationsIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+}
+
+- (void)didReceiveNotesNotification: (NSNotification *)notification {
+    NSDictionary *notesDictionary = (NSDictionary *)[notification userInfo];
+    _unreadNoteCount = [notesDictionary objectForKey:@"note_count"];
+    [self.tableView reloadData];
+}
+
 #pragma mark - Quick Photo Methods
 
 - (void)quickPhotoButtonViewTapped:(QuickPhotoButtonView *)sender {
@@ -703,6 +722,11 @@ NSLog(@"%@", self.sectionInfoArray);
         } else if(indexPath.row == 1){
             title = NSLocalizedString(@"Notifications", @"");
             cell.imageView.image = [UIImage imageNamed:@"sidebar_note"];
+            UIImage *img = [UIImage imageNamed:@"sidebar_comment_bubble"];
+            UIImageView *image = [[UIImageView alloc] initWithImage:img];
+            UILabel *commentsLbl = [cell commentsBadgeLabel:image.bounds text:([_unreadNoteCount intValue] > 99) ? NSLocalizedString(@"99⁺", "") : [NSString stringWithFormat:@"%d", [_unreadNoteCount intValue]]];
+            [image addSubview:commentsLbl];
+            cell.accessoryView = image;
         }
     } else {
         switch (indexPath.row) {

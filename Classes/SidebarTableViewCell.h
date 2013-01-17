@@ -15,4 +15,6 @@
 
 @property (readwrite, weak) Blog *blog;
 
+- (UILabel *)commentsBadgeLabel:(CGRect)aRect text:(NSString *) text;
+
 @end
