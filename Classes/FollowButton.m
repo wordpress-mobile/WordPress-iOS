@@ -64,7 +64,6 @@
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     button.titleEdgeInsets = UIEdgeInsetsMake(-1.0f, 10.f, 0.f, 0.f);
     button.titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
-    button.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     button.imageEdgeInsets = UIEdgeInsetsMake(0.f, 5.f, 0.f, 0.f);
 
 }
@@ -96,14 +95,16 @@
             [actionButton setImage:[UIImage imageNamed:@"note_button_icon_following"] forState:UIControlStateNormal];
             [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
             [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
-            [actionButton.titleLabel setShadowColor:[UIColor blackColor]];
+            [actionButton setTitleShadowColor:[UIColor UIColorFromHex:0x46809a] forState:UIControlStateNormal];
+            [actionButton.titleLabel setShadowOffset:CGSizeMake(0.0f, -1.0f)];
             break;
         case FollowButtonStateNotFollowing:
             [actionButton setTitleColor:[UIColor UIColorFromHex:0x1A1A1A] forState:UIControlStateNormal];
             [actionButton setImage:[UIImage imageNamed:@"note_button_icon_follow"] forState:UIControlStateNormal];
             [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
             [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
-            [actionButton.titleLabel setShadowColor:[UIColor whiteColor]];
+            [actionButton setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [actionButton.titleLabel setShadowOffset:CGSizeMake(0.0f, 1.0f)];
             break;
     }
     [self resizeButton];
