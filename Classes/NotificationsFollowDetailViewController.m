@@ -10,6 +10,9 @@
 #import "UIImageView+AFNetworking.h"
 #import "WordPressComApi.h"
 #import "NSString+XMLExtensions.h"
+#import "NotificationsFollowTableViewCell.h"
+#import "WPWebViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface NotificationsFollowDetailViewController ()
 
@@ -21,11 +24,12 @@
 
 @implementation NotificationsFollowDetailViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithStyle:style];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.title = NSLocalizedString(@"Notification", @"Title for notification detail view");
     }
     return self;
 }
@@ -40,15 +44,32 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
     if (_note) {
         _likeData = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"items"];
     }
+    
+    if ([_likeData count] > 1)
+        _headerLabel.text = NSLocalizedString(@"These people liked your post so far:", @"Header for following detail view, plural");
+    else
+        _headerLabel.text = NSLocalizedString(@"This person liked your post so far:", @"Header for following detail view, singular");
+    
+    [_postTitleView.layer setMasksToBounds:NO];
+    [_postTitleView.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [_postTitleView.layer setShadowOffset:CGSizeMake(0.0, 2.0)];
+    [_postTitleView.layer setShadowRadius:2.0f];
+    [_postTitleView.layer setShadowOpacity:0.3f];
+    
+    [_tableView.layer setMasksToBounds:NO];
+    [_tableView.layer setShadowColor:[[UIColor blackColor] CGColor]];
+    [_tableView.layer setShadowOffset:CGSizeMake(0.0, -1.0)];
+    [_tableView.layer setShadowRadius:1.0f];
+    [_tableView.layer setShadowOpacity:0.3f];
+    
+    [_tableView setDelegate: self];
 
 }
 
@@ -72,31 +93,17 @@
     return [_likeData count];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 100.0f;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"FollowCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    NotificationsFollowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        UIButton *likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [likeButton setBackgroundColor:[UIColor lightGrayColor]];
-        [likeButton.titleLabel setTextColor:[UIColor lightGrayColor]];
-        [likeButton setFrame:CGRectMake(cell.frame.size.width - 70, 10, 60, 20)];
-        [likeButton setTitle:@"Follow" forState:UIControlStateNormal];
-        [likeButton.titleLabel setFont:[UIFont systemFontOfSize:13.0f]];
-        [likeButton addTarget:self action:@selector(followBlog:) forControlEvents:UIControlEventTouchUpInside];
-        [cell addSubview:likeButton];
-        
-        [cell.textLabel setFont:[UIFont systemFontOfSize:14.0f]];
-        [cell.textLabel setTextColor:[UIColor darkGrayColor]];
-        [cell.textLabel setBackgroundColor:[UIColor clearColor]];
-        [cell.textLabel setFrame:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width - 90.0f, cell.frame.size.height)];
-        [cell.textLabel setNumberOfLines:1];
-        [cell.textLabel setAdjustsFontSizeToFitWidth:NO];
-        [cell.textLabel setLineBreakMode:UILineBreakModeTailTruncation];
-        
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
-        [cell setBackgroundView:imageView];
+        cell = [[NotificationsFollowTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        [cell.followButton addTarget:self action:@selector(followBlog:) forControlEvents:UIControlEventTouchUpInside];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -108,26 +115,29 @@
     UIButton *followButton = [cell.subviews objectAtIndex:2];
     if (likeDetails) {
         if (![[likeDetails objectForKey:@"blog_title"] isEqualToString:@""]) {
-            cell.textLabel.text = [NSString decodeXMLCharactersIn:[likeDetails objectForKey:@"blog_title"]];
-            if ([[likeDetails objectForKey:@"is_following"] intValue] == 0)
-                [followButton setTitle:NSLocalizedString(@"Follow", @"") forState:UIControlStateNormal];
-            else
-                [followButton setTitle:NSLocalizedString(@"Unfollow", @"") forState:UIControlStateNormal];
-            [followButton setTag:indexPath.row];
+            [cell.followButton setTitle:[NSString decodeXMLCharactersIn: [likeDetails objectForKey:@"blog_title"]] forState:UIControlStateNormal];
+            if ([[likeDetails objectForKey:@"is_following"] intValue] == 1) {
+                [cell setFollowing: YES];
+            } else {
+                [cell setFollowing: NO];
+            }
+                
+            [cell.followButton setTag:indexPath.row];
         } else {
             NSString *blogTitle = [like objectForKey:@"header"];
             if (blogTitle && [blogTitle length] > 0)
                 blogTitle = [blogTitle stringByReplacingOccurrencesOfString:@"<.+?>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, blogTitle.length)];
             else
                 blogTitle = NSLocalizedString(@"(No Title)", @"Blog with no title");
-            cell.textLabel.text = blogTitle;
+            [cell.followButton setTitle:blogTitle forState:UIControlStateNormal];
         }
+        cell.textLabel.text = [[NSString decodeXMLCharactersIn:[likeDetails objectForKey:@"blog_url"]] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
     } else {
         NSString *blogTitle = [NSString decodeXMLCharactersIn:[like objectForKey:@"header"]];
         cell.textLabel.text = [blogTitle stringByReplacingOccurrencesOfString:@"<.+?>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, blogTitle.length)];
         [followButton setHidden:YES];
     }
-    NSString *imageURL = [[like objectForKey:@"icon"] stringByReplacingOccurrencesOfString:@"s=32" withString:@"w=200"];
+    NSString *imageURL = [[like objectForKey:@"icon"] stringByReplacingOccurrencesOfString:@"s=32" withString:@"w=160"];
     [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"note_icon_placeholder"]];
     
     return cell;
@@ -136,18 +146,15 @@
 - (void)followBlog:(id)sender {
     UIButton *button = (UIButton *)sender;
     NSInteger row = button.tag;
-    NSString *follow = NSLocalizedString(@"Follow", @"");
-    NSString *unfollow = NSLocalizedString(@"Unfollow", @"");
     
     NSMutableDictionary *like = [_likeData objectAtIndex:row];
     NSMutableDictionary *likeDetails = [[like objectForKey:@"action"] objectForKey:@"params"];
     
     BOOL isFollowing = [[likeDetails objectForKey:@"is_following"] boolValue];
     
-    if (isFollowing)
-        [button setTitle:follow forState:UIControlStateNormal];
-    else
-        [button setTitle:unfollow forState:UIControlStateNormal];
+    NotificationsFollowTableViewCell *cell = (NotificationsFollowTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+    
+    [cell setFollowing: !isFollowing];
     
     NSUInteger blogID = [[likeDetails objectForKey:@"blog_id"] intValue];
     if (blogID) {
@@ -155,20 +162,17 @@
             NSDictionary *followResponse = (NSDictionary *)responseObject;
             if (followResponse && [[followResponse objectForKey:@"success"] intValue] == 1) {
                 if ([[followResponse objectForKey:@"is_following"] intValue] == 1) {
-                    [button setTitle:unfollow forState:UIControlStateNormal];
+                    [cell setFollowing: YES];
                     [likeDetails setValue:[NSNumber numberWithInt:1] forKey:@"is_following"];
                 }
                 else {
-                    [button setTitle:follow forState:UIControlStateNormal];
+                    [cell setFollowing: NO];
                     [likeDetails setValue:[NSNumber numberWithInt:0] forKey:@"is_following"];
                 }
                 
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            if (isFollowing)
-                [button setTitle:follow forState:UIControlStateNormal];
-            else
-                [button setTitle:unfollow forState:UIControlStateNormal];
+            [cell setFollowing: isFollowing];
         }];
     }
     
@@ -217,13 +221,24 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    NSMutableDictionary *likeDetails = [[[_likeData objectAtIndex:indexPath.row] objectForKey:@"action"] objectForKey:@"params"];
+    if (likeDetails) {
+        NSString *blogURLString = [likeDetails objectForKey:@"blog_url"];
+        NSURL *blogURL = [NSURL URLWithString:blogURLString];
+        if (!blogURL)
+            return;
+        WPWebViewController *webViewController = nil;
+        if ( IS_IPAD ) {
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
+        }
+        else {
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+        }
+
+        [webViewController setUrl:blogURL];
+        [self.navigationController pushViewController:webViewController animated:YES];
+    }
+    
 }
 
 @end
