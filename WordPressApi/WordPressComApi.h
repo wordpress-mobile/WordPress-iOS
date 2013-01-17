@@ -28,8 +28,15 @@ typedef void (^WordPressComApiRestSuccessFailureBlock)(AFHTTPRequestOperation *o
 - (void)signOut;
 - (void)updateCredentailsFromStore;
 
-- (void)checkNotificationsSuccess:(WordPressComApiRestSuccessResponseBlock)callback failure:(WordPressComApiRestSuccessFailureBlock)failure;
-- (void)getNotificationsBefore:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure;
+- (void)checkNotificationsSuccess:(WordPressComApiRestSuccessResponseBlock)callback
+                          failure:(WordPressComApiRestSuccessFailureBlock)failure;
+- (void)getNotificationsBefore:(NSNumber *)timestamp
+                       success:(WordPressComApiRestSuccessResponseBlock)success
+                       failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
+- (void)refreshNotifications:(NSArray *)notes
+                     success:(WordPressComApiRestSuccessResponseBlock)success
+                     failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 
 + (NSString *)WordPressAppId;

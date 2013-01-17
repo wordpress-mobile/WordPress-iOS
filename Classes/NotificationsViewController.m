@@ -49,8 +49,6 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    self.title = nil;
-    self.user = nil;
 }
 
 - (void)viewDidLoad
@@ -77,6 +75,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 
 - (void)viewDidAppear:(BOOL)animated {
     [self refreshNotifications];
+    [self refreshVisibleNotes];
 }
 
 - (void)displayOauthController:(NSNotification *)note {
@@ -162,6 +161,23 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
     [self loadNotificationsAfterNote:[self.notesFetchedResultsController.fetchedObjects lastObject]];
 }
 
+- (void)refreshVisibleNotes {
+    
+    // figure out which notifications are
+    NSArray *cells = [self.tableView visibleCells];
+    NSMutableArray *notes = [NSMutableArray arrayWithCapacity:[cells count]];
+    [cells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        Note *note = [(NotificationsTableViewCell *)obj note];
+        [notes addObject:note];
+    }];
+    
+    [self.user refreshNotifications:notes success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
+
+}
+
 
 #pragma mark - UIScrollViewDelegate
 
@@ -169,12 +185,13 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
     [self.refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
-    // if we're at the bottom try to load more
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView.bounds.size.height + scrollView.contentOffset.y >= scrollView.contentSize.height) {
         [self loadNotificationsAfterLastNote];
     }
+    [self refreshVisibleNotes];
 }
+
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
@@ -252,6 +269,21 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
         self.notesFetchedResultsController.delegate = self;
     }
     return _notesFetchedResultsController;
+}
+
+#pragma mark - NSFetchedResultsControllerDelegate
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
+    
+    if (type == NSFetchedResultsChangeUpdate) {
+        NotificationsTableViewCell *cell = (NotificationsTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.note = anObject;
+    }
+
 }
 
 

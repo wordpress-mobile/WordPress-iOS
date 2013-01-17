@@ -155,6 +155,30 @@ NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subjec
     } failure:failure];
 }
 
+- (void)refreshNotifications:(NSArray *)notes success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    NSMutableArray *noteIDs = [[NSMutableArray alloc] initWithCapacity:[notes count]];
+    [notes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [noteIDs addObject:[(Note *)obj noteID]];
+    }];
+    NSDictionary *params = @{
+        @"fields" : WordPressComApiNotificationFields,
+        @"ids" : noteIDs
+    };
+    NSManagedObjectContext *context = [(Note *)[notes objectAtIndex:0] managedObjectContext];
+    [self.restClient getPath:@"notifications/" parameters:params success:^(AFHTTPRequestOperation *operation, id response){
+        NSError *error;
+        NSArray *notesData = [response objectForKey:@"notes"];
+        for (int i=0; i < [notes count]; i++) {
+            Note *note = [notes objectAtIndex:i];
+            [note syncAttributes:[notesData objectAtIndex:i]];
+        }
+        if(![context save:&error]){
+            NSLog(@"Unable to update note: %@", error);
+        }
+        if (success != nil) success(operation, response);
+    } failure:failure ];
+}
+
 - (BOOL)hasAuthorizationToken {
     return self.authToken != nil;
 }
