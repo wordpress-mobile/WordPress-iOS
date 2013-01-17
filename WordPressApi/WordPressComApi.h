@@ -17,6 +17,9 @@
 typedef void (^WordPressComApiRestSuccessResponseBlock)(AFHTTPRequestOperation *operation, id responseObject);
 typedef void (^WordPressComApiRestSuccessFailureBlock)(AFHTTPRequestOperation *operation, NSError *error);
 
+extern NSString *const WordPressComApiNotesUserInfoKey;
+extern NSString *const WordPressComApiUnseenNoteCountInfoKey;
+
 @interface WordPressComApi : WordPressApi
 @property (nonatomic,readonly,strong) NSString *username;
 @property (nonatomic,readonly,strong) NSString *password;

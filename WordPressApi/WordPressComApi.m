@@ -15,6 +15,7 @@ NSString *const WordPressComApiOauthServiceName = @"public-api.wordpress.com";
 NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp";
 NSString *const WordPressComApiUnseenNotesNotification = @"WordPressComUnseenNotes";
 NSString *const WordPressComApiNotesUserInfoKey = @"notes";
+NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
 
 @interface WordPressComApi () <WordPressComRestClientDelegate>
 @property (readwrite, nonatomic, strong) NSString *username;
@@ -153,12 +154,13 @@ NSString *const WordPressComApiNotesUserInfoKey = @"notes";
                     [unseenNotes addObject:noteData];
                 }
             }];
-            if ([unseenNotes count] > 0) {
-                NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-                [nc postNotificationName:WordPressComApiUnseenNotesNotification
-                                  object:self
-                                userInfo:@{ WordPressComApiNotesUserInfoKey : unseenNotes }];
-            }
+            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+            [nc postNotificationName:WordPressComApiUnseenNotesNotification
+                              object:self
+                            userInfo:@{
+                WordPressComApiNotesUserInfoKey : unseenNotes,
+                WordPressComApiUnseenNoteCountInfoKey : [NSNumber numberWithInteger:[unseenNotes count]]
+             }];
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
