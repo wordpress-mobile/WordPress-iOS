@@ -915,8 +915,15 @@ NSLog(@"%@", self.sectionInfoArray);
     WPFLog(@"%@ %@ %@", self, NSStringFromSelector(_cmd), indexPath);
     
     if (self.currentIndexPath) {
-        if ([indexPath compare:self.currentIndexPath] == NSOrderedSame && !changingContentForSelectedSection)
+        if ([indexPath compare:self.currentIndexPath] == NSOrderedSame && !changingContentForSelectedSection) {
+            if (IS_IPAD) {
+                [self.panelNavigationController showSidebar];
+            } else {
+                if ( closingSidebar )
+                    [self.panelNavigationController closeSidebar];
+            }
             return;
+        }
     }
     
     self.currentIndexPath = indexPath;
