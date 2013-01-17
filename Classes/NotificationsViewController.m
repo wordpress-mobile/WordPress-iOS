@@ -203,8 +203,10 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     [self.refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    if (decelerate == NO) {
+        [self refreshVisibleNotes];
+    }
 }
-
 
 - (void)notificationsDidFinishRefreshingWithError:(NSError *)error {
     [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
