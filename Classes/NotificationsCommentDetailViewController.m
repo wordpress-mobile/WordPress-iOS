@@ -30,10 +30,10 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 @property NSDictionary *commentActions;
 @property NSDictionary *followDetails;
 @property NSDictionary *comment;
-@property NSDictionary *post;
 @property NSMutableArray *commentThread;
 @property NSNumber *siteID;
 @property NSDictionary *followAction;
+@property NSURL *headerURL;
 @property (getter = isWritingReply) BOOL writingReply;
 
 @end
@@ -106,10 +106,12 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
                name:UIKeyboardWillHideNotification
              object:nil];
     
-    
-    self.postBanner.userInteractionEnabled = NO;
-    
-    
+        
+    NSDictionary *item = [[self.note.noteData valueForKeyPath:@"body.items"] objectAtIndex:0];
+
+    self.postBanner.titleLabel.text = [item objectForKey:@"header_text"];
+    [self.postBanner.avatarImageView setImageWithURL:[NSURL URLWithString:[item objectForKey:@"icon"]]];
+    self.headerURL = [NSURL URLWithString:[item objectForKey:@"header_link"]];
     [self displayNote];
     
     // start fetching the thread
@@ -138,24 +140,6 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     }
     
     
-    NSString *postPath = [NSString stringWithFormat:@"sites/%@/posts/%@", [action valueForKeyPath:@"params.blog_id"], [action valueForKeyPath:@"params.post_id"]];
-    
-    // if we don't have post information fetch it from the api
-    if (self.post == nil) {
-        [self.user getPath:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            self.post = responseObject;
-            self.postBanner.titleLabel.text = [self.post valueForKeyPath:@"title"];
-            id authorAvatarURL = [self.post valueForKeyPath:@"author.avatar_URL"];
-            if ([authorAvatarURL isKindOfClass:[NSString class]]) {
-                [self.postBanner.avatarImageView setImageWithURL:[NSURL URLWithString:authorAvatarURL]];
-            }
-            
-            self.postBanner.userInteractionEnabled = YES;
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        }];
-    }
-        
     self.spamBarButton.enabled = NO;
     self.trashBarButton.enabled = NO;
     self.approveBarButton.enabled = NO;
@@ -219,13 +203,13 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 }
 
 - (void)visitPostURL:(id)sender {
-    [self pushToURL:[NSURL URLWithString:[self.post valueForKeyPath:@"URL"]]];
+    [self pushToURL:self.headerURL];
 }
 
 - (void)pushToURL:(NSURL *)url {
     WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:nil bundle:nil];
     [webViewController setUrl:url];
-    [self.panelNavigationController pushViewController:webViewController animated:YES];
+    [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
 }
 
 - (IBAction)moderateComment:(id)sender {
@@ -252,7 +236,7 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     button.enabled = NO;
     
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
-    [self.user.restClient postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.user postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *response = (NSDictionary *)responseObject;
         if (response) {
             NSArray *noteArray = [NSArray arrayWithObject:_note];
