@@ -78,6 +78,8 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     
     self.approveBarButton = [self barButtonItemWithImageNamed:@"toolbar_approve"
                                                           andAction:@selector(moderateComment:)];
+    self.unapproveBarButton = [self barButtonItemWithImageNamed:@"toolbar_unapprove"
+                                                    andAction:@selector(moderateComment:)];
 
     self.trashBarButton = [self barButtonItemWithImageNamed:@"toolbar_delete"
                                                    andAction:@selector(moderateComment:)];
@@ -85,7 +87,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
                                                  andAction:@selector(moderateComment:)];
     self.replyBarButton = [self barButtonItemWithImageNamed:@"toolbar_reply"
                                                   andAction:@selector(startReply:)];
-    
 
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc]
                                initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -175,33 +176,58 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 
     // figure out the actions available for the note
     NSMutableDictionary *indexedActions = [[NSMutableDictionary alloc] initWithCapacity:[actions count]];
+    NSMutableDictionary *indexedButtons = [[NSMutableDictionary alloc] initWithCapacity:[actions count]];
     [actions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSString *actionType = [obj valueForKey:@"type"];
         [indexedActions setObject:obj forKey:actionType];
         if ([actionType isEqualToString:@"approve-comment"]) {
+            [indexedButtons setObject:self.approveBarButton forKey:actionType];
             self.approveBarButton.enabled = YES;
             self.approveBarButton.customView.tag = APPROVE_BUTTON_TAG;
         } else if ([actionType isEqualToString:@"unapprove-comment"]){
-            self.approveBarButton.enabled = YES;
-            self.approveBarButton.customView.tag = UNAPPROVE_BUTTON_TAG;
+            [indexedButtons setObject:self.unapproveBarButton forKey:actionType];
+            self.unapproveBarButton.enabled = YES;
+            self.unapproveBarButton.customView.tag = UNAPPROVE_BUTTON_TAG;
         } else if ([actionType isEqualToString:@"spam-comment"]){
+            [indexedButtons setObject:self.spamBarButton forKey:actionType];
             self.spamBarButton.enabled = YES;
             self.spamBarButton.customView.tag = SPAM_BUTTON_TAG;
         } else if ([actionType isEqualToString:@"unspam-comment"]){
+            [indexedButtons setObject:self.spamBarButton forKey:actionType];
             self.spamBarButton.enabled = YES;
             self.spamBarButton.customView.tag = UNSPAM_BUTTON_TAG;
         } else if ([actionType isEqualToString:@"trash-comment"]){
+            [indexedButtons setObject:self.trashBarButton forKey:actionType];
             self.trashBarButton.enabled = YES;
             self.trashBarButton.customView.tag = TRASH_BUTTON_TAG;
         } else if ([actionType isEqualToString:@"untrash-comment"]){
+            [indexedButtons setObject:self.trashBarButton forKey:actionType];
             self.trashBarButton.enabled = YES;
             self.trashBarButton.customView.tag = UNTRASH_BUTTON_TAG;
         } else if ([actionType isEqualToString:@"replyto-comment"]){
+            [indexedButtons setObject:self.replyBarButton forKey:actionType];
             self.replyBarButton.enabled = YES;
         }
     }];
     
+    NSMutableArray *buttons = [[NSMutableArray alloc] initWithCapacity:4];
+    NSArray *possibleButtons = @[ @"approve-comment", @"unapprove-comment", @"spam-comment", @"unspam-comment", @"trash-comment", @"untrash-comment", @"replyto-comment"];
+    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [possibleButtons enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        id button = [indexedButtons objectForKey:obj];
+        if (button) {
+            if ([buttons count] > 0) {
+                [buttons addObject:spacer];
+            }
+            [buttons addObject:button];
+        }
+    }];
+    
+    [self.toolbar setItems:buttons animated:YES];
+    
     self.commentActions = indexedActions;
+    
+    
     
     NSLog(@"available actions: %@", indexedActions);
     

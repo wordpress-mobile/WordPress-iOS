@@ -21,6 +21,7 @@
 @property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
 
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *approveBarButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *unapproveBarButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *trashBarButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *spamBarButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *replyBarButton;
