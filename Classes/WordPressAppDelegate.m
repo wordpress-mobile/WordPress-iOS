@@ -1191,7 +1191,7 @@
     
     [operations addObject:blogsListOperation];
     
-    NSArray *settingsParameters = [NSArray arrayWithObjects:username, password, token, nil];
+    NSArray *settingsParameters = [NSArray arrayWithObjects:username, password, token, @"apple", nil];
     AFXMLRPCRequest *settingsRequest = [api XMLRPCRequestWithMethod:@"wpcom.get_mobile_push_notification_settings" parameters:settingsParameters];
     AFXMLRPCRequestOperation *settingsOperation = [api XMLRPCRequestOperationWithRequest:settingsRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *supportedNotifications = (NSDictionary *)responseObject;

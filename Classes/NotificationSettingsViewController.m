@@ -72,7 +72,7 @@
     AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
     //Update supported notifications dictionary
     [api callMethod:@"wpcom.get_mobile_push_notification_settings"
-         parameters:[NSArray arrayWithObjects:username, password, token, nil]
+         parameters:[NSArray arrayWithObjects:username, password, token, @"aaple" nil]
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
                 [[NSUserDefaults standardUserDefaults] setObject:supportedNotifications forKey:@"notification_preferences"];
@@ -106,7 +106,7 @@
     AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
     //Update supported notifications dictionary
     [api callMethod:@"wpcom.set_mobile_push_notification_settings"
-         parameters:[NSArray arrayWithObjects:username, password, updatedSettings, token, nil]
+         parameters:[NSArray arrayWithObjects:username, password, updatedSettings, token, @"apple", nil]
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 // Hooray!
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
