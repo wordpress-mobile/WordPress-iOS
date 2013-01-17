@@ -954,14 +954,12 @@
 					stringByReplacingOccurrencesOfString: @">" withString: @""]
 				   stringByReplacingOccurrencesOfString: @" " withString: @""];
 
-    NSLog(@"Registered for push notifications and stored device token: %@",
-          [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"]);
-
+    NSLog(@"Registered for push notifications and stored device token: %@", myToken);
+    
 	// Store the token
     NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
     if (![previousToken isEqualToString:myToken]) {
         [[NSUserDefaults standardUserDefaults] setObject:myToken forKey:@"apnsDeviceToken"];
-
         [self sendApnsToken];
     }
 }
@@ -1103,6 +1101,7 @@
                         WPFLog(@"Registered token %@, sending blogs list", token);
                         [[WordPressComApi sharedApi] syncPushNotificationInfo];
                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"apnsDeviceToken"]; //Remove the token from Preferences, otherwise the token is never re-sent to the server on the next startup
                         WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
                     }];
         } 

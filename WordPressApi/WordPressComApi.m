@@ -185,12 +185,13 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     // Until we have accounts, don't delete the password or any blog with that username will stop working
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
 #endif
+    [[WordPressAppDelegate sharedWordPressApplicationDelegate] unregisterApnsToken];
+    [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"apnsDeviceToken"]; //Remove the token from Preferences, otherwise the token is never sent to the server on the next login
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:WordPressComApiOauthServiceName error:&error];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_authenticated_flag"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] unregisterApnsToken];
     self.authToken = nil;
     self.username = nil;
     self.password = nil;
