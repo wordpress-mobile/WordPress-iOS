@@ -319,7 +319,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     id <NSFetchedResultsSectionInfo> sectionInfo = nil;
     sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     // Don't show section headers if there are no named sections
-    if ([[self.resultsController sections] count] <= 1 && [sectionInfo name] == nil) {
+    // [sectionInfo name] is sometimes nil and sometimes and empty string (#!?) so we check the length
+    if ([[self.resultsController sections] count] <= 1 && [[sectionInfo name] length] == 0) {
         return 0.f;
     }
     return kSectionHeaderHight;
