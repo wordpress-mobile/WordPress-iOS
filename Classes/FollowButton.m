@@ -8,6 +8,7 @@
 
 #import "FollowButton.h"
 #import "DTCoreText.h"
+#import "NSString+XMLExtensions.h"
 
 @interface FollowButton ()
 @property (nonatomic, strong) UIButton *button;
@@ -110,7 +111,7 @@
 }
 
 - (void)setLabel:(NSString *)label {
-    [self.button setTitle:label forState:UIControlStateNormal];
+    [self.button setTitle:[label stringByDecodingXMLCharacters] forState:UIControlStateNormal];
     [self resizeButton];
 }
 
