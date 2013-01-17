@@ -65,11 +65,18 @@
     [self.tableView setTableHeaderView:headerLabel];
     [self.view bringSubviewToFront:_postTitleView];
     
-    /*[_tableView.layer setMasksToBounds:NO];
-    [_tableView.layer setShadowColor:[[UIColor blackColor] CGColor]];
-    [_tableView.layer setShadowOffset:CGSizeMake(0.0, -1.0)];
-    [_tableView.layer setShadowRadius:1.0f];
-    [_tableView.layer setShadowOpacity:0.3f];*/
+    NSString *footerText = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer"];
+    if (footerText && ![footerText isEqualToString:@""]) {
+        UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 40.0f)];
+        [footerLabel setBackgroundColor:[UIColor UIColorFromHex:0xDEDEDE]];
+        [footerLabel setTextAlignment:NSTextAlignmentCenter];
+        [footerLabel setTextColor:[UIColor UIColorFromHex:0x5F5F5F]];
+        [footerLabel setFont:[UIFont systemFontOfSize:13.0f]];
+        [footerLabel setText: [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer"]];
+        
+        [_tableView setTableFooterView:footerLabel];
+    }
+    
     
     [_tableView setDelegate: self];
 
@@ -222,7 +229,7 @@
         }
 
         [webViewController setUrl:blogURL];
-        [self.navigationController pushViewController:webViewController animated:YES];
+        [self.panelNavigationController pushViewController:webViewController animated:YES];
     }
     
 }
