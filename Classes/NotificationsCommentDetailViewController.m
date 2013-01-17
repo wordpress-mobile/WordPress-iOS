@@ -350,7 +350,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         NSString *approvePath = [NSString stringWithFormat:@"/rest/v1%@", [action valueForKeyPath:@"params.rest_path"]];
         NSString *replyPath = [NSString stringWithFormat:@"%@/replies/new", approvePath];
         NSDictionary *params = @{@"content" : self.replyTextView.text };
-        if (@1 == [action valueForKeyPath:@"params.approve_parent"]) {
+        if ([[action valueForKeyPath:@"params.approve_parent"] isEqualToNumber:@1]) {
             [self.user postPath:approvePath parameters:@{@"status" : @"approved"} success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 [self displayNote];
             } failure:nil];
