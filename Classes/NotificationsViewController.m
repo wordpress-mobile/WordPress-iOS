@@ -50,7 +50,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-
+    self.panelNavigationController.delegate = self;
     self.infiniteScrollEnabled = YES;
     // -[UITableView registerClass:forCellReuseIdentifier:] available in iOS 6.0 and later
     if ([self.tableView respondsToSelector:@selector(registerClass:forCellReuseIdentifier:)]) {
@@ -267,6 +267,15 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
             failure(error);
         }
     }];
+}
+
+#pragma mark - DetailViewDelegate
+
+- (void)resetView {
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+    if (selectedIndexPath) {
+        [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:NO];
+    }
 }
 
 @end
