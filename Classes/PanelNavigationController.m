@@ -16,7 +16,7 @@
 #import "NotificationsViewController.h"
 #import "Note.h"
 
-#define MENU_BUTTON_WIDTH 40.0f
+#define MENU_BUTTON_WIDTH 38.0f
 
 #pragma mark -
 
@@ -35,7 +35,7 @@
 @property (nonatomic, strong) UIView *popPanelsView, *menuView;
 @property (nonatomic, strong) UIImageView *sidebarBorderView;
 @property (nonatomic, strong) UIButton *notificationButton, *menuButton;
-@property (nonatomic, strong) UIImageView *dividerImageView;
+@property (nonatomic, strong) UIImageView *dividerImageView, *spacerImageView;
 
 - (void)showSidebar;
 - (void)showSidebarAnimated:(BOOL)animated;
@@ -601,7 +601,7 @@
             
             _menuView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0, MENU_BUTTON_WIDTH, 30.0f)];
             
-            _menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 37.0f, 30.0f)];
+            _menuButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35.0f, 30.0f)];
             [_menuButton setImage:[UIImage imageNamed:@"navbar_toggle"] forState:UIControlStateNormal];
             [_menuButton setImage:[UIImage imageNamed:@"navbar_toggle"] forState:UIControlStateHighlighted];
             [_menuButton setImageEdgeInsets:UIEdgeInsetsMake(0, 3.0f, 0.0f, 0)];
@@ -612,11 +612,12 @@
             [_menuButton addTarget:self action:@selector(resetMenuButton:) forControlEvents:UIControlEventTouchUpInside];
             [_menuButton addTarget:self action:@selector(resetMenuButton:) forControlEvents:UIControlEventTouchCancel];
             
-            _notificationButton = [[UIButton alloc] initWithFrame:CGRectMake(7.0f, 0.0, 33.0f, 30.0f)];
+            _notificationButton = [[UIButton alloc] initWithFrame:CGRectMake(5.0f, 0.0, 33.0f, 30.0f)];
             [_notificationButton setAlpha:1.0f];
             [_notificationButton setImage:[UIImage imageNamed:@"note_icon_comment"] forState:UIControlStateNormal];
             [_notificationButton setBackgroundImage:[[UIImage imageNamed:@"menu_notification_right_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(3.0f, 0.0f, 3.0f, 3.0f)] forState:UIControlStateNormal];
             [_notificationButton setBackgroundImage:[[UIImage imageNamed:@"menu_notification_right_bg_down"] resizableImageWithCapInsets:UIEdgeInsetsMake(3.0f, 0.0f, 3.0f, 3.0f)] forState:UIControlStateHighlighted];
+            [_notificationButton setImageEdgeInsets:UIEdgeInsetsMake(0, 2.0f, 0.0f, 0)];
             [_notificationButton addTarget:self action:@selector(highlightMenuButton:) forControlEvents:UIControlEventTouchDown];
             [_notificationButton addTarget:self action:@selector(showNotificationsView) forControlEvents:UIControlEventTouchUpInside];
             [_notificationButton addTarget:self action:@selector(resetMenuButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -626,9 +627,14 @@
             [_dividerImageView setImage:[UIImage imageNamed:@"menu_button_divider"]];
             [_dividerImageView setAlpha:0.0f];
             
+            _spacerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(33.0f, 0.0f, 4.0f, 30.0f)];
+            [_spacerImageView setImage:[[UIImage imageNamed:@"menu_notification_spacer"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)]];
+            [_spacerImageView setAlpha:0.0f];
+            
             [_menuView addSubview:_notificationButton];
             [_menuView addSubview:_menuButton];
             [_menuView addSubview:_dividerImageView];
+            [_menuView addSubview:_spacerImageView];
             
             sidebarButton = [[UIBarButtonItem alloc] initWithCustomView:_menuView];
             _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
@@ -721,7 +727,7 @@
 - (void)completeButtonAnimation {
     [UIView animateWithDuration:0.4f delay:0 options: UIViewAnimationOptionCurveEaseOut animations:^{
         CGFloat newSizeX = MENU_BUTTON_WIDTH;
-        CGFloat newNotificationButtonX = 7.0f;
+        CGFloat newNotificationButtonX = 5.0f;
         if (_menuView.frame.size.width == MENU_BUTTON_WIDTH) {
             newSizeX += 30.0f;
             newNotificationButtonX += 30.0f;
@@ -757,6 +763,13 @@
     if (![self isShowingNotificationButton]) {
         [_notificationButton setHighlighted:YES];
         [_menuButton setHighlighted:YES];
+    } else {
+        if (sender == _notificationButton) {
+            [_spacerImageView setImage:[[UIImage imageNamed:@"menu_notification_spacer"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)]];
+        } else {
+            [_spacerImageView setImage:[[UIImage imageNamed:@"menu_notification_spacer_down"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)]];
+        }
+        [_spacerImageView setAlpha:1.0f];
     }
     [_dividerImageView setHidden: YES];
 }
@@ -765,6 +778,7 @@
     [_notificationButton setHighlighted:NO];
     [_menuButton setHighlighted:NO];
     [_dividerImageView setHidden: NO];
+    [_spacerImageView setAlpha:0.0f];
 }
 
 - (void)showNotificationButton {

@@ -751,6 +751,10 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /menu_notification_right_bg@2x.png -text svneol=unset#unset
 /menu_notification_right_bg_down.png -text svneol=unset#unset
 /menu_notification_right_bg_down@2x.png -text svneol=unset#unset
+/menu_notification_spacer.png -text svneol=unset#unset
+/menu_notification_spacer@2x.png -text svneol=unset#unset
+/menu_notification_spacer_down.png -text svneol=unset#unset
+/menu_notification_spacer_down@2x.png -text svneol=unset#unset
 /movie.png -text svneol=unset#unset
 /movie@2x.png -text svneol=unset#unset
 /n.caf -text
