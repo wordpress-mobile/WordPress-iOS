@@ -161,6 +161,11 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
                 [self.postBanner.avatarImageView setImageWithURL:[NSURL URLWithString:authorAvatarURL]];
             }
             
+            NSString *headerUrl = [self.post objectForKey:@"URL"];
+            if (headerUrl != nil) {
+                self.headerURL = [NSURL URLWithString:headerUrl];
+            }
+            
             self.postBanner.userInteractionEnabled = YES;
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
