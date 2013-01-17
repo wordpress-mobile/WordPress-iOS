@@ -146,6 +146,7 @@
 #define kNotificationTypePostLike @"pl"
 #define kNotificationTypeFollowBlog @"sb"
 #define kNotificationTypeReblog @"rb"
+#define kNotificationTypeAchievement @"ac"
 
 #define kSettingsMuteSoundsKey @"settings_mute_sounds"
 

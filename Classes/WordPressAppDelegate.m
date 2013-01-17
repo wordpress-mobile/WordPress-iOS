@@ -1178,6 +1178,13 @@
              [remoteNotif objectForKey:@"blog_id"]
              [remoteNotif objectForKey:@"post_id"] //original postID
              */
+            
+        } else if([nType isEqualToString:kNotificationTypeAchievement]){
+            //achievement reached
+            /* 
+             [remoteNotif objectForKey:@"achievement"] //textual description of the achievement
+             [remoteNotif objectForKey:@"blog_id"] //optional
+             */
         } else {
             WPFLog(@"Got unsupported notification: %@", remoteNotif);
         }
