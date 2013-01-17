@@ -142,7 +142,7 @@ NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
  * If we have unseen notes we post a WordPressComApiUnseenNotesNotification 
  */
 - (void)checkForNewUnseenNotifications {
-    NSDictionary *params = @{ @"unread":@"true", @"number":@"20", @"fields" : WordPressComApiNotificationFields };
+    NSDictionary *params = @{ @"unread":@"true", @"number":@"20", @"num_note_items":@"20", @"fields" : WordPressComApiNotificationFields };
     [self.restClient getPath:@"notifications" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSNumber *last_seen_time = [responseObject objectForKey:@"last_seen_time"];
         NSArray *notes = [responseObject objectForKey:@"notes"];
@@ -194,6 +194,8 @@ NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
     
     [requestParameters setObject:WordPressComApiNotificationFields forKey:@"fields"];
     [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"number"];
+    [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"num_note_items"];
+    
     // TODO: Check for unread notifications and notify with the number of unread notifications
 
     [self.restClient getPath:@"notifications/" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject){
@@ -206,8 +208,6 @@ NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
         if (success != nil ) success( operation, responseObject );
         
     } failure:failure];
-
-    
 }
 
 - (void)refreshNotifications:(NSArray *)notes success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {

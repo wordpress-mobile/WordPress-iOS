@@ -707,7 +707,10 @@
 }
 
 - (void)showNotificationForNoteType: (NSString *)noteType {
-    [_notificationButton setImage:[UIImage imageNamed: [NSString stringWithFormat:@"note_icon_%@", noteType]] forState:UIControlStateNormal];
+    UIImage *noteIcon = [UIImage imageNamed: [NSString stringWithFormat:@"note_icon_%@", noteType]];
+    if (noteIcon == nil)
+        noteIcon = [UIImage imageNamed:@"note_icon_comment"];
+    [_notificationButton setImage:noteIcon forState:UIControlStateNormal];
     
     if (_menuView.frame.size.width > MENU_BUTTON_WIDTH) {
         [UIView animateWithDuration:0.3f delay:0 options: 0 animations:^{

@@ -7,6 +7,7 @@
 #import "NotificationsTableViewCell.h"
 #import "NSString+XMLExtensions.h"
 #import "UIImageView+AFNetworking.h"
+#import "UIColor+Helpers.h"
 
 @interface NotificationsTableViewCell ()
 @property (nonatomic, strong) UIImageView *iconImageView;
@@ -40,7 +41,7 @@ const CGFloat NotificationsTableViewCellFontSize = 17.0f;
         self.unreadIndicator.shadowColor = [UIColor whiteColor];
         self.unreadIndicator.shadowOffset = CGSizeMake(0.0f, 1.0f);
         self.unreadIndicator.text = @"•";
-        self.unreadIndicator.textColor = [UIColor UIColorFromHex:0x2EA2CC];
+        self.unreadIndicator.textColor = [UIColor UIColorFromHex:0x008EBE];
         [self addSubview:self.detailTextLabel];
         [self addSubview:self.iconImageView];
         [self addSubview:self.unreadIndicator];
