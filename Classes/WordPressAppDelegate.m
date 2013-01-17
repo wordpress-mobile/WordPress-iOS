@@ -1000,12 +1000,21 @@
                     [self setAlertRunning:YES];
                     lastNotificationInfo = userInfo;
                     UIAlertView *alert = nil;
+                    
                     if ([userInfo objectForKey:@"blog_id"] && [userInfo objectForKey:@"comment_id"]) {
                         alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"New comment", @"Popup title for a new push notification (shown when you receive a push notification and the phone is not locked).")
                                                            message:message
                                                           delegate:self
                                                  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Popup dismiss button for a new push notification (shown when you receive a push notification and the phone is not locked).")
                                                  otherButtonTitles:NSLocalizedString(@"View", @"Popup view push notification button for a new push notification (shown when you receive a push notification and the phone is not locked)."), nil];
+                        alert.tag = kNotificationNewComment;
+                    } else if ([userInfo objectForKey:@"type"]) {
+                        alert = [[UIAlertView alloc] initWithTitle:nil
+                                                           message:message
+                                                          delegate:self
+                                                 cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Popup dismiss button for a new push notification (shown when you receive a push notification and the phone is not locked).")
+                                                 otherButtonTitles:NSLocalizedString(@"View", @"Popup view push notification button for a new push notification (shown when you receive a push notification and the phone is not locked)."), nil];
+                         alert.tag = kNotificationNewSocial;
                     } else {
                         // Unsupported notification: show it but do nothing when it's dismissed
                         alert = [[UIAlertView alloc] initWithTitle:nil
@@ -1013,8 +1022,9 @@
                                                           delegate:self
                                                  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"Popup dismiss button for a new push notification (shown when you receive a push notification and the phone is not locked).")
                                                  otherButtonTitles:nil];
+                         alert.tag = kNotificationNewComment;
                     }
-                    alert.tag = kNotificationNewComment;
+                    
                     [alert show];
                     [SoundUtil playNotificationSound];
                     [self sendPushNotificationBlogsList];
@@ -1175,33 +1185,40 @@
         WPFLog(@"Received new notification: %@", remoteNotif);
         //new social PNs
         NSString *nType = [remoteNotif objectForKey:@"type"];
-        if([nType isEqualToString:@"pl"]){
+                
+        if([nType isEqualToString:kNotificationTypePostLike]){
             //post like
             /*
              [remoteNotif objectForKey:@"blog_id"]
              [remoteNotif objectForKey:@"post_id"]
              [remoteNotif objectForKey:@"liker_id"]
              */
-        } else if([nType isEqualToString:@"cl"]){
+        } else if([nType isEqualToString:kNotificationTypeCommentLike]){
             //comment like
             /*
              [remoteNotif objectForKey:@"blog_id"]
              [remoteNotif objectForKey:@"comment_id"]
              [remoteNotif objectForKey:@"liker_id"]
              */
-        } else if([nType isEqualToString:@"sb"]){
+        } else if([nType isEqualToString:kNotificationTypeFollowBlog]){
             //logged-in follow blog
             /*
              [remoteNotif objectForKey:@"blog_id"]
              [remoteNotif objectForKey:@"subscriber_id"]
              */
-        } else if([nType isEqualToString:@"rb"]){
+        } else if([nType isEqualToString:kNotificationTypeReblog]){
             //reblog
             /*
              [remoteNotif objectForKey:@"blog_id"]
              [remoteNotif objectForKey:@"post_id"] //original postID
              */
+        } else {
+            WPFLog(@"Got unsupported notification: %@", remoteNotif);
         }
+        
+        if( self.panelNavigationController )
+            [self.panelNavigationController showNotificationsView];
+        
     } else if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
         WPFLog(@"Received notification: %@", remoteNotif);
         SidebarViewController *sidebar = (SidebarViewController *)self.panelNavigationController.masterViewController;
@@ -1303,7 +1320,13 @@
             [self openNotificationScreenWithOptions:lastNotificationInfo];
              lastNotificationInfo = nil;
         }
-	} else { 
+    } else if (alertView.tag == kNotificationNewSocial) {
+        if (buttonIndex == 1) {
+            if( self.panelNavigationController )
+                [self.panelNavigationController showNotificationsView];
+            lastNotificationInfo = nil;
+        }
+	} else {
 		//Need Help Alert
 		switch(buttonIndex) {
 			case 0: {

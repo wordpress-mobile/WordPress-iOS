@@ -131,6 +131,19 @@
 #define kCrashAlertTag 902
 #define kNoXMLPrefix 903
 #define kNotificationNewComment 1001
+#define kNotificationNewSocial 1002
+
+/**
+ Notification type could be one of the following values:
+ - pl : Post like
+ - cl : Comment like
+ - sb : Subscription to a blog
+ - rb : reblog
+ */
+#define kNotificationTypeCommentLike @"cl"
+#define kNotificationTypePostLike @"pl"
+#define kNotificationTypeFollowBlog @"sb"
+#define kNotificationTypeReblog @"rb"
 
 #define kSettingsMuteSoundsKey @"settings_mute_sounds"
 
