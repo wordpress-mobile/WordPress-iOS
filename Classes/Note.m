@@ -88,16 +88,21 @@
         note.noteID = [noteData objectForKey:@"id"];
     }
     
-    note.payload = [noteData JSONData];
-    note.type = [noteData objectForKey:@"type"];
-    NSString *subject = [[noteData objectForKey:@"subject"] objectForKey:@"text"];
-    note.subject = [subject trim];
-    note.icon = [[noteData objectForKey:@"subject"] objectForKey:@"icon"];
-    NSInteger timestamp = [[noteData objectForKey:@"timestamp"] integerValue];
-    note.timestamp = [NSNumber numberWithInteger:timestamp];
-    NSInteger unread = [[noteData objectForKey:@"unread"] integerValue];
-    note.unread = [NSNumber numberWithInteger:unread];
+    [note syncAttributes:noteData];
 
+}
+
+- (void)syncAttributes:(NSDictionary *)noteData {
+    self.payload = [noteData JSONData];
+    self.type = [noteData objectForKey:@"type"];
+    NSString *subject = [[noteData objectForKey:@"subject"] objectForKey:@"text"];
+    self.subject = [subject trim];
+    self.icon = [[noteData objectForKey:@"subject"] objectForKey:@"icon"];
+    NSInteger timestamp = [[noteData objectForKey:@"timestamp"] integerValue];
+    self.timestamp = [NSNumber numberWithInteger:timestamp];
+    NSInteger unread = [[noteData objectForKey:@"unread"] integerValue];
+    self.unread = [NSNumber numberWithInteger:unread];
+    [self parseComment];
 }
 
 - (void)dealloc {

@@ -28,6 +28,8 @@
 - (BOOL)isRead;
 - (BOOL)isUnread;
 
+- (void)syncAttributes:(NSDictionary *)data;
+
 + (BOOL)syncNotesWithResponse:(NSArray *)notesData withManagedObjectContext:(NSManagedObjectContext *)context;
 
 @end
