@@ -9,10 +9,11 @@
 #import "NotificationsCommentDetailViewController.h"
 #import "UIImageView+AFNetworking.h"
 #import "WordPressComApi.h"
+#import "WordPressAppDelegate.h"
 
 #define APPROVE_BUTTON_TAG 1
-#define SPAM_BUTTON_TAG 2
-#define TRASH_BUTTON_TAG 3
+#define TRASH_BUTTON_TAG 2
+#define SPAM_BUTTON_TAG 3
 
 @interface NotificationsCommentDetailViewController ()
 
@@ -45,8 +46,12 @@
 {
     [super viewDidLoad];
     
+    [self displayNote];
+}
+
+- (void)displayNote {
     if (_note && _note.isComment) {
-        
+        self.title = _note.subject;
         [_authorLabel setHidden:NO];
         [_commentTextView setHidden:NO];
         [_noteImageView setHidden:NO];
@@ -71,28 +76,35 @@
             }
         }
         
-        
-        
         // Set the status of the comment buttons
         _commentActions = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"actions"];
         for (int i=0; i < [_commentActions count]; i++) {
             NSDictionary *commentAction = [_commentActions objectAtIndex:i];
             
-            if ([[commentAction objectForKey:@"type"] isEqualToString:@"replyto-comment"]) {
+            NSString *commentType = [commentAction objectForKey:@"type"];
+            if ([commentType isEqualToString:@"replyto-comment"]) {
                 [_replyButton setHidden:NO];
-            } else if ([[commentAction objectForKey:@"type"] isEqualToString:@"approve-comment"]) {
+            } else if ([commentType isEqualToString:@"approve-comment"]) {
                 [_approveButton setHidden:NO];
                 [_approveButton setTitle:NSLocalizedString(@"Approve", @"") forState:UIControlStateNormal];
-            } else if ([[commentAction objectForKey:@"type"] isEqualToString:@"unapprove-comment"]) {
+            } else if ([commentType isEqualToString:@"unapprove-comment"]) {
                 [_approveButton setHidden:NO];
                 [_approveButton setTitle:NSLocalizedString(@"Unapprove", @"") forState:UIControlStateNormal];
-            } else if ([[commentAction objectForKey:@"type"] isEqualToString:@"spam-comment"]) {
+            } else if ([commentType isEqualToString:@"spam-comment"]) {
                 [_spamButton setHidden:NO];
-            } else if ([[commentAction objectForKey:@"type"] isEqualToString:@"trash-comment"]) {
+                [_spamButton setTitle:NSLocalizedString(@"Spam", @"") forState:UIControlStateNormal];
+            } else if ([commentType isEqualToString:@"unspam-comment"]) {
+                [_spamButton setHidden:NO];
+                [_spamButton setTitle:NSLocalizedString(@"Unspam", @"") forState:UIControlStateNormal];
+            } else if ([commentType isEqualToString:@"trash-comment"]) {
                 [_trashButton setHidden:NO];
+                [_trashButton setTitle:NSLocalizedString(@"Trash", @"") forState:UIControlStateNormal];
+            } else if ([commentType isEqualToString:@"untrash-comment"]) {
+                [_trashButton setHidden:NO];
+                [_trashButton setTitle:NSLocalizedString(@"Untrash", @"") forState:UIControlStateNormal];
             }
         }
-    } 
+    }
 }
 
 - (IBAction)followBlog {
@@ -136,14 +148,36 @@
             commentStatus = @"approved";
         }
     } else if (button.tag == SPAM_BUTTON_TAG) {
-        commentStatus = @"spam";
+        if ([[button titleForState:UIControlStateNormal] isEqualToString:NSLocalizedString(@"Spam", @"")]) {
+            [_spamButton setTitle:NSLocalizedString(@"Spam", @"") forState:UIControlStateNormal];
+            commentStatus = @"spam";
+        } else {
+            [_spamButton setTitle:NSLocalizedString(@"Unspam", @"") forState:UIControlStateNormal];
+            commentStatus = @"unspam";
+        }
     } else if (button.tag == TRASH_BUTTON_TAG) {
-        commentStatus = @"trash";
+        if ([[button titleForState:UIControlStateNormal] isEqualToString:NSLocalizedString(@"Trash", @"")]) {
+            [_trashButton setTitle:NSLocalizedString(@"Trash", @"") forState:UIControlStateNormal];
+            commentStatus = @"trash";
+        } else {
+            [_trashButton setTitle:NSLocalizedString(@"Untrash", @"") forState:UIControlStateNormal];
+            commentStatus = @"untrash";
+        }
     }
     
     [button setEnabled:NO];
     
     [[WordPressComApi sharedApi] moderateComment:blogID forCommentID:commentID withStatus:commentStatus success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Update note to have new status
+        NSDictionary *response = (NSDictionary *)responseObject;
+        if (response) {
+            NSArray *noteArray = [NSArray arrayWithObject:_note];
+            [[WordPressComApi sharedApi] refreshNotifications:noteArray success:^(AFHTTPRequestOperation *operation, id refreshResponseObject) {
+                [self displayNote];
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                [self displayNote];
+            }];
+        }
         [button setEnabled:YES];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [button setEnabled:YES];

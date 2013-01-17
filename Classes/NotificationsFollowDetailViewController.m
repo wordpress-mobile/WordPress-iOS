@@ -122,7 +122,8 @@
             cell.textLabel.text = blogTitle;
         }
     } else {
-        cell.textLabel.text = [NSString decodeXMLCharactersIn:[like objectForKey:@"header"]];
+        NSString *blogTitle = [NSString decodeXMLCharactersIn:[like objectForKey:@"header"]];
+        cell.textLabel.text = [blogTitle stringByReplacingOccurrencesOfString:@"<.+?>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, blogTitle.length)];
         [followButton setHidden:YES];
     }
     NSString *imageURL = [[like objectForKey:@"icon"] stringByReplacingOccurrencesOfString:@"s=32" withString:@"w=200"];

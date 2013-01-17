@@ -96,6 +96,7 @@
 
 - (void)syncAttributes:(NSDictionary *)noteData {
     self.payload = [noteData JSONData];
+    self.noteData = [self.payload mutableObjectFromJSONData];
     self.type = [noteData objectForKey:@"type"];
     NSString *subject = [[noteData objectForKey:@"subject"] objectForKey:@"text"];
     self.subject = [subject trim];
