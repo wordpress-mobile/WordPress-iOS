@@ -8,6 +8,7 @@
 
 #import "WPError.h"
 #import "WordPressAppDelegate.h"
+#import "WordPressComApi.h"
 
 NSString * const WPErrorResponseKey = @"wp_error_response";
 
@@ -66,6 +67,14 @@ NSString * const WPErrorResponseKey = @"wp_error_response";
             default:
                 break;
         }
+    } else if ([error.domain isEqualToString:WordPressComApiErrorDomain]) {
+        WPFLog(@"wp.com API error: %@: %@", [error.userInfo objectForKey:WordPressComApiErrorCodeKey], [error localizedDescription]);
+        if (error.code == WordPressComApiErrorInvalidToken) {
+            [[WordPressComApi sharedApi] refreshTokenWithSuccess:nil failure:^(NSError *error) {
+                [self showAlertWithError:error];
+            }];
+            return;
+        }
     }
     
     if (message == nil) {
@@ -74,7 +83,7 @@ NSString * const WPErrorResponseKey = @"wp_error_response";
     
     if (title == nil) {
         if (customTitle == nil) {
-            title = @"error";
+            title = NSLocalizedString(@"Error", @"Generic error alert title");
         } else {
             title = customTitle;
         }

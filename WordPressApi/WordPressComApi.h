@@ -18,8 +18,12 @@ typedef void (^WordPressComApiRestSuccessFailureBlock)(AFHTTPRequestOperation *o
 typedef NS_ENUM(NSUInteger, WordPressComApiError) {
     WordPressComApiErrorJSON,
     WordPressComApiErrorNoAccessToken,
-    WordPressComApiErrorLoginFailed
+    WordPressComApiErrorLoginFailed,
+    WordPressComApiErrorInvalidToken
 };
+
+extern NSString *const WordPressComApiErrorDomain;
+extern NSString *const WordPressComApiErrorCodeKey;
 
 @interface WordPressComApi : AFHTTPClient
 @property (nonatomic,readonly,strong) NSString *username;
@@ -32,6 +36,7 @@ typedef NS_ENUM(NSUInteger, WordPressComApiError) {
 ///-------------------------
 
 - (void)signInWithUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)refreshTokenWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)signInWithToken:(NSString *)token DEPRECATED_ATTRIBUTE;
 - (void)signOut;
 - (BOOL)hasCredentials;

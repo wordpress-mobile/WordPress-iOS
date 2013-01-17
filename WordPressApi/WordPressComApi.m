@@ -25,6 +25,7 @@ NSString *const WordPressComApiNotesUserInfoKey = @"notes";
 NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
 NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
 NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
+NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 
 // AFJSONRequestOperation requires that a URI end with .json in order to match
 // This will match all public-api.wordpress.com/rest/v1/ URI's and parse them as JSON
@@ -46,8 +47,13 @@ NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
 - (NSError *)error {
     if (self.response.statusCode >= 400) {
         NSString *errorMessage = [self.responseJSON objectForKey:@"message"];
+        NSUInteger errorCode = WordPressComApiErrorJSON;
         if ([self.responseJSON objectForKey:@"error"] && errorMessage) {
-            return [NSError errorWithDomain:WordPressComApiErrorDomain code:WordPressComApiErrorJSON userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
+            NSString *error = [self.responseJSON objectForKey:@"error"];
+            if ([error isEqualToString:@"invalid_token"]) {
+                errorCode = WordPressComApiErrorInvalidToken;
+            }
+            return [NSError errorWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey: errorMessage, WordPressComApiErrorCodeKey: error}];
         }
     }
     return [super error];
@@ -163,6 +169,10 @@ NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
                  self.password = nil;
                  if (failure) failure(error);
              }];
+}
+
+- (void)refreshTokenWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    [self signInWithUsername:self.username password:self.password success:success failure:failure];
 }
 
 - (void)signInWithToken:(NSString *)token {
