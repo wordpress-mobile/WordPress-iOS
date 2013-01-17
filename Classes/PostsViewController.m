@@ -78,18 +78,7 @@
         }
     }
     
-    if (activityFooter == nil) {
-        CGRect rect = CGRectMake(145.0, 10.0, 30.0, 30.0);
-        activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
-        activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-        activityFooter.hidesWhenStopped = YES;
-        activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-        [activityFooter stopAnimating];
-    }
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 50.0)];
-    footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [footerView addSubview:activityFooter];
-    self.tableView.tableFooterView = footerView;
+    self.infiniteScrollEnabled = YES;
 }
 
 
@@ -161,10 +150,8 @@
 	return [self.blog.hasOlderPosts boolValue];
 }
 
-- (void)loadMoreItemsWithBlock:(void (^)())block {
-	[self.blog syncPostsWithSuccess:block failure:^(NSError *error) {
-        if (block) block();
-    } loadMore:YES];
+- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    [self.blog syncPostsWithSuccess:success failure:failure loadMore:YES];
 }
 
 #pragma mark - DetailViewDelegate
@@ -179,23 +166,6 @@
 
 #pragma mark -
 #pragma mark TableView delegate
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-
-	if (IS_IPAD == YES) {
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	}
-    
-    // Are we approaching the end of the table?
-    if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) && [self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
-        // Only 3 rows till the end of table
-        if (![self isSyncing] && [self hasMoreContent]) {
-            [activityFooter startAnimating];
-            WPLog(@"Approaching end of table, let's load more posts");
-            [self loadMoreContent];
-        }
-    }
-}
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
@@ -258,15 +228,6 @@
 
 #pragma mark -
 #pragma mark Custom methods
-
-- (void)loadMoreContent {
-    if ((![self isSyncing]) && [self hasMoreContent]) {
-        WPLog(@"We have older posts to load");
-        [self loadMoreItemsWithBlock:^{
-            [activityFooter stopAnimating];
-        }];
-    }
-}
 
 - (void)deletePostAtIndexPath:(NSIndexPath *)indexPath{
     Post *post = [self.resultsController objectAtIndexPath:indexPath];

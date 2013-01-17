@@ -4,10 +4,7 @@
 
 @class EditPostViewController;
 
-@interface PostsViewController : WPTableViewController <UIAccelerometerDelegate, NSFetchedResultsControllerDelegate, DetailViewDelegate> {
-@private
-    UIActivityIndicatorView *activityFooter;
-}
+@interface PostsViewController : WPTableViewController <UIAccelerometerDelegate, NSFetchedResultsControllerDelegate, DetailViewDelegate>
 
 @property (nonatomic, strong) EditPostViewController *postDetailViewController;
 @property (nonatomic, strong) PostViewController *postReaderViewController;

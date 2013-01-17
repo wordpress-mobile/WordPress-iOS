@@ -105,10 +105,8 @@
 	return NO;
 }
 
-- (void)loadMoreItemsWithBlock:(void (^)())block {
-	[self.blog syncPagesWithSuccess:block failure:^(NSError *error) {
-        if (block) block();
-    } loadMore:YES];
+- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    [self.blog syncPagesWithSuccess:success failure:failure loadMore:YES];
 }
 
 #pragma mark -

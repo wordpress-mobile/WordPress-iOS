@@ -20,6 +20,11 @@
 @property (nonatomic) BOOL swipeActionsEnabled;
 
 /**
+ Enables the infinteScrolling
+ */
+@property (nonatomic) BOOL infiniteScrollEnabled;
+
+/**
  Sync content with the server
  
  Subclasses can call this method if they need to invoke a refresh, but it's not meant to be implemented by subclasses.
@@ -108,8 +113,13 @@
 
 /**
  Load extra content for infinite scrolling
+
+ Subclasses *MUST* implement this method if infiniteScrollingEnabled is YES
+
+ @param success A block that's executed if the sync was successful
+ @param failure A block that's executed if there was any error
  */
-- (void)loadMoreContent;
+- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
  Configures the secondary view to show when you swipe on a cell
