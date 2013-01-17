@@ -15,7 +15,7 @@
 #import "WordPressComApi.h"
 #import "NotificationsViewController.h"
 #import "Note.h"
-#import "FollowButton.h"
+#import "Constants.h"
 
 #define MENU_BUTTON_WIDTH 38.0f
 
@@ -155,8 +155,8 @@
     self.view.autoresizesSubviews = YES;
     self.view.clipsToBounds = YES;
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(showFollowToast:) name:FollowButtonFollowedEvent object:nil];
-    [nc addObserver:self selector:@selector(showFollowToast:) name:FollowButtonUnfollowedEvent object:nil];
+    [nc addObserver:self selector:@selector(showFollowToast:) name:FollowedBlogEvent object:nil];
+    [nc addObserver:self selector:@selector(showFollowToast:) name:UnfollowedBlogEvent object:nil];
 }
 
 - (void)viewDidLoad {
@@ -1642,14 +1642,13 @@
 }
 
 - (void)showFollowToast:(NSNotification *)notification {
-    BOOL unfollowed = [notification.name isEqualToString:FollowButtonUnfollowedEvent];
+    BOOL unfollowed = [notification.name isEqualToString:UnfollowedBlogEvent];
     NSString *message = (unfollowed) ?
         NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") :
         NSLocalizedString(@"Followed", @"User followed a blog");
     NSString *imageName = [NSString stringWithFormat:@"action_icon_%@", (unfollowed) ? @"unfollowed" : @"followed"];
     
     [self showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
-
 }
 
 

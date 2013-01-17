@@ -9,9 +9,7 @@
 #import "FollowButton.h"
 #import "DTCoreText.h"
 #import "NSString+XMLExtensions.h"
-
-NSString *const FollowButtonFollowedEvent = @"FollowButtonFollowed";
-NSString *const FollowButtonUnfollowedEvent = @"FollowButtonUnfollowed";
+#import "Constants.h"
 
 @interface FollowButton ()
 @property (nonatomic, strong) UIButton *button;
@@ -79,7 +77,7 @@ NSString *const FollowButtonUnfollowedEvent = @"FollowButtonUnfollowed";
         {
             self.followState = FollowButtonStateNotFollowing;
             [self.user postPath:self.unfollowURL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                [self postEvent:FollowButtonUnfollowedEvent];
+                [self postEvent:UnfollowedBlogEvent];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error){
                 self.followState = FollowButtonStateFollowing;
             }];
@@ -89,7 +87,7 @@ NSString *const FollowButtonUnfollowedEvent = @"FollowButtonUnfollowed";
         {
             self.followState = FollowButtonStateFollowing;
             [self.user postPath:self.followURL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                [self postEvent:FollowButtonFollowedEvent];
+                [self postEvent:FollowedBlogEvent];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error){
                 self.followState = FollowButtonStateNotFollowing;
             }];
