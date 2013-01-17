@@ -611,6 +611,9 @@
             [_notificationButton setImage:[UIImage imageNamed:@"note_icon_comment"] forState:UIControlStateNormal];
             [_notificationButton setBackgroundImage:[[UIImage imageNamed:@"menu_notification_right_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(3.0f, 0.0f, 3.0f, 3.0f)] forState:UIControlStateNormal];
             [_notificationButton setBackgroundImage:[[UIImage imageNamed:@"menu_notification_right_bg_down"] resizableImageWithCapInsets:UIEdgeInsetsMake(3.0f, 0.0f, 3.0f, 3.0f)] forState:UIControlStateHighlighted];
+            [_notificationButton addTarget:self action:@selector(highlightMenuButton:) forControlEvents:UIControlEventTouchDown];
+            [_notificationButton addTarget:self action:@selector(resetMenuButton:) forControlEvents:UIControlEventTouchUpInside];
+            [_notificationButton addTarget:self action:@selector(resetMenuButton:) forControlEvents:UIControlEventTouchCancel];
             
             _dividerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(37.0f, 1.0f, 1.0f, 27.0f)];
             [_dividerImageView setImage:[UIImage imageNamed:@"menu_button_divider"]];
@@ -730,13 +733,16 @@
 }
 
 - (void)highlightMenuButton: (id)sender {
-    if (_menuView.frame.size.width == 40.0f)
+    if (_menuView.frame.size.width == 40.0f) {
         [_notificationButton setHighlighted:YES];
+        [_menuButton setHighlighted:YES];
+    }
     [_dividerImageView setHidden: YES];
 }
 
 - (void)resetMenuButton: (id)sender {
     [_notificationButton setHighlighted:NO];
+    [_menuButton setHighlighted:NO];
     [_dividerImageView setHidden: NO];
 }
 
