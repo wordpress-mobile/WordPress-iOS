@@ -240,6 +240,8 @@
                     [cell setFollowing: NO];
                     [noteDetails setValue:[NSNumber numberWithInt:0] forKey:@"is_following"];
                 }
+            } else {
+                [cell setFollowing:isFollowing];
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [cell setFollowing: isFollowing];

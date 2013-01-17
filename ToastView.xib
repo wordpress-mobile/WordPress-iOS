@@ -82,12 +82,11 @@
 				<string key="NSFrameSize">{190, 190}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
+				<reference key="NSNextKeyView" ref="894244477"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">3</int>
-					<bytes key="NSWhite">MAA</bytes>
+					<int key="NSColorSpace">1</int>
+					<bytes key="NSRGB">MC4wMzkyMTU2ODYyNyAwLjAzOTIxNTY4NjI3IDAuMDM5MjE1Njg2MjcgMC45MgA</bytes>
 				</object>
-				<float key="IBUIAlpha">0.89999997615814209</float>
 				<object class="IBUISimulatedSizeMetrics" key="IBUISimulatedDestinationMetrics">
 					<string key="IBUISimulatedSizeMetricsClass">IBUISimulatedFreeformSizeMetricsSentinel</string>
 					<string key="IBUIDisplayName">Freeform</string>

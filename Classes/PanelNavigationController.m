@@ -1588,7 +1588,7 @@
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-    toastView.alpha= 0.9f;
+    toastView.alpha= 1.0f;
     CGFloat toastOffset = 95.0f;
     if (IS_IPHONE && UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
         toastOffset = 125.0f;
@@ -1613,7 +1613,7 @@
         UILabel *toastLabel = [[toastView subviews] objectAtIndex:0];
         UIImageView *toastIcon = [[toastView subviews] objectAtIndex:1];
         [UIView beginAnimations:@"content_fade_out" context:(__bridge void *)(toastView)];
-        [UIView setAnimationDelay:0.5f];
+        [UIView setAnimationDelay:0.35f];
         [UIView setAnimationDuration:0.25f];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
         [UIView setAnimationDelegate:self];
