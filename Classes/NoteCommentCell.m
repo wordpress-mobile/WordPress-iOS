@@ -68,6 +68,7 @@ const CGFloat NoteCommentCellHeight = 102.f;
     self.profileButton.backgroundColor = [UIColor whiteColor];
     self.profileButton.hidden = YES;
     self.emailButton.hidden = YES;
+    [self.profileButton setTitleColor:WP_LINK_COLOR forState:UIControlStateNormal];
     self.textLabel.text = @"";
     self.imageView.hidden = YES;
     self.imageView.frame = CGRectMake(10.f, 10.f, 92.f, 92.f);
@@ -134,6 +135,7 @@ const CGFloat NoteCommentCellHeight = 102.f;
     self.textLabel.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
     self.profileButton.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
     self.emailButton.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
+    [self.profileButton setTitleColor:[UIColor UIColorFromHex:0x287087] forState:UIControlStateNormal];
 }
 
 - (void)linkPushed:(id)sender {

@@ -72,7 +72,7 @@
 #define LOAD_MORE_DATA_TEXT_COLOR [UIColor colorWithRed:35.0 / 255.0 green:112.0 / 255.0 blue:216.0 / 255.0 alpha:1.0]
 #define WRONG_FIELD_COLOR [UIColor colorWithRed:0.7 green:0.0 blue:0.0 alpha:1.0]
 #define GOOD_FIELD_COLOR [UIColor blackColor]
-#define WP_LINK_COLOR [UIColor colorWithRed:0.0 / 255.0 green:116.0 / 255.0  blue:162.0 / 255.0  alpha:1.0]
+#define WP_LINK_COLOR [UIColor colorWithRed:0.0 / 255.0 green:117.0 / 255.0  blue:156.0 / 255.0  alpha:1.0]
 #define COMMENT_PARENT_BACKGROUND_COLOR [UIColor colorWithRed:222.0 / 255.0 green:222.0 / 255.0  blue:222.0 / 255.0  alpha:1.0]
 
 //R: 35, G: 112, B: 216 | #2370D8 | ΔX: 1378, ΔY: 29 | img

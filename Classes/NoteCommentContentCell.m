@@ -84,7 +84,7 @@
     
     NSMutableAttributedString *colorString = [self.attributedString mutableCopy];
     NSRange range = NSMakeRange(0, [colorString length]);
-    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:(__bridge id)[UIColor UIColorFromHex:0x494949].CGColor forKey:(id)kCTForegroundColorAttributeName];
+    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:(__bridge id)[UIColor UIColorFromHex:0x464646].CGColor forKey:(id)kCTForegroundColorAttributeName];
     [colorString addAttributes:stringAttributes range:range];
     self.attributedTextView.attributedString = colorString;
     
