@@ -55,26 +55,28 @@
     [_postTitleView.layer setShadowRadius:2.0f];
     [_postTitleView.layer setShadowOpacity:0.3f];
     
+    NSString *headerText = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"header_text"];
+    if (headerText) {
+        UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 40.0f)];
+        [headerLabel setBackgroundColor:[UIColor UIColorFromHex:0xDEDEDE]];
+        [headerLabel setTextAlignment:NSTextAlignmentCenter];
+        [headerLabel setTextColor:[UIColor UIColorFromHex:0x5F5F5F]];
+        [headerLabel setFont:[UIFont systemFontOfSize:13.0f]];
+        [headerLabel setText: headerText];
+        [self.tableView setTableHeaderView:headerLabel];
+        [self.view bringSubviewToFront:_postTitleView];
+    }
     
-    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 40.0f)];
-    [headerLabel setBackgroundColor:[UIColor UIColorFromHex:0xDEDEDE]];
-    [headerLabel setTextAlignment:NSTextAlignmentCenter];
-    [headerLabel setTextColor:[UIColor UIColorFromHex:0x5F5F5F]];
-    [headerLabel setFont:[UIFont systemFontOfSize:13.0f]];
-    [headerLabel setText: [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"header"]];
-    [self.tableView setTableHeaderView:headerLabel];
-    [self.view bringSubviewToFront:_postTitleView];
-    
-    NSString *footerText = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer"];
+    NSString *footerText = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer_text"];
     if (footerText && ![footerText isEqualToString:@""]) {
-        UILabel *footerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 40.0f)];
-        [footerLabel setBackgroundColor:[UIColor UIColorFromHex:0xDEDEDE]];
-        [footerLabel setTextAlignment:NSTextAlignmentCenter];
-        [footerLabel setTextColor:[UIColor UIColorFromHex:0x5F5F5F]];
-        [footerLabel setFont:[UIFont systemFontOfSize:13.0f]];
-        [footerLabel setText: [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer"]];
-        
-        [_tableView setTableFooterView:footerLabel];
+        UIButton *footerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [footerButton setFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 40.0f)];
+        [footerButton setBackgroundColor:[UIColor UIColorFromHex:0xDEDEDE]];
+        [footerButton setTitleColor:[UIColor UIColorFromHex:0x5F5F5F] forState:UIControlStateNormal];
+        [footerButton.titleLabel setFont:[UIFont systemFontOfSize:13.0f]];
+        [footerButton setTitle:footerText forState:UIControlStateNormal];
+        [footerButton addTarget:self action:@selector(viewFooterURL) forControlEvents:UIControlEventTouchUpInside];
+        [_tableView setTableFooterView:footerButton];
     }
     
     
@@ -140,11 +142,9 @@
                      [cell setFollowing: NO];
                  }
             } else {
-                 NSString *blogTitle = [selectedNote objectForKey:@"header"];
-                 if (blogTitle && [blogTitle length] > 0)
-                 blogTitle = [blogTitle stringByReplacingOccurrencesOfString:@"<.+?>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, blogTitle.length)];
-                 else
-                 blogTitle = NSLocalizedString(@"(No Title)", @"Blog with no title");
+                 NSString *blogTitle = [selectedNote objectForKey:@"header_text"];
+                 if ([blogTitle length] == 0)
+                     blogTitle = NSLocalizedString(@"(No Title)", @"Blog with no title");
                  [cell.actionButton setTitle:blogTitle forState:UIControlStateNormal];
             }
             [cell.actionButton setTag:indexPath.row];
@@ -158,7 +158,7 @@
     } else {
         // No action available for this user
         [cell.actionButton setHidden:YES];
-        cell.textLabel.text = [selectedNote objectForKey:@"header"];
+        cell.textLabel.text = [selectedNote objectForKey:@"header_text"];
     }
     if ([selectedNote objectForKey:@"icon"]) {
         NSString *imageURL = [[selectedNote objectForKey:@"icon"] stringByReplacingOccurrencesOfString:@"s=32" withString:@"w=160"];
@@ -207,6 +207,27 @@
     }   
 }
 
+- (void)viewFooterURL {
+    NSString *footerLink = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer_link"];
+    if (!footerLink)
+        return;
+    
+    NSURL *footerURL = [NSURL URLWithString:footerLink];
+    if (footerURL) {
+        WPWebViewController *webViewController = nil;
+        if ( IS_IPAD ) {
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
+        }
+        else {
+            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+        }
+        
+        [webViewController setUrl:footerURL];
+        [self.panelNavigationController pushViewController:webViewController animated:YES];
+    }
+    
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -230,6 +251,8 @@
 
         [webViewController setUrl:blogURL];
         [self.panelNavigationController pushViewController:webViewController animated:YES];
+    } else {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
     }
     
 }

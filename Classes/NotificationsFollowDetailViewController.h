@@ -16,4 +16,6 @@
 @property (nonatomic, strong) IBOutlet UILabel *blogTitleLabel;
 @property (nonatomic, strong) IBOutlet UIView *postTitleView;
 
+- (void)viewFooterURL;
+
 @end
