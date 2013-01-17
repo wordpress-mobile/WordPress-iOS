@@ -109,9 +109,14 @@
     static NSString *CellIdentifier = @"FollowCell";
     NotificationsFollowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[NotificationsFollowTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[NotificationsFollowTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         [cell.actionButton addTarget:self action:@selector(followBlog:) forControlEvents:UIControlEventTouchUpInside];
     }
+    
+    cell.textLabel.text = @"";
+    cell.detailTextLabel.text = @"";
+    [cell.actionButton setHidden:NO];
+    cell.accessoryType = UITableViewCellAccessoryNone;
     
     NSDictionary *selectedNote = [_noteData objectAtIndex:indexPath.row];
     NSDictionary *noteAction = [selectedNote objectForKey:@"action"];
@@ -136,11 +141,17 @@
                  [cell.actionButton setTitle:blogTitle forState:UIControlStateNormal];
             }
             [cell.actionButton setTag:indexPath.row];
-            if ([noteActionDetails objectForKey:@"blog_url"])
-                cell.textLabel.text = [[NSString decodeXMLCharactersIn:[noteActionDetails objectForKey:@"blog_url"]] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+            if ([noteActionDetails objectForKey:@"blog_url"]) {
+                cell.detailTextLabel.text = [[NSString decodeXMLCharactersIn:[noteActionDetails objectForKey:@"blog_url"]] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
         } else {
             [cell.actionButton setHidden:YES];
         }
+    } else {
+        // No action available for this user
+        [cell.actionButton setHidden:YES];
+        cell.textLabel.text = [selectedNote objectForKey:@"header"];
     }
     if ([selectedNote objectForKey:@"icon"]) {
         NSString *imageURL = [[selectedNote objectForKey:@"icon"] stringByReplacingOccurrencesOfString:@"s=32" withString:@"w=160"];

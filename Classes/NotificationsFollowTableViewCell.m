@@ -23,16 +23,19 @@
         //[actionButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 0.0f)];
         [self addSubview:actionButton];
         
-        [self.textLabel setFont:[UIFont systemFontOfSize:14.0f]];
-        [self.textLabel setTextColor:[UIColor UIColorFromHex:0x0074A2]];
+        [self.textLabel setTextColor:[UIColor UIColorFromHex:0x030303]];
         [self.textLabel setBackgroundColor:[UIColor clearColor]];
-        [self.textLabel setNumberOfLines:1];
-        [self.textLabel setAdjustsFontSizeToFitWidth:NO];
-        [self.textLabel setLineBreakMode:UILineBreakModeTailTruncation];
+        [self.textLabel setFont:[UIFont boldSystemFontOfSize:16.0f]];
+        
+        [self.detailTextLabel setFont:[UIFont systemFontOfSize:14.0f]];
+        [self.detailTextLabel setTextColor:[UIColor UIColorFromHex:0x0074A2]];
+        [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
+        [self.detailTextLabel setNumberOfLines:1];
+        [self.detailTextLabel setAdjustsFontSizeToFitWidth:NO];
+        [self.detailTextLabel setLineBreakMode:UILineBreakModeTailTruncation];
         
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
         [self setBackgroundView:imageView];
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     return self;
 }
@@ -59,7 +62,8 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     [self.imageView setFrame:CGRectMake(10.0f, 10.0f, 80.0f, 80.0f)];
-    [self.textLabel setFrame:CGRectMake(100.0f, 55.0f, self.frame.size.width - 140.0f, 30.0f)];
+    [self.textLabel setFrame:CGRectMake(100.0f, 20.0f, 180.0f, 30.0f)];
+    [self.detailTextLabel setFrame:CGRectMake(100.0f, 55.0f, self.frame.size.width - 140.0f, 30.0f)];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
