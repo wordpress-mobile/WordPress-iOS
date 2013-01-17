@@ -66,7 +66,7 @@ BOOL hasChanges;
 }
 
 - (void)getNotificationSettings {
-    [[WordPressComApi sharedApi] getNotificationSettings:^{
+    [[WordPressComApi sharedApi] fetchNotificationSettings:^{
         [self notificationsDidFinishRefreshingWithError: nil];
     } failure:^(NSError *error) {
         [self notificationsDidFinishRefreshingWithError: error];
@@ -115,7 +115,7 @@ BOOL hasChanges;
 
 - (void)viewWillDisappear:(BOOL)animated {
     if (hasChanges)
-        [[WordPressComApi sharedApi] setNotificationSettings];
+        [[WordPressComApi sharedApi] saveNotificationSettings:nil failure:nil];
     [super viewWillDisappear:animated];
 }
 

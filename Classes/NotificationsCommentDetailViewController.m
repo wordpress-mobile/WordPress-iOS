@@ -143,7 +143,7 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     
     // if we don't have post information fetch it from the api
     if (self.post == nil) {
-        [self.user.restClient getPath:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self.user getPath:postPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             self.post = responseObject;
             self.postBanner.titleLabel.text = [self.post valueForKeyPath:@"title"];
             id authorAvatarURL = [self.post valueForKeyPath:@"author.avatar_URL"];
@@ -311,7 +311,7 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
     if (comment.needsData) {
         NSString *commentPath = [NSString stringWithFormat:@"sites/%@/comments/%@", self.siteID, comment.commentID];
         comment.loading = YES;
-        [self.user.restClient getPath:commentPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self.user getPath:commentPath parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSUInteger section = [self.commentThread indexOfObject:comment];
             NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:0  inSection:section];
             CGFloat oldCommentHeight = [self tableView:self.tableView heightForRowAtIndexPath:commentIndexPath];
@@ -369,7 +369,7 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
 - (void)performNoteAction:(NSDictionary *)action success:(WordPressComApiRestSuccessFailureBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
     NSDictionary *params = [action objectForKey:@"params"];
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", [params objectForKey:@"blog_id"], [params objectForKey:@"comment_id"]];
-    [self.user.restClient postPath:path parameters:[params objectForKey:@"rest_body"] success:success failure:failure];
+    [self.user postPath:path parameters:[params objectForKey:@"rest_body"] success:success failure:failure];
     
 }
 

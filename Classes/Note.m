@@ -101,6 +101,19 @@ const NSUInteger NoteKeepCount = 20;
     [context save:&error];
 }
 
++ (void)removeAllNotesWithContext:(NSManagedObjectContext *)context {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
+    request.includesPropertyValues = NO;
+    NSError *error;
+    NSArray *notes = [context executeFetchRequest:request error:&error];
+    if (notes) {
+        for (Note *note in notes) {
+            [context deleteObject:note];
+        }
+    }
+    [context save:&error];
+}
+
 - (NSDictionary *)getNoteData {
     return self.noteData;
 }

@@ -6,9 +6,8 @@
 //  Copyright (c) 2012 WordPress. All rights reserved.
 //
 
-#import "WordPressApi.h"
-#import "WordPressComRestClient.h"
-#import "Note.h"
+#import <AFHTTPClient.h>
+#import <Availability.h>
 
 #define WordPressComApiDidLoginNotification @"WordPressComApiDidLogin"
 #define WordPressComApiDidLogoutNotification @"WordPressComApiDidLogout"
@@ -17,69 +16,100 @@
 typedef void (^WordPressComApiRestSuccessResponseBlock)(AFHTTPRequestOperation *operation, id responseObject);
 typedef void (^WordPressComApiRestSuccessFailureBlock)(AFHTTPRequestOperation *operation, NSError *error);
 
-extern NSString *const WordPressComApiNotesUserInfoKey;
-extern NSString *const WordPressComApiUnseenNoteCountInfoKey;
+typedef NS_ENUM(NSUInteger, WordPressComApiError) {
+    WordPressComApiErrorJSON,
+    WordPressComApiErrorNoAccessToken,
+    WordPressComApiErrorLoginFailed
+};
 
-@interface WordPressComApi : WordPressApi
+@interface WordPressComApi : AFHTTPClient
 @property (nonatomic,readonly,strong) NSString *username;
 @property (nonatomic,readonly,strong) NSString *password;
-@property (nonatomic,strong) NSString *authToken;
-@property (readonly, nonatomic, strong) WordPressComRestClient *restClient;
-
 
 + (WordPressComApi *)sharedApi;
-- (void)setUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)signOut;
-- (void)updateCredentailsFromStore;
 
+///-------------------------
+/// @name Account management
+///-------------------------
+
+- (void)signInWithUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)signInWithToken:(NSString *)token DEPRECATED_ATTRIBUTE;
+- (void)signOut;
+- (BOOL)hasCredentials;
+
+///---------------------------
+/// @name Transitional methods
+///---------------------------
+
+/**
+ Reloads `self.username` and `self.password` from the defaults dictionary and keychain
+ 
+ Since WordPressComApi uses tokens now, this shouldn't be necessary and will be removed in the future
+ */
+- (void)updateCredentailsFromStore DEPRECATED_ATTRIBUTE;
+
+///--------------------
+/// @name Notifications
+///--------------------
+
+- (void)saveNotificationSettings:(void (^)())success
+                         failure:(void (^)(NSError *error))failure;
+
+- (void)fetchNotificationSettings:(void (^)())success
+                          failure:(void (^)(NSError *error))failure;
+
+- (void)syncPushNotificationInfo;
+
+/*
+ * Queries the REST Api for unread notes and determines if the user has
+ * seen them using the response's last_seen_time timestamp.
+ *
+ * If we have unseen notes we post a WordPressComApiUnseenNotesNotification
+ */
 - (void)checkForNewUnseenNotifications;
 
 - (void)checkNotificationsSuccess:(WordPressComApiRestSuccessResponseBlock)success
                           failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)getNotificationsBefore:(NSNumber *)timestamp
-                success:(WordPressComApiRestSuccessResponseBlock)success
-                failure:(WordPressComApiRestSuccessFailureBlock)failure;
+                       success:(WordPressComApiRestSuccessResponseBlock)success
+                       failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)getNotificationsSince:(NSNumber *)timestamp
-                success:(WordPressComApiRestSuccessResponseBlock)success
-                failure:(WordPressComApiRestSuccessFailureBlock)failure;
-
-- (void)refreshNotifications:(NSArray *)notes
-                success:(WordPressComApiRestSuccessResponseBlock)success
-                failure:(WordPressComApiRestSuccessFailureBlock)failure;
+                      success:(WordPressComApiRestSuccessResponseBlock)success
+                      failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)getNotificationsWithParameters:(NSDictionary *)parameters
-                success:(WordPressComApiRestSuccessResponseBlock)success
-                failure:(WordPressComApiRestSuccessFailureBlock)failure;
+                               success:(WordPressComApiRestSuccessResponseBlock)success
+                               failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
-- (void)markNoteAsRead:(Note *)note
-                success:(WordPressComApiRestSuccessResponseBlock)success
-                failure:(WordPressComApiRestSuccessFailureBlock)failure;
+- (void)refreshNotifications:(NSArray *)notes
+                     success:(WordPressComApiRestSuccessResponseBlock)success
+                     failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
+- (void)markNoteAsRead:(NSString *)noteID
+               success:(WordPressComApiRestSuccessResponseBlock)success
+               failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)updateNoteLastSeenTime:(NSNumber *)timestamp
-                success:(WordPressComApiRestSuccessResponseBlock)success
-                failure:(WordPressComApiRestSuccessFailureBlock)failure;
+                       success:(WordPressComApiRestSuccessResponseBlock)success
+                       failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)followBlog:(NSUInteger)blogID isFollowing:(bool)following
-                success:(WordPressComApiRestSuccessResponseBlock)success
-                failure:(WordPressComApiRestSuccessFailureBlock)failure;
+           success:(WordPressComApiRestSuccessResponseBlock)success
+           failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)moderateComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withStatus:(NSString *)commentStatus
                 success:(WordPressComApiRestSuccessResponseBlock)success
                 failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)replyToComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withReply:(NSString *)reply
-                success:(WordPressComApiRestSuccessResponseBlock)success
-                failure:(WordPressComApiRestSuccessFailureBlock)failure;
+               success:(WordPressComApiRestSuccessResponseBlock)success
+               failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
-- (BOOL)hasAuthorizationToken;
-
-- (void)setNotificationSettings;
-
-- (void)getNotificationSettings: (void (^)())success failure:(void (^)(NSError *error))failure;
-
-- (void)syncPushNotificationInfo;
+///-----------------
+/// @name OAuth info
+///-----------------
 
 + (NSString *)WordPressAppId;
 + (NSString *)WordPressAppSecret;

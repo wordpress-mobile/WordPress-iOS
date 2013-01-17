@@ -19,7 +19,7 @@
 @property (readonly, getter = isRefreshing) BOOL refreshing;
 @property (readonly, nonatomic, strong) NSDate *lastRefreshDate;
 
-- (id)initWithUser:(WordPressApi *)user;
+- (id)initWithUser:(WordPressComApi *)user;
 - (void)refreshNotifications;
 @end
 

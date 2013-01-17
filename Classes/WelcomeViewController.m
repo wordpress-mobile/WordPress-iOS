@@ -81,7 +81,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    if (([Blog countWithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext] <= 0 && ( ![WordPressComApi sharedApi].username )) || isFirstRun) {
+    if (([Blog countWithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext] <= 0 && ( ![[WordPressComApi sharedApi] hasCredentials] )) || isFirstRun) {
         isFirstRun = YES;
         [self.navigationController setNavigationBarHidden:YES animated:animated];
     }

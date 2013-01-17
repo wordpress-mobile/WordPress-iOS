@@ -306,18 +306,17 @@
 - (void)signIn:(id)sender {
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
     __weak WPcomLoginViewController *loginController = self;
-    [self.wpComApi setUsername:loginCell.textField.text
-                      password:passwordCell.textField.text
-                       success:^{
-                           [loginController.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
-                           [loginController.delegate loginController:loginController didAuthenticateWithUsername:loginController.wpComApi.username];
-                       }
-                       failure:^(NSError *error) {
-                           loginController.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
-                           loginController.buttonText = NSLocalizedString(@"Sign In", @"");
-                           loginController.isSigningIn = NO;
-                           [loginController.tableView reloadData];
-                       }];
+    [self.wpComApi signInWithUsername:loginCell.textField.text
+                             password:passwordCell.textField.text
+                              success:^{
+                                  [loginController.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+                                  [loginController.delegate loginController:loginController didAuthenticateWithUsername:loginController.wpComApi.username];
+                              } failure:^(NSError *error) {
+                                  loginController.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
+                                  loginController.buttonText = NSLocalizedString(@"Sign In", @"");
+                                  loginController.isSigningIn = NO;
+                                  [loginController.tableView reloadData];
+                              }];
 }
 
 

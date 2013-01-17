@@ -88,10 +88,16 @@ typedef enum {
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
+        NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
+        [sections addIndex:SettingsSectionWpcom];
+        [sections addIndex:SettingsSectionNotifications];
+        [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
     }];
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
+        NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
+        [sections addIndex:SettingsSectionWpcom];
+        [sections addIndex:SettingsSectionNotifications];
+        [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
     }];
     
     self.tableView.backgroundView = nil;
@@ -241,7 +247,7 @@ typedef enum {
             return 1;
             
         case SettingsSectionNotifications:
-            if ([[WordPressComApi sharedApi] hasAuthorizationToken])
+            if ([[WordPressComApi sharedApi] hasCredentials])
                 return 1;
             else
                 return 0;
@@ -355,7 +361,7 @@ typedef enum {
         cell.accessoryView = aSwitch;
 
     } else if (indexPath.section == SettingsSectionNotifications) {
-        if ([[WordPressComApi sharedApi] hasAuthorizationToken]) {
+        if ([[WordPressComApi sharedApi] hasCredentials]) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = NSLocalizedString(@"Notifications", @"");
         }

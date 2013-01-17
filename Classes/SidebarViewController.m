@@ -138,7 +138,7 @@
     void (^wpcomNotificationBlock)(NSNotification *) = ^(NSNotification *note) {
         NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-        if (selectedIndexPath == nil || (selectedIndexPath.section == 0 && selectedIndexPath.row == 0)) {
+        if (selectedIndexPath == nil || (selectedIndexPath.section == 0)) {
             [self selectFirstAvailableItem];
         }
         [self checkNothingToShow];

@@ -149,7 +149,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)controller:(WPComOAuthController *)controller didAuthenticateWithToken:(NSString *)token blog:(NSString *)blogUrl scope:(NSString *)scope {
     // give the user the new auth token
-    self.user.authToken = token;
+    [self.user signInWithToken:token];
     
 }
 
@@ -192,7 +192,10 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
         note.unread = [NSNumber numberWithInt:0];
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
         [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        [self.user markNoteAsRead:note success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self.user markNoteAsRead:note.noteID success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"WordPressComUpdateNoteCount"
+                                                                object:nil
+                                                              userInfo:nil];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             note.unread = [NSNumber numberWithInt:1];
         }];

@@ -41,5 +41,6 @@
  @param context The context which contains the notes to delete.
  */
 + (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context;
++ (void)removeAllNotesWithContext:(NSManagedObjectContext *)context;
 
 @end
