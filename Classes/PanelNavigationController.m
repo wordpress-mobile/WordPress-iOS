@@ -685,6 +685,9 @@
 #pragma mark - Notifications
 
 - (void)didReceiveNotesNotification: (NSNotification *)notification {
+    if ([self.detailViewController isMemberOfClass:[NotificationsViewController class]])
+        return;
+    
     NSDictionary *notesDictionary = (NSDictionary *)[notification userInfo];
     NSMutableArray *unreadNotes = [notesDictionary objectForKey:@"notes"];
     if ([unreadNotes count] > 0) {
@@ -766,6 +769,12 @@
 }
 
 - (void)showNotificationsView {
+    // Break if we're already looking at the notifications view
+    if ([self.detailViewController isMemberOfClass:[NotificationsViewController class]]) {
+        [self completeButtonAnimation];
+        return;
+    }
+    
     if ([self isShowingNotificationButton]) {
         [self completeButtonAnimation];
         NotificationsViewController *notificationsViewController = [[NotificationsViewController alloc] init];

@@ -444,7 +444,12 @@ NSLog(@"%@", self.sectionInfoArray);
     NSDictionary *dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"kSelectedSidebarIndexDictionary"];
     NSIndexPath *preservedIndexPath = [NSIndexPath indexPathForRow:[[dict objectForKey:@"row"] integerValue] inSection:[[dict objectForKey:@"section"] integerValue]];
     
-    if (preservedIndexPath.section > 0 && ((preservedIndexPath.section - 1) < [self.resultsController.fetchedObjects count] )) {
+    
+    if (preservedIndexPath.section == 0 && preservedIndexPath.row == 1) {
+        [self processRowSelectionAtIndexPath:preservedIndexPath closingSidebar:NO];
+        [self.tableView selectRowAtIndexPath:preservedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    }
+    else if (preservedIndexPath.section > 0 && ((preservedIndexPath.section - 1) < [self.resultsController.fetchedObjects count] )) {
         if ([self.sectionInfoArray count] > (preservedIndexPath.section - 1)) {
             SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:(preservedIndexPath.section -1)];
             if (!sectionInfo.open) {
