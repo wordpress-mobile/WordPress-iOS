@@ -181,7 +181,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             if ([extra_debug boolValue]) extra_debug_on = YES;
 #endif
             if ( extra_debug_on == YES ) {
-                WPFLog(@"[updateCommentThread] ! %@", [error localizedDescription]);
+                WPFLog(@"[Rest API] ! %@", [error localizedDescription]);
             }
         }];
     }
@@ -341,7 +341,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         if ([extra_debug boolValue]) extra_debug_on = YES;
 #endif
         if ( extra_debug_on == YES ) {
-            WPFLog(@"[updateCommentThread] ! %@", [error localizedDescription]);
+            WPFLog(@"[Rest API] ! %@", [error localizedDescription]);
         }
     }];
     
@@ -394,7 +394,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             if ([extra_debug boolValue]) extra_debug_on = YES;
 #endif
             if ( extra_debug_on == YES ) {
-                WPFLog(@"[updateCommentThread] ! %@", [error localizedDescription]);
+                WPFLog(@"[Rest API] ! %@", [error localizedDescription]);
             }
         }];
     }
@@ -487,7 +487,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             if ([extra_debug boolValue]) extra_debug_on = YES;
 #endif
             if ( extra_debug_on == YES ) {
-                WPFLog(@"[updateCommentThread] ! %@", [error localizedDescription]);
+                WPFLog(@"[Rest API] ! %@", [error localizedDescription]);
             }
             [self.tableView reloadData];
         }];

@@ -243,6 +243,14 @@
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [cell setFollowing: isFollowing];
+            BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
+#ifndef DEBUG
+            NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
+            if ([extra_debug boolValue]) extra_debug_on = YES;
+#endif
+            if ( extra_debug_on == YES ) {
+                WPFLog(@"[Rest API] ! %@", [error localizedDescription]);
+            }
         }];
     }   
 }
