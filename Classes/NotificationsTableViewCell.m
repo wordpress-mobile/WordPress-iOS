@@ -34,9 +34,9 @@ const CGFloat NotificationsTableViewCellFontSize = 17.0f;
         self.detailTextLabel.font = [UIFont systemFontOfSize:NotificationsTableViewCellFontSize - 2.0f];
         self.detailTextLabel.textColor = [UIColor UIColorFromHex:0x323232];
         self.detailTextLabel.backgroundColor = [UIColor clearColor];
-        self.unreadIndicator = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 14.0f, 10.0f, 10.0f)];
+        self.unreadIndicator = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 9.0f, 10.0f, 10.0f)];
         self.unreadIndicator.backgroundColor = [UIColor clearColor];
-        self.unreadIndicator.font = [UIFont boldSystemFontOfSize:24.0f];
+        self.unreadIndicator.font = [UIFont boldSystemFontOfSize:20.0f];
         self.unreadIndicator.textAlignment = NSTextAlignmentCenter;
         self.unreadIndicator.shadowColor = [UIColor whiteColor];
         self.unreadIndicator.shadowOffset = CGSizeMake(0.0f, 1.0f);
@@ -83,10 +83,6 @@ const CGFloat NotificationsTableViewCellFontSize = 17.0f;
     
     self.textLabel.text = [NSString decodeXMLCharactersIn:note.subject];
     
-    // make room for the icon
-    if (![note isRead])
-        self.textLabel.text = [NSString stringWithFormat:@"   %@", self.textLabel.text];
-    
     self.detailTextLabel.text = [NSString decodeXMLCharactersIn: note.commentText];
     
     self.unreadIndicator.hidden = [note isRead];
@@ -118,7 +114,7 @@ const CGFloat NotificationsTableViewCellFontSize = 17.0f;
     }
 
     CGRect indicatorFrame = self.unreadIndicator.frame;
-    indicatorFrame.origin.x = CGRectGetMaxX(self.imageView.frame) + 8.f;
+    indicatorFrame.origin.x = self.frame.size.width - 30.0f;
     self.unreadIndicator.frame = indicatorFrame;
 }
 
