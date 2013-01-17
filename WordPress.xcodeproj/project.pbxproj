@@ -486,6 +486,9 @@
 		CC24E5F51577E16B00A6D5B5 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F41577E16B00A6D5B5 /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		CC313AD115A4360800F7B7C6 /* friend_follow_service_icons.png in Resources */ = {isa = PBXBuildFile; fileRef = CC313ACF15A4360800F7B7C6 /* friend_follow_service_icons.png */; };
 		CC313AD215A4360800F7B7C6 /* friend_follow_service_icons@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC313AD015A4360800F7B7C6 /* friend_follow_service_icons@2x.png */; };
+		CC669B1F1672C305009E16F8 /* FollowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CC669B1E1672C305009E16F8 /* FollowButton.m */; };
+		CC669B231672C328009E16F8 /* NoteCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC669B221672C328009E16F8 /* NoteCommentCell.m */; };
+		CC669B261672C335009E16F8 /* NoteCommentPostBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = CC669B251672C335009E16F8 /* NoteCommentPostBanner.m */; };
 		CC6B3BE715A33E16005A4523 /* WPFriendFinderNudgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6B3BE615A33E16005A4523 /* WPFriendFinderNudgeView.m */; };
 		CC6B3BFD15A35F10005A4523 /* friend_finder_cancel_btn_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BF915A35F10005A4523 /* friend_finder_cancel_btn_highlight.png */; };
 		CC6B3BFE15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFA15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png */; };
@@ -1214,6 +1217,12 @@
 		CC24E5F41577E16B00A6D5B5 /* Accounts.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		CC313ACF15A4360800F7B7C6 /* friend_follow_service_icons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friend_follow_service_icons.png; sourceTree = "<group>"; };
 		CC313AD015A4360800F7B7C6 /* friend_follow_service_icons@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friend_follow_service_icons@2x.png"; sourceTree = "<group>"; };
+		CC669B1D1672C305009E16F8 /* FollowButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowButton.h; sourceTree = "<group>"; };
+		CC669B1E1672C305009E16F8 /* FollowButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowButton.m; sourceTree = "<group>"; };
+		CC669B211672C328009E16F8 /* NoteCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteCommentCell.h; sourceTree = "<group>"; };
+		CC669B221672C328009E16F8 /* NoteCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteCommentCell.m; sourceTree = "<group>"; };
+		CC669B241672C335009E16F8 /* NoteCommentPostBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteCommentPostBanner.h; sourceTree = "<group>"; };
+		CC669B251672C335009E16F8 /* NoteCommentPostBanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteCommentPostBanner.m; sourceTree = "<group>"; };
 		CC6B3BE515A33E16005A4523 /* WPFriendFinderNudgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPFriendFinderNudgeView.h; sourceTree = "<group>"; };
 		CC6B3BE615A33E16005A4523 /* WPFriendFinderNudgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPFriendFinderNudgeView.m; sourceTree = "<group>"; };
 		CC6B3BF915A35F10005A4523 /* friend_finder_cancel_btn_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friend_finder_cancel_btn_highlight.png; sourceTree = "<group>"; };
@@ -1501,11 +1510,13 @@
 		031662E60FFB14C60045D052 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				CCAF5DCE16A872AE0032458C /* FollowButton.m */,
-				CCAF5DCF16A872AE0032458C /* FollowButton.h */,
 				5D4DE6F1167177560030518D /* WPInfoView.h */,
 				5D4DE6F2167177560030518D /* WPInfoView.m */,
 				5D4DE6F3167177560030518D /* WPInfoView.xib */,
+				CC669B241672C335009E16F8 /* NoteCommentPostBanner.h */,
+				CC669B251672C335009E16F8 /* NoteCommentPostBanner.m */,
+				CC669B1D1672C305009E16F8 /* FollowButton.h */,
+				CC669B1E1672C305009E16F8 /* FollowButton.m */,
 				5DEB6EF315B471B3004E81F3 /* WPPopoverBackgroundView.h */,
 				5DEB6EF415B471B3004E81F3 /* WPPopoverBackgroundView.m */,
 				031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */,
@@ -2018,6 +2029,8 @@
 		8320B5CF11FCA3EA00607422 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				CC669B211672C328009E16F8 /* NoteCommentCell.h */,
+				CC669B221672C328009E16F8 /* NoteCommentCell.m */,
 				031666AC0FFC3E130045D052 /* CommentTableViewCell.h */,
 				031666AD0FFC3E130045D052 /* CommentTableViewCell.m */,
 				031663050FFB151A0045D052 /* PostTableViewCell.h */,
@@ -3529,8 +3542,9 @@
 				CC0199E9165C17020073A966 /* NotificationsCommentDetailViewController.m in Sources */,
 				372AD15516682BA100F21BC1 /* NotificationsFollowDetailViewController.m in Sources */,
 				379DA051166E938E001A43CC /* NotificationsFollowTableViewCell.m in Sources */,
-				CCAF5DD016A872AE0032458C /* FollowButton.m in Sources */,
-				CCAF5DD416A873050032458C /* NoteCommentCell.m in Sources */,
+				CC669B1F1672C305009E16F8 /* FollowButton.m in Sources */,
+				CC669B231672C328009E16F8 /* NoteCommentCell.m in Sources */,
+				CC669B261672C335009E16F8 /* NoteCommentPostBanner.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
