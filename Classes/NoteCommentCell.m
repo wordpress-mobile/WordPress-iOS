@@ -13,6 +13,8 @@
 @interface NoteCommentCell () <DTAttributedTextContentViewDelegate>
 @property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic) BOOL loading;
+@property (nonatomic, strong) UIButton *profileButton;
+@property (nonatomic, strong) UIButton *emailButton;
 @end
 
 const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
@@ -45,14 +47,34 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
         self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.f, NoteCommentCellTextVerticalOffset, 320.f, 0.f)];
         self.textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         self.textContentView.edgeInsets = UIEdgeInsetsMake(10.f, 10.f, 10.f, 10.f);
-//        self.textContentView.shouldDrawLinks = NO;
+        self.textContentView.shouldDrawLinks = NO;
         self.textContentView.delegate = self;
         [self.contentView addSubview:self.textContentView];
+        self.profileButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.emailButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self prepareButton:self.profileButton];
+        [self prepareButton:self.emailButton];
+        [self.contentView addSubview:self.profileButton];
+        [self.contentView addSubview:self.emailButton];
+        
+        [self.profileButton addTarget:self action:@selector(openProfileURL:) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.textLabel.font = [UIFont systemFontOfSize:[UIFont labelFontSize]];
+        
     }
     return self;
 }
 
+- (void)prepareButton:(UIButton *)button {
+    button.titleLabel.textAlignment = NSTextAlignmentLeft;
+    button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+}
+
 - (void)prepareForReuse {
+    self.delegate = nil;
     self.imageView.hidden = NO;
     [self.followButton removeFromSuperview];
     self.followButton = nil;
@@ -60,6 +82,8 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
     self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
     self.backgroundView.backgroundColor = [UIColor whiteColor];
     self.textContentView.hidden = NO;
+    self.profileButton.hidden = YES;
+    self.emailButton.hidden = YES;
 }
 
 - (void)setFollowButton:(FollowButton *)followButton {
@@ -90,7 +114,14 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
         self.textLabel.hidden = NO;
         self.textLabel.frame = labelFrame;
     }
-    NSLog(@"BG: %@", self.backgroundView);
+    
+    if (self.profileURL != nil) {
+        [self.profileButton setTitle:[self.profileURL absoluteString] forState:UIControlStateNormal];
+        self.profileButton.hidden = NO;
+        labelFrame.origin.y += labelFrame.size.height;
+        self.profileButton.frame = labelFrame;
+    }
+    
     self.textContentView.hidden = self.textContentView.attributedString == nil;
 }
 
@@ -127,5 +158,42 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
     self.backgroundView.backgroundColor = [UIColor whiteColor];
     self.textContentView.backgroundColor = [UIColor UIColorFromHex:0xD5D6D5];
 }
+
+- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
+    NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
+    
+    DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
+    button.attributedString = string;
+    button.URL = [attributes objectForKey:DTLinkAttribute];
+    button.GUID = [attributes objectForKey:DTGUIDAttribute];
+    
+    NSMutableAttributedString *highlightedString = [string mutableCopy];
+    NSRange range = NSMakeRange(0, [highlightedString length]);
+	NSDictionary *highlightedAttributes = [NSDictionary dictionaryWithObject:(__bridge id)[UIColor redColor].CGColor forKey:(id)kCTForegroundColorAttributeName];
+    
+    [highlightedString addAttributes:highlightedAttributes range:range];
+    
+    button.highlightedAttributedString = highlightedString;
+    
+    [button addTarget:self action:@selector(linkPushed:) forControlEvents:UIControlEventTouchUpInside];
+    return button;
+}
+
+- (void)linkPushed:(id)sender {
+    DTLinkButton *button = (DTLinkButton *)sender;
+    [self sendUrlToDelegate:button.URL];
+
+}
+
+- (void)openProfileURL:(id)sender {
+    [self sendUrlToDelegate:self.profileURL];
+}
+
+- (void)sendUrlToDelegate:(NSURL *)url {
+    if ([self.delegate respondsToSelector:@selector(commentCell:didTapURL:)]) {
+        [self.delegate commentCell:self didTapURL:url];
+    }
+}
+
 
 @end
