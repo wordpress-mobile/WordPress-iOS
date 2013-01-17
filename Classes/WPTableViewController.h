@@ -13,6 +13,4 @@
 
 @property (nonatomic, strong) Blog *blog;
 
-- (id)initWithBlog:(Blog *)blog;
-
 @end

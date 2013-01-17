@@ -70,13 +70,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     editSiteViewController.delegate = nil;
 }
 
-- (id)initWithBlog:(Blog *)blog {
-    if (self) {
-        _blog = blog;
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
