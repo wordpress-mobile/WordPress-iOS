@@ -124,6 +124,10 @@
     controller.clientSecret = clientSecret;
     UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
     UIWindow *window = [[WordPressAppDelegate sharedWordPressApplicationDelegate] window];
+    if (IS_IPAD) {
+        navigation.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+		navigation.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
     [window.rootViewController presentModalViewController:navigation animated:YES];
 }
 
