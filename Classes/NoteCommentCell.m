@@ -118,7 +118,7 @@ const CGFloat NoteCommentCellHeight = 102.f;
 
 
 - (void)setAvatarURL:(NSURL *)avatarURL {
-    [self.imageView setImageWithURL:avatarURL placeholderImage:[UIImage imageNamed:@"note_icon_placeholder"]];
+    [self.imageView setImageWithURL:avatarURL placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
 }
 
 
