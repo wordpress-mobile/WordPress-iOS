@@ -10,6 +10,8 @@
 #import "UIImageView+AFNetworking.h"
 #import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
+#import "NSString+XMLExtensions.h"
+#import "UIBarButtonItem+Styled.h"
 
 #define APPROVE_BUTTON_TAG 1
 #define TRASH_BUTTON_TAG 2
@@ -18,7 +20,7 @@
 @interface NotificationsCommentDetailViewController ()
 
 @property NSUInteger followBlogID;
-@property bool isFollowingBlog;
+@property BOOL isFollowingBlog, canApprove, canTrash, canSpam;
 @property NSArray *commentActions;
 @property NSDictionary *followDetails;
 
@@ -47,6 +49,19 @@
 {
     [super viewDidLoad];
     
+    //set toolbar items
+    UIBarButtonItem *approveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_approve"] style:UIBarButtonItemStylePlain target:self action:@selector(moderateComment:)];
+    [approveButton.customView setTag:APPROVE_BUTTON_TAG];
+    [approveButton setEnabled:NO];
+    UIBarButtonItem *trashButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_delete"] style:UIBarButtonItemStylePlain target:self action:@selector(moderateComment:)];
+    [trashButton.customView setTag:TRASH_BUTTON_TAG];
+    [trashButton setEnabled:NO];
+    UIBarButtonItem *spamButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_flag"] style:UIBarButtonItemStylePlain target:self action:@selector(moderateComment:)];
+    [spamButton.customView setTag:SPAM_BUTTON_TAG];
+    [spamButton setEnabled:NO];
+    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [_toolbar setItems: [NSArray arrayWithObjects:approveButton, spacer, trashButton, spacer, spamButton, nil]];
+    
     [self displayNote];
 }
 
@@ -62,18 +77,29 @@
         [_noteImageView setImageWithURL:[NSURL URLWithString:_note.icon]
                        placeholderImage:[UIImage imageNamed:@"note_icon_placeholder"]];
         
-        // Show Follow button if user has a blog that can or already is being followed
+        // Show Follow button if user has a blog that can be followed
         NSDictionary *followItem = [[[[[_note getNoteData] objectForKey:@"body"] objectForKey:@"items"] objectAtIndex:0] objectForKey:@"action"];
         if (followItem) {
+            NSDictionary *followParams = [followItem objectForKey:@"params"];
             NSString *noteType = [followItem objectForKey:@"type"];
             if (noteType && [noteType isEqualToString:@"follow"]) {
                 [_followButton setHidden:NO];
-                _followDetails = [followItem objectForKey:@"params"];
-                if ([[_followDetails objectForKey:@"is_following"] intValue] == 1)
-                    _isFollowingBlog = YES;
-                [self setFollowButtonState:_isFollowingBlog];
-                
-                _followBlogID = [[_followDetails objectForKey:@"blog_id"] integerValue];
+                if (![[followParams objectForKey:@"blog_title"] isEqualToString:@""]) {
+                    [_followButton setTitle:[NSString decodeXMLCharactersIn: [followParams objectForKey:@"blog_title"]] forState:UIControlStateNormal];
+                    if ([[followParams objectForKey:@"is_following"] intValue] == 1) {
+                        _isFollowingBlog = YES;
+                    } else {
+                        _isFollowingBlog = NO;
+                    }
+                    [self setFollowButtonState:_isFollowingBlog];
+                } else {
+                    NSString *blogTitle = [followItem objectForKey:@"header"];
+                    if (blogTitle && [blogTitle length] > 0)
+                        blogTitle = [blogTitle stringByReplacingOccurrencesOfString:@"<.+?>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, blogTitle.length)];
+                    else
+                        blogTitle = NSLocalizedString(@"(No Title)", @"Blog with no title");
+                    [_followButton setTitle:blogTitle forState:UIControlStateNormal];
+                } 
             }
         }
         
@@ -81,28 +107,34 @@
         _commentActions = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"actions"];
         for (int i=0; i < [_commentActions count]; i++) {
             NSDictionary *commentAction = [_commentActions objectAtIndex:i];
-            
             NSString *commentType = [commentAction objectForKey:@"type"];
+            
+            UIButton *approveButton = (UIButton*)[[[_toolbar items] objectAtIndex:0] customView];
+            UIButton *trashButton = (UIButton*)[[[_toolbar items] objectAtIndex:2] customView];
+            UIButton *spamButton = (UIButton*)[[[_toolbar items] objectAtIndex:4] customView];
+            
             if ([commentType isEqualToString:@"replyto-comment"]) {
-                [_replyButton setHidden:NO];
+                //[_replyButton setHidden:NO];
             } else if ([commentType isEqualToString:@"approve-comment"]) {
-                [_approveButton setHidden:NO];
-                [_approveButton setTitle:NSLocalizedString(@"Approve", @"") forState:UIControlStateNormal];
+                [approveButton setEnabled:YES];
+                [approveButton setImage:[UIImage imageNamed:@"toolbar_approve"] forState:UIControlStateNormal];
+                _canApprove = YES;
             } else if ([commentType isEqualToString:@"unapprove-comment"]) {
-                [_approveButton setHidden:NO];
-                [_approveButton setTitle:NSLocalizedString(@"Unapprove", @"") forState:UIControlStateNormal];
+                [approveButton setEnabled:YES];
+                [approveButton setImage:[UIImage imageNamed:@"toolbar_unapprove"] forState:UIControlStateNormal];
+                _canApprove = NO;
             } else if ([commentType isEqualToString:@"spam-comment"]) {
-                [_spamButton setHidden:NO];
-                [_spamButton setTitle:NSLocalizedString(@"Spam", @"") forState:UIControlStateNormal];
+                [spamButton setEnabled:YES];
+                _canSpam = YES;
             } else if ([commentType isEqualToString:@"unspam-comment"]) {
-                [_spamButton setHidden:NO];
-                [_spamButton setTitle:NSLocalizedString(@"Unspam", @"") forState:UIControlStateNormal];
+                [spamButton setEnabled:YES];
+                _canSpam = NO;
             } else if ([commentType isEqualToString:@"trash-comment"]) {
-                [_trashButton setHidden:NO];
-                [_trashButton setTitle:NSLocalizedString(@"Trash", @"") forState:UIControlStateNormal];
+                [trashButton setEnabled:YES];
+                _canTrash = YES;
             } else if ([commentType isEqualToString:@"untrash-comment"]) {
-                [_trashButton setHidden:NO];
-                [_trashButton setTitle:NSLocalizedString(@"Untrash", @"") forState:UIControlStateNormal];
+                [trashButton setEnabled:YES];
+                _canTrash = NO;
             }
         }
     }
@@ -116,9 +148,10 @@
         if (followResponse && [[followResponse objectForKey:@"success"] intValue] == 1) {
             if ([[followResponse objectForKey:@"is_following"] intValue] == 1) {
                 _isFollowingBlog = YES;
-                
+                [self setFollowButtonState:_isFollowingBlog];
             } else {
                 _isFollowingBlog = NO;
+                [self setFollowButtonState:_isFollowingBlog];
             }
             if (_followDetails)
                 [_followDetails setValue:[NSNumber numberWithBool:_isFollowingBlog] forKey:@"is_following"];
@@ -145,33 +178,24 @@
     UIButton *button = (UIButton *)sender;
     NSString *commentStatus = @"approved";
     if (button.tag == APPROVE_BUTTON_TAG) {
-        if ([[button titleForState:UIControlStateNormal] isEqualToString:NSLocalizedString(@"Unapprove", @"")]) {
-            [_approveButton setTitle:NSLocalizedString(@"Approve", @"") forState:UIControlStateNormal];
-            commentStatus = @"unapproved";
-        } else {
-            [_approveButton setTitle:NSLocalizedString(@"Unapprove", @"") forState:UIControlStateNormal];
+        if (_canApprove)
             commentStatus = @"approved";
-        }
+        else
+            commentStatus = @"unapproved";
     } else if (button.tag == SPAM_BUTTON_TAG) {
-        if ([[button titleForState:UIControlStateNormal] isEqualToString:NSLocalizedString(@"Spam", @"")]) {
-            [_spamButton setTitle:NSLocalizedString(@"Spam", @"") forState:UIControlStateNormal];
+        if (_canSpam) 
             commentStatus = @"spam";
-        } else {
-            [_spamButton setTitle:NSLocalizedString(@"Unspam", @"") forState:UIControlStateNormal];
+        else 
             commentStatus = @"unspam";
-        }
     } else if (button.tag == TRASH_BUTTON_TAG) {
-        if ([[button titleForState:UIControlStateNormal] isEqualToString:NSLocalizedString(@"Trash", @"")]) {
-            [_trashButton setTitle:NSLocalizedString(@"Trash", @"") forState:UIControlStateNormal];
+        if (_canTrash)
             commentStatus = @"trash";
-        } else {
-            [_trashButton setTitle:NSLocalizedString(@"Untrash", @"") forState:UIControlStateNormal];
+        else
             commentStatus = @"untrash";
-        }
     }
     
     [button setEnabled:NO];
-    
+
     [[WordPressComApi sharedApi] moderateComment:blogID forCommentID:commentID withStatus:commentStatus success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Update note to have new status
         NSDictionary *response = (NSDictionary *)responseObject;
@@ -211,7 +235,22 @@
 }
 
 - (void)setFollowButtonState:(bool)isFollowing {
-    [_followButton setTitle:(isFollowing) ? NSLocalizedString(@"Unfollow", @"") : NSLocalizedString(@"Follow", @"") forState:UIControlStateNormal];
+    if (isFollowing) {
+        [_followButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_followButton setImage:[UIImage imageNamed:@"note_following_checkmark"] forState:UIControlStateNormal];
+        [_followButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
+        [_followButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
+    } else {
+        [_followButton setTitleColor:[UIColor UIColorFromHex:0x1A1A1A] forState:UIControlStateNormal];
+        [_followButton setImage:[UIImage imageNamed:@"note_icon_follow"] forState:UIControlStateNormal];
+        [_followButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
+        [_followButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
+    }
+    CGSize textSize = [[_followButton.titleLabel text] sizeWithFont:[_followButton.titleLabel font]];
+    CGFloat buttonWidth = textSize.width + 40.0f;
+    if (buttonWidth > 180.0f)
+        buttonWidth = 180.0f;
+    [_followButton setFrame:CGRectMake(_followButton.frame.origin.x, _followButton.frame.origin.y, buttonWidth, 30.0f)];
 }
 
 - (void)didReceiveMemoryWarning

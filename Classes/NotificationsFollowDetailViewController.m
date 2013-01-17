@@ -123,8 +123,6 @@
                  } else {
                      [cell setFollowing: NO];
                  }
-                 
-                 [cell.actionButton setTag:indexPath.row];
             } else {
                  NSString *blogTitle = [selectedNote objectForKey:@"header"];
                  if (blogTitle && [blogTitle length] > 0)
@@ -133,7 +131,7 @@
                  blogTitle = NSLocalizedString(@"(No Title)", @"Blog with no title");
                  [cell.actionButton setTitle:blogTitle forState:UIControlStateNormal];
             }
-            
+            [cell.actionButton setTag:indexPath.row];
             if ([noteActionDetails objectForKey:@"blog_url"])
                 cell.textLabel.text = [[NSString decodeXMLCharactersIn:[noteActionDetails objectForKey:@"blog_url"]] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
         } else {
@@ -174,7 +172,6 @@
                     [cell setFollowing: NO];
                     [noteDetails setValue:[NSNumber numberWithInt:0] forKey:@"is_following"];
                 }
-                
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [cell setFollowing: isFollowing];
