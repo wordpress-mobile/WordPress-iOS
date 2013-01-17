@@ -345,7 +345,18 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 }
 
 - (BOOL)noteHasDetailView:(Note *)note {
-    return [note isComment] || [note isLike] || [note isFollow];
+    
+    if ([note isComment])
+        return YES;
+    
+    NSDictionary *noteBody = [[note getNoteData] objectForKey:@"body"];
+    if (noteBody) {
+        NSString *noteTemplate = [noteBody objectForKey:@"template"];
+        if ([noteTemplate isEqualToString:@"single-line-list"] || [noteTemplate isEqualToString:@"multi-line-list"])
+            return YES;
+    }
+    
+    return NO;
 }
 
 #pragma mark - NSFetchedResultsController

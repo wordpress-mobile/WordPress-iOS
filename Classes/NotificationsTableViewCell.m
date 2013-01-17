@@ -67,19 +67,22 @@ const CGFloat NotificationsTableViewCellFontSize = 17.0f;
 
     [self.imageView setImageWithURL:[NSURL URLWithString:self.note.icon]
                    placeholderImage:[UIImage imageNamed:@"note_icon_placeholder"]];
-    // make room for the icon
     
-    UIImage *iconImage = [UIImage imageNamed:[NSString stringWithFormat:@"note_icon_%@", note.type]];
+    NSString *noteType = note.type;
+    if ([noteType rangeOfString:@"achievement"].location != NSNotFound)
+        noteType = @"achievement";
+    else if ([noteType rangeOfString:@"best"].location != NSNotFound)
+        noteType = @"stats";
+    
+    UIImage *iconImage = [UIImage imageNamed:[NSString stringWithFormat:@"note_icon_%@", noteType]];
     if (iconImage != nil) {
         self.iconImageView.hidden = NO;
-        self.iconImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"note_icon_%@", note.type]];
-        self.textLabel.text = [NSString decodeXMLCharactersIn:note.subject];
-    } else {
-        self.textLabel.text = [NSString decodeXMLCharactersIn:note.subject];
+        self.iconImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"note_icon_%@", noteType]];
     }
     
     self.textLabel.text = [NSString decodeXMLCharactersIn:note.subject];
     
+    // make room for the icon
     if (![note isRead])
         self.textLabel.text = [NSString stringWithFormat:@"   %@", self.textLabel.text];
     

@@ -237,18 +237,17 @@
             [_sendReplyButton setEnabled:YES];
         }];
     }
-    
 }
 
 - (void)setFollowButtonState:(bool)isFollowing {
     if (isFollowing) {
         [_followButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_followButton setImage:[UIImage imageNamed:@"note_icon_following"] forState:UIControlStateNormal];
+        [_followButton setImage:[UIImage imageNamed:@"note_button_icon_following"] forState:UIControlStateNormal];
         [_followButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
         [_followButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
     } else {
         [_followButton setTitleColor:[UIColor UIColorFromHex:0x1A1A1A] forState:UIControlStateNormal];
-        [_followButton setImage:[UIImage imageNamed:@"note_icon_follow"] forState:UIControlStateNormal];
+        [_followButton setImage:[UIImage imageNamed:@"note_button_icon_follow"] forState:UIControlStateNormal];
         [_followButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
         [_followButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
     }
