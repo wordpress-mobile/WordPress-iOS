@@ -11,7 +11,6 @@
 #import "UIColor+Helpers.h"
 
 @interface NoteCommentCell () <DTAttributedTextContentViewDelegate>
-@property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic) BOOL loading;
 @property (nonatomic, strong) UIButton *profileButton;
 @property (nonatomic, strong) UIButton *emailButton;
@@ -33,7 +32,7 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
     textContentView.edgeInsets = UIEdgeInsetsMake(0.f, 10.f, 5.f, 10.f);
     textContentView.attributedString = textContent;
     CGSize size = [textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width];
-    return size.height + NoteCommentCellTextVerticalOffset + 40.f;
+    return size.height + NoteCommentCellTextVerticalOffset + 20.f;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -62,8 +61,8 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
         
         self.textLabel.font = [UIFont systemFontOfSize:[UIFont labelFontSize]];
         
-        self.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
-        self.backgroundView.backgroundColor = [UIColor whiteColor];
+//        self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
+//        self.backgroundView.backgroundColor = [UIColor whiteColor];
   }
     return self;
 }
@@ -74,20 +73,23 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
     [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     [button setTitleColor:[UIColor UIColorFromHex:0x0074A2] forState:UIControlStateNormal];
     [button setTitleColor:[UIColor UIColorFromHex:0x5F5F5F] forState:UIControlStateHighlighted];
+    button.backgroundColor = [UIColor whiteColor];
+    button.hidden = YES;
 }
 
 - (void)prepareForReuse {
     self.delegate = nil;
     [self.followButton removeFromSuperview];
     self.followButton = nil;
-    [self.loadingIndicator removeFromSuperview];
-    [self.backgroundView removeFromSuperview];
-    self.textContentView.backgroundColor = [UIColor whiteColor];
+    self.backgroundView.backgroundColor = [UIColor whiteColor];
     self.textLabel.backgroundColor = [UIColor whiteColor];
     self.textContentView.hidden = NO;
+    self.emailButton.backgroundColor = [UIColor whiteColor];
+    self.profileButton.backgroundColor = [UIColor whiteColor];
     self.profileButton.hidden = YES;
     self.emailButton.hidden = YES;
     self.textLabel.text = @"";
+    self.imageView.hidden = YES;
     self.imageView.image = nil;
 }
 
@@ -104,7 +106,6 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
     [super layoutSubviews];
     self.imageView.backgroundColor = [UIColor grayColor];
     self.imageView.frame = CGRectMake(10.f, 10.f, 92.f, 92.f);
-    self.loadingIndicator.center = CGPointMake( self.bounds.size.width * 0.5f, self.bounds.size.height * 0.5f);
     CGFloat metaX = CGRectGetMaxX(self.imageView.frame);
     CGFloat availableWidth = self.bounds.size.width - metaX;
     CGRect labelFrame = CGRectInset( CGRectMake(metaX, self.imageView.frame.origin.y, availableWidth, 30.f), 10.f, 0.f);
@@ -142,41 +143,18 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
     // Configure the view for the selected state
 }
 
-- (void)showLoadingIndicator {
-    self.loading = YES;
-    if ( self.loadingIndicator == nil ) {
-        UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        activity.center = CGPointMake(self.frame.size.width * 0.5f, 0.f);
-        activity.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-        [activity startAnimating];
-        
-        self.loadingIndicator = activity;
-    }
-    self.imageView.hidden = YES;
-    self.textLabel.hidden = YES;
-    [self.contentView addSubview:self.loadingIndicator];
-    [self.loadingIndicator startAnimating];
-}
 
 - (void)displayAsParentComment {
-    [self displayReplyIndicatorBackgroundWithImageNamed:@"note-comment-parent-footer"];
-}
-
-- (void)displayAsGrandparentComment {
-    [self displayReplyIndicatorBackgroundWithImageNamed:@"note-comment-grandparent-footer"];
-}
-
-- (void)displayReplyIndicatorBackgroundWithImageNamed:(NSString *)imageName {
     UIColor *parentGrayColor = [[self class] darkBackgroundColor];
     self.parentComment = YES;
-    UIEdgeInsets insets = UIEdgeInsetsMake(0.f, 68.f, 14.f, 0.f);
-    UIImage *image = [[UIImage imageNamed:imageName] resizableImageWithCapInsets:insets];
-    self.backgroundView = [[UIImageView alloc] initWithImage:image];
     self.backgroundView.backgroundColor = parentGrayColor;
     self.textContentView.backgroundColor = parentGrayColor;
     self.textLabel.backgroundColor = parentGrayColor;
+    self.profileButton.backgroundColor = parentGrayColor;
+    self.emailButton.backgroundColor = parentGrayColor;
 
 }
+
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
     NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];

@@ -28,9 +28,7 @@
 @property (nonatomic, strong) NSString *email;
 @property (nonatomic, assign) id <NoteCommentCellDelegate> delegate;
 - (void)setAvatarURL:(NSURL *)avatarURL;
-- (void)showLoadingIndicator;
 - (void)displayAsParentComment;
-- (void)displayAsGrandparentComment;
 
 + (CGFloat)heightForCellWithTextContent:(NSAttributedString *)textContent constrainedToWidth:(CGFloat)width;
 
