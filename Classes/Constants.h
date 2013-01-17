@@ -137,9 +137,11 @@
  Notification type could be one of the following values:
  - pl : Post like
  - cl : Comment like
+ - cr : Comment Reply
  - sb : Subscription to a blog
  - rb : reblog
  */
+#define kNotificationTypeCommentReply @"cr"
 #define kNotificationTypeCommentLike @"cl"
 #define kNotificationTypePostLike @"pl"
 #define kNotificationTypeFollowBlog @"sb"

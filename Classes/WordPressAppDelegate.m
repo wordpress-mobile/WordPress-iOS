@@ -1193,6 +1193,14 @@
              [remoteNotif objectForKey:@"post_id"]
              [remoteNotif objectForKey:@"liker_id"]
              */
+        } else if([nType isEqualToString:kNotificationTypeCommentReply]){
+            //comment reply when you're not the author of the post.
+            /*
+             [remoteNotif objectForKey:@"blog_id"]
+             [remoteNotif objectForKey:@"comment_id"]
+             [remoteNotif objectForKey:@"parent_comment_id"]
+             [remoteNotif objectForKey:@"commenter_id"]
+             */
         } else if([nType isEqualToString:kNotificationTypeCommentLike]){
             //comment like
             /*
