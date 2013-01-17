@@ -70,8 +70,7 @@ const CGFloat NotificationsTableViewCellFontSize = 17.0f;
     NSString *iconURL = self.note.icon;
     if (iconURL) {
         iconURL = [iconURL stringByReplacingOccurrencesOfString:@"s=48" withString:@"s=96"];
-        [self.imageView setImageWithURL:[NSURL URLWithString:iconURL]
-                   placeholderImage:[UIImage imageNamed:@"note_icon_placeholder"]];
+        [self.imageView setImageWithURL:[NSURL URLWithString:iconURL]];
     }
     
     self.textLabel.text = [NSString decodeXMLCharactersIn:note.subject];
