@@ -19,9 +19,10 @@ const CGFloat NotificationsTableViewCellFontSize = 15;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
+        self.backgroundView = imageView;
         self.textLabel.numberOfLines = 3;
         self.textLabel.font = [UIFont systemFontOfSize:NotificationsTableViewCellFontSize];
         self.textLabel.backgroundColor = [UIColor clearColor];
@@ -40,6 +41,7 @@ const CGFloat NotificationsTableViewCellFontSize = 15;
 }
 
 - (void)prepareForReuse {
+    [super prepareForReuse];
     self.detailTextLabel.hidden = YES;
     self.unreadIndicator.hidden = YES;
     self.iconImageView.hidden = YES;
@@ -80,12 +82,13 @@ const CGFloat NotificationsTableViewCellFontSize = 15;
     [super layoutSubviews];
     
     self.imageView.frame = CGRectMake(7.f, 7.f, 47.f, 47.f);
-    [self.textLabel sizeToFit];
+
     CGRect labelFrame = self.textLabel.frame;
     labelFrame.origin.x = CGRectGetMaxX(self.imageView.frame) + 8.f;
     labelFrame.origin.y = 8.f;
     labelFrame.size.width = self.bounds.size.width - 40.f - CGRectGetMaxX(self.imageView.frame);
     self.textLabel.frame = labelFrame;
+
     CGRect iconFrame = self.iconImageView.frame;
     iconFrame.origin.x = CGRectGetMaxX(self.imageView.frame) + 8.f;
     iconFrame.origin.y = 10.f;
@@ -95,14 +98,11 @@ const CGFloat NotificationsTableViewCellFontSize = 15;
         CGRect commentFrame = self.textLabel.frame;
         commentFrame.origin.y = CGRectGetMaxY(commentFrame) + 5.f;
         self.detailTextLabel.frame = commentFrame;
-        
     }
-    
+
     CGRect indicatorFrame = self.unreadIndicator.frame;
     indicatorFrame.origin.x = CGRectGetMaxX(self.bounds) - indicatorFrame.size.width;
     self.unreadIndicator.frame = indicatorFrame;
-
-    
 }
 
 

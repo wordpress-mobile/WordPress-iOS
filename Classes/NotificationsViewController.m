@@ -32,10 +32,6 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 
 @implementation NotificationsViewController
 
-+ (void)registerTableViewCells:(UITableView *)tableView {
-    [tableView registerClass:[NotificationsTableViewCell class] forCellReuseIdentifier:NotificationsTableViewNoteCellIdentifier];
-}
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -57,7 +53,11 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-    [[self class] registerTableViewCells:self.tableView];
+
+    // -[UITableView registerClass:forCellReuseIdentifier:] available in iOS 6.0 and later
+    if ([self.tableView respondsToSelector:@selector(registerClass:forCellReuseIdentifier:)]) {
+        [self.tableView registerClass:[NotificationsTableViewCell class] forCellReuseIdentifier:NotificationsTableViewNoteCellIdentifier];
+    }
     
     CGRect refreshFrame = self.tableView.bounds;
     refreshFrame.origin.y = -refreshFrame.size.height;
@@ -278,11 +278,14 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
     NSString *cellIdentifier = @"NotificationCell";
     NotificationsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
+    // In iOS 6.0 and later, -[UITableViewCell dequeueReusableCellWithIdentifier:] always returns a valid cell
+    // since we registered the class
+    //
+    // The following initialisation is only needed for iOS 5
     if (cell == nil) {
         cell = [[NotificationsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
-        [cell setBackgroundView:imageView];
     }
+
     cell.note = [self.notesFetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];
     return cell;
 }
