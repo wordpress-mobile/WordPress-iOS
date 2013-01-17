@@ -249,6 +249,8 @@ Classes/WPSelectionTableViewController.m -text
 Classes/WPTableViewController.h -text
 Classes/WPTableViewController.m -text
 Classes/WPTableViewControllerSubclass.h -text
+Classes/WPToast.h -text
+Classes/WPToast.m -text
 Classes/WPWebAppViewController.h -text
 Classes/WPWebAppViewController.m -text
 Classes/WPWebBridge.h -text

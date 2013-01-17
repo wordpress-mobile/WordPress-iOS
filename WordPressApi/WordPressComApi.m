@@ -13,6 +13,7 @@
 #import "Constants.h"
 #import "Note.h"
 #import "NSString+Helpers.h"
+#import "WPToast.h"
 #import <AFJSONRequestOperation.h>
 
 NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
@@ -26,9 +27,6 @@ NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
 NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
 NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
 NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
-
-NSString *const WordPressComApiFollowedBlogEvent = @"FollowedBlogEvent";
-NSString *const WordPressComApiUnfollowedBlogEvent = @"UnfollowedBlogEvent";
 
 #define UnfollowedBlogEvent @"UnfollowedBlogEvent"
 
@@ -487,12 +485,9 @@ NSString *const WordPressComApiUnfollowedBlogEvent = @"UnfollowedBlogEvent";
     if (following)
         followPath = [followPath stringByReplacingOccurrencesOfString:@"new" withString:@"mine/delete"];
 
-    // post the notification
-    NSString *notificationName = following ? WordPressComApiUnfollowedBlogEvent : WordPressComApiFollowedBlogEvent;
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:notificationName
-     object:self
-     userInfo:@{ @"siteID":[NSNumber numberWithInt:blogID] }];
+    NSString *message = following ? NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") : NSLocalizedString(@"Followed", @"User followed a blog");
+    NSString *imageName = [NSString stringWithFormat:@"action_icon_%@", (following) ? @"unfollowed" : @"followed"];
+    [WPToast showToastWithMessage:message andImage:[UIImage imageNamed:imageName]];
     
     [self postPath:followPath
         parameters:nil

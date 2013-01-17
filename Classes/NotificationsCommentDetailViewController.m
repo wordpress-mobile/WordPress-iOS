@@ -16,6 +16,8 @@
 #import "NoteCommentLoadingCell.h"
 #import "NoteCommentContentCell.h"
 #import "NoteComment.h"
+#import "NSString+XMLExtensions.h"
+#import "WPToast.h"
 
 #define APPROVE_BUTTON_TAG 1
 #define UNAPPROVE_BUTTON_TAG 2
@@ -356,7 +358,8 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         self.replyTextView.editable = NO;
         [self.user postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"Response: %@", responseObject);
-            [self.panelNavigationController showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment") andImage:[UIImage imageNamed:@"action_icon_replied"]];
+            [WPToast showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment")
+                                 andImage:[UIImage imageNamed:@"action_icon_replied"]];
             self.replyTextView.editable = YES;
             self.replyTextView.text = nil;
             self.replyActivityView.hidden = YES;

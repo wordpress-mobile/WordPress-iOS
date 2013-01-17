@@ -467,6 +467,7 @@
 		83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
 		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
 		83FEFC7611FF6C5A0078B462 /* EditSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */; };
+		8516972C169D42F4006C5DED /* WPToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 8516972B169D42F4006C5DED /* WPToast.m */; };
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */; };
@@ -1213,6 +1214,8 @@
 		83FB4D3E122C38F700DB9506 /* MediaPlayer.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		83FEFC7311FF6C5A0078B462 /* EditSiteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditSiteViewController.h; sourceTree = "<group>"; };
 		83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSiteViewController.m; sourceTree = "<group>"; };
+		8516972A169D42F4006C5DED /* WPToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPToast.h; sourceTree = "<group>"; };
+		8516972B169D42F4006C5DED /* WPToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPToast.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = defaultPostTemplate.html; sourceTree = "<group>"; };
@@ -2525,6 +2528,8 @@
 				5D3E334D15EEBB6B005FC6F2 /* ReachabilityUtils.m */,
 				5DD91BC3163983670053E560 /* SoundUtil.h */,
 				5DD91BC4163983670053E560 /* SoundUtil.m */,
+				8516972A169D42F4006C5DED /* WPToast.h */,
+				8516972B169D42F4006C5DED /* WPToast.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -3716,6 +3721,7 @@
 				E1756E651694A99400D9EC00 /* WordPressComApiCredentials.m in Sources */,
 				CC5B0F23169B896300AA0291 /* NoteCommentLoadingCell.m in Sources */,
 				CC5B0F27169BDC4000AA0291 /* NoteCommentContentCell.m in Sources */,
+				8516972C169D42F4006C5DED /* WPToast.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

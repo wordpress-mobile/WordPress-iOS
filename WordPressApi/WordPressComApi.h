@@ -26,10 +26,6 @@ typedef NS_ENUM(NSUInteger, WordPressComApiError) {
 extern NSString *const WordPressComApiErrorDomain;
 extern NSString *const WordPressComApiErrorCodeKey;
 
-extern NSString *const WordPressComApiFollowedBlogEvent;
-extern NSString *const WordPressComApiUnfollowedBlogEvent;
-
-
 @interface WordPressComApi : AFHTTPClient
 @property (nonatomic,readonly,strong) NSString *username;
 @property (nonatomic,readonly,strong) NSString *password;
