@@ -1171,7 +1171,37 @@
 }
 
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {
-    if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
+    if ([remoteNotif objectForKey:@"type"]) {
+        WPFLog(@"Received new notification: %@", remoteNotif);
+        //new social PNs
+        NSString *nType = [remoteNotif objectForKey:@"type"];
+        if([nType isEqualToString:@"pl"]){
+            //post like
+            /*
+             [remoteNotif objectForKey:@"blog_id"]
+             [remoteNotif objectForKey:@"post_id"]
+             */
+        } else if([nType isEqualToString:@"cl"]){
+            //comment like
+            /*
+             [remoteNotif objectForKey:@"blog_id"]
+             [remoteNotif objectForKey:@"comment_id"]
+             [remoteNotif objectForKey:@"liker_id"]
+             */
+        } else if([nType isEqualToString:@"sb"]){
+            //logged-in follow blog
+            /*
+             [remoteNotif objectForKey:@"blog_id"]
+             [remoteNotif objectForKey:@"subscriber_id"]
+             */
+        } else if([nType isEqualToString:@"rb"]){
+            //reblog
+            /*
+             [remoteNotif objectForKey:@"blog_id"]
+             [remoteNotif objectForKey:@"post_id"] //original postID
+             */
+        }
+    } else if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
         WPFLog(@"Received notification: %@", remoteNotif);
         SidebarViewController *sidebar = (SidebarViewController *)self.panelNavigationController.masterViewController;
         [sidebar showCommentWithId:[[remoteNotif objectForKey:@"comment_id"] numericValue] blogId:[[remoteNotif objectForKey:@"blog_id"] numericValue]];
