@@ -190,6 +190,8 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     }
     if(note.isUnread) {
         note.unread = [NSNumber numberWithInt:0];
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         [self.user markNoteAsRead:note success:^(AFHTTPRequestOperation *operation, id responseObject) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"WordPressComUpdateNoteCount"
                                                                 object:nil
