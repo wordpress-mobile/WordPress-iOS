@@ -57,7 +57,7 @@
 @property (nonatomic, strong) NSMutableArray *sectionInfoArray;
 @property (readonly) NSInteger topSectionRowCount;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
-@property (readonly) NSNumber *unreadNoteCount;
+@property (readonly) NSUInteger unreadNoteCount;
 
 - (SectionInfo *)sectionInfoForBlog:(Blog *)blog;
 - (void)addSectionInfoForBlog:(Blog *)blog;
@@ -150,10 +150,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissCrashReporter:) name:@"CrashReporterIsFinished" object:nil];
     
     //WPCom notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotesNotification:)
-												 name:@"WordPressComUnseenNotes" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(countUnreadNotes)
+												 name:@"WordPressComUpdateNoteCount" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectNotificationsRow)
 												 name:@"SelectNotificationsRow" object:nil];
+    
+    if ([WordPressComApi sharedApi].username)
+        [self countUnreadNotes];
     
     if (currentIndexPath) {
         // If we are restoring the view after a memory warning we want to try to set the tableview back to the selected row and section
@@ -475,9 +478,17 @@ NSLog(@"%@", self.sectionInfoArray);
         [self.tableView selectRowAtIndexPath:notificationsIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
-- (void)didReceiveNotesNotification: (NSNotification *)notification {
-    NSDictionary *notesDictionary = (NSDictionary *)[notification userInfo];
-    _unreadNoteCount = [notesDictionary objectForKey:@"note_count"];
+- (void)countUnreadNotes {
+    // Count the number of unread notes and update the sidebar
+    NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"Note" inManagedObjectContext:context]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unread == %d", 1];
+    [request setPredicate:predicate];
+    
+    NSError *err;
+    NSUInteger count = [context countForFetchRequest:request error:&err];
+    _unreadNoteCount = count;
     [self.tableView reloadData];
 }
 
@@ -727,11 +738,13 @@ NSLog(@"%@", self.sectionInfoArray);
         } else if(indexPath.row == 1){
             title = NSLocalizedString(@"Notifications", @"");
             cell.imageView.image = [UIImage imageNamed:@"sidebar_note"];
-            UIImage *img = [UIImage imageNamed:@"sidebar_comment_bubble"];
-            UIImageView *image = [[UIImageView alloc] initWithImage:img];
-            UILabel *commentsLbl = [cell commentsBadgeLabel:image.bounds text:([_unreadNoteCount intValue] > 99) ? NSLocalizedString(@"99⁺", "") : [NSString stringWithFormat:@"%d", [_unreadNoteCount intValue]]];
-            [image addSubview:commentsLbl];
-            cell.accessoryView = image;
+            if (_unreadNoteCount > 0) {
+                UIImage *img = [UIImage imageNamed:@"sidebar_comment_bubble"];
+                UIImageView *image = [[UIImageView alloc] initWithImage:img];
+                UILabel *commentsLbl = [cell commentsBadgeLabel:image.bounds text:(_unreadNoteCount > 99) ? NSLocalizedString(@"99⁺", "") : [NSString stringWithFormat:@"%d", _unreadNoteCount]];
+                [image addSubview:commentsLbl];
+                cell.accessoryView = image;
+            }
         }
     } else {
         switch (indexPath.row) {

@@ -309,7 +309,16 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-    if(note.isUnread) [self.user markNoteAsRead:note success:nil failure:nil];
+    if(note.isUnread) {
+        note.unread = [NSNumber numberWithInt:0];
+        [self.user markNoteAsRead:note success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"WordPressComUpdateNoteCount"
+                                                                object:nil
+                                                              userInfo:nil];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            note.unread = [NSNumber numberWithInt:1];
+        }];
+    }
 }
 
 - (BOOL)noteHasDetailView:(Note *)note {

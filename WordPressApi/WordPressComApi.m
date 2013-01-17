@@ -231,6 +231,10 @@ NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
         if(![context save:&error]){
             NSLog(@"Unable to update note: %@", error);
         }
+        // Update sidebar unread count
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"WordPressComUpdateNoteCount"
+                                                            object:nil
+                                                          userInfo:nil];
         if (success != nil) success(operation, response);
     } failure:failure ];
 }
