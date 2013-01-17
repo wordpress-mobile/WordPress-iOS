@@ -29,7 +29,7 @@
 @end
 
 @interface Note ()
-@property (nonatomic, strong) NSDictionary *noteData;
+@property (nonatomic, strong, readwrite) NSDictionary *noteData;
 @property (readwrite, nonatomic, strong) NSString *commentText;
 
 @end

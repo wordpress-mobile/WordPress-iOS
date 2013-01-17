@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSString * icon;
 @property (nonatomic, retain) NSString * noteID;
 @property (nonatomic, strong, readonly) NSString *commentText;
+@property (nonatomic, strong, readonly) NSDictionary *noteData;
 
 - (BOOL)isComment;
 - (BOOL)isLike;
