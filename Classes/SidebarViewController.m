@@ -938,6 +938,7 @@ NSLog(@"%@", self.sectionInfoArray);
         } else if(indexPath.row == 1) { // Notifications
             self.hasUnseenNotes = NO;
             [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
             if ([self.panelNavigationController.detailViewController isMemberOfClass:[NotificationsViewController class]]) {
                 [self.panelNavigationController closeSidebar];
                 return;
