@@ -14,7 +14,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        [self setupShadow];
     }
     return self;
 }
@@ -23,10 +23,22 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        NSLog(@"Decoded banner");
+        [self setupShadow];
     }
     return self;
 }
+
+- (void)setupShadow{
+    UIImage *shadowImage = [[UIImage imageNamed:@"note_header_shadow"] resizableImageWithCapInsets:UIEdgeInsetsMake(5.f, 0.f, 0.f, 0.f)];
+    UIImageView *image = [[UIImageView alloc] initWithImage:shadowImage];
+    image.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    CGRect imageFrame = self.frame;
+    imageFrame.origin.y = CGRectGetMaxY(self.bounds);
+    imageFrame.size.height = 6.f;
+    image.frame = imageFrame;
+    [self addSubview:image];
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

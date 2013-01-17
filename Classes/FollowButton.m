@@ -7,6 +7,7 @@
 //
 
 #import "FollowButton.h"
+#import "DTCoreText.h"
 
 @interface FollowButton ()
 @property (nonatomic, strong) UIButton *button;
@@ -80,13 +81,13 @@
     switch (self.followState) {
         case FollowButtonStateFollowing:
             [actionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [actionButton setImage:[UIImage imageNamed:@"note_following_checkmark"] forState:UIControlStateNormal];
+            [actionButton setImage:[UIImage imageNamed:@"note_button_icon_following"] forState:UIControlStateNormal];
             [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
             [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
             break;
         case FollowButtonStateNotFollowing:
             [actionButton setTitleColor:[UIColor UIColorFromHex:0x1A1A1A] forState:UIControlStateNormal];
-            [actionButton setImage:[UIImage imageNamed:@"note_icon_follow"] forState:UIControlStateNormal];
+            [actionButton setImage:[UIImage imageNamed:@"note_button_icon_follow"] forState:UIControlStateNormal];
             [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
             [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
 
@@ -127,6 +128,9 @@
     frame.size.width = buttonWidth;
     self.button.frame = frame;
     NSLog(@"Resized the button: %@", self.button);
+    CGRect viewFrame = self.frame;
+    viewFrame.size = frame.size;
+    self.frame = viewFrame;
 }
 
 
