@@ -72,8 +72,8 @@ const CGFloat NoteCommentCellTextVerticalOffset = 112.f;
     button.titleLabel.textAlignment = NSTextAlignmentLeft;
     button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-    [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor blackColor] forState:UIControlStateHighlighted];
+    [button setTitleColor:[UIColor UIColorFromHex:0x0074A2] forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor UIColorFromHex:0x5F5F5F] forState:UIControlStateHighlighted];
 }
 
 - (void)prepareForReuse {
