@@ -525,10 +525,10 @@
 		CC6B3BFE15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFA15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png */; };
 		CC6B3BFF15A35F10005A4523 /* friend_finder_cancel_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFB15A35F10005A4523 /* friend_finder_cancel_btn.png */; };
 		CC6B3C0015A35F10005A4523 /* friend_finder_cancel_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC6B3BFC15A35F10005A4523 /* friend_finder_cancel_btn@2x.png */; };
-		CC9A63AA15E5A427000D653D /* sidebar_note.png in Resources */ = {isa = PBXBuildFile; fileRef = CC9A63A815E5A427000D653D /* sidebar_note.png */; };
-		CC9A63AB15E5A427000D653D /* sidebar_note@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC9A63A915E5A427000D653D /* sidebar_note@2x.png */; };
-		CCAF5DD016A872AE0032458C /* FollowButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CCAF5DCE16A872AE0032458C /* FollowButton.m */; };
-		CCAF5DD416A873050032458C /* NoteCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CCAF5DD316A873050032458C /* NoteCommentCell.m */; };
+		CCAF5E3A16A881C00032458C /* sidebar_notifications_highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = CCAF5E3616A881C00032458C /* sidebar_notifications_highlighted.png */; };
+		CCAF5E3B16A881C00032458C /* sidebar_notifications_highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CCAF5E3716A881C00032458C /* sidebar_notifications_highlighted@2x.png */; };
+		CCAF5E3C16A881C00032458C /* sidebar_notifications.png in Resources */ = {isa = PBXBuildFile; fileRef = CCAF5E3816A881C00032458C /* sidebar_notifications.png */; };
+		CCAF5E3D16A881C00032458C /* sidebar_notifications@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CCAF5E3916A881C00032458C /* sidebar_notifications@2x.png */; };
 		CCB3A04014C8E12700D43C3F /* WPReaderTopicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB3A03F14C8E12700D43C3F /* WPReaderTopicsViewController.m */; };
 		CCDCBC201590BF2A0040B3B1 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CCDCBC131590BF2A0040B3B1 /* FBDialog.bundle */; };
 		CCDCBC211590BF2A0040B3B1 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCDCBC191590BF2A0040B3B1 /* libfacebook_ios_sdk.a */; };
@@ -1293,12 +1293,12 @@
 		CC6B3BFA15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friend_finder_cancel_btn_highlight@2x.png"; sourceTree = "<group>"; };
 		CC6B3BFB15A35F10005A4523 /* friend_finder_cancel_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friend_finder_cancel_btn.png; sourceTree = "<group>"; };
 		CC6B3BFC15A35F10005A4523 /* friend_finder_cancel_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friend_finder_cancel_btn@2x.png"; sourceTree = "<group>"; };
-		CC9A63A815E5A427000D653D /* sidebar_note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_note.png; sourceTree = "<group>"; };
-		CC9A63A915E5A427000D653D /* sidebar_note@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar_note@2x.png"; sourceTree = "<group>"; };
-		CCAF5DCE16A872AE0032458C /* FollowButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowButton.m; sourceTree = "<group>"; };
-		CCAF5DCF16A872AE0032458C /* FollowButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowButton.h; sourceTree = "<group>"; };
 		CCAF5DD216A873050032458C /* NoteCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteCommentCell.h; sourceTree = "<group>"; };
 		CCAF5DD316A873050032458C /* NoteCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoteCommentCell.m; sourceTree = "<group>"; };
+		CCAF5E3616A881C00032458C /* sidebar_notifications_highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_notifications_highlighted.png; sourceTree = "<group>"; };
+		CCAF5E3716A881C00032458C /* sidebar_notifications_highlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar_notifications_highlighted@2x.png"; sourceTree = "<group>"; };
+		CCAF5E3816A881C00032458C /* sidebar_notifications.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_notifications.png; sourceTree = "<group>"; };
+		CCAF5E3916A881C00032458C /* sidebar_notifications@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar_notifications@2x.png"; sourceTree = "<group>"; };
 		CCB3A03E14C8E12700D43C3F /* WPReaderTopicsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPReaderTopicsViewController.h; sourceTree = "<group>"; };
 		CCB3A03F14C8E12700D43C3F /* WPReaderTopicsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPReaderTopicsViewController.m; sourceTree = "<group>"; };
 		CCD1921E16850C4900CA3011 /* NoteCommentLoadingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoteCommentLoadingCell.h; sourceTree = "<group>"; };
@@ -1851,6 +1851,10 @@
 		374F188915A5895B00524ED0 /* Sidebar */ = {
 			isa = PBXGroup;
 			children = (
+				CCAF5E3616A881C00032458C /* sidebar_notifications_highlighted.png */,
+				CCAF5E3716A881C00032458C /* sidebar_notifications_highlighted@2x.png */,
+				CCAF5E3816A881C00032458C /* sidebar_notifications.png */,
+				CCAF5E3916A881C00032458C /* sidebar_notifications@2x.png */,
 				30E9683A15AE4EB10047DD84 /* sidebar-logo.png */,
 				30E9683B15AE4EB10047DD84 /* sidebar-logo@2x.png */,
 				374F188A15A5897500524ED0 /* sidebar_bg.png */,
@@ -1871,8 +1875,6 @@
 				374F189715A5897500524ED0 /* sidebar_dashboard@2x.png */,
 				374F189C15A5897500524ED0 /* sidebar_footer_bg.png */,
 				374F189D15A5897500524ED0 /* sidebar_footer_bg@2x.png */,
-				CC9A63A815E5A427000D653D /* sidebar_note.png */,
-				CC9A63A915E5A427000D653D /* sidebar_note@2x.png */,
 				374F189E15A5897500524ED0 /* sidebar_pages.png */,
 				374F189F15A5897500524ED0 /* sidebar_pages@2x.png */,
 				374F18A015A5897500524ED0 /* sidebar_posts.png */,
@@ -3419,8 +3421,6 @@
 				306BAADB15C7714800F37378 /* Icon-dev-72@2x.png in Resources */,
 				306BAADF15C78C5400F37378 /* SidebarToolbarButtonHighlighted.png in Resources */,
 				306BAAE015C78C5400F37378 /* SidebarToolbarButtonHighlighted@2x.png in Resources */,
-				CC9A63AA15E5A427000D653D /* sidebar_note.png in Resources */,
-				CC9A63AB15E5A427000D653D /* sidebar_note@2x.png in Resources */,
 				5D1EE80315E7AF3E007F1F02 /* JetpackSettingsViewController.xib in Resources */,
 				E1895ECC1607272B007E6DD5 /* Default-568h@2x.png in Resources */,
 				5D66514C1637325800EBDA7D /* snd_swipe.caf in Resources */,
@@ -3505,6 +3505,10 @@
 				3772E3471680D0DE0018D2AB /* note_icon_reblog_highlighted@2x.png in Resources */,
 				3772E3481680D0DE0018D2AB /* note_icon_stats_highlighted.png in Resources */,
 				3772E3491680D0DE0018D2AB /* note_icon_stats_highlighted@2x.png in Resources */,
+				CCAF5E3A16A881C00032458C /* sidebar_notifications_highlighted.png in Resources */,
+				CCAF5E3B16A881C00032458C /* sidebar_notifications_highlighted@2x.png in Resources */,
+				CCAF5E3C16A881C00032458C /* sidebar_notifications.png in Resources */,
+				CCAF5E3D16A881C00032458C /* sidebar_notifications@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3698,7 +3702,6 @@
 				E10466081630961700E8EDDA /* WPRSDParser.m in Sources */,
 				5DD91BC5163983670053E560 /* SoundUtil.m in Sources */,
 				5D4DE6F4167177560030518D /* WPInfoView.m in Sources */,
-				CC1D80111656D901002A542F /* WordPressComRestClient.m in Sources */,
 				CC1D80141656D938002A542F /* NotificationsViewController.m in Sources */,
 				CC1D802B165830AB002A542F /* NotificationsTableViewCell.m in Sources */,
 				CC1D80311658354C002A542F /* Note.m in Sources */,

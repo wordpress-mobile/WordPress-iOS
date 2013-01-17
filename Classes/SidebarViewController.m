@@ -58,6 +58,7 @@
 @property (readonly) NSInteger topSectionRowCount;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 @property (readonly) NSUInteger unreadNoteCount;
+@property (nonatomic, assign) BOOL hasUnseenNotes;
 
 - (SectionInfo *)sectionInfoForBlog:(Blog *)blog;
 - (void)addSectionInfoForBlog:(Blog *)blog;
@@ -152,6 +153,8 @@
     //WPCom notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectNotificationsRow)
 												 name:@"SelectNotificationsRow" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveUnseenNotesNotification)
+												 name:@"WordPressComUnseenNotes" object:nil];
     
     if (currentIndexPath) {
         // If we are restoring the view after a memory warning we want to try to set the tableview back to the selected row and section
@@ -468,8 +471,10 @@ NSLog(@"%@", self.sectionInfoArray);
 }
 
 - (void)selectNotificationsRow {
+    self.hasUnseenNotes = NO;
     NSIndexPath *notificationsIndexPath = [NSIndexPath indexPathForRow: 1 inSection:0];
     if (notificationsIndexPath) {
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:notificationsIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView selectRowAtIndexPath:notificationsIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         self.currentIndexPath = notificationsIndexPath;
     }
@@ -720,7 +725,7 @@ NSLog(@"%@", self.sectionInfoArray);
             cell.imageView.image = [UIImage imageNamed:@"sidebar_read"];
         } else if(indexPath.row == 1){
             title = NSLocalizedString(@"Notifications", @"");
-            cell.imageView.image = [UIImage imageNamed:@"sidebar_note"];
+            cell.imageView.image = [UIImage imageNamed:(self.hasUnseenNotes) ? @"sidebar_notifications_highlighted" : @"sidebar_notifications"];
         }
     } else {
         switch (indexPath.row) {
@@ -833,6 +838,14 @@ NSLog(@"%@", self.sectionInfoArray);
     self.openSection = nil;
 }
 
+- (void)didReceiveUnseenNotesNotification {
+    NSIndexPath *notificationsIndexPath = [NSIndexPath indexPathForRow: 1 inSection:0];
+    if (notificationsIndexPath && self.currentIndexPath != notificationsIndexPath) {
+        self.hasUnseenNotes = YES;
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:notificationsIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
 
 /*
 // Override to support conditional editing of the table view.
@@ -923,6 +936,8 @@ NSLog(@"%@", self.sectionInfoArray);
             WPReaderViewController *readerViewController = [[WPReaderViewController alloc] init];
             detailViewController = readerViewController;
         } else if(indexPath.row == 1) { // Notifications
+            self.hasUnseenNotes = NO;
+            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
             if ([self.panelNavigationController.detailViewController isMemberOfClass:[NotificationsViewController class]]) {
                 [self.panelNavigationController closeSidebar];
                 return;

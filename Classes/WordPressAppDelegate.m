@@ -1046,6 +1046,9 @@
                     [[WordPressComApi sharedApi] syncPushNotificationInfo];
                 }
             }
+            [[WordPressComApi sharedApi] checkForNewUnseenNotifications];
+            [[WordPressComApi sharedApi] syncPushNotificationInfo];
+            [SoundUtil playNotificationSound];
             break;
         case UIApplicationStateInactive:
             NSLog(@"app state UIApplicationStateInactive"); //application is in bg and the user tapped the view button

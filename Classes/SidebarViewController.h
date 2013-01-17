@@ -32,5 +32,6 @@
 
 - (void)uploadQuickPhoto:(Post *)post;
 - (void)restorePreservedSelection;
+- (void)didReceiveUnseenNotesNotification;
 
 @end
