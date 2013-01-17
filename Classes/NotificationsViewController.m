@@ -8,7 +8,7 @@
 
 #import "NotificationsViewController.h"
 #import "NotificationsCommentDetailViewController.h"
-#import "NotificationsLikesDetailViewController.h"
+#import "NotificationsFollowDetailViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPComOAuthController.h"
 #import "WordPressComApi.h"
@@ -320,7 +320,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
             detailViewController.note = note;
             [self.panelNavigationController pushViewController:detailViewController animated:YES];
         } else {
-            NotificationsLikesDetailViewController *detailViewController = [[NotificationsLikesDetailViewController alloc] initWithNibName:@"NotificationsLikesDetailViewController" bundle:nil];
+            NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNibName:@"NotificationsFollowDetailViewController" bundle:nil];
             detailViewController.note = note;
             [self.panelNavigationController pushViewController:detailViewController animated:YES];
         }
@@ -340,7 +340,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 }
 
 - (BOOL)noteHasDetailView:(Note *)note {
-    return [note isComment] || [note isLike];
+    return [note isComment] || [note isLike] || [note isFollow];
 }
 
 #pragma mark - NSFetchedResultsController

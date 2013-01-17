@@ -30,6 +30,7 @@
         self.commentLabel.numberOfLines = 2;
         self.commentLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
         self.commentLabel.textColor = [UIColor darkGrayColor];
+        self.commentLabel.backgroundColor = [UIColor clearColor];
         self.unreadIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"note_unread_indicator"]];
         [self addSubview:self.commentLabel];
         [self addSubview:self.iconImageView];
@@ -64,7 +65,7 @@
     self.commentLabel.text = [NSString decodeXMLCharactersIn: note.commentText];
     
     self.unreadIndicator.hidden = [note isRead];
-    if (![self.note isComment] || ![self.note isLike])
+    if (![self.note isComment])
         self.commentLabel.hidden = YES;
 
 }

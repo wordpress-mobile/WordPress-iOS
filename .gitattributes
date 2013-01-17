@@ -103,9 +103,9 @@ Classes/Note.h -text
 Classes/Note.m -text
 Classes/NotificationsCommentDetailViewController.h -text
 Classes/NotificationsCommentDetailViewController.m -text
-Classes/NotificationsLikesDetailViewController.h -text
-Classes/NotificationsLikesDetailViewController.m -text
-Classes/NotificationsLikesDetailViewController.xib -text
+Classes/NotificationsFollowDetailViewController.h -text
+Classes/NotificationsFollowDetailViewController.m -text
+Classes/NotificationsFollowDetailViewController.xib -text
 Classes/NotificationsTableViewCell.h -text
 Classes/NotificationsTableViewCell.m -text
 Classes/NotificationsTableViewDatasource.h -text

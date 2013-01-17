@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Note.h"
 
-@interface NotificationsLikesDetailViewController : UITableViewController
+@interface NotificationsFollowDetailViewController : UITableViewController
 
 @property (nonatomic, strong) Note *note;
 

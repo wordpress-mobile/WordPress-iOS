@@ -6,11 +6,12 @@
 //  Copyright (c) 2012 WordPress. All rights reserved.
 //
 
-#import "NotificationsLikesDetailViewController.h"
+#import "NotificationsFollowDetailViewController.h"
 #import "UIImageView+AFNetworking.h"
 #import "WordPressComApi.h"
+#import "NSString+XMLExtensions.h"
 
-@interface NotificationsLikesDetailViewController ()
+@interface NotificationsFollowDetailViewController ()
 
 @property NSMutableArray *likeData;
 
@@ -18,7 +19,7 @@
 
 @end
 
-@implementation NotificationsLikesDetailViewController
+@implementation NotificationsFollowDetailViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -45,7 +46,7 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    if (_note && [_note isLike]) {
+    if (_note) {
         _likeData = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"items"];
     }
 
@@ -73,7 +74,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"FollowCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -89,26 +90,43 @@
         [cell.textLabel setFont:[UIFont systemFontOfSize:14.0f]];
         [cell.textLabel setTextColor:[UIColor lightGrayColor]];
         [cell.textLabel setBackgroundColor:[UIColor clearColor]];
+        [cell.textLabel setFrame:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width - 90.0f, cell.frame.size.height)];
+        [cell.textLabel setNumberOfLines:1];
+        [cell.textLabel setAdjustsFontSizeToFitWidth:NO];
+        [cell.textLabel setLineBreakMode:UILineBreakModeTailTruncation];
         
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
         [cell setBackgroundView:imageView];
     }
     
     NSDictionary *like = [_likeData objectAtIndex:indexPath.row];
-    NSDictionary *likeDetails = [[like objectForKey:@"action"] objectForKey:@"params"];
-    if (likeDetails && [likeDetails objectForKey:@"blog_title"]) {
-        cell.textLabel.text = [likeDetails objectForKey:@"blog_title"];
-        NSString *imageURL = [[like objectForKey:@"icon"] stringByReplacingOccurrencesOfString:@"s=32" withString:@"w=200"];
-        [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"note_icon_placeholder"]];
-    }
-    
-    
+    NSDictionary *likeActions = [like objectForKey:@"action"];
+    NSDictionary *likeDetails;
+    if ([likeActions isKindOfClass:[NSDictionary class]])
+        likeDetails = [likeActions objectForKey:@"params"];
     UIButton *followButton = [cell.subviews objectAtIndex:2];
-    if ([[likeDetails objectForKey:@"is_following"] intValue] == 0)
-        [followButton setTitle:@"Follow" forState:UIControlStateNormal];
-    else
-        [followButton setTitle:@"Unfollow" forState:UIControlStateNormal];
-    [followButton setTag:indexPath.row];
+    if (likeDetails) {
+        if (![[likeDetails objectForKey:@"blog_title"] isEqualToString:@""]) {
+            cell.textLabel.text = [NSString decodeXMLCharactersIn:[likeDetails objectForKey:@"blog_title"]];
+            if ([[likeDetails objectForKey:@"is_following"] intValue] == 0)
+                [followButton setTitle:NSLocalizedString(@"Follow", @"") forState:UIControlStateNormal];
+            else
+                [followButton setTitle:NSLocalizedString(@"Unfollow", @"") forState:UIControlStateNormal];
+            [followButton setTag:indexPath.row];
+        } else {
+            NSString *blogTitle = [like objectForKey:@"header"];
+            if (blogTitle && [blogTitle length] > 0)
+                blogTitle = [blogTitle stringByReplacingOccurrencesOfString:@"<.+?>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, blogTitle.length)];
+            else
+                blogTitle = NSLocalizedString(@"(No Title)", @"Blog with no title");
+            cell.textLabel.text = blogTitle;
+        }
+    } else {
+        cell.textLabel.text = [NSString decodeXMLCharactersIn:[like objectForKey:@"header"]];
+        [followButton setHidden:YES];
+    }
+    NSString *imageURL = [[like objectForKey:@"icon"] stringByReplacingOccurrencesOfString:@"s=32" withString:@"w=200"];
+    [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"note_icon_placeholder"]];
     
     return cell;
 }
@@ -116,6 +134,8 @@
 - (void)followBlog:(id)sender {
     UIButton *button = (UIButton *)sender;
     NSInteger row = button.tag;
+    NSString *follow = NSLocalizedString(@"Follow", @"");
+    NSString *unfollow = NSLocalizedString(@"Unfollow", @"");
     
     NSMutableDictionary *like = [_likeData objectAtIndex:row];
     NSMutableDictionary *likeDetails = [[like objectForKey:@"action"] objectForKey:@"params"];
@@ -123,9 +143,9 @@
     BOOL isFollowing = [[likeDetails objectForKey:@"is_following"] boolValue];
     
     if (isFollowing)
-        [button setTitle:@"Follow" forState:UIControlStateNormal];
+        [button setTitle:follow forState:UIControlStateNormal];
     else
-        [button setTitle:@"Unfollow" forState:UIControlStateNormal];
+        [button setTitle:unfollow forState:UIControlStateNormal];
     
     NSUInteger blogID = [[likeDetails objectForKey:@"blog_id"] intValue];
     if (blogID) {
@@ -133,20 +153,20 @@
             NSDictionary *followResponse = (NSDictionary *)responseObject;
             if (followResponse && [[followResponse objectForKey:@"success"] intValue] == 1) {
                 if ([[followResponse objectForKey:@"is_following"] intValue] == 1) {
-                    [button setTitle:@"Unfollow" forState:UIControlStateNormal];
+                    [button setTitle:unfollow forState:UIControlStateNormal];
                     [likeDetails setValue:[NSNumber numberWithInt:1] forKey:@"is_following"];
                 }
                 else {
-                    [button setTitle:@"Follow" forState:UIControlStateNormal];
+                    [button setTitle:follow forState:UIControlStateNormal];
                     [likeDetails setValue:[NSNumber numberWithInt:0] forKey:@"is_following"];
                 }
                 
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             if (isFollowing)
-                [button setTitle:@"Follow" forState:UIControlStateNormal];
+                [button setTitle:follow forState:UIControlStateNormal];
             else
-                [button setTitle:@"Unfollow" forState:UIControlStateNormal];
+                [button setTitle:unfollow forState:UIControlStateNormal];
         }];
     }
     
