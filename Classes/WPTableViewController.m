@@ -272,6 +272,12 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    id <NSFetchedResultsSectionInfo> sectionInfo = nil;
+    sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    // Don't show section headers if there are no named sections
+    if ([[self.resultsController sections] count] <= 1 && [sectionInfo name] == nil) {
+        return 0.f;
+    }
     return kSectionHeaderHight;
 }
 
