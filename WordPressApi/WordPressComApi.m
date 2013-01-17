@@ -99,7 +99,7 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
         [_sharedApi setDefaultHeader:@"User-Agent" value:[[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent]];
         if (authToken) {
             _sharedApi.authToken = authToken;
-        } else {
+        } else if (username && password) {
             [_sharedApi signInWithUsername:username password:password success:nil failure:nil];
         }
 
