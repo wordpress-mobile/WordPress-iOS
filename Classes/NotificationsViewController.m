@@ -66,6 +66,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 
     [self.tableView addSubview:self.refreshHeaderView];
     self.tableView.delegate = self; // UIScrollView methods
+    self.tableView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
     
     // If we don't have a valid auth token we need to intitiate Oauth, this listens for invalid tokens
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -260,6 +261,18 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 }
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
+    //delete all notes
+    NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+    NSFetchRequest *allNotes = [[NSFetchRequest alloc] init];
+    [allNotes setEntity:[NSEntityDescription entityForName:@"Note" inManagedObjectContext:context]];
+    [allNotes setIncludesPropertyValues:NO]; //only fetch the managedObjectID
+    
+    NSError *error = nil;
+    NSArray *notes = [context executeFetchRequest:allNotes error:&error];
+    for (NSManagedObject *note in notes) {
+        [context deleteObject:note];
+    }
+    [self reloadNotes];
     [self refreshNotifications];
 }
 
