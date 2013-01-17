@@ -65,6 +65,11 @@ const CGFloat NotificationsCommentDetailViewControllerReplyTextViewDefaultHeight
                                                  andAction:@selector(moderateComment:)];
     self.replyBarButton = [self barButtonItemWithImageNamed:@"toolbar_reply"
                                                   andAction:@selector(startReply:)];
+    
+    self.approveBarButton.tag = APPROVE_BUTTON_TAG;
+    self.trashBarButton.tag = TRASH_BUTTON_TAG;
+    self.spamBarButton.tag = SPAM_BUTTON_TAG;
+
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc]
                                initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                target:nil
