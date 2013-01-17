@@ -287,6 +287,20 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
     
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    Note *note = [self.notesFetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];
+    if ([self noteHasDetailView:note]) {
+        // TODO: show detail view
+    } else {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+    if(note.isUnread) [self.user markNoteAsRead:note success:nil failure:nil];
+}
+
+- (BOOL)noteHasDetailView:(Note *)note {
+    return [note isComment];
+}
+
 #pragma mark - NSFetchedResultsController
 
 - (NSFetchedResultsController *)notesFetchedResultsController {
