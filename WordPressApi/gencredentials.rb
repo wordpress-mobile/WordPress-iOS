@@ -57,7 +57,7 @@ end
 
 path = File.expand_path("~/.wpcom_app_credentials")
 unless File.exists?(path)
-  puts "error: file #{path} not found"
+  $stderr.puts "error: file #{path} not found"
   exit 1
 end
 
@@ -71,18 +71,18 @@ File.open(path) do |f|
     elsif k == "WPCOM_APP_SECRET"
       secret = v.chomp
     else
-      echo "warning: Unknown key #{k}"
+      $stderr.puts "warning: Unknown key #{k}"
     end
   end
 end
 
 if client.nil?
-  puts "warning: Client not found"
+  $stderr.puts "warning: Client not found"
   exit 2
 end
 
 if secret.nil?
-  puts "warning: Secret not found"
+  $stderr.puts "warning: Secret not found"
   exit 3
 end
 
