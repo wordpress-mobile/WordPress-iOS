@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "WordPressComApi.h"
 
-typedef NS_ENUM(NSInteger, FollowButtonState){
+extern NSString *const FollowButtonFollowedEvent;
+extern NSString *const FollowButtonUnfollowedEvent;
+
+typedef NS_ENUM(NSUInteger, FollowButtonState){
     FollowButtonStateNotFollowing,
     FollowButtonStateFollowing
 };

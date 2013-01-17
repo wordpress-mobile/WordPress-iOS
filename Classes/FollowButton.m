@@ -10,6 +10,9 @@
 #import "DTCoreText.h"
 #import "NSString+XMLExtensions.h"
 
+NSString *const FollowButtonFollowedEvent = @"FollowButtonFollowed";
+NSString *const FollowButtonUnfollowedEvent = @"FollowButtonUnfollowed";
+
 @interface FollowButton ()
 @property (nonatomic, strong) UIButton *button;
 @end
@@ -71,7 +74,46 @@
 }
 
 - (void)toggleFollowState:(id)sender {
+    switch (self.followState) {
+        case FollowButtonStateFollowing:
+        {
+            self.followState = FollowButtonStateNotFollowing;
+            [self.user postPath:self.unfollowURL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                [self postEvent:FollowButtonUnfollowedEvent];
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+                self.followState = FollowButtonStateFollowing;
+            }];
+            break;
+        }
+        case FollowButtonStateNotFollowing:
+        {
+            self.followState = FollowButtonStateFollowing;
+            [self.user postPath:self.followURL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                [self postEvent:FollowButtonFollowedEvent];
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error){
+                self.followState = FollowButtonStateNotFollowing;
+            }];
+            break;
+        }
+    }
     
+}
+
+- (void)postEvent:(NSString *)eventName {
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:eventName
+     object:self
+     userInfo:@{
+        @"siteID": self.siteID
+     }];
+}
+
+- (NSString *)followURL {
+    return [NSString stringWithFormat:@"sites/%@/follows/new", self.siteID];
+}
+
+- (NSString *)unfollowURL {
+    return [NSString stringWithFormat:@"sites/%@/follows/mine/delete", self.siteID];
 }
 
 - (void)setFollowState:(FollowButtonState)followState {
