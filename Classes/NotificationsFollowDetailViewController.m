@@ -10,6 +10,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "WordPressComApi.h"
 #import "NSString+XMLExtensions.h"
+#import "NSString+Helpers.h"
 #import "NotificationsFollowTableViewCell.h"
 #import "WPWebViewController.h"
 #import <QuartzCore/QuartzCore.h>
@@ -66,13 +67,31 @@
         [headerLabel setText: headerText];
         [self.tableView setTableHeaderView:headerLabel];
         [self.view bringSubviewToFront:_postTitleView];
+        
+        NSString *headerLink = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"header_link"];
+        if (headerLink) {
+            NSURL *postURL = [NSURL URLWithString:headerLink];
+            if (postURL) {
+                NSString *blavatarURL = [NSString stringWithFormat:@"http://gravatar.com/blavatar/%@?s=72&d=404", [[postURL host] md5]];
+                [_postBlavatar setImageWithURL:[NSURL URLWithString:blavatarURL] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom"]];
+            }
+        }
     }
+    
+    if (_note.subject) {
+        // Silly way to get the post title until we get it from the API directly
+        NSArray *quotedText = [_note.subject componentsSeparatedByString: @"\""];
+        if ([quotedText count] >= 3) {
+            NSString *postTitle = [quotedText objectAtIndex:[quotedText count] - 2];
+            [_postTitleLabel setText:postTitle];
+        }
+    }
+    
     
     NSString *footerText = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer_text"];
     if (footerText && ![footerText isEqualToString:@""]) {
         _hasFooter = YES;
     }
-    
     
     [_tableView setDelegate: self];
 
@@ -228,13 +247,16 @@
     }   
 }
 
-- (void)viewFooterURL {
-    NSString *footerLink = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer_link"];
-    if (!footerLink)
+- (IBAction)viewPostTitle:(id)sender {
+    [self loadWebViewWithURL:[[[_note getNoteData] objectForKey:@"body"] objectForKey:@"header_link"]];
+}
+
+- (void)loadWebViewWithURL: (NSString*)url {
+    if (!url)
         return;
     
-    NSURL *footerURL = [NSURL URLWithString:footerLink];
-    if (footerURL) {
+    NSURL *webViewURL = [NSURL URLWithString:url];
+    if (webViewURL) {
         WPWebViewController *webViewController = nil;
         if ( IS_IPAD ) {
             webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
@@ -243,10 +265,18 @@
             webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
         }
         
-        [webViewController setUrl:footerURL];
+        [webViewController setUrl:webViewURL];
         [self.panelNavigationController pushViewController:webViewController animated:YES];
     }
     
+}
+
+- (IBAction)highlightButton:(id)sender {
+    [_postTitleButton setBackgroundColor:[UIColor UIColorFromHex:0xEDEDED]];
+}
+
+- (IBAction)resetButton:(id)sender {
+    [_postTitleButton setBackgroundColor:[UIColor clearColor]];
 }
 
 #pragma mark - Table view delegate
@@ -277,7 +307,7 @@
             [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
         }
     } else {
-        [self viewFooterURL];
+        [self loadWebViewWithURL:[[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer_link"]];
     }
     
 }
