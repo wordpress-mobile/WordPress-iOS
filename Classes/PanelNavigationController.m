@@ -771,7 +771,10 @@
 - (void)showNotificationsView {
     // Break if we're already looking at the notifications view
     if ([self.detailViewController isMemberOfClass:[NotificationsViewController class]]) {
-        [self completeButtonAnimation];
+        if ([self isShowingNotificationButton])
+            [self completeButtonAnimation];
+        else
+            [self toggleSidebar];
         return;
     }
     
