@@ -167,4 +167,14 @@ NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subjec
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiNeedsAuthTokenNotification object:self];
 }
 
+
++ (NSString *)WordPressAppId {
+    return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"WPComAppID"];
+}
+
++ (NSString *)WordPressAppSecret {
+    return [[NSBundle mainBundle] objectForInfoDictionaryKey:@"WPComAppSecret"];
+}
+
+
 @end

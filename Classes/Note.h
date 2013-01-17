@@ -18,5 +18,7 @@
 - (BOOL)isComment;
 - (BOOL)isLike;
 - (BOOL)isFollow;
+- (BOOL)isUnread;
+- (BOOL)isRead;
 
 @end

@@ -9,6 +9,7 @@
 @interface NotificationsTableViewCell ()
 @property (nonatomic, strong) UIImageView *iconImageView;
 @property (nonatomic, strong) UILabel *commentLabel;
+@property (nonatomic, strong) UIImageView *unreadIndicator;
 @end
 
 @implementation NotificationsTableViewCell
@@ -25,8 +26,10 @@
         self.commentLabel.numberOfLines = 2;
         self.commentLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
         self.commentLabel.textColor = [UIColor darkGrayColor];
+        self.unreadIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"note_unread_indicator"]];
         [self addSubview:self.commentLabel];
         [self addSubview:self.iconImageView];
+        [self addSubview:self.unreadIndicator];
     }
     return self;
 }
@@ -47,14 +50,9 @@
     NSLog(@"Detail: %@  %@", self.commentLabel, note.commentText);
     self.commentLabel.text = note.commentText;
     
-}
+    self.unreadIndicator.hidden = [note isRead];
+    self.commentLabel.hidden = ![self.note isComment];
 
-- (void)prepareForReuse {
-    if ([self.note isComment]) {
-        self.commentLabel.hidden = NO;
-    } else {
-        self.commentLabel.hidden = YES;
-    }
 }
 
 - (void)layoutSubviews {
@@ -79,6 +77,10 @@
         self.commentLabel.frame = commentFrame;
         
     }
+    
+    CGRect indicatorFrame = self.unreadIndicator.frame;
+    indicatorFrame.origin.x = CGRectGetMaxX(self.bounds) - indicatorFrame.size.width;
+    self.unreadIndicator.frame = indicatorFrame;
 
     
 }

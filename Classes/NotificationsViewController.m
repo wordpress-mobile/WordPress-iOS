@@ -73,9 +73,10 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 }
 
 - (void)displayOauthController:(NSNotification *)note {
-    [WPComOAuthController presentWithClientId:WordPressComRestAPIClientID
+    
+    [WPComOAuthController presentWithClientId:[WordPressComApi WordPressAppId]
                                   redirectUrl:@"wpios://oauth/connect"
-                                 clientSecret:WordPressComRestAPIClientSecret
+                                 clientSecret:[WordPressComApi WordPressAppSecret]
                                      delegate:self];
 }
 

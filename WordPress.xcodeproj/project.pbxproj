@@ -443,6 +443,8 @@
 		CC1D803F16584D91002A542F /* note_icon_follow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC1D803916584D91002A542F /* note_icon_follow@2x.png */; };
 		CC1D804016584D91002A542F /* note_icon_like.png in Resources */ = {isa = PBXBuildFile; fileRef = CC1D803A16584D91002A542F /* note_icon_like.png */; };
 		CC1D804116584D91002A542F /* note_icon_like@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC1D803B16584D91002A542F /* note_icon_like@2x.png */; };
+		CC1D804C1658C764002A542F /* note_unread_indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = CC1D804A1658C764002A542F /* note_unread_indicator.png */; };
+		CC1D804D1658C764002A542F /* note_unread_indicator@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CC1D804B1658C764002A542F /* note_unread_indicator@2x.png */; };
 		CC24E5EB157723AD00A6D5B5 /* WPReaderDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC24E5EA157723AD00A6D5B5 /* WPReaderDetailViewController.m */; };
 		CC24E5EF1577D1EA00A6D5B5 /* WPFriendFinderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC24E5EE1577D1EA00A6D5B5 /* WPFriendFinderViewController.m */; };
 		CC24E5F11577DBC300A6D5B5 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F01577DBC300A6D5B5 /* AddressBook.framework */; };
@@ -1114,7 +1116,6 @@
 		CC1D80121656D937002A542F /* NotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsViewController.m; sourceTree = "<group>"; };
 		CC1D80131656D938002A542F /* NotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsViewController.h; sourceTree = "<group>"; };
 		CC1D80151656DE28002A542F /* NotificationsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationsViewController.xib; sourceTree = "<group>"; };
-		CC1D80171656F7A2002A542F /* WordPressComRestConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WordPressComRestConstants.h; path = ../Classes/WordPressApi/WordPressComRestConstants.h; sourceTree = "<group>"; };
 		CC1D801F165807D6002A542F /* NotificationsTableViewDatasource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsTableViewDatasource.h; sourceTree = "<group>"; };
 		CC1D8020165807D6002A542F /* NotificationsTableViewDatasource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTableViewDatasource.m; sourceTree = "<group>"; };
 		CC1D8029165830AB002A542F /* NotificationsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsTableViewCell.h; sourceTree = "<group>"; };
@@ -1129,6 +1130,8 @@
 		CC1D803916584D91002A542F /* note_icon_follow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "note_icon_follow@2x.png"; sourceTree = "<group>"; };
 		CC1D803A16584D91002A542F /* note_icon_like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = note_icon_like.png; sourceTree = "<group>"; };
 		CC1D803B16584D91002A542F /* note_icon_like@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "note_icon_like@2x.png"; sourceTree = "<group>"; };
+		CC1D804A1658C764002A542F /* note_unread_indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = note_unread_indicator.png; sourceTree = "<group>"; };
+		CC1D804B1658C764002A542F /* note_unread_indicator@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "note_unread_indicator@2x.png"; sourceTree = "<group>"; };
 		CC24E5E9157723AD00A6D5B5 /* WPReaderDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPReaderDetailViewController.h; sourceTree = "<group>"; };
 		CC24E5EA157723AD00A6D5B5 /* WPReaderDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPReaderDetailViewController.m; sourceTree = "<group>"; };
 		CC24E5ED1577D1EA00A6D5B5 /* WPFriendFinderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPFriendFinderViewController.h; sourceTree = "<group>"; };
@@ -2095,6 +2098,8 @@
 			children = (
 				5D4DE6EC167165060030518D /* icon_info_message.png */,
 				5D4DE6ED167165060030518D /* icon_info_message@2x.png */,
+				CC1D804A1658C764002A542F /* note_unread_indicator.png */,
+				CC1D804B1658C764002A542F /* note_unread_indicator@2x.png */,
 				CC1D803616584D91002A542F /* note_icon_comment.png */,
 				CC1D803716584D91002A542F /* note_icon_comment@2x.png */,
 				CC1D803816584D91002A542F /* note_icon_follow.png */,
@@ -2481,7 +2486,6 @@
 				E13EB7A4157D230000885780 /* WordPressComApi.m */,
 				CC1D800F1656D901002A542F /* WordPressComRestClient.h */,
 				CC1D80101656D901002A542F /* WordPressComRestClient.m */,
-				CC1D80171656F7A2002A542F /* WordPressComRestConstants.h */,
 				E10466061630961700E8EDDA /* WPRSDParser.h */,
 				E10466071630961700E8EDDA /* WPRSDParser.m */,
 			);
@@ -2675,6 +2679,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "WordPress" */;
 			buildPhases = (
+				CC1D80421658BA1D002A542F /* WordPress.com API App Credentials */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				832D4F01120A6F7C001708D4 /* CopyFiles */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -3164,6 +3169,8 @@
 				CC1D803F16584D91002A542F /* note_icon_follow@2x.png in Resources */,
 				CC1D804016584D91002A542F /* note_icon_like.png in Resources */,
 				CC1D804116584D91002A542F /* note_icon_like@2x.png in Resources */,
+				CC1D804C1658C764002A542F /* note_unread_indicator.png in Resources */,
+				CC1D804D1658C764002A542F /* note_unread_indicator@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3191,6 +3198,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
+		CC1D80421658BA1D002A542F /* WordPress.com API App Credentials */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "WordPress.com API App Credentials";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo $HOME\nWPCOM_CONFIG=$HOME/.wpcom_app_credentials\necho \"Checking for WordPress.com Oauth App Secret in $WPCOM_CONFIG\"\nif [ -a $WPCOM_CONFIG ]\nthen\n    echo \"Loading config\"\n    source $WPCOM_CONFIG\nelse\n    echo \"No config found\"\nfi\n\nif [ -z $WPCOM_APP_ID ]\nthen\necho \"warning: Missing WPCOM_APP_ID\"\nfi\nif [ -z $WPCOM_APP_SECRET ]\nthen\necho \"warning: Missing WPCOM_APP_SECRET\"\nfi\n\n# Set the CFBundleVersion in the generated Info.plist (stripping off the leading \"v\").\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"WPComAppID\" \"${WPCOM_APP_ID}\"\ndefaults write \"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH%.*}\" \"WPComAppSecret\" \"${WPCOM_APP_SECRET}\"\n\n";
+			showEnvVarsInLog = 0;
 		};
 		E16AB92814D978240047A2E5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;

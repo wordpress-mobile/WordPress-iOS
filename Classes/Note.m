@@ -75,7 +75,11 @@
 
 - (BOOL)isUnread {
     NSString *unread = (NSString*)[self.noteData objectForKey:@"unread"];
-    return [unread isEqualToString:@"0"];
+    return [unread isEqualToString:@"1"];
+}
+
+- (BOOL)isRead {
+    return ![self isUnread];
 }
 
 /*
@@ -99,7 +103,7 @@
 - (void)parseComment {
     
     if ([self isComment]) {
-        NSDictionary *bodyItem = [[[self.noteData objectForKey:@"body"] objectForKey:@"items"] objectAtIndex:0];
+        NSDictionary *bodyItem = [[[self.noteData objectForKey:@"body"] objectForKey:@"items"] lastObject];
         NSString *comment = [bodyItem objectForKey:@"html"];
         comment = [comment stringByStrippingHTML];
         

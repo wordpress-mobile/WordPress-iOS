@@ -30,4 +30,9 @@ typedef void (^WordPressComApiRestSuccessFailureBlock)(AFHTTPRequestOperation *o
 
 - (void)checkNotificationsSuccess:(WordPressComApiRestSuccessResponseBlock)callback failure:(WordPressComApiRestSuccessFailureBlock)failure;
 - (void)getNotificationsBefore:(NSNumber *)timestamp success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
+
++ (NSString *)WordPressAppId;
++ (NSString *)WordPressAppSecret;
+
 @end
