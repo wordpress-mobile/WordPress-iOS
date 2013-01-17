@@ -45,7 +45,6 @@
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *replyCancelBarButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *replyPublishBarButton;
 
-- (IBAction)replyToComment:(id)sender;
 - (IBAction)moderateComment:(id)sender;
 - (IBAction)cancelReply:(id)sender;
 - (IBAction)publishReply:(id)sender;

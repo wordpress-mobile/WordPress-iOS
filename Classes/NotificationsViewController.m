@@ -23,6 +23,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 @property (nonatomic, strong) id authListener;
 @property (nonatomic, strong) WordPressComApi *user;
+@property (nonatomic, assign) BOOL isPushingViewController;
 
 @end
 
@@ -59,6 +60,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    _isPushingViewController = NO;
     // If table is at the top, simulate a pull to refresh
     BOOL simulatePullToRefresh = (self.tableView.contentOffset.y == 0);
     [self syncItemsWithUserInteraction:simulatePullToRefresh];
@@ -67,7 +69,8 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [self pruneOldNotes];
+    if (!_isPushingViewController)
+        [self pruneOldNotes];
 }
 
 #pragma mark - Custom methods
@@ -144,6 +147,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
     if ([self noteHasDetailView:note]) {
+        _isPushingViewController = YES;
         if ([note isComment]) {
             NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];
             detailViewController.note = note;
