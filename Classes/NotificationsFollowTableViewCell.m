@@ -10,17 +10,17 @@
 
 @implementation NotificationsFollowTableViewCell
 
-@synthesize followButton;
+@synthesize actionButton;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        followButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [followButton setFrame:CGRectMake(100.0f, 20.0f, 80, 30)];
-        [followButton.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0f]];
-        [followButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 0.0f)];
-        [self addSubview:followButton];
+        actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [actionButton setFrame:CGRectMake(100.0f, 20.0f, 80.0f, 30.0f)];
+        [actionButton.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0f]];
+        //[actionButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 0.0f)];
+        [self addSubview:actionButton];
         
         [self.textLabel setFont:[UIFont systemFontOfSize:14.0f]];
         [self.textLabel setTextColor:[UIColor UIColorFromHex:0x0074A2]];
@@ -38,24 +38,21 @@
 
 - (void)setFollowing:(BOOL)isFollowing {
     if (isFollowing) {
-        [followButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [followButton setImage:[UIImage imageNamed:@"note_following_checkmark"] forState:UIControlStateNormal];
-        [followButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
-        [followButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
+        [actionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [actionButton setImage:[UIImage imageNamed:@"note_following_checkmark"] forState:UIControlStateNormal];
+        [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
+        [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_primary_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
     } else {
-        [followButton setTitleColor:[UIColor UIColorFromHex:0x1A1A1A] forState:UIControlStateNormal];
-        [followButton setImage:[UIImage imageNamed:@"note_icon_follow"] forState:UIControlStateNormal];
-        [followButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
-        [followButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
-        
+        [actionButton setTitleColor:[UIColor UIColorFromHex:0x1A1A1A] forState:UIControlStateNormal];
+        [actionButton setImage:[UIImage imageNamed:@"note_icon_follow"] forState:UIControlStateNormal];
+        [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateNormal];
+        [actionButton setBackgroundImage:[[UIImage imageNamed:@"navbar_button_bg_active"] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 4.0f, 0.0f, 4.0f)] forState:UIControlStateHighlighted];
     }
-    
-    CGSize textSize = [[followButton.titleLabel text] sizeWithFont:[followButton.titleLabel font]];
+    CGSize textSize = [[actionButton.titleLabel text] sizeWithFont:[actionButton.titleLabel font]];
     CGFloat buttonWidth = textSize.width + 40.0f;
     if (buttonWidth > 180.0f)
         buttonWidth = 180.0f;
-    [followButton setFrame:CGRectMake(followButton.frame.origin.x, followButton.frame.origin.y, buttonWidth, 30.0f)];
-    
+    [actionButton setFrame:CGRectMake(actionButton.frame.origin.x, actionButton.frame.origin.y, buttonWidth, 30.0f)];
 }
 
 - (void)layoutSubviews {

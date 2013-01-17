@@ -10,7 +10,7 @@
 
 @interface NotificationsFollowTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) UIButton *followButton;
+@property (nonatomic, strong) UIButton *actionButton;
 
 - (void)setFollowing: (BOOL)isFollowing;
 
