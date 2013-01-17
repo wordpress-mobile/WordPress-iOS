@@ -741,6 +741,16 @@ ja.lproj/Localizable.strings -text svneol=unset#unset
 /logo_wporg.png -text
 /logo_wporg@2x.png -text
 /main.m -text
+/menu_button_divider.png -text svneol=unset#unset
+/menu_button_divider@2x.png -text svneol=unset#unset
+/menu_notification_left_bg.png -text svneol=unset#unset
+/menu_notification_left_bg@2x.png -text svneol=unset#unset
+/menu_notification_left_bg_down.png -text svneol=unset#unset
+/menu_notification_left_bg_down@2x.png -text svneol=unset#unset
+/menu_notification_right_bg.png -text svneol=unset#unset
+/menu_notification_right_bg@2x.png -text svneol=unset#unset
+/menu_notification_right_bg_down.png -text svneol=unset#unset
+/menu_notification_right_bg_down@2x.png -text svneol=unset#unset
 /movie.png -text svneol=unset#unset
 /movie@2x.png -text svneol=unset#unset
 /n.caf -text
