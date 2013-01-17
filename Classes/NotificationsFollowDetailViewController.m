@@ -88,7 +88,7 @@
         [cell addSubview:likeButton];
         
         [cell.textLabel setFont:[UIFont systemFontOfSize:14.0f]];
-        [cell.textLabel setTextColor:[UIColor lightGrayColor]];
+        [cell.textLabel setTextColor:[UIColor darkGrayColor]];
         [cell.textLabel setBackgroundColor:[UIColor clearColor]];
         [cell.textLabel setFrame:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width - 90.0f, cell.frame.size.height)];
         [cell.textLabel setNumberOfLines:1];
@@ -98,6 +98,7 @@
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
         [cell setBackgroundView:imageView];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     NSDictionary *like = [_likeData objectAtIndex:indexPath.row];
     NSDictionary *likeActions = [like objectForKey:@"action"];
