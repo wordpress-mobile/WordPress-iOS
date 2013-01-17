@@ -429,8 +429,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
                 
                 // animate
                 [self.tableView beginUpdates];
-                                
-                //[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:commentIndexPath.section] withRowAnimation:UITableViewRowAnimationNone];
 
                 if (parentComment) {
                     [self.commentThread insertObject:parentComment atIndex:0];
@@ -587,7 +585,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         } else {
             imageName = @"note-comment-grandparent-footer";
         }
-        //imageName = @"note-comment-parent-footer";
         UIEdgeInsets insets = UIEdgeInsetsMake(0.f, 68.f, 19.f, 0.f);
         UIImage *image = [[UIImage imageNamed:imageName] resizableImageWithCapInsets:insets];
         return [[UIImageView alloc] initWithImage:image];

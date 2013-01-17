@@ -35,7 +35,7 @@ CGFloat const NoteCommentLoadingCellHeight = 30.f;
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.loadingIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), 20.f);
+    self.loadingIndicator.center = CGPointMake(CGRectGetMidX(self.bounds), 26.f);
 }
 
 - (void)setupLoadingIndicator {
