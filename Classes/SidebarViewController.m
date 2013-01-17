@@ -489,7 +489,10 @@ NSLog(@"%@", self.sectionInfoArray);
     NSError *err;
     NSUInteger count = [context countForFetchRequest:request error:&err];
     _unreadNoteCount = count;
-    [self.tableView reloadData];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    // Re-select current index path. If notifications was selected, reloading content would deselect it
+    // If something else was selected it should have no effect
+    [self.tableView selectRowAtIndexPath:currentIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 #pragma mark - Quick Photo Methods
@@ -923,7 +926,7 @@ NSLog(@"%@", self.sectionInfoArray);
     [NSUserDefaults resetStandardUserDefaults];
     
     UIViewController *detailViewController = nil;  
-    if (indexPath.section == 0) { // Reader
+    if (indexPath.section == 0) { // Reader & Notifications
         
         if (indexPath.row == 0) { // Reader
             if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPReaderViewController class]]) {
@@ -939,7 +942,7 @@ NSLog(@"%@", self.sectionInfoArray);
             // Reader
             WPReaderViewController *readerViewController = [[WPReaderViewController alloc] init];
             detailViewController = readerViewController;
-        } else if(indexPath.row == 1){
+        } else if(indexPath.row == 1) { // Notifications
             if ([self.panelNavigationController.detailViewController isMemberOfClass:[NotificationsViewController class]]) {
                 [self.panelNavigationController closeSidebar];
                 return;
