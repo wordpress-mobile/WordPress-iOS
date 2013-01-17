@@ -227,12 +227,7 @@
                 
 				self.buttonText = NSLocalizedString(@"Signing in...", @"");
 				
-				[NSThread sleepForTimeInterval:0.15];
-				[tv reloadData];
-				if (!isSigningIn){
-					isSigningIn = YES;
-                    [self signIn:self];
-				}
+                [self signIn:self];
 			}
 			break;
 		default:
@@ -260,13 +255,7 @@
             }
             break;
         case 1:
-            if((![loginCell.textField.text isEqualToString:@""]) && (![passwordCell.textField.text isEqualToString:@""])) {
-                if (!isSigningIn){
-                    isSigningIn = YES;
-                    [self.tableView reloadData];
-                    [self signIn:self];
-                }
-            }
+            [self signIn:self];
             break;
 	}
 
@@ -304,22 +293,34 @@
 #pragma mark Custom methods
 
 - (void)signIn:(id)sender {
+    if (isSigningIn) {
+        return;
+    }
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
     __weak WPcomLoginViewController *loginController = self;
     NSString *username = loginCell.textField.text;
     NSString *password = passwordCell.textField.text;
-    [self.wpComApi signInWithUsername:username
-                             password:password
-                              success:^{
-                                  [loginController.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
-                                  [loginController.delegate loginController:loginController didAuthenticateWithUsername:loginController.wpComApi.username];
-                              } failure:^(NSError *error) {
-                                  WPFLog(@"Login failed with username %@: %@", username, error);
-                                  loginController.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
-                                  loginController.buttonText = NSLocalizedString(@"Sign In", @"");
-                                  loginController.isSigningIn = NO;
-                                  [loginController.tableView reloadData];
-                              }];
+    if (![username length] > 0) {
+        self.footerText = NSLocalizedString(@"Username is required.", @"");
+    } else if (![password length] > 0) {
+        self.footerText = NSLocalizedString(@"Password is required.", @"");
+    } else {
+        isSigningIn = YES;
+        self.footerText = @"";
+        [self.wpComApi signInWithUsername:username
+                                 password:password
+                                  success:^{
+                                      [loginController.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+                                      [loginController.delegate loginController:loginController didAuthenticateWithUsername:loginController.wpComApi.username];
+                                  } failure:^(NSError *error) {
+                                      WPFLog(@"Login failed with username %@: %@", username, error);
+                                      loginController.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
+                                      loginController.buttonText = NSLocalizedString(@"Sign In", @"");
+                                      loginController.isSigningIn = NO;
+                                      [loginController.tableView reloadData];
+                                  }];
+    }
+    [self.tableView reloadData];
 }
 
 
