@@ -298,11 +298,19 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
         return _resultsController;
     }
 
-    NSManagedObjectContext *moc = self.blog.managedObjectContext;    
+    NSManagedObjectContext *moc;
+    NSString *cacheName;
+    if (self.blog) {
+        moc = self.blog.managedObjectContext;
+        cacheName = [NSString stringWithFormat:@"%@-%@", [self entityName], [self.blog objectID]];
+    } else {
+        moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+        cacheName = [self entityName];
+    }
     _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest]
                                                              managedObjectContext:moc
                                                                sectionNameKeyPath:[self sectionNameKeyPath]
-                                                                        cacheName:[NSString stringWithFormat:@"%@-%@", [self entityName], [self.blog objectID]]];
+                                                                        cacheName:cacheName];
     _resultsController.delegate = self;
         
     NSError *error = nil;
@@ -563,43 +571,45 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
         [self hideRefreshHeader];
         [self configureNoResultsView];
     } failure:^(NSError *error) {
-        [self hideRefreshHeader];
-        [self configureNoResultsView];
-        if (error.code == 405) {
-            // Prompt to enable XML-RPC using the default message provided from the WordPress site.
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't sync", @"")
-                                                                message:[error localizedDescription]
-                                                               delegate:self
-                                                      cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-                                                      otherButtonTitles:NSLocalizedString(@"Enable Now", @""), nil];
-            
-            alertView.tag = 30;
-            [alertView show];
-            
-        } else if (error.code == 403 && editSiteViewController == nil) {
-			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't Connect", @"")
-																message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"")
-															   delegate:nil
-													  cancelButtonTitle:nil
-													  otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-			[alertView show];
+        [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+        if (self.blog) {
+            if (error.code == 405) {
+                // FIXME: this looks like "Enable XML-RPC" which is going away
+                // If it's not, don't rely on whatever the error message is if we are showing custom actions like 'Enable Now'
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't sync", @"")
+                                                                    message:[error localizedDescription]
+                                                                   delegate:self
+                                                          cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
+                                                          otherButtonTitles:NSLocalizedString(@"Enable Now", @""), nil];
 
-            // bad login/pass combination
-            editSiteViewController = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];
-            editSiteViewController.blog = self.blog;
-            editSiteViewController.isCancellable = YES;
-            editSiteViewController.delegate = self;
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
+                alertView.tag = 30;
+                [alertView show];
 
-            if(IS_IPAD == YES) {
-                navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                navController.modalPresentationStyle = UIModalPresentationFormSheet;
+            } else if (error.code == 403 && editSiteViewController == nil) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't Connect", @"")
+                                                                    message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"")
+                                                                   delegate:nil
+                                                          cancelButtonTitle:nil
+                                                          otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+                [alertView show];
+
+                // bad login/pass combination
+                editSiteViewController = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];
+                editSiteViewController.blog = self.blog;
+                editSiteViewController.isCancellable = YES;
+                editSiteViewController.delegate = self;
+                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
+
+                if(IS_IPAD == YES) {
+                    navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+                }
+
+                [self.panelNavigationController presentModalViewController:navController animated:YES];
             }
-
-            [self.panelNavigationController presentModalViewController:navController animated:YES];
-
-        } else if (userInteraction) {
-            [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync", @"")];
+        } else {
+            // For non-blog tables (notifications), just show the error for now
+            [WPError showAlertWithError:error];
         }
     }];
 }
@@ -753,6 +763,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wreturn-type"
+
+#define AssertNoBlogSubclassMethod() NSAssert(self.blog, @"You must override %@ in a subclass if there is no blog", NSStringFromSelector(_cmd))
 
 - (NSString *)entityName {
     AssertSubclassMethod();
