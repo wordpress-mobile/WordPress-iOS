@@ -474,8 +474,10 @@ NSLog(@"%@", self.sectionInfoArray);
 
 - (void)selectNotificationsRow {
     NSIndexPath *notificationsIndexPath = [NSIndexPath indexPathForRow: 1 inSection:0];
-    if (notificationsIndexPath)
+    if (notificationsIndexPath) {
         [self.tableView selectRowAtIndexPath:notificationsIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        self.currentIndexPath = notificationsIndexPath;
+    }
 }
 
 - (void)countUnreadNotes {
@@ -907,11 +909,11 @@ NSLog(@"%@", self.sectionInfoArray);
     [self processRowSelectionAtIndexPath:indexPath];
 }
 
-- (void) processRowSelectionAtIndexPath: (NSIndexPath *) indexPath {
+- (void)processRowSelectionAtIndexPath: (NSIndexPath *) indexPath {
     [self processRowSelectionAtIndexPath:indexPath closingSidebar:YES];
 }
 
-- (void) processRowSelectionAtIndexPath:(NSIndexPath *)indexPath closingSidebar:(BOOL)closingSidebar {
+- (void)processRowSelectionAtIndexPath:(NSIndexPath *)indexPath closingSidebar:(BOOL)closingSidebar {
     WPFLog(@"%@ %@ %@", self, NSStringFromSelector(_cmd), indexPath);
     
     if (self.currentIndexPath) {
