@@ -313,7 +313,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
  */
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Note *note = [self.notesFetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];
-    return [note.type isEqualToString:@"comment"] ? 140.f : 73.f;
+    return [note.type isEqualToString:@"comment"] ? 100.f : 63.f;
     
 }
 

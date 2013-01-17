@@ -13,7 +13,7 @@
 @property (nonatomic, strong) UILabel *unreadIndicator;
 @end
 
-const CGFloat NotificationsTableViewCellFontSize = 15;
+const CGFloat NotificationsTableViewCellFontSize = 17.0f;
 
 @implementation NotificationsTableViewCell
 
@@ -23,14 +23,15 @@ const CGFloat NotificationsTableViewCellFontSize = 15;
     if (self) {
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
         self.backgroundView = imageView;
-        self.textLabel.numberOfLines = 3;
+        self.textLabel.numberOfLines = 2;
         self.textLabel.font = [UIFont systemFontOfSize:NotificationsTableViewCellFontSize];
+        self.textLabel.textColor = [UIColor UIColorFromHex:0x030303];
         self.textLabel.backgroundColor = [UIColor clearColor];
         self.imageView.frame = CGRectMake(0.f, 0.f, 47.f, 47.f);
         self.iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.f, 0.f, 16.f, 16.f)];
-        self.detailTextLabel.numberOfLines = 3;
-        self.detailTextLabel.font = [UIFont systemFontOfSize:NotificationsTableViewCellFontSize];
-        self.detailTextLabel.textColor = [UIColor darkGrayColor];
+        self.detailTextLabel.numberOfLines = 2;
+        self.detailTextLabel.font = [UIFont systemFontOfSize:NotificationsTableViewCellFontSize - 2.0f];
+        self.detailTextLabel.textColor = [UIColor UIColorFromHex:0x323232];
         self.detailTextLabel.backgroundColor = [UIColor clearColor];
         self.unreadIndicator = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 14.0f, 10.0f, 10.0f)];
         self.unreadIndicator.backgroundColor = [UIColor clearColor];
@@ -108,7 +109,7 @@ const CGFloat NotificationsTableViewCellFontSize = 15;
     
     if ([self.note isComment]) {
         CGRect commentFrame = self.textLabel.frame;
-        commentFrame.origin.y = CGRectGetMaxY(commentFrame) + 5.f;
+        commentFrame.origin.y = CGRectGetMaxY(commentFrame);
         self.detailTextLabel.frame = commentFrame;
     }
 
