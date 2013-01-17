@@ -162,6 +162,9 @@
     
     [cell setFollowing: !isFollowing];
     
+    if (self.panelNavigationController)
+        [self.panelNavigationController showToastWithMessage:(isFollowing) ?  NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") : NSLocalizedString(@"Followed", @"User followed a blog") andImage:[UIImage imageNamed:[NSString stringWithFormat:@"action_icon_%@", (isFollowing) ? @"unfollowed" : @"followed"]]];
+    
     NSUInteger blogID = [[noteDetails objectForKey:@"blog_id"] intValue];
     if (blogID) {
         [[WordPressComApi sharedApi] followBlog:blogID isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -170,14 +173,10 @@
                 if ([[followResponse objectForKey:@"is_following"] intValue] == 1) {
                     [cell setFollowing: YES];
                     [noteDetails setValue:[NSNumber numberWithInt:1] forKey:@"is_following"];
-                    if (self.panelNavigationController)
-                        [self.panelNavigationController showToastWithMessage:NSLocalizedString(@"Followed", @"User followed a blog") andImage:[UIImage imageNamed:@"action_icon_followed"]];
                 }
                 else {
                     [cell setFollowing: NO];
                     [noteDetails setValue:[NSNumber numberWithInt:0] forKey:@"is_following"];
-                    if (self.panelNavigationController)
-                        [self.panelNavigationController showToastWithMessage:NSLocalizedString(@"Unfollowed", @"User unfollowed a blog") andImage:[UIImage imageNamed:@"action_icon_unfollowed"]];
                 }
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

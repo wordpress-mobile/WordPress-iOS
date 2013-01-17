@@ -1177,14 +1177,35 @@
         }
     }
     
+    // Send a multicall for the blogs list and retrieval of push notification settings
+    NSMutableArray *operations = [NSMutableArray arrayWithCapacity:2];
     AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-    [api callMethod:@"wpcom.mobile_push_set_blogs_list"
-         parameters:[NSArray arrayWithObjects:username, password, token, blogsID, @"apple", nil]
-            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                WPFLog(@"Sent blogs list (%d blogs)", [blogsID count]);
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                WPFLog(@"Failed registering blogs list: %@", [error localizedDescription]);
-            }];
+    ;
+    NSArray *blogsListParameters = [NSArray arrayWithObjects:username, password, token, blogsID, @"apple", nil];
+    AFXMLRPCRequest *blogsListRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_set_blogs_list" parameters:blogsListParameters];
+    AFXMLRPCRequestOperation *blogsListOperation = [api XMLRPCRequestOperationWithRequest:blogsListRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        WPFLog(@"Sent blogs list (%d blogs)", [blogsID count]);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WPFLog(@"Failed registering blogs list: %@", [error localizedDescription]);
+    }];
+    
+    [operations addObject:blogsListOperation];
+    
+    NSArray *settingsParameters = [NSArray arrayWithObjects:username, password, token, nil];
+    AFXMLRPCRequest *settingsRequest = [api XMLRPCRequestWithMethod:@"wpcom.get_mobile_push_notification_settings" parameters:settingsParameters];
+    AFXMLRPCRequestOperation *settingsOperation = [api XMLRPCRequestOperationWithRequest:settingsRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
+        [[NSUserDefaults standardUserDefaults] setObject:supportedNotifications forKey:@"notification_preferences"];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WPFLog(@"Failed to receive supported notification list: %@", [error localizedDescription]);
+    }];
+    
+    [operations addObject:settingsOperation];
+    
+    AFHTTPRequestOperation *combinedOperation = [api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {} failure:^(AFHTTPRequestOperation *operation, NSError *error) {}];
+    [api enqueueHTTPRequestOperation:combinedOperation];
+    
+    
 }
 
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {

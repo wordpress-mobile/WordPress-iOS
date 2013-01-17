@@ -1582,9 +1582,8 @@
     toastIcon.image = toastImage;
     toastIcon.alpha = 0.0f;
     
-    [UIView beginAnimations:@"toast_fade_in" context:(__bridge void *)(toastView)];
-    
-    [UIView setAnimationDuration:0.3f];
+    [UIView beginAnimations:@"toast_zoom_in" context:(__bridge void *)(toastView)];
+    [UIView setAnimationDuration:0.15f];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
@@ -1598,25 +1597,40 @@
 
 - (void)animationDidStop:(NSString*)animationID finished:(BOOL)finished context:(void *)context {
     UIView *toastView = (__bridge UIView *)context;
-    if([animationID isEqualToString:@"toast_fade_in"]) {
+    if([animationID isEqualToString:@"toast_zoom_in"]) {
         UILabel *toastLabel = [[toastView subviews] objectAtIndex:0];
         UIImageView *toastIcon = [[toastView subviews] objectAtIndex:1];
-        [UIView beginAnimations:@"container_fade_in" context:(__bridge void *)(toastView)];
+        [UIView beginAnimations:@"content_fade_in" context:(__bridge void *)(toastView)];
         [UIView setAnimationDuration:0.35f];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
         toastLabel.alpha = 1.0f;
         toastIcon.alpha = 1.0f;
         [UIView commitAnimations];
-        
-        [UIView beginAnimations:@"toast_fade_out" context:(__bridge void *)(toastView)];
-        [UIView setAnimationDelay:1.7f];
-        [UIView setAnimationDuration:0.3f];
+    } else if ([animationID isEqualToString:@"content_fade_in"]) {
+        UILabel *toastLabel = [[toastView subviews] objectAtIndex:0];
+        UIImageView *toastIcon = [[toastView subviews] objectAtIndex:1];
+        [UIView beginAnimations:@"content_fade_out" context:(__bridge void *)(toastView)];
+        [UIView setAnimationDelay:0.5f];
+        [UIView setAnimationDuration:0.25f];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
         [UIView setAnimationDelegate:self];
         [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+        toastLabel.alpha = 0.0f;
+        toastIcon.alpha = 0.0f;
+        [UIView commitAnimations];
+    }else if ([animationID isEqualToString:@"content_fade_out"]) {
+        [UIView beginAnimations:@"toast_zoom_out" context:(__bridge void *)(toastView)];
+        [UIView setAnimationDuration:0.15f];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        CGFloat toastOffset = 95.0f;
+        if (IS_IPHONE && UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+            toastOffset = 125.0f;
+        toastView.frame = CGRectMake(self.view.bounds.size.width / 2, self.view.bounds.size.height / 2, 0.0f, 0.0f);
         toastView.alpha = 0.0f;
         [UIView commitAnimations];
-    } else if ([animationID isEqualToString:@"toast_fade_out"]) {
+    } else if ([animationID isEqualToString:@"toast_zoom_out"]) {
         [toastView removeFromSuperview];
     }
 }

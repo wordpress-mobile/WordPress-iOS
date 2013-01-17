@@ -229,6 +229,7 @@
 		379DA051166E938E001A43CC /* NotificationsFollowTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 379DA050166E938E001A43CC /* NotificationsFollowTableViewCell.m */; };
 		37B159F415AC7CEB00333C91 /* sidebar_cell_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37B159F215AC7CEB00333C91 /* sidebar_cell_bg@2x.png */; };
 		37B159F515AC7CEB00333C91 /* sidebar_cell_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 37B159F315AC7CEB00333C91 /* sidebar_cell_bg.png */; };
+		37B7924D16768FCC0021B3A4 /* NotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B7924C16768FCB0021B3A4 /* NotificationSettingsViewController.m */; };
 		37BC1F0A1670F7CD00D2153A /* note_button_icon_follow.png in Resources */ = {isa = PBXBuildFile; fileRef = 37BC1F061670F7CD00D2153A /* note_button_icon_follow.png */; };
 		37BC1F0B1670F7CD00D2153A /* note_button_icon_follow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37BC1F071670F7CD00D2153A /* note_button_icon_follow@2x.png */; };
 		37BC1F0C1670F7CD00D2153A /* note_button_icon_following.png in Resources */ = {isa = PBXBuildFile; fileRef = 37BC1F081670F7CD00D2153A /* note_button_icon_following.png */; };
@@ -893,6 +894,8 @@
 		379DA050166E938E001A43CC /* NotificationsFollowTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsFollowTableViewCell.m; sourceTree = "<group>"; };
 		37B159F215AC7CEB00333C91 /* sidebar_cell_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar_cell_bg@2x.png"; sourceTree = "<group>"; };
 		37B159F315AC7CEB00333C91 /* sidebar_cell_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_cell_bg.png; sourceTree = "<group>"; };
+		37B7924B16768FCB0021B3A4 /* NotificationSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSettingsViewController.h; sourceTree = "<group>"; };
+		37B7924C16768FCB0021B3A4 /* NotificationSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSettingsViewController.m; sourceTree = "<group>"; };
 		37BC1F061670F7CD00D2153A /* note_button_icon_follow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = note_button_icon_follow.png; sourceTree = "<group>"; };
 		37BC1F071670F7CD00D2153A /* note_button_icon_follow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "note_button_icon_follow@2x.png"; sourceTree = "<group>"; };
 		37BC1F081670F7CD00D2153A /* note_button_icon_following.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = note_button_icon_following.png; sourceTree = "<group>"; };
@@ -1942,6 +1945,8 @@
 				E1AB07AC1578D34300D6AD64 /* SettingsViewController.m */,
 				5D87E10915F5120C0012C595 /* SettingsPageViewController.h */,
 				5D87E10A15F5120C0012C595 /* SettingsPageViewController.m */,
+				37B7924B16768FCB0021B3A4 /* NotificationSettingsViewController.h */,
+				37B7924C16768FCB0021B3A4 /* NotificationSettingsViewController.m */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -3545,6 +3550,7 @@
 				CC669B1F1672C305009E16F8 /* FollowButton.m in Sources */,
 				CC669B231672C328009E16F8 /* NoteCommentCell.m in Sources */,
 				CC669B261672C335009E16F8 /* NoteCommentPostBanner.m in Sources */,
+				37B7924D16768FCC0021B3A4 /* NotificationSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

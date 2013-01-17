@@ -40,6 +40,7 @@
 #import "AboutViewController.h"
 #import "SettingsPageViewController.h"
 #import "Constants.h"
+#import "NotificationSettingsViewController.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,
@@ -47,6 +48,7 @@ typedef enum {
     SettingsSectionWpcom,
     SettingsSectionMedia,
     SettingsSectionSounds,
+    SettingsSectionNotifications,
     SettingsSectionInfo,
     
     SettingsSectionCount
@@ -56,6 +58,7 @@ typedef enum {
 
 @property (weak, readonly) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) NSArray *mediaSettingsArray;
+@property (nonatomic, strong) NSDictionary *notificationSettings;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
@@ -71,7 +74,7 @@ typedef enum {
     NSFetchedResultsController *_resultsController;
 }
 
-@synthesize mediaSettingsArray;
+@synthesize mediaSettingsArray, notificationSettings;
 
 #pragma mark -
 #pragma mark LifeCycle Methods
@@ -94,6 +97,18 @@ typedef enum {
     self.tableView.backgroundView = nil;
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
     [self setupMedia];
+    
+    notificationSettings = [NSDictionary dictionaryWithObjectsAndKeys:@"0", @"DefaultValue",
+                            @"media_resize_preference", @"Key",
+                            NSLocalizedString(@"Image Resize", @""), @"Title",
+                            [NSArray arrayWithObjects:NSLocalizedString(@"Always Ask", @"Image resize preference"),
+                             NSLocalizedString(@"Small", @"Image resize preference"),
+                             NSLocalizedString(@"Medium", @"Image resize preference"),
+                             NSLocalizedString(@"Large", @"Image resize preference"),
+                             NSLocalizedString(@"Disabled", @"Image resize preference"), nil], @"Titles",
+                            [NSArray arrayWithObjects:@"0",@"1",@"2",@"3",@"4", nil], @"Values",
+                            NSLocalizedString(@"Set default size images should be uploaded.", @""), @"Info",
+                            nil];
 }
 
 
@@ -225,6 +240,11 @@ typedef enum {
         case SettingsSectionSounds :
             return 1;
             
+        case SettingsSectionNotifications:
+            if ([[WordPressComApi sharedApi] hasAuthorizationToken])
+                return 1;
+            else
+                return 0;
         case SettingsSectionInfo:
             return 3;
             
@@ -232,7 +252,6 @@ typedef enum {
             return 0;
     }
 }
-
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == SettingsSectionBlogs) {
@@ -258,6 +277,9 @@ typedef enum {
     } else if (section == SettingsSectionSounds) {
         return NSLocalizedString(@"Sounds", @"Title label for the sounds section in the app settings.");
         
+        return NSLocalizedString(@"Media", @"");
+    } else if (section == SettingsSectionNotifications) {
+        return nil;
     } else if (section == SettingsSectionInfo) {
         return NSLocalizedString(@"App Info", @"Title label for the application information section in the app settings");
     }
@@ -332,6 +354,11 @@ typedef enum {
         aSwitch.on = ![[NSUserDefaults standardUserDefaults] boolForKey:kSettingsMuteSoundsKey];
         cell.accessoryView = aSwitch;
 
+    } else if (indexPath.section == SettingsSectionNotifications) {
+        if ([[WordPressComApi sharedApi] hasAuthorizationToken]) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.text = NSLocalizedString(@"Notifications", @"");
+        }
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
             cell.textLabel.text = NSLocalizedString(@"Version:", @"");
@@ -472,6 +499,9 @@ typedef enum {
     
     } else if (indexPath.section == SettingsSectionSounds) {
         // nothing to do.
+    } else if (indexPath.section == SettingsSectionNotifications) {
+        NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        [self.navigationController pushViewController:notificationSettingsViewController animated:YES];
         
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 1) {

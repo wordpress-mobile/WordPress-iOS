@@ -73,6 +73,8 @@ extern NSString *const WordPressComApiUnseenNoteCountInfoKey;
                 success:(WordPressComApiRestSuccessResponseBlock)success
                 failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
+- (BOOL)hasAuthorizationToken;
+
 + (NSString *)WordPressAppId;
 + (NSString *)WordPressAppSecret;
 
