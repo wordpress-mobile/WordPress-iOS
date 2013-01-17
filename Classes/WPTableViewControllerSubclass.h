@@ -92,6 +92,9 @@
 
 /**
  Returns a boolean indicating if the blog is syncing that type of item right now
+ 
+ Optional. If a subclass doesn't implement this method, WPTableViewController tracks syncing internally.
+ Subclasses might want to implement this if the objects are going to be synced from other parts of the app
  */
 - (BOOL)isSyncing;
 
