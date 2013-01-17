@@ -28,6 +28,7 @@
 @property (nonatomic, strong) Note *note;
 
 - (IBAction) followBlog;
+- (IBAction) moderateComment: (id)sender;
 - (void)setFollowButtonState:(bool)isFollowing;
 
 @end

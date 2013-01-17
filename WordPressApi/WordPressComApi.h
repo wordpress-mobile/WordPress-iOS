@@ -38,30 +38,36 @@ extern NSString *const WordPressComApiUnseenNoteCountInfoKey;
                           failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)getNotificationsBefore:(NSNumber *)timestamp
-                       success:(WordPressComApiRestSuccessResponseBlock)success
-                       failure:(WordPressComApiRestSuccessFailureBlock)failure;
+                success:(WordPressComApiRestSuccessResponseBlock)success
+                failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)getNotificationsSince:(NSNumber *)timestamp
-                      success:(WordPressComApiRestSuccessResponseBlock)success
-                      failure:(WordPressComApiRestSuccessFailureBlock)failure;
+                success:(WordPressComApiRestSuccessResponseBlock)success
+                failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)refreshNotifications:(NSArray *)notes
-                     success:(WordPressComApiRestSuccessResponseBlock)success
-                     failure:(WordPressComApiRestSuccessFailureBlock)failure;
+                success:(WordPressComApiRestSuccessResponseBlock)success
+                failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)getNotificationsWithParameters:(NSDictionary *)parameters
-                               success:(WordPressComApiRestSuccessResponseBlock)success
-                               failure:(WordPressComApiRestSuccessFailureBlock)failure;
+                success:(WordPressComApiRestSuccessResponseBlock)success
+                failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)markNoteAsRead:(Note *)note
-               success:(WordPressComApiRestSuccessResponseBlock)success
-               failure:(WordPressComApiRestSuccessFailureBlock)failure;
+                success:(WordPressComApiRestSuccessResponseBlock)success
+                failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)updateNoteLastSeenTime:(NSNumber *)timestamp
-                          success:(WordPressComApiRestSuccessResponseBlock)success
-                          failure:(WordPressComApiRestSuccessFailureBlock)failure;
+                success:(WordPressComApiRestSuccessResponseBlock)success
+                failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
-- (void)followBlog:(NSUInteger)blogID isFollowing:(bool)following success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure;
+- (void)followBlog:(NSUInteger)blogID isFollowing:(bool)following
+                success:(WordPressComApiRestSuccessResponseBlock)success
+                failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
+- (void)moderateComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withStatus:(NSString *)commentStatus
+                success:(WordPressComApiRestSuccessResponseBlock)success
+                failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 + (NSString *)WordPressAppId;
 + (NSString *)WordPressAppSecret;
