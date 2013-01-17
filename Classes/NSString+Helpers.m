@@ -10,8 +10,6 @@
 #import "NSData+Base64.h"
 #import <CommonCrypto/CommonDigest.h>
 
-@class XMLParserCollecter;
-
 @implementation NSString (Helpers)
 
 #pragma mark Helpers
