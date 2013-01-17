@@ -619,7 +619,7 @@
             [_notificationButton setBackgroundImage:[[UIImage imageNamed:@"menu_notification_right_bg_down"] resizableImageWithCapInsets:UIEdgeInsetsMake(3.0f, 0.0f, 3.0f, 3.0f)] forState:UIControlStateHighlighted];
             [_notificationButton setImageEdgeInsets:UIEdgeInsetsMake(0, 2.0f, 0.0f, 0)];
             [_notificationButton addTarget:self action:@selector(highlightMenuButton:) forControlEvents:UIControlEventTouchDown];
-            [_notificationButton addTarget:self action:@selector(showNotificationsView) forControlEvents:UIControlEventTouchUpInside];
+            [_notificationButton addTarget:self action:@selector(notificationButtonTap) forControlEvents:UIControlEventTouchUpInside];
             [_notificationButton addTarget:self action:@selector(resetMenuButton:) forControlEvents:UIControlEventTouchUpInside];
             [_notificationButton addTarget:self action:@selector(resetMenuButton:) forControlEvents:UIControlEventTouchCancel];
             
@@ -790,7 +790,11 @@
     [_notificationButton.imageView setAlpha:1.0f];
 }
 
-- (void)showNotificationsView {
+- (void)notificationButtonTap {
+    [self showNotificationsView:NO];
+}
+
+- (void)showNotificationsView: (BOOL)isFromPushNotification {
     // Break if we're already looking at the notifications view
     if ([self.detailViewController isMemberOfClass:[NotificationsViewController class]]) {
         if ([self isShowingNotificationButton])
@@ -800,8 +804,9 @@
         return;
     }
     
-    if ([self isShowingNotificationButton]) {
-        [self completeButtonAnimation];
+    if ([self isShowingNotificationButton] || isFromPushNotification) {
+        if ([self isShowingNotificationButton])
+            [self completeButtonAnimation];
         NotificationsViewController *notificationsViewController = [[NotificationsViewController alloc] init];
         [self setDetailViewController:notificationsViewController];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"SelectNotificationsRow"

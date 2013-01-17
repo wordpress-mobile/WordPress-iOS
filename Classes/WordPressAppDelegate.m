@@ -1234,7 +1234,7 @@
         }
         
         if( self.panelNavigationController )
-            [self.panelNavigationController showNotificationsView];
+            [self.panelNavigationController showNotificationsView:YES];
         
     } else if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
         WPFLog(@"Received notification: %@", remoteNotif);
@@ -1340,7 +1340,7 @@
     } else if (alertView.tag == kNotificationNewSocial) {
         if (buttonIndex == 1) {
             if( self.panelNavigationController )
-                [self.panelNavigationController showNotificationsView];
+                [self.panelNavigationController showNotificationsView:YES];
             lastNotificationInfo = nil;
         }
 	} else {

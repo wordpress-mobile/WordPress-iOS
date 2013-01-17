@@ -44,7 +44,8 @@
 - (void)highlightMenuButton: (id)sender;
 - (void)completeButtonAnimation;
 - (void)showNotificationForNoteType: (NSString *)noteType;
-- (void)showNotificationsView;
+- (void)notificationButtonTap;
+- (void)showNotificationsView: (BOOL)isFromPushNotification;
 - (bool)isShowingNotificationButton;
 
 // Toast Message
