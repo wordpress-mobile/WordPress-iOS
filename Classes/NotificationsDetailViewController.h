@@ -29,6 +29,7 @@
 
 - (IBAction) followBlog;
 - (IBAction) moderateComment: (id)sender;
+- (IBAction) replyToComment;
 - (void)setFollowButtonState:(bool)isFollowing;
 
 @end

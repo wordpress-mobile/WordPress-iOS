@@ -461,6 +461,15 @@
 					</object>
 					<int key="connectionID">140</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">replyToComment</string>
+						<reference key="source" ref="604293582"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">143</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -1320,7 +1329,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">142</int>
+			<int key="maxID">143</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1338,6 +1347,7 @@
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="followBlog">id</string>
 						<string key="moderateComment:">id</string>
+						<string key="replyToComment">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="followBlog">
@@ -1346,6 +1356,10 @@
 						</object>
 						<object class="IBActionInfo" key="moderateComment:">
 							<string key="name">moderateComment:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="replyToComment">
+							<string key="name">replyToComment</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>

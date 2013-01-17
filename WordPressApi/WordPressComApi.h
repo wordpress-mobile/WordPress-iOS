@@ -69,6 +69,10 @@ extern NSString *const WordPressComApiUnseenNoteCountInfoKey;
                 success:(WordPressComApiRestSuccessResponseBlock)success
                 failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
+- (void)replyToComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withReply:(NSString *)reply
+                success:(WordPressComApiRestSuccessResponseBlock)success
+                failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
 + (NSString *)WordPressAppId;
 + (NSString *)WordPressAppSecret;
 

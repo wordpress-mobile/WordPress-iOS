@@ -146,6 +146,26 @@
     
 }
 
+- (IBAction)replyToComment {
+    NSString *replyText = _replyTextView.text;
+    
+    if ([replyText length] > 0) {
+        
+        // Get blog_id and comment_id for api call
+        NSDictionary *commentAction = [[_commentActions objectAtIndex:0] objectForKey:@"params"];
+        NSUInteger blogID = [[commentAction objectForKey:@"blog_id"] intValue];
+        NSUInteger commentID = [[commentAction objectForKey:@"comment_id"] intValue];
+        
+        [_sendReplyButton setEnabled:NO];
+        [[WordPressComApi sharedApi] replyToComment:blogID forCommentID:commentID withReply:replyText success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [_sendReplyButton setEnabled:YES];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [_sendReplyButton setEnabled:YES];
+        }];
+    }
+    
+}
+
 - (void)setFollowButtonState:(bool)isFollowing {
     [_followButton setTitle:(isFollowing) ? NSLocalizedString(@"Unfollow", @"") : NSLocalizedString(@"Follow", @"") forState:UIControlStateNormal];
 }

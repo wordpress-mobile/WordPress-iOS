@@ -281,6 +281,16 @@ NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
                       failure:failure];
 }
 
+- (void)replyToComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withReply:(NSString *)reply success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+    
+    NSString *replyPath = [NSString stringWithFormat: @"sites/%d/comments/%d/replies/new", blogID, commentID];
+    
+    [self.restClient postPath:replyPath
+                   parameters:@{ @"content" : reply }
+                      success:success
+                      failure:failure];
+}
+
 #pragma mark - Oauth methods
 
 - (BOOL)hasAuthorizationToken {
