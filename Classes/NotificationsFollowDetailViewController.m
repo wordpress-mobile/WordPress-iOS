@@ -107,7 +107,6 @@
         cell = [[NotificationsFollowTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell.actionButton addTarget:self action:@selector(followBlog:) forControlEvents:UIControlEventTouchUpInside];
     }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     NSDictionary *selectedNote = [_noteData objectAtIndex:indexPath.row];
     NSDictionary *noteAction = [selectedNote objectForKey:@"action"];
