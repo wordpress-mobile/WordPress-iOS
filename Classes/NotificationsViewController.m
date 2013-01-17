@@ -343,11 +343,11 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
             detailViewController.note = note;
             detailViewController.user = self.user;
             NSLog(@"Pushing comment");
-            [self.panelNavigationController pushViewController:detailViewController animated:YES];
+            [self.panelNavigationController pushViewController:detailViewController fromViewController:self animated:YES];
         } else {
             NotificationsFollowDetailViewController *detailViewController = [[NotificationsFollowDetailViewController alloc] initWithNibName:@"NotificationsFollowDetailViewController" bundle:nil];
             detailViewController.note = note;
-            [self.panelNavigationController pushViewController:detailViewController animated:YES];
+            [self.panelNavigationController pushViewController:detailViewController fromViewController:self animated:YES];
         }
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
