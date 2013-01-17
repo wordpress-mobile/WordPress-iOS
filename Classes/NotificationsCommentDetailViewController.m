@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 WordPress. All rights reserved.
 //
 
-#import "NotificationsDetailViewController.h"
+#import "NotificationsCommentDetailViewController.h"
 #import "UIImageView+AFNetworking.h"
 #import "WordPressComApi.h"
 
@@ -14,7 +14,7 @@
 #define SPAM_BUTTON_TAG 2
 #define TRASH_BUTTON_TAG 3
 
-@interface NotificationsDetailViewController ()
+@interface NotificationsCommentDetailViewController ()
 
 @property NSUInteger followBlogID;
 @property bool isFollowingBlog;
@@ -22,7 +22,7 @@
 
 @end
 
-@implementation NotificationsDetailViewController
+@implementation NotificationsCommentDetailViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,6 +47,10 @@
     
     if (_note && _note.isComment) {
         
+        [_authorLabel setHidden:NO];
+        [_commentTextView setHidden:NO];
+        [_noteImageView setHidden:NO];
+        
         _authorLabel.text = _note.subject;
         _commentTextView.text = _note.commentText;
         [_noteImageView setImageWithURL:[NSURL URLWithString:_note.icon]
@@ -67,6 +71,8 @@
             }
         }
         
+        
+        
         // Set the status of the comment buttons
         _commentActions = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"actions"];
         for (int i=0; i < [_commentActions count]; i++) {
@@ -86,8 +92,7 @@
                 [_trashButton setHidden:NO];
             }
         }
-        
-    }
+    } 
 }
 
 - (IBAction)followBlog {

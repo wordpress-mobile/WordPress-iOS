@@ -136,7 +136,7 @@
 
 - (id)noteData {
     if (_noteData == nil) {
-        _noteData = [self.payload objectFromJSONData];
+        _noteData = [self.payload mutableObjectFromJSONData];
     }
     return _noteData;
 }

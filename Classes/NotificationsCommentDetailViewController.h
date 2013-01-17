@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Note.h"
 
-@interface NotificationsDetailViewController : UIViewController
+@interface NotificationsCommentDetailViewController : UIViewController
 
 @property (nonatomic, strong) IBOutlet UILabel *authorLabel;
 

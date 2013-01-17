@@ -23,6 +23,7 @@
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         self.textLabel.numberOfLines = 2;
         self.textLabel.font = [UIFont systemFontOfSize:[UIFont labelFontSize]];
+        self.textLabel.backgroundColor = [UIColor clearColor];
         self.imageView.frame = CGRectMake(0.f, 0.f, 47.f, 47.f);
         self.iconImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.f, 0.f, 19.f, 19.f)];
         self.commentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -63,7 +64,8 @@
     self.commentLabel.text = [NSString decodeXMLCharactersIn: note.commentText];
     
     self.unreadIndicator.hidden = [note isRead];
-    self.commentLabel.hidden = ![self.note isComment];
+    if (![self.note isComment] || ![self.note isLike])
+        self.commentLabel.hidden = YES;
 
 }
 

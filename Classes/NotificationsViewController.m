@@ -7,12 +7,13 @@
 //
 
 #import "NotificationsViewController.h"
+#import "NotificationsCommentDetailViewController.h"
+#import "NotificationsLikesDetailViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPComOAuthController.h"
 #import "WordPressComApi.h"
 #import "EGORefreshTableHeaderView.h"
 #import "NotificationsTableViewCell.h"
-#import "NotificationsDetailViewController.h"
 
 NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 
@@ -154,7 +155,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
     } else {
         timestamp = nil;
     }
-    [self.user  getNotificationsSince:timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.user getNotificationsSince:timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.lastRefreshDate = [NSDate new];
         self.refreshing = NO;
         [self notificationsDidFinishRefreshingWithError:nil];
@@ -273,7 +274,15 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
  * Dequeue a cell and have it render the note
  */
 -  (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NotificationsTableViewCell *cell = (NotificationsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:NotificationsTableViewNoteCellIdentifier];
+    
+    NSString *cellIdentifier = @"NotificationCell";
+    NotificationsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    
+    if (cell == nil) {
+        cell = (NotificationsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:NotificationsTableViewNoteCellIdentifier];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
+        [cell setBackgroundView:imageView];
+    }
     cell.note = [self.notesFetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];
     return cell;
 }
@@ -306,9 +315,15 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Note *note = [self.notesFetchedResultsController.fetchedObjects objectAtIndex:indexPath.row];
     if ([self noteHasDetailView:note]) {
-        NotificationsDetailViewController *detailViewController = [[NotificationsDetailViewController alloc] initWithNibName:@"NotificationsDetailViewController" bundle:nil];
-        detailViewController.note = note;
-        [self.panelNavigationController pushViewController:detailViewController animated:YES];
+        if ([note isComment]) {
+            NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];
+            detailViewController.note = note;
+            [self.panelNavigationController pushViewController:detailViewController animated:YES];
+        } else {
+            NotificationsLikesDetailViewController *detailViewController = [[NotificationsLikesDetailViewController alloc] initWithNibName:@"NotificationsLikesDetailViewController" bundle:nil];
+            detailViewController.note = note;
+            [self.panelNavigationController pushViewController:detailViewController animated:YES];
+        }
     } else {
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
@@ -325,7 +340,7 @@ NSString *const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableV
 }
 
 - (BOOL)noteHasDetailView:(Note *)note {
-    return [note isComment];
+    return [note isComment] || [note isLike];
 }
 
 #pragma mark - NSFetchedResultsController
