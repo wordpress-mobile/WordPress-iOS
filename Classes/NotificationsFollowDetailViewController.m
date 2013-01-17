@@ -151,8 +151,11 @@
     NSInteger row = button.tag;
     
     NSMutableDictionary *selectedNote = [_noteData objectAtIndex:row];
-    NSMutableDictionary *noteDetails = [[selectedNote objectForKey:@"action"] objectForKey:@"params"];
-    
+    NSDictionary *noteAction = [selectedNote objectForKey:@"action"];
+    NSDictionary *noteDetails;
+    if ([noteAction isKindOfClass:[NSDictionary class]])
+        noteDetails = [noteAction objectForKey:@"params"];
+
     BOOL isFollowing = [[noteDetails objectForKey:@"is_following"] boolValue];
     
     NotificationsFollowTableViewCell *cell = (NotificationsFollowTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
@@ -187,7 +190,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSMutableDictionary *likeDetails = [[[_noteData objectAtIndex:indexPath.row] objectForKey:@"action"] objectForKey:@"params"];
+    NSDictionary *noteAction = [[_noteData objectAtIndex:indexPath.row] objectForKey:@"action"];
+    NSDictionary *likeDetails;
+    if ([noteAction isKindOfClass:[NSDictionary class]])
+        likeDetails = [noteAction objectForKey:@"params"];
     if (likeDetails) {
         NSString *blogURLString = [likeDetails objectForKey:@"blog_url"];
         NSURL *blogURL = [NSURL URLWithString:blogURLString];
