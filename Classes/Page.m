@@ -49,8 +49,8 @@
     return page;
 }
 
-+ (Page *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID {
-    NSSet *results = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@",postID]];
++ (Page *)findWithBlog:(Blog *)blog andPageID:(NSNumber *)pageID {
+    NSSet *results = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@", pageID]];
     
     if (results && (results.count > 0)) {
         return [[results allObjects] objectAtIndex:0];
@@ -58,14 +58,13 @@
     return nil;
 }
 
-+ (Page *)createOrReplaceFromDictionary:(NSDictionary *)postInfo forBlog:(Blog *)blog {
-    Page *page = [self findWithBlog:blog andPostID:[postInfo objectForKey:@"page_id"]];
-    
++ (Page *)findOrCreateWithBlog:(Blog *)blog andPageID:(NSNumber *)pageID {
+    Page *page = [self findWithBlog:blog andPageID:pageID];
+
     if (page == nil) {
-        page = [Page newPageForBlog:blog];
+        page = [Page newDraftForBlog:blog];
+        page.postID = pageID;
     }
-	
-	[page updateFromDictionary:postInfo];
     return page;
 }
 

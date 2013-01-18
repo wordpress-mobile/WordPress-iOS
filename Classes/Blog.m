@@ -897,12 +897,12 @@
 
     NSMutableArray *pagesToKeep = [NSMutableArray array];
     for (NSDictionary *pageInfo in newPages) {
-        Page *newPage = [Page createOrReplaceFromDictionary:pageInfo forBlog:self];
-        if (newPage != nil) {
-            [pagesToKeep addObject:newPage];
-        } else {
-            WPFLog(@"-[Page createOrReplaceFromDictionary:forBlog:] returned a nil page: %@", pageInfo);
+        NSNumber *pageID = [[pageInfo objectForKey:@"postid"] numericValue];
+        Page *newPage = [Page findOrCreateWithBlog:self andPageID:pageID];
+        if (newPage.remoteStatus == AbstractPostRemoteStatusSync) {
+            [newPage updateFromDictionary:pageInfo];
         }
+        [pagesToKeep addObject:newPage];
     }
 
     NSArray *syncedPages = [self syncedPages];
