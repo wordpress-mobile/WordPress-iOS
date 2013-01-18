@@ -727,7 +727,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
 - (void)savePost:(BOOL)upload{
 	self.apost.postTitle = titleTextField.text;
-    self.apost.content = textView.text;
+    [self autosaveContent];
 	if ([self.apost.content rangeOfString:@"<!--more-->"].location != NSNotFound)
 		self.apost.mt_text_more = @"";
     
@@ -970,7 +970,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
             [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
             [textView.undoManager setActionName:@"link"];            
             
-			self.apost.content = textView.text;
+            [self autosaveContent];
         }
 		
         [delegate setAlertRunning:NO];
@@ -1050,7 +1050,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     self.undoButton.enabled = [self.textView.undoManager canUndo];
     self.redoButton.enabled = [self.textView.undoManager canRedo];
     
-    self.apost.content = textView.text;
+    [self autosaveContent];
 
     [self refreshButtons];
 }
@@ -1068,8 +1068,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     if (isTextViewEditing) {
         isTextViewEditing = NO;
 		
-        self.apost.content = textView.text;
-		
+        [self autosaveContent];
+
 		if (!IS_IPAD) {
             [self refreshButtons];
 		}
@@ -1292,6 +1292,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 		self.apost.content = content;
 	}
     [self refreshUIForCurrentPost];
+    [self.apost autosave];
 }
 
 - (void)insertMediaBelow:(NSNotification *)notification {
@@ -1323,6 +1324,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 		self.apost.content = content;
 	}
     [self refreshUIForCurrentPost];
+    [self.apost autosave];
 }
 
 - (void)removeMedia:(NSNotification *)notification {
@@ -1331,18 +1333,25 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	textView.text = [textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<br /><br />%@", media.html] withString:@""];
 	textView.text = [textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@<br /><br />", media.html] withString:@""];
 	textView.text = [textView.text stringByReplacingOccurrencesOfString:media.html withString:@""];
-	self.apost.content = textView.text;
+    [self autosaveContent];
     [self refreshUIForCurrentPost];
+}
+
+- (void)autosaveContent {
+    self.apost.content = textView.text;
+    [self.apost autosave];
 }
 
 #pragma mark - Keyboard toolbar
 
 - (void)undo {
     [self.textView.undoManager undo];
+    [self autosaveContent];
 }
 
 - (void)redo {
     [self.textView.undoManager redo];
+    [self autosaveContent];
 }
 
 - (void)restoreText:(NSString *)text withRange:(NSRange)range {
@@ -1358,6 +1367,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     textView.scrollEnabled = YES;
     textView.selectedRange = range;
     [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
+    [self autosaveContent];
 }
 
 - (void)wrapSelectionWithTag:(NSString *)tag {
@@ -1391,6 +1401,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         range.length = 0;
     }
     textView.selectedRange = range;
+    [self autosaveContent];
 }
 
 - (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem {
