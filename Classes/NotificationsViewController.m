@@ -128,6 +128,9 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 #pragma mark - Public methods
 
 - (void)refreshFromPushNotification {
+    if (IS_IPHONE)
+        [self.panelNavigationController popToRootViewControllerAnimated:YES];
+    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
     [self syncItemsWithUserInteraction:NO];
     [self refreshVisibleUnreadNotes];
 }
