@@ -477,11 +477,13 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
 
 - (void)refreshButtons {
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                  target:self
-                                                                                  action:@selector(cancelView:)];
-    self.navigationItem.leftBarButtonItem = cancelButton;
-    
+    if (self.navigationItem.leftBarButtonItem == nil) {
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                      target:self
+                                                                                      action:@selector(cancelView:)];
+        self.navigationItem.leftBarButtonItem = cancelButton;
+    }
+
     NSString *buttonTitle;
     if(![self.apost hasRemote]) {
         if ([self.apost.status isEqualToString:@"publish"] && ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
@@ -494,11 +496,16 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     } else {
         buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
     }
-    
-    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleDone target:self action:@selector(saveAction:)];
-    self.navigationItem.rightBarButtonItem = saveButton;
-    
-    [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
+
+    if (self.navigationItem.rightBarButtonItem == nil) {
+        UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleDone target:self action:@selector(saveAction:)];
+        self.navigationItem.rightBarButtonItem = saveButton;
+    } else {
+        self.navigationItem.rightBarButtonItem.title = buttonTitle;
+    }
+
+    BOOL updateEnabled = self.hasChanges || self.apost.remoteStatus == AbstractPostRemoteStatusFailed;
+    [self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
 }
 
 - (void)refreshUIForCompose {
@@ -537,8 +544,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     
 	// workaround for odd text view behavior on iPad
 	[textView setContentOffset:CGPointZero animated:NO];
-    
-    [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
+
+    [self refreshButtons];
 }
 
 - (void)populateSelectionsControllerWithCategories {
@@ -1044,8 +1051,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     self.redoButton.enabled = [self.textView.undoManager canRedo];
     
     self.apost.content = textView.text;
-    
-    [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
+
+    [self refreshButtons];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
@@ -1067,8 +1074,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
             [self refreshButtons];
 		}
     }
-    
-    [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
+
+    [self refreshButtons];
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
@@ -1084,10 +1091,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     self.currentEditingTextField = textField;
-	
-    if (self.navigationItem.leftBarButtonItem.style == UIBarButtonItemStyleDone) {
-        [self textViewDidEndEditing:textView];
-    }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -1106,13 +1109,13 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         self.post.tags = tagsTextField.text;
     
     [self.apost autosave];
-    
-    [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
+
+    [self refreshButtons];
 }
 
 - (void)textFieldDidChange:(id)sender {
     self.apost.postTitle = titleTextField.text;
-    [self.navigationItem.rightBarButtonItem setEnabled:self.hasChanges];
+    [self refreshButtons];
 }
 
 - (void)positionTextView:(NSNotification *)notification {
