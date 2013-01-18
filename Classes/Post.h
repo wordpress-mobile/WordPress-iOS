@@ -66,9 +66,18 @@
 + (Post *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID;
 
 /**
- Takes the NSDictionary from a XMLRPC call and creates or updates a post
+ Retrieves the post with the specified `postID` for a given blog. If the specified post doesn't exist, a new empty one is created
+
+ @returns the specified post.
  */
-+ (Post *)createOrReplaceFromDictionary:(NSDictionary *)postInfo forBlog:(Blog *)blog;
++ (Post *)findOrCreateWithBlog:(Blog *)blog andPostID:(NSNumber *)postID;
+
+/**
+ Updates the post properties with the results of a XML-RPC call
+
+ @param postInfo a dictionary with values returned from wp.getPosts
+ */
+- (void)updateFromDictionary:(NSDictionary *)postInfo;
 
 ///------------------------
 /// @name Remote management

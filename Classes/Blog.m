@@ -847,12 +847,12 @@
 
     NSMutableArray *postsToKeep = [NSMutableArray array];
     for (NSDictionary *postInfo in newPosts) {
-        Post *newPost = [Post createOrReplaceFromDictionary:postInfo forBlog:self];
-        if (newPost != nil) {
-            [postsToKeep addObject:newPost];
-        } else {
-            WPFLog(@"-[Post createOrReplaceFromDictionary:forBlog:] returned a nil post: %@", postInfo);
+        NSNumber *postID = [[postInfo objectForKey:@"postid"] numericValue];
+        Post *newPost = [Post findOrCreateWithBlog:self andPostID:postID];
+        if (newPost.remoteStatus == AbstractPostRemoteStatusSync) {
+            [newPost updateFromDictionary:postInfo];
         }
+        [postsToKeep addObject:newPost];
     }
 
     NSArray *syncedPosts = [self syncedPosts];
