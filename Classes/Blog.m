@@ -847,12 +847,12 @@
 
     NSMutableArray *postsToKeep = [NSMutableArray array];
     for (NSDictionary *postInfo in newPosts) {
-        NSNumber *postID = [[postInfo objectForKey:@"postid"] numericValue];
-        Post *newPost = [Post findOrCreateWithBlog:self andPostID:postID];
-        if (newPost.remoteStatus == AbstractPostRemoteStatusSync) {
-            [newPost updateFromDictionary:postInfo];
+        Post *newPost = [Post createOrReplaceFromDictionary:postInfo forBlog:self];
+        if (newPost != nil) {
+            [postsToKeep addObject:newPost];
+        } else {
+            WPFLog(@"-[Post createOrReplaceFromDictionary:forBlog:] returned a nil post: %@", postInfo);
         }
-        [postsToKeep addObject:newPost];
     }
 
     NSArray *syncedPosts = [self syncedPosts];
@@ -897,12 +897,12 @@
 
     NSMutableArray *pagesToKeep = [NSMutableArray array];
     for (NSDictionary *pageInfo in newPages) {
-        NSNumber *pageID = [[pageInfo objectForKey:@"postid"] numericValue];
-        Page *newPage = [Page findOrCreateWithBlog:self andPageID:pageID];
-        if (newPage.remoteStatus == AbstractPostRemoteStatusSync) {
-            [newPage updateFromDictionary:pageInfo];
+        Page *newPage = [Page createOrReplaceFromDictionary:pageInfo forBlog:self];
+        if (newPage != nil) {
+            [pagesToKeep addObject:newPage];
+        } else {
+            WPFLog(@"-[Page createOrReplaceFromDictionary:forBlog:] returned a nil page: %@", pageInfo);
         }
-        [pagesToKeep addObject:newPage];
     }
 
     NSArray *syncedPages = [self syncedPages];

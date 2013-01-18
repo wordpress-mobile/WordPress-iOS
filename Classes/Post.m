@@ -37,6 +37,7 @@
 
 @interface Post(PrivateMethods)
 + (Post *)newPostForBlog:(Blog *)blog;
+- (void)updateFromDictionary:(NSDictionary *)postInfo;
 - (void)uploadInBackground;
 - (void)didUploadInBackground;
 - (void)failedUploadInBackground;
@@ -78,16 +79,19 @@
     return nil;
 }
 
-+ (Post *)findOrCreateWithBlog:(Blog *)blog andPostID:(NSNumber *)postID {
-    Post *post = [self findWithBlog:blog andPostID:postID];
-
++ (Post *)createOrReplaceFromDictionary:(NSDictionary *)postInfo forBlog:(Blog *)blog {
+    Post *post = [self findWithBlog:blog andPostID:[[postInfo objectForKey:@"postid"] numericValue]];
+    
     if (post == nil) {
-        post = [Post newDraftForBlog:blog];
-        post.postID = postID;
+        post = [Post newPostForBlog:blog];
     }
+ 	[post updateFromDictionary:postInfo];
     [post findComments];
     return post;
 }
+
+
+
 
 - (id)init {
     if (self = [super init]) {
