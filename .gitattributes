@@ -1,327 +1,4 @@
 * text=auto !eol
-/AboutViewController.xib -text
-/AddSiteViewController-iPad.xib -text
-/AddSiteViewController.xib -text
-/AddUsersBlogsViewController-iPad.xib -text
-/AddUsersBlogsViewController.xib -text
-/BetaFeedbackViewController.xib -text
-CameraPlus/CameraPlusPickerManager.h -text
-CameraPlus/CameraPlusPickerManager.m -text
-Classes/AboutViewController.h -text
-Classes/AboutViewController.m -text
-Classes/AbstractPost.h -text
-Classes/AbstractPost.m -text
-Classes/AddSiteViewController.h -text
-Classes/AddSiteViewController.m -text
-Classes/AddUsersBlogsViewController.h -text
-Classes/AddUsersBlogsViewController.m -text
-Classes/BetaFeedbackViewController.h -text
-Classes/BetaFeedbackViewController.m -text
-Classes/BetaUIWindow.h -text
-Classes/BetaUIWindow.m -text
-Classes/Blog.h -text
-Classes/Blog.m -text
-Classes/BlogSelectorButton.h -text
-Classes/BlogSelectorButton.m -text
-Classes/BlogSelectorViewController.h -text
-Classes/BlogSelectorViewController.m -text
-Classes/BlogsTableViewCell.h -text
-Classes/BlogsTableViewCell.m -text
-Classes/CPopoverManager.h -text
-Classes/CPopoverManager.m -text
-Classes/Category.h -text
-Classes/Category.m -text
-Classes/Comment.h -text
-Classes/Comment.m -text
-Classes/CommentTableViewCell.h -text
-Classes/CommentTableViewCell.m -text
-Classes/CommentViewController.h -text
-Classes/CommentViewController.m -text
-Classes/CommentsTableViewDelegate.h -text
-Classes/CommentsViewController.h -text
-Classes/CommentsViewController.m -text
-Classes/Constants.h -text
-Classes/Coordinate.h -text
-Classes/Coordinate.m -text
-Classes/CrashReportViewController.h -text
-Classes/CrashReportViewController.m -text
-Classes/CrashReporter.framework/CrashReporter -text
-Classes/CrashReporter.framework/Headers -text
-Classes/CrashReporter.framework/Resources -text
-Classes/CrashReporter.framework/Versions/A/CrashReporter -text svneol=unset#unset
-Classes/CrashReporter.framework/Versions/A/Headers/CrashReporter.h -text
-Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReport.h -text
-Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportApplicationInfo.h -text
-Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportBinaryImageInfo.h -text
-Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportExceptionInfo.h -text
-Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportFormatter.h -text
-Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportMachineInfo.h -text
-Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportProcessInfo.h -text
-Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportProcessorInfo.h -text
-Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportSignalInfo.h -text
-Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportSystemInfo.h -text
-Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportTextFormatter.h -text
-Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportThreadInfo.h -text
-Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReporter.h -text
-Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReporterNamespace.h -text
-Classes/CrashReporter.framework/Versions/A/Resources/Info.plist -text
-Classes/CrashReporter.framework/Versions/Current -text
-Classes/DateUtils.h -text
-Classes/DateUtils.m -text
-Classes/EGOTableViewPullRefresh/EGORefreshTableHeaderView.h -text
-Classes/EGOTableViewPullRefresh/EGORefreshTableHeaderView.m -text
-Classes/EditPageViewController.h -text
-Classes/EditPageViewController.m -text
-Classes/EditPostViewController.h -text
-Classes/EditPostViewController.m -text
-Classes/EditSiteViewController.h -text
-Classes/EditSiteViewController.m -text
-Classes/FakeMigration.h -text
-Classes/FakeMigration.m -text
-Classes/FileLogger.h -text
-Classes/FileLogger.m -text
-Classes/FollowButton.h -text
-Classes/FollowButton.m -text
-Classes/HelpViewController.h -text
-Classes/HelpViewController.m -text
-Classes/JetpackAuthUtil.h -text
-Classes/JetpackAuthUtil.m -text
-Classes/JetpackSettingsViewController.h -text
-Classes/JetpackSettingsViewController.m -text
-Classes/JetpackSettingsViewController.xib -text
-Classes/MediaObjectViewController.h -text
-Classes/MediaObjectViewController.m -text
-Classes/MigrateBlogsFromFiles.h -text
-Classes/MigrateBlogsFromFiles.m -text
-Classes/NSData+Base64.h -text
-Classes/NSData+Base64.m -text
-Classes/NSMutableDictionary+Helpers.h -text
-Classes/NSMutableDictionary+Helpers.m -text
-Classes/NSString+Util.h -text
-Classes/NSString+Util.m -text
-Classes/NSString+XMLExtensions.h -text
-Classes/NSString+XMLExtensions.m -text
-Classes/Note.h -text
-Classes/Note.m -text
-Classes/NoteComment.h -text
-Classes/NoteComment.m -text
-Classes/NoteCommentCell.h -text
-Classes/NoteCommentCell.m -text
-Classes/NoteCommentContentCell.h -text
-Classes/NoteCommentContentCell.m -text
-Classes/NoteCommentLoadingCell.h -text
-Classes/NoteCommentLoadingCell.m -text
-Classes/NoteCommentPostBanner.h -text
-Classes/NoteCommentPostBanner.m -text
-Classes/NotificationSettingsViewController.h -text
-Classes/NotificationSettingsViewController.m -text
-Classes/NotificationsCommentDetailViewController.h -text
-Classes/NotificationsCommentDetailViewController.m -text
-Classes/NotificationsFollowDetailViewController.h -text
-Classes/NotificationsFollowDetailViewController.m -text
-Classes/NotificationsFollowTableViewCell.h -text
-Classes/NotificationsFollowTableViewCell.m -text
-Classes/NotificationsTableViewCell.h -text
-Classes/NotificationsTableViewCell.m -text
-Classes/NotificationsTableViewDatasource.h -text
-Classes/NotificationsTableViewDatasource.m -text
-Classes/NotificationsViewController.h -text
-Classes/NotificationsViewController.m -text
-Classes/Page.h -text
-Classes/Page.m -text
-Classes/PageViewController.h -text
-Classes/PageViewController.m -text
-Classes/PagesViewController.h -text
-Classes/PagesViewController.m -text
-Classes/PanelNavigationConstants.h -text
-Classes/PanelNavigationController.h -text
-Classes/PanelNavigationController.m -text
-Classes/PanelViewWrapper.h -text
-Classes/PanelViewWrapper.m -text
-Classes/Post.h -text
-Classes/Post.m -text
-Classes/PostAnnotation.h -text
-Classes/PostAnnotation.m -text
-Classes/PostMediaViewController.h -text
-Classes/PostMediaViewController.m -text
-Classes/PostPreviewViewController.h -text
-Classes/PostPreviewViewController.m -text
-Classes/PostSettingsViewController.h -text
-Classes/PostSettingsViewController.m -text
-Classes/PostTableViewCell.h -text
-Classes/PostTableViewCell.m -text
-Classes/PostToAbstractPost.h -text
-Classes/PostToAbstractPost.m -text
-Classes/PostViewController.h -text
-Classes/PostViewController.m -text
-Classes/PostsViewController.h -text
-Classes/PostsViewController.m -text
-Classes/QuickPhotoButtonView.h -text
-Classes/QuickPhotoButtonView.m -text
-Classes/QuickPhotoViewController.h -text
-Classes/QuickPhotoViewController.m -text
-Classes/QuickPicturePreviewView.h -text
-Classes/QuickPicturePreviewView.m -text
-Classes/ReachabilityUtils.h -text
-Classes/ReachabilityUtils.m -text
-Classes/SectionInfo.h -text
-Classes/SectionInfo.m -text
-Classes/SettingsPageViewController.h -text
-Classes/SettingsPageViewController.m -text
-Classes/SettingsViewController.h -text
-Classes/SettingsViewController.m -text
-Classes/SettingsViewControllerDelegate.h -text
-Classes/SidebarSectionHeaderView.h -text
-Classes/SidebarSectionHeaderView.m -text
-Classes/SidebarTableViewCell.h -text
-Classes/SidebarTableViewCell.m -text
-Classes/SidebarViewController.h -text
-Classes/SidebarViewController.m -text
-Classes/SoundUtil.h -text
-Classes/SoundUtil.m -text
-Classes/StatsWebViewController.h -text
-Classes/StatsWebViewController.m -text
-Classes/UIBarButtonItem+Styled.h -text
-Classes/UIBarButtonItem+Styled.m -text
-Classes/UIColor+Helpers.h -text
-Classes/UIColor+Helpers.m -text
-Classes/UIDevice+WordPressIdentifier.h -text
-Classes/UIDevice+WordPressIdentifier.m -text
-Classes/UIDevice-Hardware.h -text
-Classes/UIDevice-Hardware.m -text
-Classes/UIImageView+Gravatar.h -text
-Classes/UIImageView+Gravatar.m -text
-Classes/UINavigationBar+Styled.h -text
-Classes/UINavigationBar+Styled.m -text
-Classes/UINavigationController+KeyboardFix.h -text
-Classes/UINavigationController+KeyboardFix.m -text
-Classes/UINavigationController+Rotation.h -text
-Classes/UINavigationController+Rotation.m -text
-Classes/UITableViewActivityCell.h -text
-Classes/UITableViewActivityCell.m -text
-Classes/UITableViewSwitchCell.h -text
-Classes/UITableViewSwitchCell.m -text
-Classes/UITableViewTextFieldCell.h -text
-Classes/UITableViewTextFieldCell.m -text
-Classes/UIToolbar+Styled.h -text
-Classes/UIToolbar+Styled.m -text
-Classes/UIViewController+Rotation.h -text
-Classes/UIViewController+Rotation.m -text
-Classes/UIViewController+Styled.h -text
-Classes/UIViewController+Styled.m -text
-Classes/WPAddCategoryViewController.h -text
-Classes/WPAddCategoryViewController.m -text
-Classes/WPCategoryTree.h -text
-Classes/WPCategoryTree.m -text
-Classes/WPChromelessWebViewController.h -text
-Classes/WPChromelessWebViewController.m -text
-Classes/WPComOAuthController.h -text
-Classes/WPComOAuthController.m -text
-Classes/WPError.h -text
-Classes/WPError.m -text
-Classes/WPFriendFinderNudgeView.h -text
-Classes/WPFriendFinderNudgeView.m -text
-Classes/WPFriendFinderViewController.h -text
-Classes/WPFriendFinderViewController.m -text
-Classes/WPInfoView.h -text
-Classes/WPInfoView.m -text
-Classes/WPInfoView.xib -text
-Classes/WPKeyboardToolbar.h -text
-Classes/WPKeyboardToolbar.m -text
-Classes/WPKeyboardToolbarButtonItem.h -text
-Classes/WPKeyboardToolbarButtonItem.m -text
-Classes/WPLabel.h -text
-Classes/WPLabel.m -text
-Classes/WPPopoverBackgroundView.h -text
-Classes/WPPopoverBackgroundView.m -text
-Classes/WPProgressHUD.h -text
-Classes/WPProgressHUD.m -text
-Classes/WPReaderDetailViewController.h -text
-Classes/WPReaderDetailViewController.m -text
-Classes/WPReaderTopicsViewController.h -text
-Classes/WPReaderTopicsViewController.m -text
-Classes/WPReaderViewController.h -text
-Classes/WPReaderViewController.m -text
-Classes/WPSegmentedSelectionTableViewController.h -text
-Classes/WPSegmentedSelectionTableViewController.m -text
-Classes/WPSelectionTableViewController.h -text
-Classes/WPSelectionTableViewController.m -text
-Classes/WPTableViewController.h -text
-Classes/WPTableViewController.m -text
-Classes/WPTableViewControllerSubclass.h -text
-Classes/WPToast.h -text
-Classes/WPToast.m -text
-Classes/WPWebAppViewController.h -text
-Classes/WPWebAppViewController.m -text
-Classes/WPWebBridge.h -text
-Classes/WPWebBridge.m -text
-Classes/WPWebView.h -text
-Classes/WPWebView.m -text
-Classes/WPWebViewController.h -text
-Classes/WPWebViewController.m -text
-Classes/WPcomLoginViewController.h -text
-Classes/WPcomLoginViewController.m -text
-Classes/WebSignupViewController.h -text
-Classes/WebSignupViewController.m -text
-Classes/WelcomeViewController.h -text
-Classes/WelcomeViewController.m -text
-Classes/WordPress-1-2.xcmappingmodel/xcmapping.xml -text
-Classes/WordPress.xcdatamodeld/.xccurrentversion -text
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]2.xcdatamodel/elements -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]2.xcdatamodel/layout -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]3.xcdatamodel/elements -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]3.xcdatamodel/layout -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]4.xcdatamodel/elements -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]4.xcdatamodel/layout -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]5.xcdatamodel/elements -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]5.xcdatamodel/layout -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]6.xcdatamodel/elements -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]6.xcdatamodel/layout -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]7.xcdatamodel/elements -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]7.xcdatamodel/layout -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]8.xcdatamodel/elements -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]8.xcdatamodel/layout -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]9.xcdatamodel/elements -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress[!!-~]9.xcdatamodel/layout -text svneol=unset#unset
-Classes/WordPress.xcdatamodeld/WordPress.xcdatamodel/elements -text
-Classes/WordPress.xcdatamodeld/WordPress.xcdatamodel/layout -text
-Classes/WordPressAppDelegate.h -text
-Classes/WordPressAppDelegate.m -text
-/CommentViewController.xib -text
-/CrashReportView.xib -text
-/Default-568h@2x.png -text
-/Default-Landscape.png -text svneol=unset#unset
-/Default-Landscape@2x.png -text svneol=unset#unset
-/Default-Portrait.png -text svneol=unset#unset
-/Default-Portrait@2x.png -text svneol=unset#unset
-/Default.png -text
-/Default@2x.png -text
-/EditPostViewController-iPad.xib -text
-/EditPostViewController.xib -text
-/EditSiteViewController.xib -text
-/Entitlements.plist -text
-/HelpViewController.xib -text
-/Icon-72.png -text
-/Icon-72@2x.png -text svneol=unset#unset
-/Icon-Small-50.png -text
-/Icon-Small.png -text
-/Icon-Small@2x.png -text
-/Icon-dev-72.png -text svneol=unset#unset
-/Icon-dev-72@2x.png -text
-/Icon-dev.png -text svneol=unset#unset
-/Icon-dev@2x.png -text svneol=unset#unset
-/Icon.png -text svneol=unset#unset
-/Icon@2x.png -text svneol=unset#unset
-/Info-beta.plist -text
-/Info-dev.plist -text
-/Info.plist -text
-/MainWindow.xib -text
-/Media.h -text
-/Media.m -text
-/MediaObjectView.xib -text
-/NotificationsCommentDetailViewController.xib -text
-/NotificationsFollowDetailViewController.xib -text
-/NotificationsViewController.xib -text
 /Podfile -text
 /Podfile.lock -text
 Pods/AFNetworking/AFNetworking.podspec -text
@@ -566,149 +243,6 @@ Pods/DTCoreText/Core/Source/default.css.c -text
 Pods/DTCoreText/DTCoreText.podspec -text
 Pods/DTCoreText/LICENSE -text
 Pods/DTCoreText/Readme.markdown -text
-Pods/Documentation/DTCoreText/docset/Contents/Info.plist -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/NSAttributedString(DTCoreText).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/NSAttributedString(HTML).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/NSAttributedString(SmallCaps).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/NSCharacterSet(HTML).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/NSColor(HTML).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/NSData(DTBase64).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/NSImage(HTML).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/NSMutableAttributedString(HTML).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/NSMutableString(HTML).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/NSScanner(HTML).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/NSString(CSS).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/NSString(HTML).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/NSString(MalformedUTF8Additions).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/NSString(Paragraphs).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/UIColor(HTML).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/UIDevice(DTSimpleVersion).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Categories/UIImage(HTML).html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTAttributedTextCell.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTAttributedTextContentView.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTAttributedTextView.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTCSSListStyle.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTCSSStylesheet.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTCoreTextFontCollection.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTCoreTextFontDescriptor.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTCoreTextGlyphRun.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTCoreTextLayoutFrame.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTCoreTextLayoutLine.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTCoreTextLayouter.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTCoreTextParagraphStyle.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTHTMLAttributedStringBuilder.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTHTMLElement.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTHTMLParser.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTLazyImageView.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTLinkButton.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTTextAttachment.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTTextBlock.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Classes/DTWebVideoView.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Protocols/DTAttributedTextContentViewDelegate.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Protocols/DTHTMLParserDelegate.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Protocols/DTLazyImageViewDelegate.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/Protocols/DTWebVideoViewDelegate.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/css/styles.css -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/css/stylesPrint.css -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/hierarchy.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/img/button_bar_background.png -text svneol=unset#unset
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/img/disclosure.png -text svneol=unset#unset
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/img/disclosure_open.png -text svneol=unset#unset
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/img/library_background.png -text svneol=unset#unset
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/img/title_background.png -text svneol=unset#unset
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Documents/index.html -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Nodes.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens1.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens10.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens11.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens12.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens13.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens14.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens15.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens16.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens17.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens18.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens19.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens2.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens20.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens21.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens22.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens23.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens24.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens25.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens26.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens27.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens28.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens29.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens3.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens30.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens31.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens32.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens33.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens34.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens35.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens36.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens37.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens38.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens39.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens4.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens40.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens41.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens5.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens6.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens7.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens8.xml -text
-Pods/Documentation/DTCoreText/docset/Contents/Resources/Tokens9.xml -text
-Pods/Documentation/DTCoreText/html/Categories/NSAttributedString(DTCoreText).html -text
-Pods/Documentation/DTCoreText/html/Categories/NSAttributedString(HTML).html -text
-Pods/Documentation/DTCoreText/html/Categories/NSAttributedString(SmallCaps).html -text
-Pods/Documentation/DTCoreText/html/Categories/NSCharacterSet(HTML).html -text
-Pods/Documentation/DTCoreText/html/Categories/NSColor(HTML).html -text
-Pods/Documentation/DTCoreText/html/Categories/NSData(DTBase64).html -text
-Pods/Documentation/DTCoreText/html/Categories/NSImage(HTML).html -text
-Pods/Documentation/DTCoreText/html/Categories/NSMutableAttributedString(HTML).html -text
-Pods/Documentation/DTCoreText/html/Categories/NSMutableString(HTML).html -text
-Pods/Documentation/DTCoreText/html/Categories/NSScanner(HTML).html -text
-Pods/Documentation/DTCoreText/html/Categories/NSString(CSS).html -text
-Pods/Documentation/DTCoreText/html/Categories/NSString(HTML).html -text
-Pods/Documentation/DTCoreText/html/Categories/NSString(MalformedUTF8Additions).html -text
-Pods/Documentation/DTCoreText/html/Categories/NSString(Paragraphs).html -text
-Pods/Documentation/DTCoreText/html/Categories/UIColor(HTML).html -text
-Pods/Documentation/DTCoreText/html/Categories/UIDevice(DTSimpleVersion).html -text
-Pods/Documentation/DTCoreText/html/Categories/UIImage(HTML).html -text
-Pods/Documentation/DTCoreText/html/Classes/DTAttributedTextCell.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTAttributedTextContentView.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTAttributedTextView.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTCSSListStyle.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTCSSStylesheet.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTCoreTextFontCollection.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTCoreTextFontDescriptor.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTCoreTextGlyphRun.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTCoreTextLayoutFrame.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTCoreTextLayoutLine.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTCoreTextLayouter.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTCoreTextParagraphStyle.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTHTMLAttributedStringBuilder.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTHTMLElement.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTHTMLParser.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTLazyImageView.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTLinkButton.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTTextAttachment.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTTextBlock.html -text
-Pods/Documentation/DTCoreText/html/Classes/DTWebVideoView.html -text
-Pods/Documentation/DTCoreText/html/Protocols/DTAttributedTextContentViewDelegate.html -text
-Pods/Documentation/DTCoreText/html/Protocols/DTHTMLParserDelegate.html -text
-Pods/Documentation/DTCoreText/html/Protocols/DTLazyImageViewDelegate.html -text
-Pods/Documentation/DTCoreText/html/Protocols/DTWebVideoViewDelegate.html -text
-Pods/Documentation/DTCoreText/html/css/styles.css -text
-Pods/Documentation/DTCoreText/html/css/stylesPrint.css -text
-Pods/Documentation/DTCoreText/html/hierarchy.html -text
-Pods/Documentation/DTCoreText/html/img/button_bar_background.png -text svneol=unset#unset
-Pods/Documentation/DTCoreText/html/img/disclosure.png -text svneol=unset#unset
-Pods/Documentation/DTCoreText/html/img/disclosure_open.png -text svneol=unset#unset
-Pods/Documentation/DTCoreText/html/img/library_background.png -text svneol=unset#unset
-Pods/Documentation/DTCoreText/html/img/title_background.png -text svneol=unset#unset
-Pods/Documentation/DTCoreText/html/index.html -text
 Pods/Headers/AFNetworking/AFHTTPClient.h -text
 Pods/Headers/AFNetworking/AFHTTPRequestOperation.h -text
 Pods/Headers/AFNetworking/AFImageRequestOperation.h -text
@@ -808,597 +342,920 @@ Pods/Reachability/README.md -text
 Pods/Reachability/Reachability.h -text
 Pods/Reachability/Reachability.m -text
 Pods/Reachability/Reachability.podspec -text
-/PostMediaViewController-iPad.xib -text
-/PostMediaViewController.xib -text
-/PostPreviewViewController.xib -text
-/PostSettingsViewController.xib -text
-/PostViewController-iPad.xib -text
-/QuickPhotoViewController.xib -text
 /README -text
-Resources-iPad/MainWindow-iPad.xib -text
-/SidebarToolbarButton.png -text svneol=unset#unset
-/SidebarToolbarButton@2x.png -text svneol=unset#unset
-/SidebarToolbarButtonHighlighted.png -text
-/SidebarToolbarButtonHighlighted@2x.png -text
-/SidebarViewController.xib -text
-/ToastView.xib -text
-UIAutomationTests/Blog.js -text
-UIAutomationTests/Config.js -text
-UIAutomationTests/Post.js -text
-UIAutomationTests/WPiOSTests.js -text
-/UIButtonBarTrash.png -text svneol=unset#unset
-/UIButtonBarTrash@2x.png -text svneol=unset#unset
-/UIImage+Alpha.h -text
-/UIImage+Alpha.m -text
-/UIImage+Resize.h -text
-/UIImage+Resize.m -text
-/UIImage+RoundedCorner.h -text
-/UIImage+RoundedCorner.m -text
-/UISegmentBarBlackButton.png -text svneol=unset#unset
-/UISegmentBarBlackButton@2x.png -text svneol=unset#unset
-/UISegmentBarBlackButtonHighlighted.png -text svneol=unset#unset
-/UISegmentBarBlackButtonHighlighted@2x.png -text svneol=unset#unset
-/UITableViewActivityCell.xib -text
-/UITableViewSwitchCell.xib -text
-Vendor/KVO+Blocks/NSObject+BlockObservation.h -text
-Vendor/KVO+Blocks/NSObject+BlockObservation.m -text
-Vendor/facebook-ios-sdk/FBConnect.h -text
-Vendor/facebook-ios-sdk/FBDialog.bundle/images/close.png -text
-Vendor/facebook-ios-sdk/FBDialog.bundle/images/close@2x.png -text
-Vendor/facebook-ios-sdk/FBDialog.bundle/images/fbicon.png -text
-Vendor/facebook-ios-sdk/FBDialog.h -text
-Vendor/facebook-ios-sdk/FBFrictionlessRequestSettings.h -text
-Vendor/facebook-ios-sdk/FBLoginDialog.h -text
-Vendor/facebook-ios-sdk/FBRequest.h -text
-Vendor/facebook-ios-sdk/Facebook.h -text
-Vendor/facebook-ios-sdk/JSON.h -text
-Vendor/facebook-ios-sdk/NSObject+SBJSON.h -text
-Vendor/facebook-ios-sdk/NSString+SBJSON.h -text
-Vendor/facebook-ios-sdk/SBJSON.h -text
-Vendor/facebook-ios-sdk/SBJsonBase.h -text
-Vendor/facebook-ios-sdk/SBJsonParser.h -text
-Vendor/facebook-ios-sdk/SBJsonWriter.h -text
-Vendor/facebook-ios-sdk/libfacebook_ios_sdk.a -text
-Vendor/libraries.txt -text
-Vendor/xmlrpc/Configurations/Common.xcconfig -text
-Vendor/xmlrpc/Configurations/CommonDevelopment.xcconfig -text
-Vendor/xmlrpc/Configurations/CommonRelease.xcconfig -text
-Vendor/xmlrpc/Configurations/XMLRPC.xcconfig -text
-Vendor/xmlrpc/Configurations/XMLRPCDevelopment.xcconfig -text
-Vendor/xmlrpc/Configurations/XMLRPCRelease.xcconfig -text
-Vendor/xmlrpc/Configurations/XMLRPCUnitTests.xcconfig -text
-Vendor/xmlrpc/Configurations/XMLRPCUnitTestsDevelopment.xcconfig -text
-Vendor/xmlrpc/Configurations/XMLRPCUnitTestsRelease.xcconfig -text
-Vendor/xmlrpc/LICENSE.md -text
-Vendor/xmlrpc/Languages/English.lproj/InfoPlist.strings -text svneol=unset#unset
-Vendor/xmlrpc/NSData+Base64.h -text
-Vendor/xmlrpc/NSData+Base64.m -text
-Vendor/xmlrpc/NSStringAdditions.h -text
-Vendor/xmlrpc/NSStringAdditions.m -text
-Vendor/xmlrpc/README.md -text
-Vendor/xmlrpc/Resources/Property[!!-~]Lists/TestCases.plist -text
-Vendor/xmlrpc/Resources/Property[!!-~]Lists/XMLRPC-Info.plist -text
-Vendor/xmlrpc/Resources/Property[!!-~]Lists/XMLRPCUnitTests-Info.plist -text
-Vendor/xmlrpc/Resources/Test[!!-~]Cases/AlternativeDateFormatsTestCase.xml -text
-Vendor/xmlrpc/Resources/Test[!!-~]Cases/DefaultTypeTestCase.xml -text
-Vendor/xmlrpc/Resources/Test[!!-~]Cases/EmptyBooleanTestCase.xml -text
-Vendor/xmlrpc/Resources/Test[!!-~]Cases/EmptyDataTestCase.xml -text
-Vendor/xmlrpc/Resources/Test[!!-~]Cases/EmptyDoubleTestCase.xml -text
-Vendor/xmlrpc/Resources/Test[!!-~]Cases/EmptyIntegerTestCase.xml -text
-Vendor/xmlrpc/Resources/Test[!!-~]Cases/EmptyStringTestCase.xml -text
-Vendor/xmlrpc/Resources/Test[!!-~]Cases/SimpleArrayTestCase.xml -text
-Vendor/xmlrpc/Resources/Test[!!-~]Cases/SimpleStructTestCase.xml -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/Configurations/Common.xcconfig -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/Configurations/CommonDevelopment.xcconfig -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/Configurations/CommonRelease.xcconfig -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/Configurations/TestClient.xcconfig -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/Configurations/TestClientDevelopment.xcconfig -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/Configurations/TestClientRelease.xcconfig -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/Languages/English.lproj/InfoPlist.strings -text svneol=unset#unset
-Vendor/xmlrpc/Tools/Test[!!-~]Client/Languages/English.lproj/TestClient.xib -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/Languages/English.lproj/TestClientMainWindow.xib -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/Languages/English.lproj/TestClientXMLParserWindow.xib -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/Test[!!-~]Client.xcodeproj/project.pbxproj -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClient-Info.plist -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClient.pch -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClientApplicationController.h -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClientApplicationController.m -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClientMainWindowController.h -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClientMainWindowController.m -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClientXMLParserWindowController.h -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClientXMLParserWindowController.m -text
-Vendor/xmlrpc/Tools/Test[!!-~]Client/main.m -text
-Vendor/xmlrpc/Tools/Test[!!-~]Server/README.md -text
-Vendor/xmlrpc/Tools/Test[!!-~]Server/build.properties -text
-Vendor/xmlrpc/Tools/Test[!!-~]Server/build.xml -text
-Vendor/xmlrpc/Tools/Test[!!-~]Server/resources/handlers.properties -text
-Vendor/xmlrpc/Tools/Test[!!-~]Server/resources/log4j.xml -text
-Vendor/xmlrpc/Tools/Test[!!-~]Server/server.sh -text
-Vendor/xmlrpc/Tools/Test[!!-~]Server/src/com/divisiblebyzero/xmlrpc/Application.java -text
-Vendor/xmlrpc/Tools/Test[!!-~]Server/src/com/divisiblebyzero/xmlrpc/controller/XmlRpcServerControlPanelController.java -text
-Vendor/xmlrpc/Tools/Test[!!-~]Server/src/com/divisiblebyzero/xmlrpc/model/Server.java -text
-Vendor/xmlrpc/Tools/Test[!!-~]Server/src/com/divisiblebyzero/xmlrpc/model/handlers/Echo.java -text
-Vendor/xmlrpc/Tools/Test[!!-~]Server/src/com/divisiblebyzero/xmlrpc/view/XmlRpcServerControlPanel.java -text
-Vendor/xmlrpc/Unit[!!-~]Tests/XMLRPCParserTest.h -text
-Vendor/xmlrpc/Unit[!!-~]Tests/XMLRPCParserTest.m -text
-Vendor/xmlrpc/XMLRPC.h -text
-Vendor/xmlrpc/XMLRPC.pch -text
-Vendor/xmlrpc/XMLRPC.xcodeproj/project.pbxproj -text
-Vendor/xmlrpc/XMLRPCConnection.h -text
-Vendor/xmlrpc/XMLRPCConnection.m -text
-Vendor/xmlrpc/XMLRPCConnectionDelegate.h -text
-Vendor/xmlrpc/XMLRPCConnectionManager.h -text
-Vendor/xmlrpc/XMLRPCConnectionManager.m -text
-Vendor/xmlrpc/XMLRPCDataCleaner.h -text
-Vendor/xmlrpc/XMLRPCDataCleaner.m -text
-Vendor/xmlrpc/XMLRPCEncoder.h -text
-Vendor/xmlrpc/XMLRPCEncoder.m -text
-Vendor/xmlrpc/XMLRPCEventBasedParser.h -text
-Vendor/xmlrpc/XMLRPCEventBasedParser.m -text
-Vendor/xmlrpc/XMLRPCEventBasedParserDelegate.h -text
-Vendor/xmlrpc/XMLRPCEventBasedParserDelegate.m -text
-Vendor/xmlrpc/XMLRPCRequest.h -text
-Vendor/xmlrpc/XMLRPCRequest.m -text
-Vendor/xmlrpc/XMLRPCResponse.h -text
-Vendor/xmlrpc/XMLRPCResponse.m -text
-/WPAFNetworking.h -text
-/WPAddCategoryViewController.xib -text
-/WPComOAuthController.xib -text
-/WPReaderViewController.xib -text
-/WPSelectionTableViewController.xib -text
-/WPWebViewController-iPad.xib -text
-/WPWebViewController.xib -text
-/WPpregressHUDBackground.png -text
-/WPpregressHUDBackground@2x.png -text
-/WebSignupViewController-iPad.xib -text
-/WebSignupViewController.xib -text
-/WelcomeViewController.xib -text
-/WordPress[!!-~]copy-Info.plist -text
-WordPress.xcodeproj/project.pbxproj -text
-WordPress.xcodeproj/xcshareddata/xcschemes/WordPress[!!-~]Internal.xcscheme -text
-WordPress.xcodeproj/xcshareddata/xcschemes/WordPress.xcscheme -text
-WordPress.xcodeproj/xcshareddata/xcschemes/WordPressTest.xcscheme -text
 WordPress.xcworkspace/contents.xcworkspacedata -text
 WordPress.xcworkspace/xcuserdata/daniloercoli.xcuserdatad/UserInterfaceState.xcuserstate -text svneol=unset#unset
-WordPressApi/AFAuthenticationAlertView.h -text
-WordPressApi/AFAuthenticationAlertView.m -text
-WordPressApi/AFXMLRPCClient.h -text
-WordPressApi/AFXMLRPCClient.m -text
-WordPressApi/WPRSDParser.h -text
-WordPressApi/WPRSDParser.m -text
-WordPressApi/WordPressApi.h -text
-WordPressApi/WordPressApi.m -text
-WordPressApi/WordPressComApi.h -text
-WordPressApi/WordPressComApi.m -text
-WordPressApi/WordPressComApiCredentials.h -text
-WordPressApi/WordPressComApiCredentials.m -text
-WordPressApi/gencredentials.rb -text
-WordPressTest/WordPressTest-Info.plist -text
-WordPressTest/WordPressTest-Prefix.pch -text
-WordPressTest/WordPressTest.h -text
-WordPressTest/WordPressTest.m -text
-WordPressTest/en.lproj/InfoPlist.strings -text
-WordPressTest/entities.xml -text
-WordPressTest/entitiesDecoded.xml -text
-/WordPress_Prefix.pch -text
-/action_icon_followed.png -text svneol=unset#unset
-/action_icon_followed@2x.png -text svneol=unset#unset
-/action_icon_replied.png -text svneol=unset#unset
-/action_icon_replied@2x.png -text svneol=unset#unset
-/action_icon_unfollowed.png -text svneol=unset#unset
-/action_icon_unfollowed@2x.png -text svneol=unset#unset
-/approve.png -text svneol=unset#unset
-/approve@2x.png -text svneol=unset#unset
-/attachment.png -text svneol=unset#unset
-/attachment@2x.png -text svneol=unset#unset
-/autosave.png -text
-/autosave@2x.png -text
-/background.png -text
-/background@2x.png -text
-/blavatar-wpcom.png -text
-/blavatar-wpcom@2x.png -text
-/blavatar-wporg.png -text
-/blavatar-wporg@2x.png -text
-/blockquote.png -text svneol=unset#unset
-/blockquote@2x.png -text svneol=unset#unset
-/blockquote~ipad.png -text svneol=unset#unset
-/blueArrow.png -text svneol=unset#unset
-/blueArrow@2x.png -text svneol=unset#unset
-/bold.png -text svneol=unset#unset
-/bold@2x.png -text svneol=unset#unset
-/bold~ipad.png -text svneol=unset#unset
-/category_child.png -text
-/category_child@2x.png -text
-/cell_gradient_bg.png -text
-/cell_gradient_bg@2x.png -text
-/check.png -text
-/check@2x.png -text
-de.lproj/Localizable.strings -text svneol=unset#unset
-/defaultPostTemplate.html -text
-/defaultPostTemplate_old.html -text
-/doneButton.png -text
-/doneButton@2x.png -text
-/doneButtonHighlighted.png -text
-/doneButtonHighlighted@2x.png -text
-/down.png -text
-/down@2x.png -text
-/downArrow.png -text svneol=unset#unset
-/downArrow@2x.png -text svneol=unset#unset
-/down_dim.png -text
-/down_dim@2x.png -text
-en.lproj/Localizable.strings -text svneol=unset#unset
-es.lproj/Localizable.strings -text svneol=unset#unset
-/fix-translation.php -text
-fr.lproj/Localizable.strings -text svneol=unset#unset
-/friend_finder_cancel_btn.png -text
-/friend_finder_cancel_btn@2x.png -text
-/friend_finder_cancel_btn_highlight.png -text
-/friend_finder_cancel_btn_highlight@2x.png -text
-/friend_follow_service_icons.png -text svneol=unset#unset
-/friend_follow_service_icons@2x.png -text svneol=unset#unset
-/gravatar.jpg -text
-/hasLocation.png -text
-/hasLocation@2x.png -text
-he.lproj/Localizable.strings -text svneol=unset#unset
-/help.png -text
-hr.lproj/Localizable.strings -text svneol=unset#unset
-hu.lproj/Localizable.strings -text svneol=unset#unset
-/i18n_download -text
-/iTunesArtwork -text
-/icon_info_message.png -text
-/icon_info_message@2x.png -text
-id.lproj/Localizable.strings -text
-/info_button.png -text
-/info_button@2x.png -text
-/inner-shadow.png -text svneol=unset#unset
-it.lproj/Localizable.strings -text
-/italic.png -text svneol=unset#unset
-/italic@2x.png -text svneol=unset#unset
-/italic~ipad.png -text svneol=unset#unset
-ja.lproj/Localizable.strings -text svneol=unset#unset
-/keyboardButton.png -text svneol=unset#unset
-/keyboardButton@2x.png -text svneol=unset#unset
-/keyboardButtonHighlighted.png -text
-/keyboardButtonHighlighted@2x.png -text
-/keyboardButtoniPad.png -text
-/keyboardButtoniPad@2x.png -text svneol=unset#unset
-/keyboardButtoniPadHighlighted.png -text
-/keyboardButtoniPadHighlighted@2x.png -text svneol=unset#unset
-/keyboardButton~ipad.png -text svneol=unset#unset
-/keyboardClose~ipad.png -text svneol=unset#unset
-/left.png -text svneol=unset#unset
-/left@2x.png -text svneol=unset#unset
-/license.txt -text
-/link.png -text svneol=unset#unset
-/link@2x.png -text svneol=unset#unset
-/link~ipad.png -text svneol=unset#unset
-/list.png -text svneol=unset#unset
-/list@2x.png -text svneol=unset#unset
-/loader.html -text
-/localize.py -text
-/lock.png -text
-/logo_wpcom.png -text
-/logo_wpcom@2x.png -text
-/logo_wporg.png -text
-/logo_wporg@2x.png -text
-/main.m -text
-/menu_button_divider.png -text svneol=unset#unset
-/menu_button_divider@2x.png -text svneol=unset#unset
-/menu_notification_left_bg.png -text svneol=unset#unset
-/menu_notification_left_bg@2x.png -text svneol=unset#unset
-/menu_notification_left_bg_down.png -text svneol=unset#unset
-/menu_notification_left_bg_down@2x.png -text svneol=unset#unset
-/menu_notification_right_bg.png -text svneol=unset#unset
-/menu_notification_right_bg@2x.png -text svneol=unset#unset
-/menu_notification_right_bg_down.png -text svneol=unset#unset
-/menu_notification_right_bg_down@2x.png -text svneol=unset#unset
-/menu_notification_spacer.png -text svneol=unset#unset
-/menu_notification_spacer@2x.png -text svneol=unset#unset
-/menu_notification_spacer_down.png -text svneol=unset#unset
-/menu_notification_spacer_down@2x.png -text svneol=unset#unset
-/movie.png -text svneol=unset#unset
-/movie@2x.png -text svneol=unset#unset
-/n.caf -text
-/navbar_actions.png -text
-/navbar_actions@2x.png -text
-/navbar_add.png -text
-/navbar_add@2x.png -text
-/navbar_back_button_bg.png -text
-/navbar_back_button_bg@2x.png -text
-/navbar_back_button_bg_active.png -text
-/navbar_back_button_bg_active@2x.png -text
-/navbar_bg.png -text
-/navbar_bg@2x.png -text
-/navbar_button_bg.png -text
-/navbar_button_bg@2x.png -text
-/navbar_button_bg_active.png -text
-/navbar_button_bg_active@2x.png -text
-/navbar_button_bg_landscape.png -text
-/navbar_button_bg_landscape@2x.png -text
-/navbar_button_bg_landscape_active.png -text
-/navbar_button_bg_landscape_active@2x.png -text
-/navbar_primary_button_bg.png -text
-/navbar_primary_button_bg@2x.png -text
-/navbar_primary_button_bg_active.png -text
-/navbar_primary_button_bg_active@2x.png -text
-/navbar_primary_button_bg_landscape.png -text
-/navbar_primary_button_bg_landscape@2x.png -text
-/navbar_primary_button_bg_landscape_active.png -text
-/navbar_primary_button_bg_landscape_active@2x.png -text
-/navbar_read.png -text
-/navbar_read@2x.png -text
-/navbar_shadow.png -text
-/navbar_shadow@2x.png -text
-/navbar_toggle.png -text svneol=unset#unset
-/navbar_toggle@2x.png -text svneol=unset#unset
-nb.lproj/Localizable.strings -text svneol=unset#unset
-/next.png -text svneol=unset#unset
-/next@2x.png -text svneol=unset#unset
-nl.lproj/Localizable.strings -text svneol=unset#unset
-/note-comment-grandparent-footer.png -text svneol=unset#unset
-/note-comment-grandparent-footer@2x.png -text svneol=unset#unset
-/note-comment-parent-footer.png -text svneol=unset#unset
-/note-comment-parent-footer@2x.png -text svneol=unset#unset
-/note-reply-field.png -text svneol=unset#unset
-/note-reply-field@2x.png -text svneol=unset#unset
-/note_button_icon_follow.png -text svneol=unset#unset
-/note_button_icon_follow@2x.png -text svneol=unset#unset
-/note_button_icon_following.png -text svneol=unset#unset
-/note_button_icon_following@2x.png -text svneol=unset#unset
-/note_comment_table_threaded.png -text svneol=unset#unset
-/note_header_shadow.png -text svneol=unset#unset
-/note_header_shadow@2x.png -text svneol=unset#unset
-/note_icon_achievement.png -text svneol=unset#unset
-/note_icon_achievement@2x.png -text svneol=unset#unset
-/note_icon_achievement_highlighted.png -text svneol=unset#unset
-/note_icon_achievement_highlighted@2x.png -text svneol=unset#unset
-/note_icon_comment.png -text svneol=unset#unset
-/note_icon_comment@2x.png -text svneol=unset#unset
-/note_icon_comment_highlighted.png -text svneol=unset#unset
-/note_icon_comment_highlighted@2x.png -text svneol=unset#unset
-/note_icon_follow.png -text svneol=unset#unset
-/note_icon_follow@2x.png -text svneol=unset#unset
-/note_icon_follow_highlighted.png -text svneol=unset#unset
-/note_icon_follow_highlighted@2x.png -text svneol=unset#unset
-/note_icon_like.png -text svneol=unset#unset
-/note_icon_like@2x.png -text svneol=unset#unset
-/note_icon_like_highlighted.png -text svneol=unset#unset
-/note_icon_like_highlighted@2x.png -text svneol=unset#unset
-/note_icon_reblog.png -text svneol=unset#unset
-/note_icon_reblog@2x.png -text svneol=unset#unset
-/note_icon_reblog_highlighted.png -text svneol=unset#unset
-/note_icon_reblog_highlighted@2x.png -text svneol=unset#unset
-/note_icon_stats.png -text svneol=unset#unset
-/note_icon_stats@2x.png -text svneol=unset#unset
-/note_icon_stats_highlighted.png -text svneol=unset#unset
-/note_icon_stats_highlighted@2x.png -text svneol=unset#unset
-/note_navbar_icon_achievement.png -text svneol=unset#unset
-/note_navbar_icon_achievement@2x.png -text svneol=unset#unset
-/note_navbar_icon_comment.png -text svneol=unset#unset
-/note_navbar_icon_comment@2x.png -text svneol=unset#unset
-/note_navbar_icon_follow.png -text svneol=unset#unset
-/note_navbar_icon_follow@2x.png -text svneol=unset#unset
-/note_navbar_icon_like.png -text svneol=unset#unset
-/note_navbar_icon_like@2x.png -text svneol=unset#unset
-/note_navbar_icon_reblog.png -text svneol=unset#unset
-/note_navbar_icon_reblog@2x.png -text svneol=unset#unset
-/note_navbar_icon_stats.png -text svneol=unset#unset
-/note_navbar_icon_stats@2x.png -text svneol=unset#unset
-/panel_icon.png -text
-/panel_icon@2x.png -text
-/paperclip.png -text
-/paperclip@2x.png -text
-/photos.png -text
-/photos@2x.png -text
-pl.lproj/Localizable.strings -text svneol=unset#unset
-/popover_arrow.png -text
-/popover_arrow@2x.png -text
-/popover_bg.png -text
-/popover_bg@2x.png -text
-/postPreview.html -text
-/preview.png -text
-/preview@2x.png -text
-/previous.png -text svneol=unset#unset
-/previous@2x.png -text svneol=unset#unset
-pt.lproj/Localizable.strings -text svneol=unset#unset
-/read.png -text
-/read@2x.png -text
-/redoDisabled~ipad.png -text svneol=unset#unset
-/redo~ipad.png -text svneol=unset#unset
-/right.png -text svneol=unset#unset
-/right@2x.png -text svneol=unset#unset
-/settings.png -text
-/settings@2x.png -text
-/settings_bg.png -text
-/settings_bg@2x.png -text
-/sidebar-logo.png -text
-/sidebar-logo@2x.png -text
-/sidebar_bg.png -text
-/sidebar_bg@2x.png -text
-/sidebar_border_bg.png -text
-/sidebar_border_bg@2x.png -text
-/sidebar_camera.png -text
-/sidebar_camera@2x.png -text
-/sidebar_cell_bg.png -text
-/sidebar_cell_bg@2x.png -text
-/sidebar_cell_bg_selected.png -text
-/sidebar_cell_bg_selected@2x.png -text
-/sidebar_comment_bubble.png -text
-/sidebar_comment_bubble@2x.png -text
-/sidebar_comments.png -text
-/sidebar_comments@2x.png -text
-/sidebar_dashboard.png -text
-/sidebar_dashboard@2x.png -text
-/sidebar_footer_bg.png -text
-/sidebar_footer_bg@2x.png -text
-/sidebar_notifications.png -text svneol=unset#unset
-/sidebar_notifications@2x.png -text svneol=unset#unset
-/sidebar_notifications_highlighted.png -text svneol=unset#unset
-/sidebar_notifications_highlighted@2x.png -text svneol=unset#unset
-/sidebar_pages.png -text
-/sidebar_pages@2x.png -text
-/sidebar_posts.png -text
-/sidebar_posts@2x.png -text
-/sidebar_read.png -text
-/sidebar_read@2x.png -text
-/sidebar_settings.png -text
-/sidebar_settings@2x.png -text
-/sidebar_stats.png -text
-/sidebar_stats@2x.png -text
-/sidebar_view.png -text
-/sidebar_view@2x.png -text
-/snd_discard.caf -text
-/snd_pull.caf -text
-/snd_rollup.caf -text
-/snd_swipe.caf -text
-/stats.png -text
-/stats@2x.png -text
-sv.lproj/Localizable.strings -text svneol=unset#unset
-/sync.png -text svneol=unset#unset
-/sync@2x.png -text
-/sync_dark.png -text
-/sync_dark@2x.png -text
-/sync_lite.png -text
-/sync_lite@2x.png -text
-/tabPointer.png -text svneol=unset#unset
-/tabPointer@2x.png -text svneol=unset#unset
-/tabPointer_black.png -text
-/tabPointer_black@2x.png -text
-/table_sep.png -text svneol=unset#unset
-/table_sep@2x.png -text svneol=unset#unset
-/toggleButton.png -text
-/toggleButton@2x.png -text
-/toggleButtonExtended.png -text
-/toggleButtonExtended@2x.png -text
-/toggleButtonMain.png -text
-/toggleButtonMain@2x.png -text
-/toolbarBlockquote.png -text
-/toolbarBlockquote@2x.png -text
-/toolbarBlockquoteHighlighted.png -text
-/toolbarBlockquoteHighlighted@2x.png -text
-/toolbarBlockquoteiPad.png -text
-/toolbarBlockquoteiPad@2x.png -text svneol=unset#unset
-/toolbarBold.png -text
-/toolbarBold@2x.png -text
-/toolbarBoldHighlighted.png -text
-/toolbarBoldHighlighted@2x.png -text
-/toolbarBoldiPad.png -text
-/toolbarBoldiPad@2x.png -text svneol=unset#unset
-/toolbarCode.png -text
-/toolbarCode@2x.png -text
-/toolbarCodeHighlighted.png -text
-/toolbarCodeHighlighted@2x.png -text
-/toolbarCodeiPad.png -text
-/toolbarCodeiPad@2x.png -text svneol=unset#unset
-/toolbarDel.png -text
-/toolbarDel@2x.png -text
-/toolbarDelHighlighted.png -text
-/toolbarDelHighlighted@2x.png -text
-/toolbarDeliPad.png -text
-/toolbarDeliPad@2x.png -text svneol=unset#unset
-/toolbarItalic.png -text
-/toolbarItalic@2x.png -text
-/toolbarItalicHighlighted.png -text
-/toolbarItalicHighlighted@2x.png -text
-/toolbarItaliciPad.png -text
-/toolbarItaliciPad@2x.png -text svneol=unset#unset
-/toolbarLi.png -text
-/toolbarLi@2x.png -text
-/toolbarLiHighlighted.png -text
-/toolbarLiHighlighted@2x.png -text
-/toolbarLiiPad.png -text
-/toolbarLiiPad@2x.png -text svneol=unset#unset
-/toolbarLink.png -text
-/toolbarLink@2x.png -text
-/toolbarLinkHighlighted.png -text
-/toolbarLinkHighlighted@2x.png -text
-/toolbarLinkiPad.png -text
-/toolbarLinkiPad@2x.png -text svneol=unset#unset
-/toolbarMore.png -text
-/toolbarMore@2x.png -text
-/toolbarMoreHighlighted.png -text
-/toolbarMoreHighlighted@2x.png -text
-/toolbarMoreiPad.png -text
-/toolbarMoreiPad@2x.png -text svneol=unset#unset
-/toolbarOl.png -text
-/toolbarOl@2x.png -text
-/toolbarOlHighlighted.png -text
-/toolbarOlHighlighted@2x.png -text
-/toolbarOliPad.png -text
-/toolbarOliPad@2x.png -text svneol=unset#unset
-/toolbarUl.png -text
-/toolbarUl@2x.png -text
-/toolbarUlHighlighted.png -text
-/toolbarUlHighlighted@2x.png -text
-/toolbarUliPad.png -text
-/toolbarUliPad@2x.png -text svneol=unset#unset
-/toolbar_actions.png -text
-/toolbar_actions@2x.png -text
-/toolbar_approve.png -text
-/toolbar_approve@2x.png -text
-/toolbar_bg.png -text
-/toolbar_bg@2x.png -text
-/toolbar_delete.png -text
-/toolbar_delete@2x.png -text
-/toolbar_edit.png -text
-/toolbar_edit@2x.png -text
-/toolbar_flag.png -text
-/toolbar_flag@2x.png -text
-/toolbar_flag_lite.png -text
-/toolbar_flag_lite@2x.png -text
-/toolbar_reply.png -text
-/toolbar_reply@2x.png -text
-/toolbar_shadow.png -text
-/toolbar_shadow@2x.png -text
-/toolbar_swipe_approve.png -text
-/toolbar_swipe_approve@2x.png -text
-/toolbar_swipe_flag.png -text
-/toolbar_swipe_flag@2x.png -text
-/toolbar_swipe_reply.png -text
-/toolbar_swipe_reply@2x.png -text
-/toolbar_swipe_trash.png -text
-/toolbar_swipe_trash@2x.png -text
-/toolbar_swipe_unapprove.png -text
-/toolbar_swipe_unapprove@2x.png -text
-/toolbar_unapprove.png -text
-/toolbar_unapprove@2x.png -text
-/toolbar_write.png -text
-/toolbar_write@2x.png -text
-/toolbar_write_lite.png -text
-/toolbar_write_lite@2x.png -text
-tr.lproj/Localizable.strings -text
-/unapprove.png -text svneol=unset#unset
-/unapprove@2x.png -text svneol=unset#unset
-/uncheck.png -text
-/uncheck@2x.png -text
-/uncrustify.cfg -text
-/undoDisabled~ipad.png -text svneol=unset#unset
-/undo~ipad.png -text svneol=unset#unset
-/up.png -text
-/up@2x.png -text
-/up_dim.png -text
-/up_dim@2x.png -text
-/update-translations.rb -text
-/welcome_bg.png -text
-/welcome_bg@2x.png -text
-/welcome_bg_pattern.png -text
-/welcome_bg_pattern@2x.png -text
-/welcome_button_add.png -text
-/welcome_button_add@2x.png -text
-/welcome_button_asterisk.png -text
-/welcome_button_asterisk@2x.png -text
-/welcome_button_bg.png -text
-/welcome_button_bg@2x.png -text
-/welcome_button_bg_full.png -text
-/welcome_button_bg_full@2x.png -text
-/welcome_button_bg_full_highlighted.png -text
-/welcome_button_bg_full_highlighted@2x.png -text
-/whitebg.png -text
-/wp_logo.png -text
-/wp_logo@2x.png -text
-/write.png -text
-/write@2x.png -text
-/xhtml1-transitional.dtd -text
-/xhtmlValidatorTemplate.xhtml -text
-zh-Hans.lproj/Localizable.strings -text svneol=unset#unset
-zh-Hant.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/AboutViewController.xib -text
+WordPress/AddSiteViewController-iPad.xib -text
+WordPress/AddSiteViewController.xib -text
+WordPress/AddUsersBlogsViewController-iPad.xib -text
+WordPress/AddUsersBlogsViewController.xib -text
+WordPress/BetaFeedbackViewController.xib -text
+WordPress/CameraPlus/CameraPlusPickerManager.h -text
+WordPress/CameraPlus/CameraPlusPickerManager.m -text
+WordPress/Classes/AboutViewController.h -text
+WordPress/Classes/AboutViewController.m -text
+WordPress/Classes/AbstractPost.h -text
+WordPress/Classes/AbstractPost.m -text
+WordPress/Classes/AddSiteViewController.h -text
+WordPress/Classes/AddSiteViewController.m -text
+WordPress/Classes/AddUsersBlogsViewController.h -text
+WordPress/Classes/AddUsersBlogsViewController.m -text
+WordPress/Classes/BetaFeedbackViewController.h -text
+WordPress/Classes/BetaFeedbackViewController.m -text
+WordPress/Classes/BetaUIWindow.h -text
+WordPress/Classes/BetaUIWindow.m -text
+WordPress/Classes/Blog.h -text
+WordPress/Classes/Blog.m -text
+WordPress/Classes/BlogSelectorButton.h -text
+WordPress/Classes/BlogSelectorButton.m -text
+WordPress/Classes/BlogSelectorViewController.h -text
+WordPress/Classes/BlogSelectorViewController.m -text
+WordPress/Classes/BlogsTableViewCell.h -text
+WordPress/Classes/BlogsTableViewCell.m -text
+WordPress/Classes/CPopoverManager.h -text
+WordPress/Classes/CPopoverManager.m -text
+WordPress/Classes/Category.h -text
+WordPress/Classes/Category.m -text
+WordPress/Classes/Comment.h -text
+WordPress/Classes/Comment.m -text
+WordPress/Classes/CommentTableViewCell.h -text
+WordPress/Classes/CommentTableViewCell.m -text
+WordPress/Classes/CommentViewController.h -text
+WordPress/Classes/CommentViewController.m -text
+WordPress/Classes/CommentsTableViewDelegate.h -text
+WordPress/Classes/CommentsViewController.h -text
+WordPress/Classes/CommentsViewController.m -text
+WordPress/Classes/Constants.h -text
+WordPress/Classes/Coordinate.h -text
+WordPress/Classes/Coordinate.m -text
+WordPress/Classes/CrashReportViewController.h -text
+WordPress/Classes/CrashReportViewController.m -text
+WordPress/Classes/CrashReporter.framework/CrashReporter -text
+WordPress/Classes/CrashReporter.framework/Headers -text
+WordPress/Classes/CrashReporter.framework/Resources -text
+WordPress/Classes/CrashReporter.framework/Versions/A/CrashReporter -text svneol=unset#unset
+WordPress/Classes/CrashReporter.framework/Versions/A/Headers/CrashReporter.h -text
+WordPress/Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReport.h -text
+WordPress/Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportApplicationInfo.h -text
+WordPress/Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportBinaryImageInfo.h -text
+WordPress/Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportExceptionInfo.h -text
+WordPress/Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportFormatter.h -text
+WordPress/Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportMachineInfo.h -text
+WordPress/Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportProcessInfo.h -text
+WordPress/Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportProcessorInfo.h -text
+WordPress/Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportSignalInfo.h -text
+WordPress/Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportSystemInfo.h -text
+WordPress/Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportTextFormatter.h -text
+WordPress/Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReportThreadInfo.h -text
+WordPress/Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReporter.h -text
+WordPress/Classes/CrashReporter.framework/Versions/A/Headers/PLCrashReporterNamespace.h -text
+WordPress/Classes/CrashReporter.framework/Versions/A/Resources/Info.plist -text
+WordPress/Classes/CrashReporter.framework/Versions/Current -text
+WordPress/Classes/DateUtils.h -text
+WordPress/Classes/DateUtils.m -text
+WordPress/Classes/EGOTableViewPullRefresh/EGORefreshTableHeaderView.h -text
+WordPress/Classes/EGOTableViewPullRefresh/EGORefreshTableHeaderView.m -text
+WordPress/Classes/EditPageViewController.h -text
+WordPress/Classes/EditPageViewController.m -text
+WordPress/Classes/EditPostViewController.h -text
+WordPress/Classes/EditPostViewController.m -text
+WordPress/Classes/EditSiteViewController.h -text
+WordPress/Classes/EditSiteViewController.m -text
+WordPress/Classes/FakeMigration.h -text
+WordPress/Classes/FakeMigration.m -text
+WordPress/Classes/FileLogger.h -text
+WordPress/Classes/FileLogger.m -text
+WordPress/Classes/FollowButton.h -text
+WordPress/Classes/FollowButton.m -text
+WordPress/Classes/HelpViewController.h -text
+WordPress/Classes/HelpViewController.m -text
+WordPress/Classes/JetpackAuthUtil.h -text
+WordPress/Classes/JetpackAuthUtil.m -text
+WordPress/Classes/JetpackSettingsViewController.h -text
+WordPress/Classes/JetpackSettingsViewController.m -text
+WordPress/Classes/JetpackSettingsViewController.xib -text
+WordPress/Classes/MediaObjectViewController.h -text
+WordPress/Classes/MediaObjectViewController.m -text
+WordPress/Classes/MigrateBlogsFromFiles.h -text
+WordPress/Classes/MigrateBlogsFromFiles.m -text
+WordPress/Classes/NSData+Base64.h -text
+WordPress/Classes/NSData+Base64.m -text
+WordPress/Classes/NSMutableDictionary+Helpers.h -text
+WordPress/Classes/NSMutableDictionary+Helpers.m -text
+WordPress/Classes/NSString+Util.h -text
+WordPress/Classes/NSString+Util.m -text
+WordPress/Classes/NSString+XMLExtensions.h -text
+WordPress/Classes/NSString+XMLExtensions.m -text
+WordPress/Classes/Note.h -text
+WordPress/Classes/Note.m -text
+WordPress/Classes/NoteComment.h -text
+WordPress/Classes/NoteComment.m -text
+WordPress/Classes/NoteCommentCell.h -text
+WordPress/Classes/NoteCommentCell.m -text
+WordPress/Classes/NoteCommentContentCell.h -text
+WordPress/Classes/NoteCommentContentCell.m -text
+WordPress/Classes/NoteCommentLoadingCell.h -text
+WordPress/Classes/NoteCommentLoadingCell.m -text
+WordPress/Classes/NoteCommentPostBanner.h -text
+WordPress/Classes/NoteCommentPostBanner.m -text
+WordPress/Classes/NotificationSettingsViewController.h -text
+WordPress/Classes/NotificationSettingsViewController.m -text
+WordPress/Classes/NotificationsCommentDetailViewController.h -text
+WordPress/Classes/NotificationsCommentDetailViewController.m -text
+WordPress/Classes/NotificationsFollowDetailViewController.h -text
+WordPress/Classes/NotificationsFollowDetailViewController.m -text
+WordPress/Classes/NotificationsFollowTableViewCell.h -text
+WordPress/Classes/NotificationsFollowTableViewCell.m -text
+WordPress/Classes/NotificationsTableViewCell.h -text
+WordPress/Classes/NotificationsTableViewCell.m -text
+WordPress/Classes/NotificationsTableViewDatasource.h -text
+WordPress/Classes/NotificationsTableViewDatasource.m -text
+WordPress/Classes/NotificationsViewController.h -text
+WordPress/Classes/NotificationsViewController.m -text
+WordPress/Classes/Page.h -text
+WordPress/Classes/Page.m -text
+WordPress/Classes/PageViewController.h -text
+WordPress/Classes/PageViewController.m -text
+WordPress/Classes/PagesViewController.h -text
+WordPress/Classes/PagesViewController.m -text
+WordPress/Classes/PanelNavigationConstants.h -text
+WordPress/Classes/PanelNavigationController.h -text
+WordPress/Classes/PanelNavigationController.m -text
+WordPress/Classes/PanelViewWrapper.h -text
+WordPress/Classes/PanelViewWrapper.m -text
+WordPress/Classes/Post.h -text
+WordPress/Classes/Post.m -text
+WordPress/Classes/PostAnnotation.h -text
+WordPress/Classes/PostAnnotation.m -text
+WordPress/Classes/PostMediaViewController.h -text
+WordPress/Classes/PostMediaViewController.m -text
+WordPress/Classes/PostPreviewViewController.h -text
+WordPress/Classes/PostPreviewViewController.m -text
+WordPress/Classes/PostSettingsViewController.h -text
+WordPress/Classes/PostSettingsViewController.m -text
+WordPress/Classes/PostTableViewCell.h -text
+WordPress/Classes/PostTableViewCell.m -text
+WordPress/Classes/PostToAbstractPost.h -text
+WordPress/Classes/PostToAbstractPost.m -text
+WordPress/Classes/PostViewController.h -text
+WordPress/Classes/PostViewController.m -text
+WordPress/Classes/PostsViewController.h -text
+WordPress/Classes/PostsViewController.m -text
+WordPress/Classes/QuickPhotoButtonView.h -text
+WordPress/Classes/QuickPhotoButtonView.m -text
+WordPress/Classes/QuickPhotoViewController.h -text
+WordPress/Classes/QuickPhotoViewController.m -text
+WordPress/Classes/QuickPicturePreviewView.h -text
+WordPress/Classes/QuickPicturePreviewView.m -text
+WordPress/Classes/ReachabilityUtils.h -text
+WordPress/Classes/ReachabilityUtils.m -text
+WordPress/Classes/SectionInfo.h -text
+WordPress/Classes/SectionInfo.m -text
+WordPress/Classes/SettingsPageViewController.h -text
+WordPress/Classes/SettingsPageViewController.m -text
+WordPress/Classes/SettingsViewController.h -text
+WordPress/Classes/SettingsViewController.m -text
+WordPress/Classes/SettingsViewControllerDelegate.h -text
+WordPress/Classes/SidebarSectionHeaderView.h -text
+WordPress/Classes/SidebarSectionHeaderView.m -text
+WordPress/Classes/SidebarTableViewCell.h -text
+WordPress/Classes/SidebarTableViewCell.m -text
+WordPress/Classes/SidebarViewController.h -text
+WordPress/Classes/SidebarViewController.m -text
+WordPress/Classes/SoundUtil.h -text
+WordPress/Classes/SoundUtil.m -text
+WordPress/Classes/StatsWebViewController.h -text
+WordPress/Classes/StatsWebViewController.m -text
+WordPress/Classes/UIBarButtonItem+Styled.h -text
+WordPress/Classes/UIBarButtonItem+Styled.m -text
+WordPress/Classes/UIColor+Helpers.h -text
+WordPress/Classes/UIColor+Helpers.m -text
+WordPress/Classes/UIDevice+WordPressIdentifier.h -text
+WordPress/Classes/UIDevice+WordPressIdentifier.m -text
+WordPress/Classes/UIDevice-Hardware.h -text
+WordPress/Classes/UIDevice-Hardware.m -text
+WordPress/Classes/UIImageView+Gravatar.h -text
+WordPress/Classes/UIImageView+Gravatar.m -text
+WordPress/Classes/UINavigationBar+Styled.h -text
+WordPress/Classes/UINavigationBar+Styled.m -text
+WordPress/Classes/UINavigationController+KeyboardFix.h -text
+WordPress/Classes/UINavigationController+KeyboardFix.m -text
+WordPress/Classes/UINavigationController+Rotation.h -text
+WordPress/Classes/UINavigationController+Rotation.m -text
+WordPress/Classes/UITableViewActivityCell.h -text
+WordPress/Classes/UITableViewActivityCell.m -text
+WordPress/Classes/UITableViewSwitchCell.h -text
+WordPress/Classes/UITableViewSwitchCell.m -text
+WordPress/Classes/UITableViewTextFieldCell.h -text
+WordPress/Classes/UITableViewTextFieldCell.m -text
+WordPress/Classes/UIToolbar+Styled.h -text
+WordPress/Classes/UIToolbar+Styled.m -text
+WordPress/Classes/UIViewController+Rotation.h -text
+WordPress/Classes/UIViewController+Rotation.m -text
+WordPress/Classes/UIViewController+Styled.h -text
+WordPress/Classes/UIViewController+Styled.m -text
+WordPress/Classes/WPAddCategoryViewController.h -text
+WordPress/Classes/WPAddCategoryViewController.m -text
+WordPress/Classes/WPCategoryTree.h -text
+WordPress/Classes/WPCategoryTree.m -text
+WordPress/Classes/WPChromelessWebViewController.h -text
+WordPress/Classes/WPChromelessWebViewController.m -text
+WordPress/Classes/WPComOAuthController.h -text
+WordPress/Classes/WPComOAuthController.m -text
+WordPress/Classes/WPError.h -text
+WordPress/Classes/WPError.m -text
+WordPress/Classes/WPFriendFinderNudgeView.h -text
+WordPress/Classes/WPFriendFinderNudgeView.m -text
+WordPress/Classes/WPFriendFinderViewController.h -text
+WordPress/Classes/WPFriendFinderViewController.m -text
+WordPress/Classes/WPInfoView.h -text
+WordPress/Classes/WPInfoView.m -text
+WordPress/Classes/WPInfoView.xib -text
+WordPress/Classes/WPKeyboardToolbar.h -text
+WordPress/Classes/WPKeyboardToolbar.m -text
+WordPress/Classes/WPKeyboardToolbarButtonItem.h -text
+WordPress/Classes/WPKeyboardToolbarButtonItem.m -text
+WordPress/Classes/WPLabel.h -text
+WordPress/Classes/WPLabel.m -text
+WordPress/Classes/WPPopoverBackgroundView.h -text
+WordPress/Classes/WPPopoverBackgroundView.m -text
+WordPress/Classes/WPProgressHUD.h -text
+WordPress/Classes/WPProgressHUD.m -text
+WordPress/Classes/WPReaderDetailViewController.h -text
+WordPress/Classes/WPReaderDetailViewController.m -text
+WordPress/Classes/WPReaderTopicsViewController.h -text
+WordPress/Classes/WPReaderTopicsViewController.m -text
+WordPress/Classes/WPReaderViewController.h -text
+WordPress/Classes/WPReaderViewController.m -text
+WordPress/Classes/WPSegmentedSelectionTableViewController.h -text
+WordPress/Classes/WPSegmentedSelectionTableViewController.m -text
+WordPress/Classes/WPSelectionTableViewController.h -text
+WordPress/Classes/WPSelectionTableViewController.m -text
+WordPress/Classes/WPTableViewController.h -text
+WordPress/Classes/WPTableViewController.m -text
+WordPress/Classes/WPTableViewControllerSubclass.h -text
+WordPress/Classes/WPToast.h -text
+WordPress/Classes/WPToast.m -text
+WordPress/Classes/WPWebAppViewController.h -text
+WordPress/Classes/WPWebAppViewController.m -text
+WordPress/Classes/WPWebBridge.h -text
+WordPress/Classes/WPWebBridge.m -text
+WordPress/Classes/WPWebView.h -text
+WordPress/Classes/WPWebView.m -text
+WordPress/Classes/WPWebViewController.h -text
+WordPress/Classes/WPWebViewController.m -text
+WordPress/Classes/WPcomLoginViewController.h -text
+WordPress/Classes/WPcomLoginViewController.m -text
+WordPress/Classes/WebSignupViewController.h -text
+WordPress/Classes/WebSignupViewController.m -text
+WordPress/Classes/WelcomeViewController.h -text
+WordPress/Classes/WelcomeViewController.m -text
+WordPress/Classes/WordPress-1-2.xcmappingmodel/xcmapping.xml -text
+WordPress/Classes/WordPress.xcdatamodeld/.xccurrentversion -text
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]2.xcdatamodel/elements -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]2.xcdatamodel/layout -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]3.xcdatamodel/elements -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]3.xcdatamodel/layout -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]4.xcdatamodel/elements -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]4.xcdatamodel/layout -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]5.xcdatamodel/elements -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]5.xcdatamodel/layout -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]6.xcdatamodel/elements -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]6.xcdatamodel/layout -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]7.xcdatamodel/elements -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]7.xcdatamodel/layout -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]8.xcdatamodel/elements -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]8.xcdatamodel/layout -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]9.xcdatamodel/elements -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]9.xcdatamodel/layout -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress.xcdatamodel/elements -text
+WordPress/Classes/WordPress.xcdatamodeld/WordPress.xcdatamodel/layout -text
+WordPress/Classes/WordPressAppDelegate.h -text
+WordPress/Classes/WordPressAppDelegate.m -text
+WordPress/CommentViewController.xib -text
+WordPress/CrashReportView.xib -text
+WordPress/Default-568h@2x.png -text
+WordPress/Default-Landscape.png -text svneol=unset#unset
+WordPress/Default-Landscape@2x.png -text svneol=unset#unset
+WordPress/Default-Portrait.png -text svneol=unset#unset
+WordPress/Default-Portrait@2x.png -text svneol=unset#unset
+WordPress/Default.png -text
+WordPress/Default@2x.png -text
+WordPress/EditPostViewController-iPad.xib -text
+WordPress/EditPostViewController.xib -text
+WordPress/EditSiteViewController.xib -text
+WordPress/Entitlements.plist -text
+WordPress/HelpViewController.xib -text
+WordPress/Icon-72.png -text
+WordPress/Icon-72@2x.png -text svneol=unset#unset
+WordPress/Icon-Small-50.png -text
+WordPress/Icon-Small.png -text
+WordPress/Icon-Small@2x.png -text
+WordPress/Icon-dev-72.png -text svneol=unset#unset
+WordPress/Icon-dev-72@2x.png -text
+WordPress/Icon-dev.png -text svneol=unset#unset
+WordPress/Icon-dev@2x.png -text svneol=unset#unset
+WordPress/Icon.png -text svneol=unset#unset
+WordPress/Icon@2x.png -text svneol=unset#unset
+WordPress/Info-beta.plist -text
+WordPress/Info-dev.plist -text
+WordPress/Info.plist -text
+WordPress/MainWindow.xib -text
+WordPress/Media.h -text
+WordPress/Media.m -text
+WordPress/MediaObjectView.xib -text
+WordPress/NotificationsCommentDetailViewController.xib -text
+WordPress/NotificationsFollowDetailViewController.xib -text
+WordPress/NotificationsViewController.xib -text
+WordPress/PostMediaViewController-iPad.xib -text
+WordPress/PostMediaViewController.xib -text
+WordPress/PostPreviewViewController.xib -text
+WordPress/PostSettingsViewController.xib -text
+WordPress/PostViewController-iPad.xib -text
+WordPress/QuickPhotoViewController.xib -text
+WordPress/Resources-iPad/MainWindow-iPad.xib -text
+WordPress/SidebarToolbarButton.png -text svneol=unset#unset
+WordPress/SidebarToolbarButton@2x.png -text svneol=unset#unset
+WordPress/SidebarToolbarButtonHighlighted.png -text
+WordPress/SidebarToolbarButtonHighlighted@2x.png -text
+WordPress/SidebarViewController.xib -text
+WordPress/ToastView.xib -text
+WordPress/UIAutomationTests/Blog.js -text
+WordPress/UIAutomationTests/Config.js -text
+WordPress/UIAutomationTests/Post.js -text
+WordPress/UIAutomationTests/WPiOSTests.js -text
+WordPress/UIButtonBarTrash.png -text svneol=unset#unset
+WordPress/UIButtonBarTrash@2x.png -text svneol=unset#unset
+WordPress/UIImage+Alpha.h -text
+WordPress/UIImage+Alpha.m -text
+WordPress/UIImage+Resize.h -text
+WordPress/UIImage+Resize.m -text
+WordPress/UIImage+RoundedCorner.h -text
+WordPress/UIImage+RoundedCorner.m -text
+WordPress/UISegmentBarBlackButton.png -text svneol=unset#unset
+WordPress/UISegmentBarBlackButton@2x.png -text svneol=unset#unset
+WordPress/UISegmentBarBlackButtonHighlighted.png -text svneol=unset#unset
+WordPress/UISegmentBarBlackButtonHighlighted@2x.png -text svneol=unset#unset
+WordPress/UITableViewActivityCell.xib -text
+WordPress/UITableViewSwitchCell.xib -text
+WordPress/Vendor/KVO+Blocks/NSObject+BlockObservation.h -text
+WordPress/Vendor/KVO+Blocks/NSObject+BlockObservation.m -text
+WordPress/Vendor/facebook-ios-sdk/FBConnect.h -text
+WordPress/Vendor/facebook-ios-sdk/FBDialog.bundle/images/close.png -text
+WordPress/Vendor/facebook-ios-sdk/FBDialog.bundle/images/close@2x.png -text
+WordPress/Vendor/facebook-ios-sdk/FBDialog.bundle/images/fbicon.png -text
+WordPress/Vendor/facebook-ios-sdk/FBDialog.h -text
+WordPress/Vendor/facebook-ios-sdk/FBFrictionlessRequestSettings.h -text
+WordPress/Vendor/facebook-ios-sdk/FBLoginDialog.h -text
+WordPress/Vendor/facebook-ios-sdk/FBRequest.h -text
+WordPress/Vendor/facebook-ios-sdk/Facebook.h -text
+WordPress/Vendor/facebook-ios-sdk/JSON.h -text
+WordPress/Vendor/facebook-ios-sdk/NSObject+SBJSON.h -text
+WordPress/Vendor/facebook-ios-sdk/NSString+SBJSON.h -text
+WordPress/Vendor/facebook-ios-sdk/SBJSON.h -text
+WordPress/Vendor/facebook-ios-sdk/SBJsonBase.h -text
+WordPress/Vendor/facebook-ios-sdk/SBJsonParser.h -text
+WordPress/Vendor/facebook-ios-sdk/SBJsonWriter.h -text
+WordPress/Vendor/facebook-ios-sdk/libfacebook_ios_sdk.a -text
+WordPress/Vendor/libraries.txt -text
+WordPress/Vendor/xmlrpc/Configurations/Common.xcconfig -text
+WordPress/Vendor/xmlrpc/Configurations/CommonDevelopment.xcconfig -text
+WordPress/Vendor/xmlrpc/Configurations/CommonRelease.xcconfig -text
+WordPress/Vendor/xmlrpc/Configurations/XMLRPC.xcconfig -text
+WordPress/Vendor/xmlrpc/Configurations/XMLRPCDevelopment.xcconfig -text
+WordPress/Vendor/xmlrpc/Configurations/XMLRPCRelease.xcconfig -text
+WordPress/Vendor/xmlrpc/Configurations/XMLRPCUnitTests.xcconfig -text
+WordPress/Vendor/xmlrpc/Configurations/XMLRPCUnitTestsDevelopment.xcconfig -text
+WordPress/Vendor/xmlrpc/Configurations/XMLRPCUnitTestsRelease.xcconfig -text
+WordPress/Vendor/xmlrpc/LICENSE.md -text
+WordPress/Vendor/xmlrpc/Languages/English.lproj/InfoPlist.strings -text svneol=unset#unset
+WordPress/Vendor/xmlrpc/NSData+Base64.h -text
+WordPress/Vendor/xmlrpc/NSData+Base64.m -text
+WordPress/Vendor/xmlrpc/NSStringAdditions.h -text
+WordPress/Vendor/xmlrpc/NSStringAdditions.m -text
+WordPress/Vendor/xmlrpc/README.md -text
+WordPress/Vendor/xmlrpc/Resources/Property[!!-~]Lists/TestCases.plist -text
+WordPress/Vendor/xmlrpc/Resources/Property[!!-~]Lists/XMLRPC-Info.plist -text
+WordPress/Vendor/xmlrpc/Resources/Property[!!-~]Lists/XMLRPCUnitTests-Info.plist -text
+WordPress/Vendor/xmlrpc/Resources/Test[!!-~]Cases/AlternativeDateFormatsTestCase.xml -text
+WordPress/Vendor/xmlrpc/Resources/Test[!!-~]Cases/DefaultTypeTestCase.xml -text
+WordPress/Vendor/xmlrpc/Resources/Test[!!-~]Cases/EmptyBooleanTestCase.xml -text
+WordPress/Vendor/xmlrpc/Resources/Test[!!-~]Cases/EmptyDataTestCase.xml -text
+WordPress/Vendor/xmlrpc/Resources/Test[!!-~]Cases/EmptyDoubleTestCase.xml -text
+WordPress/Vendor/xmlrpc/Resources/Test[!!-~]Cases/EmptyIntegerTestCase.xml -text
+WordPress/Vendor/xmlrpc/Resources/Test[!!-~]Cases/EmptyStringTestCase.xml -text
+WordPress/Vendor/xmlrpc/Resources/Test[!!-~]Cases/SimpleArrayTestCase.xml -text
+WordPress/Vendor/xmlrpc/Resources/Test[!!-~]Cases/SimpleStructTestCase.xml -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/Configurations/Common.xcconfig -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/Configurations/CommonDevelopment.xcconfig -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/Configurations/CommonRelease.xcconfig -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/Configurations/TestClient.xcconfig -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/Configurations/TestClientDevelopment.xcconfig -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/Configurations/TestClientRelease.xcconfig -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/Languages/English.lproj/InfoPlist.strings -text svneol=unset#unset
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/Languages/English.lproj/TestClient.xib -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/Languages/English.lproj/TestClientMainWindow.xib -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/Languages/English.lproj/TestClientXMLParserWindow.xib -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/Test[!!-~]Client.xcodeproj/project.pbxproj -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClient-Info.plist -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClient.pch -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClientApplicationController.h -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClientApplicationController.m -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClientMainWindowController.h -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClientMainWindowController.m -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClientXMLParserWindowController.h -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/TestClientXMLParserWindowController.m -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Client/main.m -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Server/README.md -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Server/build.properties -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Server/build.xml -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Server/resources/handlers.properties -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Server/resources/log4j.xml -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Server/server.sh -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Server/src/com/divisiblebyzero/xmlrpc/Application.java -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Server/src/com/divisiblebyzero/xmlrpc/controller/XmlRpcServerControlPanelController.java -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Server/src/com/divisiblebyzero/xmlrpc/model/Server.java -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Server/src/com/divisiblebyzero/xmlrpc/model/handlers/Echo.java -text
+WordPress/Vendor/xmlrpc/Tools/Test[!!-~]Server/src/com/divisiblebyzero/xmlrpc/view/XmlRpcServerControlPanel.java -text
+WordPress/Vendor/xmlrpc/Unit[!!-~]Tests/XMLRPCParserTest.h -text
+WordPress/Vendor/xmlrpc/Unit[!!-~]Tests/XMLRPCParserTest.m -text
+WordPress/Vendor/xmlrpc/XMLRPC.h -text
+WordPress/Vendor/xmlrpc/XMLRPC.pch -text
+WordPress/Vendor/xmlrpc/XMLRPC.xcodeproj/project.pbxproj -text
+WordPress/Vendor/xmlrpc/XMLRPCConnection.h -text
+WordPress/Vendor/xmlrpc/XMLRPCConnection.m -text
+WordPress/Vendor/xmlrpc/XMLRPCConnectionDelegate.h -text
+WordPress/Vendor/xmlrpc/XMLRPCConnectionManager.h -text
+WordPress/Vendor/xmlrpc/XMLRPCConnectionManager.m -text
+WordPress/Vendor/xmlrpc/XMLRPCDataCleaner.h -text
+WordPress/Vendor/xmlrpc/XMLRPCDataCleaner.m -text
+WordPress/Vendor/xmlrpc/XMLRPCEncoder.h -text
+WordPress/Vendor/xmlrpc/XMLRPCEncoder.m -text
+WordPress/Vendor/xmlrpc/XMLRPCEventBasedParser.h -text
+WordPress/Vendor/xmlrpc/XMLRPCEventBasedParser.m -text
+WordPress/Vendor/xmlrpc/XMLRPCEventBasedParserDelegate.h -text
+WordPress/Vendor/xmlrpc/XMLRPCEventBasedParserDelegate.m -text
+WordPress/Vendor/xmlrpc/XMLRPCRequest.h -text
+WordPress/Vendor/xmlrpc/XMLRPCRequest.m -text
+WordPress/Vendor/xmlrpc/XMLRPCResponse.h -text
+WordPress/Vendor/xmlrpc/XMLRPCResponse.m -text
+WordPress/WPAFNetworking.h -text
+WordPress/WPAddCategoryViewController.xib -text
+WordPress/WPComOAuthController.xib -text
+WordPress/WPReaderViewController.xib -text
+WordPress/WPSelectionTableViewController.xib -text
+WordPress/WPWebViewController-iPad.xib -text
+WordPress/WPWebViewController.xib -text
+WordPress/WPpregressHUDBackground.png -text
+WordPress/WPpregressHUDBackground@2x.png -text
+WordPress/WebSignupViewController-iPad.xib -text
+WordPress/WebSignupViewController.xib -text
+WordPress/WelcomeViewController.xib -text
+WordPress/WordPress[!!-~]copy-Info.plist -text
+WordPress/WordPress.xcodeproj/project.pbxproj -text
+WordPress/WordPress.xcodeproj/xcshareddata/xcschemes/WordPress[!!-~]Internal.xcscheme -text
+WordPress/WordPress.xcodeproj/xcshareddata/xcschemes/WordPress.xcscheme -text
+WordPress/WordPress.xcodeproj/xcshareddata/xcschemes/WordPressTest.xcscheme -text
+WordPress/WordPressApi/AFAuthenticationAlertView.h -text
+WordPress/WordPressApi/AFAuthenticationAlertView.m -text
+WordPress/WordPressApi/AFXMLRPCClient.h -text
+WordPress/WordPressApi/AFXMLRPCClient.m -text
+WordPress/WordPressApi/WPRSDParser.h -text
+WordPress/WordPressApi/WPRSDParser.m -text
+WordPress/WordPressApi/WordPressApi.h -text
+WordPress/WordPressApi/WordPressApi.m -text
+WordPress/WordPressApi/WordPressComApi.h -text
+WordPress/WordPressApi/WordPressComApi.m -text
+WordPress/WordPressApi/WordPressComApiCredentials.h -text
+WordPress/WordPressApi/WordPressComApiCredentials.m -text
+WordPress/WordPressApi/gencredentials.rb -text
+WordPress/WordPressTest/WordPressTest-Info.plist -text
+WordPress/WordPressTest/WordPressTest-Prefix.pch -text
+WordPress/WordPressTest/WordPressTest.h -text
+WordPress/WordPressTest/WordPressTest.m -text
+WordPress/WordPressTest/en.lproj/InfoPlist.strings -text
+WordPress/WordPressTest/entities.xml -text
+WordPress/WordPressTest/entitiesDecoded.xml -text
+WordPress/WordPress_Prefix.pch -text
+WordPress/action_icon_followed.png -text svneol=unset#unset
+WordPress/action_icon_followed@2x.png -text svneol=unset#unset
+WordPress/action_icon_replied.png -text svneol=unset#unset
+WordPress/action_icon_replied@2x.png -text svneol=unset#unset
+WordPress/action_icon_unfollowed.png -text svneol=unset#unset
+WordPress/action_icon_unfollowed@2x.png -text svneol=unset#unset
+WordPress/approve.png -text svneol=unset#unset
+WordPress/approve@2x.png -text svneol=unset#unset
+WordPress/attachment.png -text svneol=unset#unset
+WordPress/attachment@2x.png -text svneol=unset#unset
+WordPress/autosave.png -text
+WordPress/autosave@2x.png -text
+WordPress/background.png -text
+WordPress/background@2x.png -text
+WordPress/blavatar-wpcom.png -text
+WordPress/blavatar-wpcom@2x.png -text
+WordPress/blavatar-wporg.png -text
+WordPress/blavatar-wporg@2x.png -text
+WordPress/blockquote.png -text svneol=unset#unset
+WordPress/blockquote@2x.png -text svneol=unset#unset
+WordPress/blockquote~ipad.png -text svneol=unset#unset
+WordPress/blueArrow.png -text svneol=unset#unset
+WordPress/blueArrow@2x.png -text svneol=unset#unset
+WordPress/bold.png -text svneol=unset#unset
+WordPress/bold@2x.png -text svneol=unset#unset
+WordPress/bold~ipad.png -text svneol=unset#unset
+WordPress/category_child.png -text
+WordPress/category_child@2x.png -text
+WordPress/cell_gradient_bg.png -text
+WordPress/cell_gradient_bg@2x.png -text
+WordPress/check.png -text
+WordPress/check@2x.png -text
+WordPress/de.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/defaultPostTemplate.html -text
+WordPress/defaultPostTemplate_old.html -text
+WordPress/doneButton.png -text
+WordPress/doneButton@2x.png -text
+WordPress/doneButtonHighlighted.png -text
+WordPress/doneButtonHighlighted@2x.png -text
+WordPress/down.png -text
+WordPress/down@2x.png -text
+WordPress/downArrow.png -text svneol=unset#unset
+WordPress/downArrow@2x.png -text svneol=unset#unset
+WordPress/down_dim.png -text
+WordPress/down_dim@2x.png -text
+WordPress/en.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/es.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/fix-translation.php -text
+WordPress/fr.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/friend_finder_cancel_btn.png -text
+WordPress/friend_finder_cancel_btn@2x.png -text
+WordPress/friend_finder_cancel_btn_highlight.png -text
+WordPress/friend_finder_cancel_btn_highlight@2x.png -text
+WordPress/friend_follow_service_icons.png -text svneol=unset#unset
+WordPress/friend_follow_service_icons@2x.png -text svneol=unset#unset
+WordPress/gravatar.jpg -text
+WordPress/hasLocation.png -text
+WordPress/hasLocation@2x.png -text
+WordPress/he.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/help.png -text
+WordPress/hr.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/hu.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/i18n_download -text
+WordPress/iTunesArtwork -text
+WordPress/icon_info_message.png -text
+WordPress/icon_info_message@2x.png -text
+WordPress/id.lproj/Localizable.strings -text
+WordPress/info_button.png -text
+WordPress/info_button@2x.png -text
+WordPress/inner-shadow.png -text svneol=unset#unset
+WordPress/it.lproj/Localizable.strings -text
+WordPress/italic.png -text svneol=unset#unset
+WordPress/italic@2x.png -text svneol=unset#unset
+WordPress/italic~ipad.png -text svneol=unset#unset
+WordPress/ja.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/keyboardButton.png -text svneol=unset#unset
+WordPress/keyboardButton@2x.png -text svneol=unset#unset
+WordPress/keyboardButtonHighlighted.png -text
+WordPress/keyboardButtonHighlighted@2x.png -text
+WordPress/keyboardButtoniPad.png -text
+WordPress/keyboardButtoniPad@2x.png -text svneol=unset#unset
+WordPress/keyboardButtoniPadHighlighted.png -text
+WordPress/keyboardButtoniPadHighlighted@2x.png -text svneol=unset#unset
+WordPress/keyboardButton~ipad.png -text svneol=unset#unset
+WordPress/keyboardClose~ipad.png -text svneol=unset#unset
+WordPress/left.png -text svneol=unset#unset
+WordPress/left@2x.png -text svneol=unset#unset
+WordPress/license.txt -text
+WordPress/link.png -text svneol=unset#unset
+WordPress/link@2x.png -text svneol=unset#unset
+WordPress/link~ipad.png -text svneol=unset#unset
+WordPress/list.png -text svneol=unset#unset
+WordPress/list@2x.png -text svneol=unset#unset
+WordPress/loader.html -text
+WordPress/localize.py -text
+WordPress/lock.png -text
+WordPress/logo_wpcom.png -text
+WordPress/logo_wpcom@2x.png -text
+WordPress/logo_wporg.png -text
+WordPress/logo_wporg@2x.png -text
+WordPress/main.m -text
+WordPress/menu_button_divider.png -text svneol=unset#unset
+WordPress/menu_button_divider@2x.png -text svneol=unset#unset
+WordPress/menu_notification_left_bg.png -text svneol=unset#unset
+WordPress/menu_notification_left_bg@2x.png -text svneol=unset#unset
+WordPress/menu_notification_left_bg_down.png -text svneol=unset#unset
+WordPress/menu_notification_left_bg_down@2x.png -text svneol=unset#unset
+WordPress/menu_notification_right_bg.png -text svneol=unset#unset
+WordPress/menu_notification_right_bg@2x.png -text svneol=unset#unset
+WordPress/menu_notification_right_bg_down.png -text svneol=unset#unset
+WordPress/menu_notification_right_bg_down@2x.png -text svneol=unset#unset
+WordPress/menu_notification_spacer.png -text svneol=unset#unset
+WordPress/menu_notification_spacer@2x.png -text svneol=unset#unset
+WordPress/menu_notification_spacer_down.png -text svneol=unset#unset
+WordPress/menu_notification_spacer_down@2x.png -text svneol=unset#unset
+WordPress/movie.png -text svneol=unset#unset
+WordPress/movie@2x.png -text svneol=unset#unset
+WordPress/n.caf -text
+WordPress/navbar_actions.png -text
+WordPress/navbar_actions@2x.png -text
+WordPress/navbar_add.png -text
+WordPress/navbar_add@2x.png -text
+WordPress/navbar_back_button_bg.png -text
+WordPress/navbar_back_button_bg@2x.png -text
+WordPress/navbar_back_button_bg_active.png -text
+WordPress/navbar_back_button_bg_active@2x.png -text
+WordPress/navbar_bg.png -text
+WordPress/navbar_bg@2x.png -text
+WordPress/navbar_button_bg.png -text
+WordPress/navbar_button_bg@2x.png -text
+WordPress/navbar_button_bg_active.png -text
+WordPress/navbar_button_bg_active@2x.png -text
+WordPress/navbar_button_bg_landscape.png -text
+WordPress/navbar_button_bg_landscape@2x.png -text
+WordPress/navbar_button_bg_landscape_active.png -text
+WordPress/navbar_button_bg_landscape_active@2x.png -text
+WordPress/navbar_primary_button_bg.png -text
+WordPress/navbar_primary_button_bg@2x.png -text
+WordPress/navbar_primary_button_bg_active.png -text
+WordPress/navbar_primary_button_bg_active@2x.png -text
+WordPress/navbar_primary_button_bg_landscape.png -text
+WordPress/navbar_primary_button_bg_landscape@2x.png -text
+WordPress/navbar_primary_button_bg_landscape_active.png -text
+WordPress/navbar_primary_button_bg_landscape_active@2x.png -text
+WordPress/navbar_read.png -text
+WordPress/navbar_read@2x.png -text
+WordPress/navbar_shadow.png -text
+WordPress/navbar_shadow@2x.png -text
+WordPress/navbar_toggle.png -text svneol=unset#unset
+WordPress/navbar_toggle@2x.png -text svneol=unset#unset
+WordPress/nb.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/next.png -text svneol=unset#unset
+WordPress/next@2x.png -text svneol=unset#unset
+WordPress/nl.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/note-comment-grandparent-footer.png -text svneol=unset#unset
+WordPress/note-comment-grandparent-footer@2x.png -text svneol=unset#unset
+WordPress/note-comment-parent-footer.png -text svneol=unset#unset
+WordPress/note-comment-parent-footer@2x.png -text svneol=unset#unset
+WordPress/note-reply-field.png -text svneol=unset#unset
+WordPress/note-reply-field@2x.png -text svneol=unset#unset
+WordPress/note_button_icon_follow.png -text svneol=unset#unset
+WordPress/note_button_icon_follow@2x.png -text svneol=unset#unset
+WordPress/note_button_icon_following.png -text svneol=unset#unset
+WordPress/note_button_icon_following@2x.png -text svneol=unset#unset
+WordPress/note_comment_table_threaded.png -text svneol=unset#unset
+WordPress/note_header_shadow.png -text svneol=unset#unset
+WordPress/note_header_shadow@2x.png -text svneol=unset#unset
+WordPress/note_icon_achievement.png -text svneol=unset#unset
+WordPress/note_icon_achievement@2x.png -text svneol=unset#unset
+WordPress/note_icon_achievement_highlighted.png -text svneol=unset#unset
+WordPress/note_icon_achievement_highlighted@2x.png -text svneol=unset#unset
+WordPress/note_icon_comment.png -text svneol=unset#unset
+WordPress/note_icon_comment@2x.png -text svneol=unset#unset
+WordPress/note_icon_comment_highlighted.png -text svneol=unset#unset
+WordPress/note_icon_comment_highlighted@2x.png -text svneol=unset#unset
+WordPress/note_icon_follow.png -text svneol=unset#unset
+WordPress/note_icon_follow@2x.png -text svneol=unset#unset
+WordPress/note_icon_follow_highlighted.png -text svneol=unset#unset
+WordPress/note_icon_follow_highlighted@2x.png -text svneol=unset#unset
+WordPress/note_icon_like.png -text svneol=unset#unset
+WordPress/note_icon_like@2x.png -text svneol=unset#unset
+WordPress/note_icon_like_highlighted.png -text svneol=unset#unset
+WordPress/note_icon_like_highlighted@2x.png -text svneol=unset#unset
+WordPress/note_icon_reblog.png -text svneol=unset#unset
+WordPress/note_icon_reblog@2x.png -text svneol=unset#unset
+WordPress/note_icon_reblog_highlighted.png -text svneol=unset#unset
+WordPress/note_icon_reblog_highlighted@2x.png -text svneol=unset#unset
+WordPress/note_icon_stats.png -text svneol=unset#unset
+WordPress/note_icon_stats@2x.png -text svneol=unset#unset
+WordPress/note_icon_stats_highlighted.png -text svneol=unset#unset
+WordPress/note_icon_stats_highlighted@2x.png -text svneol=unset#unset
+WordPress/note_navbar_icon_achievement.png -text svneol=unset#unset
+WordPress/note_navbar_icon_achievement@2x.png -text svneol=unset#unset
+WordPress/note_navbar_icon_comment.png -text svneol=unset#unset
+WordPress/note_navbar_icon_comment@2x.png -text svneol=unset#unset
+WordPress/note_navbar_icon_follow.png -text svneol=unset#unset
+WordPress/note_navbar_icon_follow@2x.png -text svneol=unset#unset
+WordPress/note_navbar_icon_like.png -text svneol=unset#unset
+WordPress/note_navbar_icon_like@2x.png -text svneol=unset#unset
+WordPress/note_navbar_icon_reblog.png -text svneol=unset#unset
+WordPress/note_navbar_icon_reblog@2x.png -text svneol=unset#unset
+WordPress/note_navbar_icon_stats.png -text svneol=unset#unset
+WordPress/note_navbar_icon_stats@2x.png -text svneol=unset#unset
+WordPress/panel_icon.png -text
+WordPress/panel_icon@2x.png -text
+WordPress/paperclip.png -text
+WordPress/paperclip@2x.png -text
+WordPress/photos.png -text
+WordPress/photos@2x.png -text
+WordPress/pl.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/popover_arrow.png -text
+WordPress/popover_arrow@2x.png -text
+WordPress/popover_bg.png -text
+WordPress/popover_bg@2x.png -text
+WordPress/postPreview.html -text
+WordPress/preview.png -text
+WordPress/preview@2x.png -text
+WordPress/previous.png -text svneol=unset#unset
+WordPress/previous@2x.png -text svneol=unset#unset
+WordPress/pt.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/read.png -text
+WordPress/read@2x.png -text
+WordPress/redoDisabled~ipad.png -text svneol=unset#unset
+WordPress/redo~ipad.png -text svneol=unset#unset
+WordPress/right.png -text svneol=unset#unset
+WordPress/right@2x.png -text svneol=unset#unset
+WordPress/settings.png -text
+WordPress/settings@2x.png -text
+WordPress/settings_bg.png -text
+WordPress/settings_bg@2x.png -text
+WordPress/sidebar-logo.png -text
+WordPress/sidebar-logo@2x.png -text
+WordPress/sidebar_bg.png -text
+WordPress/sidebar_bg@2x.png -text
+WordPress/sidebar_border_bg.png -text
+WordPress/sidebar_border_bg@2x.png -text
+WordPress/sidebar_camera.png -text
+WordPress/sidebar_camera@2x.png -text
+WordPress/sidebar_cell_bg.png -text
+WordPress/sidebar_cell_bg@2x.png -text
+WordPress/sidebar_cell_bg_selected.png -text
+WordPress/sidebar_cell_bg_selected@2x.png -text
+WordPress/sidebar_comment_bubble.png -text
+WordPress/sidebar_comment_bubble@2x.png -text
+WordPress/sidebar_comments.png -text
+WordPress/sidebar_comments@2x.png -text
+WordPress/sidebar_dashboard.png -text
+WordPress/sidebar_dashboard@2x.png -text
+WordPress/sidebar_footer_bg.png -text
+WordPress/sidebar_footer_bg@2x.png -text
+WordPress/sidebar_notifications.png -text svneol=unset#unset
+WordPress/sidebar_notifications@2x.png -text svneol=unset#unset
+WordPress/sidebar_notifications_highlighted.png -text svneol=unset#unset
+WordPress/sidebar_notifications_highlighted@2x.png -text svneol=unset#unset
+WordPress/sidebar_pages.png -text
+WordPress/sidebar_pages@2x.png -text
+WordPress/sidebar_posts.png -text
+WordPress/sidebar_posts@2x.png -text
+WordPress/sidebar_read.png -text
+WordPress/sidebar_read@2x.png -text
+WordPress/sidebar_settings.png -text
+WordPress/sidebar_settings@2x.png -text
+WordPress/sidebar_stats.png -text
+WordPress/sidebar_stats@2x.png -text
+WordPress/sidebar_view.png -text
+WordPress/sidebar_view@2x.png -text
+WordPress/snd_discard.caf -text
+WordPress/snd_pull.caf -text
+WordPress/snd_rollup.caf -text
+WordPress/snd_swipe.caf -text
+WordPress/stats.png -text
+WordPress/stats@2x.png -text
+WordPress/sv.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/sync.png -text svneol=unset#unset
+WordPress/sync@2x.png -text
+WordPress/sync_dark.png -text
+WordPress/sync_dark@2x.png -text
+WordPress/sync_lite.png -text
+WordPress/sync_lite@2x.png -text
+WordPress/tabPointer.png -text svneol=unset#unset
+WordPress/tabPointer@2x.png -text svneol=unset#unset
+WordPress/tabPointer_black.png -text
+WordPress/tabPointer_black@2x.png -text
+WordPress/table_sep.png -text svneol=unset#unset
+WordPress/table_sep@2x.png -text svneol=unset#unset
+WordPress/toggleButton.png -text
+WordPress/toggleButton@2x.png -text
+WordPress/toggleButtonExtended.png -text
+WordPress/toggleButtonExtended@2x.png -text
+WordPress/toggleButtonMain.png -text
+WordPress/toggleButtonMain@2x.png -text
+WordPress/toolbarBlockquote.png -text
+WordPress/toolbarBlockquote@2x.png -text
+WordPress/toolbarBlockquoteHighlighted.png -text
+WordPress/toolbarBlockquoteHighlighted@2x.png -text
+WordPress/toolbarBlockquoteiPad.png -text
+WordPress/toolbarBlockquoteiPad@2x.png -text svneol=unset#unset
+WordPress/toolbarBold.png -text
+WordPress/toolbarBold@2x.png -text
+WordPress/toolbarBoldHighlighted.png -text
+WordPress/toolbarBoldHighlighted@2x.png -text
+WordPress/toolbarBoldiPad.png -text
+WordPress/toolbarBoldiPad@2x.png -text svneol=unset#unset
+WordPress/toolbarCode.png -text
+WordPress/toolbarCode@2x.png -text
+WordPress/toolbarCodeHighlighted.png -text
+WordPress/toolbarCodeHighlighted@2x.png -text
+WordPress/toolbarCodeiPad.png -text
+WordPress/toolbarCodeiPad@2x.png -text svneol=unset#unset
+WordPress/toolbarDel.png -text
+WordPress/toolbarDel@2x.png -text
+WordPress/toolbarDelHighlighted.png -text
+WordPress/toolbarDelHighlighted@2x.png -text
+WordPress/toolbarDeliPad.png -text
+WordPress/toolbarDeliPad@2x.png -text svneol=unset#unset
+WordPress/toolbarItalic.png -text
+WordPress/toolbarItalic@2x.png -text
+WordPress/toolbarItalicHighlighted.png -text
+WordPress/toolbarItalicHighlighted@2x.png -text
+WordPress/toolbarItaliciPad.png -text
+WordPress/toolbarItaliciPad@2x.png -text svneol=unset#unset
+WordPress/toolbarLi.png -text
+WordPress/toolbarLi@2x.png -text
+WordPress/toolbarLiHighlighted.png -text
+WordPress/toolbarLiHighlighted@2x.png -text
+WordPress/toolbarLiiPad.png -text
+WordPress/toolbarLiiPad@2x.png -text svneol=unset#unset
+WordPress/toolbarLink.png -text
+WordPress/toolbarLink@2x.png -text
+WordPress/toolbarLinkHighlighted.png -text
+WordPress/toolbarLinkHighlighted@2x.png -text
+WordPress/toolbarLinkiPad.png -text
+WordPress/toolbarLinkiPad@2x.png -text svneol=unset#unset
+WordPress/toolbarMore.png -text
+WordPress/toolbarMore@2x.png -text
+WordPress/toolbarMoreHighlighted.png -text
+WordPress/toolbarMoreHighlighted@2x.png -text
+WordPress/toolbarMoreiPad.png -text
+WordPress/toolbarMoreiPad@2x.png -text svneol=unset#unset
+WordPress/toolbarOl.png -text
+WordPress/toolbarOl@2x.png -text
+WordPress/toolbarOlHighlighted.png -text
+WordPress/toolbarOlHighlighted@2x.png -text
+WordPress/toolbarOliPad.png -text
+WordPress/toolbarOliPad@2x.png -text svneol=unset#unset
+WordPress/toolbarUl.png -text
+WordPress/toolbarUl@2x.png -text
+WordPress/toolbarUlHighlighted.png -text
+WordPress/toolbarUlHighlighted@2x.png -text
+WordPress/toolbarUliPad.png -text
+WordPress/toolbarUliPad@2x.png -text svneol=unset#unset
+WordPress/toolbar_actions.png -text
+WordPress/toolbar_actions@2x.png -text
+WordPress/toolbar_approve.png -text
+WordPress/toolbar_approve@2x.png -text
+WordPress/toolbar_bg.png -text
+WordPress/toolbar_bg@2x.png -text
+WordPress/toolbar_delete.png -text
+WordPress/toolbar_delete@2x.png -text
+WordPress/toolbar_edit.png -text
+WordPress/toolbar_edit@2x.png -text
+WordPress/toolbar_flag.png -text
+WordPress/toolbar_flag@2x.png -text
+WordPress/toolbar_flag_lite.png -text
+WordPress/toolbar_flag_lite@2x.png -text
+WordPress/toolbar_reply.png -text
+WordPress/toolbar_reply@2x.png -text
+WordPress/toolbar_shadow.png -text
+WordPress/toolbar_shadow@2x.png -text
+WordPress/toolbar_swipe_approve.png -text
+WordPress/toolbar_swipe_approve@2x.png -text
+WordPress/toolbar_swipe_flag.png -text
+WordPress/toolbar_swipe_flag@2x.png -text
+WordPress/toolbar_swipe_reply.png -text
+WordPress/toolbar_swipe_reply@2x.png -text
+WordPress/toolbar_swipe_trash.png -text
+WordPress/toolbar_swipe_trash@2x.png -text
+WordPress/toolbar_swipe_unapprove.png -text
+WordPress/toolbar_swipe_unapprove@2x.png -text
+WordPress/toolbar_unapprove.png -text
+WordPress/toolbar_unapprove@2x.png -text
+WordPress/toolbar_write.png -text
+WordPress/toolbar_write@2x.png -text
+WordPress/toolbar_write_lite.png -text
+WordPress/toolbar_write_lite@2x.png -text
+WordPress/tr.lproj/Localizable.strings -text
+WordPress/unapprove.png -text svneol=unset#unset
+WordPress/unapprove@2x.png -text svneol=unset#unset
+WordPress/uncheck.png -text
+WordPress/uncheck@2x.png -text
+WordPress/uncrustify.cfg -text
+WordPress/undoDisabled~ipad.png -text svneol=unset#unset
+WordPress/undo~ipad.png -text svneol=unset#unset
+WordPress/up.png -text
+WordPress/up@2x.png -text
+WordPress/up_dim.png -text
+WordPress/up_dim@2x.png -text
+WordPress/update-translations.rb -text
+WordPress/welcome_bg.png -text
+WordPress/welcome_bg@2x.png -text
+WordPress/welcome_bg_pattern.png -text
+WordPress/welcome_bg_pattern@2x.png -text
+WordPress/welcome_button_add.png -text
+WordPress/welcome_button_add@2x.png -text
+WordPress/welcome_button_asterisk.png -text
+WordPress/welcome_button_asterisk@2x.png -text
+WordPress/welcome_button_bg.png -text
+WordPress/welcome_button_bg@2x.png -text
+WordPress/welcome_button_bg_full.png -text
+WordPress/welcome_button_bg_full@2x.png -text
+WordPress/welcome_button_bg_full_highlighted.png -text
+WordPress/welcome_button_bg_full_highlighted@2x.png -text
+WordPress/whitebg.png -text
+WordPress/wp_logo.png -text
+WordPress/wp_logo@2x.png -text
+WordPress/write.png -text
+WordPress/write@2x.png -text
+WordPress/xhtml1-transitional.dtd -text
+WordPress/xhtmlValidatorTemplate.xhtml -text
+WordPress/zh-Hans.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/zh-Hant.lproj/Localizable.strings -text svneol=unset#unset

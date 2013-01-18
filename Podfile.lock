@@ -1,5 +1,11 @@
 
-COCOAPODS: 0.16.0
+PODS: 
+- AFNetworking (1.1.0)
+- CTidy (0.3.0)
+- DTCoreText (1.0.2)
+- JSONKit (1.5pre)
+- NSURL+IDN (0.1)
+- Reachability (3.0.0)
 
 DEPENDENCIES: 
 - AFNetworking (~> 1.0)
@@ -10,23 +16,17 @@ DEPENDENCIES:
 - Reachability (~> 3.0.0)
 
 EXTERNAL SOURCES: 
-  NSURL+IDN: 
-    :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
   CTidy: 
     :git: git://github.com/wordpress-mobile/CTidy.git
-
-PODS: 
-- AFNetworking (1.1.0)
-- CTidy (0.3.0)
-- DTCoreText (1.0.2)
-- JSONKit (1.5pre)
-- NSURL+IDN (0.1)
-- Reachability (3.0.0)
+  NSURL+IDN: 
+    :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
 
 SPEC CHECKSUMS: 
-  JSONKit: 3d4708953ea7ae399a49777372d8b060a43ddd27
+  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
+  CTidy: 6a35875a96dd441822e620732c1113be19769067
   DTCoreText: 4f2b9d62554c62dd7cd412c9f50ece1e70a548b9
+  JSONKit: 3d4708953ea7ae399a49777372d8b060a43ddd27
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
   Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
-  CTidy: 6a35875a96dd441822e620732c1113be19769067
-  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
+
+COCOAPODS: 0.16.0

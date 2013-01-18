@@ -1,7 +1,7 @@
-OTHER_LDFLAGS = -ObjC -lxml2 -framework CoreGraphics -framework CoreText -framework ImageIO -framework MediaPlayer -framework MobileCoreServices -framework QuartzCore -framework SystemConfiguration
-PODS_BUILD_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/AFNetworking" "${PODS_ROOT}/BuildHeaders/CTidy" "${PODS_ROOT}/BuildHeaders/DTCoreText" "${PODS_ROOT}/BuildHeaders/JSONKit" "${PODS_ROOT}/BuildHeaders/NSURL+IDN" "${PODS_ROOT}/BuildHeaders/Reachability"
 ALWAYS_SEARCH_USER_PATHS = YES
 HEADER_SEARCH_PATHS = ${PODS_HEADERS_SEARCH_PATHS} "$(SDKROOT)/usr/include/libxml2"
+OTHER_LDFLAGS = -ObjC -lxml2 -framework CoreGraphics -framework CoreText -framework ImageIO -framework MediaPlayer -framework MobileCoreServices -framework QuartzCore -framework SystemConfiguration
+PODS_BUILD_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/AFNetworking" "${PODS_ROOT}/BuildHeaders/CTidy" "${PODS_ROOT}/BuildHeaders/DTCoreText" "${PODS_ROOT}/BuildHeaders/JSONKit" "${PODS_ROOT}/BuildHeaders/NSURL+IDN" "${PODS_ROOT}/BuildHeaders/Reachability"
 PODS_HEADERS_SEARCH_PATHS = ${PODS_PUBLIC_HEADERS_SEARCH_PATHS}
-PODS_ROOT = ${SRCROOT}/Pods
 PODS_PUBLIC_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/CTidy" "${PODS_ROOT}/Headers/DTCoreText" "${PODS_ROOT}/Headers/JSONKit" "${PODS_ROOT}/Headers/NSURL+IDN" "${PODS_ROOT}/Headers/Reachability"
+PODS_ROOT = ${SRCROOT}/../Pods

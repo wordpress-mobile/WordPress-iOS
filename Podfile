@@ -1,3 +1,5 @@
+xcodeproj 'WordPress/WordPress.xcodeproj'
+
 platform :ios, '5.0'
 pod 'AFNetworking',	'~> 1.0'
 pod 'Reachability',	'~> 3.0.0'
