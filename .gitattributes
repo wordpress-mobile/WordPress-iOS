@@ -344,7 +344,6 @@ Pods/Reachability/Reachability.m -text
 Pods/Reachability/Reachability.podspec -text
 /README.md -text
 WordPress.xcworkspace/contents.xcworkspacedata -text
-WordPress.xcworkspace/xcuserdata/daniloercoli.xcuserdatad/UserInterfaceState.xcuserstate -text svneol=unset#unset
 WordPress/Classes/AboutViewController.h -text
 WordPress/Classes/AboutViewController.m -text
 WordPress/Classes/AbstractPost.h -text
