@@ -5,4 +5,10 @@ WordPress.xcodeproj/*.pbxuser
 WordPress.xcodeproj/*.perspectivev3
 WordPress.xcodeproj/project.xcworkspace
 WordPress.xcodeproj/xcuserdata
+WordPress/WordPress.xcodeproj/*.mode1v3
+WordPress/WordPress.xcodeproj/*.mode2v3
+WordPress/WordPress.xcodeproj/*.pbxuser
+WordPress/WordPress.xcodeproj/*.perspectivev3
+WordPress/WordPress.xcodeproj/project.xcworkspace
+WordPress/WordPress.xcodeproj/xcuserdata
 /build
