@@ -654,6 +654,7 @@
 		FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = FD75DDAC15B021C80043F12C /* UIViewController+Rotation.m */; };
 		FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9A948B12FAEA2300438F94 /* DateUtils.m */; };
 		FDC528AC157E551100A3FD91 /* SidebarTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FDC528AB157E551000A3FD91 /* SidebarTableViewCell.m */; };
+		FDD08B5D16AD619400A06426 /* NotificationsUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FDD08B5C16AD619400A06426 /* NotificationsUtils.m */; };
 		FEA64EDF0F7E4616BA835081 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69187343EC8F435684EFFAF1 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -1521,6 +1522,8 @@
 		FDC528AA157E551000A3FD91 /* SidebarTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarTableViewCell.h; sourceTree = "<group>"; };
 		FDC528AB157E551000A3FD91 /* SidebarTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarTableViewCell.m; sourceTree = "<group>"; };
 		FDCB9A89134B75B900E5C776 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FDD08B5B16AD619400A06426 /* NotificationsUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsUtils.h; sourceTree = "<group>"; };
+		FDD08B5C16AD619400A06426 /* NotificationsUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsUtils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2639,6 +2642,8 @@
 				372AD15316682BA100F21BC1 /* NotificationsFollowDetailViewController.m */,
 				CC669B38167AA82A009E16F8 /* NoteComment.h */,
 				CC669B39167AA82A009E16F8 /* NoteComment.m */,
+				FDD08B5B16AD619400A06426 /* NotificationsUtils.h */,
+				FDD08B5C16AD619400A06426 /* NotificationsUtils.m */,
 			);
 			name = Notifications;
 			sourceTree = "<group>";
@@ -3705,6 +3710,7 @@
 				CC5B0F27169BDC4000AA0291 /* NoteCommentContentCell.m in Sources */,
 				8516972C169D42F4006C5DED /* WPToast.m in Sources */,
 				CC098B8416A9ECF800450976 /* CameraPlusPickerManager.m in Sources */,
+				FDD08B5D16AD619400A06426 /* NotificationsUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
