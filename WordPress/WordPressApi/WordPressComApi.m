@@ -337,9 +337,13 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     // Send a multicall for the blogs list and retrieval of push notification settings
     NSMutableArray *operations = [NSMutableArray arrayWithCapacity:2];
     AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-    ;
+    
     [api setAuthorizationHeaderWithToken:self.authToken];
-    NSArray *blogsListParameters = [NSArray arrayWithObjects:self.username, self.password, token, blogsID, @"apple", nil];
+  
+    NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
+	NSString *appversion = [[info objectForKey:@"CFBundleVersion"] stringByUrlEncoding];
+    
+    NSArray *blogsListParameters = [NSArray arrayWithObjects:self.username, self.password, token, blogsID, @"apple", appversion, nil];
     AFXMLRPCRequest *blogsListRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_set_blogs_list" parameters:blogsListParameters];
     AFXMLRPCRequestOperation *blogsListOperation = [api XMLRPCRequestOperationWithRequest:blogsListRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         WPFLog(@"Sent blogs list (%d blogs)", [blogsID count]);
