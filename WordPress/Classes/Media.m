@@ -98,6 +98,8 @@
 
 - (void)remove {
     [self cancelUpload];
+    NSError *error = nil;
+    [[NSFileManager defaultManager] removeItemAtPath:self.localURL error:&error];
     [[self managedObjectContext] deleteObject:self];
 }
 
