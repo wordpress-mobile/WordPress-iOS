@@ -464,8 +464,6 @@ WordPress/Classes/NotificationsTableViewCell.h -text
 WordPress/Classes/NotificationsTableViewCell.m -text
 WordPress/Classes/NotificationsTableViewDatasource.h -text
 WordPress/Classes/NotificationsTableViewDatasource.m -text
-WordPress/Classes/NotificationsUtils.h -text
-WordPress/Classes/NotificationsUtils.m -text
 WordPress/Classes/NotificationsViewController.h -text
 WordPress/Classes/NotificationsViewController.m -text
 WordPress/Classes/Page.h -text
