@@ -45,8 +45,8 @@ typedef enum {
     SettingsSectionBlogs = 0,
     SettingsSectionBlogsAdd,
     SettingsSectionWpcom,
-    SettingsSectionMedia,
     SettingsSectionNotifications,
+    SettingsSectionMedia,
     SettingsSectionSounds,
     SettingsSectionInfo,
     
