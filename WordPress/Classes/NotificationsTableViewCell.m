@@ -70,20 +70,7 @@ const CGFloat NotificationsTableViewCellFontSize = 17.0f;
     NSString *iconURL = self.note.icon;
     if (iconURL) {
         iconURL = [iconURL stringByReplacingOccurrencesOfString:@"s=48" withString:@"s=96"];
-        
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:iconURL]];
-        [request setHTTPShouldHandleCookies:NO];
-        [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-        
-        [self.imageView setImageWithURLRequest:request
-                              placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]
-                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                           self.imageView.image = image;
-                                           //[self setNeedsDisplay];
-                                       }
-                                       failure:nil
-         ];
-        
+        [self.imageView setImageWithURL:[NSURL URLWithString:iconURL] placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
     }
     
     self.textLabel.text = [NSString decodeXMLCharactersIn:note.subject];
