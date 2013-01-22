@@ -57,7 +57,6 @@ typedef enum {
 
 @property (weak, readonly) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) NSArray *mediaSettingsArray;
-@property (nonatomic, strong) NSDictionary *notificationSettings;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
@@ -73,11 +72,10 @@ typedef enum {
     NSFetchedResultsController *_resultsController;
 }
 
-@synthesize mediaSettingsArray, notificationSettings;
+@synthesize mediaSettingsArray;
 
 #pragma mark -
 #pragma mark LifeCycle Methods
-
 
 
 - (void)viewDidLoad {
@@ -102,18 +100,6 @@ typedef enum {
     self.tableView.backgroundView = nil;
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
     [self setupMedia];
-    
-    notificationSettings = [NSDictionary dictionaryWithObjectsAndKeys:@"0", @"DefaultValue",
-                            @"media_resize_preference", @"Key",
-                            NSLocalizedString(@"Image Resize", @""), @"Title",
-                            [NSArray arrayWithObjects:NSLocalizedString(@"Always Ask", @"Image resize preference"),
-                             NSLocalizedString(@"Small", @"Image resize preference"),
-                             NSLocalizedString(@"Medium", @"Image resize preference"),
-                             NSLocalizedString(@"Large", @"Image resize preference"),
-                             NSLocalizedString(@"Disabled", @"Image resize preference"), nil], @"Titles",
-                            [NSArray arrayWithObjects:@"0",@"1",@"2",@"3",@"4", nil], @"Values",
-                            NSLocalizedString(@"Set default size images should be uploaded.", @""), @"Info",
-                            nil];
 }
 
 
