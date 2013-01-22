@@ -17,6 +17,7 @@
 	IBOutlet UITableView *tableView;
 	UITextField *urlTextField, *usernameTextField, *passwordTextField, *lastTextField;
     UITableViewSwitchCell *switchCell;
+    UITableViewSwitchCell *switchCellPushNotifications;
     UIBarButtonItem *saveButton;
     Blog *blog;
     NSArray *subsites;
@@ -33,5 +34,6 @@
 @property (nonatomic, strong) UIActivityIndicatorView *savingIndicator;
 @property (nonatomic, assign) BOOL isCancellable;
 @property (nonatomic, weak) id<SettingsViewControllerDelegate>delegate;
+@property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
 
 @end

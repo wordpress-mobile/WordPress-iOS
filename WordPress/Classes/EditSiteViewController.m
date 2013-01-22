@@ -28,7 +28,8 @@
 - (void)configureTextField:(UITextField *)textField asPassword:(BOOL)asPassword;
 - (NSString *)getURLToValidate;
 - (void)enableDisableSaveButton;
-
+- (void)reloadNotificationSettings;
+- (BOOL)getBlogPushNotificationsSetting;
 @end
 
 @implementation EditSiteViewController {
@@ -77,6 +78,22 @@
         self.startingPwd = self.password;
         self.startingUrl = self.url;
         self.geolocationEnabled = blog.geolocationEnabled;
+        
+        _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
+        if (_notificationPreferences) {
+            
+        } else {
+            [[WordPressComApi sharedApi] fetchNotificationSettings:^{
+                [self reloadNotificationSettings];
+            } failure:^(NSError *error) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+                                                                message:error.localizedDescription
+                                                               delegate:nil
+                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label.")
+                                                      otherButtonTitles:nil, nil];
+                [alert show];
+            }];
+        }
     }
     
     if (isCancellable) {
@@ -134,12 +151,15 @@
     switch (section) {
 		case 0:
             return 3;	// URL, username, password
-		case 1:
-            return 1;	// Settings
+		case 1: // Settings: Geolocation, [ Push Notifications ]
+            if (blog && ( [blog isWPcom] || [blog hasJetpack] ) && [[WordPressComApi sharedApi] hasCredentials])
+                return 2;
+            else
+                return 1;	
         case 2:
-//            if ([JetpackAuthUtil getJetpackUsernameForBlog:blog] != nil) {
-//                return 2;
-//            }
+            //            if ([JetpackAuthUtil getJetpackUsernameForBlog:blog] != nil) {
+            //                return 2;
+            //            }
             return 1;
 	}
 	return 0;
@@ -220,22 +240,40 @@
             return self.passwordCell;
         }				        
     } else if(indexPath.section == 1) {
-        if(switchCell == nil) {
-            NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewSwitchCell" owner:nil options:nil];
-            for(id currentObject in topLevelObjects)
-            {
-                if([currentObject isKindOfClass:[UITableViewSwitchCell class]])
+        if(indexPath.row == 0) {
+            if(switchCell == nil) {
+                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewSwitchCell" owner:nil options:nil];
+                for(id currentObject in topLevelObjects)
                 {
-                    switchCell = (UITableViewSwitchCell *)currentObject;
-                    break;
+                    if([currentObject isKindOfClass:[UITableViewSwitchCell class]])
+                    {
+                        switchCell = (UITableViewSwitchCell *)currentObject;
+                        break;
+                    }
                 }
             }
+            switchCell.textLabel.text = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
+            switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            switchCell.cellSwitch.on = self.geolocationEnabled;
+            [switchCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
+            return switchCell;
+        } else if(indexPath.row == 1) {
+            if(switchCellPushNotifications == nil) {
+                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewSwitchCell" owner:nil options:nil];
+                for(id currentObject in topLevelObjects)
+                {
+                    if([currentObject isKindOfClass:[UITableViewSwitchCell class]])
+                    {
+                        switchCellPushNotifications = (UITableViewSwitchCell *)currentObject;
+                        break;
+                    }
+                }
+            }
+            switchCellPushNotifications.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
+            switchCellPushNotifications.selectionStyle = UITableViewCellSelectionStyleNone;
+            switchCellPushNotifications.cellSwitch.on = [self getBlogPushNotificationsSetting];
+            return switchCellPushNotifications;
         }
-        switchCell.textLabel.text = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
-        switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        switchCell.cellSwitch.on = self.geolocationEnabled;
-        [switchCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
-        return switchCell;
 	} else if(indexPath.section == 2) {
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
@@ -612,8 +650,36 @@
     if (blog) {
         blog.geolocationEnabled = self.geolocationEnabled;
         [blog dataSave];
-    }
-	
+        
+        if(switchCellPushNotifications){
+            BOOL muted = ! switchCellPushNotifications.cellSwitch.on;
+            if (_notificationPreferences) {
+                NSMutableDictionary *mutedBlogsDictionary = [[_notificationPreferences objectForKey:@"muted_blogs"] mutableCopy];
+                NSMutableArray *mutedBlogsArray = [[mutedBlogsDictionary objectForKey:@"value"] mutableCopy];
+                NSMutableDictionary *updatedPreference = nil;
+                int i=0;
+                BOOL hasMatch = NO;
+                NSNumber *blogID = [blog isWPcom] ? blog.blogID : [blog jetpackClientID];
+                for ( ; i < [mutedBlogsArray count]; i++) {
+                    updatedPreference = [[mutedBlogsArray objectAtIndex:i] mutableCopy];
+                    NSString *currentblogID = [updatedPreference objectForKey:@"blog_id"];
+                    if( [blogID intValue] == [currentblogID intValue]  ) {
+                        [updatedPreference setValue:[NSNumber numberWithBool:muted] forKey:@"value"];
+                        hasMatch = YES;
+                        break;
+                    }
+                }
+                
+                if(hasMatch){
+                    [mutedBlogsArray setObject:updatedPreference atIndexedSubscript:i];
+                    [mutedBlogsDictionary setValue:mutedBlogsArray forKey:@"value"];
+                    [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
+                    [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
+                    [[WordPressComApi sharedApi] saveNotificationSettings:nil failure:nil];
+                }
+            }
+        }
+	}
 	if(blog == nil || blog.username == nil) {
 		[self validateFields];
 	} else {
@@ -658,6 +724,32 @@
     }
     
     self.navigationItem.rightBarButtonItem.enabled = hasContent;
+}
+
+
+
+- (void)reloadNotificationSettings {
+    _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
+    if (_notificationPreferences) {
+        [self.tableView reloadData];
+    }
+}
+
+- (BOOL)getBlogPushNotificationsSetting {
+    if (_notificationPreferences) {
+        NSDictionary *mutedBlogsDictionary = [_notificationPreferences objectForKey:@"muted_blogs"];
+        NSArray *mutedBlogsArray = [mutedBlogsDictionary objectForKey:@"value"];
+        NSNumber *blogID = [blog isWPcom] ? blog.blogID : [blog jetpackClientID];
+        for(NSDictionary *currentBlog in mutedBlogsArray ){
+            NSString *currentBlogID = [currentBlog objectForKey:@"blog_id"];
+            if( [blogID intValue] == [currentBlogID intValue]  ) {
+                return ![[currentBlog objectForKey:@"value"] boolValue];
+            }
+        }
+        return YES;
+    } else {
+        return YES;
+    }
 }
 
 #pragma mark -
