@@ -951,7 +951,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
             if ((infoText.text == nil) || ([infoText.text isEqualToString:@""]))
                 infoText.text = urlField.text;
 			
-            NSString *urlString = [self validateNewLinkInfo:urlField.text];
+            NSString *urlString = [self validateNewLinkInfo:[urlField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
             NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];
             
             NSRange range = textView.selectedRange;
