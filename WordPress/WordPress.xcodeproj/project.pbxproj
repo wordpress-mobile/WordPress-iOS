@@ -599,6 +599,8 @@
 		E17078FD130A95B600F30433 /* WordPress-1-2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E17078FC130A95B600F30433 /* WordPress-1-2.xcmappingmodel */; };
 		E1745A9A15AF49C000A3F7C5 /* UIViewController+Styled.m in Sources */ = {isa = PBXBuildFile; fileRef = E1745A9915AF49C000A3F7C5 /* UIViewController+Styled.m */; };
 		E1745AA715AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m in Sources */ = {isa = PBXBuildFile; fileRef = E1745AA615AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m */; };
+		E174853016B028BF00D02746 /* keyboardButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A8A13AAA96F00A6FCA4 /* keyboardButton@2x.png */; };
+		E174853116B028C300D02746 /* keyboardButton.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A8813AAA5FE00A6FCA4 /* keyboardButton.png */; };
 		E1756E651694A99400D9EC00 /* WordPressComApiCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = E1756E641694A99400D9EC00 /* WordPressComApiCredentials.m */; };
 		E1764A36149A12BA0012F7E4 /* XMLRPCDataCleaner.m in Sources */ = {isa = PBXBuildFile; fileRef = E1764A35149A12BA0012F7E4 /* XMLRPCDataCleaner.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E177087913AAAD5800EA6C72 /* keyboardButton~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E177087813AAAD5800EA6C72 /* keyboardButton~ipad.png */; };
@@ -3497,6 +3499,8 @@
 				37A76E6016A4B435001DBF52 /* sidebar_notifications_highlighted@2x.png in Resources */,
 				37A76E6116A4B435001DBF52 /* sidebar_notifications.png in Resources */,
 				37A76E6216A4B435001DBF52 /* sidebar_notifications@2x.png in Resources */,
+				E174853016B028BF00D02746 /* keyboardButton@2x.png in Resources */,
+				E174853116B028C300D02746 /* keyboardButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
