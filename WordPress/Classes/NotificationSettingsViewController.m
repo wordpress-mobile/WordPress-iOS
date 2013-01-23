@@ -22,9 +22,11 @@
 
 @end
 
+
 @implementation NotificationSettingsViewController
 
 BOOL hasChanges;
+@synthesize showCloseButton;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -41,13 +43,17 @@ BOOL hasChanges;
     
     self.tableView.backgroundView = nil;
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
-    self.title = NSLocalizedString(@"Notifications", @"");
+    self.title = NSLocalizedString(@"Manage Notifications", @"");
     
     CGRect refreshFrame = self.tableView.bounds;
     refreshFrame.origin.y = -refreshFrame.size.height;
     self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:refreshFrame];
     self.refreshHeaderView.delegate = self;
     [self.tableView addSubview:self.refreshHeaderView];
+    
+    if(self.showCloseButton)
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -111,6 +117,10 @@ BOOL hasChanges;
     
     [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
+}
+
+- (void)dismiss {
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

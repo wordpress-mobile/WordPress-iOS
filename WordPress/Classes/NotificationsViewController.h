@@ -12,6 +12,8 @@
 
 @interface NotificationsViewController : WPTableViewController <DetailViewDelegate>
 
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *settingsButton;
+
 -(void)refreshFromPushNotification;
 
 @end

@@ -15,6 +15,7 @@
 #import "EGORefreshTableHeaderView.h"
 #import "NotificationsTableViewCell.h"
 #import "WPTableViewControllerSubclass.h"
+#import "NotificationSettingsViewController.h"
 
 NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
@@ -25,9 +26,14 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 @property (nonatomic, strong) WordPressComApi *user;
 @property (nonatomic, assign) BOOL isPushingViewController;
 
+- (void)showNotificationsSettings;
+
 @end
 
+
 @implementation NotificationsViewController
+
+@synthesize settingsButton;
 
 #pragma mark - View Lifecycle methods
 
@@ -56,6 +62,57 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     if ([self.tableView respondsToSelector:@selector(registerClass:forCellReuseIdentifier:)]) {
         [self.tableView registerClass:[NotificationsTableViewCell class] forCellReuseIdentifier:NotificationsTableViewNoteCellIdentifier];
     }
+    
+    
+    if(IS_IPHONE) {
+        if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
+            
+            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+            [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
+            [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateHighlighted];
+            
+            UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+            [btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+            
+            backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+            [btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
+            
+            btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
+            
+            [btn addTarget:self action:@selector(showNotificationsSettings) forControlEvents:UIControlEventTouchUpInside];
+            self.settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
+        } else {
+            self.settingsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                                target:self
+                                                                                action:@selector(showNotificationsSettings)];
+        }
+    } else {
+        //iPad
+        self.settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_actions.png"]
+                                                               style:UIBarButtonItemStylePlain
+                                                              target:self
+                                                              action:@selector(showNotificationsSettings)];
+    }
+
+    [self.settingsButton setAccessibilityLabel:NSLocalizedString(@"Settings", @"")];
+    
+    if ([self.settingsButton respondsToSelector:@selector(setTintColor:)]) {
+        UIColor *color = [UIColor UIColorFromHex:0x464646];
+        self.settingsButton.tintColor = color;
+    }
+    
+    if (IS_IPHONE) {
+       self.navigationItem.rightBarButtonItem = self.settingsButton;
+    } else {
+        self.toolbarItems = [NSArray arrayWithObjects: self.settingsButton , nil];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [super viewWillAppear:animated];
+    if (IS_IPAD)
+        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -123,6 +180,24 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
         }
     }
     [Note pruneOldNotesBefore:pruneBefore withContext:self.resultsController.managedObjectContext];
+}
+
+
+- (void)showNotificationsSettings {
+    
+    NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    
+    if (IS_IPAD) {
+        notificationSettingsViewController.showCloseButton = YES;
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:notificationSettingsViewController];
+        
+        nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+		nav.modalPresentationStyle = UIModalPresentationFormSheet;
+      
+        [self presentModalViewController:nav animated:YES];
+    } else {
+        [self.panelNavigationController pushViewController:notificationSettingsViewController fromViewController:self animated:YES];
+    }
 }
 
 #pragma mark - Public methods

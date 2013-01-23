@@ -13,6 +13,7 @@
 @property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
 @property (nonatomic, strong) NSMutableArray *notificationPrefArray;
 @property (nonatomic, strong) NSMutableArray *mutedBlogsArray;
+@property (nonatomic, assign) BOOL showCloseButton;
 
 - (void)notificationSettingChanged:(id)sender;
 - (void)muteBlogSettingChanged:(id)sender;
