@@ -9,7 +9,9 @@
 NSTimeInterval kAnimationDuration = 0.3f;
 
 NSUInteger const EditPostViewControllerCharactersChangedToAutosave = 20;
-NSTimeInterval const EditPostViewControllerAutosaveInterval = 5;
+NSUInteger const EditPostViewControllerCharactersChangedToAutosaveOnWWAN = 40;
+NSTimeInterval const EditPostViewControllerAutosaveInterval = 4;
+NSTimeInterval const EditPostViewControllerAutosaveIntervalOnWWAN = 6;
 
 typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagNone,
@@ -804,7 +806,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     if (!_hasChangesToAutosave)
         return;
 
-    _autosaveTimer = [NSTimer scheduledTimerWithTimeInterval:EditPostViewControllerAutosaveInterval target:self selector:@selector(autosaveTriggered:) userInfo:nil repeats:NO];
+    _autosaveTimer = [NSTimer scheduledTimerWithTimeInterval:[self autosaveInterval] target:self selector:@selector(autosaveTriggered:) userInfo:nil repeats:NO];
     WPFLog(@"New timer for %@", _autosaveTimer.fireDate);
 }
 
@@ -824,7 +826,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
 - (void)incrementCharactersChangedForAutosaveBy:(NSUInteger)change {
     _charactersChanged += change;
-    if (_charactersChanged > EditPostViewControllerCharactersChangedToAutosave) {
+    if (_charactersChanged > [self autosaveCharactersChangedThreshold]) {
         _charactersChanged = 0;
         [self autosaveTriggered:nil];
     }
@@ -836,6 +838,22 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
 - (void)hideAutosaveIndicatorWithSuccess:(BOOL)success {
     [_autosavingIndicatorView stopAnimatingWithSuccess:success];
+}
+
+- (NSTimeInterval)autosaveInterval {
+    if ([self.apost.blog.reachability isReachableViaWWAN]) {
+        return EditPostViewControllerAutosaveIntervalOnWWAN;
+    } else {
+        return EditPostViewControllerAutosaveInterval;
+    }
+}
+
+- (NSUInteger)autosaveCharactersChangedThreshold {
+    if ([self.apost.blog.reachability isReachableViaWWAN]) {
+        return EditPostViewControllerCharactersChangedToAutosaveOnWWAN;
+    } else {
+        return EditPostViewControllerCharactersChangedToAutosave;
+    }
 }
 
 - (BOOL)hasFailedMedia {
