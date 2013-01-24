@@ -138,6 +138,19 @@
 	return str;
 }
 
+- (void)showSimplePreviewWithMessage:(NSString *)message {
+    WPFLogMethod();
+    NSString *previewPageHTML = [self buildSimplePreview];
+    if (message) {
+        previewPageHTML = [previewPageHTML stringByReplacingOccurrencesOfString:@"<div class=\"page\">" withString:[NSString stringWithFormat:@"<div class=\"page\"><p>%@</p>", message]];
+    }
+    [webView loadHTMLString:previewPageHTML baseURL:nil];
+}
+
+- (void)showSimplePreview {
+    [self showSimplePreviewWithMessage:nil];
+}
+
 - (void)showRealPreview {
 	NSString *status = postDetailViewController.apost.original.status;
 	//draft post
@@ -158,17 +171,11 @@
     WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 
     if( appDelegate.connectionAvailable == NO ) {
-        NSString *previewPageHTML = [self buildSimplePreview];
-        NSString *noConnectionMessageHTML = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")];
-        previewPageHTML = [previewPageHTML stringByReplacingOccurrencesOfString:@"<div class=\"page\">" withString:noConnectionMessageHTML];
-        [webView loadHTMLString:previewPageHTML baseURL:nil];
+        [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
     } else if ( postDetailViewController.apost.blog.reachable == NO ) {
-        NSString *previewPageHTML = [self buildSimplePreview];
-        NSString *noConnectionMessageHTML = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection cannot reach your blog.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")];
-        previewPageHTML = [previewPageHTML stringByReplacingOccurrencesOfString:@"<div class=\"page\">" withString:noConnectionMessageHTML];
-        [webView loadHTMLString:previewPageHTML baseURL:nil];
+        [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection cannot reach your blog.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
     } else if (link == nil ) {
-        [webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
+        [self showSimplePreview];
     } else {
 
         // checks if this a scheduled post
@@ -219,12 +226,12 @@
             [self showRealPreview];
         } failure:^(NSError *error) {
             WPFLog(@"Error autosaving post for preview: %@", error);
-            [webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
+            [self showSimplePreview];
         }];
 
         // Couldn't autosave: that means the post is already published, and any edits would be publicly saved
         if (!autosave) {
-            [webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
+            [self showSimplePreview];
         }
 	} else {
 		[self showRealPreview];
