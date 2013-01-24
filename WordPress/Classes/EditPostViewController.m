@@ -9,6 +9,7 @@
 NSTimeInterval kAnimationDuration = 0.3f;
 
 NSUInteger const EditPostViewControllerCharactersChangedToAutosave = 20;
+NSTimeInterval const EditPostViewControllerAutosaveInterval = 5;
 
 typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagNone,
@@ -803,7 +804,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     if (!_hasChangesToAutosave)
         return;
 
-    _autosaveTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(autosaveTriggered:) userInfo:nil repeats:NO];
+    _autosaveTimer = [NSTimer scheduledTimerWithTimeInterval:EditPostViewControllerAutosaveInterval target:self selector:@selector(autosaveTriggered:) userInfo:nil repeats:NO];
     WPFLog(@"New timer for %@", _autosaveTimer.fireDate);
 }
 
