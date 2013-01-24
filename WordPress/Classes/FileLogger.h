@@ -23,3 +23,4 @@ NSString *FileLoggerPath();
 
 #define WPFLog(fmt, ...) [FileLogger log:fmt, ##__VA_ARGS__]
 #define WPFLogMethod() [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+#define WPFLogMethodParam(param) [FileLogger log:@"%@ %@%@", self, NSStringFromSelector(_cmd), param];
