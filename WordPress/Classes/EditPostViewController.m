@@ -1002,14 +1002,20 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if ([actionSheet tag] == 201) {
+        // Discard
         if (buttonIndex == 0) {
             [self discard];
         }
-        
-        if (buttonIndex == 1) {  
+
+        if (buttonIndex == 1) {
 			if ([actionSheet numberOfButtons] == 2)
 				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
+            // Save draft
 			else {
+                // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
+                if ([self.apost.status isEqualToString:@"publish"]) {
+                    self.apost.status = @"draft";
+                }
 				if (![self.apost hasRemote])
 					[self savePost:NO];
 				else
