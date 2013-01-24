@@ -224,6 +224,12 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
+
+    if([note.isLoading intValue] == 1) {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        return;
+    }
+    
     BOOL hasDetailsView = [self noteHasDetailView:note];
     if (hasDetailsView) {
         _isPushingViewController = YES;
@@ -255,6 +261,11 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 }
 
 - (BOOL)noteHasDetailView:(Note *)note {
+   
+    if([note.isLoading intValue] == 1) {
+        return NO;
+    }
+    
     if ([note isComment])
         return YES;
     
@@ -300,7 +311,17 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)configureCell:(NotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     cell.note = [self.resultsController objectAtIndexPath:indexPath];
-    cell.accessoryType = [self noteHasDetailView:cell.note] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+    
+    if([cell.note.isLoading intValue] == 1) {
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]
+                                             initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        spinner.frame = CGRectMake(0, 0, 24, 24);
+        cell.accessoryView = spinner;
+        [spinner startAnimating];        
+    } else {
+        cell.accessoryView = nil;
+        cell.accessoryType = [self noteHasDetailView:cell.note] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;        
+    }
 }
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {

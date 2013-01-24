@@ -44,6 +44,7 @@ const NSUInteger NoteKeepCount = 20;
 @dynamic payload;
 @dynamic unread;
 @dynamic icon;
+@dynamic isLoading;
 @dynamic noteID;
 @synthesize commentText = _commentText, noteData = _noteData;
 

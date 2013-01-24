@@ -321,9 +321,11 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     }
     
     button.enabled = NO;
+    self.note.isLoading = [NSNumber numberWithBool:YES];
     
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
     [self.user postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        self.note.isLoading = [NSNumber numberWithBool:NO];
         NSDictionary *response = (NSDictionary *)responseObject;
         if (response) {
             NSArray *noteArray = [NSArray arrayWithObject:_note];
@@ -334,6 +336,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             }];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        self.note.isLoading = [NSNumber numberWithBool:NO];
         button.enabled = YES;
         BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
 #ifndef DEBUG
@@ -345,6 +348,23 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         }
     }];
     
+    NSString *toastMessage = @"";
+    if (button.tag == APPROVE_BUTTON_TAG) {
+        toastMessage = NSLocalizedString(@"Approved", @"");
+    } else if (button.tag == UNAPPROVE_BUTTON_TAG) {
+        toastMessage = NSLocalizedString(@"Unapproved", @"User replied to a comment");
+    } else if (button.tag == TRASH_BUTTON_TAG){
+        toastMessage = NSLocalizedString(@"Trashed", @"User replied to a comment");
+    } else if (button.tag == UNTRASH_BUTTON_TAG){
+        toastMessage = NSLocalizedString(@"Untrashed", @"User replied to a comment");
+    } else if (button.tag == SPAM_BUTTON_TAG){
+        toastMessage = NSLocalizedString(@"Spammed", @"User replied to a comment");
+    } else if (button.tag == UNSPAM_BUTTON_TAG){
+        toastMessage = NSLocalizedString(@"Unspammed", @"User replied to a comment");
+    }
+    
+    [WPToast showToastWithMessage:toastMessage
+                         andImage:[UIImage imageNamed:@"action_icon_followed"]];
 }
 
 - (void)startReply:(id)sender {
