@@ -114,8 +114,12 @@
 #pragma mark Revision management
 - (void)cloneFrom:(AbstractPost *)source {
     for (NSString *key in [[[source entity] attributesByName] allKeys]) {
-        NSLog(@"Copying attribute %@", key);
-        [self setValue:[source valueForKey:key] forKey:key];
+        if ([key isEqualToString:@"permalink"]) {
+            NSLog(@"Skipping %@", key);
+        } else {
+            NSLog(@"Copying attribute %@", key);
+            [self setValue:[source valueForKey:key] forKey:key];
+        }
     }
     for (NSString *key in [[[source entity] relationshipsByName] allKeys]) {
         if ([key isEqualToString:@"original"] || [key isEqualToString:@"revision"]) {
@@ -159,7 +163,13 @@
     if ([self isOriginal]) {
         [self cloneFrom:self.revision];
         self.isFeaturedImageChanged = self.revision.isFeaturedImageChanged;
-        [self deleteRevision];
+    }
+}
+
+- (void)updateRevision {
+    if ([self isRevision]) {
+        [self cloneFrom:self.original];
+        self.isFeaturedImageChanged = self.original.isFeaturedImageChanged;
     }
 }
 

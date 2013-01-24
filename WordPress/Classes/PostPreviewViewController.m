@@ -138,94 +138,112 @@
 	return str;
 }
 
-#pragma mark -
-#pragma mark Webkit View Delegate Methods
-
-- (void)refreshWebView {
-	BOOL edited = [self.postDetailViewController hasChanges];
-	NSString *status = postDetailViewController.apost.status;
-	
+- (void)showRealPreview {
+	NSString *status = postDetailViewController.apost.original.status;
 	//draft post
 	BOOL isDraft = [self.postDetailViewController isAFreshlyCreatedDraft];
 	BOOL isPrivate = NO;
 	BOOL isPending = NO;
     BOOL isPrivateBlog = [postDetailViewController.apost.blog isPrivate];
-	
+
 	if ([status isEqualToString:@"draft"])
 		isDraft = YES;
 	else if ([status isEqualToString:@"private"])
 		isPrivate = YES;
 	else if ([status isEqualToString:@"pending"])
 		isPending = YES;
-	
-	if (edited) {
-		[webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
-	} else {
-		
-		NSString *link = postDetailViewController.apost.permaLink;
-		
-        WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-        
-        if( appDelegate.connectionAvailable == NO ) {
-            NSString *previewPageHTML = [self buildSimplePreview];
-            NSString *noConnectionMessageHTML = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")];
-            previewPageHTML = [previewPageHTML stringByReplacingOccurrencesOfString:@"<div class=\"page\">" withString:noConnectionMessageHTML];
-            [webView loadHTMLString:previewPageHTML baseURL:nil];
-        } else if ( postDetailViewController.apost.blog.reachable == NO ) {
-            NSString *previewPageHTML = [self buildSimplePreview];
-            NSString *noConnectionMessageHTML = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection cannot reach your blog.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")];
-            previewPageHTML = [previewPageHTML stringByReplacingOccurrencesOfString:@"<div class=\"page\">" withString:noConnectionMessageHTML];
-            [webView loadHTMLString:previewPageHTML baseURL:nil];
-		} else if (link == nil ) {
-			[webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
-		} else {
-				
-			// checks if this a scheduled post
-			
-			/*
-			 Forced the preview to use the login form. Otherwise the preview of pvt blog doesn't work.
-			 We can switch back to the normal call when we can access the blogOptions within the app.
-			 */
-			
-//			NSDate *currentGMTDate = [DateUtils currentGMTDate];
-			NSDate *postGMTDate = postDetailViewController.apost.date_created_gmt;
-			NSDate *laterDate = postDetailViewController.apost.date_created_gmt;//[currentGMTDate laterDate:postGMTDate];
-			
-			if(isDraft || isPending || isPrivate || isPrivateBlog || ([laterDate isEqualToDate:postGMTDate])) {
-				
-				NSString *wpLoginURL = [postDetailViewController.apost.blog loginURL];
-				NSURL *url = [NSURL URLWithString:wpLoginURL]; 
-				NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
-				[req setHTTPMethod:@"POST"];
-				[req addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-				NSString *paramDataString = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@", 
-											 @"log", postDetailViewController.apost.blog.username,
-											 @"pwd", [[postDetailViewController.apost.blog fetchPassword] stringByUrlEncoding],
-											 @"redirect_to", link];
-			
-				NSData *paramData = [paramDataString dataUsingEncoding:NSUTF8StringEncoding]; 
-				[req setHTTPBody: paramData];
-                [req setValue:[NSString stringWithFormat:@"%d", [paramData length]] forHTTPHeaderField:@"Content-Length"];
-                [req addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-				[webView loadRequest:req];
 
-			} else {
-				[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link]]];
-			}
-		}
+    NSString *link = postDetailViewController.apost.original.permaLink;
+
+    WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    if( appDelegate.connectionAvailable == NO ) {
+        NSString *previewPageHTML = [self buildSimplePreview];
+        NSString *noConnectionMessageHTML = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")];
+        previewPageHTML = [previewPageHTML stringByReplacingOccurrencesOfString:@"<div class=\"page\">" withString:noConnectionMessageHTML];
+        [webView loadHTMLString:previewPageHTML baseURL:nil];
+    } else if ( postDetailViewController.apost.blog.reachable == NO ) {
+        NSString *previewPageHTML = [self buildSimplePreview];
+        NSString *noConnectionMessageHTML = [NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection cannot reach your blog.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")];
+        previewPageHTML = [previewPageHTML stringByReplacingOccurrencesOfString:@"<div class=\"page\">" withString:noConnectionMessageHTML];
+        [webView loadHTMLString:previewPageHTML baseURL:nil];
+    } else if (link == nil ) {
+        [webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
+    } else {
+
+        // checks if this a scheduled post
+
+        /*
+         Forced the preview to use the login form. Otherwise the preview of pvt blog doesn't work.
+         We can switch back to the normal call when we can access the blogOptions within the app.
+         */
+
+        //			NSDate *currentGMTDate = [DateUtils currentGMTDate];
+        NSDate *postGMTDate = postDetailViewController.apost.date_created_gmt;
+        NSDate *laterDate = postDetailViewController.apost.date_created_gmt;//[currentGMTDate laterDate:postGMTDate];
+
+        if(isDraft || isPending || isPrivate || isPrivateBlog || ([laterDate isEqualToDate:postGMTDate])) {
+
+            NSString *wpLoginURL = [postDetailViewController.apost.blog loginURL];
+            NSURL *url = [NSURL URLWithString:wpLoginURL];
+            NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
+            [req setHTTPMethod:@"POST"];
+            [req addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+            NSString *paramDataString = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@",
+                                         @"log", postDetailViewController.apost.blog.username,
+                                         @"pwd", [[postDetailViewController.apost.blog fetchPassword] stringByUrlEncoding],
+                                         @"redirect_to", link];
+
+            NSData *paramData = [paramDataString dataUsingEncoding:NSUTF8StringEncoding];
+            [req setHTTPBody: paramData];
+            [req setValue:[NSString stringWithFormat:@"%d", [paramData length]] forHTTPHeaderField:@"Content-Length"];
+            [req addValue:@"*/*" forHTTPHeaderField:@"Accept"];
+            [webView loadRequest:req];
+            WPFLog(@"Showing real preview (login) for %@", link);
+        } else {
+            [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link]]];
+            WPFLog(@"Showing real preview for %@", link);
+        }
+    }
+}
+
+#pragma mark -
+#pragma mark Webkit View Delegate Methods
+
+- (void)refreshWebView {
+	BOOL edited = [self.postDetailViewController hasChanges];
+    loadingView.hidden = NO;
+
+	if (edited) {
+        BOOL autosave = [postDetailViewController autosaveRemoteWithSuccess:^{
+            [self showRealPreview];
+        } failure:^(NSError *error) {
+            WPFLog(@"Error autosaving post for preview: %@", error);
+            [webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
+        }];
+
+        // Couldn't autosave: that means the post is already published, and any edits would be publicly saved
+        if (!autosave) {
+            [webView loadHTMLString:[self buildSimplePreview] baseURL:nil];
+        }
+	} else {
+		[self showRealPreview];
 	}
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
+    WPFLogMethod();
     loadingView.hidden = NO;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)awebView {
+    WPFLogMethod();
     loadingView.hidden = YES;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
+    WPFLogMethodParam(error);
     loadingView.hidden = YES;
 }
 

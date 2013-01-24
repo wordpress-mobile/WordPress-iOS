@@ -140,4 +140,8 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDel
 - (void)dismissEditView;
 - (NSString *)editorTitle;
 
+- (BOOL)canAutosaveRemotely;
+- (BOOL)autosaveRemoteWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+
 @end

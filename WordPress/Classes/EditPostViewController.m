@@ -24,6 +24,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 @implementation EditPostViewController {
     UIAlertView *_failedMediaAlertView;
     UIAlertView *_linkHelperAlertView;
+    BOOL _isAutosaved;
 }
 
 @synthesize selectionTableViewController, segmentedTableViewController;
@@ -292,20 +293,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 - (void)switchToView:(UIView *)newView {
-	if([currentView isEqual:postPreviewViewController.view])
-		[postPreviewViewController viewWillDisappear:YES];
-	else if ([currentView isEqual:postSettingsController.view])
-		[postSettingsController viewWillDisappear:YES];
-	else if ([currentView isEqual:postMediaViewController.view])
-		[postMediaViewController viewWillDisappear:YES];
-    
-    if ([newView isEqual:postSettingsController.view])
-        [postSettingsController viewWillAppear:YES];
-    else if ([newView isEqual:postPreviewViewController.view])
-		[postPreviewViewController viewWillAppear:YES];
-    else if ([newView isEqual:postMediaViewController.view])
-		[postMediaViewController viewWillAppear:YES];
-	
     if ([newView isEqual:editView]) {
 		writeButton.enabled = NO;
 		settingsButton.enabled = YES;
@@ -359,22 +346,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     
     [UIView commitAnimations];
     
-	UIView *oldView = currentView;
     currentView = newView;
-    
-	if([oldView isEqual:postPreviewViewController.view])
-		[postPreviewViewController viewDidDisappear:YES];
-	else if ([oldView isEqual:postSettingsController.view])
-		[postSettingsController viewDidDisappear:YES];
-	else if ([oldView isEqual:postMediaViewController.view])
-		[postMediaViewController viewDidDisappear:YES];
-	
-    if ([newView isEqual:postSettingsController.view])
-        [postSettingsController viewDidAppear:YES];
-    else if ([newView isEqual:postPreviewViewController.view])
-		[postPreviewViewController viewDidAppear:YES];
-    else if ([newView isEqual:postMediaViewController.view])
-		[postMediaViewController viewDidAppear:YES];
 }
 
 - (NSInteger)pointerPositionForAttachmentsTab {
@@ -485,7 +457,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     }
 
     NSString *buttonTitle;
-    if(![self.apost hasRemote]) {
+    if(![self.apost hasRemote] || ![self.apost.status isEqualToString:self.apost.original.status]) {
         if ([self.apost.status isEqualToString:@"publish"] && ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
             buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
 		} else if ([self.apost.status isEqualToString:@"publish"]){
@@ -726,21 +698,13 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 - (void)savePost:(BOOL)upload{
-	self.apost.postTitle = titleTextField.text;
     [self autosaveContent];
-	if ([self.apost.content rangeOfString:@"<!--more-->"].location != NSNotFound)
-		self.apost.mt_text_more = @"";
-    
+
     [self.view endEditing:YES];
-    
-    if ( self.apost.original.password != nil ) { //original post was password protected
-        if ( self.apost.password == nil || [self.apost.password isEqualToString:@""] ) { //removed the password
-            self.apost.password = @"";
-        }
-    }
-            
+
     [self.apost.original applyRevision];
-	if (upload){
+    [self.apost.original deleteRevision];
+	if (upload) {
 		NSString *postTitle = self.apost.postTitle;
         [self.apost.original uploadWithSuccess:^{
             NSLog(@"post uploaded: %@", postTitle);
@@ -752,6 +716,50 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	}
 
     [self dismissEditView];
+}
+
+- (void)autosaveContent {
+    self.apost.content = textView.text;
+    self.apost.postTitle = titleTextField.text;
+	if ([self.apost.content rangeOfString:@"<!--more-->"].location != NSNotFound)
+		self.apost.mt_text_more = @"";
+
+    if ( self.apost.original.password != nil ) { //original post was password protected
+        if ( self.apost.password == nil || [self.apost.password isEqualToString:@""] ) { //removed the password
+            self.apost.password = @"";
+        }
+    }
+
+    [self.apost autosave];
+}
+
+- (BOOL)canAutosaveRemotely {
+    return ((![self.apost.original hasRemote] || [self.apost.original.status isEqualToString:@"draft"]) && self.apost.blog.reachable);
+}
+
+- (BOOL)autosaveRemoteWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    if (![self canAutosaveRemotely]) {
+        return NO;
+    }
+
+    if (![self.apost.original hasRemote]) {
+        _isAutosaved = YES;
+    }
+    [self.apost.original applyRevision];
+    self.apost.original.status = @"draft";
+    AbstractPostRemoteStatus currentRemoteStatus = self.apost.original.remoteStatus;
+    [self.apost.original uploadWithSuccess:^{
+        NSString *status = self.apost.status;
+        [self.apost updateRevision];
+        self.apost.status = status;
+        if (success) success();
+    } failure:^(NSError *error) {
+        // Restore current remote status so failed autosaves don't make the post appear as failed
+        // Specially useful when offline
+        self.apost.original.remoteStatus = currentRemoteStatus;
+    }];
+
+    return YES;
 }
 
 - (BOOL)hasFailedMedia {
@@ -825,8 +833,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	}
 		
 	UIActionSheet *actionSheet;
-	if (![self.apost hasRemote]) {
-        if ([self isAFreshlyCreatedDraft]) {
+	if (![self.apost hasRemote] || _isAutosaved) {
+        if ([self isAFreshlyCreatedDraft] || _isAutosaved) {
             actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"Keep editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.") destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
                                              otherButtonTitles:NSLocalizedString(@"Save Draft", @"Button shown if there are unsaved changes and the author is trying to move away from the post."), nil];
@@ -1013,13 +1021,10 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
             // Save draft
 			else {
                 // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
-                if ([self.apost.status isEqualToString:@"publish"]) {
+                if ((![self.apost hasRemote] || _isAutosaved) && [self.apost.status isEqualToString:@"publish"]) {
                     self.apost.status = @"draft";
                 }
-				if (![self.apost hasRemote])
-					[self savePost:NO];
-				else
-					[self savePost:YES];
+                [self savePost:YES];
 			}
         }
     }
@@ -1343,10 +1348,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     [self refreshUIForCurrentPost];
 }
 
-- (void)autosaveContent {
-    self.apost.content = textView.text;
-    [self.apost autosave];
-}
 
 #pragma mark - Keyboard toolbar
 

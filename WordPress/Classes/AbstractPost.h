@@ -64,6 +64,7 @@ typedef enum {
 - (AbstractPost *)createRevision;
 - (void)deleteRevision;
 - (void)applyRevision;
+- (void)updateRevision;
 - (BOOL)isRevision;
 - (BOOL)isOriginal;
 
