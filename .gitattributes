@@ -352,6 +352,8 @@ WordPress/Classes/AddSiteViewController.h -text
 WordPress/Classes/AddSiteViewController.m -text
 WordPress/Classes/AddUsersBlogsViewController.h -text
 WordPress/Classes/AddUsersBlogsViewController.m -text
+WordPress/Classes/AutosavingIndicatorView.h -text
+WordPress/Classes/AutosavingIndicatorView.m -text
 WordPress/Classes/BetaFeedbackViewController.h -text
 WordPress/Classes/BetaFeedbackViewController.m -text
 WordPress/Classes/BetaUIWindow.h -text

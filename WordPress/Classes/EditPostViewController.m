@@ -4,8 +4,11 @@
 #import "CPopoverManager.h"
 #import "NSString+XMLExtensions.h"
 #import "WPPopoverBackgroundView.h"
+#import "AutosavingIndicatorView.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
+
+NSUInteger const EditPostViewControllerCharactersChangedToAutosave = 20;
 
 typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagNone,
@@ -25,6 +28,11 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     UIAlertView *_failedMediaAlertView;
     UIAlertView *_linkHelperAlertView;
     BOOL _isAutosaved;
+    BOOL _isAutosaving;
+    BOOL _hasChangesToAutosave;
+    NSTimer *_autosaveTimer;
+    AutosavingIndicatorView *_autosavingIndicatorView;
+    NSUInteger _charactersChanged;
 }
 
 @synthesize selectionTableViewController, segmentedTableViewController;
@@ -49,6 +57,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 - (void)dealloc {
     _failedMediaAlertView.delegate = nil;
     _linkHelperAlertView.delegate = nil;
+    [_autosaveTimer invalidate];
+    _autosaveTimer = nil;
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
@@ -113,7 +123,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     categoriesLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
     textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
 	textViewPlaceHolderField.textAlignment = UITextAlignmentCenter;
-    [titleTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 
     if ([textView respondsToSelector:@selector(setInputAccessoryView:)]) {
         CGRect frame;
@@ -202,6 +211,14 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         attachmentButton.tintColor = color;
         photoButton.tintColor = color;
         movieButton.tintColor = color;
+    }
+
+    if (_autosavingIndicatorView == nil) {
+        _autosavingIndicatorView = [[AutosavingIndicatorView alloc] initWithFrame:CGRectZero];
+        _autosavingIndicatorView.hidden = YES;
+
+        [self.view addSubview:_autosavingIndicatorView];
+        [self positionAutosaveView:nil];
     }
 }
 
@@ -632,7 +649,10 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         self.post.categories = [NSMutableSet setWithArray:selectedObjects];
         [categoriesButton setTitle:[NSString decodeXMLCharactersIn:[self.post categoriesText]] forState:UIControlStateNormal];
     }
-	
+
+    _hasChangesToAutosave = YES;
+    [self autosaveContent];
+
 	[self refreshButtons];
 }
 
@@ -719,8 +739,10 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 - (void)autosaveContent {
-    self.apost.content = textView.text;
     self.apost.postTitle = titleTextField.text;
+    self.navigationItem.title = [self editorTitle];
+    self.post.tags = tagsTextField.text;
+    self.apost.content = textView.text;
 	if ([self.apost.content rangeOfString:@"<!--more-->"].location != NSNotFound)
 		self.apost.mt_text_more = @"";
 
@@ -731,6 +753,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     }
 
     [self.apost autosave];
+    [self restartAutosaveTimer];
 }
 
 - (BOOL)canAutosaveRemotely {
@@ -748,18 +771,70 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     [self.apost.original applyRevision];
     self.apost.original.status = @"draft";
     AbstractPostRemoteStatus currentRemoteStatus = self.apost.original.remoteStatus;
+    _isAutosaving = YES;
+    _hasChangesToAutosave = NO;
+    [self showAutosaveIndicator];
     [self.apost.original uploadWithSuccess:^{
         NSString *status = self.apost.status;
         [self.apost updateRevision];
         self.apost.status = status;
+        _isAutosaving = NO;
+        [self hideAutosaveIndicatorWithSuccess:YES];
         if (success) success();
     } failure:^(NSError *error) {
         // Restore current remote status so failed autosaves don't make the post appear as failed
         // Specially useful when offline
         self.apost.original.remoteStatus = currentRemoteStatus;
+        _isAutosaving = NO;
+        _hasChangesToAutosave = YES;
+        [self hideAutosaveIndicatorWithSuccess:NO];
     }];
 
     return YES;
+}
+
+- (void)restartAutosaveTimer {
+    WPFLogMethod();
+    [_autosaveTimer invalidate];
+    _autosaveTimer = nil;
+    if (![self canAutosaveRemotely])
+        return;
+
+    if (!_hasChangesToAutosave)
+        return;
+
+    _autosaveTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(autosaveTriggered:) userInfo:nil repeats:NO];
+    WPFLog(@"New timer for %@", _autosaveTimer.fireDate);
+}
+
+- (void)autosaveTriggered:(NSTimer *)timer {
+    WPFLogMethod();
+    if ([self canAutosaveRemotely] && !_isAutosaving) {
+        WPFLog(@"Autosaving :)");
+        [self autosaveRemoteWithSuccess:^{
+            WPFLog(@"Autosaved :D");
+            [self restartAutosaveTimer];
+        } failure:^(NSError *error) {
+            WPFLog(@"Error autosaving: %@", error);
+            [self restartAutosaveTimer];
+        }];
+    }
+}
+
+- (void)incrementCharactersChangedForAutosaveBy:(NSUInteger)change {
+    _charactersChanged += change;
+    if (_charactersChanged > EditPostViewControllerCharactersChangedToAutosave) {
+        _charactersChanged = 0;
+        [self autosaveTriggered:nil];
+    }
+}
+
+- (void)showAutosaveIndicator {
+    [_autosavingIndicatorView startAnimating];
+}
+
+- (void)hideAutosaveIndicatorWithSuccess:(BOOL)success {
+    [_autosavingIndicatorView stopAnimatingWithSuccess:success];
 }
 
 - (BOOL)hasFailedMedia {
@@ -978,7 +1053,9 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
             [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
             [textView.undoManager setActionName:@"link"];            
             
+            _hasChangesToAutosave = YES;
             [self autosaveContent];
+            [self incrementCharactersChangedForAutosaveBy:MAX(oldRange.length, aTagText.length)];
         }
 		
         [delegate setAlertRunning:NO];
@@ -1056,11 +1133,17 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     }
 }
 
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    [self incrementCharactersChangedForAutosaveBy:MAX(range.length, text.length)];
+    return YES;
+}
+
 - (void)textViewDidChange:(UITextView *)aTextView {
     
     self.undoButton.enabled = [self.textView.undoManager canUndo];
     self.redoButton.enabled = [self.textView.undoManager canRedo];
-    
+
+    _hasChangesToAutosave = YES;
     [self autosaveContent];
 
     [self refreshButtons];
@@ -1075,7 +1158,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	}
 	
     isEditing = NO;
-	
+    _hasChangesToAutosave = YES;
+
     if (isTextViewEditing) {
         isTextViewEditing = NO;
 		
@@ -1111,21 +1195,9 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 		[NSException raise:@"FakeCrash" format:@"Nothing to worry about, textField == #%#"];
 	}
 #endif
-	
-    if (textField == titleTextField) {
-        self.apost.postTitle = textField.text;
-        self.navigationItem.title = [self editorTitle];
-    }
-	else if (textField == tagsTextField)
-        self.post.tags = tagsTextField.text;
-    
-    [self.apost autosave];
-
-    [self refreshButtons];
-}
-
-- (void)textFieldDidChange:(id)sender {
-    self.apost.postTitle = titleTextField.text;
+	    
+    _hasChangesToAutosave = YES;
+    [self autosaveContent];
     [self refreshButtons];
 }
 
@@ -1202,6 +1274,26 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	[UIView commitAnimations];
 }
 
+- (void)positionAutosaveView:(NSNotification *)notification {
+    CGRect frame;
+    frame.size.width = 80.f;
+    frame.size.height = 20.f;
+    frame.origin.x = CGRectGetMaxX(self.textView.frame) - 4.f - frame.size.width;
+    frame.origin.y = CGRectGetMaxY(self.textView.frame) - 4.f - frame.size.height;
+
+    NSDictionary *keyboardInfo = [notification userInfo];
+    if (keyboardInfo) {
+        CGRect originalKeyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+        CGRect keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
+        if (CGRectGetMinY(keyboardFrame) < CGRectGetMaxY(frame)) {
+            // Keyboard would cover the indicator, reposition
+            frame.origin.y = CGRectGetMinY(keyboardFrame) - 4.f - frame.size.height;
+        }
+    }
+
+    _autosavingIndicatorView.frame = frame;
+}
+
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
     WPFLogMethod();
     CGRect frame = editorToolbar.frame;
@@ -1256,7 +1348,9 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     } else if (textField == tagsTextField)
         self.post.tags = [tagsTextField.text stringByReplacingCharactersInRange:range withString:string];
 
-    [self.apost autosave];
+    _hasChangesToAutosave = YES;
+    [self restartAutosaveTimer];
+    [self incrementCharactersChangedForAutosaveBy:MAX(range.length, string.length)];
     [self refreshButtons];
     return YES;
 }
@@ -1302,8 +1396,10 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 		[content appendString:[NSString stringWithFormat:@"<br /><br />%@", processedText]]; 
 		self.apost.content = content;
 	}
+    _hasChangesToAutosave = YES;
     [self refreshUIForCurrentPost];
     [self.apost autosave];
+    [self incrementCharactersChangedForAutosaveBy:content.length];
 }
 
 - (void)insertMediaBelow:(NSNotification *)notification {
@@ -1334,8 +1430,10 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 		[content appendString:[NSString stringWithFormat:@"<br /><br />%@", media.html]];
 		self.apost.content = content;
 	}
+    _hasChangesToAutosave = YES;
     [self refreshUIForCurrentPost];
     [self.apost autosave];
+    [self incrementCharactersChangedForAutosaveBy:content.length];
 }
 
 - (void)removeMedia:(NSNotification *)notification {
@@ -1344,8 +1442,10 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	textView.text = [textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<br /><br />%@", media.html] withString:@""];
 	textView.text = [textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@<br /><br />", media.html] withString:@""];
 	textView.text = [textView.text stringByReplacingOccurrencesOfString:media.html withString:@""];
+    _hasChangesToAutosave = YES;
     [self autosaveContent];
     [self refreshUIForCurrentPost];
+    [self incrementCharactersChangedForAutosaveBy:media.html.length];
 }
 
 
@@ -1353,11 +1453,13 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
 - (void)undo {
     [self.textView.undoManager undo];
+    _hasChangesToAutosave = YES;
     [self autosaveContent];
 }
 
 - (void)redo {
     [self.textView.undoManager redo];
+    _hasChangesToAutosave = YES;
     [self autosaveContent];
 }
 
@@ -1374,11 +1476,14 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     textView.scrollEnabled = YES;
     textView.selectedRange = range;
     [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
+    _hasChangesToAutosave = YES;
     [self autosaveContent];
+    [self incrementCharactersChangedForAutosaveBy:MAX(text.length, range.length)];
 }
 
 - (void)wrapSelectionWithTag:(NSString *)tag {
     NSRange range = textView.selectedRange;
+    NSRange originalRange = range;
     NSString *selection = [textView.text substringWithRange:range];
     NSString *prefix, *suffix;
     if ([tag isEqualToString:@"ul"] || [tag isEqualToString:@"ol"]) {
@@ -1398,8 +1503,9 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         suffix = [NSString stringWithFormat:@"</%@>", tag];        
     }
     textView.scrollEnabled = NO;
+    NSString *replacement = [NSString stringWithFormat:@"%@%@%@",prefix,selection,suffix];
     textView.text = [textView.text stringByReplacingCharactersInRange:range
-                                                           withString:[NSString stringWithFormat:@"%@%@%@",prefix,selection,suffix]];
+                                                           withString:replacement];
     textView.scrollEnabled = YES;
     if (range.length == 0) {                // If nothing was selected
         range.location += [prefix length]; // Place selection between tags
@@ -1408,7 +1514,9 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         range.length = 0;
     }
     textView.selectedRange = range;
+    _hasChangesToAutosave = YES;
     [self autosaveContent];
+    [self incrementCharactersChangedForAutosaveBy:MAX(replacement.length, originalRange.length)];
 }
 
 - (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem {
@@ -1472,12 +1580,14 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         [self positionTextView:notification];
         editorToolbar.doneButton.hidden = IS_IPAD && ! isExternalKeyboard;
     }
+    [self positionAutosaveView:notification];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
     WPFLogMethod();
 	isShowingKeyboard = NO;
     [self positionTextView:notification];
+    [self positionAutosaveView:notification];
 }
 
 #pragma mark -
