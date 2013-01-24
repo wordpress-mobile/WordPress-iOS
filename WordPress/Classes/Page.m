@@ -132,9 +132,8 @@
                               self.remoteStatus = AbstractPostRemoteStatusSync;
                               // Set the temporary date until we get it from the server so it sorts properly on the list
                               self.date_created_gmt = [DateUtils localDateToGMTDate:[NSDate date]];
-                              [self getPostWithSuccess:nil failure:nil];
                               [self save];
-                              if (success) success();
+                              [self getPostWithSuccess:success failure:failure];
                               [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
                           } else if (failure) {
                               self.remoteStatus = AbstractPostRemoteStatusFailed;
