@@ -8,8 +8,8 @@
 
 #import "PostMediaViewController.h"
 #import "EditPostViewController_Internal.h"
-#import "ImageIO/CGImageSource.h"
-#import "ImageIO/CGImageDestination.h"
+#import "Post.h"
+#import <ImageIO/ImageIO.h>
 #import "SFHFKeychainUtils.h"
 #import "WPPopoverBackgroundView.h"
 
@@ -18,7 +18,8 @@
 #define NUMBERS	@"0123456789"
 
 
-@interface PostMediaViewController (Private)
+@interface PostMediaViewController ()
+@property (nonatomic, strong) AbstractPost *apost;
 - (void)getMetadataFromAssetForURL:(NSURL *)url;
 - (UITableViewCell *)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
@@ -40,7 +41,14 @@
 - (void)dealloc {
     picker.delegate = nil;
     addPopover.delegate = nil;
-    
+}
+
+- (id)initWithPost:(AbstractPost *)aPost {
+    self = [super init];
+    if (self) {
+        self.apost = aPost;
+    }
+    return self;
 }
 
 - (void)initObjects {
@@ -110,6 +118,13 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+}
+
+- (Post *)post {
+    if ([self.apost isKindOfClass:[Post class]]) {
+        return (Post *)self.apost;
+    }
+    return nil;
 }
 
 #pragma mark -
@@ -353,7 +368,7 @@
     if (IS_IPAD) {
         actionSheetRect = rect;
         if (!CGRectIsEmpty(rect)) {
-            [actionSheet showFromRect:rect inView:postDetailViewController.postSettingsViewController.view animated:YES];
+            [actionSheet showFromRect:rect inView:self.postDetailViewController.postSettingsViewController.view animated:YES];
         } else {
             [actionSheet showFromBarButtonItem:postDetailViewController.photoButton animated:YES];
         }
@@ -492,7 +507,7 @@
 			}
 			
             if (!CGRectIsEmpty(actionSheetRect)) {
-                [addPopover presentPopoverFromRect:actionSheetRect inView:postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+                [addPopover presentPopoverFromRect:actionSheetRect inView:self.postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             } else {
                 [addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             }
@@ -603,7 +618,7 @@
                 addPopover.delegate = self;
             }
             if (!CGRectIsEmpty(actionSheetRect)) {
-                [addPopover presentPopoverFromRect:actionSheetRect inView:postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+                [addPopover presentPopoverFromRect:actionSheetRect inView:self.postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             } else {
                 [addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             }
@@ -662,7 +677,7 @@
 	if(self.isShowingResizeActionSheet == NO) {
 		isShowingResizeActionSheet = YES;
         
-        Blog *currentBlog = self.postDetailViewController.apost.blog;
+        Blog *currentBlog = self.self.apost.blog;
         NSDictionary* predefDim = [currentBlog getImageResizeDimensions];
         CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
         CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
@@ -924,7 +939,7 @@
             if (metadata) {
                 NSMutableDictionary *mutableMetadata = [metadata mutableCopy];
                 NSDictionary *gpsData = [mutableMetadata objectForKey:@"{GPS}"];
-                if (!gpsData && self.postDetailViewController.post.geolocation) {
+                if (!gpsData && self.post.geolocation) {
                     /*
                      Sample GPS data dictionary
                      "{GPS}" =     {
@@ -939,8 +954,8 @@
                      TimeStamp = "10:34:04.00";
                      };
                      */
-                    CLLocationDegrees latitude = self.postDetailViewController.post.geolocation.latitude;
-                    CLLocationDegrees longitude = self.postDetailViewController.post.geolocation.longitude;
+                    CLLocationDegrees latitude = self.post.geolocation.latitude;
+                    CLLocationDegrees longitude = self.post.geolocation.longitude;
                     NSDictionary *gps = [NSDictionary dictionaryWithObjectsAndKeys:
                                          [NSNumber numberWithDouble:fabs(latitude)], @"Latitude",
                                          (latitude < 0.0) ? @"S" : @"N", @"LatitudeRef",
@@ -1053,7 +1068,7 @@
                        //make the metadata dictionary mutable so we can remove properties to it
                        NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
 
-					   if(!self.postDetailViewController.apost.blog.geolocationEnabled) {
+					   if(!self.self.apost.blog.geolocationEnabled) {
 						   //we should remove the GPS info if the blog has the geolocation set to off
 						   
 						   //get all the metadata in the image
@@ -1165,7 +1180,7 @@
 }
 
 - (UIImage *)resizeImage:(UIImage *)original toSize:(MediaResize)resize {
-    NSDictionary* predefDim = [self.postDetailViewController.apost.blog getImageResizeDimensions];
+    NSDictionary* predefDim = [self.self.apost.blog getImageResizeDimensions];
     CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
     CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
     CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
@@ -1251,7 +1266,7 @@
 }
 
 - (void)useImage:(UIImage *)theImage {
-	Media *imageMedia = [Media newMediaForPost:postDetailViewController.apost];
+	Media *imageMedia = [Media newMediaForPost:self.apost];
 	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.90);
 	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -1402,7 +1417,7 @@
 	}
 	
 	if(copySuccess == YES) {
-		videoMedia = [Media newMediaForPost:postDetailViewController.apost];
+		videoMedia = [Media newMediaForPost:self.apost];
 		
 		if(currentOrientation == kLandscape)
 			videoMedia.orientation = @"landscape";
@@ -1492,7 +1507,7 @@
         return;
 
     self.isCheckingVideoCapability = YES;
-    [postDetailViewController.apost.blog checkVideoPressEnabledWithSuccess:^(BOOL enabled) {
+    [self.apost.blog checkVideoPressEnabledWithSuccess:^(BOOL enabled) {
         self.videoEnabled = enabled;
         self.isCheckingVideoCapability = NO;
     } failure:^(NSError *error) {
@@ -1513,7 +1528,7 @@
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"%@ IN posts AND mediaType != 'featured'", self.postDetailViewController.apost]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"%@ IN posts AND mediaType != 'featured'", self.self.apost]];
     NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorDate, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -1523,8 +1538,8 @@
                                                       managedObjectContext:appDelegate.managedObjectContext
                                                       sectionNameKeyPath:nil
                                                       cacheName:[NSString stringWithFormat:@"Media-%@-%@",
-                                                                 self.postDetailViewController.apost.blog.hostURL,
-                                                                 self.postDetailViewController.apost.postID]];
+                                                                 self.self.apost.blog.hostURL,
+                                                                 self.self.apost.postID]];
     resultsController.delegate = self;
     
      sortDescriptorDate = nil;

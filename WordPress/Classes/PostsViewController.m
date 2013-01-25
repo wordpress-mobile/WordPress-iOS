@@ -258,7 +258,6 @@
         [self resetView];
     Post *post = [Post newDraftForBlog:self.blog];
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[post createRevision]];
-    editPostViewController.editMode = kNewPost;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];
@@ -267,7 +266,6 @@
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[apost createRevision]];
-    editPostViewController.editMode = kEditPost;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];

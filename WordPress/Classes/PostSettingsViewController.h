@@ -54,6 +54,8 @@
 @property (nonatomic, weak) EditPostViewController *postDetailViewController;
 @property (nonatomic, strong) IBOutlet UITableViewCell *postFormatTableViewCell;
 
+- (id)initWithPost:(AbstractPost *)aPost;
+
 - (void)reloadData;
 - (void)endEditingAction:(id)sender;
 - (UITableViewCell*) getGeolactionCellWithIndexPath: (NSIndexPath*)indexPath;

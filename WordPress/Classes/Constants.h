@@ -170,13 +170,6 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 	kLandscape
 };
 
-typedef NS_ENUM(NSUInteger, EditPostMode) {
-	kNewPost,
-	kEditPost,
-	kAutorecoverPost,
-	kRefreshPost
-};
-
 typedef NS_ENUM(NSUInteger, EditPageMode) {
 	kNewPage,
 	kEditPage,

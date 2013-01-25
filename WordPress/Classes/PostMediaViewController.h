@@ -75,6 +75,8 @@ static inline double radians(double degrees) {
 @property (nonatomic, strong) UIAlertView *customSizeAlert;
 @property (nonatomic, strong) UIActionSheet *currentActionSheet;
 
+- (id)initWithPost:(AbstractPost *)aPost;
+
 - (void)scaleAndRotateImage:(UIImage *)image;
 - (IBAction)showVideoPickerActionSheet:(id)sender;
 - (IBAction)showPhotoPickerActionSheet:(id)sender;

@@ -34,7 +34,6 @@
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
     EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[apost createRevision]];
-    editPostViewController.editMode = kEditPage;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];
@@ -65,7 +64,6 @@
         [self resetView];
     Page *post = [Page newDraftForBlog:self.blog];
     EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[post createRevision]];
-    editPostViewController.editMode = kNewPage;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];

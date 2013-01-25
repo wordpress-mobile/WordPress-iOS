@@ -278,7 +278,6 @@
 	[self checkForNewItem];
     AbstractPost *postRevision = [self.apost createRevision];
     postViewController = [self getPostOrPageController: postRevision];
-    postViewController.editMode = kEditPost;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editorDismissed:) name:@"PostEditorDismissed" object:postViewController];
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:postViewController];
@@ -298,7 +297,6 @@
 	[self checkForNewItem];
     AbstractPost *postRevision = [self.apost createRevision];
     postViewController = [self getPostOrPageController: postRevision];
-    postViewController.editMode = kEditPost;
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editorDismissed:) name:@"PostEditorDismissed" object:postViewController];
 
     PostPreviewViewController *postPreviewViewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController"

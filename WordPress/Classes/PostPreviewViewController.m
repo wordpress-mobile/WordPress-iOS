@@ -1,30 +1,32 @@
+#import <QuartzCore/QuartzCore.h>
 #import "PostPreviewViewController.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+Helpers.h"
 #import "EditPostViewController_Internal.h"
-#import <QuartzCore/QuartzCore.h>
+#import "Post.h"
 
-@interface PostPreviewViewController (Private)
-
-- (void)addProgressIndicator;
-- (NSString *)stringReplacingNewlinesWithBR:(NSString *)surString;
-- (NSString *)buildSimplePreview;
-
+@interface PostPreviewViewController ()
+@property (nonatomic, strong) AbstractPost *apost;
 @end
 
 @implementation PostPreviewViewController
-
-@synthesize postDetailViewController, webView;
 
 #pragma mark -
 #pragma mark Lifecycle Methods
 
 - (void)dealloc {
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
-	[webView stopLoading];
-	webView.delegate = nil;
+	[self.webView stopLoading];
+	self.webView.delegate = nil;
 }
 
+- (id)initWithPost:(AbstractPost *)aPost {
+    self = [super init];
+    if (self) {
+        self.apost = aPost;
+    }
+    return self;
+}
 
 - (void)didReceiveMemoryWarning {
     WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
@@ -36,7 +38,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	webView.delegate = self;
+	self.webView.delegate = self;
 	if (loadingView == nil) {
         
         CGRect frame = self.view.frame;
@@ -79,7 +81,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
-	[webView stopLoading];
+	[self.webView stopLoading];
 }
 
 
@@ -91,6 +93,14 @@
 #pragma mark -
 #pragma mark Instance Methods
 
+- (Post *)post {
+    if ([self.apost isKindOfClass:[Post class]]) {
+        return (Post *)self.apost;
+    } else {
+        return nil;
+    }
+}
+
 - (NSString *)buildSimplePreview {
 	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
 	NSString *fpath = [NSString stringWithFormat:@"%@/defaultPostTemplate.html", resourcePath];
@@ -99,12 +109,12 @@
 	if ([str length]) {
 		
 		//Title
-		NSString *title = postDetailViewController.apost.postTitle;
+		NSString *title = self.apost.postTitle;
 		title = (title == nil || ([title length] == 0) ? NSLocalizedString(@"(no title)", @"") : title);
 		str = [str stringByReplacingOccurrencesOfString:@"!$title$!" withString:title];
 		
 		//Content
-		NSString *desc = postDetailViewController.apost.content;
+		NSString *desc = self.apost.content;
 		if (!desc)
 			desc = [NSString stringWithFormat:@"<h1>%@</h1>", NSLocalizedString(@"No Description available for this Post", @"")];
         else {
@@ -114,13 +124,13 @@
 		str = [str stringByReplacingOccurrencesOfString:@"!$text$!" withString:desc];
 		
 		//Tags
-		NSString *tags = postDetailViewController.post.tags;
+		NSString *tags = self.post.tags;
 		tags = (tags == nil ? @"" : tags);
 		tags = [NSString stringWithFormat:NSLocalizedString(@"Tags: %@", @""), tags]; //desc = [NSString stringWithFormat:@"%@ \n <p>Tags: %@</p><br>", desc, tags];
 		str = [str stringByReplacingOccurrencesOfString:@"!$mt_keywords$!" withString:tags];
 		
 		//Categories [selObjects count]
-		NSArray *categories = [postDetailViewController.post.categories allObjects];
+		NSArray *categories = [self.post.categories allObjects];
 		NSString *catStr = @"";
 		int i = 0, count = [categories count];
 		for (i = 0; i < count; i++) {
@@ -145,7 +155,7 @@
     if (message) {
         previewPageHTML = [previewPageHTML stringByReplacingOccurrencesOfString:@"<div class=\"page\">" withString:[NSString stringWithFormat:@"<div class=\"page\"><p>%@</p>", message]];
     }
-    [webView loadHTMLString:previewPageHTML baseURL:nil];
+    [self.webView loadHTMLString:previewPageHTML baseURL:nil];
 }
 
 - (void)showSimplePreview {
@@ -153,12 +163,12 @@
 }
 
 - (void)showRealPreview {
-	NSString *status = postDetailViewController.apost.original.status;
+	NSString *status = self.apost.original.status;
 	//draft post
 	BOOL isDraft = NO;
 	BOOL isPrivate = NO;
 	BOOL isPending = NO;
-    BOOL isPrivateBlog = [postDetailViewController.apost.blog isPrivate];
+    BOOL isPrivateBlog = [self.apost.blog isPrivate];
 
 	if ([status isEqualToString:@"draft"])
 		isDraft = YES;
@@ -167,13 +177,13 @@
 	else if ([status isEqualToString:@"pending"])
 		isPending = YES;
 
-    NSString *link = postDetailViewController.apost.original.permaLink;
+    NSString *link = self.apost.original.permaLink;
 
     WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 
     if( appDelegate.connectionAvailable == NO ) {
         [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
-    } else if ( postDetailViewController.apost.blog.reachable == NO ) {
+    } else if ( self.apost.blog.reachable == NO ) {
         [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection cannot reach your blog.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
     } else if (link == nil ) {
         [self showSimplePreview];
@@ -187,29 +197,29 @@
          */
 
         //			NSDate *currentGMTDate = [DateUtils currentGMTDate];
-        NSDate *postGMTDate = postDetailViewController.apost.date_created_gmt;
-        NSDate *laterDate = postDetailViewController.apost.date_created_gmt;//[currentGMTDate laterDate:postGMTDate];
+        NSDate *postGMTDate = self.apost.date_created_gmt;
+        NSDate *laterDate = self.apost.date_created_gmt;//[currentGMTDate laterDate:postGMTDate];
 
         if(isDraft || isPending || isPrivate || isPrivateBlog || ([laterDate isEqualToDate:postGMTDate])) {
 
-            NSString *wpLoginURL = [postDetailViewController.apost.blog loginURL];
+            NSString *wpLoginURL = [self.apost.blog loginURL];
             NSURL *url = [NSURL URLWithString:wpLoginURL];
             NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
             [req setHTTPMethod:@"POST"];
             [req addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
             NSString *paramDataString = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@",
-                                         @"log", postDetailViewController.apost.blog.username,
-                                         @"pwd", [[postDetailViewController.apost.blog fetchPassword] stringByUrlEncoding],
+                                         @"log", self.apost.blog.username,
+                                         @"pwd", [[self.apost.blog fetchPassword] stringByUrlEncoding],
                                          @"redirect_to", link];
 
             NSData *paramData = [paramDataString dataUsingEncoding:NSUTF8StringEncoding];
             [req setHTTPBody: paramData];
             [req setValue:[NSString stringWithFormat:@"%d", [paramData length]] forHTTPHeaderField:@"Content-Length"];
             [req addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-            [webView loadRequest:req];
+            [self.webView loadRequest:req];
             WPFLog(@"Showing real preview (login) for %@", link);
         } else {
-            [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link]]];
+            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link]]];
             WPFLog(@"Showing real preview for %@", link);
         }
     }
@@ -223,7 +233,7 @@
     loadingView.hidden = NO;
 
 	if (edited) {
-        BOOL autosave = [postDetailViewController autosaveRemoteWithSuccess:^{
+        BOOL autosave = [self.postDetailViewController autosaveRemoteWithSuccess:^{
             [self showRealPreview];
         } failure:^(NSError *error) {
             WPFLog(@"Error autosaving post for preview: %@", error);

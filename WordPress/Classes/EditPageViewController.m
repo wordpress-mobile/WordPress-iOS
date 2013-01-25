@@ -6,13 +6,15 @@
 //
 
 #import "EditPageViewController.h"
+#import "EditPostViewController_Internal.h"
+#import "AbstractPost.h"
 
 @implementation EditPageViewController
 
 
 - (NSString *)editorTitle {
     NSString *title = @"";
-    if (self.editMode == kNewPage) {
+    if (self.editMode == EditPostViewControllerModeNewPost) {
         title = NSLocalizedString(@"New Page", @"New Page Editor screen title.");
     } else {
         if ([self.apost.postTitle length] > 0) {

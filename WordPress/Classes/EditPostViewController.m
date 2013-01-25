@@ -1,10 +1,10 @@
 #import "EditPostViewController_Internal.h"
-#import "WordPressAppDelegate.h"
 #import "WPSegmentedSelectionTableViewController.h"
-#import "CPopoverManager.h"
+#import "Post.h"
+#import "AutosavingIndicatorView.h"
 #import "NSString+XMLExtensions.h"
 #import "WPPopoverBackgroundView.h"
-#import "AutosavingIndicatorView.h"
+#import "WPAddCategoryViewController.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -19,7 +19,41 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagFailedMedia,
 };
 
+@interface EditPostViewController ()
+@end
+
 @implementation EditPostViewController {
+    IBOutlet UITextView *textView;
+    IBOutlet UITextField *titleTextField;
+    IBOutlet UITextField *tagsTextField;
+    IBOutlet UILabel *titleLabel;
+    IBOutlet UITextField *textViewPlaceHolderField;
+	IBOutlet UIView *contentView;
+	IBOutlet UIView *editView;
+	IBOutlet UIBarButtonItem *writeButton;
+	IBOutlet UIBarButtonItem *previewButton;
+	IBOutlet UIBarButtonItem *attachmentButton;
+    IBOutlet UIBarButtonItem *createCategoryBarButtonItem;
+    IBOutlet UIImageView *tabPointer;
+    IBOutlet UILabel *tagsLabel;
+    IBOutlet UILabel *categoriesLabel;
+    IBOutlet UIButton *categoriesButton;
+
+    WPKeyboardToolbar *editorToolbar;
+	NSArray *statuses;
+    UIView *currentView;
+    BOOL isTextViewEditing;
+    BOOL isEditing;
+    BOOL isShowingKeyboard;
+    BOOL isExternalKeyboard;
+    BOOL isNewCategory;
+    BOOL isShowingLinkAlert;
+    UITextField *__weak currentEditingTextField;
+    WPSegmentedSelectionTableViewController *segmentedTableViewController;
+    UIActionSheet *currentActionSheet;
+    UITextField *infoText;
+    UITextField *urlField;
+
     UIAlertView *_failedMediaAlertView;
     UIAlertView *_linkHelperAlertView;
     BOOL _isAutosaved;
@@ -30,22 +64,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     NSUInteger _charactersChanged;
 }
 
-@synthesize selectionTableViewController, segmentedTableViewController;
-@synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, initialLocation;
-@synthesize editingDisabled, editCustomFields, statuses;
-@synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesButton, titleTextField;
-@synthesize tagsTextField, textViewPlaceHolderField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
-@synthesize locationButton, locationSpinner, createCategoryBarButtonItem, hasLocation;
-@synthesize editMode, apost;
-@synthesize hasSaved, isVisible, isPublishing;
-@synthesize toolbar;
-@synthesize settingsButton;
-@synthesize photoButton, movieButton;
-@synthesize undoButton, redoButton;
-@synthesize currentActionSheet;
-@synthesize postMediaViewController = postMediaViewController;
-@synthesize postSettingsViewController = postSettingsController;
-
 #pragma mark -
 #pragma mark LifeCycle Methods
 
@@ -53,7 +71,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     _failedMediaAlertView.delegate = nil;
     _linkHelperAlertView.delegate = nil;
     [_autosaveTimer invalidate];
-    _autosaveTimer = nil;
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
@@ -66,46 +83,14 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     
     if (self = [super initWithNibName:nib bundle:nil]) {
         self.apost = aPost;
+        if (self.apost.remoteStatus == AbstractPostRemoteStatusLocal) {
+            self.editMode = EditPostViewControllerModeNewPost;
+        } else {
+            self.editMode = EditPostViewControllerModeEditPost;
+        }
     }
     
     return self;
-}
-
-- (void)viewDidUnload {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super viewDidUnload];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-
-     spinner = nil;
-    self.textView.inputAccessoryView = nil;
-    editorToolbar = nil;
-    
-    // Release IBOutlets
-    self.locationButton = nil;
-    self.locationSpinner = nil;
-    self.textView = nil;
-    self.toolbar = nil;
-    self.contentView = nil;
-    self.subView = nil;
-    self.textViewContentView = nil;
-    self.statusTextField = nil;
-    self.categoriesButton = nil;
-    self.titleTextField = nil;
-    self.tagsTextField = nil;
-    self.textViewPlaceHolderField = nil;
-    self.tagsLabel = nil;
-    self.statusLabel = nil;
-    self.categoriesLabel = nil;
-    self.titleLabel = nil;
-    self.createCategoryBarButtonItem = nil;
-    self.hasLocation = nil;
-    self.photoButton = nil;
-    self.movieButton = nil;
-    self.undoButton = nil;
-    self.redoButton = nil;
-    self.currentActionSheet = nil;
-
 }
 
 - (void)viewDidLoad {
@@ -134,20 +119,24 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         textViewPlaceHolderField.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     }
 
-    if(!postSettingsController) {
-        postSettingsController = [[PostSettingsViewController alloc] initWithNibName:@"PostSettingsViewController" bundle:nil];
-        postSettingsController.postDetailViewController = self;
-        
-        postMediaViewController = [[PostMediaViewController alloc] initWithNibName:@"PostMediaViewController" bundle:nil];
-        postMediaViewController.postDetailViewController = self;
-        
-        postPreviewViewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController" bundle:nil];
-        postPreviewViewController.postDetailViewController = self;
+    if (!self.postSettingsViewController) {
+        self.postSettingsViewController = [[PostSettingsViewController alloc] initWithPost:self.apost];
+        self.postSettingsViewController.postDetailViewController = self;
     }
-    
-    postSettingsController.view.frame = editView.frame;
-    postMediaViewController.view.frame = editView.frame;
-    postPreviewViewController.view.frame = editView.frame;
+
+    if (!self.postPreviewViewController) {
+        self.postPreviewViewController = [[PostPreviewViewController alloc] initWithPost:self.apost];
+        self.postPreviewViewController.postDetailViewController = self;
+    }
+
+    if (!self.postMediaViewController) {
+        self.postMediaViewController = [[PostMediaViewController alloc] initWithPost:self.apost];
+        self.postMediaViewController.postDetailViewController = self;
+    }
+
+    self.postSettingsViewController.view.frame = editView.frame;
+    self.postMediaViewController.view.frame = editView.frame;
+    self.postPreviewViewController.view.frame = editView.frame;
     
     self.title = [self editorTitle];
 
@@ -158,30 +147,26 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(save) name:@"EditPostViewShouldSave" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(publish) name:@"EditPostViewShouldPublish" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];	
 	
     isTextViewEditing = NO;
-    spinner = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Saving...", @"Status message to indicate that content is saving (use an ellipsis (...) towards the end)")];
-	hasSaved = NO;
-    
+
     currentView = editView;
 	writeButton.enabled = NO;
     attachmentButton.enabled = [self shouldEnableMediaTab];
 
     self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	
-	if (![postMediaViewController isDeviceSupportVideo]){
+	if (![self.postMediaViewController isDeviceSupportVideo]){
 		//no video icon for older devices
-		NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:toolbar.items];
+		NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
 		NSLog(@"toolbar items: %@", toolbarItems);
 		
 		[toolbarItems removeObjectAtIndex:5];
-		[toolbar setItems:toolbarItems];
+		[self.toolbar setItems:toolbarItems];
 	}
 	
 	if (self.post && self.post.geolocation != nil && self.post.blog.geolocationEnabled) {
@@ -195,11 +180,11 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     if ([writeButton respondsToSelector:@selector(setTintColor:)]) {
         UIColor *color = [UIColor UIColorFromHex:0x222222];
         writeButton.tintColor = color;
-        settingsButton.tintColor = color;
+        self.settingsButton.tintColor = color;
         previewButton.tintColor = color;
         attachmentButton.tintColor = color;
-        photoButton.tintColor = color;
-        movieButton.tintColor = color;
+        self.photoButton.tintColor = color;
+        self.movieButton.tintColor = color;
     }
 
     if (_autosavingIndicatorView == nil) {
@@ -215,15 +200,10 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillAppear:animated];
     
-	postSettingsController.view.frame = editView.frame;
-    postMediaViewController.view.frame = editView.frame;
-    postPreviewViewController.view.frame = editView.frame;
+	self.postSettingsViewController.view.frame = editView.frame;
+    self.postMediaViewController.view.frame = editView.frame;
+    self.postPreviewViewController.view.frame = editView.frame;
 
-    if(self.editMode != kNewPost)
-		self.editMode = kRefreshPost;
-	
-	isVisible = YES;
-		
 	[self refreshButtons];
 	
     textView.frame = self.normalTextFrame;
@@ -249,11 +229,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillDisappear:animated];
     
-	if(self.editMode != kNewPost)
-		self.editMode = kRefreshPost;
-    
-	isVisible = NO;
-	
 	[titleTextField resignFirstResponder];
 	[textView resignFirstResponder];
 
@@ -273,7 +248,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
 - (NSString *)editorTitle {
     NSString *title = @"";
-    if (self.editMode == kNewPost) {
+    if (self.editMode == EditPostViewControllerModeNewPost) {
         title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
     } else {
         if ([self.apost.postTitle length] > 0) {
@@ -301,25 +276,25 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 - (void)switchToView:(UIView *)newView {
     if ([newView isEqual:editView]) {
 		writeButton.enabled = NO;
-		settingsButton.enabled = YES;
+		self.settingsButton.enabled = YES;
 		previewButton.enabled = YES;
         attachmentButton.enabled = [self shouldEnableMediaTab];
         
-    } else if ([newView isEqual:postSettingsController.view]) {
+    } else if ([newView isEqual:self.postSettingsViewController.view]) {
 		writeButton.enabled = YES;
-		settingsButton.enabled = NO;
+		self.settingsButton.enabled = NO;
 		previewButton.enabled = YES;
         attachmentButton.enabled = [self shouldEnableMediaTab];
         
-    } else if ([newView isEqual:postPreviewViewController.view]) {
+    } else if ([newView isEqual:self.postPreviewViewController.view]) {
 		writeButton.enabled = YES;
-		settingsButton.enabled = YES;
+		self.settingsButton.enabled = YES;
 		previewButton.enabled = NO;
         attachmentButton.enabled = [self shouldEnableMediaTab];
         
-	} else if ([newView isEqual:postMediaViewController.view]) {
+	} else if ([newView isEqual:self.postMediaViewController.view]) {
 		writeButton.enabled = YES;
-		settingsButton.enabled = YES;
+		self.settingsButton.enabled = YES;
 		previewButton.enabled = YES;
 		attachmentButton.enabled = NO;
 	}
@@ -331,13 +306,13 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	CGRect pointerFrame = tabPointer.frame;
     if ([newView isEqual:editView]) {
 		pointerFrame.origin.x = 22;
-    } else if ([newView isEqual:postSettingsController.view]) {
+    } else if ([newView isEqual:self.postSettingsViewController.view]) {
 		pointerFrame.origin.x = 61;
-    } else if ([newView isEqual:postPreviewViewController.view]) {
+    } else if ([newView isEqual:self.postPreviewViewController.view]) {
 		pointerFrame.origin.x = 101;
-	} else if ([newView isEqual:postMediaViewController.view]) {
+	} else if ([newView isEqual:self.postMediaViewController.view]) {
 		if (IS_IPAD) {
-			if ([postMediaViewController isDeviceSupportVideo])
+			if ([self.postMediaViewController isDeviceSupportVideo])
 				pointerFrame.origin.x = 646;
 			else
 				pointerFrame.origin.x = 688;
@@ -357,12 +332,12 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
 - (NSInteger)pointerPositionForAttachmentsTab {
     if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-        if ([postMediaViewController isDeviceSupportVideo])
+        if ([self.postMediaViewController isDeviceSupportVideo])
             return 198;
         else
             return 240;
     } else {
-        if ([postMediaViewController isDeviceSupportVideo])
+        if ([self.postMediaViewController isDeviceSupportVideo])
             return 358;
         else
             return 400;
@@ -378,32 +353,32 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 - (IBAction)switchToSettings {
-    if (currentView != postSettingsController.view) {
-        [self switchToView:postSettingsController.view];
+    if (currentView != self.postSettingsViewController.view) {
+        [self switchToView:self.postSettingsViewController.view];
     }
 	self.navigationItem.title = NSLocalizedString(@"Settings", @"Post Editor / Settings screen title.");
 }
 
 - (IBAction)switchToMedia {
-    if (currentView != postMediaViewController.view) {
-        [self switchToView:postMediaViewController.view];
+    if (currentView != self.postMediaViewController.view) {
+        [self switchToView:self.postMediaViewController.view];
     }
 	self.navigationItem.title = NSLocalizedString(@"Media", @"Post Editor / Media screen title.");
 }
 
 - (IBAction)switchToPreview {
-    if (currentView != postPreviewViewController.view) {
-        [self switchToView:postPreviewViewController.view];
+    if (currentView != self.postPreviewViewController.view) {
+        [self switchToView:self.postPreviewViewController.view];
     }
 	self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
 }
 
 - (IBAction)addVideo:(id)sender {
-    [postMediaViewController showVideoPickerActionSheet:sender];
+    [self.postMediaViewController showVideoPickerActionSheet:sender];
 }
 
 - (IBAction)addPhoto:(id)sender {
-    [postMediaViewController showPhotoPickerActionSheet:sender];
+    [self.postMediaViewController showPhotoPickerActionSheet:sender];
 }
 
 - (IBAction)showCategories:(id)sender {
@@ -439,15 +414,9 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     }
 }
 
-
-- (void)disableInteraction {
-	editingDisabled = YES;
-}
-
 - (void)dismissEditView {
     [self dismissModalViewControllerAnimated:YES];
-	 postSettingsController = nil;
-	
+
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"PostEditorDismissed" object:self];
@@ -558,45 +527,12 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 			[[CPopoverManager instance] setCurrentPopoverController:popover];
 		
         } else {
-			self.editMode = kEditPost;
+			self.editMode = EditPostViewControllerModeEditPost;
 			[self.navigationController pushViewController:segmentedTableViewController animated:YES];
 		}
     }
 	
 	isNewCategory = NO;
-}
-
-- (void)populateSelectionsControllerWithStatuses {
-    if (selectionTableViewController == nil)
-        selectionTableViewController = [[WPSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
-	
-    NSArray *dataSource = [self.apost availableStatuses];
-	
-    NSString *curStatus = self.apost.statusTitle;
-	
-    NSArray *selObject = (curStatus == nil ? [NSArray array] : [NSArray arrayWithObject:curStatus]);
-	
-    [selectionTableViewController populateDataSource:dataSource
-									   havingContext:kSelectionsStatusContext
-									 selectedObjects:selObject
-									   selectionType:kRadio
-										 andDelegate:self];
-	
-    selectionTableViewController.title = NSLocalizedString(@"Status", @"");
-    selectionTableViewController.navigationItem.rightBarButtonItem = nil;
-	if (IS_IPAD == YES) {
-		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:selectionTableViewController];
-		UIPopoverController *popover = [[NSClassFromString(@"UIPopoverController") alloc] initWithContentViewController:navController];
-		CGRect popoverRect = [self.view convertRect:[statusTextField frame] fromView:[statusTextField superview]];
-		popoverRect.size.width = MIN(popoverRect.size.width, 100);
-		[popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		[[CPopoverManager instance] setCurrentPopoverController:popover];
-	}
-	else {
-		WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-		[delegate.navigationController pushViewController:selectionTableViewController animated:YES];
-	}
-    selectionTableViewController = nil;
 }
 
 - (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged {
@@ -605,12 +541,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         return;
     }
 
-    if (selContext == kSelectionsStatusContext) {
-        NSString *curStatus = [selectedObjects lastObject];
-        self.apost.statusTitle = curStatus;
-        statusTextField.text = curStatus;
-    }
-    
     if (selContext == kSelectionsCategoriesContext) {
         NSLog(@"selected categories: %@", selectedObjects);
         NSLog(@"post: %@", self.post);
@@ -658,7 +588,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     [self.apost.original deleteRevision];
 
 	//remove the original post in case of local draft unsaved
-	if(self.editMode == kNewPost)
+	if(self.editMode == EditPostViewControllerModeNewPost)
 		[self.apost.original deletePostWithSuccess:nil failure:nil]; //we can pass nil because this is a local draft. no remote errors.
 	
 	self.apost = nil; // Just in case
@@ -871,11 +801,11 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     [titleTextField resignFirstResponder];
     [tagsTextField resignFirstResponder];
     if (!self.hasChanges) {
-		[postSettingsController endEditingAction:nil];
+		[self.postSettingsViewController endEditingAction:nil];
         [self discard];
         return;
     }
-	[postSettingsController endEditingAction:nil];
+	[self.postSettingsViewController endEditingAction:nil];
 	[self endEditingAction:nil];
     
 	if( [self isMediaInUploading] ) {
@@ -884,7 +814,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	}
 		
 	UIActionSheet *actionSheet;
-	if (![self.apost.original.status isEqualToString:@"draft"] && self.editMode != kNewPost) {
+	if (![self.apost.original.status isEqualToString:@"draft"] && self.editMode != EditPostViewControllerModeNewPost) {
         // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
 		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
 												  delegate:self
@@ -1061,11 +991,11 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 #pragma mark ActionSheet Delegate Methods
 
 - (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
-    self.currentActionSheet = actionSheet;
+    currentActionSheet = actionSheet;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    self.currentActionSheet = nil;
+    currentActionSheet = nil;
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -1097,12 +1027,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
 #pragma mark - TextView & TextField Delegates
 
-- (void)textViewDidChangeSelection:(UITextView *)aTextView {
-    if (!isTextViewEditing) {
-        isTextViewEditing = YES;
-    }
-}
-
 - (BOOL)textViewShouldBeginEditing:(UITextView *)aTextView {
     WPFLogMethod();
     isEditing = YES;
@@ -1124,9 +1048,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 - (void)textViewDidChange:(UITextView *)aTextView {
-    
-    self.undoButton.enabled = [self.textView.undoManager canUndo];
-    self.redoButton.enabled = [self.textView.undoManager canRedo];
 
     _hasChangesToAutosave = YES;
     [self autosaveContent];
@@ -1170,11 +1091,11 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    self.currentEditingTextField = textField;
+    currentEditingTextField = textField;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    self.currentEditingTextField = nil;
+    currentEditingTextField = nil;
 #ifdef DEBUGMODE
 	if ([textField.text isEqualToString:@"#%#"]) {
 		[NSException raise:@"FakeCrash" format:@"Nothing to worry about, textField == #%#"];
@@ -1263,8 +1184,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     CGRect frame;
     frame.size.width = 80.f;
     frame.size.height = 20.f;
-    frame.origin.x = CGRectGetMaxX(self.textView.frame) - 4.f - frame.size.width;
-    frame.origin.y = CGRectGetMaxY(self.textView.frame) - 4.f - frame.size.height;
+    frame.origin.x = CGRectGetMaxX(textView.frame) - 4.f - frame.size.width;
+    frame.origin.y = CGRectGetMaxY(textView.frame) - 4.f - frame.size.height;
 
     NSDictionary *keyboardInfo = [notification userInfo];
     if (keyboardInfo) {
@@ -1306,14 +1227,14 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         return;
     }
     
-    if ([currentView isEqual: postMediaViewController.view]) {
+    if ([currentView isEqual:self.postMediaViewController.view]) {
         CGRect pointerFrame = tabPointer.frame;
         pointerFrame.origin.x = [self pointerPositionForAttachmentsTab];
         tabPointer.frame = pointerFrame;
     }
 	
 	// This reinforces text field constraints set above, for when the Link Helper is already showing when the device is rotated.
-	if (isShowingLinkAlert == TRUE) {
+	if (isShowingLinkAlert) {
 		if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait) {
 			infoText.frame = CGRectMake(12.0, 46.0, 260.0, 31.0);
 			urlField.frame = CGRectMake(12.0, 82.0, 260.0, 31.0);
@@ -1345,7 +1266,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    self.currentEditingTextField = nil;
+    currentEditingTextField = nil;
     [textField resignFirstResponder];
     return YES;
 }
@@ -1437,13 +1358,13 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 #pragma mark - Keyboard toolbar
 
 - (void)undo {
-    [self.textView.undoManager undo];
+    [textView.undoManager undo];
     _hasChangesToAutosave = YES;
     [self autosaveContent];
 }
 
 - (void)redo {
-    [self.textView.undoManager redo];
+    [textView.undoManager redo];
     _hasChangesToAutosave = YES;
     [self autosaveContent];
 }
@@ -1573,25 +1494,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	isShowingKeyboard = NO;
     [self positionTextView:notification];
     [self positionAutosaveView:notification];
-}
-
-#pragma mark -
-#pragma mark UIPickerView delegate
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {	
-	return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)thePickerView numberOfRowsInComponent:(NSInteger)component {
-	return [statuses count];
-}
-
-- (NSString *)pickerView:(UIPickerView *)thePickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-	return [statuses objectAtIndex:row];
-}
-
-- (void)pickerView:(UIPickerView *)thePickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-	self.statusTextField.text = [statuses objectAtIndex:row];
 }
 
 #pragma mark -
