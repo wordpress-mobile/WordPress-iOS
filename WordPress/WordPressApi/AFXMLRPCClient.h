@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AFHTTPRequestOperation.h"
+#import <AFNetworking/AFNetworking.h>
 
 #define kAllHTTPOperationsCancelledNotification @"kAllHTTPOperationsCancelledNotification"
 

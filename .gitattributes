@@ -1247,6 +1247,8 @@ WordPress/WordPressApi/WordPressComApi.m -text
 WordPress/WordPressApi/WordPressComApiCredentials.h -text
 WordPress/WordPressApi/WordPressComApiCredentials.m -text
 WordPress/WordPressApi/gencredentials.rb -text
+WordPress/WordPressTest/EditPostViewControllerTest.h -text
+WordPress/WordPressTest/EditPostViewControllerTest.m -text
 WordPress/WordPressTest/WordPressTest-Info.plist -text
 WordPress/WordPressTest/WordPressTest-Prefix.pch -text
 WordPress/WordPressTest/WordPressTest.h -text

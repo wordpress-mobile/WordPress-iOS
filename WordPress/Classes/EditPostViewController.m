@@ -173,7 +173,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 - (void)viewWillAppear:(BOOL)animated {
     WPFLogMethod();
     [super viewWillAppear:animated];
-    
+
 	self.postSettingsViewController.view.frame = editView.frame;
     self.postMediaViewController.view.frame = editView.frame;
     self.postPreviewViewController.view.frame = editView.frame;
