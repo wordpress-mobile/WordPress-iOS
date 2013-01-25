@@ -7,7 +7,7 @@
 //
 
 #import "PostMediaViewController.h"
-#import "EditPostViewController.h"
+#import "EditPostViewController_Internal.h"
 #import "ImageIO/CGImageSource.h"
 #import "ImageIO/CGImageDestination.h"
 #import "SFHFKeychainUtils.h"

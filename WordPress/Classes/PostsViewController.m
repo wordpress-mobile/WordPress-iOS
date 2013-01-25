@@ -21,7 +21,7 @@
 
 @implementation PostsViewController
 
-@synthesize postDetailViewController, postReaderViewController;
+@synthesize postReaderViewController;
 @synthesize anyMorePosts, selectedIndexPath, drafts;
 //@synthesize resultsController;
 
@@ -259,7 +259,6 @@
     Post *post = [Post newDraftForBlog:self.blog];
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[post createRevision]];
     editPostViewController.editMode = kNewPost;
-    [editPostViewController refreshUIForCompose];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];
@@ -269,7 +268,6 @@
 - (void)editPost:(AbstractPost *)apost {
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[apost createRevision]];
     editPostViewController.editMode = kEditPost;
-    [editPostViewController refreshUIForCurrentPost];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];

@@ -12,8 +12,6 @@
 #define kSelectionsStatusContext ((void *)1000)
 #define kSelectionsCategoriesContext ((void *)2000)
 
-#define degreesToRadian(x) (M_PI * x / 180.0)
-
 @class WPSegmentedSelectionTableViewController, PostSettingsViewController, PostPreviewViewController;
 
 @interface EditPostViewController : UIViewController <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
@@ -24,7 +22,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDeleg
 	BOOL editingDisabled;
     BOOL isNewCategory;
     BOOL editCustomFields;
-	BOOL isLocalDraft;
     BOOL hasSaved, isVisible, isPublishing, isShowingKeyboard, isShowingLinkAlert, isExternalKeyboard;
 
     IBOutlet UITextView *textView;
@@ -75,7 +72,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDeleg
 @property (nonatomic) NSRange selectedLinkRange;
 @property (nonatomic, weak) UITextField *currentEditingTextField;
 @property (nonatomic, assign) BOOL isEditing, editingDisabled, editCustomFields;
-@property (nonatomic, assign) BOOL isLocalDraft;
 @property (nonatomic, strong) UIButton *customFieldsEditButton;
 @property (nonatomic, strong) CLLocation *initialLocation;
 @property (nonatomic, strong) IBOutlet UIButton *locationButton;
@@ -104,43 +100,6 @@ UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDeleg
 
 - (id)initWithPost:(AbstractPost *)aPost;
 
-// UI
-- (void)refreshUIForCompose;
-- (void)refreshUIForCurrentPost;
-- (IBAction)endTextEnteringButtonAction:(id)sender;
-- (void)endEditingAction:(id)sender;
-- (void)refreshStatus;
-- (void)positionTextView:(NSNotification *)keyboardInfo;
-- (void)deviceDidRotate:(NSNotification *)notification;
-- (void)resignTextView;
-- (void)showLinkView;
-- (void)disableInteraction;
-- (void)savePost: (BOOL)upload;
-- (NSInteger)pointerPositionForAttachmentsTab;
-// Media
-- (void)insertMediaAbove:(NSNotification *)notification;
-- (void)insertMediaBelow:(NSNotification *)notification;
-- (void)removeMedia:(NSNotification *)notification;
-
-- (IBAction)showAddNewCategoryView:(id)sender;
-
-- (NSString *)validateNewLinkInfo:(NSString *)urlText;
-
-- (BOOL)isAFreshlyCreatedDraft;
-- (IBAction)switchToEdit;
-- (IBAction)switchToSettings;
-- (IBAction)switchToMedia;
-- (IBAction)switchToPreview;
-- (IBAction)addVideo:(id)sender;
-- (IBAction)addPhoto:(id)sender;
-- (IBAction)showCategories:(id)sender;
-- (IBAction)touchTextView:(id)sender;
-- (void)refreshButtons;
-- (void)dismissEditView;
-- (NSString *)editorTitle;
-
-- (BOOL)canAutosaveRemotely;
-- (BOOL)autosaveRemoteWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 
 @end

@@ -33,12 +33,9 @@
 
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
-    self.postDetailViewController = [[EditPageViewController alloc] initWithNibName:@"EditPostViewController" bundle:nil];
-    self.postDetailViewController.apost = [apost createRevision];
-    self.postDetailViewController.editMode = kEditPost;
-    [self.postDetailViewController refreshUIForCurrentPost];
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:self.postDetailViewController];
+    EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[apost createRevision]];
+    editPostViewController.editMode = kEditPage;
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];
 }
@@ -64,10 +61,11 @@
 }
 
 - (void)showAddPostView {
+    if (IS_IPAD)
+        [self resetView];
     Page *post = [Page newDraftForBlog:self.blog];
     EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[post createRevision]];
-    editPostViewController.editMode = kNewPost;
-    [editPostViewController refreshUIForCompose];
+    editPostViewController.editMode = kNewPage;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];

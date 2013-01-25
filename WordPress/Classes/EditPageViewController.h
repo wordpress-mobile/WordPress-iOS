@@ -6,7 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EditPostViewController.h"
+#import "EditPostViewController_Internal.h"
 
 @interface EditPageViewController : EditPostViewController {
 }

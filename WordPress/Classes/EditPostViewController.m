@@ -1,4 +1,4 @@
-#import "EditPostViewController.h"
+#import "EditPostViewController_Internal.h"
 #import "WordPressAppDelegate.h"
 #import "WPSegmentedSelectionTableViewController.h"
 #import "CPopoverManager.h"
@@ -19,14 +19,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagFailedMedia,
 };
 
-@interface EditPostViewController (Private)
-- (BOOL)isMediaInUploading;
-- (void)showMediaInUploadingalert;
-- (void)restoreText:(NSString *)text withRange:(NSRange)range;
-- (void)populateSelectionsControllerWithCategories;
-- (BOOL)shouldEnableMediaTab;
-@end
-
 @implementation EditPostViewController {
     UIAlertView *_failedMediaAlertView;
     UIAlertView *_linkHelperAlertView;
@@ -40,7 +32,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
 @synthesize selectionTableViewController, segmentedTableViewController;
 @synthesize infoText, urlField, bookMarksArray, selectedLinkRange, currentEditingTextField, isEditing, initialLocation;
-@synthesize editingDisabled, editCustomFields, statuses, isLocalDraft;
+@synthesize editingDisabled, editCustomFields, statuses;
 @synthesize textView, contentView, subView, textViewContentView, statusTextField, categoriesButton, titleTextField;
 @synthesize tagsTextField, textViewPlaceHolderField, tagsLabel, statusLabel, categoriesLabel, titleLabel, customFieldsEditButton;
 @synthesize locationButton, locationSpinner, createCategoryBarButtonItem, hasLocation;
@@ -198,14 +190,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 		self.hasLocation.enabled = NO;
 	}
 
-    if(self.editMode == kEditPost) {
-        [self refreshUIForCurrentPost];
-    } else if(self.editMode == kNewPost) {
-        [self refreshUIForCompose];
-    } else {
-        [self refreshUIForCurrentPost];
-	}
-    
+    [self refreshUIForCurrentPost];
+
     if ([writeButton respondsToSelector:@selector(setTintColor:)]) {
         UIColor *color = [UIColor UIColorFromHex:0x222222];
         writeButton.tintColor = color;
@@ -500,21 +486,9 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     [self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
 }
 
-- (void)refreshUIForCompose {
-    self.navigationItem.title = [self editorTitle];
-    titleTextField.text = @"";
-    textView.text = @"";
-    textViewPlaceHolderField.hidden = NO;
-	self.isLocalDraft = YES;
-}
-
 - (void)refreshUIForCurrentPost {
-    if ([self.apost.postTitle length] > 0) {
-        self.navigationItem.title = [self editorTitle];
-    }
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"Back button label.")
-																			 style:UIBarButtonItemStyleBordered target:nil action:nil];
-	
+    self.navigationItem.title = [self editorTitle];
+
     titleTextField.text = self.apost.postTitle;
     if (self.post) {
         tagsTextField.text = self.post.tags;
@@ -590,15 +564,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     }
 	
 	isNewCategory = NO;
-}
-
-- (void)refreshStatus {
-	if(isLocalDraft == YES) {
-		statusTextField.text = NSLocalizedString(@"Local Draft", @"");
-	}
-	else {
-		statusTextField.text = self.apost.statusTitle;
-	}
 }
 
 - (void)populateSelectionsControllerWithStatuses {

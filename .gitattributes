@@ -413,6 +413,7 @@ WordPress/Classes/EditPageViewController.h -text
 WordPress/Classes/EditPageViewController.m -text
 WordPress/Classes/EditPostViewController.h -text
 WordPress/Classes/EditPostViewController.m -text
+WordPress/Classes/EditPostViewController_Internal.h -text
 WordPress/Classes/EditSiteViewController.h -text
 WordPress/Classes/EditSiteViewController.m -text
 WordPress/Classes/FakeMigration.h -text

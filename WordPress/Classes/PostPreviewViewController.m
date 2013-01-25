@@ -1,6 +1,7 @@
 #import "PostPreviewViewController.h"
 #import "WordPressAppDelegate.h"
 #import "NSString+Helpers.h"
+#import "EditPostViewController_Internal.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface PostPreviewViewController (Private)
@@ -154,7 +155,7 @@
 - (void)showRealPreview {
 	NSString *status = postDetailViewController.apost.original.status;
 	//draft post
-	BOOL isDraft = [self.postDetailViewController isAFreshlyCreatedDraft];
+	BOOL isDraft = NO;
 	BOOL isPrivate = NO;
 	BOOL isPending = NO;
     BOOL isPrivateBlog = [postDetailViewController.apost.blog isPrivate];

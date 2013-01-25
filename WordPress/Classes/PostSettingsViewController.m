@@ -4,6 +4,7 @@
 #import "WPPopoverBackgroundView.h"
 #import "SFHFKeychainUtils.h"
 #import "NSString+Helpers.h"
+#import "EditPostViewController_Internal.h"
 
 #define kPasswordFooterSectionHeight         68.0f
 #define kResizePhotoSettingSectionHeight     60.0f
@@ -92,7 +93,7 @@
 		
 		// Only add tag if it's a new post. If user removes tag we shouldn't try to add it again
 		if (postDetailViewController.post.geolocation == nil // Only if there is no geotag
-			&& [postDetailViewController isAFreshlyCreatedDraft] // and just a fresh draft.
+			&& postDetailViewController.apost.remoteStatus == AbstractPostRemoteStatusLocal // and just a fresh draft.
 			&& [CLLocationManager locationServicesEnabled]
 			&& postDetailViewController.post.blog.geolocationEnabled) {
 			isUpdatingLocation = YES;
