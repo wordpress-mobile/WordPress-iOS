@@ -661,7 +661,7 @@ WordPress/Info-dev.plist -text
 WordPress/Info.plist -text
 WordPress/Resources-iPad/AddSiteViewController-iPad.xib -text
 WordPress/Resources-iPad/AddUsersBlogsViewController-iPad.xib -text
-WordPress/Resources-iPad/EditPostViewController-iPad.xib -text
+WordPress/Resources-iPad/EditPostViewController~iPad.xib -text
 WordPress/Resources-iPad/MainWindow-iPad.xib -text
 WordPress/Resources-iPad/PostMediaViewController-iPad.xib -text
 WordPress/Resources-iPad/PostViewController-iPad.xib -text
@@ -673,7 +673,7 @@ WordPress/Resources/AddUsersBlogsViewController.xib -text
 WordPress/Resources/BetaFeedbackViewController.xib -text
 WordPress/Resources/CommentViewController.xib -text
 WordPress/Resources/CrashReportView.xib -text
-WordPress/Resources/EditPostViewController.xib -text
+WordPress/Resources/EditPostViewController~iphone.xib -text
 WordPress/Resources/EditSiteViewController.xib -text
 WordPress/Resources/HTML/defaultPostTemplate.html -text
 WordPress/Resources/HTML/defaultPostTemplate_old.html -text

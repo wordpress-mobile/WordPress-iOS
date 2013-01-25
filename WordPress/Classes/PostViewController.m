@@ -278,8 +278,7 @@
 	[self checkForNewItem];
     AbstractPost *postRevision = [self.apost createRevision];
     postViewController = [self getPostOrPageController: postRevision];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editorDismissed:) name:@"PostEditorDismissed" object:postViewController];
-    
+
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:postViewController];
     nav.modalPresentationStyle = UIModalPresentationPageSheet;
     nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -297,10 +296,8 @@
 	[self checkForNewItem];
     AbstractPost *postRevision = [self.apost createRevision];
     postViewController = [self getPostOrPageController: postRevision];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editorDismissed:) name:@"PostEditorDismissed" object:postViewController];
 
-    PostPreviewViewController *postPreviewViewController = [[PostPreviewViewController alloc] initWithNibName:@"PostPreviewViewController"
-                                                                                                       bundle:nil];
+    PostPreviewViewController *postPreviewViewController = [[PostPreviewViewController alloc] initWithPost:postRevision];
     postPreviewViewController.postDetailViewController = postViewController;
 
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:postPreviewViewController];
@@ -323,16 +320,6 @@
 - (void)checkForNewItem {
 	if(!self.apost)  //when it was a new post and user clicked on cancel
 		self.apost = [Post newDraftForBlog:self.blog];
-}
-
-
-- (void)editorDismissed:(NSNotification *)aNotification {
-    if (![self.apost hasRemote] && self.apost.remoteStatus == AbstractPostRemoteStatusLocal && !self.apost.postTitle && !self.apost.content) {
-		//do not remove the post here. it is removed in EditPostViewController
-		[self.apost deletePostWithSuccess:nil failure:nil]; //this is a local draft no remote errors checking.
-		self.apost = nil;
-    }
-    [self refreshUI];
 }
 
 - (void)dismissPreview {

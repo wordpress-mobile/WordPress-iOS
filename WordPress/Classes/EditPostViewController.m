@@ -41,7 +41,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
     WPKeyboardToolbar *editorToolbar;
     UIView *currentView;
-    BOOL isTextViewEditing;
     BOOL isEditing;
     BOOL isShowingKeyboard;
     BOOL isExternalKeyboard;
@@ -73,14 +72,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
-    NSString *nib;
-    if (IS_IPAD) {
-        nib = @"EditPostViewController-iPad";
-    } else {
-        nib = @"EditPostViewController";
-    }
-    
-    if (self = [super initWithNibName:nib bundle:nil]) {
+    if (self = [super initWithNibName:@"EditPostViewController" bundle:nil]) {
         self.apost = aPost;
         if (self.apost.remoteStatus == AbstractPostRemoteStatusLocal) {
             self.editMode = EditPostViewControllerModeNewPost;
@@ -93,7 +85,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    WPFLogMethod();
     [super viewDidLoad];
 
     titleLabel.text = NSLocalizedString(@"Title:", @"Label for the title of the post field. Should be the same as WP core.");
@@ -103,20 +95,13 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
 	textViewPlaceHolderField.textAlignment = UITextAlignmentCenter;
 
-    if ([textView respondsToSelector:@selector(setInputAccessoryView:)]) {
-        CGRect frame;
-        if (IS_IPAD) {
-            frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_IPAD_PORTRAIT);
-        } else {
-            frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_IPHONE_PORTRAIT);
-        }
-        if (editorToolbar == nil) {
-            editorToolbar = [[WPKeyboardToolbar alloc] initWithFrame:frame];
-            editorToolbar.delegate = self;
-        }
-        textView.inputAccessoryView = editorToolbar;
-        textViewPlaceHolderField.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    if (editorToolbar == nil) {
+        CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_PORTRAIT);
+        editorToolbar = [[WPKeyboardToolbar alloc] initWithFrame:frame];
+        editorToolbar.delegate = self;
     }
+    textView.inputAccessoryView = editorToolbar;
+    textViewPlaceHolderField.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
     if (!self.postSettingsViewController) {
         self.postSettingsViewController = [[PostSettingsViewController alloc] initWithPost:self.apost];
@@ -146,14 +131,10 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];	
-	
-    isTextViewEditing = NO;
 
     currentView = editView;
 	writeButton.enabled = NO;
     attachmentButton.enabled = [self shouldEnableMediaTab];
-
-    self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	
 	if (![self.postMediaViewController isDeviceSupportVideo]){
 		//no video icon for older devices
@@ -172,15 +153,13 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
     [self refreshUIForCurrentPost];
 
-    if ([writeButton respondsToSelector:@selector(setTintColor:)]) {
-        UIColor *color = [UIColor UIColorFromHex:0x222222];
-        writeButton.tintColor = color;
-        self.settingsButton.tintColor = color;
-        previewButton.tintColor = color;
-        attachmentButton.tintColor = color;
-        self.photoButton.tintColor = color;
-        self.movieButton.tintColor = color;
-    }
+    UIColor *color = [UIColor UIColorFromHex:0x222222];
+    writeButton.tintColor = color;
+    self.settingsButton.tintColor = color;
+    previewButton.tintColor = color;
+    attachmentButton.tintColor = color;
+    self.photoButton.tintColor = color;
+    self.movieButton.tintColor = color;
 
     if (_autosavingIndicatorView == nil) {
         _autosavingIndicatorView = [[AutosavingIndicatorView alloc] initWithFrame:CGRectZero];
@@ -192,7 +171,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    WPFLogMethod();
     [super viewWillAppear:animated];
     
 	self.postSettingsViewController.view.frame = editView.frame;
@@ -202,36 +181,28 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	[self refreshButtons];
 	
     textView.frame = self.normalTextFrame;
-    CGRect frame = self.normalTextFrame;
-    frame.origin.x += 7;
-    frame.origin.y += 7;
-	frame.size.width -= 14;
+    CGRect frame = CGRectInset(self.normalTextFrame, 7.f, 7.f);
 	frame.size.height = 200;
     textViewPlaceHolderField.frame = frame;
 	textViewPlaceHolderField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-	CABasicAnimation *animateWiggleIt;	
-	animateWiggleIt=[CABasicAnimation animationWithKeyPath:@"transform.scale"];
-	animateWiggleIt.duration=0.5;
-	animateWiggleIt.repeatCount=1;
-	animateWiggleIt.autoreverses=NO;
-    animateWiggleIt.fromValue=[NSNumber numberWithFloat:0.75];
-    animateWiggleIt.toValue=[NSNumber numberWithFloat:1.0];
-	[textViewPlaceHolderField.layer addAnimation:animateWiggleIt forKey:@"textViewPlaceHolderField"];
+
+	CABasicAnimation *animateWiggleIt;
+	animateWiggleIt = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+	animateWiggleIt.duration = 0.5;
+	animateWiggleIt.repeatCount = 1;
+	animateWiggleIt.autoreverses = NO;
+    animateWiggleIt.fromValue = @0.75f;
+    animateWiggleIt.toValue = @1.f;
+	[textViewPlaceHolderField.layer addAnimation:animateWiggleIt forKey:@"placeholderWiggle"];
 
 }
 
-- (void)viewWillDisappear:(BOOL)animated {	
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+- (void)viewWillDisappear:(BOOL)animated {
+    WPFLogMethod();
     [super viewWillDisappear:animated];
     
 	[titleTextField resignFirstResponder];
 	[textView resignFirstResponder];
-
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 #pragma mark -
@@ -246,7 +217,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     if (self.editMode == EditPostViewControllerModeNewPost) {
         title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
     } else {
-        if ([self.apost.postTitle length] > 0) {
+        if ([self.apost.postTitle length]) {
             title = self.apost.postTitle;
         } else {
             title = NSLocalizedString(@"Edit Post", @"Post Editor screen title.");
@@ -254,7 +225,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     }
     return title;
 }
-
 
 - (Post *)post {
     if ([self.apost isKindOfClass:[Post class]]) {
@@ -343,7 +313,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     if (currentView != editView) {
         [self switchToView:editView];
     }
-//	self.navigationItem.title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
     self.navigationItem.title = [self editorTitle];
 }
 
@@ -377,18 +346,9 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 - (IBAction)showCategories:(id)sender {
-    if (isShowingKeyboard) {
-        if(isTextViewEditing) {
-            [textView resignFirstResponder];
-        } else {
-            [currentEditingTextField resignFirstResponder];
-        }
-    }
+    [textView resignFirstResponder];
+    [currentEditingTextField resignFirstResponder];
     [self populateSelectionsControllerWithCategories];
-}
-
-- (IBAction)touchTextView:(id)sender {
-    [textView becomeFirstResponder];
 }
 
 - (CGRect)normalTextFrame {
@@ -413,8 +373,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     [self dismissModalViewControllerAnimated:YES];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"PostEditorDismissed" object:self];
 }
 
 
@@ -572,13 +530,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	}
 }
 
-- (void)endEditingAction:(id)sender {
-    [titleTextField resignFirstResponder];
-    [tagsTextField resignFirstResponder];
-    [textView resignFirstResponder];
-}
-
-
 - (void)discard {
     [self.apost.original deleteRevision];
 
@@ -612,9 +563,9 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	if (upload) {
 		NSString *postTitle = self.apost.postTitle;
         [self.apost.original uploadWithSuccess:^{
-            NSLog(@"post uploaded: %@", postTitle);
+            WPFLog(@"post uploaded: %@", postTitle);
         } failure:^(NSError *error) {
-            NSLog(@"post failed: %@", [error localizedDescription]);
+            WPFLog(@"post failed: %@", [error localizedDescription]);
         }];
 	} else {
 		[self.apost.original save];
@@ -795,14 +746,12 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     [textView resignFirstResponder];
     [titleTextField resignFirstResponder];
     [tagsTextField resignFirstResponder];
+	[self.postSettingsViewController endEditingAction:nil];
     if (!self.hasChanges) {
-		[self.postSettingsViewController endEditingAction:nil];
         [self discard];
         return;
     }
-	[self.postSettingsViewController endEditingAction:nil];
-	[self endEditingAction:nil];
-    
+
 	if( [self isMediaInUploading] ) {
 		[self showMediaInUploadingalert];
 		return;
@@ -843,22 +792,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:YES];
     
-}
-
-- (IBAction)endTextEnteringButtonAction:(id)sender {
-    [textView resignFirstResponder];
-	if (IS_IPAD == NO) {
-		if((self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft) || (self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-			//#615 -- trick to rotate the interface back to portrait. 
-				UIViewController *garbageController = [[UIViewController alloc] init]; 
-				[self.navigationController pushViewController:garbageController animated:NO]; 
-				[self.navigationController popViewControllerAnimated:NO];
-		}
-	}
-}
-
-- (void)resignTextView {
-	[textView resignFirstResponder];
 }
 
 //code to append http:// if protocol part is not there as part of urlText.
@@ -1020,8 +953,15 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     [appDelegate setAlertRunning:NO];
 }
 
-#pragma mark - TextView & TextField Delegates
+#pragma mark - TextView delegate
 
+/*
+ This needs to be defined so we can set isEditing before keyboardWillShow is called, or the textView doesn't get positioned
+ The calling order is:
+ * textViewShouldBeginEditing:
+ * keyboardWillShow:
+ * textViewDidBeginEditing:
+ */
 - (BOOL)textViewShouldBeginEditing:(UITextView *)aTextView {
     WPFLogMethod();
     isEditing = YES;
@@ -1031,10 +971,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
     WPFLogMethod();
     [textViewPlaceHolderField removeFromSuperview];
-
-    if (!isTextViewEditing) {
-        isTextViewEditing = YES;
-    }
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
@@ -1043,7 +979,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 - (void)textViewDidChange:(UITextView *)aTextView {
-
     _hasChangesToAutosave = YES;
     [self autosaveContent];
 
@@ -1052,27 +987,19 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
 - (void)textViewDidEndEditing:(UITextView *)aTextView {
     WPFLogMethod();
-	currentEditingTextField = nil;
 	
-	if([textView.text isEqualToString:@""] == YES) {
+	if([textView.text isEqualToString:@""]) {
         [editView addSubview:textViewPlaceHolderField];
 	}
 	
     isEditing = NO;
     _hasChangesToAutosave = YES;
-
-    if (isTextViewEditing) {
-        isTextViewEditing = NO;
-		
-        [self autosaveContent];
-
-		if (!IS_IPAD) {
-            [self refreshButtons];
-		}
-    }
+    [self autosaveContent];
 
     [self refreshButtons];
 }
+
+#pragma mark - TextField delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     if (textField == textViewPlaceHolderField) {
@@ -1101,6 +1028,29 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     [self autosaveContent];
     [self refreshButtons];
 }
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField == titleTextField) {
+        self.apost.postTitle = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        self.navigationItem.title = [self editorTitle];
+
+    } else if (textField == tagsTextField)
+        self.post.tags = [tagsTextField.text stringByReplacingCharactersInRange:range withString:string];
+
+    _hasChangesToAutosave = YES;
+    [self restartAutosaveTimer];
+    [self incrementCharactersChangedForAutosaveBy:MAX(range.length, string.length)];
+    [self refreshButtons];
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    currentEditingTextField = nil;
+    [textField resignFirstResponder];
+    return YES;
+}
+
+#pragma mark - Positioning & Rotation
 
 - (void)positionTextView:(NSNotification *)notification {
     // Save time: Uncomment this line when you're debugging UITextView positioning
@@ -1241,30 +1191,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	}
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if (textField == titleTextField) {
-        self.apost.postTitle = [textField.text stringByReplacingCharactersInRange:range withString:string];
-        self.navigationItem.title = [self editorTitle];
-
-    } else if (textField == tagsTextField)
-        self.post.tags = [tagsTextField.text stringByReplacingCharactersInRange:range withString:string];
-
-    _hasChangesToAutosave = YES;
-    [self restartAutosaveTimer];
-    [self incrementCharactersChangedForAutosaveBy:MAX(range.length, string.length)];
-    [self refreshButtons];
-    return YES;
-}
-
-- (BOOL)textFieldShouldClear:(UITextField *)textField {
-    return YES;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    currentEditingTextField = nil;
-    [textField resignFirstResponder];
-    return YES;
-}
+#pragma mark - Media management
 
 - (void)insertMediaAbove:(NSNotification *)notification {
 	Media *media = (Media *)[notification object];
@@ -1425,7 +1352,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     if ([buttonItem.actionTag isEqualToString:@"link"]) {
         [self showLinkView];
     } else if ([buttonItem.actionTag isEqualToString:@"done"]) {
-        [self endTextEnteringButtonAction:buttonItem];
+        [textView resignFirstResponder];
     } else {
         NSString *oldText = textView.text;
         NSRange oldRange = textView.selectedRange;
@@ -1434,42 +1361,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         [textView.undoManager setActionName:buttonItem.actionName];    
     }
 }
-
-#pragma mark  -
-#pragma mark Table Data Source Methods (for Custom Fields TableView only)
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
-	
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-		
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 200, 25)];
-        label.textAlignment = UITextAlignmentLeft;
-        label.font = [UIFont systemFontOfSize:16];
-        label.textColor = [UIColor grayColor];
-        [cell.contentView addSubview:label];
-    }
-	
-	cell.accessoryType=UITableViewCellAccessoryDisclosureIndicator;
-    cell.userInteractionEnabled = YES;
-    return cell;
-}
-
-
-#pragma mark -
-#pragma mark Table delegate
-- (NSIndexPath *)tableView:(UITableView *)tableView
-  willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
-}
-
 
 #pragma mark -
 #pragma mark Keyboard management 
@@ -1509,7 +1400,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 #pragma mark Memory management
 
 - (void)didReceiveMemoryWarning {
-    WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+    WPFLogMethod();
     [super didReceiveMemoryWarning];
 }
 
