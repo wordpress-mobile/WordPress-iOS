@@ -689,19 +689,11 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 
-- (BOOL)isAFreshlyCreatedDraft {
-	if( [self.apost.original.postID isEqualToNumber:[NSNumber numberWithInteger:-1]] ) 
-		if( self.apost.original.postTitle == nil )
-			return YES;
-	
-	return NO;
-}
-
 - (void)discard {
     [self.apost.original deleteRevision];
 
 	//remove the original post in case of local draft unsaved
-	if([self isAFreshlyCreatedDraft]) 
+	if(self.editMode == kNewPost)
 		[self.apost.original deletePostWithSuccess:nil failure:nil]; //we can pass nil because this is a local draft. no remote errors.
 	
 	self.apost = nil; // Just in case
@@ -927,20 +919,27 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 	}
 		
 	UIActionSheet *actionSheet;
-	if (![self.apost hasRemote] || _isAutosaved) {
-        if ([self isAFreshlyCreatedDraft] || _isAutosaved) {
-            actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-                                                      delegate:self cancelButtonTitle:NSLocalizedString(@"Keep editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.") destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                             otherButtonTitles:NSLocalizedString(@"Save Draft", @"Button shown if there are unsaved changes and the author is trying to move away from the post."), nil];
-        } else {
-            actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-                                                      delegate:self cancelButtonTitle:NSLocalizedString(@"Keep editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.") destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                             otherButtonTitles:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post."), nil];
-        }
-	} else {
+	if (![self.apost.original.status isEqualToString:@"draft"] && self.editMode != kNewPost) {
+        // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
 		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-												  delegate:self cancelButtonTitle:NSLocalizedString(@"Keep editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.") destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+												  delegate:self
+                                         cancelButtonTitle:NSLocalizedString(@"Keep editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                    destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
 										 otherButtonTitles:nil];
+    } else if (![self.apost hasRemote] && self.apost.remoteStatus == AbstractPostRemoteStatusLocal) {
+        // The post is a local draft or an autosaved draft: Discard or Save
+        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+                                                  delegate:self
+                                         cancelButtonTitle:NSLocalizedString(@"Keep editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                    destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                         otherButtonTitles:NSLocalizedString(@"Save Draft", @"Button shown if there are unsaved changes and the author is trying to move away from the post."), nil];
+    } else {
+        // The post was already a draft
+        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+                                                  delegate:self
+                                         cancelButtonTitle:NSLocalizedString(@"Keep editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                    destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                         otherButtonTitles:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post."), nil];
     }
 
     actionSheet.tag = 201;
@@ -1112,15 +1111,17 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         }
 
         if (buttonIndex == 1) {
-			if ([actionSheet numberOfButtons] == 2)
+            // Cancel / Keep editing
+			if ([actionSheet numberOfButtons] == 2) {
 				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
             // Save draft
-			else {
+			} else {
                 // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
                 if ((![self.apost hasRemote] || _isAutosaved) && [self.apost.status isEqualToString:@"publish"]) {
                     self.apost.status = @"draft";
                 }
-                [self savePost:YES];
+                BOOL upload = self.apost.blog.reachable;
+                [self savePost:upload];
 			}
         }
     }
