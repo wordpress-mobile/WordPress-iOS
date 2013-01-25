@@ -192,6 +192,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     self.trashBarButton.enabled = NO;
     self.approveBarButton.enabled = NO;
     self.replyBarButton.enabled = NO;
+    self.unapproveBarButton.enabled = NO;
 
     // figure out the actions available for the note
     NSMutableDictionary *indexedActions = [[NSMutableDictionary alloc] initWithCapacity:[actions count]];
@@ -306,22 +307,53 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     NSDictionary *commentAction;
     UIButton *button = (UIButton *)sender;
     
+    UIBarButtonItem *pressedButton = nil;
     if (button.tag == APPROVE_BUTTON_TAG) {
         commentAction = [self.commentActions objectForKey:@"approve-comment"];
+        pressedButton = self.approveBarButton;
     } else if (button.tag == UNAPPROVE_BUTTON_TAG) {
         commentAction = [self.commentActions objectForKey:@"unapprove-comment"];
+        pressedButton = self.unapproveBarButton;
     } else if (button.tag == TRASH_BUTTON_TAG){
         commentAction = [self.commentActions objectForKey:@"trash-comment"];
+        pressedButton = self.trashBarButton;
     } else if (button.tag == UNTRASH_BUTTON_TAG){
         commentAction = [self.commentActions objectForKey:@"untrash-comment"];
+        pressedButton = self.trashBarButton;
     } else if (button.tag == SPAM_BUTTON_TAG){
         commentAction = [self.commentActions objectForKey:@"spam-comment"];
+        pressedButton = self.spamBarButton;
     } else if (button.tag == UNSPAM_BUTTON_TAG){
         commentAction = [self.commentActions objectForKey:@"unspam-comment"];
+        pressedButton = self.spamBarButton;
     }
     
     button.enabled = NO;
     self.note.isLoading = [NSNumber numberWithBool:YES];
+
+    // disable all the buttons
+    self.spamBarButton.enabled = NO;
+    self.trashBarButton.enabled = NO;
+    self.approveBarButton.enabled = NO;
+    self.replyBarButton.enabled = NO;
+    self.unapproveBarButton.enabled = NO;
+    
+    //Replaced the pressed btn with a spinner
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]
+                                        initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner.frame = CGRectMake(0, 0, 24, 24);
+    UIBarButtonItem * barButton = [[UIBarButtonItem alloc] initWithCustomView:spinner];
+
+    NSArray *toolbarButtons =[self.toolbar items];
+    int indexOfPressedButton = 0;
+    for ( ; indexOfPressedButton <  [toolbarButtons count] ; indexOfPressedButton++) {
+        if( toolbarButtons[indexOfPressedButton] == pressedButton )
+            break;
+    }
+    NSMutableArray *newtoolbarButtons = [NSMutableArray arrayWithArray:toolbarButtons];
+    [newtoolbarButtons setObject:barButton atIndexedSubscript:indexOfPressedButton];
+    [self.toolbar setItems:newtoolbarButtons animated:YES];
+    [spinner startAnimating];
     
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
     [self.user postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -330,8 +362,10 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         if (response) {
             NSArray *noteArray = [NSArray arrayWithObject:_note];
             [[WordPressComApi sharedApi] refreshNotifications:noteArray success:^(AFHTTPRequestOperation *operation, id refreshResponseObject) {
+                [spinner stopAnimating];
                 [self displayNote];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                [spinner stopAnimating];
                 [self displayNote];
             }];
         }
@@ -350,17 +384,17 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     
     NSString *toastMessage = @"";
     if (button.tag == APPROVE_BUTTON_TAG) {
-        toastMessage = NSLocalizedString(@"Approved", @"");
+        toastMessage = NSLocalizedString(@"Approving...", @"");
     } else if (button.tag == UNAPPROVE_BUTTON_TAG) {
-        toastMessage = NSLocalizedString(@"Unapproved", @"User replied to a comment");
+        toastMessage = NSLocalizedString(@"Unapproving...", @"User replied to a comment");
     } else if (button.tag == TRASH_BUTTON_TAG){
-        toastMessage = NSLocalizedString(@"Trashed", @"User replied to a comment");
+        toastMessage = NSLocalizedString(@"Trashing...", @"User replied to a comment");
     } else if (button.tag == UNTRASH_BUTTON_TAG){
-        toastMessage = NSLocalizedString(@"Untrashed", @"User replied to a comment");
+        toastMessage = NSLocalizedString(@"Untrashing...", @"User replied to a comment");
     } else if (button.tag == SPAM_BUTTON_TAG){
-        toastMessage = NSLocalizedString(@"Spammed", @"User replied to a comment");
+        toastMessage = NSLocalizedString(@"Spamming...", @"User replied to a comment");
     } else if (button.tag == UNSPAM_BUTTON_TAG){
-        toastMessage = NSLocalizedString(@"Unspammed", @"User replied to a comment");
+        toastMessage = NSLocalizedString(@"Unspamming...", @"User replied to a comment");
     }
     
     [WPToast showToastWithMessage:toastMessage
