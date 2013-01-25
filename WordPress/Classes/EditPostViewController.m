@@ -40,7 +40,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     IBOutlet UIButton *categoriesButton;
 
     WPKeyboardToolbar *editorToolbar;
-	NSArray *statuses;
     UIView *currentView;
     BOOL isTextViewEditing;
     BOOL isEditing;
@@ -140,10 +139,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     
     self.title = [self editorTitle];
 
-    if (!statuses)
-        statuses = [NSArray arrayWithObjects:NSLocalizedString(@"Local Draft", @"Post status label in the posts list if the post has not yet been synced to the remote server."), NSLocalizedString(@"Draft", @"Post status label in the posts list if the post is a draft."), NSLocalizedString(@"Private", @"Post status label in the posts list if the post is marked as private. Should be the same as WP core."), NSLocalizedString(@"Pending review", @"Post status label in the post list if the post is pending review. Should be the same as WP core."), NSLocalizedString(@"Published", @"Post status to indicate that the post is live and published. Should be the same as WP core."), nil];
-	
-	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
