@@ -13,7 +13,7 @@
 		031663070FFB151A0045D052 /* PostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031663060FFB151A0045D052 /* PostTableViewCell.m */; };
 		031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 031666AD0FFC3E130045D052 /* CommentTableViewCell.m */; };
 		03958062100D6CFC00850742 /* WPLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 03958061100D6CFC00850742 /* WPLabel.m */; };
-		03B1E32B113DBDB300BBD1C6 /* EditPostViewController~iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1E32A113DBDB300BBD1C6 /* EditPostViewController~iPad.xib */; };
+		03B1E32B113DBDB300BBD1C6 /* EditPostViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1E32A113DBDB300BBD1C6 /* EditPostViewController~ipad.xib */; };
 		03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */; };
 		03EB54B5100FFB5C004E82CD /* gravatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 03EB54B4100FFB5C004E82CD /* gravatar.jpg */; };
 		1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* WordPressAppDelegate.m */; };
@@ -712,7 +712,7 @@
 		031669580FFC81A20045D052 /* CommentsTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsTableViewDelegate.h; sourceTree = "<group>"; };
 		03958060100D6CFC00850742 /* WPLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLabel.h; sourceTree = "<group>"; };
 		03958061100D6CFC00850742 /* WPLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLabel.m; sourceTree = "<group>"; };
-		03B1E32A113DBDB300BBD1C6 /* EditPostViewController~iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "EditPostViewController~iPad.xib"; path = "Resources-iPad/EditPostViewController~iPad.xib"; sourceTree = "<group>"; };
+		03B1E32A113DBDB300BBD1C6 /* EditPostViewController~ipad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "EditPostViewController~ipad.xib"; path = "Resources-iPad/EditPostViewController~ipad.xib"; sourceTree = "<group>"; };
 		03CF21EB0FE9F0C3008AD538 /* NSString+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Util.h"; sourceTree = "<group>"; };
 		03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Util.m"; sourceTree = "<group>"; };
 		03EB54B4100FFB5C004E82CD /* gravatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = gravatar.jpg; path = Resources/Images/gravatar.jpg; sourceTree = "<group>"; };
@@ -2304,7 +2304,7 @@
 			isa = PBXGroup;
 			children = (
 				E1497BBF12CCA92F0022BCD9 /* PostViewController-iPad.xib */,
-				03B1E32A113DBDB300BBD1C6 /* EditPostViewController~iPad.xib */,
+				03B1E32A113DBDB300BBD1C6 /* EditPostViewController~ipad.xib */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -3112,7 +3112,7 @@
 				83A646AB112C63E5000999A6 /* help.png in Resources */,
 				837576C511305C67002EAA27 /* hasLocation.png in Resources */,
 				45C73C25113C36F70024D0D2 /* MainWindow-iPad.xib in Resources */,
-				03B1E32B113DBDB300BBD1C6 /* EditPostViewController~iPad.xib in Resources */,
+				03B1E32B113DBDB300BBD1C6 /* EditPostViewController~ipad.xib in Resources */,
 				4526DC551148072F0090C99D /* Default-Portrait.png in Resources */,
 				4526DC561148072F0090C99D /* Default-Landscape.png in Resources */,
 				45F285DB1149BD020014D36C /* Icon-72.png in Resources */,
