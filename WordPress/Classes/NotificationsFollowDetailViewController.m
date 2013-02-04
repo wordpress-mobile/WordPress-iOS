@@ -185,7 +185,17 @@
         }
         if ([selectedNote objectForKey:@"icon"]) {
             NSString *imageURL = [[selectedNote objectForKey:@"icon"] stringByReplacingOccurrencesOfString:@"s=32" withString:@"s=160"];
-            [cell.imageView setImageWithURL:[NSURL URLWithString:imageURL] placeholderImage:[UIImage imageNamed:@"note_icon_placeholder"]];
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageURL]];
+            [request setHTTPShouldHandleCookies:NO];
+            [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+            
+            UIImageView *gravatarImageView = cell.imageView;
+            [cell.imageView setImageWithURLRequest:request
+                                  placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]
+                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                               gravatarImageView.image = image;
+                                           }
+                                           failure:nil];
         }
         return cell;
     } else {
