@@ -329,7 +329,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     }
     
     button.enabled = NO;
-    self.note.isLoading = [NSNumber numberWithBool:YES];
 
     // disable all the buttons
     self.spamBarButton.enabled = NO;
@@ -357,7 +356,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     
     NSString *path = [NSString stringWithFormat:@"/rest/v1%@", [commentAction valueForKeyPath:@"params.rest_path"]];
     [self.user postPath:path parameters:[commentAction valueForKeyPath:@"params.rest_body"] success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        self.note.isLoading = [NSNumber numberWithBool:NO];
         NSDictionary *response = (NSDictionary *)responseObject;
         if (response) {
             NSArray *noteArray = [NSArray arrayWithObject:_note];
@@ -370,7 +368,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             }];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        self.note.isLoading = [NSNumber numberWithBool:NO];
         button.enabled = YES;
         BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
 #ifndef DEBUG

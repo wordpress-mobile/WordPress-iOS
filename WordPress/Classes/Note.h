@@ -21,7 +21,6 @@
 @property (nonatomic, retain) NSString * noteID;
 @property (nonatomic, strong, readonly) NSString *commentText;
 @property (nonatomic, strong, readonly) NSDictionary *noteData;
-@property (nonatomic, retain) NSNumber *isLoading;
 
 - (BOOL)isComment;
 - (BOOL)isLike;
