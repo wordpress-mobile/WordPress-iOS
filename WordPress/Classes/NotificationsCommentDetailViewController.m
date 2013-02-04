@@ -341,7 +341,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     //Replaced the pressed btn with a spinner
     UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]
                                         initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    spinner.frame = CGRectMake(0, 0, 24, 24);
+    spinner.frame = CGRectMake(0, 0, 30, 30);
     UIBarButtonItem * barButton = [[UIBarButtonItem alloc] initWithCustomView:spinner];
 
     NSArray *toolbarButtons =[self.toolbar items];
@@ -381,7 +381,8 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             WPFLog(@"[Rest API] ! %@", [error localizedDescription]);
         }
     }];
-    
+  
+    /*
     NSString *toastMessage = @"";
     if (button.tag == APPROVE_BUTTON_TAG) {
         toastMessage = NSLocalizedString(@"Approving...", @"");
@@ -399,6 +400,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     
     [WPToast showToastWithMessage:toastMessage
                          andImage:[UIImage imageNamed:@"action_icon_followed"]];
+     */
 }
 
 - (void)startReply:(id)sender {

@@ -63,13 +63,13 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
         [self.tableView registerClass:[NotificationsTableViewCell class] forCellReuseIdentifier:NotificationsTableViewNoteCellIdentifier];
     }
     
-    
+   /*
     if(IS_IPHONE) {
         if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
             
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-            [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
-            [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateHighlighted];
+            [btn setImage:[UIImage imageNamed:@"settings.png"] forState:UIControlStateNormal];
+            [btn setImage:[UIImage imageNamed:@"settings.png"] forState:UIControlStateHighlighted];
             
             UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
             [btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
@@ -88,12 +88,12 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
         }
     } else {
         //iPad
-        self.settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_actions.png"]
+        self.settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings.png"]
                                                                style:UIBarButtonItemStylePlain
                                                               target:self
                                                               action:@selector(showNotificationsSettings)];
     }
-
+    
     [self.settingsButton setAccessibilityLabel:NSLocalizedString(@"Settings", @"")];
     
     if ([self.settingsButton respondsToSelector:@selector(setTintColor:)]) {
@@ -106,6 +106,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     } else {
         self.toolbarItems = [NSArray arrayWithObjects: self.settingsButton , nil];
     }
+    */
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -315,7 +316,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     if([cell.note.isLoading intValue] == 1) {
         UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]
                                              initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        spinner.frame = CGRectMake(0, 0, 24, 24);
+        spinner.frame = CGRectMake(0, 0, 16, 16);
         cell.accessoryView = spinner;
         [spinner startAnimating];        
     } else {
