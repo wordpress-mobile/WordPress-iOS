@@ -637,12 +637,12 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 - (void)prepareCommentHeaderCell:(NoteCommentCell *)cell forCommment:(NoteComment *)comment {
     BOOL mainComment = comment == [self.commentThread lastObject];
     if (mainComment) {
-        cell.avatarURL = [NSURL URLWithString:[self increaseGravatarSizeForURL: self.note.icon]];
+        cell.avatarURL = [NSURL URLWithString:[self decreaseGravatarSizeForURL: self.note.icon]];
         cell.followButton = self.followButton;
         cell.imageView.hidden = NO;
 
     } else if (comment.isLoaded){
-        cell.avatarURL = [NSURL URLWithString:[self increaseGravatarSizeForURL:[comment.commentData valueForKeyPath:@"author.avatar_URL"]]];
+        cell.avatarURL = [NSURL URLWithString:[self decreaseGravatarSizeForURL:[comment.commentData valueForKeyPath:@"author.avatar_URL"]]];
         cell.followButton = nil;
         cell.imageView.hidden = NO;
     }
@@ -654,9 +654,9 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     }
 }
 
-- (NSString *)increaseGravatarSizeForURL:(NSString *)originalURL {
-    // REST API returns 96 by default, let's make it bigger
-    return [originalURL stringByReplacingOccurrencesOfString:@"s=96" withString:@"s=184"];
+- (NSString *)decreaseGravatarSizeForURL:(NSString *)originalURL {
+    // REST API returns 256 by default, let's make it smaller
+    return [originalURL stringByReplacingOccurrencesOfString:@"s=256" withString:@"s=184"];
 }
 
 #pragma mark - UITableViewDelegate

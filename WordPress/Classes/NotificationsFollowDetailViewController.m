@@ -184,7 +184,7 @@
             cell.textLabel.text = [selectedNote objectForKey:@"header_text"];
         }
         if ([selectedNote objectForKey:@"icon"]) {
-            NSString *imageURL = [[selectedNote objectForKey:@"icon"] stringByReplacingOccurrencesOfString:@"s=32" withString:@"s=160"];
+            NSString *imageURL = [[selectedNote objectForKey:@"icon"] stringByReplacingOccurrencesOfString:@"s=256" withString:@"s=160"];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:imageURL]];
             [request setHTTPShouldHandleCookies:NO];
             [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];

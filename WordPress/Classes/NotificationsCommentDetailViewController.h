@@ -56,6 +56,6 @@
 
 - (IBAction)visitPostURL:(id)sender;
 - (void)displayNote;
-- (NSString *)increaseGravatarSizeForURL:(NSString *)originalURL;
+- (NSString *)decreaseGravatarSizeForURL:(NSString *)originalURL;
 
 @end
