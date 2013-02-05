@@ -82,7 +82,7 @@
          <EnvironmentVariable
             key = "NSDebugEnabled"
             value = "YES"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "NSAutoreleaseFreedObjectCheckEnabled"

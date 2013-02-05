@@ -112,6 +112,8 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 #pragma mark - Account management
 
 - (void)signInWithUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    NSAssert(username != nil, @"username is nil");
+    NSAssert(password != nil, @"password is nil");
     if (self.username && ![username isEqualToString:self.username]) {
         [self signOut]; // Only one account supported for now
     }
