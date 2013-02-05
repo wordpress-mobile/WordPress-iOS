@@ -1157,11 +1157,6 @@ NSLog(@"%@", self.sectionInfoArray);
     } else {
         [self tearDownQuickPhotoButton];
     }
-    
-    if([self.sectionInfoArray count] == 1) {
-        SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:0];
-        sectionInfo.open = YES;
-    }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
@@ -1199,19 +1194,12 @@ NSLog(@"%@", self.sectionInfoArray);
                 changingContentForSelectedSection = YES;
             }
             SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:indexPath.row];
-            if (sectionInfo.open) {
-                NSMutableArray *indexPathsToDelete = [[NSMutableArray alloc] init];                
-                for (NSInteger i = 0; i < NUM_ROWS; i++) {
-                    [indexPathsToDelete addObject:[NSIndexPath indexPathForRow:i inSection:indexPath.row + 1]];
-                }
-                [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:UITableViewRowAnimationFade];
-            }
             if (self.openSection == sectionInfo) {
                 self.openSection = nil;
                 wantedSection = 0;
             }
             [self.sectionInfoArray removeObjectAtIndex:indexPath.row];
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.row + 1] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.row + 1] withRowAnimation:UITableViewRowAnimationNone];
             //[self showWelcomeScreenIfNeeded];
             break;
         }
