@@ -932,27 +932,11 @@ NSLog(@"%@", self.sectionInfoArray);
     if (indexPath.section == 0) { // Reader & Notifications
         
         if (indexPath.row == 0) { // Reader
-            if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPReaderViewController class]]) {
-                // Reader was already selected
-                if (IS_IPAD) {
-                    [self.panelNavigationController showSidebar];
-                } else {
-                    [self.panelNavigationController popToRootViewControllerAnimated:NO];
-                    [self.panelNavigationController closeSidebar];
-                }
-                return;
-            }
             // Reader
             WPReaderViewController *readerViewController = [[WPReaderViewController alloc] init];
             detailViewController = readerViewController;
         } else if(indexPath.row == 1) { // Notifications
             self.hasUnseenNotes = NO;
-            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-            if ([self.panelNavigationController.detailViewController isMemberOfClass:[NotificationsViewController class]]) {
-                [self.panelNavigationController closeSidebar];
-                return;
-            }
             NotificationsViewController *notificationsViewController = [[NotificationsViewController alloc] init];
             detailViewController = notificationsViewController;
         }
