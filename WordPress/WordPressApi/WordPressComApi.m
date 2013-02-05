@@ -184,6 +184,10 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 }
 
 - (void)refreshTokenWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    if (self.username == nil || self.password == nil) {
+        WPFLog(@"-[WordPressComApi refreshTokenWithSuccess:failure:] username or password are nil, don't even try");
+        return;
+    }
     [self signInWithUsername:self.username password:self.password success:success failure:failure];
 }
 
