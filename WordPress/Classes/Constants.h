@@ -151,6 +151,7 @@
 #define kNotificationTypeAchievement @"ac"
 
 #define kSettingsMuteSoundsKey @"settings_mute_sounds"
+#define kApnsDeviceTokenPrefKey  @"apnsDeviceToken"
 
 
 typedef NS_ENUM(NSUInteger, MediaType) {

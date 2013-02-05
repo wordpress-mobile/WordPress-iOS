@@ -10,6 +10,7 @@
 #import "PanelNavigationController.h"
 #import "FBConnect.h"
 #import "CrashReportViewController.h"
+#import "Constants.h"
 
 @class AutosaveManager;
 

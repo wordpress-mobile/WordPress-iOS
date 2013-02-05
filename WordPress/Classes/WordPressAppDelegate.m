@@ -158,7 +158,7 @@
     WPFLog(@"Device model: %@", [device platform]);
     WPFLog(@"OS:        %@ %@", [device systemName], [device systemVersion]);
     WPFLog(@"UDID:      %@", [device wordpressIdentifier]);
-    WPFLog(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"]);
+    WPFLog(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]);
     WPFLog(@"===========================================================================");
 
     [self setupUserAgent];
@@ -957,9 +957,9 @@
     NSLog(@"Registered for push notifications and stored device token: %@", myToken);
     
 	// Store the token
-    NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
+    NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if (![previousToken isEqualToString:myToken]) {
-        [[NSUserDefaults standardUserDefaults] setObject:myToken forKey:@"apnsDeviceToken"];
+        [[NSUserDefaults standardUserDefaults] setObject:myToken forKey:kApnsDeviceTokenPrefKey];
         [self sendApnsToken];
     }
 }
@@ -1014,7 +1014,7 @@
 }
 
 - (void)sendApnsToken {	
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if( nil == token ) return; //no apns token available
     
     NSString *authURL = kNotificationAuthURL;   	
@@ -1046,7 +1046,7 @@
                         WPFLog(@"Registered token %@, sending blogs list", token);
                         [[WordPressComApi sharedApi] syncPushNotificationInfo];
                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"apnsDeviceToken"]; //Remove the token from Preferences, otherwise the token is never re-sent to the server on the next startup
+                        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey]; //Remove the token from Preferences, otherwise the token is never re-sent to the server on the next startup
                         WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
                     }];
         } 
@@ -1054,7 +1054,7 @@
 }
 
 - (void)unregisterApnsToken {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:@"apnsDeviceToken"];
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if( nil == token ) return; //no apns token available
     
     NSString *authURL = kNotificationAuthURL;   	
