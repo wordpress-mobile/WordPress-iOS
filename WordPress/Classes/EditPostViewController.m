@@ -765,7 +765,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
                                          cancelButtonTitle:NSLocalizedString(@"Keep editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
                                     destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
 										 otherButtonTitles:nil];
-    } else if (![self.apost hasRemote] && self.apost.remoteStatus == AbstractPostRemoteStatusLocal) {
+    } else if (self.editMode == EditPostViewControllerModeNewPost) {
         // The post is a local draft or an autosaved draft: Discard or Save
         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
                                                   delegate:self
