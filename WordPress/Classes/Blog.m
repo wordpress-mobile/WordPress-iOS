@@ -623,7 +623,7 @@
             return;
 
         NSDictionary *respDict = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
-        if ([respDict objectForKey:@"supported"]) {
+        if ([respDict objectForKey:@"supported"] && [[respDict objectForKey:@"supported"] isKindOfClass:[NSArray array]]) {
             NSMutableArray *supportedKeys = [NSMutableArray arrayWithArray:[respDict objectForKey:@"supported"]];
             // Standard isn't included in the list of supported formats? Maybe it will be one day?
             if (![supportedKeys containsObject:@"standard"]) {
