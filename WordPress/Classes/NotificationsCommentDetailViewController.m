@@ -708,11 +708,16 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             if (mainComment) {
                 minHeight = CGRectGetHeight(tableView.bounds) - CGRectGetHeight(tableView.tableFooterView.bounds) - NoteCommentCellHeight;
             }
-            NSAttributedString *content = [self convertHTMLToAttributedString:[comment.commentData valueForKeyPath:@"content"]];
-            CGFloat textHeight = [self
-                                  heightForCellWithTextContent:content
-                                  constrainedToWidth:CGRectGetWidth(tableView.bounds)];
-            height = MAX(minHeight, textHeight);
+            NSString *content = [comment.commentData valueForKeyPath:@"content"];
+            if (content) {
+                NSAttributedString *attributedContent = [self convertHTMLToAttributedString:content];
+                CGFloat textHeight = [self
+                                      heightForCellWithTextContent:attributedContent
+                                      constrainedToWidth:CGRectGetWidth(tableView.bounds)];
+                height = MAX(minHeight, textHeight);
+            } else {
+                height = minHeight;
+            }
             break;
         }
     }
@@ -747,7 +752,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 #pragma mark - Text Formatting
 
 - (NSAttributedString *)convertHTMLToAttributedString:(NSString *)html {
-    
+    NSAssert(html != nil, @"Can't convert nil to AttributedString");
     NSDictionary *options = @{
     DTDefaultFontFamily : @"Helvetica",
     NSTextSizeMultiplierDocumentOption : [NSNumber numberWithFloat:1.3]
