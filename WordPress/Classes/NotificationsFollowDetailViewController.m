@@ -69,7 +69,7 @@
         [self.view bringSubviewToFront:_postTitleView];
         
         NSString *headerLink = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"header_link"];
-        if (headerLink) {
+        if (headerLink && [headerLink isKindOfClass:[NSString class]]) {
             NSURL *postURL = [NSURL URLWithString:headerLink];
             if (postURL) {
                 NSString *blavatarURL = [NSString stringWithFormat:@"http://gravatar.com/blavatar/%@?s=72&d=404", [[postURL host] md5]];
