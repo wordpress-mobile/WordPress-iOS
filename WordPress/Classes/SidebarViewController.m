@@ -481,6 +481,10 @@ NSLog(@"%@", self.sectionInfoArray);
 }
 
 - (void)selectNotificationsRow {
+    if ([self tableView:self.tableView numberOfRowsInSection:0] < 2) {
+        // No notifications available. We probably got a push notification after sign out
+        return;
+    }
     self.hasUnseenNotes = NO;
     NSIndexPath *notificationsIndexPath = [NSIndexPath indexPathForRow: 1 inSection:0];
     if (notificationsIndexPath) {
