@@ -407,7 +407,11 @@
 
 - (void)deleteComment {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [_comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(remove)];
+    if (IS_IPAD) {
+        [self.panelNavigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 - (void)approveComment {
@@ -422,7 +426,11 @@
 
 - (void)spamComment {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    [_comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(spam)];
+    if (IS_IPAD) {
+        [self.panelNavigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 - (BOOL)isConnectedToHost {
@@ -454,8 +462,6 @@
 #pragma clang diagnostic pop
     if (!IS_IPAD) {
         [self.navigationController popViewControllerAnimated:YES];
-    } else {
-        [self.panelNavigationController popToRootViewControllerAnimated:YES];
     }
    [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:currentBlog];
 }
@@ -592,6 +598,7 @@
 }
 
 - (void)showComment:(Comment *)comment {
+    WPFLogMethodParam(comment);
     self.comment = comment;
     static NSDateFormatter *dateFormatter = nil;
 

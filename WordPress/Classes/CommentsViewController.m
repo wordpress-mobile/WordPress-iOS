@@ -311,6 +311,7 @@
 
 //Just highlight 
 - (void)tryToSelectLastComment {
+    WPFLogMethod();
     //try to move the comments list on the last user selected comment
 	if(self.lastSelectedCommentID != nil) {
 		NSArray *sections = [self.resultsController sections];
@@ -354,6 +355,7 @@
 }
 
 - (void)showCommentAtIndexPath:(NSIndexPath *)indexPath {
+    WPFLogMethodParam(indexPath);
 	Comment *comment;
     if (indexPath) {
         @try {
@@ -692,6 +694,11 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [super controllerDidChangeContent:controller];
     
-    self.editButtonItem.enabled =  [[self.resultsController fetchedObjects] count] > 0 ? YES : NO;
+    if ([[self.resultsController fetchedObjects] count] > 0) {
+        self.editButtonItem.enabled = YES;
+    } else {
+        self.editButtonItem.enabled = NO;
+        self.currentIndexPath = nil;
+    }
 }
 @end
