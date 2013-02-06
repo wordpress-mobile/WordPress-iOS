@@ -67,6 +67,7 @@ typedef enum {
 - (void)updateRevision;
 - (BOOL)isRevision;
 - (BOOL)isOriginal;
+- (void)cloneFrom:(AbstractPost *)source;
 
 //comments
 - (void)findComments;

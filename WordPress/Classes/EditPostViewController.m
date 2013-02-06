@@ -60,6 +60,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     NSTimer *_autosaveTimer;
     AutosavingIndicatorView *_autosavingIndicatorView;
     NSUInteger _charactersChanged;
+    AbstractPost *_backupPost;
 }
 
 #pragma mark -
@@ -78,6 +79,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
             self.editMode = EditPostViewControllerModeNewPost;
         } else {
             self.editMode = EditPostViewControllerModeEditPost;
+            _backupPost = [NSEntityDescription insertNewObjectForEntityForName:[[aPost entity] name] inManagedObjectContext:[aPost managedObjectContext]];
+            [_backupPost cloneFrom:aPost];
         }
     }
     
@@ -369,7 +372,33 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     }
 }
 
+- (void)deleteBackupPost {
+    if (_backupPost) {
+        NSManagedObjectContext *moc = _backupPost.managedObjectContext;
+        [moc deleteObject:_backupPost];
+        NSError *error;
+        [moc save:&error];
+        _backupPost = nil;
+    }
+}
+
+- (void)restoreBackupPost:(BOOL)upload {
+    if (_backupPost) {
+        [self.apost.original cloneFrom:_backupPost];
+        if (upload) {
+            WPFLog(@"Restoring post backup");
+            [self.apost.original uploadWithSuccess:^{
+                WPFLog(@"post uploaded: %@", self.apost.postTitle);
+            } failure:^(NSError *error) {
+                WPFLog(@"post failed: %@", [error localizedDescription]);
+            }];
+            [self deleteBackupPost];
+        }
+    }
+}
+
 - (void)dismissEditView {
+    [self deleteBackupPost];
     [self dismissModalViewControllerAnimated:YES];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -531,12 +560,15 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 }
 
 - (void)discard {
+    if (self.editMode == EditPostViewControllerModeEditPost) {
+        [self restoreBackupPost:NO];
+    }
     [self.apost.original deleteRevision];
 
 	//remove the original post in case of local draft unsaved
 	if(self.editMode == EditPostViewControllerModeNewPost)
 		[self.apost.original deletePostWithSuccess:nil failure:nil]; //we can pass nil because this is a local draft. no remote errors.
-	
+
 	self.apost = nil; // Just in case
     [self dismissEditView];
 }
@@ -747,6 +779,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     [titleTextField resignFirstResponder];
     [tagsTextField resignFirstResponder];
 	[self.postSettingsViewController endEditingAction:nil];
+    [self restoreBackupPost:YES];
     if (!self.hasChanges) {
         [self discard];
         return;

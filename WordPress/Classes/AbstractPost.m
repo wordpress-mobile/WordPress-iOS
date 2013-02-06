@@ -13,7 +13,6 @@
 @interface AbstractPost(ProtectedMethods)
 + (NSString *)titleForStatus:(NSString *)status;
 + (NSString *)statusForTitle:(NSString *)title;
-- (void)cloneFrom:(AbstractPost *)source;
 - (void)markRemoteStatusFailed;
 @end
 
