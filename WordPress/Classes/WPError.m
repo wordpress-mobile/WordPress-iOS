@@ -9,6 +9,7 @@
 #import "WPError.h"
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
+#import "WPcomLoginViewController.h"
 
 NSString * const WPErrorResponseKey = @"wp_error_response";
 
@@ -70,8 +71,11 @@ NSString * const WPErrorResponseKey = @"wp_error_response";
     } else if ([error.domain isEqualToString:WordPressComApiErrorDomain]) {
         WPFLog(@"wp.com API error: %@: %@", [error.userInfo objectForKey:WordPressComApiErrorCodeKey], [error localizedDescription]);
         if (error.code == WordPressComApiErrorInvalidToken || error.code == WordPressComApiErrorAuthorizationRequired) {
+            if ([WordPressComApi sharedApi].password == nil) {
+                [WPcomLoginViewController presentLoginScreenWithSuccess:nil cancel:nil];
+            }
             [[WordPressComApi sharedApi] refreshTokenWithSuccess:nil failure:^(NSError *error) {
-                [self showAlertWithError:error];
+                [WPcomLoginViewController presentLoginScreenWithSuccess:nil cancel:nil];
             }];
             return;
         }

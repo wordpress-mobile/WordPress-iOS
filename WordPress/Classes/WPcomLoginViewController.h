@@ -17,10 +17,13 @@
 
 @property (weak) id<WPcomLoginViewControllerDelegate> delegate;
 @property (nonatomic, assign) BOOL isCancellable;
+@property (nonatomic, assign) BOOL dismissWhenFinished;
 @property (nonatomic, strong) NSString *predefinedUsername;
 @property (nonatomic, strong) Blog *blog;
 
 - (IBAction)cancel:(id)sender;
+
++ (void)presentLoginScreenWithSuccess:(void (^)(NSString *username, NSString *password))success cancel:(void (^)())cancel;
 
 @end
 

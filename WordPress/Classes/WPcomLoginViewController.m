@@ -19,7 +19,8 @@
 @property (nonatomic, strong) NSString *footerText, *buttonText;
 @property (nonatomic, assign) BOOL isSigningIn;
 @property (nonatomic, strong) WordPressComApi *wpComApi;
-
+@property (nonatomic, strong) void (^successBlock)(NSString *username, NSString *password);
+@property (nonatomic, strong) void (^cancelBlock)();
 - (void)signIn:(id)sender;
 @end
 
@@ -29,6 +30,19 @@
 @synthesize footerText, buttonText, isSigningIn, isCancellable, predefinedUsername;
 @synthesize delegate;
 @synthesize wpComApi = _wpComApi, blog = _blog;
+
++ (void)presentLoginScreenWithSuccess:(void (^)(NSString *username, NSString *password))success cancel:(void (^)())cancel {
+    UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+    WPcomLoginViewController *loginViewController = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    loginViewController.successBlock = success;
+    loginViewController.cancelBlock = cancel;
+    loginViewController.isCancellable = YES;
+    loginViewController.dismissWhenFinished = YES;
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [rootViewController presentViewController:navController animated:YES completion:nil];
+}
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -311,7 +325,15 @@
                                  password:password
                                   success:^{
                                       [loginController.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
-                                      [loginController.delegate loginController:loginController didAuthenticateWithUsername:loginController.wpComApi.username];
+                                      if (loginController.delegate) {
+                                          [loginController.delegate loginController:loginController didAuthenticateWithUsername:loginController.wpComApi.username];
+                                      }
+                                      if (loginController.successBlock) {
+                                          loginController.successBlock(username, password);
+                                      }
+                                      if (self.dismissWhenFinished) {
+                                          [self dismissViewControllerAnimated:YES completion:nil];
+                                      }
                                   } failure:^(NSError *error) {
                                       WPFLog(@"Login failed with username %@: %@", username, error);
                                       loginController.footerText = NSLocalizedString(@"Sign in failed. Please try again.", @"");
@@ -325,7 +347,15 @@
 
 
 - (IBAction)cancel:(id)sender {
-    [self.delegate loginControllerDidDismiss:self];
+    if (self.delegate) {
+        [self.delegate loginControllerDidDismiss:self];
+    }
+    if (self.cancelBlock) {
+        self.cancelBlock();
+    }
+    if (self.dismissWhenFinished) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 @end
