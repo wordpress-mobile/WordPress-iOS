@@ -177,7 +177,6 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
         parameters:params
            success:successBlock
            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                 self.username = nil;
                  self.password = nil;
                  if (failure) failure(error);
              }];
