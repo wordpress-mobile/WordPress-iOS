@@ -567,6 +567,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)configureNoResultsView {
     if (![self isViewLoaded]) return;
     
+    [self.noResultsView removeFromSuperview];
+    
     if (self.resultsController && [[_resultsController fetchedObjects] count] == 0 && !self.isSyncing) {
         // Show no results view.
 
@@ -577,15 +579,13 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
         if ([self userCanCreateEntity]) {
             msg = NSLocalizedString(@"Why not create one?", @"A call to action to create a post or page.");
         }
+        
+     
         self.noResultsView = [WPInfoView WPInfoViewWithTitle:ttl
                                                      message:msg
                                                 cancelButton:nil];
-        
         [self.tableView addSubview:self.noResultsView];
-    } else {
-        [self.noResultsView removeFromSuperview];
     }
-
 }
 
 - (void)hideRefreshHeader {
