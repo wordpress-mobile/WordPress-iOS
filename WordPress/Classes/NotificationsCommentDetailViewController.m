@@ -510,16 +510,15 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             // if it's the main item, scroll down to show the first loader
             
             if (offset.y <= 0.f && section == [self.commentThread count] - 1) {
-                
-                // animate
-                [self.tableView beginUpdates];
 
                 if (parentComment) {
                     [self.commentThread insertObject:parentComment atIndex:0];
+                    // animate
+                    [self.tableView beginUpdates];
                     [self.tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
+                    [self.tableView endUpdates];
                 }
-         
-                [self.tableView endUpdates];
+
             } else {
                 
                 // reload and fix the offset
