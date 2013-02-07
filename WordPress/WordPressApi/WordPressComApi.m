@@ -317,6 +317,19 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if( nil == token ) return; //no apns token available
 
+    NSString *username = self.username;
+    NSString *password = self.password;
+    /* HACK: temporary fix for cases where password is nil
+     We believe jetpack settings might be causing this, but since we're actually doing authentication
+     with the authToken, we don't care that much about username/password in this method
+     */
+    if (!username)
+        username = @"";
+
+    if (!password)
+        password = @"";
+    /* HACK ENDS */
+
     NSString *authURL = kNotificationAuthURL;
     NSError *error;
     NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
@@ -348,7 +361,7 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
 	NSString *appversion = [[info objectForKey:@"CFBundleVersion"] stringByUrlEncoding];
     
-    NSArray *blogsListParameters = [NSArray arrayWithObjects:self.username, self.password, token, blogsID, @"apple", appversion, nil];
+    NSArray *blogsListParameters = [NSArray arrayWithObjects:username, password, token, blogsID, @"apple", appversion, nil];
     AFXMLRPCRequest *blogsListRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_set_blogs_list" parameters:blogsListParameters];
     AFXMLRPCRequestOperation *blogsListOperation = [api XMLRPCRequestOperationWithRequest:blogsListRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         WPFLog(@"Sent blogs list (%d blogs)", [blogsID count]);
@@ -358,7 +371,7 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 
     [operations addObject:blogsListOperation];
 
-    NSArray *settingsParameters = [NSArray arrayWithObjects:self.username, self.password, token, @"apple", nil];
+    NSArray *settingsParameters = [NSArray arrayWithObjects:username, password, token, @"apple", nil];
     AFXMLRPCRequest *settingsRequest = [api XMLRPCRequestWithMethod:@"wpcom.get_mobile_push_notification_settings" parameters:settingsParameters];
     AFXMLRPCRequestOperation *settingsOperation = [api XMLRPCRequestOperationWithRequest:settingsRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
