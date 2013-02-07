@@ -152,7 +152,7 @@
 		case 0:
             return 3;	// URL, username, password
 		case 1: // Settings: Geolocation, [ Push Notifications ]
-            if (blog && ( [blog isWPcom] || [blog hasJetpack] ) && [[WordPressComApi sharedApi] hasCredentials])
+            if (blog && ( [blog isWPcom] || [blog hasJetpack] ) && [[WordPressComApi sharedApi] hasCredentials] && nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey])
                 return 2;
             else
                 return 1;	

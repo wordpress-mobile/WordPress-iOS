@@ -228,7 +228,7 @@ typedef enum {
         case SettingsSectionMedia:
             return [mediaSettingsArray count];
         case SettingsSectionNotifications:
-            if ([[WordPressComApi sharedApi] hasCredentials])
+            if ([[WordPressComApi sharedApi] hasCredentials] && nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey])
                 return 1;
             else
                 return 0;
@@ -265,7 +265,7 @@ typedef enum {
     } else if (section == SettingsSectionMedia) {
         return NSLocalizedString(@"Media", @"Title label for the media settings section in the app settings");
     } else if (section == SettingsSectionNotifications) {
-        if ([[WordPressComApi sharedApi] hasCredentials])
+        if ([[WordPressComApi sharedApi] hasCredentials] && nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey])
             return NSLocalizedString(@"Notifications", @"");
         else
             return nil;
@@ -349,7 +349,7 @@ typedef enum {
         cell.accessoryView = aSwitch;
 
     } else if (indexPath.section == SettingsSectionNotifications) {
-        if ([[WordPressComApi sharedApi] hasCredentials]) {
+        if ([[WordPressComApi sharedApi] hasCredentials] && nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = NSLocalizedString(@"Manage Notifications", @"");
         }

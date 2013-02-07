@@ -64,6 +64,9 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     }
     
    /*
+    
+    //only shows this button if -> nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]
+    
     if(IS_IPHONE) {
         if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
             
