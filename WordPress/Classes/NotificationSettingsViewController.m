@@ -125,7 +125,14 @@ BOOL hasChanges;
 
 - (void)viewWillDisappear:(BOOL)animated {
     if (hasChanges)
-        [[WordPressComApi sharedApi] saveNotificationSettings:nil failure:nil];
+        [[WordPressComApi sharedApi] saveNotificationSettings:nil failure:^(NSError *error) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+                                                            message:error.localizedDescription
+                                                           delegate:nil
+                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label.")
+                                                  otherButtonTitles:nil, nil];
+            [alert show];
+        }];
     [super viewWillDisappear:animated];
 }
 
