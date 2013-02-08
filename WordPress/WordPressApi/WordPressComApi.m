@@ -286,13 +286,17 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
         return;
 
     AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:kWPcomXMLRPCUrl]];
+    [api setAuthorizationHeaderWithToken:self.authToken];
     //Update supported notifications dictionary
     [api callMethod:@"wpcom.set_mobile_push_notification_settings"
          parameters:[NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], updatedSettings, token, @"apple", nil]
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 // Hooray!
+                if (success)
+                    success();
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-
+                if (failure)
+                    failure(error);
             }];
 }
 
