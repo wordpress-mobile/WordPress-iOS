@@ -31,7 +31,7 @@
 }
 
 @synthesize usersBlogs, isWPcom, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;
-@synthesize spinner, topAddSelectedButton, geolocationEnabled;
+@synthesize topAddSelectedButton, geolocationEnabled;
 @synthesize username = _username, password = _password, url = _url;
 @synthesize noblogsView;
 
@@ -146,7 +146,6 @@
     self.buttonSelectAll = nil;
     self.topAddSelectedButton = nil;
     self.noblogsView = nil;
-    self.spinner = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

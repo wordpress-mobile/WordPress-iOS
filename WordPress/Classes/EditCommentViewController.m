@@ -7,12 +7,11 @@
 //
 
 #import "EditCommentViewController.h"
-#import "WPProgressHUD.h"
 #import "CommentViewController.h"
 
 @implementation EditCommentViewController
 
-@synthesize commentViewController, comment, progressAlert, hasChanges, textViewText, textView, isTransitioning, isEditing;
+@synthesize commentViewController, comment, hasChanges, textViewText, textView, isTransitioning, isEditing;
 
 - (void)dealloc {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -169,15 +168,17 @@
 	[commentViewController showComment:comment];
 	[self.navigationController popViewControllerAnimated:YES];
 	
-    self.progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Saving Edit...", @"")];
-    [self.progressAlert show];
+    self.textView.editable = NO;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    self.navigationItem.leftBarButtonItem.enabled = NO;
     [self.comment uploadWithSuccess:^{
-        [self.progressAlert dismissWithClickedButtonIndex:0 animated:YES];
         self.hasChanges = NO;
         [commentViewController cancelView:self];
     } failure:^(NSError *error) {
-        [progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-        NSString *message = NSLocalizedString(@"Sorry, something went wrong during comment moderation. Please try again.", @"");
+        self.textView.editable = YES;
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+        self.navigationItem.leftBarButtonItem.enabled = YES;
+        NSString *message = NSLocalizedString(@"Sorry, something went wrong editing the comment. Please try again.", @"");
         if (error.code == 405) {
             // XML-RPC is disabled.
             message = error.localizedDescription;

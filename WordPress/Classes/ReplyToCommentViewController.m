@@ -7,7 +7,6 @@
 //
 
 #import "ReplyToCommentViewController.h"
-#import "WPProgressHUD.h"
 
 @implementation ReplyToCommentViewController
 
@@ -40,12 +39,11 @@
 		return;
 	}
 	
-    self.progressAlert = [[WPProgressHUD alloc] initWithLabel:NSLocalizedString(@"Sending Reply...", @"")];
-    [self.progressAlert show];
+    self.textView.editable = NO;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    self.navigationItem.leftBarButtonItem.enabled = NO;
     self.comment.content = self.textView.text;
     [self.comment uploadWithSuccess:^{
-        [self.progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-        self.progressAlert = nil;
 		self.hasChanges = NO;
 		if(delegate && [delegate respondsToSelector:@selector(closeReplyViewAndSelectTheNewComment)]){
 			[delegate closeReplyViewAndSelectTheNewComment];
@@ -53,9 +51,10 @@
 			[self cancelView:nil];
 		}
     } failure:^(NSError *error) {
-        [self.progressAlert dismissWithClickedButtonIndex:0 animated:YES];
-        self.progressAlert = nil;
-        
+        self.textView.editable = YES;
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+        self.navigationItem.leftBarButtonItem.enabled = YES;
+
         NSString *message = NSLocalizedString(@"Sorry, something went wrong posting the comment reply. Please try again.", @"");
 
         if (error.code == 405) {

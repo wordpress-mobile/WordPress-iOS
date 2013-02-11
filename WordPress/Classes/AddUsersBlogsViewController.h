@@ -8,7 +8,6 @@
 #import <UIKit/UIKit.h>
 #import "WordPressAppDelegate.h"
 #import "Blog.h"
-#import "WPProgressHUD.h"
 #import "WPcomLoginViewController.h"
 
 @interface AddUsersBlogsViewController : UIViewController <UITableViewDelegate> {
@@ -18,7 +17,6 @@
 	NSMutableArray *selectedBlogs;
 	IBOutlet UITableView *tableView;
 	IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll, *topAddSelectedButton;
-	WPProgressHUD *spinner;
 }
 
 @property (nonatomic, assign) BOOL hasCompletedGetUsersBlogs, isWPcom;
@@ -27,7 +25,6 @@
 @property (nonatomic, strong) NSString *username, *url, *password;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll, *topAddSelectedButton;
-@property (nonatomic, strong) WPProgressHUD *spinner;
 @property (nonatomic, assign) BOOL geolocationEnabled;
 
 - (IBAction)selectAllBlogs:(id)sender;

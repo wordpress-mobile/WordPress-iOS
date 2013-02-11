@@ -582,8 +582,6 @@ WordPress/Classes/WPLabel.h -text
 WordPress/Classes/WPLabel.m -text
 WordPress/Classes/WPPopoverBackgroundView.h -text
 WordPress/Classes/WPPopoverBackgroundView.m -text
-WordPress/Classes/WPProgressHUD.h -text
-WordPress/Classes/WPProgressHUD.m -text
 WordPress/Classes/WPReaderDetailViewController.h -text
 WordPress/Classes/WPReaderDetailViewController.m -text
 WordPress/Classes/WPReaderTopicsViewController.h -text
@@ -659,7 +657,6 @@ WordPress/Icon@2x.png -text svneol=unset#unset
 WordPress/Info-beta.plist -text
 WordPress/Info-dev.plist -text
 WordPress/Info.plist -text
-WordPress/Resources-iPad/AddSiteViewController-iPad.xib -text
 WordPress/Resources-iPad/AddUsersBlogsViewController-iPad.xib -text
 WordPress/Resources-iPad/EditPostViewController~ipad.xib -text
 WordPress/Resources-iPad/MainWindow-iPad.xib -text

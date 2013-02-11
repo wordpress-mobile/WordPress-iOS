@@ -23,7 +23,6 @@
 @property (nonatomic) BOOL isEditing;
 @property (nonatomic, strong) IBOutlet UITextView *textView;
 @property (nonatomic, strong) NSString *textViewText;
-@property (nonatomic, strong) UIAlertView *progressAlert;
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification;
 - (void)handleKeyboardWillHide:(NSNotification *)notification;

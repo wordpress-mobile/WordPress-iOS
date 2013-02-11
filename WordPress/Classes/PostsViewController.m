@@ -89,9 +89,6 @@
 	//NSLog(@"crash time! %@", 1);
     
     self.panelNavigationController.delegate = self;
-		
-	WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	appDelegate.postID = nil;
 
 	if (IS_IPAD == NO) {
 		// iPhone table views should not appear selected
