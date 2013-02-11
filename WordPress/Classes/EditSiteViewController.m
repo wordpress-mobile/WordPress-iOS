@@ -675,14 +675,7 @@
                     [mutedBlogsDictionary setValue:mutedBlogsArray forKey:@"value"];
                     [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
                     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
-                    [[WordPressComApi sharedApi] saveNotificationSettings:nil failure:^(NSError *error) {
-                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
-                                                                        message:error.localizedDescription
-                                                                       delegate:nil
-                                                              cancelButtonTitle:NSLocalizedString(@"OK", @"OK button label.")
-                                                              otherButtonTitles:nil, nil];
-                        [alert show];
-                    }];
+                    [[WordPressComApi sharedApi] saveNotificationSettings:nil failure:nil];
                 }
             }
         }
