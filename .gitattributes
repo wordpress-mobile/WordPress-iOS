@@ -103,6 +103,7 @@ Pods/BuildHeaders/DTCoreText/UIDevice+DTSimpleVersion.h -text
 Pods/BuildHeaders/JSONKit/JSONKit.h -text
 Pods/BuildHeaders/NSURL+IDN/NSURL+IDN.h -text
 Pods/BuildHeaders/Reachability/Reachability.h -text
+Pods/BuildHeaders/UIDeviceIdentifier/UIDeviceHardware.h -text
 Pods/CTidy/CTidy.podspec -text
 Pods/CTidy/CTidy/CTidy.h -text
 Pods/CTidy/CTidy/CTidy.m -text
@@ -323,6 +324,7 @@ Pods/Headers/DTCoreText/UIDevice+DTSimpleVersion.h -text
 Pods/Headers/JSONKit/JSONKit.h -text
 Pods/Headers/NSURL+IDN/NSURL+IDN.h -text
 Pods/Headers/Reachability/Reachability.h -text
+Pods/Headers/UIDeviceIdentifier/UIDeviceHardware.h -text
 Pods/JSONKit/JSONKit.h -text
 Pods/JSONKit/JSONKit.m -text
 Pods/JSONKit/README.md -text
@@ -342,6 +344,10 @@ Pods/Reachability/README.md -text
 Pods/Reachability/Reachability.h -text
 Pods/Reachability/Reachability.m -text
 Pods/Reachability/Reachability.podspec -text
+Pods/UIDeviceIdentifier/LICENCE.txt -text
+Pods/UIDeviceIdentifier/README.md -text
+Pods/UIDeviceIdentifier/UIDeviceIdentifier/UIDeviceHardware.h -text
+Pods/UIDeviceIdentifier/UIDeviceIdentifier/UIDeviceHardware.m -text
 /README.md -text
 WordPress.xcworkspace/contents.xcworkspacedata -text
 WordPress/Classes/AboutViewController.h -text
@@ -529,8 +535,6 @@ WordPress/Classes/UIColor+Helpers.h -text
 WordPress/Classes/UIColor+Helpers.m -text
 WordPress/Classes/UIDevice+WordPressIdentifier.h -text
 WordPress/Classes/UIDevice+WordPressIdentifier.m -text
-WordPress/Classes/UIDevice-Hardware.h -text
-WordPress/Classes/UIDevice-Hardware.m -text
 WordPress/Classes/UIImage+Alpha.h -text
 WordPress/Classes/UIImage+Alpha.m -text
 WordPress/Classes/UIImage+Resize.h -text

@@ -1,0 +1,1 @@
+../../UIDeviceIdentifier/UIDeviceIdentifier/UIDeviceHardware.h

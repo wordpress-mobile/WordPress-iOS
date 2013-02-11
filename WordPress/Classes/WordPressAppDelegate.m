@@ -1,3 +1,4 @@
+#import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "NSString+Helpers.h"
@@ -155,7 +156,7 @@
     WPFLog(@"Debug mode:  Production");
 #endif
     WPFLog(@"Extra debug: %@", extraDebug);
-    WPFLog(@"Device model: %@", [device platform]);
+    WPFLog(@"Device model: %@ (%@)", [UIDeviceHardware platformString], [UIDeviceHardware platform]);
     WPFLog(@"OS:        %@ %@", [device systemName], [device systemVersion]);
     WPFLog(@"UDID:      %@", [device wordpressIdentifier]);
     WPFLog(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]);
@@ -843,7 +844,7 @@
 	 - device_model - kind of device on which the WP iPhone app is installed
 	 */
 	
-	NSString *deviceModel = [[[UIDevice currentDevice] platform] stringByUrlEncoding];
+	NSString *deviceModel = [[UIDeviceHardware platform] stringByUrlEncoding];
 	NSString *deviceuuid = [[UIDevice currentDevice] wordpressIdentifier];
 	NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
 	NSString *appversion = [[info objectForKey:@"CFBundleVersion"] stringByUrlEncoding];

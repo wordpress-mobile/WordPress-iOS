@@ -12,7 +12,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import <MobileCoreServices/UTCoreTypes.h>
 #import <AssetsLibrary/AssetsLibrary.h>
-#import "UIDevice-Hardware.h"
 #import "UIImage+Resize.h"
 #import "WordPressAppDelegate.h"
 #import "MediaObjectViewController.h"

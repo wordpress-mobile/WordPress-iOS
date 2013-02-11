@@ -2,7 +2,6 @@
 #import <CoreData/CoreData.h>
 #import <CrashReporter/CrashReporter.h>
 #import "Constants.h"
-#import "UIDevice-Hardware.h"
 #import "Blog.h"
 #import "HelpViewController.h"
 #import "Reachability.h"
