@@ -116,6 +116,7 @@ extern NSString *const WordPressComApiErrorCodeKey;
 /// @name OAuth info
 ///-----------------
 
+- (NSString *)authToken;
 + (NSString *)WordPressAppId;
 + (NSString *)WordPressAppSecret;
 

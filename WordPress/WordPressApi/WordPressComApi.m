@@ -254,6 +254,13 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 
 - (void)saveNotificationSettings:(void (^)())success
                          failure:(void (^)(NSError *error))failure {
+    
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
+    if( nil == token ) return; //no apns token available
+    
+    if(![[WordPressComApi sharedApi] hasCredentials])
+        return;
+    
     NSDictionary *notificationPreferences = [[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"];
     if (!notificationPreferences)
         return;
@@ -261,8 +268,7 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     NSMutableArray *notificationPrefArray = [[notificationPreferences allKeys] mutableCopy];
     if ([notificationPrefArray indexOfObject:@"muted_blogs"] != NSNotFound)
         [notificationPrefArray removeObjectAtIndex:[notificationPrefArray indexOfObject:@"muted_blogs"]];
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
-
+    
     // Build the dictionary to send in the API call
     NSMutableDictionary *updatedSettings = [[NSMutableDictionary alloc] init];
     for (int i = 0; i < [notificationPrefArray count]; i++) {
@@ -302,6 +308,11 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 
 - (void)fetchNotificationSettings:(void (^)())success failure:(void (^)(NSError *error))failure {
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
+    if( nil == token ) return; //no apns token available
+    
+    if(![[WordPressComApi sharedApi] hasCredentials])
+        return;
+    
     AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:kWPcomXMLRPCUrl]];
     [api setAuthorizationHeaderWithToken:self.authToken];
     [api callMethod:@"wpcom.get_mobile_push_notification_settings"
@@ -321,6 +332,9 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if( nil == token ) return; //no apns token available
 
+    if(![[WordPressComApi sharedApi] hasCredentials])
+        return;
+    
     NSString *authURL = kNotificationAuthURL;
     NSError *error;
     NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];

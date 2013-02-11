@@ -1018,45 +1018,8 @@
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if( nil == token ) return; //no apns token available
     
-    NSString *authURL = kNotificationAuthURL;   	
-    NSError *error = nil;
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
-        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil) {
-            // Migrate password to keychain
-            [SFHFKeychainUtils storeUsername:username
-                                 andPassword:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]
-                              forServiceName:@"WordPress.com"
-                              updateExisting:YES error:&error];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                        andServiceName:@"WordPress.com"
-                                                                 error:&error];
-        if (password != nil) {
-#ifdef DEBUG
-            NSNumber *sandbox = [NSNumber numberWithBool:YES];
-#else
-            NSNumber *sandbox = [NSNumber numberWithBool:NO];
-#endif
-            AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-            [api callMethod:@"wpcom.mobile_push_register_token"
-                 parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
-                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        WPFLog(@"Registered token %@, sending blogs list", token);
-                        [[WordPressComApi sharedApi] syncPushNotificationInfo];
-                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey]; //Remove the token from Preferences, otherwise the token is never re-sent to the server on the next startup
-                        WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
-                    }];
-        } 
-	}
-}
-
-- (void)unregisterApnsToken {
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
-    if( nil == token ) return; //no apns token available
+    if(![[WordPressComApi sharedApi] hasCredentials])
+        return;
     
     NSString *authURL = kNotificationAuthURL;   	
     NSError *error = nil;
@@ -1081,6 +1044,53 @@
             NSNumber *sandbox = [NSNumber numberWithBool:NO];
 #endif
             AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+            
+            [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
+            
+            [api callMethod:@"wpcom.mobile_push_register_token"
+                 parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
+                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        WPFLog(@"Registered token %@, sending blogs list", token);
+                        [[WordPressComApi sharedApi] syncPushNotificationInfo];
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey]; //Remove the token from Preferences, otherwise the token is never re-sent to the server on the next startup
+                        WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
+                    }];
+        } 
+	}
+}
+
+- (void)unregisterApnsToken {
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
+    if( nil == token ) return; //no apns token available
+    
+    if(![[WordPressComApi sharedApi] hasCredentials])
+        return;
+    
+    NSString *authURL = kNotificationAuthURL;   	
+    NSError *error = nil;
+	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
+        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil) {
+            // Migrate password to keychain
+            [SFHFKeychainUtils storeUsername:username
+                                 andPassword:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]
+                              forServiceName:@"WordPress.com"
+                              updateExisting:YES error:&error];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
+                                                        andServiceName:@"WordPress.com"
+                                                                 error:&error];
+        if (password != nil) {
+#ifdef DEBUG
+            NSNumber *sandbox = [NSNumber numberWithBool:YES];
+#else
+            NSNumber *sandbox = [NSNumber numberWithBool:NO];
+#endif
+            AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+            [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
             [api callMethod:@"wpcom.mobile_push_unregister_token"
                  parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
