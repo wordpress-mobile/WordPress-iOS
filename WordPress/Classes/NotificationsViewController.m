@@ -21,7 +21,7 @@ NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTable
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 @interface NotificationsViewController ()
-
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *settingsButton;
 @property (nonatomic, strong) id authListener;
 @property (nonatomic, strong) WordPressComApi *user;
 @property (nonatomic, assign) BOOL isPushingViewController;
