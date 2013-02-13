@@ -56,8 +56,12 @@
     self.button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = self.bounds;
     button.titleLabel.textColor = [UIColor whiteColor];
-    button.titleLabel.shadowColor = [UIColor darkGrayColor];
+    button.titleLabel.shadowColor = [UIColor UIColorFromHex:0x000000 alpha:0.45f];
     button.titleLabel.shadowOffset = CGSizeMake(0, -1.0f);
+    button.titleLabel.lineBreakMode = UILineBreakModeClip;
+    button.titleLabel.adjustsFontSizeToFitWidth = YES;
+    button.titleLabel.minimumFontSize = 12.0f;
+    button.titleLabel.textAlignment = NSTextAlignmentCenter;
     [button.titleLabel setFont:[UIFont boldSystemFontOfSize:15.0f]];
     [button setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButton"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateNormal];
     [button setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateHighlighted];
@@ -65,8 +69,8 @@
     [button addTarget:self action:@selector(handleButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [button setBackgroundColor:[UIColor clearColor]];
     [button setImage:[UIImage imageNamed:@"sidebar_camera"] forState:UIControlStateNormal];
-    [button setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 0.0f)];
-    [button setImageEdgeInsets:UIEdgeInsetsMake(3.0f, 5.0f, 0.0f, 0.0f)];
+    [button setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 12.0f, 0.0f, 10.0f)];
+    [button setImageEdgeInsets:UIEdgeInsetsMake(0.0f, 8.0f, 0.0f, 0.0f)];
     [button setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     [button setAdjustsImageWhenHighlighted:NO];
     
@@ -76,11 +80,11 @@
     
     CGRect rect;
     self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    spinner.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+    spinner.autoresizingMask = UIViewAutoresizingNone;
     spinner.hidesWhenStopped = YES;
     rect = spinner.frame;
     
-    rect.origin.x = self.frame.size.width - rect.size.width;
+    rect.origin.x = self.frame.origin.x + 6.0f;
     rect.origin.y = (self.frame.size.height - rect.size.height) / 2.0f;
     spinner.frame = rect;
     [self addSubview:spinner];
@@ -88,13 +92,16 @@
     self.label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.textColor = [UIColor whiteColor];
     label.backgroundColor = [UIColor clearColor];
-    label.textAlignment = UITextAlignmentCenter;
-    label.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
-    label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
+    label.textAlignment = UITextAlignmentLeft;
+    label.font = [UIFont systemFontOfSize:(15.0f)];
+    label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
 
-    label.frame = CGRectMake(0.0, 0.0, (spinner.frame.origin.x - 10.0f), self.frame.size.height);
+    label.frame = CGRectMake((spinner.frame.origin.x + spinner.frame.size.width + 6.0f), 0.0, (self.frame.size.width - spinner.frame.origin.x - spinner.frame.size.width), self.frame.size.height);
     label.text = NSLocalizedString(@"Uploading...", @"");
-//    label.text = NSLocalizedString(@"Uploading Quick Photo...", @"");
+    label.adjustsFontSizeToFitWidth = YES;
+    label.minimumFontSize = 12.0f;
+    label.shadowColor = [UIColor UIColorFromHex:0x000000 alpha:0.45f];
+    label.shadowOffset = CGSizeMake(0, -1.0f);
     [self addSubview:label];
     
     [self showProgress:NO animated:NO delayed:NO];
@@ -116,7 +123,10 @@
     [UIView animateWithDuration:0.6f animations:^{
         spinner.alpha = 0.0f;
         label.text = NSLocalizedString(@"Published!", @"");
-//        label.textColor = [[UIColor alloc] initWithRed:0.0f green:128.0f/255.0f blue:0.0f alpha:1.0f];
+        label.font = [UIFont boldSystemFontOfSize:(15.0f)];
+        label.textAlignment = UITextAlignmentCenter;
+        label.frame = CGRectMake(self.frame.origin.x, 0.0, self.frame.size.width, self.frame.size.height);
+        label.textColor = [UIColor UIColorFromRGBAColorWithRed:200.0f green:228.0f blue:125.0f alpha:1.0f];
     } completion:^(BOOL finished) {
         [self showProgress:NO animated:YES delayed:YES];
     }];
@@ -189,7 +199,10 @@
             label.frame = frame;
 
             label.hidden = YES;
-//            label.textColor = [[[UIColor alloc] initWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f] autorelease];
+            label.textColor = [UIColor whiteColor];
+            label.frame = CGRectMake((spinner.frame.origin.x + spinner.frame.size.width + 6.0f), 0.0, (self.frame.size.width - spinner.frame.origin.x - spinner.frame.size.width), self.frame.size.height);
+            label.textAlignment = UITextAlignmentLeft;
+            label.font = [UIFont systemFontOfSize:(15.0f)];
             label.text = NSLocalizedString(@"Uploading...", @"");
         }];
     }
