@@ -192,6 +192,7 @@
 				self.urlCell.textLabel.text = NSLocalizedString(@"URL", @"");
 				urlTextField = self.urlCell.textField;
 				urlTextField.placeholder = NSLocalizedString(@"http://example.com", @"");
+                urlTextField.keyboardType = UIKeyboardTypeURL;
                 [urlTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:urlTextField asPassword:NO];
                 urlTextField.keyboardType = UIKeyboardTypeURL;
