@@ -1258,11 +1258,11 @@ WordPress/WordPressTest/en.lproj/InfoPlist.strings -text
 WordPress/WordPressTest/entities.xml -text
 WordPress/WordPressTest/entitiesDecoded.xml -text
 WordPress/WordPress_Prefix.pch -text
-WordPress/fix-translation.php -text
 WordPress/i18n_download -text
 WordPress/iTunesArtwork -text
 WordPress/license.txt -text
-WordPress/localize.py -text
 WordPress/main.m -text
 WordPress/uncrustify.cfg -text
-WordPress/update-translations.rb -text
+/fix-translation.php -text
+/localize.py -text
+/update-translations.rb -text

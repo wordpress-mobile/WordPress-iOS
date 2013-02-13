@@ -58,12 +58,13 @@ LANGS={
 }
 
 LANGS.each do |code,local|
+  lang_dir = File.join('WordPress', 'Resources', "#{local}.lproj")
   puts "Updating #{code}"
-  system "cp #{local}.lproj/Localizable.strings #{local}.lproj/Localizable.strings.bak"
-  system "curl -so #{local}.lproj/Localizable.strings http://translate.wordpress.org/projects/ios/dev/#{code}/default/export-translations?format=strings" or begin
+  system "cp #{lang_dir}/Localizable.strings #{lang_dir}/Localizable.strings.bak"
+  system "curl -so #{lang_dir}/Localizable.strings http://translate.wordpress.org/projects/ios/dev/#{code}/default/export-translations?format=strings" or begin
     puts "Error downloading #{code}"
   end
-  system "php fix-translation.php #{local}.lproj/Localizable.strings"
-  system "plutil -lint #{local}.lproj/Localizable.strings" and system "rm #{local}.lproj/Localizable.strings.bak"
-  system "grep -a '\\x00\\x22\\x00\\x22' #{local}.lproj/Localizable.strings"
+  system "php fix-translation.php #{lang_dir}/Localizable.strings"
+  system "plutil -lint #{lang_dir}/Localizable.strings" and system "rm #{lang_dir}/Localizable.strings.bak"
+  system "grep -a '\\x00\\x22\\x00\\x22' #{lang_dir}/Localizable.strings"
 end

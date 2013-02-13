@@ -121,41 +121,24 @@ def merge(merged_fname, old_fname, new_fname):
 STRINGS_FILE = 'Localizable.strings'
 
 def localize(path):
-    languages = [name for name in os.listdir(path) if name.endswith('en.lproj') and os.path.isdir(name)]
-    
-    for language in languages:
-        original = merged = language + os.path.sep + STRINGS_FILE
-        old = original + '.old'
-        new = original + '.new'
-    
-        if os.path.isfile(original):
-            os.rename(original, old)
-            os.system('genstrings -q -o "%s" `find . -name "*.m" | grep -v Vendor`' % language)
-            os.rename(original, new)
-            merge(merged, old, new)
-        else:
-            os.system('genstrings -q -o "%s" `find . -name "*.m"` | grep -v Vendor' % language)
-        
-        # for xib in os.listdir('en.lproj'):
-        #     if not xib.endswith('.xib'):
-        #         continue
-        # 
-        #     (xib, ext) = os.path.splitext(xib)
-        #     original = merged = language + os.path.sep + xib + '.strings'
-        #     old = original + '.old'
-        #     new = original + '.new'
-        # 
-        #     if os.path.isfile(original):
-        #         os.rename(original, old)
-        #         os.system('ibtool --generate-strings-file %s/%s.strings en.lproj/%s.xib' % (language, xib, xib))
-        #         os.rename(original, new)
-        #         merge(merged, old, new)
-        #     else:
-        #         os.system('ibtool --generate-strings-file %s/%s.strings en.lproj/%s.xib' % (language, xib, xib))
-        #     
-        #     if language != 'en.lproj':
-        #         os.system('ibtool --strings-file %s/%s.strings --write %s/%s.xib en.lproj/%s.xib' % (language, xib, language, xib, xib))
+    os.chdir(path)
+    resources_path = os.path.join(path, 'Resources')
+    language = os.path.join(resources_path, 'en.lproj')
+
+    original = merged = language + os.path.sep + STRINGS_FILE
+    old = original + '.old'
+    new = original + '.new'
+
+    if os.path.isfile(original):
+        os.rename(original, old)
+        os.system('genstrings -q -o "%s" `find . -name "*.m" | grep -v Vendor`' % language)
+        os.rename(original, new)
+        merge(merged, old, new)
+        os.remove(new)
+        os.remove(old)
+    else:
+        os.system('genstrings -q -o "%s" `find . -name "*.m"` | grep -v Vendor' % language)
 
 if __name__ == '__main__':
-    localize(os.getcwd())
+    localize(os.path.join(os.getcwd(), 'WordPress'))
 
