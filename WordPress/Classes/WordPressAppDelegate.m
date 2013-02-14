@@ -27,6 +27,8 @@
 - (void)showPasswordAlert;
 - (void)cleanUnusedMediaFileFromTmpDir;
 - (void)customizeAppearance;
+- (void)toggleExtraDebuggingIfNeeded;
+- (void)handleLogoutOrBlogsChangedNotification:(NSNotification *)notification;
 @end
 
 @implementation WordPressAppDelegate
@@ -187,6 +189,8 @@
     [self setupReachability];
 
 	[self setupCoreData];
+	
+	[self toggleExtraDebuggingIfNeeded];
 
 	// Stats use core data, so run them after initialization
 	[self checkIfStatsShouldRun];
@@ -945,6 +949,41 @@
         }
     }
 }
+
+- (void)toggleExtraDebuggingIfNeeded {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:BlogChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:WordPressComApiDidLogoutNotification object:nil];
+
+	int num_blogs = [Blog countWithContext:[self managedObjectContext]];
+	BOOL authed = [[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] boolValue];
+	if (num_blogs == 0 && !authed) {
+		// When there are no blogs in the app the settings screen is unavailable.
+		// In this case, enable extra_debugging by default to help troubleshoot any issues.
+		if([[NSUserDefaults standardUserDefaults] objectForKey:@"orig_extra_debug"] != nil) {
+			return; // Already saved. Don't save again or we could loose the original value.
+		}
+		
+		NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
+		[[NSUserDefaults standardUserDefaults] setObject:origExtraDebug forKey:@"orig_extra_debug"];
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"extra_debug"];
+		[NSUserDefaults resetStandardUserDefaults];
+	} else {
+		NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] stringForKey:@"orig_extra_debug"];
+		if(origExtraDebug == nil) {
+			return;
+		}
+		
+		// Restore the original setting and remove orig_extra_debug.
+		[[NSUserDefaults standardUserDefaults] setBool:[origExtraDebug boolValue] forKey:@"extra_debug"];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"orig_extra_debug"];
+		[NSUserDefaults resetStandardUserDefaults];
+	}
+}
+
+- (void)handleLogoutOrBlogsChangedNotification:(NSNotification *)notification {
+	[self toggleExtraDebuggingIfNeeded];
+}
+
 
 #pragma mark - Push Notification delegate
 

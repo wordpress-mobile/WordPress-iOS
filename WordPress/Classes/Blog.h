@@ -11,6 +11,8 @@
 #import "AFXMLRPCClient.h"
 #import "Reachability.h"
 
+#define BlogChangedNotification @"BlogChangedNotification"
+
 @interface Blog : NSManagedObject
 
 @property (nonatomic, strong) NSNumber *blogID;
