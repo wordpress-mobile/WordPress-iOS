@@ -63,53 +63,50 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
         [self.tableView registerClass:[NotificationsTableViewCell class] forCellReuseIdentifier:NotificationsTableViewNoteCellIdentifier];
     }
     
-   /*
-    
-    //only shows this button if -> nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]
-    
-    if(IS_IPHONE) {
-        if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
-            
-            UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-            [btn setImage:[UIImage imageNamed:@"settings.png"] forState:UIControlStateNormal];
-            [btn setImage:[UIImage imageNamed:@"settings.png"] forState:UIControlStateHighlighted];
-            
-            UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-            [btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
-            
-            backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-            [btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
-            
-            btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
-            
-            [btn addTarget:self action:@selector(showNotificationsSettings) forControlEvents:UIControlEventTouchUpInside];
-            self.settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    if([[WordPressComApi sharedApi] hasCredentials] && nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]) {
+        if(IS_IPHONE) {
+            if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
+                
+                UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+                [btn setImage:[UIImage imageNamed:@"navbar_settings.png"] forState:UIControlStateNormal];
+                [btn setImage:[UIImage imageNamed:@"navbar_settings.png"] forState:UIControlStateHighlighted];
+                
+                UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+                [btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+                
+                backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+                [btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
+                
+                btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
+                
+                [btn addTarget:self action:@selector(showNotificationsSettings) forControlEvents:UIControlEventTouchUpInside];
+                self.settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
+            } else {
+                self.settingsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                                    target:self
+                                                                                    action:@selector(showNotificationsSettings)];
+            }
         } else {
-            self.settingsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                                                                target:self
-                                                                                action:@selector(showNotificationsSettings)];
+            //iPad
+            self.settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings.png"]
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(showNotificationsSettings)];
         }
-    } else {
-        //iPad
-        self.settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings.png"]
-                                                               style:UIBarButtonItemStylePlain
-                                                              target:self
-                                                              action:@selector(showNotificationsSettings)];
+        
+        [self.settingsButton setAccessibilityLabel:NSLocalizedString(@"Settings", @"")];
+        
+        if ([self.settingsButton respondsToSelector:@selector(setTintColor:)]) {
+            UIColor *color = [UIColor UIColorFromHex:0x464646];
+            self.settingsButton.tintColor = color;
+        }
+        
+        if (IS_IPHONE) {
+            self.navigationItem.rightBarButtonItem = self.settingsButton;
+        } else {
+            self.toolbarItems = [NSArray arrayWithObjects: self.settingsButton , nil];
+        }
     }
-    
-    [self.settingsButton setAccessibilityLabel:NSLocalizedString(@"Settings", @"")];
-    
-    if ([self.settingsButton respondsToSelector:@selector(setTintColor:)]) {
-        UIColor *color = [UIColor UIColorFromHex:0x464646];
-        self.settingsButton.tintColor = color;
-    }
-    
-    if (IS_IPHONE) {
-       self.navigationItem.rightBarButtonItem = self.settingsButton;
-    } else {
-        self.toolbarItems = [NSArray arrayWithObjects: self.settingsButton , nil];
-    }
-    */
 }
 
 - (void)viewWillAppear:(BOOL)animated {
