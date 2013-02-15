@@ -31,7 +31,9 @@
 - (void)handleLogoutOrBlogsChangedNotification:(NSNotification *)notification;
 @end
 
-@implementation WordPressAppDelegate
+@implementation WordPressAppDelegate {
+    BOOL _listeningForBlogChanges;
+}
 
 @synthesize window, currentBlog, postID;
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
@@ -951,8 +953,11 @@
 }
 
 - (void)toggleExtraDebuggingIfNeeded {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:BlogChangedNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:WordPressComApiDidLogoutNotification object:nil];
+    if (!_listeningForBlogChanges) {
+        _listeningForBlogChanges = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:BlogChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:WordPressComApiDidLogoutNotification object:nil];
+    }
 
 	int num_blogs = [Blog countWithContext:[self managedObjectContext]];
 	BOOL authed = [[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] boolValue];
