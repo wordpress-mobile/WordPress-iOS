@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSMutableArray *notificationPrefArray;
 @property (nonatomic, strong) NSMutableArray *mutedBlogsArray;
 @property (nonatomic, assign) BOOL showCloseButton;
+@property (nonatomic, strong) UIBarButtonItem *muteUnmuteBarButton;
 
 - (void)notificationSettingChanged:(id)sender;
 - (void)muteBlogSettingChanged:(id)sender;
