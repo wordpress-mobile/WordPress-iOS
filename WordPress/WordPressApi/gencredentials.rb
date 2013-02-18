@@ -13,7 +13,11 @@ EOF
   length = secret.length
   key = Array.new(length) {|i| rand(256)}
   length.times do |i|
-    c = secret[i]
+    if RUBY_VERSION < '1.9' then
+      c = secret[i]
+    else
+      c = secret.getbyte(i)
+    end
     c ^= key[i]
     printf("0x%02x", c)
     if (length > i + 1)
