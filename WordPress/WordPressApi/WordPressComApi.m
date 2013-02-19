@@ -276,6 +276,12 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
         [updatedSettings setValue:[updatedSetting objectForKey:@"value"] forKey:[notificationPrefArray objectAtIndex:i]];
     }
 
+    //Check and send 'mute_until' value
+    NSMutableDictionary *commentsDictionary = [notificationPreferences objectForKey:@"comments"];
+    if(commentsDictionary != nil  && [commentsDictionary objectForKey:@"mute_until"] != nil) {
+        [updatedSettings setValue:[commentsDictionary objectForKey:@"mute_until"] forKey:@"comments_mute_until"];
+    }
+    
     NSArray *blogsArray = [[notificationPreferences objectForKey:@"muted_blogs"] objectForKey:@"value"];
     NSMutableArray *mutedBlogsArray = [[NSMutableArray alloc] init];
     for (int i=0; i < [blogsArray count]; i++) {

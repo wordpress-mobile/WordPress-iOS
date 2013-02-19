@@ -13,8 +13,9 @@
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
 #import "NSString+XMLExtensions.h"
+#import "DateUtils.h"
 
-@interface NotificationSettingsViewController () <EGORefreshTableHeaderDelegate>
+@interface NotificationSettingsViewController () <EGORefreshTableHeaderDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) EGORefreshTableHeaderView *refreshHeaderView;
 @property (readwrite, nonatomic, strong) NSDate *lastRefreshDate;
@@ -93,11 +94,13 @@ BOOL hasChanges;
 
 - (void)setupToolbarButtons{
     
+    return; //Do not show the toolbar with 'mute blogs' option for now
+    
     bool toolbarVisible = NO;
     bool muteAvailable = NO;
     
-    //show the mute/unmute button only when there are 2+ blogs
-    if (_notificationPrefArray && _mutedBlogsArray && [_mutedBlogsArray count] > 1){
+    //show the mute/unmute button only when there are 10+ blogs
+    if (_notificationPrefArray && _mutedBlogsArray && [_mutedBlogsArray count] > 10){
         
         if ([[_notificationPreferences allKeys] indexOfObject:@"muted_blogs"] != NSNotFound) {
             toolbarVisible = YES;
@@ -207,9 +210,9 @@ BOOL hasChanges;
 {
     // Return the number of sections.
     if (_notificationPrefArray && _mutedBlogsArray)
-        return 2;
+        return 3;
     else if (_notificationPrefArray)
-        return 1;
+        return 2;
     else
         return 0;
 } 
@@ -218,8 +221,10 @@ BOOL hasChanges;
 {
     // Return the number of rows in the section.
     if (section == 0)
-        return [_notificationPrefArray count];
+        return 1;
     else if (section == 1)
+        return [_notificationPrefArray count];
+    else if (section == 2)
         return [_mutedBlogsArray count];
     else
         return 0;
@@ -227,6 +232,51 @@ BOOL hasChanges;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+   
+    if (indexPath.section == 0) {
+        static NSString *CellIdentifier = @"NotficationSettingsCellOnOff";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        }
+        
+        cell.textLabel.text = NSLocalizedString(@"Notifications", @"");
+        NSMutableDictionary *commentsDictionary = [_notificationPreferences objectForKey:@"comments"];
+
+        WPFLog(@"commentsDictionary: %@", commentsDictionary);
+        
+        if ([commentsDictionary objectForKey:@"mute_until"] != nil) {
+            NSString *mute_value = [commentsDictionary objectForKey:@"mute_until"];
+            if([mute_value isEqualToString:@"forever"]){
+                cell.detailTextLabel.text = NSLocalizedString(@"Off", @"");
+            } else {
+                //check the date before showing it in the cell. Date can be in the past and already expired.
+                NSDate* mutedUntilValue = [NSDate dateWithTimeIntervalSince1970:[mute_value doubleValue]];
+                NSDate *currentDate = [NSDate date];
+                
+                if (mutedUntilValue == [mutedUntilValue laterDate:currentDate]){
+                    NSDateFormatter *formatter = nil;
+                    formatter = [[NSDateFormatter alloc] init];
+                    [formatter setTimeStyle:NSDateFormatterShortStyle];
+                    cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Off Until %@", @""),[formatter stringFromDate:mutedUntilValue]];
+                } else {
+                    //date is in the past. Remove it.
+                    hasChanges = YES;
+                    commentsDictionary = [[_notificationPreferences objectForKey:@"comments"] mutableCopy];
+                    [commentsDictionary removeObjectForKey:@"mute_until"];
+                    [_notificationPreferences setValue:commentsDictionary forKey:@"comments"];
+                    [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
+                    cell.detailTextLabel.text = NSLocalizedString(@"On", @"");
+                }
+            }
+        } else {
+            cell.detailTextLabel.text = NSLocalizedString(@"On", @"");
+        }
+        cell.textLabel.textColor = [UIColor blackColor];
+        return cell;
+    }
+    
     static NSString *CellIdentifier = @"NotficationSettingsCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -241,7 +291,7 @@ BOOL hasChanges;
     cellSwitch.tag = indexPath.row;
     [cellSwitch removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
     
-    if (indexPath.section == 0) {
+    if (indexPath.section == 1) {
         [cellSwitch addTarget:self action:@selector(notificationSettingChanged:) forControlEvents:UIControlEventValueChanged];
         NSDictionary *notificationPreference = [_notificationPreferences objectForKey:[_notificationPrefArray objectAtIndex:indexPath.row]];
         
@@ -261,15 +311,124 @@ BOOL hasChanges;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if (section == 0)
+        return @"";
+    else if (section == 1)
         return NSLocalizedString(@"Push Notifications", @"");
     else
         return NSLocalizedString(@"Blogs", @"");
 }
 
 #pragma mark - Table view delegate
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if(indexPath.section == 0){
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        UIActionSheet *actionSheet;        
+        if ([[_notificationPreferences objectForKey:@"comments"] objectForKey:@"mute_until"] != nil) {
+            //Notifications were muted
+            actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Notifications", @"")
+                                                      delegate:self
+                                             cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                        destructiveButtonTitle:nil
+                                             otherButtonTitles:NSLocalizedString(@"Turn On", @""), nil];
+            actionSheet.tag = 100;
+        } else {
+            //Notifications were not muted
+            actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Notifications", @"")
+                                                      delegate:self
+                                             cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                        destructiveButtonTitle:NSLocalizedString(@"Turn Off", @"")
+                                             otherButtonTitles:NSLocalizedString(@"Turn Off for 1hr", @""), NSLocalizedString(@"Turn Off Until 8am", @""), nil ];
+            actionSheet.tag = 101;
+            
+        }
+        [actionSheet showFromRect:cell.frame inView:self.view animated:YES];
+        [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    }
+}
+
+
+#pragma mark -
+#pragma mark Action Sheet Delegate Methods
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    
+    WPFLog(@"Button Clicked: %d", buttonIndex);
+    NSMutableDictionary *commentsDictionary;
+    
+    if (actionSheet.tag == 100 ) {
+        //Notifications were muted.
+        //buttonIndex == 0 -> Turn on, cancel otherwise.
+        if(buttonIndex == 0) {
+            hasChanges = YES;
+            commentsDictionary = [[_notificationPreferences objectForKey:@"comments"] mutableCopy];
+            [commentsDictionary removeObjectForKey:@"mute_until"];
+        } else {
+            return; //cancel
+        }
+    } else {
+        //Notification were not muted.
+        //buttonIndex == 0 -> Turn off
+        //buttonIndex == 1 -> Turn off 1hr
+        //buttonIndex == 2 -> Turn off until 8am
+        //cancel otherwise
+        NSString *mute_util_value;
+        switch (buttonIndex) {
+            case 0:
+            {
+                mute_util_value = @"forever";
+                break;
+            }
+            case 1:{ //Turn off 1hr
+                NSDate *currentDate = [NSDate date];
+                NSDateComponents *comps = [[NSDateComponents alloc] init];
+                [comps setHour:+1];
+                NSCalendar *calendar = [NSCalendar currentCalendar];
+                NSDate *oneHourFromNow = [calendar dateByAddingComponents:comps toDate:currentDate options:0];
+                int timestamp = [oneHourFromNow timeIntervalSince1970];
+                 WPFLog(@"Time Stamp: %d", timestamp);
+                mute_util_value = [NSString stringWithFormat:@"%d", timestamp];
+                break;
+            }
+            case 2:{ //Turn off until 8am
+                NSDate *currentDate = [NSDate date];
+                NSCalendar *sysCalendar = [NSCalendar currentCalendar];
+                
+                //Get the hr from the current date and check if > 8AM
+                unsigned int unitFlags = NSHourCalendarUnit;//Other usage:  =(NSHourCalendarUnit | NSMinuteCalendarUnit | NSDayCalendarUnit | NSMonthCalendarUnit);
+                NSDateComponents *comps = [sysCalendar components:unitFlags fromDate:currentDate];
+                int hour = [comps hour]; //Other usage: [comps minute] [comps hour] [comps day] [comps month];
+
+                comps = [[NSDateComponents alloc] init];
+                if(hour >= 8){ //add one day if 8AM is already passed
+                    [comps setDay:+1];
+                }
+                
+                //calculate the new date
+                NSDate *eightAM = [sysCalendar dateByAddingComponents:comps toDate:currentDate options:0];
+                comps = [sysCalendar
+                         components:NSDayCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit
+                         fromDate:eightAM];
+                [comps setHour:8];
+                
+                NSDate *todayOrTomorrow8AM = [sysCalendar dateFromComponents:comps];
+                int timestamp = [todayOrTomorrow8AM timeIntervalSince1970];
+                WPFLog(@"Time Stamp: %d", timestamp);
+                mute_util_value = [NSString stringWithFormat:@"%d", timestamp];
+                break;
+            }
+            default:
+                return; //cancel
+        }
+        
+        hasChanges = YES;
+        commentsDictionary = [[_notificationPreferences objectForKey:@"comments"] mutableCopy];
+        [commentsDictionary setObject:mute_util_value forKey:@"mute_until"];
+    }
+    
+    [_notificationPreferences setValue:commentsDictionary forKey:@"comments"];
+    [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
+    [self reloadNotificationSettings];
 }
 
 #pragma mark - Pull to Refresh delegate
