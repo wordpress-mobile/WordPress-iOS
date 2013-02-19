@@ -11,4 +11,5 @@
 @interface WordPressComApiCredentials : NSObject
 + (NSString *)client;
 + (NSString *)secret;
++ (NSString *)pocketConsumerKey;
 @end

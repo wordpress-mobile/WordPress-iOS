@@ -8,3 +8,6 @@ pod 'NSURL+IDN', :podspec => 'https://raw.github.com/koke/NSURL-IDN/master/Podfi
 pod 'CTidy', :git => 'git://github.com/wordpress-mobile/CTidy.git'
 pod 'DTCoreText',   '~> 1.0.0'
 pod 'UIDeviceIdentifier', '~> 0.1'
+pod 'SVProgressHUD', '~> 0.9'
+pod 'SSKeychain',   '~> 0.2'
+pod 'SFHFKeychainUtils', '~> 0.0.1'

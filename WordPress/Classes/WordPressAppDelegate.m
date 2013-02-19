@@ -19,6 +19,8 @@
 #import "StatsWebViewController.h"
 #import "WPReaderViewController.h"
 #import "SoundUtil.h"
+#import "WordPressComApiCredentials.h"
+#import "PocketAPI.h"
 
 @interface WordPressAppDelegate (Private)
 - (void)setAppBadge;
@@ -135,6 +137,10 @@
 #pragma clang diagnostic pop
 }
 
+- (void)setupPocket {
+    [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     UIDevice *device = [UIDevice currentDevice];
 	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
@@ -209,6 +215,7 @@
     [self customizeAppearance];
     
     [self setupFacebook];
+    [self setupPocket];
     
     SidebarViewController *sidebarViewController = [[SidebarViewController alloc] init];
     
@@ -265,6 +272,10 @@
 
 -(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
     if ([facebook handleOpenURL:url]){
+        return YES;
+    }
+
+    if ([[PocketAPI sharedAPI] handleOpenURL:url]) {
         return YES;
     }
 

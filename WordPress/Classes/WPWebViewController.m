@@ -10,6 +10,7 @@
 #import "WordPressAppDelegate.h"
 #import "PanelNavigationConstants.h"
 #import "ReachabilityUtils.h"
+#import "WPActivities.h"
 
 @class WPReaderDetailViewController;
 
@@ -484,7 +485,24 @@
     NSString* permaLink = [self getDocumentPermalink];
     
     if( permaLink == nil || [[permaLink trim] isEqualToString:@""] ) return; //this should never happen
-    
+
+    if (NSClassFromString(@"UIActivity") != nil) {
+        NSString *title = [self getDocumentTitle];
+        SafariActivity *safariActivity = [[SafariActivity alloc] init];
+        InstapaperActivity *instapaperActivity = [[InstapaperActivity alloc] init];
+        PocketActivity *pocketActivity = [[PocketActivity alloc] init];
+
+        NSMutableArray *activityItems = [NSMutableArray array];
+        if (title) {
+            [activityItems addObject:title];
+        }
+
+        [activityItems addObject:[NSURL URLWithString:permaLink]];
+        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:@[safariActivity, instapaperActivity, pocketActivity]];
+        [self presentViewController:activityViewController animated:YES completion:nil];
+        return;
+    }
+
     self.linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:permaLink delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open in Safari", @"Open in Safari"), NSLocalizedString(@"Mail Link", @"Mail Link"),  NSLocalizedString(@"Copy Link", @"Copy Link"), nil];
     self.linkOptionsActionSheet.actionSheetStyle = UIActionSheetStyleDefault;
     if(IS_IPAD ){

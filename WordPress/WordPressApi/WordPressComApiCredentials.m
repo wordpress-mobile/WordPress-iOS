@@ -19,4 +19,8 @@
 + (NSString *)secret {
     return WPCOM_API_CLIENT_SECRET;
 }
+
++ (NSString *)pocketConsumerKey {
+    return @"";
+}
 @end

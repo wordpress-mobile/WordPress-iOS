@@ -103,6 +103,9 @@ Pods/BuildHeaders/DTCoreText/UIDevice+DTSimpleVersion.h -text
 Pods/BuildHeaders/JSONKit/JSONKit.h -text
 Pods/BuildHeaders/NSURL+IDN/NSURL+IDN.h -text
 Pods/BuildHeaders/Reachability/Reachability.h -text
+Pods/BuildHeaders/SFHFKeychainUtils/SFHFKeychainUtils.h -text
+Pods/BuildHeaders/SSKeychain/SSKeychain.h -text
+Pods/BuildHeaders/SVProgressHUD/SVProgressHUD.h -text
 Pods/BuildHeaders/UIDeviceIdentifier/UIDeviceHardware.h -text
 Pods/CTidy/CTidy.podspec -text
 Pods/CTidy/CTidy/CTidy.h -text
@@ -324,6 +327,9 @@ Pods/Headers/DTCoreText/UIDevice+DTSimpleVersion.h -text
 Pods/Headers/JSONKit/JSONKit.h -text
 Pods/Headers/NSURL+IDN/NSURL+IDN.h -text
 Pods/Headers/Reachability/Reachability.h -text
+Pods/Headers/SFHFKeychainUtils/SFHFKeychainUtils.h -text
+Pods/Headers/SSKeychain/SSKeychain.h -text
+Pods/Headers/SVProgressHUD/SVProgressHUD.h -text
 Pods/Headers/UIDeviceIdentifier/UIDeviceHardware.h -text
 Pods/JSONKit/JSONKit.h -text
 Pods/JSONKit/JSONKit.m -text
@@ -344,6 +350,34 @@ Pods/Reachability/README.md -text
 Pods/Reachability/Reachability.h -text
 Pods/Reachability/Reachability.m -text
 Pods/Reachability/Reachability.podspec -text
+Pods/SFHFKeychainUtils/security/SFHFKeychainUtils.h -text
+Pods/SFHFKeychainUtils/security/SFHFKeychainUtils.m -text
+Pods/SSKeychain/LICENSE -text
+Pods/SSKeychain/Readme.markdown -text
+Pods/SSKeychain/SSKeychain.podspec -text
+Pods/SSKeychain/SSKeychain/SSKeychain.h -text
+Pods/SSKeychain/SSKeychain/SSKeychain.m -text
+Pods/SVProgressHUD/Demo/Classes/AppDelegate.h -text
+Pods/SVProgressHUD/Demo/Classes/AppDelegate.m -text
+Pods/SVProgressHUD/Demo/Classes/ViewController.h -text
+Pods/SVProgressHUD/Demo/Classes/ViewController.m -text
+Pods/SVProgressHUD/Demo/Default-568h@2x.png -text svneol=unset#unset
+Pods/SVProgressHUD/Demo/MainWindow.xib -text
+Pods/SVProgressHUD/Demo/Resources-iPad/MainWindow-iPad.xib -text
+Pods/SVProgressHUD/Demo/SVProgressHUD-Info.plist -text
+Pods/SVProgressHUD/Demo/SVProgressHUD.xcodeproj/project.pbxproj -text
+Pods/SVProgressHUD/Demo/SVProgressHUD_Prefix.pch -text
+Pods/SVProgressHUD/Demo/ViewController.xib -text
+Pods/SVProgressHUD/Demo/main.m -text
+Pods/SVProgressHUD/LICENSE.txt -text
+Pods/SVProgressHUD/README.md -text
+Pods/SVProgressHUD/SVProgressHUD.podspec -text
+Pods/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle/error.png -text svneol=unset#unset
+Pods/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle/error@2x.png -text svneol=unset#unset
+Pods/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle/success.png -text svneol=unset#unset
+Pods/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle/success@2x.png -text svneol=unset#unset
+Pods/SVProgressHUD/SVProgressHUD/SVProgressHUD.h -text
+Pods/SVProgressHUD/SVProgressHUD/SVProgressHUD.m -text
 Pods/UIDeviceIdentifier/LICENCE.txt -text
 Pods/UIDeviceIdentifier/README.md -text
 Pods/UIDeviceIdentifier/UIDeviceIdentifier/UIDeviceHardware.h -text
@@ -430,6 +464,8 @@ WordPress/Classes/FollowButton.h -text
 WordPress/Classes/FollowButton.m -text
 WordPress/Classes/HelpViewController.h -text
 WordPress/Classes/HelpViewController.m -text
+WordPress/Classes/InstapaperActivity.h -text
+WordPress/Classes/InstapaperActivity.m -text
 WordPress/Classes/JetpackAuthUtil.h -text
 WordPress/Classes/JetpackAuthUtil.m -text
 WordPress/Classes/JetpackSettingsViewController.h -text
@@ -486,6 +522,8 @@ WordPress/Classes/PanelNavigationController.h -text
 WordPress/Classes/PanelNavigationController.m -text
 WordPress/Classes/PanelViewWrapper.h -text
 WordPress/Classes/PanelViewWrapper.m -text
+WordPress/Classes/PocketActivity.h -text
+WordPress/Classes/PocketActivity.m -text
 WordPress/Classes/Post.h -text
 WordPress/Classes/Post.m -text
 WordPress/Classes/PostAnnotation.h -text
@@ -512,6 +550,8 @@ WordPress/Classes/QuickPicturePreviewView.h -text
 WordPress/Classes/QuickPicturePreviewView.m -text
 WordPress/Classes/ReachabilityUtils.h -text
 WordPress/Classes/ReachabilityUtils.m -text
+WordPress/Classes/SafariActivity.h -text
+WordPress/Classes/SafariActivity.m -text
 WordPress/Classes/SectionInfo.h -text
 WordPress/Classes/SectionInfo.m -text
 WordPress/Classes/SettingsPageViewController.h -text
@@ -561,6 +601,7 @@ WordPress/Classes/UIViewController+Rotation.h -text
 WordPress/Classes/UIViewController+Rotation.m -text
 WordPress/Classes/UIViewController+Styled.h -text
 WordPress/Classes/UIViewController+Styled.m -text
+WordPress/Classes/WPActivities.h -text
 WordPress/Classes/WPAddCategoryViewController.h -text
 WordPress/Classes/WPAddCategoryViewController.m -text
 WordPress/Classes/WPCategoryTree.h -text
@@ -661,6 +702,18 @@ WordPress/Icon@2x.png -text svneol=unset#unset
 WordPress/Info-beta.plist -text
 WordPress/Info-dev.plist -text
 WordPress/Info.plist -text
+WordPress/NNInstapaperActivity@2x~ipad.png -text svneol=unset#unset
+WordPress/NNInstapaperActivity@2x~iphone.png -text svneol=unset#unset
+WordPress/NNInstapaperActivity~ipad.png -text svneol=unset#unset
+WordPress/NNInstapaperActivity~iphone.png -text svneol=unset#unset
+WordPress/NNPocketActivity@2x~ipad.png -text svneol=unset#unset
+WordPress/NNPocketActivity@2x~iphone.png -text svneol=unset#unset
+WordPress/NNPocketActivity~ipad.png -text svneol=unset#unset
+WordPress/NNPocketActivity~iphone.png -text svneol=unset#unset
+WordPress/NNReadabilityActivity@2x~ipad.png -text svneol=unset#unset
+WordPress/NNReadabilityActivity@2x~iphone.png -text svneol=unset#unset
+WordPress/NNReadabilityActivity~ipad.png -text svneol=unset#unset
+WordPress/NNReadabilityActivity~iphone.png -text svneol=unset#unset
 WordPress/Resources-iPad/AddUsersBlogsViewController-iPad.xib -text
 WordPress/Resources-iPad/EditPostViewController~ipad.xib -text
 WordPress/Resources-iPad/MainWindow-iPad.xib -text
@@ -1124,6 +1177,10 @@ WordPress/Resources/sv.lproj/Localizable.strings -text svneol=unset#unset
 WordPress/Resources/tr.lproj/Localizable.strings -text
 WordPress/Resources/zh-Hans.lproj/Localizable.strings -text svneol=unset#unset
 WordPress/Resources/zh-Hant.lproj/Localizable.strings -text svneol=unset#unset
+WordPress/Safari.png -text svneol=unset#unset
+WordPress/Safari@2x.png -text svneol=unset#unset
+WordPress/Safari@2x~ipad.png -text svneol=unset#unset
+WordPress/Safari~ipad.png -text svneol=unset#unset
 WordPress/UIAutomationTests/Blog.js -text
 WordPress/UIAutomationTests/Config.js -text
 WordPress/UIAutomationTests/Post.js -text
@@ -1132,6 +1189,16 @@ WordPress/Vendor/CameraPlus/CameraPlusPickerManager.h -text
 WordPress/Vendor/CameraPlus/CameraPlusPickerManager.m -text
 WordPress/Vendor/KVO+Blocks/NSObject+BlockObservation.h -text
 WordPress/Vendor/KVO+Blocks/NSObject+BlockObservation.m -text
+WordPress/Vendor/PocketAPI/PocketAPI+NSOperation.h -text
+WordPress/Vendor/PocketAPI/PocketAPI.h -text
+WordPress/Vendor/PocketAPI/PocketAPI.m -text
+WordPress/Vendor/PocketAPI/PocketAPILogin.h -text
+WordPress/Vendor/PocketAPI/PocketAPILogin.m -text
+WordPress/Vendor/PocketAPI/PocketAPIOperation.h -text
+WordPress/Vendor/PocketAPI/PocketAPIOperation.m -text
+WordPress/Vendor/PocketAPI/PocketAPITypes.h -text
+WordPress/Vendor/PocketAPI/SFHFKeychainUtils.h -text
+WordPress/Vendor/PocketAPI/SFHFKeychainUtils.m -text
 WordPress/Vendor/facebook-ios-sdk/FBConnect.h -text
 WordPress/Vendor/facebook-ios-sdk/FBDialog.bundle/images/close.png -text
 WordPress/Vendor/facebook-ios-sdk/FBDialog.bundle/images/close@2x.png -text

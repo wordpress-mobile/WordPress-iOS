@@ -1,4 +1,12 @@
 
+COCOAPODS: 0.16.2
+
+EXTERNAL SOURCES: 
+  NSURL+IDN: 
+    :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
+  CTidy: 
+    :git: git://github.com/wordpress-mobile/CTidy.git
+
 DEPENDENCIES: 
 - AFNetworking (~> 1.0)
 - CTidy (from `git://github.com/wordpress-mobile/CTidy.git')
@@ -6,24 +14,10 @@ DEPENDENCIES:
 - JSONKit (~> 1.4)
 - NSURL+IDN (from `https://raw.github.com/koke/NSURL-IDN/master/Podfile')
 - Reachability (~> 3.0.0)
+- SFHFKeychainUtils (~> 0.0.1)
+- SSKeychain (~> 0.2)
+- SVProgressHUD (~> 0.9)
 - UIDeviceIdentifier (~> 0.1)
-
-EXTERNAL SOURCES: 
-  CTidy: 
-    :git: git://github.com/wordpress-mobile/CTidy.git
-  NSURL+IDN: 
-    :podspec: https://raw.github.com/koke/NSURL-IDN/master/Podfile
-
-COCOAPODS: 0.16.2
-
-SPEC CHECKSUMS: 
-  UIDeviceIdentifier: 64036321b0f77ff41b4200002f0c138431c00d86
-  JSONKit: 3d4708953ea7ae399a49777372d8b060a43ddd27
-  CTidy: 6a35875a96dd441822e620732c1113be19769067
-  Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
-  DTCoreText: 4f2b9d62554c62dd7cd412c9f50ece1e70a548b9
-  NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
-  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
 
 PODS: 
 - AFNetworking (1.1.0)
@@ -32,4 +26,19 @@ PODS:
 - JSONKit (1.5pre)
 - NSURL+IDN (0.1)
 - Reachability (3.0.0)
+- SFHFKeychainUtils (0.0.1)
+- SSKeychain (0.2.1)
+- SVProgressHUD (0.9)
 - UIDeviceIdentifier (0.1)
+
+SPEC CHECKSUMS: 
+  UIDeviceIdentifier: 64036321b0f77ff41b4200002f0c138431c00d86
+  DTCoreText: 4f2b9d62554c62dd7cd412c9f50ece1e70a548b9
+  Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
+  SFHFKeychainUtils: b76aa7a39f07eb6ff97ab94b582e789f50d7ec5a
+  NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
+  SSKeychain: ffa1a79eb716d9ed1ca184fb0cf218087ca28486
+  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
+  JSONKit: 3d4708953ea7ae399a49777372d8b060a43ddd27
+  CTidy: 6a35875a96dd441822e620732c1113be19769067
+  SVProgressHUD: 98935fbafaf0031df4a9cafca3c66eaf3da06967

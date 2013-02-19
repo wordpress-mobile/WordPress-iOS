@@ -32,6 +32,21 @@
 	<string>3.5.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>org.wordpress</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>wordpress</string>
+				<string>fb249643311490</string>
+				<string>pocketapp12013</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>3.5.1</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -52,18 +67,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>org.wordpress</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>wordpress</string>
-				<string>fb249643311490</string>
-			</array>
-		</dict>
 	</array>
 </dict>
 </plist>
