@@ -11,6 +11,7 @@
 @interface NotificationSettingsViewController : UITableViewController
 
 @property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
+@property (nonatomic, strong) NSMutableDictionary *notificationMutePreferences;
 @property (nonatomic, strong) NSMutableArray *notificationPrefArray;
 @property (nonatomic, strong) NSMutableArray *mutedBlogsArray;
 @property (nonatomic, assign) BOOL showCloseButton;

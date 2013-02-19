@@ -87,6 +87,12 @@ BOOL hasChanges;
             [_notificationPrefArray removeObjectAtIndex:[_notificationPrefArray indexOfObject:@"muted_blogs"]];
             _mutedBlogsArray = [[[_notificationPreferences objectForKey:@"muted_blogs"] objectForKey:@"value"] mutableCopy];
         }
+        if ([_notificationPrefArray indexOfObject:@"mute_until"] != NSNotFound) {
+            [_notificationPrefArray removeObjectAtIndex:[_notificationPrefArray indexOfObject:@"mute_until"]];
+            _notificationMutePreferences = [[_notificationPreferences objectForKey:@"mute_until"] mutableCopy];
+        } else {
+            _notificationMutePreferences = [NSMutableDictionary dictionary];
+        }
         [self.tableView reloadData];
     }
     [self setupToolbarButtons];
@@ -242,12 +248,11 @@ BOOL hasChanges;
         }
         
         cell.textLabel.text = NSLocalizedString(@"Notifications", @"");
-        NSMutableDictionary *commentsDictionary = [_notificationPreferences objectForKey:@"comments"];
-
-        WPFLog(@"commentsDictionary: %@", commentsDictionary);
+     
+        WPFLog(@"muteDictionary: %@", _notificationMutePreferences);
         
-        if ([commentsDictionary objectForKey:@"mute_until"] != nil) {
-            NSString *mute_value = [commentsDictionary objectForKey:@"mute_until"];
+        if (_notificationMutePreferences && [_notificationMutePreferences objectForKey:@"value"] != nil) {
+            NSString *mute_value = [_notificationMutePreferences objectForKey:@"value"];
             if([mute_value isEqualToString:@"forever"]){
                 cell.detailTextLabel.text = NSLocalizedString(@"Off", @"");
             } else {
@@ -263,9 +268,8 @@ BOOL hasChanges;
                 } else {
                     //date is in the past. Remove it.
                     hasChanges = YES;
-                    commentsDictionary = [[_notificationPreferences objectForKey:@"comments"] mutableCopy];
-                    [commentsDictionary removeObjectForKey:@"mute_until"];
-                    [_notificationPreferences setValue:commentsDictionary forKey:@"comments"];
+                    [_notificationMutePreferences removeObjectForKey:@"value"];
+                    [_notificationPreferences setValue:_notificationMutePreferences forKey:@"mute_until"];
                     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
                     cell.detailTextLabel.text = NSLocalizedString(@"On", @"");
                 }
@@ -324,7 +328,7 @@ BOOL hasChanges;
     if(indexPath.section == 0){
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         UIActionSheet *actionSheet;        
-        if ([[_notificationPreferences objectForKey:@"comments"] objectForKey:@"mute_until"] != nil) {
+        if ([_notificationMutePreferences objectForKey:@"value"] != nil) {
             //Notifications were muted
             actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Notifications", @"")
                                                       delegate:self
@@ -354,15 +358,15 @@ BOOL hasChanges;
 	[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
     
     WPFLog(@"Button Clicked: %d", buttonIndex);
-    NSMutableDictionary *commentsDictionary;
+    NSMutableDictionary *muteDictionary;
     
     if (actionSheet.tag == 100 ) {
         //Notifications were muted.
         //buttonIndex == 0 -> Turn on, cancel otherwise.
         if(buttonIndex == 0) {
             hasChanges = YES;
-            commentsDictionary = [[_notificationPreferences objectForKey:@"comments"] mutableCopy];
-            [commentsDictionary removeObjectForKey:@"mute_until"];
+            muteDictionary = [NSMutableDictionary dictionary];
+            [muteDictionary setObject:@"0" forKey:@"value"];
         } else {
             return; //cancel
         }
@@ -422,11 +426,11 @@ BOOL hasChanges;
         }
         
         hasChanges = YES;
-        commentsDictionary = [[_notificationPreferences objectForKey:@"comments"] mutableCopy];
-        [commentsDictionary setObject:mute_until_value forKey:@"mute_until"];
+        muteDictionary = [NSMutableDictionary dictionary];
+        [muteDictionary setObject:mute_until_value forKey:@"value"];
     }
     
-    [_notificationPreferences setValue:commentsDictionary forKey:@"comments"];
+    [_notificationPreferences setValue:muteDictionary forKey:@"mute_until"];
     [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
     [self reloadNotificationSettings];
 }
