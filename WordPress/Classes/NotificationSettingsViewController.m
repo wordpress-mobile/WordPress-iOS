@@ -372,11 +372,11 @@ BOOL hasChanges;
         //buttonIndex == 1 -> Turn off 1hr
         //buttonIndex == 2 -> Turn off until 8am
         //cancel otherwise
-        NSString *mute_util_value;
+        NSString *mute_until_value;
         switch (buttonIndex) {
             case 0:
             {
-                mute_util_value = @"forever";
+                mute_until_value = @"forever";
                 break;
             }
             case 1:{ //Turn off 1hr
@@ -387,7 +387,7 @@ BOOL hasChanges;
                 NSDate *oneHourFromNow = [calendar dateByAddingComponents:comps toDate:currentDate options:0];
                 int timestamp = [oneHourFromNow timeIntervalSince1970];
                  WPFLog(@"Time Stamp: %d", timestamp);
-                mute_util_value = [NSString stringWithFormat:@"%d", timestamp];
+                mute_until_value = [NSString stringWithFormat:@"%d", timestamp];
                 break;
             }
             case 2:{ //Turn off until 8am
@@ -414,7 +414,7 @@ BOOL hasChanges;
                 NSDate *todayOrTomorrow8AM = [sysCalendar dateFromComponents:comps];
                 int timestamp = [todayOrTomorrow8AM timeIntervalSince1970];
                 WPFLog(@"Time Stamp: %d", timestamp);
-                mute_util_value = [NSString stringWithFormat:@"%d", timestamp];
+                mute_until_value = [NSString stringWithFormat:@"%d", timestamp];
                 break;
             }
             default:
@@ -423,7 +423,7 @@ BOOL hasChanges;
         
         hasChanges = YES;
         commentsDictionary = [[_notificationPreferences objectForKey:@"comments"] mutableCopy];
-        [commentsDictionary setObject:mute_util_value forKey:@"mute_until"];
+        [commentsDictionary setObject:mute_until_value forKey:@"mute_until"];
     }
     
     [_notificationPreferences setValue:commentsDictionary forKey:@"comments"];
