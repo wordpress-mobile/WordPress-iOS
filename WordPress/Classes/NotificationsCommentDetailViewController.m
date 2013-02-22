@@ -7,10 +7,10 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
+#import <DTCoreText/DTCoreText.h>
 #import "NotificationsCommentDetailViewController.h"
 #import "UIImageView+AFNetworking.h"
 #import "WordPressAppDelegate.h"
-#import "DTCoreText.h"
 #import "WPWebViewController.h"
 #import "NoteCommentCell.h"
 #import "NoteCommentLoadingCell.h"

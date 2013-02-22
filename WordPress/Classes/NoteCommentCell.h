@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <FollowButton.h>
-#import "DTCoreText.h"
+#import <DTCoreText/DTCoreText.h>
+#import "FollowButton.h"
 
 extern const CGFloat NoteCommentCellHeight;
 
