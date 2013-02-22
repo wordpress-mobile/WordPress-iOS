@@ -146,7 +146,9 @@ NSString * const BlogJetpackKeychainPrefix = @"jetpackblog-";
  @warning Don't call this directly
  */
 - (void)removeWithoutJetpack {
-    [self removeJetpackCredentials];
+    if (![self isWPcom]) {
+        [self removeJetpackCredentials];
+    }
 
     // Since we exchanged implementations, this actually calls `-[Blog remove]`
     [self removeWithoutJetpack];
