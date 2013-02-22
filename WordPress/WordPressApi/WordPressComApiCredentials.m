@@ -8,8 +8,8 @@
 
 #import "WordPressComApiCredentials.h"
 
-#define WPCOM_API_CLIENT_ID nil
-#define WPCOM_API_CLIENT_SECRET nil
+#define WPCOM_API_CLIENT_ID @""
+#define WPCOM_API_CLIENT_SECRET @""
 
 @implementation WordPressComApiCredentials
 + (NSString *)client {
