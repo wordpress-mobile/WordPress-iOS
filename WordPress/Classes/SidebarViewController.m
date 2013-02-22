@@ -445,11 +445,16 @@ NSLog(@"%@", self.sectionInfoArray);
 
 - (void)restorePreservedSelection {
     NSDictionary *dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"kSelectedSidebarIndexDictionary"];
+    if (!dict) {
+        return [self selectFirstAvailableItem];
+    }
+
     NSIndexPath *preservedIndexPath = [NSIndexPath indexPathForRow:[[dict objectForKey:@"row"] integerValue] inSection:[[dict objectForKey:@"section"] integerValue]];
 
     if (preservedIndexPath.section >= [self numberOfSectionsInTableView:self.tableView] || preservedIndexPath.row >= [self tableView:self.tableView numberOfRowsInSection:preservedIndexPath.section]) {
         // preserved index path is not valid anymore
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"kSelectedSidebarIndexDictionary"];
+        [self selectFirstAvailableItem];
         return;
     }
     
