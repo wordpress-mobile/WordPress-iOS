@@ -200,10 +200,18 @@
     return hostname;
 }
 
-- (NSString *)loginURL {
+- (NSString *)loginUrl {
+    return [self urlWithPath:@"wp-login.php"];
+}
+
+- (NSString *)urlWithPath:(NSString *)path {
     NSError *error = NULL;
-    NSRegularExpression *xmlrpc = [NSRegularExpression regularExpressionWithPattern:@"/xmlrpc.php$" options:NSRegularExpressionCaseInsensitive error:&error];
-    return [xmlrpc stringByReplacingMatchesInString:self.xmlrpc options:0 range:NSMakeRange(0, [self.xmlrpc length]) withTemplate:@"/wp-login.php"];
+    NSRegularExpression *xmlrpc = [NSRegularExpression regularExpressionWithPattern:@"xmlrpc.php$" options:NSRegularExpressionCaseInsensitive error:&error];
+    return [xmlrpc stringByReplacingMatchesInString:self.xmlrpc options:0 range:NSMakeRange(0, [self.xmlrpc length]) withTemplate:path];
+}
+
+- (NSString *)adminUrlWithPath:(NSString *)path {
+    return [self urlWithPath:[NSString stringWithFormat:@"wp-admin/%@", path]];
 }
 
 - (int)numberOfPendingComments{

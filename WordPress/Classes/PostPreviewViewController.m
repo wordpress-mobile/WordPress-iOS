@@ -202,7 +202,7 @@
 
         if(isDraft || isPending || isPrivate || isPrivateBlog || ([laterDate isEqualToDate:postGMTDate])) {
 
-            NSString *wpLoginURL = [self.apost.blog loginURL];
+            NSString *wpLoginURL = [self.apost.blog loginUrl];
             NSURL *url = [NSURL URLWithString:wpLoginURL];
             NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
             [req setHTTPMethod:@"POST"];

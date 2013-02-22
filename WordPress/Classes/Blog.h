@@ -62,7 +62,9 @@
 - (BOOL)isPrivate;
 - (NSArray *)sortedCategories;
 - (id)getOptionValue:(NSString *) name;
-- (NSString *)loginURL;
+- (NSString *)loginUrl;
+- (NSString *)urlWithPath:(NSString *)path;
+- (NSString *)adminUrlWithPath:(NSString *)path;
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
 - (NSString *)fetchPassword;
 - (int)numberOfPendingComments;

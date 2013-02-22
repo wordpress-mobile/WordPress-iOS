@@ -537,7 +537,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                 [webViewController setUrl:[NSURL URLWithString:path]];
                 [webViewController setUsername:self.blog.username];
                 [webViewController setPassword:[self.blog fetchPassword]];
-                [webViewController setWpLoginURL:[NSURL URLWithString:self.blog.loginURL]];
+                [webViewController setWpLoginURL:[NSURL URLWithString:self.blog.loginUrl]];
                 webViewController.shouldScrollToBottom = YES;
                 // Probably should be modal.
                 UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];

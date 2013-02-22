@@ -237,7 +237,7 @@
                                          [username stringByUrlEncoding],
                                          [password stringByUrlEncoding]];
                 
-                [mRequest setURL:[NSURL URLWithString:blog.loginURL]];
+                [mRequest setURL:[NSURL URLWithString:blog.loginUrl]];
                 [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
                 [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
                 [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];

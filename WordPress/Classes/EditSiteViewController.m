@@ -406,7 +406,7 @@
                 [webViewController setUrl:[NSURL URLWithString:path]];
                 [webViewController setUsername:self.username];
                 [webViewController setPassword:self.password];
-                [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginURL]];
+                [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginUrl]];
                 webViewController.shouldScrollToBottom = YES;
                 [self.navigationController pushViewController:webViewController animated:YES];
             } else {

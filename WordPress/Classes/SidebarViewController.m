@@ -1014,7 +1014,7 @@ NSLog(@"%@", self.sectionInfoArray);
                     if( [blog isPrivate] ) {
                         [webViewController setUsername:blog.username];
                         [webViewController setPassword:[blog fetchPassword]];
-                        [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginURL]];
+                        [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginUrl]];
                     }
                     [self.panelNavigationController setDetailViewController:webViewController closingSidebar:closingSidebar];
                 }
@@ -1047,7 +1047,7 @@ NSLog(@"%@", self.sectionInfoArray);
                     [webViewController setUrl:[NSURL URLWithString:dashboardURL]];
                     [webViewController setUsername:blog.username];
                     [webViewController setPassword:[blog fetchPassword]];
-                    [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginURL]];
+                    [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginUrl]];
                     [self.panelNavigationController setDetailViewController:webViewController closingSidebar:closingSidebar];
                 }
                 if (IS_IPAD) {
