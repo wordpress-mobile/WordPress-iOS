@@ -16,7 +16,7 @@ extern NSString * const BlogJetpackErrorDomain;
 /**
  * Possible NSError codes for BlogJetpackErrorDomain.
  */
-typedef NS_ENUM(NSUInteger, BlogJetpackErrorCode) {
+typedef NS_ENUM(NSInteger, BlogJetpackErrorCode) {
     // Blog is hosted in wordpress.com
     BlogJetpackErrorCodeInvalidBlog,
     // Username or password invalid
