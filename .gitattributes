@@ -101,6 +101,8 @@ Pods/BuildHeaders/DTCoreText/NSString+Paragraphs.h -text
 Pods/BuildHeaders/DTCoreText/NSString+UTF8Cleaner.h -text
 Pods/BuildHeaders/DTCoreText/UIDevice+DTSimpleVersion.h -text
 Pods/BuildHeaders/JSONKit/JSONKit.h -text
+Pods/BuildHeaders/NSObject-SafeExpectations/NSDictionary+SafeExpectations.h -text
+Pods/BuildHeaders/NSObject-SafeExpectations/NSObject+SafeExpectations.h -text
 Pods/BuildHeaders/NSURL+IDN/NSURL+IDN.h -text
 Pods/BuildHeaders/Reachability/Reachability.h -text
 Pods/BuildHeaders/SFHFKeychainUtils/SFHFKeychainUtils.h -text
@@ -325,6 +327,8 @@ Pods/Headers/DTCoreText/NSString+Paragraphs.h -text
 Pods/Headers/DTCoreText/NSString+UTF8Cleaner.h -text
 Pods/Headers/DTCoreText/UIDevice+DTSimpleVersion.h -text
 Pods/Headers/JSONKit/JSONKit.h -text
+Pods/Headers/NSObject-SafeExpectations/NSDictionary+SafeExpectations.h -text
+Pods/Headers/NSObject-SafeExpectations/NSObject+SafeExpectations.h -text
 Pods/Headers/NSURL+IDN/NSURL+IDN.h -text
 Pods/Headers/Reachability/Reachability.h -text
 Pods/Headers/SFHFKeychainUtils/SFHFKeychainUtils.h -text
@@ -335,7 +339,15 @@ Pods/JSONKit/JSONKit.h -text
 Pods/JSONKit/JSONKit.m -text
 Pods/JSONKit/README.md -text
 Pods/Local[!!-~]Podspecs/CTidy.podspec -text
+Pods/Local[!!-~]Podspecs/NSObject-Expectations.podspec -text
+Pods/Local[!!-~]Podspecs/NSObject-SafeExpectations.podspec -text
 Pods/Local[!!-~]Podspecs/NSURL+IDN.podspec -text
+Pods/NSObject-SafeExpectations/LICENSE -text
+Pods/NSObject-SafeExpectations/NSDictionary+SafeExpectations.h -text
+Pods/NSObject-SafeExpectations/NSDictionary+SafeExpectations.m -text
+Pods/NSObject-SafeExpectations/NSObject+SafeExpectations.h -text
+Pods/NSObject-SafeExpectations/NSObject-SafeExpectations.podspec -text
+Pods/NSObject-SafeExpectations/README.md -text
 Pods/NSURL+IDN/NSURL+IDN.h -text
 Pods/NSURL+IDN/NSURL+IDN.m -text
 Pods/Pods-Acknowledgements.markdown -text
