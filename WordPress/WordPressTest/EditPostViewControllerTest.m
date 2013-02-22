@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
+#import "CoreDataTestHelper.h"
 #import "EditPostViewControllerTest.h"
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
@@ -14,22 +15,11 @@
     EditPostViewController *_controller;
     Blog *_blog;
     Post *_post;
-    NSManagedObjectContext *_context;
-}
-
-- (void)setupCoreData {
-    NSURL *modelURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"]];
-    NSManagedObjectModel *mom = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
-    STAssertTrue([psc addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:nil options:nil error:NULL] ? YES : NO, @"Should be able to add in-memory store");
-    _context = [[NSManagedObjectContext alloc] init];
-    [_context setPersistentStoreCoordinator:psc];
 }
 
 - (void)setUp {
     [super setUp];
-    [self setupCoreData];
-    _blog = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:_context];
+    _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityWithName:@"Blog"];
     _blog.xmlrpc = @"http://test.blog/xmlrpc.php";
     _blog.url = @"http://test.blog/";
     _post = [Post newDraftForBlog:_blog];

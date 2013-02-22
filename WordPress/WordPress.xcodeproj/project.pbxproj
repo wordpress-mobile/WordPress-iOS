@@ -16,6 +16,7 @@
 		03B1E32B113DBDB300BBD1C6 /* EditPostViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03B1E32A113DBDB300BBD1C6 /* EditPostViewController~ipad.xib */; };
 		03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CF21EC0FE9F0C3008AD538 /* NSString+Util.m */; };
 		03EB54B5100FFB5C004E82CD /* gravatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 03EB54B4100FFB5C004E82CD /* gravatar.jpg */; };
+		067D911C15654CE79F0A4A29 /* libPods-WordPressTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4972215061A4C21AD2CD5B8 /* libPods-WordPressTest.a */; };
 		1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* WordPressAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -565,6 +566,13 @@
 		E12F55F414A1F22D0060A510 /* XMLRPCEventBasedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55EE14A1F22D0060A510 /* XMLRPCEventBasedParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E12F55F514A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55F014A1F22D0060A510 /* XMLRPCEventBasedParserDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E12F95B9155820A40067A653 /* NSObject+BlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F95B8155820A40067A653 /* NSObject+BlockObservation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		E131CB5216CACA6B004B0314 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E131CB5116CACA6B004B0314 /* CoreText.framework */; };
+		E131CB5416CACB05004B0314 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E131CB5316CACB05004B0314 /* libxml2.dylib */; };
+		E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */ = {isa = PBXBuildFile; fileRef = E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */; };
+		E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */ = {isa = PBXBuildFile; fileRef = E131CB5716CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json */; };
+		E131CB5916CACFDF004B0314 /* entitiesDecoded.xml in Resources */ = {isa = PBXBuildFile; fileRef = E16AB94114D97A7D0047A2E5 /* entitiesDecoded.xml */; };
+		E131CB5A16CACFE3004B0314 /* entities.xml in Resources */ = {isa = PBXBuildFile; fileRef = E16AB94014D97A7D0047A2E5 /* entities.xml */; };
+		E131CB5E16CAD659004B0314 /* AsyncTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E131CB5D16CAD659004B0314 /* AsyncTestHelper.m */; };
 		E131D08912C8C9160056BAB9 /* AbstractPost.m in Sources */ = {isa = PBXBuildFile; fileRef = E131D08812C8C9160056BAB9 /* AbstractPost.m */; };
 		E1330B0F151275300010018D /* AFAuthenticationAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1330B0E151275300010018D /* AFAuthenticationAlertView.m */; };
 		E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */ = {isa = PBXBuildFile; fileRef = E13EB7A4157D230000885780 /* WordPressComApi.m */; };
@@ -586,6 +594,8 @@
 		E15051CB16CA5DDB00D3DDDC /* Blog+Jetpack.m in Sources */ = {isa = PBXBuildFile; fileRef = E15051CA16CA5DDB00D3DDDC /* Blog+Jetpack.m */; };
 		E15051CE16CA8E4900D3DDDC /* logo_jetpack.png in Resources */ = {isa = PBXBuildFile; fileRef = E15051CC16CA8E4900D3DDDC /* logo_jetpack.png */; };
 		E15051CF16CA8E4900D3DDDC /* logo_jetpack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E15051CD16CA8E4900D3DDDC /* logo_jetpack@2x.png */; };
+		E150520C16CAC5C400D3DDDC /* BlogJetpackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */; };
+		E150520F16CAC75A00D3DDDC /* CoreDataTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E150520E16CAC75A00D3DDDC /* CoreDataTestHelper.m */; };
 		E151045E14E27F9300CE282B /* list.png in Resources */ = {isa = PBXBuildFile; fileRef = E151045C14E27F9300CE282B /* list.png */; };
 		E151045F14E27F9300CE282B /* list@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E151045D14E27F9300CE282B /* list@2x.png */; };
 		E1523EB516D3B305002C5A36 /* InstapaperActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = E1523EB416D3B305002C5A36 /* InstapaperActivity.m */; };
@@ -599,8 +609,6 @@
 		E16AB92E14D978240047A2E5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		E16AB93414D978240047A2E5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E16AB93214D978240047A2E5 /* InfoPlist.strings */; };
 		E16AB93714D978240047A2E5 /* WordPressTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E16AB93614D978240047A2E5 /* WordPressTest.m */; };
-		E16AB94214D97A7D0047A2E5 /* entities.xml in Resources */ = {isa = PBXBuildFile; fileRef = E16AB94014D97A7D0047A2E5 /* entities.xml */; };
-		E16AB94314D97A7D0047A2E5 /* entitiesDecoded.xml in Resources */ = {isa = PBXBuildFile; fileRef = E16AB94114D97A7D0047A2E5 /* entitiesDecoded.xml */; };
 		E17078FD130A95B600F30433 /* WordPress-1-2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E17078FC130A95B600F30433 /* WordPress-1-2.xcmappingmodel */; };
 		E1745A9A15AF49C000A3F7C5 /* UIViewController+Styled.m in Sources */ = {isa = PBXBuildFile; fileRef = E1745A9915AF49C000A3F7C5 /* UIViewController+Styled.m */; };
 		E1745AA715AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m in Sources */ = {isa = PBXBuildFile; fileRef = E1745AA615AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m */; };
@@ -1291,6 +1299,7 @@
 		ACC156BA0E10D73100D6E1A0 /* EditPostViewController~iphone.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "EditPostViewController~iphone.xib"; path = "Resources/EditPostViewController~iphone.xib"; sourceTree = "<group>"; };
 		ACC156CA0E10E67600D6E1A0 /* EditPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPostViewController.h; sourceTree = "<group>"; };
 		ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPostViewController.m; sourceTree = "<group>"; };
+		BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.xcconfig"; path = "../Pods/Pods-WordPressTest.xcconfig"; sourceTree = SOURCE_ROOT; };
 		C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
 		C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsViewController.m; sourceTree = "<group>"; };
 		C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPSegmentedSelectionTableViewController.h; sourceTree = "<group>"; };
@@ -1368,6 +1377,7 @@
 		CCEF153014C9EA050001176D /* WPWebAppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebAppViewController.m; sourceTree = "<group>"; };
 		CEBD3EA90FF1BA3B00C1396E /* Blog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blog.h; sourceTree = "<group>"; };
 		CEBD3EAA0FF1BA3B00C1396E /* Blog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Blog.m; sourceTree = "<group>"; };
+		D4972215061A4C21AD2CD5B8 /* libPods-WordPressTest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WordPressTest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E10466061630961700E8EDDA /* WPRSDParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPRSDParser.h; sourceTree = "<group>"; };
 		E10466071630961700E8EDDA /* WPRSDParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPRSDParser.m; sourceTree = "<group>"; };
 		E10B3651158F2D3F00419A93 /* QuartzCore.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -1419,6 +1429,12 @@
 		E12F95A71557CA400067A653 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E12F95B7155820A40067A653 /* NSObject+BlockObservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BlockObservation.h"; sourceTree = "<group>"; };
 		E12F95B8155820A40067A653 /* NSObject+BlockObservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BlockObservation.m"; sourceTree = "<group>"; };
+		E131CB5116CACA6B004B0314 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		E131CB5316CACB05004B0314 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-user-blogs_has-blog.json"; sourceTree = "<group>"; };
+		E131CB5716CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-user-blogs_doesnt-have-blog.json"; sourceTree = "<group>"; };
+		E131CB5C16CAD659004B0314 /* AsyncTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncTestHelper.h; sourceTree = "<group>"; };
+		E131CB5D16CAD659004B0314 /* AsyncTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncTestHelper.m; sourceTree = "<group>"; };
 		E131D08712C8C9150056BAB9 /* AbstractPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPost.h; sourceTree = "<group>"; };
 		E131D08812C8C9160056BAB9 /* AbstractPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractPost.m; sourceTree = "<group>"; };
 		E1330B0D151275300010018D /* AFAuthenticationAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFAuthenticationAlertView.h; sourceTree = "<group>"; };
@@ -1455,6 +1471,10 @@
 		E15051CA16CA5DDB00D3DDDC /* Blog+Jetpack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Blog+Jetpack.m"; sourceTree = "<group>"; };
 		E15051CC16CA8E4900D3DDDC /* logo_jetpack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo_jetpack.png; path = Resources/Images/logo_jetpack.png; sourceTree = "<group>"; };
 		E15051CD16CA8E4900D3DDDC /* logo_jetpack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "logo_jetpack@2x.png"; path = "Resources/Images/logo_jetpack@2x.png"; sourceTree = "<group>"; };
+		E150520A16CAC5C400D3DDDC /* BlogJetpackTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogJetpackTest.h; sourceTree = "<group>"; };
+		E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogJetpackTest.m; sourceTree = "<group>"; };
+		E150520D16CAC75A00D3DDDC /* CoreDataTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataTestHelper.h; sourceTree = "<group>"; };
+		E150520E16CAC75A00D3DDDC /* CoreDataTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataTestHelper.m; sourceTree = "<group>"; };
 		E151045C14E27F9300CE282B /* list.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = list.png; path = Resources/Images/list.png; sourceTree = "<group>"; };
 		E151045D14E27F9300CE282B /* list@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "list@2x.png"; path = "Resources/Images/list@2x.png"; sourceTree = "<group>"; };
 		E1523EB316D3B305002C5A36 /* InstapaperActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstapaperActivity.h; sourceTree = "<group>"; };
@@ -1659,6 +1679,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E131CB5416CACB05004B0314 /* libxml2.dylib in Frameworks */,
+				E183EC9D16B2160200C2EB11 /* MobileCoreServices.framework in Frameworks */,
+				E183EC9C16B215FE00C2EB11 /* SystemConfiguration.framework in Frameworks */,
+				E131CB5216CACA6B004B0314 /* CoreText.framework in Frameworks */,
 				E183ECA216B2179B00C2EB11 /* Accounts.framework in Frameworks */,
 				E183ECA316B2179B00C2EB11 /* AddressBook.framework in Frameworks */,
 				E183ECA416B2179B00C2EB11 /* AssetsLibrary.framework in Frameworks */,
@@ -1677,14 +1701,13 @@
 				E183ECAE16B2179B00C2EB11 /* MapKit.framework in Frameworks */,
 				E183ECAF16B2179B00C2EB11 /* MediaPlayer.framework in Frameworks */,
 				E183ECB016B2179B00C2EB11 /* MessageUI.framework in Frameworks */,
-				E183EC9D16B2160200C2EB11 /* MobileCoreServices.framework in Frameworks */,
 				00F2E3FB166EEFE100D0527C /* QuartzCore.framework in Frameworks */,
 				E183ECB116B2179B00C2EB11 /* Security.framework in Frameworks */,
 				E16AB92C14D978240047A2E5 /* SenTestingKit.framework in Frameworks */,
-				E183EC9C16B215FE00C2EB11 /* SystemConfiguration.framework in Frameworks */,
 				E183ECB216B2179B00C2EB11 /* Twitter.framework in Frameworks */,
 				00F2E3FA166EEFBE00D0527C /* UIKit.framework in Frameworks */,
 				E183ECB316B2179B00C2EB11 /* libPods.a in Frameworks */,
+				067D911C15654CE79F0A4A29 /* libPods-WordPressTest.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1768,6 +1791,7 @@
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				45B71DE4113EDAA100D0A33C /* Entitlements.plist */,
 				EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */,
+				BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -1819,10 +1843,14 @@
 				834CE7371256D0F60046A4A3 /* CoreGraphics.framework */,
 				83F3E2D211276371004CD686 /* CoreLocation.framework */,
 				E1A386C914DB05F700954CF8 /* CoreMedia.framework */,
+				E131CB5116CACA6B004B0314 /* CoreText.framework */,
 				E10B3663158F3B9500419A93 /* CrashReporter.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				FD3D6D2B1349F5D30061136A /* ImageIO.framework */,
 				FD21397E13128C5300099582 /* libiconv.dylib */,
+				D4972215061A4C21AD2CD5B8 /* libPods-WordPressTest.a */,
+				69187343EC8F435684EFFAF1 /* libPods.a */,
+				E131CB5316CACB05004B0314 /* libxml2.dylib */,
 				E19DF740141F7BDD000002F3 /* libz.dylib */,
 				83F3E25F11275E07004CD686 /* MapKit.framework */,
 				83FB4D3E122C38F700DB9506 /* MediaPlayer.framework */,
@@ -1834,7 +1862,6 @@
 				A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */,
 				CC24E5F21577DFF400A6D5B5 /* Twitter.framework */,
 				E10B3653158F2D4500419A93 /* UIKit.framework */,
-				69187343EC8F435684EFFAF1 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2930,6 +2957,17 @@
 			name = Sharing;
 			sourceTree = "<group>";
 		};
+		E131CB5B16CAD638004B0314 /* Test Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				E150520D16CAC75A00D3DDDC /* CoreDataTestHelper.h */,
+				E150520E16CAC75A00D3DDDC /* CoreDataTestHelper.m */,
+				E131CB5C16CAD659004B0314 /* AsyncTestHelper.h */,
+				E131CB5D16CAD659004B0314 /* AsyncTestHelper.m */,
+			);
+			name = "Test Helpers";
+			sourceTree = "<group>";
+		};
 		E159D1011309AAF200F498E2 /* Migrations */ = {
 			isa = PBXGroup;
 			children = (
@@ -2985,12 +3023,15 @@
 		E16AB92F14D978240047A2E5 /* WordPressTest */ = {
 			isa = PBXGroup;
 			children = (
+				E131CB5B16CAD638004B0314 /* Test Helpers */,
 				E16AB94414D9A13A0047A2E5 /* Test Data */,
 				E16AB93014D978240047A2E5 /* Supporting Files */,
 				E16AB93514D978240047A2E5 /* WordPressTest.h */,
 				E16AB93614D978240047A2E5 /* WordPressTest.m */,
 				E183EC9E16B2164900C2EB11 /* EditPostViewControllerTest.h */,
 				E183EC9F16B2164900C2EB11 /* EditPostViewControllerTest.m */,
+				E150520A16CAC5C400D3DDDC /* BlogJetpackTest.h */,
+				E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */,
 			);
 			path = WordPressTest;
 			sourceTree = "<group>";
@@ -3010,8 +3051,10 @@
 			children = (
 				E16AB94014D97A7D0047A2E5 /* entities.xml */,
 				E16AB94114D97A7D0047A2E5 /* entitiesDecoded.xml */,
+				E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */,
+				E131CB5716CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json */,
 			);
-			name = "Test Data";
+			path = "Test Data";
 			sourceTree = "<group>";
 		};
 		E1756E661694AA1500D9EC00 /* Derived Sources */ = {
@@ -3139,6 +3182,7 @@
 				E16AB92614D978240047A2E5 /* Frameworks */,
 				E16AB92714D978240047A2E5 /* Resources */,
 				E16AB92814D978240047A2E5 /* ShellScript */,
+				08CDD6C52F6F4CE8B478F112 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3374,8 +3418,6 @@
 				A2CDC81214C7681600091CEB /* approve@2x.png in Resources */,
 				A2CDC81314C7681600091CEB /* unapprove.png in Resources */,
 				A2CDC81414C7681600091CEB /* unapprove@2x.png in Resources */,
-				E16AB94214D97A7D0047A2E5 /* entities.xml in Resources */,
-				E16AB94314D97A7D0047A2E5 /* entitiesDecoded.xml in Resources */,
 				E151045E14E27F9300CE282B /* list.png in Resources */,
 				E151045F14E27F9300CE282B /* list@2x.png in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
@@ -3699,12 +3741,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				E16AB93414D978240047A2E5 /* InfoPlist.strings in Resources */,
+				E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */,
+				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
+				E131CB5916CACFDF004B0314 /* entitiesDecoded.xml in Resources */,
+				E131CB5A16CACFE3004B0314 /* entities.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		08CDD6C52F6F4CE8B478F112 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Pods-WordPressTest-resources.sh\"\n";
+		};
 		79289B3ECCA2441197B8D7F6 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3917,6 +3977,9 @@
 				371C367C156CCFDD007EA03E /* SidebarSectionHeaderView.m in Sources */,
 				5DC433321587C3600073CF07 /* PanelViewWrapper.m in Sources */,
 				E183ECA016B2164900C2EB11 /* EditPostViewControllerTest.m in Sources */,
+				E150520C16CAC5C400D3DDDC /* BlogJetpackTest.m in Sources */,
+				E150520F16CAC75A00D3DDDC /* CoreDataTestHelper.m in Sources */,
+				E131CB5E16CAD659004B0314 /* AsyncTestHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4209,9 +4272,8 @@
 		};
 		E16AB93914D978240047A2E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
+			baseConfigurationReference = BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -4244,9 +4306,8 @@
 		};
 		E16AB93A14D978240047A2E5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
+			baseConfigurationReference = BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -4272,9 +4333,8 @@
 		};
 		E16AB93B14D978240047A2E5 /* Distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
+			baseConfigurationReference = BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -4300,9 +4360,8 @@
 		};
 		E16AB93C14D978240047A2E5 /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
+			baseConfigurationReference = BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
