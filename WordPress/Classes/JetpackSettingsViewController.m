@@ -48,16 +48,6 @@
     [super viewDidLoad];
 
     _cloudsView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"clouds_header"]];
-    if ([_blog hasJetpack]) {
-        _messageView.text = NSLocalizedString(@"Looks like you have Jetpack set up on your blog. Congrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", @"");
-    } else {
-        _messageView.text = NSLocalizedString(@"Jetpack 1.8.2 or later is required for stats. Do you want to install Jetpack?", @"");
-    }
-
-    [_messageView sizeToFit];
-    CGRect headerFrame = _headerView.frame;
-    headerFrame.size.height = CGRectGetMaxY(_messageView.frame);
-    _headerView.frame = headerFrame;
 
     self.title = NSLocalizedString(@"Jetpack Connect", @"");
     self.tableView.backgroundView = nil;
@@ -69,7 +59,13 @@
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"") style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
     }
 
+    [self updateMessage];
     [self updateSaveButton];
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self checkForJetpack];
+    });
 
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
     tgr.cancelsTouchesInView = NO;
@@ -156,7 +152,7 @@
 	if ([_blog hasJetpack]) {
 		if (indexPath.section == 0) {
             static NSString *TextCellIdentifier = @"TextCell";
-            UITableViewTextFieldCell *textCell = (UITableViewTextFieldCell *)[tv dequeueReusableCellWithIdentifier:CellIdentifier];
+            UITableViewTextFieldCell *textCell = (UITableViewTextFieldCell *)[tv dequeueReusableCellWithIdentifier:TextCellIdentifier];
             if (textCell == nil) {
                 textCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TextCellIdentifier];
             }
@@ -225,12 +221,10 @@
         } else {
             UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
             navController.modalPresentationStyle = UIModalPresentationPageSheet;
-            webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissModalViewControllerAnimated:)];
+            webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissBrowser)];
             [self presentViewController:navController animated:YES completion:nil];
         }
 	}
-
-	
 }
 
 #pragma mark - UITableViewTextFieldCellDelegate
@@ -271,6 +265,66 @@
 - (void)dismissKeyboard {
     [_usernameCell.textField resignFirstResponder];
     [_passwordCell.textField resignFirstResponder];
+}
+
+- (void)dismissBrowser {
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self checkForJetpack];
+    }];
+}
+
+- (void)updateMessage {
+    if ([_blog hasJetpack]) {
+        _messageView.text = NSLocalizedString(@"Looks like you have Jetpack set up on your blog. Congrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", @"");
+    } else {
+        _messageView.text = NSLocalizedString(@"Jetpack 1.8.2 or later is required for stats. Do you want to install Jetpack?", @"");
+    }
+
+    [_messageView sizeToFit];
+    CGRect headerFrame = _headerView.frame;
+    headerFrame.size.height = CGRectGetMaxY(_messageView.frame) + 10;
+    _headerView.frame = headerFrame;
+}
+
+- (void)checkForJetpack {
+    if ([_blog hasJetpack]) {
+        [self tryLoginWithCurrentWPComCredentials];
+        return;
+    }
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Checking for Jetpack...", @"") maskType:SVProgressHUDMaskTypeBlack];
+    [_blog syncOptionsWithWithSuccess:^{
+        [SVProgressHUD dismiss];
+        if ([_blog hasJetpack]) {
+            [self updateMessage];
+            [self.tableView reloadData];
+            double delayInSeconds = 0.1;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self tryLoginWithCurrentWPComCredentials];
+            });
+        }
+    } failure:^(NSError *error) {
+        [SVProgressHUD dismiss];
+        [WPError showAlertWithError:error];
+    }];
+}
+
+- (void)tryLoginWithCurrentWPComCredentials {
+    if ([_blog hasJetpack] && !([[_blog jetpackUsername] length] && [[_blog jetpackPassword] length])) {
+        NSString *wpcomUsername = [[WordPressComApi sharedApi] username];
+        NSString *wpcomPassword = [[WordPressComApi sharedApi] password];
+        if (wpcomPassword && wpcomPassword) {
+            [self tryLoginWithUsername:wpcomUsername andPassword:wpcomPassword];
+        }
+    }
+}
+
+- (void)tryLoginWithUsername:(NSString *)username andPassword:(NSString *)password {
+    NSAssert(username != nil, @"Can't login with a nil username");
+    NSAssert(password != nil, @"Can't login with a nil password");
+    _usernameCell.textField.text = username;
+    _passwordCell.textField.text = password;
+    [self save:nil];
 }
 
 @end
