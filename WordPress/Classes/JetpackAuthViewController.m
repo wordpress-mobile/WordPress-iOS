@@ -66,10 +66,15 @@
     self.tableView.tableFooterView = footerImageView;
 
     self.title = NSLocalizedString(@"Jetpack Connect", @"");
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skip", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(skip:)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"") style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
 
     self.tableView.backgroundColor = [UIColor UIColorFromHex:0xF9F9F9];
     self.tableView.backgroundView = nil;
+}
+
+- (void)skip:(id)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 }
 
 - (void)save:(id)sender {
