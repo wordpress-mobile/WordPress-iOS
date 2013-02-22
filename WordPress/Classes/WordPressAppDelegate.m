@@ -1276,20 +1276,18 @@
 		switch(buttonIndex) {
 			case 0: {
 				HelpViewController *helpViewController = [[HelpViewController alloc] init];
-				
-				if (IS_IPAD && self.panelNavigationController.modalViewController) {
-					[self.navigationController pushViewController:helpViewController animated:YES];
-				}
-				else {
-                    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
-					if (IS_IPAD) {
-						aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-						aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-					}
-                    
+                UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
+                if (IS_IPAD) {
+                    aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                    aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+                }
+
+                if (IS_IPAD && self.panelNavigationController.modalViewController) {
+                    [self.panelNavigationController.modalViewController presentModalViewController:aNavigationController animated:YES];
+                } else {
                     [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
-				}
-				
+                }
+
 				break;
 			}
 			case 1:
