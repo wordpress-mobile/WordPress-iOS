@@ -561,13 +561,7 @@
         navigationType == UIWebViewNavigationTypeLinkClicked
         ) { 
         
-        WPWebViewController *webViewController;
-        if (IS_IPAD) {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
-        }
-        else {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-        }
+        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         [webViewController setUrl:[request URL]];
         if ( self.panelNavigationController  )
             [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];

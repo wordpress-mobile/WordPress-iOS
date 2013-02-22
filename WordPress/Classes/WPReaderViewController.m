@@ -76,10 +76,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
         
         self.topicsViewController = [[WPReaderTopicsViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil];
         self.topicsViewController.delegate = self;
-        if (IS_IPAD)
-            self.detailViewController = [[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
-        else 
-            self.detailViewController = [[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
+        self.detailViewController = [[WPReaderDetailViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
         self.detailViewController.delegate = self;
 
     }
@@ -475,12 +472,8 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
         } else if ( [requestedURLAbsoluteString rangeOfString:kMobileReaderFPURL].location == NSNotFound
                    && [requestedURLAbsoluteString rangeOfString:kMobileReaderURL].location == NSNotFound ) {
             //When in FP and the user click on an item we should push a new VC into the stack
-            WPWebViewController *webViewController;
-            if (IS_IPAD)
-                webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil]; 
-            else 
-                webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-            webViewController.url = [request URL]; 
+            WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+            webViewController.url = [request URL];
             [self.panelNavigationController popToRootViewControllerAnimated:NO];
             [self.panelNavigationController pushViewController:detailViewController animated:YES];
             return NO;

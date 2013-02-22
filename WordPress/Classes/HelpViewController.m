@@ -53,13 +53,7 @@
 }
 
 -(void)helpButtonTap: (id)sender {
-    WPWebViewController *webViewController = nil;
-    if ( IS_IPAD ) {
-        webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
-    }
-    else {
-        webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-    }
+    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     UIButton *button = (UIButton*)sender;
     if (button.tag == 0)
         [webViewController setUrl:[NSURL URLWithString:@"http://ios.wordpress.org/faq"]];

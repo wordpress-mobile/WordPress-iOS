@@ -397,12 +397,7 @@
                     path = [msg substringWithRange:rng];
                 }
                 
-                WPWebViewController *webViewController;
-                if ( IS_IPAD ) {
-                    webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
-                } else {
-                    webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-                }
+                WPWebViewController *webViewController = [[WPWebViewController alloc] init];
                 [webViewController setUrl:[NSURL URLWithString:path]];
                 [webViewController setUsername:self.username];
                 [webViewController setPassword:self.password];

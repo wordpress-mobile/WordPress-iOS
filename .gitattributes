@@ -793,7 +793,7 @@ WordPress/Resources-iPad/EditPostViewController~ipad.xib -text
 WordPress/Resources-iPad/MainWindow-iPad.xib -text
 WordPress/Resources-iPad/PostMediaViewController-iPad.xib -text
 WordPress/Resources-iPad/PostViewController-iPad.xib -text
-WordPress/Resources-iPad/WPWebViewController-iPad.xib -text
+WordPress/Resources-iPad/WPWebViewController~ipad.xib -text
 WordPress/Resources-iPad/WebSignupViewController-iPad.xib -text
 WordPress/Resources/AboutViewController.xib -text
 WordPress/Resources/AddSiteViewController.xib -text

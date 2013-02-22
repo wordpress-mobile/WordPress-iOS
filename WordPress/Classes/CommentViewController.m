@@ -712,13 +712,7 @@
     Blog *blog = [[self comment] blog];
     
 	if (url != nil && [[url description] length] > 0) {
-        WPWebViewController *webViewController;
-        if (IS_IPAD) {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
-        }
-        else {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-        }
+        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         [webViewController setUrl:url];
 
         if (blog.isPrivate && [blog isWPcom]) {

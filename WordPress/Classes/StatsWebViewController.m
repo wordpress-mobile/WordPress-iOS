@@ -419,14 +419,9 @@ static NSString *_lastAuthedName = nil;
         
         if ([host rangeOfString:@"wordpress.com"].location == NSNotFound ||
             [query rangeOfString:@"no-chrome"].location == NSNotFound) {
-            WPWebViewController *controller;
-            if (IS_IPAD) {
-                controller = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
-            } else {
-                controller = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-            }
-            [controller setUrl:request.URL];
-            [self.panelNavigationController pushViewController:controller fromViewController:self animated:YES];
+            WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+            [webViewController setUrl:request.URL];
+            [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
             return NO;
         }
         

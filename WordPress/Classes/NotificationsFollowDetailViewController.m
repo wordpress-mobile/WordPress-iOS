@@ -275,14 +275,7 @@
     
     NSURL *webViewURL = [NSURL URLWithString:url];
     if (webViewURL) {
-        WPWebViewController *webViewController = nil;
-        if ( IS_IPAD ) {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
-        }
-        else {
-            webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-        }
-        
+        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         [webViewController setUrl:webViewURL];
         [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
     }
@@ -311,13 +304,7 @@
             NSURL *blogURL = [NSURL URLWithString:blogURLString];
             if (!blogURL)
                 return;
-            WPWebViewController *webViewController = nil;
-            if ( IS_IPAD ) {
-                webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController-iPad" bundle:nil];
-            }
-            else {
-                webViewController = [[WPWebViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-            }
+            WPWebViewController *webViewController = [[WPWebViewController alloc] init];
             [webViewController setUsername:[WordPressComApi sharedApi].username];
             [webViewController setPassword:[WordPressComApi sharedApi].password];
             [webViewController setUrl:blogURL];
