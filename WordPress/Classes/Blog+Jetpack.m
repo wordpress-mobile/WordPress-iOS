@@ -140,16 +140,21 @@ NSString * const BlogJetpackKeychainPrefix = @"jetpackblog-";
     return [NSString stringWithFormat:@"%@%@", BlogJetpackKeychainPrefix, self.url];
 }
 
-- (void)removeWithJetpack {
+/*
+ Replacement method for `-[Blog remove]`
+ 
+ @warning Don't call this directly
+ */
+- (void)removeWithoutJetpack {
     [self removeJetpackCredentials];
 
     // Since we exchanged implementations, this actually calls `-[Blog remove]`
-    [self removeWithJetpack];
+    [self removeWithoutJetpack];
 }
 
 + (void)load {
     Method originalRemove = class_getInstanceMethod(self, @selector(remove));
-    Method customRemove = class_getInstanceMethod(self, @selector(removeWithJetpack));
+    Method customRemove = class_getInstanceMethod(self, @selector(removeWithoutJetpack));
     method_exchangeImplementations(originalRemove, customRemove);
 }
 
