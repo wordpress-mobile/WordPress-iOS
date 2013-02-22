@@ -13,6 +13,7 @@
 #import "SFHFKeychainUtils.h"
 #import "JSONKit.h"
 #import "ReachabilityUtils.h"
+#import "NSString+Helpers.h"
 
 #ifdef DEBUG
 #define kReaderRefreshThreshold 10*60 // 10min
@@ -361,9 +362,9 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     NSMutableURLRequest *loginRequest = [[NSMutableURLRequest alloc] initWithURL:loginURL];
     
     NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&rememberme=forever&redirect_to=%@",
-                              [self.username stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                              [self.password stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],
-                              [self.url.absoluteString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                              [self.username stringByUrlEncoding],
+                              [self.password stringByUrlEncoding],
+                              [self.url.absoluteString stringByUrlEncoding]];
     loginRequest.HTTPBody = [request_body dataUsingEncoding:NSUTF8StringEncoding];
     loginRequest.HTTPMethod = @"POST";
     [loginRequest setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
