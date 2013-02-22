@@ -7,7 +7,7 @@
 //
 
 #import "JetpackAuthUtil.h"
-#import "Blog.h"
+#import "Blog+Jetpack.h"
 #import "SFHFKeychainUtils.h"
 #import "AFHTTPClient.h"
 #import "AFXMLRequestOperation.h"
@@ -175,7 +175,7 @@
         
         //Try to match the Jetpack ID. The WordPress.com ID of the Jetpack blog was introduced in options in Jetpack 1.8.2 or higher
         if ( [blog getOptionValue:@"jetpack_client_id"] ) {
-            NSNumber *jetpackClientID = [blog jetpackClientID];
+            NSNumber *jetpackClientID = [blog jetpackBlogID];
             NSNumber *blogID = [[parsedBlog objectForKey:@"id"] numericValue];
 
             if ([jetpackClientID isEqualToNumber:blogID]) {

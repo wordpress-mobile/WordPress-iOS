@@ -7,7 +7,7 @@
 //
 
 #import "JetpackSettingsViewController.h"
-#import "Blog.h"
+#import "Blog+Jetpack.h"
 #import "SFHFKeychainUtils.h"
 #import "WPWebViewController.h"
 #import "ReachabilityUtils.h"
@@ -91,8 +91,8 @@
         return;
     }
             
-    self.username = [JetpackAuthUtil getJetpackUsernameForBlog:blog];
-    self.password = [JetpackAuthUtil getJetpackPasswordForBlog:blog];
+    self.username = blog.jetpackUsername;
+    self.password = blog.jetpackPassword;
         
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button to update Jetpack credentials") 

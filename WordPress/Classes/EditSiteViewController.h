@@ -9,7 +9,7 @@
 #import "WordPressAppDelegate.h"
 #import "UITableViewSwitchCell.h"
 #import "UITableViewTextFieldCell.h"
-#import "Blog.h"
+#import "Blog+Jetpack.h"
 #import "SettingsViewControllerDelegate.h"
 
 @interface EditSiteViewController : UIViewController <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate> {

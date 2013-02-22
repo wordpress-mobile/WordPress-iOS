@@ -7,6 +7,8 @@
 #import "AddSiteViewController.h"
 #import "AddUsersBlogsViewController.h"
 #import "WordPressComApi.h"
+#import "JetpackAuthViewController.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 
 @interface EditSiteViewController (PrivateMethods)
 - (void)validationDidFail:(id)wrong;
@@ -23,27 +25,7 @@
     logoImage.contentMode = UIViewContentModeCenter;
     tableView.tableHeaderView = logoImage;
     
-    // Setup WPcom table header
-//	CGRect headerFrame = CGRectMake(0.0f, 0.0f, 320.0f, 70.0f);
-//	CGRect logoFrame = CGRectMake(40.0f, 20.0f, 229.0f, 43.0f);
-//	if(IS_IPAD == YES) {
-//		logoFrame = CGRectMake(150.0f, 20.0f, 229.0f, 43.0f);
-//	}
-//	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
-//	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg.png"]];
-//	logo.frame = logoFrame;
-//	[headerView addSubview:logo];
-//	[logo release];
-//    tableView.tableHeaderView = headerView;
-    
-//    UIImageView *logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg.png"]];
-//    logoView.frame = CGRectMake(0.0f, 10.0f, 320.0f, 60.0f);
-//    logoView.contentMode = UIViewContentModeCenter;
-//    logoView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//    tableView.tableHeaderView = logoView;
-//    [logoView release];
-	if (IS_IPAD)
-		self.tableView.backgroundView = nil;
+    self.tableView.backgroundView = nil;
 	self.tableView.backgroundColor = [UIColor clearColor];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
     self.navigationItem.title = NSLocalizedString(@"Add Blog", @"");
@@ -86,16 +68,31 @@
             self.blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
 			self.blog.geolocationEnabled = self.geolocationEnabled;
 			[self.blog dataSave];
+            [SVProgressHUD showWithStatus:NSLocalizedString(@"Reading blog options", @"") maskType:SVProgressHUDMaskTypeBlack];
             [self.blog syncBlogWithSuccess:^{
                 [[WordPressComApi sharedApi] syncPushNotificationInfo];
-            } failure:nil];
-            
-            if (IS_IPAD) {
-                [self dismissModalViewControllerAnimated:YES];
-            }
-			else
-				[self.navigationController popToRootViewControllerAnimated:YES];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
+                if ([self.blog hasJetpack]) {
+                    NSString *wpcomUsername = [[WordPressComApi sharedApi] username];
+                    NSString *wpcomPassword = [[WordPressComApi sharedApi] password];
+                    if (wpcomPassword && wpcomPassword) {
+                        // Try with a known WordPress.com username first
+                        [SVProgressHUD showWithStatus:NSLocalizedString(@"Connecting to Jetpack", @"") maskType:SVProgressHUDMaskTypeBlack];
+                        [self.blog validateJetpackUsername:wpcomUsername
+                                                  password:wpcomPassword
+                                                   success:^{
+                                                       [self dismiss];
+                                                   } failure:^(NSError *error) {
+                                                       [self showJetpackAuthentication];
+                                                   }];
+                    } else {
+                        [self showJetpackAuthentication];
+                    }
+                } else {
+                    [self dismiss];
+                }
+            } failure:^(NSError *error) {
+                [SVProgressHUD dismiss];
+            }];
         }
     } else {
         NSError *error = [NSError errorWithDomain:@"WordPress" code:0 userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Sorry, you credentials were good but you don't seem to have access to any blogs", @"")}];
@@ -103,6 +100,22 @@
     }
 	[self.navigationItem setHidesBackButton:NO animated:NO];
     saveButton.enabled = YES;            
+}
+
+- (void)dismiss {
+    [SVProgressHUD dismiss];
+    if (IS_IPAD) {
+        [self dismissModalViewControllerAnimated:YES];
+    }
+    else
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
+}
+
+- (void)showJetpackAuthentication {
+    [SVProgressHUD dismiss];
+    JetpackAuthViewController *jetpackAuthViewController = [[JetpackAuthViewController alloc] initWithBlog:self.blog];
+    [self.navigationController pushViewController:jetpackAuthViewController animated:YES];
 }
 
 @end

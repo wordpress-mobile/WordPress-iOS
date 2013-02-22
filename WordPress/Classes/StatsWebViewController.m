@@ -5,7 +5,7 @@
 //
 
 #import "StatsWebViewController.h"
-#import "Blog.h"
+#import "Blog+Jetpack.h"
 #import "WordPressAppDelegate.h"
 #import "SFHFKeychainUtils.h"
 #import "WordPressComApi.h"
@@ -13,23 +13,19 @@
 #import "AFHTTPRequestOperation.h"
 #import "WPWebViewController.h"
 #import "FileLogger.h" 
-#import "JetpackAuthUtil.h"
 #import "JetpackSettingsViewController.h"
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
 #import "NSString+Helpers.h"
 
-@interface StatsWebViewController () <SettingsViewControllerDelegate, JetpackAuthUtilDelegate> {
+@interface StatsWebViewController () <SettingsViewControllerDelegate> {
     BOOL loadStatsWhenViewAppears;
     BOOL promptCredentialsWhenViewAppears;
     AFHTTPRequestOperation *authRequest;
-    JetpackAuthUtil *jetpackAuthUtil;
     UIAlertView *retryAlertView;
 }
 
-@property (nonatomic, strong) NSString *wporgBlogJetpackKey;
 @property (nonatomic, strong) AFHTTPRequestOperation *authRequest;
-@property (nonatomic, strong) JetpackAuthUtil *jetpackAuthUtil;
 @property (assign) BOOL authed;
 
 + (NSString *)lastAuthedName;
@@ -46,9 +42,7 @@
 @implementation StatsWebViewController
 
 @synthesize blog;
-@synthesize wporgBlogJetpackKey;
 @synthesize authRequest;
-@synthesize jetpackAuthUtil;
 @synthesize authed = authed;
 
 static NSString *_lastAuthedName = nil;
@@ -75,7 +69,6 @@ static NSString *_lastAuthedName = nil;
     if (authRequest && [authRequest isExecuting]) {
         [authRequest cancel];
     }
-    jetpackAuthUtil.delegate = nil;
     retryAlertView.delegate = nil;
 }
 
@@ -186,10 +179,7 @@ static NSString *_lastAuthedName = nil;
     blog = aBlog;
     if (blog) {
         [FileLogger log:@"Loading Stats for the following blog: %@", [blog url]];
-        if (![blog isWPcom]) {
-            self.wporgBlogJetpackKey = [JetpackAuthUtil getWporgBlogJetpackKey:[blog hostURL]];
-        }
-        
+
         WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
         if( !appDelegate.connectionAvailable ) {
             [webView hideRefreshingState];
@@ -216,32 +206,14 @@ static NSString *_lastAuthedName = nil;
 	// Looking for a self-hosted blog with a jetpackClientId and good crednetials.
 	BOOL prompt = NO;
 	
-	if (![blog jetpackClientID]) {
+	if (![blog jetpackBlogID]) {
 		// needs latest jetpack
 		prompt = YES;
 		
 	} else {
 		// Check for credentials.
-		if ([JetpackAuthUtil getJetpackUsernameForBlog:blog] == nil) {
+		if (![blog.jetpackUsername length] || ![blog.jetpackPassword length]) {
 			prompt = YES;
-			
-		} else {
-			// Verify credentials are good
-			NSString *username = [JetpackAuthUtil getJetpackUsernameForBlog:blog];
-			NSString *password = [JetpackAuthUtil getJetpackPasswordForBlog:blog];
-			
-			if ([username length] > 0 && [password length] > 0) {
-				// try to validate
-				if (!jetpackAuthUtil) {
-					self.jetpackAuthUtil = [[JetpackAuthUtil alloc] init];
-					jetpackAuthUtil.delegate = self;
-				}
-				[jetpackAuthUtil validateCredentialsForBlog:blog withUsername:username andPassword:password];
-				
-			} else {
-				prompt = YES;
-				
-			}
 		}
 	}
 		
@@ -255,6 +227,8 @@ static NSString *_lastAuthedName = nil;
         [alertView show];
         
         [self promptForCredentials];
+    } else {
+        [self loadStats];
     }
 }
 
@@ -292,15 +266,14 @@ static NSString *_lastAuthedName = nil;
     
     NSString *username = @"";
     NSString *password = @"";
-    NSError *error;
     if ([blog isWPcom]) {
         //use set username/pw for wpcom blogs
-        username = [blog username];
-        password = [SFHFKeychainUtils getPasswordForUsername:[blog username] andServiceName:@"WordPress.com" error:&error];
+        username = blog.username;
+        password = [blog fetchPassword];
         
     } else {
-        username = [JetpackAuthUtil getJetpackUsernameForBlog:blog];
-        password = [JetpackAuthUtil getJetpackPasswordForBlog:blog];
+        username = blog.jetpackUsername;
+        password = blog.jetpackPassword;
     }
     
     // Skip the auth call to reduce loadtime if its the same username as before.
@@ -386,7 +359,7 @@ static NSString *_lastAuthedName = nil;
     
 	NSNumber *blogID = [blog blogID];
 	if(![blog isWPcom]) {
-		blogID = [blog jetpackClientID];
+		blogID = [blog jetpackBlogID];
 	}
 	
     NSString *pathStr = [NSString stringWithFormat:@"http://wordpress.com/?no-chrome#!/my-stats/?blog=%@&unit=1", blogID];
@@ -478,36 +451,6 @@ static NSString *_lastAuthedName = nil;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
     // -999: Canceled AJAX request
     // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
-}
-
-
-#pragma mark -
-#pragma mark JetpackUtilDelegate
-
-- (void)jetpackAuthUtil:(JetpackAuthUtil *)util didValidateCredentailsForBlog:(Blog *)blog {
-    [self loadStats];
-}
-
-
-- (void)jetpackAuthUtil:(JetpackAuthUtil *)util noRecordForBlog:(Blog *)blog {
-    [self showBlogSettings];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Could not retrieve stats", @"")
-                                                        message:NSLocalizedString(@"Unable to retrieve stats. Make sure the blog has Jetpack 1.8.2 or later installed, and is connected to right account.", @"")
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                              otherButtonTitles: nil];
-    [alertView show];
-}
-
-
-- (void)jetpackAuthUtil:(JetpackAuthUtil *)util errorValidatingCredentials:(Blog *)blog withError:(NSString *)errorMessage {
-    [self showBlogSettings];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error validating Jetpack", @"")
-                                                        message:errorMessage
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", nil)
-                                              otherButtonTitles:nil];
-    [alertView show];
 }
 
 @end

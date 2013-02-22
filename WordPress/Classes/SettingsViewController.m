@@ -40,6 +40,7 @@
 #import "AboutViewController.h"
 #import "SettingsPageViewController.h"
 #import "NotificationSettingsViewController.h"
+#import "Blog+Jetpack.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,

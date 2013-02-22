@@ -410,6 +410,8 @@ WordPress/Classes/BetaFeedbackViewController.h -text
 WordPress/Classes/BetaFeedbackViewController.m -text
 WordPress/Classes/BetaUIWindow.h -text
 WordPress/Classes/BetaUIWindow.m -text
+WordPress/Classes/Blog+Jetpack.h -text
+WordPress/Classes/Blog+Jetpack.m -text
 WordPress/Classes/Blog.h -text
 WordPress/Classes/Blog.m -text
 WordPress/Classes/BlogSelectorButton.h -text
@@ -480,6 +482,8 @@ WordPress/Classes/InstapaperActivity.h -text
 WordPress/Classes/InstapaperActivity.m -text
 WordPress/Classes/JetpackAuthUtil.h -text
 WordPress/Classes/JetpackAuthUtil.m -text
+WordPress/Classes/JetpackAuthViewController.h -text
+WordPress/Classes/JetpackAuthViewController.m -text
 WordPress/Classes/JetpackSettingsViewController.h -text
 WordPress/Classes/JetpackSettingsViewController.m -text
 WordPress/Classes/JetpackSettingsViewController.xib -text
@@ -792,6 +796,10 @@ WordPress/Resources/Images/cell_gradient_bg.png -text
 WordPress/Resources/Images/cell_gradient_bg@2x.png -text
 WordPress/Resources/Images/check.png -text
 WordPress/Resources/Images/check@2x.png -text
+WordPress/Resources/Images/clouds_footer.png -text svneol=unset#unset
+WordPress/Resources/Images/clouds_footer@2x.png -text svneol=unset#unset
+WordPress/Resources/Images/clouds_header.png -text svneol=unset#unset
+WordPress/Resources/Images/clouds_header@2x.png -text svneol=unset#unset
 WordPress/Resources/Images/doneButton.png -text
 WordPress/Resources/Images/doneButton@2x.png -text
 WordPress/Resources/Images/doneButtonHighlighted.png -text
@@ -838,6 +846,8 @@ WordPress/Resources/Images/link~ipad.png -text svneol=unset#unset
 WordPress/Resources/Images/list.png -text svneol=unset#unset
 WordPress/Resources/Images/list@2x.png -text svneol=unset#unset
 WordPress/Resources/Images/lock.png -text
+WordPress/Resources/Images/logo_jetpack.png -text svneol=unset#unset
+WordPress/Resources/Images/logo_jetpack@2x.png -text svneol=unset#unset
 WordPress/Resources/Images/logo_wpcom.png -text
 WordPress/Resources/Images/logo_wpcom@2x.png -text
 WordPress/Resources/Images/logo_wporg.png -text

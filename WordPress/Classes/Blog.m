@@ -274,14 +274,6 @@
             nil];
 }
 
-- (BOOL)hasJetpack {
-    return (nil != [self getOptionValue:@"jetpack_version"]);
-}
-
-- (NSNumber *)jetpackClientID {
-	return [[self getOptionValue:@"jetpack_client_id"] numericValue];
-}
-
 - (void)awakeFromFetch {
     [self reachability];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAllHTTPOperationsCancelled:) name:kAllHTTPOperationsCancelledNotification object:nil];
