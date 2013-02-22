@@ -7,7 +7,7 @@
 #import "AddSiteViewController.h"
 #import "AddUsersBlogsViewController.h"
 #import "WordPressComApi.h"
-#import "JetpackAuthViewController.h"
+#import "JetpackSettingsViewController.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 
 @interface EditSiteViewController (PrivateMethods)
@@ -114,8 +114,12 @@
 
 - (void)showJetpackAuthentication {
     [SVProgressHUD dismiss];
-    JetpackAuthViewController *jetpackAuthViewController = [[JetpackAuthViewController alloc] initWithBlog:self.blog];
-    [self.navigationController pushViewController:jetpackAuthViewController animated:YES];
+    JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
+    jetpackSettingsViewController.canBeSkipped = YES;
+    [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
+        [self.presentingViewController dismissModalViewControllerAnimated:YES];
+    }];
+    [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
 }
 
 @end

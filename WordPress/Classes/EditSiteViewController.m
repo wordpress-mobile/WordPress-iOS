@@ -313,8 +313,10 @@
     [tv deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == 2) {
-        JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithNibName:nil bundle:nil];
-        controller.blog = blog;
+        JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:blog];
+        [controller setCompletionBlock:^(BOOL didAuthenticate) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
         [self.navigationController pushViewController:controller animated:YES];
     }
 }

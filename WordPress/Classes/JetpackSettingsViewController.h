@@ -7,32 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JetpackAuthUtil.h"
-#import "UITableViewActivityCell.h"
-#import "UITableViewTextFieldCell.h"
-#import "SettingsViewControllerDelegate.h"
-
-#define kNeedJetpackLogIn NSLocalizedString(@"To access stats, enter the WordPress.com login used with the Jetpack plugin.", @"");
 
 @class Blog;
 
-@interface JetpackSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIAlertViewDelegate> {
-    IBOutlet UITableView *tableView;
-    Blog *blog;
-    UITextField *usernameTextField;
-    UITextField *passwordTextField;
-    UITextField *lastTextField;
-    UITableViewActivityCell *verifyCredentialsActivityCell;
-    UITableViewTextFieldCell *usernameCell;
-    UITableViewTextFieldCell *passwordCell;
-    BOOL isTesting;
-    BOOL isTestSuccessful;
-    JetpackAuthUtil *jetpackAuthUtils;
-}
+typedef void(^JetpackSettingsCompletionBlock)(BOOL didAuthenticate);
 
-@property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) Blog *blog;
-@property (nonatomic, weak) id<SettingsViewControllerDelegate> delegate;
-@property (nonatomic, assign) BOOL isCancellable;
-
+@interface JetpackSettingsViewController : UITableViewController
+@property (nonatomic, assign) BOOL canBeSkipped;
+// Always add the buttons to the view. Don't touch the navigation bar
+@property (nonatomic, assign) BOOL ignoreNavigationController;
+@property (nonatomic, copy) JetpackSettingsCompletionBlock completionBlock;
+- (void)setCompletionBlock:(JetpackSettingsCompletionBlock)completionBlock; // Just so Xcode autocompletes the block
+- (id)initWithBlog:(Blog *)blog;
 @end

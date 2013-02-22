@@ -150,24 +150,26 @@ static NSString *_lastAuthedName = nil;
         controller.isCancellable = YES;
         controller.blog = self.blog;
         navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    } else {
-        JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithNibName:nil bundle:nil];
-        controller.delegate = self;
-        controller.isCancellable = YES;
-        controller.blog = self.blog;
-        navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    }
-    
-    
-    if(IS_IPAD == YES) {
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         navController.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self.panelNavigationController presentModalViewController:navController animated:YES];
+    } else {
+        JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:blog];
+        controller.ignoreNavigationController = YES;
+        __weak JetpackSettingsViewController *safeController = controller;
+        [controller setCompletionBlock:^(BOOL didAuthenticate) {
+            if (didAuthenticate) {
+                [safeController.view removeFromSuperview];
+                [safeController removeFromParentViewController];
+                self.webView.hidden = NO;
+                [self loadStats];
+            }
+        }];
+        [self addChildViewController:controller];
+        self.webView.hidden = YES;
+        [self.view addSubview:controller.view];
+        controller.view.frame = self.view.bounds;
     }
-    
-    [self.panelNavigationController presentModalViewController:navController animated:YES];
-    
-//    [navController release];
-
 }
 
 
@@ -218,14 +220,6 @@ static NSString *_lastAuthedName = nil;
 	}
 		
     if (prompt) {
-        NSString *msg = kNeedJetpackLogIn;
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Jetpack Needed" 
-                                                            message:msg 
-                                                           delegate:nil 
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"OK") 
-                                                  otherButtonTitles:nil, nil];
-        [alertView show];
-        
         [self promptForCredentials];
     } else {
         [self loadStats];

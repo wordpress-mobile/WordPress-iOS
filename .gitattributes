@@ -538,10 +538,6 @@ WordPress/Classes/HelpViewController.h -text
 WordPress/Classes/HelpViewController.m -text
 WordPress/Classes/InstapaperActivity.h -text
 WordPress/Classes/InstapaperActivity.m -text
-WordPress/Classes/JetpackAuthUtil.h -text
-WordPress/Classes/JetpackAuthUtil.m -text
-WordPress/Classes/JetpackAuthViewController.h -text
-WordPress/Classes/JetpackAuthViewController.m -text
 WordPress/Classes/JetpackSettingsViewController.h -text
 WordPress/Classes/JetpackSettingsViewController.m -text
 WordPress/Classes/JetpackSettingsViewController.xib -text
@@ -854,8 +850,6 @@ WordPress/Resources/Images/cell_gradient_bg.png -text
 WordPress/Resources/Images/cell_gradient_bg@2x.png -text
 WordPress/Resources/Images/check.png -text
 WordPress/Resources/Images/check@2x.png -text
-WordPress/Resources/Images/clouds_footer.png -text svneol=unset#unset
-WordPress/Resources/Images/clouds_footer@2x.png -text svneol=unset#unset
 WordPress/Resources/Images/clouds_header.png -text svneol=unset#unset
 WordPress/Resources/Images/clouds_header@2x.png -text svneol=unset#unset
 WordPress/Resources/Images/doneButton.png -text

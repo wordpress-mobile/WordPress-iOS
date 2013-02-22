@@ -341,7 +341,6 @@
 		5D66514C1637325800EBDA7D /* snd_swipe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D6651481637325800EBDA7D /* snd_swipe.caf */; };
 		5D66514D1637325800EBDA7D /* snd_rollup.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D6651491637325800EBDA7D /* snd_rollup.caf */; };
 		5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D69DBC3165428CA00A2D1F7 /* n.caf */; };
-		5D6FA04615E5361000F8F7E6 /* JetpackAuthUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6FA04515E5361000F8F7E6 /* JetpackAuthUtil.m */; };
 		5D7C22B615A4FCFE00FCE1C2 /* down_dim.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7C22B215A4FCC200FCE1C2 /* down_dim.png */; };
 		5D7C22B715A4FCFE00FCE1C2 /* down_dim@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7C22B315A4FCCE00FCE1C2 /* down_dim@2x.png */; };
 		5D7C22B815A4FCFE00FCE1C2 /* up_dim.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D7C22B415A4FCDE00FCE1C2 /* up_dim.png */; };
@@ -554,11 +553,8 @@
 		E125451812BF68F900D87A0A /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = E125451712BF68F900D87A0A /* Page.m */; };
 		E128566415103A3600406BC9 /* keyboardButtoniPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566215103A3600406BC9 /* keyboardButtoniPad@2x.png */; };
 		E128566515103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E128566315103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png */; };
-		E12A08E016C96E8500E3DDF6 /* JetpackAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E12A08DF16C96E8500E3DDF6 /* JetpackAuthViewController.m */; };
 		E12A08E316C9706200E3DDF6 /* clouds_header.png in Resources */ = {isa = PBXBuildFile; fileRef = E12A08E116C9706200E3DDF6 /* clouds_header.png */; };
 		E12A08E416C9706200E3DDF6 /* clouds_header@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E12A08E216C9706200E3DDF6 /* clouds_header@2x.png */; };
-		E12A08EB16C97F0C00E3DDF6 /* clouds_footer.png in Resources */ = {isa = PBXBuildFile; fileRef = E12A08E916C97F0C00E3DDF6 /* clouds_footer.png */; };
-		E12A08EC16C97F0C00E3DDF6 /* clouds_footer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E12A08EA16C97F0C00E3DDF6 /* clouds_footer@2x.png */; };
 		E12AAB621513C4B6009D025B /* WPComOAuthController.m in Sources */ = {isa = PBXBuildFile; fileRef = E12AAB611513C4B6009D025B /* WPComOAuthController.m */; };
 		E12AAB641513C4CA009D025B /* WPComOAuthController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E12AAB631513C4CA009D025B /* WPComOAuthController.xib */; };
 		E12F55F214A1F22D0060A510 /* NSStringAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = E12F55E914A1F22D0060A510 /* NSStringAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1103,8 +1099,6 @@
 		5D6651481637325800EBDA7D /* snd_swipe.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = snd_swipe.caf; path = Resources/Sounds/snd_swipe.caf; sourceTree = "<group>"; };
 		5D6651491637325800EBDA7D /* snd_rollup.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = snd_rollup.caf; path = Resources/Sounds/snd_rollup.caf; sourceTree = "<group>"; };
 		5D69DBC3165428CA00A2D1F7 /* n.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = n.caf; path = Resources/Sounds/n.caf; sourceTree = "<group>"; };
-		5D6FA04415E5361000F8F7E6 /* JetpackAuthUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackAuthUtil.h; sourceTree = "<group>"; };
-		5D6FA04515E5361000F8F7E6 /* JetpackAuthUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackAuthUtil.m; sourceTree = "<group>"; };
 		5D7C22B215A4FCC200FCE1C2 /* down_dim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = down_dim.png; path = Resources/Images/down_dim.png; sourceTree = "<group>"; };
 		5D7C22B315A4FCCE00FCE1C2 /* down_dim@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "down_dim@2x.png"; path = "Resources/Images/down_dim@2x.png"; sourceTree = "<group>"; };
 		5D7C22B415A4FCDE00FCE1C2 /* up_dim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = up_dim.png; path = Resources/Images/up_dim.png; sourceTree = "<group>"; };
@@ -1406,12 +1400,8 @@
 		E125451712BF68F900D87A0A /* Page.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Page.m; sourceTree = "<group>"; };
 		E128566215103A3600406BC9 /* keyboardButtoniPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keyboardButtoniPad@2x.png"; path = "Resources/Images/keyboardButtoniPad@2x.png"; sourceTree = "<group>"; };
 		E128566315103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keyboardButtoniPadHighlighted@2x.png"; path = "Resources/Images/keyboardButtoniPadHighlighted@2x.png"; sourceTree = "<group>"; };
-		E12A08DE16C96E8500E3DDF6 /* JetpackAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackAuthViewController.h; sourceTree = "<group>"; };
-		E12A08DF16C96E8500E3DDF6 /* JetpackAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackAuthViewController.m; sourceTree = "<group>"; };
 		E12A08E116C9706200E3DDF6 /* clouds_header.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = clouds_header.png; path = Resources/Images/clouds_header.png; sourceTree = "<group>"; };
 		E12A08E216C9706200E3DDF6 /* clouds_header@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clouds_header@2x.png"; path = "Resources/Images/clouds_header@2x.png"; sourceTree = "<group>"; };
-		E12A08E916C97F0C00E3DDF6 /* clouds_footer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = clouds_footer.png; path = Resources/Images/clouds_footer.png; sourceTree = "<group>"; };
-		E12A08EA16C97F0C00E3DDF6 /* clouds_footer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "clouds_footer@2x.png"; path = "Resources/Images/clouds_footer@2x.png"; sourceTree = "<group>"; };
 		E12AAB601513C4B6009D025B /* WPComOAuthController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPComOAuthController.h; sourceTree = "<group>"; };
 		E12AAB611513C4B6009D025B /* WPComOAuthController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPComOAuthController.m; sourceTree = "<group>"; };
 		E12AAB631513C4CA009D025B /* WPComOAuthController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WPComOAuthController.xib; path = Resources/WPComOAuthController.xib; sourceTree = "<group>"; };
@@ -2048,8 +2038,6 @@
 			children = (
 				5D1392A5157D4D92007D51B8 /* StatsWebViewController.h */,
 				5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */,
-				5D6FA04415E5361000F8F7E6 /* JetpackAuthUtil.h */,
-				5D6FA04515E5361000F8F7E6 /* JetpackAuthUtil.m */,
 				5D1EE7FF15E7AF3E007F1F02 /* JetpackSettingsViewController.h */,
 				5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */,
 			);
@@ -2468,8 +2456,6 @@
 				8369FF8F11F4F3BF003106C7 /* AddUsersBlogsViewController.m */,
 				8398EE3011ACE206000FE6E0 /* WebSignupViewController.h */,
 				8398EE3111ACE206000FE6E0 /* WebSignupViewController.m */,
-				E12A08DE16C96E8500E3DDF6 /* JetpackAuthViewController.h */,
-				E12A08DF16C96E8500E3DDF6 /* JetpackAuthViewController.m */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -2497,8 +2483,6 @@
 				FD22C2B616CD2B20002BA030 /* navbar_settings@2x.png */,
 				E15051CC16CA8E4900D3DDDC /* logo_jetpack.png */,
 				E15051CD16CA8E4900D3DDDC /* logo_jetpack@2x.png */,
-				E12A08E916C97F0C00E3DDF6 /* clouds_footer.png */,
-				E12A08EA16C97F0C00E3DDF6 /* clouds_footer@2x.png */,
 				E12A08E116C9706200E3DDF6 /* clouds_header.png */,
 				E12A08E216C9706200E3DDF6 /* clouds_header@2x.png */,
 				3716E40216729B960035F8C4 /* action_icon_followed.png */,
@@ -3729,8 +3713,6 @@
 				E1D0D84416D3D2BB00E33F4C /* NNReadabilityActivity~iphone.png in Resources */,
 				E12A08E316C9706200E3DDF6 /* clouds_header.png in Resources */,
 				E12A08E416C9706200E3DDF6 /* clouds_header@2x.png in Resources */,
-				E12A08EB16C97F0C00E3DDF6 /* clouds_footer.png in Resources */,
-				E12A08EC16C97F0C00E3DDF6 /* clouds_footer@2x.png in Resources */,
 				E15051CE16CA8E4900D3DDDC /* logo_jetpack.png in Resources */,
 				E15051CF16CA8E4900D3DDDC /* logo_jetpack@2x.png in Resources */,
 			);
@@ -3931,7 +3913,6 @@
 				5DEB6EF515B471B3004E81F3 /* WPPopoverBackgroundView.m in Sources */,
 				CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */,
 				5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */,
-				5D6FA04615E5361000F8F7E6 /* JetpackAuthUtil.m in Sources */,
 				5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */,
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
 				5D87E10C15F5120C0012C595 /* SettingsPageViewController.m in Sources */,
@@ -3963,7 +3944,6 @@
 				E1D0D82A16D3D19200E33F4C /* PocketAPILogin.m in Sources */,
 				E1D0D82B16D3D19200E33F4C /* PocketAPIOperation.m in Sources */,
 				E1D0D84716D3D2EA00E33F4C /* PocketActivity.m in Sources */,
-				E12A08E016C96E8500E3DDF6 /* JetpackAuthViewController.m in Sources */,
 				E15051CB16CA5DDB00D3DDDC /* Blog+Jetpack.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
