@@ -456,9 +456,14 @@ NSLog(@"%@", self.sectionInfoArray);
     NSDictionary *dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"kSelectedSidebarIndexDictionary"];
     NSIndexPath *preservedIndexPath = [NSIndexPath indexPathForRow:[[dict objectForKey:@"row"] integerValue] inSection:[[dict objectForKey:@"section"] integerValue]];
 
+    if (!preservedIndexPath) {
+        return [self selectFirstAvailableItem];
+    }
+
     if (preservedIndexPath.section >= [self numberOfSectionsInTableView:self.tableView] || preservedIndexPath.row >= [self tableView:self.tableView numberOfRowsInSection:preservedIndexPath.section]) {
         // preserved index path is not valid anymore
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"kSelectedSidebarIndexDictionary"];
+        [self selectFirstAvailableItem];
         return;
     }
     
