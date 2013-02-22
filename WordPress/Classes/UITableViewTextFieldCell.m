@@ -47,7 +47,7 @@
     labelSize.width = ceil(labelSize.width/5) * 5; // Round to upper 5
 
     if (IS_IPAD) {
-        frame = CGRectMake(labelSize.width + 50,
+        frame = CGRectMake(labelSize.width + 60,
                            self.textLabel.frame.origin.y,
                            self.frame.size.width - labelSize.width - 100,
                            self.textLabel.frame.size.height);
