@@ -1310,7 +1310,6 @@ WordPress/Vendor/xmlrpc/XMLRPCRequest.h -text
 WordPress/Vendor/xmlrpc/XMLRPCRequest.m -text
 WordPress/Vendor/xmlrpc/XMLRPCResponse.h -text
 WordPress/Vendor/xmlrpc/XMLRPCResponse.m -text
-WordPress/WPAFNetworking.h -text
 WordPress/WordPress[!!-~]copy-Info.plist -text
 WordPress/WordPress.xcodeproj/project.pbxproj -text
 WordPress/WordPress.xcodeproj/xcshareddata/xcschemes/WordPress[!!-~]Internal.xcscheme -text
