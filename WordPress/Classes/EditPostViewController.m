@@ -406,6 +406,11 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 
 
 - (void)refreshButtons {
+    
+    // If we're autosaving our first post remotely, don't mess with the save button because we want it to stay disabled
+    if (![self.apost hasRemote] && _isAutosaving)
+        return;
+    
     if (self.navigationItem.leftBarButtonItem == nil) {
         UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                       target:self
@@ -582,6 +587,12 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         [self showFailedMediaAlert];
         return;
     }
+    
+    if (_isAutosaving) {
+        // Cancel all blog network operations since the user tapped the save/publish button
+        [self.apost.blog.api cancelAllHTTPOperations];
+    }
+    
 	[self savePost:YES];
 }
 
@@ -641,21 +652,37 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     AbstractPostRemoteStatus currentRemoteStatus = self.apost.original.remoteStatus;
     _isAutosaving = YES;
     _hasChangesToAutosave = NO;
+    if (![self.apost hasRemote]) {
+        // If this is the first remote autosave for a post, disable the Publish button for safety's sake
+        [self.navigationItem.rightBarButtonItem setEnabled:NO];
+    }
     [self showAutosaveIndicator];
+    __weak AbstractPost *originalPost = self.apost.original;
     [self.apost.original uploadWithSuccess:^{
+        if (originalPost.revision == nil) {
+            // If the post has been published or dismissed while autosaving
+            // the network request should have been canceled
+            // But just in case, don't try updating this post
+            WPFLog(@"!!! Autosave returned after post editor was dismissed");
+            _isAutosaving = NO;
+            [self hideAutosaveIndicatorWithSuccess:YES];
+            return;
+        }
         NSString *status = self.apost.status;
         [self.apost updateRevision];
         self.apost.status = status;
         _isAutosaving = NO;
         [self hideAutosaveIndicatorWithSuccess:YES];
+        [self.navigationItem.rightBarButtonItem setEnabled:YES];
         if (success) success();
     } failure:^(NSError *error) {
         // Restore current remote status so failed autosaves don't make the post appear as failed
         // Specially useful when offline
-        self.apost.original.remoteStatus = currentRemoteStatus;
+        originalPost.remoteStatus = currentRemoteStatus;
         _isAutosaving = NO;
         _hasChangesToAutosave = YES;
         [self hideAutosaveIndicatorWithSuccess:NO];
+        [self.navigationItem.rightBarButtonItem setEnabled:YES];
     }];
 
     return YES;
