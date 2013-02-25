@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
-#import <Nocilla/Nocilla.h>
+#import <OHHTTPStubs/OHHTTPStubs.h>
 #import "BlogJetpackTest.h"
 #import "CoreDataTestHelper.h"
 #import "AsyncTestHelper.h"
@@ -31,9 +31,13 @@
                               @"readonly": @YES,
                               },
                       };
+    [_blog removeJetpackCredentials];
 }
 
 - (void)tearDown {
+    _blog = nil;
+    [[CoreDataTestHelper sharedHelper] reset];
+    [OHHTTPStubs removeAllRequestHandlers];
 }
 
 - (void)testAssertionsOnWPcom {
@@ -72,16 +76,19 @@
 }
 
 - (void)testValidateCredentials {
-    [[LSNocilla sharedInstance] start];
+    [OHHTTPStubs shouldStubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+        return [[request.URL absoluteString] isEqualToString:@"https://public-api.wordpress.com/get-user-blogs/1.0?f=json"] &&
+        [[request valueForHTTPHeaderField:@"Authorization"] isEqualToString:@"Basic dGVzdDE6dGVzdDE="]; // test1:test1
+    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+        return [OHHTTPStubsResponse responseWithFile:@"get-user-blogs_doesnt-have-blog.json" contentType:@"application/json" responseTime:OHHTTPStubsDownloadSpeedWifi];
+    }];
 
-    NSString *correct = [NSString stringWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"get-user-blogs_has-blog" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
-    NSString *wrong = [NSString stringWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"get-user-blogs_doesnt-have-blog" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
-
-    stubRequest(@"GET", @"https://public-api.wordpress.com/get-user-blogs/1.0?f=json").
-    withHeader(@"Authorization", @"Basic dGVzdDE6dGVzdDE="). // test1:test1
-    andReturn(200).
-    withHeader(@"Content-Type", @"application/json").
-    withBody(wrong);
+    [OHHTTPStubs shouldStubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+        return [[request.URL absoluteString] isEqualToString:@"https://public-api.wordpress.com/get-user-blogs/1.0?f=json"] &&
+        [[request valueForHTTPHeaderField:@"Authorization"] isEqualToString:@"Basic dGVzdDI6dGVzdDI="]; // test2:test2
+    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+        return [OHHTTPStubsResponse responseWithFile:@"get-user-blogs_has-blog.json" contentType:@"application/json" responseTime:OHHTTPStubsDownloadSpeedWifi];
+    }];
 
     ATHStart();
     [_blog validateJetpackUsername:@"test1" password:@"test1" success:^{
@@ -94,12 +101,6 @@
     }];
     ATHWait();
 
-    stubRequest(@"GET", @"https://public-api.wordpress.com/get-user-blogs/1.0?f=json").
-    withHeader(@"Authorization", @"Basic dGVzdDI6dGVzdDI="). // test2:test2
-    andReturn(200).
-    withHeader(@"Content-Type", @"application/json").
-    withBody(correct);
-
     ATHStart();
     [_blog validateJetpackUsername:@"test2" password:@"test2" success:^{
         ATHNotify();
@@ -108,8 +109,6 @@
         ATHNotify();
     }];
     ATHWait();
-
-    [[LSNocilla sharedInstance] stop];
 }
 
 @end

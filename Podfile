@@ -14,5 +14,5 @@ pod 'SFHFKeychainUtils', '~> 0.0.1'
 pod 'NSObject-SafeExpectations', :podspec => 'https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec'
 
 target :WordPressTest, :exclusive => true do
-  pod 'Nocilla', '~> 0.2'
+  pod 'OHHTTPStubs', '~> 1.1'
 end
