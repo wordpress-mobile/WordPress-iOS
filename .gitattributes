@@ -1360,6 +1360,8 @@ WordPress/WordPressTest/Test[!!-~]Data/entities.xml -text
 WordPress/WordPressTest/Test[!!-~]Data/entitiesDecoded.xml -text
 WordPress/WordPressTest/Test[!!-~]Data/get-user-blogs_doesnt-have-blog.json -text
 WordPress/WordPressTest/Test[!!-~]Data/get-user-blogs_has-blog.json -text
+WordPress/WordPressTest/Test[!!-~]Data/xmlrpc-response-getpost.xml -text
+WordPress/WordPressTest/Test[!!-~]Data/xmlrpc-response-newpost.xml -text
 WordPress/WordPressTest/UIKitTestHelper.h -text
 WordPress/WordPressTest/UIKitTestHelper.m -text
 WordPress/WordPressTest/WordPressTest-Info.plist -text

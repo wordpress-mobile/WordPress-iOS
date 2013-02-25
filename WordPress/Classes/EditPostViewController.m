@@ -19,6 +19,9 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagFailedMedia,
 };
 
+NSString *const EditPostViewControllerDidAutosaveNotification = @"EditPostViewControllerDidAutosaveNotification";
+NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostViewControllerAutosaveDidFailNotification";
+
 @interface EditPostViewController ()
 @end
 
@@ -675,6 +678,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         [self hideAutosaveIndicatorWithSuccess:YES];
         [self.navigationItem.rightBarButtonItem setEnabled:YES];
         if (success) success();
+        [[NSNotificationCenter defaultCenter] postNotificationName:EditPostViewControllerDidAutosaveNotification object:self];
     } failure:^(NSError *error) {
         // Restore current remote status so failed autosaves don't make the post appear as failed
         // Specially useful when offline
@@ -683,6 +687,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
         _hasChangesToAutosave = YES;
         [self hideAutosaveIndicatorWithSuccess:NO];
         [self.navigationItem.rightBarButtonItem setEnabled:YES];
+        [[NSNotificationCenter defaultCenter] postNotificationName:EditPostViewControllerAutosaveDidFailNotification object:self userInfo:@{@"error": error}];
     }];
 
     return YES;

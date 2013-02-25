@@ -11,6 +11,9 @@
 #import "PostMediaViewController.h"
 #import "PostPreviewViewController.h"
 
+extern NSString *const EditPostViewControllerDidAutosaveNotification;
+extern NSString *const EditPostViewControllerAutosaveDidFailNotification;
+
 @interface EditPostViewController ()
 @property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
 @property (nonatomic, strong) PostMediaViewController *postMediaViewController;

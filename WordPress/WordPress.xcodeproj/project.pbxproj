@@ -597,6 +597,8 @@
 		E1523EB516D3B305002C5A36 /* InstapaperActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = E1523EB416D3B305002C5A36 /* InstapaperActivity.m */; };
 		E154376314B5B2120038E574 /* WordPressApi.m in Sources */ = {isa = PBXBuildFile; fileRef = E154376214B5B2120038E574 /* WordPressApi.m */; };
 		E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E15618FC16DB8677006532C4 /* UIKitTestHelper.m */; };
+		E15618FF16DBA983006532C4 /* xmlrpc-response-newpost.xml in Resources */ = {isa = PBXBuildFile; fileRef = E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */; };
+		E156190116DBABDE006532C4 /* xmlrpc-response-getpost.xml in Resources */ = {isa = PBXBuildFile; fileRef = E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */; };
 		E159D1051309AB0D00F498E2 /* MigrateBlogsFromFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = E159D1041309AB0D00F498E2 /* MigrateBlogsFromFiles.m */; };
 		E15D46CA156A511D00227392 /* PanelNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = E15D46C9156A511D00227392 /* PanelNavigationController.m */; };
 		E15D46D1156AABD900227392 /* SidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E15D46D0156AABD900227392 /* SidebarViewController.m */; };
@@ -1474,6 +1476,8 @@
 		E154376214B5B2120038E574 /* WordPressApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressApi.m; sourceTree = "<group>"; };
 		E15618FB16DB8677006532C4 /* UIKitTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIKitTestHelper.h; sourceTree = "<group>"; };
 		E15618FC16DB8677006532C4 /* UIKitTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKitTestHelper.m; sourceTree = "<group>"; };
+		E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-newpost.xml"; sourceTree = "<group>"; };
+		E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-getpost.xml"; sourceTree = "<group>"; };
 		E159D1031309AB0D00F498E2 /* MigrateBlogsFromFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MigrateBlogsFromFiles.h; sourceTree = "<group>"; };
 		E159D1041309AB0D00F498E2 /* MigrateBlogsFromFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrateBlogsFromFiles.m; sourceTree = "<group>"; };
 		E15D46C8156A511D00227392 /* PanelNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelNavigationController.h; sourceTree = "<group>"; };
@@ -3042,6 +3046,8 @@
 				E16AB94114D97A7D0047A2E5 /* entitiesDecoded.xml */,
 				E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */,
 				E131CB5716CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json */,
+				E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */,
+				E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */,
 			);
 			path = "Test Data";
 			sourceTree = "<group>";
@@ -3732,6 +3738,8 @@
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
 				E131CB5916CACFDF004B0314 /* entitiesDecoded.xml in Resources */,
 				E131CB5A16CACFE3004B0314 /* entities.xml in Resources */,
+				E15618FF16DBA983006532C4 /* xmlrpc-response-newpost.xml in Resources */,
+				E156190116DBABDE006532C4 /* xmlrpc-response-getpost.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
