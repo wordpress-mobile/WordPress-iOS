@@ -1402,6 +1402,8 @@ WordPress/WordPressTest/Test[!!-~]Data/entities.xml -text
 WordPress/WordPressTest/Test[!!-~]Data/entitiesDecoded.xml -text
 WordPress/WordPressTest/Test[!!-~]Data/get-user-blogs_doesnt-have-blog.json -text
 WordPress/WordPressTest/Test[!!-~]Data/get-user-blogs_has-blog.json -text
+WordPress/WordPressTest/UIKitTestHelper.h -text
+WordPress/WordPressTest/UIKitTestHelper.m -text
 WordPress/WordPressTest/WordPressTest-Info.plist -text
 WordPress/WordPressTest/WordPressTest-Prefix.pch -text
 WordPress/WordPressTest/WordPressTest.h -text

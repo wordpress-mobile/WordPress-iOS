@@ -6,6 +6,9 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
+#import <Nocilla/Nocilla.h>
+#import "UIKitTestHelper.h"
+#import "AsyncTestHelper.h"
 #import "CoreDataTestHelper.h"
 #import "EditPostViewControllerTest.h"
 #import "EditPostViewController_Internal.h"
@@ -52,10 +55,7 @@
     STAssertEqualObjects(titleTextField.accessibilityIdentifier, @"EditorTitleField", nil);
     STAssertEqualObjects(_post, _controller.apost, nil);
 
-    [titleTextField.delegate textFieldDidBeginEditing:titleTextField];
-    [titleTextField.delegate textField:titleTextField shouldChangeCharactersInRange:NSMakeRange(0, 0) replacementString:@"Test1"];
-    titleTextField.text = @"Test1";
-    [titleTextField.delegate textFieldDidEndEditing:titleTextField];
+    [titleTextField typeText:@"Test1"];
     STAssertEqualObjects(titleTextField.text, @"Test1", nil);
     STAssertEqualObjects(_post.postTitle, @"Test1", nil);
 

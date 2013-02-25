@@ -596,6 +596,7 @@
 		E151045F14E27F9300CE282B /* list@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E151045D14E27F9300CE282B /* list@2x.png */; };
 		E1523EB516D3B305002C5A36 /* InstapaperActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = E1523EB416D3B305002C5A36 /* InstapaperActivity.m */; };
 		E154376314B5B2120038E574 /* WordPressApi.m in Sources */ = {isa = PBXBuildFile; fileRef = E154376214B5B2120038E574 /* WordPressApi.m */; };
+		E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E15618FC16DB8677006532C4 /* UIKitTestHelper.m */; };
 		E159D1051309AB0D00F498E2 /* MigrateBlogsFromFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = E159D1041309AB0D00F498E2 /* MigrateBlogsFromFiles.m */; };
 		E15D46CA156A511D00227392 /* PanelNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = E15D46C9156A511D00227392 /* PanelNavigationController.m */; };
 		E15D46D1156AABD900227392 /* SidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E15D46D0156AABD900227392 /* SidebarViewController.m */; };
@@ -1471,6 +1472,8 @@
 		E1523EB416D3B305002C5A36 /* InstapaperActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstapaperActivity.m; sourceTree = "<group>"; };
 		E154376114B5B2120038E574 /* WordPressApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressApi.h; sourceTree = "<group>"; };
 		E154376214B5B2120038E574 /* WordPressApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressApi.m; sourceTree = "<group>"; };
+		E15618FB16DB8677006532C4 /* UIKitTestHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIKitTestHelper.h; sourceTree = "<group>"; };
+		E15618FC16DB8677006532C4 /* UIKitTestHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKitTestHelper.m; sourceTree = "<group>"; };
 		E159D1031309AB0D00F498E2 /* MigrateBlogsFromFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MigrateBlogsFromFiles.h; sourceTree = "<group>"; };
 		E159D1041309AB0D00F498E2 /* MigrateBlogsFromFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrateBlogsFromFiles.m; sourceTree = "<group>"; };
 		E15D46C8156A511D00227392 /* PanelNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelNavigationController.h; sourceTree = "<group>"; };
@@ -2927,6 +2930,19 @@
 			path = "KVO+Blocks";
 			sourceTree = "<group>";
 		};
+		E131CB5B16CAD638004B0314 /* Test Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				E150520D16CAC75A00D3DDDC /* CoreDataTestHelper.h */,
+				E150520E16CAC75A00D3DDDC /* CoreDataTestHelper.m */,
+				E131CB5C16CAD659004B0314 /* AsyncTestHelper.h */,
+				E131CB5D16CAD659004B0314 /* AsyncTestHelper.m */,
+				E15618FB16DB8677006532C4 /* UIKitTestHelper.h */,
+				E15618FC16DB8677006532C4 /* UIKitTestHelper.m */,
+			);
+			name = "Test Helpers";
+			sourceTree = "<group>";
+		};
 		E1523EB216D3B2EE002C5A36 /* Sharing */ = {
 			isa = PBXGroup;
 			children = (
@@ -2939,17 +2955,6 @@
 				E1D0D84616D3D2EA00E33F4C /* PocketActivity.m */,
 			);
 			name = Sharing;
-			sourceTree = "<group>";
-		};
-		E131CB5B16CAD638004B0314 /* Test Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				E150520D16CAC75A00D3DDDC /* CoreDataTestHelper.h */,
-				E150520E16CAC75A00D3DDDC /* CoreDataTestHelper.m */,
-				E131CB5C16CAD659004B0314 /* AsyncTestHelper.h */,
-				E131CB5D16CAD659004B0314 /* AsyncTestHelper.m */,
-			);
-			name = "Test Helpers";
 			sourceTree = "<group>";
 		};
 		E159D1011309AAF200F498E2 /* Migrations */ = {
@@ -3960,6 +3965,7 @@
 				E150520C16CAC5C400D3DDDC /* BlogJetpackTest.m in Sources */,
 				E150520F16CAC75A00D3DDDC /* CoreDataTestHelper.m in Sources */,
 				E131CB5E16CAD659004B0314 /* AsyncTestHelper.m in Sources */,
+				E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
