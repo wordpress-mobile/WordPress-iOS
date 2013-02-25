@@ -12,4 +12,6 @@
 @interface CoreDataTestHelper : NSObject
 + (id)sharedHelper;
 - (NSManagedObject *)insertEntityWithName:(NSString *)entityName;
+- (void)reset;
+- (NSManagedObjectContext *)managedObjectContext;
 @end

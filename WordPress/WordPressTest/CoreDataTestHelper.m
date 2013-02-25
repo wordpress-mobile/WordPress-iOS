@@ -10,6 +10,8 @@
 
 @implementation CoreDataTestHelper {
     NSManagedObjectContext *_context;
+    NSManagedObjectModel *_model;
+    NSPersistentStoreCoordinator *_coordinator;
 }
 
 + (id)sharedHelper {
@@ -25,18 +27,44 @@
 - (id)init {
     self = [super init];
     if (self) {
-        NSURL *modelURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"]];
-        NSManagedObjectModel *mom = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-        NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
-        NSAssert([psc addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:nil options:nil error:NULL] ? YES : NO, @"Should be able to add in-memory store");
         _context = [[NSManagedObjectContext alloc] init];
-        [_context setPersistentStoreCoordinator:psc];
+        [_context setPersistentStoreCoordinator:[self persistentStoreCoordinator]];
     }
     return self;
 }
 
 - (NSManagedObject *)insertEntityWithName:(NSString *)entityName {
     return [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:_context];
+}
+
+- (void)reset {
+    [_context lock];
+    [_context reset];
+    for (NSPersistentStore *store in [_coordinator persistentStores]) {
+        [_coordinator removePersistentStore:store error:nil];
+    }
+    NSAssert([_coordinator addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:nil options:nil error:NULL] ? YES : NO, @"Should be able to add in-memory store");
+    [_context unlock];
+}
+
+- (NSManagedObjectContext *)managedObjectContext {
+    return _context;
+}
+
+- (NSManagedObjectModel *)managedObjectModel {
+    if (!_model) {
+        NSURL *modelURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"WordPress" ofType:@"momd"]];
+        _model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    }
+    return _model;
+}
+
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+    if (!_coordinator) {
+        _coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+        NSAssert([_coordinator addPersistentStoreWithType:NSInMemoryStoreType configuration:nil URL:nil options:nil error:NULL] ? YES : NO, @"Should be able to add in-memory store");
+    }
+    return _coordinator;
 }
 
 @end
