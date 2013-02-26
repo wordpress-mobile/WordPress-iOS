@@ -1083,7 +1083,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     currentEditingTextField = nil;
-#ifdef DEBUGMODE
+#ifdef DEBUG
 	if ([textField.text isEqualToString:@"#%#"]) {
 		[NSException raise:@"FakeCrash" format:@"Nothing to worry about, textField == #%#"];
 	}

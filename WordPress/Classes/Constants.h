@@ -77,7 +77,7 @@
 
 //R: 35, G: 112, B: 216 | #2370D8 | ΔX: 1378, ΔY: 29 | img
 
-#ifdef DEBUGMODE
+#ifdef DEBUG
 #define WPLog(...) NSLog(__VA_ARGS__)
 #else
 #define WPLog(__unused ...) //NSLog
