@@ -42,6 +42,7 @@
 		[reverseGeocoder cancelGeocode];
 	}
 	mapView.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
