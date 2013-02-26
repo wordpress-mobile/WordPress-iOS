@@ -677,7 +677,7 @@
 	if(self.isShowingResizeActionSheet == NO) {
 		isShowingResizeActionSheet = YES;
         
-        Blog *currentBlog = self.self.apost.blog;
+        Blog *currentBlog = self.apost.blog;
         NSDictionary* predefDim = [currentBlog getImageResizeDimensions];
         CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
         CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
@@ -1068,7 +1068,7 @@
                        //make the metadata dictionary mutable so we can remove properties to it
                        NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
 
-					   if(!self.self.apost.blog.geolocationEnabled) {
+					   if(!self.apost.blog.geolocationEnabled) {
 						   //we should remove the GPS info if the blog has the geolocation set to off
 						   
 						   //get all the metadata in the image
@@ -1180,7 +1180,7 @@
 }
 
 - (UIImage *)resizeImage:(UIImage *)original toSize:(MediaResize)resize {
-    NSDictionary* predefDim = [self.self.apost.blog getImageResizeDimensions];
+    NSDictionary* predefDim = [self.apost.blog getImageResizeDimensions];
     CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
     CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
     CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
@@ -1528,7 +1528,7 @@
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:appDelegate.managedObjectContext]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"%@ IN posts AND mediaType != 'featured'", self.self.apost]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"%@ IN posts AND mediaType != 'featured'", self.apost]];
     NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorDate, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -1538,8 +1538,8 @@
                                                       managedObjectContext:appDelegate.managedObjectContext
                                                       sectionNameKeyPath:nil
                                                       cacheName:[NSString stringWithFormat:@"Media-%@-%@",
-                                                                 self.self.apost.blog.hostURL,
-                                                                 self.self.apost.postID]];
+                                                                 self.apost.blog.hostURL,
+                                                                 self.apost.postID]];
     resultsController.delegate = self;
     
      sortDescriptorDate = nil;
