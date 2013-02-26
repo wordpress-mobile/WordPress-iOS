@@ -707,7 +707,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             if (mainComment) {
                 minHeight = CGRectGetHeight(tableView.bounds) - CGRectGetHeight(tableView.tableFooterView.bounds) - NoteCommentCellHeight;
             }
-            NSString *content = [comment.commentData valueForKeyPath:@"content"];
+            NSString *content = [comment.commentData stringForKey:@"content"];
             if (content) {
                 NSAttributedString *attributedContent = [self convertHTMLToAttributedString:content];
                 CGFloat textHeight = [self
