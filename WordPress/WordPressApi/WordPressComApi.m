@@ -487,7 +487,9 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
         for (int i=0; i < [notes count]; i++) {
             if ([notesData count] > i) {
                 Note *note = [notes objectAtIndex:i];
-                [note syncAttributes:[notesData objectAtIndex:i]];
+                if (![note isDeleted] && [note managedObjectContext]) {
+                    [note syncAttributes:[notesData objectAtIndex:i]];
+                }
             }
         }
         if(![context save:&error]){
