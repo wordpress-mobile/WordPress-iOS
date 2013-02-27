@@ -237,7 +237,10 @@
     NSMutableArray *sortedNames = [NSMutableArray arrayWithCapacity:[self.postFormats count]];
     
     if ([self.postFormats count] != 0) {
-        [sortedNames addObject:[self.postFormats objectForKey:@"standard"]];
+        id standardPostFormat = [self.postFormats objectForKey:@"standard"];
+        if (standardPostFormat) {
+            [sortedNames addObject:standardPostFormat];
+        }
         [self.postFormats enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             if (![key isEqual:@"standard"]) {
                 [sortedNames addObject:obj];
