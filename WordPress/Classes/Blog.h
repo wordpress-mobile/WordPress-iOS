@@ -8,7 +8,8 @@
 #import <Foundation/Foundation.h>
 #import <CommonCrypto/CommonDigest.h>
 #import <CoreData/CoreData.h>
-#import "AFXMLRPCClient.h"
+#import <WordPressApi/WordPressApi.h>
+
 #import "Reachability.h"
 
 #define BlogChangedNotification @"BlogChangedNotification"
@@ -35,7 +36,7 @@
 @property (nonatomic, strong) NSDictionary *options; //we can store an NSArray or an NSDictionary as a transformable attribute... 
 @property (nonatomic, strong) NSDictionary *postFormats;
 @property (weak, readonly) NSArray *sortedPostFormatNames;
-@property (readonly, nonatomic, strong) AFXMLRPCClient *api;
+@property (readonly, nonatomic, strong) WPXMLRPCClient *api;
 @property (weak, readonly) NSString *version;
 @property (weak, readonly) Reachability *reachability;
 @property (readonly) BOOL reachable;

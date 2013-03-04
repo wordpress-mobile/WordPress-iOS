@@ -5,10 +5,11 @@
 //  Created by Chris Boyd on 7/19/10.
 //
 
+#import <WordPressApi/WordPressApi.h>
+
 #import "WPcomLoginViewController.h"
 #import "UITableViewTextFieldCell.h"
 #import "SFHFKeychainUtils.h"
-#import "WordPressApi.h"
 #import "WordPressComApi.h"
 #import "WPWebViewController.h"
 #import "ReachabilityUtils.h"

@@ -41,6 +41,7 @@
 			<string>org.wordpress</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>wordpress-oauth-v2</string>
 				<string>wordpress</string>
 				<string>fb249643311490</string>
 				<string>pocketapp12013</string>

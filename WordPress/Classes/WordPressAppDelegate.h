@@ -1,11 +1,11 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import <CrashReporter/CrashReporter.h>
+
 #import "Constants.h"
 #import "Blog.h"
 #import "HelpViewController.h"
 #import "Reachability.h"
-#import "WPComOAuthController.h"
 #import "PanelNavigationController.h"
 #import "FBConnect.h"
 #import "CrashReportViewController.h"
@@ -13,7 +13,7 @@
 
 @class AutosaveManager;
 
-@interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate, WPComOAuthDelegate, FBSessionDelegate> {
+@interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate, FBSessionDelegate> {
 	Blog *currentBlog;
     //Connection Reachability variables
     Reachability *internetReachability;

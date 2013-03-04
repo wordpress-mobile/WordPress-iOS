@@ -8,7 +8,7 @@
 
 #import "BetaFeedbackViewController.h"
 #import <QuartzCore/QuartzCore.h>
-#import "AFXMLRPCClient.h"
+#import <WordPressApi/WordPressApi.h>
 
 @implementation BetaFeedbackViewController
 
@@ -88,7 +88,7 @@
 	[sendFeedbackButton setEnabled:NO];
 	sendFeedbackButton.title = @"Sending...";
 	if (![name.text isEqualToString:@""] && ![email.text isEqualToString:@""] && ![feedback.text isEqualToString:@""] && ![feedback.text isEqualToString:@"Feedback (required)"]) {
-        AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:@"http://iosbeta.wordpress.com/xmlrpc.php"]];
+        WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:@"http://iosbeta.wordpress.com/xmlrpc.php"]];
 		NSMutableDictionary *commentParams = [NSMutableDictionary dictionary];
 		
 		[commentParams setObject:feedback.text forKey:@"content"];

@@ -17,25 +17,24 @@
 #import "WPError.h"
 
 @interface Blog (PrivateMethods)
-- (AFXMLRPCRequestOperation *)operationForOptionsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (AFXMLRPCRequestOperation *)operationForPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (AFXMLRPCRequestOperation *)operationForCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (AFXMLRPCRequestOperation *)operationForCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (AFXMLRPCRequestOperation *)operationForPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
-- (AFXMLRPCRequestOperation *)operationForPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
+- (WPXMLRPCRequestOperation *)operationForOptionsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (WPXMLRPCRequestOperation *)operationForPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (WPXMLRPCRequestOperation *)operationForCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (WPXMLRPCRequestOperation *)operationForCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (WPXMLRPCRequestOperation *)operationForPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
+- (WPXMLRPCRequestOperation *)operationForPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
 
 - (void)mergeCategories:(NSArray *)newCategories;
 - (void)mergeComments:(NSArray *)newComments;
 - (void)mergePages:(NSArray *)newPages;
 - (void)mergePosts:(NSArray *)newPosts;
-- (void)handleAllHTTPOperationsCancelled:(NSNotification *)notification;
 
 @property (readwrite, assign) BOOL reachable;
 @end
 
 
 @implementation Blog {
-    AFXMLRPCClient *_api;
+    WPXMLRPCClient *_api;
     NSString *_blavatarUrl;
     Reachability *_reachability;
     BOOL _isReachable;
@@ -287,7 +286,6 @@
 
 - (void)awakeFromFetch {
     [self reachability];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAllHTTPOperationsCancelled:) name:kAllHTTPOperationsCancelledNotification object:nil];
 }
 
 - (void)dataSave {
@@ -417,7 +415,7 @@
     }
     self.isSyncingPosts = YES;
 
-    AFXMLRPCRequestOperation *operation = [self operationForPostsWithSuccess:success failure:failure loadMore:more];
+    WPXMLRPCRequestOperation *operation = [self operationForPostsWithSuccess:success failure:failure loadMore:more];
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
@@ -431,17 +429,17 @@
         return;
     }
     self.isSyncingPages = YES;
-    AFXMLRPCRequestOperation *operation = [self operationForPagesWithSuccess:success failure:failure loadMore:more];
+    WPXMLRPCRequestOperation *operation = [self operationForPagesWithSuccess:success failure:failure loadMore:more];
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
 - (void)syncCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    AFXMLRPCRequestOperation *operation = [self operationForCategoriesWithSuccess:success failure:failure];
+    WPXMLRPCRequestOperation *operation = [self operationForCategoriesWithSuccess:success failure:failure];
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
 - (void)syncOptionsWithWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    AFXMLRPCRequestOperation *operation = [self operationForOptionsWithSuccess:success failure:failure];
+    WPXMLRPCRequestOperation *operation = [self operationForOptionsWithSuccess:success failure:failure];
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
@@ -459,17 +457,17 @@
         return;
     }
     self.isSyncingComments = YES;
-    AFXMLRPCRequestOperation *operation = [self operationForCommentsWithSuccess:success failure:failure];
+    WPXMLRPCRequestOperation *operation = [self operationForCommentsWithSuccess:success failure:failure];
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
 - (void)syncPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    AFXMLRPCRequestOperation *operation = [self operationForPostFormatsWithSuccess:success failure:failure];
+    WPXMLRPCRequestOperation *operation = [self operationForPostFormatsWithSuccess:success failure:failure];
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
 - (void)syncBlogWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    AFXMLRPCRequestOperation *operation;
+    WPXMLRPCRequestOperation *operation;
     NSMutableArray *operations = [NSMutableArray arrayWithCapacity:6];
     operation = [self operationForOptionsWithSuccess:nil failure:nil];
     [operations addObject:operation];
@@ -506,7 +504,7 @@
 }
 
 - (void)syncBlogPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    AFXMLRPCRequestOperation *operation;
+    WPXMLRPCRequestOperation *operation;
     NSMutableArray *operations = [NSMutableArray arrayWithCapacity:4];
     operation = [self operationForOptionsWithSuccess:nil failure:nil];
     [operations addObject:operation];
@@ -527,7 +525,7 @@
 
 - (void)checkActivationStatusWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPFLogMethod();
-    AFXMLRPCClient *api = [AFXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:[NSString stringWithFormat: @"%@", kWPcomXMLRPCUrl]]];
+    WPXMLRPCClient *api = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:[NSString stringWithFormat: @"%@", kWPcomXMLRPCUrl]]];
     [api callMethod:@"wpcom.getActivationStatus"
          parameters:[NSArray arrayWithObjects:[self hostURL], nil]
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -563,8 +561,8 @@
         return;
     }
     NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
-    AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wpcom.getFeatures" parameters:parameters];
-    AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wpcom.getFeatures" parameters:parameters];
+    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         BOOL videoEnabled = YES;
         if(([responseObject isKindOfClass:[NSDictionary class]]) && ([responseObject objectForKey:@"videopress_enabled"] != nil))
             videoEnabled = [[responseObject objectForKey:@"videopress_enabled"] boolValue];
@@ -580,19 +578,19 @@
 
 #pragma mark - api accessor
 
-- (AFXMLRPCClient *)api {
+- (WPXMLRPCClient *)api {
     if (_api == nil) {
-        _api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc]];
+        _api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc]];
     }
     return _api;
 }
 
 #pragma mark -
 
-- (AFXMLRPCRequestOperation *)operationForOptionsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (WPXMLRPCRequestOperation *)operationForOptionsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
-    AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getOptions" parameters:parameters];
-    AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getOptions" parameters:parameters];
+    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([self isDeleted] || self.managedObjectContext == nil)
             return;
 
@@ -620,12 +618,12 @@
     return operation;
 }
 
-- (AFXMLRPCRequestOperation *)operationForPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (WPXMLRPCRequestOperation *)operationForPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     NSDictionary *dict = [NSDictionary dictionaryWithObject:@"1" forKey:@"show-supported"];
     NSArray *parameters = [self getXMLRPCArgsWithExtra:dict];
     
-    AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostFormats" parameters:parameters];
-    AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostFormats" parameters:parameters];
+    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([self isDeleted] || self.managedObjectContext == nil)
             return;
 
@@ -659,11 +657,11 @@
     return operation;
 }
 
-- (AFXMLRPCRequestOperation *)operationForCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (WPXMLRPCRequestOperation *)operationForCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     NSDictionary *requestOptions = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:100] forKey:@"number"];
     NSArray *parameters = [self getXMLRPCArgsWithExtra:requestOptions];
-    AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getComments" parameters:parameters];
-    AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getComments" parameters:parameters];
+    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([self isDeleted] || self.managedObjectContext == nil)
             return;
 
@@ -688,10 +686,10 @@
     return operation;
 }
 
-- (AFXMLRPCRequestOperation *)operationForCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (WPXMLRPCRequestOperation *)operationForCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     NSArray *parameters = [self getXMLRPCArgsWithExtra:nil];
-    AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getCategories" parameters:parameters];
-    AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getCategories" parameters:parameters];
+    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([self isDeleted] || self.managedObjectContext == nil)
             return;
 
@@ -710,7 +708,7 @@
     return operation;    
 }
 
-- (AFXMLRPCRequestOperation *)operationForPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
+- (WPXMLRPCRequestOperation *)operationForPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
     int num;
 
     // Don't load more than 20 posts if we aren't at the end of the table,
@@ -729,8 +727,8 @@
     }
 
     NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:num]];
-    AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"metaWeblog.getRecentPosts" parameters:parameters];
-    AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"metaWeblog.getRecentPosts" parameters:parameters];
+    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([self isDeleted] || self.managedObjectContext == nil)
             return;
         
@@ -764,7 +762,7 @@
     return operation;        
 }
 
-- (AFXMLRPCRequestOperation *)operationForPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
+- (WPXMLRPCRequestOperation *)operationForPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
     int num;
 	
     int syncCount = [[self syncedPages] count];
@@ -784,8 +782,8 @@
     }
 
     NSArray *parameters = [self getXMLRPCArgsWithExtra:[NSNumber numberWithInt:num]];
-    AFXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPages" parameters:parameters];
-    AFXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPages" parameters:parameters];
+    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([self isDeleted] || self.managedObjectContext == nil)
             return;
 
@@ -973,12 +971,5 @@
 
     [self dataSave];
 }
-
-- (void)handleAllHTTPOperationsCancelled:(NSNotification *)notification {
-    self.isSyncingComments = NO;
-    self.isSyncingPages = NO;
-    self.isSyncingPosts = NO;
-}
-
 
 @end

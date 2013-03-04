@@ -7,7 +7,6 @@
 //
 
 #import "NSString+Helpers.h"
-#import "NSData+Base64.h"
 #import <CommonCrypto/CommonDigest.h>
 
 @implementation NSString (Helpers)
@@ -16,14 +15,6 @@
 - (NSString *) stringByUrlEncoding
 {
 	return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,  (CFStringRef)self,  NULL,  (CFStringRef)@"!*'();:@&=+$,/?%#[]",  kCFStringEncodingUTF8));
-}
-
-- (NSString *)base64Encoding
-{
-	NSData *stringData = [self dataUsingEncoding:NSUTF8StringEncoding];
-	NSString *encodedString = [stringData base64EncodedString];
-
-	return encodedString;
 }
 
 - (NSString *)md5

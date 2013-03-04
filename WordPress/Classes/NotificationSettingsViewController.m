@@ -6,9 +6,10 @@
 //  Copyright (c) 2012 WordPress. All rights reserved.
 //
 
+#import <WordPressApi/WordPressApi.h>
+
 #import "NotificationSettingsViewController.h"
 #import "SFHFKeychainUtils.h"
-#import "AFXMLRPCClient.h"
 #import "EGORefreshTableHeaderView.h"
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"

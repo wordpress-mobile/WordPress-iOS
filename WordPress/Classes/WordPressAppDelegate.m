@@ -1,4 +1,6 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import <WordPressApi/WordPressApi.h>
+
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "NSString+Helpers.h"
@@ -141,6 +143,13 @@
     [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
 }
 
+- (void)setupSingleSignOn {
+    if ([[WordPressComApi sharedApi] username]) {
+        [[WPComOAuthController sharedController] setWordPressComUsername:[[WordPressComApi sharedApi] username]];
+        [[WPComOAuthController sharedController] setWordPressComPassword:[[WordPressComApi sharedApi] password]];
+    }
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     UIDevice *device = [UIDevice currentDevice];
 	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
@@ -216,7 +225,9 @@
     
     [self setupFacebook];
     [self setupPocket];
-    
+    [self setupSingleSignOn];
+
+
     SidebarViewController *sidebarViewController = [[SidebarViewController alloc] init];
     
     CGRect bounds = [[UIScreen mainScreen] bounds];
@@ -279,20 +290,14 @@
         return YES;
     }
 
+    if ([WordPressApi handleOpenURL:url]) {
+        return YES;
+    }
+
     if (url && [url isKindOfClass:[NSURL class]]) {
         NSString *URLString = [url absoluteString];
         NSLog(@"Application launched with URL: %@", URLString);
-        if ([[url host] isEqualToString:@"oauth"]) {
-            NSDictionary *params = [[url query] dictionaryFromQueryString];
-            oauthCallback = [params objectForKey:@"callback"];
-            NSString *clientId = [params objectForKey:@"client_id"];
-            NSString *redirectUrl = [params objectForKey:@"redirect_uri"];
-            NSString *secret = [params objectForKey:@"secret"];
-            if (clientId && redirectUrl && secret && oauthCallback) {
-                [WPComOAuthController presentWithClientId:clientId redirectUrl:redirectUrl clientSecret:secret delegate:self];
-                return YES;
-            }
-        } else if ([[url absoluteString] hasPrefix:@"wordpress://wpcom_signup_completed"]) {
+        if ([[url absoluteString] hasPrefix:@"wordpress://wpcom_signup_completed"]) {
             NSDictionary *params = [[url query] dictionaryFromQueryString];
            // WPFLog(@"%@", params);
             [[NSNotificationCenter defaultCenter] postNotificationName:@"wpcomSignupNotification" object:nil userInfo:params];
@@ -795,7 +800,7 @@
                                                         andServiceName:@"WordPress.com"
                                                                  error:&error];
         if (password != nil) {
-            AFXMLRPCClient *client = [AFXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+            WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
             [client callMethod:@"wp.getUsersBlogs"
                     parameters:[NSArray arrayWithObjects:username, password, nil]
                        success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -1098,7 +1103,7 @@
 #else
             NSNumber *sandbox = [NSNumber numberWithBool:NO];
 #endif
-            AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+            WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
             
             [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
             
@@ -1144,7 +1149,7 @@
 #else
             NSNumber *sandbox = [NSNumber numberWithBool:NO];
 #endif
-            AFXMLRPCClient *api = [[AFXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+            WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
             [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
             [api callMethod:@"wpcom.mobile_push_unregister_token"
                  parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
@@ -1298,29 +1303,6 @@
 		}
 		
 	}
-}
-
-#pragma mark - WPComOAuthDelegate
-
-- (void)controllerDidCancel:(WPComOAuthController *)controller {
-    NSLog(@"OAuth canceled");
-    NSURL *callback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://wordpress-sso", oauthCallback]];
-    [[UIApplication sharedApplication] openURL:callback];
-}
-- (void)controller:(WPComOAuthController *)controller didAuthenticateWithToken:(NSString *)token blog:(NSString *)blogUrl scope:(NSString *)scope {
-    NSLog(@"OAuth successful. Token %@ Blog %@", token, blogUrl);
-    NSString *encodedToken = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
-                                                                                 NULL,
-                                                                                 (CFStringRef)token,
-                                                                                 NULL,
-                                                                                 (CFStringRef)@"!*'();:@&=+$,/?%#[]",
-                                                                                 kCFStringEncodingUTF8 ));
-    NSURL *callback = [NSURL URLWithString:[NSString stringWithFormat:@"%@://wordpress-sso?token=%@&blog=%@",
-                                            oauthCallback,
-                                            encodedToken,
-                                            [blogUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-    NSLog(@"Launching %@", callback);
-    [[UIApplication sharedApplication] openURL:callback];
 }
 
 #pragma mark - Facebook Delegate Methods

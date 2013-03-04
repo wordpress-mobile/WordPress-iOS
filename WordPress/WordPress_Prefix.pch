@@ -2,10 +2,6 @@
 // Prefix header for all source files of the 'WordPress' target in the 'WordPress' project
 //
 
-#ifdef DEBUG
-#define _AFNETWORKING_ALLOW_INVALID_SSL_CERTIFICATES_
-#endif
-
 #ifdef __OBJC__
 	// Core Frameworks
 	#import <Foundation/Foundation.h>
@@ -27,11 +23,12 @@
     #import "WPError.h"
     #import "UIColor+Helpers.h"
     #import "PanelNavigationController.h"
-#endif
 
 #ifndef IS_IPAD
 #define IS_IPAD   ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
 #endif
 #ifndef IS_IPHONE
 #define IS_IPHONE   (!IS_IPAD)
+#endif
+
 #endif

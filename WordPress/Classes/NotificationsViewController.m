@@ -10,7 +10,6 @@
 #import "NotificationsCommentDetailViewController.h"
 #import "NotificationsFollowDetailViewController.h"
 #import "WordPressAppDelegate.h"
-#import "WPComOAuthController.h"
 #import "WordPressComApi.h"
 #import "EGORefreshTableHeaderView.h"
 #import "NotificationsTableViewCell.h"

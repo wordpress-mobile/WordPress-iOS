@@ -7,6 +7,7 @@
 //
 
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <WPXMLRPC/WPXMLRPC.h>
 
 #import "UIKitTestHelper.h"
 #import "AsyncTestHelper.h"
@@ -82,13 +83,17 @@
     [OHHTTPStubs shouldStubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return ([[request.URL absoluteString] isEqualToString:_blog.xmlrpc]);
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        NSString *body = [[NSString alloc] initWithData:[request HTTPBody] encoding:NSUTF8StringEncoding];
-        if ([body rangeOfString:@"This is a very long title"].location != NSNotFound) {
-            return [OHHTTPStubsResponse responseWithFile:@"xmlrpc-response-newpost.xml" contentType:@"text/xml" responseTime:OHHTTPStubsDownloadSpeedWifi];
+        WPXMLRPCDecoder *decoder = [[WPXMLRPCDecoder alloc] initWithData:[request HTTPBody]];
+        NSDictionary *xmlrpcRequest = [decoder object];
+        if (xmlrpcRequest) {
+            NSString *methodName = [xmlrpcRequest objectForKey:@"methodName"];
+            if ([methodName isEqualToString:@"metaWeblog.newPost"]) {
+                return [OHHTTPStubsResponse responseWithFile:@"xmlrpc-response-newpost.xml" contentType:@"text/xml" responseTime:OHHTTPStubsDownloadSpeedWifi];
+            } else if ([methodName isEqualToString:@"metaWeblog.getPost"]) {
+                return [OHHTTPStubsResponse responseWithFile:@"xmlrpc-response-getpost.xml" contentType:@"text/xml" responseTime:OHHTTPStubsDownloadSpeedWifi];
+            }
         }
-        if ([body rangeOfString:@"metaWeblog.getPost"].location != NSNotFound) {
-            return [OHHTTPStubsResponse responseWithFile:@"xmlrpc-response-getpost.xml" contentType:@"text/xml" responseTime:OHHTTPStubsDownloadSpeedWifi];
-        }
+
         return nil;
     }];
 
