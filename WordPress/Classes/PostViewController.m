@@ -292,13 +292,10 @@
         return;
     }
 
-    EditPostViewController *postViewController;
 	[self checkForNewItem];
     AbstractPost *postRevision = [self.apost createRevision];
-    postViewController = [self getPostOrPageController: postRevision];
 
     PostPreviewViewController *postPreviewViewController = [[PostPreviewViewController alloc] initWithPost:postRevision];
-    postPreviewViewController.postDetailViewController = postViewController;
 
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:postPreviewViewController];
     nav.modalPresentationStyle = UIModalPresentationPageSheet;
