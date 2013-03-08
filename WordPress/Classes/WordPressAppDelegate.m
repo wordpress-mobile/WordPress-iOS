@@ -1027,6 +1027,7 @@
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
 	NSLog(@"Failed to register for push notifications: %@", error);
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey];
 }
 
 // The notification is delivered when the application is running
