@@ -608,11 +608,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     if ([self isSyncing]) {
         return;
     }
-    if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnection];
-        [self performSelector:@selector(hideRefreshHeader) withObject:nil afterDelay:0.1];
-        return;
-    }
 
     _isSyncing = YES;
     [self syncItemsWithUserInteraction:userInteraction success:^{

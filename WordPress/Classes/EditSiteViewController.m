@@ -470,12 +470,6 @@
 	
     [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate];
     
-    if(![ReachabilityUtils isInternetReachable]){
-        [ReachabilityUtils showAlertNoInternetConnection];
-        [self validationDidFail:nil];
-        return;
-    }
-    
     NSString *uname = usernameTextField.text;
     NSString *pwd = passwordTextField.text;
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
