@@ -11,22 +11,14 @@
 #import "WordPressComApi.h"
 #import "WPcomLoginViewController.h"
 
-NSString * const WPErrorResponseKey = @"wp_error_response";
-
 @implementation WPError
-
-+ (NSError *)errorWithResponse:(NSHTTPURLResponse *)response error:(NSError *)error {
-    NSMutableDictionary *userInfo = [error.userInfo mutableCopy];
-    [userInfo setValue:response forKey:WPErrorResponseKey];
-    return [NSError errorWithDomain:error.domain code:error.code userInfo:[NSDictionary dictionaryWithDictionary:userInfo]];
-}
 
 + (void)showAlertWithError:(NSError *)error title:(NSString *)title {
     NSString *message = nil;
     NSString *customTitle = nil;
-    NSHTTPURLResponse *response = (NSHTTPURLResponse *)[error.userInfo objectForKey:WPErrorResponseKey];
-    
+
     if ([error.domain isEqual:AFNetworkingErrorDomain]) {
+        NSHTTPURLResponse *response = (NSHTTPURLResponse *)[error.userInfo objectForKey:AFNetworkingOperationFailingURLResponseErrorKey];
         switch (error.code) {
             case NSURLErrorBadServerResponse:
                 if (response) {

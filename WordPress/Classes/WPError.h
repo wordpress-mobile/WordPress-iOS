@@ -10,8 +10,6 @@
 
 @interface WPError : NSObject
 
-+ (NSError *)errorWithResponse:(NSHTTPURLResponse *)response error:(NSError *)error;
-
 + (void)showAlertWithError:(NSError *)error title:(NSString *)title;
 
 + (void)showAlertWithError:(NSError *)error;
