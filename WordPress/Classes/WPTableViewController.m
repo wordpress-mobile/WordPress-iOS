@@ -631,27 +631,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                 [alertView show];
 
             } else if (error.code == 403 && editSiteViewController == nil) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't Connect", @"")
-                                                                    message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"")
-                                                                   delegate:nil
-                                                          cancelButtonTitle:nil
-                                                          otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-                [alertView show];
-
-                // bad login/pass combination
-                editSiteViewController = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];
-                editSiteViewController.blog = self.blog;
-                editSiteViewController.isCancellable = YES;
-                editSiteViewController.delegate = self;
-                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
-
-                if(IS_IPAD == YES) {
-                    navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-                }
-
-                [self.panelNavigationController presentModalViewController:navController animated:YES];
-
+				[self promptForPassword];
             } else if (userInteraction) {
                 [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync", @"")];
             }
@@ -660,6 +640,29 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
           [WPError showAlertWithError:error];
         }
     }];
+}
+
+- (void)promptForPassword {
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't Connect", @"")
+														message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"")
+													   delegate:nil
+											  cancelButtonTitle:nil
+											  otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+	[alertView show];
+	
+	// bad login/pass combination
+	editSiteViewController = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];
+	editSiteViewController.blog = self.blog;
+	editSiteViewController.isCancellable = YES;
+	editSiteViewController.delegate = self;
+	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
+	
+	if(IS_IPAD == YES) {
+		navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+		navController.modalPresentationStyle = UIModalPresentationFormSheet;
+	}
+	
+	[self.panelNavigationController presentModalViewController:navController animated:YES];
 }
 
 #pragma mark - Swipe gestures

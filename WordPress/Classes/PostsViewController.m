@@ -16,6 +16,7 @@
 - (void)showSelectedPost;
 - (void)checkLastSyncDate;
 - (void)syncFinished;
+- (void)handleInvalidCredentialsNotification:(NSNotification *)notification;
 
 @end
 
@@ -230,7 +231,11 @@
     Post *post = [self.resultsController objectAtIndexPath:indexPath];
     [post deletePostWithSuccess:nil failure:^(NSError *error) {
         NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+		if([error code] == 403) {
+			[self promptForPassword];
+		} else {
+			[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+		}
         [self syncItemsWithUserInteraction:NO];
         if(IS_IPAD && self.postReaderViewController) {
             if(self.postReaderViewController.apost == post) {

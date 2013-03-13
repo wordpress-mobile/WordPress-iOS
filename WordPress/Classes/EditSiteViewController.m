@@ -65,14 +65,9 @@
 		}
         self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
         
-        NSError *error = nil;
         self.url = blog.url;
         self.username = blog.username;
-        if ([blog isWPcom]) {
-            self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:@"WordPress.com" error:&error];
-        } else {
-            self.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.hostURL error:&error];            
-        }
+		self.password = [blog fetchPassword];
 
         self.startingUser = self.username;
         self.startingPwd = self.password;

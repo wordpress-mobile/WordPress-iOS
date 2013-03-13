@@ -28,7 +28,6 @@
 - (void)setAppBadge;
 - (void)checkIfStatsShouldRun;
 - (void)runStats;
-- (void)showPasswordAlert;
 - (void)cleanUnusedMediaFileFromTmpDir;
 - (void)customizeAppearance;
 - (void)toggleExtraDebuggingIfNeeded;
@@ -427,19 +426,6 @@
 		if ([[err domain] isEqualToString:@"org.wordpress.iphone"]){
 			if([err code] == 401)
 				cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this blog.", @"");
-			else if([err code] == 403) { //403 = bad username/password
-				NSDictionary *errInfo = [notification userInfo];
-				//check if the user has NOT changed the blog during the loading
-				if( (errInfo != nil) && ([errInfo objectForKey:@"currentBlog"] != nil ) 
-				   && currentBlog == [errInfo objectForKey:@"currentBlog"] ) {
-                    passwordAlertRunning = YES;
-					[self performSelectorOnMainThread:@selector(showPasswordAlert) withObject:nil waitUntilDone:NO];
-				} else {
-					//do not show the alert
-					[self setAlertRunning:NO];
-				}
-				return;
-			}
 		}
         
         // ignore HTTP auth canceled errors
@@ -455,54 +441,6 @@
 		cleanedErrorMsg = NSLocalizedString(@"The app can't recognize the server response. Please, check the configuration of your blog.", @"");
 	
 	[self showAlertWithTitle:NSLocalizedString(@"Error", @"Generic popup title for any type of error.") message:cleanedErrorMsg];
-}
-
-
-- (void)showPasswordAlert {
-
-	UILabel *labelPasswd;
-	
-	NSString *lineBreaks;
-	
-	if (IS_IPAD)
-		lineBreaks = @"\n\n\n\n";
-	else 
-		lineBreaks = @"\n\n\n";
-	
-	UIAlertView *customSizeAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Incorrect Password", @"If the password was lost, a popup asks the author to update their password, this is the popup's title.") 
-															  message:lineBreaks // IMPORTANT
-															 delegate:self 
-													cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button label.") 
-													otherButtonTitles:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment)."), nil];
-	
-	customSizeAlert.tag = 101;
-	
-	labelPasswd = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 48.0, 260.0, 29.0)];
-	labelPasswd.backgroundColor = [UIColor clearColor];
-	labelPasswd.textColor = [UIColor whiteColor];
-	labelPasswd.text = NSLocalizedString(@"Please update your password:", @"If the password was lost, a popup asks the author to update their password, this is the popup's description.");
-	[customSizeAlert addSubview:labelPasswd];
-	
-	passwordTextField = [[UITextField alloc]  initWithFrame:CGRectMake(12.0, 82.0, 260.0, 29.0)]; 
-	[passwordTextField setBackgroundColor:[UIColor whiteColor]];
-	[passwordTextField setContentVerticalAlignment: UIControlContentVerticalAlignmentCenter];
-	passwordTextField.keyboardType = UIKeyboardTypeDefault;
-	passwordTextField.secureTextEntry = YES;
-	
-	[passwordTextField setTag:123];
-	
-	[customSizeAlert addSubview:passwordTextField];
-	
-	//fix the dialog position for older devices on iOS 3
-	float version = [[[UIDevice currentDevice] systemVersion] floatValue];
-	if (version <= 3.1)
-	{
-		customSizeAlert.transform = CGAffineTransformTranslate(customSizeAlert.transform, 0.0, 100.0);
-	}
-	
-	[customSizeAlert show];
-	
-	[passwordTextField becomeFirstResponder]; //this line should always be called on MainThread
 }
 
 - (void)showContentDetailViewController:(UIViewController *)viewController {
@@ -1233,36 +1171,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex { 
 	[self setAlertRunning:NO];
 	
-	if (alertView.tag == 101) { //Password Alert
-        passwordAlertRunning = NO;
-		if(currentBlog != nil) {
-			NSError *error = nil;
-			
-			if ([passwordTextField.text isEqualToString:@""]) 
-				return;
-			
-			//check if the current blog is a WP.COM blog
-			if(currentBlog.isWPcom) {
-				[SFHFKeychainUtils storeUsername:currentBlog.username
-									 andPassword:passwordTextField.text
-								  forServiceName:@"WordPress.com"
-								  updateExisting:YES
-										   error:&error];
-			} else {
-				[SFHFKeychainUtils storeUsername:currentBlog.username
-									 andPassword:passwordTextField.text
-								  forServiceName:currentBlog.hostURL
-								  updateExisting:YES
-										   error:&error];
-			}
-			
-			if (error) {
-				[FileLogger log:@"%@ %@ Error saving password for %@: %@", self, NSStringFromSelector(_cmd), currentBlog.url, error];
-			} else {
-				[FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), currentBlog.url];
-			}
-		}
-    } else if (alertView.tag == 102) { // Update alert
+    if (alertView.tag == 102) { // Update alert
         if (buttonIndex == 1) {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/us/app/wordpress/id335703880?mt=8&ls=1"]];
         }

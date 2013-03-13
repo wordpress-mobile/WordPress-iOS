@@ -228,10 +228,9 @@
             if (!triedAuthOnce) {
                 triedAuthOnce = YES;
                 
-                NSError *error = nil;
                 Blog *blog = self.apost.blog;
                 NSString *username = blog.username;
-                NSString *password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:blog.hostURL error:&error];
+                NSString *password = [blog fetchPassword];
                 
                 NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
                 NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=",

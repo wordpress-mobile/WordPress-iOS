@@ -114,11 +114,19 @@
         blog.isAdmin = [NSNumber numberWithInt:[[blogInfo objectForKey:@"isAdmin"] intValue]];
         
         NSError *error = nil;
-        [SFHFKeychainUtils storeUsername:[blogInfo objectForKey:@"username"]
-                             andPassword:[blogInfo objectForKey:@"password"]
-                          forServiceName:blog.hostURL
-                          updateExisting:TRUE
-                                   error:&error ];
+		if(blog.isWPcom) {
+			[SFHFKeychainUtils storeUsername:[blogInfo objectForKey:@"username"]
+								 andPassword:[blogInfo objectForKey:@"password"]
+							  forServiceName:@"WordPress.com"
+							  updateExisting:TRUE
+									   error:&error ];
+		} else {
+			[SFHFKeychainUtils storeUsername:[blogInfo objectForKey:@"username"]
+								 andPassword:[blogInfo objectForKey:@"password"]
+							  forServiceName:blog.hostURL
+							  updateExisting:TRUE
+									   error:&error ];
+		}
         // TODO: save blog settings
 	}
     return blog;

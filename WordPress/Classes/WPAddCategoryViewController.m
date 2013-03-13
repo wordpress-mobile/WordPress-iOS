@@ -1,7 +1,6 @@
 #import "WPAddCategoryViewController.h"
-#import "PostSettingsViewController.h"
+#import "EditSiteViewController.h"
 #import "WordPressAppDelegate.h"
-#import "Reachability.h"
 #import "UIBarButtonItem+Styled.h"
 
 @implementation WPAddCategoryViewController
@@ -139,10 +138,27 @@
         [self removeProgressIndicator];
         [self dismiss];
     } failure:^(NSError *error) {
-        NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
-		[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
 		[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 		[self removeProgressIndicator];
+		
+		if ([error code] == 403) {
+
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't Connect", @"")
+																message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"")
+															   delegate:nil
+													  cancelButtonTitle:nil
+													  otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+			[alertView show];
+			
+			// bad login/pass combination
+			EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithNibName:nil bundle:nil];
+			editSiteViewController.blog = self.blog;
+			[self.navigationController pushViewController:editSiteViewController animated:YES];
+			
+		} else {
+			NSDictionary *errInfo = [NSDictionary dictionaryWithObjectsAndKeys:self.blog, @"currentBlog", nil];
+			[[NSNotificationCenter defaultCenter] postNotificationName:kXML_RPC_ERROR_OCCURS object:error userInfo:errInfo];
+		}
     }];
 }
 
