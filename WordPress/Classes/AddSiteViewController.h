@@ -8,7 +8,5 @@
 #import <UIKit/UIKit.h>
 #import "EditSiteViewController.h"
 
-@interface AddSiteViewController : EditSiteViewController {
-}
-
+@interface AddSiteViewController : EditSiteViewController
 @end

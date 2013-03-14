@@ -16,11 +16,14 @@
 
 @implementation AddSiteViewController
 
+CGFloat const AddSiteViewLogoWidth = 320.0;
+CGFloat const AddSiteViewLogoHeight = 70.0f;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg"]];
-    logoImage.frame = CGRectMake(0.0f, 0.0f, 320.0f, 70.0f);
+    logoImage.frame = CGRectMake(0.0f, 0.0f, AddSiteViewLogoWidth, AddSiteViewLogoHeight);
     logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     logoImage.contentMode = UIViewContentModeCenter;
     tableView.tableHeaderView = logoImage;
@@ -35,64 +38,22 @@
     return nil;
 }
 
-- (void)validationSuccess:(NSString *)xmlrpc {
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    NSLog(@"hasSubsites: %@", subsites);
+- (void)validationSuccess:(NSString *)xmlRpc {
+    WPFLog(@"hasSubsites: %@", subsites);
 
     if ([subsites count] > 0) {
         // If the user has entered the URL of a site they own on a MultiSite install, 
         // assume they want to add that specific site.
         NSDictionary *subsite = nil;
-        if ([subsites count] > 1)
-            subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlrpc]] lastObject];
+        if ([subsites count] > 1) {
+            subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlRpc]] lastObject];
+        }
 
         if ([subsites count] > 1 && [[subsite objectForKey:@"blogid"] isEqualToString:@"1"]) {
-            AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
-            addUsersBlogsView.isWPcom = NO;
-            addUsersBlogsView.usersBlogs = subsites;
-            addUsersBlogsView.url = xmlrpc;
-            addUsersBlogsView.username = self.username;
-            addUsersBlogsView.password = self.password;
-			addUsersBlogsView.geolocationEnabled = self.geolocationEnabled;
-            [self.navigationController pushViewController:addUsersBlogsView animated:YES];
+            [self displayAddUsersBlogsForXmlRpc:xmlRpc];
         } else {
-            NSMutableDictionary *newBlog;
-            if(subsite)
-                newBlog = [NSMutableDictionary dictionaryWithDictionary:subsite];
-            else
-                newBlog = [NSMutableDictionary dictionaryWithDictionary:[subsites objectAtIndex:0]];
-            [newBlog setObject:self.username forKey:@"username"];
-            [newBlog setObject:self.password forKey:@"password"];
-            [newBlog setObject:xmlrpc forKey:@"xmlrpc"];
-            
-            self.blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
-			self.blog.geolocationEnabled = self.geolocationEnabled;
-			[self.blog dataSave];
-            [SVProgressHUD showWithStatus:NSLocalizedString(@"Reading blog options", @"") maskType:SVProgressHUDMaskTypeBlack];
-            [self.blog syncBlogWithSuccess:^{
-                [[WordPressComApi sharedApi] syncPushNotificationInfo];
-                if ([self.blog hasJetpack]) {
-                    NSString *wpcomUsername = [[WordPressComApi sharedApi] username];
-                    NSString *wpcomPassword = [[WordPressComApi sharedApi] password];
-                    if (wpcomPassword && wpcomPassword) {
-                        // Try with a known WordPress.com username first
-                        [SVProgressHUD showWithStatus:NSLocalizedString(@"Connecting to Jetpack", @"") maskType:SVProgressHUDMaskTypeBlack];
-                        [self.blog validateJetpackUsername:wpcomUsername
-                                                  password:wpcomPassword
-                                                   success:^{
-                                                       [self dismiss];
-                                                   } failure:^(NSError *error) {
-                                                       [self showJetpackAuthentication];
-                                                   }];
-                    } else {
-                        [self showJetpackAuthentication];
-                    }
-                } else {
-                    [self dismiss];
-                }
-            } failure:^(NSError *error) {
-                [SVProgressHUD dismiss];
-            }];
+            [self createBlogForSubsite:subsite andXmlRpc:xmlRpc];
+            [self synchronizeNewlyAddedBlog];
         }
     } else {
         NSError *error = [NSError errorWithDomain:@"WordPress" code:0 userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Sorry, you credentials were good but you don't seem to have access to any blogs", @"")}];
@@ -102,13 +63,77 @@
     saveButton.enabled = YES;            
 }
 
+- (void)displayAddUsersBlogsForXmlRpc:(NSString *)xmlRpc
+{
+    AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] init];
+    addUsersBlogsView.isWPcom = NO;
+    addUsersBlogsView.usersBlogs = subsites;
+    addUsersBlogsView.url = xmlRpc;
+    addUsersBlogsView.username = self.username;
+    addUsersBlogsView.password = self.password;
+    addUsersBlogsView.geolocationEnabled = self.geolocationEnabled;
+    [self.navigationController pushViewController:addUsersBlogsView animated:YES];
+}
+
+- (void)createBlogForSubsite:(NSDictionary *)subsite andXmlRpc:(NSString *)xmlrpc
+{
+    NSMutableDictionary *newBlog;
+    if(subsite != nil)
+        newBlog = [NSMutableDictionary dictionaryWithDictionary:subsite];
+    else
+        newBlog = [NSMutableDictionary dictionaryWithDictionary:[subsites objectAtIndex:0]];
+    [newBlog setObject:self.username forKey:@"username"];
+    [newBlog setObject:self.password forKey:@"password"];
+    [newBlog setObject:xmlrpc forKey:@"xmlrpc"];
+ 
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    self.blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
+    self.blog.geolocationEnabled = self.geolocationEnabled;
+    [self.blog dataSave];
+}
+
+- (void)synchronizeNewlyAddedBlog
+{
+    void (^successBlock)() = ^{
+        [[WordPressComApi sharedApi] syncPushNotificationInfo];
+        if ([self.blog hasJetpack]) {
+            [self connectToJetpack];
+        } else {
+            [self dismiss];
+        }        
+    };
+    void (^failureBlock)(NSError*) = ^(NSError * error) {
+        [SVProgressHUD dismiss];
+    };
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Reading blog options", @"") maskType:SVProgressHUDMaskTypeBlack];
+    [self.blog syncBlogWithSuccess:successBlock failure:failureBlock];
+}
+
+- (void)connectToJetpack
+{
+    NSString *wpcomUsername = [[WordPressComApi sharedApi] username];
+    NSString *wpcomPassword = [[WordPressComApi sharedApi] password];
+    if (wpcomPassword && wpcomPassword) {
+        // Try with a known WordPress.com username first
+        [SVProgressHUD showWithStatus:NSLocalizedString(@"Connecting to Jetpack", @"") maskType:SVProgressHUDMaskTypeBlack];
+        [self.blog validateJetpackUsername:wpcomUsername
+                                  password:wpcomPassword
+                                   success:^{ [self dismiss]; }
+                                   failure:^(NSError *error) { [self showJetpackAuthentication]; }
+         ];
+    } else {
+        [self showJetpackAuthentication];
+    }
+}
+
 - (void)dismiss {
     [SVProgressHUD dismiss];
     if (IS_IPAD) {
         [self dismissModalViewControllerAnimated:YES];
     }
-    else
+    else {
         [self.navigationController popToRootViewControllerAnimated:YES];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 }
 
