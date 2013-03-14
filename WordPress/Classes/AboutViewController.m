@@ -10,15 +10,13 @@
 #import "ReachabilityUtils.h"
 #import "WPWebViewController.h"
 
-@interface AboutViewController (Private) 
-- (void)dismiss;
-- (void)openURLWithString:(NSString *)path;
-@end
-
 @implementation AboutViewController
 
 @synthesize buttonsView;
 @synthesize logoView;
+
+#define LANDSCAPE_BUTTONS_Y -20.0f
+#define PORTRAIT_BUTTONS_Y 90.0f
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -28,7 +26,7 @@
     self.navigationItem.title = NSLocalizedString(@"About", @"About this app (information page title)");
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
     
-    if( [self.navigationController.viewControllers count] == 1 )
+    if([self.navigationController.viewControllers count] == 1)
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
 }
 
@@ -37,18 +35,17 @@
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
-
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    if( IS_IPHONE ) {
-        if ( YES == UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ) {
+    if(IS_IPHONE) {
+        if (YES == UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
             self.logoView.hidden = YES;
             CGRect frame = buttonsView.frame;
-            frame.origin.y = -20.0f;
+            frame.origin.y = LANDSCAPE_BUTTONS_Y;
             self.buttonsView.frame = frame;
         } else {
             self.logoView.hidden = NO;
             CGRect frame = buttonsView.frame;
-            frame.origin.y = 90.0f;
+            frame.origin.y = PORTRAIT_BUTTONS_Y;
             self.buttonsView.frame = frame;
         }
     }
