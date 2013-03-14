@@ -16,14 +16,13 @@
 
 @implementation AddSiteViewController
 
-CGFloat const AddSiteViewLogoWidth = 320.0;
-CGFloat const AddSiteViewLogoHeight = 70.0f;
+CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg"]];
-    logoImage.frame = CGRectMake(0.0f, 0.0f, AddSiteViewLogoWidth, AddSiteViewLogoHeight);
+    logoImage.frame = CGRectMake(0.0f, 0.0f, AddSiteLogoSize.width, AddSiteLogoSize.height);
     logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     logoImage.contentMode = UIViewContentModeCenter;
     tableView.tableHeaderView = logoImage;
@@ -48,11 +47,15 @@ CGFloat const AddSiteViewLogoHeight = 70.0f;
         if ([subsites count] > 1) {
             subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlRpc]] lastObject];
         }
+        
+        if (subsite == nil) {
+            subsite = [subsites objectAtIndex:0];
+        }
 
         if ([subsites count] > 1 && [[subsite objectForKey:@"blogid"] isEqualToString:@"1"]) {
             [self displayAddUsersBlogsForXmlRpc:xmlRpc];
         } else {
-            [self createBlogForSubsite:subsite andXmlRpc:xmlRpc];
+            [self createBlogWithXmlRpc:xmlRpc andBlogDetails:subsite];
             [self synchronizeNewlyAddedBlog];
         }
     } else {
@@ -75,16 +78,14 @@ CGFloat const AddSiteViewLogoHeight = 70.0f;
     [self.navigationController pushViewController:addUsersBlogsView animated:YES];
 }
 
-- (void)createBlogForSubsite:(NSDictionary *)subsite andXmlRpc:(NSString *)xmlrpc
+- (void)createBlogWithXmlRpc:(NSString *)xmlRpc andBlogDetails:(NSDictionary *)blogDetails
 {
-    NSMutableDictionary *newBlog;
-    if(subsite != nil)
-        newBlog = [NSMutableDictionary dictionaryWithDictionary:subsite];
-    else
-        newBlog = [NSMutableDictionary dictionaryWithDictionary:[subsites objectAtIndex:0]];
+    NSAssert(blogDetails != nil, nil);
+    
+    NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
     [newBlog setObject:self.username forKey:@"username"];
     [newBlog setObject:self.password forKey:@"password"];
-    [newBlog setObject:xmlrpc forKey:@"xmlrpc"];
+    [newBlog setObject:xmlRpc forKey:@"xmlrpc"];
  
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     self.blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
@@ -111,9 +112,9 @@ CGFloat const AddSiteViewLogoHeight = 70.0f;
 
 - (void)connectToJetpack
 {
-    NSString *wpcomUsername = [[WordPressComApi sharedApi] username];
-    NSString *wpcomPassword = [[WordPressComApi sharedApi] password];
-    if (wpcomPassword && wpcomPassword) {
+    NSString *wpcomUsername = [WordPressComApi sharedApi].username;
+    NSString *wpcomPassword = [WordPressComApi sharedApi].password;
+    if ((wpcomUsername != nil) && (wpcomPassword != nil)) {
         // Try with a known WordPress.com username first
         [SVProgressHUD showWithStatus:NSLocalizedString(@"Connecting to Jetpack", @"") maskType:SVProgressHUDMaskTypeBlack];
         [self.blog validateJetpackUsername:wpcomUsername
