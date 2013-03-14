@@ -8,10 +8,8 @@
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
-NSUInteger const EditPostViewControllerCharactersChangedToAutosave = 20;
-NSUInteger const EditPostViewControllerCharactersChangedToAutosaveOnWWAN = 40;
-NSTimeInterval const EditPostViewControllerAutosaveInterval = 4;
-NSTimeInterval const EditPostViewControllerAutosaveIntervalOnWWAN = 6;
+NSUInteger const EditPostViewControllerCharactersChangedToAutosave = 50;
+NSUInteger const EditPostViewControllerCharactersChangedToAutosaveOnWWAN = 100;
 
 typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagNone,
@@ -60,7 +58,6 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     BOOL _isAutosaved;
     BOOL _isAutosaving;
     BOOL _hasChangesToAutosave;
-    NSTimer *_autosaveTimer;
     AutosavingIndicatorView *_autosavingIndicatorView;
     NSUInteger _charactersChanged;
     AbstractPost *_backupPost;
@@ -72,7 +69,6 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 - (void)dealloc {
     _failedMediaAlertView.delegate = nil;
     _linkHelperAlertView.delegate = nil;
-    [_autosaveTimer invalidate];
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
@@ -170,6 +166,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     if (_autosavingIndicatorView == nil) {
         _autosavingIndicatorView = [[AutosavingIndicatorView alloc] initWithFrame:CGRectZero];
         _autosavingIndicatorView.hidden = YES;
+        _autosavingIndicatorView.alpha = 0.9f;
 
         [self.view addSubview:_autosavingIndicatorView];
         [self positionAutosaveView:nil];
@@ -635,15 +632,21 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     }
 
     [self.apost autosave];
-    [self restartAutosaveTimer];
 }
 
 - (BOOL)canAutosaveRemotely {
     return ((![self.apost.original hasRemote] || [self.apost.original.status isEqualToString:@"draft"]) && self.apost.blog.reachable);
 }
 
+- (BOOL)autosaveRemote {
+    return [self autosaveRemoteWithSuccess:nil failure:nil];
+}
+
 - (BOOL)autosaveRemoteWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     if (![self canAutosaveRemotely]) {
+        return NO;
+    }
+    if (_isAutosaving) {
         return NO;
     }
 
@@ -693,39 +696,15 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     return YES;
 }
 
-- (void)restartAutosaveTimer {
-    WPFLogMethod();
-    [_autosaveTimer invalidate];
-    _autosaveTimer = nil;
-    if (![self canAutosaveRemotely])
-        return;
-
-    if (!_hasChangesToAutosave)
-        return;
-
-    _autosaveTimer = [NSTimer scheduledTimerWithTimeInterval:[self autosaveInterval] target:self selector:@selector(autosaveTriggered:) userInfo:nil repeats:NO];
-    WPFLog(@"New timer for %@", _autosaveTimer.fireDate);
-}
-
-- (void)autosaveTriggered:(NSTimer *)timer {
-    WPFLogMethod();
-    if ([self canAutosaveRemotely] && !_isAutosaving) {
-        WPFLog(@"Autosaving :)");
-        [self autosaveRemoteWithSuccess:^{
-            WPFLog(@"Autosaved :D");
-            [self restartAutosaveTimer];
-        } failure:^(NSError *error) {
-            WPFLog(@"Error autosaving: %@", error);
-            [self restartAutosaveTimer];
-        }];
-    }
-}
-
 - (void)incrementCharactersChangedForAutosaveBy:(NSUInteger)change {
     _charactersChanged += change;
     if (_charactersChanged > [self autosaveCharactersChangedThreshold]) {
         _charactersChanged = 0;
-        [self autosaveTriggered:nil];
+        double delayInSeconds = 0.2;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self autosaveRemote];
+        });
     }
 }
 
@@ -735,14 +714,6 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 - (void)hideAutosaveIndicatorWithSuccess:(BOOL)success {
     [_autosavingIndicatorView stopAnimatingWithSuccess:success];
-}
-
-- (NSTimeInterval)autosaveInterval {
-    if ([self.apost.blog.reachability isReachableViaWWAN]) {
-        return EditPostViewControllerAutosaveIntervalOnWWAN;
-    } else {
-        return EditPostViewControllerAutosaveInterval;
-    }
 }
 
 - (NSUInteger)autosaveCharactersChangedThreshold {
@@ -1060,6 +1031,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     isEditing = NO;
     _hasChangesToAutosave = YES;
     [self autosaveContent];
+    [self autosaveRemote];
 
     [self refreshButtons];
 }
@@ -1091,6 +1063,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 	    
     _hasChangesToAutosave = YES;
     [self autosaveContent];
+    [self autosaveRemote];
     [self refreshButtons];
 }
 
@@ -1103,8 +1076,6 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         self.post.tags = [tagsTextField.text stringByReplacingCharactersInRange:range withString:string];
 
     _hasChangesToAutosave = YES;
-    [self restartAutosaveTimer];
-    [self incrementCharactersChangedForAutosaveBy:MAX(range.length, string.length)];
     [self refreshButtons];
     return YES;
 }
