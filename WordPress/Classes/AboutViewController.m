@@ -43,18 +43,16 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    if(IS_IPHONE) {
-        if (YES == UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+    if (IS_IPHONE) {
+        CGRect frame = buttonsView.frame;
+        if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
             self.logoView.hidden = YES;
-            CGRect frame = buttonsView.frame;
             frame.origin.y = AboutViewLandscapeButtonsY;
-            self.buttonsView.frame = frame;
         } else {
             self.logoView.hidden = NO;
-            CGRect frame = buttonsView.frame;
             frame.origin.y = AboutViewPortraitButtonsY;
-            self.buttonsView.frame = frame;
         }
+        self.buttonsView.frame = frame;
     }
 }
 
