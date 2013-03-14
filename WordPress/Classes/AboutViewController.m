@@ -10,13 +10,20 @@
 #import "ReachabilityUtils.h"
 #import "WPWebViewController.h"
 
+@interface AboutViewController()
+
+@property (nonatomic, strong) IBOutlet UIView *logoView;
+@property (nonatomic, strong) IBOutlet UIView *buttonsView;
+
+@end
+
 @implementation AboutViewController
 
 @synthesize buttonsView;
 @synthesize logoView;
 
-#define LANDSCAPE_BUTTONS_Y -20.0f
-#define PORTRAIT_BUTTONS_Y 90.0f
+CGFloat const AboutViewLandscapeButtonsY = -20.0f;
+CGFloat const AboutViewPortraitButtonsY = 90.0f;
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
@@ -40,12 +47,12 @@
         if (YES == UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
             self.logoView.hidden = YES;
             CGRect frame = buttonsView.frame;
-            frame.origin.y = LANDSCAPE_BUTTONS_Y;
+            frame.origin.y = AboutViewLandscapeButtonsY;
             self.buttonsView.frame = frame;
         } else {
             self.logoView.hidden = NO;
             CGRect frame = buttonsView.frame;
-            frame.origin.y = PORTRAIT_BUTTONS_Y;
+            frame.origin.y = AboutViewPortraitButtonsY;
             self.buttonsView.frame = frame;
         }
     }

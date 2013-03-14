@@ -9,13 +9,5 @@
 #import <UIKit/UIKit.h>
 #import "WordPressAppDelegate.h"
 
-@interface AboutViewController : UIViewController <MFMailComposeViewControllerDelegate>
-
-@property (nonatomic, strong) IBOutlet UIView *logoView;
-@property (nonatomic, strong) IBOutlet UIView *buttonsView;
-
-- (IBAction)viewTermsOfService:(id)sender;
-- (IBAction)viewPrivacyPolicy:(id)sender;
-- (IBAction)viewWebsite:(id)sender;
-
+@interface AboutViewController : UIViewController
 @end
