@@ -523,10 +523,6 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 
 - (BOOL) shouldDisplayfriendFinderNudgeView {
-    #ifdef DEBUG
-    return self.friendFinderNudgeView == nil;
-    #endif
-
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     return ![userDefaults boolForKey:WPReaderViewControllerDisplayedFriendFinder] && self.friendFinderNudgeView == nil;
 }
