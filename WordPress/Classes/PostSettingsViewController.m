@@ -46,6 +46,7 @@
 	mapView.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [tapRecognizerForFeaturedImage removeTarget:self action:NULL];
+    tapRecognizerForFeaturedImage = nil;
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
@@ -183,6 +184,8 @@
     featuredImageLabel = nil;
     postFormatTableViewCell = nil;
 
+    [tapRecognizerForFeaturedImage removeTarget:self action:NULL];
+    tapRecognizerForFeaturedImage = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
