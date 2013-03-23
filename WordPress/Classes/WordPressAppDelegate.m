@@ -1,6 +1,6 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <WordPressApi/WordPressApi.h>
-
+#import <MTZoomWindow/MTZoomWindow.h>
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "NSString+Helpers.h"
@@ -277,6 +277,9 @@
         }];
     }];
 #endif
+
+    [MTZoomWindow sharedWindow];
+
     return YES;
 }
 

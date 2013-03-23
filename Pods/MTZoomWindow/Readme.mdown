@@ -1,0 +1,50 @@
+Read Me
+=====================
+
+This class provides a simple way to zoom a specific UIView and display it fullscreen, upon a defined action of the user (uses UIGestureRecognizer to detect actions). If the user performs the action on the specified UIView the view gets zoomed in animated and is displayed fullscreen, with a black background. If the user performs the same gesture again, the UIView gets zoomed back out and everything is like it was before.
+
+This is a simple way that feels lighter to the user then pushing an own UIViewController just for displaying something in fullscreen.
+
+Usage
+------------------
+
+You can use MTZoomWindow like this:
+
+	// specify size of the UIView when it is zoomed in
+	viewToZoom.zoomedSize = CGSizeMake(300,460);
+    viewToZoom.zoomedAutoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    viewToZoom.wrapInScrollviewWhenZoomed = YES;
+
+    // find this awesome shortcut for UITapGestureRecognizer in @zwaldowski's BlocksKit
+    [viewToZoom whenTapped:^{
+        [viewToZoom zoomIn];
+    }];
+
+
+Adding MTZoomWindow to your project
+------------------
+
+1. Just copy over the files MTZoomWindow.h, MTZoomWindow.m, UIView+MTZoom.h, UIView+MTZoom.m and MTZoomWindowDelegate.h to your project.
+2. import "MTZoomWindow.h" everywhere where you want to use it
+3. There is no step 3 :)
+
+Known Issues
+------------------
+
+When your App supports landscape orientation you have to create MTZoomWindow in your AppDelegate:
+
+    - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+        // ...
+        // create ZoomWindow to listen for orientation changes
+        [MTZoomWindow sharedWindow];
+    
+        return YES;
+    }
+
+
+Screenshots
+------------------------
+
+MTZoomWindow used on a MKMapView
+
+![MTZoomWindow](https://img.skitch.com/20110308-n2qxh5t2jhtpinig29dyacrhr5.png "MTZoomWindow")

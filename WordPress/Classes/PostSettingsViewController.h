@@ -1,17 +1,24 @@
-#import <UIKit/UIKit.h>
+
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
-#import "UITableViewActivityCell.h"
-#import "EditPostViewController.h"
+#import <MTZoomWindow/MTZoomWindow.h>
+#import <UIKit/UIKit.h>
+
 #import "CPopoverManager.h"
+#import "EditPostViewController.h"
 #import "PostAnnotation.h"
 #import "UIImageView+AFNetworking.h"
+#import "UITableViewActivityCell.h"
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
 #define kOFFSET_FOR_KEYBOARD                    150.0
 
 @class EditPostViewController;
-@interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, UIActionSheetDelegate> {
+@interface PostSettingsViewController : UIViewController
+   <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate,
+    UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate,
+    UIActionSheetDelegate> {
+
     IBOutlet UITableView *tableView;
     IBOutlet UITableViewCell *statusTableViewCell;
     IBOutlet UITableViewCell *visibilityTableViewCell;
@@ -47,6 +54,7 @@
 	BOOL isUpdatingLocation, isUploadingFeaturedImage;
     IBOutlet UILabel *visibilityTitleLabel, *statusTitleLabel, *postFormatTitleLabel, *featuredImageLabel;
     IBOutlet UIImageView *featuredImageView;
+    UITapGestureRecognizer *tapRecognizerForFeaturedImage;
     IBOutlet UITableViewCell *featuredImageTableViewCell;
     IBOutlet UIActivityIndicatorView *featuredImageSpinner;
 }
@@ -62,4 +70,5 @@
 - (void)featuredImageUploadFailed: (NSNotification *)notificationInfo;
 - (void)featuredImageUploadSucceeded: (NSNotification *)notificationInfo;
 - (void)showFeaturedImageUploader: (NSNotification *)notificationInfo;
+
 @end

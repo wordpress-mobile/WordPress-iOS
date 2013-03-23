@@ -19,6 +19,7 @@
 }
 
 @property (nonatomic, strong) AbstractPost *apost;
+
 - (void)showPicker:(UIView *)picker;
 - (void)geocodeCoordinate:(CLLocationCoordinate2D)c;
 - (void)geolocationCellTapped:(NSIndexPath *)indexPath;
@@ -27,6 +28,7 @@
 @end
 
 @implementation PostSettingsViewController
+
 @synthesize postDetailViewController, postFormatTableViewCell;
 
 #pragma mark -
@@ -43,6 +45,7 @@
 	}
 	mapView.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [tapRecognizerForFeaturedImage removeTarget:self action:NULL];
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
@@ -111,12 +114,19 @@
 			[locationManager startUpdatingLocation];
 		}
 	}
-    
+
+    tapRecognizerForFeaturedImage = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomFeaturedImageView:)];
+    tapRecognizerForFeaturedImage.numberOfTapsRequired = 1;
+    [featuredImageTableViewCell addGestureRecognizer:tapRecognizerForFeaturedImage];
+
+    featuredImageView.zoomedAutoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    featuredImageView.wrapInScrollviewWhenZoomed = YES;
+
     featuredImageView.layer.shadowOffset = CGSizeMake(0.0, 1.0f);
     featuredImageView.layer.shadowColor = [[UIColor blackColor] CGColor];
     featuredImageView.layer.shadowOpacity = 0.5f;
     featuredImageView.layer.shadowRadius = 1.0f;
-    
+
     // Check if blog supports featured images
     id supportsFeaturedImages = [self.post.blog getOptionValue:@"post_thumbnail"];
     if (supportsFeaturedImages != nil) {
@@ -781,6 +791,19 @@
     [tableView reloadData];
 }
 
+- (void)zoomFeaturedImageView:(UITapGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateEnded && self.post.post_thumbnail && !featuredImageView.hidden) {
+        CGSize size = [UIScreen mainScreen].bounds.size;
+        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        if (UIInterfaceOrientationIsLandscape(orientation))
+        {
+            size = CGSizeMake(size.height, size.width);
+        }
+        featuredImageView.zoomedSize = size;
+        [featuredImageView zoomIn];
+    }
+}
+
 #pragma mark -
 #pragma mark UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -790,7 +813,6 @@
         [postDetailViewController refreshButtons];
         [tableView reloadData];
     }
-    
 }
 
 #pragma mark -
