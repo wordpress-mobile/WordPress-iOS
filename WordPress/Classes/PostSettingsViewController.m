@@ -122,6 +122,7 @@
 
     featuredImageView.zoomedAutoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     featuredImageView.wrapInScrollviewWhenZoomed = YES;
+    featuredImageView.contentMode = UIViewContentModeScaleAspectFit;
 
     featuredImageView.layer.shadowOffset = CGSizeMake(0.0, 1.0f);
     featuredImageView.layer.shadowColor = [[UIColor blackColor] CGColor];
@@ -168,9 +169,9 @@
     [locationManager stopUpdatingLocation];
     locationManager.delegate = nil;
     locationManager = nil;
-    
+
     mapView = nil;
-    
+
     [reverseGeocoder cancelGeocode];
     reverseGeocoder = nil;
     
@@ -233,7 +234,7 @@
         [featuredImageSpinner stopAnimating];
         [featuredImageSpinner setHidden:YES];
         [featuredImageLabel setHidden:YES];
-        
+        [self reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // private blog, auth needed.
         if (operation.response.statusCode == 403) {
@@ -295,7 +296,7 @@
 
 - (void)reloadData {
     passwordTextField.text = self.apost.password;
-	
+
     [tableView reloadData];
 }
 
@@ -623,9 +624,15 @@
     return nil;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tblView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ((indexPath.section == 0) && (indexPath.row == 1) && (self.apost.password))
         return 88.f;
+    else if (blogSupportsFeaturedImage && self.post.post_thumbnail && featuredImageView.image && indexPath.section == 2 && indexPath.row == 0) {
+        CGRect topBounds = tblView.bounds;
+        CGFloat fillWidth = topBounds.size.width * 0.85f;
+        CGFloat fillHeight = featuredImageView.image.size.height / featuredImageView.image.size.width * fillWidth;
+        return fillHeight;
+    }
     else if (
              (!blogSupportsFeaturedImage && (indexPath.section == 2) && (indexPath.row == 1))
              || (blogSupportsFeaturedImage && (self.post.post_thumbnail || isUploadingFeaturedImage) && indexPath.section == 2 && indexPath.row == 0)
@@ -696,7 +703,7 @@
                         break;
                     case 1:
                         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Remove this Featured Image?", @"Prompt when removing a featured image from a post") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", "Cancel a prompt") destructiveButtonTitle:NSLocalizedString(@"Remove", @"Remove an image/posts/etc") otherButtonTitles:nil];
-                        [actionSheet showFromRect:cell.frame inView:postDetailViewController.view animated:YES];
+                        [actionSheet showFromRect:cell.frame inView:tableView animated:YES];
                         break;
                 }
             } else {
