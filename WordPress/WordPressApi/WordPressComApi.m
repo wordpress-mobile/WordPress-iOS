@@ -576,6 +576,56 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 }
 /* HACK ENDS */
 
+#pragma mark - Reader methods
+
+- (void)getReaderTopicsWithSuccess:(WordPressComApiRestSuccessResponseBlock)success
+						   failure:(WordPressComApiRestSuccessFailureBlock)failure {
+	
+	NSString *path = @"reader/topics";
+	
+	[self getPath:path parameters:nil success:success failure:failure];
+}
+
+- (void)getCommentsForPost:(NSUInteger)postID
+				  fromSite:(NSString *)siteID
+				   success:(WordPressComApiRestSuccessResponseBlock)success
+				   failure:(WordPressComApiRestSuccessFailureBlock)failure {
+	
+	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%i/replies", siteID, postID];
+	
+	[self getPath:path parameters:nil success:success failure:failure];
+}
+
+- (void)getPostsFromSource:(RESTPostSource)source
+					 forID:(NSString *)ID
+			withParameters:(NSDictionary *)params
+				   success:(WordPressComApiRestSuccessResponseBlock)success
+				   failure:(WordPressComApiRestSuccessFailureBlock)failure {
+	
+	NSString *path;
+	
+	switch (source) {
+		case RESTPostSourceFollowing:
+			path = @"reader/following";
+			break;
+		case RESTPostSourceLiked:
+			path = @"reader/liked";
+			break;
+		case RESTPostSourceTopic:
+			path = [NSString stringWithFormat:@"reader/topics/%@", ID];
+			break;
+		case RESTPostSourceSite:
+			path = [NSString stringWithFormat:@"sites/%@/posts", ID];
+			break;
+		default:
+			path = @"freshly-pressed";
+			break;
+	}
+	
+	[self getPath:path parameters:params success:success failure:failure];
+}
+
+
 #pragma mark - Oauth methods
 
 - (NSString *)authToken {

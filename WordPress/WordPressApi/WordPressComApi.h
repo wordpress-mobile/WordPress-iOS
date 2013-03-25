@@ -120,4 +120,51 @@ extern NSString *const WordPressComApiErrorCodeKey;
 + (NSString *)WordPressAppId;
 + (NSString *)WordPressAppSecret;
 
+///--------------------
+/// @name Reader
+///--------------------
+
+typedef NS_ENUM(NSUInteger, RESTPostSource) {
+	RESTPostSourceFreshly,
+	RESTPostSourceFollowing,
+	RESTPostSourceLiked,
+	RESTPostSourceTopic,
+	RESTPostSourceSite
+};
+
+/**
+ Gets the list of recommended topics for the Reader.
+ */
+- (void)getReaderTopicsWithSuccess:(WordPressComApiRestSuccessResponseBlock)success
+						   failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
+/**
+ Gets the list of comments for the specified post, on the specified site.
+ 
+ @param postID The postID for the comments to retrieve.
+ @param siteID Specifies the site containing the post. This is either the blogID as an integer, or the hostname as a string.
+ @param success a block called if the REST API call is successful.
+ @param failure a block called if there is any error. `error` can be any underlying network error
+ */
+- (void)getCommentsForPost:(NSUInteger)postID
+				  fromSite:(NSString *)siteID
+				   success:(WordPressComApiRestSuccessResponseBlock)success
+				   failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
+/**
+ Gets a list of posts from the specified REST endpoint.
+ 
+ @param source An enum indicating which REST endpoint to query for posts.
+ @param ID Can indicate a site or a topic depending on context. This is either an integer indicating a site or topic id, or a site's hostname as an string.
+ @param params A dictionary of modifiers to limit or modify the result set. Possible values include number, offset, page, order, order_by, before, after. 
+ Check the documentation for the desired endpoint for a full list. ( http://developer.wordpress.com/docs/api/1/ )
+ @param success a block called if the REST API call is successful.
+ @param failure a block called if there is any error. `error` can be any underlying network error
+ */
+- (void)getPostsFromSource:(RESTPostSource)source
+					 forID:(NSString *)ID
+			withParameters:(NSDictionary *)params
+				   success:(WordPressComApiRestSuccessResponseBlock)success
+				   failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
 @end
