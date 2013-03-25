@@ -65,7 +65,8 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showFeaturedImageUploader:) name:@"UploadingFeaturedImage" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadSucceeded:) name:FeaturedImageUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadFailed:) name:FeaturedImageUploadFailed object:nil];
-    
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+
     [tableView setBackgroundView:nil];
     [tableView setBackgroundColor:[UIColor clearColor]]; //Fix for black corners on iOS4. http://stackoverflow.com/questions/1557856/black-corners-on-uitableview-group-style
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
@@ -212,6 +213,9 @@
     [self reloadData];
 }
 
+- (void)orientationDidChange:(NSNotification *)notification {
+    [self reloadData];
+}
 
 #pragma mark -
 #pragma mark Instance Methods
@@ -628,10 +632,21 @@
     if ((indexPath.section == 0) && (indexPath.row == 1) && (self.apost.password))
         return 88.f;
     else if (blogSupportsFeaturedImage && self.post.post_thumbnail && featuredImageView.image && indexPath.section == 2 && indexPath.row == 0) {
+        // find a suitable size for the featured image preview
         CGRect topBounds = tblView.bounds;
         CGFloat fillWidth = topBounds.size.width * 0.85f;
         CGFloat fillHeight = featuredImageView.image.size.height / featuredImageView.image.size.width * fillWidth;
-        return fillHeight;
+        CGSize size = [UIScreen mainScreen].bounds.size;
+        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        if (UIInterfaceOrientationIsLandscape(orientation))
+        {
+            size = CGSizeMake(size.height, size.width);
+        }
+        if (fillHeight > size.height * 0.85f) {
+            return size.height * 0.85f;
+        } else {
+            return fillHeight;
+        }
     }
     else if (
              (!blogSupportsFeaturedImage && (indexPath.section == 2) && (indexPath.row == 1))
