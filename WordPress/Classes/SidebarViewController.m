@@ -128,17 +128,9 @@
 	}
     
     self.settingsButton.backgroundColor = [UIColor clearColor];
-    [self.settingsButton setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButton"] stretchableImageWithLeftCapWidth:14.0 topCapHeight:0.0] forState:UIControlStateNormal];
-    [self.settingsButton setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButtonHighlighted"] stretchableImageWithLeftCapWidth:14.0 topCapHeight:0.0] forState:UIControlStateHighlighted];
-    [self.settingsButton setTitle:NSLocalizedString(@"Settings", @"App settings") forState:UIControlStateNormal ];
-    self.settingsButton.titleLabel.lineBreakMode = UILineBreakModeClip;
-    self.settingsButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-    self.settingsButton.titleLabel.minimumFontSize = 12.0f;
-    self.settingsButton.titleEdgeInsets = UIEdgeInsetsMake (0.0f, 12.0f, 0.0f, 10.0f);
-    self.settingsButton.imageEdgeInsets = UIEdgeInsetsMake(0.0f, 8.0f, 0.0f, 0.0f);
-    self.settingsButton.titleLabel.shadowColor = [UIColor UIColorFromHex:0x000000 alpha:0.45f];
-    self.settingsButton.titleLabel.shadowOffset = CGSizeMake(0, -1.0f);
-    [settingsButton.titleLabel setTextAlignment:UITextAlignmentCenter];
+    [self.settingsButton setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButton"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateNormal];
+    [self.settingsButton setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateHighlighted];
+    [self.settingsButton setTitle:NSLocalizedString(@"Settings", @"App settings") forState:UIControlStateNormal];
 
     if ([[self.resultsController fetchedObjects] count] > 0) {
         [self setupQuickPhotoButton];
@@ -348,7 +340,6 @@
             aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 
             [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
-            [self checkNothingToShow];
         }
     }
 }
@@ -644,18 +635,17 @@ NSLog(@"%@", self.sectionInfoArray);
 - (void)setupQuickPhotoButton {    
     if (quickPhotoButton) return;
     
-    CGFloat gapWidth = 2.0f;
-    CGFloat availableWidth = self.view.frame.size.width;
-    CGFloat buttonWidth = (availableWidth - gapWidth) / 2; // Remove gap size, divide by 2 for 2 buttons
-    
+    CGFloat availableWidth = self.view.frame.size.width;    
+    CGFloat buttonWidth = (availableWidth - 30.0f)/2; // 10px margins + 10px gap
+
     // Make room for the photo button
     CGRect settingsFrame = settingsButton.frame;
     settingsFrame.size.width = buttonWidth;
-    settingsFrame.origin.x = (buttonWidth + 3.0f); // Using 3f since the parent view doesn't have an expected even width
+    settingsFrame.origin.x = availableWidth - (buttonWidth + 10.0f);
     settingsButton.frame = settingsFrame;
     
     // Match the height and y of the settings Button.
-    CGRect frame = CGRectMake(0.0f, settingsFrame.origin.y, buttonWidth, settingsFrame.size.height);
+    CGRect frame = CGRectMake(10.0f, settingsFrame.origin.y, buttonWidth, settingsFrame.size.height);
     self.quickPhotoButton = [[QuickPhotoButtonView alloc] initWithFrame:frame];
     quickPhotoButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
     quickPhotoButton.delegate = self;
@@ -670,10 +660,8 @@ NSLog(@"%@", self.sectionInfoArray);
     quickPhotoButton.delegate = nil;
     self.quickPhotoButton = nil;
     
-    CGFloat availableWidth = self.view.frame.size.width;
     CGRect frame = settingsButton.frame;
-    frame.origin.x = 0.0f;
-    frame.size.width = availableWidth;
+    frame.origin.x = 10.0f;
     settingsButton.frame = frame;
 }
 
