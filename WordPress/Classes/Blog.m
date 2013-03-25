@@ -910,7 +910,7 @@
 
     NSMutableArray *pagesToKeep = [NSMutableArray array];
     for (NSDictionary *pageInfo in newPages) {
-        NSNumber *pageID = [[pageInfo objectForKey:@"postid"] numericValue];
+        NSNumber *pageID = [[pageInfo objectForKey:@"page_id"] numericValue];
         Page *newPage = [Page findOrCreateWithBlog:self andPageID:pageID];
         if (newPage.remoteStatus == AbstractPostRemoteStatusSync) {
             [newPage updateFromDictionary:pageInfo];
