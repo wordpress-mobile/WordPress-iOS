@@ -16,7 +16,7 @@
 
 #pragma mark - DetailView Delegate Methods
 
--(void)resetView {
+- (void)resetView {
 	
 }
 
