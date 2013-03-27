@@ -143,11 +143,27 @@
         NSMutableURLRequest *request = [self.blog.api requestWithMethod:@"metaWeblog.newMediaObject" parameters:parameters];
 
         dispatch_async(dispatch_get_main_queue(), ^(void) {
+            void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error) {
+                if ([self.mediaType isEqualToString:@"featured"]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageUploadFailed
+                                                                        object:self];
+                }
+
+                self.remoteStatus = MediaRemoteStatusFailed;
+                _uploadOperation = nil;
+                if (failure) failure(error);
+            };
             AFHTTPRequestOperation *operation = [self.blog.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 if ([self isDeleted] || self.managedObjectContext == nil)
                     return;
 
                 NSDictionary *response = (NSDictionary *)responseObject;
+
+                if (![response isKindOfClass:[NSDictionary class]]) {
+                    NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit in your blog", @"")}];
+                    failureBlock(operation, error);
+                    return;
+                }
                 if([response objectForKey:@"videopress_shortcode"] != nil)
                     self.shortcode = [response objectForKey:@"videopress_shortcode"];
 
@@ -178,15 +194,6 @@
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 if ([self isDeleted] || self.managedObjectContext == nil)
                     return;
-                
-                if ([self.mediaType isEqualToString:@"featured"]) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageUploadFailed
-                                                                        object:self];
-                }
-
-                self.remoteStatus = MediaRemoteStatusFailed;
-                 _uploadOperation = nil;
-                if (failure) failure(error);
             }];
             [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
                 dispatch_async(dispatch_get_main_queue(), ^(void) {
