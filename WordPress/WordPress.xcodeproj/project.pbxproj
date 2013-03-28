@@ -1129,7 +1129,6 @@
 		5DBABB1C16FB6CA700CDDD68 /* ReaderTopicsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTopicsViewController.m; sourceTree = "<group>"; };
 		5DBABB1E16FB6E0000CDDD68 /* ReaderPostDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostDetailViewController.h; sourceTree = "<group>"; };
 		5DBABB1F16FB6E0000CDDD68 /* ReaderPostDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostDetailViewController.m; sourceTree = "<group>"; };
-		5DBABB2116FB8E7D00CDDD68 /* WordPress 3.6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 3.6.xcdatamodel"; sourceTree = "<group>"; };
 		5DC3A44B1610B9BC00A890BE /* UINavigationController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Rotation.h"; sourceTree = "<group>"; };
 		5DC3A44C1610B9BC00A890BE /* UINavigationController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Rotation.m"; sourceTree = "<group>"; };
 		5DC4332F1587C3600073CF07 /* PanelViewWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelViewWrapper.h; sourceTree = "<group>"; };
@@ -4333,7 +4332,6 @@
 			children = (
 				5D29D2AE1700C70200813FEF /* WordPress 11.xcdatamodel */,
 				FDFB011916B1EA1C00F589A8 /* WordPress 10.xcdatamodel */,
-				5DBABB2116FB8E7D00CDDD68 /* WordPress 3.6.xcdatamodel */,
 				E1874BFE161C5DBC0058BDC4 /* WordPress 7.xcdatamodel */,
 				E1C807471696F72E00E545A6 /* WordPress 9.xcdatamodel */,
 				E115F2D116776A2900CCF00D /* WordPress 8.xcdatamodel */,
