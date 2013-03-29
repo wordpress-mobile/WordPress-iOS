@@ -160,7 +160,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             self.disclosureIndicator.hidden = NO;
             NSString *postTitle = [[self.post valueForKeyPath:@"title"] stringByDecodingXMLCharacters];
             if (!postTitle || [postTitle isEqualToString:@""])
-                postTitle = NSLocalizedString(@"Unitled Post", @"Used when a post has no title");
+                postTitle = NSLocalizedString(@"Untitled Post", @"Used when a post has no title");
             self.postBanner.titleLabel.text = postTitle;
             id authorAvatarURL = [self.post valueForKeyPath:@"author.avatar_URL"];
             if ([authorAvatarURL isKindOfClass:[NSString class]]) {
