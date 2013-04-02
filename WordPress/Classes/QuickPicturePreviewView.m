@@ -12,11 +12,14 @@
 #define QPP_SHADOW_SIZE 5.0f
 
 @implementation QuickPicturePreviewView
+
 @synthesize delegate;
 
 - (void)setupView {
     zoomed = NO;
     zooming = NO;
+    hasPaperClip = YES;
+    hasPictureFrame = YES;
     imageView = [[UIImageView alloc] init];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:imageView];
@@ -38,6 +41,17 @@
     return self;
 }
 
+- (void) setPaperClipShowing:(BOOL)visible {
+    hasPaperClip = visible;
+    [self layoutSubviews];
+}
+
+- (void) setPictureFrameShowing:(BOOL)visible {
+    hasPictureFrame = visible;
+    [self layoutSubviews];
+}
+
+
 - (void)layoutSubviews {
     UIImage *image = imageView.image;
     if (image != nil) {
@@ -49,28 +63,34 @@
 
             CGFloat width, height, maxsize;
             if (frameSize.width > frameSize.height) {
-                maxsize = frameSize.height;
+                // TODO: use another bool
+                maxsize = hasPictureFrame ? frameSize.height : frameSize.width;
             } else {
-                maxsize = frameSize.width;
+                maxsize = hasPictureFrame ? frameSize.width : frameSize.height;
             }
             if (imageRatio > 1) {
-                width = maxsize - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH);
+                width = hasPictureFrame ? maxsize - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : maxsize;
                 height = width / imageRatio;
             } else {
-                height = maxsize - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH);
+                height = hasPictureFrame ? maxsize - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : maxsize;
                 width = height * imageRatio;
             }
-            
-            width += 5.0f;
-            height += 5.0f;
-            
-            imageFrame = CGRectMake(
+
+            if (hasPictureFrame) {
+                width += 5.0f;
+                height += 5.0f;
+            }
+
+            if (hasPictureFrame) {
+                imageFrame = CGRectMake(
                                     frameSize.width - width - (QPP_MARGIN + QPP_FRAME_WIDTH),
                                     QPP_MARGIN + QPP_FRAME_WIDTH,
                                     width,
-                                    height
-                                    );
-            
+                                    height);
+            } else {
+                imageFrame = CGRectMake(0, 0, width, height);
+            }
+    
             imageView.frame = imageFrame;
             if (frameLayer == nil) {
                 frameLayer = [CALayer layer];
@@ -85,16 +105,20 @@
                 }
                 [self.layer addSublayer:frameLayer];
             }
-            imageFrame.size.width += 2 * QPP_FRAME_WIDTH;
-            imageFrame.size.height += 2 * QPP_FRAME_WIDTH;
-            imageFrame.origin.x -= QPP_FRAME_WIDTH;
-            imageFrame.origin.y -= QPP_FRAME_WIDTH;
+            if (hasPictureFrame) {
+                imageFrame.size.width += 2 * QPP_FRAME_WIDTH;
+                imageFrame.size.height += 2 * QPP_FRAME_WIDTH;
+                imageFrame.origin.x -= QPP_FRAME_WIDTH;
+                imageFrame.origin.y -= QPP_FRAME_WIDTH;
+            }
             frameLayer.frame = imageFrame;
             
-            paperClipImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"paperclip.png"]];
-            paperClipImageView.frame = CGRectMake(3.0f, -8.0f, 15.0f, 41.0f);
-            [paperClipImageView setHidden:NO];
-            [imageView addSubview:paperClipImageView];
+            if (hasPaperClip) {
+                paperClipImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"paperclip.png"]];
+                paperClipImageView.frame = CGRectMake(3.0f, -8.0f, 15.0f, 41.0f);
+                [paperClipImageView setHidden:NO];
+                [imageView addSubview:paperClipImageView];
+            }
         }
     }
     
@@ -120,7 +144,7 @@
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
     NSUInteger numTaps = [touch tapCount];
-    
+
     if (numTaps == 1) {
         zooming = YES;
         zoomed = ! zoomed;
@@ -144,12 +168,14 @@
             self.frame = [self.superview bounds];
             self.backgroundColor = [UIColor blackColor];
             imageView.frame = self.frame;
-            paperClipImageView.alpha = 0.0f;
+            if (hasPaperClip)
+                paperClipImageView.alpha = 0.0f;
         } else {
             self.frame = normalFrame;
             self.backgroundColor = [UIColor clearColor];
             imageView.frame = normalImageFrame;
-            paperClipImageView.alpha = 1.0f;
+            if (hasPaperClip)
+                paperClipImageView.alpha = 1.0f;
         }
         [UIView commitAnimations];
 

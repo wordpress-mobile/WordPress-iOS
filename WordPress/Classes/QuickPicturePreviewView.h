@@ -23,10 +23,15 @@
     CALayer *frameLayer;
     BOOL zoomed;
     BOOL zooming;
+    BOOL hasPaperClip;
+    BOOL hasPictureFrame;
     CGRect normalFrame, normalImageFrame;
 }
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, weak) IBOutlet id<QuickPicturePreviewViewDelegate> delegate;
+
+- (void) setPaperClipShowing:(BOOL)visible;
+- (void) setPictureFrameShowing:(BOOL)visible;
 
 @end
