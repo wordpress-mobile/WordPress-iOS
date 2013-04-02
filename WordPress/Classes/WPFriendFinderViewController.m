@@ -305,14 +305,18 @@ typedef void (^CancelBlock)();
         [defaults setBool:YES forKey:kAccessedAddressBookPreference];
         [defaults synchronize];
     }
-    self.dismissBlock(buttonIndex);
+    if (self.dismissBlock) {
+        self.dismissBlock(buttonIndex);
+    }
 }
 
 // Called when we cancel a view (eg. the user clicks the Home button). This is not called when the user clicks the cancel button.
 // If not defined in the delegate, we simulate a click in the cancel button
 - (void)alertViewCancel:(UIAlertView *)alertView
 {
-    self.dismissBlock(-1);
+    if (self.dismissBlock) {
+        self.dismissBlock(-1);
+    }
 }
 
 
