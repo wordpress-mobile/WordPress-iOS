@@ -18,14 +18,16 @@
 
 @end
 
-@interface QuickPicturePreviewView : UIView {
-    UIImageView *imageView, *paperClipImageView;
+@interface QuickPicturePreviewView : UIView <UIScrollViewDelegate> {
+    UIScrollView *scrollView;
+    UIImageView *imageView, *paperClipImageView, *zoomView;
     CALayer *frameLayer;
     BOOL zoomed;
     BOOL zooming;
     BOOL hasPaperClip;
     BOOL hasPictureFrame;
     CGRect normalFrame, normalImageFrame;
+    CGRect originalFrame;
 }
 
 @property (nonatomic, strong) UIImage *image;
