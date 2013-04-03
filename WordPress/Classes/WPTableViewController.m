@@ -630,7 +630,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                     [alertView show];
 
                 } else if (error.code == 403 && editSiteViewController == nil) {
-                    [self promptForPasswordWithMessage:nil];
+                    [self promptForPassword];
                 } else if (error.code == 425 && editSiteViewController == nil) {
                     [self promptForPasswordWithMessage:[error localizedDescription]];
                 } else if (userInteraction) {
@@ -644,6 +644,10 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
           [WPError showAlertWithError:error];
         }
     }];
+}
+
+- (void)promptForPassword {
+    [self promptForPasswordWithMessage:nil];
 }
 
 - (void)promptForPasswordWithMessage:(NSString *)message {
