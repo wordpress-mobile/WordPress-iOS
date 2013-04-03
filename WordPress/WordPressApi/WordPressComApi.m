@@ -15,6 +15,7 @@
 #import "NSString+Helpers.h"
 #import "WPToast.h"
 #import <AFJSONRequestOperation.h>
+#import "ReaderContext.h"
 
 NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
@@ -578,6 +579,31 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 
 #pragma mark - Reader methods
 
+- (NSString *)getEndpointPath:(RESTPostEndpoint)endpoint {
+
+	NSString *path = nil;
+	
+	switch (endpoint) {
+		case RESTPostEndpointFollowing:
+			path = @"reader/following";
+			break;
+		case RESTPostEndpointLiked:
+			path = @"reader/liked";
+			break;
+		case RESTPostEndpointTopic:
+			path = @"reader/topics/%@";
+			break;
+		case RESTPostEndpointSite:
+			path = @"sites/%@/posts";
+			break;
+		default:
+			path = @"freshly-pressed";
+			break;
+	}
+	
+	return path;
+}
+
 - (void)getReaderTopicsWithSuccess:(WordPressComApiRestSuccessResponseBlock)success
 						   failure:(WordPressComApiRestSuccessFailureBlock)failure {
 	
@@ -596,32 +622,11 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 	[self getPath:path parameters:nil success:success failure:failure];
 }
 
-- (void)getPostsFromSource:(RESTPostSource)source
-					 forID:(NSString *)ID
+- (void)getPostsFromEndpoint:(NSString *)path
 			withParameters:(NSDictionary *)params
 				   success:(WordPressComApiRestSuccessResponseBlock)success
 				   failure:(WordPressComApiRestSuccessFailureBlock)failure {
-	
-	NSString *path;
-	
-	switch (source) {
-		case RESTPostSourceFollowing:
-			path = @"reader/following";
-			break;
-		case RESTPostSourceLiked:
-			path = @"reader/liked";
-			break;
-		case RESTPostSourceTopic:
-			path = [NSString stringWithFormat:@"reader/topics/%@", ID];
-			break;
-		case RESTPostSourceSite:
-			path = [NSString stringWithFormat:@"sites/%@/posts", ID];
-			break;
-		default:
-			path = @"freshly-pressed";
-			break;
-	}
-	
+		
 	[self getPath:path parameters:params success:success failure:failure];
 }
 

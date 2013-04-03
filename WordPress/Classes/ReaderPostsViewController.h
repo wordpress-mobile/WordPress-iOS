@@ -11,4 +11,6 @@
 
 @interface ReaderPostsViewController : WPTableViewController <DetailViewDelegate>
 
+@property (nonatomic, strong) NSNumber *currentTopic;
+
 @end

@@ -9,8 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "AbstractComment.h"
+#import "ReaderPost.h"
 
 @interface ReaderComment : AbstractComment
 
+@property (nonatomic, strong) NSString *authorAvatarURL;
+@property (nonatomic, strong) ReaderPost *post;
+
++ (NSArray *)fetchCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context;
 
 @end

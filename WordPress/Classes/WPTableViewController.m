@@ -350,13 +350,11 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
         return _resultsController;
     }
 
-    NSManagedObjectContext *moc;
+    NSManagedObjectContext *moc = [self managedObjectContext];
     NSString *cacheName;
     if (self.blog) {
-        moc = self.blog.managedObjectContext;
         cacheName = [NSString stringWithFormat:@"%@-%@", [self entityName], [self.blog objectID]];
     } else {
-        moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
         cacheName = [self entityName];
     }
     _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest]
@@ -831,6 +829,14 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 	return NO;
 }
 
+- (NSManagedObjectContext *)managedObjectContext {
+	if (self.blog) {
+        return self.blog.managedObjectContext;
+    } else {
+        return [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+    }
+}
+
 #define AssertSubclassMethod() NSAssert(false, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))
 #define AssertNoBlogSubclassMethod() NSAssert(self.blog, @"You must override %@ in a subclass if there is no blog", NSStringFromSelector(_cmd))
 
@@ -850,7 +856,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (NSFetchRequest *)fetchRequest {
     AssertNoBlogSubclassMethod();
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:self.blog.managedObjectContext]];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:[self managedObjectContext]]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
 
     return fetchRequest;
