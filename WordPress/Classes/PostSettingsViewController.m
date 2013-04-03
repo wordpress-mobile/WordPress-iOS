@@ -190,6 +190,10 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)viewDidLayoutSubviews {
+    [featuredImageView orientationDidChange:nil];
+}
+
 #pragma mark -
 #pragma mark Rotation Methods
 

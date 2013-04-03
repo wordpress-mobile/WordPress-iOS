@@ -190,7 +190,10 @@
 
 - (void) zoomIn {
     if (zoomed) {
-        [scrollView setZoomScale:2.0f animated:YES];
+        if (scrollView.zoomScale <= 1.0f)
+            [scrollView setZoomScale:2.0f animated:YES];
+        else
+            [scrollView setZoomScale:1.0f animated:YES];
         return;
     }
     
@@ -405,6 +408,9 @@
 
 - (void)orientationDidChange:(NSNotification *)note {
     if (zoomed && scrollView) {
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        originalFrame = [self convertRect:self.bounds toView:window];
+        imageView.frame = self.bounds;
         scrollView.frame = [UIScreen mainScreen].bounds;
     }
 }
