@@ -617,21 +617,27 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
         _isSyncing = NO;
         [self configureNoResultsView];
         if (self.blog) {
-            if (error.code == 405) {
-                // Prompt to enable XML-RPC using the default message provided from the WordPress site.
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't sync", @"")
-                                                                    message:[error localizedDescription]
-                                                                   delegate:self
-                                                          cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-                                                          otherButtonTitles:NSLocalizedString(@"Enable Now", @""), nil];
+            if ([error.domain isEqualToString:@"XMLRPC"]) {
+                if (error.code == 405) {
+                    // Prompt to enable XML-RPC using the default message provided from the WordPress site.
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't sync", @"")
+                                                                        message:[error localizedDescription]
+                                                                       delegate:self
+                                                              cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
+                                                              otherButtonTitles:NSLocalizedString(@"Enable Now", @""), nil];
 
-                alertView.tag = 30;
-                [alertView show];
+                    alertView.tag = 30;
+                    [alertView show];
 
-            } else if (error.code == 403 && editSiteViewController == nil) {
-				[self promptForPassword];
-            } else if (userInteraction) {
-                [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync", @"")];
+                } else if (error.code == 403 && editSiteViewController == nil) {
+                    [self promptForPasswordWithMessage:nil];
+                } else if (error.code == 425 && editSiteViewController == nil) {
+                    [self promptForPasswordWithMessage:[error localizedDescription]];
+                } else if (userInteraction) {
+                    [WPError showAlertWithError:error title:NSLocalizedString(@"Couldn't sync", @"")];
+                }
+            } else {
+                [WPError showAlertWithError:error];
             }
         } else {
           // For non-blog tables (notifications), just show the error for now
@@ -640,9 +646,12 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     }];
 }
 
-- (void)promptForPassword {
+- (void)promptForPasswordWithMessage:(NSString *)message {
+    if (message == nil) {
+        message = NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"");
+    }
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't Connect", @"")
-														message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"")
+														message:message
 													   delegate:nil
 											  cancelButtonTitle:nil
 											  otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
