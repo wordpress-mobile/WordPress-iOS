@@ -288,8 +288,7 @@
 
 - (void)reloadData {
     passwordTextField.text = self.apost.password;
-    [featuredImageView setPaperClipShowing:NO];
-    [featuredImageView setPictureFrameShowing:NO];
+    [featuredImageView setBorderAndClipShowing:NO];
     [tableView reloadData];
 }
 
@@ -627,13 +626,14 @@
         CGFloat fillHeight = featuredImageView.image.size.height / featuredImageView.image.size.width * fillWidth;
         CGSize size = [UIScreen mainScreen].bounds.size;
         UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-        if (UIInterfaceOrientationIsLandscape(orientation)) {
+        if (UIInterfaceOrientationIsLandscape(orientation))
+        {
             size = CGSizeMake(size.height, size.width);
         }
         if (fillHeight > size.height * 0.85f) {
-            return size.height * 0.85f + featuredImageView.frame.origin.y;
+            return size.height * 0.85f;
         } else {
-            return fillHeight + featuredImageView.frame.origin.y;
+            return fillHeight;
         }
     } else if (
              (!blogSupportsFeaturedImage && (indexPath.section == 2) && (indexPath.row == 1))
@@ -801,18 +801,6 @@
     if (!featuredImageSpinner.isAnimating)
         [featuredImageSpinner startAnimating];
     [tableView reloadData];
-}
-
-- (void)zoomFeaturedImageView:(UITapGestureRecognizer *)sender {
-    if (sender.state == UIGestureRecognizerStateEnded && self.post.post_thumbnail && !featuredImageView.hidden) {
-        CGSize size = [UIScreen mainScreen].bounds.size;
-        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-        if (UIInterfaceOrientationIsLandscape(orientation)) {
-            size = CGSizeMake(size.height, size.width);
-        }
-        //featuredImageView.zoomedSize = size;
-        //[featuredImageView zoomIn];
-    }
 }
 
 #pragma mark -

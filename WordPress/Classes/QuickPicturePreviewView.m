@@ -13,17 +13,22 @@
 
 @implementation QuickPicturePreviewView
 
-@synthesize delegate;
+@synthesize delegate, zoomed;
 
 - (void)setupView {
     zoomed = NO;
     zooming = NO;
-    hasPaperClip = YES;
-    hasPictureFrame = YES;
+    hasBorderAndClip = YES;
+    
+    backgroundView = [[UIView alloc] initWithFrame:self.frame];
+    backgroundView.hidden = YES;
+    backgroundView.opaque = NO;
+    backgroundView.backgroundColor = [UIColor blackColor];
+    backgroundView.alpha = 0.0f;
     
     scrollView = [[UIScrollView alloc] initWithFrame:self.frame];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    scrollView.maximumZoomScale = 2.0f;
+    scrollView.maximumZoomScale = 3.0f;
     scrollView.showsVerticalScrollIndicator = NO;
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
@@ -31,7 +36,17 @@
     scrollView.hidden = YES;
     scrollView.contentSize = CGSizeMake(1.f,1.f);
     scrollView.scrollEnabled = NO;
+    scrollView.bounces = YES;
+    scrollView.backgroundColor = [UIColor clearColor];
     [self addSubview:scrollView];
+    
+    UISwipeGestureRecognizer *swipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(zoomOut)];
+    swipeRecognizer.direction = UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown;
+    [scrollView addGestureRecognizer:swipeRecognizer];
+    
+    UITapGestureRecognizer *zoomOutRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomOut)];
+    zoomOutRecognizer.numberOfTapsRequired = 1;
+    [scrollView addGestureRecognizer:zoomOutRecognizer];
     
     zoomView = [[UIImageView alloc] init];
     zoomView.contentMode = UIViewContentModeScaleAspectFit;
@@ -41,6 +56,26 @@
     imageView = [[UIImageView alloc] init];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     [self addSubview:imageView];
+    
+    UIInterfaceOrientation statusBarOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (UIInterfaceOrientationIsLandscape(statusBarOrientation)) {
+        [self setupForOrientation:UIInterfaceOrientationPortraitUpsideDown];
+    } else if (statusBarOrientation == UIInterfaceOrientationPortraitUpsideDown) {
+        [self setupForOrientation:UIInterfaceOrientationPortrait];
+    }
+    
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomIn)];
+    tapRecognizer.numberOfTapsRequired = 1;
+    [self addGestureRecognizer:tapRecognizer];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(orientationWillChange:)
+                                                 name:UIApplicationWillChangeStatusBarOrientationNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(orientationDidChange:)
+                                                 name:UIApplicationDidChangeStatusBarOrientationNotification
+                                               object:nil];
 }
 
 - (id)init {
@@ -67,47 +102,41 @@
     return self;
 }
 
-- (void) setPaperClipShowing:(BOOL)visible {
-    hasPaperClip = visible;
+- (void) setBorderAndClipShowing:(BOOL)visible {
+    hasBorderAndClip = visible;
     [self layoutSubviews];
 }
-
-- (void) setPictureFrameShowing:(BOOL)visible {
-    hasPictureFrame = visible;
-    [self layoutSubviews];
-}
-
 
 - (void)layoutSubviews {
     UIImage *image = imageView.image;
     if (image != nil) {
         if (!zooming && !zoomed) {
-            CGSize imageSize = image.size;
-            CGFloat imageRatio = imageSize.width / imageSize.height;
+            CGFloat imageRatio = image.size.width / image.size.height;
             CGSize frameSize = self.frame.size;
+            if (!hasBorderAndClip)
+                imageRatio = frameSize.width / frameSize.height;
             CGRect imageFrame;
-
+            
             CGFloat width, height, maxsize;
             if (frameSize.width > frameSize.height) {
-                // TODO: use another bool
-                maxsize = hasPictureFrame ? frameSize.height : frameSize.width;
+                maxsize = hasBorderAndClip ? frameSize.height : frameSize.width;
             } else {
-                maxsize = hasPictureFrame ? frameSize.width : frameSize.height;
+                maxsize = hasBorderAndClip ? frameSize.width : frameSize.height;
             }
             if (imageRatio > 1) {
-                width = hasPictureFrame ? maxsize - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : maxsize;
+                width = hasBorderAndClip ? maxsize - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : maxsize;
                 height = width / imageRatio;
             } else {
-                height = hasPictureFrame ? maxsize - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : maxsize;
+                height = hasBorderAndClip ? maxsize - 2.0f * (QPP_MARGIN + QPP_FRAME_WIDTH) : maxsize;
                 width = height * imageRatio;
             }
             
-            if (hasPictureFrame) {
+            if (hasBorderAndClip) {
                 width += 5.0f;
                 height += 5.0f;
             }
             
-            if (hasPictureFrame) {
+            if (hasBorderAndClip) {
                 imageFrame = CGRectMake(
                                         frameSize.width - width - (QPP_MARGIN + QPP_FRAME_WIDTH),
                                         QPP_MARGIN + QPP_FRAME_WIDTH,
@@ -120,7 +149,6 @@
             imageView.frame = imageFrame;
             if (frameLayer == nil) {
                 frameLayer = [CALayer layer];
-                frameLayer.backgroundColor = [UIColor whiteColor].CGColor;
                 frameLayer.zPosition = -5;
                 // Check for shadow compatibility (iOS 3.2+)
                 if ([frameLayer respondsToSelector:@selector(setShadowColor:)]) {
@@ -129,9 +157,12 @@
                     frameLayer.shadowOpacity = 0.5f;
                     frameLayer.shadowRadius = 1.0f;
                 }
-                [self.layer addSublayer:frameLayer];
+                if (hasBorderAndClip) {
+                    frameLayer.backgroundColor = [UIColor whiteColor].CGColor;
+                    [self.layer addSublayer:frameLayer];
+                }
             }
-            if (hasPictureFrame) {
+            if (hasBorderAndClip) {
                 imageFrame.size.width += 2 * QPP_FRAME_WIDTH;
                 imageFrame.size.height += 2 * QPP_FRAME_WIDTH;
                 imageFrame.origin.x -= QPP_FRAME_WIDTH;
@@ -139,7 +170,7 @@
             }
             frameLayer.frame = imageFrame;
             
-            if (hasPaperClip) {
+            if (hasBorderAndClip) {
                 paperClipImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"paperclip.png"]];
                 paperClipImageView.frame = CGRectMake(3.0f, -8.0f, 15.0f, 41.0f);
                 [paperClipImageView setHidden:NO];
@@ -167,26 +198,39 @@
     }
     imageView.hidden = YES;
     frameLayer.opacity = 0.0f;
-    CGFloat barHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
     
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-    scrollView.userInteractionEnabled = YES;
-    scrollView.contentSize = window.bounds.size;
-    scrollView.hidden = NO;
-    scrollView.frame = [self convertRect:imageView.frame toView:window];
-    originalFrame = scrollView.frame;
-    scrollView.scrollEnabled = YES;
-    zoomView.bounds = [self convertRect:imageView.bounds toView:scrollView];
-    zoomView.frame = CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height);
-    [window addSubview:scrollView];
     
-    [UIView animateWithDuration:0.4f
+    scrollView.userInteractionEnabled = YES;
+    scrollView.scrollEnabled = YES;
+    scrollView.hidden = backgroundView.hidden = NO;
+    backgroundView.frame = [UIScreen mainScreen].bounds;
+    [window addSubview:backgroundView];
+
+    UIInterfaceOrientation current = [[UIApplication sharedApplication] statusBarOrientation];
+    CGSize size = [UIScreen mainScreen].bounds.size;
+    if (UIInterfaceOrientationIsLandscape(current)) {
+        size = CGSizeMake(size.height, size.width);
+    }
+    scrollView.contentSize = size;
+    if (hasBorderAndClip) {
+        scrollView.frame = [self convertRect:imageView.frame toView:window];
+    } else {
+        scrollView.frame = [self convertRect:imageView.bounds toView:window];
+    }
+    originalFrame = scrollView.frame;
+    zoomView.bounds = [self convertRect:imageView.bounds toView:scrollView];
+    zoomView.frame = CGRectMake(0, 0, scrollView.bounds.size.width, scrollView.bounds.size.height);
+    [window addSubview:scrollView];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
+
+    [UIView animateWithDuration:0.3f
                           delay:0.0f
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         scrollView.backgroundColor = [UIColor blackColor];
-                         scrollView.frame = CGRectOffset(window.frame, 0, barHeight);
-                         if (hasPaperClip)
+                         scrollView.frame = [UIScreen mainScreen].bounds;
+                         backgroundView.alpha = 1.0f;
+                         if (hasBorderAndClip)
                              paperClipImageView.alpha = 0.0f;
                      } completion:^(BOOL finished) {
                          zooming = NO;
@@ -202,39 +246,38 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(pictureWillRestore)]) {
         [self.delegate pictureWillRestore];
     }
-    scrollView.userInteractionEnabled = NO;
-    
-    [UIView animateWithDuration:0.4f
-                          delay:0.0f
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         scrollView.backgroundColor = [UIColor clearColor];
-                         scrollView.frame = originalFrame;
-                         if (hasPaperClip)
-                             paperClipImageView.alpha = 1.0f;
-                     } completion:^(BOOL finished) {
-                         [scrollView removeFromSuperview];
-                         zooming = NO;
-                         imageView.hidden = NO;
-                         frameLayer.opacity = 1.0f;
-                         if (self.delegate && [self.delegate respondsToSelector:@selector(pictureDidRestore)])
-                             [self.delegate pictureDidRestore];
-                     }];
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    UITouch *touch = [touches anyObject];
-    NSUInteger numTaps = [touch tapCount];
-    
-    if (numTaps == 1) {
-        zooming = YES;
-        zoomed = ! zoomed;
-        if (zoomed) {
-            [self zoomIn];
-        } else {
-            [self zoomOut];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        double delayInSeconds = 0.0;
+        if (scrollView.zoomScale > 1) {
+            [scrollView setZoomScale:1.f animated:YES];
+            delayInSeconds = 0.3;
         }
-    }
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            scrollView.userInteractionEnabled = NO;
+            scrollView.scrollEnabled = NO;
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+            
+            [UIView animateWithDuration:0.3f
+                                  delay:0.0f
+                                options:UIViewAnimationOptionCurveEaseInOut
+                             animations:^{
+                                 scrollView.zoomScale = 1.0;
+                                 backgroundView.alpha = 0.0f;
+                                 scrollView.frame = originalFrame;
+                                 if (hasBorderAndClip)
+                                     paperClipImageView.alpha = 1.0f;
+                             } completion:^(BOOL finished) {
+                                 [scrollView removeFromSuperview];
+                                 [backgroundView removeFromSuperview];
+                                 zooming = NO;
+                                 imageView.hidden = NO;
+                                 frameLayer.opacity = 1.0f;
+                                 if (self.delegate && [self.delegate respondsToSelector:@selector(pictureDidRestore)])
+                                     [self.delegate pictureDidRestore];
+                             }];
+        });
+    });
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
@@ -242,21 +285,127 @@
 }
 
 - (void)scrollViewDidZoom:(UIScrollView *)_scrollView {
-    // if we zoomed in we want to allow panning around
     if (_scrollView.zoomScale > 1.f) {
         _scrollView.scrollEnabled = YES;
     } else {
         _scrollView.scrollEnabled = NO;
     }
-    
-    //if (self.zoomGestures & ZoomableGesturePinch) {
+
     if (!_scrollView.zooming && _scrollView.zoomBouncing && _scrollView.zoomScale <= 1.f) {
         dispatch_async(dispatch_get_main_queue(), ^{
             zoomed = ! zoomed;
             [self zoomOut];
         });
     }
-    //    }
-
 }
+
+- (void) setupForOrientation:(UIInterfaceOrientation)orientation {
+    UIInterfaceOrientation current = [[UIApplication sharedApplication] statusBarOrientation];
+    
+	CGFloat angle = 0.0;
+	switch (current) {
+		case UIInterfaceOrientationPortrait: {
+			switch (orientation) {
+				case UIInterfaceOrientationPortraitUpsideDown:
+					angle = (CGFloat)M_PI;
+					break;
+                    
+				case UIInterfaceOrientationLandscapeLeft:
+					angle = (CGFloat)(M_PI*-90.0)/180.0;
+					break;
+                    
+				case UIInterfaceOrientationLandscapeRight:
+					angle = (CGFloat)(M_PI*90.0)/180.0;
+					break;
+                    
+				default:
+					return;
+			}
+			break;
+		}
+            
+		case UIInterfaceOrientationPortraitUpsideDown: {
+			switch (orientation) {
+				case UIInterfaceOrientationPortrait:
+					angle = (CGFloat)M_PI;
+					break;
+                    
+				case UIInterfaceOrientationLandscapeLeft:
+					angle = (CGFloat)(M_PI*90.0)/180.0;
+					break;
+                    
+				case UIInterfaceOrientationLandscapeRight:
+					angle = (CGFloat)(M_PI*-90.0)/180.0;
+					break;
+                    
+				default:
+					return;
+			}
+			break;
+		}
+            
+		case UIInterfaceOrientationLandscapeLeft: {
+			switch (orientation) {
+				case UIInterfaceOrientationLandscapeRight:
+					angle = (CGFloat)M_PI;
+					break;
+                    
+				case UIInterfaceOrientationPortraitUpsideDown:
+					angle = (CGFloat)(M_PI*-90.0)/180.0;
+					break;
+                    
+				case UIInterfaceOrientationPortrait:
+					angle = (CGFloat)(M_PI*90.0)/180.0;
+					break;
+                    
+				default:
+					return;
+			}
+			break;
+		}
+            
+		case UIInterfaceOrientationLandscapeRight: {
+			switch (orientation) {
+				case UIInterfaceOrientationLandscapeLeft:
+					angle = (CGFloat)M_PI;
+					break;
+                    
+				case UIInterfaceOrientationPortrait:
+					angle = (CGFloat)(M_PI*-90.0)/180.0;
+					break;
+                    
+				case UIInterfaceOrientationPortraitUpsideDown:
+					angle = (CGFloat)(M_PI*90.0)/180.0;
+					break;
+                    
+				default:
+					return;
+			}
+			break;
+		}
+	}
+    
+	CGAffineTransform rotation = CGAffineTransformMakeRotation(angle);
+    
+    [UIView animateWithDuration:0.4 animations:^{
+        scrollView.transform = CGAffineTransformConcat(rotation, scrollView.transform);
+    }];
+}
+
+- (void)orientationWillChange:(NSNotification *)note {
+    UIInterfaceOrientation orientation = [[[note userInfo] objectForKey: UIApplicationStatusBarOrientationUserInfoKey] integerValue];
+    if (scrollView) {
+        if (zoomed) {
+            [scrollView setZoomScale:1.f animated:YES];
+        }
+        [self setupForOrientation:orientation];
+    }
+}
+
+- (void)orientationDidChange:(NSNotification *)note {
+    if (zoomed && scrollView) {
+        scrollView.frame = [UIScreen mainScreen].bounds;
+    }
+}
+
 @end

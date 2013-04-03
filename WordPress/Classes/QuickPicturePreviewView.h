@@ -19,21 +19,21 @@
 @end
 
 @interface QuickPicturePreviewView : UIView <UIScrollViewDelegate> {
+    UIView *backgroundView;
     UIScrollView *scrollView;
     UIImageView *imageView, *paperClipImageView, *zoomView;
     CALayer *frameLayer;
     BOOL zoomed;
     BOOL zooming;
-    BOOL hasPaperClip;
-    BOOL hasPictureFrame;
+    BOOL hasBorderAndClip;
     CGRect normalFrame, normalImageFrame;
     CGRect originalFrame;
 }
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, weak) IBOutlet id<QuickPicturePreviewViewDelegate> delegate;
+@property (nonatomic, assign) BOOL zoomed;
 
-- (void) setPaperClipShowing:(BOOL)visible;
-- (void) setPictureFrameShowing:(BOOL)visible;
+- (void) setBorderAndClipShowing:(BOOL)visible;
 
 @end
