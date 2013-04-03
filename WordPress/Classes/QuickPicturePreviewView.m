@@ -10,6 +10,8 @@
 #define QPP_MARGIN 5.0f
 #define QPP_FRAME_WIDTH 5.0f
 #define QPP_SHADOW_SIZE 5.0f
+#define MAX_ZOOM_SCALE 3.0f
+#define ZOOM_ANIMATION_DURATION 0.3f
 
 @implementation QuickPicturePreviewView
 
@@ -25,10 +27,10 @@
     backgroundView.opaque = NO;
     backgroundView.backgroundColor = [UIColor blackColor];
     backgroundView.alpha = 0.0f;
-    
+
     scrollView = [[UIScrollView alloc] initWithFrame:self.frame];
     scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    scrollView.maximumZoomScale = 3.0f;
+    scrollView.maximumZoomScale = MAX_ZOOM_SCALE;
     scrollView.showsVerticalScrollIndicator = NO;
     scrollView.showsHorizontalScrollIndicator = NO;
     scrollView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
@@ -229,7 +231,7 @@
     [window addSubview:scrollView];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent];
 
-    [UIView animateWithDuration:0.3f
+    [UIView animateWithDuration:ZOOM_ANIMATION_DURATION
                           delay:0.0f
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
@@ -262,7 +264,7 @@
             scrollView.scrollEnabled = NO;
             [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
             
-            [UIView animateWithDuration:0.3f
+            [UIView animateWithDuration:ZOOM_ANIMATION_DURATION
                                   delay:0.0f
                                 options:UIViewAnimationOptionCurveEaseInOut
                              animations:^{
@@ -409,7 +411,11 @@
 - (void)orientationDidChange:(NSNotification *)note {
     if (zoomed && scrollView) {
         UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-        originalFrame = [self convertRect:self.bounds toView:window];
+        if (hasBorderAndClip) {
+            originalFrame = [self convertRect:imageView.frame toView:window];
+        } else {
+            originalFrame = [self convertRect:self.bounds toView:window];
+        }
         imageView.frame = self.bounds;
         scrollView.frame = [UIScreen mainScreen].bounds;
     }

@@ -46,6 +46,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     self.photoImageView.delegate = nil;
     self.popController.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #if !__has_feature(objc_arc)
@@ -96,6 +97,8 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationWillChange:) name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -143,7 +146,7 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
+
     if (self.popController) {
         showPickerAfterRotation = YES;
         [popController dismissPopoverAnimated:NO];
@@ -153,11 +156,19 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    
+
     if (showPickerAfterRotation) {
         showPickerAfterRotation = NO;
         [self showPicker];
     }
+}
+
+- (void)orientationWillChange:(NSNotification *)notification {
+    [photoImageView orientationWillChange:notification];
+}
+
+- (void)orientationDidChange:(NSNotification *)notification {
+    [photoImageView orientationDidChange:notification];
 }
 
 
@@ -323,6 +334,8 @@
     
     self.photo = (UIImage *)[info objectForKey:UIImagePickerControllerOriginalImage];
     self.photoImageView.image = self.photo;
+    self.photoImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.photoImageView.frame = CGRectMake(self.view.frame.size.width-150, 0, 150, 150);
     
     if (![self isViewLoaded]) {
         // If we get a memory warning on the way here our view could have unloaded.
@@ -368,7 +381,6 @@
 - (void)pictureWillZoom {
     [self.titleTextField resignFirstResponder];
     [self.contentTextView resignFirstResponder];
-    [self.view bringSubviewToFront:photoImageView];
 }
 
 - (void)pictureDidRestore {
