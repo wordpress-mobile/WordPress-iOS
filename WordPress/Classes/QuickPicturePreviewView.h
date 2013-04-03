@@ -34,6 +34,9 @@
 @property (nonatomic, weak) IBOutlet id<QuickPicturePreviewViewDelegate> delegate;
 @property (nonatomic, assign) BOOL zoomed;
 
-- (void) setBorderAndClipShowing:(BOOL)visible;
+- (void)setupForOrientation:(UIInterfaceOrientation)orientation;
+- (void)setBorderAndClipShowing:(BOOL)visible;
+- (void)orientationWillChange:(NSNotification *)note;
+- (void)orientationDidChange:(NSNotification *)note;
 
 @end

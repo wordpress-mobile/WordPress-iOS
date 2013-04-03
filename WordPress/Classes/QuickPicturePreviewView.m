@@ -43,10 +43,15 @@
     UISwipeGestureRecognizer *swipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(zoomOut)];
     swipeRecognizer.direction = UISwipeGestureRecognizerDirectionUp | UISwipeGestureRecognizerDirectionDown;
     [scrollView addGestureRecognizer:swipeRecognizer];
-    
+
     UITapGestureRecognizer *zoomOutRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomOut)];
     zoomOutRecognizer.numberOfTapsRequired = 1;
     [scrollView addGestureRecognizer:zoomOutRecognizer];
+
+    UITapGestureRecognizer *doubleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomIn)];
+    doubleTapRecognizer.numberOfTapsRequired = 2;
+    [scrollView addGestureRecognizer:doubleTapRecognizer];
+    [zoomOutRecognizer requireGestureRecognizerToFail:doubleTapRecognizer];
     
     zoomView = [[UIImageView alloc] init];
     zoomView.contentMode = UIViewContentModeScaleAspectFit;
@@ -67,15 +72,6 @@
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(zoomIn)];
     tapRecognizer.numberOfTapsRequired = 1;
     [self addGestureRecognizer:tapRecognizer];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(orientationWillChange:)
-                                                 name:UIApplicationWillChangeStatusBarOrientationNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(orientationDidChange:)
-                                                 name:UIApplicationDidChangeStatusBarOrientationNotification
-                                               object:nil];
 }
 
 - (id)init {
@@ -193,11 +189,17 @@
 }
 
 - (void) zoomIn {
+    if (zoomed) {
+        [scrollView setZoomScale:2.0f animated:YES];
+        return;
+    }
+    
     if (self.delegate && [self.delegate respondsToSelector:@selector(pictureWillZoom)]) {
         [self.delegate pictureWillZoom];
     }
     imageView.hidden = YES;
     frameLayer.opacity = 0.0f;
+    zooming = YES;
     
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     
@@ -234,9 +236,7 @@
                              paperClipImageView.alpha = 0.0f;
                      } completion:^(BOOL finished) {
                          zooming = NO;
-                         if (!zoomed) {
-                             frameLayer.opacity = 1.0f;
-                         }
+                         zoomed = YES;
                          if (self.delegate && [self.delegate respondsToSelector:@selector(pictureDidZoom)])
                              [self.delegate pictureDidZoom];
                      }];
@@ -246,6 +246,7 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(pictureWillRestore)]) {
         [self.delegate pictureWillRestore];
     }
+    zooming = YES;
     dispatch_async(dispatch_get_main_queue(), ^{
         double delayInSeconds = 0.0;
         if (scrollView.zoomScale > 1) {
@@ -271,6 +272,7 @@
                                  [scrollView removeFromSuperview];
                                  [backgroundView removeFromSuperview];
                                  zooming = NO;
+                                 zoomed = NO;
                                  imageView.hidden = NO;
                                  frameLayer.opacity = 1.0f;
                                  if (self.delegate && [self.delegate respondsToSelector:@selector(pictureDidRestore)])
@@ -293,7 +295,6 @@
 
     if (!_scrollView.zooming && _scrollView.zoomBouncing && _scrollView.zoomScale <= 1.f) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            zoomed = ! zoomed;
             [self zoomOut];
         });
     }
