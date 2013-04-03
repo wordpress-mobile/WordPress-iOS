@@ -39,6 +39,13 @@
 /// ----------------------------------------------
 
 /**
+ The NSManagedObjectContext to use. 
+ 
+ Optional. Only needed if there subclass needs a custom context. 
+ */
+- (NSManagedObjectContext *)managedObjectContext;
+
+/**
  Core Data entity name used by NSFetchedResultsController
  
  e.g. Post, Page, Comment, ...
