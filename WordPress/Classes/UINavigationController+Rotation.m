@@ -25,10 +25,17 @@
     return UIInterfaceOrientationMaskAll;
 }
 
+- (BOOL)myShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return ([self mySupportedInterfaceOrientations] & toInterfaceOrientation) ? YES : NO;
+}
 
 + (void)load {    
     Method origMethod = class_getInstanceMethod(self, @selector(supportedInterfaceOrientations));
     Method newMethod = class_getInstanceMethod(self, @selector(mySupportedInterfaceOrientations));
+    method_exchangeImplementations(origMethod, newMethod);
+
+    origMethod = class_getInstanceMethod(self, @selector(shouldAutorotateToInterfaceOrientation:));
+    newMethod = class_getInstanceMethod(self, @selector(myShouldAutorotateToInterfaceOrientation:));
     method_exchangeImplementations(origMethod, newMethod);
 }
 

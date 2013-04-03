@@ -63,6 +63,8 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     AbstractPost *_backupPost;
 }
 
+#define USE_AUTOSAVES 0
+
 #pragma mark -
 #pragma mark LifeCycle Methods
 
@@ -78,8 +80,10 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
             self.editMode = EditPostViewControllerModeNewPost;
         } else {
             self.editMode = EditPostViewControllerModeEditPost;
+#if USE_AUTOSAVES
             _backupPost = [NSEntityDescription insertNewObjectForEntityForName:[[aPost entity] name] inManagedObjectContext:[aPost managedObjectContext]];
             [_backupPost cloneFrom:aPost];
+#endif
         }
     }
     
@@ -398,7 +402,9 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 }
 
 - (void)dismissEditView {
+#if USE_AUTOSAVES
     [self deleteBackupPost];
+#endif
     [self dismissModalViewControllerAnimated:YES];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -565,9 +571,11 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 }
 
 - (void)discard {
+#if USE_AUTOSAVES
     if (self.editMode == EditPostViewControllerModeEditPost) {
         [self restoreBackupPost:NO];
     }
+#endif
     [self.apost.original deleteRevision];
 
 	//remove the original post in case of local draft unsaved
@@ -635,7 +643,11 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 }
 
 - (BOOL)canAutosaveRemotely {
+#if USE_AUTOSAVES
     return ((![self.apost.original hasRemote] || [self.apost.original.status isEqualToString:@"draft"]) && self.apost.blog.reachable);
+#else
+    return NO;
+#endif
 }
 
 - (BOOL)autosaveRemote {
@@ -782,7 +794,9 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     [titleTextField resignFirstResponder];
     [tagsTextField resignFirstResponder];
 	[self.postSettingsViewController endEditingAction:nil];
+#if USE_AUTOSAVES
     [self restoreBackupPost:YES];
+#endif
     if (!self.hasChanges) {
         [self discard];
         return;
