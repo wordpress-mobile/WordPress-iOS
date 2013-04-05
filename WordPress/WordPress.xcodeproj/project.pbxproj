@@ -465,6 +465,10 @@
 		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
 		83FEFC7611FF6C5A0078B462 /* EditSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */; };
 		8516972C169D42F4006C5DED /* WPToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 8516972B169D42F4006C5DED /* WPToast.m */; };
+		85B3B90E1703AD6F00B6E2EB /* CreateWPComAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B3B90C1703AD6E00B6E2EB /* CreateWPComAccountViewController.m */; };
+		85B3B90F1703AD6F00B6E2EB /* CreateWPComAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85B3B90D1703AD6E00B6E2EB /* CreateWPComAccountViewController.xib */; };
+		85DB3100170A322C003761BD /* CreateWPComBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DB30FE170A322C003761BD /* CreateWPComBlogViewController.m */; };
+		85DB3101170A322C003761BD /* CreateWPComBlogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85DB30FF170A322C003761BD /* CreateWPComBlogViewController.xib */; };
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */; };
@@ -1243,6 +1247,12 @@
 		83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSiteViewController.m; sourceTree = "<group>"; };
 		8516972A169D42F4006C5DED /* WPToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPToast.h; sourceTree = "<group>"; };
 		8516972B169D42F4006C5DED /* WPToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPToast.m; sourceTree = "<group>"; };
+		85B3B90B1703AD6E00B6E2EB /* CreateWPComAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateWPComAccountViewController.h; sourceTree = "<group>"; };
+		85B3B90C1703AD6E00B6E2EB /* CreateWPComAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateWPComAccountViewController.m; sourceTree = "<group>"; };
+		85B3B90D1703AD6E00B6E2EB /* CreateWPComAccountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateWPComAccountViewController.xib; sourceTree = "<group>"; };
+		85DB30FD170A322C003761BD /* CreateWPComBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateWPComBlogViewController.h; sourceTree = "<group>"; };
+		85DB30FE170A322C003761BD /* CreateWPComBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateWPComBlogViewController.m; sourceTree = "<group>"; };
+		85DB30FF170A322C003761BD /* CreateWPComBlogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateWPComBlogViewController.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate.html; path = Resources/HTML/defaultPostTemplate.html; sourceTree = "<group>"; };
@@ -2384,6 +2394,12 @@
 				8369FF8F11F4F3BF003106C7 /* AddUsersBlogsViewController.m */,
 				8398EE3011ACE206000FE6E0 /* WebSignupViewController.h */,
 				8398EE3111ACE206000FE6E0 /* WebSignupViewController.m */,
+				85B3B90B1703AD6E00B6E2EB /* CreateWPComAccountViewController.h */,
+				85B3B90C1703AD6E00B6E2EB /* CreateWPComAccountViewController.m */,
+				85B3B90D1703AD6E00B6E2EB /* CreateWPComAccountViewController.xib */,
+				85DB30FD170A322C003761BD /* CreateWPComBlogViewController.h */,
+				85DB30FE170A322C003761BD /* CreateWPComBlogViewController.m */,
+				85DB30FF170A322C003761BD /* CreateWPComBlogViewController.xib */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -3623,6 +3639,8 @@
 				E12A08E416C9706200E3DDF6 /* clouds_header@2x.png in Resources */,
 				E15051CE16CA8E4900D3DDDC /* logo_jetpack.png in Resources */,
 				E15051CF16CA8E4900D3DDDC /* logo_jetpack@2x.png in Resources */,
+				85B3B90F1703AD6F00B6E2EB /* CreateWPComAccountViewController.xib in Resources */,
+				85DB3101170A322C003761BD /* CreateWPComBlogViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3838,6 +3856,8 @@
 				E1D0D82B16D3D19200E33F4C /* PocketAPIOperation.m in Sources */,
 				E1D0D84716D3D2EA00E33F4C /* PocketActivity.m in Sources */,
 				E15051CB16CA5DDB00D3DDDC /* Blog+Jetpack.m in Sources */,
+				85B3B90E1703AD6F00B6E2EB /* CreateWPComAccountViewController.m in Sources */,
+				85DB3100170A322C003761BD /* CreateWPComBlogViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

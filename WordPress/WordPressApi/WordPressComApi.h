@@ -26,6 +26,13 @@ typedef NS_ENUM(NSUInteger, WordPressComApiError) {
 extern NSString *const WordPressComApiErrorDomain;
 extern NSString *const WordPressComApiErrorCodeKey;
 
+extern NSString *const WordPressComApiErrorCodeInvalidUser;
+extern NSString *const WordPressComApiErrorCodeInvalidEmail;
+extern NSString *const WordPressComApiErrorCodeInvalidPassword;
+extern NSString *const WordPressComApiErrorCodeInvalidBlogUrl;
+extern NSString *const WordPressComApiErrorCodeInvalidBlogTitle;
+
+
 @interface WordPressComApi : AFHTTPClient
 @property (nonatomic,readonly,strong) NSString *username;
 @property (nonatomic,readonly,strong) NSString *password;
@@ -41,6 +48,8 @@ extern NSString *const WordPressComApiErrorCodeKey;
 - (void)signInWithToken:(NSString *)token DEPRECATED_ATTRIBUTE;
 - (void)signOut;
 - (BOOL)hasCredentials;
+- (void)createWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password andBlogUrl:(NSString *)blogUrl success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
+- (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle success:(void (^)(id))success failure:(void (^)(NSError *))failure;
 
 ///---------------------------
 /// @name Transitional methods

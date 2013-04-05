@@ -28,6 +28,13 @@ NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
 NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
 NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 
+NSString *const WordPressComApiErrorCodeInvalidUser = @"invalid_user";
+NSString *const WordPressComApiErrorCodeInvalidEmail = @"invalid_email";
+NSString *const WordPressComApiErrorCodeInvalidPassword = @"invalid_password";
+NSString *const WordPressComApiErrorCodeInvalidBlogUrl = @"invalid_blogname";
+NSString *const WordPressComApiErrorCodeInvalidBlogTitle = @"invalid_blogtitle";
+
+
 #define UnfollowedBlogEvent @"UnfollowedBlogEvent"
 
 
@@ -227,6 +234,64 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 - (BOOL)hasCredentials {
     return _authToken != nil;
 }
+
+- (void)createWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password andBlogUrl:(NSString *)blogUrl success:(void (^)(id))success failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert(email != nil);
+    NSParameterAssert(username != nil);
+    NSParameterAssert(password != nil);
+    NSParameterAssert(blogUrl != nil);
+    
+    void (^successBlock)(AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"Response : %@", responseObject);
+        success(responseObject);
+    };
+    
+    void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error){
+        NSLog(@"Response : %@", operation.responseString);
+        NSLog(@"Error : %@", error);
+        failure(error);
+    };
+    
+    NSDictionary *params = @{
+                             @"email": email,
+                             @"username" : username,
+                             @"password" : password,
+                             @"blog_name": blogUrl,
+                             @"client_id" : [WordPressComApiCredentials client],
+                             @"client_secret" : [WordPressComApiCredentials secret]
+                             };
+        
+    [self postPath:@"users/new" parameters:params success:successBlock failure:failureBlock];
+}
+
+- (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle success:(void (^)(id))success failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert(blogUrl != nil);
+    NSParameterAssert(blogTitle != nil);
+    NSAssert([self hasCredentials], @"Should have credentials");
+    
+    void (^successBlock)(AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"Response : %@", responseObject);
+        success(responseObject);
+    };
+    
+    void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error){
+        NSLog(@"Response : %@", operation.responseString);
+        NSLog(@"Error : %@", error);
+        failure(error);
+    };
+
+    NSDictionary *params = @{
+                             @"blog_name": blogUrl,
+                             @"blog_title": blogTitle,
+                             @"client_id": [WordPressComApiCredentials client],
+                             @"client_secret": [WordPressComApiCredentials secret]
+                             };
+    
+    [self postPath:@"sites/new" parameters:params success:successBlock failure:failureBlock];
+}
+
 
 #pragma mark - Transitional methods
 

@@ -10,13 +10,18 @@
 #import "WordPressAppDelegate.h"
 #import "AboutViewController.h"
 #import "AddUsersBlogsViewController.h"
+#import "CreateWPComAccountViewController.h"
+#import "CreateWPComBlogViewController.h"
 #import "AddSiteViewController.h"
 #import "EditSiteViewController.h"
 #import "WebSignupViewController.h"
 #import "WPcomLoginViewController.h"
 #import "WordPressComApi.h"
 
-@interface WelcomeViewController () <WPcomLoginViewControllerDelegate> {
+@interface WelcomeViewController () <
+    WPcomLoginViewControllerDelegate,
+    CreateWPComAccountViewControllerDelegate,
+    CreateWPComBlogViewControllerDelegate> {
     WordPressAppDelegate *__weak appDelegate;
 }
 
@@ -162,12 +167,22 @@
 
 
 - (IBAction)handleCreateBlogTapped:(id)sender {
-    NSString *newNibName = @"WebSignupViewController";
-    if(IS_IPAD == YES)
-        newNibName = @"WebSignupViewController-iPad";
-    WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:newNibName bundle:[NSBundle mainBundle]];
-    [self.navigationController pushViewController:webSignup animated:YES];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wpcomSignupNotificationReceived:) name:@"wpcomSignupNotification" object:nil];
+    if ([WordPressComApi sharedApi].hasCredentials) {
+        CreateWPComBlogViewController *viewController = [[CreateWPComBlogViewController alloc] init];
+        viewController.delegate = self;
+        [self.navigationController pushViewController:viewController animated:YES];
+    } else {
+        CreateWPComAccountViewController *viewController = [[CreateWPComAccountViewController alloc] init];
+        viewController.delegate = self;
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
+    
+//    NSString *newNibName = @"WebSignupViewController";
+//    if(IS_IPAD == YES)
+//        newNibName = @"WebSignupViewController-iPad";
+//    WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:newNibName bundle:[NSBundle mainBundle]];
+//    [self.navigationController pushViewController:webSignup animated:YES];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wpcomSignupNotificationReceived:) name:@"wpcomSignupNotification" object:nil];
 }
 
 
@@ -222,6 +237,32 @@
 - (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithUsername:(NSString *)username {
     [self.navigationController popViewControllerAnimated:NO];
     [self handleAddBlogTapped:nil];
+}
+
+#pragma mark - CreateWPComAccountViewControllerDelegate
+
+- (void)createdAndSignedInAccountWithUserName:(NSString *)userName
+{
+    [self.navigationController popViewControllerAnimated:NO];
+    [self handleAddBlogTapped:nil];
+}
+
+- (void)createdAccountWithUserName:(NSString *)userName
+{
+    // In this case the user was able to create an account but for some reason was unable to sign in.
+    // Just present the login controller in this case with the data prefilled and give the user the chance to sign in again
+    [self.navigationController popViewControllerAnimated:NO];
+    WPcomLoginViewController *wpLoginView = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    wpLoginView.delegate = self;
+    wpLoginView.predefinedUsername = userName;
+    [self.navigationController pushViewController:wpLoginView animated:YES];
+}
+
+#pragma mark - CreateWPComBlogViewControllerDelegate
+
+- (void)createdBlogWithDetails:(NSDictionary *)blogDetails
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 
