@@ -18,15 +18,25 @@
 
 @end
 
-@interface QuickPicturePreviewView : UIView {
-    UIImageView *imageView, *paperClipImageView;
+@interface QuickPicturePreviewView : UIView <UIScrollViewDelegate> {
+    UIView *backgroundView;
+    UIScrollView *scrollView;
+    UIImageView *imageView, *paperClipImageView, *zoomView;
     CALayer *frameLayer;
     BOOL zoomed;
     BOOL zooming;
+    BOOL hasBorderAndClip;
     CGRect normalFrame, normalImageFrame;
+    CGRect originalFrame;
 }
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, weak) IBOutlet id<QuickPicturePreviewViewDelegate> delegate;
+@property (nonatomic, assign) BOOL zoomed;
+
+- (void)setupForOrientation:(UIInterfaceOrientation)orientation;
+- (void)setBorderAndClipShowing:(BOOL)visible;
+- (void)orientationWillChange:(NSNotification *)note;
+- (void)orientationDidChange:(NSNotification *)note;
 
 @end

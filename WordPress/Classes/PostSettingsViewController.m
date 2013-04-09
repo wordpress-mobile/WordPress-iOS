@@ -19,6 +19,7 @@
 }
 
 @property (nonatomic, strong) AbstractPost *apost;
+
 - (void)showPicker:(UIView *)picker;
 - (void)geocodeCoordinate:(CLLocationCoordinate2D)c;
 - (void)geolocationCellTapped:(NSIndexPath *)indexPath;
@@ -27,6 +28,7 @@
 @end
 
 @implementation PostSettingsViewController
+
 @synthesize postDetailViewController, postFormatTableViewCell;
 
 #pragma mark -
@@ -61,7 +63,9 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showFeaturedImageUploader:) name:@"UploadingFeaturedImage" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadSucceeded:) name:FeaturedImageUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadFailed:) name:FeaturedImageUploadFailed object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationWillChange:) name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+
     [tableView setBackgroundView:nil];
     [tableView setBackgroundColor:[UIColor clearColor]]; //Fix for black corners on iOS4. http://stackoverflow.com/questions/1557856/black-corners-on-uitableview-group-style
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
@@ -111,12 +115,12 @@
 			[locationManager startUpdatingLocation];
 		}
 	}
-    
+
     featuredImageView.layer.shadowOffset = CGSizeMake(0.0, 1.0f);
     featuredImageView.layer.shadowColor = [[UIColor blackColor] CGColor];
     featuredImageView.layer.shadowOpacity = 0.5f;
     featuredImageView.layer.shadowRadius = 1.0f;
-    
+
     // Check if blog supports featured images
     id supportsFeaturedImages = [self.post.blog getOptionValue:@"post_thumbnail"];
     if (supportsFeaturedImages != nil) {
@@ -129,7 +133,7 @@
             [featuredImageSpinner setHidden:NO];
             if (!featuredImageSpinner.isAnimating)
                 [featuredImageSpinner startAnimating];
-            [tableView reloadData];
+            [self reloadData];
             
             [self.post getFeaturedImageURLWithSuccess:^{
                 if (self.post.featuredImageURL) {
@@ -186,6 +190,10 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)viewDidLayoutSubviews {
+    [featuredImageView orientationDidChange:nil];
+}
+
 #pragma mark -
 #pragma mark Rotation Methods
 
@@ -195,9 +203,18 @@
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [featuredImageView setupForOrientation:fromInterfaceOrientation];
     [self reloadData];
 }
 
+- (void)orientationWillChange:(NSNotification *)notification {
+    [featuredImageView orientationWillChange:notification];
+}
+
+- (void)orientationDidChange:(NSNotification *)notification {
+    [featuredImageView orientationDidChange:notification];
+    [self reloadData];
+}
 
 #pragma mark -
 #pragma mark Instance Methods
@@ -220,7 +237,7 @@
         [featuredImageSpinner stopAnimating];
         [featuredImageSpinner setHidden:YES];
         [featuredImageLabel setHidden:YES];
-        
+        [self reloadData];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // private blog, auth needed.
         if (operation.response.statusCode == 403) {
@@ -282,7 +299,7 @@
 
 - (void)reloadData {
     passwordTextField.text = self.apost.password;
-	
+    [featuredImageView setBorderAndClipShowing:NO];
     [tableView reloadData];
 }
 
@@ -610,10 +627,26 @@
     return nil;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ((indexPath.section == 0) && (indexPath.row == 1) && (self.apost.password))
+- (CGFloat)tableView:(UITableView *)tblView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ((indexPath.section == 0) && (indexPath.row == 1) && (self.apost.password)) {
         return 88.f;
-    else if (
+    } else if (blogSupportsFeaturedImage && self.post.post_thumbnail && featuredImageView.image && indexPath.section == 2 && indexPath.row == 0) {
+        // find a suitable size for the featured image preview
+        CGRect topBounds = tblView.bounds;
+        CGFloat fillWidth = topBounds.size.width * 0.85f;
+        CGFloat fillHeight = featuredImageView.image.size.height / featuredImageView.image.size.width * fillWidth;
+        CGSize size = [UIScreen mainScreen].bounds.size;
+        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        if (UIInterfaceOrientationIsLandscape(orientation))
+        {
+            size = CGSizeMake(size.height, size.width);
+        }
+        if (fillHeight > size.height * 0.85f) {
+            return size.height * 0.85f;
+        } else {
+            return fillHeight;
+        }
+    } else if (
              (!blogSupportsFeaturedImage && (indexPath.section == 2) && (indexPath.row == 1))
              || (blogSupportsFeaturedImage && (self.post.post_thumbnail || isUploadingFeaturedImage) && indexPath.section == 2 && indexPath.row == 0)
              || (blogSupportsFeaturedImage && (indexPath.section == 3) && (indexPath.row == 1))
@@ -683,7 +716,7 @@
                         break;
                     case 1:
                         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Remove this Featured Image?", @"Prompt when removing a featured image from a post") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", "Cancel a prompt") destructiveButtonTitle:NSLocalizedString(@"Remove", @"Remove an image/posts/etc") otherButtonTitles:nil];
-                        [actionSheet showFromRect:cell.frame inView:postDetailViewController.view animated:YES];
+                        [actionSheet showFromRect:cell.frame inView:tableView animated:YES];
                         break;
                 }
             } else {

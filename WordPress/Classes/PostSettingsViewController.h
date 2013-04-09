@@ -6,6 +6,7 @@
 #import "CPopoverManager.h"
 #import "PostAnnotation.h"
 #import "UIImageView+AFNetworking.h"
+#import "QuickPicturePreviewView.h"
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
 #define kOFFSET_FOR_KEYBOARD                    150.0
@@ -46,7 +47,7 @@
 	NSString *address;
 	BOOL isUpdatingLocation, isUploadingFeaturedImage;
     IBOutlet UILabel *visibilityTitleLabel, *statusTitleLabel, *postFormatTitleLabel, *featuredImageLabel;
-    IBOutlet UIImageView *featuredImageView;
+    IBOutlet QuickPicturePreviewView *featuredImageView;
     IBOutlet UITableViewCell *featuredImageTableViewCell;
     IBOutlet UIActivityIndicatorView *featuredImageSpinner;
 }
@@ -55,11 +56,11 @@
 @property (nonatomic, strong) IBOutlet UITableViewCell *postFormatTableViewCell;
 
 - (id)initWithPost:(AbstractPost *)aPost;
-
 - (void)reloadData;
 - (void)endEditingAction:(id)sender;
 - (UITableViewCell*) getGeolactionCellWithIndexPath: (NSIndexPath*)indexPath;
 - (void)featuredImageUploadFailed: (NSNotification *)notificationInfo;
 - (void)featuredImageUploadSucceeded: (NSNotification *)notificationInfo;
 - (void)showFeaturedImageUploader: (NSNotification *)notificationInfo;
+
 @end
