@@ -15,6 +15,9 @@
 
 @interface JetpackSettingsViewController () <UITableViewTextFieldCellDelegate>
 
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *password;
+
 @end
 
 @implementation JetpackSettingsViewController {
@@ -27,6 +30,9 @@
     BOOL _authenticating;
 }
 
+@synthesize username = _username;
+@synthesize password = _password;
+
 #define kCheckCredentials NSLocalizedString(@"Verify and Save Credentials", @"");
 #define kCheckingCredentials NSLocalizedString(@"Verifing Credentials", @"");
 
@@ -36,6 +42,8 @@
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         _blog = blog;
+		self.username = _blog.jetpackUsername;
+		self.password = _blog.jetpackPassword;
     }
     return self;
 }
@@ -85,15 +93,14 @@
 - (IBAction)save:(id)sender {
     [self dismissKeyboard];
     [SVProgressHUD show];
-    NSString *username = _usernameCell.textField.text;
-    NSString *password = _passwordCell.textField.text;
+	
     [self setAuthenticating:YES];
-    [_blog validateJetpackUsername:username
-                          password:password
+    [_blog validateJetpackUsername:_username
+                          password:_password
                            success:^{
                                [SVProgressHUD dismiss];
                                if (![[WordPressComApi sharedApi] username]) {
-                                   [[WordPressComApi sharedApi] signInWithUsername:username password:password success:nil failure:nil];
+                                   [[WordPressComApi sharedApi] signInWithUsername:_username password:_password success:nil failure:nil];
                                }
                                [self setAuthenticating:NO];
                                if (self.completionBlock) {
@@ -162,7 +169,7 @@
                 textCell.textField.keyboardType = UIKeyboardTypeEmailAddress;
                 textCell.shouldDismissOnReturn = NO;
                 textCell.delegate = self;
-                textCell.textField.text = _blog.jetpackUsername;
+                textCell.textField.text = _username;
                 _usernameCell = textCell;
             } else {
                 textCell.textLabel.text = NSLocalizedString(@"Password:", @"");
@@ -170,7 +177,7 @@
                 textCell.textField.secureTextEntry = YES;
                 textCell.shouldDismissOnReturn = YES;
                 textCell.delegate = self;
-                textCell.textField.text = _blog.jetpackPassword;
+                textCell.textField.text = _password;
                 _passwordCell = textCell;
             }
             cell = textCell;
@@ -235,6 +242,11 @@
 }
 
 - (void)cellTextDidChange:(UITableViewTextFieldCell *)cell {
+	if([cell isEqual:_usernameCell]) {
+		self.username = _usernameCell.textField.text;
+	} else {
+		self.password = _passwordCell.textField.text;
+	}
     [self updateSaveButton];
 }
 
@@ -254,6 +266,8 @@
 }
 
 - (void)updateSaveButton {
+	if (![self isViewLoaded]) return;
+	
     if ([self useNavigationController]) {
         self.navigationItem.rightBarButtonItem.enabled = [self saveEnabled];
     } else {
@@ -313,7 +327,7 @@
     if ([_blog hasJetpack] && !([[_blog jetpackUsername] length] && [[_blog jetpackPassword] length])) {
         NSString *wpcomUsername = [[WordPressComApi sharedApi] username];
         NSString *wpcomPassword = [[WordPressComApi sharedApi] password];
-        if (wpcomPassword && wpcomPassword) {
+        if (wpcomUsername && wpcomPassword) {
             [self tryLoginWithUsername:wpcomUsername andPassword:wpcomPassword];
         }
     }
@@ -324,6 +338,10 @@
     NSAssert(password != nil, @"Can't login with a nil password");
     _usernameCell.textField.text = username;
     _passwordCell.textField.text = password;
+	
+    self.username = username;
+    self.password = password;
+
     [self save:nil];
 }
 
