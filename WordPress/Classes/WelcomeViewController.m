@@ -209,6 +209,7 @@
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
     nc.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.navigationController presentModalViewController:nc animated:YES];
+	[self.navigationController setNavigationBarHidden:YES];
 }
 
 #pragma mark - WPcomLoginViewControllerDelegate
