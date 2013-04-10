@@ -797,7 +797,9 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 #if USE_AUTOSAVES
     [self restoreBackupPost:YES];
 #endif
-    if (!self.hasChanges) {
+	// If this is a draft with no changes other than a featured image and
+	// the featured image is still uploading then hasChanges will be false.
+    if (!self.hasChanges && ![self isMediaInUploading]) {
         [self discard];
         return;
     }
