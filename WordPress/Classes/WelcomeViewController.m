@@ -10,8 +10,8 @@
 #import "WordPressAppDelegate.h"
 #import "AboutViewController.h"
 #import "AddUsersBlogsViewController.h"
-#import "CreateWPComAccountViewController.h"
 #import "CreateWPComBlogViewController.h"
+#import "CreateWPComAccountViewController.h"
 #import "AddSiteViewController.h"
 #import "EditSiteViewController.h"
 #import "WebSignupViewController.h"
@@ -172,7 +172,7 @@
         viewController.delegate = self;
         [self.navigationController pushViewController:viewController animated:YES];
     } else {
-        CreateWPComAccountViewController *viewController = [[CreateWPComAccountViewController alloc] init];
+        CreateWPComAccountViewController *viewController = [[CreateWPComAccountViewController alloc] initWithStyle:UITableViewStyleGrouped];
         viewController.delegate = self;
         [self.navigationController pushViewController:viewController animated:YES];
     }
