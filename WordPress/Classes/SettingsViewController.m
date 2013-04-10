@@ -224,7 +224,7 @@ typedef enum {
             return 1;
             
         case SettingsSectionWpcom:
-            return [WordPressComApi sharedApi].username ? 2 : 1;
+            return ([WordPressComApi sharedApi].username && [[WordPressComApi sharedApi] hasCredentials]) ? 2 : 1;
             
         case SettingsSectionMedia:
             return [mediaSettingsArray count];
