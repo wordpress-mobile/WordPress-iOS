@@ -26,6 +26,7 @@
 #import "WPXMLRPCDataCleaner.h"
 
 NSString *const WPXMLRPCFaultErrorDomain = @"WPXMLRPCFaultError";
+NSString *const WPXMLRPCErrorDomain = @"WPXMLRPCError";
 
 @interface WPXMLRPCDecoder () <NSXMLParserDelegate>
 @end
@@ -113,6 +114,10 @@ NSString *const WPXMLRPCFaultErrorDomain = @"WPXMLRPCFaultError";
 
     if ([self isFault]) {
         return [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:[self faultCode] userInfo:@{NSLocalizedDescriptionKey: [self faultString]}];
+    }
+
+    if (_object == nil) {
+        return [NSError errorWithDomain:WPXMLRPCErrorDomain code:WPXMLRPCInvalidInputError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"The data doesn't look like a valid XML-RPC response", @"WPXMLRPC", nil)}];
     }
 
     return nil;
