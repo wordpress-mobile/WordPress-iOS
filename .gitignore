@@ -1,4 +1,5 @@
 /Entitlements.plist
+Pods/Documentation
 Pods/Pods.xcodeproj/*.mode1v3
 Pods/Pods.xcodeproj/*.mode2v3
 Pods/Pods.xcodeproj/*.pbxuser
