@@ -1,17 +1,17 @@
 // AFHTTPRequestOperation.m
 //
 // Copyright (c) 2011 Gowalla (http://gowalla.com/)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,12 +25,11 @@
 
 // Workaround for change in imp_implementationWithBlock() with Xcode 4.5
 #if defined(__IPHONE_6_0) || defined(__MAC_10_8)
-    #define AF_CAST_TO_BLOCK id
+#define AF_CAST_TO_BLOCK id
 #else
-    #define AF_CAST_TO_BLOCK __bridge void *
+#define AF_CAST_TO_BLOCK __bridge void *
 #endif
 
-// We do a little bit of duck typing in this file which can trigger this warning.  Turn it off for this source file. 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wstrict-selector-match"
 
@@ -47,9 +46,9 @@ NSSet * AFContentTypesFromHTTPHeader(NSString *string) {
         if (parametersRange.location != NSNotFound) {
             mediaRange = [mediaRange substringToIndex:parametersRange.location];
         }
-        
+
         mediaRange = [mediaRange stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        
+
         if (mediaRange.length > 0) {
             [mutableContentTypes addObject:mediaRange];
         }
@@ -108,18 +107,12 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
 @property (readwrite, nonatomic, strong) NSURLRequest *request;
 @property (readwrite, nonatomic, strong) NSHTTPURLResponse *response;
 @property (readwrite, nonatomic, strong) NSError *HTTPError;
-@property (readwrite, nonatomic, copy) NSString *HTTPResponseString;
-@property (readwrite, nonatomic, assign) long long totalContentLength;
-@property (readwrite, nonatomic, assign) long long offsetContentLength;
 @end
 
 @implementation AFHTTPRequestOperation
 @synthesize HTTPError = _HTTPError;
-@synthesize HTTPResponseString = _HTTPResponseString;
 @synthesize successCallbackQueue = _successCallbackQueue;
 @synthesize failureCallbackQueue = _failureCallbackQueue;
-@synthesize totalContentLength = _totalContentLength;
-@synthesize offsetContentLength = _offsetContentLength;
 @dynamic request;
 @dynamic response;
 
@@ -130,7 +123,7 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
 #endif
         _successCallbackQueue = NULL;
     }
-    
+
     if (_failureCallbackQueue) {
 #if !OS_OBJECT_USE_OBJC
         dispatch_release(_failureCallbackQueue);
@@ -147,7 +140,7 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
             [userInfo setValue:[self.request URL] forKey:NSURLErrorFailingURLErrorKey];
             [userInfo setValue:self.request forKey:AFNetworkingOperationFailingURLRequestErrorKey];
             [userInfo setValue:self.response forKey:AFNetworkingOperationFailingURLResponseErrorKey];
-            
+
             if (![self hasAcceptableStatusCode]) {
                 NSUInteger statusCode = ([self.response isKindOfClass:[NSHTTPURLResponse class]]) ? (NSUInteger)[self.response statusCode] : 200;
                 [userInfo setValue:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Expected status code in (%@), got %d", @"AFNetworking", nil), AFStringFromIndexSet([[self class] acceptableStatusCodes]), statusCode] forKey:NSLocalizedDescriptionKey];
@@ -161,7 +154,7 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
             }
         }
     }
-    
+
     if (self.HTTPError) {
         return self.HTTPError;
     } else {
@@ -169,27 +162,23 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
     }
 }
 
-- (NSString *)responseString {
+- (NSStringEncoding)responseStringEncoding {
     // When no explicit charset parameter is provided by the sender, media subtypes of the "text" type are defined to have a default charset value of "ISO-8859-1" when received via HTTP. Data in character sets other than "ISO-8859-1" or its subsets MUST be labeled with an appropriate charset value.
     // See http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.4.1
-    if (!self.HTTPResponseString && self.response && !self.response.textEncodingName && self.responseData) {
+    if (self.response && !self.response.textEncodingName && self.responseData) {
         NSString *type = nil;
         AFGetMediaTypeAndSubtypeWithString([[self.response allHeaderFields] valueForKey:@"Content-Type"], &type, nil);
 
         if ([type isEqualToString:@"text"]) {
-            self.HTTPResponseString = [[NSString alloc] initWithData:self.responseData encoding:NSISOLatin1StringEncoding];
+            return NSISOLatin1StringEncoding;
         }
     }
 
-    if (self.HTTPResponseString) {
-        return self.HTTPResponseString;
-    } else {
-        return [super responseString];
-    }
+    return [super responseStringEncoding];
 }
 
 - (void)pause {
-    unsigned long long offset = 0; 
+    unsigned long long offset = 0;
     if ([self.outputStream propertyForKey:NSStreamFileCurrentOffsetKey]) {
         offset = [[self.outputStream propertyForKey:NSStreamFileCurrentOffsetKey] unsignedLongLongValue];
     } else {
@@ -202,7 +191,7 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
     }
     [mutableURLRequest setValue:[NSString stringWithFormat:@"bytes=%llu-", offset] forHTTPHeaderField:@"Range"];
     self.request = mutableURLRequest;
-    
+
     [super pause];
 }
 
@@ -210,7 +199,7 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
 	if (!self.response) {
 		return NO;
 	}
-    
+
     NSUInteger statusCode = ([self.response isKindOfClass:[NSHTTPURLResponse class]]) ? (NSUInteger)[self.response statusCode] : 200;
     return ![[self class] acceptableStatusCodes] || [[[self class] acceptableStatusCodes] containsIndex:statusCode];
 }
@@ -219,14 +208,14 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
     if (!self.response) {
 		return NO;
 	}
-    
+
     // Any HTTP/1.1 message containing an entity-body SHOULD include a Content-Type header field defining the media type of that body. If and only if the media type is not given by a Content-Type field, the recipient MAY attempt to guess the media type via inspection of its content and/or the name extension(s) of the URI used to identify the resource. If the media type remains unknown, the recipient SHOULD treat it as type "application/octet-stream".
     // See http://www.w3.org/Protocols/rfc2616/rfc2616-sec7.html
     NSString *contentType = [self.response MIMEType];
     if (!contentType) {
         contentType = @"application/octet-stream";
     }
-    
+
     return ![[self class] acceptableContentTypes] || [[[self class] acceptableContentTypes] containsObject:contentType];
 }
 
@@ -245,7 +234,7 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
 #endif
             _successCallbackQueue = successCallbackQueue;
         }
-    }    
+    }
 }
 
 - (void)setFailureCallbackQueue:(dispatch_queue_t)failureCallbackQueue {
@@ -256,14 +245,14 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
 #endif
             _failureCallbackQueue = NULL;
         }
-        
+
         if (failureCallbackQueue) {
 #if !OS_OBJECT_USE_OBJC
             dispatch_retain(failureCallbackQueue);
 #endif
             _failureCallbackQueue = failureCallbackQueue;
         }
-    }    
+    }
 }
 
 - (void)setCompletionBlockWithSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
@@ -320,50 +309,10 @@ static void AFSwizzleClassMethodWithClassAndSelectorUsingBlock(Class klass, SEL 
     if ([[self class] isEqual:[AFHTTPRequestOperation class]]) {
         return YES;
     }
-    
+
     return [[self acceptableContentTypes] intersectsSet:AFContentTypesFromHTTPHeader([request valueForHTTPHeaderField:@"Accept"])];
 }
 
-#pragma mark - NSURLConnectionDelegate
-
-- (void)connection:(__unused NSURLConnection *)connection 
-didReceiveResponse:(NSURLResponse *)response 
-{
-    self.response = (NSHTTPURLResponse *)response;
-    
-    // Set Content-Range header if status code of response is 206 (Partial Content)
-    // See http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.7
-    long long totalContentLength = self.response.expectedContentLength;
-    long long fileOffset = 0;
-    NSUInteger statusCode = ([self.response isKindOfClass:[NSHTTPURLResponse class]]) ? (NSUInteger)[self.response statusCode] : 200;
-    if (statusCode == 206) {
-        NSString *contentRange = [self.response.allHeaderFields valueForKey:@"Content-Range"];
-        if ([contentRange hasPrefix:@"bytes"]) {
-            NSArray *byteRanges = [contentRange componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" -/"]];
-            if ([byteRanges count] == 4) {
-                fileOffset = [[byteRanges objectAtIndex:1] longLongValue];
-                totalContentLength = [[byteRanges objectAtIndex:2] longLongValue] ?: -1; // if this is "*", it's converted to 0, but -1 is default.
-            }
-        }
-    } else {
-        if ([self.outputStream propertyForKey:NSStreamFileCurrentOffsetKey]) {
-            [self.outputStream setProperty:[NSNumber numberWithInteger:0] forKey:NSStreamFileCurrentOffsetKey];
-        } else {
-            if ([[self.outputStream propertyForKey:NSStreamDataWrittenToMemoryStreamKey] length] > 0) {
-                self.outputStream = [NSOutputStream outputStreamToMemory];
-                
-                NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-                for (NSString *runLoopMode in self.runLoopModes) {
-                    [self.outputStream scheduleInRunLoop:runLoop forMode:runLoopMode];
-                }
-            }
-        }
-    }
-    
-    self.offsetContentLength = MAX(fileOffset, 0);
-    self.totalContentLength = totalContentLength;
-    
-    [self.outputStream open];
-}
-
 @end
+
+#pragma clang diagnostic pop

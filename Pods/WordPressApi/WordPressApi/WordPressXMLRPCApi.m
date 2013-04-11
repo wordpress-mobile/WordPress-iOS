@@ -25,6 +25,8 @@
 #import "WPXMLRPCClient.h"
 #import "WPRSDParser.h"
 
+NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
+
 @interface WordPressXMLRPCApi ()
 @property (readwrite, nonatomic, retain) NSURL *xmlrpc;
 @property (readwrite, nonatomic, retain) NSString *username;
@@ -209,7 +211,8 @@
             success(xmlrpcURL);
         }
     } failure:^(NSError *error){
-        if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
+        if (([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication)
+            || ([error.domain isEqual:WordPressXMLRPCApiErrorDomain] && error.code == WordPressXMLRPCApiMobilePluginRedirectedError)) {
             [self logExtraInfo: [error localizedDescription]];
             if (failure) {
                 failure(error);
@@ -372,17 +375,36 @@
 
 + (void)validateXMLRPCUrl:(NSURL *)url success:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:url];
-    [client callMethod:@"system.listMethods"
-            parameters:[NSArray array]
-               success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                   if (success) {
-                       success();
-                   }
-               } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                   if (failure) {
-                       failure(error);
-                   }
-               }];
+    NSURLRequest *request = [client requestWithMethod:@"system.listMethods" parameters:@[]];
+    __block BOOL isRedirected = NO;
+    AFHTTPRequestOperation *operation = [client HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *methods = responseObject;
+        if ([methods isKindOfClass:[NSArray class]] && [methods containsObject:@"wp.getUsersBlogs"]) {
+            if (success) {
+                success();
+            }
+        } else {
+            if (failure) {
+                NSError *error = [NSError errorWithDomain:WordPressXMLRPCApiErrorDomain code:WordPressXMLRPCApiNotWordPressError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"That doesn't look like a WordPress site", @"WordPressApi", nil)}];
+                failure(error);
+            }
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (isRedirected) {
+            if ([operation.responseString rangeOfString:@"<meta name=\"GENERATOR\" content=\"www.dudamobile.com\">"].location != NSNotFound) {
+                error = [NSError errorWithDomain:WordPressXMLRPCApiErrorDomain code:WordPressXMLRPCApiMobilePluginRedirectedError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog", @"WordPressApi", nil)}];
+            }
+        }
+        if (failure) {
+            failure(error);
+        }
+    }];
+    [operation setRedirectResponseBlock:^NSURLRequest *(NSURLConnection *connection, NSURLRequest *request, NSURLResponse *redirectResponse) {
+        isRedirected = YES;
+        return request;
+    }];
+
+    [client enqueueHTTPRequestOperation:operation];
 }
 
 + (void)logExtraInfo:(NSString *)format, ... {
