@@ -865,7 +865,7 @@
     [context setPersistentStoreCoordinator:self.persistentStoreCoordinator];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:context]];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY posts.blog != NULL"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY posts.blog != NULL AND remoteStatusNumber <> %@", @(MediaRemoteStatusSync)];
     [fetchRequest setPredicate:predicate];
     NSArray *mediaObjectsToKeep = [context executeFetchRequest:fetchRequest error:&error];
     if (error != nil) {
@@ -874,7 +874,7 @@
     //get a references to media files linked in a post
     NSLog(@"%i media items to check for cleanup", [mediaObjectsToKeep count]);
     for (Media *media in mediaObjectsToKeep) {
-        //        [mediaToKeep addObject:media.localURL];
+        [mediaToKeep addObject:media.localURL];
     }
 
     //searches for jpg files within the app temp file
