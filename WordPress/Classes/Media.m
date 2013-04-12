@@ -144,6 +144,9 @@
 
         dispatch_async(dispatch_get_main_queue(), ^(void) {
             void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error) {
+                if ([self isDeleted] || self.managedObjectContext == nil)
+                    return;
+
                 if ([self.mediaType isEqualToString:@"featured"]) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageUploadFailed
                                                                         object:self];
@@ -191,10 +194,7 @@
                                                                         object:self
                                                                       userInfo:response];
                 }
-            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                if ([self isDeleted] || self.managedObjectContext == nil)
-                    return;
-            }];
+            } failure:failureBlock];
             [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
                 dispatch_async(dispatch_get_main_queue(), ^(void) {
                     if ([self isDeleted] || self.managedObjectContext == nil)
