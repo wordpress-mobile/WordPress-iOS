@@ -233,7 +233,9 @@
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
             [media save];
-        } failure:nil];
+        } failure:^(NSError *error) {
+            [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+        }];
     } else if (media.remoteStatus == MediaRemoteStatusPushing) {
         [media cancelUpload];
     } else if (media.remoteStatus == MediaRemoteStatusProcessing) {
@@ -1354,9 +1356,7 @@
         }
         [imageMedia save];
     } failure:^(NSError *error) {
-        if( isPickingFeaturedImage ) {
-            [WPError showAlertWithError:error title:NSLocalizedString(@"Sorry, 'Featured Image' upload failed.", @"")];
-        }
+        [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
     }];
 	
 	isAddingMedia = NO;
@@ -1444,7 +1444,9 @@
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:videoMedia];
             [videoMedia save];
-        } failure:nil];
+        } failure:^(NSError *error) {
+            [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+        }];
 		isAddingMedia = NO;
 		
 		//switch to the attachment view if we're not already there 
