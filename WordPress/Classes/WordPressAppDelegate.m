@@ -1197,11 +1197,11 @@
                     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
                 }
 
-                if (IS_IPAD && self.panelNavigationController.modalViewController) {
-                    [self.panelNavigationController.modalViewController presentModalViewController:aNavigationController animated:YES];
-                } else {
-                    [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
+                UIViewController *presenter = self.panelNavigationController;
+                if (presenter.modalViewController) {
+                    presenter = presenter.modalViewController;
                 }
+                [presenter presentModalViewController:aNavigationController animated:YES];
 
 				break;
 			}
