@@ -34,15 +34,15 @@
 
 @implementation CreateWPComAccountViewController
 
-NSUInteger const EmailTextFieldTag = 1;
-NSUInteger const UserNameTextFieldTag = 2;
-NSUInteger const PasswordTextFieldTag = 3;
-NSUInteger const BlogTextFieldTag = 4;
+NSUInteger const CreateAccountEmailTextFieldTag = 1;
+NSUInteger const CreateAccountUserNameTextFieldTag = 2;
+NSUInteger const CreateAccountPasswordTextFieldTag = 3;
+NSUInteger const CreateAccountBlogTextFieldTag = 4;
 
-CGSize const HeaderSize = { 320.0, 70.0 };
-CGPoint const LogoStartingPoint = { 40.0, 20.0 };
-CGPoint const LogoStartingPointIpad = { 150.0, 20.0 };
-CGSize const LogoSize = { 229.0, 43.0 };
+CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
+CGPoint const CreateAccountLogoStartingPoint = { 40.0, 20.0 };
+CGPoint const CreateAccountLogoStartingPointIpad = { 150.0, 20.0 };
+CGSize const CreateAccountLogoSize = { 229.0, 43.0 };
 
 - (void)viewDidLoad
 {
@@ -55,12 +55,12 @@ CGSize const LogoSize = { 229.0, 43.0 };
 	_buttonText = NSLocalizedString(@"Create WordPress.com Blog", @"");
 	self.navigationItem.title = NSLocalizedString(@"Create Account", @"");
         
-    CGRect headerFrame = CGRectMake(0, 0, HeaderSize.width, HeaderSize.height);
-    CGRect logoFrame = CGRectMake(LogoStartingPoint.x, LogoStartingPoint.y, LogoSize.width, LogoSize.height);
+    CGRect headerFrame = CGRectMake(0, 0, CreateAccountHeaderSize.width, CreateAccountHeaderSize.height);
+    CGRect logoFrame = CGRectMake(CreateAccountLogoStartingPoint.x, CreateAccountLogoStartingPoint.y, CreateAccountLogoSize.width, CreateAccountLogoSize.height);
 	NSString *logoFile = @"logo_wpcom.png";
 	if(IS_IPAD == YES) {
 		logoFile = @"logo_wpcom@2x.png";
-        logoFrame = CGRectMake(LogoStartingPointIpad.x, LogoStartingPointIpad.y, LogoSize.width, LogoSize.height);
+        logoFrame = CGRectMake(CreateAccountLogoStartingPointIpad.x, CreateAccountLogoStartingPointIpad.y, CreateAccountLogoSize.width, CreateAccountLogoSize.height);
 	}
 
 	UIView *headerView = [[UIView alloc] initWithFrame:headerFrame];
@@ -136,7 +136,7 @@ CGSize const LogoSize = { 229.0, 43.0 };
             }
             _emailCell.textLabel.text = NSLocalizedString(@"Email", @"");
             _emailTextField = _emailCell.textField;
-            _emailTextField.tag = EmailTextFieldTag;
+            _emailTextField.tag = CreateAccountEmailTextFieldTag;
             _emailTextField.placeholder = NSLocalizedString(@"user@example.com", @"");
             _emailTextField.keyboardType = UIKeyboardTypeEmailAddress;
             _emailTextField.returnKeyType = UIReturnKeyNext;
@@ -150,7 +150,7 @@ CGSize const LogoSize = { 229.0, 43.0 };
             }
             _usernameCell.textLabel.text = NSLocalizedString(@"Username", @"");
             _usernameTextField = _usernameCell.textField;
-            _usernameTextField.tag = UserNameTextFieldTag;
+            _usernameTextField.tag = CreateAccountUserNameTextFieldTag;
             _usernameTextField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
             _usernameTextField.keyboardType = UIKeyboardTypeEmailAddress;
             _usernameTextField.returnKeyType = UIReturnKeyNext;
@@ -163,7 +163,7 @@ CGSize const LogoSize = { 229.0, 43.0 };
             }
             _passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
             _passwordTextField = _passwordCell.textField;
-            _passwordTextField.tag = PasswordTextFieldTag;
+            _passwordTextField.tag = CreateAccountPasswordTextFieldTag;
             _passwordTextField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
             _passwordTextField.keyboardType = UIKeyboardTypeDefault;
             _passwordTextField.returnKeyType = UIReturnKeyNext;
@@ -177,7 +177,7 @@ CGSize const LogoSize = { 229.0, 43.0 };
             }
             _blogUrlCell.textLabel.text = NSLocalizedString(@"Blog URL", @"");
             _blogUrlTextField = _blogUrlCell.textField;
-            _blogUrlTextField.tag = BlogTextFieldTag;
+            _blogUrlTextField.tag = CreateAccountBlogTextFieldTag;
             _blogUrlTextField.placeholder = NSLocalizedString(@"myblog.wordpress.com", @"");
             _blogUrlTextField.keyboardType = UIKeyboardTypeURL;
             _blogUrlTextField.delegate = self;
@@ -208,16 +208,16 @@ CGSize const LogoSize = { 229.0, 43.0 };
 	[textField resignFirstResponder];
 	   
     switch (textField.tag) {
-        case EmailTextFieldTag:
+        case CreateAccountEmailTextFieldTag:
             [_usernameTextField becomeFirstResponder];
             break;
-        case UserNameTextFieldTag:
+        case CreateAccountUserNameTextFieldTag:
             [_passwordTextField becomeFirstResponder];
             break;
-        case PasswordTextFieldTag:
+        case CreateAccountPasswordTextFieldTag:
             [_blogUrlTextField becomeFirstResponder];
             break;
-        case BlogTextFieldTag:
+        case CreateAccountBlogTextFieldTag:
             [self createAccount];
             break;
         default:

@@ -168,7 +168,7 @@
 
 - (IBAction)handleCreateBlogTapped:(id)sender {
     if ([WordPressComApi sharedApi].hasCredentials) {
-        CreateWPComBlogViewController *viewController = [[CreateWPComBlogViewController alloc] init];
+        CreateWPComBlogViewController *viewController = [[CreateWPComBlogViewController alloc] initWithStyle:UITableViewStyleGrouped];
         viewController.delegate = self;
         [self.navigationController pushViewController:viewController animated:YES];
     } else {

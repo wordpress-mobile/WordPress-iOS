@@ -465,9 +465,11 @@
 		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
 		83FEFC7611FF6C5A0078B462 /* EditSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */; };
 		8516972C169D42F4006C5DED /* WPToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 8516972B169D42F4006C5DED /* WPToast.m */; };
+		8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */ = {isa = PBXBuildFile; fileRef = 8525398A171761D9003F6B32 /* WPComLanguages.m */; };
 		8566BC95170F84BC003C6BCF /* CreateWPComAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8566BC93170F84BC003C6BCF /* CreateWPComAccountViewController.m */; };
-		85DB3100170A322C003761BD /* CreateWPComBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DB30FE170A322C003761BD /* CreateWPComBlogViewController.m */; };
-		85DB3101170A322C003761BD /* CreateWPComBlogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85DB30FF170A322C003761BD /* CreateWPComBlogViewController.xib */; };
+		85D805521715F4EA0075EEAC /* CreateWPComBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D805511715F4EA0075EEAC /* CreateWPComBlogViewController.m */; };
+		85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85D80557171630B30075EEAC /* DotCom-Languages.plist */; };
+		85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D8055C171631F10075EEAC /* SelectWPComLanguageViewController.m */; };
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */; };
@@ -1246,11 +1248,15 @@
 		83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSiteViewController.m; sourceTree = "<group>"; };
 		8516972A169D42F4006C5DED /* WPToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPToast.h; sourceTree = "<group>"; };
 		8516972B169D42F4006C5DED /* WPToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPToast.m; sourceTree = "<group>"; };
+		85253989171761D9003F6B32 /* WPComLanguages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPComLanguages.h; sourceTree = "<group>"; };
+		8525398A171761D9003F6B32 /* WPComLanguages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPComLanguages.m; sourceTree = "<group>"; };
 		8566BC92170F84BC003C6BCF /* CreateWPComAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateWPComAccountViewController.h; sourceTree = "<group>"; };
 		8566BC93170F84BC003C6BCF /* CreateWPComAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateWPComAccountViewController.m; sourceTree = "<group>"; };
-		85DB30FD170A322C003761BD /* CreateWPComBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateWPComBlogViewController.h; sourceTree = "<group>"; };
-		85DB30FE170A322C003761BD /* CreateWPComBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateWPComBlogViewController.m; sourceTree = "<group>"; };
-		85DB30FF170A322C003761BD /* CreateWPComBlogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateWPComBlogViewController.xib; sourceTree = "<group>"; };
+		85D805501715F4EA0075EEAC /* CreateWPComBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateWPComBlogViewController.h; sourceTree = "<group>"; };
+		85D805511715F4EA0075EEAC /* CreateWPComBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateWPComBlogViewController.m; sourceTree = "<group>"; };
+		85D80557171630B30075EEAC /* DotCom-Languages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DotCom-Languages.plist"; sourceTree = "<group>"; };
+		85D8055B171631F10075EEAC /* SelectWPComLanguageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectWPComLanguageViewController.h; sourceTree = "<group>"; };
+		85D8055C171631F10075EEAC /* SelectWPComLanguageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectWPComLanguageViewController.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate.html; path = Resources/HTML/defaultPostTemplate.html; sourceTree = "<group>"; };
@@ -1780,6 +1786,7 @@
 				6E05AEE311EE8C1B00237983 /* Icon-Small-50.png */,
 				6E05AEF211EE8EF800237983 /* Icon-Small@2x.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
+				85D80557171630B30075EEAC /* DotCom-Languages.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2392,11 +2399,12 @@
 				8369FF8F11F4F3BF003106C7 /* AddUsersBlogsViewController.m */,
 				8398EE3011ACE206000FE6E0 /* WebSignupViewController.h */,
 				8398EE3111ACE206000FE6E0 /* WebSignupViewController.m */,
-				85DB30FD170A322C003761BD /* CreateWPComBlogViewController.h */,
-				85DB30FE170A322C003761BD /* CreateWPComBlogViewController.m */,
-				85DB30FF170A322C003761BD /* CreateWPComBlogViewController.xib */,
 				8566BC92170F84BC003C6BCF /* CreateWPComAccountViewController.h */,
 				8566BC93170F84BC003C6BCF /* CreateWPComAccountViewController.m */,
+				85D805501715F4EA0075EEAC /* CreateWPComBlogViewController.h */,
+				85D805511715F4EA0075EEAC /* CreateWPComBlogViewController.m */,
+				85D8055B171631F10075EEAC /* SelectWPComLanguageViewController.h */,
+				85D8055C171631F10075EEAC /* SelectWPComLanguageViewController.m */,
 			);
 			name = Blog;
 			sourceTree = "<group>";
@@ -2593,6 +2601,8 @@
 				5DD91BC4163983670053E560 /* SoundUtil.m */,
 				8516972A169D42F4006C5DED /* WPToast.h */,
 				8516972B169D42F4006C5DED /* WPToast.m */,
+				85253989171761D9003F6B32 /* WPComLanguages.h */,
+				8525398A171761D9003F6B32 /* WPComLanguages.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -3636,7 +3646,7 @@
 				E12A08E416C9706200E3DDF6 /* clouds_header@2x.png in Resources */,
 				E15051CE16CA8E4900D3DDDC /* logo_jetpack.png in Resources */,
 				E15051CF16CA8E4900D3DDDC /* logo_jetpack@2x.png in Resources */,
-				85DB3101170A322C003761BD /* CreateWPComBlogViewController.xib in Resources */,
+				85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3852,8 +3862,10 @@
 				E1D0D82B16D3D19200E33F4C /* PocketAPIOperation.m in Sources */,
 				E1D0D84716D3D2EA00E33F4C /* PocketActivity.m in Sources */,
 				E15051CB16CA5DDB00D3DDDC /* Blog+Jetpack.m in Sources */,
-				85DB3100170A322C003761BD /* CreateWPComBlogViewController.m in Sources */,
 				8566BC95170F84BC003C6BCF /* CreateWPComAccountViewController.m in Sources */,
+				85D805521715F4EA0075EEAC /* CreateWPComBlogViewController.m in Sources */,
+				85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */,
+				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

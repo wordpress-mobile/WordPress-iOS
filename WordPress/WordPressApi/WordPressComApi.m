@@ -265,26 +265,25 @@ NSString *const WordPressComApiErrorCodeInvalidBlogTitle = @"invalid_blogtitle";
     [self postPath:@"users/new" parameters:params success:successBlock failure:failureBlock];
 }
 
-- (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle success:(void (^)(id))success failure:(void (^)(NSError *))failure
+- (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(blogUrl != nil);
     NSParameterAssert(blogTitle != nil);
+    NSParameterAssert(languageId != nil);
     NSAssert([self hasCredentials], @"Should have credentials");
     
     void (^successBlock)(AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"Response : %@", responseObject);
         success(responseObject);
     };
     
     void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error){
-        NSLog(@"Response : %@", operation.responseString);
-        NSLog(@"Error : %@", error);
         failure(error);
     };
 
     NSDictionary *params = @{
                              @"blog_name": blogUrl,
                              @"blog_title": blogTitle,
+                             @"lang_id": languageId,
                              @"client_id": [WordPressComApiCredentials client],
                              @"client_secret": [WordPressComApiCredentials secret]
                              };
