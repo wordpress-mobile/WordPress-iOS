@@ -214,6 +214,13 @@
 }
 
 - (NSString *)html {
+    return [self htmlWithMediaSettings:nil];
+}
+
+- (NSString *)htmlWithMediaSettings:(MediaSettings *)mediaSettings {
+    if (mediaSettings == nil) {
+        mediaSettings = [[MediaSettings alloc] init];
+    }
 	NSString *result = @"";
 	
 	if(self.mediaType != nil) {
@@ -221,20 +228,30 @@
 			if(self.shortcode != nil)
 				result = self.shortcode;
 			else if(self.remoteURL != nil) {
-                NSString *linkType = nil;
-                if( [[self.blog getOptionValue:@"image_default_link_type"] isKindOfClass:[NSString class]] )
-                    linkType = (NSString *)[self.blog getOptionValue:@"image_default_link_type"];
-                else
-                    linkType = @"";
+                // try to generate the HTML from the media settings first
+                result = [mediaSettings html];
                 
-                if ([linkType isEqualToString:@"none"]) {
+                // if the HTML generated was empty then create the default HTML for the image
+                if (result == nil || [result isEqualToString:@""]) {
+                    // set the link blocks
+                    NSString *linkPrefix = nil;
+                    NSString *linkPostfix = nil;
+                    if([[self.blog getOptionValue:@"image_default_link_type"] isKindOfClass:[NSString class]]) {
+                        NSString *mediaLinkType = (NSString *)[self.blog getOptionValue:@"image_default_link_type"];
+                        if ([mediaLinkType isEqualToString:@"file"]) {
+                            linkPrefix = [NSString stringWithFormat:
+                                          @"<a href=\"%@\">",
+                                          self.remoteURL];
+                            linkPostfix = @"</a>";
+                        }
+                    } else {
+                        linkPrefix = @"";
+                        linkPostfix = @"";
+                    }
+
                     result = [NSString stringWithFormat:
-                              @"<img src=\"%@\" alt=\"%@\" class=\"alignnone size-full\" />",
-                              self.remoteURL, self.filename];
-                } else {
-                    result = [NSString stringWithFormat:
-                              @"<a href=\"%@\"><img src=\"%@\" alt=\"%@\" class=\"alignnone size-full\" /></a>",
-                              self.remoteURL, self.remoteURL, self.filename];
+                              @"%@<img src=\"%@\" class=\"alignnone\"/>%@",
+                              linkPrefix, self.remoteURL, linkPostfix];
                 }
             }
 		}

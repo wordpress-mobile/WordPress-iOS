@@ -143,16 +143,17 @@
 		}
 	}
 	else if(isInserting == YES) {
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:media, @"media", [[MediaSettings alloc] init], @"mediaSettings", nil];
 		switch (buttonIndex) {
 			case 0:
-				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaAbove" object:media];
+				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaAbove" object:self userInfo:userInfo];
 				if(IS_IPAD == YES)
 					[self dismissModalViewControllerAnimated:YES];
 				else
 					[self.navigationController popViewControllerAnimated:YES];
 				break;
 			case 1:
-				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
+				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:self userInfo:userInfo];
 				if(IS_IPAD == YES)
 					[self dismissModalViewControllerAnimated:YES];
 				else

@@ -136,7 +136,8 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaAbove:) name:@"ShouldInsertMediaAbove" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:@"ShouldInsertMediaBelow" object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMedia:) name:@"UpdateMedia" object:nil];
 
     currentView = editView;
 	writeButton.enabled = NO;
@@ -1244,46 +1245,71 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 }
 
 #pragma mark - Media management
+- (void)removeMediaFromContent:(NSMutableString *)content mediaHtml:(NSString *)mediaHtml{
+    // find the image html and replace it with an empty string
+    NSRange imageLocation = [content rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br /><br />", mediaHtml]];
+    if (imageLocation.location == NSNotFound) {
+        // look at the end of the content
+        imageLocation = [content rangeOfString:[NSString stringWithFormat:@"%@%@", mediaHtml, @"<br /><br />"]];
+        if (imageLocation.location == NSNotFound) {
+            // look anywhere in the content
+            imageLocation = [content rangeOfString:mediaHtml];
+        }
+    }
+    if (imageLocation.location != NSNotFound) {
+        [content replaceCharactersInRange:imageLocation withString:@""];
+    }
+}
 
 - (void)insertMediaAbove:(NSNotification *)notification {
-	Media *media = (Media *)[notification object];
-	NSString *prefix = @"<br /><br />";
+    NSDictionary *userInfo = notification.userInfo;
+	Media *media = (Media *)[userInfo objectForKey:@"media"];
+    MediaSettings *mediaSettings = (MediaSettings *)[userInfo objectForKey:@"mediaSettings"];
+	NSString *postfix = @"<br /><br />";
 	
 	if(self.apost.content == nil || [self.apost.content isEqualToString:@""]) {
 		self.apost.content = @"";
-		prefix = @"";
+		postfix = @"";
 	}
 	
-	NSMutableString *content = [[NSMutableString alloc] initWithString:media.html];
-	NSRange imgHTML = [textView.text rangeOfString: content];
-	
-	NSRange imgHTMLPre = [textView.text rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br /><br />", content]]; 
- 	NSRange imgHTMLPost = [textView.text rangeOfString:[NSString stringWithFormat:@"%@%@", content, @"<br /><br />"]]; 
-	
-	if (imgHTMLPre.location == NSNotFound && imgHTMLPost.location == NSNotFound && imgHTML.location == NSNotFound) {
-		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, self.apost.content]];
-        self.apost.content = content;
-	}
-	else { 
-		NSMutableString *processedText = [[NSMutableString alloc] initWithString:textView.text]; 
-		if (imgHTMLPre.location != NSNotFound) 
-			[processedText replaceCharactersInRange:imgHTMLPre withString:@""];
-		else if (imgHTMLPost.location != NSNotFound) 
-			[processedText replaceCharactersInRange:imgHTMLPost withString:@""];
-		else  
-			[processedText replaceCharactersInRange:imgHTML withString:@""];  
-		 
-		[content appendString:[NSString stringWithFormat:@"<br /><br />%@", processedText]]; 
-		self.apost.content = content;
-	}
-    _hasChangesToAutosave = YES;
+    NSString *currentMediaHtml = [MediaSettings createMediaSettingsForUrl:media.remoteURL content:self.apost.content].parsedHtml;
+    if (currentMediaHtml == nil) {
+        currentMediaHtml = @"";
+    }
+	NSMutableString *content = [[NSMutableString alloc] initWithString:self.apost.content];
+	[self removeMediaFromContent:content mediaHtml:currentMediaHtml];
+    
+    self.apost.content = [NSString stringWithFormat:@"%@%@%@", [media htmlWithMediaSettings:mediaSettings], postfix, content];
     [self refreshUIForCurrentPost];
-    [self.apost autosave];
-    [self incrementCharactersChangedForAutosaveBy:content.length];
+}
+
+- (void)updateMedia:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+	Media *media = (Media *)[userInfo objectForKey:@"media"];
+    MediaSettings *mediaSettings = (MediaSettings *)[userInfo objectForKey:@"mediaSettings"];
+	
+	NSMutableString *content = [[NSMutableString alloc] initWithString:self.apost.content];
+    
+    NSString *currentMediaHtml = [MediaSettings createMediaSettingsForUrl:media.remoteURL content:content].parsedHtml;
+    if (currentMediaHtml == nil) {
+        currentMediaHtml = @"";
+    }
+    NSRange mediaHtmlRange = [content rangeOfString:currentMediaHtml];
+    
+    if (mediaHtmlRange.location == NSNotFound) {
+		[content appendString:[NSString stringWithFormat:@"<br /><br />%@", [media htmlWithMediaSettings:mediaSettings]]];
+	}
+	else {
+		[content replaceCharactersInRange:mediaHtmlRange withString:[media htmlWithMediaSettings:mediaSettings]];
+	}
+    self.apost.content = content;
+    [self refreshUIForCurrentPost];
 }
 
 - (void)insertMediaBelow:(NSNotification *)notification {
-	Media *media = (Media *)[notification object];
+    NSDictionary *userInfo = notification.userInfo;
+	Media *media = (Media *)[userInfo objectForKey:@"media"];
+    MediaSettings *mediaSettings = (MediaSettings *)[userInfo objectForKey:@"mediaSettings"];
 	NSString *prefix = @"<br /><br />";
 	
 	if(self.apost.content == nil || [self.apost.content isEqualToString:@""]) {
@@ -1291,41 +1317,25 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 		prefix = @"";
 	}
 	
+    NSString *currentMediaHtml = [MediaSettings createMediaSettingsForUrl:media.remoteURL content:self.apost.content].parsedHtml;
+    if (currentMediaHtml == nil) {
+        currentMediaHtml = @"";
+    }
 	NSMutableString *content = [[NSMutableString alloc] initWithString:self.apost.content];
-	NSRange imgHTML = [content rangeOfString: media.html];
-	NSRange imgHTMLPre = [content rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br /><br />", media.html]]; 
- 	NSRange imgHTMLPost = [content rangeOfString:[NSString stringWithFormat:@"%@%@", media.html, @"<br /><br />"]];
-	
-	if (imgHTMLPre.location == NSNotFound && imgHTMLPost.location == NSNotFound && imgHTML.location == NSNotFound) {
-		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];
-        self.apost.content = content;
-	}
-	else {
-		if (imgHTMLPre.location != NSNotFound) 
-			[content replaceCharactersInRange:imgHTMLPre withString:@""]; 
-		else if (imgHTMLPost.location != NSNotFound) 
-			[content replaceCharactersInRange:imgHTMLPost withString:@""];
-		else  
-			[content replaceCharactersInRange:imgHTML withString:@""];
-		[content appendString:[NSString stringWithFormat:@"<br /><br />%@", media.html]];
-		self.apost.content = content;
-	}
-    _hasChangesToAutosave = YES;
+	[self removeMediaFromContent:content mediaHtml:currentMediaHtml];
+
+    self.apost.content = [NSString stringWithFormat:@"%@%@%@", content, prefix, [media htmlWithMediaSettings:mediaSettings]];
     [self refreshUIForCurrentPost];
-    [self.apost autosave];
-    [self incrementCharactersChangedForAutosaveBy:content.length];
 }
 
 - (void)removeMedia:(NSNotification *)notification {
 	//remove the html string for the media object
 	Media *media = (Media *)[notification object];
-	textView.text = [textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<br /><br />%@", media.html] withString:@""];
-	textView.text = [textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@<br /><br />", media.html] withString:@""];
-	textView.text = [textView.text stringByReplacingOccurrencesOfString:media.html withString:@""];
-    _hasChangesToAutosave = YES;
-    [self autosaveContent];
+    NSString *currentMediaHtml = [MediaSettings createMediaSettingsForUrl:media.remoteURL content:self.apost.content].parsedHtml;
+    NSMutableString *content = [[NSMutableString alloc] initWithString:self.apost.content];
+    [self removeMediaFromContent:content mediaHtml:currentMediaHtml];
+    self.apost.content = content;
     [self refreshUIForCurrentPost];
-    [self incrementCharactersChangedForAutosaveBy:media.html.length];
 }
 
 

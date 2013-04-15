@@ -9,6 +9,7 @@
 #import <CoreData/CoreData.h>
 #import "Blog.h"
 #import "AbstractPost.h"
+#import "MediaSettings.h"
 
 typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
     MediaRemoteStatusPushing,    // Uploading post
@@ -51,6 +52,7 @@ typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
 - (void)remove;
 - (void)save;
 - (void)setImage:(UIImage *)image withSize:(MediaResize)size;
+- (NSString *)htmlWithMediaSettings:(MediaSettings *)mediaSettings;
 
 @end
 
