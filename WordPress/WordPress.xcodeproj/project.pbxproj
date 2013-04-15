@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00C0D2581718AB1C00E2B95D /* button_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 00C0D2561718AB1C00E2B95D /* button_red.png */; };
+		00C0D2591718AB1C00E2B95D /* button_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 00C0D2571718AB1C00E2B95D /* button_red@2x.png */; };
+		00C0D25B1718AB4B00E2B95D /* MediaSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 00C0D25A1718AB4B00E2B95D /* MediaSettingsViewController.xib */; };
+		00C0D25E1718AB6300E2B95D /* MediaSettingsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C0D25D1718AB6300E2B95D /* MediaSettingsTests.m */; };
+		00C0D2611718AB9C00E2B95D /* MediaSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C0D2601718AB9C00E2B95D /* MediaSettingsViewController.m */; };
+		00C0D2641718ABCC00E2B95D /* MediaSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C0D2631718ABCC00E2B95D /* MediaSettings.m */; };
+		00C0D2651718ABCC00E2B95D /* MediaSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 00C0D2631718ABCC00E2B95D /* MediaSettings.m */; };
 		00F2E3F8166EEF9800D0527C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7371256D0F60046A4A3 /* CoreGraphics.framework */; };
 		00F2E3FA166EEFBE00D0527C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3653158F2D4500419A93 /* UIKit.framework */; };
 		00F2E3FB166EEFE100D0527C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3651158F2D3F00419A93 /* QuartzCore.framework */; };
@@ -721,6 +728,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		00C0D2561718AB1C00E2B95D /* button_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button_red.png; path = Resources/Images/button_red.png; sourceTree = "<group>"; };
+		00C0D2571718AB1C00E2B95D /* button_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button_red@2x.png"; path = "Resources/Images/button_red@2x.png"; sourceTree = "<group>"; };
+		00C0D25A1718AB4B00E2B95D /* MediaSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MediaSettingsViewController.xib; path = Resources/MediaSettingsViewController.xib; sourceTree = "<group>"; };
+		00C0D25C1718AB6300E2B95D /* MediaSettingsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaSettingsTests.h; sourceTree = "<group>"; };
+		00C0D25D1718AB6300E2B95D /* MediaSettingsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaSettingsTests.m; sourceTree = "<group>"; };
+		00C0D25F1718AB9C00E2B95D /* MediaSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaSettingsViewController.h; sourceTree = "<group>"; };
+		00C0D2601718AB9C00E2B95D /* MediaSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaSettingsViewController.m; sourceTree = "<group>"; };
+		00C0D2621718ABCC00E2B95D /* MediaSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaSettings.h; sourceTree = "<group>"; };
+		00C0D2631718ABCC00E2B95D /* MediaSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaSettings.m; sourceTree = "<group>"; };
 		031663050FFB151A0045D052 /* PostTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostTableViewCell.h; sourceTree = "<group>"; };
 		031663060FFB151A0045D052 /* PostTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTableViewCell.m; sourceTree = "<group>"; };
 		031666AC0FFC3E130045D052 /* CommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentTableViewCell.h; sourceTree = "<group>"; };
@@ -2262,6 +2278,7 @@
 		83290399120CF517000A965A /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				00C0D25A1718AB4B00E2B95D /* MediaSettingsViewController.xib */,
 				83CAD4201235F9F4003DFA20 /* MediaObjectView.xib */,
 				8383178712270E980047B476 /* PostMediaViewController.xib */,
 			);
@@ -2282,6 +2299,10 @@
 		83CAD4191235F823003DFA20 /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				00C0D2621718ABCC00E2B95D /* MediaSettings.h */,
+				00C0D2631718ABCC00E2B95D /* MediaSettings.m */,
+				00C0D25F1718AB9C00E2B95D /* MediaSettingsViewController.h */,
+				00C0D2601718AB9C00E2B95D /* MediaSettingsViewController.m */,
 				8383178512270E980047B476 /* PostMediaViewController.h */,
 				8383178612270E980047B476 /* PostMediaViewController.m */,
 				83CAD41A1235F854003DFA20 /* MediaObjectViewController.h */,
@@ -2387,6 +2408,8 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				00C0D2561718AB1C00E2B95D /* button_red.png */,
+				00C0D2571718AB1C00E2B95D /* button_red@2x.png */,
 				E1D0D82D16D3D2BA00E33F4C /* NNInstapaperActivity@2x~ipad.png */,
 				E1D0D82E16D3D2BA00E33F4C /* NNInstapaperActivity@2x~iphone.png */,
 				E1D0D82F16D3D2BA00E33F4C /* NNInstapaperActivity~ipad.png */,
@@ -2920,6 +2943,8 @@
 				E183EC9F16B2164900C2EB11 /* EditPostViewControllerTest.m */,
 				E150520A16CAC5C400D3DDDC /* BlogJetpackTest.h */,
 				E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */,
+				00C0D25C1718AB6300E2B95D /* MediaSettingsTests.h */,
+				00C0D25D1718AB6300E2B95D /* MediaSettingsTests.m */,
 			);
 			path = WordPressTest;
 			sourceTree = "<group>";
@@ -3617,6 +3642,9 @@
 				E12A08E416C9706200E3DDF6 /* clouds_header@2x.png in Resources */,
 				E15051CE16CA8E4900D3DDDC /* logo_jetpack.png in Resources */,
 				E15051CF16CA8E4900D3DDDC /* logo_jetpack@2x.png in Resources */,
+				00C0D2581718AB1C00E2B95D /* button_red.png in Resources */,
+				00C0D2591718AB1C00E2B95D /* button_red@2x.png in Resources */,
+				00C0D25B1718AB4B00E2B95D /* MediaSettingsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3832,6 +3860,8 @@
 				E1D0D82B16D3D19200E33F4C /* PocketAPIOperation.m in Sources */,
 				E1D0D84716D3D2EA00E33F4C /* PocketActivity.m in Sources */,
 				E15051CB16CA5DDB00D3DDDC /* Blog+Jetpack.m in Sources */,
+				00C0D2611718AB9C00E2B95D /* MediaSettingsViewController.m in Sources */,
+				00C0D2641718ABCC00E2B95D /* MediaSettings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3847,6 +3877,8 @@
 				E150520F16CAC75A00D3DDDC /* CoreDataTestHelper.m in Sources */,
 				E131CB5E16CAD659004B0314 /* AsyncTestHelper.m in Sources */,
 				E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */,
+				00C0D25E1718AB6300E2B95D /* MediaSettingsTests.m in Sources */,
+				00C0D2651718ABCC00E2B95D /* MediaSettings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

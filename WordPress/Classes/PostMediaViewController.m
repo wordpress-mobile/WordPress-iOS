@@ -231,7 +231,8 @@
                 NSLog(@"Media deleted while uploading (%@)", media);
                 return;
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:media, @"media", [[MediaSettings alloc] init], @"mediaSettings", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:self userInfo:userInfo];
             [media save];
         } failure:nil];
     } else if (media.remoteStatus == MediaRemoteStatusPushing) {
@@ -239,9 +240,20 @@
     } else if (media.remoteStatus == MediaRemoteStatusProcessing) {
         // Do nothing. See trac #1508
     } else {
-        MediaObjectViewController *mediaView = [[MediaObjectViewController alloc] initWithNibName:@"MediaObjectView" bundle:nil];
-        [mediaView setMedia:media];
-
+        // for images use the new media settings view
+        UIViewController *mediaView;
+        if ([media.mediaType isEqualToString:@"image"]) {
+            MediaSettingsViewController *tempMediaView = [[MediaSettingsViewController alloc] initWithNibName:@"MediaSettingsViewController" bundle:nil];
+            [tempMediaView setMedia:media];
+            MediaSettings *mediaSettings = [MediaSettings createMediaSettingsForUrl:media.remoteURL content:postDetailViewController.apost.content];
+            [tempMediaView setMediaSettings:mediaSettings];
+            mediaView = tempMediaView;
+        } else {
+            MediaObjectViewController *tempMediaView = [[MediaObjectViewController alloc] initWithNibName:@"MediaObjectView" bundle:nil];
+            [tempMediaView setMedia:media];
+            mediaView = tempMediaView;
+        }
+        
         if(IS_IPAD == YES) {
 			mediaView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 			mediaView.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -1347,7 +1359,8 @@
             return;
         }
         if (!isPickingFeaturedImage) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:imageMedia];
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:imageMedia, @"media", [[MediaSettings alloc] init], @"mediaSettings", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:self userInfo:userInfo];
         }
         else {
             
@@ -1442,7 +1455,8 @@
                 NSLog(@"Media deleted while uploading (%@)", videoMedia);
                 return;
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:videoMedia];
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:videoMedia, @"media", [[MediaSettings alloc] init], @"mediaSettings", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:self userInfo:userInfo];
             [videoMedia save];
         } failure:nil];
 		isAddingMedia = NO;
@@ -1484,7 +1498,8 @@
         NSLog(@"Media deleted while uploading (%@)", media);
         return;
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:media, @"media", [[MediaSettings alloc] init], @"mediaSettings", nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:self userInfo:userInfo];
     [media save];
 	self.isAddingMedia = NO;
 }
