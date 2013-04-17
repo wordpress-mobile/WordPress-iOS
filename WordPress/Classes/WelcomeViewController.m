@@ -14,7 +14,6 @@
 #import "CreateWPComAccountViewController.h"
 #import "AddSiteViewController.h"
 #import "EditSiteViewController.h"
-#import "WebSignupViewController.h"
 #import "WPcomLoginViewController.h"
 #import "WordPressComApi.h"
 
@@ -174,14 +173,7 @@
         CreateWPComAccountViewController *viewController = [[CreateWPComAccountViewController alloc] initWithStyle:UITableViewStyleGrouped];
         viewController.delegate = self;
         [self.navigationController pushViewController:viewController animated:YES];
-    }
-    
-//    NSString *newNibName = @"WebSignupViewController";
-//    if(IS_IPAD == YES)
-//        newNibName = @"WebSignupViewController-iPad";
-//    WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:newNibName bundle:[NSBundle mainBundle]];
-//    [self.navigationController pushViewController:webSignup animated:YES];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wpcomSignupNotificationReceived:) name:@"wpcomSignupNotification" object:nil];
+    }    
 }
 
 

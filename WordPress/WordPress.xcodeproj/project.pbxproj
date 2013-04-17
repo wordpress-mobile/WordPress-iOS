@@ -449,7 +449,6 @@
 		8383178812270E980047B476 /* PostMediaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8383178612270E980047B476 /* PostMediaViewController.m */; };
 		8383178912270E980047B476 /* PostMediaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8383178712270E980047B476 /* PostMediaViewController.xib */; };
 		838C672E1210C3C300B09CA3 /* Post.m in Sources */ = {isa = PBXBuildFile; fileRef = 838C672D1210C3C300B09CA3 /* Post.m */; };
-		8398EE3411ACE206000FE6E0 /* WebSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8398EE3111ACE206000FE6E0 /* WebSignupViewController.m */; };
 		8398EE3511ACE206000FE6E0 /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8398EE3311ACE206000FE6E0 /* WelcomeViewController.m */; };
 		8398EE9A11ACE63C000FE6E0 /* WebSignupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8398EE9811ACE63C000FE6E0 /* WebSignupViewController.xib */; };
 		8398EE9B11ACE63C000FE6E0 /* WelcomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8398EE9911ACE63C000FE6E0 /* WelcomeViewController.xib */; };
@@ -1227,8 +1226,6 @@
 		8383178712270E980047B476 /* PostMediaViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PostMediaViewController.xib; path = Resources/PostMediaViewController.xib; sourceTree = "<group>"; };
 		838C672C1210C3C300B09CA3 /* Post.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Post.h; sourceTree = "<group>"; };
 		838C672D1210C3C300B09CA3 /* Post.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Post.m; sourceTree = "<group>"; };
-		8398EE3011ACE206000FE6E0 /* WebSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSignupViewController.h; sourceTree = "<group>"; };
-		8398EE3111ACE206000FE6E0 /* WebSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSignupViewController.m; sourceTree = "<group>"; };
 		8398EE3211ACE206000FE6E0 /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
 		8398EE3311ACE206000FE6E0 /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
 		8398EE9811ACE63C000FE6E0 /* WebSignupViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = WebSignupViewController.xib; path = Resources/WebSignupViewController.xib; sourceTree = "<group>"; };
@@ -2403,8 +2400,6 @@
 				83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */,
 				8369FF8E11F4F3BF003106C7 /* AddUsersBlogsViewController.h */,
 				8369FF8F11F4F3BF003106C7 /* AddUsersBlogsViewController.m */,
-				8398EE3011ACE206000FE6E0 /* WebSignupViewController.h */,
-				8398EE3111ACE206000FE6E0 /* WebSignupViewController.m */,
 				8566BC92170F84BC003C6BCF /* CreateWPComAccountViewController.h */,
 				8566BC93170F84BC003C6BCF /* CreateWPComAccountViewController.m */,
 				85D805501715F4EA0075EEAC /* CreateWPComBlogViewController.h */,
@@ -3765,7 +3760,6 @@
 				2994EEEE10DF0FCD008336A6 /* ReplyToCommentViewController.m in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
 				45F45B3611614BA50022D394 /* CPopoverManager.m in Sources */,
-				8398EE3411ACE206000FE6E0 /* WebSignupViewController.m in Sources */,
 				8398EE3511ACE206000FE6E0 /* WelcomeViewController.m in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
