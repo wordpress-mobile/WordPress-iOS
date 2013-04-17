@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
 	<dict>
@@ -502,7 +502,7 @@
 		<key>lang_id</key>
 		<string>462</string>
 		<key>name</key>
-		<string>&amp;#1178;&amp;#1072;&amp;#1079;&amp;#1072;&amp;#1179; &amp;#1090;&amp;#1110;&amp;#1083;&amp;#1110;</string>
+		<string>Қазақ тілі</string>
 		<key>slug</key>
 		<string>kk</string>
 	</dict>
@@ -614,7 +614,7 @@
 		<key>lang_id</key>
 		<string>472</string>
 		<key>name</key>
-		<string>&amp;#1084;&amp;#1086;&amp;#1085;&amp;#1075;&amp;#1086;&amp;#1083;&amp;#32;&amp;#1093;&amp;#1101;&amp;#1083;</string>
+		<string>монгол хэл</string>
 		<key>slug</key>
 		<string>mn</string>
 	</dict>
@@ -622,7 +622,7 @@
 		<key>lang_id</key>
 		<string>461</string>
 		<key>name</key>
-		<string>&amp;#2350;&amp;#2352;&amp;#2366;&amp;#2336;&amp;#2368;&amp;#32;&amp;#77;&amp;#97;&amp;#114;&amp;#257;&amp;#7789;&amp;#104;&amp;#299;</string>
+		<string>मराठी Marāṭhī</string>
 		<key>slug</key>
 		<string>mr</string>
 	</dict>
@@ -646,7 +646,7 @@
 		<key>lang_id</key>
 		<string>464</string>
 		<key>name</key>
-		<string>Mirand&amp;#233;s</string>
+		<string>Mirandés</string>
 		<key>slug</key>
 		<string>mwl</string>
 	</dict>
@@ -990,7 +990,7 @@
 		<key>lang_id</key>
 		<string>463</string>
 		<key>name</key>
-		<string>valenci&amp;#224;</string>
+		<string>valencià</string>
 		<key>slug</key>
 		<string>va</string>
 	</dict>
