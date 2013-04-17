@@ -51,9 +51,6 @@ NSUInteger const CreateAccountPasswordTextFieldTag = 3;
 NSUInteger const CreateAccountBlogUrlTextFieldTag = 4;
 
 CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
-CGPoint const CreateAccountLogoStartingPoint = { 40.0, 20.0 };
-CGPoint const CreateAccountLogoStartingPointIpad = { 150.0, 20.0 };
-CGSize const CreateAccountLogoSize = { 229.0, 43.0 };
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -77,20 +74,12 @@ CGSize const CreateAccountLogoSize = { 229.0, 43.0 };
 	_footerText = @" ";
 	_buttonText = NSLocalizedString(@"Create WordPress.com Blog", @"");
 	self.navigationItem.title = NSLocalizedString(@"Create Account", @"");
-        
-    CGRect headerFrame = CGRectMake(0, 0, CreateAccountHeaderSize.width, CreateAccountHeaderSize.height);
-    CGRect logoFrame = CGRectMake(CreateAccountLogoStartingPoint.x, CreateAccountLogoStartingPoint.y, CreateAccountLogoSize.width, CreateAccountLogoSize.height);
-	NSString *logoFile = @"logo_wpcom.png";
-	if(IS_IPAD == YES) {
-		logoFile = @"logo_wpcom@2x.png";
-        logoFrame = CGRectMake(CreateAccountLogoStartingPointIpad.x, CreateAccountLogoStartingPointIpad.y, CreateAccountLogoSize.width, CreateAccountLogoSize.height);
-	}
 
-	UIView *headerView = [[UIView alloc] initWithFrame:headerFrame];
-	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
-	logo.frame = logoFrame;
-	[headerView addSubview:logo];
-	self.tableView.tableHeaderView = headerView;    
+    UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wpcom"]];
+    logoImage.frame = CGRectMake(0.0f, 0.0f, CreateAccountHeaderSize.width, CreateAccountHeaderSize.height);
+    logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    logoImage.contentMode = UIViewContentModeCenter;
+    self.tableView.tableHeaderView = logoImage;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

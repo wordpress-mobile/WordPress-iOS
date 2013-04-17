@@ -48,9 +48,6 @@
 @implementation CreateWPComBlogViewController
 
 CGSize const CreateBlogHeaderSize = { 320.0, 70.0 };
-CGPoint const CreateBlogLogoStartingPoint = { 40.0, 20.0 };
-CGPoint const CreateBlogLogoStartingPointIpad = { 150.0, 20.0 };
-CGSize const CreateBlogLogoSize = { 229.0, 43.0 };
 
 NSUInteger const CreateBlogBlogUrlFieldTag = 1;
 
@@ -78,19 +75,11 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
 	_buttonText = NSLocalizedString(@"Create WordPress.com Blog", @"");
 	self.navigationItem.title = NSLocalizedString(@"Create Blog", @"");
     
-    CGRect headerFrame = CGRectMake(0, 0, CreateBlogHeaderSize.width, CreateBlogHeaderSize.height);
-    CGRect logoFrame = CGRectMake(CreateBlogLogoStartingPoint.x, CreateBlogLogoStartingPoint.y, CreateBlogLogoSize.width, CreateBlogLogoSize.height);
-	NSString *logoFile = @"logo_wpcom.png";
-	if(IS_IPAD == YES) {
-		logoFile = @"logo_wpcom@2x.png";
-        logoFrame = CGRectMake(CreateBlogLogoStartingPointIpad.x, CreateBlogLogoStartingPointIpad.y, CreateBlogLogoSize.width, CreateBlogLogoSize.height);
-	}
-    
-	UIView *headerView = [[UIView alloc] initWithFrame:headerFrame];
-	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
-	logo.frame = logoFrame;
-	[headerView addSubview:logo];
-	self.tableView.tableHeaderView = headerView;
+    UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wpcom"]];
+    logoImage.frame = CGRectMake(0.0f, 0.0f, CreateBlogHeaderSize.width, CreateBlogHeaderSize.height);
+    logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    logoImage.contentMode = UIViewContentModeCenter;
+    self.tableView.tableHeaderView = logoImage;
 }
 
 - (void)didMoveToParentViewController:(UIViewController *)parent
