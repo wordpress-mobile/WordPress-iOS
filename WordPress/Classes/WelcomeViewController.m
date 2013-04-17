@@ -165,7 +165,6 @@
     }
 }
 
-
 - (IBAction)handleCreateBlogTapped:(id)sender {
     if ([WordPressComApi sharedApi].hasCredentials) {
         CreateWPComBlogViewController *viewController = [[CreateWPComBlogViewController alloc] initWithStyle:UITableViewStyleGrouped];

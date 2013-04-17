@@ -8,6 +8,7 @@
 
 #import "CreateWPComBlogViewController.h"
 #import "SelectWPComLanguageViewController.h"
+#import "SelectWPComBlogVisibilityViewController.h"
 #import "UITableViewTextFieldCell.h"
 #import "UITableViewActivityCell.h"
 #import "UITableViewSwitchCell.h"
@@ -19,11 +20,13 @@
 
 @interface CreateWPComBlogViewController () <
     SelectWPComLanguageViewControllerDelegate,
+    SelectWPComBlogVisibilityViewControllerDelegate,
     UITextFieldDelegate> {
         
     UITableViewTextFieldCell *_blogUrlCell;
     UITableViewTextFieldCell *_blogTitleCell;
     UITableViewSwitchCell *_geolocationEnabledCell;
+    UITableViewCell *_blogVisibilityCell;
     UITableViewCell *_localeCell;
     
     UITextField *_blogUrlTextField;
@@ -37,6 +40,7 @@
     BOOL _userPressedBackButton;
 
     NSDictionary *_currentLanguage;
+    WordPressComApiBlogVisibility _blogVisibility;
 }
 
 @end
@@ -55,11 +59,8 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     self = [super initWithStyle:style];
     
     if (self) {
-        NSString * language = [[NSLocale preferredLanguages] objectAtIndex:0];
-        _currentLanguage = [WPComLanguages languageDataForLocale:language];
-        if (_currentLanguage == nil) {
-            _currentLanguage = [WPComLanguages languageDataForLocale:@"en"];
-        }
+        _currentLanguage = [WPComLanguages currentLanguage];
+        _blogVisibility = WordPressComApiBlogVisibilityPublic;
         _geolocationEnabled = true;
     }
     
@@ -92,6 +93,16 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
 	self.tableView.tableHeaderView = headerView;
 }
 
+- (void)didMoveToParentViewController:(UIViewController *)parent
+{
+    // User has pressed back button so make sure the user does not see a strange message
+    // or encounters strange behavior as a result of a failed or successful attempt to create an account.
+    if (parent == nil) {
+        self.delegate = nil;
+        _userPressedBackButton = true;
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -102,7 +113,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0)
-        return 4;
+        return 5;
     else
         return 1;
 }
@@ -132,7 +143,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
         
         if(_isCreatingBlog) {
 			[activityCell.spinner startAnimating];
-			_buttonText = NSLocalizedString(@"Creating Account...", nil);
+			_buttonText = NSLocalizedString(@"Creating Blog...", nil);
 		} else {
 			[activityCell.spinner stopAnimating];
 			_buttonText = NSLocalizedString(@"Create WordPress.com Blog", nil);
@@ -179,6 +190,15 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             _localeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell = _localeCell;
         } else if (indexPath.row == 3) {
+            if (_blogVisibilityCell == nil) {
+                _blogVisibilityCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                                             reuseIdentifier:@"VisibilityCell"];
+            }
+            _blogVisibilityCell.textLabel.text = @"Blog Visibility";
+            _blogVisibilityCell.detailTextLabel.text = [self textForCurrentBlogVisibility];
+            _blogVisibilityCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell = _blogVisibilityCell;
+        } else if (indexPath.row == 4) {
             if(_geolocationEnabledCell == nil) {
                 NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"UITableViewSwitchCell" owner:nil options:nil];
                 for(id currentObject in topLevelObjects)
@@ -195,7 +215,6 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             _geolocationEnabledCell.cellSwitch.on = _geolocationEnabled;
             [_geolocationEnabledCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
             cell = _geolocationEnabledCell;
-
         }
     }
     
@@ -214,10 +233,15 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
 
     if (indexPath.section == 0) {
         if (indexPath.row == 2) {
-            SelectWPComLanguageViewController *selectLanguageViewController = [[SelectWPComLanguageViewController alloc] initWithStyle:UITableViewStylePlain];
+            SelectWPComLanguageViewController *selectLanguageViewController = [[SelectWPComLanguageViewController alloc] initWithStyle:UITableViewStyleGrouped];
             selectLanguageViewController.currentlySelectedLanguageId = [_currentLanguage objectForKey:@"lang_id"];
             selectLanguageViewController.delegate = self;
             [self.navigationController pushViewController:selectLanguageViewController animated:YES];
+        } else if (indexPath.row == 3) {
+            SelectWPComBlogVisibilityViewController *selectedVisibilityViewController = [[SelectWPComBlogVisibilityViewController alloc] initWithStyle:UITableViewStyleGrouped];
+            selectedVisibilityViewController.currentBlogVisibility = _blogVisibility;
+            selectedVisibilityViewController.delegate = self;
+            [self.navigationController pushViewController:selectedVisibilityViewController animated:YES];
         }
     } else {
         [self clickedCreateBlog];
@@ -240,11 +264,19 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
 	return YES;
 }
 
-#pragma mark SelectWPComLanguageViewControllerDelegate
+#pragma mark - SelectWPComLanguageViewControllerDelegate
 
 - (void)selectWPComLanguageViewController:(SelectWPComLanguageViewController *)viewController didSelectLanguage:(NSDictionary *)data
 {
     _currentLanguage = data;
+    [self.tableView reloadData];
+}
+
+#pragma mark - SelectWPComBlogVisibilityViewControllerDelegate
+
+- (void)selectWPComBlogVisibilityViewController:(SelectWPComBlogVisibilityViewController *)viewController didSelectBlogVisibilitySetting:(WordPressComApiBlogVisibility)visibility
+{
+    _blogVisibility = visibility;
     [self.tableView reloadData];
 }
 
@@ -271,12 +303,10 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
 
     _isCreatingBlog = true;
     [self.tableView reloadData];
-    [[WordPressComApi sharedApi] createWPComBlogWithUrl:_blogUrlTextField.text andBlogTitle:_blogTitleTextField.text andLanguageId:[_currentLanguage objectForKey:@"lang_id"] success:^(id responseObject){
-        if (self.delegate != nil) {
-            NSDictionary *blogDetails = [responseObject dictionaryForKey:@"blog_details"];
-            [self createBlog:blogDetails];
-            [self.delegate createdBlogWithDetails:blogDetails];
-        }
+    [[WordPressComApi sharedApi] createWPComBlogWithUrl:_blogUrlTextField.text andBlogTitle:_blogTitleTextField.text andLanguageId:[_currentLanguage objectForKey:@"lang_id"] andBlogVisibility:_blogVisibility success:^(id responseObject){
+        NSDictionary *blogDetails = [responseObject dictionaryForKey:@"blog_details"];
+        [self createBlog:blogDetails];
+        [self.delegate createdBlogWithDetails:blogDetails];
     } failure:^(NSError *error){
         if (!_userPressedBackButton) {
             _isCreatingBlog = false;
@@ -363,13 +393,14 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     [alertView show];
 }
 
-- (void)didMoveToParentViewController:(UIViewController *)parent
+- (NSString *)textForCurrentBlogVisibility
 {
-    // User has pressed back button so make sure the user does not see a strange message
-    // or encounters strange behavior as a result of a failed or successful attempt to create an account.
-    if (parent == nil) {
-        self.delegate = nil;
-        _userPressedBackButton = true;
+    if (_blogVisibility == WordPressComApiBlogVisibilityPublic) {
+        return NSLocalizedString(@"Public", nil);
+    } else if (_blogVisibility == WordPressComApiComBlogVisibilityPrivate) {
+        return NSLocalizedString(@"Private", nil);
+    } else {
+        return NSLocalizedString(@"Hidden", nil);
     }
 }
 

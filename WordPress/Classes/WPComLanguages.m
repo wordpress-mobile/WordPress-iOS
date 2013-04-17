@@ -25,6 +25,17 @@
     return self;
 }
 
++ (NSDictionary *)currentLanguage
+{
+    NSString * language = [[NSLocale preferredLanguages] objectAtIndex:0];
+    NSDictionary *currentLanguage = [WPComLanguages languageDataForLocale:language];
+    if (currentLanguage == nil) {
+        currentLanguage = [WPComLanguages languageDataForLocale:@"en"];
+    }
+    
+    return currentLanguage;
+}
+
 + (NSArray *)allLanguages
 {
     return [self sharedInstance].languages;

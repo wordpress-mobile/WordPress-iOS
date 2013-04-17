@@ -235,21 +235,27 @@ NSString *const WordPressComApiErrorCodeInvalidBlogTitle = @"invalid_blogtitle";
     return _authToken != nil;
 }
 
-- (void)createWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password andBlogUrl:(NSString *)blogUrl success:(void (^)(id))success failure:(void (^)(NSError *))failure
+- (void)validateWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure
+{
+    [self createWPComAccountWithEmail:email andUsername:username andPassword:password validate:YES success:success failure:failure];
+}
+
+- (void)createWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure
+{
+    [self createWPComAccountWithEmail:email andUsername:username andPassword:password validate:NO success:success failure:failure];
+}
+
+- (void)createWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password validate:(BOOL)validate success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(email != nil);
     NSParameterAssert(username != nil);
     NSParameterAssert(password != nil);
-    NSParameterAssert(blogUrl != nil);
-    
+
     void (^successBlock)(AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"Response : %@", responseObject);
         success(responseObject);
     };
     
     void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error){
-        NSLog(@"Response : %@", operation.responseString);
-        NSLog(@"Error : %@", error);
         failure(error);
     };
     
@@ -257,20 +263,29 @@ NSString *const WordPressComApiErrorCodeInvalidBlogTitle = @"invalid_blogtitle";
                              @"email": email,
                              @"username" : username,
                              @"password" : password,
-                             @"blog_name": blogUrl,
+                             @"validate" : @(validate),
                              @"client_id" : [WordPressComApiCredentials client],
                              @"client_secret" : [WordPressComApiCredentials secret]
                              };
-        
+    
     [self postPath:@"users/new" parameters:params success:successBlock failure:failureBlock];
+
 }
 
-- (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId success:(void (^)(id))success failure:(void (^)(NSError *))failure
+- (void)validateWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId success:(void (^)(id))success failure:(void (^)(NSError *))failure
+{
+    [self createWPComBlogWithUrl:blogUrl andBlogTitle:blogTitle andLanguageId:languageId andBlogVisibility:WordPressComApiBlogVisibilityPublic validate:true success:success failure:failure];
+}
+
+- (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId andBlogVisibility:(WordPressComApiBlogVisibility)visibility success:(void (^)(id))success failure:(void (^)(NSError *))failure
+{
+    [self createWPComBlogWithUrl:blogUrl andBlogTitle:blogTitle andLanguageId:languageId andBlogVisibility:visibility validate:false success:success failure:failure];
+}
+
+- (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId andBlogVisibility:(WordPressComApiBlogVisibility)visibility validate:(BOOL)validate success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(blogUrl != nil);
-    NSParameterAssert(blogTitle != nil);
     NSParameterAssert(languageId != nil);
-    NSAssert([self hasCredentials], @"Should have credentials");
     
     void (^successBlock)(AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
         success(responseObject);
@@ -279,16 +294,32 @@ NSString *const WordPressComApiErrorCodeInvalidBlogTitle = @"invalid_blogtitle";
     void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error){
         failure(error);
     };
-
+    
+    if (blogTitle == nil) {
+        blogTitle = @"";
+    }
+    
+    int blogVisibility = 1;
+    if (visibility == WordPressComApiBlogVisibilityPublic) {
+        blogVisibility = 1;
+    } else if (visibility == WordPressComApiComBlogVisibilityPrivate) {
+        blogVisibility = -1;
+    } else {
+        // Hidden
+        blogVisibility = 0;
+    }
+    
     NSDictionary *params = @{
                              @"blog_name": blogUrl,
                              @"blog_title": blogTitle,
                              @"lang_id": languageId,
+                             @"public": @(blogVisibility),
+                             @"validate": @(validate),
                              @"client_id": [WordPressComApiCredentials client],
                              @"client_secret": [WordPressComApiCredentials secret]
                              };
     
-    [self postPath:@"sites/new" parameters:params success:successBlock failure:failureBlock];
+    [self postPath:@"sites/new" parameters:params success:successBlock failure:failureBlock];    
 }
 
 

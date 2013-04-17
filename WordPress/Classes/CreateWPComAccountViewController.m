@@ -11,12 +11,19 @@
 #import "ReachabilityUtils.h"
 #import "UITableViewActivityCell.h"
 #import "UITableViewTextFieldCell.h"
+#import "WPComLanguages.h"
+#import "SelectWPComLanguageViewController.h"
+#import "WPAsyncBlockOperation.h"
 
-@interface CreateWPComAccountViewController () <UITextFieldDelegate> {
+@interface CreateWPComAccountViewController () <
+    UITextFieldDelegate,
+    SelectWPComLanguageViewControllerDelegate> {
+        
     UITableViewTextFieldCell *_usernameCell;
     UITableViewTextFieldCell *_passwordCell;
     UITableViewTextFieldCell *_emailCell;
     UITableViewTextFieldCell *_blogUrlCell;
+    UITableViewCell *_localeCell;
     
     UITextField *_usernameTextField;
     UITextField *_passwordTextField;
@@ -28,6 +35,10 @@
     
     BOOL _isCreatingAccount;
     BOOL _userPressedBackButton;
+    
+    NSDictionary *_currentLanguage;
+        
+    NSOperationQueue *_operationQueue;
 }
 
 @end
@@ -37,12 +48,24 @@
 NSUInteger const CreateAccountEmailTextFieldTag = 1;
 NSUInteger const CreateAccountUserNameTextFieldTag = 2;
 NSUInteger const CreateAccountPasswordTextFieldTag = 3;
-NSUInteger const CreateAccountBlogTextFieldTag = 4;
+NSUInteger const CreateAccountBlogUrlTextFieldTag = 4;
 
 CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 CGPoint const CreateAccountLogoStartingPoint = { 40.0, 20.0 };
 CGPoint const CreateAccountLogoStartingPointIpad = { 150.0, 20.0 };
 CGSize const CreateAccountLogoSize = { 229.0, 43.0 };
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    
+    if (self) {
+        _currentLanguage = [WPComLanguages currentLanguage];
+        _operationQueue = [[NSOperationQueue alloc] init];
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -84,7 +107,7 @@ CGSize const CreateAccountLogoSize = { 229.0, 43.0 };
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0)
-        return 4;
+        return 5;
     else
         return 1;
 }
@@ -175,13 +198,22 @@ CGSize const CreateAccountLogoSize = { 229.0, 43.0 };
                 _blogUrlCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                                 reuseIdentifier:@"TextCell"];
             }
-            _blogUrlCell.textLabel.text = NSLocalizedString(@"Blog URL", @"");
+            _blogUrlCell.textLabel.text = NSLocalizedString(@"Blog URL", nil);
             _blogUrlTextField = _blogUrlCell.textField;
-            _blogUrlTextField.tag = CreateAccountBlogTextFieldTag;
-            _blogUrlTextField.placeholder = NSLocalizedString(@"myblog.wordpress.com", @"");
+            _blogUrlTextField.tag = CreateAccountBlogUrlTextFieldTag;
+            _blogUrlTextField.placeholder = NSLocalizedString(@"myblog.wordpress.com", nil);
             _blogUrlTextField.keyboardType = UIKeyboardTypeURL;
             _blogUrlTextField.delegate = self;
             cell = _blogUrlCell;
+        } else if (indexPath.row == 4) {
+            if (_localeCell == nil) {
+                _localeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                                                     reuseIdentifier:@"LocaleCell"];
+            }
+            _localeCell.textLabel.text = @"Language";
+            _localeCell.detailTextLabel.text = [_currentLanguage objectForKey:@"name"];
+            _localeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell = _localeCell;
         }
     }
     
@@ -197,7 +229,14 @@ CGSize const CreateAccountLogoSize = { 229.0, 43.0 };
     if (_isCreatingAccount)
         return;
     
-    if (indexPath.section == 1) {
+    if (indexPath.section == 0) {
+        if (indexPath.row == 4) {
+            SelectWPComLanguageViewController *selectLanguageViewController = [[SelectWPComLanguageViewController alloc] initWithStyle:UITableViewStylePlain];
+            selectLanguageViewController.currentlySelectedLanguageId = [_currentLanguage objectForKey:@"lang_id"];
+            selectLanguageViewController.delegate = self;
+            [self.navigationController pushViewController:selectLanguageViewController animated:YES];
+        }
+    } else {
         [self createAccount];
     }
 }
@@ -217,14 +256,19 @@ CGSize const CreateAccountLogoSize = { 229.0, 43.0 };
         case CreateAccountPasswordTextFieldTag:
             [_blogUrlTextField becomeFirstResponder];
             break;
-        case CreateAccountBlogTextFieldTag:
-            [self createAccount];
-            break;
         default:
             break;
     }
     
 	return YES;
+}
+
+#pragma mark SelectWPComLanguageViewControllerDelegate
+
+- (void)selectWPComLanguageViewController:(SelectWPComLanguageViewController *)viewController didSelectLanguage:(NSDictionary *)data
+{
+    _currentLanguage = data;
+    [self.tableView reloadData];
 }
 
 #pragma mark - Private Methods
@@ -296,26 +340,8 @@ CGSize const CreateAccountLogoSize = { 229.0, 43.0 };
         _isCreatingAccount = true;
         [self.tableView reloadData];
         
-        [[WordPressComApi sharedApi] createWPComAccountWithEmail:_emailTextField.text andUsername:_usernameTextField.text andPassword:_passwordTextField.text andBlogUrl:_blogUrlTextField.text success:^(id responseObject){
-            [[WordPressComApi sharedApi] signInWithUsername:_usernameTextField.text password:_passwordTextField.text success:^{
-                if (self.delegate != nil) {
-                    [self.delegate createdAndSignedInAccountWithUserName:_usernameTextField.text];
-                }
-            } failure:^(NSError * error){
-                WPFLog(@"Error logging in after creating an account with username : %@", _usernameTextField.text);
-                // If we fail to log in  for whatever reason after successfuly creating an account, fallback and
-                // display the login form so the user has the option of logging in.
-                [self.delegate createdAccountWithUserName:_usernameTextField.text];
-            }];
-        } failure:^(NSError *error){
-            // We don't want to display any messages if the user decided to "cancel" this screen and
-            // go back to the main screen.
-            if (!_userPressedBackButton) {
-                _isCreatingAccount = false;
-                [self.tableView reloadData];
-                [self handleCreationError:error];
-            }
-        }];
+        [self disableTextFields];
+        [self createUserAndBlog];
     } else {
         [self showErrorMessage];
     }
@@ -328,6 +354,145 @@ CGSize const CreateAccountLogoSize = { 229.0, 43.0 };
     if (parent == nil) {
         self.delegate = nil;
         _userPressedBackButton = true;
+        [_operationQueue cancelAllOperations];
+    }
+}
+
+#pragma mark - Private Methods
+
+- (void)createUserAndBlog
+{
+    // As there are 5 API requests to do this successfully, using WPAsyncBlockOperation to create dependencies
+    // on previous required API requests so if one fails along the way the rest won't continue executing.
+    
+    WPAsyncBlockOperation *userValidation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
+        void (^userValidationSuccess)(id) = ^(id responseObject) {
+            [operation operationSucceeded];
+        };
+        
+        void (^userValidationFailure)(NSError *) = ^(NSError *error){
+            [operation operationFailed];
+            [self processErrorDuringRemoteConnection:error];
+        };
+
+        [[WordPressComApi sharedApi] validateWPComAccountWithEmail:_emailTextField.text
+                                                       andUsername:_usernameTextField.text
+                                                       andPassword:_passwordTextField.text
+                                                           success:userValidationSuccess
+                                                           failure:userValidationFailure];
+    }];
+    WPAsyncBlockOperation *blogValidation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
+        void (^blogValidationSuccess)(id) = ^(id responseObject) {
+            [operation operationSucceeded];
+        };
+        void (^blogValidationFailure)(NSError *) = ^(NSError *error) {
+            [self processErrorDuringRemoteConnection:error];
+            [operation operationFailed];
+        };
+        
+        [[WordPressComApi sharedApi] validateWPComBlogWithUrl:_blogUrlTextField.text
+                                                 andBlogTitle:nil
+                                                andLanguageId:[_currentLanguage objectForKey:@"lang_id"]
+                                                      success:blogValidationSuccess
+                                                      failure:blogValidationFailure];
+    }];    
+    WPAsyncBlockOperation *userCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
+        void (^createUserSuccess)(id) = ^(id responseObject){
+            [operation operationSucceeded];
+        };
+        void (^createUserFailure)(NSError *) = ^(NSError *error) {
+            [operation operationFailed];
+            [self processErrorDuringRemoteConnection:error];
+        };
+        
+        [[WordPressComApi sharedApi] createWPComAccountWithEmail:_emailTextField.text
+                                                     andUsername:_usernameTextField.text
+                                                     andPassword:_passwordTextField.text
+                                                         success:createUserSuccess
+                                                         failure:createUserFailure];
+ 
+    }];
+    WPAsyncBlockOperation *userSignIn = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
+        void (^signInSuccess)(void) = ^{
+            [operation operationSucceeded];
+        };
+        void (^signInFailure)(NSError *) = ^(NSError *error) {
+            // We've hit a strange failure at this point, the user has been created successfully but for some reason
+            // we are unable to sign in and proceed
+            [operation operationFailed];
+            [self processErrorDuringRemoteConnection:error];
+        };
+        
+        [[WordPressComApi sharedApi] signInWithUsername:_usernameTextField.text
+                                               password:_passwordTextField.text
+                                                success:signInSuccess
+                                                failure:signInFailure];
+    }];
+    
+    WPAsyncBlockOperation *blogCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
+        void (^createBlogSuccess)(id) = ^(id responseObject){
+            [operation operationSucceeded];
+            if (self.delegate != nil) {
+                [self.delegate createdAndSignedInAccountWithUserName:_usernameTextField.text];
+            }
+        };
+        void (^createBlogFailure)(NSError *error) = ^(NSError *error) {
+            [operation operationFailed];
+            [self processErrorDuringRemoteConnection:error];
+        };
+        NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
+        
+        [[WordPressComApi sharedApi] createWPComBlogWithUrl:_blogUrlTextField.text
+                                               andBlogTitle:nil
+                                              andLanguageId:languageId
+                                          andBlogVisibility:WordPressComApiBlogVisibilityPublic
+                                                    success:createBlogSuccess
+                                                    failure:createBlogFailure];
+    }];
+    
+    // The order of API Requests is
+    // 1. Validate User
+    // 2. Validate Blog
+    // 3. Create User
+    // 4. Sign In User
+    // 5. Create Blog
+    
+    [blogCreation addDependency:userSignIn];
+    [userSignIn addDependency:userCreation];
+    [userCreation addDependency:blogValidation];
+    [userCreation addDependency:userValidation];
+    [blogValidation addDependency:userValidation];
+    
+    [_operationQueue addOperation:userValidation];
+    [_operationQueue addOperation:blogValidation];
+    [_operationQueue addOperation:userCreation];
+    [_operationQueue addOperation:userSignIn];
+    [_operationQueue addOperation:blogCreation];
+}
+
+- (void)processErrorDuringRemoteConnection:(NSError *)error
+{
+    if (!_userPressedBackButton) {
+        _isCreatingAccount = false;
+        [self enableTextFields];
+        [self.tableView reloadData];
+        [self handleCreationError:error];
+    }
+}
+
+- (void)disableTextFields
+{
+    NSArray *textFields = @[_usernameTextField, _emailTextField, _passwordTextField, _blogUrlTextField];
+    for (UITextField *textField in textFields) {
+        textField.enabled = false;
+    }
+}
+
+- (void)enableTextFields
+{
+    NSArray *textFields = @[_usernameTextField, _emailTextField, _passwordTextField, _blogUrlTextField];
+    for (UITextField *textField in textFields) {
+        textField.enabled = true;
     }
 }
 

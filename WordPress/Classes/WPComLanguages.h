@@ -10,6 +10,7 @@
 
 @interface WPComLanguages : NSObject
 
++ (NSDictionary *)currentLanguage;
 + (NSArray *)allLanguages;
 + (NSDictionary *)languageDataForLocale:(NSString *)locale;
 
