@@ -206,8 +206,9 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     if (IS_IPHONE)
         [self.panelNavigationController popToRootViewControllerAnimated:YES];
     [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
-    [self syncItemsWithUserInteraction:NO];
-    [self refreshVisibleUnreadNotes];
+    if (![self isSyncing]) {
+        [self syncItemsWithUserInteraction:NO];
+    }
 }
 
 #pragma mark - UITableViewDelegate
