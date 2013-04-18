@@ -997,7 +997,8 @@
              [self openNotificationScreenWithOptions:userInfo];
             break;
         case UIApplicationStateBackground:
-            NSLog(@" app state UIApplicationStateBackground"); //?? doh!
+            NSLog(@" app state UIApplicationStateBackground"); //application is in bg and the user tapped the view button
+            [self openNotificationScreenWithOptions:userInfo];
             break;
         default:
             break;
