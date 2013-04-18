@@ -26,7 +26,9 @@
 }
 
 - (BOOL)myShouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return ([self mySupportedInterfaceOrientations] & toInterfaceOrientation) ? YES : NO;
+    NSUInteger mask = [self mySupportedInterfaceOrientations];
+    NSUInteger orientation = 1 << toInterfaceOrientation;
+    return (mask & orientation) ? YES : NO;
 }
 
 + (void)load {    

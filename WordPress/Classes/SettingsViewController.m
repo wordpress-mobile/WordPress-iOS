@@ -110,9 +110,18 @@ typedef enum {
 }
 
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    // Remove the delegate to avoid a corddata error that can occur when a new
+    // blog is added, and other rows/sections are added as well (e.g. notifications).
+    self.resultsController.delegate = nil;
+}
+
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self checkCloseButton];
+    self.resultsController.delegate = self; // Restore the delegate.
     self.editButtonItem.enabled = ([[self.resultsController fetchedObjects] count] > 0); // Disable if we have no blogs.
     [self.tableView reloadData];
 }
@@ -224,10 +233,11 @@ typedef enum {
             return 1;
             
         case SettingsSectionWpcom:
-            return [WordPressComApi sharedApi].username ? 2 : 1;
+            return ([WordPressComApi sharedApi].username && [[WordPressComApi sharedApi] hasCredentials]) ? 2 : 1;
             
         case SettingsSectionMedia:
             return [mediaSettingsArray count];
+			
         case SettingsSectionNotifications:
             if ([[WordPressComApi sharedApi] hasCredentials] && nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey])
                 return 1;
@@ -265,6 +275,7 @@ typedef enum {
         
     } else if (section == SettingsSectionMedia) {
         return NSLocalizedString(@"Media", @"Title label for the media settings section in the app settings");
+		
     } else if (section == SettingsSectionNotifications) {
         if ([[WordPressComApi sharedApi] hasCredentials] && nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey])
             return NSLocalizedString(@"Notifications", @"");

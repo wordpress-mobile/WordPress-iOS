@@ -797,16 +797,16 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 #if USE_AUTOSAVES
     [self restoreBackupPost:YES];
 #endif
+	if ([self isMediaInUploading]) {
+		[self showMediaInUploadingalert];
+		return;
+	}
+
     if (!self.hasChanges) {
         [self discard];
         return;
     }
 
-	if( [self isMediaInUploading] ) {
-		[self showMediaInUploadingalert];
-		return;
-	}
-		
 	UIActionSheet *actionSheet;
 	if (![self.apost.original.status isEqualToString:@"draft"] && self.editMode != EditPostViewControllerModeNewPost) {
         // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
