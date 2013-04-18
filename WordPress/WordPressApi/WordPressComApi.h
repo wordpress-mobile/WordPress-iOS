@@ -37,6 +37,7 @@ extern NSString *const WordPressComApiErrorCodeInvalidEmail;
 extern NSString *const WordPressComApiErrorCodeInvalidPassword;
 extern NSString *const WordPressComApiErrorCodeInvalidBlogUrl;
 extern NSString *const WordPressComApiErrorCodeInvalidBlogTitle;
+extern NSString *const WordPressComApiErrorCodeTooManyRequests;
 
 
 @interface WordPressComApi : AFHTTPClient

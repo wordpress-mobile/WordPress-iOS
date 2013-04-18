@@ -307,6 +307,8 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
         errorMessage = NSLocalizedString(@"Invalid blog url", @"");
     } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogTitle]) {
         errorMessage = NSLocalizedString(@"Invalid Blog Title", @"");
+    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeTooManyRequests]) {
+        errorMessage = NSLocalizedString(@"Limit Reached - Contact Support", @"");
     } else {
         errorMessage = NSLocalizedString(@"Unknown error", @"");
     }

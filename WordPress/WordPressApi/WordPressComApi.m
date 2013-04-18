@@ -33,6 +33,7 @@ NSString *const WordPressComApiErrorCodeInvalidEmail = @"invalid_email";
 NSString *const WordPressComApiErrorCodeInvalidPassword = @"invalid_password";
 NSString *const WordPressComApiErrorCodeInvalidBlogUrl = @"invalid_blogname";
 NSString *const WordPressComApiErrorCodeInvalidBlogTitle = @"invalid_blogtitle";
+NSString *const WordPressComApiErrorCodeTooManyRequests = @"too_many_requests";
 
 
 #define UnfollowedBlogEvent @"UnfollowedBlogEvent"
@@ -256,6 +257,17 @@ NSString *const WordPressComApiErrorCodeInvalidBlogTitle = @"invalid_blogtitle";
     };
     
     void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error){
+        // This endpoint is throttled, so check if we've sent too many requests and fill that error in as
+        // when too many requests occur the API just spits out an html page.
+        if ([error.userInfo objectForKey:WordPressComApiErrorCodeKey] == nil) {
+            if ([[operation responseString] rangeOfString:@"Limit reached"].location != NSNotFound) {
+                NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
+                [userInfo setValue:WordPressComApiErrorCodeTooManyRequests forKey:WordPressComApiErrorCodeKey];
+                failure([[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo]);
+                return;
+            }
+        }
+        
         failure(error);
     };
     
