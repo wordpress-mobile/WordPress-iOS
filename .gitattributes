@@ -758,6 +758,8 @@ WordPress/Classes/WordPress-1-2.xcmappingmodel/xcmapping.xml -text
 WordPress/Classes/WordPress.xcdatamodeld/.xccurrentversion -text
 WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]10.xcdatamodel/elements -text svneol=unset#unset
 WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]10.xcdatamodel/layout -text svneol=unset#unset
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]11.xcdatamodel/elements -text
+WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]11.xcdatamodel/layout -text
 WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]2.xcdatamodel/elements -text svneol=unset#unset
 WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]2.xcdatamodel/layout -text svneol=unset#unset
 WordPress/Classes/WordPress.xcdatamodeld/WordPress[!!-~]3.xcdatamodel/elements -text svneol=unset#unset

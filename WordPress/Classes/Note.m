@@ -9,6 +9,8 @@
 #import "Note.h"
 #import "NSString+Helpers.h"
 #import "JSONKit.h"
+#import "WordPressComApi.h"
+#import "WordPressAppDelegate.h"
 
 const NSUInteger NoteKeepCount = 20;
 
@@ -60,6 +62,16 @@ const NSUInteger NoteKeepCount = 20;
         return NO;
     } else {
         return YES;
+    }
+}
+
++ (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context {
+    NSManagedObjectModel *model = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectModel];
+    NSFetchRequest *request = [model fetchRequestTemplateForName:@"UnreadNotes"];
+    NSError *error = nil;
+    NSArray *notes = [context executeFetchRequest:request error:&error];
+    if ([notes count] > 0) {
+        [[WordPressComApi sharedApi] refreshNotifications:notes fields:@"id,unread" success:nil failure:nil];
     }
 }
 
@@ -159,6 +171,30 @@ const NSUInteger NoteKeepCount = 20;
     NSInteger unread = [[noteData objectForKey:@"unread"] integerValue];
     self.unread = [NSNumber numberWithInteger:unread];
     [self parseComment];
+}
+
+- (void)updateAttributes:(NSDictionary *)noteData {
+    if ([noteData objectForKey:@"type"]) {
+        self.type = [noteData objectForKey:@"type"];
+    }
+    if ([noteData objectForKey:@"subject"]) {
+        NSString *subject = [[noteData objectForKey:@"subject"] objectForKey:@"text"];
+        if (!subject)
+            subject = [[noteData objectForKey:@"subject"] objectForKey:@"html"];
+        self.subject = [subject trim];
+        self.icon = [[noteData objectForKey:@"subject"] objectForKey:@"icon"];
+    }
+    if ([noteData objectForKey:@"timestamp"]) {
+        NSInteger timestamp = [[noteData objectForKey:@"timestamp"] integerValue];
+        self.timestamp = [NSNumber numberWithInteger:timestamp];
+    }
+    if ([noteData objectForKey:@"unread"]) {
+        NSInteger unread = [[noteData objectForKey:@"unread"] integerValue];
+        self.unread = [NSNumber numberWithInteger:unread];
+    }
+    if ([self isComment] && [noteData objectForKey:@"body"]) {
+        [self parseComment];
+    }
 }
 
 - (BOOL)isComment {

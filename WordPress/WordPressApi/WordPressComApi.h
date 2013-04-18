@@ -89,6 +89,7 @@ extern NSString *const WordPressComApiErrorCodeKey;
                                failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)refreshNotifications:(NSArray *)notes
+                      fields:(NSString *)fields
                      success:(WordPressComApiRestSuccessResponseBlock)success
                      failure:(WordPressComApiRestSuccessFailureBlock)failure;
 

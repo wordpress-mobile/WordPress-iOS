@@ -121,7 +121,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     // If table is at the top, simulate a pull to refresh
     BOOL simulatePullToRefresh = (self.tableView.contentOffset.y == 0);
     [self syncItemsWithUserInteraction:simulatePullToRefresh];
-    [self refreshVisibleUnreadNotes];
+    [self refreshUnreadNotes];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -132,20 +132,8 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 #pragma mark - Custom methods
 
-- (void)refreshVisibleUnreadNotes {
-    // figure out which notifications are visible
-    NSArray *cells = [self.tableView visibleCells];
-    NSMutableArray *notes = [NSMutableArray arrayWithCapacity:[cells count]];
-    [cells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        Note *note = [(NotificationsTableViewCell *)obj note];
-        if ([note isUnread]) {
-            [notes addObject:note];
-        }
-    }];
-
-    [self.user refreshNotifications:notes success:^(AFHTTPRequestOperation *operation, id responseObject) {
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-    }];
+- (void)refreshUnreadNotes {
+    [Note refreshUnreadNotesWithContext:self.resultsController.managedObjectContext];
 }
 
 - (void)updateSyncDate {
