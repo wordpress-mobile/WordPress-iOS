@@ -8,6 +8,8 @@
 
 #import "ReaderPost.h"
 #import "WordPressComApi.h"
+#import "NSString+Helpers.h"
+#import "NSString+Util.h"
 
 @interface ReaderPost()
 
@@ -165,10 +167,19 @@
 			rng.location = [img rangeOfString:@"http" options:NSBackwardsSearch].location;
 			rng.length = [img rangeOfString:@"&unsharp" options:NSBackwardsSearch].location - rng.location;
 			img = [img substringWithRange:rng];
-			img = [img stringByReplacingOccurrencesOfString:@"%25" withString:@"%"];
+
+			// Actually decode twice.
+			img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+			img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+			rng = [img rangeOfString:@"://"];
+			img = [img substringFromIndex:rng.location + 3];
 			img = [NSString stringWithFormat:@"https://i0.wp.com/%@?w=300&h=150", img];
 			
 		} else {
+			NSRange rng;
+			rng.location = [img rangeOfString:@"://" options:NSBackwardsSearch].location + 3;
+			img = [img substringFromIndex:rng.location];
 			img = [NSString stringWithFormat:@"https://i0.wp.com/%@?w=300&h=150", img];
 		}
 		featuredImage = img;
