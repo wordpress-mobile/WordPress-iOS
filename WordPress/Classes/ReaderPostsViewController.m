@@ -40,7 +40,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
 
 - (void)viewDidLoad {
-	
+[NSFetchedResultsController deleteCacheWithName:@"ReaderPost"];
 	[super viewDidLoad];
 	
 	// Topics button

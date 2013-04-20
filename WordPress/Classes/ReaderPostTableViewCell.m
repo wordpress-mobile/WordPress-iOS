@@ -78,25 +78,25 @@
 		
 		self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		_likeButton.frame = CGRectMake(10.0f, 0.0f, 40.0f, 40.0f);
-		_likeButton.backgroundColor = [UIColor redColor];
+		_likeButton.backgroundColor = [UIColor colorWithHexString:@"3478E3"];
 		_likeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 		[_likeButton addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 
 		self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		_followButton.frame = CGRectMake(40.0f, 0.0f, 40.0f, 40.0f);
-		_followButton.backgroundColor = [UIColor blueColor];
+		_followButton.backgroundColor = [UIColor colorWithHexString:@"3478E3"];
 		_followButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 		[_followButton addTarget:self action:@selector(handleFollowButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
 		self.reblogButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		_reblogButton.frame = CGRectMake(70.0f, 0.0f, 40.0f, 40.0f);
-		_reblogButton.backgroundColor = [UIColor greenColor];
+		_reblogButton.backgroundColor = [UIColor colorWithHexString:@"3478E3"];
 		_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 		[_reblogButton addTarget:self action:@selector(handleReblogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
 		self.commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		_commentButton.frame = CGRectMake(100.0f, 0.0f, 40.0f, 40.0f);
-		_commentButton.backgroundColor = [UIColor orangeColor];
+		_commentButton.backgroundColor = [UIColor colorWithHexString:@"3478E3"];
 		_commentButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 		[_commentButton addTarget:self action:@selector(handleCommentButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
