@@ -30,6 +30,7 @@
 #import "CrashReportViewController.h"
 #import "NotificationsViewController.h"
 #import "SoundUtil.h"
+#import "ReaderPostsViewController.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
@@ -956,7 +957,9 @@ NSLog(@"%@", self.sectionInfoArray);
         
         if (indexPath.row == 0) { // Reader
             // Reader
-            WPReaderViewController *readerViewController = [[WPReaderViewController alloc] init];
+//            WPReaderViewController *readerViewController = [[WPReaderViewController alloc] init];
+//            detailViewController = readerViewController;
+            ReaderPostsViewController *readerViewController = [[ReaderPostsViewController alloc] init];
             detailViewController = readerViewController;
         } else if(indexPath.row == 1) { // Notifications
             self.hasUnseenNotes = NO;

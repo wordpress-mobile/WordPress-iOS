@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString *const ReaderCurrentTopicKey;
+
+@protocol ReaderTopicsDelegate <NSObject>
+
+- (void)readerTopicChanged;
+
+@end
+
 @interface ReaderTopicsViewController : UITableViewController
+
+@property (nonatomic, strong) id<ReaderTopicsDelegate>delegate;
 
 @end

@@ -12,6 +12,7 @@
 @interface ReaderPost()
 
 - (void)updateFromDictionary:(NSDictionary *)dict;
+- (NSString *)createSummary:(NSString *)str;
 
 @end
 
@@ -21,6 +22,8 @@
 @dynamic authorDisplayName;
 @dynamic authorEmail;
 @dynamic authorURL;
+@dynamic blogName;
+@dynamic blogURL;
 @dynamic commentCount;
 @dynamic dateSynced;
 @dynamic endpoint;
@@ -30,8 +33,8 @@
 @dynamic isReblogged;
 @dynamic likeCount;
 @dynamic siteID;
+@dynamic summary;
 @dynamic comments;
-
 
 + (NSArray *)fetchPostsForEndpoint:(NSString *)endpoint withContext:(NSManagedObjectContext *)context {
 
@@ -117,55 +120,151 @@
 	
 }
 
+
 - (void)updateFromDictionary:(NSDictionary *)dict {
 
-	NSDictionary *author = [dict objectForKey:@"author"];
-	self.author = [author objectForKey:@"name"];
+	NSDictionary *author = nil;
+	NSString *dateString = nil;
+	NSString *dateFormat = nil;
+	NSString *featuredImage = nil;
+	
+	// The results come in two flavors.  If editorial key, then freshly-pressed.
+	if ([dict objectForKey:@"editorial"]) {
+		
+		NSDictionary *editorial = [dict objectForKey:@"editorial"];
+
+		author = [dict objectForKey:@"author"];
+		
+		self.author = [author objectForKey:@"name"];
+		self.authorURL = [author objectForKey:@"URL"];
+
+		self.blogName = [editorial objectForKey:@"blog_name"];
+		
+		self.content = [dict objectForKey:@"content"];
+		
+		dateString = [dict objectForKey:@"date"];
+		dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZZZZZ";
+
+		self.permaLink = [dict objectForKey:@"URL"];
+		self.postTitle = [dict objectForKey:@"title"];
+		
+		NSURL *url = [NSURL URLWithString:self.permaLink];
+		self.blogURL = [NSString stringWithFormat:@"%@://%@/", url.scheme, url.host];
+		
+		self.summary = [self createSummary:[dict objectForKey:@"content"]];
+		
+		NSString *img = [editorial objectForKey:@"image"];
+		
+		if(NSNotFound != [img rangeOfString:@"mshots/"].location) {
+			NSRange rng = [img rangeOfString:@"?" options:NSBackwardsSearch];
+			img = [img substringToIndex:rng.location];
+			img = [NSString stringWithFormat:@"%@?w=300&h=150", img];
+			
+		} else if(NSNotFound != [img rangeOfString:@"imgpress"].location) {
+			NSRange rng;
+			rng.location = [img rangeOfString:@"http" options:NSBackwardsSearch].location;
+			rng.length = [img rangeOfString:@"&unsharp" options:NSBackwardsSearch].location - rng.location;
+			img = [img substringWithRange:rng];
+			img = [img stringByReplacingOccurrencesOfString:@"%25" withString:@"%"];
+			img = [NSString stringWithFormat:@"https://i0.wp.com/%@?w=300&h=150", img];
+			
+		} else {
+			img = [NSString stringWithFormat:@"https://i0.wp.com/%@?w=300&h=150", img];
+		}
+		featuredImage = img;
+
+		
+	} else {		
+		author = [dict objectForKey:@"post_author"];
+		
+		self.author = [author objectForKey:@"post_author"];
+		self.authorURL = [dict objectForKey:@"blog_url"];
+		
+		self.blogURL = [dict objectForKey:@"blog_url"];
+		self.blogName = [dict objectForKey:@"blog_name"];
+		
+		self.content = [dict objectForKey:@"post_content_full"];
+		
+		dateString = [dict objectForKey:@"post_date_gmt"];
+		dateFormat = @"yyyy-MM-dd HH:mm:ss";
+		
+		self.permaLink = [dict objectForKey:@"post_permalink"];
+		self.postTitle = [dict objectForKey:@"post_title"];
+		
+		self.summary = [dict objectForKey:@"post_content"];
+		
+		NSString *img = [dict objectForKey:@"post_featured_thumbnail"];
+		if([img length]) {
+			// TODO: Regex this madness
+			NSRange rng = [img rangeOfString:@"://"];
+			rng.location += 3;
+			NSRange endRng = [img rangeOfString:@"?" options:NSBackwardsSearch];
+			if(endRng.location == NSNotFound) {
+				NSRange tmpRng;
+				tmpRng.location = rng.location;
+				tmpRng.length = [img length] - rng.location;
+				endRng = [img rangeOfString:@"\"" options:nil range:tmpRng];
+			}
+
+			rng.length = endRng.location - rng.location;
+
+			img = [img substringWithRange:rng];
+			featuredImage = [NSString stringWithFormat:@"https://i0.wp.com/%@?w=300&h=150", img];
+		}
+	}
+
 	self.authorAvatarURL = [author objectForKey:@"avatar_URL"];
 	self.authorDisplayName = [author objectForKey:@"display_name"];
-	// email can return a boolean. 
+	// email can return a boolean.
 	if([[author objectForKey:@"email"] isKindOfClass:[NSString class]]) {
 		self.authorEmail = [author objectForKey:@"email"];
 	}
-	self.authorURL = [author objectForKey:@"URL"];
-	
+
 	if([[dict objectForKey:@"comment_count"] isKindOfClass:[NSNumber class]]){
 		self.commentCount = [dict objectForKey:@"comment_count"];
 	} else {
 		self.commentCount = [NSNumber numberWithInteger:[[dict objectForKey:@"comment_count"] integerValue]];
 	}
-	self.content = [dict objectForKey:@"content"];
-	
-	NSString *dateString = nil;
-	NSString *dateFormat = nil;
-	if([dict objectForKey:@"date"]) {
-		dateString = [dict objectForKey:@"date"];
-		dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZZZZZ";
-	} else if ([dict objectForKey:@"post_date_gmt"]) {
-		dateString = [dict objectForKey:@"post_date_gmt"];
-		dateFormat = @"yyyy-MM-dd HH:mm:ss";
-	} else {
-		NSLog(@"!!!! UNKNOWN DATE KEY");
-		NSLog(@"!!!! UNKNOWN DATE FORMAT");
-	}
-	
+		
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:dateFormat];
 	NSDate *date = [dateFormatter dateFromString:dateString];
 	self.date_created_gmt = date;
 
 	self.dateSynced = [NSDate date];
-	self.featuredImage = [dict objectForKey:@"featured_image"];
+	self.featuredImage = featuredImage;
+	
 	self.isFollowing = [dict objectForKey:@"is_following"];
 	self.isLiked = [dict objectForKey:@"is_liked"];
 	self.isReblogged = [dict objectForKey:@"is_reblogged"];
 	self.likeCount = [dict objectForKey:@"like_count"];
-	self.password = [dict objectForKey:@"password"];
-	self.permaLink = [dict objectForKey:@"URL"];
-	self.postTitle = [dict objectForKey:@"title"];
+
 	self.siteID = [dict objectForKey:@"site_ID"];
 	self.status = [dict objectForKey:@"status"];
 
 }
+
+
+- (NSString *)createSummary:(NSString *)str {
+
+	// TODO: strip out html.
+	
+	NSString *snippet = [str substringToIndex:200];
+	NSRange rng = [snippet rangeOfString:@"." options:NSBackwardsSearch];
+	
+	if (rng.location == NSNotFound) {
+		rng.location = 150;
+	}
+	
+	if(rng.location > 150) {
+		snippet = [snippet substringToIndex:(rng.location + 1)];
+	} else {
+		rng = [snippet rangeOfString:@" " options:NSBackwardsSearch];
+		snippet = [NSString stringWithFormat:@"%@ ...", [snippet substringToIndex:rng.location]];
+	}
+
+	return snippet;
+}
+
 
 @end
