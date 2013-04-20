@@ -129,7 +129,7 @@
 }
 
 - (void)checkResultForPath:(NSString *)path andResponseObject:(id)responseObject {
-NSLog(@"Path: %@", path);
+
 	NSDictionary *resp = (NSDictionary *)responseObject;
 	NSArray *postsArr = [resp objectForKey:@"posts"];
 	NSManagedObjectContext *moc = [[CoreDataTestHelper sharedHelper] managedObjectContext];

@@ -7,17 +7,149 @@
 //
 
 #import "ReaderPostsViewController.h"
+#import "ReaderPostTableViewCell.h"
+#import "ReaderTopicsViewController.h"
+#import "ReaderPostDetailViewController.h"
 #import "ReaderContext.h"
+#import "ReaderPost.h"
+#import "WordPressComApi.h"
+#import "WordPressAppDelegate.h"
 
 NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
-@interface ReaderPostsViewController ()
+@interface ReaderPostsViewController ()<ReaderTopicsDelegate>
+
+@property (nonatomic, strong) NSArray *rowHeights;
+@property (nonatomic, strong) NSFetchedResultsController *resultsController;
+
+- (NSDictionary *)currentTopic;
+- (void)updateRowHeights;
 
 @end
 
 @implementation ReaderPostsViewController
 
-@synthesize currentTopic;
+@synthesize rowHeights;
+
+#pragma mark - Life Cycle methods
+
+- (void)doBeforeDealloc {
+	[super doBeforeDealloc];
+	_resultsController.delegate = nil;
+}
+
+
+- (void)viewDidLoad {
+	
+	[super viewDidLoad];
+	
+	// Topics button
+	UIBarButtonItem *button = nil;
+    if (IS_IPHONE && [[UIButton class] respondsToSelector:@selector(appearance)]) {
+		
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btn setImage:[UIImage imageNamed:@"navbar_read"] forState:UIControlStateNormal];
+        
+		UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+        [btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+		
+        backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+        [btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
+        
+        btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
+		
+        [btn addTarget:self action:@selector(handleTopicsButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        button = [[UIBarButtonItem alloc] initWithCustomView:btn];
+		
+    } else {
+        button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks
+                                                               target:self
+                                                               action:@selector(handleTopicsButtonTapped:)];
+    }
+	
+    [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"")];
+    
+    if ([button respondsToSelector:@selector(setTintColor:)]) {
+        UIColor *color = [UIColor UIColorFromHex:0x464646];
+        button.tintColor = color;
+    }
+    
+    if (IS_IPHONE) {
+        [self.navigationItem setRightBarButtonItem:button animated:YES];
+    } else {
+        self.toolbarItems = [NSArray arrayWithObjects:button, nil];
+    }
+    
+	// Compute row heights now for smoother scrolling later.
+	[self updateRowHeights];
+	
+}
+
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	self.panelNavigationController.delegate = self;
+	
+	NSDictionary *dict = [self currentTopic];
+	NSString *title = [dict objectForKey:@"title"];
+	self.title = NSLocalizedString(title, @"");
+
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+	
+    self.panelNavigationController.delegate = nil;
+}
+
+
+- (void)viewDidUnload {
+	[super viewDidUnload];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+}
+
+
+#pragma mark - Instance Methods
+
+- (NSDictionary *)currentTopic {
+	NSDictionary *topic = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ReaderCurrentTopicKey];
+	if(!topic) {
+		topic = @{@"title": @"Freshly Pressed", @"endpoint":@"freshly-pressed"};
+	}
+	return topic;
+}
+
+
+- (void)updateRowHeights {
+	self.rowHeights = [ReaderPostTableViewCell cellHeightsInTableView:self.tableView
+															 forPosts:self.resultsController.fetchedObjects
+															cellStyle:UITableViewCellStyleDefault
+													  reuseIdentifier:@"ReaderPostCell"];
+}
+
+
+- (void)handleTopicsButtonTapped:(id)sender {
+	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+	controller.delegate = self;
+	
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    if (IS_IPAD) {
+        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+		navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
+	
+    [self presentModalViewController:navController animated:YES];
+	
+}
+
 
 #pragma mark - DetailView Delegate Methods
 
@@ -25,61 +157,151 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 	
 }
 
-- (void)setBlog:(Blog *)blog {
-	// Noop. The reader doesn't use a Blog entity.
-}
 
-
-- (NSString *)entityName {
-	return @"ReaderPost";
-}
+#pragma mark - Sync methods
 
 - (NSDate *)lastSyncDate {
-	return [[NSUserDefaults standardUserDefaults] objectForKey:ReaderLastSyncDateKey];
-}
-
-- (BOOL)hasMoreContent {
-    return YES;
+	return (NSDate *)[[NSUserDefaults standardUserDefaults] objectForKey:ReaderLastSyncDateKey];
 }
 
 
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
-    
+- (void)syncWithUserInteraction:(BOOL)userInteraction {	
+	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
+	
+	[[WordPressComApi sharedApi] getPostsFromEndpoint:endpoint
+									   withParameters:nil
+											  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+												  
+												  NSDictionary *resp = (NSDictionary *)responseObject;
+												  NSArray *postsArr = [resp objectForKey:@"posts"];
+												  
+												  [ReaderPost syncPostsFromEndpoint:endpoint
+																		  withArray:postsArr
+																		withContext:[[ReaderContext sharedReaderContext] managedObjectContext]];
+												  
+												  [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ReaderLastSyncDateKey];
+												  [NSUserDefaults resetStandardUserDefaults];
+												  
+												  self.resultsController = nil;
+												  [self updateRowHeights];
+												  [self.tableView reloadData];
+
+												  [self hideRefreshHeader];
+											  }
+											  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+												  [self hideRefreshHeader];
+												  // TODO:
+											  }];
+	
 }
+
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
 	
 }
 
-- (NSManagedObjectContext *)managedObjectContext {
-	return [[ReaderContext sharedReaderContext] managedObjectContext];
+
+#pragma mark -
+#pragma mark TableView Methods
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	return [[self.resultsController sections] count];
 }
 
-- (NSFetchRequest *)fetchRequest {
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    id <NSFetchedResultsSectionInfo> sectionInfo = nil;
+    sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    return [sectionInfo numberOfObjects];
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return [(NSNumber *)[self.rowHeights objectAtIndex:indexPath.row] floatValue];
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *cellIdentifier = @"ReaderPostCell";
+    ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [[ReaderPostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+	cell.selectionStyle = UITableViewCellSelectionStyleNone;
+	cell.accessoryType = UITableViewCellAccessoryNone;
+	
+	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+	[cell configureCell:post];
+	
+    return cell;
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
+	
+	ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
+	
+	[self.panelNavigationController pushViewController:controller animated:YES];
+}
+
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleNone;
+}
+
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+    return NO;
+}
+
+
+#pragma mark -
+#pragma mark Fetched results controller
+
+- (NSFetchedResultsController *)resultsController {
+    if (_resultsController != nil) {
+        return _resultsController;
+    }
+	
+	NSString *entityName = @"ReaderPost";
+	NSManagedObjectContext *moc = [[ReaderContext sharedReaderContext] managedObjectContext];
+	
+	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
+	
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:[self managedObjectContext]]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(topicID == %@)", [self.currentTopic stringValue]]];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:moc]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(endpoint == %@)", endpoint]];
     NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorDate, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
-
-	return fetchRequest;
-}
-
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    
-}
-
-
-- (UITableViewCell *)newCell {
-    // To comply with apple ownership and naming conventions, returned cell should have a retain count > 0, so retain the dequeued cell.
-    NSString *cellIdentifier = [NSString stringWithFormat:@"_WPTable_%@_Cell", [self entityName]];
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+	
+	_resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                             managedObjectContext:moc
+                                                               sectionNameKeyPath:nil
+                                                                        cacheName:nil];
+	
+    NSError *error = nil;
+    if (![_resultsController performFetch:&error]) {
+        WPFLog(@"%@ couldn't fetch %@: %@", self, entityName, [error localizedDescription]);
+        _resultsController = nil;
     }
-    return cell;
+    
+    return _resultsController;
+}
+
+
+#pragma mark - ReaderTopicsDelegate Methods
+
+- (void)readerTopicChanged {
+	self.resultsController = nil;
+	[self updateRowHeights];
+    [self.tableView reloadData];
+    if ( [WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && [self.resultsController.fetchedObjects count] == 0 && ![self isSyncing] ) {
+        [self simulatePullToRefresh];
+    }
 }
 
 

@@ -8,14 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "AbstractPost.h"
+#import "BasePost.h"
 
-@interface ReaderPost : AbstractPost
+@interface ReaderPost : BasePost
 
 @property (nonatomic, strong) NSString *authorAvatarURL;
 @property (nonatomic, strong) NSString *authorDisplayName;
 @property (nonatomic, strong) NSString *authorEmail;
 @property (nonatomic, strong) NSString *authorURL;
+@property (nonatomic, strong) NSString *blogName;
+@property (nonatomic, strong) NSString *blogURL;
 @property (nonatomic, strong) NSNumber *commentCount;
 @property (nonatomic, strong) NSDate *dateSynced;
 @property (nonatomic, strong) NSString *endpoint;
@@ -25,7 +27,9 @@
 @property (nonatomic, strong) NSNumber *isReblogged;
 @property (nonatomic, strong) NSNumber *likeCount;
 @property (nonatomic, strong) NSNumber *siteID;
+@property (nonatomic, strong) NSString *summary;
 @property (nonatomic, strong) NSMutableSet *comments;
+
 
 /*
  Fetch posts for the specified endpoint. 
@@ -59,8 +63,6 @@
 
 
 + (void)createOrUpdateWithDictionary:(NSDictionary *)dict forEndpoint:(NSString *)endpoint withContext:(NSManagedObjectContext *)context;
-
-
 
 
 

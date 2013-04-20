@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WPTableViewController.h"
+#import "WPRefreshViewController.h"
+#import "PanelNavigationController.h"
 
-@interface ReaderPostsViewController : WPTableViewController <DetailViewDelegate>
-
-@property (nonatomic, strong) NSNumber *currentTopic;
+@interface ReaderPostsViewController : WPRefreshViewController <NSFetchedResultsControllerDelegate, DetailViewDelegate>
 
 @end

@@ -2,8 +2,8 @@
 //  BasePost.m
 //  WordPress
 //
-//  Created by Jorge Bernal on 12/27/10.
-//  Copyright 2010 WordPress. All rights reserved.
+//  Created by Eric J on 3/25/13.
+//  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
 #import "BasePost.h"
@@ -48,23 +48,6 @@
     } else {
         return title;
     }
-}
-
-- (void)awakeFromFetch {
-    [super awakeFromFetch];
-    
-    if (self.remoteStatus == AbstractPostRemoteStatusPushing) {
-        // If we've just been fetched and our status is AbstractPostRemoteStatusPushing then something
-        // when wrong saving -- the app crashed for instance. So change our remote status to failed.
-        // Do this after a delay since property changes and saves are ignored during awakeFromFetch. See docs.
-        [self performSelector:@selector(markRemoteStatusFailed) withObject:nil afterDelay:0.1];
-    }
-    
-}
-
-- (void)markRemoteStatusFailed {
-    self.remoteStatus = AbstractPostRemoteStatusFailed;    
-    [self save];
 }
 
 - (NSArray *)availableStatuses {
