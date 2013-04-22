@@ -346,6 +346,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     [newBlog setObject:[blogInfo objectForKey:@"blogid"] forKey:@"blogid"];
     [newBlog setObject:[blogInfo objectForKey:@"url"] forKey:@"url"];
     [newBlog setObject:[blogInfo objectForKey:@"xmlrpc"] forKey:@"xmlrpc"];
+    [newBlog setObject:@(true) forKey:@"isAdmin"];
     
     
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
