@@ -15,7 +15,6 @@
 #import "NSString+Helpers.h"
 #import "WPToast.h"
 #import <AFJSONRequestOperation.h>
-#import "ReaderContext.h"
 
 NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
@@ -578,31 +577,6 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 /* HACK ENDS */
 
 #pragma mark - Reader methods
-
-- (NSString *)getEndpointPath:(RESTPostEndpoint)endpoint {
-
-	NSString *path = nil;
-	
-	switch (endpoint) {
-		case RESTPostEndpointFollowing:
-			path = @"reader/following";
-			break;
-		case RESTPostEndpointLiked:
-			path = @"reader/liked";
-			break;
-		case RESTPostEndpointTopic:
-			path = @"reader/topics/%@";
-			break;
-		case RESTPostEndpointSite:
-			path = @"sites/%@/posts";
-			break;
-		default:
-			path = @"freshly-pressed";
-			break;
-	}
-	
-	return path;
-}
 
 - (void)getReaderTopicsWithSuccess:(WordPressComApiRestSuccessResponseBlock)success
 						   failure:(WordPressComApiRestSuccessFailureBlock)failure {

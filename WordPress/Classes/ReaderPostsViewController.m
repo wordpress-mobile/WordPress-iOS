@@ -10,7 +10,6 @@
 #import "ReaderPostTableViewCell.h"
 #import "ReaderTopicsViewController.h"
 #import "ReaderPostDetailViewController.h"
-#import "ReaderContext.h"
 #import "ReaderPost.h"
 #import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
@@ -40,7 +39,6 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
 
 - (void)viewDidLoad {
-[NSFetchedResultsController deleteCacheWithName:@"ReaderPost"];
 	[super viewDidLoad];
 	
 	// Topics button
@@ -122,7 +120,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 - (NSDictionary *)currentTopic {
 	NSDictionary *topic = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ReaderCurrentTopicKey];
 	if(!topic) {
-		topic = @{@"title": @"Freshly Pressed", @"endpoint":@"freshly-pressed"};
+		topic = [[ReaderPost readerEndpoints] objectAtIndex:0];
 	}
 	return topic;
 }
@@ -177,7 +175,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 												  
 												  [ReaderPost syncPostsFromEndpoint:endpoint
 																		  withArray:postsArr
-																		withContext:[[ReaderContext sharedReaderContext] managedObjectContext]];
+																		withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
 												  
 												  [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ReaderLastSyncDateKey];
 												  [NSUserDefaults resetStandardUserDefaults];
@@ -267,14 +265,15 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
     }
 	
 	NSString *entityName = @"ReaderPost";
-	NSManagedObjectContext *moc = [[ReaderContext sharedReaderContext] managedObjectContext];
+	NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
 	
 	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
 	
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:moc]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"(endpoint == %@)", endpoint]];
-    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];
+	
+    NSSortDescriptor *sortDescriptorDate = [[NSSortDescriptor alloc] initWithKey:@"sortDate" ascending:NO];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorDate, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
 	

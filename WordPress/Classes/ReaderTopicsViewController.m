@@ -8,6 +8,7 @@
 
 #import "ReaderTopicsViewController.h"
 #import "WordPressComApi.h"
+#import "ReaderPost.h"
 
 NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 
@@ -26,6 +27,8 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 
 @synthesize delegate;
 
+#pragma mark - LifeCycle Methods
+
 - (void)dealloc {
 	
 }
@@ -36,10 +39,13 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 	if (self) {
 		[self loadTopics];
 		
-		self.defaultTopicsArray = @[@{@"title": @"Freshly Pressed", @"endpoint":@"freshly-pressed"},
-							  @{@"title": @"Blogs I Follow", @"endpoint":@"reader/following"},
-							  @{@"title": @"Blogs I Like", @"endpoint":@"reader/liked"}];
-		
+		NSArray *arr = [ReaderPost readerEndpoints];
+		NSIndexSet *indexSet = [arr indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+			NSDictionary *dict = (NSDictionary *)obj;
+			return [[dict objectForKey:@"default"] boolValue];
+		}];
+		self.defaultTopicsArray = [arr objectsAtIndexes:indexSet];
+				
 		NSDictionary *dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ReaderCurrentTopicKey];
 		if (dict) {
 			self.currentTopic = dict;
@@ -52,6 +58,7 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 	
 	return self;
 }
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -77,8 +84,8 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 	}
 }
 
-- (void)handleCancelButtonTapped:(id)sender {
 
+- (void)handleCancelButtonTapped:(id)sender {
 	[self dismissModalViewControllerAnimated:YES];
 }
 
@@ -87,12 +94,13 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 	[[WordPressComApi sharedApi] getReaderTopicsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
 		NSDictionary *dict = (NSDictionary *)responseObject;
 		
+		NSString *topicEndpoint = [[[ReaderPost readerEndpoints] objectAtIndex:ReaderTopicEndpointIndex] objectForKey:@"endpoint"];
 		NSArray *arr = [dict objectForKey:@"topics"];
 		NSMutableArray *topics = [NSMutableArray arrayWithCapacity:[arr count]];
 		
 		for (NSDictionary *dict in arr) {
 			NSString *title = [dict objectForKey:@"cat_name"];
-			NSString *endpoint = [NSString stringWithFormat:@"reader/topics/%@", [dict objectForKey:@"cat_id"]];
+			NSString *endpoint = [NSString stringWithFormat:topicEndpoint, [dict objectForKey:@"cat_id"]];
 			[topics addObject:@{@"title": title, @"endpoint":endpoint}];
 		}
 		
@@ -106,7 +114,7 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 }
 
 
-#pragma mark - Table view data source
+#pragma mark - TableView methods
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	switch (section) {

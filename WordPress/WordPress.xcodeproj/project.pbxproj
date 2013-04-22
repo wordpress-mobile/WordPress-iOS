@@ -322,7 +322,6 @@
 		5D15F4E515B8C43E001B14EA /* toolbarDelHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D15F4D515B8C43E001B14EA /* toolbarDelHighlighted@2x.png */; };
 		5D15F4E615B8C43E001B14EA /* toolbarDeliPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D15F4D615B8C43E001B14EA /* toolbarDeliPad.png */; };
 		5D15F4E715B8C43E001B14EA /* toolbarDeliPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D15F4D715B8C43E001B14EA /* toolbarDeliPad@2x.png */; };
-		5D1D79811704FAA6000FE64E /* ReaderContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1D79801704FAA6000FE64E /* ReaderContext.m */; };
 		5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */; };
 		5D1EE80315E7AF3E007F1F02 /* JetpackSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1EE80115E7AF3E007F1F02 /* JetpackSettingsViewController.xib */; };
 		5D207B981721D51900D19A2C /* WPRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D207B971721D51900D19A2C /* WPRefreshViewController.m */; };
@@ -1072,8 +1071,6 @@
 		5D15F4D515B8C43E001B14EA /* toolbarDelHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbarDelHighlighted@2x.png"; path = "Resources/Images/toolbarDelHighlighted@2x.png"; sourceTree = "<group>"; };
 		5D15F4D615B8C43E001B14EA /* toolbarDeliPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbarDeliPad.png; path = Resources/Images/toolbarDeliPad.png; sourceTree = "<group>"; };
 		5D15F4D715B8C43E001B14EA /* toolbarDeliPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbarDeliPad@2x.png"; path = "Resources/Images/toolbarDeliPad@2x.png"; sourceTree = "<group>"; };
-		5D1D797F1704FAA6000FE64E /* ReaderContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderContext.h; sourceTree = "<group>"; };
-		5D1D79801704FAA6000FE64E /* ReaderContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderContext.m; sourceTree = "<group>"; };
 		5D1EE7FF15E7AF3E007F1F02 /* JetpackSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackSettingsViewController.h; sourceTree = "<group>"; };
 		5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackSettingsViewController.m; sourceTree = "<group>"; };
 		5D1EE80115E7AF3E007F1F02 /* JetpackSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JetpackSettingsViewController.xib; path = Classes/JetpackSettingsViewController.xib; sourceTree = "<group>"; };
@@ -1880,8 +1877,6 @@
 				833AF25A114575A50016DE8F /* PostAnnotation.m */,
 				CC1D802F1658354C002A542F /* Note.h */,
 				CC1D80301658354C002A542F /* Note.m */,
-				5D1D797F1704FAA6000FE64E /* ReaderContext.h */,
-				5D1D79801704FAA6000FE64E /* ReaderContext.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -3913,7 +3908,6 @@
 				5DE486B61700B22A00D624F3 /* ReaderPost.m in Sources */,
 				5D29D2B51701042B00813FEF /* AbstractPost.m in Sources */,
 				5D29D2B61701042B00813FEF /* AbstractComment.m in Sources */,
-				5D1D79811704FAA6000FE64E /* ReaderContext.m in Sources */,
 				5DA4A40F171F73AF00AF76F8 /* ReaderPostTableViewCell.m in Sources */,
 				5D207B981721D51900D19A2C /* WPRefreshViewController.m in Sources */,
 			);
