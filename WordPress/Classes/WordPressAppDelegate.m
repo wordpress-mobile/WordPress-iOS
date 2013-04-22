@@ -23,7 +23,7 @@
 #import "SoundUtil.h"
 #import "WordPressComApiCredentials.h"
 #import "PocketAPI.h"
-#import "ReaderContext.h"
+
 @interface WordPressAppDelegate (Private)
 - (void)setAppBadge;
 - (void)checkIfStatsShouldRun;
@@ -277,7 +277,7 @@
         }];
     }];
 #endif
-	[[ReaderContext sharedReaderContext] managedObjectContext];
+
     return YES;
 }
 

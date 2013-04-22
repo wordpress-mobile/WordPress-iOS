@@ -11,7 +11,7 @@
 #import	"WordPressComApi.h"
 #import "CoreDataTestHelper.h"
 #import "AsyncTestHelper.h"
-#import "ReaderContext.h"
+#import "ReaderPost.h"
 
 @interface ReaderTest()
 
@@ -97,6 +97,7 @@
 
 }
 
+
 /*
  * API
  */
@@ -114,6 +115,7 @@
 	ATHWait();
 }
 
+
 - (void)testGetComments {
 		
 	ATHStart();
@@ -127,6 +129,7 @@
 	ATHWait();
 	
 }
+
 
 - (void)checkResultForPath:(NSString *)path andResponseObject:(id)responseObject {
 
@@ -145,10 +148,11 @@
 
 }
 
+
 - (void)testGetPostsFreshlyPressed {
 	
 	ATHStart();
-	NSString *path = [[WordPressComApi sharedApi] getEndpointPath:RESTPostEndpointFreshly];
+	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:0] objectForKey:@"endpoint"];
 	[[WordPressComApi sharedApi] getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
 		[self checkResultForPath:path andResponseObject:responseObject];
@@ -163,10 +167,11 @@
 	
 }
 
+
 - (void)testGetPostsFollowing {
 	
 	ATHStart();
-	NSString *path = [[WordPressComApi sharedApi] getEndpointPath:RESTPostEndpointFollowing];
+	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:2] objectForKey:@"endpoint"];
 	[[WordPressComApi sharedApi] getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		
 		[self checkResultForPath:path andResponseObject:responseObject];
@@ -180,10 +185,11 @@
 	
 }
 
+
 - (void)testGetPostsLikes {
 	
 	ATHStart();
-	NSString *path = [[WordPressComApi sharedApi] getEndpointPath:RESTPostEndpointLiked];
+	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:1] objectForKey:@"endpoint"];
 	[[WordPressComApi sharedApi] getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		
 		[self checkResultForPath:path andResponseObject:responseObject];
@@ -197,10 +203,11 @@
 	
 }
 
+
 - (void)testGetPostsForTopic {
 	
 	ATHStart();
-	NSString *path = [[WordPressComApi sharedApi] getEndpointPath:RESTPostEndpointTopic];
+	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:3] objectForKey:@"endpoint"];
 	path = [NSString stringWithFormat:path, @"1"];
 	[[WordPressComApi sharedApi] getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
@@ -215,22 +222,5 @@
 	
 }
 
-- (void)testGetPostForSite {
-	
-	ATHStart();
-	NSString *path = [[WordPressComApi sharedApi] getEndpointPath:RESTPostEndpointSite];
-	path = [NSString stringWithFormat:path, @"en.blog.wordpress.com"];
-	[[WordPressComApi sharedApi] getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-
-		[self checkResultForPath:path andResponseObject:responseObject];
-		ATHNotify();
-		
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		STFail(@"Call to Reader Site Posts Failed: %@", error);
-		ATHNotify();
-	}];
-	ATHWait();
-
-}
 
 @end

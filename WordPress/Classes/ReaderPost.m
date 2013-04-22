@@ -11,10 +11,13 @@
 #import "NSString+Helpers.h"
 #import "NSString+Util.h"
 
+NSInteger const ReaderTopicEndpointIndex = 3;
+
 @interface ReaderPost()
 
 - (void)updateFromDictionary:(NSDictionary *)dict;
 - (NSString *)createSummary:(NSString *)str;
+- (NSDate *)convertDateString:(NSString *)dateString;
 
 @end
 
@@ -35,8 +38,27 @@
 @dynamic isReblogged;
 @dynamic likeCount;
 @dynamic siteID;
+@dynamic sortDate;
 @dynamic summary;
 @dynamic comments;
+
+
++ (NSArray *)readerEndpoints {
+	static NSArray *endpoints = nil;
+	static dispatch_once_t token;
+	dispatch_once(&token, ^{
+		
+		NSDictionary *fpDict = @{@"title": NSLocalizedString(@"Freshly Pressed", @""), @"endpoint":@"freshly-pressed", @"default":@YES};
+		NSDictionary *follows = @{@"title": NSLocalizedString(@"Blogs I Follow", @""), @"endpoint":@"reader/following", @"default":@YES};
+		NSDictionary *likes = @{@"title": NSLocalizedString(@"Blogs I Like", @""), @"endpoint":@"reader/liked", @"default":@YES};
+		NSDictionary *topic = @{@"title": NSLocalizedString(@"Topics", @""), @"endpoint":@"reader/topics/%@", @"default":@NO};
+		
+		endpoints = @[fpDict, follows, likes, topic];
+		
+	});
+	return endpoints;
+}
+
 
 + (NSArray *)fetchPostsForEndpoint:(NSString *)endpoint withContext:(NSManagedObjectContext *)context {
 
@@ -126,11 +148,9 @@
 - (void)updateFromDictionary:(NSDictionary *)dict {
 
 	NSDictionary *author = nil;
-	NSString *dateString = nil;
-	NSString *dateFormat = nil;
 	NSString *featuredImage = nil;
 	
-	// The results come in two flavors.  If editorial key, then freshly-pressed.
+	// The results come in two flavors.  If editorial key, then its the freshly-pressed flavor.
 	if ([dict objectForKey:@"editorial"]) {
 		
 		NSDictionary *editorial = [dict objectForKey:@"editorial"];
@@ -144,9 +164,9 @@
 		
 		self.content = [dict objectForKey:@"content"];
 		
-		dateString = [dict objectForKey:@"date"];
-		dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZZZZZ";
-
+		self.date_created_gmt = [self convertDateString:[dict objectForKey:@"date"]];
+		self.sortDate = [self convertDateString:[editorial objectForKey:@"displayed_on"]];
+		
 		self.permaLink = [dict objectForKey:@"URL"];
 		self.postTitle = [dict objectForKey:@"title"];
 		
@@ -156,7 +176,6 @@
 		self.summary = [self createSummary:[dict objectForKey:@"content"]];
 		
 		NSString *img = [editorial objectForKey:@"image"];
-		
 		if(NSNotFound != [img rangeOfString:@"mshots/"].location) {
 			NSRange rng = [img rangeOfString:@"?" options:NSBackwardsSearch];
 			img = [img substringToIndex:rng.location];
@@ -196,8 +215,9 @@
 		
 		self.content = [dict objectForKey:@"post_content_full"];
 		
-		dateString = [dict objectForKey:@"post_date_gmt"];
-		dateFormat = @"yyyy-MM-dd HH:mm:ss";
+		NSDate *date = [self convertDateString:[dict objectForKey:@"post_date_gmt"]];
+		self.date_created_gmt = date;
+		self.sortDate = date;
 		
 		self.permaLink = [dict objectForKey:@"post_permalink"];
 		self.postTitle = [dict objectForKey:@"post_title"];
@@ -236,11 +256,6 @@
 	} else {
 		self.commentCount = [NSNumber numberWithInteger:[[dict objectForKey:@"comment_count"] integerValue]];
 	}
-		
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateFormat:dateFormat];
-	NSDate *date = [dateFormatter dateFromString:dateString];
-	self.date_created_gmt = date;
 
 	self.dateSynced = [NSDate date];
 	self.featuredImage = featuredImage;
@@ -275,6 +290,24 @@
 	}
 
 	return snippet;
+}
+
+
+- (NSDate *)convertDateString:(NSString *)dateString {
+	
+	NSArray *formats = @[@"yyyy-MM-dd'T'HH:mm:ssZZZZZ", @"yyyy-MM-dd HH:mm:ss"];
+	NSDate *date;
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	
+	for (NSString *dateFormat in formats) {
+		[dateFormatter setDateFormat:dateFormat];
+		date = [dateFormatter dateFromString:dateString];
+		if(date){
+			return date;
+		}
+	}
+	
+	return nil;
 }
 
 
