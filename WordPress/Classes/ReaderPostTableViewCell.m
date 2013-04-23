@@ -12,6 +12,7 @@
 #import "UIImageView+Gravatar.h"
 
 #define RPTVCVerticalPadding 10.0f;
+#define RPTVCFeaturedImageHeight 150.0f;
 
 @interface ReaderPostTableViewCell()
 
@@ -55,6 +56,8 @@
 		CGFloat width = self.frame.size.width;
 		
 		[self.contentView addSubview:self.imageView]; // TODO: Not sure about this...
+		self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+		self.imageView.clipsToBounds = YES;
 		
 		self.snippetTextView = [[DTAttributedTextContentView alloc] initWithAttributedString:nil width:width];
 		_snippetTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -129,7 +132,7 @@
 
 	// Are we showing an image? What size should it be?
 	if(_showImage) {
-		height = contentWidth / 2.0f;
+		height = RPTVCFeaturedImageHeight;
 		self.imageView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
 
 		nextY += ceilf(height + vpadding);
@@ -183,7 +186,8 @@
 	
 	// Are we showing an image? What size should it be?
 	if(_showImage) {
-		desiredHeight += contentWidth / 2.0f;
+		CGFloat height = RPTVCFeaturedImageHeight;
+		desiredHeight += height;
 		desiredHeight += vpadding;
 	}
 	
@@ -237,8 +241,12 @@
 	if (post.featuredImage) {
 		self.showImage = YES;
 		self.imageView.hidden = NO;
-		url = [NSURL URLWithString:post.featuredImage];
-NSLog(@"%@", url);
+
+		NSInteger width = ceil(self.frame.size.width);
+
+		NSString *path = [NSString stringWithFormat:@"https://i0.wp.com/%@?w=%i", post.featuredImage, width];
+		url = [NSURL URLWithString:path];
+
 		[self.imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
 	}
 	

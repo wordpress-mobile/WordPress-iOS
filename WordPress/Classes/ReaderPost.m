@@ -176,10 +176,13 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		self.summary = [self createSummary:[dict objectForKey:@"content"]];
 		
 		NSString *img = [editorial objectForKey:@"image"];
-		if(NSNotFound != [img rangeOfString:@"mshots/"].location) {
-			NSRange rng = [img rangeOfString:@"?" options:NSBackwardsSearch];
-			img = [img substringToIndex:rng.location];
-			img = [NSString stringWithFormat:@"%@?w=300&h=150", img];
+		NSRange rng = [img rangeOfString:@"mshots/"];
+		if(NSNotFound != rng.location) {
+			img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+			rng = [img rangeOfString:@"://" options:NSBackwardsSearch];
+			rng.location += 3;
+			rng.length = [img rangeOfString:@"?" options:NSBackwardsSearch].location - rng.location;
+			img = [img substringWithRange:rng];
 			
 		} else if(NSNotFound != [img rangeOfString:@"imgpress"].location) {
 			NSRange rng;
@@ -193,13 +196,11 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 			rng = [img rangeOfString:@"://"];
 			img = [img substringFromIndex:rng.location + 3];
-			img = [NSString stringWithFormat:@"https://i0.wp.com/%@?w=300&h=150", img];
 			
 		} else {
 			NSRange rng;
 			rng.location = [img rangeOfString:@"://" options:NSBackwardsSearch].location + 3;
 			img = [img substringFromIndex:rng.location];
-			img = [NSString stringWithFormat:@"https://i0.wp.com/%@?w=300&h=150", img];
 		}
 		featuredImage = img;
 
@@ -239,8 +240,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 			rng.length = endRng.location - rng.location;
 
-			img = [img substringWithRange:rng];
-			featuredImage = [NSString stringWithFormat:@"https://i0.wp.com/%@?w=300&h=150", img];
+			featuredImage = [img substringWithRange:rng];
 		}
 	}
 
