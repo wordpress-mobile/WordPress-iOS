@@ -1,1 +1,1 @@
-../../WPXMLRPC/WPXMLRPC/WPXMLRPCDataCleaner.h
+../../wpxmlrpc/WPXMLRPC/WPXMLRPCDataCleaner.h
