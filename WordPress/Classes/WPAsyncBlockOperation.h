@@ -14,7 +14,7 @@
 
 + (id)operationWithBlock:(void(^)(WPAsyncBlockOperation *))block;
 - (void)addBlock:(void(^)(WPAsyncBlockOperation *))block;
-- (void)operationSucceeded;
-- (void)operationFailed;
+- (void)didSucceed;
+- (void)didFail;
 
 @end

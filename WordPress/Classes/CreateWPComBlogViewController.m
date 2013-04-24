@@ -223,7 +223,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     if (indexPath.section == 0) {
         if (indexPath.row == 2) {
             SelectWPComLanguageViewController *selectLanguageViewController = [[SelectWPComLanguageViewController alloc] initWithStyle:UITableViewStyleGrouped];
-            selectLanguageViewController.currentlySelectedLanguageId = [_currentLanguage objectForKey:@"lang_id"];
+            selectLanguageViewController.currentlySelectedLanguageId = [[_currentLanguage objectForKey:@"lang_id"] intValue];
             selectLanguageViewController.delegate = self;
             [self.navigationController pushViewController:selectLanguageViewController animated:YES];
         } else if (indexPath.row == 3) {
@@ -308,9 +308,9 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
 - (BOOL)areFieldsValid
 {
     BOOL areFieldsFilled = [[_blogTitleTextField.text trim] length] != 0 && [[_blogUrlTextField.text trim] length] != 0;
-    BOOL urlDoesNotHaveDot = [_blogUrlTextField.text rangeOfString:@"."].location == NSNotFound;
+    BOOL urlDoesNotHavePeriod = [_blogUrlTextField.text rangeOfString:@"."].location == NSNotFound;
     
-    return areFieldsFilled && urlDoesNotHaveDot;
+    return areFieldsFilled && urlDoesNotHavePeriod;
 }
 
 - (void)displayErrorMessage

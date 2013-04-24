@@ -37,7 +37,7 @@ typedef void (^ExecutionBlock)(WPAsyncBlockOperation *);
 + (id)operationWithBlock:(void(^)(WPAsyncBlockOperation *))block;
 {
     WPAsyncBlockOperation *operation = [[WPAsyncBlockOperation alloc] init];
-    operation.executionBlock = block;
+    [operation addBlock:block];
     return operation;
 }
 
@@ -69,7 +69,7 @@ typedef void (^ExecutionBlock)(WPAsyncBlockOperation *);
     }
     
     if ([self haveAnyDependenciesFailed]) {
-        [self operationFailed];
+        [self didFail];
         [self completeOperation];
         return;
     }
@@ -81,17 +81,16 @@ typedef void (^ExecutionBlock)(WPAsyncBlockOperation *);
     self.executionBlock(self);
 }
 
-- (void)operationSucceeded
+- (void)didSucceed
 {
     [self completeOperation];
 }
 
-- (void)operationFailed
+- (void)didFail
 {
     [self willChangeValueForKey:@"failed"];
     _failed = true;
     [self didChangeValueForKey:@"failed"];
-    
     [self completeOperation];
 }
 

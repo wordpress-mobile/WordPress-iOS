@@ -21,7 +21,7 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        [self loadLanguages];
+        _languages = [WPComLanguages allLanguages];
     }
     return self;
 }
@@ -53,7 +53,7 @@
     NSDictionary *language = [_languages objectAtIndex:indexPath.row];
     cell.textLabel.text = [language objectForKey:@"name"];
     
-    if ([[language objectForKey:@"lang_id"] intValue] == [_currentlySelectedLanguageId intValue]) {
+    if ([[language objectForKey:@"lang_id"] intValue] == _currentlySelectedLanguageId) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -69,16 +69,6 @@
     NSDictionary *language = [_languages objectAtIndex:indexPath.row];
     [self.delegate selectWPComLanguageViewController:self didSelectLanguage:language];
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-#pragma mark - Private Methods
-
-- (void)loadLanguages
-{
-    if (_languages != nil)
-        return;
-    
-    _languages = [WPComLanguages allLanguages];    
 }
 
 @end

@@ -221,7 +221,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     if (indexPath.section == 0) {
         if (indexPath.row == 4) {
             SelectWPComLanguageViewController *selectLanguageViewController = [[SelectWPComLanguageViewController alloc] initWithStyle:UITableViewStylePlain];
-            selectLanguageViewController.currentlySelectedLanguageId = [_currentLanguage objectForKey:@"lang_id"];
+            selectLanguageViewController.currentlySelectedLanguageId = [[_currentLanguage objectForKey:@"lang_id"] intValue];
             selectLanguageViewController.delegate = self;
             [self.navigationController pushViewController:selectLanguageViewController animated:YES];
         }
@@ -265,9 +265,9 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 - (BOOL)areFieldsValid
 {
     BOOL areFieldsFilled = [[_usernameTextField.text trim] length] != 0 && [[_passwordTextField.text trim] length] != 0 && [[_emailTextField.text trim] length] != 0 && [[_blogUrlTextField.text trim] length] != 0;
-    BOOL urlDoesNotHaveDot = [_blogUrlTextField.text rangeOfString:@"."].location == NSNotFound;
+    BOOL urlDoesNotHavePeriod = [_blogUrlTextField.text rangeOfString:@"."].location == NSNotFound;
     
-    return areFieldsFilled && urlDoesNotHaveDot;
+    return areFieldsFilled && urlDoesNotHavePeriod;
 }
 
 - (void)showErrorMessage
@@ -313,7 +313,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
         errorMessage = NSLocalizedString(@"Unknown error", @"");
     }
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:errorMessage delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
     [alertView show];
 }
 
@@ -358,11 +358,11 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     
     WPAsyncBlockOperation *userValidation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^userValidationSuccess)(id) = ^(id responseObject) {
-            [operation operationSucceeded];
+            [operation didSucceed];
         };
         
         void (^userValidationFailure)(NSError *) = ^(NSError *error){
-            [operation operationFailed];
+            [operation didFail];
             [self processErrorDuringRemoteConnection:error];
         };
 
@@ -374,11 +374,11 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     }];
     WPAsyncBlockOperation *blogValidation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^blogValidationSuccess)(id) = ^(id responseObject) {
-            [operation operationSucceeded];
+            [operation didSucceed];
         };
         void (^blogValidationFailure)(NSError *) = ^(NSError *error) {
             [self processErrorDuringRemoteConnection:error];
-            [operation operationFailed];
+            [operation didFail];
         };
         
         [[WordPressComApi sharedApi] validateWPComBlogWithUrl:_blogUrlTextField.text
@@ -389,10 +389,10 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     }];    
     WPAsyncBlockOperation *userCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^createUserSuccess)(id) = ^(id responseObject){
-            [operation operationSucceeded];
+            [operation didSucceed];
         };
         void (^createUserFailure)(NSError *) = ^(NSError *error) {
-            [operation operationFailed];
+            [operation didFail];
             [self processErrorDuringRemoteConnection:error];
         };
         
@@ -405,12 +405,12 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     }];
     WPAsyncBlockOperation *userSignIn = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^signInSuccess)(void) = ^{
-            [operation operationSucceeded];
+            [operation didSucceed];
         };
         void (^signInFailure)(NSError *) = ^(NSError *error) {
             // We've hit a strange failure at this point, the user has been created successfully but for some reason
             // we are unable to sign in and proceed
-            [operation operationFailed];
+            [operation didFail];
             [self processErrorDuringRemoteConnection:error];
         };
         
@@ -422,13 +422,13 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     
     WPAsyncBlockOperation *blogCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^createBlogSuccess)(id) = ^(id responseObject){
-            [operation operationSucceeded];
+            [operation didSucceed];
             if (self.delegate != nil) {
                 [self.delegate createdAndSignedInAccountWithUserName:_usernameTextField.text];
             }
         };
         void (^createBlogFailure)(NSError *error) = ^(NSError *error) {
-            [operation operationFailed];
+            [operation didFail];
             [self processErrorDuringRemoteConnection:error];
         };
         NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];

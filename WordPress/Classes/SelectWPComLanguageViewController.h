@@ -12,7 +12,7 @@
 @interface SelectWPComLanguageViewController : UITableViewController
 
 @property (nonatomic, weak) id<SelectWPComLanguageViewControllerDelegate> delegate;
-@property (nonatomic, strong) NSNumber *currentlySelectedLanguageId;
+@property (nonatomic, assign) NSInteger currentlySelectedLanguageId;
 
 @end
 
