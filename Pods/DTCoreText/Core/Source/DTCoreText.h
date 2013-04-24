@@ -12,18 +12,19 @@
 #import "DTImage+HTML.h"
 
 // common utilities
-#import "CGUtils.h"
+#import "DTUtils.h"
+#if TARGET_OS_IPHONE
+#import "DTCoreTextFunctions.h"
+#endif
 
 // common classes
 #import "DTCSSListStyle.h"
 #import "DTTextBlock.h"
 #import "DTCSSStylesheet.h"
-#import "DTCoreText.h"
 #import "DTCoreTextFontDescriptor.h"
 #import "DTHTMLElement.h"
 #import "DTTextAttachment.h"
 #import "NSCharacterSet+HTML.h"
-#import "NSData+DTBase64.h"
 #import "NSScanner+HTML.h"
 #import "NSMutableString+HTML.h"
 #import "NSString+CSS.h"
@@ -36,18 +37,20 @@
 #import "NSAttributedString+DTCoreText.h"
 #import "DTHTMLAttributedStringBuilder.h"
 
+// parsing classes
+#import "DTHTMLParserNode.h"
+#import "DTHTMLParserTextNode.h"
+
 
 // These classes only work with UIKit on iOS
 #if TARGET_OS_IPHONE
-
 
 #import "DTLazyImageView.h"
 #import "DTLinkButton.h"
 #import "DTWebVideoView.h"
 #import "NSAttributedStringRunDelegates.h"
 
-#import "UIDevice+DTSimpleVersion.h"
-
+#import "DTAttributedLabel.h"
 #import "DTAttributedTextCell.h"
 #import "DTAttributedTextContentView.h"
 #import "DTAttributedTextView.h"
@@ -56,6 +59,11 @@
 #import "DTCoreTextLayoutFrame.h"
 #import "DTCoreTextLayoutLine.h"
 #import "DTCoreTextLayouter.h"
+
+#import "DTDictationPlaceholderTextAttachment.h"
+#import "DTDictationPlaceholderView.h"
+
+#import "UIFont+DTCoreText.h"
 
 #endif
 

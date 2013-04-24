@@ -1,6 +1,6 @@
 //
 //  NSCharacterSet+HTML.h
-//  CoreTextExtensions
+//  DTCoreText
 //
 //  Created by Oliver Drobnik on 1/15/11.
 //  Copyright 2011 Drobnik.com. All rights reserved.
@@ -27,6 +27,12 @@
  */
 + (NSCharacterSet *)tagAttributeNameCharacterSet;
 
+
+/**
+ Creates a characterset of all whitespace and newline characters that can be ignored between HTML tags
+ @returns An NSCharacterSet of ignorable characters
+ */
++ (NSCharacterSet *)ignorableWhitespaceCharacterSet;
 
 /** 
  Creates a character set with the apostrophe character ' (used as single quote agnostic of direction) and double quote character " (agnostic of direction).  

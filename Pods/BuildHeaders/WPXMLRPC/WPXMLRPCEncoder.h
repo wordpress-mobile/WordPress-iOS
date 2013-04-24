@@ -1,1 +1,1 @@
-../../WPXMLRPC/WPXMLRPC/WPXMLRPCEncoder.h
+../../wpxmlrpc/WPXMLRPC/WPXMLRPCEncoder.h

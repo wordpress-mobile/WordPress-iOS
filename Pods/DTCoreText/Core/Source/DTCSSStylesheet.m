@@ -1,6 +1,6 @@
 //
 //  DTCSSStylesheet.m
-//  CoreTextExtensions
+//  DTCoreText
 //
 //  Created by Oliver Drobnik on 9/5/11.
 //  Copyright (c) 2011 Drobnik.com. All rights reserved.
@@ -83,6 +83,7 @@ extern unsigned int default_css_len;
 
 - (void)_uncompressShorthands:(NSMutableDictionary *)styles
 {
+	// list-style shorthand
 	NSString *shortHand = [[styles objectForKey:@"list-style"] lowercaseString];
 	
 	if (shortHand)
@@ -147,8 +148,258 @@ extern unsigned int default_css_len;
 				}
 			}
 		}
+	}
+	
+	// font shorthand, see http://www.w3.org/TR/CSS21/fonts.html#font-shorthand
+	shortHand = [styles objectForKey:@"font"];
+	
+	if (shortHand)
+	{
+		NSString *fontStyle = @"normal";
+		NSArray *validFontStyles = [NSArray arrayWithObjects:@"italic", @"oblique", nil];
+		BOOL fontStyleSet = NO;
+
+		NSString *fontVariant = @"normal";
+		NSArray *validFontVariants = [NSArray arrayWithObjects:@"small-caps", nil];
+		BOOL fontVariantSet = NO;
 		
-		return;
+		NSString *fontWeight = @"normal";
+		NSArray *validFontWeights = [NSArray arrayWithObjects:@"bold", @"bolder", @"lighter", @"100", @"200", @"300", @"400", @"500", @"600", @"700", @"800", @"900", nil];
+		BOOL fontWeightSet = NO;
+		
+		NSString *fontSize = @"normal";
+		NSArray *validFontSizes = [NSArray arrayWithObjects:@"xx-small", @"x-small", @"small", @"medium", @"large", @"x-large", @"xx-large", @"larger", @"smaller", nil];
+		BOOL fontSizeSet = NO;
+		
+		NSArray *suffixesToIgnore = [NSArray arrayWithObjects:@"caption", @"icon", @"menu", @"message-box", @"small-caption", @"status-bar", @"inherit", nil];
+		
+		NSString *lineHeight = @"normal";
+		BOOL lineHeightSet = NO;
+		
+		NSMutableString *fontFamily = [NSMutableString string];
+		
+		NSArray *components = [shortHand componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
+		for (NSString *oneComponent in components)
+		{
+			// try font size keywords
+			if ([validFontSizes containsObject:oneComponent])
+			{
+				fontSize = oneComponent;
+				fontSizeSet = YES;
+				
+				continue;
+			}
+			
+			NSInteger slashIndex = [oneComponent rangeOfString:@"/"].location;
+			
+			if (slashIndex != NSNotFound)
+			{
+				// font-size / line-height
+				
+				fontSize = [oneComponent substringToIndex:slashIndex-1];
+				fontSizeSet = YES;
+				
+				lineHeight = [oneComponent substringFromIndex:slashIndex+1];
+				lineHeightSet = YES;
+				
+				continue;
+			}
+			else
+			{
+				// length
+				if ([oneComponent hasSuffix:@"%"] || [oneComponent hasSuffix:@"em"] || [oneComponent hasSuffix:@"px"] || [oneComponent hasSuffix:@"pt"])
+				{
+					fontSize = oneComponent;
+					fontSizeSet = YES;
+					
+					continue;
+				}
+			}
+				
+			if (fontSizeSet)
+			{
+				if ([suffixesToIgnore containsObject:oneComponent])
+				{
+					break;
+				}
+				
+				// assume that this is part of font family
+				if ([fontFamily length])
+				{
+					[fontFamily appendString:@" "];
+				}
+				
+				[fontFamily appendString:oneComponent];
+			}
+			else
+			{
+				if (!fontWeightSet && [validFontStyles containsObject:oneComponent])
+				{
+					fontStyle = oneComponent;
+					fontStyleSet = YES;
+				}
+				else if (!fontVariantSet && [validFontVariants containsObject:oneComponent])
+				{
+					fontVariant = oneComponent;
+					fontVariantSet = YES;
+				}
+				else if (!fontWeightSet && [validFontWeights containsObject:oneComponent])
+				{
+					fontWeight = oneComponent;
+					fontWeightSet = YES;
+				}
+			}
+		}
+
+		[styles removeObjectForKey:@"font"];
+
+		// size and family are mandatory, without them this is invalid
+		if ([fontSize length] && [fontFamily length])
+		{
+			[styles setObject:fontStyle forKey:@"font-style"];
+			[styles setObject:fontWeight forKey:@"font-weight"];
+			[styles setObject:fontVariant forKey:@"font-variant"];
+			[styles setObject:fontSize forKey:@"font-size"];
+			[styles setObject:lineHeight forKey:@"line-height"];
+			[styles setObject:fontFamily forKey:@"font-family"];
+		}
+	}
+	
+	shortHand = [styles objectForKey:@"margin"];
+	
+	if (shortHand)
+	{
+		NSArray *parts = [shortHand componentsSeparatedByString:@" "];
+		
+		NSString *topMargin;
+		NSString *rightMargin;
+		NSString *bottomMargin;
+		NSString *leftMargin;
+		
+		if ([parts count] == 4)
+		{
+			topMargin = [parts objectAtIndex:0];
+			rightMargin = [parts objectAtIndex:1];
+			bottomMargin = [parts objectAtIndex:2];
+			leftMargin = [parts objectAtIndex:3];
+		}
+		else if ([parts count] == 3)
+		{
+			topMargin = [parts objectAtIndex:0];
+			rightMargin = [parts objectAtIndex:1];
+			bottomMargin = [parts objectAtIndex:2];
+			leftMargin = [parts objectAtIndex:1];
+		}
+		else if ([parts count] == 2)
+		{
+			topMargin = [parts objectAtIndex:0];
+			rightMargin = [parts objectAtIndex:1];
+			bottomMargin = [parts objectAtIndex:0];
+			leftMargin = [parts objectAtIndex:1];
+		}
+		else
+		{
+			NSString *onlyValue = [parts objectAtIndex:0];
+			
+			topMargin = onlyValue;
+			rightMargin = onlyValue;
+			bottomMargin = onlyValue;
+			leftMargin = onlyValue;
+		}
+		
+		// only apply the ones where there is no previous direct setting
+		
+		if (![styles objectForKey:@"margin-top"])
+		{
+			[styles setObject:topMargin forKey:@"margin-top"];
+		}
+		
+		if (![styles objectForKey:@"margin-right"])
+		{
+			[styles setObject:rightMargin forKey:@"margin-right"];
+		}
+		
+		if (![styles objectForKey:@"margin-bottom"])
+		{
+			[styles setObject:bottomMargin forKey:@"margin-bottom"];
+		}
+		
+		if (![styles objectForKey:@"margin-left"])
+		{
+			[styles setObject:leftMargin forKey:@"margin-left"];
+		}
+		
+		// remove the shorthand
+		[styles removeObjectForKey:@"margin"];
+	}
+	
+	shortHand = [styles objectForKey:@"padding"];
+	
+	if (shortHand)
+	{
+		NSArray *parts = [shortHand componentsSeparatedByString:@" "];
+		
+		NSString *topPadding;
+		NSString *rightPadding;
+		NSString *bottomPadding;
+		NSString *leftPadding;
+		
+		if ([parts count] == 4)
+		{
+			topPadding = [parts objectAtIndex:0];
+			rightPadding = [parts objectAtIndex:1];
+			bottomPadding = [parts objectAtIndex:2];
+			leftPadding = [parts objectAtIndex:3];
+		}
+		else if ([parts count] == 3)
+		{
+			topPadding = [parts objectAtIndex:0];
+			rightPadding = [parts objectAtIndex:1];
+			bottomPadding = [parts objectAtIndex:2];
+			leftPadding = [parts objectAtIndex:1];
+		}
+		else if ([parts count] == 2)
+		{
+			topPadding = [parts objectAtIndex:0];
+			rightPadding = [parts objectAtIndex:1];
+			bottomPadding = [parts objectAtIndex:0];
+			leftPadding = [parts objectAtIndex:1];
+		}
+		else
+		{
+			NSString *onlyValue = [parts objectAtIndex:0];
+			
+			topPadding = onlyValue;
+			rightPadding = onlyValue;
+			bottomPadding = onlyValue;
+			leftPadding = onlyValue;
+		}
+
+		// only apply the ones where there is no previous direct setting
+		
+		if (![styles objectForKey:@"padding-top"])
+		{
+			[styles setObject:topPadding forKey:@"padding-top"];
+		}
+		
+		if (![styles objectForKey:@"padding-right"])
+		{
+			[styles setObject:rightPadding forKey:@"padding-right"];
+		}
+
+		if (![styles objectForKey:@"padding-bottom"])
+		{
+			[styles setObject:bottomPadding forKey:@"padding-bottom"];
+		}
+		
+		if (![styles objectForKey:@"padding-left"])
+		{
+			[styles setObject:leftPadding forKey:@"padding-left"];
+		}
+		
+		// remove the shorthand
+		[styles removeObjectForKey:@"padding"];
 	}
 }
 
@@ -161,6 +412,22 @@ extern unsigned int default_css_len;
 		NSString *cleanSelector = [selector stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		
 		NSMutableDictionary *ruleDictionary = [[rule dictionaryOfCSSStyles] mutableCopy];
+		
+		// remove !important, we're ignoring these
+		for (NSString *oneKey in [ruleDictionary allKeys])
+		{
+			NSString *value = [ruleDictionary objectForKey:oneKey];
+			
+			NSRange rangeOfImportant = [value rangeOfString:@"!important" options:NSCaseInsensitiveSearch];
+			
+			if (rangeOfImportant.location != NSNotFound)
+			{
+				value = [value stringByReplacingCharactersInRange:rangeOfImportant withString:@""];
+				value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+				
+				[ruleDictionary setObject:value forKey:oneKey];
+			}
+		}
 
 		// need to uncompress because otherwise we might get shorthands and non-shorthands together
 		[self _uncompressShorthands:ruleDictionary];
@@ -231,28 +498,41 @@ extern unsigned int default_css_len;
 		if (c == '/')
 		{
 			i++;
-			// skip until closing /
-			
-			for (; i < length; i++)
-			{
-				if ([css characterAtIndex:i] == '/')
-				{
-					break;
-				}
-			}
 			
 			if (i < length)
 			{
-				braceMarker = i+1;
-				continue;
-			}
-			else
-			{
-				// end of string
-				return;
+				c = [css characterAtIndex:i];
+				
+				if (c == '*')
+				{
+					// skip comment until closing /
+					
+					for (; i < length; i++)
+					{
+						if ([css characterAtIndex:i] == '/')
+						{
+							break;
+						}
+					}
+					
+					if (i < length)
+					{
+						braceMarker = i+1;
+						continue;
+					}
+					else
+					{
+						// end of string
+						return;
+					}
+				}
+				else
+				{
+					// not a comment
+					i--;
+				}
 			}
 		}
-		
 		
 		// An opening brace! It could be the start of a new rule, or it could be a nested brace.
 		if (c == '{') {
@@ -293,7 +573,31 @@ extern unsigned int default_css_len;
 
 - (void)mergeStylesheet:(DTCSSStylesheet *)stylesheet
 {
-	[_styles addEntriesFromDictionary:[stylesheet styles]];
+	NSArray *otherStylesheetStyleKeys = [[stylesheet styles] allKeys];
+	
+	for (NSString *oneKey in otherStylesheetStyleKeys)
+	{
+		NSDictionary *existingStyles = [_styles objectForKey:oneKey];
+		NSDictionary *stylesToMerge = [[stylesheet styles] objectForKey:oneKey];
+		if (existingStyles)
+		{
+			NSMutableDictionary *mutableStyles = [existingStyles mutableCopy];
+			
+			for (NSString *oneStyleKey in stylesToMerge)
+			{
+				NSString *mergingStyleString = [stylesToMerge objectForKey:oneStyleKey];
+				
+				[mutableStyles setObject:mergingStyleString forKey:oneStyleKey];
+			}
+			
+			[_styles setObject:mutableStyles forKey:oneKey];
+		}
+		else
+		{
+			// nothing to worry
+			[_styles setObject:stylesToMerge forKey:oneKey];
+		}
+	}
 }
 
 #pragma mark Accessing Style Information
@@ -307,7 +611,7 @@ extern unsigned int default_css_len;
 	NSMutableDictionary *tmpDict = [NSMutableDictionary dictionary];
 	
 	// Get based on element
-	NSDictionary *byTagName = [self.styles objectForKey:element.tagName];
+	NSDictionary *byTagName = [self.styles objectForKey:element.name];
 	
 	if (byTagName) 
 	{
@@ -315,13 +619,13 @@ extern unsigned int default_css_len;
 	}
 	
     // Get based on class(es)
-	NSString *classString = [element attributeForKey:@"class"];
+	NSString *classString = [element.attributes objectForKey:@"class"];
 	NSArray *classes = [classString componentsSeparatedByString:@" "];
 	
 	for (NSString *class in classes) 
 	{
 		NSString *classRule = [NSString stringWithFormat:@".%@", class];
-		NSString *classAndTagRule = [NSString stringWithFormat:@"%@.%@", element.tagName, class];
+		NSString *classAndTagRule = [NSString stringWithFormat:@"%@.%@", element.name, class];
 		
 		NSDictionary *byClass = [_styles objectForKey:classRule];
 		NSDictionary *byClassAndName = [_styles objectForKey:classAndTagRule];
@@ -338,16 +642,16 @@ extern unsigned int default_css_len;
 	}
 	
 	// Get based on id
-	NSString *idRule = [NSString stringWithFormat:@"#%@", [element attributeForKey:@"id"]];
+	NSString *idRule = [NSString stringWithFormat:@"#%@", [element.attributes objectForKey:@"id"]];
 	NSDictionary *byID = [_styles objectForKey:idRule];
 	
-	if (byID) 
+	if (byID)
 	{
 		[tmpDict addEntriesFromDictionary:byID];
 	}
 	
 	// Get tag's local style attribute
-	NSString *styleString = [element attributeForKey:@"style"];
+	NSString *styleString = [element.attributes objectForKey:@"style"];
 	
 	if ([styleString length])
 	{

@@ -1,6 +1,6 @@
 //
 //  DTCoreTextGlyphRun.m
-//  CoreTextExtensions
+//  DTCoreText
 //
 //  Created by Oliver Drobnik on 1/25/11.
 //  Copyright 2011 Drobnik.com. All rights reserved.
@@ -10,6 +10,8 @@
 #import "DTCoreTextLayoutLine.h"
 #import "DTTextAttachment.h"
 #import "DTCoreTextConstants.h"
+#import "DTCoreTextParagraphStyle.h"
+#import "DTCoreTextFunctions.h"
 
 #ifndef __IPHONE_4_3
 	#define __IPHONE_4_3 40300
@@ -22,7 +24,12 @@
 @property (nonatomic, assign) CGRect frame;
 @property (nonatomic, assign) NSInteger numberOfGlyphs;
 @property (nonatomic, unsafe_unretained, readwrite) NSDictionary *attributes;
-@property (nonatomic, assign) dispatch_semaphore_t runLock;
+
+#if OS_OBJECT_USE_OBJC
+@property (nonatomic, strong) dispatch_semaphore_t runLock; // GCD objects use ARC
+#else
+@property (nonatomic, assign) dispatch_semaphore_t runLock; // GCD objects don't use ARC
+#endif
 
 @end
 
@@ -34,19 +41,22 @@
 	CGRect _frame;
 	
 	CGFloat _offset; // x distance from line origin 
-	CGFloat ascent;
-	CGFloat descent;
-	CGFloat leading;
-	CGFloat width;
+	CGFloat _ascent;
+	CGFloat _descent;
+	CGFloat _leading;
+	CGFloat _width;
 	
-	NSInteger numberOfGlyphs;
+	BOOL _writingDirectionIsRightToLeft;
+	BOOL _isTrailingWhitespace;
 	
-	const CGPoint *glyphPositionPoints;
-	BOOL needToFreeGlyphPositionPoints;
+	NSInteger _numberOfGlyphs;
+	
+	const CGPoint *_glyphPositionPoints;
+	//BOOL needToFreeGlyphPositionPoints;
 	
 	__unsafe_unretained DTCoreTextLayoutLine *_line;	// retain cycle, since these objects are retained by the _line
-	__unsafe_unretained NSDictionary *attributes;
-    NSArray *stringIndices;
+	__unsafe_unretained NSDictionary *_attributes;
+    NSArray *_stringIndices;
 	
 	DTTextAttachment *_attachment;
 	BOOL _hyperlink;
@@ -54,6 +64,8 @@
 	BOOL _didCheckForAttachmentInAttributes;
 	BOOL _didCheckForHyperlinkInAttributes;
 	BOOL _didCalculateMetrics;
+	BOOL _didGetWritingDirection;
+	BOOL _didDetermineTrailingWhitespace;
 }
 
 @synthesize runLock;
@@ -82,7 +94,9 @@
 		CFRelease(_run);
 	}
 	
+#if !OS_OBJECT_USE_OBJC
 	dispatch_release(runLock);
+#endif
 }
 
 - (NSString *)description
@@ -98,7 +112,7 @@
 	{
 		if (!_didCalculateMetrics)
 		{
-			width = (CGFloat)CTRunGetTypographicBounds((CTRunRef)_run, CFRangeMake(0, 0), &ascent, &descent, &leading);
+			_width = (CGFloat)CTRunGetTypographicBounds((CTRunRef)_run, CFRangeMake(0, 0), &_ascent, &_descent, &_leading);
 			_didCalculateMetrics = YES;
 		}
 	}
@@ -110,23 +124,23 @@
 	if (!_didCalculateMetrics) {
 		[self calculateMetrics];
 	}
-	if (!glyphPositionPoints)
+	if (!_glyphPositionPoints)
 	{
 		// this is a pointer to the points inside the run, thus no retain necessary
-		glyphPositionPoints = CTRunGetPositionsPtr(_run);
+		_glyphPositionPoints = CTRunGetPositionsPtr(_run);
 	}
 	
-	if (!glyphPositionPoints || index >= self.numberOfGlyphs)
+	if (!_glyphPositionPoints || index >= self.numberOfGlyphs)
 	{
 		return CGRectNull;
 	}
 	
-	CGPoint glyphPosition = glyphPositionPoints[index];
+	CGPoint glyphPosition = _glyphPositionPoints[index];
 	
-	CGRect rect = CGRectMake(_line.baselineOrigin.x + glyphPosition.x, _line.baselineOrigin.y - ascent, _offset + width - glyphPosition.x, ascent + descent);
+	CGRect rect = CGRectMake(_line.baselineOrigin.x + glyphPosition.x, _line.baselineOrigin.y - _ascent, _offset + _width - glyphPosition.x, _ascent + _descent);
 	if (index < self.numberOfGlyphs-1)
 	{
-		rect.size.width = glyphPositionPoints[index+1].x - glyphPosition.x;
+		rect.size.width = _glyphPositionPoints[index+1].x - glyphPosition.x;
 	}
 	
 	return rect;
@@ -135,7 +149,7 @@
 // TODO: fix indices if the stringRange is modified
 - (NSArray *)stringIndices 
 {
-	if (!stringIndices) 
+	if (!_stringIndices) 
 	{
 		const CFIndex *indices = CTRunGetStringIndicesPtr(_run);
 		NSInteger count = self.numberOfGlyphs;
@@ -145,9 +159,9 @@
 		{
 			[array addObject:[NSNumber numberWithInteger:indices[i]]];
 		}
-		stringIndices = array;
+		_stringIndices = array;
 	}
-	return stringIndices;
+	return _stringIndices;
 }
 
 // bounds of an image encompassing the entire run
@@ -192,10 +206,143 @@
 		
 		CGContextSetTextMatrix(context, textMatrix);
 		
+		CGContextSetRGBFillColor(context, 1, 0, 0, 1);
+		CGContextSetBlendMode(context, kCGBlendModePlusLighter);
+		
 		CTRunDraw(_run, context, CFRangeMake(0, 0));
 
 		// restore identity
 		CGContextSetTextMatrix(context, CGAffineTransformIdentity);
+	}
+}
+
+- (void)drawDecorationInContext:(CGContextRef)context
+{
+	// get the scaling factor of the current translation matrix
+	CGAffineTransform ctm = CGContextGetCTM(context);
+	CGFloat contentScale = ctm.a; // needed for  rounding operations
+	CGFloat smallestPixelWidth = 1.0f/contentScale;
+	
+	CGColorRef backgroundColor = (__bridge CGColorRef)[_attributes objectForKey:DTBackgroundColorAttribute];
+	
+	// can also be iOS 6 attribute
+#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_5_1
+	if (!backgroundColor && ___useiOS6Attributes)
+	{
+		UIColor *uiColor = [_attributes objectForKey:NSBackgroundColorAttributeName];
+		backgroundColor = uiColor.CGColor;
+	}
+#endif
+	// -------------- Line-Out, Underline, Background-Color
+	BOOL drawStrikeOut = [[_attributes objectForKey:DTStrikeOutAttribute] boolValue];
+	BOOL drawUnderline = [[_attributes objectForKey:(id)kCTUnderlineStyleAttributeName] boolValue];
+	
+	if (drawStrikeOut||drawUnderline||backgroundColor)
+	{
+		// calculate area covered by non-whitespace
+		CGRect lineFrame = _line.frame;
+		lineFrame.size.width -= _line.trailingWhitespaceWidth;
+		
+		// exclude trailing whitespace so that we don't underline too much
+		CGRect runStrokeBounds = CGRectIntersection(lineFrame, self.frame);
+		
+		NSInteger superscriptStyle = [[_attributes objectForKey:(id)kCTSuperscriptAttributeName] integerValue];
+		
+		switch (superscriptStyle)
+		{
+			case 1:
+			{
+				runStrokeBounds.origin.y -= _ascent * 0.47f;
+				break;
+			}
+			case -1:
+			{
+				runStrokeBounds.origin.y += _ascent * 0.25f;
+				break;
+			}
+			default:
+				break;
+		}
+		
+		if (backgroundColor)
+		{
+			CGContextSetFillColorWithColor(context, backgroundColor);
+			CGContextFillRect(context, runStrokeBounds);
+		}
+		
+		if (drawStrikeOut || drawUnderline)
+		{
+			CGContextSaveGState(context);
+
+			CTFontRef usedFont = (__bridge CTFontRef)([_attributes objectForKey:(id)kCTFontAttributeName]);
+			
+			CGFloat fontUnderlineThickness;
+			
+			if (usedFont)
+			{
+				fontUnderlineThickness = CTFontGetUnderlineThickness(usedFont);
+			}
+			else
+			{
+				fontUnderlineThickness = smallestPixelWidth;
+			}
+			
+			CGFloat usedUnderlineThickness = DTCeilWithContentScale(fontUnderlineThickness, contentScale);
+			
+			CGContextSetLineWidth(context, usedUnderlineThickness);
+			
+			if (drawStrikeOut)
+			{
+				CGFloat y;
+				
+				if (usedFont)
+				{
+					CGFloat strokePosition = CTFontGetXHeight(usedFont)/2.0;
+					y = DTRoundWithContentScale(runStrokeBounds.origin.y + _ascent - strokePosition, contentScale);
+				}
+				else
+				{
+					y = DTRoundWithContentScale((runStrokeBounds.origin.y + self.frame.size.height/2.0f + 1), contentScale);
+				}
+				
+				if ((int)(usedUnderlineThickness/smallestPixelWidth)%2) // odd line width
+				{
+					y += smallestPixelWidth/2.0f; // shift down half a pixel to avoid aliasing
+				}
+				
+				CGContextMoveToPoint(context, runStrokeBounds.origin.x, y);
+				CGContextAddLineToPoint(context, runStrokeBounds.origin.x + runStrokeBounds.size.width, y);
+			}
+			
+			if (drawUnderline)
+			{
+				CGFloat y;
+				
+				if (usedFont)
+				{
+					CGFloat underlinePosition = CTFontGetUnderlinePosition(usedFont);
+					
+					y = DTRoundWithContentScale(runStrokeBounds.origin.y + runStrokeBounds.size.height - _descent - underlinePosition - fontUnderlineThickness/2.0f, contentScale);
+				}
+				else
+				{
+					y = DTRoundWithContentScale((runStrokeBounds.origin.y + runStrokeBounds.size.height - self.descent + 1.0f), contentScale);
+				}
+				
+				if ((int)(usedUnderlineThickness/smallestPixelWidth)%2) // odd line width
+				{
+					y += smallestPixelWidth/2.0f; // shift down half a pixel to avoid aliasing
+				}
+				
+				CGContextMoveToPoint(context, runStrokeBounds.origin.x, y);
+				CGContextAddLineToPoint(context, runStrokeBounds.origin.x + runStrokeBounds.size.width, y);
+			}
+
+			
+			CGContextStrokePath(context);
+			
+			CGContextRestoreGState(context); // restore antialiasing
+		}
 	}
 }
 
@@ -208,30 +355,55 @@
 			[self calculateMetrics];
 		}
 		
-		descent = 0;
-		ascent = self.attachment.displaySize.height;
+		_descent = 0;
+		_ascent = self.attachment.displaySize.height;
 	}
+}
+
+- (BOOL)isTrailingWhitespace
+{
+	if (_didDetermineTrailingWhitespace)
+	{
+		return _isTrailingWhitespace;
+	}
+	
+	if (self == [[_line glyphRuns] lastObject])
+	{
+		if (!_didCalculateMetrics)
+		{
+			[self calculateMetrics];
+		}
+
+		// this is trailing whitespace if it matches the lines's trailing whitespace
+		if (_line.trailingWhitespaceWidth >= _width)
+		{
+			_isTrailingWhitespace = YES;
+		}
+	}
+	
+	_didDetermineTrailingWhitespace = YES;
+	return _isTrailingWhitespace;
 }
 
 #pragma mark Properites
 - (NSInteger)numberOfGlyphs
 {
-	if (!numberOfGlyphs)
+	if (!_numberOfGlyphs)
 	{
-		numberOfGlyphs = CTRunGetGlyphCount(_run);
+		_numberOfGlyphs = CTRunGetGlyphCount(_run);
 	}
 	
-	return numberOfGlyphs;
+	return _numberOfGlyphs;
 }
 
 - (NSDictionary *)attributes
 {
-	if (!attributes)
+	if (!_attributes)
 	{
-		attributes = (__bridge NSDictionary *)CTRunGetAttributes(_run);
+		_attributes = (__bridge NSDictionary *)CTRunGetAttributes(_run);
 	}
 	
-	return attributes;
+	return _attributes;
 }
 
 - (DTTextAttachment *)attachment
@@ -271,7 +443,7 @@
 		[self calculateMetrics];
 	}
 	
-	return CGRectMake(_line.baselineOrigin.x + _offset, _line.baselineOrigin.y - ascent, width, ascent + descent);
+	return CGRectMake(_line.baselineOrigin.x + _offset, _line.baselineOrigin.y - _ascent, _width, _ascent + _descent);
 }
 
 - (CGFloat)width
@@ -281,7 +453,7 @@
 		[self calculateMetrics];
 	}
 	
-	return width;
+	return _width;
 }
 
 - (CGFloat)ascent
@@ -291,7 +463,7 @@
 		[self calculateMetrics];
 	}
 	
-	return ascent;
+	return _ascent;
 }
 
 - (CGFloat)descent
@@ -301,7 +473,7 @@
 		[self calculateMetrics];
 	}
 	
-	return descent;
+	return _descent;
 }
 
 - (CGFloat)leading
@@ -311,16 +483,38 @@
 		[self calculateMetrics];
 	}
 	
-	return leading;
+	return _leading;
+}
+
+- (BOOL)writingDirectionIsRightToLeft
+{
+	if (!_didGetWritingDirection)
+	{
+		CTParagraphStyleRef paragraphStyle = (__bridge CTParagraphStyleRef)[self.attributes objectForKey:(id)kCTParagraphStyleAttributeName];
+		
+		// depends on the text direction
+		CTWritingDirection baseWritingDirection;
+		CTParagraphStyleGetValueForSpecifier(paragraphStyle, kCTParagraphStyleSpecifierBaseWritingDirection, sizeof(baseWritingDirection), &baseWritingDirection);
+		
+		if (baseWritingDirection == kCTWritingDirectionRightToLeft)
+		{
+			_writingDirectionIsRightToLeft = YES;
+		}
+	
+		_didGetWritingDirection = YES;
+	}
+	
+	return _writingDirectionIsRightToLeft;
 }
 
 @synthesize frame = _frame;
-@synthesize numberOfGlyphs;
-@synthesize attributes;
+@synthesize numberOfGlyphs = _numberOfGlyphs;
+@synthesize attributes = _attributes;
 
-@synthesize ascent;
-@synthesize descent;
-@synthesize leading;
+@synthesize ascent = _ascent;
+@synthesize descent = _descent;
+@synthesize leading = _leading;
 @synthesize attachment = _attachment;
+@synthesize writingDirectionIsRightToLeft = _writingDirectionIsRightToLeft;
 
 @end

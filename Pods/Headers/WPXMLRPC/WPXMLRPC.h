@@ -1,1 +1,1 @@
-../../WPXMLRPC/WPXMLRPC/WPXMLRPC.h
+../../wpxmlrpc/WPXMLRPC/WPXMLRPC.h

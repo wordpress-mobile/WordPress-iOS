@@ -1,18 +1,21 @@
 //
 //  DTLazyImageView.m
-//  PagingTextScroller
+//  DTCoreText
 //
 //  Created by Oliver Drobnik on 5/20/11.
-//  Copyright 2011 . All rights reserved.
+//  Copyright 2011 Drobnik.com. All rights reserved.
 //
 
 #import "DTLazyImageView.h"
 
 static NSCache *_imageCache = nil;
 
+NSString * const DTLazyImageViewWillStartDownloadNotification = @"DTLazyImageViewWillStartDownloadNotification";
+NSString * const DTLazyImageViewDidFinishDownloadNotification = @"DTLazyImageViewDidFinishDownloadNotification";
+
 @interface DTLazyImageView ()
 
-- (void)notify;
+- (void)_notifyDelegate;
 
 @end
 
@@ -37,7 +40,8 @@ static NSCache *_imageCache = nil;
 @synthesize delegate=_delegate;
 
 - (void)dealloc
-{	
+{
+	_delegate = nil; // to avoid late notification
 	[_connection cancel];
 	
 	if (_imageSource) CFRelease(_imageSource);
@@ -48,6 +52,14 @@ static NSCache *_imageCache = nil;
 	if ([NSThread isMainThread])
 	{
 		[self performSelectorInBackground:@selector(loadImageAtURL:) withObject:url];
+		return;
+	}
+	
+	// local files we don't need to get asynchronously
+	if ([url isFileURL] || [url.scheme isEqualToString:@"data"])
+	{
+		NSData *data = [NSData dataWithContentsOfURL:url];
+		[self completeDownloadWithData:data];
 		return;
 	}
 	
@@ -62,6 +74,9 @@ static NSCache *_imageCache = nil;
 		
 		_connection = [[NSURLConnection alloc] initWithRequest:_urlRequest delegate:self startImmediately:NO];
 		[_connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
+
+		[[NSNotificationCenter defaultCenter] postNotificationName:DTLazyImageViewWillStartDownloadNotification object:self];
+		
 		[_connection start];
 	
 		// necessary because otherwise otherwise the delegate methods would not get delivered
@@ -83,8 +98,9 @@ static NSCache *_imageCache = nil;
 			_fullWidth = image.size.width;
 			_fullHeight = image.size.height;
 			
-			// for unknown reasons direct notify does not work below iOS 5
-			[self performSelector:@selector(notify) withObject:nil afterDelay:0.0];
+			// this has to be synchronous
+			[self _notifyDelegate];
+			
 			return;
 		}
 		
@@ -165,14 +181,11 @@ static NSCache *_imageCache = nil;
 
 #pragma mark NSURL Loading
 
-- (void)notify
+- (void)_notifyDelegate
 {
-//	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSValue valueWithCGSize:CGSizeMake(_fullWidth, _fullHeight)], @"ImageSize", _url, @"ImageURL", nil];
-	
 	if ([self.delegate respondsToSelector:@selector(lazyImageView:didChangeImageSize:)]) {
 		[self.delegate lazyImageView:self didChangeImageSize:CGSizeMake(_fullWidth, _fullHeight)];
 	}
-//	[[NSNotificationCenter defaultCenter] postNotificationName:@"DTLazyImageViewDidFinishLoading" object:nil userInfo:userInfo];
 }
 
 - (void)completeDownloadWithData:(NSData *)data
@@ -185,7 +198,7 @@ static NSCache *_imageCache = nil;
 	
 	self.bounds = CGRectMake(0, 0, _fullWidth, _fullHeight);
 	
-	[self notify];
+	[self _notifyDelegate];
 	
 	static dispatch_once_t predicate;
 
@@ -265,6 +278,9 @@ static NSCache *_imageCache = nil;
 		CFRelease(_imageSource), _imageSource = NULL;
 	
 	CFRunLoopStop(CFRunLoopGetCurrent());
+
+	// success = no userInfo
+	[[NSNotificationCenter defaultCenter] postNotificationName:DTLazyImageViewDidFinishDownloadNotification object:self];
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -277,6 +293,10 @@ static NSCache *_imageCache = nil;
 		CFRelease(_imageSource), _imageSource = NULL;
 	
 	CFRunLoopStop(CFRunLoopGetCurrent());
+
+	// send completion notification, pack in error as well
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:error forKey:@"Error"];
+	[[NSNotificationCenter defaultCenter] postNotificationName:DTLazyImageViewDidFinishDownloadNotification object:self userInfo:userInfo];
 }
 
 #pragma mark Properties

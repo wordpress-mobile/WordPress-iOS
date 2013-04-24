@@ -1,1 +1,1 @@
-../../WPXMLRPC/WPXMLRPC/WPStringUtils.h
+../../wpxmlrpc/WPXMLRPC/WPStringUtils.h
