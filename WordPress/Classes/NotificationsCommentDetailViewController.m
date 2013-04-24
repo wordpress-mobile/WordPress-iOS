@@ -17,6 +17,7 @@
 #import "NoteCommentContentCell.h"
 #import "NoteComment.h"
 #import "NSString+XMLExtensions.h"
+#import "NSString+Helpers.h"
 #import "WPToast.h"
 
 #define APPROVE_BUTTON_TAG 1
@@ -756,7 +757,8 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     DTDefaultFontFamily : @"Helvetica",
     NSTextSizeMultiplierDocumentOption : [NSNumber numberWithFloat:1.3]
     };
-    
+
+    html = [html stringByReplacingHTMLEmoticonsWithEmoji];
     NSAttributedString *content = [[NSAttributedString alloc] initWithHTMLData:[html dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:NULL];
     return content;
 }

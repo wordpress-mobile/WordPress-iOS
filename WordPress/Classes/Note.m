@@ -243,6 +243,7 @@ const NSUInteger NoteKeepCount = 20;
         NSString *comment = [bodyItem objectForKey:@"html"];
         if (comment == (id)[NSNull null] || comment.length == 0 )
             return;
+        comment = [comment stringByReplacingHTMLEmoticonsWithEmoji];
         comment = [comment stringByStrippingHTML];
         
         NSString *xmlString = [NSString stringWithFormat:@"<d>%@</d>", comment];

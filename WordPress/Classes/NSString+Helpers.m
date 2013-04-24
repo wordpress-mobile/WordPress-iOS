@@ -57,6 +57,46 @@
     return result;
 }
 
+- (NSString *)stringByReplacingHTMLEmoticonsWithEmoji {
+    NSMutableString *result = [NSMutableString stringWithString:self];
+    NSError *error = NULL;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<img src='.*?wp-includes/images/smilies/icon_(.+?).gif'.*?class='wp-smiley' ?/?>" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSArray *matches = [regex matchesInString:result options:0 range:NSMakeRange(0, [result length])];
+    for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
+        NSRange range = [match rangeAtIndex:1];
+        NSString *icon = [result substringWithRange:range];
+        NSDictionary *replacements = @{
+                                       @"arrow": @"➡",
+                                       @"biggrin": @"😁",
+                                       @"confused": @"😕",
+                                       @"cool": @"😎",
+                                       @"cry": @"😢",
+                                       @"eek": @"😬",
+                                       @"evil": @"😈",
+                                       @"exclaim": @"❗",
+                                       @"idea": @"💡",
+                                       @"lol": @"😁",
+                                       @"mad": @"😠",
+                                       @"mrgreen": @"🐸",
+                                       @"neutral": @"😐",
+                                       @"question": @"❓",
+                                       @"razz": @"😛",
+                                       @"redface": @"😳",
+                                       @"rolleyes": @"😯",
+                                       @"sad": @"😞",
+                                       @"smile": @"😀",
+                                       @"surprised": @"😮",
+                                       @"twisted": @"👿",
+                                       @"wink": @"😜"
+                                       };
+        NSString *replacement = [replacements objectForKey:icon];
+        if (replacement) {
+            [result replaceCharactersInRange:[match range] withString:replacement];
+        }
+    }
+    return [NSString stringWithString:result];
+}
+
 /*
  * Uses a RegEx to strip all HTML tags from a string and unencode entites
  */
