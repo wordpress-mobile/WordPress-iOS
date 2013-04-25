@@ -69,7 +69,8 @@ const CGFloat NotificationsTableViewCellFontSize = 17.0f;
 
     NSString *iconURL = self.note.icon;
     if (iconURL) {
-        iconURL = [iconURL stringByReplacingOccurrencesOfString:@"s=256" withString:@"s=96"];
+        int avatarSize = (int)(self.imageView.frame.size.width * [[UIScreen mainScreen] scale]);
+        iconURL = [iconURL stringByReplacingOccurrencesOfString:@"s=256" withString:[NSString stringWithFormat:@"s=%d", avatarSize]];
         [self.imageView setImageWithURL:[NSURL URLWithString:iconURL] placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
     }
     
