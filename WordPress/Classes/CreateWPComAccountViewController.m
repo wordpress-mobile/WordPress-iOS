@@ -64,6 +64,12 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     return self;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -320,7 +326,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 - (void)createAccount
 {
     [self.view endEditing:YES];
-    
+        
     if ([self areFieldsValid]) {
         if (![ReachabilityUtils isInternetReachable]) {
             [ReachabilityUtils showAlertNoInternetConnection];

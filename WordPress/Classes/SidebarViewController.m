@@ -23,13 +23,13 @@
 #import "PanelNavigationConstants.h"
 #import "WPWebViewController.h"
 #import "WordPressComApi.h"
-#import "WelcomeViewController.h"
 #import "CameraPlusPickerManager.h"
 #import "QuickPhotoViewController.h"
 #import "QuickPhotoButtonView.h"
 #import "CrashReportViewController.h"
 #import "NotificationsViewController.h"
 #import "SoundUtil.h"
+#import "GeneralWalkthroughViewController.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
@@ -339,9 +339,7 @@
         if ( ! [WordPressComApi sharedApi].username ) {
             //ohh auch! no .COM account? 
             _showingWelcomeScreen = YES;
-            WelcomeViewController *welcomeViewController = nil;
-            welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
-            [welcomeViewController automaticallyDismissOnLoginActions];
+            GeneralWalkthroughViewController *welcomeViewController = [[GeneralWalkthroughViewController alloc] init];
             
             UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
             aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;

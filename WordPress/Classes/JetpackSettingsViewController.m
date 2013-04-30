@@ -51,6 +51,12 @@
 #pragma mark -
 #pragma mark LifeCycle Methods
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+}
+
 - (void)viewDidLoad {
     WPFLogMethod();
     [super viewDidLoad];

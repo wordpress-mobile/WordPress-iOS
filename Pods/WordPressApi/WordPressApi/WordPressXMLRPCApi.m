@@ -101,6 +101,21 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
                     }];
 }
 
+- (void)getBlogOptionsWithSuccess:(void (^)(id options))success failure:(void (^)(NSError *error))failure
+{
+    [self.client callMethod:@"wp.getOptions"
+                 parameters:[NSArray arrayWithObjects:@(1), self.username, self.password, nil]
+                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                        if (success) {
+                            success(responseObject);
+                        }
+                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                        if (failure) {
+                            failure(error);
+                        }
+                    }];    
+}
+
 #pragma mark - Publishing a post
 
 - (void)publishPostWithText:(NSString *)content title:(NSString *)title success:(void (^)(NSUInteger, NSURL *))success failure:(void (^)(NSError *))failure {

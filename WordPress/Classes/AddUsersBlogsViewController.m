@@ -90,12 +90,19 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelAddWPcomBlogs) 
 												 name:@"didCancelWPcomLogin" object:nil];
     
-    if ([[UIBarButtonItem class] respondsToSelector:@selector(appearance)])
+    if ([[UIBarButtonItem class] respondsToSelector:@selector(appearance)]) {
         [UIBarButtonItem styleButtonAsPrimary:buttonAddSelected];
+    }    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    
+    if (self.hideBackButton) {
+        [self.navigationItem setHidesBackButton:YES animated:NO];
+    }
 
 	if (usersBlogs.count == 0) {
 		buttonSelectAll.enabled = FALSE;

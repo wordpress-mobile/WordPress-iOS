@@ -41,6 +41,7 @@
 #import "SettingsPageViewController.h"
 #import "NotificationSettingsViewController.h"
 #import "Blog+Jetpack.h"
+#import "GeneralWalkthroughViewController.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,
@@ -182,11 +183,9 @@ typedef enum {
 
 - (void)checkCloseButton {
     if ([[self.resultsController fetchedObjects] count] == 0 && [WordPressComApi sharedApi].username == nil) {
-        WelcomeViewController *welcomeViewController;
-        welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil]; 
-        [welcomeViewController automaticallyDismissOnLoginActions];
+        GeneralWalkthroughViewController *walkthroughViewController = [[GeneralWalkthroughViewController alloc] init];
         self.navigationController.navigationBar.hidden = YES;
-        [self.navigationController pushViewController:welcomeViewController animated:YES];
+        [self.navigationController pushViewController:walkthroughViewController animated:YES];
     } else {
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }

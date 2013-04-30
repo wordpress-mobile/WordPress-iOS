@@ -463,11 +463,17 @@
 		83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
 		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
 		83FEFC7611FF6C5A0078B462 /* EditSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */; };
+		850D22B61729EEBC00EC6A16 /* GeneralWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 850D22B41729EEBC00EC6A16 /* GeneralWalkthroughViewController.m */; };
+		850D22B71729EEBC00EC6A16 /* GeneralWalkthroughViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 850D22B51729EEBC00EC6A16 /* GeneralWalkthroughViewController.xib */; };
+		850D22CE172A1A1E00EC6A16 /* GeneralWalkthroughViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 850D22CD172A1A1E00EC6A16 /* GeneralWalkthroughViewController~ipad.xib */; };
 		85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */; };
 		85149747171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85149746171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m */; };
 		8516972C169D42F4006C5DED /* WPToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 8516972B169D42F4006C5DED /* WPToast.m */; };
 		8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */ = {isa = PBXBuildFile; fileRef = 8525398A171761D9003F6B32 /* WPComLanguages.m */; };
 		8566BC95170F84BC003C6BCF /* CreateWPComAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8566BC93170F84BC003C6BCF /* CreateWPComAccountViewController.m */; };
+		85C1B74A172B3538004F8B0E /* LoginCompletedWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C1B748172B3538004F8B0E /* LoginCompletedWalkthroughViewController.m */; };
+		85C1B74B172B3538004F8B0E /* LoginCompletedWalkthroughViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C1B749172B3538004F8B0E /* LoginCompletedWalkthroughViewController.xib */; };
+		85C1B74D172B357A004F8B0E /* LoginCompletedWalkthroughViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C1B74C172B357A004F8B0E /* LoginCompletedWalkthroughViewController~ipad.xib */; };
 		85D805521715F4EA0075EEAC /* CreateWPComBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D805511715F4EA0075EEAC /* CreateWPComBlogViewController.m */; };
 		85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85D80557171630B30075EEAC /* DotCom-Languages.plist */; };
 		85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D8055C171631F10075EEAC /* SelectWPComLanguageViewController.m */; };
@@ -1245,6 +1251,10 @@
 		83FB4D3E122C38F700DB9506 /* MediaPlayer.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		83FEFC7311FF6C5A0078B462 /* EditSiteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditSiteViewController.h; sourceTree = "<group>"; };
 		83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSiteViewController.m; sourceTree = "<group>"; };
+		850D22B31729EEBC00EC6A16 /* GeneralWalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralWalkthroughViewController.h; sourceTree = "<group>"; };
+		850D22B41729EEBC00EC6A16 /* GeneralWalkthroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralWalkthroughViewController.m; sourceTree = "<group>"; };
+		850D22B51729EEBC00EC6A16 /* GeneralWalkthroughViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralWalkthroughViewController.xib; sourceTree = "<group>"; };
+		850D22CD172A1A1E00EC6A16 /* GeneralWalkthroughViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "GeneralWalkthroughViewController~ipad.xib"; sourceTree = "<group>"; };
 		8514973F171E13DF00B87F3F /* WPAsyncBlockOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAsyncBlockOperation.h; sourceTree = "<group>"; };
 		85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAsyncBlockOperation.m; sourceTree = "<group>"; };
 		85149745171E671000B87F3F /* SelectWPComBlogVisibilityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectWPComBlogVisibilityViewController.h; sourceTree = "<group>"; };
@@ -1255,6 +1265,10 @@
 		8525398A171761D9003F6B32 /* WPComLanguages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPComLanguages.m; sourceTree = "<group>"; };
 		8566BC92170F84BC003C6BCF /* CreateWPComAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateWPComAccountViewController.h; sourceTree = "<group>"; };
 		8566BC93170F84BC003C6BCF /* CreateWPComAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateWPComAccountViewController.m; sourceTree = "<group>"; };
+		85C1B747172B3537004F8B0E /* LoginCompletedWalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginCompletedWalkthroughViewController.h; sourceTree = "<group>"; };
+		85C1B748172B3538004F8B0E /* LoginCompletedWalkthroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginCompletedWalkthroughViewController.m; sourceTree = "<group>"; };
+		85C1B749172B3538004F8B0E /* LoginCompletedWalkthroughViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginCompletedWalkthroughViewController.xib; sourceTree = "<group>"; };
+		85C1B74C172B357A004F8B0E /* LoginCompletedWalkthroughViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "LoginCompletedWalkthroughViewController~ipad.xib"; sourceTree = "<group>"; };
 		85D805501715F4EA0075EEAC /* CreateWPComBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateWPComBlogViewController.h; sourceTree = "<group>"; };
 		85D805511715F4EA0075EEAC /* CreateWPComBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateWPComBlogViewController.m; sourceTree = "<group>"; };
 		85D80557171630B30075EEAC /* DotCom-Languages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DotCom-Languages.plist"; sourceTree = "<group>"; };
@@ -1483,7 +1497,7 @@
 		E177087B13AAC19700EA6C72 /* redoDisabled~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "redoDisabled~ipad.png"; path = "Resources/Images/redoDisabled~ipad.png"; sourceTree = "<group>"; };
 		E177087C13AAC19700EA6C72 /* undo~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "undo~ipad.png"; path = "Resources/Images/undo~ipad.png"; sourceTree = "<group>"; };
 		E177087D13AAC19700EA6C72 /* undoDisabled~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "undoDisabled~ipad.png"; path = "Resources/Images/undoDisabled~ipad.png"; sourceTree = "<group>"; };
-		E17B98E7171FFB450073E30D /* WordPress 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WordPress 11.xcdatamodel"; sourceTree = "<group>"; };
+		E17B98E7171FFB450073E30D /* WordPress 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 11.xcdatamodel"; sourceTree = "<group>"; };
 		E17BE25F134F5E4D00165C3D /* QuickPicturePreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickPicturePreviewView.h; sourceTree = "<group>"; };
 		E17BE260134F5E4D00165C3D /* QuickPicturePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPicturePreviewView.m; sourceTree = "<group>"; };
 		E17BE7A9134DEC12007285FD /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2338,6 +2352,21 @@
 			name = Blogs;
 			sourceTree = "<group>";
 		};
+		850D22B21729EE8600EC6A16 /* NUX */ = {
+			isa = PBXGroup;
+			children = (
+				850D22B31729EEBC00EC6A16 /* GeneralWalkthroughViewController.h */,
+				850D22B41729EEBC00EC6A16 /* GeneralWalkthroughViewController.m */,
+				850D22B51729EEBC00EC6A16 /* GeneralWalkthroughViewController.xib */,
+				850D22CD172A1A1E00EC6A16 /* GeneralWalkthroughViewController~ipad.xib */,
+				85C1B747172B3537004F8B0E /* LoginCompletedWalkthroughViewController.h */,
+				85C1B74C172B357A004F8B0E /* LoginCompletedWalkthroughViewController~ipad.xib */,
+				85C1B748172B3538004F8B0E /* LoginCompletedWalkthroughViewController.m */,
+				85C1B749172B3538004F8B0E /* LoginCompletedWalkthroughViewController.xib */,
+			);
+			name = NUX;
+			sourceTree = "<group>";
+		};
 		A2F140A415E464C900132A5E /* Rich Text */ = {
 			isa = PBXGroup;
 			children = (
@@ -2368,6 +2397,7 @@
 		AC34397A0E11435A00E5D79B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				850D22B21729EE8600EC6A16 /* NUX */,
 				CC1D800D1656D8B2002A542F /* Notifications */,
 				E15D46C7156A506A00227392 /* Panels */,
 				AC34397B0E11443300E5D79B /* Blog */,
@@ -3652,6 +3682,10 @@
 				E15051CE16CA8E4900D3DDDC /* logo_jetpack.png in Resources */,
 				E15051CF16CA8E4900D3DDDC /* logo_jetpack@2x.png in Resources */,
 				85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */,
+				850D22B71729EEBC00EC6A16 /* GeneralWalkthroughViewController.xib in Resources */,
+				850D22CE172A1A1E00EC6A16 /* GeneralWalkthroughViewController~ipad.xib in Resources */,
+				85C1B74B172B3538004F8B0E /* LoginCompletedWalkthroughViewController.xib in Resources */,
+				85C1B74D172B357A004F8B0E /* LoginCompletedWalkthroughViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3872,6 +3906,8 @@
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */,
 				85149747171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m in Sources */,
+				850D22B61729EEBC00EC6A16 /* GeneralWalkthroughViewController.m in Sources */,
+				85C1B74A172B3538004F8B0E /* LoginCompletedWalkthroughViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
