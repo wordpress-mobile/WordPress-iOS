@@ -13,6 +13,7 @@
 #import "ReaderPost.h"
 #import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
+#import "PanelNavigationConstants.h"
 
 NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
@@ -22,7 +23,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 
 - (NSDictionary *)currentTopic;
-- (void)updateRowHeights;
+- (void)updateRowHeightsForWidth:(CGFloat)width;
 
 @end
 
@@ -79,7 +80,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
     }
     
 	// Compute row heights now for smoother scrolling later.
-	[self updateRowHeights];
+	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 	
 }
 
@@ -115,6 +116,22 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 }
 
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	CGFloat width;
+	// The new width should be the window
+	if (IS_IPAD) {
+		width = IPAD_DETAIL_WIDTH;
+	} else {
+		CGRect frame = self.view.window.frame;
+		width = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? frame.size.height : frame.size.width;
+	}
+	
+	[self updateRowHeightsForWidth:width];
+}
+
+
 #pragma mark - Instance Methods
 
 - (NSDictionary *)currentTopic {
@@ -126,11 +143,13 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 }
 
 
-- (void)updateRowHeights {
-	self.rowHeights = [ReaderPostTableViewCell cellHeightsInTableView:self.tableView
-															 forPosts:self.resultsController.fetchedObjects
-															cellStyle:UITableViewCellStyleDefault
-													  reuseIdentifier:@"ReaderPostCell"];
+- (void)updateRowHeightsForWidth:(CGFloat)width {
+	self.rowHeights = [ReaderPostTableViewCell cellHeightsForPosts:self.resultsController.fetchedObjects
+															 width:width
+														tableStyle:UITableViewStylePlain
+														 cellStyle:UITableViewCellStyleDefault
+												   reuseIdentifier:@"ReaderPostCell"];
+
 }
 
 
@@ -181,7 +200,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 												  [NSUserDefaults resetStandardUserDefaults];
 												  
 												  self.resultsController = nil;
-												  [self updateRowHeights];
+												  [self updateRowHeightsForWidth:self.tableView.frame.size.width];
 												  [self.tableView reloadData];
 
 												  [self hideRefreshHeader];
@@ -296,7 +315,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
 - (void)readerTopicChanged {
 	self.resultsController = nil;
-	[self updateRowHeights];
+	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
     [self.tableView reloadData];
     if ( [WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && [self.resultsController.fetchedObjects count] == 0 && ![self isSyncing] ) {
         [self simulatePullToRefresh];

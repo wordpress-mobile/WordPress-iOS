@@ -29,7 +29,7 @@
 @property (nonatomic, strong) UIButton *reblogButton;
 @property (nonatomic, assign) BOOL showImage;
 
-- (CGFloat)requiredRowHeightInTableView:(UITableView *)tableView;
+- (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;
 - (void)handleLikeButtonTapped:(id)sender;
 - (void)handleFollowButtonTapped:(id)sender;
 - (void)handleReblogButtonTapped:(id)sender;
@@ -38,13 +38,17 @@
 
 @implementation ReaderPostTableViewCell
 
-+ (NSArray *)cellHeightsInTableView:(UITableView *)tableView forPosts:(NSArray *)posts cellStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-	
++ (NSArray *)cellHeightsForPosts:(NSArray *)posts
+						   width:(CGFloat)width
+					  tableStyle:(UITableViewStyle)tableStyle
+					   cellStyle:(UITableViewCellStyle)cellStyle
+				 reuseIdentifier:(NSString *)reuseIdentifier {
+
 	NSMutableArray *heights = [NSMutableArray arrayWithCapacity:[posts count]];
-	ReaderPostTableViewCell *cell = [[ReaderPostTableViewCell alloc] initWithStyle:style reuseIdentifier:reuseIdentifier];
+	ReaderPostTableViewCell *cell = [[ReaderPostTableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:reuseIdentifier];
 	for (ReaderPost *post in posts) {
 		[cell configureCell:post];
-		CGFloat height = [cell requiredRowHeightInTableView:tableView];
+		CGFloat height = [cell requiredRowHeightForWidth:width tableStyle:tableStyle];
 		[heights addObject:[NSNumber numberWithFloat:height]];
 	}
 	return heights;
@@ -157,39 +161,40 @@
 }
 
 
-- (CGFloat)requiredRowHeightInTableView:(UITableView *)tableView {
-
+- (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style {
+	
 	CGFloat desiredHeight = 0.0f;
 	CGFloat vpadding = RPTVCVerticalPadding;
-	CGFloat contentWidth = self.contentView.frame.size.width;
-
-	if(contentWidth == 0.0f) {
-		contentWidth = tableView.frame.size.width;
-		// reduce width for accessories
-		switch (self.accessoryType) {
-			case UITableViewCellAccessoryDisclosureIndicator:
-			case UITableViewCellAccessoryCheckmark:
-				contentWidth -= 20.0f;
-				break;
-			case UITableViewCellAccessoryDetailDisclosureButton:
-				contentWidth -= 33.0f;
-				break;
-			case UITableViewCellAccessoryNone:
-				break;
-		}
-		
-		// reduce width for grouped table views
-		if (tableView.style == UITableViewStyleGrouped) {
-			contentWidth -= 19;
-		}
+	
+	// Do the math. We can't trust the cell's contentView's frame because
+	// its not updated at a useful time during rotation.
+	CGFloat contentWidth = width;
+	
+	// reduce width for accessories
+	switch (self.accessoryType) {
+		case UITableViewCellAccessoryDisclosureIndicator:
+		case UITableViewCellAccessoryCheckmark:
+			contentWidth -= 20.0f;
+			break;
+		case UITableViewCellAccessoryDetailDisclosureButton:
+			contentWidth -= 33.0f;
+			break;
+		case UITableViewCellAccessoryNone:
+			break;
+	}
+	
+	// reduce width for grouped table views
+	if (style == UITableViewStyleGrouped) {
+		contentWidth -= 19;
 	}
 	
 	// Are we showing an image? What size should it be?
 	if(_showImage) {
 		CGFloat height = RPTVCFeaturedImageHeight;
 		desiredHeight += height;
-		desiredHeight += vpadding;
 	}
+	
+	desiredHeight += vpadding;
 	
 	// Size of the snippet
 	desiredHeight += [_snippetTextView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
@@ -197,10 +202,10 @@
 	
 	// Size of the byview
 	desiredHeight += (_byView.frame.size.height + vpadding);
-
+	
 	// size of the control bar
 	desiredHeight += (_controlView.frame.size.height + vpadding);
-
+	
 	return desiredHeight;
 }
 

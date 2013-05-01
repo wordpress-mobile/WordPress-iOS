@@ -14,9 +14,10 @@
 /**
  Return's an array of required cell heights to display the specified posts. 
  */
-+ (NSArray *)cellHeightsInTableView:(UITableView *)tableView
-						   forPosts:(NSArray *)posts
-						  cellStyle:(UITableViewCellStyle)style
++ (NSArray *)cellHeightsForPosts:(NSArray *)posts
+						   width:(CGFloat)width
+					  tableStyle:(UITableViewStyle)tableStyle
+						  cellStyle:(UITableViewCellStyle)cellStyle
 					reuseIdentifier:(NSString *)reuseIdentifier;
 
 - (void)configureCell:(ReaderPost *)post;
