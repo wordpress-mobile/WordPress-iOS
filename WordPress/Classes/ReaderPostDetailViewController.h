@@ -29,5 +29,6 @@
 - (IBAction)handleFollowButtonTapped:(id)sender;
 - (IBAction)handleReblogButtonTapped:(id)sender;
 - (IBAction)handleActionButtonTapped:(id)sender;
+- (IBAction)handleTitleButtonTapped:(id)sender;
 
 @end

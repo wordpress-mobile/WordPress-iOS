@@ -33,7 +33,6 @@ extern NSInteger const ReaderTopicEndpointIndex;
 @property (nonatomic, strong) NSString *summary;
 @property (nonatomic, strong) NSMutableSet *comments;
 
-
 /**
  An array of dictionaries representing available REST API endpoints to retrieve posts for the Reader.
  The dictionaries contain the endpoint title, API path fragment, and if the endpoint is one of the default topics.
@@ -83,6 +82,14 @@ extern NSInteger const ReaderTopicEndpointIndex;
  */
 + (void)createOrUpdateWithDictionary:(NSDictionary *)dict forEndpoint:(NSString *)endpoint withContext:(NSManagedObjectContext *)context;
 
+
+- (void)toggleLikedWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+
+- (void)toggleFollowingWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+
+- (void)reblogPostToSite:(id)newSite success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 
 @end

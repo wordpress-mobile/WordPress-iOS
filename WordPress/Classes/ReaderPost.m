@@ -18,6 +18,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 - (void)updateFromDictionary:(NSDictionary *)dict;
 - (NSString *)createSummary:(NSString *)str;
 - (NSDate *)convertDateString:(NSString *)dateString;
+- (NSString *)normalizeParagraphs:(NSString *)string;
 
 @end
 
@@ -149,7 +150,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 	NSDictionary *author = nil;
 	NSString *featuredImage = nil;
-	
+
 	// The results come in two flavors.  If editorial key, then its the freshly-pressed flavor.
 	if ([dict objectForKey:@"editorial"]) {
 		
@@ -162,7 +163,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 		self.blogName = [editorial objectForKey:@"blog_name"];
 		
-		self.content = [dict objectForKey:@"content"];
+		self.content = [self normalizeParagraphs:[dict objectForKey:@"content"]];
 		
 		self.date_created_gmt = [self convertDateString:[dict objectForKey:@"date"]];
 		self.sortDate = [self convertDateString:[editorial objectForKey:@"displayed_on"]];
@@ -213,17 +214,24 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		
 		self.blogURL = [dict objectForKey:@"blog_url"];
 		self.blogName = [dict objectForKey:@"blog_name"];
-		
-		self.content = [dict objectForKey:@"post_content_full"];
-		
-		NSDate *date = [self convertDateString:[dict objectForKey:@"post_date_gmt"]];
+
+		self.content = [self normalizeParagraphs:[dict objectForKey:@"post_content_full"]];
+
+		NSDate *date;
+		NSString *timestamp = [dict objectForKey:@"post_timestamp"];
+		if (timestamp != nil) {
+			NSTimeInterval timeInterval = [timestamp doubleValue];
+			date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+		} else {
+			date = [self convertDateString:[dict objectForKey:@"post_date_gmt"]];
+		}
 		self.date_created_gmt = date;
 		self.sortDate = date;
 		
 		self.permaLink = [dict objectForKey:@"post_permalink"];
 		self.postTitle = [dict objectForKey:@"post_title"];
 		
-		self.summary = [dict objectForKey:@"post_content"];
+		self.summary = [self normalizeParagraphs:[dict objectForKey:@"post_content"]];
 		
 		NSString *img = [dict objectForKey:@"post_featured_thumbnail"];
 		if([img length]) {
@@ -241,6 +249,12 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 			rng.length = endRng.location - rng.location;
 
 			featuredImage = [img substringWithRange:rng];
+		}
+		
+		NSString *media = [dict objectForKey:@"post_featured_media"];
+	
+		if(media) {
+			self.content = [NSString stringWithFormat:@"%@%@", media, self.content];
 		}
 	}
 
@@ -272,8 +286,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 
 - (NSString *)createSummary:(NSString *)str {
-
-	// TODO: strip out html.
+	str = [self normalizeParagraphs:[str substringToIndex:300]];
 	
 	NSString *snippet = [str substringToIndex:200];
 	NSRange rng = [snippet rangeOfString:@"." options:NSBackwardsSearch];
@@ -289,7 +302,27 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		snippet = [NSString stringWithFormat:@"%@ ...", [snippet substringToIndex:rng.location]];
 	}
 
-	return snippet;
+	return [self normalizeParagraphs:snippet];
+}
+
+
+- (NSString *)normalizeParagraphs:(NSString *)string {
+	NSError *error;
+	
+	// Convert div tags to p tags
+	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<div[^>]*>" options:NSRegularExpressionCaseInsensitive error:&error];
+	string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"<p>"];
+	
+	regex = [NSRegularExpression regularExpressionWithPattern:@"</div>" options:NSRegularExpressionCaseInsensitive error:&error];
+	string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"</p>"];
+	
+	// Remove duplicate p tags.
+	regex = [NSRegularExpression regularExpressionWithPattern:@"<p[^>]*>\\s*<p[^>]*>" options:NSRegularExpressionCaseInsensitive error:&error];
+	string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"<p>"];
+	
+	regex = [NSRegularExpression regularExpressionWithPattern:@"</p>\\s*</p>" options:NSRegularExpressionCaseInsensitive error:&error];
+	string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"</p>"];
+	return string;
 }
 
 
@@ -308,6 +341,84 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	}
 	
 	return nil;
+}
+
+
+- (void)toggleLikedWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+
+	BOOL oldValue = self.isLiked.boolValue;
+	BOOL like = !oldValue;
+	
+	self.isLiked = [NSNumber numberWithBool:like];
+	
+	NSString *path = nil;
+	if (like) {
+		path = [NSString stringWithFormat:@"sites/%@/posts/%d/likes/new"];
+	} else {
+		path = [NSString stringWithFormat:@"sites/%@/posts/%d/likes/mine/delete"];
+	}
+
+	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		[self save];
+		
+		if(success) {
+			success();
+		}
+		
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		// undo the change.
+		self.isLiked = [NSNumber numberWithBool:oldValue];
+		
+		if(failure) {
+			failure(error);
+		}
+	}];
+}
+
+
+- (void)toggleFollowingWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+
+	BOOL oldValue = [self.isFollowing boolValue];
+	BOOL follow = !oldValue;
+		
+	self.isFollowing = [NSNumber numberWithBool:follow];
+	
+	NSString *path = nil;
+	if (follow) {
+		path = [NSString stringWithFormat:@"sites/%@/follows/new"];
+	} else {
+		path = [NSString stringWithFormat:@"sites/%@/follows/mine/delete"];
+	}
+	
+	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		[self save];
+		
+		if(success) {
+			success();
+		}
+		
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		self.isFollowing = [NSNumber numberWithBool:oldValue];
+		
+		if(failure) {
+			failure(error);
+		}
+	}];
+}
+
+
+- (void)reblogPostToSite:(id)newSite success:(void (^)())success failure:(void (^)(NSError *error))failure {
+	return;
+	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%d/reblogs/new"];
+	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		if(success) {
+			success();
+		}
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		if(failure) {
+			failure(error);
+		}
+	}];
 }
 
 
