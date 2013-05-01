@@ -35,7 +35,7 @@
 {
     [super viewDidLoad];
 
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
+    self.view.backgroundColor = [UIColor colorWithRed:28.0/255.0 green:138.0/255.0 blue:192.0/255.0 alpha:1.0];
     
     _pageWidth = CGRectGetWidth(self.view.frame);
     

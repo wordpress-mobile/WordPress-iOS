@@ -1,5 +1,5 @@
 //
-//  GeneralWalkthroughViewController.h
+//  WPWalkthroughTextField.h
 //  WordPress
 //
 //  Created by Sendhil Panchadsaram on 4/30/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GeneralWalkthroughViewController : UIViewController
+@interface WPWalkthroughTextField : UITextField
 
 @end

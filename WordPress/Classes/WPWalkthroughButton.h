@@ -1,5 +1,5 @@
 //
-//  GeneralWalkthroughViewController.h
+//  WPWalkthroughButton.h
 //  WordPress
 //
 //  Created by Sendhil Panchadsaram on 4/30/13.
@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GeneralWalkthroughViewController : UIViewController
+@interface WPWalkthroughButton : UIControl
+
+@property (nonatomic, strong) NSString *text;
 
 @end
