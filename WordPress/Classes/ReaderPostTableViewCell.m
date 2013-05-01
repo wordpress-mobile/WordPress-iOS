@@ -10,12 +10,15 @@
 #import <DTCoreText/DTCoreText.h>
 #import <QuartzCore/QuartzCore.h>
 #import "UIImageView+Gravatar.h"
+#import "WPWebViewController.h"
+#import "WordPressAppDelegate.h"
 
 #define RPTVCVerticalPadding 10.0f;
 #define RPTVCFeaturedImageHeight 150.0f;
 
-@interface ReaderPostTableViewCell()
+@interface ReaderPostTableViewCell() <DTAttributedTextContentViewDelegate>
 
+@property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) DTAttributedTextContentView *snippetTextView;
 @property (nonatomic, strong) DTAttributedTextContentView *bylineTextView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
@@ -24,14 +27,12 @@
 @property (nonatomic, strong) UIButton *likeButton;
 @property (nonatomic, strong) UIButton *followButton;
 @property (nonatomic, strong) UIButton *reblogButton;
-@property (nonatomic, strong) UIButton *commentButton;
 @property (nonatomic, assign) BOOL showImage;
 
 - (CGFloat)requiredRowHeightInTableView:(UITableView *)tableView;
 - (void)handleLikeButtonTapped:(id)sender;
 - (void)handleFollowButtonTapped:(id)sender;
 - (void)handleReblogButtonTapped:(id)sender;
-- (void)handleCommentButtonTapped:(id)sender;
 
 @end
 
@@ -59,16 +60,21 @@
 		self.imageView.contentMode = UIViewContentModeScaleAspectFill;
 		self.imageView.clipsToBounds = YES;
 		
-		self.snippetTextView = [[DTAttributedTextContentView alloc] initWithAttributedString:nil width:width];
+		//self.snippetTextView = [[DTAttributedTextContentView alloc] initWithAttributedString:nil width:width];
+		self.snippetTextView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 44.0f)];
 		_snippetTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_snippetTextView.backgroundColor = [UIColor clearColor];
 		_snippetTextView.edgeInsets = UIEdgeInsetsMake(0.f, 10.f, 0.f, 0.f);
+		_snippetTextView.delegate = self;
+		_snippetTextView.shouldDrawLinks = NO;
+		_snippetTextView.shouldDrawImages = NO;
 		[self.contentView addSubview:_snippetTextView];
 		
 		self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)];
 		[self.contentView addSubview:_avatarImageView];
 		
-		self.bylineTextView = [[DTAttributedTextContentView alloc] initWithAttributedString:nil width:width];
+		//self.bylineTextView = [[DTAttributedTextContentView alloc] initWithAttributedString:nil width:width];
+		self.bylineTextView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 44.0f)];
 		_bylineTextView.autoresizesSubviews = UIViewAutoresizingFlexibleWidth;
 		_bylineTextView.backgroundColor = [UIColor clearColor];
 		[self.contentView addSubview:_bylineTextView];
@@ -97,18 +103,11 @@
 		_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 		[_reblogButton addTarget:self action:@selector(handleReblogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
-		self.commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		_commentButton.frame = CGRectMake(100.0f, 0.0f, 40.0f, 40.0f);
-		_commentButton.backgroundColor = [UIColor colorWithHexString:@"3478E3"];
-		_commentButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-		[_commentButton addTarget:self action:@selector(handleCommentButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-		
-		self.controlView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 150.0f, 40.0f)];
+		self.controlView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 120.0f, 40.0f)];
 		_controlView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[_controlView addSubview:_likeButton];
 		[_controlView addSubview:_followButton];
 		[_controlView addSubview:_reblogButton];
-		[_controlView addSubview:_commentButton];
 		[self.contentView addSubview:_controlView];
 		
     }
@@ -118,7 +117,6 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
 }
 
 
@@ -136,6 +134,8 @@
 		self.imageView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
 
 		nextY += ceilf(height + vpadding);
+	} else {
+		nextY += vpadding;
 	}
 
 	// Position the snippet
@@ -204,24 +204,28 @@
 	return desiredHeight;
 }
 
+
 - (void)prepareForReuse {
 	[super prepareForReuse];
 	
+	[self.imageView cancelImageRequestOperation];
 	self.imageView.image = nil;
 	self.avatarImageView.image = nil;
 	_snippetTextView.attributedString = nil;
 	_bylineTextView.attributedString = nil;
 }
 
+
 - (void)configureCell:(ReaderPost *)post {
-	
+	self.post = post;
 	NSString *str;
 	NSString *contentSnippet = post.summary;
 	if(contentSnippet && [contentSnippet length] > 0){
-		str = [NSString stringWithFormat:@"<h3>%@</h3><p>%@</p>", post.postTitle, contentSnippet];
+		str = [NSString stringWithFormat:@"<h3>%@</h3>%@", post.postTitle, contentSnippet];
 	} else {
 		str = [NSString stringWithFormat:@"<h3>%@</h3>", post.postTitle];
 	}
+
 	_snippetTextView.attributedString = [self convertHTMLToAttributedString:str withOptions:nil];
 	
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -251,6 +255,8 @@
 	}
 	
 	[self.avatarImageView setImageWithBlavatarUrl:post.blogURL];
+	
+	[self updateControlBar];
 }
 
 
@@ -270,23 +276,101 @@
 }
 
 
+- (void)updateControlBar {
+	if (!self.post) return;
+	
+	UIImage *img = nil;
+	if (self.post.isLiked.boolValue) {
+		img = [UIImage imageNamed:@""];
+	} else {
+		img = [UIImage imageNamed:@""];
+	}
+	[self.likeButton.imageView setImage:img];
+	
+	if (self.post.isReblogged.boolValue) {
+		img = [UIImage imageNamed:@""];
+	} else {
+		img = [UIImage imageNamed:@""];
+	}
+	[self.reblogButton.imageView setImage:img];
+	
+	if (self.post.isFollowing.boolValue) {
+		img = [UIImage imageNamed:@""];
+	} else {
+		img = [UIImage imageNamed:@""];
+	}
+	[self.followButton.imageView setImage:img];
+}
+
+
 - (void)handleLikeButtonTapped:(id)sender {
-	NSLog(@"Tapped");
+	NSLog(@"Tapped reblog");
+	[self.post toggleLikedWithSuccess:^{
+		// Nothing to see here?
+	} failure:^(NSError *error) {
+		[self updateControlBar];
+	}];
+	
+	[self updateControlBar];
 }
 
 
 - (void)handleFollowButtonTapped:(id)sender {
-	NSLog(@"Tapped");
+	NSLog(@"Tapped reblog");
+	[self.post toggleFollowingWithSuccess:^{
+		
+	} failure:^(NSError *error) {
+		[self updateControlBar];
+	}];
+	
+	[self updateControlBar];
 }
 
 
 - (void)handleReblogButtonTapped:(id)sender {
-	NSLog(@"Tapped");
+	NSLog(@"Tapped reblog");
+	[self.post reblogPostToSite:nil success:^{
+		
+	} failure:^(NSError *error) {
+		[self updateControlBar];
+	}];
+	
+	[self updateControlBar];
 }
 
 
-- (void)handleCommentButtonTapped:(id)sender {
-	NSLog(@"Tapped");	
+- (void)handleLinkTapped:(id)sender {
+	WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:((DTLinkButton *)sender).URL];
+	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller animated:YES];
 }
+
+#pragma mark - DTAttributedTextContentView Delegate Methods
+
+- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
+	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
+	
+	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
+	NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
+	
+	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
+	button.URL = URL;
+	button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
+	button.GUID = identifier;
+	
+	// get image with normal link text
+	UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
+	[button setImage:normalImage forState:UIControlStateNormal];
+	
+	// get image for highlighted link text
+	UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
+	[button setImage:highlightImage forState:UIControlStateHighlighted];
+	
+	// use normal push action for opening URL
+	[button addTarget:self action:@selector(handleLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
+	
+	return button;
+}
+
 
 @end

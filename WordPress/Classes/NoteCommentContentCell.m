@@ -20,8 +20,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
-        self.attributedTextView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.f, 0, 320.f, 0.f)];
-        self.attributedTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.attributedTextView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.f, 0, 320.f, 40.f)];
+        self.attributedTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.attributedTextView.edgeInsets = UIEdgeInsetsMake(10.f, 10.f, 20.f, 10.f);
         self.attributedTextView.shouldDrawLinks = NO;
         self.attributedTextView.delegate = self;
@@ -43,28 +43,52 @@
 }
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
-    NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
-    
-    DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
-    button.URL = [attributes objectForKey:DTLinkAttribute];
-    button.GUID = [attributes objectForKey:DTGUIDAttribute];
-    
-    NSMutableAttributedString *attributedString = [string mutableCopy];
-    NSRange range = NSMakeRange(0, [attributedString length]);
-	NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:(__bridge id)WP_LINK_COLOR.CGColor forKey:(id)kCTForegroundColorAttributeName];
-    
-    [attributedString addAttributes:stringAttributes range:range];
-    button.attributedString = attributedString;
-    
-    NSMutableAttributedString *highlightedString = [string mutableCopy];
-	NSDictionary *highlightedAttributes = [NSDictionary dictionaryWithObject:(__bridge id)[UIColor darkGrayColor].CGColor forKey:(id)kCTForegroundColorAttributeName];
-    
-    [highlightedString addAttributes:highlightedAttributes range:range];
-    
-    button.highlightedAttributedString = highlightedString;
-    
-    [button addTarget:self action:@selector(linkPushed:) forControlEvents:UIControlEventTouchUpInside];
-    return button;
+//    NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
+//    
+//    DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
+//    button.URL = [attributes objectForKey:DTLinkAttribute];
+//    button.GUID = [attributes objectForKey:DTGUIDAttribute];
+//    
+//    NSMutableAttributedString *attributedString = [string mutableCopy];
+//    NSRange range = NSMakeRange(0, [attributedString length]);
+//	NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:(__bridge id)WP_LINK_COLOR.CGColor forKey:(id)kCTForegroundColorAttributeName];
+//    
+//    [attributedString addAttributes:stringAttributes range:range];
+//    button.attributedString = attributedString;
+//    
+//    NSMutableAttributedString *highlightedString = [string mutableCopy];
+//	NSDictionary *highlightedAttributes = [NSDictionary dictionaryWithObject:(__bridge id)[UIColor darkGrayColor].CGColor forKey:(id)kCTForegroundColorAttributeName];
+//    
+//    [highlightedString addAttributes:highlightedAttributes range:range];
+//    
+//    button.highlightedAttributedString = highlightedString;
+//    
+//    [button addTarget:self action:@selector(linkPushed:) forControlEvents:UIControlEventTouchUpInside];
+//    return button;
+//	
+	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
+	
+	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
+	NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
+	
+	
+	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
+	button.URL = URL;
+	button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
+	button.GUID = identifier;
+	
+	// get image with normal link text
+	UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
+	[button setImage:normalImage forState:UIControlStateNormal];
+	
+	// get image for highlighted link text
+	UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
+	[button setImage:highlightImage forState:UIControlStateHighlighted];
+	
+	// use normal push action for opening URL
+	[button addTarget:self action:@selector(handleLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
+	
+	return button;
 }
 
 - (void)linkPushed:(id)sender {

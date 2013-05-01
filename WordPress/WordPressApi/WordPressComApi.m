@@ -604,6 +604,22 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 	[self getPath:path parameters:params success:success failure:failure];
 }
 
+- (void)likePost:(NSInteger)postID fromSite:(id)site success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessResponseBlock)failure {
+	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%d/likes/new"];
+	[self postPath:path parameters:nil success:success failure:failure];
+}
+
+- (void)unlikePost:(NSInteger)postID fromSite:(id)site success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessResponseBlock)failure {
+	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%d/likes/mine/delete"];
+	[self postPath:path parameters:nil success:success failure:failure];
+}
+
+- (void)reblogPost:(NSInteger)postID fromSite:(id)site success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessResponseBlock)failure {
+	// TODO: Update this when the API supports specifying which blog to reblog to. Right now it uses the user's default blog. (What if they don't have one!!!)
+	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%d/reblogs/new"];
+	[self postPath:path parameters:nil success:success failure:failure];
+}
+
 
 #pragma mark - Oauth methods
 
