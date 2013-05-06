@@ -9,13 +9,13 @@
 #import <objc/runtime.h>
 
 #import "Blog+Jetpack.h"
+#import "WPAccount.h"
 #import "SFHFKeychainUtils.h"
 #import "WordPressAppDelegate.h"
 
 NSString * const BlogJetpackErrorDomain = @"BlogJetpackError";
 NSString * const BlogJetpackApiBaseUrl = @"https://public-api.wordpress.com/";
 NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
-NSString * const BlogJetpackKeychainPrefix = @"jetpackblog-";
 
 // AFJSONRequestOperation requires that a URI end with .json in order to match
 // This will make any request to be processed as JSON
@@ -51,14 +51,13 @@ NSString * const BlogJetpackKeychainPrefix = @"jetpackblog-";
 - (NSString *)jetpackUsername {
     NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
 
-    return [[NSUserDefaults standardUserDefaults] stringForKey:[self jetpackDefaultsKey]];
+    return self.jetpackAccount.username;
 }
 
 - (NSString *)jetpackPassword {
     NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
 
-    NSError *error = nil;
-    return [SFHFKeychainUtils getPasswordForUsername:[self jetpackUsername] andServiceName:@"WordPress.com" error:&error];
+    return self.jetpackAccount.password;
 }
 
 - (void)validateJetpackUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *))failure {
@@ -123,21 +122,16 @@ NSString * const BlogJetpackKeychainPrefix = @"jetpackblog-";
 
 - (void)removeJetpackCredentials {
     NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[self jetpackDefaultsKey]];
+
+    self.account = nil;
 }
 
 #pragma mark - Private methods
 
 - (void)saveJetpackUsername:(NSString *)username andPassword:(NSString *)password {
     NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
-    [[NSUserDefaults standardUserDefaults] setObject:username forKey:[self jetpackDefaultsKey]];
-    NSError *error;
-    [SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:@"WordPress.com" updateExisting:YES error:&error];
-}
-
-- (NSString *)jetpackDefaultsKey {
-    NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
-    return [NSString stringWithFormat:@"%@%@", BlogJetpackKeychainPrefix, self.url];
+    WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username andPassword:password];
+    self.jetpackAccount = account;
 }
 
 /*

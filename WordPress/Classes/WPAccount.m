@@ -16,6 +16,8 @@
 static NSString * const DefaultDotcomAccountDefaultsKey = @"AccountDefaultDotcom";
 static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
 static WPAccount *__defaultDotcomAccount = nil;
+NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
+
 
 @interface WPAccount ()
 @property (nonatomic, retain) NSString *xmlrpc;
@@ -61,11 +63,13 @@ static WPAccount *__defaultDotcomAccount = nil;
     __defaultDotcomAccount = account;
     NSURL *accountURL = [[account objectID] URIRepresentation];
     [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:DefaultDotcomAccountDefaultsKey];
+    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:account];
 }
 
 + (void)removeDefaultWordPressComAccount {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
     __defaultDotcomAccount = nil;
+    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
 - (void)prepareForDeletion {
@@ -80,6 +84,9 @@ static WPAccount *__defaultDotcomAccount = nil;
 + (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username andPassword:(NSString *)password {
     WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:DotcomXmlrpcKey username:username andPassword:password];
     account.isWpcom = YES;
+    if (__defaultDotcomAccount == nil) {
+        [self setDefaultWordPressComAccount:account];
+    }
     return account;
 }
 
