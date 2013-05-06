@@ -209,7 +209,7 @@
             [req addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
             NSString *paramDataString = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@",
                                          @"log", [self.apost.blog.username stringByUrlEncoding],
-                                         @"pwd", [[self.apost.blog fetchPassword] stringByUrlEncoding],
+                                         @"pwd", [self.apost.blog.password stringByUrlEncoding],
                                          @"redirect_to", [link stringByUrlEncoding]];
 
             NSData *paramData = [paramDataString dataUsingEncoding:NSUTF8StringEncoding];

@@ -238,7 +238,7 @@
                 
                 Blog *blog = self.apost.blog;
                 NSString *username = blog.username;
-                NSString *password = [blog fetchPassword];
+                NSString *password = blog.password;
                 
                 NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
                 NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=",

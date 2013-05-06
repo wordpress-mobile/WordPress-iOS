@@ -10,6 +10,7 @@
 #import "Page.h"
 #import "Category.h"
 #import "Comment.h"
+#import "WPAccount.h"
 #import "SFHFKeychainUtils.h"
 #import "UIImage+Resize.h"
 #import "NSURL+IDN.h"
@@ -40,12 +41,14 @@
     BOOL _isReachable;
 }
 
-@dynamic blogID, blogName, url, username, password, xmlrpc, apiKey;
+@dynamic blogID, blogName, url, xmlrpc, apiKey;
 @dynamic isAdmin, hasOlderPosts, hasOlderPages;
 @dynamic posts, categories, comments; 
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync, lastUpdateWarning;
 @synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
 @dynamic geolocationEnabled, options, postFormats, isActivated;
+@dynamic account;
+@dynamic jetpackAccount;
 
 #pragma mark -
 #pragma mark Dealloc
@@ -81,70 +84,6 @@
 
 #pragma mark -
 #pragma mark Custom methods
-
-+ (BOOL)blogExistsForURL:(NSString *)theURL withContext:(NSManagedObjectContext *)moc andUsername:(NSString *)username{
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog"
-                                        inManagedObjectContext:moc]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"url like %@ AND username = %@", theURL, username]];
-    NSError *error = nil;
-    NSArray *results = [moc executeFetchRequest:fetchRequest error:&error];
-     fetchRequest = nil;
-    
-    return (results.count > 0);
-}
-
-+ (Blog *)createFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext *)moc {
-    Blog *blog = nil;
-    NSString *blogUrl = [[blogInfo objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	if([blogUrl hasSuffix:@"/"])
-		blogUrl = [blogUrl substringToIndex:blogUrl.length-1];
-	blogUrl= [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
-    if (![self blogExistsForURL:blogUrl withContext:moc andUsername: [blogInfo objectForKey:@"username"]]) {
-        blog = [[Blog alloc] initWithEntity:[NSEntityDescription entityForName:@"Blog"
-                                                         inManagedObjectContext:moc]
-              insertIntoManagedObjectContext:moc];
-        
-        blog.url = blogUrl;
-        blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
-        blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];
-		blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
-        blog.username = [blogInfo objectForKey:@"username"];
-        blog.isAdmin = [NSNumber numberWithInt:[[blogInfo objectForKey:@"isAdmin"] intValue]];
-        
-        NSError *error = nil;
-		if(blog.isWPcom) {
-			[SFHFKeychainUtils storeUsername:[blogInfo objectForKey:@"username"]
-								 andPassword:[blogInfo objectForKey:@"password"]
-							  forServiceName:@"WordPress.com"
-							  updateExisting:TRUE
-									   error:&error ];
-		} else {
-			[SFHFKeychainUtils storeUsername:[blogInfo objectForKey:@"username"]
-								 andPassword:[blogInfo objectForKey:@"password"]
-							  forServiceName:blog.hostURL
-							  updateExisting:TRUE
-									   error:&error ];
-		}
-        // TODO: save blog settings
-	}
-    return blog;
-}
-
-+ (Blog *)findWithId:(int)blogId withContext:(NSManagedObjectContext *)moc {
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"blogID = %d", blogId]];
-
-    NSError *err = nil;
-    NSArray *result = [moc executeFetchRequest:request error:&err];
-    Blog *blog = nil;
-    if (err == nil && [result count] > 0 ) {
-        blog = [result objectAtIndex:0];
-    }
-    return blog;
-}
 
 + (NSInteger)countWithContext:(NSManagedObjectContext *)moc {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -329,7 +268,7 @@
     NSMutableArray *result = [NSMutableArray array];
     [result addObject:self.blogID];
     [result addObject:self.username];
-    [result addObject:[self fetchPassword]];
+    [result addObject:self.password];
     
     if ([extra isKindOfClass:[NSArray class]]) {
         [result addObjectsFromArray:extra];
@@ -338,27 +277,6 @@
     }
     
     return [NSArray arrayWithArray:result];
-}
-
-- (NSString *)fetchPassword {
-    NSError *err;
-	NSString *password;
-
-	if (self.isWPcom) {
-        password = [SFHFKeychainUtils getPasswordForUsername:self.username
-                                              andServiceName:@"WordPress.com"
-                                                       error:&err];
-    } else {
-		password = [SFHFKeychainUtils getPasswordForUsername:self.username
-                                              andServiceName:self.hostURL
-                                                       error:&err];
-	}
-    // The result of fetchPassword is stored in NSArrays in several places.
-    // Make sure we return an empty string instead of nil to prevent a crash.
-	if (password == nil)
-		password = @"";
-
-	return password;
 }
 
 - (NSString *)version {
@@ -390,6 +308,14 @@
 
 - (void)setReachable:(BOOL)reachable {
     _isReachable = reachable;
+}
+
+- (NSString *)username {
+    return self.account.username;
+}
+
+- (NSString *)password {
+    return self.account.password;
 }
 
 #pragma mark -

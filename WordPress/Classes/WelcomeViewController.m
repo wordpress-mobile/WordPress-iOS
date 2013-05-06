@@ -16,6 +16,7 @@
 #import "EditSiteViewController.h"
 #import "WPcomLoginViewController.h"
 #import "WordPressComApi.h"
+#import "WPAccount.h"
 
 @interface WelcomeViewController () <
     WPcomLoginViewControllerDelegate,
@@ -139,26 +140,9 @@
 - (IBAction)handleAddBlogTapped:(id)sender {
     [WPMobileStats trackEventForWPCom:StatsEventWelcomeViewControllerClickedAddWordpressDotComBlog];
 
-    NSString *username = nil;
-    NSString *password = nil;
-    
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
-        NSError *error = nil;
-        username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        password = [SFHFKeychainUtils getPasswordForUsername:username
-                                              andServiceName:@"WordPress.com"
-                                                       error:&error];
-    }
-    
     if(appDelegate.isWPcomAuthenticated) {
-        AddUsersBlogsViewController *addUsersBlogsView;
-        if (IS_IPAD == YES)
-            addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController-iPad" bundle:nil];
-        else
-            addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
+        AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithAccount:[WPAccount defaultWordPressComAccount]];
         addUsersBlogsView.isWPcom = YES;
-        [addUsersBlogsView setUsername:username];
-        [addUsersBlogsView setPassword:password];
         [self.navigationController pushViewController:addUsersBlogsView animated:YES];
     }
     else {
@@ -231,7 +215,7 @@
 }
 
 
-- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithUsername:(NSString *)username {
+- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithAccount:(WPAccount *)account {
     [self.navigationController popViewControllerAnimated:NO];
     [self handleAddBlogTapped:nil];
 }

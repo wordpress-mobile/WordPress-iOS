@@ -14,6 +14,7 @@
 #import "UIBarButtonItem+Styled.h"
 #import "ReachabilityUtils.h"
 #import "UIImageView+Gravatar.h"
+#import "WPAccount.h"
 
 @interface AddUsersBlogsViewController() <CreateWPComBlogViewControllerDelegate>
 
@@ -28,6 +29,7 @@
 @implementation AddUsersBlogsViewController {
     UIAlertView *failureAlertView;
     BOOL _hideSignInButton;
+    WPAccount *_account;
 }
 
 @synthesize usersBlogs, isWPcom, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;
@@ -41,6 +43,14 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     failureAlertView.delegate = nil;
+}
+
+- (AddUsersBlogsViewController *)initWithAccount:(WPAccount *)account {
+    self = [super init];
+    if (self) {
+        _account = account;
+    }
+    return self;
 }
 
 - (void)viewDidLoad {
@@ -113,10 +123,7 @@
         [self.navigationController presentModalViewController:wpComLogin animated:YES];
 	}
 	else if(isWPcom) {
-		if((usersBlogs == nil) && ([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"] != nil)) {
-			usersBlogs = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"];
-		}
-		else if(usersBlogs == nil) {
+		if (usersBlogs == nil) {
 			[self refreshBlogs];
 		} else if([usersBlogs count] == 0){
             [self refreshBlogs]; //Maybe just returning from creating a blog
@@ -365,7 +372,8 @@
 }
 
 - (void)signOut { 
-    if (isWPcom) { 
+    if (isWPcom) {
+        [WPAccount removeDefaultWordPressComAccount];
         [[WordPressComApi sharedApi] signOut]; 
     } 
     [self.navigationController popViewControllerAnimated:YES]; 
@@ -383,12 +391,10 @@
     NSURL *xmlrpc;
     NSString *username, *password;
     if (isWPcom) {
-        NSError *error = nil;
         xmlrpc = [NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"];
-        username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        password = [SFHFKeychainUtils getPasswordForUsername:username
-                                              andServiceName:@"WordPress.com"
-                                                       error:&error];
+        WPAccount *account = [WPAccount defaultWordPressComAccount];
+        username = account.username;
+        password = account.password;
     } else {
         xmlrpc = [NSURL URLWithString:_url];
         username = self.username;
@@ -599,24 +605,16 @@
 }
 
 - (void)createBlog:(NSDictionary *)blogInfo {
-    NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogInfo];
-    [newBlog setObject:self.username forKey:@"username"];
-    [newBlog setObject:self.password forKey:@"password"];
-    WPLog(@"creating blog: %@", newBlog);
-    Blog *blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
+    WPLog(@"creating blog: %@", blogInfo);
+    Blog *blog = [_account findOrCreateBlogFromDictionary:blogInfo];
 	blog.geolocationEnabled = self.geolocationEnabled;
 	[blog dataSave];
     [blog syncBlogWithSuccess:^{
         if( ! [blog isWPcom] )
             [[WordPressComApi sharedApi] syncPushNotificationInfo];
-    }
+        }
                       failure:nil];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
-}
-
-- (void)cancelAddWPcomBlogs {
-	UIViewController *controller = [self.navigationController.viewControllers objectAtIndex:1];
-	[self.navigationController popToViewController:controller animated:NO];
 }
 
 -(void)checkAddSelectedButtonStatus {

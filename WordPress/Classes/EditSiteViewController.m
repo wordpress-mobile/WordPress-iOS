@@ -68,7 +68,7 @@
         
         self.url = blog.url;
         self.username = blog.username;
-		self.password = [blog fetchPassword];
+		self.password = blog.password;
 
         self.startingUser = self.username;
         self.startingPwd = self.password;
@@ -508,7 +508,6 @@
 	[savingIndicator setHidden:YES];
     blog.url = self.url;
     blog.xmlrpc = xmlrpc;
-    blog.username = self.username;
     blog.geolocationEnabled = self.geolocationEnabled;
 	NSError *error = nil;
 	//check if the blog is a WP.COM blog

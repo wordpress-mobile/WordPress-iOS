@@ -156,7 +156,7 @@
 }
 
 - (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, [self.blog fetchPassword], nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, self.blog.password, nil];
     [self.blog.api callMethod:@"wp.getPage"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -183,7 +183,7 @@
         return;
     }
     
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, [self.blog fetchPassword], [self XMLRPCDictionary], nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, self.blog.password, [self XMLRPCDictionary], nil];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
     [self.blog.api callMethod:@"wp.editPage"
                    parameters:parameters
