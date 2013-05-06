@@ -69,6 +69,14 @@
 	
 	self.title = self.post.postTitle;
 	
+	self.likeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleLikeButtonTapped:)];
+	self.followButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleFollowButtonTapped:)];
+	self.reblogButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleReblogButtonTapped:)];
+	self.actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(handleActionButtonTapped:)];
+	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+	[self setToolbarItems:@[placeholder, _likeButton, placeholder, _followButton, placeholder, _reblogButton, placeholder, _actionButton, placeholder] animated:YES];
+	self.navigationController.toolbarHidden = NO;
+	
 	CGRect frame = self.tableView.frame;
 	self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, 44.0f)];
 	_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -208,6 +216,9 @@
 		img = [UIImage imageNamed:@""];
 	}
 	[self.reblogButton setImage:img];
+	
+	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+	[self setToolbarItems:@[placeholder, _likeButton, placeholder, _followButton, placeholder, _reblogButton, placeholder, _actionButton, placeholder] animated:YES];
 }
 
 
