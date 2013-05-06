@@ -7,18 +7,18 @@
 //
 
 #import "ReaderPostDetailViewController.h"
-#import "UIImageView+Gravatar.h"
 #import <DTCoreText/DTCoreText.h>
 #import <QuartzCore/QuartzCore.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <MessageUI/MFMailComposeViewController.h>
+#import "UIImageView+Gravatar.h"
 #import "WPActivities.h"
 #import "WPWebViewController.h"
 #import "ReaderMediaView.h"
 #import "ReaderImageView.h"
 #import "ReaderVideoView.h"
 
-@interface ReaderPostDetailViewController ()<DTAttributedTextContentViewDelegate, DTWebVideoViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
+@interface ReaderPostDetailViewController ()<DTAttributedTextContentViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) NSMutableSet *mediaPlayers;
@@ -46,7 +46,7 @@
 
 
 - (id)initWithPost:(ReaderPost *)apost {
-	self = [super initWithNibName:nil bundle:nil];
+	self = [super initWithStyle:UITableViewStylePlain];
 	if(self) {
 		self.post = apost;
 		self.mediaArray = [NSMutableArray array];
@@ -56,7 +56,7 @@
 
 
 - (id)initWithDictionary:(NSDictionary *)dict {
-	self = [super initWithNibName:nil bundle:nil];
+	self = [super initWithStyle:UITableViewStylePlain];
 	if(self) {
 		// TODO: for supporting Twitter cards.
 	}
@@ -68,8 +68,31 @@
 	[super viewDidLoad];
 	
 	self.title = self.post.postTitle;
-	self.titleLabel.text = [self.post.blogName stringByReplacingHTMLEntities];
-	[self.blavatarImageView setImageWithBlavatarUrl:[self.post blogURL]];
+	
+	CGRect frame = self.tableView.frame;
+	self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, 44.0f)];
+	_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	
+	self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, 44.0f)];
+	_headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_headerView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0];
+	
+	self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(44.0f, 0.0f, frame.size.width - 76.0f, 44.0f)];
+	_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_titleLabel.text = [self.post.blogName stringByReplacingHTMLEntities];
+	_titleLabel.backgroundColor = [UIColor clearColor];
+	
+	self.blavatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 44.0f, 44.0f)];
+	[_blavatarImageView setImageWithBlavatarUrl:[self.post blogURL]];
+	
+	UIImageView *disclosureImage = [[UIImageView alloc] initWithFrame:CGRectMake(frame.size.width - 32.0f, 11.0f, 22.0f, 22.0f)];
+	disclosureImage.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+	disclosureImage.image = [UIImage imageNamed:@""];
+
+	[_headerView addSubview:disclosureImage];
+	[_headerView addSubview:_blavatarImageView];
+	[_headerView addSubview:_titleLabel];
+	[_contentView addSubview:_headerView];
 	
 	self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 44.0f, self.view.frame.size.width, 44.0f)];
 	_textContentView.delegate = self;
@@ -78,7 +101,7 @@
 	_textContentView.edgeInsets = UIEdgeInsetsMake(0.f, 10.f, 0.f, 10.f);
 	_textContentView.shouldDrawImages = NO;
 	_textContentView.shouldDrawLinks = NO;
-	[self.contentView addSubview:_textContentView];
+	[_contentView addSubview:_textContentView];
 	
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
 														  DTDefaultFontFamily: @"Helvetica",
@@ -100,10 +123,10 @@
 	
 	// Then update the layout
 	// need to reset the layouter because otherwise we get the old framesetter or cached layout frames
-	self.textContentView.layouter = nil;
+	_textContentView.layouter = nil;
 	
 	// layout might have changed due to image sizes
-	[self.textContentView relayoutText];
+	[_textContentView relayoutText];
 	
 	[self updateLayout];
 }
@@ -119,11 +142,11 @@
 	
 	// Size the scrollView's content view.
 	frame = self.contentView.frame;
-	frame.size.width = self.view.frame.size.width;
+	frame.size.width = self.tableView.frame.size.width;
 	frame.size.height = 64.0f + height;
-	self.contentView.frame = frame;
-
-	[self.scrollView setContentSize:self.contentView.frame.size];
+	_contentView.frame = frame;
+	
+	[self.tableView reloadData];
 }
 
 
@@ -188,7 +211,7 @@
 }
 
 
-- (IBAction)handleTitleButtonTapped:(id)sender {
+- (void)handleTitleButtonTapped:(id)sender {
 	NSLog(@"Title Tapped");
 	
 	WPWebViewController *controller = [[WPWebViewController alloc] init];
@@ -197,7 +220,7 @@
 }
 
 
-- (IBAction)handleLikeButtonTapped:(id)sender {
+- (void)handleLikeButtonTapped:(id)sender {
 	NSLog(@"Like Tapped");
 	[self.post toggleLikedWithSuccess:^{
 		
@@ -208,7 +231,7 @@
 }
 
 
-- (IBAction)handleFollowButtonTapped:(id)sender {
+- (void)handleFollowButtonTapped:(id)sender {
 	NSLog(@"Follow tapped");
 	[self.post toggleFollowingWithSuccess:^{
 		
@@ -219,7 +242,7 @@
 }
 
 
-- (IBAction)handleReblogButtonTapped:(id)sender {
+- (void)handleReblogButtonTapped:(id)sender {
 	NSLog(@"Reblog tapped");
 	[self.post reblogPostToSite:nil success:^{
 		
@@ -230,7 +253,7 @@
 }
 
 
-- (IBAction)handleActionButtonTapped:(id)sender {
+- (void)handleActionButtonTapped:(id)sender {
 	
 	if (self.linkOptionsActionSheet) {
         [self.linkOptionsActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
@@ -327,7 +350,46 @@
 }
 
 
-#pragma mark - UIActionSheet Delegate
+#pragma mark - UITableView Delegate Methods
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	if (section != 0) return nil;
+	
+	return _contentView;
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	if (section != 0) return 0.0f;
+	
+	return _contentView.frame.size.height;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return [self.post.comments count]; // number of comments
+}
+
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	return 1;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReaderCommentCell"];
+	if (!cell) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ReaderCommentCell"];
+	}
+	return cell;
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+}
+
+#pragma mark - UIActionSheet Delegate Methods
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	

@@ -396,7 +396,6 @@
 		5DD8A70B15A63F4700A673A4 /* wp_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A70115A63F4700A673A4 /* wp_logo.png */; };
 		5DD8A70C15A63F4700A673A4 /* wp_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5DD8A70215A63F4700A673A4 /* wp_logo@2x.png */; };
 		5DD91BC5163983670053E560 /* SoundUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DD91BC4163983670053E560 /* SoundUtil.m */; };
-		5DE02E2C1720E003004548C6 /* ReaderPostDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DE02E2B1720E003004548C6 /* ReaderPostDetailViewController.xib */; };
 		5DE486B31700B0F600D624F3 /* ReaderComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE486B21700B0F600D624F3 /* ReaderComment.m */; };
 		5DE486B61700B22A00D624F3 /* ReaderPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE486B51700B22A00D624F3 /* ReaderPost.m */; };
 		5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B3156FCD3400242C35 /* WPWebView.m */; };
@@ -1171,7 +1170,6 @@
 		5DD8A70215A63F4700A673A4 /* wp_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "wp_logo@2x.png"; path = "Resources/Images/wp_logo@2x.png"; sourceTree = "<group>"; };
 		5DD91BC3163983670053E560 /* SoundUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundUtil.h; sourceTree = "<group>"; };
 		5DD91BC4163983670053E560 /* SoundUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundUtil.m; sourceTree = "<group>"; };
-		5DE02E2B1720E003004548C6 /* ReaderPostDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderPostDetailViewController.xib; sourceTree = "<group>"; };
 		5DE486B11700B0F600D624F3 /* ReaderComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderComment.h; sourceTree = "<group>"; };
 		5DE486B21700B0F600D624F3 /* ReaderComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderComment.m; sourceTree = "<group>"; };
 		5DE486B41700B22A00D624F3 /* ReaderPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPost.h; sourceTree = "<group>"; };
@@ -2274,14 +2272,6 @@
 			name = Welcome;
 			sourceTree = "<group>";
 		};
-		5DE02E2A1720DFBE004548C6 /* Reader */ = {
-			isa = PBXGroup;
-			children = (
-				5DE02E2B1720E003004548C6 /* ReaderPostDetailViewController.xib */,
-			);
-			name = Reader;
-			sourceTree = "<group>";
-		};
 		8320B5CF11FCA3EA00607422 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -3039,7 +3029,6 @@
 		E19472D8134E3E4A00879F63 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				5DE02E2A1720DFBE004548C6 /* Reader */,
 				37195B7F166A5DDC005F2292 /* Notifications */,
 				373C5181156D0504007C2977 /* Panels */,
 				ACFF1DC00E231EF600EC6BF5 /* Blog */,
@@ -3700,7 +3689,6 @@
 				E12A08E416C9706200E3DDF6 /* clouds_header@2x.png in Resources */,
 				E15051CE16CA8E4900D3DDDC /* logo_jetpack.png in Resources */,
 				E15051CF16CA8E4900D3DDDC /* logo_jetpack@2x.png in Resources */,
-				5DE02E2C1720E003004548C6 /* ReaderPostDetailViewController.xib in Resources */,
 				5D6E39B81730822600E973A9 /* reader-video-placholder.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,27 +8,26 @@
 
 #import <UIKit/UIKit.h>
 #import "ReaderPost.h"
+#import "WPRefreshViewController.h"
 
-@interface ReaderPostDetailViewController : UIViewController <UIScrollViewDelegate>
+@interface ReaderPostDetailViewController : WPRefreshViewController
 
 @property (nonatomic, strong) ReaderPost *post;
 
-@property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
-@property (nonatomic, strong) IBOutlet UIView *contentView;
-@property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *likeButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *followButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *reblogButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *actionButton;
-@property (nonatomic, strong) IBOutlet UIView *headerView;
-@property (nonatomic, strong) IBOutlet UIImageView *blavatarImageView;
-@property (nonatomic, strong) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) UIBarButtonItem *likeButton;
+@property (nonatomic, strong) UIBarButtonItem *followButton;
+@property (nonatomic, strong) UIBarButtonItem *reblogButton;
+@property (nonatomic, strong) UIBarButtonItem *actionButton;
+@property (nonatomic, strong) UIView *headerView;
+@property (nonatomic, strong) UIImageView *blavatarImageView;
+@property (nonatomic, strong) UILabel *titleLabel;
 
 - (id)initWithPost:(ReaderPost *)apost;
-- (IBAction)handleLikeButtonTapped:(id)sender;
-- (IBAction)handleFollowButtonTapped:(id)sender;
-- (IBAction)handleReblogButtonTapped:(id)sender;
-- (IBAction)handleActionButtonTapped:(id)sender;
-- (IBAction)handleTitleButtonTapped:(id)sender;
+- (void)handleLikeButtonTapped:(id)sender;
+- (void)handleFollowButtonTapped:(id)sender;
+- (void)handleReblogButtonTapped:(id)sender;
+- (void)handleActionButtonTapped:(id)sender;
+- (void)handleTitleButtonTapped:(id)sender;
 
 @end
