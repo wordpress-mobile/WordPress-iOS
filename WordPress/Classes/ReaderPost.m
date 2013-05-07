@@ -265,12 +265,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		self.authorEmail = [author objectForKey:@"email"];
 	}
 
-	if([[dict objectForKey:@"comment_count"] isKindOfClass:[NSNumber class]]){
-		self.commentCount = [dict objectForKey:@"comment_count"];
-	} else {
-		self.commentCount = [NSNumber numberWithInteger:[[dict objectForKey:@"comment_count"] integerValue]];
-	}
-
+    self.commentCount = [dict numberForKey:@"comment_count"];
 	self.dateSynced = [NSDate date];
 	self.featuredImage = featuredImage;
 	
