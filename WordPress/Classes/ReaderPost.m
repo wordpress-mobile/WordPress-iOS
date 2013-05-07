@@ -269,12 +269,12 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	self.dateSynced = [NSDate date];
 	self.featuredImage = featuredImage;
 	
-	self.isFollowing = [dict objectForKey:@"is_following"];
-	self.isLiked = [dict objectForKey:@"is_liked"];
-	self.isReblogged = [dict objectForKey:@"is_reblogged"];
-	self.likeCount = [dict objectForKey:@"like_count"];
+	self.isFollowing = [dict numberForKey:@"is_following"];
+	self.isLiked = [dict numberForKey:@"is_liked"];
+	self.isReblogged = [dict numberForKey:@"is_reblogged"];
+	self.likeCount = [dict numberForKey:@"like_count"];
 
-	self.siteID = [dict objectForKey:@"site_ID"];
+	self.siteID = [dict numberForKey:@"site_ID"];
 	self.status = [dict objectForKey:@"status"];
 
 }
@@ -348,9 +348,9 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	
 	NSString *path = nil;
 	if (like) {
-		path = [NSString stringWithFormat:@"sites/%@/posts/%d/likes/new"];
+		path = [NSString stringWithFormat:@"sites/%@/posts/%d/likes/new", self.siteID, self.postID];
 	} else {
-		path = [NSString stringWithFormat:@"sites/%@/posts/%d/likes/mine/delete"];
+		path = [NSString stringWithFormat:@"sites/%@/posts/%d/likes/mine/delete", self.siteID, self.postID];
 	}
 
 	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -380,9 +380,9 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	
 	NSString *path = nil;
 	if (follow) {
-		path = [NSString stringWithFormat:@"sites/%@/follows/new"];
+		path = [NSString stringWithFormat:@"sites/%@/follows/new", self.siteID];
 	} else {
-		path = [NSString stringWithFormat:@"sites/%@/follows/mine/delete"];
+		path = [NSString stringWithFormat:@"sites/%@/follows/mine/delete", self.siteID];
 	}
 	
 	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -403,8 +403,8 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 
 - (void)reblogPostToSite:(id)newSite success:(void (^)())success failure:(void (^)(NSError *error))failure {
-	return;
-	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%d/reblogs/new"];
+	return; // Short circuited until the API is updated
+	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%d/reblogs/new", self.siteID, self.postID];
 	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if(success) {
 			success();
