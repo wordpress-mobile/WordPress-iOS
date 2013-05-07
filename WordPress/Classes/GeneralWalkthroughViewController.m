@@ -8,9 +8,11 @@
 
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <WPXMLRPC/WPXMLRPC.h>
+#import "UIView+FormSheetHelpers.h"
 #import "GeneralWalkthroughViewController.h"
 #import "CreateWPComAccountViewController.h"
 #import "AddUsersBlogsViewController.h"
+#import "NewAddUsersBlogViewController.h"
 #import "AboutViewController.h"
 #import "WPWalkthroughButton.h"
 #import "WPWalkthroughLineSeparatorView.h"
@@ -20,6 +22,10 @@
 #import "Blog+Jetpack.h"
 #import "LoginCompletedWalkthroughViewController.h"
 #import "JetpackSettingsViewController.h"
+#import "WPWalkthroughGrayOverlayView.h"
+#import "LoginCompletedWalkthroughViewController.h"
+#import "ReachabilityUtils.h"
+#import "SFHFKeychainUtils.h"
 
 @interface GeneralWalkthroughViewController () <
     UIScrollViewDelegate,
@@ -55,8 +61,8 @@
     WPWalkthroughButton *_signInButton;
     UILabel *_createAccountLabel;
     
-    CGFloat _pageWidth;
-    CGFloat _pageHeight;
+    CGFloat _viewWidth;
+    CGFloat _viewHeight;
     
     CGFloat _bottomPanelOriginalX;
     CGFloat _skipToCreateAccountOriginalX;
@@ -68,6 +74,7 @@
     BOOL _userIsDotCom;
     BOOL _blogHasJetpack;
     BOOL _savedOriginalPositionsOfStickyControls;
+    BOOL _hasViewAppeared;
     NSArray *_blogs;
     Blog *_blog;
 }
@@ -81,9 +88,7 @@ NSUInteger const GeneralWalkthroughStandardOffset = 16;
 NSUInteger const GeneralWalkthroughBottomBackgroundHeight = 64;
 NSUInteger const GeneralWalkthroughBottomButtonWidth = 136.0;
 NSUInteger const GeneralWalkthroughBottomButtonHeight = 32.0;
-
-NSUInteger const GeneralWalkthroughFailureAlertViewBadURLErrorTag = 20;
-NSUInteger const GeneralWalkthroughFailureAlertViewXMLRPCErrorTag = 30;
+NSUInteger const GeneralWalkthroughKeyboardOffset = 65;
 
 NSUInteger const GeneralWalkthroughUsernameTextFieldTag = 1;
 NSUInteger const GeneralWalkthroughPasswordTextFieldTag = 2;
@@ -103,11 +108,9 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self getInitialWidthAndHeight];
     
     self.view.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:140.0/255.0 blue:190.0/255.0 alpha:1.0];
@@ -116,7 +119,11 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     [self initializePage2];
     [self initializePage3];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];
+    if (!IS_IPAD) {
+        // We don't need to shift the controls up on the iPad as there's enough space.
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow) name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide) name:UIKeyboardWillHideNotification object:nil];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -129,8 +136,8 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 {
     [super viewDidAppear:animated];
     
-    _pageWidth = CGRectGetWidth(self.view.bounds);
-    _pageHeight = CGRectGetHeight(self.view.bounds);
+    _viewWidth = CGRectGetWidth(self.view.bounds);
+    _viewHeight = CGRectGetHeight(self.view.bounds);
     
     // We are technically laying out the view twice on this view's initialization, but as we hardcoded the width/height
     // in viewDidLoad to prevent a flicker, we are doing this should the hardcoded dimensions no longer be correct in a
@@ -141,6 +148,18 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     [self layoutPage2Controls];
     [self layoutPage3Controls];
     [self savePositionsOfStickyControls];
+    
+    if (_hasViewAppeared) {
+        // This is for the case when the user pulls up another view from the sign in page and returns to this view. When that
+        // happens the sticky controls on the bottom won't be in the correct place, so in order to set them up we first
+        // 'page' to the second page to make sure that the controls at the bottom are in place should the user page back
+        // and then we 'page' to the current content offset in the _scrollView to ensure that the bottom panel is in
+        // the correct place
+        [self moveStickyControlsForContentOffset:CGPointMake(_viewWidth, 0)];
+        [self moveStickyControlsForContentOffset:_scrollView.contentOffset];
+    }
+    
+    _hasViewAppeared = true;    
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -154,49 +173,99 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView.contentOffset.x < 0) {
-        //TODO: Remove this duplication
+    NSUInteger pageViewed = ceil(scrollView.contentOffset.x/_viewWidth) + 1;
+    [self flagPageViewed:pageViewed];
+    [self moveStickyControlsForContentOffset:scrollView.contentOffset];
+}
+
+//- (void)moveStickyControlsForContentOffset:(CGPoint)contentOffset
+//{
+//    if (contentOffset.x < 0) {
+//        //TODO: Remove this duplication
+//        CGRect bottomPanelFrame = _bottomPanel.frame;
+//        bottomPanelFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
+//        _bottomPanel.frame = bottomPanelFrame;
+//        
+//        CGRect skipToCreateAccountFrame = _skipToCreateAccount.frame;
+//        skipToCreateAccountFrame.origin.x = _skipToCreateAccountOriginalX + contentOffset.x;
+//        _skipToCreateAccount.frame = skipToCreateAccountFrame;
+//        
+//        CGRect skipToSignInFrame = _skipToSignIn.frame;
+//        skipToSignInFrame.origin.x = _skipToSignInOriginalX + contentOffset.x;
+//        _skipToSignIn.frame = skipToSignInFrame;
+//        
+//        return;
+//    }
+//    
+//    NSUInteger pageViewed = ceil(contentOffset.x/_viewWidth) + 1;
+//    // We only want the sign in, create account and help buttons to drag along until we hit the sign in screen
+//    if (pageViewed < 3) {
+//        // If the user is editing the sign in page and then swipes over, dismiss keyboard
+//        [self.view endEditing:YES];
+//        
+//        CGRect skipToCreateAccountFrame = _skipToCreateAccount.frame;
+//        skipToCreateAccountFrame.origin.x = _skipToCreateAccountOriginalX + contentOffset.x;
+//        _skipToCreateAccount.frame = skipToCreateAccountFrame;
+//        
+//        CGRect skipToSignInFrame = _skipToSignIn.frame;
+//        skipToSignInFrame.origin.x = _skipToSignInOriginalX + contentOffset.x;
+//        _skipToSignIn.frame = skipToSignInFrame;
+//        
+//        CGRect pageControlFrame = _pageControl.frame;
+//        pageControlFrame.origin.x = _pageControlOriginalX + contentOffset.x;
+//        _pageControl.frame = pageControlFrame;
+//    }
+//    
+//    CGRect bottomPanelFrame = _bottomPanel.frame;
+//    bottomPanelFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
+//    _bottomPanel.frame = bottomPanelFrame;
+//}
+
+- (void)moveStickyControlsForContentOffset:(CGPoint)contentOffset
+{
+    // TODO: Redo this method, it's confusing.
+    
+    if (contentOffset.x < 0) {
         CGRect bottomPanelFrame = _bottomPanel.frame;
-        bottomPanelFrame.origin.x = _bottomPanelOriginalX + scrollView.contentOffset.x;
+        bottomPanelFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
         _bottomPanel.frame = bottomPanelFrame;
         
         CGRect skipToCreateAccountFrame = _skipToCreateAccount.frame;
-        skipToCreateAccountFrame.origin.x = _skipToCreateAccountOriginalX + scrollView.contentOffset.x;
+        skipToCreateAccountFrame.origin.x = _skipToCreateAccountOriginalX + contentOffset.x;
         _skipToCreateAccount.frame = skipToCreateAccountFrame;
         
         CGRect skipToSignInFrame = _skipToSignIn.frame;
-        skipToSignInFrame.origin.x = _skipToSignInOriginalX + scrollView.contentOffset.x;
+        skipToSignInFrame.origin.x = _skipToSignInOriginalX + contentOffset.x;
         _skipToSignIn.frame = skipToSignInFrame;
-
+        
         return;
     }
     
-    NSUInteger pageViewed = ceil(scrollView.contentOffset.x/_pageWidth) + 1;
-    
+    NSUInteger pageViewed = ceil(contentOffset.x/_viewWidth) + 1;
     // We only want the sign in, create account and help buttons to drag along until we hit the sign in screen
     if (pageViewed < 3) {
         // If the user is editing the sign in page and then swipes over, dismiss keyboard
         [self.view endEditing:YES];
-
+        
         CGRect skipToCreateAccountFrame = _skipToCreateAccount.frame;
-        skipToCreateAccountFrame.origin.x = _skipToCreateAccountOriginalX + scrollView.contentOffset.x;
+        skipToCreateAccountFrame.origin.x = _skipToCreateAccountOriginalX + contentOffset.x;
         _skipToCreateAccount.frame = skipToCreateAccountFrame;
         
         CGRect skipToSignInFrame = _skipToSignIn.frame;
-        skipToSignInFrame.origin.x = _skipToSignInOriginalX + scrollView.contentOffset.x;
+        skipToSignInFrame.origin.x = _skipToSignInOriginalX + contentOffset.x;
         _skipToSignIn.frame = skipToSignInFrame;
         
         CGRect pageControlFrame = _pageControl.frame;
-        pageControlFrame.origin.x = _pageControlOriginalX + scrollView.contentOffset.x;
+        pageControlFrame.origin.x = _pageControlOriginalX + contentOffset.x;
         _pageControl.frame = pageControlFrame;
     }
     
     CGRect bottomPanelFrame = _bottomPanel.frame;
-    bottomPanelFrame.origin.x = _bottomPanelOriginalX + scrollView.contentOffset.x;
+    bottomPanelFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
     _bottomPanel.frame = bottomPanelFrame;
-    
-    [self flagPageViewed:pageViewed];
 }
+
+
 
 #pragma mark - UITextField delegate methods
 
@@ -211,57 +280,82 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
             [_siteUrlText becomeFirstResponder];
             break;
         case GeneralWalkthroughSiteUrlTextFieldTag:
-            [self clickedSignIn:nil];
+            if (_signInButton.enabled) {
+                [self clickedSignIn:nil];
+            }
             break;
     }
 	return YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     _signInButton.enabled = [self areDotComFieldsFilled];
     return YES;
 }
 
-#pragma mark - UIAlertView Delegate Related
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    _signInButton.enabled = [self areDotComFieldsFilled];
+    return YES;
+}
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    BOOL isUsernameFilled = [self isUsernameFilled];
+    BOOL isPasswordFilled = [self isPasswordFilled];
     
-    if (alertView.tag == GeneralWalkthroughFailureAlertViewBadURLErrorTag) {
-        [self handleAlertViewForBadURL:alertView withButtonIndex:buttonIndex];
-    } else if (alertView.tag == GeneralWalkthroughFailureAlertViewXMLRPCErrorTag) {
-        [self handleAlertViewForXMLRPCError:alertView withButtonIndex:buttonIndex];
-    } else {
-        [self handleAlertViewForGeneralError:alertView withButtonIndex:buttonIndex];
+    NSMutableString *updatedString = [[NSMutableString alloc] initWithString:textField.text];
+    [updatedString replaceCharactersInRange:range withString:string];
+    BOOL updatedStringHasContent = [[updatedString trim] length] != 0;
+    if (textField == _usernameText) {
+        isUsernameFilled = updatedStringHasContent;
+    } else if (textField == _passwordText) {
+        isPasswordFilled = updatedStringHasContent;
     }
+    _signInButton.enabled = isUsernameFilled && isPasswordFilled;
+    
+    return YES;
 }
 
-- (void)handleAlertViewForBadURL:(UIAlertView *)alertView withButtonIndex:(NSInteger)buttonIndex
+#pragma mark - Displaying of Error Messages
+
+- (WPWalkthroughGrayOverlayView *)baseLoginErrorOverlayView:(NSString *)message
 {
-    if (buttonIndex == 0) {
-        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-        webViewController.url = [NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"];
-        [self.navigationController setNavigationBarHidden:NO animated:NO];
-        [self.navigationController pushViewController:webViewController animated:YES];
-    }
+    WPWalkthroughGrayOverlayView *overlayView = [[WPWalkthroughGrayOverlayView alloc] initWithFrame:self.view.bounds];
+    overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode;
+    overlayView.overlayTitle = NSLocalizedString(@"Sorry, can't log in", nil);
+    overlayView.overlayDescription = message;
+    overlayView.footerDescription = @"TAP TO DISMISS";
+    overlayView.button1Text = NSLocalizedString(@"Need Help?", nil);
+    overlayView.button2Text = NSLocalizedString(@"OK", nil);
+    overlayView.singleTapCompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+        [overlayView dismiss];
+    };
+    return overlayView;
 }
 
-- (void)handleAlertViewForXMLRPCError:(UIAlertView *)alertView withButtonIndex:(NSInteger)buttonIndex
+- (void)displayErrorMessageForXMLRPC:(NSString *)message
 {
-    if (buttonIndex == 0) {
-        [self showHelpViewController];
-    } else if (buttonIndex == 1) {
+    WPWalkthroughGrayOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
+    overlayView.button2Text = NSLocalizedString(@"Enable Now", nil);
+    overlayView.button1CompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+        [overlayView dismiss];
+        [self showHelpViewController:NO];
+    };
+    overlayView.button2CompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+        [overlayView dismiss];
+        
         NSString *path = nil;
         NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:nil];
-        NSString *msg = [alertView message];
-        NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
+        NSRange rng = [regex rangeOfFirstMatchInString:message options:0 range:NSMakeRange(0, [message length])];
         
         if (rng.location == NSNotFound) {
             path = [self getSiteUrl];
             path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
             path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
         } else {
-            path = [msg substringWithRange:rng];
+            path = [message substringWithRange:rng];
         }
         
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
@@ -270,15 +364,40 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [webViewController setPassword:_passwordText.text];
         webViewController.shouldScrollToBottom = YES;
         [self.navigationController setNavigationBarHidden:NO animated:NO];
-        [self.navigationController pushViewController:webViewController animated:YES];
-    }
+        [self.navigationController pushViewController:webViewController animated:NO];
+    };
+    [self.view addSubview:overlayView];
 }
 
-- (void)handleAlertViewForGeneralError:(UIAlertView *)alertView withButtonIndex:(NSInteger)buttonIndex
+- (void)displayErrorMessageForBadUrl:(NSString *)message
 {
-    if (buttonIndex == 0) {
-        [self showHelpViewController];
-    }
+    WPWalkthroughGrayOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
+    overlayView.button1CompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+        [overlayView dismiss];
+        
+        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+        webViewController.url = [NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"];
+        [self.navigationController setNavigationBarHidden:NO animated:NO];
+        [self.navigationController pushViewController:webViewController animated:NO];
+    };
+    overlayView.button2CompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+        [overlayView dismiss];
+    };
+    [self.view addSubview:overlayView];
+}
+
+- (void)displayGenericErrorMessage:(NSString *)message
+{
+    WPWalkthroughGrayOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
+    overlayView.button1CompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+        [overlayView dismiss];
+        
+        [self showHelpViewController:NO];
+    };
+    overlayView.button2CompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+        [overlayView dismiss];
+    };
+    [self.view addSubview:overlayView];
 }
 
 #pragma mark - Button Press Methods
@@ -295,13 +414,13 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 
 - (void)clickedSkipToCreate:(id)sender
 {
-    [_scrollView setContentOffset:CGPointMake(_pageWidth * 2, 0) animated:NO];
+    [_scrollView setContentOffset:CGPointMake(_viewWidth * 2, 0) animated:NO];
     [self clickedCreateAccount:nil];
 }
 
 - (void)clickedSkipToSignIn:(id)sender
 {
-    [_scrollView setContentOffset:CGPointMake(_pageWidth * 2, 0) animated:YES];
+    [_scrollView setContentOffset:CGPointMake(_viewWidth * 2, 0) animated:YES];
 }
 
 - (void)clickedCreateAccount:(UITapGestureRecognizer *)tapGestureRecognizer
@@ -323,6 +442,13 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 
 - (void)clickedSignIn:(id)sender
 {
+    [self.view endEditing:YES];
+
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
+    
     if (![self areFieldsValid]) {
         [self displayErrorMessages];
         return;
@@ -337,7 +463,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 {
     [self.navigationController popViewControllerAnimated:NO];
     _userIsDotCom = true;
-    [self displayAddUsersBlogsForWPCom];
+    [self showAddUsersBlogsForWPCom];
 }
 
 - (void)createdAccountWithUserName:(NSString *)userName
@@ -352,7 +478,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 {
     _scrollView = [[UIScrollView alloc] init];
     CGSize scrollViewSize = _scrollView.contentSize;
-    scrollViewSize.width = _pageWidth * 3;
+    scrollViewSize.width = _viewWidth * 3;
     _scrollView.frame = self.view.bounds;
     _scrollView.contentSize = scrollViewSize;
     _scrollView.pagingEnabled = true;
@@ -384,7 +510,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_infoButton];
     }
     
-    // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
+    // Add Logo
     if (_page1Icon == nil) {
         _page1Icon = [[UILabel alloc] init];
         _page1Icon.backgroundColor = [UIColor clearColor];
@@ -396,6 +522,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_page1Icon];
     }
     
+    // Add Title
     if (_page1Title == nil) {
         _page1Title = [[UILabel alloc] init];
         _page1Title.backgroundColor = [UIColor clearColor];
@@ -403,7 +530,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         _page1Title.numberOfLines = 0;
         _page1Title.lineBreakMode = UILineBreakModeWordWrap;
         _page1Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
-        _page1Title.text = NSLocalizedString(@"Welcome to WordPress", @"");
+        _page1Title.text = NSLocalizedString(@"Welcome to WordPress", nil);
         _page1Title.shadowColor = _textShadowColor;
         _page1Title.shadowOffset = CGSizeMake(1.0, 1.0);
         _page1Title.textColor = [UIColor whiteColor];
@@ -411,11 +538,13 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_page1Title];
     }
     
+    // Add Top Separator
     if (_page1TopSeparator == nil) {
         _page1TopSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
         [_scrollView addSubview:_page1TopSeparator];
     }
 
+    // Add Description
     if (_page1Description == nil) {
         _page1Description = [[UILabel alloc] init];
         _page1Description.backgroundColor = [UIColor clearColor];
@@ -429,6 +558,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_page1Description];
     }
 
+    // Add Bottom Separator
     if (_page1BottomSeparator == nil) {
         _page1BottomSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
         [_scrollView addSubview:_page1BottomSeparator];
@@ -441,6 +571,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_bottomPanel];
     }
     
+    // Add Page Control
     if (_pageControl == nil) {
         // The page control adds a bunch of extra space for padding that messes with our calculations.
         _pageControl = [[UIPageControl alloc] init];
@@ -456,6 +587,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_pageControl];
     }
 
+    // Add "SWIPE TO CONTINUE" text
     if (_page1SwipeToContinue == nil) {
         _page1SwipeToContinue = [[UILabel alloc] init];
         _page1SwipeToContinue.backgroundColor = [UIColor clearColor];
@@ -469,6 +601,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_page1SwipeToContinue];
     }
 
+    // Add Skip to Create Account Button
     if (_skipToCreateAccount == nil) {
         _skipToCreateAccount = [[WPWalkthroughButton alloc] init];
         _skipToCreateAccount.text = @"Create Account";
@@ -476,6 +609,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_skipToCreateAccount];
     }
     
+    // Add Skip to Sign in Button
     if (_skipToSignIn == nil) {
         _skipToSignIn = [[WPWalkthroughButton alloc] init];
         _skipToSignIn.text = @"Sign In";
@@ -483,7 +617,6 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_skipToSignIn];
     }
 }
-
 
 - (void)layoutPage1Controls
 {
@@ -494,53 +627,62 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     CGFloat extraIconSpaceOnTop = 56;
     CGFloat extraIconSpaceOnBottom = 50;
     CGFloat x,y;
-    x = (_pageWidth - CGRectGetWidth(_page1Icon.frame))/2.0;
+    x = (_viewWidth - CGRectGetWidth(_page1Icon.frame))/2.0;
     x = [self adjustX:x forPage:1];
     y = GeneralWalkthroughIconVerticalOffset - extraIconSpaceOnTop;
     _page1Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1Icon.frame), CGRectGetHeight(_page1Icon.frame)));
  
-    x = (_pageWidth - CGRectGetWidth(_page1Title.frame))/2.0;
+    // Layout Title
+    x = (_viewWidth - CGRectGetWidth(_page1Title.frame))/2.0;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMaxY(_page1Icon.frame) + GeneralWalkthroughStandardOffset - extraIconSpaceOnBottom;
     _page1Title.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1Title.frame), CGRectGetHeight(_page1Title.frame)));
     
+    // Layout Top Separator
     x = GeneralWalkthroughStandardOffset;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMaxY(_page1Title.frame) + 3 * GeneralWalkthroughStandardOffset;
-    _page1TopSeparator.frame = CGRectMake(x, y, _pageWidth - 2*GeneralWalkthroughStandardOffset, 2);
+    _page1TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
     
+    // Layout Description
     CGSize labelSize = [_page1Description.text sizeWithFont:_page1Description.font constrainedToSize:CGSizeMake(289.0, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
-    x = (_pageWidth - labelSize.width)/2.0;
+    x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMaxY(_page1TopSeparator.frame) + GeneralWalkthroughStandardOffset;
     _page1Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
     
+    // Layout Bottom Separator
     x = GeneralWalkthroughStandardOffset;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMaxY(_page1Description.frame) + GeneralWalkthroughStandardOffset;
-    _page1BottomSeparator.frame = CGRectMake(x, y, _pageWidth - 2*GeneralWalkthroughStandardOffset, 2);
+    _page1BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
     
+    // Layout Bottom Panel
     x = 0;
     x = [self adjustX:x forPage:1];
-    y = _pageHeight - GeneralWalkthroughBottomBackgroundHeight;
-    _bottomPanel.frame = CGRectMake(x, y, _pageWidth, GeneralWalkthroughBottomBackgroundHeight);
+    y = _viewHeight - GeneralWalkthroughBottomBackgroundHeight;
+    _bottomPanel.frame = CGRectMake(x, y, _viewWidth, GeneralWalkthroughBottomBackgroundHeight);
     
+    // Layout Page Control
     CGFloat verticalSpaceForPageControl = 15;
-    x = (_pageWidth - CGRectGetWidth(_pageControl.frame))/2.0;
+    x = (_viewWidth - CGRectGetWidth(_pageControl.frame))/2.0;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMinY(_bottomPanel.frame) - GeneralWalkthroughStandardOffset - CGRectGetHeight(_pageControl.frame) + verticalSpaceForPageControl;
     _pageControl.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_pageControl.frame), CGRectGetHeight(_pageControl.frame)));
     
-    x = (_pageWidth - CGRectGetWidth(_page1SwipeToContinue.frame))/2.0;
+    // Layout Swipe to Continue
+    x = (_viewWidth - CGRectGetWidth(_page1SwipeToContinue.frame))/2.0;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMinY(_pageControl.frame) - 5 - CGRectGetHeight(_page1SwipeToContinue.frame) + verticalSpaceForPageControl;
     _page1SwipeToContinue.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1SwipeToContinue.frame), CGRectGetHeight(_page1SwipeToContinue.frame)));
     
-    x = (_pageWidth - 2*GeneralWalkthroughBottomButtonWidth - GeneralWalkthroughStandardOffset)/2.0;
+    // Layout Skip to Create Account Button
+    x = (_viewWidth - 2*GeneralWalkthroughBottomButtonWidth - GeneralWalkthroughStandardOffset)/2.0;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMinY(_bottomPanel.frame) + GeneralWalkthroughStandardOffset;
     _skipToCreateAccount.frame = CGRectMake(x, y, GeneralWalkthroughBottomButtonWidth, GeneralWalkthroughBottomButtonHeight);
 
+    // Layout Skip to Sign In Button
     x = CGRectGetMaxX(_skipToCreateAccount.frame) + GeneralWalkthroughStandardOffset;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMinY(_skipToCreateAccount.frame);
@@ -555,6 +697,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 
 - (void)addPage2Controls
 {
+    // Add Icon
     if (_page2Icon == nil) {
         _page2Icon = [[UILabel alloc] init];
         _page2Icon.backgroundColor = [UIColor clearColor];
@@ -566,6 +709,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_page2Icon];
     }
     
+    // Add Title
     if (_page2Title == nil) {
         _page2Title = [[UILabel alloc] init];
         _page2Title.backgroundColor = [UIColor clearColor];
@@ -581,11 +725,13 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_page2Title];
     }
     
+    // Add Top Separator
     if (_page2TopSeparator == nil) {
         _page2TopSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
         [_scrollView addSubview:_page2TopSeparator];
     }
     
+    // Add Description
     if (_page2Description == nil) {
         _page2Description = [[UILabel alloc] init];
         _page2Description.backgroundColor = [UIColor clearColor];
@@ -599,6 +745,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_page2Description];
     }
     
+    // Add Bottom Separator
     if (_page2BottomSeparator == nil) {
         _page2BottomSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
         [_scrollView addSubview:_page2BottomSeparator];
@@ -608,34 +755,39 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 - (void)layoutPage2Controls
 {
     CGFloat x,y;
+    
     // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
     CGFloat extraIconSpaceOnTop = 40;
     CGFloat extraIconSpaceOnBottom = 68;
-    x = (_pageWidth - CGRectGetWidth(_page2Icon.frame))/2.0;
+    x = (_viewWidth - CGRectGetWidth(_page2Icon.frame))/2.0;
     x = [self adjustX:x forPage:2];
     y = GeneralWalkthroughIconVerticalOffset - extraIconSpaceOnTop;
     _page2Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2Icon.frame), CGRectGetHeight(_page2Icon.frame)));
 
-    x = (_pageWidth - CGRectGetWidth(_page2Title.frame))/2.0;
+    // Layout Title
+    x = (_viewWidth - CGRectGetWidth(_page2Title.frame))/2.0;
     x = [self adjustX:x forPage:2];
     y = CGRectGetMaxY(_page2Icon.frame) + GeneralWalkthroughStandardOffset - extraIconSpaceOnBottom;
     _page2Title.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2Title.frame), CGRectGetHeight(_page2Title.frame)));
 
+    // Layout Top Separator
     x = GeneralWalkthroughStandardOffset;
     x = [self adjustX:x forPage:2];
     y = CGRectGetMaxY(_page2Title.frame) + GeneralWalkthroughStandardOffset;
-    _page2TopSeparator.frame = CGRectMake(x, y, _pageWidth - 2*GeneralWalkthroughStandardOffset, 2);
+    _page2TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
 
+    // Layout Description
     CGSize labelSize = [_page2Description.text sizeWithFont:_page2Description.font constrainedToSize:CGSizeMake(289.0, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
-    x = (_pageWidth - labelSize.width)/2.0;
+    x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:2];
     y = CGRectGetMaxY(_page2TopSeparator.frame) + GeneralWalkthroughStandardOffset;
     _page2Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
     
+    // Layout Bottom Separator
     x = GeneralWalkthroughStandardOffset;
     x = [self adjustX:x forPage:2];
     y = CGRectGetMaxY(_page2Description.frame) + GeneralWalkthroughStandardOffset;
-    _page2BottomSeparator.frame = CGRectMake(x, y, _pageWidth - 2*GeneralWalkthroughStandardOffset, 2);
+    _page2BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
 }
 
 - (void)initializePage3
@@ -646,6 +798,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 
 - (void)addPage3Controls
 {
+    // Add Icon
     if (_page3Icon == nil) {
         _page3Icon = [[UILabel alloc] init];
         _page3Icon.backgroundColor = [UIColor clearColor];
@@ -657,11 +810,13 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_page3Icon];
     }
     
+    // Add Username
     if (_usernameText == nil) {
         _usernameText = [[WPWalkthroughTextField alloc] init];
         _usernameText.backgroundColor = [UIColor whiteColor];
         _usernameText.placeholder = @"Username / email";
         _usernameText.font = [UIFont fontWithName:@"OpenSans" size:21.0];
+        _usernameText.adjustsFontSizeToFitWidth = true;
         _usernameText.delegate = self;
         _usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
         _usernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -669,6 +824,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_usernameText];
     }
     
+    // Add Password
     if (_passwordText == nil) {
         _passwordText = [[WPWalkthroughTextField alloc] init];
         _passwordText.backgroundColor = [UIColor whiteColor];
@@ -680,11 +836,13 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_passwordText];
     }
     
+    // Add Site Url
     if (_siteUrlText == nil) {
         _siteUrlText = [[WPWalkthroughTextField alloc] init];
         _siteUrlText.backgroundColor = [UIColor whiteColor];
         _siteUrlText.placeholder = @"Site Address (URL)";
         _siteUrlText.font = [UIFont fontWithName:@"OpenSans" size:21.0];
+        _siteUrlText.adjustsFontSizeToFitWidth = true;
         _siteUrlText.delegate = self;
         _siteUrlText.tag = GeneralWalkthroughSiteUrlTextFieldTag;
         _siteUrlText.keyboardType = UIKeyboardTypeURL;
@@ -694,6 +852,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_siteUrlText];
     }
     
+    // Add Sign In Button
     if (_signInButton == nil) {
         _signInButton = [[WPWalkthroughButton alloc] init];
         _signInButton.text = @"Sign In";
@@ -702,6 +861,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [_scrollView addSubview:_signInButton];
     }
     
+    // Add Create Account Text
     if (_createAccountLabel == nil) {
         _createAccountLabel = [[UILabel alloc] init];
         _createAccountLabel.backgroundColor = [UIColor clearColor];
@@ -724,36 +884,41 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
     CGFloat extraIconSpaceOnTop = 19;
     CGFloat extraIconSpaceOnBottom = 34;
-    x = (_pageWidth - CGRectGetWidth(_page3Icon.frame))/2.0;
+    x = (_viewWidth - CGRectGetWidth(_page3Icon.frame))/2.0;
     x = [self adjustX:x forPage:3];
     y = GeneralWalkthroughIconVerticalOffset- extraIconSpaceOnTop;
     _page3Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page3Icon.frame), CGRectGetHeight(_page3Icon.frame)));
 
+    // Layout Username
     CGFloat textFieldWidth = 288.0;
     CGFloat textFieldHeight = 44.0;
-    x = (_pageWidth - textFieldWidth)/2.0;
+    x = (_viewWidth - textFieldWidth)/2.0;
     x = [self adjustX:x forPage:3];
     y = CGRectGetMaxY(_page3Icon.frame) + GeneralWalkthroughStandardOffset - extraIconSpaceOnBottom;
     _usernameText.frame = CGRectIntegral(CGRectMake(x, y, textFieldWidth, textFieldHeight));
 
-    x = (_pageWidth - textFieldWidth)/2.0;
+    // Layout Password
+    x = (_viewWidth - textFieldWidth)/2.0;
     x = [self adjustX:x forPage:3];
     y = CGRectGetMaxY(_usernameText.frame) + GeneralWalkthroughStandardOffset;
     _passwordText.frame = CGRectIntegral(CGRectMake(x, y, textFieldWidth, textFieldHeight));
 
-    x = (_pageWidth - textFieldWidth)/2.0;
+    // Layout Site URL
+    x = (_viewWidth - textFieldWidth)/2.0;
     x = [self adjustX:x forPage:3];
     y = CGRectGetMaxY(_passwordText.frame) + GeneralWalkthroughStandardOffset;
     _siteUrlText.frame = CGRectIntegral(CGRectMake(x, y, textFieldWidth, textFieldHeight));
 
+    // Layout Sign in Button
     CGFloat signInButtonWidth = 160.0;
     CGFloat signInButtonHeight = 40.0;
-    x = (_pageWidth - signInButtonWidth) / 2.0;;
+    x = (_viewWidth - signInButtonWidth) / 2.0;;
     x = [self adjustX:x forPage:3];
     y = CGRectGetMaxY(_siteUrlText.frame) + 2*GeneralWalkthroughStandardOffset;
     _signInButton.frame = CGRectMake(x, y, signInButtonWidth, signInButtonHeight);
 
-    x = (_pageWidth - CGRectGetWidth(_createAccountLabel.frame))/2.0;
+    // Layout Create Account Label
+    x = (_viewWidth - CGRectGetWidth(_createAccountLabel.frame))/2.0;
     x = [self adjustX:x forPage:3];
     y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame) - CGRectGetHeight(_createAccountLabel.frame))/2.0;
     _createAccountLabel.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_createAccountLabel.frame), CGRectGetHeight(_createAccountLabel.frame)));
@@ -761,20 +926,14 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 
 - (void)getInitialWidthAndHeight
 {
-    if (IS_IPAD) {
-        // This is a hacky, but it seems like Apple won't give you the correct dimensions of a view inside a form sheet
-        // until viewDidAppear which will result in a nasty layout flicker because we don't have the correct dimensions
-        // from self.view.bounds.
-        _pageWidth = 540;
-        _pageHeight = 620;
-    } else {
-        _pageWidth = CGRectGetWidth(self.view.bounds);
-        _pageHeight = CGRectGetHeight(self.view.bounds);
-    }
+    _viewWidth = [self.view formSheetViewWidth];
+    _viewHeight = [self.view formSheetViewHeight];
 }
 
 - (void)savePositionsOfStickyControls
 {
+    // The reason we save these positions is because it allows us to drag certain controls along
+    // the scrollview as the user moves along the walkthrough.
     if (!_savedOriginalPositionsOfStickyControls) {
         _savedOriginalPositionsOfStickyControls = true;
         _skipToCreateAccountOriginalX = CGRectGetMinX(_skipToCreateAccount.frame);
@@ -786,7 +945,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 
 - (CGFloat)adjustX:(CGFloat)x forPage:(NSUInteger)page
 {
-    return (x + _pageWidth*(page-1));
+    return (x + _viewWidth*(page-1));
 }
 
 - (void)flagPageViewed:(NSUInteger)pageViewed
@@ -794,18 +953,10 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     _pageControl.currentPage = pageViewed - 1;
 }
 
-- (void)blogsRefreshNotificationReceived:(NSNotification *)notification
-{
-    // User added blogs, now show completion walkthrough
-    [self.navigationController popViewControllerAnimated:NO];
-    [self showCompletionWalkthrough];
-}
-
 - (void)showCompletionWalkthrough
 {
-    BOOL showExtraPages = _userIsDotCom || _blogHasJetpack;
     LoginCompletedWalkthroughViewController *loginCompletedViewController = [[LoginCompletedWalkthroughViewController alloc] init];
-    loginCompletedViewController.showsExtraWalkthroughPages = showExtraPages;
+    loginCompletedViewController.showsExtraWalkthroughPages = _userIsDotCom || _blogHasJetpack;
     [self.navigationController pushViewController:loginCompletedViewController animated:YES];
 }
 
@@ -821,18 +972,18 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
 }
 
-- (void)showHelpViewController
+- (void)showHelpViewController:(BOOL)animated
 {
     HelpViewController *helpViewController = [[HelpViewController alloc] init];
     helpViewController.isBlogSetup = YES;
     [self.navigationController setNavigationBarHidden:NO animated:NO];
-    [self.navigationController pushViewController:helpViewController animated:YES];
+    [self.navigationController pushViewController:helpViewController animated:animated];
 }
 
-- (BOOL)isUrlWPCom
+- (BOOL)isUrlWPCom:(NSString *)url
 {
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"wordpress\\.com/?$" options:NSRegularExpressionCaseInsensitive error:nil];
-    NSArray *result = [protocol matchesInString:[_siteUrlText.text trim] options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [[_siteUrlText.text trim] length])];
+    NSArray *result = [protocol matchesInString:[url trim] options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [[url trim] length])];
     
     return [result count] != 0;
 }
@@ -843,7 +994,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     NSString *url = [siteURL absoluteString];
     
     // If the user enters a WordPress.com url we want to ensure we are communicating over https
-    if ([self isUrlWPCom]) {
+    if ([self isUrlWPCom:url]) {
         if (siteURL.scheme == nil) {
             url = [NSString stringWithFormat:@"https://%@", url];
         } else {
@@ -868,8 +1019,6 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     return url;
 }
 
-#pragma mark - Private Methods Related to Sign In
-
 - (BOOL)areFieldsValid
 {
     if ([self areSelfHostedFieldsFilled]) {
@@ -879,9 +1028,19 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     }
 }
 
+- (BOOL)isUsernameFilled
+{
+    return [[_usernameText.text trim] length] != 0;
+}
+
+- (BOOL)isPasswordFilled
+{
+    return [[_passwordText.text trim] length] != 0;
+}
+
 - (BOOL)areDotComFieldsFilled
 {
-    return [[_usernameText.text trim] length] != 0 && [[_passwordText.text trim] length] != 0;
+    return [self isUsernameFilled] && [self isPasswordFilled];
 }
 
 - (BOOL)areSelfHostedFieldsFilled
@@ -914,12 +1073,12 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 
 - (void)signIn
 {
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", nil) maskType:SVProgressHUDMaskTypeBlack];
     
     NSString *username = _usernameText.text;
     NSString *password = _passwordText.text;
     
-    if ([self hasUserOnlyEnteredValuesForDotCom]) {
+    if ([self hasUserOnlyEnteredValuesForDotCom] || [self isUrlWPCom:_siteUrlText.text]) {
         [self signInForWPComForUsername:username andPassword:password];
         return;
     }
@@ -956,19 +1115,14 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     
     void (^loginSuccessBlock)(void) = ^{
         [SVProgressHUD dismiss];
-        [self displayAddUsersBlogsForWPCom];
+        [self showAddUsersBlogsForWPCom];
     };
     
     void (^loginFailBlock)(NSError *) = ^(NSError *error){
         // User shouldn't get here because the getOptions call should fail, but in the unlikely case they do throw up an error message.
         [SVProgressHUD dismiss];
         WPFLog(@"Login failed with username %@ : %@", username, error);
-        UIAlertView *failureAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", nil)
-                                                                   message:NSLocalizedString(@"Please update your credentials and try again.", @"")
-                                                                  delegate:self
-                                                         cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-                                                         otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-        [failureAlertView show];
+        [self displayGenericErrorMessage:NSLocalizedString(@"Please update your credentials and try again.", nil)];
     };
     
     [[WordPressComApi sharedApi] signInWithUsername:username
@@ -980,13 +1134,12 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 
 - (void)signInForSelfHostedForUsername:(NSString *)username password:(NSString *)password options:(NSDictionary *)options andApi:(WordPressXMLRPCApi *)api
 {
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Reading blog options", @"") maskType:SVProgressHUDMaskTypeBlack];
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Reading blog options", nil) maskType:SVProgressHUDMaskTypeBlack];
     
     if ([options objectForKey:@"jetpack_version"] != nil) {
         _blogHasJetpack = true;
     }
     
-    // Self Hosted
     [api getBlogsWithSuccess:^(NSArray *blogs) {
         _blogs = blogs;
         [self handleGetBlogsSuccess:[api.xmlrpc absoluteString]];
@@ -1004,7 +1157,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     } else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
         [self displayRemoteError:error];
     } else if([error.domain isEqual:AFNetworkingErrorDomain]) {
-        NSString *str = [NSString stringWithFormat:NSLocalizedString(@"There was a server error communicating with your site:\n%@\nTap 'Need Help?' to view the FAQ.", @""), [error localizedDescription]];
+        NSString *str = [NSString stringWithFormat:NSLocalizedString(@"There was a server error communicating with your site:\n%@\nTap 'Need Help?' to view the FAQ.", nil), [error localizedDescription]];
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                   str, NSLocalizedDescriptionKey,
                                   nil];
@@ -1012,7 +1165,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [self displayRemoteError:err];
     } else {
         NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  NSLocalizedString(@"Unable to find a WordPress site at that URL. Tap 'Need Help?' to view the FAQ.", @""), NSLocalizedDescriptionKey,
+                                  NSLocalizedString(@"Unable to find a WordPress site at that URL. Tap 'Need Help?' to view the FAQ.", nil), NSLocalizedDescriptionKey,
                                   nil];
         NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadURL userInfo:userInfo];
         [self displayRemoteError:err];
@@ -1033,13 +1186,14 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         }
         
         if ([_blogs count] > 1 && [[subsite objectForKey:@"blogid"] isEqualToString:@"1"]) {
-            [self displayAddUsersBlogsForXmlRpc:xmlRPCUrl];
+            [SVProgressHUD dismiss];
+            [self showAddUsersBlogsForSelfHosted:xmlRPCUrl];
         } else {
             [self createBlogWithXmlRpc:xmlRPCUrl andBlogDetails:subsite];
             [self synchronizeNewlyAddedBlog];
         }
     } else {
-        NSError *error = [NSError errorWithDomain:@"WordPress" code:0 userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Sorry, you credentials were good but you don't seem to have access to any blogs", @"")}];
+        NSError *error = [NSError errorWithDomain:@"WordPress" code:0 userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Sorry, you credentials were good but you don't seem to have access to any blogs", nil)}];
         [self displayRemoteError:error];
     }
 }
@@ -1047,63 +1201,59 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 - (void)displayRemoteError:(NSError *)error {
     NSString *message = [error localizedDescription];
     if ([error code] == 403) {
-        message = NSLocalizedString(@"Please update your credentials and try again.", @"");
+        message = NSLocalizedString(@"Please update your credentials and try again.", nil);
     }
     
-    UIAlertView *failureAlertView;
+    if ([[message trim] length] == 0) {
+        message = NSLocalizedString(@"Sign in failed. Please try again.", nil);
+    }
+    
     if ([error code] == 405) {
-        // XMLRPC disabled.
-        failureAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
-                                                      message:message
-                                                     delegate:self
-                                            cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-                                            otherButtonTitles:NSLocalizedString(@"Enable Now", @""), nil];
-        
-        failureAlertView.tag = GeneralWalkthroughFailureAlertViewXMLRPCErrorTag;
+        [self displayErrorMessageForXMLRPC:message];
     } else {
-        failureAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
-                                                      message:message
-                                                     delegate:self
-                                            cancelButtonTitle:NSLocalizedString(@"Need Help?", @"")
-                                            otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-        
         if ([error code] == NSURLErrorBadURL) {
-            // take the user to the FAQ page when they hit "Need Help"
-            failureAlertView.tag = GeneralWalkthroughFailureAlertViewBadURLErrorTag;
+            [self displayErrorMessageForBadUrl:message];
+        } else {
+            [self displayGenericErrorMessage:message];
         }
     }
+}
+
+- (NewAddUsersBlogViewController *)addUsersBlogViewController
+{
+    NewAddUsersBlogViewController *vc = [[NewAddUsersBlogViewController alloc] initWithStyle:UITableViewStylePlain];
+    vc.username = _usernameText.text;
+    vc.password = _passwordText.text;
+    vc.blogAdditionCompleted = ^(NewAddUsersBlogViewController * viewController){
+        [self.navigationController popViewControllerAnimated:NO];
+        [self showCompletionWalkthrough];
+    };
+    vc.onNoBlogsLoaded = ^(NewAddUsersBlogViewController *viewController) {
+        [self.navigationController popViewControllerAnimated:NO];
+        [self showCompletionWalkthrough];
+    };
+    vc.onErrorLoading = ^(NewAddUsersBlogViewController *viewController, NSError *error) {
+        WPFLog(@"There was an error loading blogs after sign in");
+        [self.navigationController popViewControllerAnimated:YES];
+        [self displayGenericErrorMessage:[error localizedDescription]];
+    };
     
-    [failureAlertView show];
+    return vc;
 }
 
-- (void)displayAddUsersBlogsForXmlRpc:(NSString *)xmlRPCUrl
+- (void)showAddUsersBlogsForSelfHosted:(NSString *)xmlRPCUrl
 {
-    [SVProgressHUD dismiss];
-    AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] init];
-    addUsersBlogsView.isWPcom = NO;
-    addUsersBlogsView.usersBlogs = _blogs;
-    addUsersBlogsView.url = xmlRPCUrl;
-    addUsersBlogsView.username = _usernameText.text;
-    addUsersBlogsView.password = _passwordText.text;
-    addUsersBlogsView.geolocationEnabled = true;
-    addUsersBlogsView.hideBackButton = true;
-    [self.navigationController pushViewController:addUsersBlogsView animated:YES];
+    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController];
+    vc.isWPCom = NO;
+    vc.url = xmlRPCUrl;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)displayAddUsersBlogsForWPCom
+- (void)showAddUsersBlogsForWPCom
 {
-    AddUsersBlogsViewController *addUsersBlogsView;
-    if (IS_IPAD == YES) {
-        addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController-iPad" bundle:nil];
-    }
-    else {
-        addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
-    }
-    addUsersBlogsView.isWPcom = true;
-    addUsersBlogsView.hideBackButton = true;
-    [addUsersBlogsView setUsername:_usernameText.text];
-    [addUsersBlogsView setPassword:_passwordText.text];
-    [self.navigationController pushViewController:addUsersBlogsView animated:YES];
+    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController];
+    vc.isWPCom = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)createBlogWithXmlRpc:(NSString *)xmlRPCUrl andBlogDetails:(NSDictionary *)blogDetails
@@ -1122,7 +1272,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 
 - (void)synchronizeNewlyAddedBlog
 {
-    [SVProgressHUD setStatus:NSLocalizedString(@"Synchronizing Blog", @"")];
+    [SVProgressHUD setStatus:NSLocalizedString(@"Synchronizing Blog", nil)];
     void (^successBlock)() = ^{
         [[WordPressComApi sharedApi] syncPushNotificationInfo];
         [SVProgressHUD dismiss];
@@ -1136,6 +1286,32 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         [SVProgressHUD dismiss];
     };
     [_blog syncBlogWithSuccess:successBlock failure:failureBlock];
+}
+
+- (void)keyboardWillShow
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        NSArray *controlsToMove = @[_page3Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
+        
+        for (UIControl *control in controlsToMove) {
+            CGRect frame = control.frame;
+            frame.origin.y -= GeneralWalkthroughKeyboardOffset;
+            control.frame = frame;
+        }
+    }];
+}
+
+- (void)keyboardWillHide
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        NSArray *controlsToMove = @[_page3Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
+        
+        for (UIControl *control in controlsToMove) {
+            CGRect frame = control.frame;
+            frame.origin.y += GeneralWalkthroughKeyboardOffset;
+            control.frame = frame;
+        }
+    }];
 }
 
 @end

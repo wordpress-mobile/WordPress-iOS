@@ -10,4 +10,7 @@
 
 @interface WPWalkthroughLineSeparatorView : UIView
 
+@property (nonatomic, strong) UIColor *topLineColor;
+@property (nonatomic, strong) UIColor *bottomLineColor;
+
 @end

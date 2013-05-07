@@ -15,6 +15,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _buttonColor = WPWalkthroughButtonBlue;
         self.backgroundColor = [UIColor clearColor];
         self.layer.shadowColor = [UIColor blackColor].CGColor;
         self.layer.shadowOffset = CGSizeMake(1, 1);
@@ -34,6 +35,20 @@
     [self removeClippingForRoundedCorners:context];    
 }
 
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [self setNeedsDisplay];
+    [super setHighlighted:highlighted];
+}
+
+- (void)setButtonColor:(WPWalkthroughButtonColor)buttonColor
+{
+    if (_buttonColor != buttonColor) {
+        _buttonColor = buttonColor;
+        [self setNeedsDisplay];
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)addClippingForRoundedCorners:(CGContextRef)context
@@ -51,10 +66,18 @@
 - (void)fillBackground:(CGRect)rect
 {
     UIColor *backgroundColor;
-    if (self.highlighted) {
-        backgroundColor = [UIColor colorWithRed:30.0/255.0 green:140.0/255.0 blue:190.0/255.0 alpha:1.0];
+    if (self.buttonColor == WPWalkthroughButtonBlue) {
+        if (self.highlighted) {
+            backgroundColor = [UIColor colorWithRed:30.0/255.0 green:140.0/255.0 blue:190.0/255.0 alpha:1.0];
+        } else {
+            backgroundColor = [UIColor colorWithRed:46.0/255.0 green:162.0/255.0 blue:204.0/255.0 alpha:1.0];
+        }
     } else {
-        backgroundColor = [UIColor colorWithRed:46.0/255.0 green:162.0/255.0 blue:204.0/255.0 alpha:1.0];
+        if (self.highlighted) {
+            backgroundColor = [UIColor colorWithRed:42.0/255.0 green:42.0/255.0 blue:42.0/255.0 alpha:1.0];
+        } else {
+            backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
+        }        
     }
     [backgroundColor set];
     UIRectFill(rect);
@@ -71,23 +94,11 @@
     CGSize adjustedSize = [self.text sizeWithFont:adjustedFont forWidth:textWidth lineBreakMode:UILineBreakModeTailTruncation];
     
     // Configure Text Shadow
-    UIColor *shadowColor = [UIColor colorWithRed:0 green:115.0/255.0 blue:164.0/255.0 alpha:1.0];
+    UIColor *shadowColor = [self textShadowColor];
     CGContextSaveGState(context);
     CGContextSetShadowWithColor(context, CGSizeMake(0.5, 0.5), 1.0, shadowColor.CGColor);
-    
-    if (self.enabled) {
-        if (self.highlighted) {
-            [[UIColor colorWithRed:109.0/255.0 green:190.0/255.0 blue:219.0/255.0 alpha:1.0] set];
-        } else {
-            [[UIColor whiteColor] set];
-        }
-    } else {
-        if (self.highlighted) {
-            [[UIColor whiteColor] set];
-        } else {
-            [[UIColor colorWithRed:109.0/255.0 green:190.0/255.0 blue:219.0/255.0 alpha:1.0] set];
-        }
-    }
+
+    [self configureTextColor];
     
     CGFloat x = (CGRectGetWidth(self.frame) - adjustedSize.width) / 2.0;
     CGFloat y = (CGRectGetHeight(self.frame) - adjustedSize.height) / 2.0;
@@ -96,10 +107,48 @@
     CGContextRestoreGState(context);
 }
 
-- (void)setHighlighted:(BOOL)highlighted
+- (UIColor *)textShadowColor
 {
-    [self setNeedsDisplay];
-    [super setHighlighted:highlighted];
+    if (self.buttonColor == WPWalkthroughButtonBlue) {
+        return [UIColor colorWithRed:0 green:115.0/255.0 blue:164.0/255.0 alpha:1.0];
+    } else {
+        return [UIColor whiteColor];
+    }
+}
+
+- (void)configureTextColor
+{
+    if (self.buttonColor == WPWalkthroughButtonBlue) {
+        if (self.enabled) {
+            if (self.highlighted) {
+                [[UIColor colorWithRed:109.0/255.0 green:190.0/255.0 blue:219.0/255.0 alpha:1.0] set];
+            } else {
+                [[UIColor whiteColor] set];
+            }
+        } else {
+            if (self.highlighted) {
+                [[UIColor whiteColor] set];
+            } else {
+                [[UIColor colorWithRed:109.0/255.0 green:190.0/255.0 blue:219.0/255.0 alpha:1.0] set];
+            }
+        }
+    } else {
+        if (self.enabled) {
+            if (self.highlighted) {
+                [[UIColor whiteColor] set];
+            } else {
+                [[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.9] set];
+            }
+        } else {
+            if (self.highlighted) {
+                [[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.9] set];
+            } else {
+                [[UIColor colorWithRed:109.0/255.0 green:190.0/255.0 blue:219.0/255.0 alpha:1.0] set];
+            }
+        }
+
+    }
+    
 }
 
 @end

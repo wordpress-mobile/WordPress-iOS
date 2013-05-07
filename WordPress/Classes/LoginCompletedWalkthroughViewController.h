@@ -2,7 +2,7 @@
 //  LoginCompletedWalkthroughViewController.h
 //  WordPress
 //
-//  Created by Sendhil Panchadsaram on 4/26/13.
+//  Created by Sendhil Panchadsaram on 5/1/13.
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 

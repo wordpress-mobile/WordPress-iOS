@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSUInteger, WPWalkthroughButtonColor) {
+    WPWalkthroughButtonBlue,
+    WPWalkthroughButtonGray,
+};
+
+
 @interface WPWalkthroughButton : UIControl
 
 @property (nonatomic, strong) NSString *text;
+@property (nonatomic, assign) WPWalkthroughButtonColor buttonColor;
 
 @end
