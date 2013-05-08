@@ -1,1 +1,1 @@
-../../WPXMLRPC/WPXMLRPC/WPBase64Utils.h
+../../wpxmlrpc/WPXMLRPC/WPBase64Utils.h
