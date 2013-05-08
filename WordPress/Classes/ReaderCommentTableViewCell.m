@@ -56,23 +56,28 @@
 		[self.contentView addSubview:self.imageView]; // TODO: Not sure about this...
 		self.imageView.contentMode = UIViewContentModeScaleAspectFit;
 		self.imageView.clipsToBounds = YES;
-		[self.imageView setFrame:CGRectMake(0.0f, 0.0f, 20.0f, 20.0f)];
+		[self.imageView setFrame:CGRectMake(0.5f, 0.5f, 20.0f, 20.0f)];
 		self.imageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 		
-		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - (10.0f + 50.0f), 0.0f, 30.0f, 20.0f)];
+		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - (5.0f + 30.0f), 5.0f, 30.0f, 20.0f)];
+		[_dateLabel setFont:[UIFont systemFontOfSize:14.0f]];
+		_dateLabel.textColor = [UIColor grayColor];
+		_dateLabel.textAlignment = NSTextAlignmentRight;
 		_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 		_dateLabel.backgroundColor = [UIColor clearColor];
 		[self.contentView addSubview:_dateLabel];
 		
-		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(25.0f, 0.0f, width - (60.0f + 20.0f), 20.0f)];
+		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0f, 5.0f, (_dateLabel.frame.origin.x - 40.0f), 20.0f)];
+		[_authorLabel setFont:[UIFont systemFontOfSize:14.0f]];
+		_dateLabel.textColor = [UIColor grayColor];
 		_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_authorLabel.backgroundColor = [UIColor clearColor];
 		[self.contentView addSubview:_authorLabel];
 		
-		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 25.0f, width, 44.0f)];
+		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, 44.0f)];
 		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_textContentView.backgroundColor = [UIColor clearColor];
-		_textContentView.edgeInsets = UIEdgeInsetsMake(0.f, 10.f, 0.f, 0.f);
+		_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 5.0f, 0.0f);
 		_textContentView.delegate = self;
 		_textContentView.shouldDrawLinks = NO;
 		_textContentView.shouldDrawImages = NO;
@@ -100,7 +105,7 @@
 	frame.size.width -= frame.origin.x;
 	self.contentView.frame = frame;
 	
-	[self.imageView setFrame:CGRectMake(0.0f, 0.0f, 20.0f, 20.0f)];
+	[self.imageView setFrame:CGRectMake(5.0f, 5.0f, 20.0f, 20.0f)];
 	
 	CGFloat contentWidth = self.contentView.frame.size.width;
 
@@ -161,14 +166,10 @@
 	self.comment = comment;
 
 	self.indentationLevel = [comment.depth integerValue];
-	
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateStyle:NSDateFormatterLongStyle];
-	NSString *dateStr = [dateFormatter stringFromDate:comment.dateCreated];
-	
-	_dateLabel.text = dateStr;
+		
+	_dateLabel.text = [comment shortDate];
 	_authorLabel.text = comment.author;
-
+NSLog(@"COMMENT AUTHOR BLAVATAR: %@", comment.authorAvatarURL);
 	[self.imageView setImageWithBlavatarUrl:comment.authorAvatarURL];
 
 	_textContentView.attributedString = [self convertHTMLToAttributedString:comment.content withOptions:nil];

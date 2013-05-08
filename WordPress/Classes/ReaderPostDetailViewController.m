@@ -212,10 +212,10 @@
 		comments = [comments sortedArrayUsingComparator: ^(id obj1, id obj2) {
 			ReaderComment *a = obj1;
 			ReaderComment *b = obj2;
-			if ([a dateCreated] > [b dateCreated]) {
+			if ([[a dateCreated] timeIntervalSince1970] > [[b dateCreated] timeIntervalSince1970]) {
 				return (NSComparisonResult)NSOrderedDescending;
 			}
-			if ([a dateCreated] < [b dateCreated]) {
+			if ([[a dateCreated] timeIntervalSince1970] < [[b dateCreated] timeIntervalSince1970]) {
 				return (NSComparisonResult)NSOrderedAscending;
 			}
 			return (NSComparisonResult)NSOrderedSame;
@@ -559,7 +559,7 @@
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"ReaderComment" inManagedObjectContext:moc]];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@) && (parentID = 0)", self.post];
     [fetchRequest setPredicate:predicate];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:YES];
     [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     
 	_resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
