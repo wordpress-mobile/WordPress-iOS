@@ -169,9 +169,7 @@
 		
 	_dateLabel.text = [comment shortDate];
 	_authorLabel.text = comment.author;
-NSLog(@"COMMENT AUTHOR BLAVATAR: %@", comment.authorAvatarURL);
-	[self.imageView setImageWithBlavatarUrl:comment.authorAvatarURL];
-
+	[self.imageView setImageWithURL:[NSURL URLWithString:comment.authorAvatarURL] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom.png"]];
 	_textContentView.attributedString = [self convertHTMLToAttributedString:comment.content withOptions:nil];
 }
 

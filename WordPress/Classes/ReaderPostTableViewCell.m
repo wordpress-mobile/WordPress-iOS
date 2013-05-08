@@ -258,7 +258,7 @@
 		[self.imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
 	}
 	
-	[self.avatarImageView setImageWithBlavatarUrl:post.blogURL];
+	[self.avatarImageView setImageWithBlavatarUrl:[[NSURL URLWithString:post.blogURL] host]];
 	
 	[self updateControlBar];
 }
