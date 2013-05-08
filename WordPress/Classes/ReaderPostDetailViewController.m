@@ -107,7 +107,7 @@
 	_titleLabel.backgroundColor = [UIColor clearColor];
 	
 	self.blavatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 44.0f, 44.0f)];
-	[_blavatarImageView setImageWithBlavatarUrl:[self.post blogURL]];
+	[_blavatarImageView setImageWithBlavatarUrl:[[NSURL URLWithString:[self.post blogURL]] host]];
 	
 	UIImageView *disclosureImage = [[UIImageView alloc] initWithFrame:CGRectMake(frame.size.width - 32.0f, 11.0f, 22.0f, 22.0f)];
 	disclosureImage.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
