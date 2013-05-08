@@ -17,8 +17,11 @@
 
 @implementation ReaderComment
 
+@dynamic depth;
 @dynamic authorAvatarURL;
 @dynamic post;
+@dynamic childComments;
+@dynamic parentComment;
 
 + (NSArray *)fetchCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -37,14 +40,89 @@
 }
 
 
-+ (void)syncComments:(NSArray *)comments forPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
++ (NSArray *)fetchChildCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"ReaderComment" inManagedObjectContext:context]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@) && (parentID != 0)", post];
+    [request setPredicate:predicate];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
+    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    
+    NSError *error = nil;
+    NSArray *array = [context executeFetchRequest:request error:&error];
+    if (array == nil) {
+        array = [NSArray array];
+    }
+    return array;
+}
+
+
++ (NSArray *)fetchParentCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
+	NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"ReaderComment" inManagedObjectContext:context]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@) && (parentID = 0)", post];
+    [request setPredicate:predicate];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
+    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    
+    NSError *error = nil;
+    NSArray *array = [context executeFetchRequest:request error:&error];
+    if (array == nil) {
+        array = [NSArray array];
+    }
+    return array;
+}
+
+
++ (void)syncAndThreadComments:(NSArray *)comments forPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
 	[comments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		[self createOrUpdateWithDictionary:obj forPost:post withContext:context];
 	}];
 	
     NSError *error;
     if(![context save:&error]){
-        NSLog(@"Failed to sync ReaderPosts: %@", error);
+        NSLog(@"Failed to sync ReaderComments: %@", error);
+    }
+	
+	// Thread relationships
+	NSArray *commentsArr = [self fetchChildCommentsForPost:post withContext:context];
+	[commentsArr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		ReaderComment *comment = (ReaderComment *)obj;
+		
+		NSFetchRequest *request = [[NSFetchRequest alloc] init];
+		[request setEntity:[NSEntityDescription entityForName:@"ReaderComment" inManagedObjectContext:context]];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@) && (commentID = %@)", post, comment.parentID];
+		[request setPredicate:predicate];
+		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
+		[request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+		
+		NSError *error = nil;
+		NSArray *arr = [context executeFetchRequest:request error:&error];
+		if ([arr count]) {
+			comment.parentComment = [arr objectAtIndex:0];
+		} else {
+			[context deleteObject:comment]; // no parent found so we don't want to show this. 
+		}
+	}];
+	
+	if(![context save:&error]){
+        NSLog(@"Failed to set ReaderComment Relationships: %@", error);
+    }
+	
+	// Update depths
+	commentsArr = [self fetchParentCommentsForPost:post withContext:context];
+	__block void(__weak ^updateDepth)(NSArray *, NSNumber *) = ^void (NSArray *comments, NSNumber *depth) {
+		for (ReaderComment *comment in comments) {
+			comment.depth = depth;
+			if([comment.childComments count] > 0) {
+				updateDepth([comment.childComments allObjects], [NSNumber numberWithInteger:([depth integerValue] + 1)]);
+			}
+		}
+	};
+	updateDepth(commentsArr, @0);
+	
+    if(![context save:&error]){
+        NSLog(@"Failed to set ReaderComment Depths: %@", error);
     }
 }
 
@@ -83,24 +161,44 @@
 	
 	NSDictionary *author = [dict objectForKey:@"author"];
 	
-	self.author = [author objectForKey:@"name"];
-	self.author_email = [author objectForKey:@"email"];
-	self.author_url = [author objectForKey:@"URL"];
-	self.authorAvatarURL = [author objectForKey:@"avatar_URL"];
+	self.author = [author stringForKey:@"name"];
+	self.author_email = [author stringForKey:@"email"];
+	self.author_url = [author stringForKey:@"URL"];
+	self.authorAvatarURL = [author stringForKey:@"avatar_URL"];
 	
-	self.content = [dict objectForKey:@"content"];
-	self.dateCreated = [dict objectForKey:@"date"];
-	self.link = [dict objectForKey:@"URL"];
+	self.content = [dict stringForKey:@"content"];
+	self.dateCreated = [self convertDateString:[dict objectForKey:@"date"]];
+	self.link = [dict stringForKey:@"URL"];
 	
-	NSNumber *parent = [dict objectForKey:@"parent"];
-	if ([parent integerValue]) {
-		self.parentID = parent;
+	id parent = [dict objectForKey:@"parent"];
+	if ([parent isKindOfClass:[NSDictionary class]]) {
+		parent = [parent numberForKey:@"ID"];
+	} else {
+		parent = [dict numberForKey:@"parent"];
 	}
+	self.parentID = (NSNumber *)parent;
 
     self.status = [dict objectForKey:@"status"];
     self.type = [dict objectForKey:@"type"];
 
 }
 
+
+- (NSDate *)convertDateString:(NSString *)dateString {
+	
+	NSArray *formats = @[@"yyyy-MM-dd'T'HH:mm:ssZZZZZ", @"yyyy-MM-dd HH:mm:ss"];
+	NSDate *date;
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	
+	for (NSString *dateFormat in formats) {
+		[dateFormatter setDateFormat:dateFormat];
+		date = [dateFormatter dateFromString:dateString];
+		if(date){
+			return date;
+		}
+	}
+	
+	return nil;
+}
 
 @end

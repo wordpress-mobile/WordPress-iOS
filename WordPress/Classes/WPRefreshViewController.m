@@ -63,9 +63,9 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
     [super viewWillAppear:animated];
     CGSize contentSize = self.tableView.contentSize;
     if(contentSize.height > savedScrollOffset.y) {
-        [self.tableView scrollRectToVisible:CGRectMake(savedScrollOffset.x, savedScrollOffset.y, 0.0, 0.0) animated:NO];
+        [self.tableView scrollRectToVisible:CGRectMake(savedScrollOffset.x, savedScrollOffset.y, 0.0f, 0.0f) animated:NO];
     } else {
-        [self.tableView scrollRectToVisible:CGRectMake(0.0, contentSize.height, 0.0, 0.0) animated:NO];
+        [self.tableView scrollRectToVisible:CGRectMake(0.0f, contentSize.height, 0.0f, 0.0f) animated:NO];
     }
 }
 
@@ -83,7 +83,7 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
     NSDate *lastSynced = [self lastSyncDate];
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > WPRefreshViewControllerRefreshTimeout) {
         // If table is at the original scroll position, simulate a pull to refresh
-        if (self.tableView.contentOffset.y == 0) {
+        if (self.tableView.contentOffset.y == 0.0f) {
             [self simulatePullToRefresh];
         } else {
 			// Otherwise, just update in the background
@@ -101,8 +101,7 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
@@ -164,7 +163,7 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (NSDate *)lastSyncDate {
 	// Should be overridden
-	return [NSDate date];
+	return nil;
 }
 
 

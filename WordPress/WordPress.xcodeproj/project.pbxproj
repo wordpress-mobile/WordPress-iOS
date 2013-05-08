@@ -337,6 +337,7 @@
 		5D29D2B61701042B00813FEF /* AbstractComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D29D2B41701042B00813FEF /* AbstractComment.m */; };
 		5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */; };
 		5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D3E334D15EEBB6B005FC6F2 /* ReachabilityUtils.m */; };
+		5D404EFF173988D500790411 /* ReaderCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D404EFE173988D400790411 /* ReaderCommentTableViewCell.m */; };
 		5D4DE6EE167165060030518D /* icon_info_message.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D4DE6EC167165060030518D /* icon_info_message.png */; };
 		5D4DE6EF167165060030518D /* icon_info_message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D4DE6ED167165060030518D /* icon_info_message@2x.png */; };
 		5D4DE6F4167177560030518D /* WPInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D4DE6F2167177560030518D /* WPInfoView.m */; };
@@ -1096,6 +1097,8 @@
 		5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPhotoButtonView.m; sourceTree = "<group>"; };
 		5D3E334C15EEBB6B005FC6F2 /* ReachabilityUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReachabilityUtils.h; sourceTree = "<group>"; };
 		5D3E334D15EEBB6B005FC6F2 /* ReachabilityUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReachabilityUtils.m; sourceTree = "<group>"; };
+		5D404EFD173988D400790411 /* ReaderCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderCommentTableViewCell.h; sourceTree = "<group>"; };
+		5D404EFE173988D400790411 /* ReaderCommentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderCommentTableViewCell.m; sourceTree = "<group>"; };
 		5D4DE6EC167165060030518D /* icon_info_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_info_message.png; path = Resources/Images/icon_info_message.png; sourceTree = "<group>"; };
 		5D4DE6ED167165060030518D /* icon_info_message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon_info_message@2x.png"; path = "Resources/Images/icon_info_message@2x.png"; sourceTree = "<group>"; };
 		5D4DE6F1167177560030518D /* WPInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPInfoView.h; sourceTree = "<group>"; };
@@ -2795,6 +2798,8 @@
 				5D6E39B117304ED500E973A9 /* ReaderImageView.m */,
 				5D6E39B317306B3E00E973A9 /* ReaderVideoView.h */,
 				5D6E39B417306B3F00E973A9 /* ReaderVideoView.m */,
+				5D404EFD173988D400790411 /* ReaderCommentTableViewCell.h */,
+				5D404EFE173988D400790411 /* ReaderCommentTableViewCell.m */,
 			);
 			name = Reader;
 			sourceTree = "<group>";
@@ -3916,6 +3921,7 @@
 				5D207B981721D51900D19A2C /* WPRefreshViewController.m in Sources */,
 				5D6E39B217304ED500E973A9 /* ReaderImageView.m in Sources */,
 				5D6E39B517306B3F00E973A9 /* ReaderVideoView.m in Sources */,
+				5D404EFF173988D500790411 /* ReaderCommentTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

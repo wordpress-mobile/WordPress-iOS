@@ -8,7 +8,6 @@
 
 #import "ReaderPostTableViewCell.h"
 #import <DTCoreText/DTCoreText.h>
-#import <QuartzCore/QuartzCore.h>
 #import "UIImageView+Gravatar.h"
 #import "WPWebViewController.h"
 #import "WordPressAppDelegate.h"

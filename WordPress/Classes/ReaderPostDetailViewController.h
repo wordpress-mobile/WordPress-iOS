@@ -10,7 +10,7 @@
 #import "ReaderPost.h"
 #import "WPRefreshViewController.h"
 
-@interface ReaderPostDetailViewController : WPRefreshViewController
+@interface ReaderPostDetailViewController : WPRefreshViewController <DetailViewDelegate>
 
 @property (nonatomic, strong) ReaderPost *post;
 

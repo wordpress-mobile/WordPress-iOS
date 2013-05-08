@@ -174,6 +174,8 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		NSURL *url = [NSURL URLWithString:self.permaLink];
 		self.blogURL = [NSString stringWithFormat:@"%@://%@/", url.scheme, url.host];
 		
+		self.siteID = [editorial numberForKey:@"blog_id"];
+
 		self.summary = [self createSummary:[dict objectForKey:@"content"]];
 		
 		NSString *img = [editorial objectForKey:@"image"];
@@ -231,8 +233,10 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		self.permaLink = [dict objectForKey:@"post_permalink"];
 		self.postTitle = [dict objectForKey:@"post_title"];
 		
-		self.summary = [self normalizeParagraphs:[dict objectForKey:@"post_content"]];
+		self.siteID = [dict numberForKey:@"blog_id"];
 		
+		self.summary = [self normalizeParagraphs:[dict objectForKey:@"post_content"]];
+				
 		NSString *img = [dict objectForKey:@"post_featured_thumbnail"];
 		if([img length]) {
 			// TODO: Regex this madness
@@ -274,7 +278,6 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	self.isReblogged = [dict numberForKey:@"is_reblogged"];
 	self.likeCount = [dict numberForKey:@"like_count"];
 
-	self.siteID = [dict numberForKey:@"site_ID"];
 	self.status = [dict objectForKey:@"status"];
 
 }

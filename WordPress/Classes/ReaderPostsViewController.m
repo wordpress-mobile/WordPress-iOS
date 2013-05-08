@@ -275,6 +275,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 }
 
 
+
 #pragma mark -
 #pragma mark Fetched results controller
 
@@ -309,7 +310,6 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
     
     return _resultsController;
 }
-
 
 #pragma mark - ReaderTopicsDelegate Methods
 

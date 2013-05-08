@@ -135,11 +135,14 @@ extern NSString *const WordPressComApiErrorCodeKey;
  
  @param postID The ID of the post for the comments to retrieve.
  @param siteID The ID (as a string) or host name of the site.
+ @param params A dictionary of modifiers to limit or modify the result set. Possible values include number, offset, page, order, order_by, before, after.
+ Check the documentation for the desired endpoint for a full list. ( http://developer.wordpress.com/docs/api/1/ )
  @param success a block called if the REST API call is successful.
  @param failure a block called if there is any error. `error` can be any underlying network error
  */
 - (void)getCommentsForPost:(NSUInteger)postID
 				  fromSite:(NSString *)siteID
+			withParameters:(NSDictionary*)params
 				   success:(WordPressComApiRestSuccessResponseBlock)success
 				   failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
