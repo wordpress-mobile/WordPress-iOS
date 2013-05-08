@@ -17,6 +17,11 @@
 #import "ReaderMediaView.h"
 #import "ReaderImageView.h"
 #import "ReaderVideoView.h"
+#import "PanelNavigationConstants.h"
+#import "WordPressAppDelegate.h"
+#import "WordPressComApi.h"
+#import "ReaderComment.h"
+#import "ReaderCommentTableViewCell.h"
 
 @interface ReaderPostDetailViewController ()<DTAttributedTextContentViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 
@@ -24,13 +29,18 @@
 @property (nonatomic, strong) NSMutableSet *mediaPlayers;
 @property (nonatomic, strong) UIActionSheet *linkOptionsActionSheet;
 @property (nonatomic, strong) NSMutableArray *mediaArray;
+@property (nonatomic, strong) NSMutableArray *comments;
+@property (nonatomic, strong) NSArray *rowHeights;
+@property (nonatomic, strong) NSFetchedResultsController *resultsController;
 
+- (void)updateRowHeightsForWidth:(CGFloat)width;
 - (void)updateLayout;
 - (void)updateMediaLayout:(id<ReaderMediaView>)imageView;
 - (void)handleLinkTapped:(id)sender;
 - (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
 - (void)handleImageViewLoaded:(ReaderImageView *)imageView;
 - (void)handleCloseModal:(id)sender;
+- (void)prepareComments;
 
 @end
 
@@ -40,8 +50,9 @@
 
 #pragma mark - LifeCycle Methods
 
-- (void)dealloc {
-	
+- (void)doBeforeDealloc {
+	[super doBeforeDealloc];
+	_resultsController.delegate = nil;
 }
 
 
@@ -50,6 +61,8 @@
 	if(self) {
 		self.post = apost;
 		self.mediaArray = [NSMutableArray array];
+		self.comments = [NSMutableArray array];
+		self.rowHeights = [NSArray array];
 	}
 	return self;
 }
@@ -68,18 +81,21 @@
 	[super viewDidLoad];
 	
 	self.title = self.post.postTitle;
+	self.tableView.backgroundView = nil;
+	self.tableView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
 	
 	self.likeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleLikeButtonTapped:)];
 	self.followButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleFollowButtonTapped:)];
 	self.reblogButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleReblogButtonTapped:)];
 	self.actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(handleActionButtonTapped:)];
 	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	[self setToolbarItems:@[placeholder, _likeButton, placeholder, _followButton, placeholder, _reblogButton, placeholder, _actionButton, placeholder] animated:YES];
+	[self setToolbarItems:@[_likeButton, placeholder, _followButton, placeholder, _reblogButton, placeholder, _actionButton] animated:YES];
 	self.navigationController.toolbarHidden = NO;
 	
 	CGRect frame = self.tableView.frame;
 	self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, 44.0f)];
 	_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_contentView.backgroundColor = [UIColor whiteColor];
 	
 	self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, 44.0f)];
 	_headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -106,18 +122,63 @@
 	_textContentView.delegate = self;
 	_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	_textContentView.backgroundColor = [UIColor clearColor];
-	_textContentView.edgeInsets = UIEdgeInsetsMake(0.f, 10.f, 0.f, 10.f);
+	_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
 	_textContentView.shouldDrawImages = NO;
 	_textContentView.shouldDrawLinks = NO;
 	[_contentView addSubview:_textContentView];
 	
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
 														  DTDefaultFontFamily: @"Helvetica",
-										   NSTextSizeMultiplierDocumentOption: [NSNumber numberWithFloat:1.3]
+										   NSTextSizeMultiplierDocumentOption: [NSNumber numberWithFloat:1.3f]
 								 }];
 	_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:[post.content dataUsingEncoding:NSUTF8StringEncoding] options:dict documentAttributes:NULL];
 	
+	[self prepareComments];
+	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 	[self updateLayout];
+}
+
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	self.panelNavigationController.delegate = self;
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+	
+    self.panelNavigationController.delegate = nil;
+	[self.navigationController setToolbarHidden:YES animated:YES];	
+}
+
+
+- (void)viewDidUnload {
+	[super viewDidUnload];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+}
+
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	CGFloat width;
+	// The new width should be the window
+	if (IS_IPAD) {
+		width = IPAD_DETAIL_WIDTH;
+	} else {
+		CGRect frame = self.view.window.frame;
+		width = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? frame.size.height : frame.size.width;
+	}
+	
+	[self updateRowHeightsForWidth:width];
 }
 
 
@@ -142,6 +203,45 @@
 
 #pragma mark - Instance Methods
 
+- (void)prepareComments {
+	self.resultsController = nil;
+	[_comments removeAllObjects];
+	
+	__block void(__weak ^flattenComments)(NSArray *) = ^void (NSArray *comments) {
+		// Ensure the array is correctly sorted. 
+		comments = [comments sortedArrayUsingComparator: ^(id obj1, id obj2) {
+			ReaderComment *a = obj1;
+			ReaderComment *b = obj2;
+			if ([a dateCreated] > [b dateCreated]) {
+				return (NSComparisonResult)NSOrderedDescending;
+			}
+			if ([a dateCreated] < [b dateCreated]) {
+				return (NSComparisonResult)NSOrderedAscending;
+			}
+			return (NSComparisonResult)NSOrderedSame;
+		}];
+		
+		for (ReaderComment *comment in comments) {
+			[_comments addObject:comment];
+			if([comment.childComments count] > 0) {
+				flattenComments([comment.childComments allObjects]);
+			}
+		}
+	};
+	
+	flattenComments(self.resultsController.fetchedObjects);
+}
+
+
+- (void)updateRowHeightsForWidth:(CGFloat)width {
+	self.rowHeights = [ReaderCommentTableViewCell cellHeightsForComments:_comments
+															 width:width
+														tableStyle:UITableViewStylePlain
+														 cellStyle:UITableViewCellStyleDefault
+												   reuseIdentifier:@"ReaderCommentCell"];
+}
+
+
 - (void)updateLayout {
 	// Size the textContentView
 	CGFloat height = [_textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:self.view.frame.size.width].height;
@@ -154,7 +254,7 @@
 	frame.size.height = 64.0f + height;
 	_contentView.frame = frame;
 	
-	[self.tableView reloadData];
+	self.tableView.tableHeaderView = _contentView;
 }
 
 
@@ -218,7 +318,7 @@
 	[self.reblogButton setImage:img];
 	
 	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	[self setToolbarItems:@[placeholder, _likeButton, placeholder, _followButton, placeholder, _reblogButton, placeholder, _actionButton, placeholder] animated:YES];
+	[self setToolbarItems:@[_likeButton, placeholder, _followButton, placeholder, _reblogButton, placeholder, _actionButton] animated:YES];
 }
 
 
@@ -361,24 +461,43 @@
 }
 
 
-#pragma mark - UITableView Delegate Methods
+#pragma mark - Sync methods
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	if (section != 0) return nil;
+- (void)syncWithUserInteraction:(BOOL)userInteraction {
 	
-	return _contentView;
+	NSDictionary *params = @{@"number":@100};
+	[[WordPressComApi sharedApi] getCommentsForPost:[self.post.postID integerValue]
+										   fromSite:[self.post.siteID stringValue]
+									 withParameters:params
+											success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		NSDictionary *resp = (NSDictionary *)responseObject;
+		NSArray *commentsArr = [resp objectForKey:@"comments"];
+		
+		[ReaderComment syncAndThreadComments:commentsArr
+							forPost:self.post
+						withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+
+		[self prepareComments];
+		[self updateRowHeightsForWidth:self.tableView.frame.size.width];
+		[self.tableView reloadData];
+		[self hideRefreshHeader];
+		
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		[self hideRefreshHeader];
+
+	}];	
 }
 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	if (section != 0) return 0.0f;
-	
-	return _contentView.frame.size.height;
+#pragma mark - UITableView Delegate Methods
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return [[_rowHeights objectAtIndex:indexPath.row] floatValue];
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [self.post.comments count]; // number of comments
+	return [_comments count];
 }
 
 
@@ -388,17 +507,75 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ReaderCommentCell"];
-	if (!cell) {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"ReaderCommentCell"];
-	}
-	return cell;
+	NSString *cellIdentifier = @"ReaderCommentCell";
+    ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [[ReaderCommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+	cell.selectionStyle = UITableViewCellSelectionStyleNone;
+	cell.accessoryType = UITableViewCellAccessoryNone;
+		
+	ReaderComment *comment = [_comments objectAtIndex:indexPath.row];
+	[cell configureCell:comment];
+
+	return cell;	
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleNone;
+}
+
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+    return NO;
+}
+
+
+#pragma mark - DetailView Delegate Methods
+
+- (void)resetView {
 	
 }
+
+
+#pragma mark -
+#pragma mark Fetched results controller
+
+- (NSFetchedResultsController *)resultsController {
+    if (_resultsController != nil) {
+        return _resultsController;
+    }
+	
+	NSString *entityName = @"ReaderComment";
+	NSManagedObjectContext *moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+	
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:@"ReaderComment" inManagedObjectContext:moc]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(post = %@) && (parentID = 0)", self.post];
+    [fetchRequest setPredicate:predicate];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateCreated" ascending:NO];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    
+	_resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                             managedObjectContext:moc
+                                                               sectionNameKeyPath:nil
+                                                                        cacheName:nil];
+	
+    NSError *error = nil;
+    if (![_resultsController performFetch:&error]) {
+        WPFLog(@"%@ couldn't fetch %@: %@", self, entityName, [error localizedDescription]);
+        _resultsController = nil;
+    }
+    
+    return _resultsController;
+}
+
 
 #pragma mark - UIActionSheet Delegate Methods
 

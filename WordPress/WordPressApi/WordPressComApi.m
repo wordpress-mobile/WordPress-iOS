@@ -588,6 +588,7 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 
 - (void)getCommentsForPost:(NSUInteger)postID
 				  fromSite:(NSString *)siteID
+			withParameters:(NSDictionary*)params
 				   success:(WordPressComApiRestSuccessResponseBlock)success
 				   failure:(WordPressComApiRestSuccessFailureBlock)failure {
 	

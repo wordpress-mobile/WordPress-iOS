@@ -13,8 +13,11 @@
 
 @interface ReaderComment : AbstractComment
 
+@property (nonatomic, strong) NSNumber *depth;
 @property (nonatomic, strong) NSString *authorAvatarURL;
 @property (nonatomic, strong) ReaderPost *post;
+@property (nonatomic, strong) NSSet *childComments;
+@property (nonatomic, strong) ReaderComment *parentComment;
 
 
 /*
@@ -28,6 +31,15 @@
 + (NSArray *)fetchCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context;
 
 
+
++ (NSArray *)fetchChildCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context;
+
+
+
++ (NSArray *)fetchParentCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context;
+
+
+
 /*
  Save or update comments for the specified post.
  
@@ -37,7 +49,7 @@
  
  @return Returns an array of posts.
  */
-+ (void)syncComments:(NSArray *)comments forPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context;
++ (void)syncAndThreadComments:(NSArray *)comments forPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context;
 
 
 /**
