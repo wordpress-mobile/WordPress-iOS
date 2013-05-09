@@ -36,7 +36,7 @@
 // Height for secondary cells (posts/pages/comments/... inside a blog)
 #define SIDEBAR_CELL_SECONDARY_HEIGHT 48.0f
 // Max width for right view (currently : size of the sidebar_comment_bubble image)
-#define SIDEBAR_CELL_ACCESSORY_MAX_WIDTH 34.f
+#define SIDEBAR_CELL_ACCESSORY_MAX_WIDTH 54.f
 #define SIDEBAR_BGCOLOR [UIColor colorWithWhite:0.921875f alpha:1.0f];
 #define HEADER_HEIGHT 42.f
 #define DEFAULT_ROW_HEIGHT 48
