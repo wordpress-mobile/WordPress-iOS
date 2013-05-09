@@ -19,13 +19,15 @@
 
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) DTAttributedTextContentView *snippetTextView;
-@property (nonatomic, strong) DTAttributedTextContentView *bylineTextView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) UIView *byView;
 @property (nonatomic, strong) UIView *controlView;
 @property (nonatomic, strong) UIButton *likeButton;
 @property (nonatomic, strong) UIButton *followButton;
 @property (nonatomic, strong) UIButton *reblogButton;
+@property (nonatomic, strong) UILabel *bylineLabel;
+@property (nonatomic, strong) UILabel *commentLabel;
+@property (nonatomic, strong) UILabel *likesLabel;
 @property (nonatomic, assign) BOOL showImage;
 
 - (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;
@@ -73,41 +75,59 @@
 		_snippetTextView.shouldDrawImages = NO;
 		[self.contentView addSubview:_snippetTextView];
 		
-		self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)];
-		[self.contentView addSubview:_avatarImageView];
-		
-		//self.bylineTextView = [[DTAttributedTextContentView alloc] initWithAttributedString:nil width:width];
-		self.bylineTextView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 44.0f)];
-		_bylineTextView.autoresizesSubviews = UIViewAutoresizingFlexibleWidth;
-		_bylineTextView.backgroundColor = [UIColor clearColor];
-		[self.contentView addSubview:_bylineTextView];
-		
-		self.byView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, (width - 20.0f), 30.0f)];
+		self.byView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, (width - 20.0f), 20.0f)];
 		_byView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		[_byView addSubview:_avatarImageView];
-		[_byView addSubview:_bylineTextView];
 		[self.contentView addSubview:_byView];
 		
+		self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 20.0f, 20.0f)];
+		[_byView addSubview:_avatarImageView];
+		
+		self.bylineLabel = [[UILabel alloc] initWithFrame:CGRectMake(25.0f, 0.0f, width - 45.0f, 20.0f)];
+		_bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		_bylineLabel.font = [UIFont systemFontOfSize:14.0f];
+		_bylineLabel.textColor = [UIColor colorWithWhite:0.5f alpha:1.0f];
+		_bylineLabel.backgroundColor = [UIColor clearColor];
+		[_byView addSubview:_bylineLabel];
+		
+
+		UIImageView *commentImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"note_icon_comment.png"]];
+		commentImageView.frame = CGRectMake(10.0f, 3.0f, 16.0f, 16.0f);
+
+		self.commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0f, 3.0f, 30.0f, 16.0f)];
+		_commentLabel.font = [UIFont systemFontOfSize:14.0f];
+		_commentLabel.textColor = [UIColor colorWithWhite:0.7 alpha:1.0f];
+		
+		UIImageView *likesImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"note_icon_like.png"]];
+		likesImageView.frame = CGRectMake(10.0f, 20.0f, 16.0f, 16.0f);
+
+		self.likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0f, 20.0f, 30.0f, 16.0f)];
+		_likesLabel.font = [UIFont systemFontOfSize:14.0f];
+		_likesLabel.textColor = [UIColor colorWithWhite:0.7 alpha:1.0f];
+		
+		
 		self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		_likeButton.frame = CGRectMake(10.0f, 0.0f, 40.0f, 40.0f);
+		_likeButton.frame = CGRectMake(70.0f, 0.0f, 40.0f, 40.0f);
 		_likeButton.backgroundColor = [UIColor colorWithHexString:@"3478E3"];
-		_likeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 		[_likeButton addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 
 		self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		_followButton.frame = CGRectMake(40.0f, 0.0f, 40.0f, 40.0f);
+		_followButton.frame = CGRectMake(170.0f, 0.0f, 40.0f, 40.0f);
 		_followButton.backgroundColor = [UIColor colorWithHexString:@"3478E3"];
 		_followButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 		[_followButton addTarget:self action:@selector(handleFollowButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
 		self.reblogButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		_reblogButton.frame = CGRectMake(70.0f, 0.0f, 40.0f, 40.0f);
+		_reblogButton.frame = CGRectMake(270.0f, 0.0f, 40.0f, 40.0f);
 		_reblogButton.backgroundColor = [UIColor colorWithHexString:@"3478E3"];
-		_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+		_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 		[_reblogButton addTarget:self action:@selector(handleReblogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
-		self.controlView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 120.0f, 40.0f)];
+		self.controlView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 40.0f)];
 		_controlView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		[_controlView addSubview:commentImageView];
+		[_controlView addSubview:_commentLabel];
+		[_controlView addSubview:likesImageView];
+		[_controlView addSubview:_likesLabel];
 		[_controlView addSubview:_likeButton];
 		[_controlView addSubview:_followButton];
 		[_controlView addSubview:_reblogButton];
@@ -151,8 +171,6 @@
 	CGFloat width = contentWidth - 20.0f;
 	_byView.frame = CGRectMake(10.0f, nextY, width, height);
 	nextY += ceilf(height + vpadding);
-
-	_bylineTextView.frame = CGRectMake(40.0f, 0.0f, (width - 40.0f), 30.0f);
 	
 	// position the control bar
 	height = _controlView.frame.size.height;
@@ -214,9 +232,9 @@
 	
 	[self.imageView cancelImageRequestOperation];
 	self.imageView.image = nil;
-	self.avatarImageView.image = nil;
+	_avatarImageView.image = nil;
+	_bylineLabel.text = nil;
 	_snippetTextView.attributedString = nil;
-	_bylineTextView.attributedString = nil;
 }
 
 
@@ -233,16 +251,11 @@
 	_snippetTextView.attributedString = [self convertHTMLToAttributedString:str withOptions:nil];
 	
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateStyle:NSDateFormatterLongStyle];
+	[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 	NSString *dateStr = [dateFormatter stringFromDate:post.date_created_gmt];
 	
-	
-	str = [NSString stringWithFormat:@"%@ on %@",dateStr, post.blogName];
-	NSDictionary *options = @{
-						   NSTextSizeMultiplierDocumentOption: [NSNumber numberWithFloat:1.0]
-		 };
-	_bylineTextView.attributedString = [self convertHTMLToAttributedString:str withOptions:options];
-	
+	_bylineLabel.text = [NSString stringWithFormat:@"%@ on %@",dateStr, post.blogName];
+
 	self.showImage = NO;
 	self.imageView.hidden = YES;
 	NSURL *url = nil;
@@ -257,6 +270,9 @@
 
 		[self.imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
 	}
+	
+	_commentLabel.text = [self.post.commentCount stringValue];
+	_likesLabel.text = [self.post.likeCount stringValue];
 	
 	[self.avatarImageView setImageWithBlavatarUrl:[[NSURL URLWithString:post.blogURL] host]];
 	
