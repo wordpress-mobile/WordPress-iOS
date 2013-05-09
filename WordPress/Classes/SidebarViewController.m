@@ -756,17 +756,17 @@ NSLog(@"%@", self.sectionInfoArray);
       
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            title = NSLocalizedString(@"Reader", @"");
+            title = NSLocalizedString(@"Reader", @"Menu item to view the Reader for WordPress.com blogs, a way to read and follow blogs that interests you");
             cell.imageView.image = [UIImage imageNamed:@"sidebar_read"];
         } else if(indexPath.row == 1){
-            title = NSLocalizedString(@"Notifications", @"");
+            title = NSLocalizedString(@"Notifications", @"Menu item to view Notifications for WordPress.com and Jetpack-enabled blogs");
             cell.imageView.image = [UIImage imageNamed:(self.hasUnseenNotes) ? @"sidebar_notifications_highlighted" : @"sidebar_notifications"];
         }
     } else {
         switch (indexPath.row) {
             case 0:
             {
-                title = NSLocalizedString(@"Posts", @"");
+                title = NSLocalizedString(@"Posts", @"Menu item to view posts");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_posts"];
                 UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SIDEBAR_CELL_ACCESSORY_MAX_WIDTH, SIDEBAR_CELL_SECONDARY_HEIGHT)];
                 [addButton setImage:[UIImage imageNamed:@"sidebar_icon_add"] forState:UIControlStateNormal];
@@ -777,7 +777,7 @@ NSLog(@"%@", self.sectionInfoArray);
             }
             case 1:
             {
-                title = NSLocalizedString(@"Pages", @"");
+                title = NSLocalizedString(@"Pages", @"Menu item to view pages");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_pages"];
                 UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SIDEBAR_CELL_ACCESSORY_MAX_WIDTH, SIDEBAR_CELL_SECONDARY_HEIGHT)];
                 [addButton setImage:[UIImage imageNamed:@"sidebar_icon_add"] forState:UIControlStateNormal];
@@ -788,7 +788,7 @@ NSLog(@"%@", self.sectionInfoArray);
             }
             case 2:
             {
-                title = NSLocalizedString(@"Comments", @"");
+                title = NSLocalizedString(@"Comments", @"Menu item to view comments");
                 Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
                 cell.blog = blog;
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_comments"];
@@ -796,19 +796,19 @@ NSLog(@"%@", self.sectionInfoArray);
             }
             case 3:
             {
-                title = NSLocalizedString(@"Stats", @"");
+                title = NSLocalizedString(@"Stats", @"Menu item to view Jetpack stats associated with a blog");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_stats"];
                 break;
             }
             case 4:
             {
-                title = NSLocalizedString(@"View Site", @"");
+                title = NSLocalizedString(@"View Site", @"Menu item to view the site in a an in-app web view");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_view"];
                 break;
             }
             case 5:
             {
-                title = NSLocalizedString(@"Dashboard", @"Button to load the dashboard in a web view");
+                title = NSLocalizedString(@"View Admin", @"Menu item to load the dashboard in a an in-app web view");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_dashboard"];
                 break;
             }
