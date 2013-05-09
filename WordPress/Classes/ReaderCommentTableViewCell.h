@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "ReaderComment.h"
 
+#define ReaderCommentCellLinkTappedNotification @"ReaderCommentCellLinkTappedNotification"
+
 @interface ReaderCommentTableViewCell : UITableViewCell
 
 /**

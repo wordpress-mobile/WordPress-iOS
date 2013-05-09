@@ -32,6 +32,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 @dynamic blogURL;
 @dynamic commentCount;
 @dynamic dateSynced;
+@dynamic dateCommentsSynced;
 @dynamic endpoint;
 @dynamic featuredImage;
 @dynamic isFollowing;
@@ -417,6 +418,16 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 			failure(error);
 		}
 	}];
+}
+
+
+- (NSString *)prettyDateString {
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setTimeStyle:NSDateFormatterShortStyle];
+	[formatter setDateStyle:NSDateFormatterMediumStyle];
+	[formatter setDoesRelativeDateFormatting:YES];
+	
+	return [formatter stringFromDate:self.date_created_gmt];
 }
 
 
