@@ -78,7 +78,9 @@ typedef void (^ExecutionBlock)(WPAsyncBlockOperation *);
     _executing = YES;
     [self didChangeValueForKey:@"isExecuting"];
 
-    self.executionBlock(self);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.executionBlock(self);
+    });
 }
 
 - (void)didSucceed
