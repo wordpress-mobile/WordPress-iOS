@@ -22,6 +22,7 @@ extern NSInteger const ReaderTopicEndpointIndex;
 @property (nonatomic, strong) NSString *blogURL;
 @property (nonatomic, strong) NSNumber *commentCount;
 @property (nonatomic, strong) NSDate *dateSynced;
+@property (nonatomic, strong) NSDate *dateCommentsSynced;
 @property (nonatomic, strong) NSString *endpoint;
 @property (nonatomic, strong) NSString *featuredImage;
 @property (nonatomic, strong) NSNumber *isFollowing;
@@ -91,5 +92,7 @@ extern NSInteger const ReaderTopicEndpointIndex;
 
 - (void)reblogPostToSite:(id)newSite success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
+
+- (NSString *)prettyDateString;
 
 @end

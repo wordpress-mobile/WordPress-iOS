@@ -308,7 +308,7 @@
 
 
 - (void)handleLikeButtonTapped:(id)sender {
-	NSLog(@"Tapped reblog");
+	NSLog(@"Tapped like");
 	[self.post toggleLikedWithSuccess:^{
 		// Nothing to see here?
 	} failure:^(NSError *error) {
@@ -320,7 +320,7 @@
 
 
 - (void)handleFollowButtonTapped:(id)sender {
-	NSLog(@"Tapped reblog");
+	NSLog(@"Tapped follow");
 	[self.post toggleFollowingWithSuccess:^{
 		
 	} failure:^(NSError *error) {
@@ -354,13 +354,10 @@
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
 	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
 	
-	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
-	NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
-	
 	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
-	button.URL = URL;
-	button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
-	button.GUID = identifier;
+	button.URL = [attributes objectForKey:DTLinkAttribute];
+	button.minimumHitSize = CGSizeMake(25.0f, 25.0f); // adjusts it's bounds so that button is always large enough
+	button.GUID = [attributes objectForKey:DTGUIDAttribute];
 	
 	// get image with normal link text
 	UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];

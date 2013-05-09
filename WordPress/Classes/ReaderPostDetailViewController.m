@@ -25,6 +25,17 @@
 
 @interface ReaderPostDetailViewController ()<DTAttributedTextContentViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 
+@property (nonatomic, strong) ReaderPost *post;
+@property (nonatomic, strong) UIView *headerView;
+@property (nonatomic, strong) UIView *authorView;
+@property (nonatomic, strong) UIImageView *avatarImageView;
+@property (nonatomic, strong) UILabel *authorLabel;
+@property (nonatomic, strong) UILabel *dateLabel;
+@property (nonatomic, strong) UILabel *blogLabel;
+@property (nonatomic, strong) UIBarButtonItem *likeButton;
+@property (nonatomic, strong) UIBarButtonItem *followButton;
+@property (nonatomic, strong) UIBarButtonItem *reblogButton;
+@property (nonatomic, strong) UIBarButtonItem *actionButton;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) NSMutableSet *mediaPlayers;
 @property (nonatomic, strong) UIActionSheet *linkOptionsActionSheet;
@@ -33,14 +44,20 @@
 @property (nonatomic, strong) NSArray *rowHeights;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 
+- (void)prepareComments;
 - (void)updateRowHeightsForWidth:(CGFloat)width;
 - (void)updateLayout;
 - (void)updateMediaLayout:(id<ReaderMediaView>)imageView;
+- (void)handleLikeButtonTapped:(id)sender;
+- (void)handleFollowButtonTapped:(id)sender;
+- (void)handleReblogButtonTapped:(id)sender;
+- (void)handleActionButtonTapped:(id)sender;
+- (void)handleTitleButtonTapped:(id)sender;
+- (void)handleCellLinkTapped:(NSNotification *)notification;
 - (void)handleLinkTapped:(id)sender;
-- (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
 - (void)handleImageViewLoaded:(ReaderImageView *)imageView;
 - (void)handleCloseModal:(id)sender;
-- (void)prepareComments;
+- (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
 
 @end
 
@@ -63,6 +80,10 @@
 		self.mediaArray = [NSMutableArray array];
 		self.comments = [NSMutableArray array];
 		self.rowHeights = [NSArray array];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(handleCellLinkTapped:)
+													 name:ReaderCommentCellLinkTappedNotification
+												   object:nil];
 	}
 	return self;
 }
@@ -81,58 +102,119 @@
 	[super viewDidLoad];
 	
 	self.title = self.post.postTitle;
+	
 	self.tableView.backgroundView = nil;
 	self.tableView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
+	
+	
+	if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
+		UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+		
+		[btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
+		[btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateHighlighted];
+		
+		UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+		[btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+		
+		backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+		[btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
+		btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
+		[btn addTarget:self action:@selector(handleActionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+		
+		self.actionButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
+	} else {
+		self.actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+																		   target:self
+																		   action:@selector(handleActionButtonTapped:)];
+	}
+	self.navigationItem.rightBarButtonItem = _actionButton;
 	
 	self.likeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleLikeButtonTapped:)];
 	self.followButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleFollowButtonTapped:)];
 	self.reblogButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleReblogButtonTapped:)];
-	self.actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(handleActionButtonTapped:)];
+
 	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	[self setToolbarItems:@[_likeButton, placeholder, _followButton, placeholder, _reblogButton, placeholder, _actionButton] animated:YES];
+	[self setToolbarItems:@[_likeButton, placeholder, _followButton, placeholder, _reblogButton] animated:YES];
 	self.navigationController.toolbarHidden = NO;
 	
-	CGRect frame = self.tableView.frame;
-	self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, 44.0f)];
-	_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_contentView.backgroundColor = [UIColor whiteColor];
+	CGFloat width = self.tableView.frame.size.width;
 	
-	self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, 44.0f)];
+	self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 190.0f)];
 	_headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_headerView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0];
+	_headerView.backgroundColor = [UIColor whiteColor];
 	
-	self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(44.0f, 0.0f, frame.size.width - 76.0f, 44.0f)];
-	_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_titleLabel.text = [self.post.blogName stringByReplacingHTMLEntities];
-	_titleLabel.backgroundColor = [UIColor clearColor];
+	self.authorView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 80.0f)];
+	_authorView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_authorView.backgroundColor = [UIColor colorWithRed:30.0f/255.0f green:140.0f/255.0f blue:190.0f/255.0f alpha:1.0f];
+	[_headerView addSubview:_authorView];
 	
-	self.blavatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 44.0f, 44.0f)];
-	[_blavatarImageView setImageWithBlavatarUrl:[[NSURL URLWithString:[self.post blogURL]] host]];
+	CGRect rect = CGRectMake(0, 0, 1, 1);
+	UIGraphicsBeginImageContext(rect.size);
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:241.0f/255.0f green:131.0/255.0f blue:30.0f/255.0f alpha:1.0] CGColor]);
+	CGContextFillRect(context, rect);
+	UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
 	
-	UIImageView *disclosureImage = [[UIImageView alloc] initWithFrame:CGRectMake(frame.size.width - 32.0f, 11.0f, 22.0f, 22.0f)];
-	disclosureImage.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-	disclosureImage.image = [UIImage imageNamed:@""];
-
-	[_headerView addSubview:disclosureImage];
-	[_headerView addSubview:_blavatarImageView];
-	[_headerView addSubview:_titleLabel];
-	[_contentView addSubview:_headerView];
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+	button.frame = CGRectMake(0.0f, 0.0f, width, 70.0f);
+	[button setBackgroundImage:img forState:UIControlStateHighlighted];
+	button.backgroundColor = [UIColor clearColor];
+	[button addTarget:self action:@selector(handleAuthorViewTapped:) forControlEvents:UIControlEventTouchUpInside];
+	[_authorView addSubview:button];
 	
-	self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 44.0f, self.view.frame.size.width, 44.0f)];
+	self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 40.0f, 40.0f)];
+	_avatarImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+	[_avatarImageView setImageWithURL:[NSURL URLWithString:self.post.authorAvatarURL] placeholderImage:[UIImage imageNamed:@""]];
+	[_authorView addSubview:_avatarImageView];
+	
+	self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0f, 10.0f, width - 70.0f, 20.0f)];
+	_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_authorLabel.backgroundColor = [UIColor clearColor];
+	_authorLabel.font = [UIFont systemFontOfSize:14.0f];
+	_authorLabel.text = self.post.author;
+	_authorLabel.textColor = [UIColor whiteColor];
+	[_authorView addSubview:_authorLabel];
+	
+	self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0f, 30.0f, width - 70.0f, 20.0f)];
+	_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_dateLabel.backgroundColor = [UIColor clearColor];
+	_dateLabel.font = [UIFont systemFontOfSize:14.0f];
+	_dateLabel.text = [NSString stringWithFormat:@"%@ on", [self.post prettyDateString]];
+	_dateLabel.textColor = [UIColor whiteColor];
+	[_authorView addSubview:_dateLabel];
+	
+	self.blogLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 50.0f, width - 20.0f, 20.0f)];
+	_blogLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_blogLabel.backgroundColor = [UIColor clearColor];
+	_blogLabel.font = [UIFont systemFontOfSize:14.0f];
+	_blogLabel.text = self.post.blogName;
+	_blogLabel.textColor = [UIColor whiteColor];
+	[_authorView addSubview:_blogLabel];
+	
+	self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 90.0f, width, 100.0f)]; // Starting height is arbitrary
 	_textContentView.delegate = self;
 	_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	_textContentView.backgroundColor = [UIColor clearColor];
 	_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
 	_textContentView.shouldDrawImages = NO;
 	_textContentView.shouldDrawLinks = NO;
-	[_contentView addSubview:_textContentView];
-	
+	[_headerView addSubview:_textContentView];
+		
+	NSString *str = @"";
+	if([self.post.postTitle length] > 0) {
+		str = [NSString stringWithFormat:@"<h2>%@</h2>%@", self.post.postTitle, self.post.content];
+	} else {
+		str = post.content;
+	}
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
 														  DTDefaultFontFamily: @"Helvetica",
 										   NSTextSizeMultiplierDocumentOption: [NSNumber numberWithFloat:1.3f]
 								 }];
-	_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:[post.content dataUsingEncoding:NSUTF8StringEncoding] options:dict documentAttributes:NULL];
-	
+	_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
+																			 options:dict
+																  documentAttributes:NULL];
+
 	[self prepareComments];
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 	[self updateLayout];
@@ -143,6 +225,7 @@
 	[super viewWillAppear:animated];
 	
 	self.panelNavigationController.delegate = self;
+	[self.navigationController setToolbarHidden:NO animated:YES];
 }
 
 
@@ -150,7 +233,7 @@
     [super viewWillDisappear:animated];
 	
     self.panelNavigationController.delegate = nil;
-	[self.navigationController setToolbarHidden:YES animated:YES];	
+	[self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 
@@ -244,17 +327,18 @@
 
 - (void)updateLayout {
 	// Size the textContentView
+	CGFloat width = self.tableView.frame.size.width;
 	CGFloat height = [_textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:self.view.frame.size.width].height;
-	CGRect frame = CGRectMake(0.0f, 44.0f, self.view.frame.size.width, height);
+	CGRect frame = _textContentView.frame;
+	frame.size.width = width;
+	frame.size.height = height;
 	_textContentView.frame = frame;
 	
-	// Size the scrollView's content view.
-	frame = self.contentView.frame;
-	frame.size.width = self.tableView.frame.size.width;
-	frame.size.height = 64.0f + height;
-	_contentView.frame = frame;
+	frame = _headerView.frame;
+	frame.size.height = height + _textContentView.frame.origin.y + 10.0f; // + bottom padding
+	_headerView.frame = frame;
 	
-	self.tableView.tableHeaderView = _contentView;
+	self.tableView.tableHeaderView = _headerView;
 }
 
 
@@ -318,7 +402,7 @@
 	[self.reblogButton setImage:img];
 	
 	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	[self setToolbarItems:@[_likeButton, placeholder, _followButton, placeholder, _reblogButton, placeholder, _actionButton] animated:YES];
+	[self setToolbarItems:@[_likeButton, placeholder, _followButton, placeholder, _reblogButton] animated:YES];
 }
 
 
@@ -421,6 +505,13 @@
 }
 
 
+- (void)handleAuthorViewTapped:(id)sender {
+	WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:[NSURL URLWithString:self.post.permaLink]];
+	[self.panelNavigationController pushViewController:controller animated:YES];
+}
+
+
 - (void)handleImageLinkURL:(id)sender {	
 	WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:((ReaderImageView *)sender).linkURL];
@@ -456,6 +547,14 @@
 }
 
 
+- (void)handleCellLinkTapped:(NSNotification *)notification {
+	NSURL *url = [notification.userInfo objectForKey:@"URL"];
+	WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:url];
+	[self.panelNavigationController pushViewController:controller animated:YES];
+}
+
+
 - (void)handleCloseModal:(id)sender {
 	[self dismissModalViewControllerAnimated:YES];
 }
@@ -466,26 +565,34 @@
 - (void)syncWithUserInteraction:(BOOL)userInteraction {
 	
 	NSDictionary *params = @{@"number":@100};
+	
 	[[WordPressComApi sharedApi] getCommentsForPost:[self.post.postID integerValue]
 										   fromSite:[self.post.siteID stringValue]
 									 withParameters:params
 											success:^(AFHTTPRequestOperation *operation, id responseObject) {
-		NSDictionary *resp = (NSDictionary *)responseObject;
-		NSArray *commentsArr = [resp objectForKey:@"comments"];
-		
-		[ReaderComment syncAndThreadComments:commentsArr
-							forPost:self.post
-						withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+												self.post.dateCommentsSynced = [NSDate date];
+												
+												NSDictionary *resp = (NSDictionary *)responseObject;
+												NSArray *commentsArr = [resp objectForKey:@"comments"];
+												
+												[ReaderComment syncAndThreadComments:commentsArr
+																	forPost:self.post
+																withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
 
-		[self prepareComments];
-		[self updateRowHeightsForWidth:self.tableView.frame.size.width];
-		[self.tableView reloadData];
-		[self hideRefreshHeader];
-		
-	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		[self hideRefreshHeader];
+												[self prepareComments];
+												[self updateRowHeightsForWidth:self.tableView.frame.size.width];
+												[self.tableView reloadData];
+												[self hideRefreshHeader];
+												
+											} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+												[self hideRefreshHeader];
 
-	}];	
+											}];	
+}
+
+
+- (NSDate *)lastSyncDate {
+	return self.post.dateCommentsSynced;
 }
 
 

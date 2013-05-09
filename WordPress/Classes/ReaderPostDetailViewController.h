@@ -12,22 +12,6 @@
 
 @interface ReaderPostDetailViewController : WPRefreshViewController <DetailViewDelegate>
 
-@property (nonatomic, strong) ReaderPost *post;
-
-@property (nonatomic, strong) UIView *contentView;
-@property (nonatomic, strong) UIBarButtonItem *likeButton;
-@property (nonatomic, strong) UIBarButtonItem *followButton;
-@property (nonatomic, strong) UIBarButtonItem *reblogButton;
-@property (nonatomic, strong) UIBarButtonItem *actionButton;
-@property (nonatomic, strong) UIView *headerView;
-@property (nonatomic, strong) UIImageView *blavatarImageView;
-@property (nonatomic, strong) UILabel *titleLabel;
-
 - (id)initWithPost:(ReaderPost *)apost;
-- (void)handleLikeButtonTapped:(id)sender;
-- (void)handleFollowButtonTapped:(id)sender;
-- (void)handleReblogButtonTapped:(id)sender;
-- (void)handleActionButtonTapped:(id)sender;
-- (void)handleTitleButtonTapped:(id)sender;
 
 @end

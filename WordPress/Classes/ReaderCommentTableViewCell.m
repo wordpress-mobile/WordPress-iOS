@@ -21,6 +21,7 @@
 @property (nonatomic, strong) UILabel *dateLabel;
 
 - (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;
+- (void)handleLinkTapped:(id)sender;
 
 @end
 
@@ -56,10 +57,10 @@
 		[self.contentView addSubview:self.imageView]; // TODO: Not sure about this...
 		self.imageView.contentMode = UIViewContentModeScaleAspectFit;
 		self.imageView.clipsToBounds = YES;
-		[self.imageView setFrame:CGRectMake(0.5f, 0.5f, 20.0f, 20.0f)];
+		[self.imageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
 		self.imageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 		
-		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - (5.0f + 30.0f), 5.0f, 30.0f, 20.0f)];
+		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - (10.0f + 30.0f), 10.0f, 30.0f, 20.0f)];
 		[_dateLabel setFont:[UIFont systemFontOfSize:14.0f]];
 		_dateLabel.textColor = [UIColor grayColor];
 		_dateLabel.textAlignment = NSTextAlignmentRight;
@@ -67,7 +68,7 @@
 		_dateLabel.backgroundColor = [UIColor clearColor];
 		[self.contentView addSubview:_dateLabel];
 		
-		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0f, 5.0f, (_dateLabel.frame.origin.x - 40.0f), 20.0f)];
+		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(40.0f, 10.0f, (_dateLabel.frame.origin.x - 50.0f), 20.0f)];
 		[_authorLabel setFont:[UIFont systemFontOfSize:14.0f]];
 		_dateLabel.textColor = [UIColor grayColor];
 		_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -77,7 +78,7 @@
 		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, 44.0f)];
 		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_textContentView.backgroundColor = [UIColor clearColor];
-		_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 5.0f, 0.0f);
+		_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 5.0f, 10.0f);
 		_textContentView.delegate = self;
 		_textContentView.shouldDrawLinks = NO;
 		_textContentView.shouldDrawImages = NO;
@@ -105,13 +106,13 @@
 	frame.size.width -= frame.origin.x;
 	self.contentView.frame = frame;
 	
-	[self.imageView setFrame:CGRectMake(5.0f, 5.0f, 20.0f, 20.0f)];
+	[self.imageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
 	
-	CGFloat contentWidth = self.contentView.frame.size.width;
+	CGFloat width = self.contentView.frame.size.width;
 
-	CGFloat height = [_textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
+	CGFloat height = [_textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width].height;
 	
-	_textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, contentWidth, height);
+	_textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, height);
 	
 }
 
@@ -187,6 +188,12 @@
 	}
 	
     return [[NSAttributedString alloc] initWithHTMLData:[html dataUsingEncoding:NSUTF8StringEncoding] options:dict documentAttributes:NULL];
+}
+
+
+- (void)handleLinkTapped:(id)sender {
+	NSDictionary *dict = @{@"URL":((DTLinkButton *)sender).URL};
+	[[NSNotificationCenter defaultCenter] postNotificationName:ReaderCommentCellLinkTappedNotification object:nil userInfo:dict];
 }
 
 
