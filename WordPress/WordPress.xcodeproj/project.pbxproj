@@ -463,6 +463,8 @@
 		83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
 		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
 		83FEFC7611FF6C5A0078B462 /* EditSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */; };
+		851122DA173B53BF0017DA68 /* icon-wp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 851122D8173B53BF0017DA68 /* icon-wp@2x.png */; };
+		851122DB173B53BF0017DA68 /* icon-wp.png in Resources */ = {isa = PBXBuildFile; fileRef = 851122D9173B53BF0017DA68 /* icon-wp.png */; };
 		85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */; };
 		85149747171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85149746171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m */; };
 		8516972C169D42F4006C5DED /* WPToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 8516972B169D42F4006C5DED /* WPToast.m */; };
@@ -1268,6 +1270,8 @@
 		83FB4D3E122C38F700DB9506 /* MediaPlayer.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		83FEFC7311FF6C5A0078B462 /* EditSiteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditSiteViewController.h; sourceTree = "<group>"; };
 		83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSiteViewController.m; sourceTree = "<group>"; };
+		851122D8173B53BF0017DA68 /* icon-wp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-wp@2x.png"; sourceTree = "<group>"; };
+		851122D9173B53BF0017DA68 /* icon-wp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-wp.png"; sourceTree = "<group>"; };
 		8514973F171E13DF00B87F3F /* WPAsyncBlockOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAsyncBlockOperation.h; sourceTree = "<group>"; };
 		85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAsyncBlockOperation.m; sourceTree = "<group>"; };
 		85149745171E671000B87F3F /* SelectWPComBlogVisibilityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectWPComBlogVisibilityViewController.h; sourceTree = "<group>"; };
@@ -2443,6 +2447,8 @@
 				85D08A62173333B300E2BBCA /* addBlogsUnselectedImage@2x.png */,
 				853E11341739CD6500657E1F /* textDropdownIcon@2x.png */,
 				853E11351739CD6500657E1F /* textDropdownIcon.png */,
+				851122D8173B53BF0017DA68 /* icon-wp@2x.png */,
+				851122D9173B53BF0017DA68 /* icon-wp.png */,
 			);
 			name = NUX;
 			sourceTree = "<group>";
@@ -3778,6 +3784,8 @@
 				85D08A66173333B300E2BBCA /* addBlogsUnselectedImage@2x.png in Resources */,
 				853E11361739CD6500657E1F /* textDropdownIcon@2x.png in Resources */,
 				853E11371739CD6500657E1F /* textDropdownIcon.png in Resources */,
+				851122DA173B53BF0017DA68 /* icon-wp@2x.png in Resources */,
+				851122DB173B53BF0017DA68 /* icon-wp.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

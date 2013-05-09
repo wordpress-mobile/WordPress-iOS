@@ -26,7 +26,7 @@
     // Page 1
     WPWalkthroughButton *_cancelButton;
     UIButton *_infoButton;
-    UILabel *_page1Icon;
+    UIImageView *_page1Icon;
     UILabel *_page1Title;
     UITextField *_page1EmailText;
     UITextField *_page1UsernameText;
@@ -34,7 +34,7 @@
     WPWalkthroughButton *_page1NextButton;
     
     // Page 2
-    UILabel *_page2Icon;
+    UIImageView *_page2Icon;
     UILabel *_page2Title;
     UITextField *_page2SiteTitleText;
     UITextField *_page2SiteAddressText;
@@ -44,7 +44,7 @@
     WPWalkthroughButton *_page2PreviousButton;
     
     // Page 3
-    UILabel *_page3Icon;
+    UIImageView *_page3Icon;
     UILabel *_page3Title;
     UILabel *_page3EmailLabel;
     UILabel *_page3UsernameLabel;
@@ -67,9 +67,11 @@
     BOOL _page2FieldsValid;
 
     BOOL _hasViewAppeared;
+    BOOL _keyboardVisible;
     BOOL _savedOriginalPositionsOfStickyControls;
     CGFloat _infoButtonOriginalX;
     CGFloat _cancelButtonOriginalX;
+    CGFloat _keyboardOffset;
     
     NSUInteger _currentPage;
     
@@ -126,8 +128,10 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     
     if (!IS_IPAD) {
         // We don't need to shift the controls up on the iPad as there's enough space.
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow) name:UIKeyboardWillShowNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide) name:UIKeyboardWillHideNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow) name:UIKeyboardDidShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide) name:UIKeyboardDidHideNotification object:nil];
     }
 
 }
@@ -156,6 +160,13 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     }
     
     _hasViewAppeared = true;
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+    if (IS_IPHONE)
+        return UIInterfaceOrientationMaskPortrait;
+    
+    return UIInterfaceOrientationMaskAll;
 }
 
 #pragma mark - UITextField Delegate methods
@@ -271,7 +282,7 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     [self.view addSubview:_scrollView];
     _scrollView.delegate = self;
     
-    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedOnScrollView:)];
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedOnScrollView:)];
     gestureRecognizer.numberOfTapsRequired = 1;
     gestureRecognizer.cancelsTouchesInView = NO;
     [_scrollView addGestureRecognizer:gestureRecognizer];
@@ -310,13 +321,8 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     
     // Add Icon
     if (_page1Icon == nil) {
-        _page1Icon = [[UILabel alloc] init];
-        _page1Icon.text = @"";
-        _page1Icon.backgroundColor = [UIColor clearColor];
-        _page1Icon.font = [UIFont fontWithName:@"Genericons-Regular" size:60];
-        _page1Icon.shadowColor = _textShadowColor;
-        _page1Icon.textColor = [UIColor whiteColor];
-        [_page1Icon sizeToFit];
+        UIImage *icon = [UIImage imageNamed:@"icon-wp"];
+        _page1Icon = [[UIImageView alloc] initWithImage:icon];
         [_scrollView addSubview:_page1Icon];
     }
     
@@ -400,19 +406,20 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     y = CreateAccountAndBlogStandardOffset;
     _cancelButton.frame = CGRectMake(x, y, 66.0, 22.0);
     
-    // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
-    CGFloat extraIconSpaceOnTop = 18;
-    CGFloat extraIconSpaceOnBottom = 33;
+    // Layout the controls starting out from y of 0, then offset them once the height of the controls
+    // is accurately calculated we can determine the vertical center and adjust everything accordingly.
+    
+    // Layout Icon
     x = (_viewWidth - CGRectGetWidth(_page1Icon.frame))/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CreateAccountAndBlogIconVerticalOffset - extraIconSpaceOnTop;
+    y = 0;
     _page1Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1Icon.frame), CGRectGetHeight(_page1Icon.frame)));
     
     // Layout Title
     CGSize titleSize = [_page1Title.text sizeWithFont:_page1Title.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - titleSize.width)/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page1Icon.frame) + CreateAccountAndBlogStandardOffset - extraIconSpaceOnBottom;
+    y = CGRectGetMaxY(_page1Icon.frame) + CreateAccountAndBlogStandardOffset;
     _page1Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
     // Layout Email
@@ -424,13 +431,13 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     // Layout Username
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page1EmailText.frame) + CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_page1EmailText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
     _page1UsernameText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
 
     // Layout Password
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page1UsernameText.frame) + CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_page1UsernameText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
     _page1PasswordText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
     
     // Layout Next Button
@@ -438,6 +445,9 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     x = [self adjustX:x forPage:currentPage];
     y = CGRectGetMaxY(_page1PasswordText.frame) + CreateAccountAndBlogStandardOffset;
     _page1NextButton.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogNextButtonWidth, CreateAccountAndBlogNextButtonHeight));
+    
+    NSArray *controls = @[_page1Icon, _page1Title, _page1EmailText, _page1UsernameText, _page1PasswordText, _page1NextButton];
+    [self centerViews:controls withStartingView:_page1Icon andEndingView:_page1NextButton];
 }
 
 - (void)initializePage2
@@ -450,13 +460,8 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
 {
     // Add Icon
     if (_page2Icon == nil) {
-        _page2Icon = [[UILabel alloc] init];
-        _page2Icon.text = @"";
-        _page2Icon.backgroundColor = [UIColor clearColor];
-        _page2Icon.font = [UIFont fontWithName:@"Genericons-Regular" size:60];
-        _page2Icon.shadowColor = _textShadowColor;
-        _page2Icon.textColor = [UIColor whiteColor];
-        [_page2Icon sizeToFit];
+        UIImage *icon = [UIImage imageNamed:@"icon-wp"];
+        _page2Icon = [[UIImageView alloc] initWithImage:icon];
         [_scrollView addSubview:_page2Icon];
     }
     
@@ -543,19 +548,20 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     CGFloat x,y;
     CGFloat currentPage=2;
     
-    // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
-    CGFloat extraIconSpaceOnTop = 18;
-    CGFloat extraIconSpaceOnBottom = 33;
+    // Layout the controls starting out from y of 0, then offset them once the height of the controls
+    // is accurately calculated we can determine the vertical center and adjust everything accordingly.
+
+    // Layout Icon
     x = (_viewWidth - CGRectGetWidth(_page2Icon.frame))/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CreateAccountAndBlogIconVerticalOffset - extraIconSpaceOnTop;
+    y = 0;
     _page2Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2Icon.frame), CGRectGetHeight(_page2Icon.frame)));
     
     // Layout Title
     CGSize titleSize = [_page2Title.text sizeWithFont:_page2Title.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - titleSize.width)/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page2Icon.frame) + CreateAccountAndBlogStandardOffset - extraIconSpaceOnBottom;
+    y = CGRectGetMaxY(_page2Icon.frame) + CreateAccountAndBlogStandardOffset;
     _page2Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
     // Layout Site Title
@@ -567,13 +573,13 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     // Layout Site Address
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page2SiteTitleText.frame) + CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_page2SiteTitleText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
     _page2SiteAddressText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
 
     // Layout Site Language
     x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page2SiteAddressText.frame) + CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_page2SiteAddressText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
     _page2SiteLanguageText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
     
     // Layout Dropdown Image
@@ -591,6 +597,9 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     x = CGRectGetMaxX(_page2PreviousButton.frame) + CreateAccountAndBlogStandardOffset;
     y = CGRectGetMaxY(_page2SiteLanguageText.frame) + CreateAccountAndBlogStandardOffset;
     _page2NextButton.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogPagingButtonWidth, CreateAccountAndBlogPagingButtonHeight));
+    
+    NSArray *controls = @[_page2Icon, _page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2PreviousButton, _page2NextButton];
+    [self centerViews:controls withStartingView:_page2Icon andEndingView:_page2NextButton];
 }
 
 - (void)initializePage3
@@ -603,13 +612,8 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
 {
     // Add Icon
     if (_page3Icon == nil) {
-        _page3Icon = [[UILabel alloc] init];
-        _page3Icon.text = @"";
-        _page3Icon.backgroundColor = [UIColor clearColor];
-        _page3Icon.font = [UIFont fontWithName:@"Genericons-Regular" size:60];
-        _page3Icon.shadowColor = _textShadowColor;
-        _page3Icon.textColor = [UIColor whiteColor];
-        [_page3Icon sizeToFit];
+        UIImage *icon = [UIImage imageNamed:@"icon-wp"];
+        _page3Icon = [[UIImageView alloc] initWithImage:icon];
         [_scrollView addSubview:_page3Icon];
     }
     
@@ -748,20 +752,20 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
 {
     CGFloat x,y;
     CGFloat currentPage=3;
-        
-    // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
-    CGFloat extraIconSpaceOnTop = 18;
-    CGFloat extraIconSpaceOnBottom = 33;
+    
+    // Layout the controls starting out from y of 0, then offset then once the height of the controls
+    // is accurately calculated we can determine the vertical center and adjust everything accordingly.
+    
     x = (_viewWidth - CGRectGetWidth(_page3Icon.frame))/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CreateAccountAndBlogIconVerticalOffset - extraIconSpaceOnTop;
+    y = 0;
     _page3Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2Icon.frame), CGRectGetHeight(_page2Icon.frame)));
     
     // Layout Title
     CGSize titleSize = [_page3Title.text sizeWithFont:_page3Title.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - titleSize.width)/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page3Icon.frame) + CreateAccountAndBlogStandardOffset - extraIconSpaceOnBottom;
+    y = CGRectGetMaxY(_page3Icon.frame) + CreateAccountAndBlogStandardOffset;
     _page3Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
     // Layout First Line Separator
@@ -847,6 +851,9 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     x = CGRectGetMaxX(_page3PreviousButton.frame) + CreateAccountAndBlogStandardOffset;
     y = CGRectGetMaxY(_page3SixthLineSeparator.frame) + CreateAccountAndBlogStandardOffset;
     _page3NextButton.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogPagingButtonWidth, CreateAccountAndBlogPagingButtonHeight));
+    
+    NSArray *controls = @[_page3Icon, _page3Title, _page3FirstLineSeparator, _page3EmailLabel, _page3SecondLineSeparator, _page3UsernameLabel, _page3ThirdLineSeparator, _page3SiteTitleLabel, _page3FourthLineSeparator, _page3SiteAddressLabel, _page3FifthLineSeparator, _page3SiteLanguageLabel, _page3SixthLineSeparator, _page3PreviousButton, _page3NextButton];
+    [self centerViews:controls withStartingView:_page3Icon andEndingView:_page3NextButton];
 }
 
 - (void)updatePage3Labels
@@ -858,6 +865,19 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     _page3SiteLanguageLabel.text = [NSString stringWithFormat:@"Site Language: %@", [_currentLanguage objectForKey:@"name"]];
     
     [self layoutPage3Controls];
+}
+
+- (void)centerViews:(NSArray *)controls withStartingView:(UIView *)startingView andEndingView:(UIView *)endingView
+{
+    CGFloat heightOfControls = CGRectGetMaxY(endingView.frame) - CGRectGetMinY(startingView.frame);
+    CGFloat startingYForCenteredControls = floorf((_viewHeight - heightOfControls)/2.0);
+    CGFloat offsetToCenter = CGRectGetMinY(startingView.frame) - startingYForCenteredControls;
+    
+    for (UIControl *control in controls) {
+        CGRect frame = control.frame;
+        frame.origin.y -= offsetToCenter;
+        control.frame = frame;
+    }
 }
 
 - (void)clickedInfoButton
@@ -878,13 +898,31 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     [_scrollView setContentOffset:CGPointMake(_viewWidth*(page-1), 0) animated:YES];
 }
 
-- (void)tappedOnScrollView:(UIGestureRecognizer *)gestureRecognizer
+- (void)clickedOnScrollView:(UIGestureRecognizer *)gestureRecognizer
 {
     CGPoint touchPoint = [gestureRecognizer locationInView:_scrollView];
-    BOOL tappedSiteLanguage = CGRectContainsPoint(_page2SiteLanguageText.frame, touchPoint);
-    if (tappedSiteLanguage) {
+    BOOL clickedSiteLanguage = CGRectContainsPoint(_page2SiteLanguageText.frame, touchPoint);
+    
+    if (clickedSiteLanguage) {
         [self showLanguagePicker];
     } else {
+        BOOL clickedPage1Next = CGRectContainsPoint(_page1NextButton.frame, touchPoint) && _page1NextButton.enabled;
+        BOOL clickedPage2Next = CGRectContainsPoint(_page2NextButton.frame, touchPoint) && _page2NextButton.enabled;
+        BOOL clickedPage2Previous = CGRectContainsPoint(_page2PreviousButton.frame, touchPoint);
+
+        if (_keyboardVisible) {
+            // When the keyboard is displayed, the normal button events don't fire off properly as
+            // this gesture recognizer intercepts them. We double check that the user didn't press a button
+            // while in this mode and if they did hand off the event.
+            if (clickedPage1Next) {
+                [self clickedPage1NextButton];
+            } else if(clickedPage2Next) {
+                [self clickedPage2NextButton];
+            } else if (clickedPage2Previous) {
+                [self clickedPage2PreviousButton];
+            }            
+        }
+        
         [self.view endEditing:YES];
     }
 }
@@ -900,6 +938,7 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     if (_page1FieldsValid) {
         [self moveToPage:2];
     } else {
+        _page1NextButton.enabled = NO;
         [self validateUserFields];
     }
 }
@@ -915,6 +954,7 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     if (_page2FieldsValid) {
         [self moveToPage:3];
     } else {
+        _page2NextButton.enabled = NO;
         [self validateSiteFields];
     }
 }
@@ -969,8 +1009,15 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     _infoButton.frame = infoButtonFrame;
 }
 
-- (void)keyboardWillShow
+- (void)keyboardWillShow:(NSNotification *)notification
 {
+    CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    if (_currentPage == 1) {
+        _keyboardOffset = (CGRectGetMaxY(_page1NextButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_page1NextButton.frame);
+    } else {
+        _keyboardOffset = (CGRectGetMaxY(_page2NextButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_page2NextButton.frame);
+    }
+
     [UIView animateWithDuration:0.3 animations:^{
         NSArray *controlsToMove = @[];
         NSArray *controlsToHide = @[];
@@ -984,7 +1031,7 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
         
         for (UIControl *control in controlsToMove) {
             CGRect frame = control.frame;
-            frame.origin.y -= CreateAccountAndBlogKeyboardOffset;
+            frame.origin.y -= _keyboardOffset;
             control.frame = frame;
         }
         
@@ -994,7 +1041,7 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
     }];
 }
 
-- (void)keyboardWillHide
+- (void)keyboardWillHide:(NSNotification *)notification
 {
     [UIView animateWithDuration:0.3 animations:^{
         NSArray *controlsToMove = @[];
@@ -1009,7 +1056,7 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
         
         for (UIControl *control in controlsToMove) {
             CGRect frame = control.frame;
-            frame.origin.y += CreateAccountAndBlogKeyboardOffset;
+            frame.origin.y += _keyboardOffset;
             control.frame = frame;
         }
         
@@ -1017,6 +1064,16 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
             control.alpha = 1.0;
         }
     }];
+}
+
+- (void)keyboardDidShow
+{
+    _keyboardVisible = true;
+}
+
+- (void)keyboardDidHide
+{
+    _keyboardVisible = false;
 }
 
 - (void)showLanguagePicker
@@ -1094,12 +1151,14 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
 - (void)validateUserFields
 {
     void (^userValidationSuccess)(id) = ^(id responseObject) {
+        _page1NextButton.enabled = YES;
         [SVProgressHUD dismiss];
         _page1FieldsValid = true;
         [self moveToPage:2];
     };
     
     void (^userValidationFailure)(NSError *) = ^(NSError *error){
+        _page1NextButton.enabled = YES;
         [SVProgressHUD dismiss];
         [self handleRemoteError:error];
     };
@@ -1156,12 +1215,14 @@ CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
 - (void)validateSiteFields
 {
     void (^blogValidationSuccess)(id) = ^(id responseObject) {
+        _page2NextButton.enabled = YES;
         [SVProgressHUD dismiss];
         _page2FieldsValid = true;
         [self updatePage3Labels];
         [self moveToPage:3];
     };
     void (^blogValidationFailure)(NSError *) = ^(NSError *error) {
+        _page2NextButton.enabled = YES;
         [SVProgressHUD dismiss];
         [self handleRemoteError:error];
     };
