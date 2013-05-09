@@ -35,6 +35,8 @@
 #define SIDEBAR_CELL_HEIGHT 51.0f
 // Height for secondary cells (posts/pages/comments/... inside a blog)
 #define SIDEBAR_CELL_SECONDARY_HEIGHT 48.0f
+// Max width for right view (currently : size of the sidebar_comment_bubble image)
+#define SIDEBAR_CELL_ACCESSORY_MAX_WIDTH 34.f
 #define SIDEBAR_BGCOLOR [UIColor colorWithWhite:0.921875f alpha:1.0f];
 #define HEADER_HEIGHT 42.f
 #define DEFAULT_ROW_HEIGHT 48
@@ -766,12 +768,22 @@ NSLog(@"%@", self.sectionInfoArray);
             {
                 title = NSLocalizedString(@"Posts", @"");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_posts"];
+                UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SIDEBAR_CELL_ACCESSORY_MAX_WIDTH, SIDEBAR_CELL_SECONDARY_HEIGHT)];
+                [addButton setImage:[UIImage imageNamed:@"sidebar_icon_add"] forState:UIControlStateNormal];
+                [addButton addTarget:self action:@selector(quickAddNewPost:) forControlEvents:UIControlEventTouchUpInside];
+                cell.accessoryView = addButton;
+
                 break;
             }
             case 1:
             {
                 title = NSLocalizedString(@"Pages", @"");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_pages"];
+                UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SIDEBAR_CELL_ACCESSORY_MAX_WIDTH, SIDEBAR_CELL_SECONDARY_HEIGHT)];
+                [addButton setImage:[UIImage imageNamed:@"sidebar_icon_add"] forState:UIControlStateNormal];
+                [addButton addTarget:self action:@selector(quickAddNewPost:) forControlEvents:UIControlEventTouchUpInside];
+                cell.accessoryView = addButton;
+
                 break;
             }
             case 2:
@@ -811,6 +823,26 @@ NSLog(@"%@", self.sectionInfoArray);
     cell.textLabel.backgroundColor = SIDEBAR_BGCOLOR;
     
     return cell;
+}
+
+
+-(void)quickAddNewPost:(id)sender {
+    NSAssert([sender isKindOfClass:[UIView class]], nil);
+
+    UITableViewCell *cell = (UITableViewCell *)[(UIView *)sender superview];
+    NSAssert([cell isKindOfClass:[UITableViewCell class]], nil);
+    if (![cell isKindOfClass:[UITableViewCell class]]) {
+        return;
+    }
+
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+
+    [self processRowSelectionAtIndexPath:indexPath];
+    [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    self.currentIndexPath = indexPath;
+    if ([self.panelNavigationController.topViewController respondsToSelector:@selector(showAddPostView)]) {
+        [self.panelNavigationController.topViewController performSelector:@selector(showAddPostView)];
+    }
 }
 
 #pragma mark Section header delegate
