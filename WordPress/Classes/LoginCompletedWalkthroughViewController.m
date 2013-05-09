@@ -12,6 +12,7 @@
 #import "WPWalkthroughButton.h"
 #import "WPWalkthroughLineSeparatorView.h"
 #import "WPWalkthroughGrayOverlayView.h"
+#import "WordPressAppDelegate.h"
 
 @interface LoginCompletedWalkthroughViewController ()<UIScrollViewDelegate> {
     UIScrollView *_scrollView;
@@ -42,9 +43,14 @@
     WPWalkthroughLineSeparatorView *_page3TopSeparator;
     WPWalkthroughLineSeparatorView *_page3BottomSeparator;
     
+    // Page 4
+    UILabel *_page4Icon;
+    UILabel *_page4Title;
+    
     CGFloat _viewWidth;
     CGFloat _viewHeight;
     
+    CGFloat _currentPage;
     CGFloat _bottomPanelOriginalX;
     CGFloat _skipToAppOriginalX;
     CGFloat _pageControlOriginalX;
@@ -84,6 +90,7 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
     [self initializePage1];
     [self initializePage2];
     [self initializePage3];
+    [self initializePage4];
     [self addLoginSuccessView];
 }
 
@@ -101,6 +108,7 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
     [self layoutPage1Controls];
     [self layoutPage2Controls];
     [self layoutPage3Controls];
+    [self layoutPage4Controls];
     [self savePositionsOfStickyControls];
 }
 
@@ -123,28 +131,17 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
     
     NSUInteger pageViewed = ceil(scrollView.contentOffset.x/_viewWidth) + 1;
     
-    // We only want the sign in, create account and help buttons to drag along until we hit the sign in screen
-    if (pageViewed < 4) {
-        CGRect bottomPanelFrame = _bottomPanel.frame;
-        bottomPanelFrame.origin.x = _bottomPanelOriginalX + scrollView.contentOffset.x;
-        _bottomPanel.frame = bottomPanelFrame;
-        
-        CGRect skipToAppFrame = _skipToApp.frame;
-        skipToAppFrame.origin.x = _skipToAppOriginalX + scrollView.contentOffset.x;
-        _skipToApp.frame = skipToAppFrame;
-
-        CGRect pageControlFrame = _pageControl.frame;
-        pageControlFrame.origin.x = _pageControlOriginalX + scrollView.contentOffset.x;
-        _pageControl.frame = pageControlFrame;
-    }
-    
-    if (pageViewed >= 4) {
-        [self dismiss];
-    }
-    
     CGRect bottomPanelFrame = _bottomPanel.frame;
     bottomPanelFrame.origin.x = _bottomPanelOriginalX + scrollView.contentOffset.x;
     _bottomPanel.frame = bottomPanelFrame;
+    
+    CGRect pageControlFrame = _pageControl.frame;
+    pageControlFrame.origin.x = _pageControlOriginalX + scrollView.contentOffset.x;
+    _pageControl.frame = pageControlFrame;
+
+    CGRect skipToAppFrame = _skipToApp.frame;
+    skipToAppFrame.origin.x = _skipToAppOriginalX + scrollView.contentOffset.x;
+    _skipToApp.frame = skipToAppFrame;
     
     [self flagPageViewed:pageViewed];
 }
@@ -174,13 +171,14 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
     grayOverlay.overlayTitle = @"Success!";
     grayOverlay.overlayDescription = @"You have successfully signed into your WordPress account!";
     grayOverlay.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
-    grayOverlay.footerDescription = @"TAP TO CONTINUE";
+    grayOverlay.footerDescription = NSLocalizedString(@"TAP TO CONTINUE", nil);
     grayOverlay.icon = WPWalkthroughGrayOverlayViewBlueCheckmarkIcon;
     grayOverlay.hideBackgroundView = YES;
     grayOverlay.singleTapCompletionBlock = ^(WPWalkthroughGrayOverlayView * overlayView){
-        [overlayView dismiss];
         if (!self.showsExtraWalkthroughPages) {
             [self dismiss];
+        } else {
+            [overlayView dismiss];
         }
     };
     [self.view addSubview:grayOverlay];
@@ -198,6 +196,11 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
     _scrollView.pagingEnabled = YES;
     [self.view addSubview:_scrollView];
     _scrollView.delegate = self;
+    
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedScrollView:)];
+    gestureRecognizer.cancelsTouchesInView = NO;
+    gestureRecognizer.numberOfTapsRequired = 1;
+    [_scrollView addGestureRecognizer:gestureRecognizer];
 }
 
 - (void)layoutScrollview
@@ -312,7 +315,7 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
         _skipToApp.backgroundColor = [UIColor clearColor];
         _skipToApp.textColor = [UIColor whiteColor];
         _skipToApp.font = [UIFont fontWithName:@"OpenSans" size:15.0];
-        _skipToApp.text = @"Skip and start using WordPress";
+        _skipToApp.text = @"Tap to start using WordPress";
         _skipToApp.shadowColor = [UIColor blackColor];
         [_skipToApp sizeToFit];
         UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedSkipToApp:)];
@@ -589,6 +592,63 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
     _page3BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
 }
 
+- (void)initializePage4
+{
+    [self addPage4Controls];
+    [self layoutPage4Controls];
+}
+
+- (void)addPage4Controls
+{
+    // Add Icon
+    if (_page4Icon == nil) {
+        _page4Icon = [[UILabel alloc] init];
+        _page4Icon.backgroundColor = [UIColor clearColor];
+        _page4Icon.font = [UIFont fontWithName:@"Genericons-Regular" size:110];
+        _page4Icon.text = @""; // Comment Logo
+        _page4Icon.shadowColor = _textShadowColor;
+        _page4Icon.textColor = [UIColor whiteColor];
+        [_page4Icon sizeToFit];
+        [_scrollView addSubview:_page4Icon];
+    }
+    
+    // Add Title
+    if (_page4Title == nil) {
+        _page4Title = [[UILabel alloc] init];
+        _page4Title.backgroundColor = [UIColor clearColor];
+        _page4Title.textAlignment = UITextAlignmentCenter;
+        _page4Title.numberOfLines = 0;
+        _page4Title.lineBreakMode = UILineBreakModeWordWrap;
+        _page4Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
+        _page4Title.text = @"Get Started!";
+        _page4Title.shadowColor = _textShadowColor;
+        _page4Title.shadowOffset = CGSizeMake(1, 1);
+        _page4Title.textColor = [UIColor whiteColor];
+        [_scrollView addSubview:_page4Title];
+    }    
+}
+
+- (void)layoutPage4Controls
+{
+    CGFloat x,y;
+    CGFloat currentPage=4;
+    
+    // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
+    CGFloat extraIconSpaceOnTop = 56;
+    CGFloat extraIconSpaceOnBottom = 89;
+    x = (_viewWidth - CGRectGetWidth(_page4Icon.frame))/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = LoginCompletedWalkthroughIconVerticalOffset - extraIconSpaceOnTop;
+    _page4Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page4Icon.frame), CGRectGetHeight(_page4Icon.frame)));
+    
+    // Layout Title
+    CGSize titleSize = [_page4Title.text sizeWithFont:_page4Title.font constrainedToSize:CGSizeMake(LoginCompletedWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    x = (_viewWidth - titleSize.width)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page4Icon.frame) + LoginCompletedWalkthroughStandardOffset - extraIconSpaceOnBottom;
+    _page4Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));    
+}
+
 - (CGFloat)adjustX:(CGFloat)x forPage:(NSUInteger)page
 {
     return (x + _viewWidth*(page-1));
@@ -597,6 +657,7 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
 - (void)flagPageViewed:(NSUInteger)pageViewed
 {
     _pageControl.currentPage = pageViewed - 1;
+    _currentPage = pageViewed;
 }
 
 - (void)clickedInfoButton:(id)sender
@@ -614,12 +675,20 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
     [self dismiss];
 }
 
+- (void)clickedScrollView:(UITapGestureRecognizer *)gestureRecognizer
+{
+    if (_currentPage == 4) {
+        [self dismiss];
+    }
+}
+
 - (void)dismiss
 {
     if (!_isDismissing) {
         _isDismissing = true;
-        self.parentViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        self.parentViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self.parentViewController dismissModalViewControllerAnimated:YES];
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate].panelNavigationController teaseSidebar];
     }
 }
 

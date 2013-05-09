@@ -8,16 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol SelectWPComLanguageViewControllerDelegate;
+typedef void(^SelectWPComLanguageViewControllerBlock)(NSDictionary *);
+
 @interface SelectWPComLanguageViewController : UITableViewController
 
-@property (nonatomic, weak) id<SelectWPComLanguageViewControllerDelegate> delegate;
 @property (nonatomic, assign) NSInteger currentlySelectedLanguageId;
-
-@end
-
-@protocol SelectWPComLanguageViewControllerDelegate <NSObject>
-
-- (void)selectWPComLanguageViewController:(SelectWPComLanguageViewController *)viewController didSelectLanguage:(NSDictionary *)data;
+@property (nonatomic, copy) SelectWPComLanguageViewControllerBlock didSelectLanguage;
 
 @end

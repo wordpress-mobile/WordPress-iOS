@@ -1,0 +1,1250 @@
+//
+//  CreateAccountAndBlogViewController.m
+//  WordPress
+//
+//  Created by Sendhil Panchadsaram on 5/7/13.
+//  Copyright (c) 2013 WordPress. All rights reserved.
+//
+
+#import "CreateAccountAndBlogViewController.h"
+#import <SVProgressHUD/SVProgressHUD.h>
+#import "HelpViewController.h"
+#import "WordPressComApi.h"
+#import "UIView+FormSheetHelpers.h"
+#import "WPWalkthroughButton.h"
+#import "WPWalkthroughTextField.h"
+#import "WPWalkthroughLineSeparatorView.h"
+#import "WPAsyncBlockOperation.h"
+#import "WPComLanguages.h"
+#import "WPWalkthroughGrayOverlayView.h"
+#import "SelectWPComLanguageViewController.h"
+
+
+@interface CreateAccountAndBlogViewController ()<UIScrollViewDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate> {
+    UIScrollView *_scrollView;
+    
+    // Page 1
+    WPWalkthroughButton *_cancelButton;
+    UIButton *_infoButton;
+    UILabel *_page1Icon;
+    UILabel *_page1Title;
+    UITextField *_page1EmailText;
+    UITextField *_page1UsernameText;
+    UITextField *_page1PasswordText;
+    WPWalkthroughButton *_page1NextButton;
+    
+    // Page 2
+    UILabel *_page2Icon;
+    UILabel *_page2Title;
+    UITextField *_page2SiteTitleText;
+    UITextField *_page2SiteAddressText;
+    UITextField *_page2SiteLanguageText;
+    UIImageView *_page2SiteLanguageDropdownImage;
+    WPWalkthroughButton *_page2NextButton;
+    WPWalkthroughButton *_page2PreviousButton;
+    
+    // Page 3
+    UILabel *_page3Icon;
+    UILabel *_page3Title;
+    UILabel *_page3EmailLabel;
+    UILabel *_page3UsernameLabel;
+    UILabel *_page3SiteTitleLabel;
+    UILabel *_page3SiteAddressLabel;
+    UILabel *_page3SiteLanguageLabel;
+    WPWalkthroughButton *_page3NextButton;
+    WPWalkthroughButton *_page3PreviousButton;
+    WPWalkthroughLineSeparatorView *_page3FirstLineSeparator;
+    WPWalkthroughLineSeparatorView *_page3SecondLineSeparator;
+    WPWalkthroughLineSeparatorView *_page3ThirdLineSeparator;
+    WPWalkthroughLineSeparatorView *_page3FourthLineSeparator;
+    WPWalkthroughLineSeparatorView *_page3FifthLineSeparator;
+    WPWalkthroughLineSeparatorView *_page3SixthLineSeparator;
+    
+    NSOperationQueue *_operationQueue;
+    
+    // This is so if the user pages back and forth we aren't validating each time
+    BOOL _page1FieldsValid;
+    BOOL _page2FieldsValid;
+
+    BOOL _hasViewAppeared;
+    BOOL _savedOriginalPositionsOfStickyControls;
+    CGFloat _infoButtonOriginalX;
+    CGFloat _cancelButtonOriginalX;
+    
+    NSUInteger _currentPage;
+    
+    UIColor *_textShadowColor;
+    UIColor *_confirmationLabelColor;
+    
+    CGFloat _viewWidth;
+    CGFloat _viewHeight;
+    
+    NSDictionary *_currentLanguage;
+}
+
+@end
+
+@implementation CreateAccountAndBlogViewController
+
+CGFloat const CreateAccountAndBlogStandardOffset = 16.0;
+CGFloat const CreateAccountAndBlogIconVerticalOffset = 70.0;
+CGFloat const CreateAccountAndBlogMaxTextWidth = 289.0;
+CGFloat const CreateAccountAndBlogTextFieldWidth = 288.0;
+CGFloat const CreateAccountAndBlogTextFieldHeight = 44.0;
+CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
+CGFloat const CreateAccountAndBlogNextButtonWidth = 160.0;
+CGFloat const CreateAccountAndBlogNextButtonHeight = 40.0;
+CGFloat const CreateAccountAndBlogPagingButtonWidth = 136.0;
+CGFloat const CreateAccountAndBlogPagingButtonHeight = 40.0;
+
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        _textShadowColor = [UIColor colorWithRed:0.0 green:115.0/255.0 blue:164.0/255.0 alpha:0.5];
+        _confirmationLabelColor = [UIColor colorWithRed:188.0/255.0 green:221.0/255.0 blue:236.0/255.0 alpha:1.0];
+        _currentPage = 1;
+        _operationQueue = [[NSOperationQueue alloc] init];
+        _currentLanguage = [WPComLanguages currentLanguage];
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    _viewWidth = [self.view formSheetViewWidth];
+    _viewHeight = [self.view formSheetViewHeight];
+    self.view.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:140.0/255.0 blue:190.0/255.0 alpha:1.0];
+    
+    [self addScrollview];
+    [self initializePage1];
+    [self initializePage2];
+    [self initializePage3];
+    
+    if (!IS_IPAD) {
+        // We don't need to shift the controls up on the iPad as there's enough space.
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow) name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide) name:UIKeyboardWillHideNotification object:nil];
+    }
+
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self layoutScrollview];
+    [self layoutPage1Controls];
+    [self layoutPage2Controls];
+    [self layoutPage3Controls];
+    [self savePositionsOfStickyControls];
+    
+    if (_hasViewAppeared) {
+        // This is for the case when the user pulls up the select language view on page 2 and returns to this view. When that
+        // happens the sticky controls on the top won't be in the correct place, so in order to set them up we
+        // 'page' to the current content offset in the _scrollView to ensure that the cancel button and help button
+        // are in the correct place6
+        [self moveStickyControlsForContentOffset:CGPointMake(_scrollView.contentOffset.x, 0)];
+    }
+    
+    _hasViewAppeared = true;
+}
+
+#pragma mark - UITextField Delegate methods
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if (textField == _page1EmailText) {
+        [_page1UsernameText becomeFirstResponder];
+    } else if (textField == _page1UsernameText) {
+        [_page1PasswordText becomeFirstResponder];
+    } else if (textField == _page1PasswordText) {
+        if (_page1NextButton.enabled) {
+            [self clickedPage1NextButton];            
+        }
+    } else if (textField == _page2SiteTitleText) {
+        [_page2SiteAddressText becomeFirstResponder];
+    } else if (textField == _page2SiteAddressText) {
+        if (_page2NextButton.enabled) {
+            [self clickedPage2NextButton];
+        }
+    }
+    return YES;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSArray *page1Fields = @[_page1EmailText, _page1UsernameText, _page1PasswordText];
+    NSArray *page2Fields = @[_page2SiteTitleText, _page2SiteAddressText];
+    
+    NSMutableString *updatedString = [[NSMutableString alloc] initWithString:textField.text];
+    [updatedString replaceCharactersInRange:range withString:string];
+
+    if ([page1Fields containsObject:textField]) {
+        _page1FieldsValid = false;
+        [self updatePage1ButtonEnabledStatusFor:textField andUpdatedString:updatedString];
+    } else if ([page2Fields containsObject:textField]) {
+        _page2FieldsValid = false;
+        [self updatePage2ButtonEnabledStatusFor:textField andUpdatedString:updatedString];
+    }
+    
+    return YES;
+}
+
+- (void)updatePage1ButtonEnabledStatusFor:(UITextField *)textField andUpdatedString:(NSString *)updatedString
+{
+    BOOL isEmailFilled = [self isEmailedFilled];
+    BOOL isUsernameFilled = [self isUsernameFilled];
+    BOOL isPasswordFilled = [self isPasswordFilled];
+    BOOL updatedStringHasContent = [[updatedString trim] length] != 0;
+    
+    if (textField == _page1EmailText) {
+        isEmailFilled = updatedStringHasContent;
+    } else if (textField == _page1UsernameText) {
+        isUsernameFilled = updatedStringHasContent;
+    } else if (textField == _page1PasswordText) {
+        isPasswordFilled = updatedStringHasContent;
+    }
+    
+    _page1NextButton.enabled = isEmailFilled && isUsernameFilled && isPasswordFilled;
+}
+
+- (void)updatePage2ButtonEnabledStatusFor:(UITextField *)textField andUpdatedString:(NSString *)updatedString
+{
+    BOOL isSiteTitleFilled = [self isSiteTitleFilled];
+    BOOL isSiteAddressFilled = [self isSiteAddressFilled];
+    BOOL updatedStringHasContent = [[updatedString trim] length] != 0;
+    
+    if (textField == _page2SiteTitleText) {
+        isSiteTitleFilled = updatedStringHasContent;
+    } else if (textField == _page2SiteAddressText) {
+        isSiteAddressFilled = updatedStringHasContent;
+    }
+    
+    _page2NextButton.enabled = isSiteTitleFilled && isSiteAddressFilled;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    _page1NextButton.enabled = [self page1FieldsFilled];
+    _page2NextButton.enabled = [self page2FieldsFilled];
+    return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    _page1NextButton.enabled = [self page1FieldsFilled];
+    _page2NextButton.enabled = [self page2FieldsFilled];
+    return YES;
+}
+
+#pragma mark - UIScrollView Delegate methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    NSUInteger pageViewed = ceil(scrollView.contentOffset.x/_viewWidth) + 1;
+    [self flagPageViewed:pageViewed];
+    [self moveStickyControlsForContentOffset:scrollView.contentOffset];
+}
+
+#pragma mark - Private Methods
+
+- (void)addScrollview
+{
+    _scrollView = [[UIScrollView alloc] init];
+    CGSize scrollViewSize = _scrollView.contentSize;
+    scrollViewSize.width = _viewWidth * 3;
+    _scrollView.scrollEnabled = NO;
+    _scrollView.frame = self.view.bounds;
+    _scrollView.contentSize = scrollViewSize;
+    _scrollView.pagingEnabled = true;
+    _scrollView.showsHorizontalScrollIndicator = NO;
+    _scrollView.pagingEnabled = YES;
+    [self.view addSubview:_scrollView];
+    _scrollView.delegate = self;
+    
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedOnScrollView:)];
+    gestureRecognizer.numberOfTapsRequired = 1;
+    gestureRecognizer.cancelsTouchesInView = NO;
+    [_scrollView addGestureRecognizer:gestureRecognizer];
+}
+
+- (void)layoutScrollview
+{
+    _scrollView.frame = self.view.bounds;
+}
+
+- (void)initializePage1
+{
+    [self addPage1Controls];
+    [self layoutPage1Controls];
+}
+
+- (void)addPage1Controls
+{
+    // Add Info Button
+    UIImage *infoButtonImage = [UIImage imageNamed:@"infoButton"];
+    if (_infoButton == nil) {
+        _infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_infoButton setImage:infoButtonImage forState:UIControlStateNormal];
+        _infoButton.frame = CGRectMake(CreateAccountAndBlogStandardOffset, CreateAccountAndBlogStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
+        [_infoButton addTarget:self action:@selector(clickedInfoButton) forControlEvents:UIControlEventTouchUpInside];
+        [_scrollView addSubview:_infoButton];
+    }
+    
+    // Add Cancel Button
+    if (_cancelButton == nil) {
+        _cancelButton = [[WPWalkthroughButton alloc] init];
+        _cancelButton.text = @"Cancel";
+        [_cancelButton addTarget:self action:@selector(clickedCancelButton) forControlEvents:UIControlEventTouchUpInside];
+        [_scrollView addSubview:_cancelButton];
+    }
+    
+    // Add Icon
+    if (_page1Icon == nil) {
+        _page1Icon = [[UILabel alloc] init];
+        _page1Icon.text = @"";
+        _page1Icon.backgroundColor = [UIColor clearColor];
+        _page1Icon.font = [UIFont fontWithName:@"Genericons-Regular" size:60];
+        _page1Icon.shadowColor = _textShadowColor;
+        _page1Icon.textColor = [UIColor whiteColor];
+        [_page1Icon sizeToFit];
+        [_scrollView addSubview:_page1Icon];
+    }
+    
+    // Add Title
+    if (_page1Title == nil) {
+        _page1Title = [[UILabel alloc] init];
+        _page1Title.textAlignment = UITextAlignmentCenter;
+        _page1Title.text = @"Create an account on WordPress.com";
+        _page1Title.numberOfLines = 0;
+        _page1Title.backgroundColor = [UIColor clearColor];
+        _page1Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
+        _page1Title.shadowColor = _textShadowColor;
+        _page1Title.textColor = [UIColor whiteColor];
+        _page1Title.lineBreakMode = UILineBreakModeWordWrap;
+        [_scrollView addSubview:_page1Title];
+    }
+    
+    // Add Email
+    if (_page1EmailText == nil) {
+        _page1EmailText = [[WPWalkthroughTextField alloc] init];
+        _page1EmailText.backgroundColor = [UIColor whiteColor];
+        _page1EmailText.placeholder = @"Email Address";
+        _page1EmailText.font = [UIFont fontWithName:@"OpenSans" size:21.0];
+        _page1EmailText.adjustsFontSizeToFitWidth = true;
+        _page1EmailText.delegate = self;
+        _page1EmailText.autocorrectionType = UITextAutocorrectionTypeNo;
+        _page1EmailText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        [_scrollView addSubview:_page1EmailText];
+    }
+    
+    // Add Username
+    if (_page1UsernameText == nil) {
+        _page1UsernameText = [[WPWalkthroughTextField alloc] init];
+        _page1UsernameText.backgroundColor = [UIColor whiteColor];
+        _page1UsernameText.placeholder = @"Username";
+        _page1UsernameText.font = [UIFont fontWithName:@"OpenSans" size:21.0];
+        _page1UsernameText.adjustsFontSizeToFitWidth = true;
+        _page1UsernameText.delegate = self;
+        _page1UsernameText.autocorrectionType = UITextAutocorrectionTypeNo;
+        _page1UsernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        [_scrollView addSubview:_page1UsernameText];
+    }
+    
+    // Add Password
+    if (_page1PasswordText == nil) {
+        _page1PasswordText = [[WPWalkthroughTextField alloc] init];
+        _page1PasswordText.secureTextEntry = true;
+        _page1PasswordText.backgroundColor = [UIColor whiteColor];
+        _page1PasswordText.placeholder = @"Password";
+        _page1PasswordText.font = [UIFont fontWithName:@"OpenSans" size:21.0];
+        _page1PasswordText.adjustsFontSizeToFitWidth = true;
+        _page1PasswordText.delegate = self;
+        _page1PasswordText.autocorrectionType = UITextAutocorrectionTypeNo;
+        _page1PasswordText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        [_scrollView addSubview:_page1PasswordText];
+    }
+    
+    // Add Next Button
+    if (_page1NextButton == nil) {
+        _page1NextButton = [[WPWalkthroughButton alloc] init];
+        _page1NextButton.text = NSLocalizedString(@"Next", nil);
+        _page1NextButton.enabled = false;
+        [_page1NextButton addTarget:self action:@selector(clickedPage1NextButton) forControlEvents:UIControlEventTouchUpInside];
+        [_scrollView addSubview:_page1NextButton];
+    }
+}
+
+- (void)layoutPage1Controls
+{
+    CGFloat x,y;
+    CGFloat currentPage=1;
+    
+    // Layout Info Button
+    UIImage *infoButtonImage = [UIImage imageNamed:@"infoButton"];
+    x = _viewWidth - CreateAccountAndBlogStandardOffset - infoButtonImage.size.width;
+    y = CreateAccountAndBlogStandardOffset;
+    _infoButton.frame = CGRectMake(x, y, infoButtonImage.size.width, infoButtonImage.size.height);
+    
+    // Layout Cancel Button
+    x = CreateAccountAndBlogStandardOffset;
+    y = CreateAccountAndBlogStandardOffset;
+    _cancelButton.frame = CGRectMake(x, y, 66.0, 22.0);
+    
+    // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
+    CGFloat extraIconSpaceOnTop = 18;
+    CGFloat extraIconSpaceOnBottom = 33;
+    x = (_viewWidth - CGRectGetWidth(_page1Icon.frame))/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CreateAccountAndBlogIconVerticalOffset - extraIconSpaceOnTop;
+    _page1Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1Icon.frame), CGRectGetHeight(_page1Icon.frame)));
+    
+    // Layout Title
+    CGSize titleSize = [_page1Title.text sizeWithFont:_page1Title.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    x = (_viewWidth - titleSize.width)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page1Icon.frame) + CreateAccountAndBlogStandardOffset - extraIconSpaceOnBottom;
+    _page1Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
+    
+    // Layout Email
+    x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page1Title.frame) + CreateAccountAndBlogStandardOffset;
+    _page1EmailText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+
+    // Layout Username
+    x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page1EmailText.frame) + CreateAccountAndBlogStandardOffset;
+    _page1UsernameText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+
+    // Layout Password
+    x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page1UsernameText.frame) + CreateAccountAndBlogStandardOffset;
+    _page1PasswordText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    
+    // Layout Next Button
+    x = (_viewWidth - CreateAccountAndBlogNextButtonWidth)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page1PasswordText.frame) + CreateAccountAndBlogStandardOffset;
+    _page1NextButton.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogNextButtonWidth, CreateAccountAndBlogNextButtonHeight));
+}
+
+- (void)initializePage2
+{
+    [self addPage2Controls];
+    [self layoutPage2Controls];
+}
+
+- (void)addPage2Controls
+{
+    // Add Icon
+    if (_page2Icon == nil) {
+        _page2Icon = [[UILabel alloc] init];
+        _page2Icon.text = @"";
+        _page2Icon.backgroundColor = [UIColor clearColor];
+        _page2Icon.font = [UIFont fontWithName:@"Genericons-Regular" size:60];
+        _page2Icon.shadowColor = _textShadowColor;
+        _page2Icon.textColor = [UIColor whiteColor];
+        [_page2Icon sizeToFit];
+        [_scrollView addSubview:_page2Icon];
+    }
+    
+    // Add Title
+    if (_page2Title == nil) {
+        _page2Title = [[UILabel alloc] init];
+        _page2Title.textAlignment = UITextAlignmentCenter;
+        _page2Title.text = @"Create your first WordPress.com site";
+        _page2Title.numberOfLines = 0;
+        _page2Title.backgroundColor = [UIColor clearColor];
+        _page2Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
+        _page2Title.shadowColor = _textShadowColor;
+        _page2Title.textColor = [UIColor whiteColor];
+        _page2Title.lineBreakMode = UILineBreakModeWordWrap;
+        [_scrollView addSubview:_page2Title];
+    }
+    
+    // Add Site Title
+    if (_page2SiteTitleText == nil) {
+        _page2SiteTitleText = [[WPWalkthroughTextField alloc] init];
+        _page2SiteTitleText.backgroundColor = [UIColor whiteColor];
+        _page2SiteTitleText.placeholder = @"Site Title";
+        _page2SiteTitleText.font = [UIFont fontWithName:@"OpenSans" size:21.0];
+        _page2SiteTitleText.adjustsFontSizeToFitWidth = true;
+        _page2SiteTitleText.delegate = self;
+        _page2SiteTitleText.autocorrectionType = UITextAutocorrectionTypeNo;
+        _page2SiteTitleText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        [_scrollView addSubview:_page2SiteTitleText];
+    }
+    
+    // Add Site Address
+    if (_page2SiteAddressText == nil) {
+        _page2SiteAddressText = [[WPWalkthroughTextField alloc] init];
+        _page2SiteAddressText.backgroundColor = [UIColor whiteColor];
+        _page2SiteAddressText.placeholder = @"yoursite.wordpress.com";
+        _page2SiteAddressText.font = [UIFont fontWithName:@"OpenSans" size:21.0];
+        _page2SiteAddressText.adjustsFontSizeToFitWidth = true;
+        _page2SiteAddressText.delegate = self;
+        _page2SiteAddressText.autocorrectionType = UITextAutocorrectionTypeNo;
+        _page2SiteAddressText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        [_scrollView addSubview:_page2SiteAddressText];
+    }
+    
+    // Add Site Language
+    if (_page2SiteLanguageText == nil) {
+        _page2SiteLanguageText = [[WPWalkthroughTextField alloc] init];
+        _page2SiteLanguageText.backgroundColor = [UIColor whiteColor];
+        _page2SiteLanguageText.placeholder = @"Site Language";
+        _page2SiteLanguageText.font = [UIFont fontWithName:@"OpenSans" size:21.0];
+        _page2SiteLanguageText.adjustsFontSizeToFitWidth = true;
+        _page2SiteLanguageText.delegate = self;
+        _page2SiteLanguageText.autocorrectionType = UITextAutocorrectionTypeNo;
+        _page2SiteLanguageText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _page2SiteLanguageText.enabled = NO;
+        _page2SiteLanguageText.text = [_currentLanguage objectForKey:@"name"];
+        [_scrollView addSubview:_page2SiteLanguageText];
+    }
+    
+    if (_page2SiteLanguageDropdownImage == nil) {
+        UIImage *dropDownImage = [UIImage imageNamed:@"textDropdownIcon"];
+        _page2SiteLanguageDropdownImage = [[UIImageView alloc] initWithImage:dropDownImage];
+        [_scrollView addSubview:_page2SiteLanguageDropdownImage];
+    }
+    
+    // Add Next Button
+    if (_page2NextButton == nil) {
+        _page2NextButton = [[WPWalkthroughButton alloc] init];
+        _page2NextButton.text = NSLocalizedString(@"Next", nil);
+        [_page2NextButton addTarget:self action:@selector(clickedPage2NextButton) forControlEvents:UIControlEventTouchUpInside];
+        [_scrollView addSubview:_page2NextButton];
+    }
+
+    // Add Previous Button
+    if (_page2PreviousButton == nil) {
+        _page2PreviousButton = [[WPWalkthroughButton alloc] init];
+        _page2PreviousButton.text = NSLocalizedString(@"Previous", nil);
+        [_page2PreviousButton addTarget:self action:@selector(clickedPage2PreviousButton) forControlEvents:UIControlEventTouchUpInside];
+        [_scrollView addSubview:_page2PreviousButton];
+    }
+}
+
+- (void)layoutPage2Controls
+{
+    CGFloat x,y;
+    CGFloat currentPage=2;
+    
+    // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
+    CGFloat extraIconSpaceOnTop = 18;
+    CGFloat extraIconSpaceOnBottom = 33;
+    x = (_viewWidth - CGRectGetWidth(_page2Icon.frame))/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CreateAccountAndBlogIconVerticalOffset - extraIconSpaceOnTop;
+    _page2Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2Icon.frame), CGRectGetHeight(_page2Icon.frame)));
+    
+    // Layout Title
+    CGSize titleSize = [_page2Title.text sizeWithFont:_page2Title.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    x = (_viewWidth - titleSize.width)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page2Icon.frame) + CreateAccountAndBlogStandardOffset - extraIconSpaceOnBottom;
+    _page2Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
+    
+    // Layout Site Title
+    x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page2Title.frame) + CreateAccountAndBlogStandardOffset;
+    _page2SiteTitleText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    
+    // Layout Site Address
+    x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page2SiteTitleText.frame) + CreateAccountAndBlogStandardOffset;
+    _page2SiteAddressText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+
+    // Layout Site Language
+    x = (_viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page2SiteAddressText.frame) + CreateAccountAndBlogStandardOffset;
+    _page2SiteLanguageText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
+    
+    // Layout Dropdown Image
+    x = CGRectGetMaxX(_page2SiteLanguageText.frame) - CGRectGetWidth(_page2SiteLanguageDropdownImage.frame) - CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMinY(_page2SiteLanguageText.frame) + (CGRectGetHeight(_page2SiteLanguageText.frame) - CGRectGetHeight(_page2SiteLanguageDropdownImage.frame))/2.0;
+    _page2SiteLanguageDropdownImage.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2SiteLanguageDropdownImage.frame), CGRectGetHeight(_page2SiteLanguageDropdownImage.frame)));
+    
+    // Layout Previous Button
+    x = (_viewWidth - CreateAccountAndBlogPagingButtonWidth*2 - CreateAccountAndBlogStandardOffset)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page2SiteLanguageText.frame) + CreateAccountAndBlogStandardOffset;
+    _page2PreviousButton.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogPagingButtonWidth, CreateAccountAndBlogPagingButtonHeight));
+    
+    // Layout Next Button
+    x = CGRectGetMaxX(_page2PreviousButton.frame) + CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_page2SiteLanguageText.frame) + CreateAccountAndBlogStandardOffset;
+    _page2NextButton.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogPagingButtonWidth, CreateAccountAndBlogPagingButtonHeight));
+}
+
+- (void)initializePage3
+{
+    [self addPage3Controls];
+    [self layoutPage3Controls];
+}
+
+- (void)addPage3Controls
+{
+    // Add Icon
+    if (_page3Icon == nil) {
+        _page3Icon = [[UILabel alloc] init];
+        _page3Icon.text = @"";
+        _page3Icon.backgroundColor = [UIColor clearColor];
+        _page3Icon.font = [UIFont fontWithName:@"Genericons-Regular" size:60];
+        _page3Icon.shadowColor = _textShadowColor;
+        _page3Icon.textColor = [UIColor whiteColor];
+        [_page3Icon sizeToFit];
+        [_scrollView addSubview:_page3Icon];
+    }
+    
+    // Add Title
+    if (_page3Title == nil) {
+        _page3Title = [[UILabel alloc] init];
+        _page3Title.textAlignment = UITextAlignmentCenter;
+        _page3Title.text = @"Review your information";
+        _page3Title.numberOfLines = 0;
+        _page3Title.backgroundColor = [UIColor clearColor];
+        _page3Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
+        _page3Title.shadowColor = _textShadowColor;
+        _page3Title.textColor = [UIColor whiteColor];
+        _page3Title.lineBreakMode = UILineBreakModeWordWrap;
+        [_scrollView addSubview:_page3Title];
+    }
+
+    // Add First Line Separator
+    if (_page3FirstLineSeparator == nil) {
+        _page3FirstLineSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        [_scrollView addSubview:_page3FirstLineSeparator];
+    }
+
+    // Add Email Label
+    if (_page3EmailLabel == nil) {
+        _page3EmailLabel = [[UILabel alloc] init];
+        _page3EmailLabel.textAlignment = UITextAlignmentCenter;
+        _page3EmailLabel.text = @"Email: ";
+        _page3EmailLabel.numberOfLines = 1;
+        _page3EmailLabel.backgroundColor = [UIColor clearColor];
+        _page3EmailLabel.font = [UIFont fontWithName:@"OpenSans" size:14];
+        _page3EmailLabel.shadowColor = _textShadowColor;
+        _page3EmailLabel.textColor = _confirmationLabelColor;
+        _page3EmailLabel.lineBreakMode = UILineBreakModeTailTruncation;
+        [_scrollView addSubview:_page3EmailLabel];
+    }
+
+    // Add Second Line Separator
+    if (_page3SecondLineSeparator == nil) {
+        _page3SecondLineSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        [_scrollView addSubview:_page3SecondLineSeparator];
+    }
+
+    // Add Username
+    if (_page3UsernameLabel == nil) {
+        _page3UsernameLabel = [[UILabel alloc] init];
+        _page3UsernameLabel.textAlignment = UITextAlignmentCenter;
+        _page3UsernameLabel.text = @"Username: ";
+        _page3UsernameLabel.numberOfLines = 1;
+        _page3UsernameLabel.backgroundColor = [UIColor clearColor];
+        _page3UsernameLabel.font = [UIFont fontWithName:@"OpenSans" size:14];
+        _page3UsernameLabel.shadowColor = _textShadowColor;
+        _page3UsernameLabel.textColor = _confirmationLabelColor;
+        _page3UsernameLabel.lineBreakMode = UILineBreakModeTailTruncation;
+        [_scrollView addSubview:_page3UsernameLabel];
+    }
+
+    // Add Third Line Separator
+    if (_page3ThirdLineSeparator == nil) {
+        _page3ThirdLineSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        [_scrollView addSubview:_page3ThirdLineSeparator];
+    }
+
+    if (_page3SiteTitleLabel == nil) {
+        _page3SiteTitleLabel = [[UILabel alloc] init];
+        _page3SiteTitleLabel.textAlignment = UITextAlignmentCenter;
+        _page3SiteTitleLabel.text = @"Site Title: ";
+        _page3SiteTitleLabel.numberOfLines = 1;
+        _page3SiteTitleLabel.backgroundColor = [UIColor clearColor];
+        _page3SiteTitleLabel.font = [UIFont fontWithName:@"OpenSans" size:14];
+        _page3SiteTitleLabel.shadowColor = _textShadowColor;
+        _page3SiteTitleLabel.textColor = _confirmationLabelColor;
+        _page3SiteTitleLabel.lineBreakMode = UILineBreakModeTailTruncation;
+        [_scrollView addSubview:_page3SiteTitleLabel];
+    }
+
+    if (_page3FourthLineSeparator == nil) {
+        _page3FourthLineSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        [_scrollView addSubview:_page3FourthLineSeparator];
+    }
+
+    if (_page3SiteAddressLabel == nil) {
+        _page3SiteAddressLabel = [[UILabel alloc] init];
+        _page3SiteAddressLabel.textAlignment = UITextAlignmentCenter;
+        _page3SiteAddressLabel.text = @"Site Address: ";
+        _page3SiteAddressLabel.numberOfLines = 1;
+        _page3SiteAddressLabel.backgroundColor = [UIColor clearColor];
+        _page3SiteAddressLabel.font = [UIFont fontWithName:@"OpenSans" size:14];
+        _page3SiteAddressLabel.shadowColor = _textShadowColor;
+        _page3SiteAddressLabel.textColor = _confirmationLabelColor;
+        _page3SiteAddressLabel.lineBreakMode = UILineBreakModeTailTruncation;
+        [_scrollView addSubview:_page3SiteAddressLabel];
+    }
+
+    if (_page3FifthLineSeparator == nil) {
+        _page3FifthLineSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        [_scrollView addSubview:_page3FifthLineSeparator];
+    }
+    
+    if (_page3SiteLanguageLabel == nil) {
+        _page3SiteLanguageLabel = [[UILabel alloc] init];
+        _page3SiteLanguageLabel.textAlignment = UITextAlignmentCenter;
+        _page3SiteLanguageLabel.text = @"Site Language: ";
+        _page3SiteLanguageLabel.numberOfLines = 1;
+        _page3SiteLanguageLabel.backgroundColor = [UIColor clearColor];
+        _page3SiteLanguageLabel.font = [UIFont fontWithName:@"OpenSans" size:14];
+        _page3SiteLanguageLabel.shadowColor = _textShadowColor;
+        _page3SiteLanguageLabel.textColor = _confirmationLabelColor;
+        _page3SiteLanguageLabel.lineBreakMode = UILineBreakModeTailTruncation;
+        [_scrollView addSubview:_page3SiteLanguageLabel];
+    }
+    
+    if (_page3SixthLineSeparator == nil) {
+        _page3SixthLineSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        [_scrollView addSubview:_page3SixthLineSeparator];
+    }
+
+    // Add Next Button
+    if (_page3NextButton == nil) {
+        _page3NextButton = [[WPWalkthroughButton alloc] init];
+        _page3NextButton.text = NSLocalizedString(@"Next", nil);
+        [_page3NextButton addTarget:self action:@selector(clickedPage3NextButton) forControlEvents:UIControlEventTouchUpInside];
+        [_scrollView addSubview:_page3NextButton];
+    }
+    
+    // Add Previous Button
+    if (_page3PreviousButton == nil) {
+        _page3PreviousButton = [[WPWalkthroughButton alloc] init];
+        _page3PreviousButton.text = NSLocalizedString(@"Previous", nil);
+        [_page3PreviousButton addTarget:self action:@selector(clickedPage3PreviousButton) forControlEvents:UIControlEventTouchUpInside];
+        [_scrollView addSubview:_page3PreviousButton];
+    }
+}
+
+- (void)layoutPage3Controls
+{
+    CGFloat x,y;
+    CGFloat currentPage=3;
+        
+    // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
+    CGFloat extraIconSpaceOnTop = 18;
+    CGFloat extraIconSpaceOnBottom = 33;
+    x = (_viewWidth - CGRectGetWidth(_page3Icon.frame))/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CreateAccountAndBlogIconVerticalOffset - extraIconSpaceOnTop;
+    _page3Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2Icon.frame), CGRectGetHeight(_page2Icon.frame)));
+    
+    // Layout Title
+    CGSize titleSize = [_page3Title.text sizeWithFont:_page3Title.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    x = (_viewWidth - titleSize.width)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page3Icon.frame) + CreateAccountAndBlogStandardOffset - extraIconSpaceOnBottom;
+    _page3Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
+    
+    // Layout First Line Separator
+    CGFloat lineSeparatorWidth = _viewWidth - 2*CreateAccountAndBlogStandardOffset;
+    CGFloat lineSeparatorHeight = 2;
+    x = CreateAccountAndBlogStandardOffset;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page3Title.frame) + CreateAccountAndBlogStandardOffset;
+    _page3FirstLineSeparator.frame = CGRectMake(x, y, lineSeparatorWidth, lineSeparatorHeight);
+    
+    // Layout Email Label
+    CGSize emailLabelSize = [_page3EmailLabel.text sizeWithFont:_page3EmailLabel.font forWidth:CreateAccountAndBlogMaxTextWidth lineBreakMode:UILineBreakModeTailTruncation];
+    x = CreateAccountAndBlogStandardOffset;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page3FirstLineSeparator.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _page3EmailLabel.frame = CGRectMake(x, y, emailLabelSize.width, emailLabelSize.height);
+    
+    // Layout Second Line Separator
+    x = CreateAccountAndBlogStandardOffset;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page3EmailLabel.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _page3SecondLineSeparator.frame = CGRectMake(x, y, lineSeparatorWidth, lineSeparatorHeight);
+    
+    // Layout Username Label
+    CGSize usernameLabelSize = [_page3UsernameLabel.text sizeWithFont:_page3UsernameLabel.font forWidth:CreateAccountAndBlogMaxTextWidth lineBreakMode:UILineBreakModeTailTruncation];
+    x = CreateAccountAndBlogStandardOffset;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page3SecondLineSeparator.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _page3UsernameLabel.frame = CGRectMake(x, y, usernameLabelSize.width, usernameLabelSize.height);
+    
+    // Layout Third Line Separator
+    x = CreateAccountAndBlogStandardOffset;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page3UsernameLabel.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _page3ThirdLineSeparator.frame = CGRectMake(x, y, lineSeparatorWidth, lineSeparatorHeight);
+    
+    // Layout Site Title Label
+    CGSize siteTitleLabel = [_page3SiteTitleLabel.text sizeWithFont:_page3SiteTitleLabel.font forWidth:CreateAccountAndBlogMaxTextWidth lineBreakMode:UILineBreakModeTailTruncation];
+    x = CreateAccountAndBlogStandardOffset;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page3ThirdLineSeparator.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _page3SiteTitleLabel.frame = CGRectMake(x, y, siteTitleLabel.width, siteTitleLabel.height);
+    
+    // Layout Fourth Line Separator
+    x = CreateAccountAndBlogStandardOffset;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page3SiteTitleLabel.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _page3FourthLineSeparator.frame = CGRectMake(x, y, lineSeparatorWidth, lineSeparatorHeight);
+    
+    // Layout Site Address Label
+    CGSize siteAddressLabel = [_page3SiteAddressLabel.text sizeWithFont:_page3SiteAddressLabel.font forWidth:CreateAccountAndBlogMaxTextWidth lineBreakMode:UILineBreakModeTailTruncation];
+    x = CreateAccountAndBlogStandardOffset;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page3FourthLineSeparator.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _page3SiteAddressLabel.frame = CGRectMake(x, y, siteAddressLabel.width, siteAddressLabel.height);
+    
+    // Layout Fifth Line Separator
+    x = CreateAccountAndBlogStandardOffset;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page3SiteAddressLabel.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _page3FifthLineSeparator.frame = CGRectMake(x, y, lineSeparatorWidth, lineSeparatorHeight);
+    
+    // Layout Site Address Label
+    CGSize siteLanguageLabelSize = [_page3SiteLanguageLabel.text sizeWithFont:_page3SiteLanguageLabel.font forWidth:CreateAccountAndBlogMaxTextWidth lineBreakMode:UILineBreakModeTailTruncation];
+    x = CreateAccountAndBlogStandardOffset;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page3FifthLineSeparator.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _page3SiteLanguageLabel.frame = CGRectMake(x, y, siteLanguageLabelSize.width, siteLanguageLabelSize.height);
+
+    // Layout Sixth Line Separator
+    x = CreateAccountAndBlogStandardOffset;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page3SiteLanguageLabel.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _page3SixthLineSeparator.frame = CGRectMake(x, y, lineSeparatorWidth, lineSeparatorHeight);
+    
+    // Layout Previous Button
+    x = (_viewWidth - CreateAccountAndBlogPagingButtonWidth*2 - CreateAccountAndBlogStandardOffset)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page3SixthLineSeparator.frame) + CreateAccountAndBlogStandardOffset;
+    _page3PreviousButton.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogPagingButtonWidth, CreateAccountAndBlogPagingButtonHeight));
+    
+    // Layout Next Button
+    x = CGRectGetMaxX(_page3PreviousButton.frame) + CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_page3SixthLineSeparator.frame) + CreateAccountAndBlogStandardOffset;
+    _page3NextButton.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogPagingButtonWidth, CreateAccountAndBlogPagingButtonHeight));
+}
+
+- (void)updatePage3Labels
+{
+    _page3EmailLabel.text = [NSString stringWithFormat:@"Email: %@", _page1EmailText.text];
+    _page3UsernameLabel.text = [NSString stringWithFormat:@"Username: %@", _page1UsernameText.text];
+    _page3SiteTitleLabel.text = [NSString stringWithFormat:@"Site Title: %@", _page2SiteTitleText.text];
+    _page3SiteAddressLabel.text = [NSString stringWithFormat:@"Site Address: %@", _page2SiteAddressText.text];
+    _page3SiteLanguageLabel.text = [NSString stringWithFormat:@"Site Language: %@", [_currentLanguage objectForKey:@"name"]];
+    
+    [self layoutPage3Controls];
+}
+
+- (void)clickedInfoButton
+{
+    HelpViewController *helpViewController = [[HelpViewController alloc] init];
+    helpViewController.isBlogSetup = YES;
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [self.navigationController pushViewController:helpViewController animated:YES];
+}
+
+- (void)clickedCancelButton
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)moveToPage:(NSUInteger)page
+{
+    [_scrollView setContentOffset:CGPointMake(_viewWidth*(page-1), 0) animated:YES];
+}
+
+- (void)tappedOnScrollView:(UIGestureRecognizer *)gestureRecognizer
+{
+    CGPoint touchPoint = [gestureRecognizer locationInView:_scrollView];
+    BOOL tappedSiteLanguage = CGRectContainsPoint(_page2SiteLanguageText.frame, touchPoint);
+    if (tappedSiteLanguage) {
+        [self showLanguagePicker];
+    } else {
+        [self.view endEditing:YES];
+    }
+}
+
+- (void)clickedPage1NextButton
+{
+    [self.view endEditing:YES];
+    if (![self page1FieldsValid]) {
+        [self showFieldsNotFilledError];
+        return;
+    }
+    
+    if (_page1FieldsValid) {
+        [self moveToPage:2];
+    } else {
+        [self validateUserFields];
+    }
+}
+
+- (void)clickedPage2NextButton
+{
+    [self.view endEditing:YES];
+    if (![self page2FieldsValid]) {
+        [self showFieldsNotFilledError];
+        return;
+    }
+    
+    if (_page2FieldsValid) {
+        [self moveToPage:3];
+    } else {
+        [self validateSiteFields];
+    }
+}
+
+- (void)clickedPage2PreviousButton
+{
+    [self.view endEditing:YES];
+    [self moveToPage:1];
+}
+
+- (void)clickedPage3NextButton
+{
+    [self createUserAndSite];
+}
+
+- (void)clickedPage3PreviousButton
+{
+    [self moveToPage:2];
+}
+
+
+- (void)savePositionsOfStickyControls
+{
+    if (!_savedOriginalPositionsOfStickyControls) {
+        _savedOriginalPositionsOfStickyControls = true;
+        _infoButtonOriginalX = CGRectGetMinX(_infoButton.frame);
+        _cancelButtonOriginalX = CGRectGetMinX(_cancelButton.frame);
+    }
+}
+
+- (CGFloat)adjustX:(CGFloat)x forPage:(NSUInteger)page
+{
+    return (x + _viewWidth*(page-1));
+}
+
+- (void)flagPageViewed:(NSUInteger)page
+{
+    _currentPage = page;
+}
+
+- (void)moveStickyControlsForContentOffset:(CGPoint)contentOffset
+{
+    if (contentOffset.x < 0)
+        return;
+    
+    CGRect cancelButtonFrame = _cancelButton.frame;
+    cancelButtonFrame.origin.x = _cancelButtonOriginalX + contentOffset.x;
+    _cancelButton.frame =  cancelButtonFrame;
+    
+    CGRect infoButtonFrame = _infoButton.frame;
+    infoButtonFrame.origin.x = _infoButtonOriginalX + contentOffset.x;
+    _infoButton.frame = infoButtonFrame;
+}
+
+- (void)keyboardWillShow
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        NSArray *controlsToMove = @[];
+        NSArray *controlsToHide = @[];
+        if (_currentPage == 1) {
+            controlsToMove = @[_page1Title, _page1UsernameText, _page1EmailText, _page1PasswordText, _page1NextButton];
+            controlsToHide = @[_page1Icon, _infoButton, _cancelButton];
+        } else if (_currentPage == 2) {
+            controlsToMove = @[_page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2NextButton, _page2PreviousButton];
+            controlsToHide = @[_page2Icon, _infoButton, _cancelButton];
+        }
+        
+        for (UIControl *control in controlsToMove) {
+            CGRect frame = control.frame;
+            frame.origin.y -= CreateAccountAndBlogKeyboardOffset;
+            control.frame = frame;
+        }
+        
+        for (UIControl *control in controlsToHide) {
+            control.alpha = 0.0;
+        }        
+    }];
+}
+
+- (void)keyboardWillHide
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        NSArray *controlsToMove = @[];
+        NSArray *controlsToShow = @[];
+        if (_currentPage == 1) {
+            controlsToMove = @[_page1Title, _page1UsernameText, _page1EmailText, _page1PasswordText, _page1NextButton];
+            controlsToShow = @[_page1Icon, _infoButton, _cancelButton];
+        } else if (_currentPage == 2) {
+            controlsToMove = @[_page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2NextButton, _page2PreviousButton];
+            controlsToShow = @[_page2Icon, _infoButton, _cancelButton];
+        }
+        
+        for (UIControl *control in controlsToMove) {
+            CGRect frame = control.frame;
+            frame.origin.y += CreateAccountAndBlogKeyboardOffset;
+            control.frame = frame;
+        }
+        
+        for (UIControl *control in controlsToShow) {
+            control.alpha = 1.0;
+        }
+    }];
+}
+
+- (void)showLanguagePicker
+{
+    [self.view endEditing:YES];
+    SelectWPComLanguageViewController *languageViewController = [[SelectWPComLanguageViewController alloc] init];
+    languageViewController.currentlySelectedLanguageId = [[_currentLanguage objectForKey:@"lang_id"] intValue];
+    languageViewController.didSelectLanguage = ^(NSDictionary *language){
+        [self updateLanguage:language];
+    };
+    [self.navigationController pushViewController:languageViewController animated:YES];
+}
+
+- (void)updateLanguage:(NSDictionary *)language
+{
+    _currentLanguage = language;
+    _page2SiteLanguageText.text = [_currentLanguage objectForKey:@"name"];
+    _page2FieldsValid = false;
+}
+
+- (void)handleRemoteError:(NSError *)error
+{
+    NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
+    NSString *errorMessage;
+    
+    if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidUser]) {
+        errorMessage = NSLocalizedString(@"Invalid username", @"");
+    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidEmail]) {
+        errorMessage = NSLocalizedString(@"Invalid email address", @"");
+    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidPassword]) {
+        errorMessage = NSLocalizedString(@"Invalid password", @"");
+    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogUrl]) {
+        errorMessage = NSLocalizedString(@"Invalid blog url", @"");
+    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogTitle]) {
+        errorMessage = NSLocalizedString(@"Invalid Blog Title", @"");
+    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeTooManyRequests]) {
+        errorMessage = NSLocalizedString(@"Limit Reached - Contact Support", @"");
+    } else {
+        errorMessage = NSLocalizedString(@"Unknown error", @"");
+    }
+    
+    [self showError:errorMessage];
+}
+
+- (BOOL)page1FieldsFilled
+{
+    return [self isEmailedFilled] && [self isUsernameFilled] && [self isPasswordFilled];
+}
+
+- (BOOL)isEmailedFilled
+{
+    return ([[_page1EmailText.text trim] length] != 0);
+}
+
+- (BOOL)isUsernameFilled
+{
+    return ([[_page1UsernameText.text trim] length] != 0);
+}
+
+- (BOOL)isPasswordFilled
+{
+    return ([[_page1PasswordText.text trim] length] != 0);
+}
+
+- (BOOL)page1FieldsValid
+{
+    return [self page1FieldsFilled];
+}
+
+- (void)showFieldsNotFilledError
+{
+    [self showError:NSLocalizedString(@"Please fill out all the fields", nil)];
+}
+
+- (void)validateUserFields
+{
+    void (^userValidationSuccess)(id) = ^(id responseObject) {
+        [SVProgressHUD dismiss];
+        _page1FieldsValid = true;
+        [self moveToPage:2];
+    };
+    
+    void (^userValidationFailure)(NSError *) = ^(NSError *error){
+        [SVProgressHUD dismiss];
+        [self handleRemoteError:error];
+    };
+    
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Validating User Data", nil) maskType:SVProgressHUDMaskTypeBlack];
+    [[WordPressComApi sharedApi] validateWPComAccountWithEmail:_page1EmailText.text
+                                                   andUsername:_page1UsernameText.text
+                                                   andPassword:_page1PasswordText.text
+                                                       success:userValidationSuccess
+                                                       failure:userValidationFailure];
+
+}
+
+- (BOOL)page2FieldsValid
+{
+    return [self page2FieldsFilled];
+}
+
+- (BOOL)page2FieldsFilled
+{
+    return [self isSiteTitleFilled] && [self isSiteAddressFilled];
+}
+
+- (BOOL)isSiteTitleFilled
+{
+    return ([[_page2SiteTitleText.text trim] length] != 0);
+}
+
+- (BOOL)isSiteAddressFilled
+{
+    return ([[_page2SiteAddressText.text trim] length] != 0);
+}
+
+- (NSString *)getSiteAddressWithoutWordPressDotCom
+{
+    NSRegularExpression *dotCom = [NSRegularExpression regularExpressionWithPattern:@"\\.wordpress\\.com/?$" options:NSRegularExpressionCaseInsensitive error:nil];
+    return [dotCom stringByReplacingMatchesInString:_page2SiteAddressText.text options:0 range:NSMakeRange(0, [_page2SiteAddressText.text length]) withTemplate:@""];
+}
+
+
+- (void)showError:(NSString *)message
+{
+    WPWalkthroughGrayOverlayView *overlayView = [[WPWalkthroughGrayOverlayView alloc] initWithFrame:self.view.bounds];
+    overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
+    overlayView.overlayTitle = NSLocalizedString(@"Error", nil);
+    overlayView.overlayDescription = message;
+    overlayView.footerDescription = NSLocalizedString(@"TAP TO DISMISS", nil);
+    overlayView.singleTapCompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+        [overlayView dismiss];
+    };
+    [self.view addSubview:overlayView];
+}
+
+- (void)validateSiteFields
+{
+    void (^blogValidationSuccess)(id) = ^(id responseObject) {
+        [SVProgressHUD dismiss];
+        _page2FieldsValid = true;
+        [self updatePage3Labels];
+        [self moveToPage:3];
+    };
+    void (^blogValidationFailure)(NSError *) = ^(NSError *error) {
+        [SVProgressHUD dismiss];
+        [self handleRemoteError:error];
+    };
+    
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Validating Site Data", nil) maskType:SVProgressHUDMaskTypeBlack];
+
+    NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
+    [[WordPressComApi sharedApi] validateWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
+                                             andBlogTitle:_page2SiteTitleText.text
+                                            andLanguageId:languageId
+                                                  success:blogValidationSuccess
+                                                  failure:blogValidationFailure];
+}
+
+- (void)createUserAndSite
+{
+    WPAsyncBlockOperation *userCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
+        void (^createUserSuccess)(id) = ^(id responseObject){
+            [operation didSucceed];
+        };
+        void (^createUserFailure)(NSError *) = ^(NSError *error) {
+            [operation didFail];
+            [SVProgressHUD dismiss];
+            [self handleRemoteError:error];
+        };
+        
+        [[WordPressComApi sharedApi] createWPComAccountWithEmail:_page1EmailText.text
+                                                     andUsername:_page1UsernameText.text
+                                                     andPassword:_page1PasswordText.text
+                                                         success:createUserSuccess
+                                                         failure:createUserFailure];
+        
+    }];
+    WPAsyncBlockOperation *userSignIn = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
+        void (^signInSuccess)(void) = ^{
+            [operation didSucceed];
+        };
+        void (^signInFailure)(NSError *) = ^(NSError *error) {
+            // We've hit a strange failure at this point, the user has been created successfully but for some reason
+            // we are unable to sign in and proceed
+            [operation didFail];
+            [SVProgressHUD dismiss];
+            [self handleRemoteError:error];
+        };
+        
+        [[WordPressComApi sharedApi] signInWithUsername:_page1UsernameText.text
+                                               password:_page1PasswordText.text
+                                                success:signInSuccess
+                                                failure:signInFailure];
+    }];
+    
+    WPAsyncBlockOperation *blogCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
+        void (^createBlogSuccess)(id) = ^(id responseObject){
+            [operation didSucceed];
+            [SVProgressHUD dismiss];
+            if (self.onCreatedUser) {
+                self.onCreatedUser(_page1UsernameText.text, _page1PasswordText.text);
+            }
+        };
+        void (^createBlogFailure)(NSError *error) = ^(NSError *error) {
+            [SVProgressHUD dismiss];
+            [operation didFail];
+            [self handleRemoteError:error];
+        };
+        
+        NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
+        [[WordPressComApi sharedApi] createWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
+                                               andBlogTitle:_page2SiteTitleText.text
+                                              andLanguageId:languageId
+                                          andBlogVisibility:WordPressComApiBlogVisibilityPublic
+                                                    success:createBlogSuccess
+                                                    failure:createBlogFailure];
+
+    }];
+    
+    [blogCreation addDependency:userSignIn];
+    [userSignIn addDependency:userCreation];
+    
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Creating User and Site", nil) maskType:SVProgressHUDMaskTypeBlack];
+    
+    [_operationQueue addOperation:userCreation];
+    [_operationQueue addOperation:userSignIn];
+    [_operationQueue addOperation:blogCreation];
+}
+
+@end

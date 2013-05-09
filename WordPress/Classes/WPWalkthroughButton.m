@@ -49,6 +49,14 @@
     }
 }
 
+- (void)setText:(NSString *)text
+{
+    if (_text != text) {
+        _text = text;
+        [self setNeedsDisplay];
+    }
+}
+
 #pragma mark - Private Methods
 
 - (void)addClippingForRoundedCorners:(CGContextRef)context

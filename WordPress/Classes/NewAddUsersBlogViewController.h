@@ -12,13 +12,13 @@
 typedef void(^AddUsersBlogViewControllerBlock)(NewAddUsersBlogViewController *);
 typedef void(^AddUsersBlogViewControllerErrorBlock)(NewAddUsersBlogViewController *, NSError *);
 
-@interface NewAddUsersBlogViewController : UITableViewController
+@interface NewAddUsersBlogViewController : UIViewController
 
 @property (nonatomic, assign) BOOL isWPCom;
 @property (nonatomic, assign) BOOL autoAddSingleBlog;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
-@property (nonatomic, strong) NSString *url;
+@property (nonatomic, strong) NSString *xmlRPCUrl;
 
 @property (nonatomic, copy) AddUsersBlogViewControllerBlock blogAdditionCompleted;
 @property (nonatomic, copy) AddUsersBlogViewControllerBlock onNoBlogsLoaded;

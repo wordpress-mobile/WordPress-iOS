@@ -19,7 +19,6 @@
 #import "ReachabilityUtils.h"
 
 @interface CreateWPComBlogViewController () <
-    SelectWPComLanguageViewControllerDelegate,
     SelectWPComBlogVisibilityViewControllerDelegate,
     UITextFieldDelegate> {
         
@@ -224,7 +223,10 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
         if (indexPath.row == 2) {
             SelectWPComLanguageViewController *selectLanguageViewController = [[SelectWPComLanguageViewController alloc] initWithStyle:UITableViewStyleGrouped];
             selectLanguageViewController.currentlySelectedLanguageId = [[_currentLanguage objectForKey:@"lang_id"] intValue];
-            selectLanguageViewController.delegate = self;
+            selectLanguageViewController.didSelectLanguage = ^(NSDictionary *language){
+                _currentLanguage = language;
+                [self.tableView reloadData];
+            };
             [self.navigationController pushViewController:selectLanguageViewController animated:YES];
         } else if (indexPath.row == 3) {
             SelectWPComBlogVisibilityViewController *selectedVisibilityViewController = [[SelectWPComBlogVisibilityViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -251,14 +253,6 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     }
     
 	return YES;
-}
-
-#pragma mark - SelectWPComLanguageViewControllerDelegate
-
-- (void)selectWPComLanguageViewController:(SelectWPComLanguageViewController *)viewController didSelectLanguage:(NSDictionary *)data
-{
-    _currentLanguage = data;
-    [self.tableView reloadData];
 }
 
 #pragma mark - SelectWPComBlogVisibilityViewControllerDelegate

@@ -467,6 +467,8 @@
 		85149747171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85149746171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m */; };
 		8516972C169D42F4006C5DED /* WPToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 8516972B169D42F4006C5DED /* WPToast.m */; };
 		8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */ = {isa = PBXBuildFile; fileRef = 8525398A171761D9003F6B32 /* WPComLanguages.m */; };
+		853E11361739CD6500657E1F /* textDropdownIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 853E11341739CD6500657E1F /* textDropdownIcon@2x.png */; };
+		853E11371739CD6500657E1F /* textDropdownIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 853E11351739CD6500657E1F /* textDropdownIcon.png */; };
 		8566BC95170F84BC003C6BCF /* CreateWPComAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8566BC93170F84BC003C6BCF /* CreateWPComAccountViewController.m */; };
 		858DE401172F99B2000AC628 /* Genericons-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 858DE400172F99B2000AC628 /* Genericons-Regular.otf */; };
 		858DE40F1730384F000AC628 /* GeneralWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 858DE40E1730384F000AC628 /* GeneralWalkthroughViewController.m */; };
@@ -491,6 +493,7 @@
 		85E105941731D4FD001071A3 /* nuxStatsIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E105921731D4FC001071A3 /* nuxStatsIcon.png */; };
 		85E105951731D4FD001071A3 /* nuxStatsIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85E105931731D4FD001071A3 /* nuxStatsIcon@2x.png */; };
 		85EC44D11738C24500686604 /* UIView+FormSheetHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EC44D01738C24500686604 /* UIView+FormSheetHelpers.m */; };
+		85EC44D41739826A00686604 /* CreateAccountAndBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */; };
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */; };
@@ -1273,6 +1276,8 @@
 		8516972B169D42F4006C5DED /* WPToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPToast.m; sourceTree = "<group>"; };
 		85253989171761D9003F6B32 /* WPComLanguages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPComLanguages.h; sourceTree = "<group>"; };
 		8525398A171761D9003F6B32 /* WPComLanguages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPComLanguages.m; sourceTree = "<group>"; };
+		853E11341739CD6500657E1F /* textDropdownIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "textDropdownIcon@2x.png"; sourceTree = "<group>"; };
+		853E11351739CD6500657E1F /* textDropdownIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textDropdownIcon.png; sourceTree = "<group>"; };
 		8566BC92170F84BC003C6BCF /* CreateWPComAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateWPComAccountViewController.h; sourceTree = "<group>"; };
 		8566BC93170F84BC003C6BCF /* CreateWPComAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateWPComAccountViewController.m; sourceTree = "<group>"; };
 		858DE400172F99B2000AC628 /* Genericons-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Genericons-Regular.otf"; sourceTree = "<group>"; };
@@ -1309,6 +1314,8 @@
 		85E105931731D4FD001071A3 /* nuxStatsIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nuxStatsIcon@2x.png"; sourceTree = "<group>"; };
 		85EC44CF1738C24500686604 /* UIView+FormSheetHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+FormSheetHelpers.h"; sourceTree = "<group>"; };
 		85EC44D01738C24500686604 /* UIView+FormSheetHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FormSheetHelpers.m"; sourceTree = "<group>"; };
+		85EC44D21739826A00686604 /* CreateAccountAndBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateAccountAndBlogViewController.h; sourceTree = "<group>"; };
+		85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateAccountAndBlogViewController.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate.html; path = Resources/HTML/defaultPostTemplate.html; sourceTree = "<group>"; };
@@ -2407,6 +2414,8 @@
 				85D08A5D17332C4A00E2BBCA /* NewAddUsersBlogViewController.m */,
 				85D08A6F17342ECE00E2BBCA /* AddUsersBlogCell.h */,
 				85D08A7017342ECE00E2BBCA /* AddUsersBlogCell.m */,
+				85EC44D21739826A00686604 /* CreateAccountAndBlogViewController.h */,
+				85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */,
 			);
 			name = NUX;
 			sourceTree = "<group>";
@@ -2432,6 +2441,8 @@
 				85D08A60173333B300E2BBCA /* addBlogsSelectedImage@2x.png */,
 				85D08A61173333B300E2BBCA /* addBlogsUnselectedImage.png */,
 				85D08A62173333B300E2BBCA /* addBlogsUnselectedImage@2x.png */,
+				853E11341739CD6500657E1F /* textDropdownIcon@2x.png */,
+				853E11351739CD6500657E1F /* textDropdownIcon.png */,
 			);
 			name = NUX;
 			sourceTree = "<group>";
@@ -3765,6 +3776,8 @@
 				85D08A64173333B300E2BBCA /* addBlogsSelectedImage@2x.png in Resources */,
 				85D08A65173333B300E2BBCA /* addBlogsUnselectedImage.png in Resources */,
 				85D08A66173333B300E2BBCA /* addBlogsUnselectedImage@2x.png in Resources */,
+				853E11361739CD6500657E1F /* textDropdownIcon@2x.png in Resources */,
+				853E11371739CD6500657E1F /* textDropdownIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3994,6 +4007,7 @@
 				85D08A5E17332C4A00E2BBCA /* NewAddUsersBlogViewController.m in Sources */,
 				85D08A7117342ECE00E2BBCA /* AddUsersBlogCell.m in Sources */,
 				85EC44D11738C24500686604 /* UIView+FormSheetHelpers.m in Sources */,
+				85EC44D41739826A00686604 /* CreateAccountAndBlogViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

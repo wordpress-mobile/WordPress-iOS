@@ -32,6 +32,12 @@
     self.navigationItem.title = NSLocalizedString(@"Select Language", nil);
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -67,7 +73,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *language = [_languages objectAtIndex:indexPath.row];
-    [self.delegate selectWPComLanguageViewController:self didSelectLanguage:language];
+    if (self.didSelectLanguage) {
+        self.didSelectLanguage(language);
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 

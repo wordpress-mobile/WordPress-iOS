@@ -10,6 +10,7 @@
 #import "WordPressAppDelegate.h"
 #import "UIView+FormSheetHelpers.h"
 #import "NewAddUsersBlogViewController.h"
+#import "WPWalkthroughButton.h"
 #import "AddUsersBlogCell.h"
 #import "SFHFKeychainUtils.h"
 #import "NSString+XMLExtensions.h"
@@ -17,16 +18,20 @@
 #import "Blog.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 
-@interface NewAddUsersBlogViewController () {
+@interface NewAddUsersBlogViewController () <
+    UITableViewDelegate,
+    UITableViewDataSource> {
     NSArray *_usersBlogs;
     NSMutableArray *_selectedBlogs;
-    UIButton *_selectAll;
-    UIButton *_addBlogs;
+    WPWalkthroughButton *_selectAllButton;
+    WPWalkthroughButton *_addSelectedButton;
     BOOL _loading;
     
     CGFloat _viewWidth;
     CGFloat _viewHeight;
 }
+
+@property (nonatomic, strong) UITableView *tableView;
 
 @end
 
@@ -35,11 +40,16 @@
 CGFloat const AddUsersBlogHeaderHeight = 164.0;
 CGFloat const AddUsersBlogStandardOffset = 16.0;
 CGFloat const AddUsersBlogLoadingViewHeight = 100.0;
-CGFloat const AddUsersBlogLogoVerticalOffset = 79.0;
+CGFloat const AddUsersBlogTitleVerticalOffset = 23.0;
+CGFloat const AddUsersBlogMaxTextWidth = 289.0;
+CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
+CGFloat const AddUsersBlogBottomButtonWidth = 136.0;
+CGFloat const AddUsersBlogBottomButtonHeight = 32.0;
 
-- (id)initWithStyle:(UITableViewStyle)style
+
+- (id)init
 {
-    self = [super initWithStyle:style];
+    self = [super init];
     if (self) {
         _selectedBlogs = [[NSMutableArray alloc] init];
         _autoAddSingleBlog = true;
@@ -53,10 +63,9 @@ CGFloat const AddUsersBlogLogoVerticalOffset = 79.0;
     
     _viewWidth = [self.view formSheetViewWidth];
     _viewHeight = [self.view formSheetViewHeight];
-    self.view.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:140.0/255.0 blue:190.0/255.0 alpha:1.0];
-    self.tableView.tableHeaderView = [self headerView];
-    self.tableView.tableFooterView = [self footerView];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        
+    [self addTableView];
+    [self addBottomPanel];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -149,6 +158,46 @@ CGFloat const AddUsersBlogLogoVerticalOffset = 79.0;
 
 #pragma mark - Private Methods
 
+- (void)addTableView
+{
+    CGRect tableViewFrame = self.view.bounds;
+    tableViewFrame.size.height -= AddUsersBlogBottomBackgroundHeight;
+    
+    self.tableView = [[UITableView alloc] initWithFrame:tableViewFrame style:UITableViewStylePlain];
+    self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.view.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:140.0/255.0 blue:190.0/255.0 alpha:1.0];
+    self.tableView.tableHeaderView = [self headerView];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.view addSubview:self.tableView];
+}
+
+- (void)addBottomPanel
+{
+    UIView *bottomPanel = [[UIView alloc] init];
+    bottomPanel.backgroundColor = [UIColor clearColor];
+    bottomPanel.frame = CGRectMake(0, CGRectGetMaxY(self.tableView.frame), _viewWidth, AddUsersBlogBottomBackgroundHeight);
+    [self.view addSubview:bottomPanel];
+    
+    CGFloat x,y;
+    x = (_viewWidth - 2*AddUsersBlogBottomButtonWidth - AddUsersBlogStandardOffset)/2.0;
+    y = AddUsersBlogStandardOffset;
+    _selectAllButton = [[WPWalkthroughButton alloc] init];
+    _selectAllButton.text = NSLocalizedString(@"Select All", nil);
+    _selectAllButton.frame = CGRectMake(x, y, AddUsersBlogBottomButtonWidth, AddUsersBlogBottomButtonHeight);
+    [_selectAllButton addTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [bottomPanel addSubview:_selectAllButton];
+    
+    x = CGRectGetMaxX(_selectAllButton.frame) + AddUsersBlogStandardOffset;
+    y = AddUsersBlogStandardOffset;
+    _addSelectedButton = [[WPWalkthroughButton alloc] init];
+    _addSelectedButton.text = NSLocalizedString(@"Add Selected", nil);
+    _addSelectedButton.frame = CGRectMake(x, y, AddUsersBlogBottomButtonWidth, AddUsersBlogBottomButtonHeight);
+    [_addSelectedButton addTarget:self action:@selector(createBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [bottomPanel addSubview:_addSelectedButton];
+}
+
 - (UIView *)headerView
 {
     CGFloat x, y;
@@ -166,58 +215,21 @@ CGFloat const AddUsersBlogLogoVerticalOffset = 79.0;
         [headerView addSubview:infoButton];
     }
     
-    // Add "Add" Button
-    UIButton *addBlogsButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [addBlogsButton setTitle:@"Add Blogs" forState:UIControlStateNormal];
-    [addBlogsButton sizeToFit];
-    [addBlogsButton addTarget:self action:@selector(createBlogs) forControlEvents:UIControlEventTouchUpInside];
-    x = _viewWidth - CGRectGetWidth(addBlogsButton.frame) - AddUsersBlogStandardOffset;
-    y = AddUsersBlogStandardOffset;
-    addBlogsButton.frame = CGRectMake(x, y, CGRectGetWidth(addBlogsButton.frame), CGRectGetHeight(addBlogsButton.frame));
-    addBlogsButton.enabled = NO;
-    [headerView addSubview:addBlogsButton];
-    _addBlogs = addBlogsButton;
-    
-    // Add Select All Button
-    UIButton *selectAllButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
-    [selectAllButton sizeToFit];
-    [selectAllButton addTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    x = _viewWidth - CGRectGetWidth(addBlogsButton.frame) - AddUsersBlogStandardOffset;
-    y = CGRectGetMaxY(addBlogsButton.frame) + AddUsersBlogStandardOffset;
-    selectAllButton.frame = CGRectMake(x, y, CGRectGetWidth(selectAllButton.frame), CGRectGetHeight(selectAllButton.frame
-                                                                                                    ));
-    [headerView addSubview:selectAllButton];
-    _selectAll = selectAllButton;
-    
-    // Add Logo
-    UILabel *logo = [[UILabel alloc] init];
-    logo = [[UILabel alloc] init];
-    logo.backgroundColor = [UIColor clearColor];
-    logo.font = [UIFont fontWithName:@"Genericons-Regular" size:60];
-    logo.text = @""; // WordPress Logo
-    logo.shadowColor = [UIColor colorWithRed:0.0 green:115.0/255.0 blue:164.0/255.0 alpha:0.5];
-    logo.textColor = [UIColor whiteColor];
-    [logo sizeToFit];
-
-    // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
-    CGFloat extraSpaceOnTop = 18.0;
-    x = (_viewWidth - CGRectGetWidth(logo.frame))/2.0;
-    y = AddUsersBlogLogoVerticalOffset-extraSpaceOnTop;
-    logo.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(logo.frame), CGRectGetHeight(logo.frame)));
-    
-    [headerView addSubview:logo];
+    UILabel *title = [[UILabel alloc] init];
+    title.backgroundColor = [UIColor clearColor];
+    title.textAlignment = UITextAlignmentCenter;
+    title.font = [UIFont fontWithName:@"OpenSans-Light" size:29.0];
+    title.text = NSLocalizedString(@"Select the sites you want to add", nil);
+    title.shadowColor = [UIColor colorWithRed:0.0 green:115.0/255.0 blue:164.0/255.0 alpha:0.5];
+    title.textColor = [UIColor whiteColor];
+    title.numberOfLines = 0;
+    CGSize titleSize = [title.text sizeWithFont:title.font constrainedToSize:CGSizeMake(AddUsersBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    x = (_viewWidth - titleSize.width)/2.0;
+    y = CGRectGetHeight(headerView.frame) - titleSize.height - AddUsersBlogTitleVerticalOffset;
+    title.frame = CGRectMake(x, y, titleSize.width, titleSize.height);
+    [headerView addSubview:title];
     
     return headerView;
-}
-
-- (UIView *)footerView
-{
-    // This just adds a little bit of space at the bottom of the tableview so the final table view cell
-    // doesn't terminate on the bottom abruptly without some spacing.
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth, AddUsersBlogStandardOffset)];
-    footerView.backgroundColor = [UIColor clearColor];
-    return footerView;
 }
 
 - (UIView *)loadingView
@@ -241,7 +253,7 @@ CGFloat const AddUsersBlogLogoVerticalOffset = 79.0;
     loading.backgroundColor = [UIColor clearColor];
     loading.textColor = [UIColor whiteColor];
     loading.shadowColor = [UIColor blackColor];
-    loading.text = NSLocalizedString(@"Loading blogs...", nil);
+    loading.text = NSLocalizedString(@"Loading sites...", nil);
     loading.font = [UIFont fontWithName:@"OpenSans" size:15.0];
     [loading sizeToFit];
     x = (_viewWidth - CGRectGetWidth(loading.frame))/2.0;
@@ -267,7 +279,7 @@ CGFloat const AddUsersBlogLogoVerticalOffset = 79.0;
     if (self.isWPCom) {
         xmlrpc = [NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"];
     } else {
-        xmlrpc = [NSURL URLWithString:self.url];
+        xmlrpc = [NSURL URLWithString:self.xmlRPCUrl];
     }
     
     _loading = true;
@@ -296,7 +308,7 @@ CGFloat const AddUsersBlogLogoVerticalOffset = 79.0;
                         [self createBlogs];
                     }
                 }
-                
+                                
                 [self toggleButtons];
                 [self.tableView reloadData];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -324,7 +336,7 @@ CGFloat const AddUsersBlogLogoVerticalOffset = 79.0;
 
 - (void)createBlogs
 {
-    _addBlogs.enabled = NO;
+    _addSelectedButton.enabled = NO;
     
     for (NSDictionary *blog in _usersBlogs) {
 		if([_selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
@@ -362,15 +374,20 @@ CGFloat const AddUsersBlogLogoVerticalOffset = 79.0;
 
 - (void)toggleButtons
 {
-    _addBlogs.enabled = [_selectedBlogs count] > 0;
-    _selectAll.enabled = [_usersBlogs count] != 0;
+    _addSelectedButton.enabled = [_selectedBlogs count] > 0;
+    _selectAllButton.enabled = [_usersBlogs count] != 0;
+    if ([_selectedBlogs count] == [_usersBlogs count]) {
+        _selectAllButton.text = NSLocalizedString(@"Deselect All", nil);
+    } else {
+        _selectAllButton.text = NSLocalizedString(@"Select All", nil);        
+    }
 }
 
 - (void)selectAllBlogs
 {
-    [_selectAll removeTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAll addTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAll setTitle:NSLocalizedString(@"Deselect All", nil) forState:UIControlStateNormal];
+    [_selectAllButton removeTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton addTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    _selectAllButton.text = NSLocalizedString(@"Deselect All", nil);
     
     [_selectedBlogs removeAllObjects];
     for (NSDictionary *blogData in _usersBlogs) {
@@ -384,9 +401,9 @@ CGFloat const AddUsersBlogLogoVerticalOffset = 79.0;
 
 - (void)deselectAllBlogs
 {
-    [_selectAll removeTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAll addTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAll setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
+    [_selectAllButton removeTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton addTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    _selectAllButton.text = NSLocalizedString(@"Select All", nil);
     
     [_selectedBlogs removeAllObjects];
     

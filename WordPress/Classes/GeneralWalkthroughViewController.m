@@ -10,7 +10,7 @@
 #import <WPXMLRPC/WPXMLRPC.h>
 #import "UIView+FormSheetHelpers.h"
 #import "GeneralWalkthroughViewController.h"
-#import "CreateWPComAccountViewController.h"
+#import "CreateAccountAndBlogViewController.h"
 #import "AddUsersBlogsViewController.h"
 #import "NewAddUsersBlogViewController.h"
 #import "AboutViewController.h"
@@ -29,7 +29,6 @@
 
 @interface GeneralWalkthroughViewController () <
     UIScrollViewDelegate,
-    CreateWPComAccountViewControllerDelegate,
     UITextFieldDelegate> {
     UIScrollView *_scrollView;
     WPWalkthroughButton *_skipToCreateAccount;
@@ -83,12 +82,13 @@
 
 @implementation GeneralWalkthroughViewController
 
-NSUInteger const GeneralWalkthroughIconVerticalOffset = 77;
-NSUInteger const GeneralWalkthroughStandardOffset = 16;
-NSUInteger const GeneralWalkthroughBottomBackgroundHeight = 64;
-NSUInteger const GeneralWalkthroughBottomButtonWidth = 136.0;
-NSUInteger const GeneralWalkthroughBottomButtonHeight = 32.0;
-NSUInteger const GeneralWalkthroughKeyboardOffset = 65;
+CGFloat const GeneralWalkthroughIconVerticalOffset = 77;
+CGFloat const GeneralWalkthroughStandardOffset = 16;
+CGFloat const GeneralWalkthroughBottomBackgroundHeight = 64;
+CGFloat const GeneralWalkthroughBottomButtonWidth = 136.0;
+CGFloat const GeneralWalkthroughBottomButtonHeight = 32.0;
+CGFloat const GeneralWalkthroughKeyboardOffset = 65;
+CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
 
 NSUInteger const GeneralWalkthroughUsernameTextFieldTag = 1;
 NSUInteger const GeneralWalkthroughPasswordTextFieldTag = 2;
@@ -177,49 +177,6 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     [self flagPageViewed:pageViewed];
     [self moveStickyControlsForContentOffset:scrollView.contentOffset];
 }
-
-//- (void)moveStickyControlsForContentOffset:(CGPoint)contentOffset
-//{
-//    if (contentOffset.x < 0) {
-//        //TODO: Remove this duplication
-//        CGRect bottomPanelFrame = _bottomPanel.frame;
-//        bottomPanelFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
-//        _bottomPanel.frame = bottomPanelFrame;
-//        
-//        CGRect skipToCreateAccountFrame = _skipToCreateAccount.frame;
-//        skipToCreateAccountFrame.origin.x = _skipToCreateAccountOriginalX + contentOffset.x;
-//        _skipToCreateAccount.frame = skipToCreateAccountFrame;
-//        
-//        CGRect skipToSignInFrame = _skipToSignIn.frame;
-//        skipToSignInFrame.origin.x = _skipToSignInOriginalX + contentOffset.x;
-//        _skipToSignIn.frame = skipToSignInFrame;
-//        
-//        return;
-//    }
-//    
-//    NSUInteger pageViewed = ceil(contentOffset.x/_viewWidth) + 1;
-//    // We only want the sign in, create account and help buttons to drag along until we hit the sign in screen
-//    if (pageViewed < 3) {
-//        // If the user is editing the sign in page and then swipes over, dismiss keyboard
-//        [self.view endEditing:YES];
-//        
-//        CGRect skipToCreateAccountFrame = _skipToCreateAccount.frame;
-//        skipToCreateAccountFrame.origin.x = _skipToCreateAccountOriginalX + contentOffset.x;
-//        _skipToCreateAccount.frame = skipToCreateAccountFrame;
-//        
-//        CGRect skipToSignInFrame = _skipToSignIn.frame;
-//        skipToSignInFrame.origin.x = _skipToSignInOriginalX + contentOffset.x;
-//        _skipToSignIn.frame = skipToSignInFrame;
-//        
-//        CGRect pageControlFrame = _pageControl.frame;
-//        pageControlFrame.origin.x = _pageControlOriginalX + contentOffset.x;
-//        _pageControl.frame = pageControlFrame;
-//    }
-//    
-//    CGRect bottomPanelFrame = _bottomPanel.frame;
-//    bottomPanelFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
-//    _bottomPanel.frame = bottomPanelFrame;
-//}
 
 - (void)moveStickyControlsForContentOffset:(CGPoint)contentOffset
 {
@@ -326,7 +283,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode;
     overlayView.overlayTitle = NSLocalizedString(@"Sorry, can't log in", nil);
     overlayView.overlayDescription = message;
-    overlayView.footerDescription = @"TAP TO DISMISS";
+    overlayView.footerDescription = NSLocalizedString(@"TAP TO DISMISS", nil);
     overlayView.button1Text = NSLocalizedString(@"Need Help?", nil);
     overlayView.button2Text = NSLocalizedString(@"OK", nil);
     overlayView.singleTapCompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
@@ -425,13 +382,14 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 
 - (void)clickedCreateAccount:(UITapGestureRecognizer *)tapGestureRecognizer
 {
-    // The reason we unhide the navigation bar here even though the create account
-    // page does the same is because if we don't the animation on the create account
-    // page is very jarring.
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
-    
-    CreateWPComAccountViewController *createAccountViewController = [[CreateWPComAccountViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    createAccountViewController.delegate = self;
+    CreateAccountAndBlogViewController *createAccountViewController = [[CreateAccountAndBlogViewController alloc] init];
+    createAccountViewController.onCreatedUser = ^(NSString *username, NSString *password) {
+        _usernameText.text = username;
+        _passwordText.text = password;
+        _userIsDotCom = true;
+        [self.navigationController popViewControllerAnimated:NO];
+        [self showAddUsersBlogsForWPCom];
+    };
     [self.navigationController pushViewController:createAccountViewController animated:YES];
 }
 
@@ -457,21 +415,6 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     [self signIn];
 }
 
-#pragma mark - CreateWPComAccountViewControllerDelegate
-
-- (void)createdAndSignedInAccountWithUserName:(NSString *)userName
-{
-    [self.navigationController popViewControllerAnimated:NO];
-    _userIsDotCom = true;
-    [self showAddUsersBlogsForWPCom];
-}
-
-- (void)createdAccountWithUserName:(NSString *)userName
-{
-    //TODO: Deal with this error where the user creates an account then we are unable to sign in. Perhaps we retry once, and then display an error?
-    NSLog(@"Account created, but sign in failed for some reason");
-}
-
 #pragma mark - Private Methods
 
 - (void)addScrollview
@@ -485,7 +428,12 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     _scrollView.showsHorizontalScrollIndicator = NO;
     _scrollView.pagingEnabled = YES;
     [self.view addSubview:_scrollView];
-    _scrollView.delegate = self;    
+    _scrollView.delegate = self;
+    
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedBackground:)];
+    gestureRecognizer.numberOfTapsRequired = 1;
+    gestureRecognizer.cancelsTouchesInView = NO;
+    [_scrollView addGestureRecognizer:gestureRecognizer];
 }
 
 - (void)layoutScrollview
@@ -534,7 +482,6 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         _page1Title.shadowColor = _textShadowColor;
         _page1Title.shadowOffset = CGSizeMake(1.0, 1.0);
         _page1Title.textColor = [UIColor whiteColor];
-        [_page1Title sizeToFit];
         [_scrollView addSubview:_page1Title];
     }
     
@@ -633,19 +580,20 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     _page1Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1Icon.frame), CGRectGetHeight(_page1Icon.frame)));
  
     // Layout Title
-    x = (_viewWidth - CGRectGetWidth(_page1Title.frame))/2.0;
+    CGSize titleSize = [_page1Title.text sizeWithFont:_page1Title.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    x = (_viewWidth - titleSize.width)/2.0;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMaxY(_page1Icon.frame) + GeneralWalkthroughStandardOffset - extraIconSpaceOnBottom;
-    _page1Title.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1Title.frame), CGRectGetHeight(_page1Title.frame)));
+    _page1Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
     // Layout Top Separator
     x = GeneralWalkthroughStandardOffset;
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Title.frame) + 3 * GeneralWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page1Title.frame) + 1 * GeneralWalkthroughStandardOffset;
     _page1TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
     
     // Layout Description
-    CGSize labelSize = [_page1Description.text sizeWithFont:_page1Description.font constrainedToSize:CGSizeMake(289.0, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize labelSize = [_page1Description.text sizeWithFont:_page1Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMaxY(_page1TopSeparator.frame) + GeneralWalkthroughStandardOffset;
@@ -717,11 +665,10 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         _page2Title.numberOfLines = 0;
         _page2Title.lineBreakMode = UILineBreakModeWordWrap;
         _page2Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
-        _page2Title.text = @"You can publish as\ninspiration strikes";
+        _page2Title.text = @"You can publish as inspiration strikes";
         _page2Title.shadowColor = _textShadowColor;
         _page2Title.shadowOffset = CGSizeMake(1, 1);
         _page2Title.textColor = [UIColor whiteColor];
-        [_page2Title sizeToFit];
         [_scrollView addSubview:_page2Title];
     }
     
@@ -739,7 +686,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         _page2Description.numberOfLines = 0;
         _page2Description.lineBreakMode = UILineBreakModeWordWrap;
         _page2Description.font = [UIFont fontWithName:@"OpenSans" size:15.0];
-        _page2Description.text = @"Had a brilliant insight? Found a link to share? Captured the perfect pic?\nPost it in real time.";
+        _page2Description.text = @"Had a brilliant insight? Found a link to share? Captured the perfect pic? Post it in real time.";
         _page2Description.shadowColor = _textShadowColor;
         _page2Description.textColor = [UIColor whiteColor];
         [_scrollView addSubview:_page2Description];
@@ -765,10 +712,11 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     _page2Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2Icon.frame), CGRectGetHeight(_page2Icon.frame)));
 
     // Layout Title
-    x = (_viewWidth - CGRectGetWidth(_page2Title.frame))/2.0;
+    CGSize titleSize = [_page2Title.text sizeWithFont:_page2Title.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    x = (_viewWidth - titleSize.width)/2.0;
     x = [self adjustX:x forPage:2];
     y = CGRectGetMaxY(_page2Icon.frame) + GeneralWalkthroughStandardOffset - extraIconSpaceOnBottom;
-    _page2Title.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2Title.frame), CGRectGetHeight(_page2Title.frame)));
+    _page2Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
 
     // Layout Top Separator
     x = GeneralWalkthroughStandardOffset;
@@ -777,7 +725,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
     _page2TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
 
     // Layout Description
-    CGSize labelSize = [_page2Description.text sizeWithFont:_page2Description.font constrainedToSize:CGSizeMake(289.0, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize labelSize = [_page2Description.text sizeWithFont:_page2Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:2];
     y = CGRectGetMaxY(_page2TopSeparator.frame) + GeneralWalkthroughStandardOffset;
@@ -1221,7 +1169,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 
 - (NewAddUsersBlogViewController *)addUsersBlogViewController
 {
-    NewAddUsersBlogViewController *vc = [[NewAddUsersBlogViewController alloc] initWithStyle:UITableViewStylePlain];
+    NewAddUsersBlogViewController *vc = [[NewAddUsersBlogViewController alloc] init];
     vc.username = _usernameText.text;
     vc.password = _passwordText.text;
     vc.blogAdditionCompleted = ^(NewAddUsersBlogViewController * viewController){
@@ -1245,7 +1193,7 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 {
     NewAddUsersBlogViewController *vc = [self addUsersBlogViewController];
     vc.isWPCom = NO;
-    vc.url = xmlRPCUrl;
+    vc.xmlRPCUrl = xmlRPCUrl;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

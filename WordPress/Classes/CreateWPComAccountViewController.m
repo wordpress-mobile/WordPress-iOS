@@ -16,8 +16,7 @@
 #import "WPAsyncBlockOperation.h"
 
 @interface CreateWPComAccountViewController () <
-    UITextFieldDelegate,
-    SelectWPComLanguageViewControllerDelegate> {
+    UITextFieldDelegate> {
         
     UITableViewTextFieldCell *_usernameCell;
     UITableViewTextFieldCell *_passwordCell;
@@ -228,7 +227,10 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
         if (indexPath.row == 4) {
             SelectWPComLanguageViewController *selectLanguageViewController = [[SelectWPComLanguageViewController alloc] initWithStyle:UITableViewStylePlain];
             selectLanguageViewController.currentlySelectedLanguageId = [[_currentLanguage objectForKey:@"lang_id"] intValue];
-            selectLanguageViewController.delegate = self;
+            selectLanguageViewController.didSelectLanguage = ^(NSDictionary *language){
+                _currentLanguage = language;
+                [self.tableView reloadData];
+            };
             [self.navigationController pushViewController:selectLanguageViewController animated:YES];
         }
     } else {
@@ -256,14 +258,6 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     }
     
 	return YES;
-}
-
-#pragma mark SelectWPComLanguageViewControllerDelegate
-
-- (void)selectWPComLanguageViewController:(SelectWPComLanguageViewController *)viewController didSelectLanguage:(NSDictionary *)data
-{
-    _currentLanguage = data;
-    [self.tableView reloadData];
 }
 
 #pragma mark - Private Methods
