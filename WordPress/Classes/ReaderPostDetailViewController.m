@@ -32,10 +32,11 @@
 @property (nonatomic, strong) UILabel *authorLabel;
 @property (nonatomic, strong) UILabel *dateLabel;
 @property (nonatomic, strong) UILabel *blogLabel;
+@property (nonatomic, strong) UIBarButtonItem *commentButton;
 @property (nonatomic, strong) UIBarButtonItem *likeButton;
 @property (nonatomic, strong) UIBarButtonItem *followButton;
 @property (nonatomic, strong) UIBarButtonItem *reblogButton;
-@property (nonatomic, strong) UIBarButtonItem *actionButton;
+@property (nonatomic, strong) UIBarButtonItem *shareButton;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) NSMutableSet *mediaPlayers;
 @property (nonatomic, strong) UIActionSheet *linkOptionsActionSheet;
@@ -48,15 +49,21 @@
 - (void)updateRowHeightsForWidth:(CGFloat)width;
 - (void)updateLayout;
 - (void)updateMediaLayout:(id<ReaderMediaView>)imageView;
-- (void)handleLikeButtonTapped:(id)sender;
-- (void)handleFollowButtonTapped:(id)sender;
-- (void)handleReblogButtonTapped:(id)sender;
-- (void)handleActionButtonTapped:(id)sender;
-- (void)handleTitleButtonTapped:(id)sender;
+- (void)updateToolbar;
+
+- (void)handleAuthorViewTapped:(id)sender;
 - (void)handleCellLinkTapped:(NSNotification *)notification;
+- (void)handleCommentButtonTapped:(id)sender;
+- (void)handleFollowButtonTapped:(id)sender;
+- (void)handleImageLinkTapped:(id)sender;
+- (void)handleLikeButtonTapped:(id)sender;
 - (void)handleLinkTapped:(id)sender;
-- (void)handleImageViewLoaded:(ReaderImageView *)imageView;
+- (void)handleReblogButtonTapped:(id)sender;
+- (void)handleShareButtonTapped:(id)sender;
+- (void)handleTitleButtonTapped:(id)sender;
+- (void)handleVideoTapped:(id)sender;
 - (void)handleCloseModal:(id)sender;
+- (void)handleImageViewLoaded:(ReaderImageView *)imageView;
 - (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
 
 @end
@@ -119,16 +126,17 @@
 		backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
 		[btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
 		btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
-		[btn addTarget:self action:@selector(handleActionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+		[btn addTarget:self action:@selector(handleShareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
-		self.actionButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
+		self.shareButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
 	} else {
-		self.actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+		self.shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
 																		   target:self
-																		   action:@selector(handleActionButtonTapped:)];
+																		   action:@selector(handleShareButtonTapped:)];
 	}
-	self.navigationItem.rightBarButtonItem = _actionButton;
-	
+	self.navigationItem.rightBarButtonItem = _shareButton;
+
+	self.commentButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleCommentButtonTapped:)];
 	self.likeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleLikeButtonTapped:)];
 	self.followButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleFollowButtonTapped:)];
 	self.reblogButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleReblogButtonTapped:)];
@@ -192,6 +200,30 @@
 	_blogLabel.textColor = [UIColor whiteColor];
 	[_authorView addSubview:_blogLabel];
 	
+	UIImageView *commentImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"note_icon_comment.png"]];
+	commentImageView.frame = CGRectMake(width - 26.0f, 12.0f, 16.0f, 16.0f);
+	[_authorView addSubview:commentImageView];
+	
+	UILabel *commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - 60.0f, 10.0f, 30.0f, 20.0f)];
+	commentLabel.font = [UIFont systemFontOfSize:14.0f];
+	commentLabel.textColor = [UIColor whiteColor];
+	commentLabel.textAlignment = UITextAlignmentRight;
+	commentLabel.backgroundColor = [UIColor clearColor];
+	commentLabel.text = [self.post.commentCount stringValue];
+	[_authorView addSubview:commentLabel];
+	
+	UIImageView *likesImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"note_icon_like.png"]];
+	likesImageView.frame = CGRectMake(width - 26.0f, 32.0f, 16.0f, 16.0f);
+	[_authorView addSubview:likesImageView];
+	
+	UILabel *likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - 60.0f, 30.0f, 30.0f, 20.0f)];
+	likesLabel.font = [UIFont systemFontOfSize:14.0f];
+	likesLabel.textColor = [UIColor whiteColor];
+	likesLabel.textAlignment = UITextAlignmentRight;
+	likesLabel.backgroundColor = [UIColor clearColor];
+	likesLabel.text = [self.post.likeCount stringValue];
+	[_authorView addSubview:likesLabel];
+	
 	self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 90.0f, width, 100.0f)]; // Starting height is arbitrary
 	_textContentView.delegate = self;
 	_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -214,7 +246,7 @@
 	_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
 																			 options:dict
 																  documentAttributes:NULL];
-
+	
 	[self prepareComments];
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 	[self updateLayout];
@@ -406,11 +438,40 @@
 }
 
 
-- (void)handleTitleButtonTapped:(id)sender {
-	NSLog(@"Title Tapped");
-	
+- (void)handleAuthorViewTapped:(id)sender {
 	WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:[NSURL URLWithString:self.post.permaLink]];
+	[self.panelNavigationController pushViewController:controller animated:YES];
+}
+
+
+- (void)handleCellLinkTapped:(NSNotification *)notification {
+	NSURL *url = [notification.userInfo objectForKey:@"URL"];
+	WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:url];
+	[self.panelNavigationController pushViewController:controller animated:YES];
+}
+
+
+- (void)handleCommentButtonTapped:(id)sender {
+	
+}
+
+
+- (void)handleFollowButtonTapped:(id)sender {
+	NSLog(@"Follow tapped");
+	[self.post toggleFollowingWithSuccess:^{
+		
+	} failure:^(NSError *error) {
+		[self updateToolbar];
+	}];
+	[self updateToolbar];
+}
+
+
+- (void)handleImageLinkTapped:(id)sender {
+	WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:((ReaderImageView *)sender).linkURL];
 	[self.panelNavigationController pushViewController:controller animated:YES];
 }
 
@@ -426,14 +487,10 @@
 }
 
 
-- (void)handleFollowButtonTapped:(id)sender {
-	NSLog(@"Follow tapped");
-	[self.post toggleFollowingWithSuccess:^{
-		
-	} failure:^(NSError *error) {
-		[self updateToolbar];
-	}];
-	[self updateToolbar];
+- (void)handleLinkTapped:(id)sender {
+	WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:((DTLinkButton *)sender).URL];
+	[self.panelNavigationController pushViewController:controller animated:YES];
 }
 
 
@@ -448,7 +505,7 @@
 }
 
 
-- (void)handleActionButtonTapped:(id)sender {
+- (void)handleShareButtonTapped:(id)sender {
 	
 	if (self.linkOptionsActionSheet) {
         [self.linkOptionsActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
@@ -476,7 +533,7 @@
     self.linkOptionsActionSheet = [[UIActionSheet alloc] initWithTitle:permaLink delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Open in Safari", @"Open in Safari"), NSLocalizedString(@"Mail Link", @"Mail Link"),  NSLocalizedString(@"Copy Link", @"Copy Link"), nil];
     self.linkOptionsActionSheet.actionSheetStyle = UIActionSheetStyleDefault;
     if(IS_IPAD ){
-        [self.linkOptionsActionSheet showFromBarButtonItem:self.actionButton animated:YES];
+        [self.linkOptionsActionSheet showFromBarButtonItem:_shareButton animated:YES];
     } else {
         [self.linkOptionsActionSheet showInView:self.view];
     }
@@ -484,37 +541,11 @@
 }
 
 
-- (void)handleLinkTapped:(id)sender {
-	WPWebViewController *controller = [[WPWebViewController alloc] init];
-	[controller setUrl:((DTLinkButton *)sender).URL];
-	[self.panelNavigationController pushViewController:controller animated:YES];
-}
-
-
-- (void)handleImageViewLoaded:(ReaderImageView *)imageView {
+- (void)handleTitleButtonTapped:(id)sender {
+	NSLog(@"Title Tapped");
 	
-	[self updateMediaLayout:imageView];
-	
-	// need to reset the layouter because otherwise we get the old framesetter or cached layout frames
-	self.textContentView.layouter = nil;
-	
-	// layout might have changed due to image sizes
-	[self.textContentView relayoutText];
-	
-	[self updateLayout];
-}
-
-
-- (void)handleAuthorViewTapped:(id)sender {
 	WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:[NSURL URLWithString:self.post.permaLink]];
-	[self.panelNavigationController pushViewController:controller animated:YES];
-}
-
-
-- (void)handleImageLinkURL:(id)sender {	
-	WPWebViewController *controller = [[WPWebViewController alloc] init];
-	[controller setUrl:((ReaderImageView *)sender).linkURL];
 	[self.panelNavigationController pushViewController:controller animated:YES];
 }
 
@@ -547,11 +578,17 @@
 }
 
 
-- (void)handleCellLinkTapped:(NSNotification *)notification {
-	NSURL *url = [notification.userInfo objectForKey:@"URL"];
-	WPWebViewController *controller = [[WPWebViewController alloc] init];
-	[controller setUrl:url];
-	[self.panelNavigationController pushViewController:controller animated:YES];
+- (void)handleImageViewLoaded:(ReaderImageView *)imageView {
+	
+	[self updateMediaLayout:imageView];
+	
+	// need to reset the layouter because otherwise we get the old framesetter or cached layout frames
+	self.textContentView.layouter = nil;
+	
+	// layout might have changed due to image sizes
+	[self.textContentView relayoutText];
+	
+	[self updateLayout];
 }
 
 
@@ -786,7 +823,7 @@
 		
 		if (attachment.hyperLinkURL) {
 			imageView.linkURL = attachment.hyperLinkURL;
-			[imageView addTarget:self action:@selector(handleImageLinkURL:) forControlEvents:UIControlEventTouchUpInside];
+			[imageView addTarget:self action:@selector(handleImageLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
 		}
 		
 		if (attachment.contents) {
@@ -800,7 +837,6 @@
 								   [self handleImageViewLoaded:readerImageView];
 							   }];
 		}
-NSLog(@"ATTACHMENT IMAGE VIEW : %@ ", imageView);
 		return imageView;
 		
 	} else {
@@ -823,7 +859,6 @@ NSLog(@"ATTACHMENT IMAGE VIEW : %@ ", imageView);
 		[videoView addTarget:self action:@selector(handleVideoTapped:) forControlEvents:UIControlEventTouchUpInside];
 
 		[self updateMediaLayout:videoView];
-NSLog(@"ATTACHMENT VIDEO VIEW : %@ ", videoView);
 		return videoView;
 	}
 
