@@ -157,7 +157,7 @@
 	UIGraphicsEndImageContext();
 	
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-	button.frame = CGRectMake(0.0f, 0.0f, width, 70.0f);
+	button.frame = _authorView.frame;
 	[button setBackgroundImage:img forState:UIControlStateHighlighted];
 	button.backgroundColor = [UIColor clearColor];
 	[button addTarget:self action:@selector(handleAuthorViewTapped:) forControlEvents:UIControlEventTouchUpInside];
