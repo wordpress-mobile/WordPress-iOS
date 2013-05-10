@@ -90,10 +90,6 @@ CGFloat const GeneralWalkthroughBottomButtonHeight = 32.0;
 CGFloat const GeneralWalkthroughKeyboardOffset = 65;
 CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
 
-NSUInteger const GeneralWalkthroughUsernameTextFieldTag = 1;
-NSUInteger const GeneralWalkthroughPasswordTextFieldTag = 2;
-NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
- 
 - (id)init
 {
     self = [super init];
@@ -229,19 +225,16 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	[textField resignFirstResponder];
     
-    switch (textField.tag) {
-        case GeneralWalkthroughUsernameTextFieldTag:
-            [_passwordText becomeFirstResponder];
-            break;
-        case GeneralWalkthroughPasswordTextFieldTag:
-            [_siteUrlText becomeFirstResponder];
-            break;
-        case GeneralWalkthroughSiteUrlTextFieldTag:
-            if (_signInButton.enabled) {
-                [self clickedSignIn:nil];
-            }
-            break;
+    if (textField == _usernameText) {
+        [_passwordText becomeFirstResponder];
+    } else if (textField == _passwordText) {
+        [_siteUrlText becomeFirstResponder];
+    } else if (textField == _siteUrlText) {
+        if (_signInButton.enabled) {
+            [self clickedSignIn:nil];
+        }
     }
+    
 	return YES;
 }
 
@@ -768,7 +761,6 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         _usernameText.delegate = self;
         _usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
         _usernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _usernameText.tag = GeneralWalkthroughUsernameTextFieldTag;
         [_scrollView addSubview:_usernameText];
     }
     
@@ -780,7 +772,6 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         _passwordText.font = [UIFont fontWithName:@"OpenSans" size:21.0];
         _passwordText.delegate = self;
         _passwordText.secureTextEntry = YES;
-        _passwordText.tag = GeneralWalkthroughPasswordTextFieldTag;
         [_scrollView addSubview:_passwordText];
     }
     
@@ -792,7 +783,6 @@ NSUInteger const GeneralWalkthroughSiteUrlTextFieldTag = 3;
         _siteUrlText.font = [UIFont fontWithName:@"OpenSans" size:21.0];
         _siteUrlText.adjustsFontSizeToFitWidth = true;
         _siteUrlText.delegate = self;
-        _siteUrlText.tag = GeneralWalkthroughSiteUrlTextFieldTag;
         _siteUrlText.keyboardType = UIKeyboardTypeURL;
         _siteUrlText.returnKeyType = UIReturnKeyGo;
         _siteUrlText.autocorrectionType = UITextAutocorrectionTypeNo;
