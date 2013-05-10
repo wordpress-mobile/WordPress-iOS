@@ -22,7 +22,7 @@
 #import "StatsWebViewController.h"
 #import "PanelNavigationConstants.h"
 #import "WPWebViewController.h"
-#import "WordPressComApi.h"
+#import "WPAccount.h"
 #import "CameraPlusPickerManager.h"
 #import "QuickPhotoViewController.h"
 #import "QuickPhotoButtonView.h"
@@ -150,13 +150,12 @@
     void (^wpcomNotificationBlock)(NSNotification *) = ^(NSNotification *note) {
         NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-        if (selectedIndexPath == nil || ([[note name] isEqualToString:WordPressComApiDidLogoutNotification] && (selectedIndexPath.section == 0))) {
+        if (selectedIndexPath == nil || ([WPAccount defaultWordPressComAccount] == nil && (selectedIndexPath.section == 0))) {
             [self selectFirstAvailableItem];
         }
         [self checkNothingToShow];
     };
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
-    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
+    [[NSNotificationCenter defaultCenter] addObserverForName:WPAccountDefaultWordPressComAccountChangedNotification object:nil queue:nil usingBlock:wpcomNotificationBlock];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCameraPlusImages:) name:kCameraPlusImagesNotification object:nil];
     //Crash Report Notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissCrashReporter:) name:@"CrashReporterIsFinished" object:nil];
@@ -202,7 +201,7 @@
         // present our content with a slight delay, and then the events fire.
         // Need to find a true fix and remove this workaround.
         // See http://ios.trac.wordpress.org/ticket/1114 and #1135
-        if (IS_IPHONE && !( [[self.resultsController fetchedObjects] count] == 0 && ! [WordPressComApi sharedApi].username )) {
+        if (IS_IPHONE && !( [[self.resultsController fetchedObjects] count] == 0 && ![WPAccount defaultWordPressComAccount] )) {
             // Don't delay presentation on iPhone, or the sidebar is briefly visible after launch
             [self presentContent];
         } else {
@@ -306,7 +305,7 @@
 }
 
 - (NSInteger)topSectionRowCount {
-    if ([[WordPressComApi sharedApi] hasCredentials]) {
+    if ([WPAccount defaultWordPressComAccount]) {
         // reader and notifications
         return 2;
     } else {
@@ -339,7 +338,7 @@
      WPFLogMethod();
     if ( [[self.resultsController fetchedObjects] count] == 0 ) {
         //ohh poor boy, no blogs yet?
-        if ( ! [WordPressComApi sharedApi].username ) {
+        if (![WPAccount defaultWordPressComAccount]) {
             //ohh auch! no .COM account? 
             _showingWelcomeScreen = YES;
             GeneralWalkthroughViewController *welcomeViewController = [[GeneralWalkthroughViewController alloc] init];
@@ -355,7 +354,7 @@
 }
 
 - (void)checkNothingToShow {
-    if ( [[self.resultsController fetchedObjects] count] == 0 && ! [WordPressComApi sharedApi].username ) {
+    if ( [[self.resultsController fetchedObjects] count] == 0 && ![WPAccount defaultWordPressComAccount] ) {
         utililtyView.hidden = YES;
         settingsButton.hidden = YES;
         

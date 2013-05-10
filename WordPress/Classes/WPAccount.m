@@ -63,6 +63,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     __defaultDotcomAccount = account;
     NSURL *accountURL = [[account objectID] URIRepresentation];
     [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:DefaultDotcomAccountDefaultsKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:account];
 }
 
