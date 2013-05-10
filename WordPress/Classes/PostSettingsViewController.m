@@ -116,6 +116,16 @@
     featuredImageView.layer.shadowColor = [[UIColor blackColor] CGColor];
     featuredImageView.layer.shadowOpacity = 0.5f;
     featuredImageView.layer.shadowRadius = 1.0f;
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(featuredImageTapped:)];
+    singleTap.numberOfTapsRequired = 1;
+    singleTap.numberOfTouchesRequired = 1;
+    [featuredImageView addGestureRecognizer:singleTap];
+    [featuredImageView setUserInteractionEnabled:YES];
+    singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(featuredImageTapped:)];
+    singleTap.numberOfTapsRequired = 1;
+    singleTap.numberOfTouchesRequired = 1;
+    [fullscreenFeaturedImageView addGestureRecognizer:singleTap];
+    [fullscreenFeaturedImageView setUserInteractionEnabled:YES];
     
     // Check if blog supports featured images
     id supportsFeaturedImages = [self.post.blog getOptionValue:@"post_thumbnail"];
@@ -172,7 +182,8 @@
     featuredImageLabel = nil;
     featuredImageLabel = nil;
     postFormatTableViewCell = nil;
-
+    featuredImageOverlayView = nil;
+    featuredImageView = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -195,6 +206,7 @@
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [self rotateFullscreenFeaturedImage];
     [self reloadData];
 }
 
@@ -269,6 +281,51 @@
     [operation start];
 }
 
+- (void)hideFullscreenFeaturedImage {
+    [UIView transitionWithView:tableView.window duration:0.2
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{
+                        [featuredImageOverlayView removeFromSuperview];
+                    }
+                    completion:^(BOOL finished){
+                        isFeaturedImageFullscreen = NO;
+                    }];
+}
+
+- (void)showFullscreenFeaturedImage {
+    fullscreenFeaturedImageView.image = featuredImageView.image;
+    isFeaturedImageFullscreen = YES;
+    [self rotateFullscreenFeaturedImage];
+    [tableView.window setAutoresizesSubviews:YES];
+    [UIView transitionWithView:tableView.window duration:0.2
+                       options:UIViewAnimationOptionTransitionCrossDissolve
+                    animations:^{
+                        [tableView.window addSubview:featuredImageOverlayView];
+                    }
+                    completion:nil];
+}
+
+- (void)rotateFullscreenFeaturedImage {
+    NSInteger orientation = [[UIDevice currentDevice] orientation];
+    float angle;
+    switch (orientation) {
+        case UIDeviceOrientationPortraitUpsideDown:
+            angle = M_PI;
+            break;
+        case UIDeviceOrientationLandscapeLeft:
+            angle = M_PI / 2;
+            break;
+        case UIDeviceOrientationLandscapeRight:
+            angle = - M_PI / 2;
+            break;
+        case UIDeviceOrientationPortrait:
+        default:
+            angle = 0;
+            break;
+    }
+    featuredImageOverlayView.transform = CGAffineTransformMakeRotation(angle);
+    [featuredImageOverlayView setFrame: [[UIScreen mainScreen] bounds]];
+}
 
 - (void)endEditingAction:(id)sender {
 	if (passwordTextField != nil){
@@ -1078,6 +1135,16 @@
             addressLabel.text = address;
         }
     }];
+}
+
+#pragma mark -
+#pragma mark UIGestureRecognizerDelegate
+- (void)featuredImageTapped:(UIGestureRecognizer *)gestureRecognizer {
+    if (isFeaturedImageFullscreen) {
+        [self hideFullscreenFeaturedImage];
+    } else {
+        [self showFullscreenFeaturedImage];
+    }
 }
 
 @end

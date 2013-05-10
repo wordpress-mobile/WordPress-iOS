@@ -46,6 +46,9 @@
 	NSString *address;
 	BOOL isUpdatingLocation, isUploadingFeaturedImage;
     IBOutlet UILabel *visibilityTitleLabel, *statusTitleLabel, *postFormatTitleLabel, *featuredImageLabel;
+    BOOL isFeaturedImageFullscreen;
+    IBOutlet UIView *featuredImageOverlayView;
+    IBOutlet UIImageView *fullscreenFeaturedImageView;
     IBOutlet UIImageView *featuredImageView;
     IBOutlet UITableViewCell *featuredImageTableViewCell;
     IBOutlet UIActivityIndicatorView *featuredImageSpinner;
