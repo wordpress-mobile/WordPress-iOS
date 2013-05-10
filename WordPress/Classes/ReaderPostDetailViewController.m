@@ -22,6 +22,7 @@
 #import "WordPressComApi.h"
 #import "ReaderComment.h"
 #import "ReaderCommentTableViewCell.h"
+#import "WPImageViewController.h"
 
 @interface ReaderPostDetailViewController ()<DTAttributedTextContentViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 
@@ -470,9 +471,25 @@
 
 
 - (void)handleImageLinkTapped:(id)sender {
-	WPWebViewController *controller = [[WPWebViewController alloc] init];
-	[controller setUrl:((ReaderImageView *)sender).linkURL];
-	[self.panelNavigationController pushViewController:controller animated:YES];
+	ReaderImageView *imageView = (ReaderImageView *)sender;
+	NSString *url = [imageView.linkURL absoluteString];
+	
+	BOOL match = NO;
+	NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
+	for (NSString *type in types) {
+		if (NSNotFound != [url rangeOfString:type].location) {
+			match = YES;
+			break;
+		}
+	}
+	
+	if (match) {
+		[WPImageViewController presentAsModalWithURL:((ReaderImageView *)sender).linkURL];
+	} else {
+		WPWebViewController *controller = [[WPWebViewController alloc] init];
+		[controller setUrl:((ReaderImageView *)sender).linkURL];
+		[self.panelNavigationController pushViewController:controller animated:YES];		
+	}
 }
 
 
