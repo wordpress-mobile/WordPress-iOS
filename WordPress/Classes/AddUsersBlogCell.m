@@ -7,15 +7,14 @@
 //
 
 #import "AddUsersBlogCell.h"
-#import "WPWalkthroughLineSeparatorView.h"
 #import "UIImageView+Gravatar.h"
 
 @interface AddUsersBlogCell() {
     UILabel *_titleLabel;
     UIImageView *_blavatarImage;
     UIImageView *_checkboxImage;
-    WPWalkthroughLineSeparatorView *_separator;
-    WPWalkthroughLineSeparatorView *_topSeparator;
+    UIImageView *_separator;
+    UIImageView *_topSeparator;
     
     NSString *_blavatarUrl;
 }
@@ -39,21 +38,22 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
         _titleLabel.numberOfLines = 0;
         _titleLabel.textColor = [UIColor whiteColor];
         _titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+        _titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [self addSubview:_titleLabel];
         
         _blavatarImage = [[UIImageView alloc] initWithFrame:CGRectMake(AddUsersBlogCellStandardOffset, 0.5*AddUsersBlogCellStandardOffset, AddUsersBlogCellBlavatarSide, AddUsersBlogCellBlavatarSide)];
         [self addSubview:_blavatarImage];
         
-        UIImage *image = [UIImage imageNamed:@"addBlogsUnselectedImage"];
+        UIImage *image = [UIImage imageNamed:@"icon-check-small-blue"];
         _checkboxImage = [[UIImageView alloc] initWithImage:image];
         _checkboxImage.frame = CGRectMake(CGRectGetWidth(self.bounds) - AddUsersBlogCellStandardOffset - CGRectGetWidth(_checkboxImage.frame), AddUsersBlogCellStandardOffset, image.size.width , image.size.height);
         [self addSubview:_checkboxImage];
         
-        _topSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        _topSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         _topSeparator.frame = CGRectZero;
         [self addSubview:_topSeparator];
         
-        _separator = [[WPWalkthroughLineSeparatorView alloc] init];
+        _separator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [self addSubview:_separator];
     }
     return self;
@@ -80,9 +80,9 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
     // Setup Checkbox
     UIImage *image;
     if (self.selected) {
-        image = [UIImage imageNamed:@"addBlogsSelectedImage"];
+        image = [UIImage imageNamed:@"icon-check-small-white"];
     } else {
-        image = [UIImage imageNamed:@"addBlogsUnselectedImage"];
+        image = [UIImage imageNamed:@"icon-check-small-blue"];
     }
     _checkboxImage.image = image;
     x = cellWidth - AddUsersBlogCellStandardOffset - CGRectGetWidth(_checkboxImage.frame);

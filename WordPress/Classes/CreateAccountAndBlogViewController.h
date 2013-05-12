@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseNUXViewController.h"
 
-typedef void(^CreateAccountAndBlogViewControllerBlock)(NSString *, NSString *);
+@interface CreateAccountAndBlogViewController : BaseNUXViewController
 
-@interface CreateAccountAndBlogViewController : UIViewController
-
-@property (nonatomic, copy) CreateAccountAndBlogViewControllerBlock onCreatedUser;
+@property (nonatomic, copy) void(^onCreatedUser)(NSString *, NSString *);
 
 @end

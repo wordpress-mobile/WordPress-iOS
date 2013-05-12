@@ -19,9 +19,6 @@ typedef NS_ENUM(NSUInteger, WPWalkthroughGrayOverlayViewIcon) {
     WPWalkthroughGrayOverlayViewBlueCheckmarkIcon,
 };
 
-@class WPWalkthroughGrayOverlayView;
-typedef void(^WPWalkthroughGrayOverlayViewCompletionBlock)(WPWalkthroughGrayOverlayView*);
-
 @interface WPWalkthroughGrayOverlayView : UIView
 
 @property (nonatomic, assign) WPWalkthroughGrayOverlayViewOverlayMode overlayMode;
@@ -34,10 +31,10 @@ typedef void(^WPWalkthroughGrayOverlayViewCompletionBlock)(WPWalkthroughGrayOver
 @property (nonatomic, strong) NSString *button2Text;
 @property (nonatomic, assign) BOOL hideBackgroundView;
 
-@property (nonatomic, copy) WPWalkthroughGrayOverlayViewCompletionBlock singleTapCompletionBlock;
-@property (nonatomic, copy) WPWalkthroughGrayOverlayViewCompletionBlock doubleTapCompletionBlock;
-@property (nonatomic, copy) WPWalkthroughGrayOverlayViewCompletionBlock button1CompletionBlock;
-@property (nonatomic, copy) WPWalkthroughGrayOverlayViewCompletionBlock button2CompletionBlock;
+@property (nonatomic, copy) void (^singleTapCompletionBlock)(WPWalkthroughGrayOverlayView *);
+@property (nonatomic, copy) void (^doubleTapCompletionBlock)(WPWalkthroughGrayOverlayView *);
+@property (nonatomic, copy) void (^button1CompletionBlock)(WPWalkthroughGrayOverlayView *);
+@property (nonatomic, copy) void (^button2CompletionBlock)(WPWalkthroughGrayOverlayView *);
 
 - (void)dismiss;
 

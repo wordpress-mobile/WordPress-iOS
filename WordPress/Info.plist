@@ -64,7 +64,6 @@
 	<string>UIStatusBarStyleBlackOpaque</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Genericons-Regular.otf</string>
 		<string>OpenSans-Light.ttf</string>
 		<string>OpenSans-Regular.ttf</string>
 	</array>

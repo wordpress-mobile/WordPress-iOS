@@ -8,14 +8,15 @@
 
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <WPXMLRPC/WPXMLRPC.h>
+#import <QuartzCore/QuartzCore.h>
 #import "UIView+FormSheetHelpers.h"
 #import "GeneralWalkthroughViewController.h"
 #import "CreateAccountAndBlogViewController.h"
 #import "AddUsersBlogsViewController.h"
 #import "NewAddUsersBlogViewController.h"
 #import "AboutViewController.h"
-#import "WPWalkthroughButton.h"
-#import "WPWalkthroughLineSeparatorView.h"
+#import "WPNUXPrimaryButton.h"
+#import "WPNUXSecondaryButton.h"
 #import "WPWalkthroughTextField.h"
 #import "WordPressComApi.h"
 #import "WPWebViewController.h"
@@ -31,33 +32,34 @@
     UIScrollViewDelegate,
     UITextFieldDelegate> {
     UIScrollView *_scrollView;
-    WPWalkthroughButton *_skipToCreateAccount;
-    WPWalkthroughButton *_skipToSignIn;
+    WPNUXSecondaryButton *_skipToCreateAccount;
+    WPNUXPrimaryButton *_skipToSignIn;
     UIButton *_infoButton;
     
     // Page 1
-    UILabel *_page1Icon;
+    UIImageView *_page1Icon;
     UILabel *_page1Title;
     UILabel *_page1Description;
     UILabel *_page1SwipeToContinue;
-    WPWalkthroughLineSeparatorView *_page1TopSeparator;
-    WPWalkthroughLineSeparatorView *_page1BottomSeparator;
+    UIImageView *_page1TopSeparator;
+    UIImageView *_page1BottomSeparator;
+    UIView *_bottomPanelLine;
     UIView *_bottomPanel;
     UIPageControl *_pageControl;
     
     // Page 2
-    UILabel *_page2Icon;
+    UIImageView *_page2Icon;
     UILabel *_page2Title;
     UILabel *_page2Description;
-    WPWalkthroughLineSeparatorView *_page2TopSeparator;
-    WPWalkthroughLineSeparatorView *_page2BottomSeparator;
+    UIImageView *_page2TopSeparator;
+    UIImageView *_page2BottomSeparator;
     
     // Page 3
-    UILabel *_page3Icon;
+    UIImageView *_page3Icon;
     UITextField *_usernameText;
     UITextField *_passwordText;
     UITextField *_siteUrlText;
-    WPWalkthroughButton *_signInButton;
+    UIButton *_signInButton;
     UILabel *_createAccountLabel;
     
     CGFloat _viewWidth;
@@ -67,13 +69,17 @@
     CGFloat _skipToCreateAccountOriginalX;
     CGFloat _skipToSignInOriginalX;
     CGFloat _pageControlOriginalX;
+    CGFloat _heightFromSwipeToContinue;
+        
+    CGFloat _keyboardOffset;
     
     UIColor *_textShadowColor;
         
     BOOL _userIsDotCom;
-    BOOL _blogHasJetpack;
+    BOOL _blogConnectedToJetpack;
     BOOL _savedOriginalPositionsOfStickyControls;
     BOOL _hasViewAppeared;
+    NSUInteger _currentPage;
     NSArray *_blogs;
     Blog *_blog;
 }
@@ -85,10 +91,12 @@
 CGFloat const GeneralWalkthroughIconVerticalOffset = 77;
 CGFloat const GeneralWalkthroughStandardOffset = 16;
 CGFloat const GeneralWalkthroughBottomBackgroundHeight = 64;
-CGFloat const GeneralWalkthroughBottomButtonWidth = 136.0;
-CGFloat const GeneralWalkthroughBottomButtonHeight = 32.0;
-CGFloat const GeneralWalkthroughKeyboardOffset = 65;
 CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
+CGFloat const GeneralWalkthroughSwipeToContinueTopOffset = 14.0;
+CGFloat const GeneralWalkthroughTextFieldWidth = 289.0;
+CGFloat const GeneralWalkthroughTextFieldHeight = 40.0;
+CGFloat const GeneralWalkthroughSignInButtonWidth = 160.0;
+CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (id)init
 {
@@ -107,17 +115,20 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self getInitialWidthAndHeight];
+    _viewWidth = [self.view formSheetViewWidth];
+    _viewHeight = [self.view formSheetViewHeight];
     
     self.view.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:140.0/255.0 blue:190.0/255.0 alpha:1.0];
+    
     [self addScrollview];
     [self initializePage1];
     [self initializePage2];
     [self initializePage3];
+
     
     if (!IS_IPAD) {
         // We don't need to shift the controls up on the iPad as there's enough space.
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow) name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide) name:UIKeyboardWillHideNotification object:nil];
     }
 }
@@ -134,7 +145,7 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
     
     _viewWidth = CGRectGetWidth(self.view.bounds);
     _viewHeight = CGRectGetHeight(self.view.bounds);
-    
+
     // We are technically laying out the view twice on this view's initialization, but as we hardcoded the width/height
     // in viewDidLoad to prevent a flicker, we are doing this should the hardcoded dimensions no longer be correct in a
     // future version of iOS. If a future version of iOS results in different dimensions for the form sheet, this will
@@ -364,7 +375,6 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
 
 - (void)clickedSkipToCreate:(id)sender
 {
-    [_scrollView setContentOffset:CGPointMake(_viewWidth * 2, 0) animated:NO];
     [self clickedCreateAccount:nil];
 }
 
@@ -389,6 +399,13 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
 - (void)clickedBackground:(UITapGestureRecognizer *)tapGestureRecognizer
 {
     [self.view endEditing:YES];
+}
+
+- (void)clickedBottomPanel:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (_currentPage == 3) {
+        [self clickedCreateAccount:nil];        
+    }
 }
 
 - (void)clickedSignIn:(id)sender
@@ -442,10 +459,12 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
 
 - (void)addPage1Controls
 {
-    UIImage *infoButtonImage = [UIImage imageNamed:@"infoButton"];
+    UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
+    UIImage *infoButtonImageHighlighted = [UIImage imageNamed:@"btn-about-tap"];
     if (_infoButton == nil) {
         _infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_infoButton setImage:infoButtonImage forState:UIControlStateNormal];
+        [_infoButton setImage:infoButtonImageHighlighted forState:UIControlStateHighlighted];
         _infoButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
         [_infoButton addTarget:self action:@selector(clickedInfoButton:) forControlEvents:UIControlEventTouchUpInside];
         [_scrollView addSubview:_infoButton];
@@ -453,13 +472,7 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
     
     // Add Logo
     if (_page1Icon == nil) {
-        _page1Icon = [[UILabel alloc] init];
-        _page1Icon.backgroundColor = [UIColor clearColor];
-        _page1Icon.font = [UIFont fontWithName:@"Genericons-Regular" size:90];
-        _page1Icon.text = @""; // WordPress Logo
-        _page1Icon.shadowColor = _textShadowColor;
-        _page1Icon.textColor = [UIColor whiteColor];
-        [_page1Icon sizeToFit];
+        _page1Icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-wp"]];
         [_scrollView addSubview:_page1Icon];
     }
     
@@ -473,14 +486,15 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
         _page1Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
         _page1Title.text = NSLocalizedString(@"Welcome to WordPress", nil);
         _page1Title.shadowColor = _textShadowColor;
-        _page1Title.shadowOffset = CGSizeMake(1.0, 1.0);
+        _page1Title.shadowOffset = CGSizeMake(0.0, 1.0);
+        _page1Title.layer.shadowRadius = 2.0;
         _page1Title.textColor = [UIColor whiteColor];
         [_scrollView addSubview:_page1Title];
     }
     
     // Add Top Separator
     if (_page1TopSeparator == nil) {
-        _page1TopSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        _page1TopSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [_scrollView addSubview:_page1TopSeparator];
     }
 
@@ -494,13 +508,15 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
         _page1Description.font = [UIFont fontWithName:@"OpenSans" size:15.0];
         _page1Description.text = @"Full publishing power in a pint-sized package. Make your mark on the go!";
         _page1Description.shadowColor = _textShadowColor;
-        _page1Description.textColor = [UIColor whiteColor];
+        _page1Description.shadowOffset = CGSizeMake(0.0, 1.0);
+        _page1Description.layer.shadowRadius = 2.0;
+        _page1Description.textColor = [self descriptionTextColor];
         [_scrollView addSubview:_page1Description];
     }
 
     // Add Bottom Separator
     if (_page1BottomSeparator == nil) {
-        _page1BottomSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        _page1BottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [_scrollView addSubview:_page1BottomSeparator];
     }
 
@@ -509,6 +525,16 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
         _bottomPanel = [[UIView alloc] init];
         _bottomPanel.backgroundColor = [UIColor colorWithRed:42.0/255.0 green:42.0/255.0 blue:42.0/255.0 alpha:1.0];
         [_scrollView addSubview:_bottomPanel];
+        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedBottomPanel:)];
+        gestureRecognizer.numberOfTapsRequired = 1;
+        [_bottomPanel addGestureRecognizer:gestureRecognizer];
+    }
+    
+    // Bottom Panel "Black" Line
+    if (_bottomPanelLine == nil) {
+        _bottomPanelLine = [[UIView alloc] init];
+        _bottomPanelLine.backgroundColor = [self bottomPanelLineColor];
+        [_scrollView addSubview:_bottomPanelLine];
     }
     
     // Add Page Control
@@ -530,79 +556,109 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
     // Add "SWIPE TO CONTINUE" text
     if (_page1SwipeToContinue == nil) {
         _page1SwipeToContinue = [[UILabel alloc] init];
+        [_page1SwipeToContinue setTextColor:[UIColor colorWithRed:255.0 green:255.0 blue:255.0 alpha:0.3]];
+        [_page1SwipeToContinue setShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
         _page1SwipeToContinue.backgroundColor = [UIColor clearColor];
         _page1SwipeToContinue.textAlignment = UITextAlignmentCenter;
         _page1SwipeToContinue.numberOfLines = 1;
         _page1SwipeToContinue.font = [UIFont fontWithName:@"OpenSans" size:10.0];
-        _page1SwipeToContinue.text = @"SWIPE TO CONTINUE";
-        _page1SwipeToContinue.shadowColor = _textShadowColor;
-        _page1SwipeToContinue.textColor = [UIColor colorWithRed:86.0/255.0 green:169.0/255.0 blue:206.0/255.0 alpha:1.0];
+        _page1SwipeToContinue.text = NSLocalizedString(@"SWIPE TO CONTINUE", nil);
+        _page1SwipeToContinue.shadowOffset = CGSizeMake(0.0, 1.0);
         [_page1SwipeToContinue sizeToFit];
         [_scrollView addSubview:_page1SwipeToContinue];
     }
 
     // Add Skip to Create Account Button
     if (_skipToCreateAccount == nil) {
-        _skipToCreateAccount = [[WPWalkthroughButton alloc] init];
-        _skipToCreateAccount.text = @"Create Account";
+        _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
+        [_skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
+        [_skipToCreateAccount setTitleColor:[UIColor colorWithRed:150.0/255.0 green:155.0/255.0 blue:155.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+        [_skipToCreateAccount setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5] forState:UIControlStateNormal];
+        [_skipToCreateAccount setTitleColor:[UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:0.3] forState:UIControlStateHighlighted];
+        [_skipToCreateAccount setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8] forState:UIControlStateNormal];
+        _skipToCreateAccount.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [_skipToCreateAccount addTarget:self action:@selector(clickedSkipToCreate:) forControlEvents:UIControlEventTouchUpInside];
+        [_skipToCreateAccount sizeToFit];
         [_scrollView addSubview:_skipToCreateAccount];
     }
-    
+        
     // Add Skip to Sign in Button
     if (_skipToSignIn == nil) {
-        _skipToSignIn = [[WPWalkthroughButton alloc] init];
-        _skipToSignIn.text = @"Sign In";
+        _skipToSignIn = [[WPNUXPrimaryButton alloc] init];
+        [_skipToSignIn setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9] forState:UIControlStateNormal];
+        [_skipToSignIn setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2] forState:UIControlStateNormal];
+        [_skipToSignIn setTitleColor:[UIColor colorWithRed:25.0/255.0 green:135.0/255.0 blue:179.0/255.0 alpha:1.0] forState:UIControlStateHighlighted];
+        [_skipToSignIn setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.1] forState:UIControlStateHighlighted];
+        _skipToSignIn.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
+        [_skipToSignIn setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
         [_skipToSignIn addTarget:self action:@selector(clickedSkipToSignIn:) forControlEvents:UIControlEventTouchUpInside];
+        [_skipToSignIn sizeToFit];
         [_scrollView addSubview:_skipToSignIn];
+    }
+    
+    // Ensure Buttons are Same Height as they have different fonts so they will generate slightly different heights
+    CGFloat createAccountHeight = CGRectGetHeight(_skipToCreateAccount.frame);
+    CGFloat skipToSignInHeight = CGRectGetHeight(_skipToSignIn.frame);
+    if (createAccountHeight > skipToSignInHeight) {
+        CGRect frame = _skipToSignIn.frame;
+        frame.size.height = createAccountHeight;
+        _skipToSignIn.frame = frame;
+    } else {
+        CGRect frame = _skipToCreateAccount.frame;
+        frame.size.height = skipToSignInHeight;
+        _skipToCreateAccount.frame = frame;
     }
 }
 
 - (void)layoutPage1Controls
 {
-    UIImage *infoButtonImage = [UIImage imageNamed:@"infoButton"];
+    UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
     _infoButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
 
-    // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
-    CGFloat extraIconSpaceOnTop = 56;
-    CGFloat extraIconSpaceOnBottom = 50;
     CGFloat x,y;
+    
+    // Layout Icon
     x = (_viewWidth - CGRectGetWidth(_page1Icon.frame))/2.0;
     x = [self adjustX:x forPage:1];
-    y = GeneralWalkthroughIconVerticalOffset - extraIconSpaceOnTop;
+    y = GeneralWalkthroughIconVerticalOffset;
     _page1Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1Icon.frame), CGRectGetHeight(_page1Icon.frame)));
  
     // Layout Title
     CGSize titleSize = [_page1Title.text sizeWithFont:_page1Title.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - titleSize.width)/2.0;
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Icon.frame) + GeneralWalkthroughStandardOffset - extraIconSpaceOnBottom;
+    y = CGRectGetMaxY(_page1Icon.frame) + 0.5*GeneralWalkthroughStandardOffset;
     _page1Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
     // Layout Top Separator
     x = GeneralWalkthroughStandardOffset;
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Title.frame) + 1 * GeneralWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page1Title.frame) + GeneralWalkthroughStandardOffset;
     _page1TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
     
     // Layout Description
     CGSize labelSize = [_page1Description.text sizeWithFont:_page1Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1TopSeparator.frame) + GeneralWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page1TopSeparator.frame) + 0.5*GeneralWalkthroughStandardOffset;
     _page1Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
     
     // Layout Bottom Separator
     x = GeneralWalkthroughStandardOffset;
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Description.frame) + GeneralWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page1Description.frame) + 0.5*GeneralWalkthroughStandardOffset;
     _page1BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
-    
+        
     // Layout Bottom Panel
     x = 0;
     x = [self adjustX:x forPage:1];
     y = _viewHeight - GeneralWalkthroughBottomBackgroundHeight;
     _bottomPanel.frame = CGRectMake(x, y, _viewWidth, GeneralWalkthroughBottomBackgroundHeight);
+    
+    // Layout Bottom Panel Line
+    x = 0;
+    y = CGRectGetMinY(_bottomPanel.frame);
+    _bottomPanelLine.frame = CGRectMake(x, y, _viewWidth, 1);
     
     // Layout Page Control
     CGFloat verticalSpaceForPageControl = 15;
@@ -614,20 +670,24 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
     // Layout Swipe to Continue
     x = (_viewWidth - CGRectGetWidth(_page1SwipeToContinue.frame))/2.0;
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMinY(_pageControl.frame) - 5 - CGRectGetHeight(_page1SwipeToContinue.frame) + verticalSpaceForPageControl;
+    y = CGRectGetMinY(_pageControl.frame) - GeneralWalkthroughSwipeToContinueTopOffset - CGRectGetHeight(_page1SwipeToContinue.frame) + verticalSpaceForPageControl;
     _page1SwipeToContinue.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1SwipeToContinue.frame), CGRectGetHeight(_page1SwipeToContinue.frame)));
     
     // Layout Skip to Create Account Button
-    x = (_viewWidth - 2*GeneralWalkthroughBottomButtonWidth - GeneralWalkthroughStandardOffset)/2.0;
+    x = GeneralWalkthroughStandardOffset;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMinY(_bottomPanel.frame) + GeneralWalkthroughStandardOffset;
-    _skipToCreateAccount.frame = CGRectMake(x, y, GeneralWalkthroughBottomButtonWidth, GeneralWalkthroughBottomButtonHeight);
+    _skipToCreateAccount.frame = CGRectMake(x, y, CGRectGetWidth(_skipToCreateAccount.frame), CGRectGetHeight(_skipToCreateAccount.frame));
 
     // Layout Skip to Sign In Button
-    x = CGRectGetMaxX(_skipToCreateAccount.frame) + GeneralWalkthroughStandardOffset;
+    x = _viewWidth - GeneralWalkthroughStandardOffset - CGRectGetWidth(_skipToSignIn.frame);
     x = [self adjustX:x forPage:1];
     y = CGRectGetMinY(_skipToCreateAccount.frame);
-    _skipToSignIn.frame = CGRectMake(x, y, GeneralWalkthroughBottomButtonWidth, GeneralWalkthroughBottomButtonHeight);
+    _skipToSignIn.frame = CGRectMake(x, y, CGRectGetWidth(_skipToSignIn.frame), CGRectGetHeight(_skipToSignIn.frame));
+    
+    _heightFromSwipeToContinue = _viewHeight - CGRectGetMinY(_page1SwipeToContinue.frame);
+    NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1TopSeparator, _page1Description, _page1BottomSeparator];
+    [self centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1BottomSeparator forHeight:(_viewHeight - _heightFromSwipeToContinue)];
 }
 
 - (void)initializePage2
@@ -640,13 +700,7 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
 {
     // Add Icon
     if (_page2Icon == nil) {
-        _page2Icon = [[UILabel alloc] init];
-        _page2Icon.backgroundColor = [UIColor clearColor];
-        _page2Icon.font = [UIFont fontWithName:@"Genericons-Regular" size:100];
-        _page2Icon.text = @""; // Pencil Logo
-        _page2Icon.shadowColor = _textShadowColor;
-        _page2Icon.textColor = [UIColor whiteColor];
-        [_page2Icon sizeToFit];
+        _page2Icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-post"]];
         [_scrollView addSubview:_page2Icon];
     }
     
@@ -660,14 +714,15 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
         _page2Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
         _page2Title.text = @"You can publish as inspiration strikes";
         _page2Title.shadowColor = _textShadowColor;
-        _page2Title.shadowOffset = CGSizeMake(1, 1);
+        _page2Title.shadowOffset = CGSizeMake(0.0, 1.0);
+        _page2Title.layer.shadowRadius = 2.0;
         _page2Title.textColor = [UIColor whiteColor];
         [_scrollView addSubview:_page2Title];
     }
     
     // Add Top Separator
     if (_page2TopSeparator == nil) {
-        _page2TopSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        _page2TopSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [_scrollView addSubview:_page2TopSeparator];
     }
     
@@ -681,13 +736,15 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
         _page2Description.font = [UIFont fontWithName:@"OpenSans" size:15.0];
         _page2Description.text = @"Had a brilliant insight? Found a link to share? Captured the perfect pic? Post it in real time.";
         _page2Description.shadowColor = _textShadowColor;
-        _page2Description.textColor = [UIColor whiteColor];
+        _page2Description.shadowOffset = CGSizeMake(0.0, 1.0);
+        _page2Description.layer.shadowRadius = 2.0;
+        _page2Description.textColor = [self descriptionTextColor];
         [_scrollView addSubview:_page2Description];
     }
     
     // Add Bottom Separator
     if (_page2BottomSeparator == nil) {
-        _page2BottomSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        _page2BottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [_scrollView addSubview:_page2BottomSeparator];
     }
 }
@@ -695,20 +752,18 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
 - (void)layoutPage2Controls
 {
     CGFloat x,y;
-    
-    // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
-    CGFloat extraIconSpaceOnTop = 40;
-    CGFloat extraIconSpaceOnBottom = 68;
+
+    // Layout Icon
     x = (_viewWidth - CGRectGetWidth(_page2Icon.frame))/2.0;
     x = [self adjustX:x forPage:2];
-    y = GeneralWalkthroughIconVerticalOffset - extraIconSpaceOnTop;
+    y = GeneralWalkthroughIconVerticalOffset ;
     _page2Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2Icon.frame), CGRectGetHeight(_page2Icon.frame)));
 
     // Layout Title
     CGSize titleSize = [_page2Title.text sizeWithFont:_page2Title.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - titleSize.width)/2.0;
     x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2Icon.frame) + GeneralWalkthroughStandardOffset - extraIconSpaceOnBottom;
+    y = CGRectGetMaxY(_page2Icon.frame) + 0.5*GeneralWalkthroughStandardOffset;
     _page2Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
 
     // Layout Top Separator
@@ -721,14 +776,17 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
     CGSize labelSize = [_page2Description.text sizeWithFont:_page2Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2TopSeparator.frame) + GeneralWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page2TopSeparator.frame) + 0.5*GeneralWalkthroughStandardOffset;
     _page2Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
     
     // Layout Bottom Separator
     x = GeneralWalkthroughStandardOffset;
     x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2Description.frame) + GeneralWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page2Description.frame) + 0.5*GeneralWalkthroughStandardOffset;
     _page2BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
+    
+    NSArray *viewsToCenter = @[_page2Icon, _page2Title, _page2TopSeparator, _page2Description, _page2BottomSeparator];
+    [self centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_page2BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinue)];
 }
 
 - (void)initializePage3
@@ -741,13 +799,7 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
 {
     // Add Icon
     if (_page3Icon == nil) {
-        _page3Icon = [[UILabel alloc] init];
-        _page3Icon.backgroundColor = [UIColor clearColor];
-        _page3Icon.font = [UIFont fontWithName:@"Genericons-Regular" size:60];
-        _page3Icon.text = @""; // Pencil Logo
-        _page3Icon.shadowColor = _textShadowColor;
-        _page3Icon.textColor = [UIColor whiteColor];
-        [_page3Icon sizeToFit];
+        _page3Icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-wp"]];
         [_scrollView addSubview:_page3Icon];
     }
     
@@ -756,7 +808,7 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
         _usernameText = [[WPWalkthroughTextField alloc] init];
         _usernameText.backgroundColor = [UIColor whiteColor];
         _usernameText.placeholder = @"Username / email";
-        _usernameText.font = [UIFont fontWithName:@"OpenSans" size:21.0];
+        _usernameText.font = [self textFieldFont];
         _usernameText.adjustsFontSizeToFitWidth = true;
         _usernameText.delegate = self;
         _usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -769,7 +821,7 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
         _passwordText = [[WPWalkthroughTextField alloc] init];
         _passwordText.backgroundColor = [UIColor whiteColor];
         _passwordText.placeholder = @"Password";
-        _passwordText.font = [UIFont fontWithName:@"OpenSans" size:21.0];
+        _passwordText.font = [self textFieldFont];
         _passwordText.delegate = self;
         _passwordText.secureTextEntry = YES;
         [_scrollView addSubview:_passwordText];
@@ -780,7 +832,7 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
         _siteUrlText = [[WPWalkthroughTextField alloc] init];
         _siteUrlText.backgroundColor = [UIColor whiteColor];
         _siteUrlText.placeholder = @"Site Address (URL)";
-        _siteUrlText.font = [UIFont fontWithName:@"OpenSans" size:21.0];
+        _siteUrlText.font = [self textFieldFont];
         _siteUrlText.adjustsFontSizeToFitWidth = true;
         _siteUrlText.delegate = self;
         _siteUrlText.keyboardType = UIKeyboardTypeURL;
@@ -792,11 +844,21 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
     
     // Add Sign In Button
     if (_signInButton == nil) {
-        _signInButton = [[WPWalkthroughButton alloc] init];
-        _signInButton.text = @"Sign In";
+        UIImage *mainImage = [[UIImage imageNamed:@"btn-main"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
+        UIImage *inactiveImage = [[UIImage imageNamed:@"btn-main-inactive"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
+        UIImage *tappedImage = [[UIImage imageNamed:@"btn-main-tap"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
+        _signInButton = [[UIButton alloc] init];
+        [_signInButton setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
+        [_signInButton setBackgroundImage:mainImage forState:UIControlStateNormal];
+        [_signInButton setBackgroundImage:inactiveImage forState:UIControlStateDisabled];
+        [_signInButton setBackgroundImage:tappedImage forState:UIControlStateHighlighted];
+        [_signInButton setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9] forState:UIControlStateNormal];
+        [_signInButton setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4] forState:UIControlStateDisabled];
+        [_signInButton setTitleColor:[UIColor colorWithRed:9.0/255.0 green:134.0/255.0 blue:181.0/255.0 alpha:0.4] forState:UIControlStateHighlighted];
+        _signInButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:20.0];
         [_signInButton addTarget:self action:@selector(clickedSignIn:) forControlEvents:UIControlEventTouchUpInside];
-        _signInButton.enabled = NO;
         [_scrollView addSubview:_signInButton];
+        _signInButton.enabled = NO;
     }
     
     // Add Create Account Text
@@ -807,6 +869,7 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
         _createAccountLabel.font = [UIFont fontWithName:@"OpenSans" size:15.0];
         _createAccountLabel.text = @"Don't have an account? Create one!";
         _createAccountLabel.shadowColor = [UIColor blackColor];
+        _createAccountLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [_createAccountLabel sizeToFit];
         UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedCreateAccount:)];
         tapGestureRecognizer.numberOfTapsRequired = 1;
@@ -819,53 +882,43 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
 - (void)layoutPage3Controls
 {
     CGFloat x,y;
-    // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
-    CGFloat extraIconSpaceOnTop = 19;
-    CGFloat extraIconSpaceOnBottom = 34;
     x = (_viewWidth - CGRectGetWidth(_page3Icon.frame))/2.0;
     x = [self adjustX:x forPage:3];
-    y = GeneralWalkthroughIconVerticalOffset- extraIconSpaceOnTop;
+    y = GeneralWalkthroughIconVerticalOffset;
     _page3Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page3Icon.frame), CGRectGetHeight(_page3Icon.frame)));
 
     // Layout Username
-    CGFloat textFieldWidth = 288.0;
-    CGFloat textFieldHeight = 44.0;
-    x = (_viewWidth - textFieldWidth)/2.0;
+    x = (_viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
     x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_page3Icon.frame) + GeneralWalkthroughStandardOffset - extraIconSpaceOnBottom;
-    _usernameText.frame = CGRectIntegral(CGRectMake(x, y, textFieldWidth, textFieldHeight));
+    y = CGRectGetMaxY(_page3Icon.frame) + GeneralWalkthroughStandardOffset;
+    _usernameText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Password
-    x = (_viewWidth - textFieldWidth)/2.0;
+    x = (_viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
     x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_usernameText.frame) + GeneralWalkthroughStandardOffset;
-    _passwordText.frame = CGRectIntegral(CGRectMake(x, y, textFieldWidth, textFieldHeight));
+    y = CGRectGetMaxY(_usernameText.frame) + 0.5*GeneralWalkthroughStandardOffset;
+    _passwordText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Site URL
-    x = (_viewWidth - textFieldWidth)/2.0;
+    x = (_viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
     x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_passwordText.frame) + GeneralWalkthroughStandardOffset;
-    _siteUrlText.frame = CGRectIntegral(CGRectMake(x, y, textFieldWidth, textFieldHeight));
+    y = CGRectGetMaxY(_passwordText.frame) + 0.5*GeneralWalkthroughStandardOffset;
+    _siteUrlText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
 
     // Layout Sign in Button
-    CGFloat signInButtonWidth = 160.0;
-    CGFloat signInButtonHeight = 40.0;
-    x = (_viewWidth - signInButtonWidth) / 2.0;;
+    x = (_viewWidth - GeneralWalkthroughSignInButtonWidth) / 2.0;;
     x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_siteUrlText.frame) + 2*GeneralWalkthroughStandardOffset;
-    _signInButton.frame = CGRectMake(x, y, signInButtonWidth, signInButtonHeight);
+    y = CGRectGetMaxY(_siteUrlText.frame) + GeneralWalkthroughStandardOffset;
+    _signInButton.frame = CGRectMake(x, y, GeneralWalkthroughSignInButtonWidth, GeneralWalkthroughSignInButtonHeight);
 
     // Layout Create Account Label
     x = (_viewWidth - CGRectGetWidth(_createAccountLabel.frame))/2.0;
     x = [self adjustX:x forPage:3];
     y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame) - CGRectGetHeight(_createAccountLabel.frame))/2.0;
     _createAccountLabel.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_createAccountLabel.frame), CGRectGetHeight(_createAccountLabel.frame)));
-}
-
-- (void)getInitialWidthAndHeight
-{
-    _viewWidth = [self.view formSheetViewWidth];
-    _viewHeight = [self.view formSheetViewHeight];
+    
+    NSArray *viewsToCenter = @[_page3Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
+    [self centerViews:viewsToCenter withStartingView:_page3Icon andEndingView:_signInButton forHeight:(_viewHeight-_heightFromSwipeToContinue)];
 }
 
 - (void)savePositionsOfStickyControls
@@ -888,13 +941,14 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
 
 - (void)flagPageViewed:(NSUInteger)pageViewed
 {
+    _currentPage = pageViewed;
     _pageControl.currentPage = pageViewed - 1;
 }
 
 - (void)showCompletionWalkthrough
 {
     LoginCompletedWalkthroughViewController *loginCompletedViewController = [[LoginCompletedWalkthroughViewController alloc] init];
-    loginCompletedViewController.showsExtraWalkthroughPages = _userIsDotCom || _blogHasJetpack;
+    loginCompletedViewController.showsExtraWalkthroughPages = _userIsDotCom || _blogConnectedToJetpack;
     [self.navigationController pushViewController:loginCompletedViewController animated:YES];
 }
 
@@ -904,6 +958,7 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
     JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:_blog];
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
+        _blogConnectedToJetpack = didAuthenticate;
         [self.navigationController popViewControllerAnimated:NO];
         [self showCompletionWalkthrough];
     }];
@@ -1074,10 +1129,6 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
 {
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Reading blog options", nil) maskType:SVProgressHUDMaskTypeBlack];
     
-    if ([options objectForKey:@"jetpack_version"] != nil) {
-        _blogHasJetpack = true;
-    }
-    
     [api getBlogsWithSuccess:^(NSArray *blogs) {
         _blogs = blogs;
         [self handleGetBlogsSuccess:[api.xmlrpc absoluteString]];
@@ -1226,14 +1277,17 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
     [_blog syncBlogWithSuccess:successBlock failure:failureBlock];
 }
 
-- (void)keyboardWillShow
+- (void)keyboardWillShow:(NSNotification *)notification
 {
+    CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    _keyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_signInButton.frame);
+
     [UIView animateWithDuration:0.3 animations:^{
         NSArray *controlsToMove = @[_page3Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
         
         for (UIControl *control in controlsToMove) {
             CGRect frame = control.frame;
-            frame.origin.y -= GeneralWalkthroughKeyboardOffset;
+            frame.origin.y -= _keyboardOffset;
             control.frame = frame;
         }
     }];
@@ -1246,7 +1300,7 @@ CGFloat const GeneralWalkthroughMaxTextWidth = 289.0;
         
         for (UIControl *control in controlsToMove) {
             CGRect frame = control.frame;
-            frame.origin.y += GeneralWalkthroughKeyboardOffset;
+            frame.origin.y += _keyboardOffset;
             control.frame = frame;
         }
     }];

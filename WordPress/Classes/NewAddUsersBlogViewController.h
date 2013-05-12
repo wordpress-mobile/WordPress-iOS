@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @class NewAddUsersBlogViewController;
-typedef void(^AddUsersBlogViewControllerBlock)(NewAddUsersBlogViewController *);
-typedef void(^AddUsersBlogViewControllerErrorBlock)(NewAddUsersBlogViewController *, NSError *);
 
 @interface NewAddUsersBlogViewController : UIViewController
 
@@ -20,8 +18,8 @@ typedef void(^AddUsersBlogViewControllerErrorBlock)(NewAddUsersBlogViewControlle
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *xmlRPCUrl;
 
-@property (nonatomic, copy) AddUsersBlogViewControllerBlock blogAdditionCompleted;
-@property (nonatomic, copy) AddUsersBlogViewControllerBlock onNoBlogsLoaded;
-@property (nonatomic, copy) AddUsersBlogViewControllerErrorBlock onErrorLoading;
+@property (nonatomic, copy ) void (^blogAdditionCompleted)(NewAddUsersBlogViewController *);
+@property (nonatomic, copy ) void (^onNoBlogsLoaded)(NewAddUsersBlogViewController *);
+@property (nonatomic, copy ) void (^onErrorLoading)(NewAddUsersBlogViewController *, NSError *);
 
 @end

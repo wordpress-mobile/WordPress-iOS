@@ -6,17 +6,15 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "LoginCompletedWalkthroughViewController.h"
 #import "UIView+FormSheetHelpers.h"
 #import "AboutViewController.h"
-#import "WPWalkthroughButton.h"
-#import "WPWalkthroughLineSeparatorView.h"
 #import "WPWalkthroughGrayOverlayView.h"
 #import "WordPressAppDelegate.h"
 
 @interface LoginCompletedWalkthroughViewController ()<UIScrollViewDelegate> {
     UIScrollView *_scrollView;
-    UIButton *_infoButton;
     UILabel *_skipToApp;
     
     // Page 1
@@ -24,27 +22,28 @@
     UILabel *_page1Title;
     UILabel *_page1Description;
     UILabel *_page1SwipeToContinue;
-    WPWalkthroughLineSeparatorView *_page1TopSeparator;
-    WPWalkthroughLineSeparatorView *_page1BottomSeparator;
+    UIImageView *_page1TopSeparator;
+    UIImageView *_page1BottomSeparator;
+    UIView *_bottomPanelLine;
     UIView *_bottomPanel;
     UIPageControl *_pageControl;
     
     // Page 2
-    UILabel *_page2Icon;
+    UIImageView *_page2Icon;
     UILabel *_page2Title;
     UILabel *_page2Description;
-    WPWalkthroughLineSeparatorView *_page2TopSeparator;
-    WPWalkthroughLineSeparatorView *_page2BottomSeparator;
+    UIImageView *_page2TopSeparator;
+    UIImageView *_page2BottomSeparator;
     
     // Page 3
-    UILabel *_page3Icon;
+    UIImageView *_page3Icon;
     UILabel *_page3Title;
     UILabel *_page3Description;
-    WPWalkthroughLineSeparatorView *_page3TopSeparator;
-    WPWalkthroughLineSeparatorView *_page3BottomSeparator;
+    UIImageView *_page3TopSeparator;
+    UIImageView *_page3BottomSeparator;
     
     // Page 4
-    UILabel *_page4Icon;
+    UIImageView *_page4Icon;
     UILabel *_page4Title;
     
     CGFloat _viewWidth;
@@ -54,6 +53,7 @@
     CGFloat _bottomPanelOriginalX;
     CGFloat _skipToAppOriginalX;
     CGFloat _pageControlOriginalX;
+    CGFloat _heightFromSwipeToContinueToBottom;
 
     BOOL _savedOriginalPositionsOfStickyControls;
     BOOL _isDismissing;
@@ -69,6 +69,7 @@ NSUInteger const LoginCompletedWalkthroughStandardOffset = 16;
 CGFloat const LoginCompletedWalkthroughIconVerticalOffset = 85;
 CGFloat const LoginCompletedWalkthroughMaxTextWidth = 289.0;
 CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
+CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
 
 
 - (id)init
@@ -216,18 +217,10 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
 
 - (void)addPage1Controls
 {
-    // Add Info Button
-    UIImage *infoButtonImage = [UIImage imageNamed:@"infoButton"];
-    if (_infoButton == nil) {
-        _infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_infoButton setImage:infoButtonImage forState:UIControlStateNormal];
-        _infoButton.frame = CGRectMake(LoginCompletedWalkthroughStandardOffset, LoginCompletedWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
-        [_infoButton addTarget:self action:@selector(clickedInfoButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_scrollView addSubview:_infoButton];
-    }
     
+    // Add Icon
     if (_page1Icon == nil) {
-        _page1Icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"nuxStatsIcon"]];
+        _page1Icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-stats"]];
         [_scrollView addSubview:_page1Icon];
     }
 
@@ -241,14 +234,15 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
         _page1Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
         _page1Title.text = @"Track your site's statistics";
         _page1Title.shadowColor = _textShadowColor;
-        _page1Title.shadowOffset = CGSizeMake(1.0, 1.0);
+        _page1Title.shadowOffset = CGSizeMake(0.0, 1.0);
+        _page1Title.layer.shadowRadius = 2.0;
         _page1Title.textColor = [UIColor whiteColor];
         [_scrollView addSubview:_page1Title];
     }
     
     // Add Top Separator
     if (_page1TopSeparator == nil) {
-        _page1TopSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        _page1TopSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [_scrollView addSubview:_page1TopSeparator];
     }
     
@@ -261,14 +255,16 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
         _page1Description.lineBreakMode = UILineBreakModeWordWrap;
         _page1Description.font = [UIFont fontWithName:@"OpenSans" size:15.0];
         _page1Description.text = @"Learn what your readers respond to so you can give them more of it";
+        _page1Description.shadowOffset = CGSizeMake(0.0, 1.0);
         _page1Description.shadowColor = _textShadowColor;
-        _page1Description.textColor = [UIColor whiteColor];
+        _page1Title.layer.shadowRadius = 2.0;
+        _page1Description.textColor = [self descriptionTextColor];
         [_scrollView addSubview:_page1Description];
     }
     
     // Add Bottom Separator
     if (_page1BottomSeparator == nil) {
-        _page1BottomSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        _page1BottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [_scrollView addSubview:_page1BottomSeparator];
     }
     
@@ -277,6 +273,16 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
         _bottomPanel = [[UIView alloc] init];
         _bottomPanel.backgroundColor = [UIColor colorWithRed:42.0/255.0 green:42.0/255.0 blue:42.0/255.0 alpha:1.0];
         [_scrollView addSubview:_bottomPanel];
+        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedBottomPanel:)];
+        gestureRecognizer.numberOfTapsRequired = 1;
+        [_bottomPanel addGestureRecognizer:gestureRecognizer];
+    }
+    
+    // Bottom Panel "Black" Line
+    if (_bottomPanelLine == nil) {
+        _bottomPanelLine = [[UIView alloc] init];
+        _bottomPanelLine.backgroundColor = [self bottomPanelLineColor];
+        [_scrollView addSubview:_bottomPanelLine];
     }
     
     // Add Page Control
@@ -298,6 +304,8 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
     // Add "SWIPE TO CONTINUE"
     if (_page1SwipeToContinue == nil) {
         _page1SwipeToContinue = [[UILabel alloc] init];
+        [_page1SwipeToContinue setTextColor:[UIColor colorWithRed:255.0 green:255.0 blue:255.0 alpha:0.3]];
+        [_page1SwipeToContinue setShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
         _page1SwipeToContinue.backgroundColor = [UIColor clearColor];
         _page1SwipeToContinue.textAlignment = UITextAlignmentCenter;
         _page1SwipeToContinue.numberOfLines = 1;
@@ -330,10 +338,6 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
 {
     CGFloat x,y;
     
-    // Layout Info Button
-    UIImage *infoButtonImage = [UIImage imageNamed:@"infoButton"];
-    _infoButton.frame = CGRectMake(LoginCompletedWalkthroughStandardOffset, LoginCompletedWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
-
     // Layout Stats Icon
     x = (_viewWidth - CGRectGetWidth(_page1Icon.frame))/2.0;
     y = LoginCompletedWalkthroughIconVerticalOffset;
@@ -343,26 +347,26 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
     CGSize titleSize = [_page1Title.text sizeWithFont:_page1Title.font constrainedToSize:CGSizeMake(LoginCompletedWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - titleSize.width)/2.0;
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Icon.frame) + LoginCompletedWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page1Icon.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page1Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
     // Layout Top Separator
     x = LoginCompletedWalkthroughStandardOffset;
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Title.frame) + 3 * LoginCompletedWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page1Title.frame) + LoginCompletedWalkthroughStandardOffset;
     _page1TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
     
     // Layout Description
     CGSize labelSize = [_page1Description.text sizeWithFont:_page1Description.font constrainedToSize:CGSizeMake(LoginCompletedWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1TopSeparator.frame) + LoginCompletedWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page1TopSeparator.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page1Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
 
     // Layout Bottom Separator
     x = LoginCompletedWalkthroughStandardOffset;
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMaxY(_page1Description.frame) + LoginCompletedWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page1Description.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page1BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
     
     // Layout Bottom Panel
@@ -370,6 +374,11 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
     x = [self adjustX:x forPage:1];
     y = _viewHeight - LoginCompletedWalkthroughBottomBackgroundHeight;
     _bottomPanel.frame = CGRectMake(x, y, _viewWidth, LoginCompletedWalkthroughBottomBackgroundHeight);
+    
+    // Layout Bottom Panel Line
+    x = 0;
+    y = CGRectGetMinY(_bottomPanel.frame);
+    _bottomPanelLine.frame = CGRectMake(x, y, _viewWidth, 1);
     
     // Layout Page Control
     CGFloat verticalSpaceForPageControl = 15;
@@ -381,13 +390,17 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
     // Layout Swipe to Continue Label
     x = (_viewWidth - CGRectGetWidth(_page1SwipeToContinue.frame))/2.0;
     x = [self adjustX:x forPage:1];
-    y = CGRectGetMinY(_pageControl.frame) - 5 - CGRectGetHeight(_page1SwipeToContinue.frame) + verticalSpaceForPageControl;
+    y = CGRectGetMinY(_pageControl.frame) - LoginCompeltedWalkthroughSwipeToContinueTopOffset - CGRectGetHeight(_page1SwipeToContinue.frame) + verticalSpaceForPageControl;
     _page1SwipeToContinue.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1SwipeToContinue.frame), CGRectGetHeight(_page1SwipeToContinue.frame)));
 
     // Layout Skip and Start Using App
     x = (_viewWidth - CGRectGetWidth(_skipToApp.frame))/2.0;
     y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame)-CGRectGetHeight(_skipToApp.frame))/2.0;
     _skipToApp.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_skipToApp.frame), CGRectGetHeight(_skipToApp.frame)));
+    
+    _heightFromSwipeToContinueToBottom = _viewHeight - CGRectGetMinY(_page1SwipeToContinue.frame);
+    NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1TopSeparator, _page1Description, _page1BottomSeparator];
+    [self centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
 }
 
 - (void)initializePage2
@@ -400,13 +413,7 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
 {
     // Add Icon
     if (_page2Icon == nil) {
-        _page2Icon = [[UILabel alloc] init];
-        _page2Icon.backgroundColor = [UIColor clearColor];
-        _page2Icon.font = [UIFont fontWithName:@"Genericons-Regular" size:70];
-        _page2Icon.text = @""; // RSS Logo
-        _page2Icon.shadowColor = _textShadowColor;
-        _page2Icon.textColor = [UIColor whiteColor];
-        [_page2Icon sizeToFit];
+        _page2Icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-reader"]];
         [_scrollView addSubview:_page2Icon];
     }
     
@@ -420,14 +427,15 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
         _page2Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
         _page2Title.text = @"The WordPress Reader";
         _page2Title.shadowColor = _textShadowColor;
-        _page2Title.shadowOffset = CGSizeMake(1, 1);
+        _page2Title.shadowOffset = CGSizeMake(0.0, 1.0);
+        _page2Title.layer.shadowRadius = 2.0;
         _page2Title.textColor = [UIColor whiteColor];
         [_scrollView addSubview:_page2Title];
     }
     
     // Add Top Separator
     if (_page2TopSeparator == nil) {
-        _page2TopSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        _page2TopSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [_scrollView addSubview:_page2TopSeparator];
     }
     
@@ -440,14 +448,16 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
         _page2Description.lineBreakMode = UILineBreakModeWordWrap;
         _page2Description.font = [UIFont fontWithName:@"OpenSans" size:15.0];
         _page2Description.text = @"Browse the entire WordPress ecosystem. If you can think it, someone is writing it.";
+        _page2Description.shadowOffset = CGSizeMake(0.0, 1.0);
         _page2Description.shadowColor = _textShadowColor;
-        _page2Description.textColor = [UIColor whiteColor];
+        _page2Description.layer.shadowRadius = 2.0;
+        _page2Description.textColor = [self descriptionTextColor];
         [_scrollView addSubview:_page2Description];
     }
     
     // Add Bottom Separator
     if (_page2BottomSeparator == nil) {
-        _page2BottomSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        _page2BottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [_scrollView addSubview:_page2BottomSeparator];
     }
 }
@@ -456,19 +466,16 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
 {
     CGFloat x,y;
 
-    // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
-    CGFloat extraIconSpaceOnTop = 21;
-    CGFloat extraIconSpaceOnBottom = 40;
     x = (_viewWidth - CGRectGetWidth(_page2Icon.frame))/2.0;
     x = [self adjustX:x forPage:2];
-    y = LoginCompletedWalkthroughIconVerticalOffset - extraIconSpaceOnTop;
+    y = LoginCompletedWalkthroughIconVerticalOffset;
     _page2Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2Icon.frame), CGRectGetHeight(_page2Icon.frame)));
 
     // Layout Title
     CGSize titleSize = [_page2Title.text sizeWithFont:_page2Title.font constrainedToSize:CGSizeMake(LoginCompletedWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - titleSize.width)/2.0;
     x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2Icon.frame) + LoginCompletedWalkthroughStandardOffset - extraIconSpaceOnBottom;
+    y = CGRectGetMaxY(_page2Icon.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page2Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
     // Layout Top Separator
@@ -481,14 +488,17 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
     CGSize labelSize = [_page2Description.text sizeWithFont:_page2Description.font constrainedToSize:CGSizeMake(LoginCompletedWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2TopSeparator.frame) + LoginCompletedWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page2TopSeparator.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page2Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
     
     // Layout Bottom Separator
     x = LoginCompletedWalkthroughStandardOffset;
     x = [self adjustX:x forPage:2];
-    y = CGRectGetMaxY(_page2Description.frame) + LoginCompletedWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page2Description.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page2BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
+    
+    NSArray *viewsToCenter = @[_page2Icon, _page2Title, _page2TopSeparator, _page2Description, _page2BottomSeparator];
+    [self centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_page2BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
 }
 
 - (void)initializePage3
@@ -501,13 +511,7 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
 {
     // Add Icon
     if (_page3Icon == nil) {
-        _page3Icon = [[UILabel alloc] init];
-        _page3Icon.backgroundColor = [UIColor clearColor];
-        _page3Icon.font = [UIFont fontWithName:@"Genericons-Regular" size:90];
-        _page3Icon.text = @""; // Comment Logo
-        _page3Icon.shadowColor = _textShadowColor;
-        _page3Icon.textColor = [UIColor whiteColor];
-        [_page3Icon sizeToFit];
+        _page3Icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-notifications"]];
         [_scrollView addSubview:_page3Icon];
     }
     
@@ -521,14 +525,15 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
         _page3Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
         _page3Title.text = @"Get notified of new Comments & Likes";
         _page3Title.shadowColor = _textShadowColor;
-        _page3Title.shadowOffset = CGSizeMake(1, 1);
+        _page3Title.shadowOffset = CGSizeMake(0.0, 1.0);
+        _page3Title.layer.shadowRadius = 2.0;
         _page3Title.textColor = [UIColor whiteColor];
         [_scrollView addSubview:_page3Title];
     }
     
     // Add Top Separator
     if (_page3TopSeparator == nil) {
-        _page3TopSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        _page3TopSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [_scrollView addSubview:_page3TopSeparator];
     }
     
@@ -541,14 +546,16 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
         _page3Description.lineBreakMode = UILineBreakModeWordWrap;
         _page3Description.font = [UIFont fontWithName:@"OpenSans" size:15.0];
         _page3Description.text = @"Keep the conversation going with notifications on the go. No need for a desktop to nurture the dialogue.";
+        _page3Description.shadowOffset = CGSizeMake(0.0, 1.0);
         _page3Description.shadowColor = _textShadowColor;
-        _page3Description.textColor = [UIColor whiteColor];
+        _page3Description.layer.shadowRadius = 2.0;
+        _page3Description.textColor = [self descriptionTextColor];
         [_scrollView addSubview:_page3Description];
     }
     
     // Add Bottom Separator
     if (_page3BottomSeparator == nil) {
-        _page3BottomSeparator = [[WPWalkthroughLineSeparatorView alloc] init];
+        _page3BottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [_scrollView addSubview:_page3BottomSeparator];
     }
 }
@@ -557,19 +564,16 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
 {
     CGFloat x,y;
     
-    // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
-    CGFloat extraIconSpaceOnTop = 45;
-    CGFloat extraIconSpaceOnBottom = 59;
     x = (_viewWidth - CGRectGetWidth(_page3Icon.frame))/2.0;
     x = [self adjustX:x forPage:3];
-    y = LoginCompletedWalkthroughIconVerticalOffset - extraIconSpaceOnTop;
+    y = LoginCompletedWalkthroughIconVerticalOffset;
     _page3Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page3Icon.frame), CGRectGetHeight(_page3Icon.frame)));
     
     // Layout Title
     CGSize titleSize = [_page3Title.text sizeWithFont:_page3Title.font constrainedToSize:CGSizeMake(LoginCompletedWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - titleSize.width)/2.0;
     x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_page3Icon.frame) + LoginCompletedWalkthroughStandardOffset - extraIconSpaceOnBottom;
+    y = CGRectGetMaxY(_page3Icon.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page3Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
     // Layout Top Separator
@@ -582,14 +586,17 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
     CGSize labelSize = [_page3Description.text sizeWithFont:_page3Description.font constrainedToSize:CGSizeMake(LoginCompletedWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_page3TopSeparator.frame) + LoginCompletedWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page3TopSeparator.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page3Description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
     
     // Layout Bottom Separator
     x = LoginCompletedWalkthroughStandardOffset;
     x = [self adjustX:x forPage:3];
-    y = CGRectGetMaxY(_page3Description.frame) + LoginCompletedWalkthroughStandardOffset;
+    y = CGRectGetMaxY(_page3Description.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
     _page3BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
+    
+    NSArray *viewsToCenter = @[_page3Icon, _page3Title, _page3TopSeparator, _page3Description, _page3BottomSeparator];
+    [self centerViews:viewsToCenter withStartingView:_page3Icon andEndingView:_page3BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
 }
 
 - (void)initializePage4
@@ -602,13 +609,7 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
 {
     // Add Icon
     if (_page4Icon == nil) {
-        _page4Icon = [[UILabel alloc] init];
-        _page4Icon.backgroundColor = [UIColor clearColor];
-        _page4Icon.font = [UIFont fontWithName:@"Genericons-Regular" size:110];
-        _page4Icon.text = @""; // Comment Logo
-        _page4Icon.shadowColor = _textShadowColor;
-        _page4Icon.textColor = [UIColor whiteColor];
-        [_page4Icon sizeToFit];
+        _page4Icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-check"]];
         [_scrollView addSubview:_page4Icon];
     }
     
@@ -622,7 +623,8 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
         _page4Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
         _page4Title.text = @"Get Started!";
         _page4Title.shadowColor = _textShadowColor;
-        _page4Title.shadowOffset = CGSizeMake(1, 1);
+        _page4Title.shadowOffset = CGSizeMake(0.0, 1.0);
+        _page4Title.layer.shadowRadius = 2.0;
         _page4Title.textColor = [UIColor whiteColor];
         [_scrollView addSubview:_page4Title];
     }    
@@ -633,20 +635,20 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
     CGFloat x,y;
     CGFloat currentPage=4;
     
-    // Unfortunately the way iOS generates the Genericons Font results in far too much space on the top and the bottom, so for now we will adjust this by hand.
-    CGFloat extraIconSpaceOnTop = 56;
-    CGFloat extraIconSpaceOnBottom = 89;
     x = (_viewWidth - CGRectGetWidth(_page4Icon.frame))/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = LoginCompletedWalkthroughIconVerticalOffset - extraIconSpaceOnTop;
+    y = LoginCompletedWalkthroughIconVerticalOffset;
     _page4Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page4Icon.frame), CGRectGetHeight(_page4Icon.frame)));
     
     // Layout Title
     CGSize titleSize = [_page4Title.text sizeWithFont:_page4Title.font constrainedToSize:CGSizeMake(LoginCompletedWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
     x = (_viewWidth - titleSize.width)/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page4Icon.frame) + LoginCompletedWalkthroughStandardOffset - extraIconSpaceOnBottom;
-    _page4Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));    
+    y = CGRectGetMaxY(_page4Icon.frame) + 0.5*LoginCompletedWalkthroughStandardOffset;
+    _page4Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
+    
+    NSArray *viewsToCenter = @[_page4Icon, _page4Title];
+    [self centerViews:viewsToCenter withStartingView:_page4Title andEndingView:_page4Title forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
 }
 
 - (CGFloat)adjustX:(CGFloat)x forPage:(NSUInteger)page
@@ -660,19 +662,14 @@ CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
     _currentPage = pageViewed;
 }
 
-- (void)clickedInfoButton:(id)sender
-{
-    AboutViewController *aboutViewController = [[AboutViewController alloc] init];
-	aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
-    nc.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self.navigationController presentModalViewController:nc animated:YES];
-	[self.navigationController setNavigationBarHidden:YES];
-}
-
 - (void)clickedSkipToApp:(UITapGestureRecognizer *)gestureRecognizer
 {
     [self dismiss];
+}
+
+- (void)clickedBottomPanel:(UITapGestureRecognizer *)gestureRecognizer
+{
+    [self clickedSkipToApp:nil];
 }
 
 - (void)clickedScrollView:(UITapGestureRecognizer *)gestureRecognizer
