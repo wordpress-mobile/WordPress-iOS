@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BaseNUXViewController.h"
 
-@interface CreateAccountAndBlogViewController : BaseNUXViewController
+@interface CreateAccountAndBlogViewController : UIViewController
 
 @property (nonatomic, copy) void(^onCreatedUser)(NSString *, NSString *);
 

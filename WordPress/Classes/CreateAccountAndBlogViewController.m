@@ -17,6 +17,7 @@
 #import "WPComLanguages.h"
 #import "WPWalkthroughGrayOverlayView.h"
 #import "SelectWPComLanguageViewController.h"
+#import "WPNUXUtility.h"
 
 @interface CreateAccountAndBlogViewController ()<
     UIScrollViewDelegate,
@@ -76,7 +77,6 @@
     
     NSUInteger _currentPage;
     
-    UIColor *_textShadowColor;
     UIColor *_confirmationLabelColor;
     
     CGFloat _viewWidth;
@@ -101,7 +101,6 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 {
     self = [super init];
     if (self) {
-        _textShadowColor = [UIColor colorWithRed:0.0 green:115.0/255.0 blue:164.0/255.0 alpha:0.5];
         _confirmationLabelColor = [UIColor colorWithRed:188.0/255.0 green:221.0/255.0 blue:236.0/255.0 alpha:1.0];
         _currentPage = 1;
         _operationQueue = [[NSOperationQueue alloc] init];
@@ -340,8 +339,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1Title.text = @"Create an account on WordPress.com";
         _page1Title.numberOfLines = 0;
         _page1Title.backgroundColor = [UIColor clearColor];
-        _page1Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
-        _page1Title.shadowColor = _textShadowColor;
+        _page1Title.font = [WPNUXUtility titleFont];
+        _page1Title.shadowColor = [WPNUXUtility textShadowColor];
         _page1Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page1Title.textColor = [UIColor whiteColor];
         _page1Title.lineBreakMode = UILineBreakModeWordWrap;
@@ -353,7 +352,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1EmailText = [[WPWalkthroughTextField alloc] init];
         _page1EmailText.backgroundColor = [UIColor whiteColor];
         _page1EmailText.placeholder = @"Email Address";
-        _page1EmailText.font = [self textFieldFont];
+        _page1EmailText.font = [WPNUXUtility textFieldFont];
         _page1EmailText.adjustsFontSizeToFitWidth = true;
         _page1EmailText.delegate = self;
         _page1EmailText.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -366,7 +365,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1UsernameText = [[WPWalkthroughTextField alloc] init];
         _page1UsernameText.backgroundColor = [UIColor whiteColor];
         _page1UsernameText.placeholder = @"Username";
-        _page1UsernameText.font = [self textFieldFont];
+        _page1UsernameText.font = [WPNUXUtility textFieldFont];
         _page1UsernameText.adjustsFontSizeToFitWidth = true;
         _page1UsernameText.delegate = self;
         _page1UsernameText.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -380,7 +379,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1PasswordText.secureTextEntry = true;
         _page1PasswordText.backgroundColor = [UIColor whiteColor];
         _page1PasswordText.placeholder = @"Password";
-        _page1PasswordText.font = [self textFieldFont];
+        _page1PasswordText.font = [WPNUXUtility textFieldFont];
         _page1PasswordText.adjustsFontSizeToFitWidth = true;
         _page1PasswordText.delegate = self;
         _page1PasswordText.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -456,7 +455,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     _page1NextButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1NextButton.frame), CGRectGetHeight(_page1NextButton.frame)));
     
     NSArray *controls = @[_page1Icon, _page1Title, _page1EmailText, _page1UsernameText, _page1PasswordText, _page1NextButton];
-    [self centerViews:controls withStartingView:_page1Icon andEndingView:_page1NextButton forHeight:_viewHeight];
+    [WPNUXUtility centerViews:controls withStartingView:_page1Icon andEndingView:_page1NextButton forHeight:_viewHeight];
 }
 
 - (void)addPage2Controls
@@ -475,8 +474,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page2Title.text = @"Create your first WordPress.com site";
         _page2Title.numberOfLines = 0;
         _page2Title.backgroundColor = [UIColor clearColor];
-        _page2Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
-        _page2Title.shadowColor = _textShadowColor;
+        _page2Title.font = [WPNUXUtility titleFont];
+        _page2Title.shadowColor = [WPNUXUtility textShadowColor];
         _page2Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page2Title.textColor = [UIColor whiteColor];
         _page2Title.lineBreakMode = UILineBreakModeWordWrap;
@@ -488,7 +487,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page2SiteTitleText = [[WPWalkthroughTextField alloc] init];
         _page2SiteTitleText.backgroundColor = [UIColor whiteColor];
         _page2SiteTitleText.placeholder = @"Site Title";
-        _page2SiteTitleText.font = [self textFieldFont];
+        _page2SiteTitleText.font = [WPNUXUtility textFieldFont];
         _page2SiteTitleText.adjustsFontSizeToFitWidth = true;
         _page2SiteTitleText.delegate = self;
         _page2SiteTitleText.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -501,7 +500,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page2SiteAddressText = [[WPWalkthroughTextField alloc] init];
         _page2SiteAddressText.backgroundColor = [UIColor whiteColor];
         _page2SiteAddressText.placeholder = @"yoursite.wordpress.com";
-        _page2SiteAddressText.font = [self textFieldFont];
+        _page2SiteAddressText.font = [WPNUXUtility textFieldFont];
         _page2SiteAddressText.adjustsFontSizeToFitWidth = true;
         _page2SiteAddressText.delegate = self;
         _page2SiteAddressText.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -514,7 +513,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page2SiteLanguageText = [[WPWalkthroughTextField alloc] init];
         _page2SiteLanguageText.backgroundColor = [UIColor whiteColor];
         _page2SiteLanguageText.placeholder = @"Site Language";
-        _page2SiteLanguageText.font = [self textFieldFont];
+        _page2SiteLanguageText.font = [WPNUXUtility textFieldFont];
         _page2SiteLanguageText.adjustsFontSizeToFitWidth = true;
         _page2SiteLanguageText.delegate = self;
         _page2SiteLanguageText.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -605,7 +604,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     _page2NextButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2NextButton.frame), CGRectGetHeight(_page2NextButton.frame)));
     
     NSArray *controls = @[_page2Icon, _page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2PreviousButton, _page2NextButton];
-    [self centerViews:controls withStartingView:_page2Icon andEndingView:_page2NextButton forHeight:_viewHeight];
+    [WPNUXUtility centerViews:controls withStartingView:_page2Icon andEndingView:_page2NextButton forHeight:_viewHeight];
 }
 
 - (void)addPage3Controls
@@ -624,8 +623,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page3Title.text = @"Review your information";
         _page3Title.numberOfLines = 0;
         _page3Title.backgroundColor = [UIColor clearColor];
-        _page3Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
-        _page3Title.shadowColor = _textShadowColor;
+        _page3Title.font = [WPNUXUtility titleFont];
+        _page3Title.shadowColor = [WPNUXUtility textShadowColor];
         _page3Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page3Title.textColor = [UIColor whiteColor];
         _page3Title.lineBreakMode = UILineBreakModeWordWrap;
@@ -646,7 +645,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page3EmailLabel.numberOfLines = 1;
         _page3EmailLabel.backgroundColor = [UIColor clearColor];
         _page3EmailLabel.font = [UIFont fontWithName:@"OpenSans" size:14];
-        _page3EmailLabel.shadowColor = _textShadowColor;
+        _page3EmailLabel.shadowColor = [WPNUXUtility textShadowColor];
         _page3EmailLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         _page3EmailLabel.textColor = _confirmationLabelColor;
         _page3EmailLabel.lineBreakMode = UILineBreakModeTailTruncation;
@@ -667,7 +666,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page3UsernameLabel.numberOfLines = 1;
         _page3UsernameLabel.backgroundColor = [UIColor clearColor];
         _page3UsernameLabel.font = [UIFont fontWithName:@"OpenSans" size:14];
-        _page3UsernameLabel.shadowColor = _textShadowColor;
+        _page3UsernameLabel.shadowColor = [WPNUXUtility textShadowColor];
         _page3UsernameLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         _page3UsernameLabel.textColor = _confirmationLabelColor;
         _page3UsernameLabel.lineBreakMode = UILineBreakModeTailTruncation;
@@ -687,7 +686,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page3SiteTitleLabel.numberOfLines = 1;
         _page3SiteTitleLabel.backgroundColor = [UIColor clearColor];
         _page3SiteTitleLabel.font = [UIFont fontWithName:@"OpenSans" size:14];
-        _page3SiteTitleLabel.shadowColor = _textShadowColor;
+        _page3SiteTitleLabel.shadowColor = [WPNUXUtility textShadowColor];
         _page3SiteTitleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         _page3SiteTitleLabel.textColor = _confirmationLabelColor;
         _page3SiteTitleLabel.lineBreakMode = UILineBreakModeTailTruncation;
@@ -706,7 +705,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page3SiteAddressLabel.numberOfLines = 1;
         _page3SiteAddressLabel.backgroundColor = [UIColor clearColor];
         _page3SiteAddressLabel.font = [UIFont fontWithName:@"OpenSans" size:14];
-        _page3SiteAddressLabel.shadowColor = _textShadowColor;
+        _page3SiteAddressLabel.shadowColor = [WPNUXUtility textShadowColor];
         _page3SiteAddressLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         _page3SiteAddressLabel.textColor = _confirmationLabelColor;
         _page3SiteAddressLabel.lineBreakMode = UILineBreakModeTailTruncation;
@@ -725,7 +724,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page3SiteLanguageLabel.numberOfLines = 1;
         _page3SiteLanguageLabel.backgroundColor = [UIColor clearColor];
         _page3SiteLanguageLabel.font = [UIFont fontWithName:@"OpenSans" size:14];
-        _page3SiteLanguageLabel.shadowColor = _textShadowColor;
+        _page3SiteLanguageLabel.shadowColor = [WPNUXUtility textShadowColor];
         _page3SiteAddressLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         _page3SiteLanguageLabel.textColor = _confirmationLabelColor;
         _page3SiteLanguageLabel.lineBreakMode = UILineBreakModeTailTruncation;
@@ -861,7 +860,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     _page3NextButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page3NextButton.frame), CGRectGetHeight(_page3NextButton.frame)));
     
     NSArray *controls = @[_page3Icon, _page3Title, _page3FirstLineSeparator, _page3EmailLabel, _page3SecondLineSeparator, _page3UsernameLabel, _page3ThirdLineSeparator, _page3SiteTitleLabel, _page3FourthLineSeparator, _page3SiteAddressLabel, _page3FifthLineSeparator, _page3SiteLanguageLabel, _page3SixthLineSeparator, _page3PreviousButton, _page3NextButton];
-    [self centerViews:controls withStartingView:_page3Icon andEndingView:_page3NextButton forHeight:_viewHeight];
+    [WPNUXUtility centerViews:controls withStartingView:_page3Icon andEndingView:_page3NextButton forHeight:_viewHeight];
 }
 
 - (void)equalizePreviousAndNextButtonWidths

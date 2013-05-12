@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BaseNUXViewController.h"
 
-@interface LoginCompletedWalkthroughViewController : BaseNUXViewController
+@interface LoginCompletedWalkthroughViewController : UIViewController
 
 @property (nonatomic, assign) BOOL showsExtraWalkthroughPages;
 

@@ -27,6 +27,7 @@
 #import "LoginCompletedWalkthroughViewController.h"
 #import "ReachabilityUtils.h"
 #import "SFHFKeychainUtils.h"
+#import "WPNUXUtility.h"
 
 @interface GeneralWalkthroughViewController () <
     UIScrollViewDelegate,
@@ -73,8 +74,6 @@
         
     CGFloat _keyboardOffset;
     
-    UIColor *_textShadowColor;
-        
     BOOL _userIsDotCom;
     BOOL _blogConnectedToJetpack;
     BOOL _savedOriginalPositionsOfStickyControls;
@@ -97,15 +96,6 @@ CGFloat const GeneralWalkthroughTextFieldWidth = 289.0;
 CGFloat const GeneralWalkthroughTextFieldHeight = 40.0;
 CGFloat const GeneralWalkthroughSignInButtonWidth = 160.0;
 CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
-
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        _textShadowColor = [UIColor colorWithRed:0.0 green:115.0/255.0 blue:164.0/255.0 alpha:0.5];
-    }
-    return self;
-}
 
 - (void)dealloc
 {
@@ -483,9 +473,9 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _page1Title.textAlignment = UITextAlignmentCenter;
         _page1Title.numberOfLines = 0;
         _page1Title.lineBreakMode = UILineBreakModeWordWrap;
-        _page1Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
+        _page1Title.font = [WPNUXUtility titleFont];
         _page1Title.text = NSLocalizedString(@"Welcome to WordPress", nil);
-        _page1Title.shadowColor = _textShadowColor;
+        _page1Title.shadowColor = [WPNUXUtility textShadowColor];
         _page1Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page1Title.layer.shadowRadius = 2.0;
         _page1Title.textColor = [UIColor whiteColor];
@@ -505,12 +495,12 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _page1Description.textAlignment = UITextAlignmentCenter;
         _page1Description.numberOfLines = 0;
         _page1Description.lineBreakMode = UILineBreakModeWordWrap;
-        _page1Description.font = [UIFont fontWithName:@"OpenSans" size:15.0];
+        _page1Description.font = [WPNUXUtility descriptionTextFont];
         _page1Description.text = @"Full publishing power in a pint-sized package. Make your mark on the go!";
-        _page1Description.shadowColor = _textShadowColor;
+        _page1Description.shadowColor = [WPNUXUtility textShadowColor];
         _page1Description.shadowOffset = CGSizeMake(0.0, 1.0);
         _page1Description.layer.shadowRadius = 2.0;
-        _page1Description.textColor = [self descriptionTextColor];
+        _page1Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page1Description];
     }
 
@@ -523,7 +513,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     // Bottom Portion
     if (_bottomPanel == nil) {
         _bottomPanel = [[UIView alloc] init];
-        _bottomPanel.backgroundColor = [UIColor colorWithRed:42.0/255.0 green:42.0/255.0 blue:42.0/255.0 alpha:1.0];
+        _bottomPanel.backgroundColor = [WPNUXUtility bottomPanelBackgroundColor];
         [_scrollView addSubview:_bottomPanel];
         UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedBottomPanel:)];
         gestureRecognizer.numberOfTapsRequired = 1;
@@ -533,7 +523,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     // Bottom Panel "Black" Line
     if (_bottomPanelLine == nil) {
         _bottomPanelLine = [[UIView alloc] init];
-        _bottomPanelLine.backgroundColor = [self bottomPanelLineColor];
+        _bottomPanelLine.backgroundColor = [WPNUXUtility bottomPanelLineColor];
         [_scrollView addSubview:_bottomPanelLine];
     }
     
@@ -543,25 +533,19 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _pageControl = [[UIPageControl alloc] init];
         _pageControl.numberOfPages = 3;
         [_pageControl sizeToFit];
-        // This only works on iOS6+
-        if ([_pageControl respondsToSelector:@selector(pageIndicatorTintColor)]) {
-            UIColor *currentPageTintColor = [UIColor colorWithRed:46.0/255.0 green:162.0/255.0 blue:204.0/255.0 alpha:1.0];
-            UIColor *pageIndicatorTintColor = [UIColor colorWithRed:38.0/255.0 green:151.0/255.0 blue:197.0/255.0 alpha:1.0];
-            _pageControl.pageIndicatorTintColor = pageIndicatorTintColor;
-            _pageControl.currentPageIndicatorTintColor = currentPageTintColor;
-        }
+        [WPNUXUtility configurePageControlTintColors:_pageControl];
         [_scrollView addSubview:_pageControl];
     }
 
     // Add "SWIPE TO CONTINUE" text
     if (_page1SwipeToContinue == nil) {
         _page1SwipeToContinue = [[UILabel alloc] init];
-        [_page1SwipeToContinue setTextColor:[UIColor colorWithRed:255.0 green:255.0 blue:255.0 alpha:0.3]];
-        [_page1SwipeToContinue setShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
+        [_page1SwipeToContinue setTextColor:[WPNUXUtility swipeToContinueTextColor]];
+        [_page1SwipeToContinue setShadowColor:[WPNUXUtility swipeToContinueShadowTextColor]];
         _page1SwipeToContinue.backgroundColor = [UIColor clearColor];
         _page1SwipeToContinue.textAlignment = UITextAlignmentCenter;
         _page1SwipeToContinue.numberOfLines = 1;
-        _page1SwipeToContinue.font = [UIFont fontWithName:@"OpenSans" size:10.0];
+        _page1SwipeToContinue.font = [WPNUXUtility swipeToContinueFont];
         _page1SwipeToContinue.text = NSLocalizedString(@"SWIPE TO CONTINUE", nil);
         _page1SwipeToContinue.shadowOffset = CGSizeMake(0.0, 1.0);
         [_page1SwipeToContinue sizeToFit];
@@ -687,7 +671,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     
     _heightFromSwipeToContinue = _viewHeight - CGRectGetMinY(_page1SwipeToContinue.frame);
     NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1TopSeparator, _page1Description, _page1BottomSeparator];
-    [self centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1BottomSeparator forHeight:(_viewHeight - _heightFromSwipeToContinue)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1BottomSeparator forHeight:(_viewHeight - _heightFromSwipeToContinue)];
 }
 
 - (void)initializePage2
@@ -711,9 +695,9 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _page2Title.textAlignment = UITextAlignmentCenter;
         _page2Title.numberOfLines = 0;
         _page2Title.lineBreakMode = UILineBreakModeWordWrap;
-        _page2Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
+        _page2Title.font = [WPNUXUtility titleFont];
         _page2Title.text = @"You can publish as inspiration strikes";
-        _page2Title.shadowColor = _textShadowColor;
+        _page2Title.shadowColor = [WPNUXUtility textShadowColor];
         _page2Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page2Title.layer.shadowRadius = 2.0;
         _page2Title.textColor = [UIColor whiteColor];
@@ -733,12 +717,12 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _page2Description.textAlignment = UITextAlignmentCenter;
         _page2Description.numberOfLines = 0;
         _page2Description.lineBreakMode = UILineBreakModeWordWrap;
-        _page2Description.font = [UIFont fontWithName:@"OpenSans" size:15.0];
+        _page2Description.font = [WPNUXUtility descriptionTextFont];
         _page2Description.text = @"Had a brilliant insight? Found a link to share? Captured the perfect pic? Post it in real time.";
-        _page2Description.shadowColor = _textShadowColor;
+        _page2Description.shadowColor = [WPNUXUtility textShadowColor];
         _page2Description.shadowOffset = CGSizeMake(0.0, 1.0);
         _page2Description.layer.shadowRadius = 2.0;
-        _page2Description.textColor = [self descriptionTextColor];
+        _page2Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page2Description];
     }
     
@@ -786,7 +770,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     _page2BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
     
     NSArray *viewsToCenter = @[_page2Icon, _page2Title, _page2TopSeparator, _page2Description, _page2BottomSeparator];
-    [self centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_page2BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinue)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_page2BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinue)];
 }
 
 - (void)initializePage3
@@ -808,7 +792,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _usernameText = [[WPWalkthroughTextField alloc] init];
         _usernameText.backgroundColor = [UIColor whiteColor];
         _usernameText.placeholder = @"Username / email";
-        _usernameText.font = [self textFieldFont];
+        _usernameText.font = [WPNUXUtility textFieldFont];
         _usernameText.adjustsFontSizeToFitWidth = true;
         _usernameText.delegate = self;
         _usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -821,7 +805,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _passwordText = [[WPWalkthroughTextField alloc] init];
         _passwordText.backgroundColor = [UIColor whiteColor];
         _passwordText.placeholder = @"Password";
-        _passwordText.font = [self textFieldFont];
+        _passwordText.font = [WPNUXUtility textFieldFont];
         _passwordText.delegate = self;
         _passwordText.secureTextEntry = YES;
         [_scrollView addSubview:_passwordText];
@@ -832,7 +816,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _siteUrlText = [[WPWalkthroughTextField alloc] init];
         _siteUrlText.backgroundColor = [UIColor whiteColor];
         _siteUrlText.placeholder = @"Site Address (URL)";
-        _siteUrlText.font = [self textFieldFont];
+        _siteUrlText.font = [WPNUXUtility textFieldFont];
         _siteUrlText.adjustsFontSizeToFitWidth = true;
         _siteUrlText.delegate = self;
         _siteUrlText.keyboardType = UIKeyboardTypeURL;
@@ -918,7 +902,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     _createAccountLabel.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_createAccountLabel.frame), CGRectGetHeight(_createAccountLabel.frame)));
     
     NSArray *viewsToCenter = @[_page3Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
-    [self centerViews:viewsToCenter withStartingView:_page3Icon andEndingView:_signInButton forHeight:(_viewHeight-_heightFromSwipeToContinue)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page3Icon andEndingView:_signInButton forHeight:(_viewHeight-_heightFromSwipeToContinue)];
 }
 
 - (void)savePositionsOfStickyControls
@@ -1059,8 +1043,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)displayErrorMessages
 {
-    //TODO: Flesh out more
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:@"Fill out all fields" delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Please fill out all the fields", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
     [alertView show];
 }
 

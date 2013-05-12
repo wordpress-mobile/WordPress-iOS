@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "BaseNUXViewController.h"
 
-@interface GeneralWalkthroughViewController : BaseNUXViewController
+@interface GeneralWalkthroughViewController : UIViewController
 
 @end

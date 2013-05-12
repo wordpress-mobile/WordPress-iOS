@@ -12,6 +12,7 @@
 #import "AboutViewController.h"
 #import "WPWalkthroughGrayOverlayView.h"
 #import "WordPressAppDelegate.h"
+#import "WPNUXUtility.h"
 
 @interface LoginCompletedWalkthroughViewController ()<UIScrollViewDelegate> {
     UIScrollView *_scrollView;
@@ -70,16 +71,6 @@ CGFloat const LoginCompletedWalkthroughIconVerticalOffset = 85;
 CGFloat const LoginCompletedWalkthroughMaxTextWidth = 289.0;
 CGFloat const LoginCompletedWalkthroughBottomBackgroundHeight = 64.0;
 CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
-
-
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        _textShadowColor = [UIColor colorWithRed:0.0 green:115.0/255.0 blue:164.0/255.0 alpha:0.5];
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -231,9 +222,9 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page1Title.textAlignment = UITextAlignmentCenter;
         _page1Title.numberOfLines = 0;
         _page1Title.lineBreakMode = UILineBreakModeWordWrap;
-        _page1Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
+        _page1Title.font = [WPNUXUtility titleFont];
         _page1Title.text = @"Track your site's statistics";
-        _page1Title.shadowColor = _textShadowColor;
+        _page1Title.shadowColor = [WPNUXUtility textShadowColor];
         _page1Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page1Title.layer.shadowRadius = 2.0;
         _page1Title.textColor = [UIColor whiteColor];
@@ -253,12 +244,12 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page1Description.textAlignment = UITextAlignmentCenter;
         _page1Description.numberOfLines = 0;
         _page1Description.lineBreakMode = UILineBreakModeWordWrap;
-        _page1Description.font = [UIFont fontWithName:@"OpenSans" size:15.0];
+        _page1Description.font = [WPNUXUtility descriptionTextFont];
         _page1Description.text = @"Learn what your readers respond to so you can give them more of it";
         _page1Description.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page1Description.shadowColor = _textShadowColor;
+        _page1Description.shadowColor = [WPNUXUtility textShadowColor];
         _page1Title.layer.shadowRadius = 2.0;
-        _page1Description.textColor = [self descriptionTextColor];
+        _page1Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page1Description];
     }
     
@@ -271,7 +262,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     // Bottom Portion
     if (_bottomPanel == nil) {
         _bottomPanel = [[UIView alloc] init];
-        _bottomPanel.backgroundColor = [UIColor colorWithRed:42.0/255.0 green:42.0/255.0 blue:42.0/255.0 alpha:1.0];
+        _bottomPanel.backgroundColor = [WPNUXUtility bottomPanelBackgroundColor];
         [_scrollView addSubview:_bottomPanel];
         UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedBottomPanel:)];
         gestureRecognizer.numberOfTapsRequired = 1;
@@ -281,7 +272,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     // Bottom Panel "Black" Line
     if (_bottomPanelLine == nil) {
         _bottomPanelLine = [[UIView alloc] init];
-        _bottomPanelLine.backgroundColor = [self bottomPanelLineColor];
+        _bottomPanelLine.backgroundColor = [WPNUXUtility bottomPanelLineColor];
         [_scrollView addSubview:_bottomPanelLine];
     }
     
@@ -291,28 +282,21 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _pageControl = [[UIPageControl alloc] init];
         _pageControl.numberOfPages = 4;
         [_pageControl sizeToFit];
-        // This only works on iOS6+
-        if ([_pageControl respondsToSelector:@selector(pageIndicatorTintColor)]) {
-            UIColor *currentPageTintColor = [UIColor colorWithRed:46.0/255.0 green:162.0/255.0 blue:204.0/255.0 alpha:1.0];
-            UIColor *pageIndicatorTintColor = [UIColor colorWithRed:38.0/255.0 green:151.0/255.0 blue:197.0/255.0 alpha:1.0];
-            _pageControl.pageIndicatorTintColor = pageIndicatorTintColor;
-            _pageControl.currentPageIndicatorTintColor = currentPageTintColor;
-        }
+        [WPNUXUtility configurePageControlTintColors:_pageControl];
         [_scrollView addSubview:_pageControl];
     }
     
     // Add "SWIPE TO CONTINUE"
     if (_page1SwipeToContinue == nil) {
         _page1SwipeToContinue = [[UILabel alloc] init];
-        [_page1SwipeToContinue setTextColor:[UIColor colorWithRed:255.0 green:255.0 blue:255.0 alpha:0.3]];
-        [_page1SwipeToContinue setShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
+        [_page1SwipeToContinue setTextColor:[WPNUXUtility swipeToContinueTextColor]];
+        [_page1SwipeToContinue setShadowColor:[WPNUXUtility swipeToContinueShadowTextColor]];
         _page1SwipeToContinue.backgroundColor = [UIColor clearColor];
         _page1SwipeToContinue.textAlignment = UITextAlignmentCenter;
         _page1SwipeToContinue.numberOfLines = 1;
-        _page1SwipeToContinue.font = [UIFont fontWithName:@"OpenSans" size:10.0];
-        _page1SwipeToContinue.text = @"SWIPE TO CONTINUE";
-        _page1SwipeToContinue.shadowColor = _textShadowColor;
-        _page1SwipeToContinue.textColor = [UIColor colorWithRed:86.0/255.0 green:169.0/255.0 blue:206.0/255.0 alpha:1.0];
+        _page1SwipeToContinue.font = [WPNUXUtility swipeToContinueFont];
+        _page1SwipeToContinue.text = NSLocalizedString(@"SWIPE TO CONTINUE", nil);
+        _page1SwipeToContinue.shadowColor = [WPNUXUtility textShadowColor];
         [_page1SwipeToContinue sizeToFit];
         [_scrollView addSubview:_page1SwipeToContinue];
     }
@@ -400,7 +384,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     
     _heightFromSwipeToContinueToBottom = _viewHeight - CGRectGetMinY(_page1SwipeToContinue.frame);
     NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1TopSeparator, _page1Description, _page1BottomSeparator];
-    [self centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
 }
 
 - (void)initializePage2
@@ -424,9 +408,9 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page2Title.textAlignment = UITextAlignmentCenter;
         _page2Title.numberOfLines = 0;
         _page2Title.lineBreakMode = UILineBreakModeWordWrap;
-        _page2Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
+        _page2Title.font = [WPNUXUtility titleFont];
         _page2Title.text = @"The WordPress Reader";
-        _page2Title.shadowColor = _textShadowColor;
+        _page2Title.shadowColor = [WPNUXUtility textShadowColor];
         _page2Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page2Title.layer.shadowRadius = 2.0;
         _page2Title.textColor = [UIColor whiteColor];
@@ -446,12 +430,12 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page2Description.textAlignment = UITextAlignmentCenter;
         _page2Description.numberOfLines = 0;
         _page2Description.lineBreakMode = UILineBreakModeWordWrap;
-        _page2Description.font = [UIFont fontWithName:@"OpenSans" size:15.0];
+        _page2Description.font = [WPNUXUtility descriptionTextFont];
         _page2Description.text = @"Browse the entire WordPress ecosystem. If you can think it, someone is writing it.";
         _page2Description.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page2Description.shadowColor = _textShadowColor;
+        _page2Description.shadowColor = [WPNUXUtility textShadowColor];
         _page2Description.layer.shadowRadius = 2.0;
-        _page2Description.textColor = [self descriptionTextColor];
+        _page2Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page2Description];
     }
     
@@ -498,7 +482,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     _page2BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
     
     NSArray *viewsToCenter = @[_page2Icon, _page2Title, _page2TopSeparator, _page2Description, _page2BottomSeparator];
-    [self centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_page2BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page2Icon andEndingView:_page2BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
 }
 
 - (void)initializePage3
@@ -522,9 +506,9 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page3Title.textAlignment = UITextAlignmentCenter;
         _page3Title.numberOfLines = 0;
         _page3Title.lineBreakMode = UILineBreakModeWordWrap;
-        _page3Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
+        _page3Title.font = [WPNUXUtility titleFont];
         _page3Title.text = @"Get notified of new Comments & Likes";
-        _page3Title.shadowColor = _textShadowColor;
+        _page3Title.shadowColor = [WPNUXUtility textShadowColor];
         _page3Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page3Title.layer.shadowRadius = 2.0;
         _page3Title.textColor = [UIColor whiteColor];
@@ -544,12 +528,12 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page3Description.textAlignment = UITextAlignmentCenter;
         _page3Description.numberOfLines = 0;
         _page3Description.lineBreakMode = UILineBreakModeWordWrap;
-        _page3Description.font = [UIFont fontWithName:@"OpenSans" size:15.0];
+        _page3Description.font = [WPNUXUtility descriptionTextFont];
         _page3Description.text = @"Keep the conversation going with notifications on the go. No need for a desktop to nurture the dialogue.";
         _page3Description.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page3Description.shadowColor = _textShadowColor;
+        _page3Description.shadowColor = [WPNUXUtility textShadowColor];
         _page3Description.layer.shadowRadius = 2.0;
-        _page3Description.textColor = [self descriptionTextColor];
+        _page3Description.textColor = [WPNUXUtility descriptionTextColor];
         [_scrollView addSubview:_page3Description];
     }
     
@@ -596,7 +580,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     _page3BottomSeparator.frame = CGRectMake(x, y, _viewWidth - 2*LoginCompletedWalkthroughStandardOffset, 2);
     
     NSArray *viewsToCenter = @[_page3Icon, _page3Title, _page3TopSeparator, _page3Description, _page3BottomSeparator];
-    [self centerViews:viewsToCenter withStartingView:_page3Icon andEndingView:_page3BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page3Icon andEndingView:_page3BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
 }
 
 - (void)initializePage4
@@ -620,9 +604,9 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page4Title.textAlignment = UITextAlignmentCenter;
         _page4Title.numberOfLines = 0;
         _page4Title.lineBreakMode = UILineBreakModeWordWrap;
-        _page4Title.font = [UIFont fontWithName:@"OpenSans-Light" size:29];
+        _page4Title.font = [WPNUXUtility titleFont];
         _page4Title.text = @"Get Started!";
-        _page4Title.shadowColor = _textShadowColor;
+        _page4Title.shadowColor = [WPNUXUtility textShadowColor];
         _page4Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page4Title.layer.shadowRadius = 2.0;
         _page4Title.textColor = [UIColor whiteColor];
@@ -648,7 +632,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     _page4Title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
     NSArray *viewsToCenter = @[_page4Icon, _page4Title];
-    [self centerViews:viewsToCenter withStartingView:_page4Title andEndingView:_page4Title forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_page4Title andEndingView:_page4Title forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
 }
 
 - (CGFloat)adjustX:(CGFloat)x forPage:(NSUInteger)page

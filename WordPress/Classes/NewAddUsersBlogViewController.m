@@ -18,6 +18,7 @@
 #import "NSString+XMLExtensions.h"
 #import "WordPressComApi.h"
 #import "Blog.h"
+#import "WPNUXUtility.h"
 
 @interface NewAddUsersBlogViewController () <
     UITableViewDelegate,
@@ -39,7 +40,6 @@
 
 CGFloat const AddUsersBlogHeaderHeight = 164.0;
 CGFloat const AddUsersBlogStandardOffset = 16.0;
-CGFloat const AddUsersBlogLoadingViewHeight = 100.0;
 CGFloat const AddUsersBlogTitleVerticalOffset = 23.0;
 CGFloat const AddUsersBlogMaxTextWidth = 289.0;
 CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
@@ -158,7 +158,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 - (void)addBottomPanel
 {
     UIView *bottomPanel = [[UIView alloc] init];
-    bottomPanel.backgroundColor = [UIColor colorWithRed:42.0/255.0 green:42.0/255.0 blue:42.0/255.0 alpha:1.0];
+    bottomPanel.backgroundColor = [WPNUXUtility bottomPanelBackgroundColor];
     bottomPanel.frame = CGRectMake(0, CGRectGetMaxY(self.tableView.frame), _viewWidth, AddUsersBlogBottomBackgroundHeight);
     [self.view addSubview:bottomPanel];
     
@@ -210,7 +210,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     title.lineBreakMode = UILineBreakModeWordWrap;
     title.font = [UIFont fontWithName:@"OpenSans-Light" size:29.0];
     title.text = NSLocalizedString(@"Select the sites you want to add", nil);
-    title.shadowColor = [UIColor colorWithRed:0.0 green:115.0/255.0 blue:164.0/255.0 alpha:0.5];
+    title.shadowColor = [WPNUXUtility textShadowColor];
     title.shadowOffset = CGSizeMake(0.0, 1.0);
     title.textColor = [UIColor whiteColor];
     title.numberOfLines = 0;
@@ -221,38 +221,6 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     [headerView addSubview:title];
     
     return headerView;
-}
-
-- (UIView *)loadingView
-{
-    CGFloat x,y;
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth, AddUsersBlogLoadingViewHeight)];
-    
-    // Create Activity Indicator
-    CGFloat activityIndicatorHeight = 20.0;
-    CGFloat activityIndicatorWidth = 20.0;
-    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] init];
-    activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-    x = (_viewWidth - activityIndicatorHeight)/2.0;
-    y = 0;
-    activityIndicator.frame = CGRectMake(x, y, activityIndicatorWidth, activityIndicatorHeight);
-    [activityIndicator startAnimating];
-    [view addSubview:activityIndicator];
-    
-    // Create Loading Label
-    UILabel *loading = [[UILabel alloc] init];
-    loading.backgroundColor = [UIColor clearColor];
-    loading.textColor = [UIColor whiteColor];
-    loading.shadowColor = [UIColor blackColor];
-    loading.text = NSLocalizedString(@"Loading sites...", nil);
-    loading.font = [UIFont fontWithName:@"OpenSans" size:15.0];
-    [loading sizeToFit];
-    x = (_viewWidth - CGRectGetWidth(loading.frame))/2.0;
-    y = CGRectGetMaxY(activityIndicator.frame) + AddUsersBlogStandardOffset;
-    loading.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(loading.frame), CGRectGetHeight(loading.frame)));
-    [view addSubview:loading];
-    
-    return view;
 }
 
 - (UIView *)checkmarkAccessoryView

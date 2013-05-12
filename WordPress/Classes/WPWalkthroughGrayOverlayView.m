@@ -9,6 +9,7 @@
 #import "WPWalkthroughGrayOverlayView.h"
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
+#import "WPNUXUtility.h"
 
 @interface WPWalkthroughGrayOverlayView() {
     UIImageView *_logo;
@@ -179,17 +180,8 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
         _button2.frame = CGRectZero;
     }
     
-    // TODO: Combine this with the same code in BaseNUXViewController
     NSArray *viewsToCenter = @[_logo, _title, _description, _topSeparator, _description, _bottomLabel];
-    CGFloat heightOfControls = CGRectGetMaxY(_bottomLabel.frame) - CGRectGetMinY(_logo.frame);
-    CGFloat startingYForCenteredControls = floorf((_viewHeight - heightOfControls)/2.0);
-    CGFloat offsetToCenter = CGRectGetMinY(_logo.frame) - startingYForCenteredControls;
-    
-    for (UIControl *control in viewsToCenter) {
-        CGRect frame = control.frame;
-        frame.origin.y -= offsetToCenter;
-        control.frame = frame;
-    }
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_logo andEndingView:_bottomLabel forHeight:_viewHeight];
 }
 
 - (void)dismiss
@@ -246,7 +238,7 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     _description.textAlignment = UITextAlignmentCenter;
     _description.numberOfLines = 0;
     _description.lineBreakMode = UILineBreakModeWordWrap;
-    _description.font = [UIFont fontWithName:@"OpenSans" size:15.0];
+    _description.font = [WPNUXUtility descriptionTextFont];
     _description.text = self.overlayDescription;
     _description.shadowColor = [UIColor blackColor];
     _description.textColor = [UIColor whiteColor];

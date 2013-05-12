@@ -523,11 +523,11 @@
 		85AD6AF5173CD17B002CB896 /* btn-secondary-tap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85AD6AF1173CD17B002CB896 /* btn-secondary-tap@2x.png */; };
 		85AD6AF6173CD17B002CB896 /* btn-secondary.png in Resources */ = {isa = PBXBuildFile; fileRef = 85AD6AF2173CD17B002CB896 /* btn-secondary.png */; };
 		85AD6AF7173CD17B002CB896 /* btn-secondary@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85AD6AF3173CD17B002CB896 /* btn-secondary@2x.png */; };
-		85AD6AFA173CE09B002CB896 /* BaseNUXViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AD6AF9173CE09A002CB896 /* BaseNUXViewController.m */; };
 		85AD6B16173E2DA4002CB896 /* ui-texture.png in Resources */ = {isa = PBXBuildFile; fileRef = 85AD6B14173E2DA1002CB896 /* ui-texture.png */; };
 		85AD6B17173E2DA4002CB896 /* ui-texture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85AD6B15173E2DA2002CB896 /* ui-texture@2x.png */; };
 		85AD6B1A173E3595002CB896 /* ui-line-dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 85AD6B18173E3593002CB896 /* ui-line-dark.png */; };
 		85AD6B1B173E3595002CB896 /* ui-line-dark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85AD6B19173E3594002CB896 /* ui-line-dark@2x.png */; };
+		85AD6B1E17405889002CB896 /* WPNUXUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AD6B1D17405888002CB896 /* WPNUXUtility.m */; };
 		85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C720B01730CEFA00460645 /* WPWalkthroughTextField.m */; };
 		85D08A5E17332C4A00E2BBCA /* NewAddUsersBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D08A5D17332C4A00E2BBCA /* NewAddUsersBlogViewController.m */; };
 		85D08A7117342ECE00E2BBCA /* AddUsersBlogCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D08A7017342ECE00E2BBCA /* AddUsersBlogCell.m */; };
@@ -1380,12 +1380,12 @@
 		85AD6AF1173CD17B002CB896 /* btn-secondary-tap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-secondary-tap@2x.png"; sourceTree = "<group>"; };
 		85AD6AF2173CD17B002CB896 /* btn-secondary.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-secondary.png"; sourceTree = "<group>"; };
 		85AD6AF3173CD17B002CB896 /* btn-secondary@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-secondary@2x.png"; sourceTree = "<group>"; };
-		85AD6AF8173CE09A002CB896 /* BaseNUXViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNUXViewController.h; sourceTree = "<group>"; };
-		85AD6AF9173CE09A002CB896 /* BaseNUXViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNUXViewController.m; sourceTree = "<group>"; };
 		85AD6B14173E2DA1002CB896 /* ui-texture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-texture.png"; sourceTree = "<group>"; };
 		85AD6B15173E2DA2002CB896 /* ui-texture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-texture@2x.png"; sourceTree = "<group>"; };
 		85AD6B18173E3593002CB896 /* ui-line-dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-line-dark.png"; sourceTree = "<group>"; };
 		85AD6B19173E3594002CB896 /* ui-line-dark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ui-line-dark@2x.png"; sourceTree = "<group>"; };
+		85AD6B1C17405887002CB896 /* WPNUXUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXUtility.h; sourceTree = "<group>"; };
+		85AD6B1D17405888002CB896 /* WPNUXUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXUtility.m; sourceTree = "<group>"; };
 		85C720AF1730CEFA00460645 /* WPWalkthroughTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWalkthroughTextField.h; sourceTree = "<group>"; };
 		85C720B01730CEFA00460645 /* WPWalkthroughTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWalkthroughTextField.m; sourceTree = "<group>"; };
 		85D08A5C17332C4A00E2BBCA /* NewAddUsersBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewAddUsersBlogViewController.h; sourceTree = "<group>"; };
@@ -2505,8 +2505,6 @@
 				85AD6AEB173CCF9E002CB896 /* WPNUXPrimaryButton.m */,
 				85AD6AED173CCFDC002CB896 /* WPNUXSecondaryButton.h */,
 				85AD6AEE173CCFDC002CB896 /* WPNUXSecondaryButton.m */,
-				85AD6AF8173CE09A002CB896 /* BaseNUXViewController.h */,
-				85AD6AF9173CE09A002CB896 /* BaseNUXViewController.m */,
 			);
 			name = NUX;
 			sourceTree = "<group>";
@@ -2633,6 +2631,8 @@
 				AC512F800E20D28500B7DA32 /* Utils */,
 				8320B5CF11FCA3EA00607422 /* Cells */,
 				E1A38C921581879D00439E55 /* WPTableViewControllerSubclass.h */,
+				85AD6B1C17405887002CB896 /* WPNUXUtility.h */,
+				85AD6B1D17405888002CB896 /* WPNUXUtility.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -4193,7 +4193,7 @@
 				85EC44D41739826A00686604 /* CreateAccountAndBlogViewController.m in Sources */,
 				85AD6AEC173CCF9E002CB896 /* WPNUXPrimaryButton.m in Sources */,
 				85AD6AEF173CCFDC002CB896 /* WPNUXSecondaryButton.m in Sources */,
-				85AD6AFA173CE09B002CB896 /* BaseNUXViewController.m in Sources */,
+				85AD6B1E17405889002CB896 /* WPNUXUtility.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
