@@ -383,8 +383,8 @@
 	
 	// First the imageView
 	CGFloat width = _textContentView.frame.size.width;
-	CGRect frame = UIEdgeInsetsInsetRect(_textContentView.frame, _textContentView.edgeInsets);
-	if(imageView.image.size.width > frame.size.width) {
+//	CGRect frame = UIEdgeInsetsInsetRect(_textContentView.frame, _textContentView.edgeInsets);
+//	if(imageView.image.size.width > frame.size.width) {
 		
 		// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
 		// so position it offset by the inverse of _textContentView's edgeInsets.
@@ -397,7 +397,7 @@
 		
 		viewSize.width = width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
 		viewSize.height = imageView.image.size.height * (width / imageView.image.size.width);
-	}
+//	}
 	
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
 	
@@ -620,28 +620,28 @@
 	
 	NSDictionary *params = @{@"number":@100};
 	
-	[[WordPressComApi sharedApi] getCommentsForPost:[self.post.postID integerValue]
-										   fromSite:[self.post.siteID stringValue]
-									 withParameters:params
-											success:^(AFHTTPRequestOperation *operation, id responseObject) {
-												self.post.dateCommentsSynced = [NSDate date];
-												
-												NSDictionary *resp = (NSDictionary *)responseObject;
-												NSArray *commentsArr = [resp objectForKey:@"comments"];
-												
-												[ReaderComment syncAndThreadComments:commentsArr
-																	forPost:self.post
-																withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
-
-												[self prepareComments];
-												[self updateRowHeightsForWidth:self.tableView.frame.size.width];
-												[self.tableView reloadData];
-												[self hideRefreshHeader];
-												
-											} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-												[self hideRefreshHeader];
-
-											}];	
+	[ReaderPost getCommentsForPost:[self.post.postID integerValue]
+						  fromSite:[self.post.siteID stringValue]
+					withParameters:params
+						   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+							   self.post.dateCommentsSynced = [NSDate date];
+							   
+							   NSDictionary *resp = (NSDictionary *)responseObject;
+							   NSArray *commentsArr = [resp objectForKey:@"comments"];
+							   
+							   [ReaderComment syncAndThreadComments:commentsArr
+															forPost:self.post
+														withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+							   
+							   [self prepareComments];
+							   [self updateRowHeightsForWidth:self.tableView.frame.size.width];
+							   [self.tableView reloadData];
+							   [self hideRefreshHeader];
+							   
+						   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+							   [self hideRefreshHeader];
+							   
+						   }];
 }
 
 

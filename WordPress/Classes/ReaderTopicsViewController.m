@@ -91,7 +91,7 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 
 
 - (void)loadTopics {
-	[[WordPressComApi sharedApi] getReaderTopicsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[ReaderPost getReaderTopicsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
 		NSDictionary *dict = (NSDictionary *)responseObject;
 		
 		NSString *topicEndpoint = [[[ReaderPost readerEndpoints] objectAtIndex:ReaderTopicEndpointIndex] objectForKey:@"endpoint"];

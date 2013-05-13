@@ -185,31 +185,31 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 - (void)syncWithUserInteraction:(BOOL)userInteraction {	
 	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
 	
-	[[WordPressComApi sharedApi] getPostsFromEndpoint:endpoint
-									   withParameters:nil
-											  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-												  
-												  NSDictionary *resp = (NSDictionary *)responseObject;
-												  NSArray *postsArr = [resp objectForKey:@"posts"];
-												  
-												  [ReaderPost syncPostsFromEndpoint:endpoint
-																		  withArray:postsArr
-																		withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
-												  
-												  [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ReaderLastSyncDateKey];
-												  [NSUserDefaults resetStandardUserDefaults];
-												  
-												  self.resultsController = nil;
-												  [self updateRowHeightsForWidth:self.tableView.frame.size.width];
-												  [self.tableView reloadData];
+	[ReaderPost getPostsFromEndpoint:endpoint
+					  withParameters:nil
+							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+								 
+								 NSDictionary *resp = (NSDictionary *)responseObject;
+								 NSArray *postsArr = [resp objectForKey:@"posts"];
+								 
+								 [ReaderPost syncPostsFromEndpoint:endpoint
+														 withArray:postsArr
+													   withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+								 
+								 [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ReaderLastSyncDateKey];
+								 [NSUserDefaults resetStandardUserDefaults];
+								 
+								 self.resultsController = nil;
+								 [self updateRowHeightsForWidth:self.tableView.frame.size.width];
+								 [self.tableView reloadData];
+								 
+								 [self hideRefreshHeader];
+							 }
+							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+								 [self hideRefreshHeader];
+								 // TODO:
+							 }];
 
-												  [self hideRefreshHeader];
-											  }
-											  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-												  [self hideRefreshHeader];
-												  // TODO:
-											  }];
-	
 }
 
 
