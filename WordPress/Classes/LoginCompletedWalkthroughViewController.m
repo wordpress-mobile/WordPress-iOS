@@ -104,6 +104,13 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     [self savePositionsOfStickyControls];
 }
 
+- (NSUInteger)supportedInterfaceOrientations {
+    if (IS_IPHONE)
+        return UIInterfaceOrientationMaskPortrait;
+    
+    return UIInterfaceOrientationMaskAll;
+}
+
 #pragma mark - UIScrollView Delegate Methods
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

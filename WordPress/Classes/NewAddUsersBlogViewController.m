@@ -85,6 +85,13 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     [self createBlog:[_usersBlogs objectAtIndex:0]];
 }
 
+- (NSUInteger)supportedInterfaceOrientations {
+    if (IS_IPHONE)
+        return UIInterfaceOrientationMaskPortrait;
+    
+    return UIInterfaceOrientationMaskAll;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
