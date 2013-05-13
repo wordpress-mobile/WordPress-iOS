@@ -59,11 +59,6 @@
     return [UIColor colorWithRed:255.0 green:255.0 blue:255.0 alpha:0.3];
 }
 
-+ (UIColor *)swipeToContinueShadowTextColor
-{
-    return [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2];
-}
-
 #pragma mark - Helper Methods
 
 + (void)centerViews:(NSArray *)controls withStartingView:(UIView *)startingView andEndingView:(UIView *)endingView forHeight:(CGFloat)viewHeight

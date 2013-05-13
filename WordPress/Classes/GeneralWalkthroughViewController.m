@@ -541,13 +541,12 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_page1SwipeToContinue == nil) {
         _page1SwipeToContinue = [[UILabel alloc] init];
         [_page1SwipeToContinue setTextColor:[WPNUXUtility swipeToContinueTextColor]];
-        [_page1SwipeToContinue setShadowColor:[WPNUXUtility swipeToContinueShadowTextColor]];
+        [_page1SwipeToContinue setShadowColor:[WPNUXUtility textShadowColor]];
         _page1SwipeToContinue.backgroundColor = [UIColor clearColor];
         _page1SwipeToContinue.textAlignment = UITextAlignmentCenter;
         _page1SwipeToContinue.numberOfLines = 1;
         _page1SwipeToContinue.font = [WPNUXUtility swipeToContinueFont];
         _page1SwipeToContinue.text = NSLocalizedString(@"SWIPE TO CONTINUE", nil);
-        _page1SwipeToContinue.shadowOffset = CGSizeMake(0.0, 1.0);
         [_page1SwipeToContinue sizeToFit];
         [_scrollView addSubview:_page1SwipeToContinue];
     }
@@ -556,11 +555,6 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_skipToCreateAccount == nil) {
         _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
         [_skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
-        [_skipToCreateAccount setTitleColor:[UIColor colorWithRed:150.0/255.0 green:155.0/255.0 blue:155.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-        [_skipToCreateAccount setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5] forState:UIControlStateNormal];
-        [_skipToCreateAccount setTitleColor:[UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:0.3] forState:UIControlStateHighlighted];
-        [_skipToCreateAccount setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8] forState:UIControlStateNormal];
-        _skipToCreateAccount.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [_skipToCreateAccount addTarget:self action:@selector(clickedSkipToCreate:) forControlEvents:UIControlEventTouchUpInside];
         [_skipToCreateAccount sizeToFit];
         [_scrollView addSubview:_skipToCreateAccount];
@@ -569,11 +563,6 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     // Add Skip to Sign in Button
     if (_skipToSignIn == nil) {
         _skipToSignIn = [[WPNUXPrimaryButton alloc] init];
-        [_skipToSignIn setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9] forState:UIControlStateNormal];
-        [_skipToSignIn setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2] forState:UIControlStateNormal];
-        [_skipToSignIn setTitleColor:[UIColor colorWithRed:25.0/255.0 green:135.0/255.0 blue:179.0/255.0 alpha:1.0] forState:UIControlStateHighlighted];
-        [_skipToSignIn setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.1] forState:UIControlStateHighlighted];
-        _skipToSignIn.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
         [_skipToSignIn setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
         [_skipToSignIn addTarget:self action:@selector(clickedSkipToSignIn:) forControlEvents:UIControlEventTouchUpInside];
         [_skipToSignIn sizeToFit];

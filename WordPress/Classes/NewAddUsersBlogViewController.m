@@ -172,6 +172,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     [_selectAllButton sizeToFit];
     [_selectAllButton addTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
     [bottomPanel addSubview:_selectAllButton];
+    
     CGFloat selectAllWidth = CGRectGetWidth(_selectAllButton.frame);
     // This part is to ensure that we have the larger of the two widths for the two text options for this button
     // so that regardless of what text is in the button it will fit

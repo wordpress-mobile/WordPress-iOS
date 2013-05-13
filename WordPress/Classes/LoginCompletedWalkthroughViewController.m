@@ -290,13 +290,12 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     if (_page1SwipeToContinue == nil) {
         _page1SwipeToContinue = [[UILabel alloc] init];
         [_page1SwipeToContinue setTextColor:[WPNUXUtility swipeToContinueTextColor]];
-        [_page1SwipeToContinue setShadowColor:[WPNUXUtility swipeToContinueShadowTextColor]];
+        [_page1SwipeToContinue setShadowColor:[WPNUXUtility textShadowColor]];
         _page1SwipeToContinue.backgroundColor = [UIColor clearColor];
         _page1SwipeToContinue.textAlignment = UITextAlignmentCenter;
         _page1SwipeToContinue.numberOfLines = 1;
         _page1SwipeToContinue.font = [WPNUXUtility swipeToContinueFont];
         _page1SwipeToContinue.text = NSLocalizedString(@"SWIPE TO CONTINUE", nil);
-        _page1SwipeToContinue.shadowColor = [WPNUXUtility textShadowColor];
         [_page1SwipeToContinue sizeToFit];
         [_scrollView addSubview:_page1SwipeToContinue];
     }

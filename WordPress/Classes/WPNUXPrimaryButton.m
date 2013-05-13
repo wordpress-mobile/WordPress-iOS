@@ -22,7 +22,10 @@
         [self setBackgroundImage:mainImage forState:UIControlStateNormal];
         [self setBackgroundImage:tappedImage forState:UIControlStateHighlighted];
         [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9] forState:UIControlStateNormal];
+        [self setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2] forState:UIControlStateNormal];
         [self setTitleColor:[UIColor colorWithRed:25.0/255.0 green:135.0/255.0 blue:179.0/255.0 alpha:1.0] forState:UIControlStateHighlighted];
+        [self setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.1] forState:UIControlStateHighlighted];
+        self.titleLabel.shadowOffset = CGSizeMake(0.0, -1.0);
     }
     return self;
 }
