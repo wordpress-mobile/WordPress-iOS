@@ -22,6 +22,7 @@
 		self.edgeInsets = UIEdgeInsetsZero;
 		self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, frame.size.height)];
 		_imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_imageView.contentMode = UIViewContentModeScaleAspectFit;
 		
 		[self addSubview:_imageView];
 		
@@ -42,6 +43,12 @@
 		frame.origin.x = _edgeInsets.left;
 	}
 	_imageView.frame = frame;
+	
+	if (_imageView.image.size.width < frame.size.width && _imageView.image.size.height < frame.size.height) {
+		_imageView.contentMode = UIViewContentModeCenter;
+	} else {
+		_imageView.contentMode = UIViewContentModeScaleAspectFill;
+	}
 }
 
 
