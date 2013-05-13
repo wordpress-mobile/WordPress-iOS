@@ -113,7 +113,7 @@
 	
 	self.tableView.backgroundView = nil;
 	self.tableView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
-	
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	
 	if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
 		UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];

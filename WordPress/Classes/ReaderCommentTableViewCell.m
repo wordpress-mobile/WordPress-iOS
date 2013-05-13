@@ -8,6 +8,7 @@
 
 #import "ReaderCommentTableViewCell.h"
 #import <DTCoreText/DTCoreText.h>
+#import <QuartzCore/QuartzCore.h>
 #import "UIImageView+Gravatar.h"
 #import "WordPressAppDelegate.h"
 
@@ -19,9 +20,11 @@
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) UILabel *authorLabel;
 @property (nonatomic, strong) UILabel *dateLabel;
+@property (nonatomic, strong) UIView *threadView;
 
 - (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;
 - (void)handleLinkTapped:(id)sender;
+- (void)drawNestingLayers;
 
 @end
 
@@ -51,7 +54,6 @@
 		CGFloat width = self.frame.size.width;
 
 		self.backgroundView = nil;
-
 		self.contentView.backgroundColor = [UIColor clearColor];
 		
 		[self.contentView addSubview:self.imageView]; // TODO: Not sure about this...
@@ -83,6 +85,11 @@
 		_textContentView.shouldDrawLinks = NO;
 		_textContentView.shouldDrawImages = NO;
 		[self.contentView addSubview:_textContentView];
+		
+		self.threadView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, self.frame.size.height)];
+		_threadView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_threadView.backgroundColor = [UIColor clearColor];
+		[self addSubview:_threadView];
 
     }
 	
@@ -97,8 +104,6 @@
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
-
-	self.backgroundView = nil;
 	
 	// We have to manually update the indentation of the content view? wtf.
 	CGRect frame = self.contentView.frame;
@@ -109,11 +114,36 @@
 	[self.imageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
 	
 	CGFloat width = self.contentView.frame.size.width;
-
 	CGFloat height = [_textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width].height;
 	
 	_textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, height);
 	
+	[self drawNestingLayers];
+}
+
+
+- (void)drawNestingLayers {
+	_threadView.frame = CGRectMake(0.0f, 0.0f, self.frame.size.width, self.frame.size.height);
+	
+	UIColor *baseColor = [UIColor colorWithRed:194.0f/255.0f green:216.0f/255.0f blue:235.0f/255.0f alpha:1.0];
+	NSMutableArray *layers = [NSMutableArray array];
+	for (NSInteger i = 0; i < self.indentationLevel; i++) {
+		CGFloat darkness = 1.0f - (i * 0.05f);
+		CGFloat h, s, b, a;
+		[baseColor getHue:&h saturation:&s brightness:&b alpha:&a];
+		
+		UIColor *stepColor = [UIColor colorWithHue:h
+										saturation:s
+										brightness:(b * darkness)
+											 alpha:a];
+
+		CALayer *layer = [CALayer layer];
+		layer.backgroundColor = stepColor.CGColor;
+		layer.frame = CGRectMake((self.indentationWidth * i), 0.0f, self.indentationWidth, self.frame.size.height);
+		[layers addObject:layer];
+	}
+	
+	[_threadView.layer setSublayers:layers];
 }
 
 
@@ -165,9 +195,12 @@
 
 - (void)configureCell:(ReaderComment *)comment {
 	self.comment = comment;
-
+	
+	self.indentationWidth = 10.0f;
 	self.indentationLevel = [comment.depth integerValue];
-		
+	
+	[self.contentView addSubview:self.imageView];
+	
 	_dateLabel.text = [comment shortDate];
 	_authorLabel.text = comment.author;
 	[self.imageView setImageWithURL:[NSURL URLWithString:comment.authorAvatarURL] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom.png"]];
