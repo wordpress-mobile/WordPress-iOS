@@ -122,6 +122,7 @@ typedef enum {
     [super viewWillAppear:animated];
     [self checkCloseButton];
     self.resultsController.delegate = self; // Restore the delegate.
+    [self.resultsController performFetch:nil];
     self.editButtonItem.enabled = ([[self.resultsController fetchedObjects] count] > 0); // Disable if we have no blogs.
     [self.tableView reloadData];
 }
