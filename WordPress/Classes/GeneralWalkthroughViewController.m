@@ -370,7 +370,11 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)clickedSkipToSignIn:(id)sender
 {
-    [_scrollView setContentOffset:CGPointMake(_viewWidth * 2, 0) animated:YES];
+    [UIView animateWithDuration:0.3 animations:^{
+        _scrollView.contentOffset = CGPointMake(_viewWidth * 2, 0);
+    } completion:^(BOOL finished){
+        [_usernameText becomeFirstResponder];
+    }];
 }
 
 - (void)clickedCreateAccount:(UITapGestureRecognizer *)tapGestureRecognizer
