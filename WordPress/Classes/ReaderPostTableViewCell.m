@@ -73,6 +73,7 @@
 		_snippetTextView.delegate = self;
 		_snippetTextView.shouldDrawLinks = NO;
 		_snippetTextView.shouldDrawImages = NO;
+		_snippetTextView.shouldLayoutCustomSubviews = NO;
 		[self.contentView addSubview:_snippetTextView];
 		
 		self.byView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, (width - 20.0f), 20.0f)];
@@ -164,6 +165,7 @@
 	// Position the snippet
 	height = [_snippetTextView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
 	_snippetTextView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
+	[_snippetTextView layoutSubviews];
 	nextY += ceilf(height + vpadding);
 
 	// position the byView
