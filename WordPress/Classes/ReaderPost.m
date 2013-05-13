@@ -432,3 +432,37 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 
 @end
+
+
+@implementation ReaderPost (WordPressComApi)
+
++ (void)getReaderTopicsWithSuccess:(WordPressComApiRestSuccessResponseBlock)success
+						   failure:(WordPressComApiRestSuccessFailureBlock)failure {
+	
+	NSString *path = @"reader/topics";
+	
+	[[WordPressComApi sharedApi] getPath:path parameters:nil success:success failure:failure];
+}
+
+
++ (void)getCommentsForPost:(NSUInteger)postID
+				  fromSite:(NSString *)siteID
+			withParameters:(NSDictionary*)params
+				   success:(WordPressComApiRestSuccessResponseBlock)success
+				   failure:(WordPressComApiRestSuccessFailureBlock)failure {
+	
+	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%i/replies", siteID, postID];
+	
+	[[WordPressComApi sharedApi] getPath:path parameters:nil success:success failure:failure];
+}
+
+
++ (void)getPostsFromEndpoint:(NSString *)path
+			  withParameters:(NSDictionary *)params
+					 success:(WordPressComApiRestSuccessResponseBlock)success
+					 failure:(WordPressComApiRestSuccessFailureBlock)failure {
+	
+	[[WordPressComApi sharedApi] getPath:path parameters:params success:success failure:failure];
+}
+
+@end
