@@ -336,7 +336,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page1Title == nil) {
         _page1Title = [[UILabel alloc] init];
         _page1Title.textAlignment = UITextAlignmentCenter;
-        _page1Title.text = @"Create an account on WordPress.com";
+        _page1Title.text = NSLocalizedString(@"NUX_Create_Account_Page1_Title", nil);
         _page1Title.numberOfLines = 0;
         _page1Title.backgroundColor = [UIColor clearColor];
         _page1Title.font = [WPNUXUtility titleFont];
@@ -351,7 +351,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page1EmailText == nil) {
         _page1EmailText = [[WPWalkthroughTextField alloc] init];
         _page1EmailText.backgroundColor = [UIColor whiteColor];
-        _page1EmailText.placeholder = @"Email Address";
+        _page1EmailText.placeholder = NSLocalizedString(@"NUX_Create_Account_Page1_Email_Placeholder", nil);
         _page1EmailText.font = [WPNUXUtility textFieldFont];
         _page1EmailText.adjustsFontSizeToFitWidth = true;
         _page1EmailText.delegate = self;
@@ -364,7 +364,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page1UsernameText == nil) {
         _page1UsernameText = [[WPWalkthroughTextField alloc] init];
         _page1UsernameText.backgroundColor = [UIColor whiteColor];
-        _page1UsernameText.placeholder = @"Username";
+        _page1UsernameText.placeholder = NSLocalizedString(@"NUX_Create_Account_Page1_Username_Placeholder", nil);
         _page1UsernameText.font = [WPNUXUtility textFieldFont];
         _page1UsernameText.adjustsFontSizeToFitWidth = true;
         _page1UsernameText.delegate = self;
@@ -378,7 +378,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1PasswordText = [[WPWalkthroughTextField alloc] init];
         _page1PasswordText.secureTextEntry = true;
         _page1PasswordText.backgroundColor = [UIColor whiteColor];
-        _page1PasswordText.placeholder = @"Password";
+        _page1PasswordText.placeholder = NSLocalizedString(@"NUX_Create_Account_Page1_Password_Placeholder", nil);
         _page1PasswordText.font = [WPNUXUtility textFieldFont];
         _page1PasswordText.adjustsFontSizeToFitWidth = true;
         _page1PasswordText.delegate = self;
@@ -471,7 +471,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page2Title == nil) {
         _page2Title = [[UILabel alloc] init];
         _page2Title.textAlignment = UITextAlignmentCenter;
-        _page2Title.text = @"Create your first WordPress.com site";
+        _page2Title.text = NSLocalizedString(@"NUX_Create_Account_Page2_Site_Title_Placeholder", nil);
         _page2Title.numberOfLines = 0;
         _page2Title.backgroundColor = [UIColor clearColor];
         _page2Title.font = [WPNUXUtility titleFont];
@@ -486,7 +486,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page2SiteTitleText == nil) {
         _page2SiteTitleText = [[WPWalkthroughTextField alloc] init];
         _page2SiteTitleText.backgroundColor = [UIColor whiteColor];
-        _page2SiteTitleText.placeholder = @"Site Title";
+        _page2SiteTitleText.placeholder = NSLocalizedString(@"NUX_Create_Account_Page2_Site_Title_Placeholder", nil);
         _page2SiteTitleText.font = [WPNUXUtility textFieldFont];
         _page2SiteTitleText.adjustsFontSizeToFitWidth = true;
         _page2SiteTitleText.delegate = self;
@@ -499,7 +499,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page2SiteAddressText == nil) {
         _page2SiteAddressText = [[WPWalkthroughTextField alloc] init];
         _page2SiteAddressText.backgroundColor = [UIColor whiteColor];
-        _page2SiteAddressText.placeholder = @"yoursite.wordpress.com";
+        _page2SiteAddressText.placeholder = NSLocalizedString(@"NUX_Create_Account_Page2_Site_Address_Placeholder", nil);
         _page2SiteAddressText.font = [WPNUXUtility textFieldFont];
         _page2SiteAddressText.adjustsFontSizeToFitWidth = true;
         _page2SiteAddressText.delegate = self;
@@ -512,7 +512,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page2SiteLanguageText == nil) {
         _page2SiteLanguageText = [[WPWalkthroughTextField alloc] init];
         _page2SiteLanguageText.backgroundColor = [UIColor whiteColor];
-        _page2SiteLanguageText.placeholder = @"Site Language";
+        _page2SiteLanguageText.placeholder = NSLocalizedString(@"NUX_Create_Account_Page2_Site_Language_Placeholder", nil);
         _page2SiteLanguageText.font = [WPNUXUtility textFieldFont];
         _page2SiteLanguageText.adjustsFontSizeToFitWidth = true;
         _page2SiteLanguageText.delegate = self;
@@ -620,7 +620,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page3Title == nil) {
         _page3Title = [[UILabel alloc] init];
         _page3Title.textAlignment = UITextAlignmentCenter;
-        _page3Title.text = @"Review your information";
+        _page3Title.text = NSLocalizedString(@"NUX_Create_Account_Page3_Title", nil);
         _page3Title.numberOfLines = 0;
         _page3Title.backgroundColor = [UIColor clearColor];
         _page3Title.font = [WPNUXUtility titleFont];
@@ -881,11 +881,11 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)updatePage3Labels
 {
-    _page3EmailLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Email: %@", nil), _page1EmailText.text];
-    _page3UsernameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Username: %@", nil), _page1UsernameText.text];
-    _page3SiteTitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Site Title: %@", nil), _page2SiteTitleText.text];
-    _page3SiteAddressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Site Address: %@", nil), _page2SiteAddressText.text];
-    _page3SiteLanguageLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Site Language: %@", nil), [_currentLanguage objectForKey:@"name"]];
+    _page3EmailLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUX_Create_Account_Page3_Email_Review", nil), _page1EmailText.text];
+    _page3UsernameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUX_Create_Account_Page3_Username_Review", nil), _page1UsernameText.text];
+    _page3SiteTitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUX_Create_Account_Page3_Site_Title_Review", nil), _page2SiteTitleText.text];
+    _page3SiteAddressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUX_Create_Account_Page3_Site_Address_Review", nil), [NSString stringWithFormat:@"%@.wordpress.com", [self getSiteAddressWithoutWordPressDotCom]]];
+    _page3SiteLanguageLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUX_Create_Account_Page3_Site_Language_Review", nil), [_currentLanguage objectForKey:@"name"]];
     
     [self layoutPage3Controls];
 }

@@ -81,4 +81,15 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+#pragma mark - Private Methods
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    NSMutableString *text = [[NSMutableString alloc] init];
+    [text appendFormat:@"%@ - %@\n\n", NSLocalizedString(@"Public", nil), NSLocalizedString(@"Blog_Visibility_Public_Description", nil)];
+    [text appendFormat:@"%@ - %@\n\n", NSLocalizedString(@"Private", nil), NSLocalizedString(@"Blog_Visibility_Private_Description", nil)];
+    [text appendFormat:@"%@ - %@", NSLocalizedString(@"Hidden", nil), NSLocalizedString(@"Blog_Visibility_Hidden_Description", nil)];
+
+    return text;
+}
+
 @end

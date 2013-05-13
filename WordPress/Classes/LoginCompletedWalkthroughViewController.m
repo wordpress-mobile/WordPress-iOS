@@ -83,7 +83,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     [self initializePage2];
     [self initializePage3];
     [self initializePage4];
-    [self addLoginSuccessView];
+    [self showLoginSuccess];
 }
 
 
@@ -157,11 +157,11 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     }
 }
 
-- (void)addLoginSuccessView
+- (void)showLoginSuccess
 {
     WPWalkthroughGrayOverlayView *grayOverlay = [[WPWalkthroughGrayOverlayView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth, _viewHeight)];
-    grayOverlay.overlayTitle = @"Success!";
-    grayOverlay.overlayDescription = @"You have successfully signed into your WordPress account!";
+    grayOverlay.overlayTitle = NSLocalizedString(@"NUX_Second_Walkthrough_Success_Overlay_Title", nil);
+    grayOverlay.overlayDescription = NSLocalizedString(@"NUX_Second_Walkthrough_Success_Overlay_Description", nil);
     grayOverlay.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
     grayOverlay.footerDescription = NSLocalizedString(@"TAP TO CONTINUE", nil);
     grayOverlay.icon = WPWalkthroughGrayOverlayViewBlueCheckmarkIcon;
@@ -223,7 +223,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page1Title.numberOfLines = 0;
         _page1Title.lineBreakMode = UILineBreakModeWordWrap;
         _page1Title.font = [WPNUXUtility titleFont];
-        _page1Title.text = @"Track your site's statistics";
+        _page1Title.text = NSLocalizedString(@"NUX_Second_Walkthrough_Page1_Title", nil);
         _page1Title.shadowColor = [WPNUXUtility textShadowColor];
         _page1Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page1Title.layer.shadowRadius = 2.0;
@@ -245,7 +245,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page1Description.numberOfLines = 0;
         _page1Description.lineBreakMode = UILineBreakModeWordWrap;
         _page1Description.font = [WPNUXUtility descriptionTextFont];
-        _page1Description.text = @"Learn what your readers respond to so you can give them more of it";
+        _page1Description.text = NSLocalizedString(@"NUX_Second_Walkthrough_Page1_Description", nil);
         _page1Description.shadowOffset = CGSizeMake(0.0, 1.0);
         _page1Description.shadowColor = [WPNUXUtility textShadowColor];
         _page1Title.layer.shadowRadius = 2.0;
@@ -307,7 +307,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _skipToApp.backgroundColor = [UIColor clearColor];
         _skipToApp.textColor = [UIColor whiteColor];
         _skipToApp.font = [UIFont fontWithName:@"OpenSans" size:15.0];
-        _skipToApp.text = @"Tap to start using WordPress";
+        _skipToApp.text = NSLocalizedString(@"NUX_Second_Walkthrough_Bottom_Skip_Label", nil;);
         _skipToApp.shadowColor = [UIColor blackColor];
         [_skipToApp sizeToFit];
         UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedSkipToApp:)];
@@ -409,7 +409,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page2Title.numberOfLines = 0;
         _page2Title.lineBreakMode = UILineBreakModeWordWrap;
         _page2Title.font = [WPNUXUtility titleFont];
-        _page2Title.text = @"The WordPress Reader";
+        _page2Title.text = NSLocalizedString(@"NUX_Second_Walkthrough_Page2_Title", nil);
         _page2Title.shadowColor = [WPNUXUtility textShadowColor];
         _page2Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page2Title.layer.shadowRadius = 2.0;
@@ -431,7 +431,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page2Description.numberOfLines = 0;
         _page2Description.lineBreakMode = UILineBreakModeWordWrap;
         _page2Description.font = [WPNUXUtility descriptionTextFont];
-        _page2Description.text = @"Browse the entire WordPress ecosystem. If you can think it, someone is writing it.";
+        _page2Description.text = NSLocalizedString(@"NUX_Second_Walkthrough_Page2_Description", nil);
         _page2Description.shadowOffset = CGSizeMake(0.0, 1.0);
         _page2Description.shadowColor = [WPNUXUtility textShadowColor];
         _page2Description.layer.shadowRadius = 2.0;
@@ -507,7 +507,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page3Title.numberOfLines = 0;
         _page3Title.lineBreakMode = UILineBreakModeWordWrap;
         _page3Title.font = [WPNUXUtility titleFont];
-        _page3Title.text = @"Get notified of new Comments & Likes";
+        _page3Title.text = NSLocalizedString(@"NUX_Second_Walkthrough_Page3_Title", nil);
         _page3Title.shadowColor = [WPNUXUtility textShadowColor];
         _page3Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page3Title.layer.shadowRadius = 2.0;
@@ -529,7 +529,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page3Description.numberOfLines = 0;
         _page3Description.lineBreakMode = UILineBreakModeWordWrap;
         _page3Description.font = [WPNUXUtility descriptionTextFont];
-        _page3Description.text = @"Keep the conversation going with notifications on the go. No need for a desktop to nurture the dialogue.";
+        _page3Description.text = NSLocalizedString(@"NUX_Second_Walkthrough_Page3_Description", nil);
         _page3Description.shadowOffset = CGSizeMake(0.0, 1.0);
         _page3Description.shadowColor = [WPNUXUtility textShadowColor];
         _page3Description.layer.shadowRadius = 2.0;
@@ -605,7 +605,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page4Title.numberOfLines = 0;
         _page4Title.lineBreakMode = UILineBreakModeWordWrap;
         _page4Title.font = [WPNUXUtility titleFont];
-        _page4Title.text = @"Get Started!";
+        _page4Title.text = NSLocalizedString(@"NUX_Second_Walkthrough_Page4_Title", nil);
         _page4Title.shadowColor = [WPNUXUtility textShadowColor];
         _page4Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page4Title.layer.shadowRadius = 2.0;
