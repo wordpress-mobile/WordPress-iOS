@@ -669,7 +669,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     y = CGRectGetMinY(_skipToCreateAccount.frame);
     _skipToSignIn.frame = CGRectMake(x, y, CGRectGetWidth(_skipToSignIn.frame), CGRectGetHeight(_skipToSignIn.frame));
     
-    _heightFromSwipeToContinue = _viewHeight - CGRectGetMinY(_page1SwipeToContinue.frame);
+    _heightFromSwipeToContinue = _viewHeight - CGRectGetMinY(_page1SwipeToContinue.frame) - CGRectGetHeight(_page1SwipeToContinue.frame);
     NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1TopSeparator, _page1Description, _page1BottomSeparator];
     [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1BottomSeparator forHeight:(_viewHeight - _heightFromSwipeToContinue)];
 }

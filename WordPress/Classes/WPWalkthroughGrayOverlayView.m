@@ -179,9 +179,10 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
         _button1.frame = CGRectZero;
         _button2.frame = CGRectZero;
     }
-    
-    NSArray *viewsToCenter = @[_logo, _title, _description, _topSeparator, _description, _bottomLabel];
-    [WPNUXUtility centerViews:viewsToCenter withStartingView:_logo andEndingView:_bottomLabel forHeight:_viewHeight];
+
+    CGFloat heightFromBottomLabel = _viewHeight - CGRectGetMinY(_bottomLabel.frame) - CGRectGetHeight(_bottomLabel.frame);
+    NSArray *viewsToCenter = @[_logo, _title, _description, _topSeparator, _bottomSeparator];
+    [WPNUXUtility centerViews:viewsToCenter withStartingView:_logo andEndingView:_bottomSeparator forHeight:(_viewHeight-heightFromBottomLabel)];
 }
 
 - (void)dismiss

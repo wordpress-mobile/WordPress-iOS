@@ -382,7 +382,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame)-CGRectGetHeight(_skipToApp.frame))/2.0;
     _skipToApp.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_skipToApp.frame), CGRectGetHeight(_skipToApp.frame)));
     
-    _heightFromSwipeToContinueToBottom = _viewHeight - CGRectGetMinY(_page1SwipeToContinue.frame);
+    _heightFromSwipeToContinueToBottom = _viewHeight - CGRectGetMinY(_page1SwipeToContinue.frame) - CGRectGetHeight(_page1SwipeToContinue.frame);
     NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1TopSeparator, _page1Description, _page1BottomSeparator];
     [WPNUXUtility centerViews:viewsToCenter withStartingView:_page1Icon andEndingView:_page1BottomSeparator forHeight:(_viewHeight-_heightFromSwipeToContinueToBottom)];
 }
