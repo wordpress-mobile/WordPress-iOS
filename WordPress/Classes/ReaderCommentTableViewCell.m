@@ -84,6 +84,7 @@
 		_textContentView.delegate = self;
 		_textContentView.shouldDrawLinks = NO;
 		_textContentView.shouldDrawImages = NO;
+		_textContentView.shouldLayoutCustomSubviews = NO;
 		[self.contentView addSubview:_textContentView];
 		
 		self.threadView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, self.frame.size.height)];
@@ -117,6 +118,7 @@
 	CGFloat height = [_textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width].height;
 	
 	_textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, height);
+	[_textContentView layoutSubviews];
 	
 	[self drawNestingLayers];
 }
