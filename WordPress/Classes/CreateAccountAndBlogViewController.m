@@ -142,10 +142,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+
     [self layoutScrollview];
-    [self layoutPage1Controls];
-    [self layoutPage2Controls];
-    [self layoutPage3Controls];
     [self savePositionsOfStickyControls];
     
     if (_hasViewAppeared) {

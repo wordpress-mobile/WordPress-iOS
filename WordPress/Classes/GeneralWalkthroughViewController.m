@@ -132,18 +132,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    _viewWidth = CGRectGetWidth(self.view.bounds);
-    _viewHeight = CGRectGetHeight(self.view.bounds);
 
-    // We are technically laying out the view twice on this view's initialization, but as we hardcoded the width/height
-    // in viewDidLoad to prevent a flicker, we are doing this should the hardcoded dimensions no longer be correct in a
-    // future version of iOS. If a future version of iOS results in different dimensions for the form sheet, this will
-    // result in this page flickering but at least the layout will ultimately be correct.
     [self layoutScrollview];
-    [self layoutPage1Controls];
-    [self layoutPage2Controls];
-    [self layoutPage3Controls];
     [self savePositionsOfStickyControls];
     
     if (_hasViewAppeared) {

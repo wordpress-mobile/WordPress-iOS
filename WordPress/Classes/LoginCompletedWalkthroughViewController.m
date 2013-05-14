@@ -97,11 +97,8 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+
     [self layoutScrollview];
-    [self layoutPage1Controls];
-    [self layoutPage2Controls];
-    [self layoutPage3Controls];
-    [self layoutPage4Controls];
     [self savePositionsOfStickyControls];
 }
 
