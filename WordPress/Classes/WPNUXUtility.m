@@ -59,6 +59,16 @@
     return [UIColor colorWithRed:255.0 green:255.0 blue:255.0 alpha:0.3];
 }
 
++ (UIColor *)confirmationLabelColor
+{
+    return [UIColor colorWithRed:188.0/255.0 green:221.0/255.0 blue:236.0/255.0 alpha:1.0];
+}
+
++ (UIColor *)backgroundColor
+{
+    return [UIColor colorWithRed:30.0/255.0 green:140.0/255.0 blue:190.0/255.0 alpha:1.0];
+}
+
 #pragma mark - Helper Methods
 
 + (void)centerViews:(NSArray *)controls withStartingView:(UIView *)startingView andEndingView:(UIView *)endingView forHeight:(CGFloat)viewHeight

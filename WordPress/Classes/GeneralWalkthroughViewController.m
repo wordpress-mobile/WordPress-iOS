@@ -15,6 +15,7 @@
 #import "AddUsersBlogsViewController.h"
 #import "NewAddUsersBlogViewController.h"
 #import "AboutViewController.h"
+#import "WPNUXMainButton.h"
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPWalkthroughTextField.h"
@@ -23,7 +24,7 @@
 #import "Blog+Jetpack.h"
 #import "LoginCompletedWalkthroughViewController.h"
 #import "JetpackSettingsViewController.h"
-#import "WPWalkthroughGrayOverlayView.h"
+#import "WPWalkthroughOverlayView.h"
 #import "LoginCompletedWalkthroughViewController.h"
 #import "ReachabilityUtils.h"
 #import "SFHFKeychainUtils.h"
@@ -60,7 +61,7 @@
     UITextField *_usernameText;
     UITextField *_passwordText;
     UITextField *_siteUrlText;
-    UIButton *_signInButton;
+    WPNUXMainButton *_signInButton;
     UILabel *_createAccountLabel;
     
     CGFloat _viewWidth;
@@ -107,8 +108,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     [super viewDidLoad];
     _viewWidth = [self.view formSheetViewWidth];
     _viewHeight = [self.view formSheetViewHeight];
-    
-    self.view.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:140.0/255.0 blue:190.0/255.0 alpha:1.0];
+        
+    self.view.backgroundColor = [WPNUXUtility backgroundColor];
     
     [self addScrollview];
     [self initializePage1];
@@ -270,16 +271,16 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 #pragma mark - Displaying of Error Messages
 
-- (WPWalkthroughGrayOverlayView *)baseLoginErrorOverlayView:(NSString *)message
+- (WPWalkthroughOverlayView *)baseLoginErrorOverlayView:(NSString *)message
 {
-    WPWalkthroughGrayOverlayView *overlayView = [[WPWalkthroughGrayOverlayView alloc] initWithFrame:self.view.bounds];
+    WPWalkthroughOverlayView *overlayView = [[WPWalkthroughOverlayView alloc] initWithFrame:self.view.bounds];
     overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode;
     overlayView.overlayTitle = NSLocalizedString(@"Sorry, we can’t log you in.", nil);
     overlayView.overlayDescription = message;
     overlayView.footerDescription = NSLocalizedString(@"TAP TO DISMISS", nil);
-    overlayView.button1Text = NSLocalizedString(@"Need Help?", nil);
-    overlayView.button2Text = NSLocalizedString(@"OK", nil);
-    overlayView.singleTapCompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+    overlayView.leftButtonText = NSLocalizedString(@"Need Help?", nil);
+    overlayView.rightButtonText = NSLocalizedString(@"OK", nil);
+    overlayView.singleTapCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
     return overlayView;
@@ -287,13 +288,13 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)displayErrorMessageForXMLRPC:(NSString *)message
 {
-    WPWalkthroughGrayOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.button2Text = NSLocalizedString(@"Enable Now", nil);
-    overlayView.button1CompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
+    overlayView.rightButtonText = NSLocalizedString(@"Enable Now", nil);
+    overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
         [self showHelpViewController:NO];
     };
-    overlayView.button2CompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+    overlayView.button2CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
         
         NSString *path = nil;
@@ -321,8 +322,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)displayErrorMessageForBadUrl:(NSString *)message
 {
-    WPWalkthroughGrayOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.button1CompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
+    overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
         
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
@@ -330,7 +331,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         [self.navigationController pushViewController:webViewController animated:NO];
     };
-    overlayView.button2CompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+    overlayView.button2CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
     [self.view addSubview:overlayView];
@@ -338,13 +339,13 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)displayGenericErrorMessage:(NSString *)message
 {
-    WPWalkthroughGrayOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.button1CompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
+    overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
         
         [self showHelpViewController:NO];
     };
-    overlayView.button2CompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+    overlayView.button2CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
     [self.view addSubview:overlayView];
@@ -820,18 +821,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     
     // Add Sign In Button
     if (_signInButton == nil) {
-        UIImage *mainImage = [[UIImage imageNamed:@"btn-main"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
-        UIImage *inactiveImage = [[UIImage imageNamed:@"btn-main-inactive"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
-        UIImage *tappedImage = [[UIImage imageNamed:@"btn-main-tap"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 4, 0, 4)];
-        _signInButton = [[UIButton alloc] init];
+        _signInButton = [[WPNUXMainButton alloc] init];
         [_signInButton setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
-        [_signInButton setBackgroundImage:mainImage forState:UIControlStateNormal];
-        [_signInButton setBackgroundImage:inactiveImage forState:UIControlStateDisabled];
-        [_signInButton setBackgroundImage:tappedImage forState:UIControlStateHighlighted];
-        [_signInButton setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9] forState:UIControlStateNormal];
-        [_signInButton setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4] forState:UIControlStateDisabled];
-        [_signInButton setTitleColor:[UIColor colorWithRed:9.0/255.0 green:134.0/255.0 blue:181.0/255.0 alpha:0.4] forState:UIControlStateHighlighted];
-        _signInButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:20.0];
         [_signInButton addTarget:self action:@selector(clickedSignIn:) forControlEvents:UIControlEventTouchUpInside];
         [_scrollView addSubview:_signInButton];
         _signInButton.enabled = NO;

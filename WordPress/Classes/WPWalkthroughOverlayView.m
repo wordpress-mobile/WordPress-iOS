@@ -6,20 +6,20 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
-#import "WPWalkthroughGrayOverlayView.h"
+#import "WPWalkthroughOverlayView.h"
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPNUXUtility.h"
 
-@interface WPWalkthroughGrayOverlayView() {
+@interface WPWalkthroughOverlayView() {
     UIImageView *_logo;
     UILabel *_title;
     UILabel *_description;
     UILabel *_bottomLabel;
     UIImageView *_topSeparator;
     UIImageView *_bottomSeparator;
-    WPNUXSecondaryButton *_button1;
-    WPNUXPrimaryButton *_button2;
+    WPNUXSecondaryButton *_leftButton;
+    WPNUXPrimaryButton *_rightButton;
     
     CGFloat _viewWidth;
     CGFloat _viewHeight;
@@ -29,7 +29,7 @@
 
 @end
 
-@implementation WPWalkthroughGrayOverlayView
+@implementation WPWalkthroughOverlayView
 
 NSUInteger const WPWalkthroughGrayOverlayIconVerticalOffset = 75.0;
 NSUInteger const WPWalkthroughGrayOverlayStandardOffset = 16.0;
@@ -49,7 +49,7 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     return self;
 }
 
-- (void)setOverlayMode:(WPWalkthroughGrayOverlayViewOverlayMode)overlayMode
+- (void)setOverlayMode:(WPWalkthroughOverlayViewOverlayMode)overlayMode
 {
     if (_overlayMode != overlayMode) {
         _overlayMode = overlayMode;
@@ -85,27 +85,27 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     }
 }
 
-- (void)setButton1Text:(NSString *)button1Text
+- (void)setLeftButtonText:(NSString *)leftButtonText
 {
-    if (_button1Text != button1Text) {
-        _button1Text = button1Text;
-        [_button1 setTitle:_button1Text forState:UIControlStateNormal];
-        [_button1 sizeToFit];
+    if (_leftButtonText != leftButtonText) {
+        _leftButtonText = leftButtonText;
+        [_leftButton setTitle:_leftButtonText forState:UIControlStateNormal];
+        [_leftButton sizeToFit];
         [self setNeedsLayout];
     }
 }
 
-- (void)setButton2Text:(NSString *)button2Text
+- (void)setRightButtonText:(NSString *)rightButtonText
 {
-    if (_button2Text != button2Text) {
-        _button2Text = button2Text;
-        [_button2 setTitle:_button2Text forState:UIControlStateNormal];
-        [_button2 sizeToFit];
+    if (_rightButtonText != rightButtonText) {
+        _rightButtonText = rightButtonText;
+        [_rightButton setTitle:_rightButtonText forState:UIControlStateNormal];
+        [_rightButton sizeToFit];
         [self setNeedsLayout];
     }
 }
 
-- (void)setIcon:(WPWalkthroughGrayOverlayViewIcon)icon
+- (void)setIcon:(WPWalkthroughOverlayViewIcon)icon
 {
     if (_icon != icon) {
         _icon = icon;
@@ -129,7 +129,7 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     
     _viewWidth = CGRectGetWidth(self.bounds);
     _viewHeight = CGRectGetHeight(self.bounds);
-
+    
     CGFloat x, y;
     
     // Layout Logo
@@ -170,16 +170,16 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     if (self.overlayMode == WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode) {
         x = WPWalkthroughGrayOverlayStandardOffset;
         y = (_viewHeight - WPWalkthroughGrayOverlayBottomPanelHeight + WPWalkthroughGrayOverlayStandardOffset);
-        _button1.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_button1.frame), CGRectGetHeight(_button1.frame)));
+        _leftButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_leftButton.frame), CGRectGetHeight(_leftButton.frame)));
         
-        x = _viewWidth - CGRectGetWidth(_button2.frame) - WPWalkthroughGrayOverlayStandardOffset;
-        y = CGRectGetMinY(_button1.frame);
-        _button2.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_button2.frame), CGRectGetHeight(_button2.frame)));
+        x = _viewWidth - CGRectGetWidth(_rightButton.frame) - WPWalkthroughGrayOverlayStandardOffset;
+        y = CGRectGetMinY(_leftButton.frame);
+        _rightButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_rightButton.frame), CGRectGetHeight(_rightButton.frame)));
     } else {
-        _button1.frame = CGRectZero;
-        _button2.frame = CGRectZero;
+        _leftButton.frame = CGRectZero;
+        _rightButton.frame = CGRectZero;
     }
-
+    
     CGFloat heightFromBottomLabel = _viewHeight - CGRectGetMinY(_bottomLabel.frame) - CGRectGetHeight(_bottomLabel.frame);
     NSArray *viewsToCenter = @[_logo, _title, _description, _topSeparator, _bottomSeparator];
     [WPNUXUtility centerViews:viewsToCenter withStartingView:_logo andEndingView:_bottomSeparator forHeight:(_viewHeight-heightFromBottomLabel)];
@@ -260,18 +260,18 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     [self addSubview:_bottomLabel];
     
     // Add Button 1
-    _button1 = [[WPNUXSecondaryButton alloc] init];
-    [_button1 setTitle:self.button1Text forState:UIControlStateNormal];
-    [_button1 sizeToFit];
-    [_button1 addTarget:self action:@selector(clickedOnButton1) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_button1];
+    _leftButton = [[WPNUXSecondaryButton alloc] init];
+    [_leftButton setTitle:self.leftButtonText forState:UIControlStateNormal];
+    [_leftButton sizeToFit];
+    [_leftButton addTarget:self action:@selector(clickedOnButton1) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_leftButton];
     
     // Add Button 2
-    _button2 = [[WPNUXPrimaryButton alloc] init];
-    [_button2 setTitle:self.button2Text forState:UIControlStateNormal];
-    [_button2 sizeToFit];
-    [_button2 addTarget:self action:@selector(clickedOnButton2) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_button2];
+    _rightButton = [[WPNUXPrimaryButton alloc] init];
+    [_rightButton setTitle:self.rightButtonText forState:UIControlStateNormal];
+    [_rightButton sizeToFit];
+    [_rightButton addTarget:self action:@selector(clickedOnButton2) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_rightButton];
 }
 
 - (void)configureIcon
@@ -304,8 +304,8 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
 - (void)tappedOnView:(UITapGestureRecognizer *)gestureRecognizer
 {
     CGPoint touchPoint = [gestureRecognizer locationInView:self];
-    BOOL touchedButton1 = CGRectContainsPoint(_button1.frame, touchPoint);
-    BOOL touchedButton2 = CGRectContainsPoint(_button2.frame, touchPoint);
+    BOOL touchedButton1 = CGRectContainsPoint(_leftButton.frame, touchPoint);
+    BOOL touchedButton2 = CGRectContainsPoint(_rightButton.frame, touchPoint);
     
     if (touchedButton1 || touchedButton2)
         return;
@@ -336,3 +336,4 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
 }
 
 @end
+

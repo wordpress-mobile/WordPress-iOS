@@ -10,7 +10,7 @@
 #import "LoginCompletedWalkthroughViewController.h"
 #import "UIView+FormSheetHelpers.h"
 #import "AboutViewController.h"
-#import "WPWalkthroughGrayOverlayView.h"
+#import "WPWalkthroughOverlayView.h"
 #import "WordPressAppDelegate.h"
 #import "WPNUXUtility.h"
 
@@ -77,7 +77,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     _viewWidth = [self.view formSheetViewWidth];
     _viewHeight = [self.view formSheetViewHeight];
     
-    self.view.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:140.0/255.0 blue:190.0/255.0 alpha:1.0];
+    self.view.backgroundColor = [WPNUXUtility backgroundColor];
 
     [self addScrollview];
     [self initializePage1];
@@ -161,14 +161,14 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
 
 - (void)showLoginSuccess
 {
-    WPWalkthroughGrayOverlayView *grayOverlay = [[WPWalkthroughGrayOverlayView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth, _viewHeight)];
+    WPWalkthroughOverlayView *grayOverlay = [[WPWalkthroughOverlayView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth, _viewHeight)];
     grayOverlay.overlayTitle = NSLocalizedString(@"NUX_Second_Walkthrough_Success_Overlay_Title", nil);
     grayOverlay.overlayDescription = NSLocalizedString(@"NUX_Second_Walkthrough_Success_Overlay_Description", nil);
     grayOverlay.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
     grayOverlay.footerDescription = NSLocalizedString(@"TAP TO CONTINUE", nil);
     grayOverlay.icon = WPWalkthroughGrayOverlayViewBlueCheckmarkIcon;
     grayOverlay.hideBackgroundView = YES;
-    grayOverlay.singleTapCompletionBlock = ^(WPWalkthroughGrayOverlayView * overlayView){
+    grayOverlay.singleTapCompletionBlock = ^(WPWalkthroughOverlayView * overlayView){
         if (!self.showsExtraWalkthroughPages) {
             [self dismiss];
         } else {

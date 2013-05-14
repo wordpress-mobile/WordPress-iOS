@@ -36,7 +36,7 @@
     
     // Adjust frame to account for the edge insets
     CGRect frame = self.frame;
-    frame.size.width += 30;
+    frame.size.width += self.titleEdgeInsets.left + self.titleEdgeInsets.right;
     self.frame = frame;
 }
 

@@ -148,7 +148,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.view.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:140.0/255.0 blue:190.0/255.0 alpha:1.0];
+    self.view.backgroundColor = [WPNUXUtility backgroundColor];
     self.tableView.tableHeaderView = [self headerView];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tableView];

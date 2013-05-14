@@ -20,6 +20,8 @@
 + (UIColor *)descriptionTextColor;
 + (UIColor *)bottomPanelBackgroundColor;
 + (UIColor *)swipeToContinueTextColor;
++ (UIColor *)confirmationLabelColor;
++ (UIColor *)backgroundColor;
 
 + (void)centerViews:(NSArray *)controls withStartingView:(UIView *)startingView andEndingView:(UIView *)endingView forHeight:(CGFloat)viewHeight;
 + (void)configurePageControlTintColors:(UIPageControl *)pageControl;

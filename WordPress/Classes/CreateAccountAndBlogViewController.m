@@ -11,11 +11,12 @@
 #import "HelpViewController.h"
 #import "WordPressComApi.h"
 #import "UIView+FormSheetHelpers.h"
+#import "WPNUXBackButton.h"
 #import "WPNUXPrimaryButton.h"
 #import "WPWalkthroughTextField.h"
 #import "WPAsyncBlockOperation.h"
 #import "WPComLanguages.h"
-#import "WPWalkthroughGrayOverlayView.h"
+#import "WPWalkthroughOverlayView.h"
 #import "SelectWPComLanguageViewController.h"
 #import "WPNUXUtility.h"
 
@@ -26,7 +27,7 @@
     UIScrollView *_scrollView;
     
     // Page 1
-    UIButton *_cancelButton;
+    WPNUXBackButton *_cancelButton;
     UIButton *_helpButton;
     UIImageView *_page1Icon;
     UILabel *_page1Title;
@@ -76,9 +77,7 @@
     CGFloat _keyboardOffset;
     
     NSUInteger _currentPage;
-    
-    UIColor *_confirmationLabelColor;
-    
+        
     CGFloat _viewWidth;
     CGFloat _viewHeight;
     
@@ -101,7 +100,6 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 {
     self = [super init];
     if (self) {
-        _confirmationLabelColor = [UIColor colorWithRed:188.0/255.0 green:221.0/255.0 blue:236.0/255.0 alpha:1.0];
         _currentPage = 1;
         _operationQueue = [[NSOperationQueue alloc] init];
         _currentLanguage = [WPComLanguages currentLanguage];
@@ -115,7 +113,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     _viewWidth = [self.view formSheetViewWidth];
     _viewHeight = [self.view formSheetViewHeight];
-    self.view.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:140.0/255.0 blue:190.0/255.0 alpha:1.0];
+    self.view.backgroundColor = [WPNUXUtility backgroundColor];
         
     [self addScrollview];
     [self addPage1Controls];
@@ -308,19 +306,10 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     // Add Cancel Button
     if (_cancelButton == nil) {
-        UIImage *mainImage = [[UIImage imageNamed:@"btn-back"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 10, 0, 4)];
-        UIImage *tappedImage = [[UIImage imageNamed:@"btn-back-tap"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 10, 0, 4)];
-        _cancelButton = [[UIButton alloc] init];
-        _cancelButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0];
-        [_cancelButton setTitleEdgeInsets:UIEdgeInsetsMake(-1.0, 12.0, 0, 10.0)];
-        [_cancelButton setTitleColor:[UIColor colorWithRed:22.0/255.0 green:160.0/255.0 blue:208.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-        [_cancelButton setTitleColor:[UIColor colorWithRed:17.0/255.0 green:134.0/255.0 blue:180.0/255.0 alpha:1.0] forState:UIControlStateHighlighted];
+        _cancelButton = [[WPNUXBackButton alloc] init];
         [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
-        [_cancelButton setBackgroundImage:mainImage forState:UIControlStateNormal];
-        [_cancelButton setBackgroundImage:tappedImage forState:UIControlStateHighlighted];
         [_cancelButton addTarget:self action:@selector(clickedCancelButton) forControlEvents:UIControlEventTouchUpInside];
         [_cancelButton sizeToFit];
-        _cancelButton.frame = CGRectMake(0, 0, CGRectGetWidth(_cancelButton.frame)+_cancelButton.titleEdgeInsets.left+_cancelButton.titleEdgeInsets.right, CGRectGetHeight(_cancelButton.frame));
         [_scrollView addSubview:_cancelButton];
     }
     
@@ -646,7 +635,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page3EmailLabel.font = [UIFont fontWithName:@"OpenSans" size:14];
         _page3EmailLabel.shadowColor = [WPNUXUtility textShadowColor];
         _page3EmailLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page3EmailLabel.textColor = _confirmationLabelColor;
+        _page3EmailLabel.textColor = [WPNUXUtility confirmationLabelColor];
         _page3EmailLabel.lineBreakMode = UILineBreakModeTailTruncation;
         [_scrollView addSubview:_page3EmailLabel];
     }
@@ -667,7 +656,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page3UsernameLabel.font = [UIFont fontWithName:@"OpenSans" size:14];
         _page3UsernameLabel.shadowColor = [WPNUXUtility textShadowColor];
         _page3UsernameLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page3UsernameLabel.textColor = _confirmationLabelColor;
+        _page3UsernameLabel.textColor = [WPNUXUtility confirmationLabelColor];
         _page3UsernameLabel.lineBreakMode = UILineBreakModeTailTruncation;
         [_scrollView addSubview:_page3UsernameLabel];
     }
@@ -687,7 +676,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page3SiteTitleLabel.font = [UIFont fontWithName:@"OpenSans" size:14];
         _page3SiteTitleLabel.shadowColor = [WPNUXUtility textShadowColor];
         _page3SiteTitleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page3SiteTitleLabel.textColor = _confirmationLabelColor;
+        _page3SiteTitleLabel.textColor = [WPNUXUtility confirmationLabelColor];
         _page3SiteTitleLabel.lineBreakMode = UILineBreakModeTailTruncation;
         [_scrollView addSubview:_page3SiteTitleLabel];
     }
@@ -706,7 +695,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page3SiteAddressLabel.font = [UIFont fontWithName:@"OpenSans" size:14];
         _page3SiteAddressLabel.shadowColor = [WPNUXUtility textShadowColor];
         _page3SiteAddressLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page3SiteAddressLabel.textColor = _confirmationLabelColor;
+        _page3SiteAddressLabel.textColor = [WPNUXUtility confirmationLabelColor];
         _page3SiteAddressLabel.lineBreakMode = UILineBreakModeTailTruncation;
         [_scrollView addSubview:_page3SiteAddressLabel];
     }
@@ -725,7 +714,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page3SiteLanguageLabel.font = [UIFont fontWithName:@"OpenSans" size:14];
         _page3SiteLanguageLabel.shadowColor = [WPNUXUtility textShadowColor];
         _page3SiteAddressLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        _page3SiteLanguageLabel.textColor = _confirmationLabelColor;
+        _page3SiteLanguageLabel.textColor = [WPNUXUtility confirmationLabelColor];
         _page3SiteLanguageLabel.lineBreakMode = UILineBreakModeTailTruncation;
         [_scrollView addSubview:_page3SiteLanguageLabel];
     }
@@ -1213,12 +1202,12 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)showError:(NSString *)message
 {
-    WPWalkthroughGrayOverlayView *overlayView = [[WPWalkthroughGrayOverlayView alloc] initWithFrame:self.view.bounds];
+    WPWalkthroughOverlayView *overlayView = [[WPWalkthroughOverlayView alloc] initWithFrame:self.view.bounds];
     overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
     overlayView.overlayTitle = NSLocalizedString(@"Error", nil);
     overlayView.overlayDescription = message;
     overlayView.footerDescription = NSLocalizedString(@"TAP TO DISMISS", nil);
-    overlayView.singleTapCompletionBlock = ^(WPWalkthroughGrayOverlayView *overlayView){
+    overlayView.singleTapCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
     [self.view addSubview:overlayView];
