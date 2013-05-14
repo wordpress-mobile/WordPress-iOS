@@ -2505,6 +2505,8 @@
 				85AD6AEB173CCF9E002CB896 /* WPNUXPrimaryButton.m */,
 				85AD6AED173CCFDC002CB896 /* WPNUXSecondaryButton.h */,
 				85AD6AEE173CCFDC002CB896 /* WPNUXSecondaryButton.m */,
+				85AD6B1C17405887002CB896 /* WPNUXUtility.h */,
+				85AD6B1D17405888002CB896 /* WPNUXUtility.m */,
 			);
 			name = NUX;
 			sourceTree = "<group>";
@@ -2631,8 +2633,6 @@
 				AC512F800E20D28500B7DA32 /* Utils */,
 				8320B5CF11FCA3EA00607422 /* Cells */,
 				E1A38C921581879D00439E55 /* WPTableViewControllerSubclass.h */,
-				85AD6B1C17405887002CB896 /* WPNUXUtility.h */,
-				85AD6B1D17405888002CB896 /* WPNUXUtility.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";

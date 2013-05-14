@@ -35,9 +35,9 @@
     UIScrollView *_scrollView;
     WPNUXSecondaryButton *_skipToCreateAccount;
     WPNUXPrimaryButton *_skipToSignIn;
-    UIButton *_infoButton;
     
     // Page 1
+    UIButton *_page1InfoButton;
     UIImageView *_page1Icon;
     UILabel *_page1Title;
     UILabel *_page1Description;
@@ -114,7 +114,6 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     [self initializePage1];
     [self initializePage2];
     [self initializePage3];
-
     
     if (!IS_IPAD) {
         // We don't need to shift the controls up on the iPad as there's enough space.
@@ -455,13 +454,13 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 {
     UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
     UIImage *infoButtonImageHighlighted = [UIImage imageNamed:@"btn-about-tap"];
-    if (_infoButton == nil) {
-        _infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_infoButton setImage:infoButtonImage forState:UIControlStateNormal];
-        [_infoButton setImage:infoButtonImageHighlighted forState:UIControlStateHighlighted];
-        _infoButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
-        [_infoButton addTarget:self action:@selector(clickedInfoButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_scrollView addSubview:_infoButton];
+    if (_page1InfoButton == nil) {
+        _page1InfoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_page1InfoButton setImage:infoButtonImage forState:UIControlStateNormal];
+        [_page1InfoButton setImage:infoButtonImageHighlighted forState:UIControlStateHighlighted];
+        _page1InfoButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
+        [_page1InfoButton addTarget:self action:@selector(clickedInfoButton:) forControlEvents:UIControlEventTouchUpInside];
+        [_scrollView addSubview:_page1InfoButton];
     }
     
     // Add Logo
@@ -590,7 +589,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 - (void)layoutPage1Controls
 {
     UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
-    _infoButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
+    _page1InfoButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
 
     CGFloat x,y;
     
@@ -1078,12 +1077,11 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)signInForWPComForUsername:(NSString *)username andPassword:(NSString *)password
 {
-    _userIsDotCom = true;
-    
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Connecting to WordPress.com", nil) maskType:SVProgressHUDMaskTypeBlack];
     
     void (^loginSuccessBlock)(void) = ^{
         [SVProgressHUD dismiss];
+        _userIsDotCom = true;
         [self showAddUsersBlogsForWPCom];
     };
     

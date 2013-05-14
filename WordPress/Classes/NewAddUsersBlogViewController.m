@@ -77,14 +77,6 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
-- (void)addSingleBlog
-{
-    if ([_usersBlogs count] != 1)
-        return;
-    
-    [self createBlog:[_usersBlogs objectAtIndex:0]];
-}
-
 - (NSUInteger)supportedInterfaceOrientations {
     if (IS_IPHONE)
         return UIInterfaceOrientationMaskPortrait;
@@ -263,13 +255,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
                     if (self.onNoBlogsLoaded) {
                         self.onNoBlogsLoaded(self);
                     }
-                } else {
-                    [_usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                        NSString *title = [obj valueForKey:@"blogName"];
-                        title = [title stringByDecodingXMLCharacters];
-                        [obj setValue:title forKey:@"blogName"];
-                    }];
-                    
+                } else {                    
                     // Select First Blog
                     NSString *firstBlogId = [[_usersBlogs objectAtIndex:0] objectForKey:@"blogid"];
                     if (![_selectedBlogs containsObject:firstBlogId]) {

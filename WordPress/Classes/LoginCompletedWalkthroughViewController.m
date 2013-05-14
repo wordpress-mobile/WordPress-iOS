@@ -57,9 +57,7 @@
     CGFloat _heightFromSwipeToContinueToBottom;
 
     BOOL _savedOriginalPositionsOfStickyControls;
-    BOOL _isDismissing;
-    
-    UIColor *_textShadowColor;
+    BOOL _isDismissing;    
 }
 
 @end
@@ -76,8 +74,11 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
 {
     [super viewDidLoad];
     
-    [self getInitialWidthAndHeight];
+    _viewWidth = [self.view formSheetViewWidth];
+    _viewHeight = [self.view formSheetViewHeight];
+    
     self.view.backgroundColor = [UIColor colorWithRed:30.0/255.0 green:140.0/255.0 blue:190.0/255.0 alpha:1.0];
+
     [self addScrollview];
     [self initializePage1];
     [self initializePage2];
@@ -147,12 +148,6 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
 
 
 #pragma mark - Private Methods
-
-- (void)getInitialWidthAndHeight
-{
-    _viewWidth = [self.view formSheetViewWidth];
-    _viewHeight = [self.view formSheetViewHeight];
-}
 
 - (void)savePositionsOfStickyControls
 {

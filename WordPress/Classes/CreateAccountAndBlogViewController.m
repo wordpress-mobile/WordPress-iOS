@@ -125,7 +125,6 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     [self layoutPage1Controls];
     [self layoutPage2Controls];
     [self layoutPage3Controls];
-    [self equalizePreviousAndNextButtonWidths];
     
     if (!IS_IPAD) {
         // We don't need to shift the controls up on the iPad as there's enough space.
@@ -939,6 +938,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 - (void)clickedPage1NextButton
 {
     [self.view endEditing:YES];
+    
     if (![self page1FieldsValid]) {
         [self showFieldsNotFilledError];
         return;
@@ -1163,6 +1163,9 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1NextButton.enabled = YES;
         [SVProgressHUD dismiss];
         _page1FieldsValid = true;
+        if ([[_page2SiteAddressText.text trim] length] == 0) {
+            _page2SiteAddressText.text = [NSString stringWithFormat:@"%@.wordpress.com", _page1UsernameText.text];
+        }
         [self moveToPage:2];
     };
     
