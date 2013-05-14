@@ -10,6 +10,7 @@
 #import "WordPressComApi.h"
 #import "NSString+Helpers.h"
 #import "NSString+Util.h"
+#import <DTCoreText/DTCoreText.h>
 
 NSInteger const ReaderTopicEndpointIndex = 3;
 
@@ -285,7 +286,12 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 
 - (NSString *)createSummary:(NSString *)str {
-	str = [self normalizeParagraphs:[str substringToIndex:300]];
+		
+    NSAttributedString *attrStr = [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
+																	   options:nil
+															documentAttributes:NULL];
+	
+	str = [attrStr plainTextString];
 	
 	NSString *snippet = [str substringToIndex:200];
 	NSRange rng = [snippet rangeOfString:@"." options:NSBackwardsSearch];

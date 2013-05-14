@@ -181,7 +181,7 @@
 	_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_authorLabel.backgroundColor = [UIColor clearColor];
 	_authorLabel.font = [UIFont systemFontOfSize:14.0f];
-	_authorLabel.text = self.post.author;
+	_authorLabel.text = (self.post.author != nil) ? self.post.author : self.post.authorDisplayName;
 	_authorLabel.textColor = [UIColor whiteColor];
 	[_authorView addSubview:_authorLabel];
 	
@@ -203,6 +203,7 @@
 	
 	UIImageView *commentImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"note_icon_comment.png"]];
 	commentImageView.frame = CGRectMake(width - 26.0f, 12.0f, 16.0f, 16.0f);
+	commentImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	[_authorView addSubview:commentImageView];
 	
 	UILabel *commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - 60.0f, 10.0f, 30.0f, 20.0f)];
@@ -210,14 +211,17 @@
 	commentLabel.textColor = [UIColor whiteColor];
 	commentLabel.textAlignment = UITextAlignmentRight;
 	commentLabel.backgroundColor = [UIColor clearColor];
+	commentLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	commentLabel.text = [self.post.commentCount stringValue];
 	[_authorView addSubview:commentLabel];
 	
 	UIImageView *likesImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"note_icon_like.png"]];
 	likesImageView.frame = CGRectMake(width - 26.0f, 32.0f, 16.0f, 16.0f);
+	likesImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	[_authorView addSubview:likesImageView];
 	
 	UILabel *likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - 60.0f, 30.0f, 30.0f, 20.0f)];
+	likesLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	likesLabel.font = [UIFont systemFontOfSize:14.0f];
 	likesLabel.textColor = [UIColor whiteColor];
 	likesLabel.textAlignment = UITextAlignmentRight;
@@ -383,21 +387,18 @@
 	
 	// First the imageView
 	CGFloat width = _textContentView.frame.size.width;
-//	CGRect frame = UIEdgeInsetsInsetRect(_textContentView.frame, _textContentView.edgeInsets);
-//	if(imageView.image.size.width > frame.size.width) {
-		
-		// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
-		// so position it offset by the inverse of _textContentView's edgeInsets.
-		UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
-		edgeInsets.left = 0.0f - edgeInsets.left;
-		edgeInsets.top = 0.0f;
-		edgeInsets.right = 0.0f - edgeInsets.right;
-		edgeInsets.bottom = 0.0f;
-		imageView.edgeInsets = edgeInsets;
-		
-		viewSize.width = width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-		viewSize.height = imageView.image.size.height * (width / imageView.image.size.width);
-//	}
+
+	// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
+	// so position it offset by the inverse of _textContentView's edgeInsets.
+	UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
+	edgeInsets.left = 0.0f - edgeInsets.left;
+	edgeInsets.top = 0.0f;
+	edgeInsets.right = 0.0f - edgeInsets.right;
+	edgeInsets.bottom = 0.0f;
+	imageView.edgeInsets = edgeInsets;
+	
+	viewSize.width = width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+	viewSize.height = imageView.image.size.height * (width / imageView.image.size.width);
 	
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
 	
