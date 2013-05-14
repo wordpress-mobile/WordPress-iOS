@@ -43,8 +43,8 @@
 		CGFloat height = [cell requiredRowHeightForWidth:width tableStyle:tableStyle];
 		[heights addObject:[NSNumber numberWithFloat:height]];
 	}
-	return heights;
 	
+	return heights;
 }
 
 
@@ -82,7 +82,6 @@
 		_textContentView.backgroundColor = [UIColor clearColor];
 		_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 5.0f, 10.0f);
 		_textContentView.delegate = self;
-		_textContentView.shouldDrawLinks = NO;
 		_textContentView.shouldDrawImages = NO;
 		_textContentView.shouldLayoutCustomSubviews = NO;
 		[self.contentView addSubview:_textContentView];

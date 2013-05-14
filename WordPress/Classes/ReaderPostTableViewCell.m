@@ -69,9 +69,8 @@
 		self.snippetTextView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 44.0f)];
 		_snippetTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_snippetTextView.backgroundColor = [UIColor clearColor];
-		_snippetTextView.edgeInsets = UIEdgeInsetsMake(0.f, 10.f, 0.f, 0.f);
+		_snippetTextView.edgeInsets = UIEdgeInsetsMake(0.f, 10.f, 0.f, 10.f);
 		_snippetTextView.delegate = self;
-		_snippetTextView.shouldDrawLinks = NO;
 		_snippetTextView.shouldDrawImages = NO;
 		_snippetTextView.shouldLayoutCustomSubviews = NO;
 		[self.contentView addSubview:_snippetTextView];
@@ -387,7 +386,7 @@
 	
 	// use normal push action for opening URL
 	[button addTarget:self action:@selector(handleLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
-	
+
 	return button;
 }
 
