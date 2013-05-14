@@ -303,7 +303,7 @@
 }
 
 - (NSInteger)topSectionRowCount {
-    if ([WordPressComApi sharedApi].username) {
+    if ([[WordPressComApi sharedApi] hasCredentials]) {
         // reader and notifications
         return 2;
     } else {
