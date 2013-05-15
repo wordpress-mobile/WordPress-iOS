@@ -27,6 +27,7 @@
     NSMutableArray *_selectedBlogs;
     WPNUXSecondaryButton *_selectAllButton;
     WPNUXPrimaryButton *_addSelectedButton;
+    UIView *_mainTextureView;
     
     CGFloat _viewWidth;
     CGFloat _viewHeight;
@@ -61,7 +62,8 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     
     _viewWidth = [self.view formSheetViewWidth];
     _viewHeight = [self.view formSheetViewHeight];
-        
+    
+    [self addBackgroundTexture];
     [self addTableView];
     [self addBottomPanel];
 }
@@ -139,6 +141,14 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 
 #pragma mark - Private Methods
 
+- (void)addBackgroundTexture
+{
+    _mainTextureView = [[UIView alloc] initWithFrame:self.view.bounds];
+    _mainTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
+    [self.view addSubview:_mainTextureView];
+    _mainTextureView.userInteractionEnabled = NO;
+}
+
 - (void)addTableView
 {
     CGRect tableViewFrame = CGRectMake(0, 0, _viewWidth, _viewHeight);
@@ -165,6 +175,11 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     bottomPanelLine.backgroundColor = [UIColor colorWithRed:17.0/255.0 green:17.0/255.0 blue:17.0/255.0 alpha:0.95];
     bottomPanelLine.frame = CGRectMake(0, CGRectGetMinY(bottomPanel.frame), _viewWidth, 1);
     [self.view addSubview:bottomPanel];
+    
+    UIView *bottomPanelTextureView = [[UIView alloc] initWithFrame:bottomPanel.frame];
+    bottomPanelTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
+    bottomPanelTextureView.userInteractionEnabled = NO;
+    [self.view addSubview:bottomPanelTextureView];
     
     _selectAllButton = [[WPNUXSecondaryButton alloc] init];
     [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];

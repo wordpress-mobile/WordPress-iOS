@@ -34,6 +34,7 @@
     UIScrollViewDelegate,
     UITextFieldDelegate> {
     UIScrollView *_scrollView;
+    UIView *_mainTextureView;
     WPNUXSecondaryButton *_skipToCreateAccount;
     WPNUXPrimaryButton *_skipToSignIn;
     
@@ -47,6 +48,7 @@
     UIImageView *_page1BottomSeparator;
     UIView *_bottomPanelLine;
     UIView *_bottomPanel;
+    UIView *_bottomPanelTextureView;
     UIPageControl *_pageControl;
     
     // Page 2
@@ -68,6 +70,7 @@
     CGFloat _viewHeight;
     
     CGFloat _bottomPanelOriginalX;
+    CGFloat _bottomPanelTextureOriginalX;
     CGFloat _skipToCreateAccountOriginalX;
     CGFloat _skipToSignInOriginalX;
     CGFloat _pageControlOriginalX;
@@ -110,7 +113,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     _viewHeight = [self.view formSheetViewHeight];
         
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
-    
+
+    [self addBackgroundTexture];
     [self addScrollview];
     [self initializePage1];
     [self initializePage2];
@@ -167,25 +171,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)moveStickyControlsForContentOffset:(CGPoint)contentOffset
 {
-    // TODO: Redo this method, it's confusing.
-    
-    if (contentOffset.x < 0) {
-        CGRect bottomPanelFrame = _bottomPanel.frame;
-        bottomPanelFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
-        _bottomPanel.frame = bottomPanelFrame;
-        
-        CGRect skipToCreateAccountFrame = _skipToCreateAccount.frame;
-        skipToCreateAccountFrame.origin.x = _skipToCreateAccountOriginalX + contentOffset.x;
-        _skipToCreateAccount.frame = skipToCreateAccountFrame;
-        
-        CGRect skipToSignInFrame = _skipToSignIn.frame;
-        skipToSignInFrame.origin.x = _skipToSignInOriginalX + contentOffset.x;
-        _skipToSignIn.frame = skipToSignInFrame;
-        
-        return;
-    }
-    
     NSUInteger pageViewed = ceil(contentOffset.x/_viewWidth) + 1;
+
     // We only want the sign in, create account and help buttons to drag along until we hit the sign in screen
     if (pageViewed < 3) {
         // If the user is editing the sign in page and then swipes over, dismiss keyboard
@@ -207,9 +194,11 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     CGRect bottomPanelFrame = _bottomPanel.frame;
     bottomPanelFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
     _bottomPanel.frame = bottomPanelFrame;
+    
+    CGRect bottomPanelTextureFrame = _bottomPanelTextureView.frame;
+    bottomPanelTextureFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
+    _bottomPanelTextureView.frame = bottomPanelTextureFrame;
 }
-
-
 
 #pragma mark - UITextField delegate methods
 
@@ -411,6 +400,14 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 #pragma mark - Private Methods
 
+- (void)addBackgroundTexture
+{
+    _mainTextureView = [[UIView alloc] initWithFrame:self.view.bounds];
+    _mainTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
+    [self.view addSubview:_mainTextureView];
+    _mainTextureView.userInteractionEnabled = NO;
+}
+
 - (void)addScrollview
 {
     _scrollView = [[UIScrollView alloc] init];
@@ -503,8 +500,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _page1BottomSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [_scrollView addSubview:_page1BottomSeparator];
     }
-
-    // Bottom Portion
+    
+    // Bottom Panel
     if (_bottomPanel == nil) {
         _bottomPanel = [[UIView alloc] init];
         _bottomPanel.backgroundColor = [WPNUXUtility bottomPanelBackgroundColor];
@@ -514,13 +511,21 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         [_bottomPanel addGestureRecognizer:gestureRecognizer];
     }
     
+    // Bottom Texture View
+    if (_bottomPanelTextureView == nil) {
+        _bottomPanelTextureView = [[UIView alloc] init];
+        _bottomPanelTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
+        _bottomPanelTextureView.userInteractionEnabled = NO;
+        [_scrollView addSubview:_bottomPanelTextureView];
+    }
+    
     // Bottom Panel "Black" Line
     if (_bottomPanelLine == nil) {
         _bottomPanelLine = [[UIView alloc] init];
         _bottomPanelLine.backgroundColor = [WPNUXUtility bottomPanelLineColor];
         [_scrollView addSubview:_bottomPanelLine];
     }
-    
+        
     // Add Page Control
     if (_pageControl == nil) {
         // The page control adds a bunch of extra space for padding that messes with our calculations.
@@ -580,7 +585,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 - (void)layoutPage1Controls
 {
     UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
-    _page1InfoButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
+    _page1InfoButton.frame = CGRectMake(0, 0, infoButtonImage.size.width, infoButtonImage.size.height);
 
     CGFloat x,y;
     
@@ -621,6 +626,9 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     x = [self adjustX:x forPage:1];
     y = _viewHeight - GeneralWalkthroughBottomBackgroundHeight;
     _bottomPanel.frame = CGRectMake(x, y, _viewWidth, GeneralWalkthroughBottomBackgroundHeight);
+    
+    // Layout Bottom Panel Gradient View
+    _bottomPanelTextureView.frame = _bottomPanel.frame;
     
     // Layout Bottom Panel Line
     x = 0;
@@ -887,6 +895,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _skipToCreateAccountOriginalX = CGRectGetMinX(_skipToCreateAccount.frame);
         _skipToSignInOriginalX = CGRectGetMinX(_skipToSignIn.frame);
         _bottomPanelOriginalX = CGRectGetMinX(_bottomPanel.frame);
+        _bottomPanelTextureOriginalX = CGRectGetMinX(_bottomPanelTextureView.frame);
         _pageControlOriginalX = CGRectGetMinX(_pageControl.frame);
     }
 }

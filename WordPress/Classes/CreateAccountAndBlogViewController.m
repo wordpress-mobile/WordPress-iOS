@@ -297,7 +297,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_helpButton setImage:helpButtonImage forState:UIControlStateNormal];
         [_helpButton setImage:helpButtonImageHighlighted forState:UIControlStateHighlighted];
-        _helpButton.frame = CGRectMake(CreateAccountAndBlogStandardOffset, CreateAccountAndBlogStandardOffset, helpButtonImage.size.width, helpButtonImage.size.height);
+        _helpButton.frame = CGRectMake(0, 0, helpButtonImage.size.width, helpButtonImage.size.height);
         [_helpButton addTarget:self action:@selector(clickedInfoButton) forControlEvents:UIControlEventTouchUpInside];
         [_scrollView addSubview:_helpButton];
     }
@@ -391,8 +391,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     // Layout Help Button
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
-    x = _viewWidth - CreateAccountAndBlogStandardOffset - helpButtonImage.size.width;
-    y = CreateAccountAndBlogStandardOffset;
+    x = _viewWidth - helpButtonImage.size.width;
+    y = 0;
     _helpButton.frame = CGRectMake(x, y, helpButtonImage.size.width, helpButtonImage.size.height);
     
     // Layout Cancel Button

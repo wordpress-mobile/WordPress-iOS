@@ -16,6 +16,7 @@
 
 @interface LoginCompletedWalkthroughViewController ()<UIScrollViewDelegate> {
     UIScrollView *_scrollView;
+    UIView *_mainTextureView;
     UILabel *_skipToApp;
     
     // Page 1
@@ -27,6 +28,7 @@
     UIImageView *_page1BottomSeparator;
     UIView *_bottomPanelLine;
     UIView *_bottomPanel;
+    UIView *_bottomPanelTextureView;
     UIPageControl *_pageControl;
     
     // Page 2
@@ -52,6 +54,7 @@
     
     CGFloat _currentPage;
     CGFloat _bottomPanelOriginalX;
+    CGFloat _bottomPanelTextureOriginalX;
     CGFloat _skipToAppOriginalX;
     CGFloat _pageControlOriginalX;
     CGFloat _heightFromSwipeToContinueToBottom;
@@ -79,6 +82,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     
     self.view.backgroundColor = [WPNUXUtility backgroundColor];
 
+    [self addBackgroundTexture];
     [self addScrollview];
     [self initializePage1];
     [self initializePage2];
@@ -113,38 +117,32 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    // TODO: Clean up this method as it's confusing
-    if (scrollView.contentOffset.x < 0) {
-        CGRect bottomPanelFrame = _bottomPanel.frame;
-        bottomPanelFrame.origin.x = _bottomPanelOriginalX + scrollView.contentOffset.x;
-        _bottomPanel.frame = bottomPanelFrame;
-        
-        CGRect skipToAppFrame = _skipToApp.frame;
-        skipToAppFrame.origin.x = _skipToAppOriginalX + scrollView.contentOffset.x;
-        _skipToApp.frame = skipToAppFrame;
-        
-        return;
-    }
-    
     NSUInteger pageViewed = ceil(scrollView.contentOffset.x/_viewWidth) + 1;
-    
-    CGRect bottomPanelFrame = _bottomPanel.frame;
-    bottomPanelFrame.origin.x = _bottomPanelOriginalX + scrollView.contentOffset.x;
-    _bottomPanel.frame = bottomPanelFrame;
-    
-    CGRect pageControlFrame = _pageControl.frame;
-    pageControlFrame.origin.x = _pageControlOriginalX + scrollView.contentOffset.x;
-    _pageControl.frame = pageControlFrame;
-
-    CGRect skipToAppFrame = _skipToApp.frame;
-    skipToAppFrame.origin.x = _skipToAppOriginalX + scrollView.contentOffset.x;
-    _skipToApp.frame = skipToAppFrame;
-    
     [self flagPageViewed:pageViewed];
+    [self moveStickyControlsForContentOffset:scrollView.contentOffset];
 }
 
 
 #pragma mark - Private Methods
+
+- (void)moveStickyControlsForContentOffset:(CGPoint)contentOffset
+{
+    CGRect bottomPanelFrame = _bottomPanel.frame;
+    bottomPanelFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
+    _bottomPanel.frame = bottomPanelFrame;
+    
+    CGRect bottomPanelTextureFrame = _bottomPanelTextureView.frame;
+    bottomPanelTextureFrame.origin.x = _bottomPanelOriginalX + contentOffset.x;
+    _bottomPanelTextureView.frame = bottomPanelTextureFrame;
+    
+    CGRect pageControlFrame = _pageControl.frame;
+    pageControlFrame.origin.x = _pageControlOriginalX + contentOffset.x;
+    _pageControl.frame = pageControlFrame;
+    
+    CGRect skipToAppFrame = _skipToApp.frame;
+    skipToAppFrame.origin.x = _skipToAppOriginalX + contentOffset.x;
+    _skipToApp.frame = skipToAppFrame;
+}
 
 - (void)savePositionsOfStickyControls
 {
@@ -152,6 +150,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _savedOriginalPositionsOfStickyControls = true;
         _skipToAppOriginalX = CGRectGetMinX(_skipToApp.frame);
         _bottomPanelOriginalX = CGRectGetMinX(_bottomPanel.frame);
+        _bottomPanelTextureOriginalX = CGRectGetMinX(_bottomPanelTextureView.frame);
         _pageControlOriginalX = CGRectGetMinX(_pageControl.frame);
     }
 }
@@ -173,6 +172,14 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         }
     };
     [self.view addSubview:grayOverlay];
+}
+
+- (void)addBackgroundTexture
+{
+    _mainTextureView = [[UIView alloc] initWithFrame:self.view.bounds];
+    _mainTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
+    [self.view addSubview:_mainTextureView];
+    _mainTextureView.userInteractionEnabled = NO;
 }
 
 - (void)addScrollview
@@ -258,7 +265,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         [_scrollView addSubview:_page1BottomSeparator];
     }
     
-    // Bottom Portion
+    // Bottom Panel
     if (_bottomPanel == nil) {
         _bottomPanel = [[UIView alloc] init];
         _bottomPanel.backgroundColor = [WPNUXUtility bottomPanelBackgroundColor];
@@ -266,6 +273,14 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedBottomPanel:)];
         gestureRecognizer.numberOfTapsRequired = 1;
         [_bottomPanel addGestureRecognizer:gestureRecognizer];
+    }
+    
+    // Bottom Texture View
+    if (_bottomPanelTextureView == nil) {
+        _bottomPanelTextureView = [[UIView alloc] init];
+        _bottomPanelTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
+        _bottomPanelTextureView.userInteractionEnabled = NO;
+        [_scrollView addSubview:_bottomPanelTextureView];
     }
     
     // Bottom Panel "Black" Line
@@ -357,6 +372,9 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     y = _viewHeight - LoginCompletedWalkthroughBottomBackgroundHeight;
     _bottomPanel.frame = CGRectMake(x, y, _viewWidth, LoginCompletedWalkthroughBottomBackgroundHeight);
     
+    // Layout Bottom Panel Gradient View
+    _bottomPanelTextureView.frame = _bottomPanel.frame;
+        
     // Layout Bottom Panel Line
     x = 0;
     y = CGRectGetMinY(_bottomPanel.frame);
