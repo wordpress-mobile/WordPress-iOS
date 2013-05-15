@@ -10,7 +10,6 @@
 #import "WordPressComApi.h"
 #import "NSString+Helpers.h"
 #import "NSString+Util.h"
-#import <DTCoreText/DTCoreText.h>
 
 NSInteger const ReaderTopicEndpointIndex = 3;
 
@@ -18,7 +17,6 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 - (void)updateFromDictionary:(NSDictionary *)dict;
 - (NSString *)createSummary:(NSString *)str;
-- (NSDate *)convertDateString:(NSString *)dateString;
 - (NSString *)normalizeParagraphs:(NSString *)string;
 
 @end
@@ -167,8 +165,8 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		
 		self.content = [self normalizeParagraphs:[dict objectForKey:@"content"]];
 		
-		self.date_created_gmt = [self convertDateString:[dict objectForKey:@"date"]];
-		self.sortDate = [self convertDateString:[editorial objectForKey:@"displayed_on"]];
+		self.date_created_gmt = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
+		self.sortDate = [DateUtils dateFromISOString:[editorial objectForKey:@"displayed_on"]];
 		
 		self.permaLink = [dict objectForKey:@"URL"];
 		self.postTitle = [dict objectForKey:@"title"];
@@ -227,7 +225,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 			NSTimeInterval timeInterval = [timestamp doubleValue];
 			date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
 		} else {
-			date = [self convertDateString:[dict objectForKey:@"post_date_gmt"]];
+			date = [DateUtils dateFromISOString:[dict objectForKey:@"post_date_gmt"]];
 		}
 		self.date_created_gmt = date;
 		self.sortDate = date;
@@ -237,7 +235,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		
 		self.siteID = [dict numberForKey:@"blog_id"];
 		
-		self.summary = [self normalizeParagraphs:[dict objectForKey:@"post_content"]];
+		self.summary = [[dict objectForKey:@"post_content"] stringByStrippingHTML];
 				
 		NSString *img = [dict objectForKey:@"post_featured_thumbnail"];
 		if([img length]) {
@@ -285,13 +283,8 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 }
 
 
-- (NSString *)createSummary:(NSString *)str {
-		
-    NSAttributedString *attrStr = [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
-																	   options:nil
-															documentAttributes:NULL];
-	
-	str = [attrStr plainTextString];
+- (NSString *)createSummary:(NSString *)str {	
+	str = [str stringByStrippingHTML];
 	
 	NSString *snippet = [str substringToIndex:200];
 	NSRange rng = [snippet rangeOfString:@"." options:NSBackwardsSearch];
@@ -328,24 +321,6 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	regex = [NSRegularExpression regularExpressionWithPattern:@"</p>\\s*</p>" options:NSRegularExpressionCaseInsensitive error:&error];
 	string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"</p>"];
 	return string;
-}
-
-
-- (NSDate *)convertDateString:(NSString *)dateString {
-	
-	NSArray *formats = @[@"yyyy-MM-dd'T'HH:mm:ssZZZZZ", @"yyyy-MM-dd HH:mm:ss"];
-	NSDate *date;
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	
-	for (NSString *dateFormat in formats) {
-		[dateFormatter setDateFormat:dateFormat];
-		date = [dateFormatter dateFromString:dateString];
-		if(date){
-			return date;
-		}
-	}
-	
-	return nil;
 }
 
 

@@ -167,7 +167,7 @@
 	self.authorAvatarURL = [author stringForKey:@"avatar_URL"];
 	
 	self.content = [dict stringForKey:@"content"];
-	self.dateCreated = [self convertDateString:[dict objectForKey:@"date"]];
+	self.dateCreated = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
 	self.link = [dict stringForKey:@"URL"];
 	
 	id parent = [dict objectForKey:@"parent"];
@@ -181,24 +181,6 @@
     self.status = [dict objectForKey:@"status"];
     self.type = [dict objectForKey:@"type"];
 
-}
-
-
-- (NSDate *)convertDateString:(NSString *)dateString {
-	
-	NSArray *formats = @[@"yyyy-MM-dd'T'HH:mm:ssZZZZZ", @"yyyy-MM-dd HH:mm:ss"];
-	NSDate *date;
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	
-	for (NSString *dateFormat in formats) {
-		[dateFormatter setDateFormat:dateFormat];
-		date = [dateFormatter dateFromString:dateString];
-		if(date){
-			return date;
-		}
-	}
-	
-	return nil;
 }
 
 
