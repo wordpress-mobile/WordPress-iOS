@@ -8,11 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol ReaderMediaView <NSObject>
+@interface ReaderMediaView : UIControl
 
+@property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, assign) UIEdgeInsets edgeInsets;
+@property (nonatomic, strong) NSURL *contentURL;
 
 - (UIImage *)image;
+- (void)setImage:(UIImage *)image;
 - (NSURL *)contentURL;
 
+- (void)setImageWithURL:(NSURL *)url
+	   placeholderImage:(UIImage *)image
+				success:(void (^)(ReaderMediaView *readerMediaView))success
+				failure:(void (^)(ReaderMediaView *readerMediaView, NSError *error))failure;
 @end

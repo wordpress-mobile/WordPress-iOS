@@ -15,23 +15,14 @@ typedef enum {
     ReaderVideoContentTypeEmbed
 } ReaderVideoContentType;
 
-@interface ReaderVideoView : UIControl <ReaderMediaView>
+@interface ReaderVideoView : ReaderMediaView
 
-@property (nonatomic, assign) UIEdgeInsets edgeInsets;
-@property (readonly, nonatomic, strong) NSURL *contentURL;
 @property (readonly, nonatomic, assign) ReaderVideoContentType contentType;
 @property (nonatomic, strong) NSString *title;
 
-
 - (void)setContentURL:(NSURL *)url
 			   ofType:(ReaderVideoContentType)type
-			  success:(void (^)(ReaderVideoView *videoView))success
-			  failure:(void (^)(ReaderVideoView *videoView, NSError *error))failure;
-
-- (void)setImageWithURL:(NSURL *)url
-	   placeholderImage:(UIImage *)image
-				success:(void (^)(ReaderVideoView *videoView))success
-				failure:(void (^)(ReaderVideoView *videoView, NSError *error))failure;
-
+			  success:(void (^)(id videoView))success
+			  failure:(void (^)(id videoView, NSError *error))failure;
 
 @end
