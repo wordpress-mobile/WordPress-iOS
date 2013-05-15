@@ -11,9 +11,7 @@
 
 @interface ReaderVideoView()
 
-@property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIButton *playButton;
-@property (readwrite, nonatomic, strong) NSURL *contentURL;
 @property (readwrite, nonatomic, assign) ReaderVideoContentType contentType;
 
 + (AFHTTPClient *)sharedYoutubeClient;
@@ -22,14 +20,14 @@
 
 - (void)handlePlayButtonTapped:(id)sender;
 - (void)getYoutubeThumb:(NSString *)vidId
-				success:(void (^)(ReaderVideoView *videoView))success
-				failure:(void (^)(ReaderVideoView *videoView, NSError *error))failure;
+				success:(void (^)(id videoView))success
+				failure:(void (^)(id videoView, NSError *error))failure;
 - (void)getVimeoThumb:(NSString *)vidId
-			  success:(void (^)(ReaderVideoView *videoView))success
-			  failure:(void (^)(ReaderVideoView *videoView, NSError *error))failure;
+			  success:(void (^)(id videoView))success
+			  failure:(void (^)(id videoView, NSError *error))failure;
 - (void)getDailyMotionThumb:(NSString *)vidId
-					success:(void (^)(ReaderVideoView *videoView))success
-					failure:(void (^)(ReaderVideoView *videoView, NSError *error))failure;
+					success:(void (^)(id videoView))success
+					failure:(void (^)(id videoView, NSError *error))failure;
 
 @end
 
@@ -70,13 +68,8 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-		frame.origin.x = 0.0f;
-		frame.origin.y = 0.0f;
-        self.imageView = [[UIImageView alloc] initWithFrame:frame];
-		[_imageView setImage:[UIImage imageNamed:@"reader-video-placholder.png"]];
-		_imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		_imageView.backgroundColor = [UIColor blackColor];
-		[self addSubview:_imageView];
+		self.imageView.backgroundColor = [UIColor blackColor];
+		[self.imageView setImage:[UIImage imageNamed:@"reader-video-placholder.png"]];
 		
 		self.playButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		_playButton.frame = frame;
@@ -89,92 +82,39 @@
 }
 
 
-- (void)layoutSubviews {
-	[super layoutSubviews];
-	
-	CGRect frame = CGRectMake(0.0f, 0.0f, self.frame.size.width, self.frame.size.height);
-	if (UIEdgeInsetsEqualToEdgeInsets(UIEdgeInsetsZero, _edgeInsets)) {
-		_imageView.frame = frame;
-	} else {
-		CGFloat width = frame.size.width - (_edgeInsets.left + _edgeInsets.right);
-		frame.size.width = width;
-		frame.origin.x = _edgeInsets.left;
-	}
-	_imageView.frame = frame;
-}
-
-
 #pragma mark - Instance Methods
-
-- (void)setEdgeInsets:(UIEdgeInsets)edgeInsets {
-	_edgeInsets = edgeInsets;
-	[self setNeedsLayout];
-}
-
 
 - (void)handlePlayButtonTapped:(id)sender {
 	[self sendActionsForControlEvents:UIControlEventTouchUpInside];
 }
 
 
-- (UIImage *)image {
-	return _imageView.image;
-}
-
-
 - (void)setContentURL:(NSURL *)url
 			   ofType:(ReaderVideoContentType)type
-			  success:(void (^)(ReaderVideoView *videoView))success
-			  failure:(void (^)(ReaderVideoView *videoView, NSError *error))failure {
+			  success:(void (^)(id videoView))success
+			  failure:(void (^)(id videoView, NSError *error))failure {
 	
 	self.contentType = type;
 	self.contentURL = url;
 	
-	NSString *path = [_contentURL path];
+	NSString *path = [self.contentURL path];
 	NSRange rng = [path rangeOfString:@"/" options:NSBackwardsSearch];
 	NSString *vidId = [path substringFromIndex:rng.location + 1];
 	
-	if (NSNotFound != [[_contentURL absoluteString] rangeOfString:@"youtube.com/embed"].location) {
+	if (NSNotFound != [[self.contentURL absoluteString] rangeOfString:@"youtube.com/embed"].location) {
 		[self getYoutubeThumb:vidId success:success failure:failure];
-	} else if (NSNotFound != [[_contentURL absoluteString] rangeOfString:@"vimeo.com/video"].location) {
+	} else if (NSNotFound != [[self.contentURL absoluteString] rangeOfString:@"vimeo.com/video"].location) {
 		[self getVimeoThumb:vidId success:success failure:failure];
-	} else if (NSNotFound != [[_contentURL absoluteString] rangeOfString:@"dailymotion.com/embed/video"].location) {
+	} else if (NSNotFound != [[self.contentURL absoluteString] rangeOfString:@"dailymotion.com/embed/video"].location) {
 		[self getDailyMotionThumb:vidId success:success failure:failure];
 	}
 
 }
 
 
-- (void)setImageWithURL:(NSURL *)url
-	   placeholderImage:(UIImage *)image
-				success:(void (^)(ReaderVideoView *videoView))success
-				failure:(void (^)(ReaderVideoView *videoView, NSError *error))failure {
-	
-	// Weak refs to avoid retain loop.
-	__weak id selfRef = self;
-	__weak UIImageView *imageViewRef = _imageView;
-	
-	void (^_success)(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) = ^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-		imageViewRef.image = image;
-		if (success) {
-			success(selfRef);
-		}
-	};
-	
-	void (^_failure)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) = ^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-		if(failure) {
-			failure(selfRef, error);
-		}
-	};
-	
-	NSURLRequest *req = [NSURLRequest requestWithURL:url];
-	[_imageView setImageWithURLRequest:req placeholderImage:image success:_success failure:_failure];
-}
-
-
 - (void)getYoutubeThumb:(NSString *)vidId
-				success:(void (^)(ReaderVideoView *videoView))success
-				failure:(void (^)(ReaderVideoView *videoView, NSError *error))failure {
+				success:(void (^)(id videoView))success
+				failure:(void (^)(id videoView, NSError *error))failure {
 	
 	__weak ReaderVideoView *selfRef = self;
 	NSString *path = [NSString stringWithFormat:@"/feeds/api/videos/%@?v=2&alt=json", vidId];
@@ -202,8 +142,8 @@
 
 
 - (void)getVimeoThumb:(NSString *)vidId
-			  success:(void (^)(ReaderVideoView *videoView))success
-			  failure:(void (^)(ReaderVideoView *videoView, NSError *error))failure {
+			  success:(void (^)(id videoView))success
+			  failure:(void (^)(id videoView, NSError *error))failure {
 
 	__weak ReaderVideoView *selfRef = self;
 	NSString *path = [NSString stringWithFormat:@"/api/v2/video/%@.json", vidId];
@@ -226,8 +166,8 @@
 
 
 - (void)getDailyMotionThumb:(NSString *)vidId
-					success:(void (^)(ReaderVideoView *videoView))success
-					failure:(void (^)(ReaderVideoView *videoView, NSError *error))failure {
+					success:(void (^)(id videoView))success
+					failure:(void (^)(id videoView, NSError *error))failure {
 	
 	__weak ReaderVideoView *selfRef = self;
 	NSString *path = [NSString stringWithFormat:@"/video/%@?fields=thumbnail_large_url", vidId];

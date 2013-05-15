@@ -50,7 +50,7 @@
 - (void)prepareComments;
 - (void)updateRowHeightsForWidth:(CGFloat)width;
 - (void)updateLayout;
-- (void)updateMediaLayout:(id<ReaderMediaView>)mediaView;
+- (void)updateMediaLayout:(ReaderMediaView *)mediaView;
 - (void)updateToolbar;
 
 - (void)handleAuthorViewTapped:(id)sender;
@@ -65,7 +65,7 @@
 - (void)handleTitleButtonTapped:(id)sender;
 - (void)handleVideoTapped:(id)sender;
 - (void)handleCloseModal:(id)sender;
-- (void)handleMediaViewLoaded:(id<ReaderMediaView>)mediaView;
+- (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView;
 - (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
 
 @end
@@ -305,7 +305,7 @@
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
 	// Figure out image sizes after orientation change.
-	for (id<ReaderMediaView>mediaView in _mediaArray) {
+	for (ReaderMediaView *mediaView in _mediaArray) {
 		[self updateMediaLayout:mediaView];
 	}
 	
@@ -378,7 +378,7 @@
 }
 
 
-- (void)updateMediaLayout:(id<ReaderMediaView>)imageView {
+- (void)updateMediaLayout:(ReaderMediaView *)imageView {
 
 	NSURL *url = imageView.contentURL;
 	
@@ -590,7 +590,7 @@
 }
 
 
-- (void)handleMediaViewLoaded:(id<ReaderMediaView>)mediaView {
+- (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView {
 	
 	[self updateMediaLayout:mediaView];
 	
@@ -836,13 +836,13 @@
 		[imageView addTarget:self action:@selector(handleImageLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
 		if (attachment.contents) {
-			[imageView setImage:attachment.contents];
+			[imageView setImage:(UIImage *)attachment.contents];
 		} else {
 			[imageView setImageWithURL:attachment.contentURL
 					  placeholderImage:[UIImage imageNamed:@""]
-							   success:^(ReaderImageView *readerImageView) {
+							   success:^(id readerImageView) {
 								   [self handleMediaViewLoaded:readerImageView];
-							   } failure:^(ReaderImageView *readerImageView, NSError *error) {
+							   } failure:^(id readerImageView, NSError *error) {
 								   [self handleMediaViewLoaded:readerImageView];
 							   }];
 		}
