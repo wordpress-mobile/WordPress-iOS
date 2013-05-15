@@ -160,6 +160,16 @@
 }
 
 
+- (void)prepareForReuse {
+	[super prepareForReuse];
+	
+	_avatarImageView.image = nil;
+	_bylineLabel.text = nil;
+}
+
+
+#pragma mark - Instance Methods
+
 - (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style {
 	
 	CGFloat desiredHeight = 0.0f;
@@ -206,14 +216,6 @@
 	desiredHeight += (_controlView.frame.size.height + vpadding);
 	
 	return desiredHeight;
-}
-
-
-- (void)prepareForReuse {
-	[super prepareForReuse];
-
-	_avatarImageView.image = nil;
-	_bylineLabel.text = nil;
 }
 
 

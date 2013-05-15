@@ -95,6 +95,16 @@
 }
 
 
+- (void)prepareForReuse {
+	[super prepareForReuse];
+	
+	_authorLabel.text = @"";
+	_dateLabel.text = @"";
+}
+
+
+#pragma mark - Instance Methods
+
 - (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style {
 	
 	CGFloat desiredHeight = self.authorLabel.frame.size.height + 15.0f; // author + padding above, below, and between
@@ -127,14 +137,6 @@
 	desiredHeight += [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
 	
 	return desiredHeight;
-}
-
-
-- (void)prepareForReuse {
-	[super prepareForReuse];
-	
-	_authorLabel.text = @"";
-	_dateLabel.text = @"";
 }
 
 

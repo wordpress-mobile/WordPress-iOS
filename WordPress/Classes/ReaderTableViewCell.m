@@ -27,7 +27,7 @@
 		_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
 		_textContentView.delegate = self;
 		_textContentView.shouldDrawImages = NO;
-		_textContentView.shouldLayoutCustomSubviews = NO;
+		_textContentView.shouldLayoutCustomSubviews = YES;
 		[self.contentView addSubview:_textContentView];
 		
 		
