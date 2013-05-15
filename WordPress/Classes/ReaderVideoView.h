@@ -19,14 +19,19 @@ typedef enum {
 
 @property (nonatomic, assign) UIEdgeInsets edgeInsets;
 @property (readonly, nonatomic, strong) NSURL *contentURL;
-@property (readonly, nonatomic, strong) NSObject *content;
 @property (readonly, nonatomic, assign) ReaderVideoContentType contentType;
+@property (nonatomic, strong) NSString *title;
 
 
-/**
- All three properties should be set, and order may matter.  This is a convenience function for this purpose.
- */
-- (void)setContentURL:(NSURL *)url andContent:(NSObject *)content ofType:(ReaderVideoContentType)type;
-- (UIImage *)image;
+- (void)setContentURL:(NSURL *)url
+			   ofType:(ReaderVideoContentType)type
+			  success:(void (^)(ReaderVideoView *videoView))success
+			  failure:(void (^)(ReaderVideoView *videoView, NSError *error))failure;
+
+- (void)setImageWithURL:(NSURL *)url
+	   placeholderImage:(UIImage *)image
+				success:(void (^)(ReaderVideoView *videoView))success
+				failure:(void (^)(ReaderVideoView *videoView, NSError *error))failure;
+
 
 @end

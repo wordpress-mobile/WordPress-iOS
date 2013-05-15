@@ -23,6 +23,7 @@
 #import "ReaderComment.h"
 #import "ReaderCommentTableViewCell.h"
 #import "WPImageViewController.h"
+#import "WPWebVideoViewController.h"
 
 @interface ReaderPostDetailViewController ()<DTAttributedTextContentViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 
@@ -49,7 +50,7 @@
 - (void)prepareComments;
 - (void)updateRowHeightsForWidth:(CGFloat)width;
 - (void)updateLayout;
-- (void)updateMediaLayout:(id<ReaderMediaView>)imageView;
+- (void)updateMediaLayout:(id<ReaderMediaView>)mediaView;
 - (void)updateToolbar;
 
 - (void)handleAuthorViewTapped:(id)sender;
@@ -64,7 +65,7 @@
 - (void)handleTitleButtonTapped:(id)sender;
 - (void)handleVideoTapped:(id)sender;
 - (void)handleCloseModal:(id)sender;
-- (void)handleImageViewLoaded:(ReaderImageView *)imageView;
+- (void)handleMediaViewLoaded:(id<ReaderMediaView>)mediaView;
 - (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
 
 @end
@@ -111,8 +112,6 @@
 	
 	self.title = self.post.postTitle;
 	
-	self.tableView.backgroundView = nil;
-	self.tableView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	
 	if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
@@ -473,23 +472,28 @@
 
 - (void)handleImageLinkTapped:(id)sender {
 	ReaderImageView *imageView = (ReaderImageView *)sender;
-	NSString *url = [imageView.linkURL absoluteString];
 	
-	BOOL match = NO;
-	NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
-	for (NSString *type in types) {
-		if (NSNotFound != [url rangeOfString:type].location) {
-			match = YES;
-			break;
+	if(imageView.linkURL) {
+		NSString *url = [imageView.linkURL absoluteString];
+		
+		BOOL match = NO;
+		NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
+		for (NSString *type in types) {
+			if (NSNotFound != [url rangeOfString:type].location) {
+				match = YES;
+				break;
+			}
 		}
-	}
-	
-	if (match) {
-		[WPImageViewController presentAsModalWithURL:((ReaderImageView *)sender).linkURL];
+		
+		if (match) {
+			[WPImageViewController presentAsModalWithURL:((ReaderImageView *)sender).linkURL];
+		} else {
+			WPWebViewController *controller = [[WPWebViewController alloc] init];
+			[controller setUrl:((ReaderImageView *)sender).linkURL];
+			[self.panelNavigationController pushViewController:controller animated:YES];		
+		}
 	} else {
-		WPWebViewController *controller = [[WPWebViewController alloc] init];
-		[controller setUrl:((ReaderImageView *)sender).linkURL];
-		[self.panelNavigationController pushViewController:controller animated:YES];		
+		[WPImageViewController presentAsModalWithImage:imageView.image];
 	}
 }
 
@@ -577,28 +581,18 @@
 		controller.modalPresentationStyle = UIModalPresentationFormSheet;
 		[self.panelNavigationController presentModalViewController:controller animated:YES];
 		
-	} else if(videoView.contentType == ReaderVideoContentTypeIFrame) {
-		
-		WPWebViewController *controller = [[WPWebViewController alloc] init];
-		[controller setUrl:videoView.contentURL];
-		
-		UIBarButtonItem *closeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleCloseModal:)];
-		controller.navigationItem.leftBarButtonItem = closeButton;
-		
-		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-		navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
-		[self.panelNavigationController presentModalViewController:navController animated:YES];
-		
-	} else if (videoView.contentType == ReaderVideoContentTypeEmbed) {
-		// TODO: hmm... gonna be a webview and we'll set its content I suppose.
+	} else {
+		// Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
+		// Assume this is content we can show and try to load it.
+		WPWebVideoViewController *controller = [WPWebVideoViewController presentAsModalWithURL:videoView.contentURL];
+		controller.title = (videoView.title != nil) ? videoView.title : @"Video";
 	}
 }
 
 
-- (void)handleImageViewLoaded:(ReaderImageView *)imageView {
+- (void)handleMediaViewLoaded:(id<ReaderMediaView>)mediaView {
 	
-	[self updateMediaLayout:imageView];
+	[self updateMediaLayout:mediaView];
 	
 	// need to reset the layouter because otherwise we get the old framesetter or cached layout frames
 	self.textContentView.layouter = nil;
@@ -838,11 +832,8 @@
 		
 		ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
 		[_mediaArray addObject:imageView];
-		
-		if (attachment.hyperLinkURL) {
-			imageView.linkURL = attachment.hyperLinkURL;
-			[imageView addTarget:self action:@selector(handleImageLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
-		}
+		imageView.linkURL = attachment.hyperLinkURL;
+		[imageView addTarget:self action:@selector(handleImageLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
 		if (attachment.contents) {
 			[imageView setImage:attachment.contents];
@@ -850,9 +841,9 @@
 			[imageView setImageWithURL:attachment.contentURL
 					  placeholderImage:[UIImage imageNamed:@""]
 							   success:^(ReaderImageView *readerImageView) {
-								   [self handleImageViewLoaded:readerImageView];
+								   [self handleMediaViewLoaded:readerImageView];
 							   } failure:^(ReaderImageView *readerImageView, NSError *error) {
-								   [self handleImageViewLoaded:readerImageView];
+								   [self handleMediaViewLoaded:readerImageView];
 							   }];
 		}
 		return imageView;
@@ -873,10 +864,17 @@
 		
 		ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
 		[_mediaArray addObject:videoView];
-		[videoView setContentURL:attachment.contentURL andContent:attachment.contents ofType:videoType];
+		[videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
+			[self handleMediaViewLoaded:readerVideoView];
+			
+		} failure:^(id readerVideoView, NSError *error) {
+			[self handleMediaViewLoaded:readerVideoView];
+			
+		}];
+		
 		[videoView addTarget:self action:@selector(handleVideoTapped:) forControlEvents:UIControlEventTouchUpInside];
 
-		[self updateMediaLayout:videoView];
+		[self handleMediaViewLoaded:videoView];
 		return videoView;
 	}
 

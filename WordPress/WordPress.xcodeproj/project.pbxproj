@@ -325,6 +325,7 @@
 		5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */; };
 		5D1EE80315E7AF3E007F1F02 /* JetpackSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1EE80115E7AF3E007F1F02 /* JetpackSettingsViewController.xib */; };
 		5D207B981721D51900D19A2C /* WPRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D207B971721D51900D19A2C /* WPRefreshViewController.m */; };
+		5D210FD81742D436006CF722 /* WPWebVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D210FD71742D436006CF722 /* WPWebVideoViewController.m */; };
 		5D27718115A33A8500F4DCAA /* toolbar_approve.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D27717115A33A8500F4DCAA /* toolbar_approve.png */; };
 		5D27718215A33A8500F4DCAA /* toolbar_approve@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D27717215A33A8500F4DCAA /* toolbar_approve@2x.png */; };
 		5D27718915A33A8500F4DCAA /* toolbar_flag.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D27717915A33A8500F4DCAA /* toolbar_flag.png */; };
@@ -1080,6 +1081,8 @@
 		5D1EE80115E7AF3E007F1F02 /* JetpackSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JetpackSettingsViewController.xib; path = Classes/JetpackSettingsViewController.xib; sourceTree = "<group>"; };
 		5D207B961721D51900D19A2C /* WPRefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPRefreshViewController.h; sourceTree = "<group>"; };
 		5D207B971721D51900D19A2C /* WPRefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPRefreshViewController.m; sourceTree = "<group>"; };
+		5D210FD61742D436006CF722 /* WPWebVideoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebVideoViewController.h; sourceTree = "<group>"; };
+		5D210FD71742D436006CF722 /* WPWebVideoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebVideoViewController.m; sourceTree = "<group>"; };
 		5D27717115A33A8500F4DCAA /* toolbar_approve.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar_approve.png; path = Resources/Images/toolbar_approve.png; sourceTree = "<group>"; };
 		5D27717215A33A8500F4DCAA /* toolbar_approve@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar_approve@2x.png"; path = "Resources/Images/toolbar_approve@2x.png"; sourceTree = "<group>"; };
 		5D27717915A33A8500F4DCAA /* toolbar_flag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar_flag.png; path = Resources/Images/toolbar_flag.png; sourceTree = "<group>"; };
@@ -2805,6 +2808,8 @@
 				5D404EFE173988D400790411 /* ReaderCommentTableViewCell.m */,
 				5D5CA5EF173D4E0A00C423D0 /* WPImageViewController.h */,
 				5D5CA5F0173D4E0A00C423D0 /* WPImageViewController.m */,
+				5D210FD61742D436006CF722 /* WPWebVideoViewController.h */,
+				5D210FD71742D436006CF722 /* WPWebVideoViewController.m */,
 			);
 			name = Reader;
 			sourceTree = "<group>";
@@ -3928,6 +3933,7 @@
 				5D6E39B517306B3F00E973A9 /* ReaderVideoView.m in Sources */,
 				5D404EFF173988D500790411 /* ReaderCommentTableViewCell.m in Sources */,
 				5D5CA5F1173D4E0A00C423D0 /* WPImageViewController.m in Sources */,
+				5D210FD81742D436006CF722 /* WPWebVideoViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
