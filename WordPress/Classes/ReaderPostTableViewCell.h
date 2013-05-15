@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "ReaderPost.h"
+#import "ReaderTableViewCell.h"
 
-@interface ReaderPostTableViewCell : UITableViewCell
+@interface ReaderPostTableViewCell : ReaderTableViewCell
 
 /**
  Return's an array of required cell heights to display the specified posts. 

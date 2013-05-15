@@ -9,8 +9,8 @@
 #import "ReaderPostTableViewCell.h"
 #import <DTCoreText/DTCoreText.h>
 #import "UIImageView+Gravatar.h"
-#import "WPWebViewController.h"
 #import "WordPressAppDelegate.h"
+#import "WPWebViewController.h"
 
 #define RPTVCVerticalPadding 10.0f;
 #define RPTVCFeaturedImageHeight 150.0f;
@@ -18,7 +18,6 @@
 @interface ReaderPostTableViewCell() <DTAttributedTextContentViewDelegate>
 
 @property (nonatomic, strong) ReaderPost *post;
-@property (nonatomic, strong) DTAttributedTextContentView *snippetTextView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) UIView *byView;
 @property (nonatomic, strong) UIView *controlView;
@@ -56,25 +55,13 @@
 }
 
 
+#pragma mark - Lifecycle Methods
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 		CGFloat width = self.frame.size.width;
-		
-		[self.contentView addSubview:self.imageView]; // TODO: Not sure about this...
-		self.imageView.contentMode = UIViewContentModeScaleAspectFill;
-		self.imageView.clipsToBounds = YES;
-		
-		//self.snippetTextView = [[DTAttributedTextContentView alloc] initWithAttributedString:nil width:width];
-		self.snippetTextView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 44.0f)];
-		_snippetTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_snippetTextView.backgroundColor = [UIColor clearColor];
-		_snippetTextView.edgeInsets = UIEdgeInsetsMake(0.f, 10.f, 0.f, 10.f);
-		_snippetTextView.delegate = self;
-		_snippetTextView.shouldDrawImages = NO;
-		_snippetTextView.shouldLayoutCustomSubviews = NO;
-		[self.contentView addSubview:_snippetTextView];
-		
+				
 		self.byView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, (width - 20.0f), 20.0f)];
 		_byView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[self.contentView addSubview:_byView];
@@ -89,7 +76,6 @@
 		_bylineLabel.backgroundColor = [UIColor clearColor];
 		[_byView addSubview:_bylineLabel];
 		
-
 		UIImageView *commentImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"note_icon_comment.png"]];
 		commentImageView.frame = CGRectMake(10.0f, 3.0f, 16.0f, 16.0f);
 
@@ -103,7 +89,6 @@
 		self.likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0f, 20.0f, 30.0f, 16.0f)];
 		_likesLabel.font = [UIFont systemFontOfSize:14.0f];
 		_likesLabel.textColor = [UIColor colorWithWhite:0.7 alpha:1.0f];
-		
 		
 		self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		_likeButton.frame = CGRectMake(70.0f, 0.0f, 40.0f, 40.0f);
@@ -139,11 +124,6 @@
 }
 
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-}
-
-
 - (void)layoutSubviews {
 	[super layoutSubviews];
 
@@ -163,9 +143,9 @@
 	}
 
 	// Position the snippet
-	height = [_snippetTextView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
-	_snippetTextView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
-	[_snippetTextView layoutSubviews];
+	height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
+	self.textContentView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
+	[self.textContentView layoutSubviews];
 	nextY += ceilf(height + vpadding);
 
 	// position the byView
@@ -216,7 +196,7 @@
 	desiredHeight += vpadding;
 	
 	// Size of the snippet
-	desiredHeight += [_snippetTextView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
+	desiredHeight += [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
 	desiredHeight += vpadding;
 	
 	// Size of the byview
@@ -231,12 +211,9 @@
 
 - (void)prepareForReuse {
 	[super prepareForReuse];
-	
-	[self.imageView cancelImageRequestOperation];
-	self.imageView.image = nil;
+
 	_avatarImageView.image = nil;
 	_bylineLabel.text = nil;
-	_snippetTextView.attributedString = nil;
 }
 
 
@@ -250,7 +227,7 @@
 		str = [NSString stringWithFormat:@"<h3>%@</h3>", post.postTitle];
 	}
 
-	_snippetTextView.attributedString = [self convertHTMLToAttributedString:str withOptions:nil];
+	self.textContentView.attributedString = [self convertHTMLToAttributedString:str withOptions:nil];
 	
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
@@ -279,22 +256,6 @@
 	[self.avatarImageView setImageWithBlavatarUrl:[[NSURL URLWithString:post.blogURL] host]];
 	
 	[self updateControlBar];
-}
-
-
-- (NSAttributedString *)convertHTMLToAttributedString:(NSString *)html withOptions:(NSDictionary *)options {
-    NSAssert(html != nil, @"Can't convert nil to AttributedString");
-	
-	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
-														  DTDefaultFontFamily: @"Helvetica",
-										   NSTextSizeMultiplierDocumentOption: [NSNumber numberWithFloat:1.3]
-								 }];
-
-	if(options) {
-		[dict addEntriesFromDictionary:options];
-	}
-	
-    return [[NSAttributedString alloc] initWithHTMLData:[html dataUsingEncoding:NSUTF8StringEncoding] options:dict documentAttributes:NULL];
 }
 
 
@@ -358,37 +319,6 @@
 	}];
 	
 	[self updateControlBar];
-}
-
-
-- (void)handleLinkTapped:(id)sender {
-	WPWebViewController *controller = [[WPWebViewController alloc] init];
-	[controller setUrl:((DTLinkButton *)sender).URL];
-	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller animated:YES];
-}
-
-#pragma mark - DTAttributedTextContentView Delegate Methods
-
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
-	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
-	
-	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
-	button.URL = [attributes objectForKey:DTLinkAttribute];
-	button.minimumHitSize = CGSizeMake(25.0f, 25.0f); // adjusts it's bounds so that button is always large enough
-	button.GUID = [attributes objectForKey:DTGUIDAttribute];
-	
-	// get image with normal link text
-	UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
-	[button setImage:normalImage forState:UIControlStateNormal];
-	
-	// get image for highlighted link text
-	UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
-	[button setImage:highlightImage forState:UIControlStateHighlighted];
-	
-	// use normal push action for opening URL
-	[button addTarget:self action:@selector(handleLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
-
-	return button;
 }
 
 

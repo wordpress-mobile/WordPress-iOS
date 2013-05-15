@@ -16,10 +16,8 @@
 @interface ReaderCommentTableViewCell()<DTAttributedTextContentViewDelegate>
 
 @property (nonatomic, strong) ReaderComment *comment;
-@property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) UILabel *authorLabel;
 @property (nonatomic, strong) UILabel *dateLabel;
-@property (nonatomic, strong) UIView *threadView;
 
 - (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;
 - (void)handleLinkTapped:(id)sender;
@@ -46,17 +44,13 @@
 }
 
 
+#pragma mark - Lifecycle Methods
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 		CGFloat width = self.frame.size.width;
-
-		self.backgroundView = nil;
-		self.contentView.backgroundColor = [UIColor clearColor];
 		
-		[self.contentView addSubview:self.imageView]; // TODO: Not sure about this...
-		self.imageView.contentMode = UIViewContentModeScaleAspectFit;
-		self.imageView.clipsToBounds = YES;
 		[self.imageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
 		self.imageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 		
@@ -75,28 +69,10 @@
 		_authorLabel.backgroundColor = [UIColor clearColor];
 		[self.contentView addSubview:_authorLabel];
 		
-		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, 44.0f)];
-		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_textContentView.backgroundColor = [UIColor clearColor];
-		_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 5.0f, 10.0f);
-		_textContentView.delegate = self;
-		_textContentView.shouldDrawImages = NO;
-		_textContentView.shouldLayoutCustomSubviews = NO;
-		[self.contentView addSubview:_textContentView];
-		
-		self.threadView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, self.frame.size.height)];
-		_threadView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		_threadView.backgroundColor = [UIColor clearColor];
-		[self addSubview:_threadView];
-
+		self.textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, 44.0f);
     }
 	
     return self;
-}
-
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
 }
 
 
@@ -112,10 +88,10 @@
 	[self.imageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
 	
 	CGFloat width = self.contentView.frame.size.width;
-	CGFloat height = [_textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width].height;
-	
-	_textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, height);
-	[_textContentView layoutSubviews];
+	CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width].height;
+
+	self.textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, height);
+	[self.textContentView layoutSubviews];
 }
 
 
@@ -148,7 +124,7 @@
 	// Cell indentation 
 	contentWidth -= (self.indentationLevel * self.indentationWidth);
 	
-	desiredHeight += [_textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
+	desiredHeight += [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
 	
 	return desiredHeight;
 }
@@ -157,11 +133,8 @@
 - (void)prepareForReuse {
 	[super prepareForReuse];
 	
-	[self.imageView cancelImageRequestOperation];
-	self.imageView.image = nil;
 	_authorLabel.text = @"";
 	_dateLabel.text = @"";
-	_textContentView.attributedString = nil;
 }
 
 
@@ -176,58 +149,7 @@
 	_dateLabel.text = [comment shortDate];
 	_authorLabel.text = comment.author;
 	[self.imageView setImageWithURL:[NSURL URLWithString:comment.authorAvatarURL] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom.png"]];
-	_textContentView.attributedString = [self convertHTMLToAttributedString:comment.content withOptions:nil];
+	self.textContentView.attributedString = [self convertHTMLToAttributedString:comment.content withOptions:nil];
 }
-
-
-- (NSAttributedString *)convertHTMLToAttributedString:(NSString *)html withOptions:(NSDictionary *)options {
-    NSAssert(html != nil, @"Can't convert nil to AttributedString");
-	
-	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
-														  DTDefaultFontFamily: @"Helvetica",
-										   NSTextSizeMultiplierDocumentOption: [NSNumber numberWithFloat:1.3]
-								 }];
-	
-	if(options) {
-		[dict addEntriesFromDictionary:options];
-	}
-	
-    return [[NSAttributedString alloc] initWithHTMLData:[html dataUsingEncoding:NSUTF8StringEncoding] options:dict documentAttributes:NULL];
-}
-
-
-- (void)handleLinkTapped:(id)sender {
-	NSDictionary *dict = @{@"URL":((DTLinkButton *)sender).URL};
-	[[NSNotificationCenter defaultCenter] postNotificationName:ReaderCommentCellLinkTappedNotification object:nil userInfo:dict];
-}
-
-
-#pragma mark - DTAttributedTextContentView Delegate Methods
-
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
-	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
-	
-	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
-	NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
-	
-	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
-	button.URL = URL;
-	button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
-	button.GUID = identifier;
-	
-	// get image with normal link text
-	UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
-	[button setImage:normalImage forState:UIControlStateNormal];
-	
-	// get image for highlighted link text
-	UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
-	[button setImage:highlightImage forState:UIControlStateHighlighted];
-	
-	// use normal push action for opening URL
-	[button addTarget:self action:@selector(handleLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
-	
-	return button;
-}
-
 
 @end

@@ -167,7 +167,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		
 		self.date_created_gmt = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
 		self.sortDate = [DateUtils dateFromISOString:[editorial objectForKey:@"displayed_on"]];
-		
+		self.likeCount = [dict numberForKey:@"like_count"];
 		self.permaLink = [dict objectForKey:@"URL"];
 		self.postTitle = [dict objectForKey:@"title"];
 		
@@ -229,7 +229,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		}
 		self.date_created_gmt = date;
 		self.sortDate = date;
-		
+		self.likeCount = [dict objectForKey:@"post_like_count"];
 		self.permaLink = [dict objectForKey:@"post_permalink"];
 		self.postTitle = [dict objectForKey:@"post_title"];
 		
@@ -276,7 +276,6 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	self.isFollowing = [dict numberForKey:@"is_following"];
 	self.isLiked = [dict numberForKey:@"is_liked"];
 	self.isReblogged = [dict numberForKey:@"is_reblogged"];
-	self.likeCount = [dict numberForKey:@"like_count"];
 
 	self.status = [dict objectForKey:@"status"];
 
