@@ -108,6 +108,7 @@
 		self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		_likeButton.frame = CGRectMake(70.0f, 0.0f, 40.0f, 40.0f);
 		_likeButton.backgroundColor = [UIColor colorWithHexString:@"3478E3"];
+		_likeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 		[_likeButton addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 
 		self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
