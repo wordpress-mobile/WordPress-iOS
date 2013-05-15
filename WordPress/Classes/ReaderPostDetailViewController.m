@@ -107,8 +107,6 @@
 	
 	self.title = self.post.postTitle;
 	
-	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-	
 	if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
 		UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
 		
