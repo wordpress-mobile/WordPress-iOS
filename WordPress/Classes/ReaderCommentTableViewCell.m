@@ -8,7 +8,6 @@
 
 #import "ReaderCommentTableViewCell.h"
 #import <DTCoreText/DTCoreText.h>
-#import <QuartzCore/QuartzCore.h>
 #import "UIImageView+Gravatar.h"
 #import "WordPressAppDelegate.h"
 
@@ -24,7 +23,6 @@
 
 - (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;
 - (void)handleLinkTapped:(id)sender;
-- (void)drawNestingLayers;
 
 @end
 
@@ -118,33 +116,6 @@
 	
 	_textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, height);
 	[_textContentView layoutSubviews];
-	
-	[self drawNestingLayers];
-}
-
-
-- (void)drawNestingLayers {
-	_threadView.frame = CGRectMake(0.0f, 0.0f, self.frame.size.width, self.frame.size.height);
-	
-	UIColor *baseColor = [UIColor colorWithRed:194.0f/255.0f green:216.0f/255.0f blue:235.0f/255.0f alpha:1.0];
-	NSMutableArray *layers = [NSMutableArray array];
-	for (NSInteger i = 0; i < self.indentationLevel; i++) {
-		CGFloat darkness = 1.0f - (i * 0.05f);
-		CGFloat h, s, b, a;
-		[baseColor getHue:&h saturation:&s brightness:&b alpha:&a];
-		
-		UIColor *stepColor = [UIColor colorWithHue:h
-										saturation:s
-										brightness:(b * darkness)
-											 alpha:a];
-
-		CALayer *layer = [CALayer layer];
-		layer.backgroundColor = stepColor.CGColor;
-		layer.frame = CGRectMake((self.indentationWidth * i), 0.0f, self.indentationWidth, self.frame.size.height);
-		[layers addObject:layer];
-	}
-	
-	[_threadView.layer setSublayers:layers];
 }
 
 
