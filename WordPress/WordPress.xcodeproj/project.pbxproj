@@ -338,6 +338,7 @@
 		5D29D2B61701042B00813FEF /* AbstractComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D29D2B41701042B00813FEF /* AbstractComment.m */; };
 		5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */; };
 		5D348ED217440AF400F7227A /* ReaderMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D348ED117440AF400F7227A /* ReaderMediaView.m */; };
+		5D348ED517441AA900F7227A /* ReaderTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D348ED417441AA900F7227A /* ReaderTableViewCell.m */; };
 		5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D3E334D15EEBB6B005FC6F2 /* ReachabilityUtils.m */; };
 		5D404EFF173988D500790411 /* ReaderCommentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D404EFE173988D400790411 /* ReaderCommentTableViewCell.m */; };
 		5D4DE6EE167165060030518D /* icon_info_message.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D4DE6EC167165060030518D /* icon_info_message.png */; };
@@ -1101,6 +1102,8 @@
 		5D2B80CF1592447200161F6E /* QuickPhotoButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickPhotoButtonView.h; sourceTree = "<group>"; };
 		5D2B80D01592447200161F6E /* QuickPhotoButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPhotoButtonView.m; sourceTree = "<group>"; };
 		5D348ED117440AF400F7227A /* ReaderMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderMediaView.m; sourceTree = "<group>"; };
+		5D348ED317441AA800F7227A /* ReaderTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderTableViewCell.h; sourceTree = "<group>"; };
+		5D348ED417441AA900F7227A /* ReaderTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTableViewCell.m; sourceTree = "<group>"; };
 		5D3E334C15EEBB6B005FC6F2 /* ReachabilityUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReachabilityUtils.h; sourceTree = "<group>"; };
 		5D3E334D15EEBB6B005FC6F2 /* ReachabilityUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReachabilityUtils.m; sourceTree = "<group>"; };
 		5D404EFD173988D400790411 /* ReaderCommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderCommentTableViewCell.h; sourceTree = "<group>"; };
@@ -2805,6 +2808,8 @@
 				5D6E39B117304ED500E973A9 /* ReaderImageView.m */,
 				5D6E39B317306B3E00E973A9 /* ReaderVideoView.h */,
 				5D6E39B417306B3F00E973A9 /* ReaderVideoView.m */,
+				5D348ED317441AA800F7227A /* ReaderTableViewCell.h */,
+				5D348ED417441AA900F7227A /* ReaderTableViewCell.m */,
 				5DA4A40D171F73AF00AF76F8 /* ReaderPostTableViewCell.h */,
 				5DA4A40E171F73AF00AF76F8 /* ReaderPostTableViewCell.m */,
 				5D404EFD173988D400790411 /* ReaderCommentTableViewCell.h */,
@@ -3938,6 +3943,7 @@
 				5D5CA5F1173D4E0A00C423D0 /* WPImageViewController.m in Sources */,
 				5D210FD81742D436006CF722 /* WPWebVideoViewController.m in Sources */,
 				5D348ED217440AF400F7227A /* ReaderMediaView.m in Sources */,
+				5D348ED517441AA900F7227A /* ReaderTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

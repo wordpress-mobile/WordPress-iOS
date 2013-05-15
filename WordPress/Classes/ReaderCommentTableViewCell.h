@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ReaderTableViewCell.h"
 #import "ReaderComment.h"
 
-#define ReaderCommentCellLinkTappedNotification @"ReaderCommentCellLinkTappedNotification"
-
-@interface ReaderCommentTableViewCell : UITableViewCell
+@interface ReaderCommentTableViewCell : ReaderTableViewCell
 
 /**
  Return's an array of required cell heights to display the specified comments.

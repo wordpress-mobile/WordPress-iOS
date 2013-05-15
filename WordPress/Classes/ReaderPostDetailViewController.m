@@ -54,7 +54,6 @@
 - (void)updateToolbar;
 
 - (void)handleAuthorViewTapped:(id)sender;
-- (void)handleCellLinkTapped:(NSNotification *)notification;
 - (void)handleCommentButtonTapped:(id)sender;
 - (void)handleFollowButtonTapped:(id)sender;
 - (void)handleImageLinkTapped:(id)sender;
@@ -89,10 +88,6 @@
 		self.mediaArray = [NSMutableArray array];
 		self.comments = [NSMutableArray array];
 		self.rowHeights = [NSArray array];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(handleCellLinkTapped:)
-													 name:ReaderCommentCellLinkTappedNotification
-												   object:nil];
 	}
 	return self;
 }
@@ -442,14 +437,6 @@
 - (void)handleAuthorViewTapped:(id)sender {
 	WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:[NSURL URLWithString:self.post.permaLink]];
-	[self.panelNavigationController pushViewController:controller animated:YES];
-}
-
-
-- (void)handleCellLinkTapped:(NSNotification *)notification {
-	NSURL *url = [notification.userInfo objectForKey:@"URL"];
-	WPWebViewController *controller = [[WPWebViewController alloc] init];
-	[controller setUrl:url];
 	[self.panelNavigationController pushViewController:controller animated:YES];
 }
 
