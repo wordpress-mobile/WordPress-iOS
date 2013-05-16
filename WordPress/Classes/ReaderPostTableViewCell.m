@@ -13,11 +13,11 @@
 #import "WPWebViewController.h"
 
 #define RPTVCVerticalPadding 10.0f;
-#define RPTVCFeaturedImageHeight 150.0f;
 
 @interface ReaderPostTableViewCell() <DTAttributedTextContentViewDelegate>
 
 @property (nonatomic, strong) ReaderPost *post;
+@property (nonatomic, strong) UIView *containerView;
 @property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) UIView *byView;
 @property (nonatomic, strong) UIView *controlView;
@@ -25,8 +25,6 @@
 @property (nonatomic, strong) UIButton *followButton;
 @property (nonatomic, strong) UIButton *reblogButton;
 @property (nonatomic, strong) UILabel *bylineLabel;
-@property (nonatomic, strong) UILabel *commentLabel;
-@property (nonatomic, strong) UILabel *likesLabel;
 @property (nonatomic, assign) BOOL showImage;
 
 - (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;
@@ -60,66 +58,75 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-		CGFloat width = self.frame.size.width;
-				
-		self.byView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, (width - 20.0f), 20.0f)];
-		_byView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		[self.contentView addSubview:_byView];
 		
-		self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 20.0f, 20.0f)];
+		self.contentView.backgroundColor = [UIColor colorWithHexString:@"F1F1F1"];
+		CGRect frame = CGRectMake(10.0f, 0.0f, self.contentView.frame.size.width - 20.0f, self.contentView.frame.size.height - 10.0f);
+		CGFloat width = frame.size.width;
+
+		self.containerView = [[UIView alloc] initWithFrame:frame];
+		_containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_containerView.backgroundColor = [UIColor whiteColor];
+		[self.contentView addSubview:_containerView];
+		
+		self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+		[_containerView addSubview:self.imageView];
+
+		self.textContentView.frame = CGRectMake(0.0f, 0.0f, width, 44.0f);
+		[_containerView addSubview:self.textContentView];
+				
+		self.byView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, (width - 20.0f), 32.0f)];
+		_byView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		[_containerView addSubview:_byView];
+		
+		self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
 		[_byView addSubview:_avatarImageView];
 		
-		self.bylineLabel = [[UILabel alloc] initWithFrame:CGRectMake(25.0f, 0.0f, width - 45.0f, 20.0f)];
+		self.bylineLabel = [[UILabel alloc] initWithFrame:CGRectMake(37.0f, 0.0f, width - 57.0f, 32.0f)];
+		_bylineLabel.numberOfLines = 2;
 		_bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_bylineLabel.font = [UIFont systemFontOfSize:14.0f];
 		_bylineLabel.textColor = [UIColor colorWithWhite:0.5f alpha:1.0f];
 		_bylineLabel.backgroundColor = [UIColor clearColor];
 		[_byView addSubview:_bylineLabel];
 		
-		UIImageView *commentImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"note_icon_comment.png"]];
-		commentImageView.frame = CGRectMake(10.0f, 3.0f, 16.0f, 16.0f);
-
-		self.commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0f, 3.0f, 30.0f, 16.0f)];
-		_commentLabel.font = [UIFont systemFontOfSize:14.0f];
-		_commentLabel.textColor = [UIColor colorWithWhite:0.7 alpha:1.0f];
 		
-		UIImageView *likesImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"note_icon_like.png"]];
-		likesImageView.frame = CGRectMake(10.0f, 20.0f, 16.0f, 16.0f);
 
-		self.likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0f, 20.0f, 30.0f, 16.0f)];
-		_likesLabel.font = [UIFont systemFontOfSize:14.0f];
-		_likesLabel.textColor = [UIColor colorWithWhite:0.7 alpha:1.0f];
+		UIColor *color = [UIColor colorWithHexString:@"3478E3"];
 		
+		self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		[_followButton setTitle:NSLocalizedString(@"Follow", @"") forState:UIControlStateNormal];
+		[_followButton setTitleColor:color forState:UIControlStateNormal];
+		[_followButton setImage:[UIImage imageNamed:@"note_navbar_icon_follow.png"] forState:UIControlStateNormal];
+		_followButton.frame = CGRectMake(0.0f, 0.0f, 100.0f, 40.0f);
+		[_followButton addTarget:self action:@selector(handleFollowButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+
 		self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		_likeButton.frame = CGRectMake(70.0f, 0.0f, 40.0f, 40.0f);
-		_likeButton.backgroundColor = [UIColor colorWithHexString:@"3478E3"];
+		[_likeButton setTitle:NSLocalizedString(@"Like", @"") forState:UIControlStateNormal];
+		[_likeButton setTitleColor:color forState:UIControlStateNormal];
+		[_likeButton setImage:[UIImage imageNamed:@"note_navbar_icon_like.png"] forState:UIControlStateNormal];
+		_likeButton.frame = CGRectMake(100.0f, 0.0f, 100.0f, 40.0f);
 		_likeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 		[_likeButton addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-
-		self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		_followButton.frame = CGRectMake(170.0f, 0.0f, 40.0f, 40.0f);
-		_followButton.backgroundColor = [UIColor colorWithHexString:@"3478E3"];
-		_followButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-		[_followButton addTarget:self action:@selector(handleFollowButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
 		self.reblogButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		_reblogButton.frame = CGRectMake(270.0f, 0.0f, 40.0f, 40.0f);
-		_reblogButton.backgroundColor = [UIColor colorWithHexString:@"3478E3"];
+		[_reblogButton setTitle:NSLocalizedString(@"Reblog", @"") forState:UIControlStateNormal];
+		[_reblogButton setTitleColor:color forState:UIControlStateNormal];
+		[_reblogButton setImage:[UIImage imageNamed:@"note_navbar_icon_reblog.png"] forState:UIControlStateNormal];
+		_reblogButton.titleLabel.textColor = [UIColor colorWithHexString:@"3478E3"];
+		_reblogButton.frame = CGRectMake(200.0f, 0.0f, 100.0f, 40.0f);
 		_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 		[_reblogButton addTarget:self action:@selector(handleReblogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
-		self.controlView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 40.0f)];
+		self.controlView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 40.0f)];
 		_controlView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		[_controlView addSubview:commentImageView];
-		[_controlView addSubview:_commentLabel];
-		[_controlView addSubview:likesImageView];
-		[_controlView addSubview:_likesLabel];
-		[_controlView addSubview:_likeButton];
+
 		[_controlView addSubview:_followButton];
+		[_controlView addSubview:_likeButton];
 		[_controlView addSubview:_reblogButton];
-		[self.contentView addSubview:_controlView];
+		[_containerView addSubview:_controlView];
 		
     }
+	
     return self;
 }
 
@@ -127,16 +134,15 @@
 - (void)layoutSubviews {
 	[super layoutSubviews];
 
-	CGFloat contentWidth = self.contentView.frame.size.width;
+	CGFloat contentWidth = _containerView.frame.size.width;
 	CGFloat nextY = 0.0f;
 	CGFloat vpadding = RPTVCVerticalPadding;
 	CGFloat height = 0.0f;
 
 	// Are we showing an image? What size should it be?
 	if(_showImage) {
-		height = RPTVCFeaturedImageHeight;
+		height = (contentWidth * 0.66f);
 		self.imageView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
-
 		nextY += ceilf(height + vpadding);
 	} else {
 		nextY += vpadding;
@@ -177,7 +183,7 @@
 	
 	// Do the math. We can't trust the cell's contentView's frame because
 	// its not updated at a useful time during rotation.
-	CGFloat contentWidth = width;
+	CGFloat contentWidth = width - 20.0f; // 10px padding on either side.
 	
 	// reduce width for accessories
 	switch (self.accessoryType) {
@@ -199,7 +205,7 @@
 	
 	// Are we showing an image? What size should it be?
 	if(_showImage) {
-		CGFloat height = RPTVCFeaturedImageHeight;
+		CGFloat height = (contentWidth * 0.66f);
 		desiredHeight += height;
 	}
 	
@@ -215,6 +221,8 @@
 	// size of the control bar
 	desiredHeight += (_controlView.frame.size.height + vpadding);
 	
+	desiredHeight += vpadding;
+	
 	return desiredHeight;
 }
 
@@ -224,9 +232,9 @@
 	NSString *str;
 	NSString *contentSnippet = post.summary;
 	if(contentSnippet && [contentSnippet length] > 0){
-		str = [NSString stringWithFormat:@"<h3>%@</h3>%@", post.postTitle, contentSnippet];
+		str = [NSString stringWithFormat:@"<h3 style=\"color:#000000;font-size:20px;font-weight:normal;\">%@</h3>%@", post.postTitle, contentSnippet];
 	} else {
-		str = [NSString stringWithFormat:@"<h3>%@</h3>", post.postTitle];
+		str = [NSString stringWithFormat:@"<h3 style=\"color:#000000;font-size:20px;font-weight:normal;\">%@</h3>", post.postTitle];
 	}
 
 	self.textContentView.attributedString = [self convertHTMLToAttributedString:str withOptions:nil];
@@ -235,7 +243,7 @@
 	[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 	NSString *dateStr = [dateFormatter stringFromDate:post.date_created_gmt];
 	
-	_bylineLabel.text = [NSString stringWithFormat:@"%@ on %@",dateStr, post.blogName];
+	_bylineLabel.text = [NSString stringWithFormat:@"%@ \non %@",dateStr, post.blogName];
 
 	self.showImage = NO;
 	self.imageView.hidden = YES;
@@ -244,16 +252,12 @@
 		self.showImage = YES;
 		self.imageView.hidden = NO;
 
-		NSInteger width = ceil(self.frame.size.width);
-
+		NSInteger width = ceil(_containerView.frame.size.width);
 		NSString *path = [NSString stringWithFormat:@"https://i0.wp.com/%@?w=%i", post.featuredImage, width];
 		url = [NSURL URLWithString:path];
 
 		[self.imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
 	}
-	
-	_commentLabel.text = [self.post.commentCount stringValue];
-	_likesLabel.text = [self.post.likeCount stringValue];
 	
 	[self.avatarImageView setImageWithBlavatarUrl:[[NSURL URLWithString:post.blogURL] host]];
 	

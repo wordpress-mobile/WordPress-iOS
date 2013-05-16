@@ -42,6 +42,8 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	
 	// Topics button
 	UIBarButtonItem *button = nil;
     if (IS_IPHONE && [[UIButton class] respondsToSelector:@selector(appearance)]) {

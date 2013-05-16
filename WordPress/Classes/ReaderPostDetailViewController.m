@@ -347,10 +347,10 @@
 
 - (void)updateRowHeightsForWidth:(CGFloat)width {
 	self.rowHeights = [ReaderCommentTableViewCell cellHeightsForComments:_comments
-															 width:width
-														tableStyle:UITableViewStylePlain
-														 cellStyle:UITableViewCellStyleDefault
-												   reuseIdentifier:@"ReaderCommentCell"];
+																   width:width
+															  tableStyle:UITableViewStylePlain
+															   cellStyle:UITableViewCellStyleDefault
+														 reuseIdentifier:@"ReaderCommentCell"];
 }
 
 
