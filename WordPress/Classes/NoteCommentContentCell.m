@@ -65,18 +65,14 @@
 //    
 //    [button addTarget:self action:@selector(linkPushed:) forControlEvents:UIControlEventTouchUpInside];
 //    return button;
-//	
+
 	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
-	
-	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
-	NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
-	
-	
+
 	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
-	button.URL = URL;
+	button.URL = [attributes objectForKey:DTLinkAttribute];
+	button.GUID = [attributes objectForKey:DTGUIDAttribute];
 	button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
-	button.GUID = identifier;
-	
+
 	// get image with normal link text
 	UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
 	[button setImage:normalImage forState:UIControlStateNormal];
@@ -85,8 +81,7 @@
 	UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
 	[button setImage:highlightImage forState:UIControlStateHighlighted];
 	
-	// use normal push action for opening URL
-	[button addTarget:self action:@selector(handleLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
+	[button addTarget:self action:@selector(linkPushed:) forControlEvents:UIControlEventTouchUpInside];
 	
 	return button;
 }
@@ -110,6 +105,7 @@
     NSRange range = NSMakeRange(0, [colorString length]);
     NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:(__bridge id)[UIColor UIColorFromHex:0x464646].CGColor forKey:(id)kCTForegroundColorAttributeName];
     [colorString addAttributes:stringAttributes range:range];
+
     self.attributedTextView.attributedString = colorString;
     
     self.backgroundView.backgroundColor = COMMENT_PARENT_BACKGROUND_COLOR;
