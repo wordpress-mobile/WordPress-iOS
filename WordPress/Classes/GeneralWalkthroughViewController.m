@@ -82,6 +82,8 @@
     BOOL _blogConnectedToJetpack;
     BOOL _savedOriginalPositionsOfStickyControls;
     BOOL _hasViewAppeared;
+    BOOL _viewedPage2;
+    BOOL _viewedPage3;
     NSUInteger _currentPage;
     NSArray *_blogs;
     Blog *_blog;
@@ -125,6 +127,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide) name:UIKeyboardWillHideNotification object:nil];
     }
+    
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughOpened];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -303,8 +307,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
     overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-        
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError];
+        [overlayView dismiss];        
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         webViewController.url = [NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"];
         [self.navigationController setNavigationBarHidden:NO animated:NO];
@@ -320,8 +324,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
     overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError];
         [overlayView dismiss];
-        
         [self showHelpViewController:NO];
     };
     overlayView.button2CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
@@ -334,6 +338,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)clickedInfoButton:(id)sender
 {
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedInfo];
     AboutViewController *aboutViewController = [[AboutViewController alloc] init];
 	aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
@@ -344,11 +349,13 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)clickedSkipToCreate:(id)sender
 {
-    [self clickedCreateAccount:nil];
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedSkipToCreateAccount];
+    [self showCreateAccountView];
 }
 
 - (void)clickedSkipToSignIn:(id)sender
 {
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedSkipToSignIn];
     [UIView animateWithDuration:0.3 animations:^{
         _scrollView.contentOffset = CGPointMake(_viewWidth * 2, 0);
     } completion:^(BOOL finished){
@@ -358,15 +365,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)clickedCreateAccount:(UITapGestureRecognizer *)tapGestureRecognizer
 {
-    CreateAccountAndBlogViewController *createAccountViewController = [[CreateAccountAndBlogViewController alloc] init];
-    createAccountViewController.onCreatedUser = ^(NSString *username, NSString *password) {
-        _usernameText.text = username;
-        _passwordText.text = password;
-        _userIsDotCom = true;
-        [self.navigationController popViewControllerAnimated:NO];
-        [self showAddUsersBlogsForWPCom];
-    };
-    [self.navigationController pushViewController:createAccountViewController animated:YES];
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedCreateAccount];
+    [self showCreateAccountView];
 }
 
 - (void)clickedBackground:(UITapGestureRecognizer *)tapGestureRecognizer
@@ -909,6 +909,14 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 {
     _currentPage = pageViewed;
     _pageControl.currentPage = pageViewed - 1;
+    // We do this so we don't keep flagging events if the user goes back and forth on pages
+    if (pageViewed == 2 && !_viewedPage2) {
+        _viewedPage2 = true;
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughViewedPage2];
+    } else if (pageViewed == 3 && !_viewedPage3) {
+        _viewedPage3 = true;
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughViewedPage3];
+    }
 }
 
 - (void)showCompletionWalkthrough
@@ -916,6 +924,19 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     LoginCompletedWalkthroughViewController *loginCompletedViewController = [[LoginCompletedWalkthroughViewController alloc] init];
     loginCompletedViewController.showsExtraWalkthroughPages = _userIsDotCom || _blogConnectedToJetpack;
     [self.navigationController pushViewController:loginCompletedViewController animated:YES];
+}
+
+- (void)showCreateAccountView
+{
+    CreateAccountAndBlogViewController *createAccountViewController = [[CreateAccountAndBlogViewController alloc] init];
+    createAccountViewController.onCreatedUser = ^(NSString *username, NSString *password) {
+        _usernameText.text = username;
+        _passwordText.text = password;
+        _userIsDotCom = true;
+        [self.navigationController popViewControllerAnimated:NO];
+        [self showAddUsersBlogsForWPCom];
+    };
+    [self.navigationController pushViewController:createAccountViewController animated:YES];
 }
 
 - (void)showJetpackAuthentication
@@ -1036,7 +1057,15 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     NSString *username = _usernameText.text;
     NSString *password = _passwordText.text;
     
-    if ([self hasUserOnlyEnteredValuesForDotCom] || [self isUrlWPCom:_siteUrlText.text]) {
+    if ([self hasUserOnlyEnteredValuesForDotCom]) {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughSignedInWithoutUrl];
+        [self signInForWPComForUsername:username andPassword:password];
+        return;
+    }
+    
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughSignedInWithUrl];
+    
+    if ([self isUrlWPCom:_siteUrlText.text]) {
         [self signInForWPComForUsername:username andPassword:password];
         return;
     }
@@ -1067,6 +1096,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)signInForWPComForUsername:(NSString *)username andPassword:(NSString *)password
 {
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughSignedInForDotCom];
+    
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Connecting to WordPress.com", nil) maskType:SVProgressHUDMaskTypeBlack];
     
     void (^loginSuccessBlock)(void) = ^{
@@ -1091,6 +1122,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)signInForSelfHostedForUsername:(NSString *)username password:(NSString *)password options:(NSDictionary *)options andApi:(WordPressXMLRPCApi *)api
 {
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughSignedInForSelfHosted];
+    
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Reading blog options", nil) maskType:SVProgressHUDMaskTypeBlack];
     
     [api getBlogsWithSuccess:^(NSArray *blogs) {

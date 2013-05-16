@@ -74,7 +74,8 @@
     BOOL _savedOriginalPositionsOfStickyControls;
     CGFloat _infoButtonOriginalX;
     CGFloat _cancelButtonOriginalX;
-    CGFloat _keyboardOffset;
+    CGFloat _keyboardOffset;    
+    NSString *_defaultSiteUrl;
     
     NSUInteger _currentPage;
         
@@ -110,6 +111,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountOpened];
     
     _viewWidth = [self.view formSheetViewWidth];
     _viewHeight = [self.view formSheetViewHeight];
@@ -876,8 +879,9 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     [self layoutPage3Controls];
 }
 
-- (void)clickedInfoButton
+- (void)clickedHelpButton
 {
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedHelp];
     HelpViewController *helpViewController = [[HelpViewController alloc] init];
     helpViewController.isBlogSetup = YES;
     [self.navigationController pushViewController:helpViewController animated:YES];
@@ -885,6 +889,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)clickedCancelButton
 {
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedCancel];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -899,6 +904,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     BOOL clickedSiteLanguage = CGRectContainsPoint(_page2SiteLanguageText.frame, touchPoint);
     
     if (clickedSiteLanguage) {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedViewLanguages];
         [self showLanguagePicker];
     } else {
         BOOL clickedPage1Next = CGRectContainsPoint(_page1NextButton.frame, touchPoint) && _page1NextButton.enabled;
@@ -924,6 +930,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)clickedPage1NextButton
 {
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedPage1Next];
+    
     [self.view endEditing:YES];
     
     if (![self page1FieldsValid]) {
@@ -941,7 +949,10 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)clickedPage2NextButton
 {
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedPage2Next];
+
     [self.view endEditing:YES];
+    
     if (![self page2FieldsValid]) {
         [self showFieldsNotFilledError];
         return;
@@ -950,6 +961,11 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page2FieldsValid) {
         [self moveToPage:3];
     } else {
+        // Check if user changed default URL and if so track the stat for it.
+        if (![_page2SiteAddressText.text isEqualToString:_defaultSiteUrl]) {
+            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountChangedDefaultURL];
+        }
+        
         _page2NextButton.enabled = NO;
         [self validateSiteFields];
     }
@@ -957,6 +973,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)clickedPage2PreviousButton
 {
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedPage2Previous];
+
     [self.view endEditing:YES];
     [self moveToPage:1];
 }
@@ -968,6 +986,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)clickedPage3PreviousButton
 {
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedPage3Previous];
+    
     [self moveToPage:2];
 }
 
@@ -1151,7 +1171,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         [SVProgressHUD dismiss];
         _page1FieldsValid = true;
         if ([[_page2SiteAddressText.text trim] length] == 0) {
-            _page2SiteAddressText.text = [NSString stringWithFormat:@"%@.wordpress.com", _page1UsernameText.text];
+            _page2SiteAddressText.text = _defaultSiteUrl = [NSString stringWithFormat:@"%@.wordpress.com", _page1UsernameText.text];
         }
         [self moveToPage:2];
     };
@@ -1275,6 +1295,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     
     WPAsyncBlockOperation *blogCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^createBlogSuccess)(id) = ^(id responseObject){
+            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountCreatedAccount];
             [operation didSucceed];
             [SVProgressHUD dismiss];
             if (self.onCreatedUser) {

@@ -60,6 +60,8 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 {
     [super viewDidLoad];
     
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAddBlogsOpened];
+    
     _viewWidth = [self.view formSheetViewWidth];
     _viewHeight = [self.view formSheetViewHeight];
     
@@ -310,6 +312,9 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 
 - (void)createBlogs
 {
+    NSDictionary *properties = @{@"number_of_blogs": [NSNumber numberWithInt:[_selectedBlogs count]]};
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAddBlogsClickedAddSelected properties:properties];
+
     _addSelectedButton.enabled = NO;
     
     for (NSDictionary *blog in _usersBlogs) {
@@ -323,7 +328,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     if (error != nil) {
         NSLog(@"Error adding blogs: %@", [error localizedDescription]);
     }
-    
+
     if (self.blogAdditionCompleted) {
         self.blogAdditionCompleted(self);
     }
@@ -359,6 +364,8 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 
 - (void)selectAllBlogs
 {
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAddBlogsClickedSelectAll];
+
     [_selectAllButton removeTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
     [_selectAllButton addTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
     [_selectAllButton setTitle:NSLocalizedString(@"Deselect All", nil) forState:UIControlStateNormal];
@@ -370,11 +377,13 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     }
     
     [self toggleButtons];
-    [self.tableView reloadData];
+    [self.tableView reloadData];    
 }
 
 - (void)deselectAllBlogs
 {
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAddBlogsClickedDeselectAll];
+
     [_selectAllButton removeTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
     [_selectAllButton addTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
     [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];

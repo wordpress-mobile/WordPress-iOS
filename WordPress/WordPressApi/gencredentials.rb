@@ -57,7 +57,15 @@ def print_pocket(pocket)
 EOF
 end
 
-def print_class(client, secret, pocket)
+def print_mixpanel(mixpanel)
+    print <<-EOF
++ (NSString *)mixpanelAPIToken {
+    return @"#{mixpanel}";
+}
+EOF
+end
+
+def print_class(client, secret, pocket, mixpanel)
   print <<-EOF
 #import "WordPressComApiCredentials.h"
 @implementation WordPressComApiCredentials
@@ -65,6 +73,7 @@ EOF
   print_client(client)
   print_secret(secret)
   print_pocket(pocket)
+  print_mixpanel(mixpanel)
   printf("@end\n")
 end
 
@@ -77,6 +86,7 @@ end
 client = nil
 secret = nil
 pocket = nil
+mixpanel = nil
 File.open(path) do |f|
   f.lines.each do |l|
     (k,v) = l.split("=")
@@ -86,6 +96,8 @@ File.open(path) do |f|
       secret = v.chomp
     elsif k == "POCKET_CONSUMER_KEY"
       pocket = v.chomp
+    elsif k == "MIXPANEL_API_TOKEN"
+      mixpanel = v.chomp
     else
       $stderr.puts "warning: Unknown key #{k}"
     end
@@ -102,4 +114,4 @@ if secret.nil?
   exit 3
 end
 
-print_class(client, secret, pocket)
+print_class(client, secret, pocket, mixpanel)

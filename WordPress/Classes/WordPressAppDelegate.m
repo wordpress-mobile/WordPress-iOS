@@ -1,6 +1,5 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <WordPressApi/WordPressApi.h>
-
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "NSString+Helpers.h"
@@ -23,6 +22,7 @@
 #import "SoundUtil.h"
 #import "WordPressComApiCredentials.h"
 #import "PocketAPI.h"
+#import "WPMobileStats.h"
 
 @interface WordPressAppDelegate (Private)
 - (void)setAppBadge;
@@ -181,6 +181,8 @@
     WPFLog(@"===========================================================================");
 
     [self setupUserAgent];
+    [WPMobileStats initializeStats];
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsAppOpened];
 
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
         NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];

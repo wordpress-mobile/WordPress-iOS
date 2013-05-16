@@ -60,7 +60,10 @@
     CGFloat _heightFromSwipeToContinueToBottom;
 
     BOOL _savedOriginalPositionsOfStickyControls;
-    BOOL _isDismissing;    
+    BOOL _isDismissing;
+    BOOL _viewedPage2;
+    BOOL _viewedPage3;
+    BOOL _viewedPage4;
 }
 
 @end
@@ -89,6 +92,8 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     [self initializePage3];
     [self initializePage4];
     [self showLoginSuccess];
+    
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughOpened];
 }
 
 
@@ -660,10 +665,27 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
 {
     _pageControl.currentPage = pageViewed - 1;
     _currentPage = pageViewed;
+    
+    // We do this so we don't keep flagging events if the user goes back and forth on pages
+    if (pageViewed == 2 && !_viewedPage2) {
+        _viewedPage2 = true;
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedPage2];
+    } else if (pageViewed == 3 && !_viewedPage3) {
+        _viewedPage3 = true;
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedPage3];
+    } else if (pageViewed == 4 && !_viewedPage4) {
+        _viewedPage4 = true;
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughViewedPage4];
+    }
 }
 
 - (void)clickedSkipToApp:(UITapGestureRecognizer *)gestureRecognizer
 {
+    if (_currentPage == 4) {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughClickedStartUsingAppOnFinalPage];
+    } else {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughClickedStartUsingApp];
+    }
     [self dismiss];
 }
 
@@ -675,6 +697,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
 - (void)clickedScrollView:(UITapGestureRecognizer *)gestureRecognizer
 {
     if (_currentPage == 4) {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughClickedStartUsingAppOnFinalPage];
         [self dismiss];
     }
 }
