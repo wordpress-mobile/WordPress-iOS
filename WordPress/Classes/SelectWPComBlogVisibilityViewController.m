@@ -23,8 +23,8 @@
     if (self) {
         _visibilityOptions = @[
                                NSLocalizedString(@"Public", nil),
-                               NSLocalizedString(@"Private", nil),
-                               NSLocalizedString(@"Hidden", nil)];
+                               NSLocalizedString(@"Hidden", nil),
+                               NSLocalizedString(@"Private", nil)];
         _currentBlogVisibility = WordPressComApiBlogVisibilityPublic;
     }
     
@@ -73,9 +73,9 @@
     if (indexPath.row == 0) {
         visibility = WordPressComApiBlogVisibilityPublic;
     } else if (indexPath.row == 1) {
-        visibility = WordPressComApiComBlogVisibilityPrivate;
-    } else {
         visibility = WordPressComApiBlogVisibilityHidden;
+    } else {
+        visibility = WordPressComApiComBlogVisibilityPrivate;
     }
     [self.delegate selectWPComBlogVisibilityViewController:self didSelectBlogVisibilitySetting:visibility];
     [self.navigationController popViewControllerAnimated:YES];
@@ -86,8 +86,8 @@
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     NSMutableString *text = [[NSMutableString alloc] init];
     [text appendFormat:@"%@ - %@\n\n", NSLocalizedString(@"Public", nil), NSLocalizedString(@"Blog_Visibility_Public_Description", nil)];
-    [text appendFormat:@"%@ - %@\n\n", NSLocalizedString(@"Private", nil), NSLocalizedString(@"Blog_Visibility_Private_Description", nil)];
-    [text appendFormat:@"%@ - %@", NSLocalizedString(@"Hidden", nil), NSLocalizedString(@"Blog_Visibility_Hidden_Description", nil)];
+    [text appendFormat:@"%@ - %@\n\n", NSLocalizedString(@"Hidden", nil), NSLocalizedString(@"Blog_Visibility_Hidden_Description", nil)];
+    [text appendFormat:@"%@ - %@", NSLocalizedString(@"Private", nil), NSLocalizedString(@"Blog_Visibility_Private_Description", nil)];
 
     return text;
 }
