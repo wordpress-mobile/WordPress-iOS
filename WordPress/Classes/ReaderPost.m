@@ -106,13 +106,14 @@ NSInteger const ReaderTopicEndpointIndex = 3;
     NSError *error = nil;
     NSArray *array = [context executeFetchRequest:request error:&error];
 
-    if (array) {
+    if ([array count]) {
+		NSLog(@"Deleting %i ReaderPosts synced earlier than: %@ ", [array count], syncedDate);
         for (ReaderPost *post in array) {
+			NSLog(@"Post: %@", post);
             [context deleteObject:post];
         }
     }
     [context save:&error];
-	
 }
 
 

@@ -199,6 +199,9 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 								 [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ReaderLastSyncDateKey];
 								 [NSUserDefaults resetStandardUserDefaults];
 								 
+								 NSTimeInterval interval = - (60 * 60 * 24 * 7); // 7 days.
+								 [ReaderPost deletePostsSynedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]] withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+								 
 								 self.resultsController = nil;
 								 [self updateRowHeightsForWidth:self.tableView.frame.size.width];
 								 [self.tableView reloadData];
