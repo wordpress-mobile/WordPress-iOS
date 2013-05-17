@@ -306,7 +306,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         [_helpButton setImage:helpButtonImage forState:UIControlStateNormal];
         [_helpButton setImage:helpButtonImageHighlighted forState:UIControlStateHighlighted];
         _helpButton.frame = CGRectMake(0, 0, helpButtonImage.size.width, helpButtonImage.size.height);
-        [_helpButton addTarget:self action:@selector(clickedInfoButton) forControlEvents:UIControlEventTouchUpInside];
+        [_helpButton addTarget:self action:@selector(clickedHelpButton) forControlEvents:UIControlEventTouchUpInside];
         [_scrollView addSubview:_helpButton];
     }
     
@@ -424,8 +424,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     _helpButton.frame = CGRectMake(x, y, helpButtonImage.size.width, helpButtonImage.size.height);
     
     // Layout Cancel Button
-    x = CreateAccountAndBlogStandardOffset;
-    y = CreateAccountAndBlogStandardOffset;
+    x = 0;
+    y = 0;
     _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CGRectGetHeight(_cancelButton.frame));
         
     // Layout the controls starting out from y of 0, then offset them once the height of the controls
