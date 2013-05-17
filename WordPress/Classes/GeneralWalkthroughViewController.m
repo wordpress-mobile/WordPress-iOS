@@ -637,11 +637,17 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     
     // Layout Page Control
     CGFloat verticalSpaceForPageControl = 15;
-    x = (_viewWidth - CGRectGetWidth(_pageControl.frame))/2.0;
+    CGSize pageControlSize = [_pageControl sizeForNumberOfPages:3];
+    x = (_viewWidth - pageControlSize.width)/2.0;
+    if (IS_IPAD) {
+        // UIPageControl seems to add about half it's size in padding on the iPad
+        // TODO : Figure out why this is happening
+        x += pageControlSize.width/2.0;
+    }
     x = [self adjustX:x forPage:1];
     y = CGRectGetMinY(_bottomPanel.frame) - GeneralWalkthroughStandardOffset - CGRectGetHeight(_pageControl.frame) + verticalSpaceForPageControl;
-    _pageControl.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_pageControl.frame), CGRectGetHeight(_pageControl.frame)));
-    
+    _pageControl.frame = CGRectIntegral(CGRectMake(x, y, pageControlSize.width, pageControlSize.height));
+
     // Layout Swipe to Continue
     x = (_viewWidth - CGRectGetWidth(_page1SwipeToContinue.frame))/2.0;
     x = [self adjustX:x forPage:1];
