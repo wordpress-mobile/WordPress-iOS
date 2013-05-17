@@ -51,6 +51,7 @@ LANGS={
   'nl' => 'nl', # Dutch
   'pl' => 'pl', # Polish
   'pt' => 'pt', # Portuguese
+  'ru' => 'ru', # Russian
   'sv' => 'sv', # Swedish
   'tr' => 'tr', # Turkish
   'zh-cn' => 'zh-Hans', # Chinese (Chine)
