@@ -139,4 +139,10 @@ extern NSString *const WordPressComApiErrorCodeTooManyRequests;
 + (NSString *)WordPressAppId;
 + (NSString *)WordPressAppSecret;
 
+///-----------------
+/// @name Error Messages
+///-----------------
+
++ (NSString *)errorMessageForErrorCode:(NSString *)errorCode;
+
 @end

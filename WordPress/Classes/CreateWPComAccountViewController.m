@@ -304,11 +304,11 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidPassword]) {
         errorMessage = NSLocalizedString(@"Invalid password", @"");
     } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogUrl]) {
-        errorMessage = NSLocalizedString(@"Invalid blog url", @"");
+        errorMessage = NSLocalizedString(@"Invalid Site Address", @"");
     } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogTitle]) {
-        errorMessage = NSLocalizedString(@"Invalid Blog Title", @"");
+        errorMessage = NSLocalizedString(@"Invalid Site Title", @"");
     } else if ([errorCode isEqualToString:WordPressComApiErrorCodeTooManyRequests]) {
-        errorMessage = NSLocalizedString(@"Limit Reached - Contact Support", @"");
+        errorMessage = NSLocalizedString(@"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support.", @"");
     } else {
         errorMessage = NSLocalizedString(@"Unknown error", @"");
     }

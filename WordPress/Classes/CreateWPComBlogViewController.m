@@ -366,7 +366,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
     NSString *errorMessage;
     if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogUrl]) {
-        errorMessage = NSLocalizedString(@"Invalid blog url", nil);
+        errorMessage = NSLocalizedString(@"Invalid Site Address", nil);
     } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogTitle]) {
         NSLocalizedString(@"Invalid blog title", nil);
     } else {

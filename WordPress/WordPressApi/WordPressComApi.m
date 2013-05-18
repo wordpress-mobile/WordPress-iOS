@@ -722,4 +722,54 @@ NSString *const WordPressComApiErrorCodeTooManyRequests = @"too_many_requests";
     return [WordPressComApiCredentials secret];
 }
 
++ (NSString *)errorMessageForErrorCode:(NSString *)errorCode
+{
+    // TODO : Review list of error codes
+    if ([errorCode isEqualToString:@"username_only_lowercase_letters_and_numbers"]) {
+        return NSLocalizedString(@"Only lowercase letters (a-z) and numbers are allowed.", nil);
+    } else if ([errorCode isEqualToString:@"username_not_allowed"]) {
+        return NSLocalizedString(@"That username is not allowed.", nil);
+    } else if ([errorCode isEqualToString:@"email_cant_be_used_to_signup"]) {
+        return NSLocalizedString(@"You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider.", nil);
+    } else if ([errorCode isEqualToString:@"username_must_be_at_least_four_characters"]) {
+        return NSLocalizedString(@"Username must be at least 4 characters.", nil);
+    } else if ([errorCode isEqualToString:@"username_contains_invalid_characters"]) {
+        return NSLocalizedString(@"Sorry, usernames may not contain the character &#8220;_&#8221;!", nil);
+    } else if ([errorCode isEqualToString:@"email_invalid"]) {
+        return NSLocalizedString(@"Please enter a valid email address.", nil);
+    } else if ([errorCode isEqualToString:@"Sorry, that email address is not allowed!"]) {
+        return NSLocalizedString(@"Sorry, that email address is not allowed!", nil);
+    } else if ([errorCode isEqualToString:@"username_exists"]) {
+        return NSLocalizedString(@"Sorry, that username already exists!", nil);
+    } else if ([errorCode isEqualToString:@"email_exists"]) {
+        return NSLocalizedString(@"Sorry, that email address is already being used!", nil);
+    } else if ([errorCode isEqualToString:@"username_reserved_but_may_be_available"]) {
+        return NSLocalizedString(@"That username is currently reserved but may be available in a couple of days.", nil);
+    } else if ([errorCode isEqualToString:@"email_reserved"]) {
+        return NSLocalizedString(@"That email address has already been used. Please check your inbox for an activation email. If you don’t activate you can try again in a few days.", nil);
+    } else if ([errorCode isEqualToString:@"site_required"]) {
+        return NSLocalizedString(@"Please enter a site address.", nil);
+    } else if ([errorCode isEqualToString:@"site_address_not_allowed"]) {
+        return NSLocalizedString(@"That site address is not allowed.", nil);
+    } else if ([errorCode isEqualToString:@"site_address_must_be_at_least_four_characters"]) {
+        return NSLocalizedString(@"Site address must be at least 4 characters.", nil);
+    } else if ([errorCode isEqualToString:@"site_address_must_be_less_than_sixty_four_characters"]) {
+        return NSLocalizedString(@"The site address must be shorter than 64 characters.", nil);
+    } else if ([errorCode isEqualToString:@"site_address_contains_invalid_characters"]) {
+        return NSLocalizedString(@"Sorry, site addresses may not contain the character &#8220;_&#8221;!", nil);
+    } else if ([errorCode isEqualToString:@"site_address_cant_be_used"]) {
+        return NSLocalizedString(@"Sorry, you may not use that site address.", nil);
+    } else if ([errorCode isEqualToString:@"site_address_only_letters_and_numbers"]) {
+        return NSLocalizedString(@"Only the letters a-z and numbers allowed.", nil);
+    } else if ([errorCode isEqualToString:@"site_address_exists"]) {
+        return NSLocalizedString(@"Sorry, that site already exists!", nil);
+    } else if ([errorCode isEqualToString:@"site_address_reserved"]) {
+        return NSLocalizedString(@"Sorry, that site is reserved!", nil);
+    } else if ([errorCode isEqualToString:@"site_address_reserved_but_may_be_available"]) {
+        return NSLocalizedString(@"That site is currently reserved but may be available in a couple days.", nil);
+    }
+    
+    return NSLocalizedString(@"Unknown error", nil);
+}
+
 @end
