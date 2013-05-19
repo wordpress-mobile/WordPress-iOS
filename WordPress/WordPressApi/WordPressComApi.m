@@ -726,7 +726,7 @@ NSString *const WordPressComApiErrorCodeTooManyRequests = @"too_many_requests";
 {
     // TODO : Review list of error codes
     if ([errorCode isEqualToString:@"username_only_lowercase_letters_and_numbers"]) {
-        return NSLocalizedString(@"Only lowercase letters (a-z) and numbers are allowed.", nil);
+        return NSLocalizedString(@"Sorry, usernames can only contain lowercase letters (a-z) and numbers.", nil);
     } else if ([errorCode isEqualToString:@"username_not_allowed"]) {
         return NSLocalizedString(@"That username is not allowed.", nil);
     } else if ([errorCode isEqualToString:@"email_cant_be_used_to_signup"]) {
@@ -737,7 +737,7 @@ NSString *const WordPressComApiErrorCodeTooManyRequests = @"too_many_requests";
         return NSLocalizedString(@"Sorry, usernames may not contain the character &#8220;_&#8221;!", nil);
     } else if ([errorCode isEqualToString:@"email_invalid"]) {
         return NSLocalizedString(@"Please enter a valid email address.", nil);
-    } else if ([errorCode isEqualToString:@"Sorry, that email address is not allowed!"]) {
+    } else if ([errorCode isEqualToString:@"email_not_allowed"]) {
         return NSLocalizedString(@"Sorry, that email address is not allowed!", nil);
     } else if ([errorCode isEqualToString:@"username_exists"]) {
         return NSLocalizedString(@"Sorry, that username already exists!", nil);
@@ -747,25 +747,27 @@ NSString *const WordPressComApiErrorCodeTooManyRequests = @"too_many_requests";
         return NSLocalizedString(@"That username is currently reserved but may be available in a couple of days.", nil);
     } else if ([errorCode isEqualToString:@"email_reserved"]) {
         return NSLocalizedString(@"That email address has already been used. Please check your inbox for an activation email. If you don’t activate you can try again in a few days.", nil);
-    } else if ([errorCode isEqualToString:@"site_required"]) {
+    } else if ([errorCode isEqualToString:@"blog_name_required"]) {
         return NSLocalizedString(@"Please enter a site address.", nil);
-    } else if ([errorCode isEqualToString:@"site_address_not_allowed"]) {
+    } else if ([errorCode isEqualToString:@"blog_name_not_allowed"]) {
         return NSLocalizedString(@"That site address is not allowed.", nil);
-    } else if ([errorCode isEqualToString:@"site_address_must_be_at_least_four_characters"]) {
+    } else if ([errorCode isEqualToString:@"blog_name_must_be_at_least_four_characters"]) {
         return NSLocalizedString(@"Site address must be at least 4 characters.", nil);
-    } else if ([errorCode isEqualToString:@"site_address_must_be_less_than_sixty_four_characters"]) {
+    } else if ([errorCode isEqualToString:@"blog_name_must_be_less_than_sixty_four_characters"]) {
         return NSLocalizedString(@"The site address must be shorter than 64 characters.", nil);
-    } else if ([errorCode isEqualToString:@"site_address_contains_invalid_characters"]) {
+    } else if ([errorCode isEqualToString:@"blog_name_contains_invalid_characters"]) {
         return NSLocalizedString(@"Sorry, site addresses may not contain the character &#8220;_&#8221;!", nil);
-    } else if ([errorCode isEqualToString:@"site_address_cant_be_used"]) {
+    } else if ([errorCode isEqualToString:@"blog_name_cant_be_used"]) {
         return NSLocalizedString(@"Sorry, you may not use that site address.", nil);
-    } else if ([errorCode isEqualToString:@"site_address_only_letters_and_numbers"]) {
-        return NSLocalizedString(@"Only the letters a-z and numbers allowed.", nil);
-    } else if ([errorCode isEqualToString:@"site_address_exists"]) {
+    } else if ([errorCode isEqualToString:@"blog_name_only_lowercase_letters_and_numbers"]) {
+        return NSLocalizedString(@"Sorry, site addresses can only contain lowercase letters (a-z) and numbers.", nil);
+    } else if ([errorCode isEqualToString:@"blog_name_must_include_letters"]) {
+        return NSLocalizedString(@"Sorry, site addresses must have letters too!", nil);
+    } else if ([errorCode isEqualToString:@"blog_name_exists"]) {
         return NSLocalizedString(@"Sorry, that site already exists!", nil);
-    } else if ([errorCode isEqualToString:@"site_address_reserved"]) {
+    } else if ([errorCode isEqualToString:@"blog_name_reserved"]) {
         return NSLocalizedString(@"Sorry, that site is reserved!", nil);
-    } else if ([errorCode isEqualToString:@"site_address_reserved_but_may_be_available"]) {
+    } else if ([errorCode isEqualToString:@"blog_name_reserved_but_may_be_available"]) {
         return NSLocalizedString(@"That site is currently reserved but may be available in a couple days.", nil);
     }
     

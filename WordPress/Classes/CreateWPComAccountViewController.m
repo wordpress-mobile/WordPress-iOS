@@ -302,7 +302,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidEmail]) {
         errorMessage = NSLocalizedString(@"Invalid email address", @"");
     } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidPassword]) {
-        errorMessage = NSLocalizedString(@"Invalid password", @"");
+        errorMessage = NSLocalizedString(@"Your password is invalid because it does not meet our security guidelines. Please try a more complex password.", @"");
     } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogUrl]) {
         errorMessage = NSLocalizedString(@"Invalid Site Address", @"");
     } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogTitle]) {
