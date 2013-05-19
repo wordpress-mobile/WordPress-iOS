@@ -166,7 +166,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     grayOverlay.overlayTitle = NSLocalizedString(@"Success!", @"NUX Second Walkthrough Success Overlay Title");
     grayOverlay.overlayDescription = NSLocalizedString(@"You have successfully signed into your WordPress account!", @"NUX Second Walkthrough Success Overlay Description");
     grayOverlay.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
-    grayOverlay.footerDescription = NSLocalizedString(@"TAP TO CONTINUE", nil);
+    grayOverlay.footerDescription = [NSLocalizedString(@"tap to continue", nil) uppercaseString];
     grayOverlay.icon = WPWalkthroughGrayOverlayViewBlueCheckmarkIcon;
     grayOverlay.hideBackgroundView = YES;
     grayOverlay.singleTapCompletionBlock = ^(WPWalkthroughOverlayView * overlayView){
@@ -314,7 +314,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page1SwipeToContinue.textAlignment = UITextAlignmentCenter;
         _page1SwipeToContinue.numberOfLines = 1;
         _page1SwipeToContinue.font = [WPNUXUtility swipeToContinueFont];
-        _page1SwipeToContinue.text = NSLocalizedString(@"SWIPE TO CONTINUE", nil);
+        _page1SwipeToContinue.text = [NSLocalizedString(@"swipe to continue", nil) uppercaseString];
         [_page1SwipeToContinue sizeToFit];
         [_scrollView addSubview:_page1SwipeToContinue];
     }

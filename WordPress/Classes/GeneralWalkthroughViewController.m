@@ -260,7 +260,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode;
     overlayView.overlayTitle = NSLocalizedString(@"Sorry, we can’t log you in.", nil);
     overlayView.overlayDescription = message;
-    overlayView.footerDescription = NSLocalizedString(@"TAP TO DISMISS", nil);
+    overlayView.footerDescription = [NSLocalizedString(@"tap to dismiss", nil) uppercaseString];
     overlayView.leftButtonText = NSLocalizedString(@"Need Help?", nil);
     overlayView.rightButtonText = NSLocalizedString(@"OK", nil);
     overlayView.singleTapCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
@@ -545,7 +545,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _page1SwipeToContinue.textAlignment = UITextAlignmentCenter;
         _page1SwipeToContinue.numberOfLines = 1;
         _page1SwipeToContinue.font = [WPNUXUtility swipeToContinueFont];
-        _page1SwipeToContinue.text = NSLocalizedString(@"SWIPE TO CONTINUE", nil);
+        _page1SwipeToContinue.text = [NSLocalizedString(@"swipe to continue", nil) uppercaseString];
         [_page1SwipeToContinue sizeToFit];
         [_scrollView addSubview:_page1SwipeToContinue];
     }
