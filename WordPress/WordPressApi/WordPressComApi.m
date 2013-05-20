@@ -260,7 +260,8 @@ NSString *const WordPressComApiErrorCodeTooManyRequests = @"too_many_requests";
         // This endpoint is throttled, so check if we've sent too many requests and fill that error in as
         // when too many requests occur the API just spits out an html page.
         if ([error.userInfo objectForKey:WordPressComApiErrorCodeKey] == nil) {
-            if ([[operation responseString] rangeOfString:@"Limit reached"].location != NSNotFound) {
+            NSString *responseString = [operation responseString];
+            if (responseString != nil && [responseString rangeOfString:@"Limit reached"].location != NSNotFound) {
                 NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
                 [userInfo setValue:WordPressComApiErrorCodeTooManyRequests forKey:WordPressComApiErrorCodeKey];
                 failure([[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo]);
