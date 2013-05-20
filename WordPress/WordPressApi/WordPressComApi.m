@@ -746,7 +746,7 @@ NSString *const WordPressComApiErrorCodeTooManyRequests = @"too_many_requests";
     } else if ([errorCode isEqualToString:@"username_reserved_but_may_be_available"]) {
         return NSLocalizedString(@"That username is currently reserved but may be available in a couple of days.", nil);
     } else if ([errorCode isEqualToString:@"email_reserved"]) {
-        return NSLocalizedString(@"That email address has already been used. Please check your inbox for an activation email. If you don’t activate you can try again in a few days.", nil);
+        return NSLocalizedString(@"That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days.", nil);
     } else if ([errorCode isEqualToString:@"blog_name_required"]) {
         return NSLocalizedString(@"Please enter a site address.", nil);
     } else if ([errorCode isEqualToString:@"blog_name_not_allowed"]) {
