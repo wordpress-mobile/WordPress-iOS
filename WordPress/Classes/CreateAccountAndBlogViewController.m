@@ -78,8 +78,7 @@
     BOOL _savedOriginalPositionsOfStickyControls;
     CGFloat _infoButtonOriginalX;
     CGFloat _cancelButtonOriginalX;
-    CGFloat _keyboardOffsetForText;
-    CGFloat _keyboardOffsetForButtons;
+    CGFloat _keyboardOffset;
     NSString *_defaultSiteUrl;
     
     NSUInteger _currentPage;
@@ -389,8 +388,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1TOSLabel.text = NSLocalizedString(@"You agree to the fascinating terms of service by pressing the next button.", @"NUX Create Account TOS Label");
         _page1TOSLabel.numberOfLines = 0;
         _page1TOSLabel.backgroundColor = [UIColor clearColor];
-        _page1TOSLabel.font = [WPNUXUtility descriptionTextFont];
-        _page1TOSLabel.textColor = [WPNUXUtility descriptionTextColor];
+        _page1TOSLabel.font = [WPNUXUtility tosLabelFont];
+        _page1TOSLabel.textColor = [WPNUXUtility tosLabelColor];
         _page1TOSLabel.shadowColor = [WPNUXUtility textShadowColor];
         _page1TOSLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         _page1TOSLabel.layer.shadowRadius = 2.0;
@@ -461,19 +460,25 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     x = [self adjustX:x forPage:currentPage];
     y = CGRectGetMaxY(_page1UsernameText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
     _page1PasswordText.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, CreateAccountAndBlogTextFieldHeight));
-
-    // Layout Terms of Service
-    CGSize TOSLabelSize = [_page1TOSLabel.text sizeWithFont:_page1TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
-    x = (_viewWidth - TOSLabelSize.width)/2.0;
-    x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page1PasswordText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
-    _page1TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
     // Layout Next Button
     x = (_viewWidth - CGRectGetWidth(_page1NextButton.frame))/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page1TOSLabel.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_page1PasswordText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
     _page1NextButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1NextButton.frame), CGRectGetHeight(_page1NextButton.frame)));
+
+    // Layout Terms of Service
+    CGFloat TOSSingleLineHeight = [@"WordPress" sizeWithFont:_page1TOSLabel.font].height;
+    CGSize TOSLabelSize = [_page1TOSLabel.text sizeWithFont:_page1TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    // If the terms of service don't fit on two lines, then shrink the font to make sure the entire terms of service is visible.
+    if (TOSLabelSize.height > 2*TOSSingleLineHeight) {
+        _page1TOSLabel.font = [WPNUXUtility tosLabelSmallerFont];
+        TOSLabelSize = [_page1TOSLabel.text sizeWithFont:_page1TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    }
+    x = (_viewWidth - TOSLabelSize.width)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page1NextButton.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _page1TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
     NSArray *controls = @[_page1Icon, _page1Title, _page1EmailText, _page1UsernameText, _page1PasswordText, _page1TOSLabel, _page1NextButton];
     [WPNUXUtility centerViews:controls withStartingView:_page1Icon andEndingView:_page1NextButton forHeight:_viewHeight];
@@ -559,8 +564,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page2TOSLabel.text = NSLocalizedString(@"You agree to the fascinating terms of service by pressing the next button.", @"NUX Create Account TOS Label");
         _page2TOSLabel.numberOfLines = 0;
         _page2TOSLabel.backgroundColor = [UIColor clearColor];
-        _page2TOSLabel.font = [WPNUXUtility descriptionTextFont];
-        _page2TOSLabel.textColor = [WPNUXUtility descriptionTextColor];
+        _page2TOSLabel.font = [WPNUXUtility tosLabelFont];
+        _page2TOSLabel.textColor = [WPNUXUtility tosLabelColor];
         _page2TOSLabel.shadowColor = [WPNUXUtility textShadowColor];
         _page2TOSLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         _page2TOSLabel.layer.shadowRadius = 2.0;
@@ -634,23 +639,29 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     y = CGRectGetMinY(_page2SiteLanguageText.frame) + (CGRectGetHeight(_page2SiteLanguageText.frame) - CGRectGetHeight(_page2SiteLanguageDropdownImage.frame))/2.0;
     _page2SiteLanguageDropdownImage.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2SiteLanguageDropdownImage.frame), CGRectGetHeight(_page2SiteLanguageDropdownImage.frame)));
     
-    // Layout Terms of Service
-    CGSize TOSLabelSize = [_page2TOSLabel.text sizeWithFont:_page2TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
-    x = (_viewWidth - TOSLabelSize.width)/2.0;
-    x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page2SiteLanguageText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
-    _page2TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
-    
     // Layout Previous Button
     x = (_viewWidth - CGRectGetWidth(_page2PreviousButton.frame) - CGRectGetWidth(_page2NextButton.frame) - CreateAccountAndBlogStandardOffset)/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page2TOSLabel.frame) + CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_page2SiteLanguageText.frame) + CreateAccountAndBlogStandardOffset;
     _page2PreviousButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2PreviousButton.frame), CGRectGetHeight(_page2PreviousButton.frame)));
     
     // Layout Next Button
     x = CGRectGetMaxX(_page2PreviousButton.frame) + CreateAccountAndBlogStandardOffset;
-    y = CGRectGetMaxY(_page2TOSLabel.frame) + CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_page2SiteLanguageText.frame) + CreateAccountAndBlogStandardOffset;
     _page2NextButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2NextButton.frame), CGRectGetHeight(_page2NextButton.frame)));
+    
+    // Layout Terms of Service
+    CGFloat TOSSingleLineHeight = [@"WordPress" sizeWithFont:_page2TOSLabel.font].height;
+    CGSize TOSLabelSize = [_page2TOSLabel.text sizeWithFont:_page2TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    // If the terms of service don't fit on two lines, then shrink the font to make sure the entire terms of service is visible.
+    if (TOSLabelSize.height > 2*TOSSingleLineHeight) {
+        _page2TOSLabel.font = [WPNUXUtility tosLabelSmallerFont];
+        TOSLabelSize = [_page2TOSLabel.text sizeWithFont:_page2TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    }
+    x = (_viewWidth - TOSLabelSize.width)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page2NextButton.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _page2TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
     NSArray *controls = @[_page2Icon, _page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2TOSLabel, _page2PreviousButton, _page2NextButton];
     [WPNUXUtility centerViews:controls withStartingView:_page2Icon andEndingView:_page2NextButton forHeight:_viewHeight];
@@ -1102,78 +1113,34 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 {
     CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     if (_currentPage == 1) {
-        // The reason we need two separate offsets is because there isn't enough room to display
-        // the text, the TOS label and the buttons, so we move the text a certain height and then
-        // the buttons the same height plus the height of the terms of service label so it 'hops' over
-        // the label
-        _keyboardOffsetForText = (CGRectGetMaxY(_page1TOSLabel.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_page1NextButton.frame);
-        _keyboardOffsetForButtons = _keyboardOffsetForText + CGRectGetHeight(_page1TOSLabel.frame);
+        _keyboardOffset = (CGRectGetMaxY(_page1NextButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_page1NextButton.frame);
     } else {
-        _keyboardOffsetForText = (CGRectGetMaxY(_page2TOSLabel.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_page2NextButton.frame);
-        _keyboardOffsetForButtons = _keyboardOffsetForText + CGRectGetHeight(_page2TOSLabel.frame);
+        _keyboardOffset = (CGRectGetMaxY(_page2NextButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_page2NextButton.frame);
     }
 
-    [UIView animateWithDuration:0.3 animations:^{
-        NSArray *textControlsToMove = @[];
-        NSArray *buttonControlsToMove = @[];
-        NSArray *textControlsToHide = @[];
-        if (_currentPage == 1) {
-            textControlsToMove = @[_page1Title, _page1UsernameText, _page1EmailText, _page1PasswordText];
-            buttonControlsToMove = @[_page1NextButton];
-            textControlsToHide = @[_page1Icon, _helpButton, _cancelButton, _page1TOSLabel];
-        } else if (_currentPage == 2) {
-            textControlsToMove = @[_page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage];
-            buttonControlsToMove = @[_page2NextButton, _page2PreviousButton];
-            textControlsToHide = @[_page2Icon, _helpButton, _cancelButton, _page2TOSLabel];
-        }
-        
-        for (UIControl *control in textControlsToMove) {
+    [UIView animateWithDuration:0.3 animations:^{        
+        for (UIControl *control in [self controlsToMoveDuringKeyboardTransition:_currentPage]) {
             CGRect frame = control.frame;
-            frame.origin.y -= _keyboardOffsetForText;
+            frame.origin.y -= _keyboardOffset;
             control.frame = frame;
         }
         
-        for (UIControl *control in buttonControlsToMove) {
-            CGRect frame = control.frame;
-            frame.origin.y -= _keyboardOffsetForButtons;
-            control.frame = frame;
-        }
-        
-        for (UIControl *control in textControlsToHide) {
+        for (UIControl *control in [self controlsToShowOrHideDuringKeyboardTransition:_currentPage]) {
             control.alpha = 0.0;
-        }        
+        }
     }];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-    [UIView animateWithDuration:0.3 animations:^{
-        NSArray *textControlsToMove = @[];
-        NSArray *buttonControlsToMove = @[];
-        NSArray *textControlsToShow = @[];
-        if (_currentPage == 1) {
-            textControlsToMove = @[_page1Title, _page1UsernameText, _page1EmailText, _page1PasswordText];
-            buttonControlsToMove = @[_page1NextButton];
-            textControlsToShow = @[_page1Icon, _helpButton, _cancelButton, _page1TOSLabel];
-        } else if (_currentPage == 2) {
-            textControlsToMove = @[_page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage];
-            buttonControlsToMove = @[_page2PreviousButton, _page2NextButton];
-            textControlsToShow = @[_page2Icon, _helpButton, _cancelButton, _page2TOSLabel];
-        }
-        
-        for (UIControl *control in textControlsToMove) {
+    [UIView animateWithDuration:0.3 animations:^{        
+        for (UIControl *control in [self controlsToMoveDuringKeyboardTransition:_currentPage]) {
             CGRect frame = control.frame;
-            frame.origin.y += _keyboardOffsetForText;
+            frame.origin.y += _keyboardOffset;
             control.frame = frame;
         }
-        
-        for (UIControl *control in buttonControlsToMove) {
-            CGRect frame = control.frame;
-            frame.origin.y += _keyboardOffsetForButtons;
-            control.frame = frame;
-        }
-        
-        for (UIControl *control in textControlsToShow) {
+                
+        for (UIControl *control in [self controlsToShowOrHideDuringKeyboardTransition:_currentPage]) {
             control.alpha = 1.0;
         }
     }];
@@ -1187,6 +1154,28 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 - (void)keyboardDidHide
 {
     _keyboardVisible = false;
+}
+
+- (NSArray *)controlsToMoveDuringKeyboardTransition:(NSUInteger)page
+{
+    if (page == 1) {
+        return @[_page1Title, _page1UsernameText, _page1EmailText, _page1PasswordText, _page1NextButton];
+    } else if (page == 2) {
+        return @[_page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2NextButton, _page2PreviousButton];
+    } else {
+        return nil;
+    }
+}
+
+- (NSArray *)controlsToShowOrHideDuringKeyboardTransition:(NSUInteger)page
+{
+    if (page == 1) {
+        return @[_page1Icon, _helpButton, _cancelButton, _page1TOSLabel];
+    } else if (page == 2) {
+        return @[_page2Icon, _helpButton, _cancelButton, _page2TOSLabel];
+    } else {
+        return nil;
+    }
 }
 
 - (void)showLanguagePicker

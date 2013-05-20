@@ -32,6 +32,16 @@
     return [UIFont fontWithName:@"OpenSans" size:10.0];
 }
 
++ (UIFont *)tosLabelFont
+{
+    return [UIFont fontWithName:@"OpenSans" size:12.0];
+}
+
++ (UIFont *)tosLabelSmallerFont
+{
+    return [UIFont fontWithName:@"OpenSans" size:9.0];
+}
+
 #pragma mark - Colors
 
 + (UIColor *)textShadowColor
@@ -67,6 +77,11 @@
 + (UIColor *)backgroundColor
 {
     return [UIColor colorWithRed:30.0/255.0 green:140.0/255.0 blue:190.0/255.0 alpha:1.0];
+}
+
++ (UIColor *)tosLabelColor
+{
+    return [UIColor colorWithRed:255.0 green:255.0 blue:255.0 alpha:0.3];
 }
 
 #pragma mark - Helper Methods
