@@ -19,7 +19,10 @@
 NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
-@interface NotificationsViewController ()
+@interface NotificationsViewController () {
+    BOOL _retrievingNotifications;
+}
+
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *settingsButton;
 @property (nonatomic, strong) id authListener;
 @property (nonatomic, strong) WordPressComApi *user;
@@ -323,17 +326,28 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     return YES;
 }
 
+- (BOOL)isSyncing
+{
+    return _retrievingNotifications;
+}
+
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     Note *lastNote = [self.resultsController.fetchedObjects lastObject];
     if (lastNote == nil) {
         return;
     }
-
+    
+    _retrievingNotifications = true;
+    
     [self.user getNotificationsBefore:lastNote.timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        _retrievingNotifications = false;
+                
         if (success) {
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        _retrievingNotifications = false;
+        
         if (failure) {
             failure(error);
         }
