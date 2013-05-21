@@ -45,7 +45,7 @@ EXTERNAL SOURCES:
     :podspec: https://raw.github.com/koke/WordPressApi/master/WordPressApi.podspec
 
 SPEC CHECKSUMS:
-  AFNetworking: 616da0028916ce296f5c3cef74e5552eb4e10e13
+  AFNetworking: a44069e3c9c89867544f6639482f155c7e5f9b41
   CTidy: 6a35875a96dd441822e620732c1113be19769067
   DTCoreText: 4f2b9d62554c62dd7cd412c9f50ece1e70a548b9
   JSONKit: 409734ab3407fce90ef7eaa95d7168f38d9a6601

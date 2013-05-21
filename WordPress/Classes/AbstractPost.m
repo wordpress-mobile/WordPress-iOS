@@ -79,7 +79,7 @@
 }
 
 - (BOOL)hasRemote {
-    return ((self.postID != nil) && ([self.postID intValue] > 0));
+    return ((self.postID != nil) && ([self.postID longLongValue] > 0));
 }
 
 - (void)remove {
@@ -318,7 +318,7 @@
     if (self.post_thumbnail == nil) {
         // Including an empty string for wp_post_thumbnail generates
         // an "Invalid attachment ID" error in the call to wp.newPage
-        if ([self.postID intValue] > 0) {
+        if ([self.postID longLongValue] > 0) {
             [postParams setValue:@"" forKey:@"wp_post_thumbnail"];
         }
 
