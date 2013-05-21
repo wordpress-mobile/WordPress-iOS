@@ -27,13 +27,7 @@ NSString *const WordPressComApiUnseenNoteCountInfoKey = @"note_count";
 NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
 NSString *const WordPressComApiErrorDomain = @"com.wordpress.api";
 NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
-
-NSString *const WordPressComApiErrorCodeInvalidUser = @"invalid_user";
-NSString *const WordPressComApiErrorCodeInvalidEmail = @"invalid_email";
-NSString *const WordPressComApiErrorCodeInvalidPassword = @"invalid_password";
-NSString *const WordPressComApiErrorCodeInvalidBlogUrl = @"invalid_blogname";
-NSString *const WordPressComApiErrorCodeInvalidBlogTitle = @"invalid_blogtitle";
-NSString *const WordPressComApiErrorCodeTooManyRequests = @"too_many_requests";
+NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKey";
 
 
 #define UnfollowedBlogEvent @"UnfollowedBlogEvent"
@@ -257,18 +251,27 @@ NSString *const WordPressComApiErrorCodeTooManyRequests = @"too_many_requests";
     };
     
     void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error){
+        NSError *errorWithLocalizedMessage;
         // This endpoint is throttled, so check if we've sent too many requests and fill that error in as
         // when too many requests occur the API just spits out an html page.
         if ([error.userInfo objectForKey:WordPressComApiErrorCodeKey] == nil) {
-            if ([[operation responseString] rangeOfString:@"Limit reached"].location != NSNotFound) {
+            NSString *responseString = [operation responseString];
+            if (responseString != nil && [responseString rangeOfString:@"Limit reached"].location != NSNotFound) {
                 NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
-                [userInfo setValue:WordPressComApiErrorCodeTooManyRequests forKey:WordPressComApiErrorCodeKey];
-                failure([[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo]);
-                return;
+                [userInfo setValue:NSLocalizedString(@"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support.", @"") forKey:WordPressComApiErrorMessageKey];
+                [userInfo setValue:@"too_many_requests" forKey:WordPressComApiErrorCodeKey];
+                errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
             }
+        } else {
+            NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
+            NSString *localizedErrorMessage = [self errorMessageForErrorCode:errorCode];
+            NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
+            [userInfo setValue:errorCode forKey:WordPressComApiErrorCodeKey];
+            [userInfo setValue:localizedErrorMessage forKey:WordPressComApiErrorMessageKey];
+            errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
         }
         
-        failure(error);
+        failure(errorWithLocalizedMessage);
     };
     
     NSDictionary *params = @{
@@ -300,11 +303,28 @@ NSString *const WordPressComApiErrorCodeTooManyRequests = @"too_many_requests";
     NSParameterAssert(languageId != nil);
     
     void (^successBlock)(AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
-        success(responseObject);
+        NSDictionary *response = responseObject;
+        if ([response count] == 0) {
+            // There was an error creating the blog as a successful call yields a dictionary back.
+            NSString *localizedErrorMessage = NSLocalizedString(@"Unknown error", nil);
+            NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
+            [userInfo setValue:localizedErrorMessage forKey:WordPressComApiErrorMessageKey];
+            NSError *errorWithLocalizedMessage = [[NSError alloc] initWithDomain:WordPressComApiErrorDomain code:0 userInfo:userInfo];
+
+            failure(errorWithLocalizedMessage);
+        } else {
+            success(responseObject);
+        }
     };
     
     void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error){
-        failure(error);
+        NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
+        NSString *localizedErrorMessage = [self errorMessageForErrorCode:errorCode];
+        NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
+        [userInfo setValue:errorCode forKey:WordPressComApiErrorCodeKey];
+        [userInfo setValue:localizedErrorMessage forKey:WordPressComApiErrorMessageKey];
+        NSError *errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
+        failure(errorWithLocalizedMessage);
     };
     
     if (blogTitle == nil) {
@@ -720,6 +740,70 @@ NSString *const WordPressComApiErrorCodeTooManyRequests = @"too_many_requests";
 
 + (NSString *)WordPressAppSecret {
     return [WordPressComApiCredentials secret];
+}
+
+- (NSString *)errorMessageForErrorCode:(NSString *)errorCode
+{
+    // TODO : Review list of error codes
+    if ([errorCode isEqualToString:@"username_only_lowercase_letters_and_numbers"]) {
+        return NSLocalizedString(@"Sorry, usernames can only contain lowercase letters (a-z) and numbers.", nil);
+    } else if ([errorCode isEqualToString:@"username_required"]) {
+        return NSLocalizedString(@"Please enter a username.", nil);
+    } else if ([errorCode isEqualToString:@"username_not_allowed"]) {
+        return NSLocalizedString(@"That username is not allowed.", nil);
+    } else if ([errorCode isEqualToString:@"email_cant_be_used_to_signup"]) {
+        return NSLocalizedString(@"You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider.", nil);
+    } else if ([errorCode isEqualToString:@"username_must_be_at_least_four_characters"]) {
+        return NSLocalizedString(@"Username must be at least 4 characters.", nil);
+    } else if ([errorCode isEqualToString:@"username_contains_invalid_characters"]) {
+        return NSLocalizedString(@"Sorry, usernames may not contain the character &#8220;_&#8221;!", nil);
+    } else if ([errorCode isEqualToString:@"username_must_include_letters"]) {
+        return NSLocalizedString(@"Sorry, usernames must have letters (a-z) too!", nil);
+    } else if ([errorCode isEqualToString:@"email_invalid"]) {
+        return NSLocalizedString(@"Please enter a valid email address.", nil);
+    } else if ([errorCode isEqualToString:@"email_not_allowed"]) {
+        return NSLocalizedString(@"Sorry, that email address is not allowed!", nil);
+    } else if ([errorCode isEqualToString:@"username_exists"]) {
+        return NSLocalizedString(@"Sorry, that username already exists!", nil);
+    } else if ([errorCode isEqualToString:@"email_exists"]) {
+        return NSLocalizedString(@"Sorry, that email address is already being used!", nil);
+    } else if ([errorCode isEqualToString:@"username_reserved_but_may_be_available"]) {
+        return NSLocalizedString(@"That username is currently reserved but may be available in a couple of days.", nil);
+    } else if ([errorCode isEqualToString:@"email_reserved"]) {
+        return NSLocalizedString(@"That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days.", nil);
+    } else if ([errorCode isEqualToString:@"blog_name_required"]) {
+        return NSLocalizedString(@"Please enter a site address.", nil);
+    } else if ([errorCode isEqualToString:@"blog_name_not_allowed"]) {
+        return NSLocalizedString(@"That site address is not allowed.", nil);
+    } else if ([errorCode isEqualToString:@"blog_name_must_be_at_least_four_characters"]) {
+        return NSLocalizedString(@"Site address must be at least 4 characters.", nil);
+    } else if ([errorCode isEqualToString:@"blog_name_must_be_less_than_sixty_four_characters"]) {
+        return NSLocalizedString(@"The site address must be shorter than 64 characters.", nil);
+    } else if ([errorCode isEqualToString:@"blog_name_contains_invalid_characters"]) {
+        return NSLocalizedString(@"Sorry, site addresses may not contain the character &#8220;_&#8221;!", nil);
+    } else if ([errorCode isEqualToString:@"blog_name_cant_be_used"]) {
+        return NSLocalizedString(@"Sorry, you may not use that site address.", nil);
+    } else if ([errorCode isEqualToString:@"blog_name_only_lowercase_letters_and_numbers"]) {
+        return NSLocalizedString(@"Sorry, site addresses can only contain lowercase letters (a-z) and numbers.", nil);
+    } else if ([errorCode isEqualToString:@"blog_name_must_include_letters"]) {
+        return NSLocalizedString(@"Sorry, site addresses must have letters too!", nil);
+    } else if ([errorCode isEqualToString:@"blog_name_exists"]) {
+        return NSLocalizedString(@"Sorry, that site already exists!", nil);
+    } else if ([errorCode isEqualToString:@"blog_name_reserved"]) {
+        return NSLocalizedString(@"Sorry, that site is reserved!", nil);
+    } else if ([errorCode isEqualToString:@"blog_name_reserved_but_may_be_available"]) {
+        return NSLocalizedString(@"That site is currently reserved but may be available in a couple days.", nil);
+    } else if ([errorCode isEqualToString:@"password_invalid"]) {
+        return NSLocalizedString(@"Your password is invalid because it does not meet our security guidelines. Please try a more complex password.", @"");
+    } else if ([errorCode isEqualToString:@"blog_name_invalid"]) {
+        return NSLocalizedString(@"Invalid Site Address", @"");
+    } else if ([errorCode isEqualToString:@"blog_title_invalid"]) {
+        return NSLocalizedString(@"Invalid Site Title", @"");
+    } else if ([errorCode isEqualToString:@"username_invalid"]) {
+        return NSLocalizedString(@"Invalid username", @"");
+    }
+    
+    return NSLocalizedString(@"Unknown error", nil);
 }
 
 @end

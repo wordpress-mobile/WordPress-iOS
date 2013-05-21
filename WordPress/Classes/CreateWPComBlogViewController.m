@@ -294,7 +294,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
         if (!_userPressedBackButton) {
             _isCreatingBlog = false;
             [self.tableView reloadData];
-            [self handleCreationError:error];
+            [self displayCreationError:error];
         }
     }];
 }
@@ -361,18 +361,9 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     [[WordPressComApi sharedApi] syncPushNotificationInfo];
 }
 
-- (void)handleCreationError:(NSError *)error
+- (void)displayCreationError:(NSError *)error
 {
-    NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
-    NSString *errorMessage;
-    if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogUrl]) {
-        errorMessage = NSLocalizedString(@"Invalid blog url", nil);
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogTitle]) {
-        NSLocalizedString(@"Invalid blog title", nil);
-    } else {
-        errorMessage = NSLocalizedString(@"Unknown error", nil);
-    }
-    
+    NSString *errorMessage = [error.userInfo objectForKey:WordPressComApiErrorMessageKey];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
     [alertView show];
 }

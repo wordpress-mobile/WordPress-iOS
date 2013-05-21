@@ -8,6 +8,7 @@
 
 #import "CreateAccountAndBlogViewController.h"
 #import <SVProgressHUD/SVProgressHUD.h>
+#import <QuartzCore/QuartzCore.h>
 #import "HelpViewController.h"
 #import "WordPressComApi.h"
 #import "UIView+FormSheetHelpers.h"
@@ -19,6 +20,7 @@
 #import "WPWalkthroughOverlayView.h"
 #import "SelectWPComLanguageViewController.h"
 #import "WPNUXUtility.h"
+#import "WPWebViewController.h"
 
 @interface CreateAccountAndBlogViewController ()<
     UIScrollViewDelegate,
@@ -31,6 +33,7 @@
     UIButton *_helpButton;
     UIImageView *_page1Icon;
     UILabel *_page1Title;
+    UILabel *_page1TOSLabel;
     UITextField *_page1EmailText;
     UITextField *_page1UsernameText;
     UITextField *_page1PasswordText;
@@ -39,6 +42,7 @@
     // Page 2
     UIImageView *_page2Icon;
     UILabel *_page2Title;
+    UILabel *_page2TOSLabel;
     UITextField *_page2SiteTitleText;
     UITextField *_page2SiteAddressText;
     UITextField *_page2SiteLanguageText;
@@ -74,7 +78,7 @@
     BOOL _savedOriginalPositionsOfStickyControls;
     CGFloat _infoButtonOriginalX;
     CGFloat _cancelButtonOriginalX;
-    CGFloat _keyboardOffset;    
+    CGFloat _keyboardOffset;
     NSString *_defaultSiteUrl;
     
     NSUInteger _currentPage;
@@ -301,7 +305,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         [_helpButton setImage:helpButtonImage forState:UIControlStateNormal];
         [_helpButton setImage:helpButtonImageHighlighted forState:UIControlStateHighlighted];
         _helpButton.frame = CGRectMake(0, 0, helpButtonImage.size.width, helpButtonImage.size.height);
-        [_helpButton addTarget:self action:@selector(clickedInfoButton) forControlEvents:UIControlEventTouchUpInside];
+        [_helpButton addTarget:self action:@selector(clickedHelpButton) forControlEvents:UIControlEventTouchUpInside];
         [_scrollView addSubview:_helpButton];
     }
     
@@ -325,7 +329,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page1Title == nil) {
         _page1Title = [[UILabel alloc] init];
         _page1Title.textAlignment = UITextAlignmentCenter;
-        _page1Title.text = NSLocalizedString(@"NUX_Create_Account_Page1_Title", nil);
+        _page1Title.text = NSLocalizedString(@"Create an account on WordPress.com", @"NUX Create Account Page 1 Title");
         _page1Title.numberOfLines = 0;
         _page1Title.backgroundColor = [UIColor clearColor];
         _page1Title.font = [WPNUXUtility titleFont];
@@ -340,7 +344,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page1EmailText == nil) {
         _page1EmailText = [[WPWalkthroughTextField alloc] init];
         _page1EmailText.backgroundColor = [UIColor whiteColor];
-        _page1EmailText.placeholder = NSLocalizedString(@"NUX_Create_Account_Page1_Email_Placeholder", nil);
+        _page1EmailText.placeholder = NSLocalizedString(@"Email Address", @"NUX Create Account Page 1 Email Placeholder");
         _page1EmailText.font = [WPNUXUtility textFieldFont];
         _page1EmailText.adjustsFontSizeToFitWidth = true;
         _page1EmailText.delegate = self;
@@ -353,7 +357,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page1UsernameText == nil) {
         _page1UsernameText = [[WPWalkthroughTextField alloc] init];
         _page1UsernameText.backgroundColor = [UIColor whiteColor];
-        _page1UsernameText.placeholder = NSLocalizedString(@"NUX_Create_Account_Page1_Username_Placeholder", nil);
+        _page1UsernameText.placeholder = NSLocalizedString(@"Username", nil);
         _page1UsernameText.font = [WPNUXUtility textFieldFont];
         _page1UsernameText.adjustsFontSizeToFitWidth = true;
         _page1UsernameText.delegate = self;
@@ -367,13 +371,33 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1PasswordText = [[WPWalkthroughTextField alloc] init];
         _page1PasswordText.secureTextEntry = true;
         _page1PasswordText.backgroundColor = [UIColor whiteColor];
-        _page1PasswordText.placeholder = NSLocalizedString(@"NUX_Create_Account_Page1_Password_Placeholder", nil);
+        _page1PasswordText.placeholder = NSLocalizedString(@"Password", nil);
         _page1PasswordText.font = [WPNUXUtility textFieldFont];
         _page1PasswordText.adjustsFontSizeToFitWidth = true;
         _page1PasswordText.delegate = self;
         _page1PasswordText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page1PasswordText.autocapitalizationType = UITextAutocapitalizationTypeNone;
         [_scrollView addSubview:_page1PasswordText];
+    }
+    
+    // Add Terms of Service Label
+    if (_page1TOSLabel == nil) {
+        _page1TOSLabel = [[UILabel alloc] init];
+        _page1TOSLabel.userInteractionEnabled = YES;
+        _page1TOSLabel.textAlignment = UITextAlignmentCenter;
+        _page1TOSLabel.text = NSLocalizedString(@"You agree to the fascinating terms of service by pressing the next button.", @"NUX Create Account TOS Label");
+        _page1TOSLabel.numberOfLines = 0;
+        _page1TOSLabel.backgroundColor = [UIColor clearColor];
+        _page1TOSLabel.font = [WPNUXUtility tosLabelFont];
+        _page1TOSLabel.textColor = [WPNUXUtility tosLabelColor];
+        _page1TOSLabel.shadowColor = [WPNUXUtility textShadowColor];
+        _page1TOSLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        _page1TOSLabel.layer.shadowRadius = 2.0;
+        [_scrollView addSubview:_page1TOSLabel];
+        
+        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedTOSLabel)];
+        gestureRecognizer.numberOfTapsRequired = 1;
+        [_page1TOSLabel addGestureRecognizer:gestureRecognizer];
     }
     
     // Add Next Button
@@ -399,8 +423,8 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     _helpButton.frame = CGRectMake(x, y, helpButtonImage.size.width, helpButtonImage.size.height);
     
     // Layout Cancel Button
-    x = CreateAccountAndBlogStandardOffset;
-    y = CreateAccountAndBlogStandardOffset;
+    x = 0;
+    y = 0;
     _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CGRectGetHeight(_cancelButton.frame));
         
     // Layout the controls starting out from y of 0, then offset them once the height of the controls
@@ -440,11 +464,24 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     // Layout Next Button
     x = (_viewWidth - CGRectGetWidth(_page1NextButton.frame))/2.0;
     x = [self adjustX:x forPage:currentPage];
-    y = CGRectGetMaxY(_page1PasswordText.frame) + CreateAccountAndBlogStandardOffset;
+    y = CGRectGetMaxY(_page1PasswordText.frame) + 0.5*CreateAccountAndBlogStandardOffset;
     _page1NextButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1NextButton.frame), CGRectGetHeight(_page1NextButton.frame)));
+
+    // Layout Terms of Service
+    CGFloat TOSSingleLineHeight = [@"WordPress" sizeWithFont:_page1TOSLabel.font].height;
+    CGSize TOSLabelSize = [_page1TOSLabel.text sizeWithFont:_page1TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    // If the terms of service don't fit on two lines, then shrink the font to make sure the entire terms of service is visible.
+    if (TOSLabelSize.height > 2*TOSSingleLineHeight) {
+        _page1TOSLabel.font = [WPNUXUtility tosLabelSmallerFont];
+        TOSLabelSize = [_page1TOSLabel.text sizeWithFont:_page1TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    }
+    x = (_viewWidth - TOSLabelSize.width)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page1NextButton.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _page1TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
-    NSArray *controls = @[_page1Icon, _page1Title, _page1EmailText, _page1UsernameText, _page1PasswordText, _page1NextButton];
-    [WPNUXUtility centerViews:controls withStartingView:_page1Icon andEndingView:_page1NextButton forHeight:_viewHeight];
+    NSArray *controls = @[_page1Icon, _page1Title, _page1EmailText, _page1UsernameText, _page1PasswordText, _page1TOSLabel, _page1NextButton];
+    [WPNUXUtility centerViews:controls withStartingView:_page1Icon andEndingView:_page1TOSLabel forHeight:_viewHeight];
 }
 
 - (void)addPage2Controls
@@ -460,7 +497,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page2Title == nil) {
         _page2Title = [[UILabel alloc] init];
         _page2Title.textAlignment = UITextAlignmentCenter;
-        _page2Title.text = NSLocalizedString(@"NUX_Create_Account_Page2_Site_Title_Placeholder", nil);
+        _page2Title.text = NSLocalizedString(@"Create your first WordPress.com site", @"NUX Create Account Page 2 Title");
         _page2Title.numberOfLines = 0;
         _page2Title.backgroundColor = [UIColor clearColor];
         _page2Title.font = [WPNUXUtility titleFont];
@@ -475,7 +512,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page2SiteTitleText == nil) {
         _page2SiteTitleText = [[WPWalkthroughTextField alloc] init];
         _page2SiteTitleText.backgroundColor = [UIColor whiteColor];
-        _page2SiteTitleText.placeholder = NSLocalizedString(@"NUX_Create_Account_Page2_Site_Title_Placeholder", nil);
+        _page2SiteTitleText.placeholder = NSLocalizedString(@"Site Title", @"NUX Create Account Page 2 Site Title Placeholder");
         _page2SiteTitleText.font = [WPNUXUtility textFieldFont];
         _page2SiteTitleText.adjustsFontSizeToFitWidth = true;
         _page2SiteTitleText.delegate = self;
@@ -488,7 +525,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page2SiteAddressText == nil) {
         _page2SiteAddressText = [[WPWalkthroughTextField alloc] init];
         _page2SiteAddressText.backgroundColor = [UIColor whiteColor];
-        _page2SiteAddressText.placeholder = NSLocalizedString(@"NUX_Create_Account_Page2_Site_Address_Placeholder", nil);
+        _page2SiteAddressText.placeholder = NSLocalizedString(@"yoursite.wordpress.com", @"NUX Create Account Page 2 Site Address Placeholder");
         _page2SiteAddressText.font = [WPNUXUtility textFieldFont];
         _page2SiteAddressText.adjustsFontSizeToFitWidth = true;
         _page2SiteAddressText.delegate = self;
@@ -501,7 +538,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page2SiteLanguageText == nil) {
         _page2SiteLanguageText = [[WPWalkthroughTextField alloc] init];
         _page2SiteLanguageText.backgroundColor = [UIColor whiteColor];
-        _page2SiteLanguageText.placeholder = NSLocalizedString(@"NUX_Create_Account_Page2_Site_Language_Placeholder", nil);
+        _page2SiteLanguageText.placeholder = NSLocalizedString(@"Site Language", @"NUX Create Account Page 2 Site Language Placeholder");
         _page2SiteLanguageText.font = [WPNUXUtility textFieldFont];
         _page2SiteLanguageText.adjustsFontSizeToFitWidth = true;
         _page2SiteLanguageText.delegate = self;
@@ -512,10 +549,31 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         [_scrollView addSubview:_page2SiteLanguageText];
     }
     
+    // Add Site Language Dropdown Image
     if (_page2SiteLanguageDropdownImage == nil) {
         UIImage *dropDownImage = [UIImage imageNamed:@"textDropdownIcon"];
         _page2SiteLanguageDropdownImage = [[UIImageView alloc] initWithImage:dropDownImage];
         [_scrollView addSubview:_page2SiteLanguageDropdownImage];
+    }
+    
+    // Add Terms of Service Label
+    if (_page2TOSLabel == nil) {
+        _page2TOSLabel = [[UILabel alloc] init];
+        _page2TOSLabel.userInteractionEnabled = YES;
+        _page2TOSLabel.textAlignment = UITextAlignmentCenter;
+        _page2TOSLabel.text = NSLocalizedString(@"You agree to the fascinating terms of service by pressing the next button.", @"NUX Create Account TOS Label");
+        _page2TOSLabel.numberOfLines = 0;
+        _page2TOSLabel.backgroundColor = [UIColor clearColor];
+        _page2TOSLabel.font = [WPNUXUtility tosLabelFont];
+        _page2TOSLabel.textColor = [WPNUXUtility tosLabelColor];
+        _page2TOSLabel.shadowColor = [WPNUXUtility textShadowColor];
+        _page2TOSLabel.shadowOffset = CGSizeMake(0.0, 1.0);
+        _page2TOSLabel.layer.shadowRadius = 2.0;
+        [_scrollView addSubview:_page2TOSLabel];
+        
+        UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedTOSLabel)];
+        gestureRecognizer.numberOfTapsRequired = 1;
+        [_page2TOSLabel addGestureRecognizer:gestureRecognizer];
     }
     
     // Add Next Button
@@ -592,8 +650,21 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     y = CGRectGetMaxY(_page2SiteLanguageText.frame) + CreateAccountAndBlogStandardOffset;
     _page2NextButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2NextButton.frame), CGRectGetHeight(_page2NextButton.frame)));
     
-    NSArray *controls = @[_page2Icon, _page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2PreviousButton, _page2NextButton];
-    [WPNUXUtility centerViews:controls withStartingView:_page2Icon andEndingView:_page2NextButton forHeight:_viewHeight];
+    // Layout Terms of Service
+    CGFloat TOSSingleLineHeight = [@"WordPress" sizeWithFont:_page2TOSLabel.font].height;
+    CGSize TOSLabelSize = [_page2TOSLabel.text sizeWithFont:_page2TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    // If the terms of service don't fit on two lines, then shrink the font to make sure the entire terms of service is visible.
+    if (TOSLabelSize.height > 2*TOSSingleLineHeight) {
+        _page2TOSLabel.font = [WPNUXUtility tosLabelSmallerFont];
+        TOSLabelSize = [_page2TOSLabel.text sizeWithFont:_page2TOSLabel.font constrainedToSize:CGSizeMake(CreateAccountAndBlogMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    }
+    x = (_viewWidth - TOSLabelSize.width)/2.0;
+    x = [self adjustX:x forPage:currentPage];
+    y = CGRectGetMaxY(_page2NextButton.frame) + 0.5*CreateAccountAndBlogStandardOffset;
+    _page2TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
+    
+    NSArray *controls = @[_page2Icon, _page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2TOSLabel, _page2PreviousButton, _page2NextButton];
+    [WPNUXUtility centerViews:controls withStartingView:_page2Icon andEndingView:_page2TOSLabel forHeight:_viewHeight];
 }
 
 - (void)addPage3Controls
@@ -609,7 +680,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page3Title == nil) {
         _page3Title = [[UILabel alloc] init];
         _page3Title.textAlignment = UITextAlignmentCenter;
-        _page3Title.text = NSLocalizedString(@"NUX_Create_Account_Page3_Title", nil);
+        _page3Title.text = NSLocalizedString(@"Review your information", @"NUX Create Account Page 3 Title");
         _page3Title.numberOfLines = 0;
         _page3Title.backgroundColor = [UIColor clearColor];
         _page3Title.font = [WPNUXUtility titleFont];
@@ -668,6 +739,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         [_scrollView addSubview:_page3ThirdLineSeparator];
     }
 
+    // Add Site Title
     if (_page3SiteTitleLabel == nil) {
         _page3SiteTitleLabel = [[UILabel alloc] init];
         _page3SiteTitleLabel.textAlignment = UITextAlignmentCenter;
@@ -682,11 +754,13 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         [_scrollView addSubview:_page3SiteTitleLabel];
     }
 
+    // Add Fourth Line Separator
     if (_page3FourthLineSeparator == nil) {
         _page3FourthLineSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [_scrollView addSubview:_page3FourthLineSeparator];
     }
 
+    // Add Site Address
     if (_page3SiteAddressLabel == nil) {
         _page3SiteAddressLabel = [[UILabel alloc] init];
         _page3SiteAddressLabel.textAlignment = UITextAlignmentCenter;
@@ -701,11 +775,13 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         [_scrollView addSubview:_page3SiteAddressLabel];
     }
 
+    // Add Fifth Line Separator
     if (_page3FifthLineSeparator == nil) {
         _page3FifthLineSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [_scrollView addSubview:_page3FifthLineSeparator];
     }
     
+    // Add Site Language
     if (_page3SiteLanguageLabel == nil) {
         _page3SiteLanguageLabel = [[UILabel alloc] init];
         _page3SiteLanguageLabel.textAlignment = UITextAlignmentCenter;
@@ -720,11 +796,12 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         [_scrollView addSubview:_page3SiteLanguageLabel];
     }
     
+    // Add Sixth Line Separator
     if (_page3SixthLineSeparator == nil) {
         _page3SixthLineSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [_scrollView addSubview:_page3SixthLineSeparator];
     }
-
+    
     // Add Next Button
     if (_page3NextButton == nil) {
         _page3NextButton = [[WPNUXPrimaryButton alloc] init];
@@ -870,11 +947,11 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)updatePage3Labels
 {
-    _page3EmailLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUX_Create_Account_Page3_Email_Review", nil), _page1EmailText.text];
-    _page3UsernameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUX_Create_Account_Page3_Username_Review", nil), _page1UsernameText.text];
-    _page3SiteTitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUX_Create_Account_Page3_Site_Title_Review", nil), _page2SiteTitleText.text];
-    _page3SiteAddressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUX_Create_Account_Page3_Site_Address_Review", nil), [NSString stringWithFormat:@"%@.wordpress.com", [self getSiteAddressWithoutWordPressDotCom]]];
-    _page3SiteLanguageLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUX_Create_Account_Page3_Site_Language_Review", nil), [_currentLanguage objectForKey:@"name"]];
+    _page3EmailLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Email: %@", @"NUX Create Account Page 3 Email Review Label"), _page1EmailText.text];
+    _page3UsernameLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Username: %@", @"NUX Create Account Page 3 Username Review Label"), _page1UsernameText.text];
+    _page3SiteTitleLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Site Title: %@", @"NUX Create Account Page 3 Site Title Review Label"), _page2SiteTitleText.text];
+    _page3SiteAddressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Site Address: %@", @"NUX Create Account Page 3 Site Address Review Label"), [NSString stringWithFormat:@"%@.wordpress.com", [self getSiteAddressWithoutWordPressDotCom]]];
+    _page3SiteLanguageLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Site Language: %@", @"NUX Create Account Page 3 Site Language Review Label"), [_currentLanguage objectForKey:@"name"]];
     
     [self layoutPage3Controls];
 }
@@ -991,6 +1068,13 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     [self moveToPage:2];
 }
 
+- (void)clickedTOSLabel
+{
+    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+    [webViewController setUrl:[NSURL URLWithString:@"http://en.wordpress.com/tos/"]];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [self.navigationController pushViewController:webViewController animated:NO];
+}
 
 - (void)savePositionsOfStickyControls
 {
@@ -1034,49 +1118,29 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _keyboardOffset = (CGRectGetMaxY(_page2NextButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_page2NextButton.frame);
     }
 
-    [UIView animateWithDuration:0.3 animations:^{
-        NSArray *controlsToMove = @[];
-        NSArray *controlsToHide = @[];
-        if (_currentPage == 1) {
-            controlsToMove = @[_page1Title, _page1UsernameText, _page1EmailText, _page1PasswordText, _page1NextButton];
-            controlsToHide = @[_page1Icon, _helpButton, _cancelButton];
-        } else if (_currentPage == 2) {
-            controlsToMove = @[_page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2NextButton, _page2PreviousButton];
-            controlsToHide = @[_page2Icon, _helpButton, _cancelButton];
-        }
-        
-        for (UIControl *control in controlsToMove) {
+    [UIView animateWithDuration:0.3 animations:^{        
+        for (UIControl *control in [self controlsToMoveDuringKeyboardTransition:_currentPage]) {
             CGRect frame = control.frame;
             frame.origin.y -= _keyboardOffset;
             control.frame = frame;
         }
         
-        for (UIControl *control in controlsToHide) {
+        for (UIControl *control in [self controlsToShowOrHideDuringKeyboardTransition:_currentPage]) {
             control.alpha = 0.0;
-        }        
+        }
     }];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-    [UIView animateWithDuration:0.3 animations:^{
-        NSArray *controlsToMove = @[];
-        NSArray *controlsToShow = @[];
-        if (_currentPage == 1) {
-            controlsToMove = @[_page1Title, _page1UsernameText, _page1EmailText, _page1PasswordText, _page1NextButton];
-            controlsToShow = @[_page1Icon, _helpButton, _cancelButton];
-        } else if (_currentPage == 2) {
-            controlsToMove = @[_page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2NextButton, _page2PreviousButton];
-            controlsToShow = @[_page2Icon, _helpButton, _cancelButton];
-        }
-        
-        for (UIControl *control in controlsToMove) {
+    [UIView animateWithDuration:0.3 animations:^{        
+        for (UIControl *control in [self controlsToMoveDuringKeyboardTransition:_currentPage]) {
             CGRect frame = control.frame;
             frame.origin.y += _keyboardOffset;
             control.frame = frame;
         }
-        
-        for (UIControl *control in controlsToShow) {
+                
+        for (UIControl *control in [self controlsToShowOrHideDuringKeyboardTransition:_currentPage]) {
             control.alpha = 1.0;
         }
     }];
@@ -1090,6 +1154,28 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 - (void)keyboardDidHide
 {
     _keyboardVisible = false;
+}
+
+- (NSArray *)controlsToMoveDuringKeyboardTransition:(NSUInteger)page
+{
+    if (page == 1) {
+        return @[_page1Title, _page1UsernameText, _page1EmailText, _page1PasswordText, _page1NextButton];
+    } else if (page == 2) {
+        return @[_page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2NextButton, _page2PreviousButton];
+    } else {
+        return nil;
+    }
+}
+
+- (NSArray *)controlsToShowOrHideDuringKeyboardTransition:(NSUInteger)page
+{
+    if (page == 1) {
+        return @[_page1Icon, _helpButton, _cancelButton, _page1TOSLabel];
+    } else if (page == 2) {
+        return @[_page2Icon, _helpButton, _cancelButton, _page2TOSLabel];
+    } else {
+        return nil;
+    }
 }
 
 - (void)showLanguagePicker
@@ -1110,27 +1196,9 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     _page2FieldsValid = false;
 }
 
-- (void)handleRemoteError:(NSError *)error
+- (void)displayRemoteError:(NSError *)error
 {
-    NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
-    NSString *errorMessage;
-    
-    if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidUser]) {
-        errorMessage = NSLocalizedString(@"Invalid username", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidEmail]) {
-        errorMessage = NSLocalizedString(@"Invalid email address", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidPassword]) {
-        errorMessage = NSLocalizedString(@"Invalid password", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogUrl]) {
-        errorMessage = NSLocalizedString(@"Invalid blog url", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogTitle]) {
-        errorMessage = NSLocalizedString(@"Invalid Blog Title", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeTooManyRequests]) {
-        errorMessage = NSLocalizedString(@"Limit Reached - Contact Support", @"");
-    } else {
-        errorMessage = NSLocalizedString(@"Unknown error", @"");
-    }
-    
+    NSString *errorMessage = [error.userInfo objectForKey:WordPressComApiErrorMessageKey];
     [self showError:errorMessage];
 }
 
@@ -1179,7 +1247,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     void (^userValidationFailure)(NSError *) = ^(NSError *error){
         _page1NextButton.enabled = YES;
         [SVProgressHUD dismiss];
-        [self handleRemoteError:error];
+        [self displayRemoteError:error];
     };
     
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Validating User Data", nil) maskType:SVProgressHUDMaskTypeBlack];
@@ -1224,7 +1292,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
     overlayView.overlayTitle = NSLocalizedString(@"Error", nil);
     overlayView.overlayDescription = message;
-    overlayView.footerDescription = NSLocalizedString(@"TAP TO DISMISS", nil);
+    overlayView.footerDescription = [NSLocalizedString(@"tap to dismiss", nil) uppercaseString];
     overlayView.singleTapCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
@@ -1243,7 +1311,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     void (^blogValidationFailure)(NSError *) = ^(NSError *error) {
         _page2NextButton.enabled = YES;
         [SVProgressHUD dismiss];
-        [self handleRemoteError:error];
+        [self displayRemoteError:error];
     };
     
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Validating Site Data", nil) maskType:SVProgressHUDMaskTypeBlack];
@@ -1265,7 +1333,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         void (^createUserFailure)(NSError *) = ^(NSError *error) {
             [operation didFail];
             [SVProgressHUD dismiss];
-            [self handleRemoteError:error];
+            [self displayRemoteError:error];
         };
         
         [[WordPressComApi sharedApi] createWPComAccountWithEmail:_page1EmailText.text
@@ -1284,7 +1352,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
             // we are unable to sign in and proceed
             [operation didFail];
             [SVProgressHUD dismiss];
-            [self handleRemoteError:error];
+            [self displayRemoteError:error];
         };
         
         [[WordPressComApi sharedApi] signInWithUsername:_page1UsernameText.text
@@ -1305,7 +1373,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         void (^createBlogFailure)(NSError *error) = ^(NSError *error) {
             [SVProgressHUD dismiss];
             [operation didFail];
-            [self handleRemoteError:error];
+            [self displayRemoteError:error];
         };
         
         NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];

@@ -292,27 +292,9 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     }
 }
 
-- (void)handleCreationError:(NSError *)error
+- (void)displayCreationErrorMessage:(NSError *)error
 {
-    NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
-    NSString *errorMessage;
-    
-    if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidUser]) {
-        errorMessage = NSLocalizedString(@"Invalid username", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidEmail]) {
-        errorMessage = NSLocalizedString(@"Invalid email address", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidPassword]) {
-        errorMessage = NSLocalizedString(@"Invalid password", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogUrl]) {
-        errorMessage = NSLocalizedString(@"Invalid blog url", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogTitle]) {
-        errorMessage = NSLocalizedString(@"Invalid Blog Title", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeTooManyRequests]) {
-        errorMessage = NSLocalizedString(@"Limit Reached - Contact Support", @"");
-    } else {
-        errorMessage = NSLocalizedString(@"Unknown error", @"");
-    }
-    
+    NSString *errorMessage = [error.userInfo objectForKey:WordPressComApiErrorMessageKey];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -467,7 +449,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
         _isCreatingAccount = false;
         [self enableTextFields];
         [self.tableView reloadData];
-        [self handleCreationError:error];
+        [self displayCreationErrorMessage:error];
     }
 }
 

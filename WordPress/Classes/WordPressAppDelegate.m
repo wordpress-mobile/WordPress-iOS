@@ -23,6 +23,7 @@
 #import "WordPressComApiCredentials.h"
 #import "PocketAPI.h"
 #import "WPMobileStats.h"
+#import "WPComLanguages.h"
 
 @interface WordPressAppDelegate (Private)
 - (void)setAppBadge;
@@ -182,7 +183,7 @@
 
     [self setupUserAgent];
     [WPMobileStats initializeStats];
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsAppOpened];
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsAppOpened properties:@{@"language": [[WPComLanguages currentLanguage] objectForKey:@"name"]}];
 
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
         NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];

@@ -113,7 +113,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     
     NSDictionary *blogData = [_usersBlogs objectAtIndex:indexPath.row];
     cell.showTopSeparator = indexPath.row == 0;
-    cell.title = [blogData objectForKey:@"blogName"];
+    cell.title = [self getCellTitleForIndexPath:indexPath];
     cell.blavatarUrl = [blogData objectForKey:@"url"];
     cell.selected = [_selectedBlogs containsObject:[blogData objectForKey:@"blogid"]];
     
@@ -122,8 +122,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *blogData = [_usersBlogs objectAtIndex:indexPath.row];
-    return [AddUsersBlogCell rowHeightWithText:[blogData objectForKey:@"blogName"]];
+    return [AddUsersBlogCell rowHeightWithText:[self getCellTitleForIndexPath:indexPath]];    
 }
 
 #pragma mark - Table view delegate
@@ -392,6 +391,15 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     
     [self toggleButtons];
     [self.tableView reloadData];
+}
+
+- (NSString *)getCellTitleForIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *blogData = [_usersBlogs objectAtIndex:indexPath.row];
+    if ([[[blogData objectForKey:@"blogName"] trim] length] == 0)
+        return [blogData objectForKey:@"url"];
+    else
+        return [blogData objectForKey:@"blogName"];
 }
 
 @end

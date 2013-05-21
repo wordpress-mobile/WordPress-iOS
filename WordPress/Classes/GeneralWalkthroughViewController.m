@@ -258,9 +258,9 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 {
     WPWalkthroughOverlayView *overlayView = [[WPWalkthroughOverlayView alloc] initWithFrame:self.view.bounds];
     overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode;
-    overlayView.overlayTitle = NSLocalizedString(@"Sorry, we can’t log you in.", nil);
+    overlayView.overlayTitle = NSLocalizedString(@"Sorry, we can't log you in.", nil);
     overlayView.overlayDescription = message;
-    overlayView.footerDescription = NSLocalizedString(@"TAP TO DISMISS", nil);
+    overlayView.footerDescription = [NSLocalizedString(@"tap to dismiss", nil) uppercaseString];
     overlayView.leftButtonText = NSLocalizedString(@"Need Help?", nil);
     overlayView.rightButtonText = NSLocalizedString(@"OK", nil);
     overlayView.singleTapCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
@@ -465,7 +465,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _page1Title.numberOfLines = 0;
         _page1Title.lineBreakMode = UILineBreakModeWordWrap;
         _page1Title.font = [WPNUXUtility titleFont];        
-        _page1Title.text = NSLocalizedString(@"NUX_First_Walkthrough_Page1_Title", nil);
+        _page1Title.text = NSLocalizedString(@"Welcome to WordPress", @"NUX First Walkthrough Page 1 Title");
         _page1Title.shadowColor = [WPNUXUtility textShadowColor];
         _page1Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page1Title.layer.shadowRadius = 2.0;
@@ -487,7 +487,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _page1Description.numberOfLines = 0;
         _page1Description.lineBreakMode = UILineBreakModeWordWrap;
         _page1Description.font = [WPNUXUtility descriptionTextFont];
-        _page1Description.text = NSLocalizedString(@"NUX_First_Walkthrough_Page1_Description", nil);
+        _page1Description.text = NSLocalizedString(@"Hold the web in the palm of your hand. Full publishing power in a pint-sized package.", @"NUX First Walkthrough Page 1 Description");
         _page1Description.shadowColor = [WPNUXUtility textShadowColor];
         _page1Description.shadowOffset = CGSizeMake(0.0, 1.0);
         _page1Description.layer.shadowRadius = 2.0;
@@ -545,7 +545,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _page1SwipeToContinue.textAlignment = UITextAlignmentCenter;
         _page1SwipeToContinue.numberOfLines = 1;
         _page1SwipeToContinue.font = [WPNUXUtility swipeToContinueFont];
-        _page1SwipeToContinue.text = NSLocalizedString(@"SWIPE TO CONTINUE", nil);
+        _page1SwipeToContinue.text = [NSLocalizedString(@"swipe to continue", nil) uppercaseString];
         [_page1SwipeToContinue sizeToFit];
         [_scrollView addSubview:_page1SwipeToContinue];
     }
@@ -634,14 +634,20 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     x = 0;
     y = CGRectGetMinY(_bottomPanel.frame);
     _bottomPanelLine.frame = CGRectMake(x, y, _viewWidth, 1);
-    
+        
     // Layout Page Control
     CGFloat verticalSpaceForPageControl = 15;
-    x = (_viewWidth - CGRectGetWidth(_pageControl.frame))/2.0;
+    CGSize pageControlSize = [_pageControl sizeForNumberOfPages:3];
+    x = (_viewWidth - pageControlSize.width)/2.0;
+    if (IS_IPAD) {
+        // UIPageControl seems to add about half it's size in padding on the iPad
+        // TODO : Figure out why this is happening
+        x += pageControlSize.width/2.0;
+    }
     x = [self adjustX:x forPage:1];
     y = CGRectGetMinY(_bottomPanel.frame) - GeneralWalkthroughStandardOffset - CGRectGetHeight(_pageControl.frame) + verticalSpaceForPageControl;
-    _pageControl.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_pageControl.frame), CGRectGetHeight(_pageControl.frame)));
-    
+    _pageControl.frame = CGRectIntegral(CGRectMake(x, y, pageControlSize.width, pageControlSize.height));
+
     // Layout Swipe to Continue
     x = (_viewWidth - CGRectGetWidth(_page1SwipeToContinue.frame))/2.0;
     x = [self adjustX:x forPage:1];
@@ -687,7 +693,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _page2Title.numberOfLines = 0;
         _page2Title.lineBreakMode = UILineBreakModeWordWrap;
         _page2Title.font = [WPNUXUtility titleFont];
-        _page2Title.text = NSLocalizedString(@"NUX_First_Walkthrough_Page2_Title", nil);
+        _page2Title.text = NSLocalizedString(@"Publish whenever inspiration strikes", @"NUX First Walkthrough Page 2 Title");
         _page2Title.shadowColor = [WPNUXUtility textShadowColor];
         _page2Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page2Title.layer.shadowRadius = 2.0;
@@ -709,7 +715,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _page2Description.numberOfLines = 0;
         _page2Description.lineBreakMode = UILineBreakModeWordWrap;
         _page2Description.font = [WPNUXUtility descriptionTextFont];
-        _page2Description.text = NSLocalizedString(@"NUX_First_Walkthrough_Page2_Description", nil);
+        _page2Description.text = NSLocalizedString(@"Brilliant insight? Hilarious link? Perfect pic? Capture genius as it happens and post in real time.", @"NUX First Walkthrough Page 2 Description");
         _page2Description.shadowColor = [WPNUXUtility textShadowColor];
         _page2Description.shadowOffset = CGSizeMake(0.0, 1.0);
         _page2Description.layer.shadowRadius = 2.0;
@@ -782,7 +788,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_usernameText == nil) {
         _usernameText = [[WPWalkthroughTextField alloc] init];
         _usernameText.backgroundColor = [UIColor whiteColor];
-        _usernameText.placeholder = NSLocalizedString(@"NUX_First_Walkthrough_Page3_Username_Placeholder", nil);
+        _usernameText.placeholder = NSLocalizedString(@"Username / Email", @"NUX First Walkthrough Page 3 Username Placeholder");
         _usernameText.font = [WPNUXUtility textFieldFont];
         _usernameText.adjustsFontSizeToFitWidth = true;
         _usernameText.delegate = self;
@@ -795,7 +801,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_passwordText == nil) {
         _passwordText = [[WPWalkthroughTextField alloc] init];
         _passwordText.backgroundColor = [UIColor whiteColor];
-        _passwordText.placeholder = NSLocalizedString(@"NUX_First_Walkthrough_Page3_Password_Placeholder", nil);
+        _passwordText.placeholder = NSLocalizedString(@"Password", nil);
         _passwordText.font = [WPNUXUtility textFieldFont];
         _passwordText.delegate = self;
         _passwordText.secureTextEntry = YES;
@@ -806,7 +812,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_siteUrlText == nil) {
         _siteUrlText = [[WPWalkthroughTextField alloc] init];
         _siteUrlText.backgroundColor = [UIColor whiteColor];
-        _siteUrlText.placeholder = NSLocalizedString(@"NUX_First_Walkthrough_Page3_Site_Address_Placeholder", nil);
+        _siteUrlText.placeholder = NSLocalizedString(@"Site Address (URL)", @"NUX First Walkthrough Page 3 Site Address Placeholder");
         _siteUrlText.font = [WPNUXUtility textFieldFont];
         _siteUrlText.adjustsFontSizeToFitWidth = true;
         _siteUrlText.delegate = self;
@@ -832,7 +838,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _createAccountLabel.backgroundColor = [UIColor clearColor];
         _createAccountLabel.textColor = [UIColor whiteColor];
         _createAccountLabel.font = [UIFont fontWithName:@"OpenSans" size:15.0];
-        _createAccountLabel.text = NSLocalizedString(@"NUX_First_Walkthrough_Page3_Create_Account_Label", nil);
+        _createAccountLabel.text = NSLocalizedString(@"Don't have an account? Create one!", @"NUX First Walkthrough Page 3 Create Account Label");
         _createAccountLabel.shadowColor = [UIColor blackColor];
         _createAccountLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [_createAccountLabel sizeToFit];

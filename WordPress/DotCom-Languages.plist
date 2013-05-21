@@ -28,14 +28,6 @@
 	</dict>
 	<dict>
 		<key>lang_id</key>
-		<string>419</string>
-		<key>name</key>
-		<string>ܕܥܒܪܸܝܛ</string>
-		<key>slug</key>
-		<string>arc</string>
-	</dict>
-	<dict>
-		<key>lang_id</key>
 		<string>4</string>
 		<key>name</key>
 		<string>অসমীয়া</string>
@@ -201,14 +193,6 @@
 		<string>Deutsch</string>
 		<key>slug</key>
 		<string>de</string>
-	</dict>
-	<dict>
-		<key>lang_id</key>
-		<string>427</string>
-		<key>name</key>
-		<string>ދިވެހިބަސް</string>
-		<key>slug</key>
-		<string>dv</string>
 	</dict>
 	<dict>
 		<key>lang_id</key>
@@ -505,14 +489,6 @@
 		<string>Қазақ тілі</string>
 		<key>slug</key>
 		<string>kk</string>
-	</dict>
-	<dict>
-		<key>lang_id</key>
-		<string>38</string>
-		<key>name</key>
-		<string>ភាសាខ្មែរ</string>
-		<key>slug</key>
-		<string>km</string>
 	</dict>
 	<dict>
 		<key>lang_id</key>
@@ -977,14 +953,6 @@
 		<string>اردو</string>
 		<key>slug</key>
 		<string>ur</string>
-	</dict>
-	<dict>
-		<key>lang_id</key>
-		<string>458</string>
-		<key>name</key>
-		<string>????? ????</string>
-		<key>slug</key>
-		<string>uz</string>
 	</dict>
 	<dict>
 		<key>lang_id</key>

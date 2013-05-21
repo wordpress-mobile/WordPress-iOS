@@ -163,10 +163,10 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
 - (void)showLoginSuccess
 {
     WPWalkthroughOverlayView *grayOverlay = [[WPWalkthroughOverlayView alloc] initWithFrame:CGRectMake(0, 0, _viewWidth, _viewHeight)];
-    grayOverlay.overlayTitle = NSLocalizedString(@"NUX_Second_Walkthrough_Success_Overlay_Title", nil);
-    grayOverlay.overlayDescription = NSLocalizedString(@"NUX_Second_Walkthrough_Success_Overlay_Description", nil);
+    grayOverlay.overlayTitle = NSLocalizedString(@"Success!", @"NUX Second Walkthrough Success Overlay Title");
+    grayOverlay.overlayDescription = NSLocalizedString(@"You have successfully signed into your WordPress account!", @"NUX Second Walkthrough Success Overlay Description");
     grayOverlay.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
-    grayOverlay.footerDescription = NSLocalizedString(@"TAP TO CONTINUE", nil);
+    grayOverlay.footerDescription = [NSLocalizedString(@"tap to continue", nil) uppercaseString];
     grayOverlay.icon = WPWalkthroughGrayOverlayViewBlueCheckmarkIcon;
     grayOverlay.hideBackgroundView = YES;
     grayOverlay.singleTapCompletionBlock = ^(WPWalkthroughOverlayView * overlayView){
@@ -234,7 +234,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page1Title.numberOfLines = 0;
         _page1Title.lineBreakMode = UILineBreakModeWordWrap;
         _page1Title.font = [WPNUXUtility titleFont];
-        _page1Title.text = NSLocalizedString(@"NUX_Second_Walkthrough_Page1_Title", nil);
+        _page1Title.text = NSLocalizedString(@"Track your site's statistics", @"NUX Second Walkthrough Page 1 Title");
         _page1Title.shadowColor = [WPNUXUtility textShadowColor];
         _page1Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page1Title.layer.shadowRadius = 2.0;
@@ -256,7 +256,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page1Description.numberOfLines = 0;
         _page1Description.lineBreakMode = UILineBreakModeWordWrap;
         _page1Description.font = [WPNUXUtility descriptionTextFont];
-        _page1Description.text = NSLocalizedString(@"NUX_Second_Walkthrough_Page1_Description", nil);
+        _page1Description.text = NSLocalizedString(@"Learn what your visitors respond to so you can give them more of it", @"NUX Second Walkthrough Page 1 Description");
         _page1Description.shadowOffset = CGSizeMake(0.0, 1.0);
         _page1Description.shadowColor = [WPNUXUtility textShadowColor];
         _page1Title.layer.shadowRadius = 2.0;
@@ -314,7 +314,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page1SwipeToContinue.textAlignment = UITextAlignmentCenter;
         _page1SwipeToContinue.numberOfLines = 1;
         _page1SwipeToContinue.font = [WPNUXUtility swipeToContinueFont];
-        _page1SwipeToContinue.text = NSLocalizedString(@"SWIPE TO CONTINUE", nil);
+        _page1SwipeToContinue.text = [NSLocalizedString(@"swipe to continue", nil) uppercaseString];
         [_page1SwipeToContinue sizeToFit];
         [_scrollView addSubview:_page1SwipeToContinue];
     }
@@ -325,7 +325,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _skipToApp.backgroundColor = [UIColor clearColor];
         _skipToApp.textColor = [UIColor whiteColor];
         _skipToApp.font = [UIFont fontWithName:@"OpenSans" size:15.0];
-        _skipToApp.text = NSLocalizedString(@"NUX_Second_Walkthrough_Bottom_Skip_Label", nil;);
+        _skipToApp.text = NSLocalizedString(@"Tap to start using WordPress", @"NUX Second Walkthrough Bottom Skip Label");
         _skipToApp.shadowColor = [UIColor blackColor];
         [_skipToApp sizeToFit];
         UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedSkipToApp:)];
@@ -387,10 +387,16 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     
     // Layout Page Control
     CGFloat verticalSpaceForPageControl = 15;
+    CGSize pageControlSize = [_pageControl sizeForNumberOfPages:4];
     x = (_viewWidth - CGRectGetWidth(_pageControl.frame))/2.0;
+    if (IS_IPAD) {
+        // UIPageControl seems to add about half it's size in padding on the iPad
+        // TODO : Figure out why this is happening
+        x += pageControlSize.width/2.0;
+    }
     x = [self adjustX:x forPage:1];
     y = CGRectGetMinY(_bottomPanel.frame) - LoginCompletedWalkthroughStandardOffset - CGRectGetHeight(_pageControl.frame) + verticalSpaceForPageControl;
-    _pageControl.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_pageControl.frame), CGRectGetHeight(_pageControl.frame)));
+    _pageControl.frame = CGRectIntegral(CGRectMake(x, y, pageControlSize.width, pageControlSize.height));
 
     // Layout Swipe to Continue Label
     x = (_viewWidth - CGRectGetWidth(_page1SwipeToContinue.frame))/2.0;
@@ -430,7 +436,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page2Title.numberOfLines = 0;
         _page2Title.lineBreakMode = UILineBreakModeWordWrap;
         _page2Title.font = [WPNUXUtility titleFont];
-        _page2Title.text = NSLocalizedString(@"NUX_Second_Walkthrough_Page2_Title", nil);
+        _page2Title.text = NSLocalizedString(@"Explore the WordPress.com Reader", @"NUX Second Walkthrough Page 2 Title");
         _page2Title.shadowColor = [WPNUXUtility textShadowColor];
         _page2Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page2Title.layer.shadowRadius = 2.0;
@@ -452,7 +458,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page2Description.numberOfLines = 0;
         _page2Description.lineBreakMode = UILineBreakModeWordWrap;
         _page2Description.font = [WPNUXUtility descriptionTextFont];
-        _page2Description.text = NSLocalizedString(@"NUX_Second_Walkthrough_Page2_Description", nil);
+        _page2Description.text = NSLocalizedString(@"Browse the entire WordPress ecosystem. Thousands of topics at the flick of a finger.", @"NUX Second Walkthrough Page 2 Description");
         _page2Description.shadowOffset = CGSizeMake(0.0, 1.0);
         _page2Description.shadowColor = [WPNUXUtility textShadowColor];
         _page2Description.layer.shadowRadius = 2.0;
@@ -528,7 +534,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page3Title.numberOfLines = 0;
         _page3Title.lineBreakMode = UILineBreakModeWordWrap;
         _page3Title.font = [WPNUXUtility titleFont];
-        _page3Title.text = NSLocalizedString(@"NUX_Second_Walkthrough_Page3_Title", nil);
+        _page3Title.text = NSLocalizedString(@"Get real-time comment notifications", @"NUX Second Walkthrough Page 3 Title");
         _page3Title.shadowColor = [WPNUXUtility textShadowColor];
         _page3Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page3Title.layer.shadowRadius = 2.0;
@@ -550,7 +556,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page3Description.numberOfLines = 0;
         _page3Description.lineBreakMode = UILineBreakModeWordWrap;
         _page3Description.font = [WPNUXUtility descriptionTextFont];
-        _page3Description.text = NSLocalizedString(@"NUX_Second_Walkthrough_Page3_Description", nil);
+        _page3Description.text = NSLocalizedString(@"Keep the conversation going with notifications on the go. No need for a desktop to nurture the dialogue.", @"NUX Second Walkthrough Page 3 Description");
         _page3Description.shadowOffset = CGSizeMake(0.0, 1.0);
         _page3Description.shadowColor = [WPNUXUtility textShadowColor];
         _page3Description.layer.shadowRadius = 2.0;
@@ -626,7 +632,7 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
         _page4Title.numberOfLines = 0;
         _page4Title.lineBreakMode = UILineBreakModeWordWrap;
         _page4Title.font = [WPNUXUtility titleFont];
-        _page4Title.text = NSLocalizedString(@"NUX_Second_Walkthrough_Page4_Title", nil);
+        _page4Title.text = NSLocalizedString(@"Get started!", @"NUX Second Walkthrough Page 4 Title");
         _page4Title.shadowColor = [WPNUXUtility textShadowColor];
         _page4Title.shadowOffset = CGSizeMake(0.0, 1.0);
         _page4Title.layer.shadowRadius = 2.0;
