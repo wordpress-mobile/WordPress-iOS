@@ -1111,14 +1111,16 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    NSDictionary *keyboardInfo = notification.userInfo;
+    CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    CGRect keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     if (_currentPage == 1) {
         _keyboardOffset = (CGRectGetMaxY(_page1NextButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_page1NextButton.frame);
     } else {
         _keyboardOffset = (CGRectGetMaxY(_page2NextButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_page2NextButton.frame);
     }
 
-    [UIView animateWithDuration:0.3 animations:^{        
+    [UIView animateWithDuration:animationDuration animations:^{
         for (UIControl *control in [self controlsToMoveDuringKeyboardTransition:_currentPage]) {
             CGRect frame = control.frame;
             frame.origin.y -= _keyboardOffset;
@@ -1133,7 +1135,10 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-    [UIView animateWithDuration:0.3 animations:^{        
+    NSDictionary *keyboardInfo = notification.userInfo;
+    CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    
+    [UIView animateWithDuration:animationDuration animations:^{
         for (UIControl *control in [self controlsToMoveDuringKeyboardTransition:_currentPage]) {
             CGRect frame = control.frame;
             frame.origin.y += _keyboardOffset;

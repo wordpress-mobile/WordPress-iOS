@@ -125,7 +125,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (!IS_IPAD) {
         // We don't need to shift the controls up on the iPad as there's enough space.
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide) name:UIKeyboardWillHideNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     }
     
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughOpened];
@@ -1282,10 +1282,12 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
+    NSDictionary *keyboardInfo = notification.userInfo;
+    CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     _keyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(_signInButton.frame);
 
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:animationDuration animations:^{
         NSArray *controlsToMove = @[_page3Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
         
         for (UIControl *control in controlsToMove) {
@@ -1296,9 +1298,11 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     }];
 }
 
-- (void)keyboardWillHide
+- (void)keyboardWillHide:(NSNotification *)notification
 {
-    [UIView animateWithDuration:0.3 animations:^{
+    NSDictionary *keyboardInfo = notification.userInfo;
+    CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    [UIView animateWithDuration:animationDuration animations:^{
         NSArray *controlsToMove = @[_page3Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
         
         for (UIControl *control in controlsToMove) {
