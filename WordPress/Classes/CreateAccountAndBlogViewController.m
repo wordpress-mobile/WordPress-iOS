@@ -481,7 +481,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     _page1TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
     NSArray *controls = @[_page1Icon, _page1Title, _page1EmailText, _page1UsernameText, _page1PasswordText, _page1TOSLabel, _page1NextButton];
-    [WPNUXUtility centerViews:controls withStartingView:_page1Icon andEndingView:_page1NextButton forHeight:_viewHeight];
+    [WPNUXUtility centerViews:controls withStartingView:_page1Icon andEndingView:_page1TOSLabel forHeight:_viewHeight];
 }
 
 - (void)addPage2Controls
@@ -664,7 +664,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     _page2TOSLabel.frame = CGRectIntegral(CGRectMake(x, y, TOSLabelSize.width, TOSLabelSize.height));
     
     NSArray *controls = @[_page2Icon, _page2Title, _page2SiteTitleText, _page2SiteAddressText, _page2SiteLanguageText, _page2SiteLanguageDropdownImage, _page2TOSLabel, _page2PreviousButton, _page2NextButton];
-    [WPNUXUtility centerViews:controls withStartingView:_page2Icon andEndingView:_page2NextButton forHeight:_viewHeight];
+    [WPNUXUtility centerViews:controls withStartingView:_page2Icon andEndingView:_page2TOSLabel forHeight:_viewHeight];
 }
 
 - (void)addPage3Controls
