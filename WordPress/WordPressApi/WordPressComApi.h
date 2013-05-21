@@ -31,13 +31,7 @@ typedef NS_ENUM(NSUInteger, WordPressComApiBlogVisibility) {
 
 extern NSString *const WordPressComApiErrorDomain;
 extern NSString *const WordPressComApiErrorCodeKey;
-
-extern NSString *const WordPressComApiErrorCodeInvalidUser;
-extern NSString *const WordPressComApiErrorCodeInvalidEmail;
-extern NSString *const WordPressComApiErrorCodeInvalidPassword;
-extern NSString *const WordPressComApiErrorCodeInvalidBlogUrl;
-extern NSString *const WordPressComApiErrorCodeInvalidBlogTitle;
-extern NSString *const WordPressComApiErrorCodeTooManyRequests;
+extern NSString *const WordPressComApiErrorMessageKey;
 
 
 @interface WordPressComApi : AFHTTPClient
@@ -138,11 +132,5 @@ extern NSString *const WordPressComApiErrorCodeTooManyRequests;
 - (NSString *)authToken;
 + (NSString *)WordPressAppId;
 + (NSString *)WordPressAppSecret;
-
-///-----------------
-/// @name Error Messages
-///-----------------
-
-+ (NSString *)errorMessageForErrorCode:(NSString *)errorCode;
 
 @end

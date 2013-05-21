@@ -292,27 +292,9 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     }
 }
 
-- (void)handleCreationError:(NSError *)error
+- (void)displayCreationErrorMessage:(NSError *)error
 {
-    NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
-    NSString *errorMessage;
-    
-    if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidUser]) {
-        errorMessage = NSLocalizedString(@"Invalid username", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidEmail]) {
-        errorMessage = NSLocalizedString(@"Invalid email address", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidPassword]) {
-        errorMessage = NSLocalizedString(@"Your password is invalid because it does not meet our security guidelines. Please try a more complex password.", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogUrl]) {
-        errorMessage = NSLocalizedString(@"Invalid Site Address", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogTitle]) {
-        errorMessage = NSLocalizedString(@"Invalid Site Title", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeTooManyRequests]) {
-        errorMessage = NSLocalizedString(@"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support.", @"");
-    } else {
-        errorMessage = NSLocalizedString(@"Unknown error", @"");
-    }
-    
+    NSString *errorMessage = [error.userInfo objectForKey:WordPressComApiErrorMessageKey];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:errorMessage delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
     [alertView show];
 }
@@ -467,7 +449,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
         _isCreatingAccount = false;
         [self enableTextFields];
         [self.tableView reloadData];
-        [self handleCreationError:error];
+        [self displayCreationErrorMessage:error];
     }
 }
 

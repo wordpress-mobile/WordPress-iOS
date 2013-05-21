@@ -1196,27 +1196,9 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     _page2FieldsValid = false;
 }
 
-- (void)handleRemoteError:(NSError *)error
+- (void)displayRemoteError:(NSError *)error
 {
-    NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
-    NSString *errorMessage;
-    
-    if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidUser]) {
-        errorMessage = NSLocalizedString(@"Invalid username", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidEmail]) {
-        errorMessage = NSLocalizedString(@"Invalid email address", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidPassword]) {
-        errorMessage = NSLocalizedString(@"Your password is invalid because it does not meet our security guidelines. Please try a more complex password.", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogUrl]) {
-        errorMessage = NSLocalizedString(@"Invalid Site Address", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeInvalidBlogTitle]) {
-        errorMessage = NSLocalizedString(@"Invalid Site Title", @"");
-    } else if ([errorCode isEqualToString:WordPressComApiErrorCodeTooManyRequests]) {
-        errorMessage = NSLocalizedString(@"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support.", @"");
-    } else {
-        errorMessage = NSLocalizedString(@"Unknown error", @"");
-    }
-    
+    NSString *errorMessage = [error.userInfo objectForKey:WordPressComApiErrorMessageKey];
     [self showError:errorMessage];
 }
 
@@ -1265,7 +1247,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     void (^userValidationFailure)(NSError *) = ^(NSError *error){
         _page1NextButton.enabled = YES;
         [SVProgressHUD dismiss];
-        [self handleRemoteError:error];
+        [self displayRemoteError:error];
     };
     
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Validating User Data", nil) maskType:SVProgressHUDMaskTypeBlack];
@@ -1329,7 +1311,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     void (^blogValidationFailure)(NSError *) = ^(NSError *error) {
         _page2NextButton.enabled = YES;
         [SVProgressHUD dismiss];
-        [self handleRemoteError:error];
+        [self displayRemoteError:error];
     };
     
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Validating Site Data", nil) maskType:SVProgressHUDMaskTypeBlack];
@@ -1351,7 +1333,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         void (^createUserFailure)(NSError *) = ^(NSError *error) {
             [operation didFail];
             [SVProgressHUD dismiss];
-            [self handleRemoteError:error];
+            [self displayRemoteError:error];
         };
         
         [[WordPressComApi sharedApi] createWPComAccountWithEmail:_page1EmailText.text
@@ -1370,7 +1352,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
             // we are unable to sign in and proceed
             [operation didFail];
             [SVProgressHUD dismiss];
-            [self handleRemoteError:error];
+            [self displayRemoteError:error];
         };
         
         [[WordPressComApi sharedApi] signInWithUsername:_page1UsernameText.text
@@ -1391,7 +1373,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         void (^createBlogFailure)(NSError *error) = ^(NSError *error) {
             [SVProgressHUD dismiss];
             [operation didFail];
-            [self handleRemoteError:error];
+            [self displayRemoteError:error];
         };
         
         NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
