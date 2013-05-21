@@ -20,7 +20,6 @@
 @property (nonatomic, strong) UILabel *dateLabel;
 
 - (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;
-- (void)handleLinkTapped:(id)sender;
 
 @end
 
@@ -68,6 +67,12 @@
 		_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_authorLabel.backgroundColor = [UIColor clearColor];
 		[self.contentView addSubview:_authorLabel];
+		
+		
+		UIImageView *separatorImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell-separator"]];
+		separatorImageView.frame = CGRectMake(0.0f, 0.0f, width, 2.0f);
+		separatorImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		[self.contentView addSubview:separatorImageView];
 		
 		self.textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, 44.0f);
     }

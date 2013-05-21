@@ -105,6 +105,9 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
+	self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	
 	self.title = self.post.postTitle;
 	
 	if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
@@ -129,14 +132,57 @@
 	}
 	self.navigationItem.rightBarButtonItem = _shareButton;
 
-	self.commentButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleCommentButtonTapped:)];
-	self.likeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleLikeButtonTapped:)];
-	self.followButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleFollowButtonTapped:)];
-	self.reblogButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleReblogButtonTapped:)];
+	UIColor *color = [UIColor colorWithHexString:@"3478E3"];
+	CGFloat fontSize = 16.0f;
+	
+	UIButton *commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+	[commentBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
+//	[commentBtn setTitle:NSLocalizedString(@"Comment", @"") forState:UIControlStateNormal];
+	[commentBtn setTitleColor:color forState:UIControlStateNormal];
+	[commentBtn setImage:[UIImage imageNamed:@"note_icon_comment"] forState:UIControlStateNormal];
+	commentBtn.frame = CGRectMake(0.0f, 0.0f, 100.0f, 40.0f);
+	[commentBtn addTarget:self action:@selector(handleCommentButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+	
+	UIButton *likeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+	[likeBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
+//	[likeBtn setTitle:NSLocalizedString(@"Like", @"") forState:UIControlStateNormal];
+	[likeBtn setTitleColor:color forState:UIControlStateNormal];
+	[likeBtn setImage:[UIImage imageNamed:@"note_icon_like"] forState:UIControlStateNormal];
+	likeBtn.frame = CGRectMake(0.0f, 0.0f, 100.0f, 40.0f);
+	likeBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+	[likeBtn addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+	
+	UIButton *followBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+	[followBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
+//	[followBtn setTitle:NSLocalizedString(@"Follow", @"") forState:UIControlStateNormal];
+	[followBtn setTitleColor:color forState:UIControlStateNormal];
+	[followBtn setImage:[UIImage imageNamed:@"note_icon_follow"] forState:UIControlStateNormal];
+	followBtn.frame = CGRectMake(0.0f, 0.0f, 100.0f, 40.0f);
+	[followBtn addTarget:self action:@selector(handleFollowButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+	
+	UIButton *reblogBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+	[reblogBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
+//	[reblogBtn setTitle:NSLocalizedString(@"Reblog", @"") forState:UIControlStateNormal];
+	[reblogBtn setTitleColor:color forState:UIControlStateNormal];
+	[reblogBtn setImage:[UIImage imageNamed:@"note_icon_reblog"] forState:UIControlStateNormal];
+	reblogBtn.frame = CGRectMake(0.0f, 0.0f, 100.0f, 40.0f);
+	reblogBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+	[reblogBtn addTarget:self action:@selector(handleReblogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+	
+	self.commentButton = [[UIBarButtonItem alloc] initWithCustomView:commentBtn];
+	self.likeButton = [[UIBarButtonItem alloc] initWithCustomView:likeBtn];
+	self.followButton = [[UIBarButtonItem alloc] initWithCustomView:followBtn];
+	self.reblogButton = [[UIBarButtonItem alloc] initWithCustomView:reblogBtn];
+	[self updateToolbar];
+	
+//	self.commentButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleCommentButtonTapped:)];
+//	self.likeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleLikeButtonTapped:)];
+//	self.followButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleFollowButtonTapped:)];
+//	self.reblogButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleReblogButtonTapped:)];
 
-	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	[self setToolbarItems:@[_likeButton, placeholder, _followButton, placeholder, _reblogButton] animated:YES];
-	self.navigationController.toolbarHidden = NO;
+//	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//	[self setToolbarItems:@[_likeButton, placeholder, _followButton, placeholder, _reblogButton] animated:YES];
+//	self.navigationController.toolbarHidden = NO;
 	
 	CGFloat width = self.tableView.frame.size.width;
 	
@@ -366,31 +412,76 @@
 
 - (void)updateToolbar {
 	if (!self.post) return;
+
+//	UIImage *img = nil;
+//	if (self.post.isLiked.boolValue) {
+//		img = [UIImage imageNamed:@""];
+//	} else {
+//		img = [UIImage imageNamed:@""];
+//	}
+//	[self.likeButton setImage:img];
+//	
+//	if (self.post.isFollowing.boolValue) {
+//		img = [UIImage imageNamed:@""];
+//	} else {
+//		img = [UIImage imageNamed:@""];
+//	}
+//	[self.followButton setImage:img];
+//	
+//	if (self.post.isReblogged.boolValue) {
+//		img = [UIImage imageNamed:@""];
+//	} else {
+//		img = [UIImage imageNamed:@""];
+//	}
+//	[self.reblogButton setImage:img];
+//	
+//	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//	[self setToolbarItems:@[_commentButton, placeholder, _likeButton, placeholder, _followButton, placeholder, _reblogButton] animated:YES];
+//	
+//	return;
+	UIColor *activeColor = [UIColor colorWithHexString:@"F1831E"];
+	UIColor *inactiveColor = [UIColor colorWithHexString:@"3478E3"];
 	
 	UIImage *img = nil;
+	UIColor *color;
+	UIButton *btn;
 	if (self.post.isLiked.boolValue) {
-		img = [UIImage imageNamed:@""];
+		img = [UIImage imageNamed:@"note_navbar_icon_like"];
+		color = activeColor;
 	} else {
-		img = [UIImage imageNamed:@""];
+		img = [UIImage imageNamed:@"note_icon_like"];
+		color = inactiveColor;
 	}
-	[self.likeButton setImage:img];
-	
-	if (self.post.isFollowing.boolValue) {
-		img = [UIImage imageNamed:@""];
-	} else {
-		img = [UIImage imageNamed:@""];
-	}
-	[self.followButton setImage:img];
+	btn = (UIButton *)_likeButton.customView;
+	[btn.imageView setImage:img];
+	[btn setTitleColor:color forState:UIControlStateNormal];
 	
 	if (self.post.isReblogged.boolValue) {
-		img = [UIImage imageNamed:@""];
+		img = [UIImage imageNamed:@"note_navbar_icon_reblog"];
+		color = activeColor;
 	} else {
-		img = [UIImage imageNamed:@""];
+		img = [UIImage imageNamed:@"note_icon_reblog"];
+		color = inactiveColor;
 	}
-	[self.reblogButton setImage:img];
+	btn = (UIButton *)_reblogButton.customView;
+	[btn.imageView setImage:img];
+	[btn setTitleColor:color forState:UIControlStateNormal];
+	
+	if (self.post.isFollowing.boolValue) {
+		img = [UIImage imageNamed:@"note_navbar_icon_follow"];
+		color = activeColor;
+	} else {
+		img = [UIImage imageNamed:@"note_icon_follow"];
+		color = inactiveColor;
+	}
+	btn = (UIButton *)_followButton.customView;
+	[btn.imageView setImage:img];
+	[btn setTitleColor:color forState:UIControlStateNormal];
 	
 	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	[self setToolbarItems:@[_likeButton, placeholder, _followButton, placeholder, _reblogButton] animated:YES];
+	[self setToolbarItems:@[_commentButton, placeholder, _likeButton, placeholder, _followButton, placeholder, _reblogButton] animated:YES];
+	self.navigationController.toolbarHidden = NO;
+
 }
 
 
