@@ -236,7 +236,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		
 		self.siteID = [dict numberForKey:@"blog_id"];
 		
-		self.summary = [[dict objectForKey:@"post_content"] stringByStrippingHTML];
+		self.summary = [[[dict objectForKey:@"post_content"] stringByStrippingHTML] trim];
 				
 		NSString *img = [dict objectForKey:@"post_featured_thumbnail"];
 		if([img length]) {
@@ -300,7 +300,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		snippet = [NSString stringWithFormat:@"%@ ...", [snippet substringToIndex:rng.location]];
 	}
 
-	return [self normalizeParagraphs:snippet];
+	return [[self normalizeParagraphs:snippet] trim];
 }
 
 
@@ -403,12 +403,76 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 
 - (NSString *)prettyDateString {
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setTimeStyle:NSDateFormatterShortStyle];
-	[formatter setDateStyle:NSDateFormatterMediumStyle];
-	[formatter setDoesRelativeDateFormatting:YES];
+	NSDate *date = [self isFreshlyPressed] ? self.sortDate : self.dateCreated;
+	NSString *str;
+	NSTimeInterval diff = [[NSDate date] timeIntervalSince1970] - [date timeIntervalSince1970];
 	
-	return [formatter stringFromDate:self.date_created_gmt];
+	if(diff < 60) {
+		NSString *fmt = NSLocalizedString(@"%i second ago", @"second ago");
+		if(diff == 1) {
+			fmt = NSLocalizedString(@"%i seconds ago", @"seconds ago");
+		}
+		
+		str = [NSString stringWithFormat:fmt, (NSInteger)diff];
+
+	} else if(diff < 3600) {
+		
+		NSInteger min = (NSInteger)floor(diff / 60);
+		NSInteger sec = (NSInteger)floor(fmod(diff, 60));
+		NSString *minFmt = NSLocalizedString(@"%i minutes ago", @"minutes ago");
+		NSString *secFmt = NSLocalizedString(@"%i seconds ago", @"seconds ago");
+		if (min == 1) {
+			minFmt = NSLocalizedString(@"%i minute ago", @"minute ago");
+		}
+		if (sec == 1) {
+			secFmt = NSLocalizedString(@"%i second ago", @"second ago");
+		}
+
+		NSString *fmt = [NSString stringWithFormat:@"%@, %@", minFmt, secFmt];
+		str = [NSString stringWithFormat:fmt, min, sec];
+		
+	} else if (diff < 86400) {
+		
+		NSInteger hr = (NSInteger)floor(diff / 3600);
+		NSInteger min = (NSInteger)floor(fmod(diff, 3600) / 60);
+		
+		NSString *hrFmt = NSLocalizedString(@"%i hours ago", @"hours ago");
+		NSString *minFmt = NSLocalizedString(@"%i minutes ago", @"minutes ago");
+		if (hr == 1) {
+			hrFmt = NSLocalizedString(@"%i hour ago", @"hour ago");
+		}
+		if (min == 1) {
+			minFmt = NSLocalizedString(@"%i minute ago", @"minute ago");
+		}
+		
+		NSString *fmt = [NSString stringWithFormat:@"%@, %@", hrFmt, minFmt];
+		str = [NSString stringWithFormat:fmt, hr, min];
+		
+	} else {
+
+		NSInteger day = (NSInteger)floor(diff / 86400);
+		NSInteger hr = (NSInteger)floor(fmod(diff, 86400) / 3600);
+
+		NSString *dayFmt = NSLocalizedString(@"%i days ago", @"days ago");
+		NSString *hrFmt = NSLocalizedString(@"%i hours ago", @"hours ago");
+		if (day == 1) {
+			dayFmt = NSLocalizedString(@"%i day ago", @"day ago");
+		}
+		if (hr == 1) {
+			hrFmt = NSLocalizedString(@"%i hour ago", @"hour ago");
+		}
+		
+		NSString *fmt = [NSString stringWithFormat:@"%@, %@", dayFmt, hrFmt];
+		str = [NSString stringWithFormat:fmt, day, hr];
+		
+	}
+	
+	return str;
+}
+
+
+- (BOOL)isFreshlyPressed {
+	return ([self.endpoint rangeOfString:@"freshly-pressed"].location != NSNotFound)? true : false;
 }
 
 

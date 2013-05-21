@@ -146,82 +146,44 @@
 	
 	self.authorView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 80.0f)];
 	_authorView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_authorView.backgroundColor = [UIColor colorWithRed:30.0f/255.0f green:140.0f/255.0f blue:190.0f/255.0f alpha:1.0f];
 	[_headerView addSubview:_authorView];
 	
-	CGRect rect = CGRectMake(0, 0, 1, 1);
-	UIGraphicsBeginImageContext(rect.size);
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:241.0f/255.0f green:131.0/255.0f blue:30.0f/255.0f alpha:1.0] CGColor]);
-	CGContextFillRect(context, rect);
-	UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
 	
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 	button.frame = _authorView.frame;
-	[button setBackgroundImage:img forState:UIControlStateHighlighted];
-	button.backgroundColor = [UIColor clearColor];
 	[button addTarget:self action:@selector(handleAuthorViewTapped:) forControlEvents:UIControlEventTouchUpInside];
 	[_authorView addSubview:button];
 	
-	self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 40.0f, 40.0f)];
+	self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 60.0f, 60.0f)];
 	_avatarImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 	[_avatarImageView setImageWithURL:[NSURL URLWithString:self.post.authorAvatarURL] placeholderImage:[UIImage imageNamed:@""]];
 	[_authorView addSubview:_avatarImageView];
 	
-	self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0f, 10.0f, width - 70.0f, 20.0f)];
+	self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(75.0f, 10.0f, width - 90.0f, 20.0f)];
 	_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_authorLabel.backgroundColor = [UIColor clearColor];
 	_authorLabel.font = [UIFont systemFontOfSize:14.0f];
 	_authorLabel.text = (self.post.author != nil) ? self.post.author : self.post.authorDisplayName;
-	_authorLabel.textColor = [UIColor whiteColor];
+	_authorLabel.textColor = [UIColor grayColor];
 	[_authorView addSubview:_authorLabel];
 	
-	self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0f, 30.0f, width - 70.0f, 20.0f)];
+	self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(75.0f, 30.0f, width - 90.0f, 20.0f)];
 	_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_dateLabel.backgroundColor = [UIColor clearColor];
 	_dateLabel.font = [UIFont systemFontOfSize:14.0f];
 	_dateLabel.text = [NSString stringWithFormat:@"%@ on", [self.post prettyDateString]];
-	_dateLabel.textColor = [UIColor whiteColor];
+	_dateLabel.textColor = [UIColor grayColor];
 	[_authorView addSubview:_dateLabel];
 	
-	self.blogLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 50.0f, width - 20.0f, 20.0f)];
+	self.blogLabel = [[UILabel alloc] initWithFrame:CGRectMake(75.0f, 50.0f, width - 90.0f, 20.0f)];
 	_blogLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_blogLabel.backgroundColor = [UIColor clearColor];
 	_blogLabel.font = [UIFont systemFontOfSize:14.0f];
 	_blogLabel.text = self.post.blogName;
-	_blogLabel.textColor = [UIColor whiteColor];
+	_blogLabel.textColor = [UIColor grayColor];
 	[_authorView addSubview:_blogLabel];
 	
-	UIImageView *commentImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"note_icon_comment.png"]];
-	commentImageView.frame = CGRectMake(width - 26.0f, 12.0f, 16.0f, 16.0f);
-	commentImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-	[_authorView addSubview:commentImageView];
-	
-	UILabel *commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - 60.0f, 10.0f, 30.0f, 20.0f)];
-	commentLabel.font = [UIFont systemFontOfSize:14.0f];
-	commentLabel.textColor = [UIColor whiteColor];
-	commentLabel.textAlignment = UITextAlignmentRight;
-	commentLabel.backgroundColor = [UIColor clearColor];
-	commentLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-	commentLabel.text = [self.post.commentCount stringValue];
-	[_authorView addSubview:commentLabel];
-	
-	UIImageView *likesImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"note_icon_like.png"]];
-	likesImageView.frame = CGRectMake(width - 26.0f, 32.0f, 16.0f, 16.0f);
-	likesImageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-	[_authorView addSubview:likesImageView];
-	
-	UILabel *likesLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - 60.0f, 30.0f, 30.0f, 20.0f)];
-	likesLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-	likesLabel.font = [UIFont systemFontOfSize:14.0f];
-	likesLabel.textColor = [UIColor whiteColor];
-	likesLabel.textAlignment = UITextAlignmentRight;
-	likesLabel.backgroundColor = [UIColor clearColor];
-	likesLabel.text = [self.post.likeCount stringValue];
-	[_authorView addSubview:likesLabel];
-	
-	self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 90.0f, width, 100.0f)]; // Starting height is arbitrary
+	self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 80.0f, width, 100.0f)]; // Starting height is arbitrary
 	_textContentView.delegate = self;
 	_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	_textContentView.backgroundColor = [UIColor clearColor];
@@ -232,7 +194,7 @@
 		
 	NSString *str = @"";
 	if([self.post.postTitle length] > 0) {
-		str = [NSString stringWithFormat:@"<h2>%@</h2>%@", self.post.postTitle, self.post.content];
+		str = [NSString stringWithFormat:@"<h2 style=\"color:#000000;font-size:18px;font-weight:100;margin-bottom:8px;\">%@</h2>%@", self.post.postTitle, self.post.content];
 	} else {
 		str = post.content;
 	}

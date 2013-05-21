@@ -96,6 +96,9 @@ extern NSInteger const ReaderTopicEndpointIndex;
 
 - (NSString *)prettyDateString;
 
+
+- (BOOL)isFreshlyPressed;
+
 @end
 
 
