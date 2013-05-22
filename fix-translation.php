@@ -14,6 +14,10 @@ foreach ( $argv as $file ) {
 			$fixedLine = preg_replace( '/^"(.*)" = "";$/', '"$1" = "$1";', $utf8Line );
 			$fixedLine = mb_convert_encoding( $fixedLine, 'UTF-16BE' );
 			$out .= $fixedLine;
+		} else if ( preg_match('/^(.* = ".*)(?<!\\\\)\"(.*)(?<!\\\\)\"(.*\";)$/uim', $utf8Line, $matches ) ) {
+			$fixedLine = preg_replace('/^(.* = ".*)(?<!\\\\)\"(.*)(?<!\\\\)\"(.*\";)$/uim', '$1\\"$2\\"$3', $utf8Line);
+			$fixedLine = mb_convert_encoding( $fixedLine, 'UTF-16BE', 'UTF-8' );
+			$out .= $fixedLine;
 		} else {
 			$out .= $line;
 		}
