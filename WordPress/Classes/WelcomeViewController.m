@@ -129,12 +129,16 @@
 
 
 - (IBAction)handleOrgBlogTapped:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventWelcomeViewControllerClickedAddSelfHostedBlog];
+    
     AddSiteViewController *addSiteView = [[AddSiteViewController alloc] initWithNibName:nil bundle:nil];    
     [self.navigationController pushViewController:addSiteView animated:YES];
 }
 
 
 - (IBAction)handleAddBlogTapped:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventWelcomeViewControllerClickedAddWordpressDotComBlog];
+
     NSString *username = nil;
     NSString *password = nil;
     
@@ -165,6 +169,8 @@
 }
 
 - (IBAction)handleCreateBlogTapped:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventWelcomeViewControllerClickedCreateWordpressDotComBlog];
+    
     if ([WordPressComApi sharedApi].hasCredentials) {
         CreateWPComBlogViewController *viewController = [[CreateWPComBlogViewController alloc] initWithStyle:UITableViewStyleGrouped];
         viewController.delegate = self;

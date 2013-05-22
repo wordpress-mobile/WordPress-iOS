@@ -212,6 +212,19 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 	[textView resignFirstResponder];
 }
 
+- (NSString *)statsPrefix
+{
+    if (_statsPrefix == nil)
+        return @"Post Detail";
+    else
+        return _statsPrefix;
+}
+
+- (NSString *)formattedStatEventString:(NSString *)event
+{
+    return [NSString stringWithFormat:@"%@ - %@", self.statsPrefix, event];
+}
+
 #pragma mark -
 #pragma mark Instance Methods
 
@@ -318,6 +331,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 - (IBAction)switchToEdit {
     if (currentView != editView) {
+        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClickedEdit]];
         [self switchToView:editView];
     }
     self.navigationItem.title = [self editorTitle];
@@ -325,6 +339,8 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 - (IBAction)switchToSettings {
     if (currentView != self.postSettingsViewController.view) {
+        self.postSettingsViewController.statsPrefix = self.statsPrefix;
+        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClickedSettings]];
         [self switchToView:self.postSettingsViewController.view];
     }
 	self.navigationItem.title = NSLocalizedString(@"Settings", @"Post Editor / Settings screen title.");
@@ -332,6 +348,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 - (IBAction)switchToMedia {
     if (currentView != self.postMediaViewController.view) {
+        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClickedMedia]];
         [self switchToView:self.postMediaViewController.view];
     }
 	self.navigationItem.title = NSLocalizedString(@"Media", @"Post Editor / Media screen title.");
@@ -339,20 +356,24 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 - (IBAction)switchToPreview {
     if (currentView != self.postPreviewViewController.view) {
+        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClickedPreview]];
         [self switchToView:self.postPreviewViewController.view];
     }
 	self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
 }
 
 - (IBAction)addVideo:(id)sender {
+    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClickedAddVideo]];
     [self.postMediaViewController showVideoPickerActionSheet:sender];
 }
 
 - (IBAction)addPhoto:(id)sender {
+    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClickedAddPhoto]];
     [self.postMediaViewController showPhotoPickerActionSheet:sender];
 }
 
 - (IBAction)showCategories:(id)sender {
+    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClickedShowCategories]];
     [textView resignFirstResponder];
     [currentEditingTextField resignFirstResponder];
     [self populateSelectionsControllerWithCategories];
@@ -605,6 +626,8 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 }
 
 - (void)savePost:(BOOL)upload{
+    [self logSavePostStats];
+    
     [self autosaveContent];
 
     [self.view endEditing:YES];
@@ -623,6 +646,25 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 	}
 
     [self dismissEditView];
+}
+
+- (void)logSavePostStats
+{
+    NSString *buttonTitle = self.navigationItem.rightBarButtonItem.title;
+    NSString *event;
+    if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
+        event = StatsEventPostDetailClickedSchedule;
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
+        event = StatsEventPostDetailClickedPublish;
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Save", nil)]) {
+        event = StatsEventPostDetailClickedSave;
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Update", nil)]) {
+        event = StatsEventPostDetailClickedUpdate;
+    }
+    
+    if (event != nil) {
+        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:event]];
+    }
 }
 
 - (void)autosaveContent {
@@ -1244,6 +1286,8 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 #pragma mark - Media management
 
 - (void)insertMediaAbove:(NSNotification *)notification {
+    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailAddedPhoto]];
+    
 	Media *media = (Media *)[notification object];
 	NSString *prefix = @"<br /><br />";
 	
@@ -1281,6 +1325,8 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 }
 
 - (void)insertMediaBelow:(NSNotification *)notification {
+    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailAddedPhoto]];
+    
 	Media *media = (Media *)[notification object];
 	NSString *prefix = @"<br /><br />";
 	
@@ -1315,6 +1361,8 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 }
 
 - (void)removeMedia:(NSNotification *)notification {
+    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailRemovedPhoto]];
+
 	//remove the html string for the media object
 	Media *media = (Media *)[notification object];
 	textView.text = [textView.text stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<br /><br />%@", media.html] withString:@""];
@@ -1399,6 +1447,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 - (void)keyboardToolbarButtonItemPressed:(WPKeyboardToolbarButtonItem *)buttonItem {
     WPFLogMethod();
+    [self logWPKeyboardToolbarButtonStat:buttonItem];
     if ([buttonItem.actionTag isEqualToString:@"link"]) {
         [self showLinkView];
     } else if ([buttonItem.actionTag isEqualToString:@"done"]) {
@@ -1409,6 +1458,36 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         [self wrapSelectionWithTag:buttonItem.actionTag];
         [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
         [textView.undoManager setActionName:buttonItem.actionName];    
+    }
+}
+
+- (void)logWPKeyboardToolbarButtonStat:(WPKeyboardToolbarButtonItem *)buttonItem {
+    NSString *actionTag = buttonItem.actionTag;
+    NSString *event;
+    if ([actionTag isEqualToString:@"strong"]) {
+        event = StatsEventPostDetailClickedKeyboardToolbarBoldButton;
+    } else if ([actionTag isEqualToString:@"em"]) {
+        event = StatsEventPostDetailClickedKeyboardToolbarItalicButton;
+    } else if ([actionTag isEqualToString:@"link"]) {
+        event = StatsEventPostDetailClickedKeyboardToolbarLinkButton;
+    } else if ([actionTag isEqualToString:@"blockquote"]) {
+        event = StatsEventPostDetailClickedKeyboardToolbarBlockquoteButton;
+    } else if ([actionTag isEqualToString:@"del"]) {
+        event = StatsEventPostDetailClickedKeyboardToolbarDelButton;
+    } else if ([actionTag isEqualToString:@"ul"]) {
+        event = StatsEventPostDetailClickedKeyboardToolbarUnorderedListButton;
+    } else if ([actionTag isEqualToString:@"ol"]) {
+        event = StatsEventPostDetailClickedKeyboardToolbarOrderedListButton;
+    } else if ([actionTag isEqualToString:@"li"]) {
+        event = StatsEventPostDetailClickedKeyboardToolbarListItemButton;
+    } else if ([actionTag isEqualToString:@"code"]) {
+        event = StatsEventPostDetailClickedKeyboardToolbarCodeButton;
+    } else if ([actionTag isEqualToString:@"more"]) {
+        event = StatsEventPostDetailClickedKeyboardToolbarMoreButton;
+    }
+    
+    if (event != nil) {
+        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:event]];
     }
 }
 

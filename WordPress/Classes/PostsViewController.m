@@ -8,15 +8,9 @@
 
 #define TAG_OFFSET 1010
 
-@interface PostsViewController (Private)
-
-- (BOOL)handleAutoSavedContext:(NSInteger)tag;
-- (void)deletePostAtIndexPath:(NSIndexPath *)indexPath;
-- (void)editPost:(AbstractPost *)apost;
-- (void)showSelectedPost;
-- (void)checkLastSyncDate;
-- (void)syncFinished;
-- (void)handleInvalidCredentialsNotification:(NSNotification *)notification;
+@interface PostsViewController() {
+    BOOL _hasViewAppeared;
+}
 
 @end
 
@@ -82,6 +76,15 @@
     self.infiniteScrollEnabled = YES;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    if (!_hasViewAppeared) {
+        _hasViewAppeared = true;
+        [WPMobileStats trackEventForWPCom:[self statsEventForViewOpening]];
+    }
+}
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
@@ -131,6 +134,16 @@
         return NO;
     
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+}
+
+- (NSString *)statsEventForViewOpening
+{
+    return StatsEventPostsOpened;
+}
+
+- (NSString *)statsEventForViewingDetail
+{
+    return StatsEventPostsClickedPostDetail;
 }
 
 #pragma mark -
@@ -188,6 +201,9 @@
 		// Don't allow editing while pushing changes
 		return;
 	}
+    
+    [WPMobileStats trackEventForWPCom:[self statsEventForViewingDetail]];
+    
     if (IS_IPAD) {
         self.selectedIndexPath = indexPath;
     } else {
@@ -256,6 +272,8 @@
 }
 
 - (void)showAddPostView {
+    [WPMobileStats trackEventForWPCom:StatsEventPostsClickedNewPost];
+
     if (IS_IPAD)
         [self resetView];
     Post *post = [Post newDraftForBlog:self.blog];

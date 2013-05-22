@@ -202,6 +202,13 @@ typedef enum {
 
 - (void)handleMuteSoundsChanged:(id)sender {
     UISwitch *aSwitch = (UISwitch *)sender;
+    
+    if (aSwitch.on) {
+        [WPMobileStats trackEventForWPCom:StatsEventSettingsEnabledSounds];
+    } else {
+        [WPMobileStats trackEventForWPCom:StatsEventSettingsDisabledSounds];
+    }
+
     [[NSUserDefaults standardUserDefaults] setBool:!(aSwitch.on) forKey:kSettingsMuteSoundsKey];
     [NSUserDefaults resetStandardUserDefaults];
 }
@@ -452,6 +459,8 @@ typedef enum {
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [WPMobileStats trackEventForWPCom:StatsEventSettingsRemovedBlog];
+        
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
         [blog remove];
         
@@ -471,6 +480,8 @@ typedef enum {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == SettingsSectionBlogs) {
+        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedEditBlog];
+        
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
 
 		EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] init];
@@ -478,6 +489,8 @@ typedef enum {
         [self.navigationController pushViewController:editSiteViewController animated:YES];
 
     } else if (indexPath.section == SettingsSectionBlogsAdd) {
+        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAddBlog];
+
         WelcomeViewController *welcomeViewController;
         welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil]; 
         welcomeViewController.title = NSLocalizedString(@"Add a Blog", @"");
@@ -486,6 +499,8 @@ typedef enum {
     } else if (indexPath.section == SettingsSectionWpcom) {
         if ([[WordPressComApi sharedApi] hasCredentials]) {
             if (indexPath.row == 1) {
+                [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignOutOfDotCom];
+
                 // Present the Sign out ActionSheet
                 NSString *signOutTitle = NSLocalizedString(@"You are logged in as %@", @"");
                 signOutTitle = [NSString stringWithFormat:signOutTitle, [WordPressComApi sharedApi].username];
@@ -498,17 +513,29 @@ typedef enum {
                 [actionSheet showInView:self.view];
             }
         } else {
+            [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedSignIntoDotCom];
+            
             WPcomLoginViewController *loginViewController = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
             loginViewController.delegate = self;
             [self.navigationController pushViewController:loginViewController animated:YES];
         }
         
     } else if (indexPath.section == SettingsSectionMedia) {
+        if (indexPath.row == 0) {
+            [WPMobileStats trackEventForWPCom:StatsEventSettingsMediaClickedImageResize];
+        } else if (indexPath.row == 1) {
+            [WPMobileStats trackEventForWPCom:StatsEventSettingsMediaClickedVideoQuality];
+        } else if (indexPath.row == 2) {
+            [WPMobileStats trackEventForWPCom:StatsEventSettingsMediaClickedVideoContent];
+        }
+        
         NSDictionary *dict = [mediaSettingsArray objectAtIndex:indexPath.row];
         SettingsPageViewController *controller = [[SettingsPageViewController alloc] initWithDictionary:dict];
         [self.navigationController pushViewController:controller animated:YES];
     
     } else if (indexPath.section == SettingsSectionNotifications) {
+        [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedManageNotifications];
+        
         NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
         [self.navigationController pushViewController:notificationSettingsViewController animated:YES];
     } else if (indexPath.section == SettingsSectionSounds) {
@@ -516,7 +543,9 @@ typedef enum {
         
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 1) {
-            AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil]; 
+            [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAbout];
+            
+            AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
             [self.navigationController pushViewController:aboutViewController animated:YES];
         }
     }
@@ -617,6 +646,8 @@ typedef enum {
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if(buttonIndex == 0) {
+        [WPMobileStats trackEventForWPCom:StatsEventSettingsSignedOutOfDotCom];
+        
         // Sign out
         [[WordPressComApi sharedApi] signOut];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];

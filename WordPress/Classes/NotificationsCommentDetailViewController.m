@@ -310,21 +310,27 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     
     UIBarButtonItem *pressedButton = nil;
     if (button.tag == APPROVE_BUTTON_TAG) {
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailApproveComment];
         commentAction = [self.commentActions objectForKey:@"approve-comment"];
         pressedButton = self.approveBarButton;
     } else if (button.tag == UNAPPROVE_BUTTON_TAG) {
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnapproveComment];
         commentAction = [self.commentActions objectForKey:@"unapprove-comment"];
         pressedButton = self.unapproveBarButton;
     } else if (button.tag == TRASH_BUTTON_TAG){
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailTrashComment];
         commentAction = [self.commentActions objectForKey:@"trash-comment"];
         pressedButton = self.trashBarButton;
     } else if (button.tag == UNTRASH_BUTTON_TAG){
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUntrashComment];
         commentAction = [self.commentActions objectForKey:@"untrash-comment"];
         pressedButton = self.trashBarButton;
     } else if (button.tag == SPAM_BUTTON_TAG){
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailFlagCommentAsSpam];
         commentAction = [self.commentActions objectForKey:@"spam-comment"];
         pressedButton = self.spamBarButton;
     } else if (button.tag == UNSPAM_BUTTON_TAG){
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnflagCommentAsSpam];
         commentAction = [self.commentActions objectForKey:@"unspam-comment"];
         pressedButton = self.spamBarButton;
     }
@@ -402,6 +408,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 }
 
 - (void)startReply:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailClickedReplyButton];
     [self.replyTextView becomeFirstResponder];
 }
 
@@ -411,6 +418,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 }
 
 - (void)publishReply:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailRepliedToComment];
     
     NSDictionary *action = [self.commentActions objectForKey:@"replyto-comment"];
     if (action){

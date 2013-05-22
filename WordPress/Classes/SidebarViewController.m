@@ -442,6 +442,8 @@ NSLog(@"%@", self.sectionInfoArray);
 }
 
 - (IBAction)showSettings:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventSidebarClickedSettings];
+    
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     if (IS_IPAD)
@@ -571,6 +573,8 @@ NSLog(@"%@", self.sectionInfoArray);
 }
 
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)useCameraPlus withImage:(UIImage *)image {
+    [WPMobileStats trackEventForWPCom:StatsEventSidebarClickedQuickPhoto];
+    
     QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
     quickPhotoViewController.sidebarViewController = self;
     quickPhotoViewController.photo = image;
@@ -985,10 +989,13 @@ NSLog(@"%@", self.sectionInfoArray);
     if (indexPath.section == 0) { // Reader & Notifications
         
         if (indexPath.row == 0) { // Reader
-            // Reader
+            [WPMobileStats trackEventForWPCom:StatsEventSidebarClickedReader];
+            
             WPReaderViewController *readerViewController = [[WPReaderViewController alloc] init];
             detailViewController = readerViewController;
         } else if(indexPath.row == 1) { // Notifications
+            [WPMobileStats trackEventForWPCom:StatsEventSidebarClickedNotifications];
+            
             self.hasUnseenNotes = NO;
             NotificationsViewController *notificationsViewController = [[NotificationsViewController alloc] init];
             detailViewController = notificationsViewController;
@@ -1003,18 +1010,28 @@ NSLog(@"%@", self.sectionInfoArray);
         //did user select the same item, but for a different blog? If so then just update the data in the view controller.
         switch (indexPath.row) {
             case 0:
+                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedPosts];
+                
                  controllerClass = [PostsViewController class];
                 break;
             case 1:
+                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedPages];
+                
                 controllerClass = [PagesViewController class];
                 break;
             case 2:
+                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedComments];
+                
                 controllerClass = [CommentsViewController class];
                 break;
             case 3:
+                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedStats];
+                
                 controllerClass =  [StatsWebViewController class];//IS_IPAD ? [StatsWebViewController class] : [StatsTableViewController class];
                 break;
-            case 4 : 
+            case 4 :
+                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedViewSite];
+                
                 blogURL = blog.url;
                 if (![blogURL hasPrefix:@"http"]) {
                     blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
@@ -1048,6 +1065,8 @@ NSLog(@"%@", self.sectionInfoArray);
                 }
                 return;
             case 5:
+                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedViewAdmin];
+                
                  dashboardURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
                 //dashboard already selected
                 if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPWebViewController class]] 

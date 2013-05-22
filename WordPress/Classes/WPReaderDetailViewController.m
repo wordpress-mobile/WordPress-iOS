@@ -32,6 +32,7 @@
 }
 
 - (void)viewDidLoad {
+    self.statsPrefixForShareActions = @"Reader Detail";
     self.webBridge = [WPWebBridge bridge];
     self.webBridge.delegate = self;
     [super viewDidLoad];
@@ -91,6 +92,8 @@
 
 - (void)loadNextItem:(id)sender
 {
+    [WPMobileStats trackEventForWPCom:StatsEventReaderDetailClickedNext];
+    
     if (![ReachabilityUtils isInternetReachable]) {
         [ReachabilityUtils showAlertNoInternetConnection];
         return;
@@ -103,6 +106,8 @@
 
 - (void)loadPreviousItem:(id)sender
 {
+    [WPMobileStats trackEventForWPCom:StatsEventReaderDetailClickedPrevious];
+
     if (![ReachabilityUtils isInternetReachable]) {
         [ReachabilityUtils showAlertNoInternetConnection];
         return;

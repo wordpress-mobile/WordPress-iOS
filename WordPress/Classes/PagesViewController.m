@@ -60,6 +60,8 @@
 }
 
 - (void)showAddPostView {
+    [WPMobileStats trackEventForWPCom:StatsEventPagesClickedNewPage];
+
     if (IS_IPAD)
         [self resetView];
     Page *post = [Page newDraftForBlog:self.blog];
@@ -75,6 +77,17 @@
     
     return [Page titleForRemoteStatus:[sectionName numericValue]];
 }
+
+- (NSString *)statsEventForViewOpening
+{
+    return StatsEventPagesOpened;
+}
+
+- (NSString *)statsEventForViewingDetail
+{
+    return StatsEventPagesClickedPageDetail;
+}
+
 
 #pragma mark -
 #pragma mark Syncs methods

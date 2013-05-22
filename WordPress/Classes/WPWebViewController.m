@@ -48,6 +48,13 @@
     self.linkOptionsActionSheet.delegate = nil;
 }
 
+- (NSString *)statsPrefixForShareActions
+{
+    if (_statsPrefixForShareActions == nil)
+        return @"Webview";
+    else
+        return _statsPrefixForShareActions;
+}
 
 #pragma mark - View lifecycle
 
@@ -483,6 +490,7 @@
         [self.linkOptionsActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
         self.linkOptionsActionSheet = nil;
     }
+    [WPMobileStats trackEventForWPCom:[NSString stringWithFormat:@"%@ - %@", self.statsPrefixForShareActions, StatsEventWebviewClickedShowLinkOptions]];
     NSString* permaLink = [self getDocumentPermalink];
     
     if( permaLink == nil || [[permaLink trim] isEqualToString:@""] ) return; //this should never happen
@@ -500,6 +508,36 @@
 
         [activityItems addObject:[NSURL URLWithString:permaLink]];
         UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:@[safariActivity, instapaperActivity, pocketActivity]];
+        activityViewController.completionHandler = ^(NSString *activityType, BOOL completed) {
+            if (!completed)
+                return;
+            
+            NSString *event;
+            if ([activityType isEqualToString:UIActivityTypeMail]) {
+                event = StatsEventWebviewSharedArticleViaEmail;
+            } else if ([activityType isEqualToString:UIActivityTypeMessage]) {
+                event = StatsEventWebviewSharedArticleViaSMS;
+            } else if ([activityType isEqualToString:UIActivityTypePostToTwitter]) {
+                event = StatsEventWebviewSharedArticleViaTwitter;
+            } else if ([activityType isEqualToString:UIActivityTypePostToFacebook]) {
+                event = StatsEventWebviewSharedArticleViaFacebook;
+            } else if ([activityType isEqualToString:UIActivityTypeCopyToPasteboard]) {
+                event = StatsEventWebviewCopiedArticleDetails;
+            } else if ([activityType isEqualToString:UIActivityTypePostToWeibo]) {
+                event = StatsEventWebviewSharedArticleViaWeibo;
+            } else if ([activityType isEqualToString:NSStringFromClass([SafariActivity class])]) {
+                event = StatsEventWebviewOpenedArticleInSafari;
+            } else if ([activityType isEqualToString:NSStringFromClass([InstapaperActivity class])]) {
+                event = StatsEventWebviewSentArticleToInstapaper;
+            } else if ([activityType isEqualToString:NSStringFromClass([PocketActivity class])]) {
+                event = StatsEventWebviewSentArticleToPocket;
+            }
+            
+            if (event != nil) {
+                event = [NSString stringWithFormat:@"%@ - %@", self.statsPrefixForShareActions, event];
+                [WPMobileStats trackEventForWPCom:event];
+            }
+        };
         [self presentViewController:activityViewController animated:YES completion:nil];
         return;
     }
@@ -700,7 +738,6 @@
     //field not found in this view.
     return NO;
 }
-
 
 - (void)showCloseButton {
     if ( IS_IPAD ) {

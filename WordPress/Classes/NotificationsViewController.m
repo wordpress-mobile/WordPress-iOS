@@ -21,6 +21,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 @interface NotificationsViewController () {
     BOOL _retrievingNotifications;
+    BOOL _viewHasAppeared;
 }
 
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *settingsButton;
@@ -120,6 +121,12 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    if (!_viewHasAppeared) {
+        _viewHasAppeared = true;
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsOpened];
+    }
+    
     _isPushingViewController = NO;
     // If table is at the top, simulate a pull to refresh
     BOOL simulatePullToRefresh = (self.tableView.contentOffset.y == 0);
@@ -219,6 +226,8 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     
     BOOL hasDetailsView = [self noteHasDetailView:note];
     if (hasDetailsView) {
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsOpenedNotificationDetails];
+        
         _isPushingViewController = YES;
         if ([note isComment]) {
             NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];

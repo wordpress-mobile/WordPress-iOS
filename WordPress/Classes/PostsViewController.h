@@ -14,5 +14,7 @@
 - (void)showAddPostView;
 - (void)reselect;
 - (BOOL)refreshRequired;
+- (NSString *)statsEventForViewOpening;
+- (NSString *)statsEventForViewingDetail;
 
 @end

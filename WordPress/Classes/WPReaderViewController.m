@@ -136,6 +136,10 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    if (!_hasViewAppeared) {
+        _hasViewAppeared = true;
+        [WPMobileStats trackEventForWPCom:StatsEventReaderOpened];
+    }
     [self performSelector:@selector(showFriendFinderNudgeView:) withObject:self afterDelay:3.0];
 }
 
@@ -206,6 +210,8 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 #pragma mark - Topic View Controller Methods
 - (void)showTopicSelector:(id)sender
 {
+    [WPMobileStats trackEventForWPCom:StatsEventReaderClickedShowTopicSelector];
+    
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:self.topicsViewController];
     if (IS_IPAD) {
         nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -217,6 +223,16 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 - (void)topicsController:(WPReaderTopicsViewController *)topicsController didDismissSelectingTopic:(NSString *)topic withTitle:(NSString *)title
 {
+    if ([topic isEqualToString:@"fp"]) {
+        [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedFreshlyPressedTopic];
+    } else {
+        if (topic != nil) {
+            [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedTopic properties:@{@"topic": topic}];
+        } else {
+            [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedTopic];
+        }
+    }
+    
     [self dismiss];
     if (topic != nil) {
         NSString *javaScriptString = [NSString stringWithFormat:@"Reader2.load_topic('%@');", topic];
@@ -312,6 +328,8 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 - (void)showArticleDetails:(id)item
 {
+    [WPMobileStats trackEventForWPCom:StatsEventReaderClickedArticleDetails];
+    
     if(![ReachabilityUtils isInternetReachable]) {
         [ReachabilityUtils showAlertNoInternetConnection];
         return;
