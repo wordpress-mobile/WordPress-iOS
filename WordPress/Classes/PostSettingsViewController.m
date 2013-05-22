@@ -6,6 +6,7 @@
 #import "NSString+Helpers.h"
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
+#import "FullscreenImageBrowserViewController.h"
 
 #define kPasswordFooterSectionHeight         68.0f
 #define kResizePhotoSettingSectionHeight     60.0f
@@ -116,7 +117,14 @@
     featuredImageView.layer.shadowColor = [[UIColor blackColor] CGColor];
     featuredImageView.layer.shadowOpacity = 0.5f;
     featuredImageView.layer.shadowRadius = 1.0f;
-    
+
+    // Add a single tap listener, to show the featured image fullscreen
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(featuredImageTapped:)];
+    singleTap.numberOfTapsRequired = 1;
+    singleTap.numberOfTouchesRequired = 1;
+    [featuredImageView addGestureRecognizer:singleTap];
+    [featuredImageView setUserInteractionEnabled:YES];
+
     // Check if blog supports featured images
     id supportsFeaturedImages = [self.post.blog getOptionValue:@"post_thumbnail"];
     if (supportsFeaturedImages != nil) {
@@ -189,8 +197,7 @@
 #pragma mark -
 #pragma mark Rotation Methods
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
@@ -290,6 +297,17 @@
     self.apost.dateCreated = datePickerView.date;
 	[postDetailViewController refreshButtons];
     [tableView reloadData];
+}
+
+- (void)showModalFullscreenFeaturedImage {
+    FullscreenImageBrowserViewController *fullscreenImageBrowser = [[FullscreenImageBrowserViewController alloc] init];
+    [self presentModalViewController:fullscreenImageBrowser animated:YES];
+    fullscreenImageBrowser.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [fullscreenImageBrowser setImage:featuredImageView.image];
+}
+
+- (void)dismissFullscreenFeaturedImage {
+    [self.presentedViewController dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -
@@ -1078,6 +1096,13 @@
             addressLabel.text = address;
         }
     }];
+}
+
+#pragma mark -
+#pragma mark UIGestureRecognizerDelegate
+
+- (void)featuredImageTapped:(UIGestureRecognizer *)gestureRecognizer {
+    [self showModalFullscreenFeaturedImage];
 }
 
 @end

@@ -281,6 +281,8 @@
 		45F285DB1149BD020014D36C /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F285D81149BD020014D36C /* Icon-72.png */; };
 		45F285DD1149BD020014D36C /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F285DA1149BD020014D36C /* Icon.png */; };
 		45F45B3611614BA50022D394 /* CPopoverManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F45B3511614BA50022D394 /* CPopoverManager.m */; };
+		505D31A6174A80F500C61DAC /* FullscreenImageBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 505D31A4174A80F500C61DAC /* FullscreenImageBrowserViewController.m */; };
+		505D31A9174A817700C61DAC /* FullscreenImageBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 505D31A8174A817700C61DAC /* FullscreenImageBrowserViewController.xib */; };
 		58CA2D1B1738B90F000D1612 /* sidebar_icon_add.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CA2D191738B90F000D1612 /* sidebar_icon_add.png */; };
 		58CA2D1C1738B90F000D1612 /* sidebar_icon_add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CA2D1A1738B90F000D1612 /* sidebar_icon_add@2x.png */; };
 		5D1392A7157D4D92007D51B8 /* StatsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */; };
@@ -1020,6 +1022,9 @@
 		45F285DA1149BD020014D36C /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		45F45B3411614BA50022D394 /* CPopoverManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPopoverManager.h; sourceTree = "<group>"; };
 		45F45B3511614BA50022D394 /* CPopoverManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPopoverManager.m; sourceTree = "<group>"; };
+		505D31A3174A80F500C61DAC /* FullscreenImageBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullscreenImageBrowserViewController.h; sourceTree = "<group>"; };
+		505D31A4174A80F500C61DAC /* FullscreenImageBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullscreenImageBrowserViewController.m; sourceTree = "<group>"; };
+		505D31A8174A817700C61DAC /* FullscreenImageBrowserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FullscreenImageBrowserViewController.xib; path = Resources/FullscreenImageBrowserViewController.xib; sourceTree = "<group>"; };
 		58CA2D191738B90F000D1612 /* sidebar_icon_add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_icon_add.png; sourceTree = "<group>"; };
 		58CA2D1A1738B90F000D1612 /* sidebar_icon_add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar_icon_add@2x.png"; sourceTree = "<group>"; };
 		5D1392A5157D4D92007D51B8 /* StatsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsWebViewController.h; sourceTree = "<group>"; };
@@ -2586,6 +2591,8 @@
 				5DD91BC4163983670053E560 /* SoundUtil.m */,
 				8516972A169D42F4006C5DED /* WPToast.h */,
 				8516972B169D42F4006C5DED /* WPToast.m */,
+				505D31A3174A80F500C61DAC /* FullscreenImageBrowserViewController.h */,
+				505D31A4174A80F500C61DAC /* FullscreenImageBrowserViewController.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -2985,6 +2992,7 @@
 				A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */,
 				ACAC7B690E1F8C0700AC7074 /* WPSelectionTableViewController.xib */,
 				3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */,
+				505D31A8174A817700C61DAC /* FullscreenImageBrowserViewController.xib */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -3631,6 +3639,7 @@
 				E15051CF16CA8E4900D3DDDC /* logo_jetpack@2x.png in Resources */,
 				58CA2D1B1738B90F000D1612 /* sidebar_icon_add.png in Resources */,
 				58CA2D1C1738B90F000D1612 /* sidebar_icon_add@2x.png in Resources */,
+				505D31A9174A817700C61DAC /* FullscreenImageBrowserViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3846,6 +3855,7 @@
 				E1D0D82B16D3D19200E33F4C /* PocketAPIOperation.m in Sources */,
 				E1D0D84716D3D2EA00E33F4C /* PocketActivity.m in Sources */,
 				E15051CB16CA5DDB00D3DDDC /* Blog+Jetpack.m in Sources */,
+				505D31A6174A80F500C61DAC /* FullscreenImageBrowserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
