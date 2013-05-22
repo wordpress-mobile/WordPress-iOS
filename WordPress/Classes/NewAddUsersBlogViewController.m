@@ -200,7 +200,9 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     
     _addSelectedButton = [[WPNUXPrimaryButton alloc] init];
     [_addSelectedButton setTitle:NSLocalizedString(@"Add Selected", nil) forState:UIControlStateNormal];
-    // Calculate the space with the largest possible text width before setting the text back to normal
+    // Calculate the space with the largest possible text width before setting the text back to normal. We calculate this
+    // ahead of time so that way we don't have flickering as the text changes result in the button size changing. This also
+    // ensures we don't have to re-layout the button as the text changes as well.
     [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@ (100)", NSLocalizedString(@"Add Selected", nil)] forState:UIControlStateNormal];
     [_addSelectedButton sizeToFit];
     [_addSelectedButton setTitle:NSLocalizedString(@"Add Selected", nil) forState:UIControlStateNormal];
