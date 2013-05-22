@@ -205,7 +205,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     // ensures we don't have to re-layout the button as the text changes as well.
     [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@ (100)", NSLocalizedString(@"Add Selected", nil)] forState:UIControlStateNormal];
     [_addSelectedButton sizeToFit];
-    [_addSelectedButton setTitle:NSLocalizedString(@"Add Selected", nil) forState:UIControlStateNormal];
+    [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@ (1)", NSLocalizedString(@"Add Selected", nil)] forState:UIControlStateNormal];
     [_addSelectedButton addTarget:self action:@selector(createBlogs) forControlEvents:UIControlEventTouchUpInside];
     [bottomPanel addSubview:_addSelectedButton];
     
