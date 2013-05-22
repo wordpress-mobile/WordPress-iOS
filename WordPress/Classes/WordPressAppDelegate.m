@@ -183,7 +183,6 @@
 
     [self setupUserAgent];
     [WPMobileStats initializeStats];
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsAppOpened properties:@{@"language": [[WPComLanguages currentLanguage] objectForKey:@"name"]}];
 
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
         NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
@@ -262,8 +261,12 @@
     //Information related to the reason for its launching, which can include things other than notifications.
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotif) {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
+
         NSLog(@"Launched with a remote notification as parameter:  %@", remoteNotif);
-        [self openNotificationScreenWithOptions:remoteNotif];  
+        [self openNotificationScreenWithOptions:remoteNotif];
+    } else {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpened properties:@{@"language": [[WPComLanguages currentLanguage] objectForKey:@"name"]}];
     }
     //the guide say: NO if the application cannot handle the URL resource, otherwise return YES. 
     //The return value is ignored if the application is launched as a result of a remote notification.
@@ -997,10 +1000,14 @@
             [SoundUtil playNotificationSound];
             break;
         case UIApplicationStateInactive:
+            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
+            
             NSLog(@"app state UIApplicationStateInactive"); //application is in bg and the user tapped the view button
              [self openNotificationScreenWithOptions:userInfo];
             break;
         case UIApplicationStateBackground:
+            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
+
             NSLog(@" app state UIApplicationStateBackground"); //application is in bg and the user tapped the view button
             [self openNotificationScreenWithOptions:userInfo];
             break;

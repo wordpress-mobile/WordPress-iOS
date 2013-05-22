@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 
 // General
-extern NSString *const StatsAppOpened;
+extern NSString *const StatsEventAppOpened;
+extern NSString *const StatsEventAppOpenedDueToPushNotification;
 
 // Top Level Menu Items
 extern NSString *const StatsEventSidebarClickedReader;

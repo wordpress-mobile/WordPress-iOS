@@ -12,7 +12,8 @@
 #import "WordPressComApi.h"
 
 // General
-NSString *const StatsAppOpened = @"Application Opened";
+NSString *const StatsEventAppOpened = @"Application Opened";
+NSString *const StatsEventAppOpenedDueToPushNotification = @"Application Opened Due to Push Notification";
 
 // Top Level Menu Items
 NSString *const StatsEventSidebarClickedReader = @"Sidebar - Clicked Reader";
