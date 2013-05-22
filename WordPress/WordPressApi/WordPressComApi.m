@@ -470,7 +470,7 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     }];
 }
 
-- (void)refreshNotifications:(NSArray *)notes success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
+- (void)refreshNotifications:(NSArray *)notes fields:(NSString *)fields success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
     // No notes? Then there's nothing to sync
     if ([notes count] == 0) {
         return;
@@ -479,8 +479,11 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     [notes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [noteIDs addObject:[(Note *)obj noteID]];
     }];
+    if (fields == nil) {
+        fields = WordPressComApiNotificationFields;
+    }
     NSDictionary *params = @{
-        @"fields" : WordPressComApiNotificationFields,
+        @"fields" : fields,
         @"ids" : noteIDs
     };
     NSManagedObjectContext *context = [(Note *)[notes objectAtIndex:0] managedObjectContext];
@@ -491,7 +494,7 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
             if ([notesData count] > i) {
                 Note *note = [notes objectAtIndex:i];
                 if (![note isDeleted] && [note managedObjectContext]) {
-                    [note syncAttributes:[notesData objectAtIndex:i]];
+                    [note updateAttributes:[notesData objectAtIndex:i]];
                 }
             }
         }

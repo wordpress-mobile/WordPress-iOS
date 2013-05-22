@@ -1,1 +1,1 @@
-../../WPXMLRPC/WPXMLRPC/WPXMLRPCDecoderDelegate.h
+../../wpxmlrpc/WPXMLRPC/WPXMLRPCDecoderDelegate.h

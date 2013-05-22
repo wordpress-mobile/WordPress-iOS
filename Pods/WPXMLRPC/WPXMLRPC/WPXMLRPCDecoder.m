@@ -26,6 +26,7 @@
 #import "WPXMLRPCDataCleaner.h"
 
 NSString *const WPXMLRPCFaultErrorDomain = @"WPXMLRPCFaultError";
+NSString *const WPXMLRPCErrorDomain = @"WPXMLRPCError";
 
 @interface WPXMLRPCDecoder () <NSXMLParserDelegate>
 @end
@@ -35,6 +36,7 @@ NSString *const WPXMLRPCFaultErrorDomain = @"WPXMLRPCFaultError";
     WPXMLRPCDecoderDelegate *_delegate;
     BOOL _isFault;
     NSData *_body;
+    NSData *_originalData;
     id _object;
     NSMutableString *_methodName;
 }
@@ -46,6 +48,7 @@ NSString *const WPXMLRPCFaultErrorDomain = @"WPXMLRPCFaultError";
     
     if (self = [self init]) {
         _body = data;
+        _originalData = data;
         _parser = [[NSXMLParser alloc] initWithData:data];
         _delegate = nil;
         _isFault = NO;
@@ -63,7 +66,7 @@ NSString *const WPXMLRPCFaultErrorDomain = @"WPXMLRPCFaultError";
     [_parser parse];
 
     if ([_parser parserError]) {
-        WPXMLRPCDataCleaner *cleaner = [[WPXMLRPCDataCleaner alloc] initWithData:_body];
+        WPXMLRPCDataCleaner *cleaner = [[WPXMLRPCDataCleaner alloc] initWithData:_originalData];
         _body = [cleaner cleanData];
         _parser = [[NSXMLParser alloc] initWithData:_body];
         [_parser setDelegate:self];
@@ -108,11 +111,25 @@ NSString *const WPXMLRPCFaultErrorDomain = @"WPXMLRPCFaultError";
 
 - (NSError *)error {
     if ([_parser parserError]) {
+        NSString *response = [[NSString alloc] initWithData:_originalData encoding:NSUTF8StringEncoding];
+        if (response) {
+            // Search for known PHP errors
+            NSError *error = NULL;
+            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"Allowed memory size of \\d+ bytes exhausted" options:NSRegularExpressionCaseInsensitive error:&error];
+            NSUInteger numberOfMatches = [regex numberOfMatchesInString:response options:0 range:NSMakeRange(0, [response length])];
+            if (numberOfMatches > 0) {
+                return [NSError errorWithDomain:WPXMLRPCErrorDomain code:WPXMLRPCOutOfMemoryError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"Your site ran out of memory while processing this request", @"WPXMLRPC", nil)}];
+            }
+        }
         return [_parser parserError];
     }
 
     if ([self isFault]) {
         return [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:[self faultCode] userInfo:@{NSLocalizedDescriptionKey: [self faultString]}];
+    }
+
+    if (_object == nil) {
+        return [NSError errorWithDomain:WPXMLRPCErrorDomain code:WPXMLRPCInvalidInputError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"The data doesn't look like a valid XML-RPC response", @"WPXMLRPC", nil)}];
     }
 
     return nil;

@@ -865,7 +865,7 @@
     [context setPersistentStoreCoordinator:self.persistentStoreCoordinator];
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Media" inManagedObjectContext:context]];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY posts.blog != NULL"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"ANY posts.blog != NULL AND remoteStatusNumber <> %@", @(MediaRemoteStatusSync)];
     [fetchRequest setPredicate:predicate];
     NSArray *mediaObjectsToKeep = [context executeFetchRequest:fetchRequest error:&error];
     if (error != nil) {
@@ -874,7 +874,7 @@
     //get a references to media files linked in a post
     NSLog(@"%i media items to check for cleanup", [mediaObjectsToKeep count]);
     for (Media *media in mediaObjectsToKeep) {
-        //        [mediaToKeep addObject:media.localURL];
+        [mediaToKeep addObject:media.localURL];
     }
 
     //searches for jpg files within the app temp file
@@ -997,7 +997,8 @@
              [self openNotificationScreenWithOptions:userInfo];
             break;
         case UIApplicationStateBackground:
-            NSLog(@" app state UIApplicationStateBackground"); //?? doh!
+            NSLog(@" app state UIApplicationStateBackground"); //application is in bg and the user tapped the view button
+            [self openNotificationScreenWithOptions:userInfo];
             break;
         default:
             break;
@@ -1197,11 +1198,11 @@
                     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
                 }
 
-                if (IS_IPAD && self.panelNavigationController.modalViewController) {
-                    [self.panelNavigationController.modalViewController presentModalViewController:aNavigationController animated:YES];
-                } else {
-                    [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
+                UIViewController *presenter = self.panelNavigationController;
+                if (presenter.modalViewController) {
+                    presenter = presenter.modalViewController;
                 }
+                [presenter presentModalViewController:aNavigationController animated:YES];
 
 				break;
 			}

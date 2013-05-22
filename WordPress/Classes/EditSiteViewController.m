@@ -15,6 +15,7 @@
 #import "WPWebViewController.h"
 #import "JetpackSettingsViewController.h"
 #import "ReachabilityUtils.h"
+#import <WPXMLRPC/WPXMLRPC.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 
 @interface EditSiteViewController (PrivateMethods)
@@ -482,6 +483,15 @@
         [SVProgressHUD dismiss];
         if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
             [self validationDidFail:nil];
+		} else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
+			[self validationDidFail:error];
+		} else if([error.domain isEqual:AFNetworkingErrorDomain]) {
+			NSString *str = [NSString stringWithFormat:NSLocalizedString(@"There was a server error communicating with your site:\n%@\nTap 'Need Help?' to view the FAQ.", @""), [error localizedDescription]];
+			NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      str, NSLocalizedDescriptionKey,
+                                      nil];
+            NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadServerResponse userInfo:userInfo];
+            [self validationDidFail:err];
         } else {
             NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
                                       NSLocalizedString(@"Unable to find a WordPress site at that URL. Tap 'Need Help?' to view the FAQ.", @""), NSLocalizedDescriptionKey,
@@ -686,7 +696,6 @@
 - (IBAction)cancel:(id)sender {
     if (isCancellable) {
         [self dismissModalViewControllerAnimated:YES];
-//
     } else {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }

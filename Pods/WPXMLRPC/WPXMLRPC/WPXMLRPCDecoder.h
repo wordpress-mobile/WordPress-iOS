@@ -24,6 +24,12 @@
 #import <Foundation/Foundation.h>
 
 extern NSString *const WPXMLRPCFaultErrorDomain;
+extern NSString *const WPXMLRPCErrorDomain;
+
+typedef NS_ENUM(NSInteger, WPXMLRPCError) {
+    WPXMLRPCInvalidInputError, // The data passed doesn't look like a XML-RPC response
+    WPXMLRPCOutOfMemoryError, // Response was a PHP out of memory fatal error
+};
 
 /**
  `WPXMLRPCEncoder` encodes a XML-RPC response

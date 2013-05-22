@@ -58,5 +58,10 @@
     self.backgroundColor = [UIColor whiteColor];
 }
 
+- (void)setAvatarURL:(NSURL *)avatarURL {
+    CGFloat gravatarSize = self.avatarImageView.frame.size.width * [[UIScreen mainScreen] scale];
+    NSURL *resizedURL = [NSURL URLWithString:[[avatarURL absoluteString] stringByReplacingOccurrencesOfString:@"s=96" withString:[NSString stringWithFormat:@"s=%d", (int)gravatarSize]]];
+    [self.avatarImageView setImageWithURL:resizedURL placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
+}
 
 @end

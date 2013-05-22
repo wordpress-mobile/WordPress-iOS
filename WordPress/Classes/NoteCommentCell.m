@@ -88,9 +88,7 @@ const CGFloat NoteCommentCellHeight = 102.f;
 
     [super layoutSubviews];
     self.imageView.backgroundColor = [UIColor grayColor];
-    CGFloat gravatarSize = 92.0f;
-    if (self.parentComment)
-        gravatarSize = 58.0f;
+    CGFloat gravatarSize = [self gravatarSize];
     self.imageView.frame = CGRectMake(10.f, 10.f, gravatarSize, gravatarSize);
     CGFloat metaX = CGRectGetMaxX(self.imageView.frame);
     CGFloat availableWidth = self.bounds.size.width - metaX;
@@ -116,9 +114,18 @@ const CGFloat NoteCommentCellHeight = 102.f;
     
 }
 
+- (CGFloat)gravatarSize {
+    if (self.parentComment)
+        return 58.0f;
+    else
+        return 92.f;
+}
 
 - (void)setAvatarURL:(NSURL *)avatarURL {
-    [self.imageView setImageWithURL:avatarURL placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
+    CGFloat gravatarSize = [self gravatarSize] * [[UIScreen mainScreen] scale];
+    NSURL *resizedURL = [NSURL URLWithString:[[avatarURL absoluteString] stringByReplacingOccurrencesOfString:@"s=256" withString:[NSString stringWithFormat:@"s=%d", (int)gravatarSize]]];
+    WPFLogMethodParam(resizedURL);
+    [self.imageView setImageWithURL:resizedURL placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
 }
 
 
