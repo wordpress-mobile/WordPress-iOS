@@ -175,6 +175,8 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         [self.view addSubview:_autosavingIndicatorView];
         [self positionAutosaveView:nil];
     }
+    
+    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailOpenedEditor]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -626,6 +628,8 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 }
 
 - (void)savePost:(BOOL)upload{
+    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+    
     [self logSavePostStats];
     
     [self autosaveContent];
@@ -845,6 +849,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 	}
 
     if (!self.hasChanges) {
+        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self discard];
         return;
     }
@@ -1028,9 +1033,13 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         if (buttonIndex == 1) {
             // Cancel / Keep editing
 			if ([actionSheet numberOfButtons] == 2) {
+                [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+                
 				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
             // Save draft
 			} else {
+                [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+                
                 // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
                 if ((![self.apost hasRemote] || _isAutosaved) && [self.apost.status isEqualToString:@"publish"]) {
                     self.apost.status = @"draft";

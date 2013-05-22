@@ -91,6 +91,8 @@ extern NSString *const StatsEventPostDetailClickedSchedule;
 extern NSString *const StatsEventPostDetailClickedSave;
 extern NSString *const StatsEventPostDetailClickedUpdate;
 extern NSString *const StatsEventPostDetailClickedPublish;
+extern NSString *const StatsEventPostDetailOpenedEditor;
+extern NSString *const StatsEventPostDetailClosedEditor;
 
 // Post Detail - Settings
 extern NSString *const StatsEventPostDetailSettingsClickedStatus;

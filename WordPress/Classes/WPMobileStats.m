@@ -94,6 +94,8 @@ NSString *const StatsEventPostDetailClickedSchedule = @"Clicked Schedule Button"
 NSString *const StatsEventPostDetailClickedSave = @"Clicked Save Button";
 NSString *const StatsEventPostDetailClickedUpdate = @"Clicked Update Button";
 NSString *const StatsEventPostDetailClickedPublish = @"Clicked Publish Button";
+NSString *const StatsEventPostDetailOpenedEditor = @"Opened Editor";
+NSString *const StatsEventPostDetailClosedEditor = @"Closed Editor";
 
 // Post Detail - Settings
 NSString *const StatsEventPostDetailSettingsClickedStatus = @"Settings - Clicked Status";
