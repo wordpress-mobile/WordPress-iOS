@@ -200,7 +200,10 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     
     _addSelectedButton = [[WPNUXPrimaryButton alloc] init];
     [_addSelectedButton setTitle:NSLocalizedString(@"Add Selected", nil) forState:UIControlStateNormal];
+    // Calculate the space with the largest possible text width before setting the text back to normal
+    [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@ (100)", NSLocalizedString(@"Add Selected", nil)] forState:UIControlStateNormal];
     [_addSelectedButton sizeToFit];
+    [_addSelectedButton setTitle:NSLocalizedString(@"Add Selected", nil) forState:UIControlStateNormal];
     [_addSelectedButton addTarget:self action:@selector(createBlogs) forControlEvents:UIControlEventTouchUpInside];
     [bottomPanel addSubview:_addSelectedButton];
     
@@ -353,6 +356,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 - (void)toggleButtons
 {
     _addSelectedButton.enabled = [_selectedBlogs count] > 0;
+    [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@ (%d)", NSLocalizedString(@"Add Selected", nil), [_selectedBlogs count]] forState:UIControlStateNormal];
     _selectAllButton.enabled = [_usersBlogs count] != 0;
     if ([_selectedBlogs count] == [_usersBlogs count]) {
         [_selectAllButton setTitle:NSLocalizedString(@"Deselect All", nil) forState:UIControlStateNormal];
