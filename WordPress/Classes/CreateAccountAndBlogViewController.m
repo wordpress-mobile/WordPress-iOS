@@ -525,7 +525,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page2SiteAddressText == nil) {
         _page2SiteAddressText = [[WPWalkthroughTextField alloc] init];
         _page2SiteAddressText.backgroundColor = [UIColor whiteColor];
-        _page2SiteAddressText.placeholder = NSLocalizedString(@"yoursite.wordpress.com", @"NUX Create Account Page 2 Site Address Placeholder");
+        _page2SiteAddressText.placeholder = NSLocalizedString(@"Site Address (URL)", nil);
         _page2SiteAddressText.font = [WPNUXUtility textFieldFont];
         _page2SiteAddressText.adjustsFontSizeToFitWidth = true;
         _page2SiteAddressText.delegate = self;
