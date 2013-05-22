@@ -323,6 +323,9 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     // Add Skip to App Button
     if (_skipToApp == nil) {
         _skipToApp = [[UILabel alloc] init];
+        _skipToApp.numberOfLines = 2;
+        _skipToApp.lineBreakMode = UILineBreakModeWordWrap;
+        _skipToApp.textAlignment = UITextAlignmentCenter;
         _skipToApp.backgroundColor = [UIColor clearColor];
         _skipToApp.textColor = [UIColor whiteColor];
         _skipToApp.font = [UIFont fontWithName:@"OpenSans" size:15.0];
@@ -406,9 +409,10 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
     _page1SwipeToContinue.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1SwipeToContinue.frame), CGRectGetHeight(_page1SwipeToContinue.frame)));
 
     // Layout Skip and Start Using App
-    x = (_viewWidth - CGRectGetWidth(_skipToApp.frame))/2.0;
-    y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame)-CGRectGetHeight(_skipToApp.frame))/2.0;
-    _skipToApp.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_skipToApp.frame), CGRectGetHeight(_skipToApp.frame)));
+    CGSize skipToAppLabelSize = [_skipToApp.text sizeWithFont:_skipToApp.font constrainedToSize:CGSizeMake(_viewWidth - 2*LoginCompletedWalkthroughStandardOffset, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    x = (_viewWidth - skipToAppLabelSize.width)/2.0;
+    y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame) - skipToAppLabelSize.height)/2.0;
+    _skipToApp.frame = CGRectIntegral(CGRectMake(x, y, skipToAppLabelSize.width, skipToAppLabelSize.height));
     
     _heightFromSwipeToContinueToBottom = _viewHeight - CGRectGetMinY(_page1SwipeToContinue.frame) - CGRectGetHeight(_page1SwipeToContinue.frame);
     NSArray *viewsToCenter = @[_page1Icon, _page1Title, _page1TopSeparator, _page1Description, _page1BottomSeparator];

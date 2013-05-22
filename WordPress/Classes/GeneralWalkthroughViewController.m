@@ -835,13 +835,15 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     // Add Create Account Text
     if (_createAccountLabel == nil) {
         _createAccountLabel = [[UILabel alloc] init];
+        _createAccountLabel.numberOfLines = 2;
+        _createAccountLabel.lineBreakMode = UILineBreakModeWordWrap;
+        _createAccountLabel.textAlignment = UITextAlignmentCenter;
         _createAccountLabel.backgroundColor = [UIColor clearColor];
         _createAccountLabel.textColor = [UIColor whiteColor];
         _createAccountLabel.font = [UIFont fontWithName:@"OpenSans" size:15.0];
         _createAccountLabel.text = NSLocalizedString(@"Don't have an account? Create one!", @"NUX First Walkthrough Page 3 Create Account Label");
         _createAccountLabel.shadowColor = [UIColor blackColor];
         _createAccountLabel.shadowOffset = CGSizeMake(0.0, 1.0);
-        [_createAccountLabel sizeToFit];
         UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedCreateAccount:)];
         tapGestureRecognizer.numberOfTapsRequired = 1;
         _createAccountLabel.userInteractionEnabled = YES;
@@ -883,10 +885,11 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     _signInButton.frame = CGRectMake(x, y, GeneralWalkthroughSignInButtonWidth, GeneralWalkthroughSignInButtonHeight);
 
     // Layout Create Account Label
-    x = (_viewWidth - CGRectGetWidth(_createAccountLabel.frame))/2.0;
+    CGSize createAccountLabelSize = [_createAccountLabel.text sizeWithFont:_createAccountLabel.font constrainedToSize:CGSizeMake(_viewWidth - 2*GeneralWalkthroughStandardOffset, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    x = (_viewWidth - createAccountLabelSize.width)/2.0;
     x = [self adjustX:x forPage:3];
-    y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame) - CGRectGetHeight(_createAccountLabel.frame))/2.0;
-    _createAccountLabel.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_createAccountLabel.frame), CGRectGetHeight(_createAccountLabel.frame)));
+    y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame) - createAccountLabelSize.height)/2.0;
+    _createAccountLabel.frame = CGRectIntegral(CGRectMake(x, y, createAccountLabelSize.width, createAccountLabelSize.height));
     
     NSArray *viewsToCenter = @[_page3Icon, _usernameText, _passwordText, _siteUrlText, _signInButton];
     [WPNUXUtility centerViews:viewsToCenter withStartingView:_page3Icon andEndingView:_signInButton forHeight:(_viewHeight-_heightFromSwipeToContinue)];
