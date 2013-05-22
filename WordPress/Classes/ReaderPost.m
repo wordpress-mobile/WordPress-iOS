@@ -320,6 +320,11 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	
 	regex = [NSRegularExpression regularExpressionWithPattern:@"</p>\\s*</p>" options:NSRegularExpressionCaseInsensitive error:&error];
 	string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"</p>"];
+	
+	// Remove inline styles.
+	regex = [NSRegularExpression regularExpressionWithPattern:@"style=\".*\"" options:NSRegularExpressionCaseInsensitive error:&error];
+	string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@""];
+	
 	return string;
 }
 
