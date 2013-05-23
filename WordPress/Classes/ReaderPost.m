@@ -209,8 +209,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		}
 		featuredImage = img;
 
-		
-	} else {		
+	} else {
 		author = [dict objectForKey:@"post_author"];
 		
 		self.author = [author objectForKey:@"post_author"];
@@ -411,6 +410,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 - (NSString *)prettyDateString {
 	NSDate *date = [self isFreshlyPressed] ? self.sortDate : self.dateCreated;
 	NSString *str;
+//	date = 	[DateUtils localDateToGMTDate:date];
 	NSTimeInterval diff = [[NSDate date] timeIntervalSince1970] - [date timeIntervalSince1970];
 	
 	if(diff < 60) {

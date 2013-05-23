@@ -81,12 +81,11 @@
 		self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
 		[_byView addSubview:_avatarImageView];
 		
-		self.bylineLabel = [[UILabel alloc] initWithFrame:CGRectMake(37.0f, 0.0f, width - 57.0f, 32.0f)];
+		self.bylineLabel = [[UILabel alloc] initWithFrame:CGRectMake(37.0f, -2.0f, width - 57.0f, 36.0f)];
 		_bylineLabel.numberOfLines = 2;
 		_bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_bylineLabel.font = [UIFont systemFontOfSize:14.0f];
 		_bylineLabel.textColor = [UIColor colorWithWhite:0.5f alpha:1.0f];
-		_bylineLabel.backgroundColor = [UIColor clearColor];
 		[_byView addSubview:_bylineLabel];
 		
 		

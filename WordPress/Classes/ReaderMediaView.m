@@ -42,7 +42,7 @@
 	if (_imageView.image.size.width < frame.size.width && _imageView.image.size.height < frame.size.height) {
 		_imageView.contentMode = UIViewContentModeCenter;
 	} else {
-		_imageView.contentMode = UIViewContentModeScaleAspectFill;
+		_imageView.contentMode = UIViewContentModeScaleAspectFit;
 	}
 }
 

@@ -386,12 +386,11 @@
 - (void)updateMediaLayout:(ReaderMediaView *)imageView {
 
 	NSURL *url = imageView.contentURL;
-	
-	CGSize viewSize = imageView.image.size;
 
-	if (viewSize.height > 0) {
-		// First the imageView
-		CGFloat width = _textContentView.frame.size.width;
+	CGFloat width = _textContentView.frame.size.width;
+	CGSize viewSize = imageView.image.size;
+	viewSize.width = width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+	if (viewSize.height > 0 && (viewSize.width > _textContentView.frame.size.width)) {
 
 		// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
 		// so position it offset by the inverse of _textContentView's edgeInsets.
@@ -402,7 +401,6 @@
 		edgeInsets.bottom = 0.0f;
 		imageView.edgeInsets = edgeInsets;
 		
-		viewSize.width = width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
 		viewSize.height = imageView.image.size.height * (width / imageView.image.size.width);
 	}
 	
@@ -785,11 +783,14 @@
 		_commentTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_commentTextView.font = [UIFont systemFontOfSize:14.0f];
 		_commentTextView.delegate = self;
+		_commentTextView.backgroundColor = [UIColor clearColor];
 		[_footerView addSubview:_commentTextView];
 		
 		self.commentPromptLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 35.0f, width - 30.0f, 20.0f)];
 		_commentPromptLabel.text = NSLocalizedString(@"Tap to reply", @"");
+		_commentPromptLabel.backgroundColor = [UIColor clearColor];
 		_commentPromptLabel.textColor = [UIColor grayColor];
+		_commentPromptLabel.font = [UIFont systemFontOfSize:14.0f];
 		[_footerView addSubview:_commentPromptLabel];
 		
 		self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
