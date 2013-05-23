@@ -6,26 +6,31 @@
 //
 
 #import "QuickPhotoButtonView.h"
+#import "Media.h"
+#import "CircularProgressView.h"
 
 @interface QuickPhotoButtonView () {
     UILabel *label;
     UIActivityIndicatorView *spinner;
     UIButton *button;
+    CircularProgressView *progressView;
 }
 
-@property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) UIActivityIndicatorView *spinner;
+@property (nonatomic, strong) CircularProgressView *progressView;
 @property (nonatomic, strong) UIButton *button;
+@property (nonatomic, strong) UIButton *uploadingButton;
 
 - (void)setup;
-- (void)handleButtonTapped:(id)sender;
+- (void)newQuickPhotoButtonTapped:(id)sender;
+- (void)uploadingButtonTapped:(id)sender;
 - (void)showProgress:(BOOL)show animated:(BOOL)animated delayed:(BOOL)delayed;
 
 @end
 
 @implementation QuickPhotoButtonView
 
-@synthesize label, spinner, button, delegate;
+@synthesize uploadingButton, spinner, button, delegate, progressView;
 
 #pragma mark -
 #pragma mark LifeCycle Methods
@@ -66,7 +71,7 @@
     [button setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButton"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateNormal];
     [button setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateHighlighted];
     [button setTitle:NSLocalizedString(@"Photo", @"") forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(handleButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(newQuickPhotoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [button setBackgroundColor:[UIColor clearColor]];
     [button setImage:[UIImage imageNamed:@"sidebar_camera"] forState:UIControlStateNormal];
     [button setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 12.0f, 0.0f, 10.0f)];
@@ -77,32 +82,51 @@
     button.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     [self addSubview:button];
+
+    
+    
+    self.uploadingButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGRect frame = self.bounds;
+    frame.origin.y = self.bounds.size.height;
+    uploadingButton.frame = frame;
+    uploadingButton.titleLabel.textColor = [UIColor whiteColor];
+    uploadingButton.titleLabel.shadowColor = [UIColor UIColorFromHex:0x000000 alpha:0.45f];
+    uploadingButton.titleLabel.shadowOffset = CGSizeMake(0, -1.0f);
+    uploadingButton.titleLabel.lineBreakMode = UILineBreakModeClip;
+    uploadingButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    uploadingButton.titleLabel.minimumFontSize = 12.0f;
+    uploadingButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [uploadingButton.titleLabel setFont:[UIFont boldSystemFontOfSize:15.0f]];
+    [uploadingButton setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButton"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateNormal];
+    [uploadingButton setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateHighlighted];
+    [uploadingButton setTitle:NSLocalizedString(@"Uploading...", @"") forState:UIControlStateNormal];
+    [uploadingButton addTarget:self action:@selector(uploadingButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [uploadingButton setBackgroundColor:[UIColor clearColor]];
+    [uploadingButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 12.0f, 0.0f, 10.0f)];
+    [uploadingButton setImageEdgeInsets:UIEdgeInsetsMake(0.0f, 8.0f, 0.0f, 0.0f)];
+    [uploadingButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    [uploadingButton setAdjustsImageWhenHighlighted:NO];
+    
+    uploadingButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    [self addSubview:uploadingButton];
     
     CGRect rect;
-    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     spinner.autoresizingMask = UIViewAutoresizingNone;
-    spinner.hidesWhenStopped = YES;
+    spinner.hidesWhenStopped = NO;
     rect = spinner.frame;
-    
-    rect.origin.x = self.frame.origin.x + 6.0f;
+
+    [uploadingButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 12.0f + rect.size.width, 0.0f, 10.0f)];
+    rect.origin.x = 6.0f;
     rect.origin.y = (self.frame.size.height - rect.size.height) / 2.0f;
     spinner.frame = rect;
-    [self addSubview:spinner];
-    
-    self.label = [[UILabel alloc] initWithFrame:CGRectZero];
-    label.textColor = [UIColor whiteColor];
-    label.backgroundColor = [UIColor clearColor];
-    label.textAlignment = UITextAlignmentLeft;
-    label.font = [UIFont systemFontOfSize:(15.0f)];
-    label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
+    [uploadingButton addSubview:spinner];
 
-    label.frame = CGRectMake((spinner.frame.origin.x + spinner.frame.size.width + 6.0f), 0.0, (self.frame.size.width - spinner.frame.origin.x - spinner.frame.size.width), self.frame.size.height);
-    label.text = NSLocalizedString(@"Uploading...", @"");
-    label.adjustsFontSizeToFitWidth = YES;
-    label.minimumFontSize = 12.0f;
-    label.shadowColor = [UIColor UIColorFromHex:0x000000 alpha:0.45f];
-    label.shadowOffset = CGSizeMake(0, -1.0f);
-    [self addSubview:label];
+    progressView = [[CircularProgressView alloc] init];
+    progressView.color = [UIColor whiteColor];
+    progressView.frame = rect;
+    [uploadingButton addSubview:progressView];
     
     [self showProgress:NO animated:NO delayed:NO];
 }
@@ -111,22 +135,42 @@
 #pragma mark -
 #pragma mark Instance Methods
 
-- (void)handleButtonTapped:(id)sender {
+- (void)newQuickPhotoButtonTapped:(id)sender {
     if (delegate) {
-        [delegate quickPhotoButtonViewTapped:self];
+        [delegate quickPhotoButtonTapped:self];
+    }
+}
+
+- (void)uploadingButtonTapped:(id)sender {
+    if (delegate) {
+        [delegate quickPhotoProgressButtonTapped:self];
+    }
+}
+
+- (void)updateProgress:(float)progress {
+    if (!spinner.isAnimating) return;
+    
+    if (progress < 1.0f) {
+        self.progressView.hidden = NO;
+        self.spinner.hidden = YES;
+        self.progressView.progress = progress;
+        uploadingButton.titleLabel.text = NSLocalizedString(@"Uploading...", @"");
+    }
+    else {
+        self.progressView.hidden = YES;
+        self.spinner.hidden = NO;
+        uploadingButton.titleLabel.text = NSLocalizedString(@"Finalizing", @"");
     }
 }
 
 - (void)showSuccess {
     if (!spinner.isAnimating) return; // check the spinner to ensure we're showing progress.
-    
+
     [UIView animateWithDuration:0.6f animations:^{
-        spinner.alpha = 0.0f;
-        label.text = NSLocalizedString(@"Published!", @"");
-        label.font = [UIFont boldSystemFontOfSize:(15.0f)];
-        label.textAlignment = UITextAlignmentCenter;
-        label.frame = CGRectMake(self.frame.origin.x, 0.0, self.frame.size.width, self.frame.size.height);
-        label.textColor = [UIColor UIColorFromRGBAColorWithRed:200.0f green:228.0f blue:125.0f alpha:1.0f];
+        spinner.hidden = YES;
+        uploadingButton.enabled = NO;
+        uploadingButton.titleLabel.text = NSLocalizedString(@"Published!", @"");
+        uploadingButton.frame = CGRectMake(self.frame.origin.x, 0.0, self.frame.size.width, self.frame.size.height);
     } completion:^(BOOL finished) {
         [self showProgress:NO animated:YES delayed:YES];
     }];
@@ -147,22 +191,18 @@
     }
     
     if (show) {
-        spinner.alpha = 1.0f;
+        spinner.hidden = NO;
+        self.progressView.progress = 0;
         [spinner startAnimating];
-        label.hidden = NO;
-        
+
         [UIView animateWithDuration:duration delay:delay options:0 animations:^{
             CGRect frame = button.frame;
             frame.origin.y = self.frame.size.height;
             button.frame = frame;
             
-            frame = spinner.frame;
-            frame.origin.y = (self.frame.size.height - frame.size.height) / 2.0f;
-            spinner.frame = frame;
-            
-            frame = label.frame;
+            frame = uploadingButton.frame;
             frame.origin.y = 0.0f;
-            label.frame = frame;
+            uploadingButton.frame = frame;
             
         } completion:^(BOOL finished) {
             // reposition above so we're always sliding down.
@@ -180,30 +220,17 @@
             frame.origin.y = 0.0f;
             button.frame = frame;
             
-            frame = spinner.frame;
+            frame = uploadingButton.frame;
             frame.origin.y = self.frame.size.height;
-            spinner.frame = frame;
-            
-            frame = label.frame;
-            frame.origin.y = self.frame.size.height;
-            label.frame = frame;
+            uploadingButton.frame = frame;
             
         } completion:^(BOOL finished) {
-            CGRect frame = spinner.frame;
-            frame.origin.y = -frame.size.height;
-            spinner.frame = frame;
             [spinner stopAnimating];
-            
-            frame = label.frame;
-            frame.origin.y = -frame.size.height;
-            label.frame = frame;
 
-            label.hidden = YES;
-            label.textColor = [UIColor whiteColor];
-            label.frame = CGRectMake((spinner.frame.origin.x + spinner.frame.size.width + 6.0f), 0.0, (self.frame.size.width - spinner.frame.origin.x - spinner.frame.size.width), self.frame.size.height);
-            label.textAlignment = UITextAlignmentLeft;
-            label.font = [UIFont systemFontOfSize:(15.0f)];
-            label.text = NSLocalizedString(@"Uploading...", @"");
+            CGRect frame = uploadingButton.frame;
+            frame.origin.y = -frame.size.height;
+            uploadingButton.frame = frame;
+            uploadingButton.enabled = YES;
         }];
     }
 }

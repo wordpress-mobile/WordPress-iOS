@@ -235,7 +235,7 @@
             [media save];
         } failure:^(NSError *error) {
             [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
-        }];
+        } progressUpdate:nil];
     } else if (media.remoteStatus == MediaRemoteStatusPushing) {
         [media cancelUpload];
     } else if (media.remoteStatus == MediaRemoteStatusProcessing) {
@@ -1269,7 +1269,7 @@
 
 - (void)useImage:(UIImage *)theImage {
 	Media *imageMedia = [Media newMediaForPost:self.apost];
-	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.90);
+	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.60);
 	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"yyyyMMdd-HHmmss"];
@@ -1337,7 +1337,7 @@
         imageMedia.mediaType = @"featured";
     else
         imageMedia.mediaType = @"image";
-	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
+	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.60);
 	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];
 	imageMedia.height = [NSNumber numberWithInt:theImage.size.height];
     if (isPickingFeaturedImage)
@@ -1357,7 +1357,7 @@
         [imageMedia save];
     } failure:^(NSError *error) {
         [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
-    }];
+    } progressUpdate:nil];
 	
 	isAddingMedia = NO;
 	
@@ -1446,7 +1446,7 @@
             [videoMedia save];
         } failure:^(NSError *error) {
             [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
-        }];
+        } progressUpdate:nil];
 		isAddingMedia = NO;
 		
 		//switch to the attachment view if we're not already there 

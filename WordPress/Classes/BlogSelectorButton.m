@@ -45,7 +45,7 @@
         
         CGRect postToFrame = self.bounds;
         postToFrame.origin.x = blavatarFrame.size.width + 15;
-        postToFrame.origin.y = postToFrame.origin.y + 6;
+        postToFrame.origin.y = postToFrame.origin.y + 3;
         postToFrame.size.width -= blavatarFrame.size.width + 10 + 50;
         postToFrame.size.height = 18.0f;
         postToLabel = [[UILabel alloc] initWithFrame:postToFrame];
@@ -147,6 +147,11 @@
             }
         }
     }
+}
+
+- (void)disableBlogSelection {
+    self.enabled = NO;
+    selectorImageView.alpha = 0.0f;
 }
 
 - (void)setActiveBlog:(Blog *)aBlog {

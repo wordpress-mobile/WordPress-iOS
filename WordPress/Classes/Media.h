@@ -47,10 +47,13 @@ typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
 
 + (Media *)newMediaForPost:(AbstractPost *)post;
 - (void)cancelUpload;
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)deleteWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure progressUpdate:(void (^)(float progress))progressUpdate;
 - (void)remove;
 - (void)save;
 - (void)setImage:(UIImage *)image withSize:(MediaResize)size;
+- (BOOL)isUploading;
+- (BOOL)isUploaded;
 
 @end
 

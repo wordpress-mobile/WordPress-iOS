@@ -48,6 +48,14 @@
     self.popController.delegate = nil;
 }
 
+- (id)initWithPost:(Post *)aPost {
+    if (self = [super initWithNibName:@"QuickPhotoViewController" bundle:nil]) {
+        post = aPost;
+    }
+    
+    return self;
+}
+
 #if !__has_feature(objc_arc)
 //stackoverflow.com/questions/945082/uiwebview-in-multithread-viewcontroller
 - (oneway void)release {
@@ -77,6 +85,11 @@
     self.blogSelector.delegate = self;
     if (self.startingBlog != nil) {
         self.blogSelector.activeBlog = startingBlog;
+        // if we are opening an existing post disable the blog selection since the photo
+        // may already be uploaded and used in another post, maybe not required
+        if (post) {
+            [self.blogSelector disableBlogSelection];
+        }
     }
     
     if (self.photo) {
@@ -90,12 +103,17 @@
                                                            target:self 
                                                            action:@selector(post)];
 
-    [postButtonItem setEnabled:NO];
+    [postButtonItem setEnabled:(post != nil)];
     self.navigationItem.rightBarButtonItem = self.postButtonItem;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    if (post) {
+        titleTextField.text = post.postTitle;
+        contentTextView.text = post.content;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -210,14 +228,29 @@
     [post save];
 }
 
-- (void)post {
+- (void)initializePost {
     Blog *blog = self.blogSelector.activeBlog;
     Media *media = nil;
     if (post == nil) {
         post = [Post newDraftForBlog:blog];
     } else {
-        post.blog = blog;
         media = [post.media anyObject];
+        
+        // if the blog selected at publish time doesn't match the blog that
+        // the media was uploaded to then remove the media and create a
+        // new one to be uploaded to the proper blog
+        if (media.blog != blog) {
+            Media *newMedia = [self createMediaForPost:post];
+            
+            media.posts = nil;
+            [media deleteWithSuccess:^() {
+                 [FileLogger log:@"%@ %@ Media removed from blog (%@)", self, NSStringFromSelector(_cmd), media];
+            } failure:nil];
+            
+            media = newMedia;
+        }
+        
+        post.blog = blog;
         [media setBlog:blog];
     }
     post.postTitle = titleTextField.text;
@@ -228,20 +261,69 @@
         post.specialType = @"QuickPhoto";
     }
     post.postFormat = @"image";
+    [post save];
+}
+
+// currently unused as there is no button in the UI to call this action
+- (IBAction)openPostInFullEditor:(id)sender {
+    [self initializePost];
+    Media *media = [post.media anyObject];
+    if (!media.isUploaded && !media.isUploading) {
+        [media uploadWithSuccess:^{
+            if ([media isDeleted]) {
+                [FileLogger log:@"%@ %@ Media deleted while uploading (%@)", self, NSStringFromSelector(_cmd), media];
+                return;
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
+            
+            [media save];
+        } failure:^(NSError *error) {
+            [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+        } progressUpdate:nil];
+    }
     
-    if( appDelegate.connectionAvailable == YES ) {
+    [self dismiss:NO];
+    [sidebarViewController editPost:post];
+}
+
+- (void)post {
+    [self initializePost];
+    Media *media = [post.media anyObject];
+    if (!media.isUploaded) {
+        // subscribe to notifications so the post can be updated after the media has been uploaded
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
         [[NSNotificationCenter defaultCenter] addObserver:post selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:media];
         [[NSNotificationCenter defaultCenter] addObserver:post selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:media];
-        
-        appDelegate.isUploadingPost = YES;
-        
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            [media uploadWithSuccess:nil failure:nil];
-            [post save];
-        });
-        
-        [self dismiss];
+    } else {
+        post.content = [NSString stringWithFormat:@"%@\n\n%@", [media html], post.content];
+    }
+    
+    if( appDelegate.connectionAvailable == YES ) {
+        if (post.remoteStatus != AbstractPostRemoteStatusPushing) {
+            appDelegate.isUploadingPost = YES;
+            // mark the post as uploading right away so that it's not editable in the posts view
+            // if the post fails it will be marked as failed (fixes #1472)
+            [post setRemoteStatus:AbstractPostRemoteStatusPushing];
+            
+            dispatch_async(dispatch_get_main_queue(), ^(void) {
+                // start uploading the media if it hasn't started/completed yet
+                if (!media.isUploading && !media.isUploaded) {
+                    [media uploadWithSuccess:nil failure:^(NSError *error) {
+                        [sidebarViewController postUploadFailed:nil];
+                    } progressUpdate:^(float progress) {
+                        [sidebarViewController updateQuickPostProgress:progress];
+                    }];
+                } else if (media.isUploaded) {
+                    [sidebarViewController updateQuickPostProgress:1.0f];
+                    [post uploadWithSuccess:nil failure:nil];
+                } 
+                [post save];
+            });
+            
+            
+        }
         [sidebarViewController uploadQuickPhoto:post];
+        [self dismiss];
     } else {
         [media setRemoteStatus:MediaRemoteStatusFailed];
         [post save];
@@ -256,17 +338,51 @@
 }
 
 - (void)dismiss {
-    [[self sidebarViewController] dismissModalViewControllerAnimated:YES];
+    [self dismiss:YES];
+}
+
+- (void)dismiss:(BOOL)animated {
+    [[self sidebarViewController] dismissModalViewControllerAnimated:animated];
 }
 
 - (void)cancel {
     self.photo = nil;
     if (post != nil) {
+        Media *media = [post.media anyObject];
+        if (media) {
+            [media remove];
+            if (media.isUploaded) {
+                [media deleteWithSuccess:nil failure:nil];
+            }
+        }
         [post deletePostWithSuccess:nil failure:nil];
     }
     [self dismiss];
 }
 
+- (Media*)createMediaForPost:(Post *)p {
+    Media* media = [Media newMediaForPost:p];
+    int resizePreference = 0;
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
+        resizePreference = [[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] intValue];
+    
+    MediaResize newSize = kResizeLarge;
+    switch (resizePreference) {
+        case 1:
+            newSize = kResizeSmall;
+            break;
+        case 2:
+            newSize = kResizeMedium;
+            break;
+        case 4:
+            newSize = kResizeOriginal;
+            break;
+    }
+    
+    [media setImage:self.photo withSize:newSize];
+    [FileLogger log:@"%@ %@ Image size after optimization: %dKB", self, NSStringFromSelector(_cmd), [media.filesize intValue]];
+    return media;
+}
 
 - (void)saveImage {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
@@ -277,6 +393,7 @@
             Media *media = nil;
             
             Blog *blog = self.blogSelector.activeBlog;
+            startingBlog = blog;
             if (post == nil) {
                 post = [Post newDraftForBlog:blog];
             }
@@ -284,29 +401,29 @@
             if (post.media && [post.media count] > 0) {
                 media = [post.media anyObject];
             } else {
-                media = [Media newMediaForPost:post];
-                int resizePreference = 0;
-                if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
-                    resizePreference = [[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] intValue];
-                
-                MediaResize newSize = kResizeLarge;
-                switch (resizePreference) {
-                    case 1:
-                        newSize = kResizeSmall;
-                        break;
-                    case 2:
-                        newSize = kResizeMedium;
-                        break;
-                    case 4:
-                        newSize = kResizeOriginal;
-                        break;
-                }
-                
-                [media setImage:self.photo withSize:newSize];
+                media = [self createMediaForPost:post];
             }
             
             [media save];
             [postButtonItem setEnabled:YES];
+
+            // start uploading the media right away
+            if (!media.isUploaded) {
+                [[NSNotificationCenter defaultCenter] addObserver:post selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:media];
+                
+                appDelegate.isUploadingPost = YES;
+                [media uploadWithSuccess:^{
+                    if ([media isDeleted]) {
+                        [FileLogger log:@"%@ %@ Media deleted while uploading (%@)", self, NSStringFromSelector(_cmd), media];
+                        return;
+                    }
+                    [media save];
+                } failure:^(NSError *error) {
+                    [sidebarViewController postUploadFailed:nil];
+                } progressUpdate:^(float progress) {
+                    [sidebarViewController updateQuickPostProgress:progress];
+                }];
+            }
         });
     });
 }

@@ -12,7 +12,7 @@
 #import "AFHTTPRequestOperation.h"
 
 @interface Media (PrivateMethods)
-- (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure ;
+- (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure progressUpdate:(void (^)(float progress))progressUpdate;
 @end
 
 @implementation Media {
@@ -67,6 +67,14 @@
     [self didChangeValueForKey:@"progress"];
 }
 
+- (BOOL)isUploading {
+    return _uploadOperation != nil;
+}
+
+- (BOOL)isUploaded {
+    return self.remoteStatus == MediaRemoteStatusSync;
+}
+
 - (MediaRemoteStatus)remoteStatus {
     return (MediaRemoteStatus)[[self remoteStatusNumber] intValue];
 }
@@ -117,16 +125,39 @@
         _uploadOperation = nil;
         self.remoteStatus = MediaRemoteStatusFailed;
     }
+    self.progress = 0;
 }
 
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (BOOL)hasRemote {
+    return ((self.mediaID != nil) && ([self.mediaID intValue] > 0));
+}
+
+- (void)deleteWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    WPFLogMethod();
+    BOOL remote = [self hasRemote];
+    if (remote) {
+        NSArray *parameters = [NSArray arrayWithObjects:@"0", self.blog.username, [self.blog fetchPassword], self.mediaID, nil];
+        [self.blog.api callMethod:@"wp.deletePost"
+                       parameters:parameters
+                          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                              if (success) success();
+                          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                              if (failure) failure(error);
+                          }];
+    }
+    if (!remote && success) {
+        success();
+    }
+}
+
+- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure progressUpdate:(void (^)(float progress))progressUpdate {
     [self save];
     self.progress = 0.0f;
     
-    [self xmlrpcUploadWithSuccess:success failure:failure];
+    [self xmlrpcUploadWithSuccess:success failure:failure progressUpdate:progressUpdate];
 }
 
-- (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure progressUpdate:(void (^)(float progress))progressUpdate {
     NSString *mimeType = ([self.mediaType isEqualToString:@"video"]) ? @"video/mp4" : @"image/jpeg";
     NSDictionary *object = [NSDictionary dictionaryWithObjectsAndKeys:
                             mimeType, @"type",
@@ -200,6 +231,8 @@
                     if ([self isDeleted] || self.managedObjectContext == nil)
                         return;
                     self.progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
+                    if (progressUpdate)
+                        progressUpdate(self.progress);
                 });
             }];
             _uploadOperation = operation;
@@ -371,7 +404,7 @@
                                                    bounds:originalSize
                                      interpolationQuality:kCGInterpolationHigh];
 
-    NSData *imageData = UIImageJPEGRepresentation(resizedImage, 0.90);
+    NSData *imageData = UIImageJPEGRepresentation(resizedImage, 0.60);
 	UIImage *imageThumbnail = [resizedImage thumbnailImage:75 transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"yyyyMMdd-HHmmss"];
@@ -389,7 +422,7 @@
 	self.localURL = filepath;
 	self.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
 	self.mediaType = @"image";
-	self.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
+	self.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.60);
 	self.width = [NSNumber numberWithInt:resizedImage.size.width];
 	self.height = [NSNumber numberWithInt:resizedImage.size.height];
 }

@@ -42,5 +42,7 @@
 - (void)cancel;
 - (void)saveImage;
 - (void)dismiss;
+- (IBAction)openPostInFullEditor:(id)sender;
+- (id)initWithPost:(Post *)aPost;
 
 @end

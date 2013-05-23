@@ -15,9 +15,11 @@
 
 - (void)showSuccess;
 - (void)showProgress:(BOOL)show animated:(BOOL)animated;
+- (void)updateProgress:(float)progress;
 
 @end
 
 @protocol QuickPhotoButtonViewDelegate <NSObject>
-- (void)quickPhotoButtonViewTapped:(QuickPhotoButtonView *)sender;
+- (void)quickPhotoButtonTapped:(QuickPhotoButtonView *)sender;
+- (void)quickPhotoProgressButtonTapped:(QuickPhotoButtonView *)sender;
 @end
