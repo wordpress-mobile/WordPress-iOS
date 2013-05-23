@@ -75,6 +75,12 @@
 		[self.contentView addSubview:separatorImageView];
 		
 		self.textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, 44.0f);
+		
+		
+		UIView *view = [[UIView alloc] initWithFrame:self.bounds];
+		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		view.backgroundColor = [UIColor colorWithHexString:@"36A3CA"];
+		[self setSelectedBackgroundView:view];
     }
 	
     return self;

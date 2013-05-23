@@ -24,8 +24,9 @@
 #import "ReaderCommentTableViewCell.h"
 #import "WPImageViewController.h"
 #import "WPWebVideoViewController.h"
+#import "WPToast.h"
 
-@interface ReaderPostDetailViewController ()<DTAttributedTextContentViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
+@interface ReaderPostDetailViewController ()<DTAttributedTextContentViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) UIView *headerView;
@@ -39,13 +40,23 @@
 @property (nonatomic, strong) UIBarButtonItem *followButton;
 @property (nonatomic, strong) UIBarButtonItem *reblogButton;
 @property (nonatomic, strong) UIBarButtonItem *shareButton;
+@property (nonatomic, strong) UIBarButtonItem *sendCommentButton;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
+@property (nonatomic, strong) UIView *footerView;
+@property (nonatomic, strong) UIView *commentFormPointer;
+@property (nonatomic, strong) UILabel *commentFormLabel;
+@property (nonatomic, strong) UILabel *commentPromptLabel;
+@property (nonatomic, strong) UITextView *commentTextView;
+@property (nonatomic, strong) UIButton *commentSubmitButton;
+@property (nonatomic, strong) UIActivityIndicatorView *activityView;
 @property (nonatomic, strong) NSMutableSet *mediaPlayers;
 @property (nonatomic, strong) UIActionSheet *linkOptionsActionSheet;
 @property (nonatomic, strong) NSMutableArray *mediaArray;
 @property (nonatomic, strong) NSMutableArray *comments;
 @property (nonatomic, strong) NSArray *rowHeights;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
+@property (nonatomic) BOOL isShowingKeyboard;
+@property (nonatomic) BOOL isReplying;
 
 - (void)prepareComments;
 - (void)updateRowHeightsForWidth:(CGFloat)width;
@@ -61,8 +72,10 @@
 - (void)handleLinkTapped:(id)sender;
 - (void)handleReblogButtonTapped:(id)sender;
 - (void)handleShareButtonTapped:(id)sender;
+- (void)handleSendCommentButtonTapped:(id)sender;
 - (void)handleTitleButtonTapped:(id)sender;
 - (void)handleVideoTapped:(id)sender;
+- (void)handleCloseKeyboard:(id)sender;
 - (void)handleCloseModal:(id)sender;
 - (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView;
 - (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
@@ -175,15 +188,6 @@
 	self.reblogButton = [[UIBarButtonItem alloc] initWithCustomView:reblogBtn];
 	[self updateToolbar];
 	
-//	self.commentButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleCommentButtonTapped:)];
-//	self.likeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleLikeButtonTapped:)];
-//	self.followButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleFollowButtonTapped:)];
-//	self.reblogButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(handleReblogButtonTapped:)];
-
-//	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-//	[self setToolbarItems:@[_likeButton, placeholder, _followButton, placeholder, _reblogButton] animated:YES];
-//	self.navigationController.toolbarHidden = NO;
-	
 	CGFloat width = self.tableView.frame.size.width;
 	
 	self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 190.0f)];
@@ -231,7 +235,7 @@
 	
 	self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 80.0f, width, 100.0f)]; // Starting height is arbitrary
 	_textContentView.delegate = self;
-	_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_textContentView.backgroundColor = [UIColor clearColor];
 	_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
 	_textContentView.shouldDrawImages = NO;
@@ -239,14 +243,16 @@
 	[_headerView addSubview:_textContentView];
 		
 	NSString *str = @"";
+	NSString *content = self.post.content;
+	
 	if([self.post.postTitle length] > 0) {
-		str = [NSString stringWithFormat:@"<h2 style=\"color:#000000;font-size:18px;font-weight:100;margin-bottom:8px;\">%@</h2>%@", self.post.postTitle, self.post.content];
+		str = [NSString stringWithFormat:@"<h2 style=\"color:#000000;font-size:18px;font-weight:100;margin-bottom:8px;\">%@</h2>%@", self.post.postTitle, content];
 	} else {
-		str = post.content;
+		str = content;
 	}
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
-														  DTDefaultFontFamily: @"Helvetica",
-										   NSTextSizeMultiplierDocumentOption: [NSNumber numberWithFloat:1.3f]
+														  DTDefaultFontFamily:@"Helvetica",
+										   NSTextSizeMultiplierDocumentOption:[NSNumber numberWithFloat:1.3f]
 								 }];
 	_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
 																			 options:dict
@@ -364,10 +370,8 @@
 
 - (void)updateLayout {
 	// Size the textContentView
-	CGFloat width = self.tableView.frame.size.width;
-	CGFloat height = [_textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:self.view.frame.size.width].height;
 	CGRect frame = _textContentView.frame;
-	frame.size.width = width;
+	CGFloat height = [_textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:frame.size.width].height;
 	frame.size.height = height;
 	_textContentView.frame = frame;
 	
@@ -384,21 +388,23 @@
 	NSURL *url = imageView.contentURL;
 	
 	CGSize viewSize = imageView.image.size;
-	
-	// First the imageView
-	CGFloat width = _textContentView.frame.size.width;
 
-	// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
-	// so position it offset by the inverse of _textContentView's edgeInsets.
-	UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
-	edgeInsets.left = 0.0f - edgeInsets.left;
-	edgeInsets.top = 0.0f;
-	edgeInsets.right = 0.0f - edgeInsets.right;
-	edgeInsets.bottom = 0.0f;
-	imageView.edgeInsets = edgeInsets;
-	
-	viewSize.width = width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-	viewSize.height = imageView.image.size.height * (width / imageView.image.size.width);
+	if (viewSize.height > 0) {
+		// First the imageView
+		CGFloat width = _textContentView.frame.size.width;
+
+		// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
+		// so position it offset by the inverse of _textContentView's edgeInsets.
+		UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
+		edgeInsets.left = 0.0f - edgeInsets.left;
+		edgeInsets.top = 0.0f;
+		edgeInsets.right = 0.0f - edgeInsets.right;
+		edgeInsets.bottom = 0.0f;
+		imageView.edgeInsets = edgeInsets;
+		
+		viewSize.width = width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+		viewSize.height = imageView.image.size.height * (width / imageView.image.size.width);
+	}
 	
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
 	
@@ -413,32 +419,6 @@
 - (void)updateToolbar {
 	if (!self.post) return;
 
-//	UIImage *img = nil;
-//	if (self.post.isLiked.boolValue) {
-//		img = [UIImage imageNamed:@""];
-//	} else {
-//		img = [UIImage imageNamed:@""];
-//	}
-//	[self.likeButton setImage:img];
-//	
-//	if (self.post.isFollowing.boolValue) {
-//		img = [UIImage imageNamed:@""];
-//	} else {
-//		img = [UIImage imageNamed:@""];
-//	}
-//	[self.followButton setImage:img];
-//	
-//	if (self.post.isReblogged.boolValue) {
-//		img = [UIImage imageNamed:@""];
-//	} else {
-//		img = [UIImage imageNamed:@""];
-//	}
-//	[self.reblogButton setImage:img];
-//	
-//	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-//	[self setToolbarItems:@[_commentButton, placeholder, _likeButton, placeholder, _followButton, placeholder, _reblogButton] animated:YES];
-//	
-//	return;
 	UIColor *activeColor = [UIColor colorWithHexString:@"F1831E"];
 	UIColor *inactiveColor = [UIColor colorWithHexString:@"3478E3"];
 	
@@ -493,7 +473,12 @@
 
 
 - (void)handleCommentButtonTapped:(id)sender {
-	
+	if([[self.tableView visibleCells] count] == 0) {
+		if ([self.comments count] > 0) {
+			[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+								  atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+		}
+	}
 }
 
 
@@ -514,16 +499,16 @@
 	if(imageView.linkURL) {
 		NSString *url = [imageView.linkURL absoluteString];
 		
-		BOOL match = NO;
+		BOOL matched = NO;
 		NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
 		for (NSString *type in types) {
 			if (NSNotFound != [url rangeOfString:type].location) {
-				match = YES;
+				matched = YES;
 				break;
 			}
 		}
 		
-		if (match) {
+		if (matched) {
 			[WPImageViewController presentAsModalWithURL:((ReaderImageView *)sender).linkURL];
 		} else {
 			WPWebViewController *controller = [[WPWebViewController alloc] init];
@@ -565,6 +550,73 @@
 }
 
 
+- (void)handleSendCommentButtonTapped:(id)sender {
+	[self handleCloseKeyboard:nil];
+	
+	NSString *str = [_commentTextView.text trim];
+	if ([str length] == 0) {
+		return;
+	}
+
+	_commentTextView.editable = NO;
+	_commentSubmitButton.enabled = NO;
+	[_activityView startAnimating];
+	NSString *path;
+	if ([self.tableView indexPathForSelectedRow] != nil) {
+		ReaderComment *comment = [_comments objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+		path = [NSString stringWithFormat:@"sites/%@/comments/%@/replies/new", self.post.siteID, comment.commentID];
+	} else {
+		path = [NSString stringWithFormat:@"sites/%@/posts/%@/replies/new", self.post.siteID, self.post.postID];
+	}
+
+	NSDictionary *params = @{@"content":str};
+	[[WordPressComApi sharedApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		
+		NSDictionary *params = @{@"number":@100};
+		
+		[ReaderPost getCommentsForPost:[self.post.postID integerValue]
+							  fromSite:[self.post.siteID stringValue]
+						withParameters:params
+							   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+								   
+								   _commentTextView.editable = YES;
+								   _commentTextView.text = nil;
+								   [_activityView stopAnimating];
+								   
+								   [WPToast showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment")
+														andImage:[UIImage imageNamed:@"action_icon_replied"]];
+								   
+								   self.post.dateCommentsSynced = [NSDate date];
+								   
+								   NSDictionary *resp = (NSDictionary *)responseObject;
+								   NSArray *commentsArr = [resp objectForKey:@"comments"];
+								   
+								   [ReaderComment syncAndThreadComments:commentsArr
+																forPost:self.post
+															withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+								   
+								   [self prepareComments];
+								   [self updateRowHeightsForWidth:self.tableView.frame.size.width];
+								   [self.tableView reloadData];
+								   [self hideRefreshHeader];
+								   
+							   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+								   [self hideRefreshHeader];
+								   _commentSubmitButton.enabled = YES;
+								   _commentTextView.editable = YES;
+								   [_activityView stopAnimating];
+							   }];
+		
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		_commentSubmitButton.enabled = YES;
+		_commentTextView.editable = YES;
+		[_activityView stopAnimating];
+		
+	}];
+	
+}
+
+
 - (void)handleShareButtonTapped:(id)sender {
 	
 	if (self.linkOptionsActionSheet) {
@@ -602,8 +654,6 @@
 
 
 - (void)handleTitleButtonTapped:(id)sender {
-	NSLog(@"Title Tapped");
-	
 	WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:[NSURL URLWithString:self.post.permaLink]];
 	[self.panelNavigationController pushViewController:controller animated:YES];
@@ -641,6 +691,10 @@
 	[self updateLayout];
 }
 
+
+- (void)handleCloseKeyboard:(id)sender {
+	[self.view endEditing:YES];
+}
 
 - (void)handleCloseModal:(id)sender {
 	[self dismissModalViewControllerAnimated:YES];
@@ -690,6 +744,11 @@
 }
 
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	return 100.0f;
+}
+
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return [_comments count];
 }
@@ -700,13 +759,59 @@
 }
 
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+	if (section > 0)
+		return nil;
+	
+	if (_footerView == nil) {
+		CGFloat width = self.tableView.frame.size.width;
+		CGFloat height = 100.0f;
+		self.footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, height)];
+		_footerView.backgroundColor = [UIColor colorWithHexString:@"1E8CBE"];
+
+		self.commentFormLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 10.0f, width - 20.0f, 16.0f)];
+		_commentFormLabel.text = [NSString stringWithFormat:@"Commenting on %@", self.post.postTitle];
+		_commentFormLabel.textColor = [UIColor whiteColor];
+		_commentFormLabel.font = [UIFont systemFontOfSize:12.0f];
+		_commentFormLabel.backgroundColor = [UIColor clearColor];
+		[_footerView addSubview:_commentFormLabel];
+
+		UIImageView *imgView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"note-reply-field"] resizableImageWithCapInsets:UIEdgeInsetsMake(6.0f, 6.0f, 6.0f, 6.0f)]];
+		imgView.frame = CGRectMake(10.0f, 30.0f, width - 20.0f, 60.0f);
+		imgView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		[_footerView addSubview:imgView];
+		
+		self.commentTextView = [[UITextView alloc] initWithFrame:CGRectMake(15.0f, 35.0f, width - 30.0, 50.0f)];
+		_commentTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		_commentTextView.font = [UIFont systemFontOfSize:14.0f];
+		_commentTextView.delegate = self;
+		[_footerView addSubview:_commentTextView];
+		
+		self.commentPromptLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 35.0f, width - 30.0f, 20.0f)];
+		_commentPromptLabel.text = NSLocalizedString(@"Tap to reply", @"");
+		_commentPromptLabel.textColor = [UIColor grayColor];
+		[_footerView addSubview:_commentPromptLabel];
+		
+		self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+		CGRect frame = _activityView.frame;
+		frame.origin.x = (width / 2.0f) - (frame.size.width / 2.0f);
+		frame.origin.y = (height / 2.0f) - (frame.size.height / 2.0f);
+		_activityView.frame = frame;
+		_activityView.hidesWhenStopped = YES;
+		_activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+		[_footerView addSubview:_activityView];
+	}
+	
+	return _footerView;
+}
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSString *cellIdentifier = @"ReaderCommentCell";
     ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[ReaderCommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
-	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.accessoryType = UITableViewCellAccessoryNone;
 		
 	ReaderComment *comment = [_comments objectAtIndex:indexPath.row];
@@ -716,8 +821,28 @@
 }
 
 
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+	if ([cell isSelected]) {
+		[tableView deselectRowAtIndexPath:indexPath animated:NO];
+		[tableView.delegate tableView:tableView didDeselectRowAtIndexPath:indexPath];
+		return nil;
+	}
+	return indexPath;
+}
+
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	ReaderComment *comment = [_comments objectAtIndex:indexPath.row];
+	_commentFormLabel.text = [NSString stringWithFormat:@"Replying to %@", comment.author];
+}
+
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if ([tableView indexPathForSelectedRow]) {
+		return;
+	}
+	_commentFormLabel.text = [NSString stringWithFormat:@"Commenting on %@", self.post.postTitle];
 }
 
 
@@ -728,6 +853,44 @@
 
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
     return NO;
+}
+
+
+#pragma mark - UIScrollView Delegate Methods
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+	if ([self.tableView.visibleCells count] == 0 && _isShowingKeyboard) {
+		[self handleCloseKeyboard:nil];
+	}
+}
+
+
+#pragma mark - UITextView Delegate Methods
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCloseKeyboard:)];
+	if (!_sendCommentButton) {
+		_sendCommentButton = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(handleSendCommentButtonTapped:)];
+	}
+	[self.navigationItem setLeftBarButtonItem:cancelButton animated:NO];
+	[self.navigationItem setRightBarButtonItem:_sendCommentButton animated:NO];
+	
+	_sendCommentButton.enabled = (_commentTextView.text.length == 0) ? NO : YES;
+	_isShowingKeyboard = YES;
+	_commentPromptLabel.hidden = YES;
+}
+
+
+- (void)textViewDidChange:(UITextView *)textView {
+	_sendCommentButton.enabled = (_commentTextView.text.length == 0) ? NO : YES;
+}
+
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+	[self.navigationItem setLeftBarButtonItem:nil animated:NO];
+	[self.navigationItem setRightBarButtonItem:self.shareButton animated:NO];
+	_isShowingKeyboard = NO;
+	_commentPromptLabel.hidden = (_commentTextView.text.length > 0) ? YES : NO;
 }
 
 

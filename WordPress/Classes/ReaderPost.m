@@ -10,6 +10,7 @@
 #import "WordPressComApi.h"
 #import "NSString+Helpers.h"
 #import "NSString+Util.h"
+#import "NSString+XMLExtensions.h"
 
 NSInteger const ReaderTopicEndpointIndex = 3;
 
@@ -170,7 +171,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		self.sortDate = [DateUtils dateFromISOString:[editorial objectForKey:@"displayed_on"]];
 		self.likeCount = [dict numberForKey:@"like_count"];
 		self.permaLink = [dict objectForKey:@"URL"];
-		self.postTitle = [dict objectForKey:@"title"];
+		self.postTitle = [[dict objectForKey:@"title"] stringByDecodingXMLCharacters];
 		
 		NSURL *url = [NSURL URLWithString:self.permaLink];
 		self.blogURL = [NSString stringWithFormat:@"%@://%@/", url.scheme, url.host];
@@ -232,7 +233,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		self.sortDate = date;
 		self.likeCount = [dict objectForKey:@"post_like_count"];
 		self.permaLink = [dict objectForKey:@"post_permalink"];
-		self.postTitle = [dict objectForKey:@"post_title"];
+		self.postTitle = [[dict objectForKey:@"post_title"] stringByDecodingXMLCharacters];
 		
 		self.siteID = [dict numberForKey:@"blog_id"];
 		
