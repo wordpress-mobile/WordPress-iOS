@@ -14,11 +14,11 @@
 #import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
 #import "PanelNavigationConstants.h"
-#import "SFHFKeychainUtils.h"
 #import "NSString+XMLExtensions.h"
 #import "ReaderReblogFormView.h"
 #import "WPFriendFinderViewController.h"
 #import "WPFriendFinderNudgeView.h"
+#import "WPAccount.h"
 
 NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
@@ -613,12 +613,10 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	NSURL *xmlrpc;
     NSString *username, *password;
-	NSError *error = nil;
+    WPAccount *account = [WPAccount defaultWordPressComAccount];
 	xmlrpc = [NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"];
-	username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-	password = [SFHFKeychainUtils getPasswordForUsername:username
-										  andServiceName:@"WordPress.com"
-												   error:&error];
+	username = account.username;
+	password = account.password;
 	
     WPXMLRPCClient *api = [WPXMLRPCClient clientWithXMLRPCEndpoint:xmlrpc];
     [api callMethod:@"wp.getUsersBlogs"

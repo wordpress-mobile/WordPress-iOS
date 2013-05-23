@@ -42,6 +42,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
 
     NSURL *accountURL = [[NSUserDefaults standardUserDefaults] URLForKey:DefaultDotcomAccountDefaultsKey];
+    if (!accountURL) {
+        return nil;
+    }
     NSManagedObjectID *objectID = [[context persistentStoreCoordinator] managedObjectIDForURIRepresentation:accountURL];
     if (!objectID) {
         return nil;

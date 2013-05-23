@@ -14,9 +14,9 @@
 #import "UITableViewSwitchCell.h"
 #import "WordPressComApi.h"
 #import "WPComLanguages.h"
-#import "SFHFKeychainUtils.h"
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
+#import "WPAccount.h"
 
 @interface CreateWPComBlogViewController () <
     SelectWPComBlogVisibilityViewControllerDelegate,
@@ -327,24 +327,16 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
 
 // TODO : Figure out where to put this so we aren't duplicating code with AddUsersBlogViewController
 - (void)createBlog:(NSDictionary *)blogInfo {
-    NSError *error;
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-    NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                    andServiceName:@"WordPress.com"
-                                                             error:&error];
-    
     NSMutableDictionary *newBlog = [NSMutableDictionary dictionary];
-    [newBlog setObject:username forKey:@"username"];
-    [newBlog setObject:password forKey:@"password"];
     [newBlog setObject:[blogInfo objectForKey:@"blogname"] forKey:@"blogName"];
     [newBlog setObject:[blogInfo objectForKey:@"blogid"] forKey:@"blogid"];
     [newBlog setObject:[blogInfo objectForKey:@"url"] forKey:@"url"];
     [newBlog setObject:[blogInfo objectForKey:@"xmlrpc"] forKey:@"xmlrpc"];
     [newBlog setObject:@(true) forKey:@"isAdmin"];
+
+    WPAccount *account = [WPAccount defaultWordPressComAccount];
     
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    Blog *blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
+    Blog *blog = [account findOrCreateBlogFromDictionary:newBlog];
     blog.geolocationEnabled = _geolocationEnabled;
 	[blog dataSave];
     [blog syncBlogWithSuccess:^{
@@ -354,10 +346,6 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
                       failure:nil];
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
     
-    [appDelegate.managedObjectContext save:&error];
-    if (error != nil) {
-        NSLog(@"Error adding blogs: %@", [error localizedDescription]);
-    }
     [[WordPressComApi sharedApi] syncPushNotificationInfo];
 }
 

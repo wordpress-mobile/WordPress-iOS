@@ -6,7 +6,6 @@
 //
 
 #import "WelcomeViewController.h"
-#import "SFHFKeychainUtils.h"
 #import "WordPressAppDelegate.h"
 #import "AboutViewController.h"
 #import "AddUsersBlogsViewController.h"

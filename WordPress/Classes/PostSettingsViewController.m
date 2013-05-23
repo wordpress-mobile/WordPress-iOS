@@ -2,7 +2,6 @@
 #import "WPSelectionTableViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPPopoverBackgroundView.h"
-#import "SFHFKeychainUtils.h"
 #import "NSString+Helpers.h"
 #import "EditPostViewController_Internal.h"
 #import "Post.h"

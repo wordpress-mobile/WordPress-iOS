@@ -10,7 +10,6 @@
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
 #import <ImageIO/ImageIO.h>
-#import "SFHFKeychainUtils.h"
 #import "WPPopoverBackgroundView.h"
 
 #define TAG_ACTIONSHEET_PHOTO 1

@@ -10,7 +10,6 @@
 
 #import "Blog+Jetpack.h"
 #import "WPAccount.h"
-#import "SFHFKeychainUtils.h"
 #import "WordPressAppDelegate.h"
 
 NSString * const BlogJetpackErrorDomain = @"BlogJetpackError";

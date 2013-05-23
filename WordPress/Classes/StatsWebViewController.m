@@ -7,7 +7,6 @@
 #import "StatsWebViewController.h"
 #import "Blog+Jetpack.h"
 #import "WordPressAppDelegate.h"
-#import "SFHFKeychainUtils.h"
 #import "WordPressComApi.h"
 #import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"

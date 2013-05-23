@@ -9,7 +9,6 @@
 //#import "InAppSettings.h"
 #import "Blog.h"
 #import "Media.h"
-#import "SFHFKeychainUtils.h"
 #import "CameraPlusPickerManager.h"
 #import "PanelNavigationController.h"
 #import "SidebarViewController.h"
@@ -24,6 +23,7 @@
 #import "PocketAPI.h"
 #import "WPMobileStats.h"
 #import "WPComLanguages.h"
+#import "WPAccount.h"
 
 @interface WordPressAppDelegate (Private)
 - (void)setAppBadge;
@@ -733,44 +733,26 @@
 
 - (void)checkWPcomAuthentication {
 	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
-	
-    NSError *error = nil;
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
-        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil) {
-            // Migrate password to keychain
-            [SFHFKeychainUtils storeUsername:username
-                                 andPassword:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]
-                              forServiceName:@"WordPress.com"
-                              updateExisting:YES error:&error];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                        andServiceName:@"WordPress.com"
-                                                                 error:&error];
-        if (password != nil) {
-            WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-            [client callMethod:@"wp.getUsersBlogs"
-                    parameters:[NSArray arrayWithObjects:username, password, nil]
-                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                           isWPcomAuthenticated = YES;
-                           WPFLog(@"Logged in to WordPress.com as %@", username);
-                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                           if ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403) {
-                               isWPcomAuthenticated = NO;
-                           }
-                           WPFLog(@"Error authenticating %@ with WordPress.com: %@", username, [error description]);
-                       }];            
-        } else {
-            isWPcomAuthenticated = NO;
-        }
-	}
-	else {
+
+    WPAccount *account = [WPAccount defaultWordPressComAccount];
+	if (account) {
+        WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+        [client callMethod:@"wp.getUsersBlogs"
+                parameters:[NSArray arrayWithObjects:account.username, account.password, nil]
+                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                       isWPcomAuthenticated = YES;
+                       WPFLog(@"Logged in to WordPress.com as %@", account.username);
+                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403) {
+                           isWPcomAuthenticated = NO;
+                       }
+                       WPFLog(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
+                   }];
+	} else {
 		isWPcomAuthenticated = NO;
 	}
-	
-	if(isWPcomAuthenticated)
+
+	if (isWPcomAuthenticated)
 		[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];
 	else
 		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"wpcom_authenticated_flag"];
@@ -1038,41 +1020,26 @@
         return;
     
     NSString *authURL = kNotificationAuthURL;   	
-    NSError *error = nil;
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
-        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil) {
-            // Migrate password to keychain
-            [SFHFKeychainUtils storeUsername:username
-                                 andPassword:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]
-                              forServiceName:@"WordPress.com"
-                              updateExisting:YES error:&error];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                        andServiceName:@"WordPress.com"
-                                                                 error:&error];
-        if (password != nil) {
+    WPAccount *account = [WPAccount defaultWordPressComAccount];
+	if (account) {
 #ifdef DEBUG
-            NSNumber *sandbox = [NSNumber numberWithBool:YES];
+        NSNumber *sandbox = [NSNumber numberWithBool:YES];
 #else
-            NSNumber *sandbox = [NSNumber numberWithBool:NO];
+        NSNumber *sandbox = [NSNumber numberWithBool:NO];
 #endif
-            WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-            
-            [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
-            
-            [api callMethod:@"wpcom.mobile_push_register_token"
-                 parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
-                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        WPFLog(@"Registered token %@, sending blogs list", token);
-                        [[WordPressComApi sharedApi] syncPushNotificationInfo];
-                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey]; //Remove the token from Preferences, otherwise the token is never re-sent to the server on the next startup
-                        WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
-                    }];
-        } 
+        WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+
+        [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
+
+        [api callMethod:@"wpcom.mobile_push_register_token"
+             parameters:[NSArray arrayWithObjects:account.username, account.password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
+                success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    WPFLog(@"Registered token %@, sending blogs list", token);
+                    [[WordPressComApi sharedApi] syncPushNotificationInfo];
+                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey]; //Remove the token from Preferences, otherwise the token is never re-sent to the server on the next startup
+                    WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
+                }];
 	}
 }
 
@@ -1084,38 +1051,23 @@
         return;
     
     NSString *authURL = kNotificationAuthURL;   	
-    NSError *error = nil;
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
-        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil) {
-            // Migrate password to keychain
-            [SFHFKeychainUtils storeUsername:username
-                                 andPassword:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]
-                              forServiceName:@"WordPress.com"
-                              updateExisting:YES error:&error];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                        andServiceName:@"WordPress.com"
-                                                                 error:&error];
-        if (password != nil) {
+    WPAccount *account = [WPAccount defaultWordPressComAccount];
+	if (account) {
 #ifdef DEBUG
-            NSNumber *sandbox = [NSNumber numberWithBool:YES];
+        NSNumber *sandbox = [NSNumber numberWithBool:YES];
 #else
-            NSNumber *sandbox = [NSNumber numberWithBool:NO];
+        NSNumber *sandbox = [NSNumber numberWithBool:NO];
 #endif
-            WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-            [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
-            [api callMethod:@"wpcom.mobile_push_unregister_token"
-                 parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
-                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        WPFLog(@"Unregistered token %@", token);
-                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        WPFLog(@"Couldn't unregister token: %@", [error localizedDescription]);
-                    }];
-        } 
-	}
+        WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+        [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
+        [api callMethod:@"wpcom.mobile_push_unregister_token"
+             parameters:[NSArray arrayWithObjects:account.username, account.password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
+                success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    WPFLog(@"Unregistered token %@", token);
+                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    WPFLog(@"Couldn't unregister token: %@", [error localizedDescription]);
+                }];
+    }
 }
 
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {

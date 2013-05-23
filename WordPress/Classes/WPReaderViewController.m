@@ -10,10 +10,10 @@
 #import "WPWebViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPFriendFinderViewController.h"
-#import "SFHFKeychainUtils.h"
 #import "JSONKit.h"
 #import "ReachabilityUtils.h"
 #import "NSString+Helpers.h"
+#import "WPAccount.h"
 
 #ifdef DEBUG
 #define kReaderRefreshThreshold 10*60 // 10min
@@ -63,14 +63,11 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     self = [super init];
     if (self) {
         self.url = [NSURL URLWithString:kMobileReaderURL];
-        NSError *error = nil; 
-        NSString *wpcom_username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"]; 
-        NSString *wpcom_password = [SFHFKeychainUtils getPasswordForUsername:wpcom_username 
-                                                              andServiceName:@"WordPress.com" 
-                                                                       error:&error];
-        if (wpcom_username && wpcom_password) {
-            self.username = wpcom_username;
-            self.password = wpcom_password;
+
+        WPAccount *account = [WPAccount defaultWordPressComAccount];
+        if (account) {
+            self.username = account.username;
+            self.password = account.password;
         }
         
         [self canIHazCookie];

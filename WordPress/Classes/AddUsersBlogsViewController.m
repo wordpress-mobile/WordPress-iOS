@@ -8,7 +8,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "AddUsersBlogsViewController.h"
 #import "CreateWPComBlogViewController.h"
-#import "SFHFKeychainUtils.h"
 #import "NSString+XMLExtensions.h"
 #import "WordPressComApi.h"
 #import "UIBarButtonItem+Styled.h"
@@ -574,27 +573,12 @@
 - (void)saveSelectedBlogs {
     [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"refreshCommentsRequired"];
 	
-    NSError *error = nil;
-    if (isWPcom) {
-        self.username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        self.password = [SFHFKeychainUtils getPasswordForUsername:_username
-                                                   andServiceName:@"WordPress.com"
-                                                            error:&error];
-        NSLog(@"saveSelectedBlogs. username: %@, usersBlogs: %@", _username, usersBlogs);
-    } else {
-        NSLog(@"saveSelectedBlogs. username: %@, usersBlogs: %@", _username, usersBlogs);
-    }
-    
     for (NSDictionary *blog in usersBlogs) {
 		if([selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
 			[self createBlog:blog];
 		}
 	}
     
-    [appDelegate.managedObjectContext save:&error];
-    if (error != nil) {
-        NSLog(@"Error adding blogs: %@", [error localizedDescription]);
-    }
     [self didSaveSelectedBlogsInBackground];
     
 }

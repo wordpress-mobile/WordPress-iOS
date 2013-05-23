@@ -27,8 +27,8 @@
 #import "WPWalkthroughOverlayView.h"
 #import "LoginCompletedWalkthroughViewController.h"
 #import "ReachabilityUtils.h"
-#import "SFHFKeychainUtils.h"
 #import "WPNUXUtility.h"
+#import "WPAccount.h"
 
 @interface GeneralWalkthroughViewController () <
     UIScrollViewDelegate,
@@ -1253,14 +1253,14 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 {
     NSParameterAssert(blogDetails != nil);
     
+    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlRPCUrl username:_usernameText.text andPassword:_passwordText.text];
+
     NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
-    [newBlog setObject:_usernameText.text forKey:@"username"];
-    [newBlog setObject:_passwordText.text forKey:@"password"];
     [newBlog setObject:xmlRPCUrl forKey:@"xmlrpc"];
-    
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    _blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
+
+    _blog = [account findOrCreateBlogFromDictionary:newBlog];
     [_blog dataSave];
+
 }
 
 - (void)synchronizeNewlyAddedBlog

@@ -11,7 +11,6 @@
 #import "Category.h"
 #import "Comment.h"
 #import "WPAccount.h"
-#import "SFHFKeychainUtils.h"
 #import "UIImage+Resize.h"
 #import "NSURL+IDN.h"
 #import "NSString+XMLExtensions.h"
