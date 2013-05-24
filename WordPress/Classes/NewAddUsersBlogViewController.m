@@ -184,6 +184,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     
     _selectAllButton = [[WPNUXSecondaryButton alloc] init];
     [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
+    _selectAllButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     [_selectAllButton sizeToFit];
     [_selectAllButton addTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
     [bottomPanel addSubview:_selectAllButton];
@@ -197,9 +198,10 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
     CGRect selectAllFrame = _selectAllButton.frame;
     selectAllFrame.size.width = selectAllWidth > deselectAllWidth ? selectAllWidth : deselectAllWidth;
-    
+
     _addSelectedButton = [[WPNUXPrimaryButton alloc] init];
     [_addSelectedButton setTitle:NSLocalizedString(@"Add Selected", nil) forState:UIControlStateNormal];
+    _addSelectedButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     // Calculate the space with the largest possible text width before setting the text back to normal. We calculate this
     // ahead of time so that way we don't have flickering as the text changes result in the button size changing. This also
     // ensures we don't have to re-layout the button as the text changes as well.
@@ -208,15 +210,22 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@ (1)", NSLocalizedString(@"Add Selected", nil)] forState:UIControlStateNormal];
     [_addSelectedButton addTarget:self action:@selector(createBlogs) forControlEvents:UIControlEventTouchUpInside];
     [bottomPanel addSubview:_addSelectedButton];
-    
+
+    // For some locales, these strings can be long so we try to balance the widths.
+    CGFloat availableWidth = _viewWidth - 3 * AddUsersBlogStandardOffset;
+    CGFloat widthRatio = availableWidth / (CGRectGetWidth(_addSelectedButton.frame) + CGRectGetWidth(selectAllFrame));
+
+    CGFloat maxWidth = CGRectGetWidth(_selectAllButton.frame) * widthRatio;
     CGFloat x,y;
     x = AddUsersBlogStandardOffset;
     y = AddUsersBlogStandardOffset;
-    _selectAllButton.frame = CGRectMake(x, y, CGRectGetWidth(_selectAllButton.frame), CGRectGetHeight(_selectAllButton.frame));
-    
-    x = _viewWidth - CGRectGetWidth(_addSelectedButton.frame) - AddUsersBlogStandardOffset;
+    _selectAllButton.frame = CGRectIntegral(CGRectMake(x, y, MIN(CGRectGetWidth(_selectAllButton.frame), maxWidth), CGRectGetHeight(_selectAllButton.frame)));
+
+    maxWidth = CGRectGetWidth(_addSelectedButton.frame) * widthRatio;
+    CGFloat addSelectedButtonWidth = MIN(CGRectGetWidth(_addSelectedButton.frame), maxWidth);
+    x = _viewWidth - addSelectedButtonWidth - AddUsersBlogStandardOffset;
     y = AddUsersBlogStandardOffset;
-    _addSelectedButton.frame = CGRectMake(x, y, CGRectGetWidth(_addSelectedButton.frame), CGRectGetHeight(_addSelectedButton.frame));
+    _addSelectedButton.frame = CGRectIntegral(CGRectMake(x, y, addSelectedButtonWidth, CGRectGetHeight(_addSelectedButton.frame)));
 }
 
 - (UIView *)headerView
