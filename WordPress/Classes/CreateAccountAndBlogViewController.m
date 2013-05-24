@@ -350,6 +350,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1EmailText.delegate = self;
         _page1EmailText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page1EmailText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _page1EmailText.keyboardType = UIKeyboardTypeEmailAddress;
         [_scrollView addSubview:_page1EmailText];
     }
     
