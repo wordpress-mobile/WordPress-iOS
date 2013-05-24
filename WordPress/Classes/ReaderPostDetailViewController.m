@@ -77,6 +77,7 @@
 - (void)handleVideoTapped:(id)sender;
 - (void)handleCloseKeyboard:(id)sender;
 - (void)handleCloseModal:(id)sender;
+- (void)handleFooterViewTapped:(id)sender;
 - (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView;
 - (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
 
@@ -699,6 +700,15 @@
 }
 
 
+- (void)handleFooterViewTapped:(id)sender {
+	if (_isShowingKeyboard) {
+		if([self.tableView indexPathForSelectedRow]) {
+			[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+		}
+	}
+}
+
+
 #pragma mark - Sync methods
 
 - (void)syncWithUserInteraction:(BOOL)userInteraction {
@@ -764,13 +774,19 @@
 	if (_footerView == nil) {
 		CGFloat width = self.tableView.frame.size.width;
 		CGFloat height = 100.0f;
-		self.footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, height)];
+		CGRect frame = CGRectMake(0.0f, 0.0f, width, height);
+		self.footerView = [[UIView alloc] initWithFrame:frame];
 		_footerView.backgroundColor = [UIColor colorWithHexString:@"1E8CBE"];
+		
+		UIButton *footerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		footerButton.frame = frame;
+		[footerButton addTarget:self action:@selector(handleFooterViewTapped:) forControlEvents:UIControlEventTouchUpInside];
+		[_footerView addSubview:footerButton];
 
-		self.commentFormLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 10.0f, width - 20.0f, 16.0f)];
+		self.commentFormLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 7.0f, width - 20.0f, 18.0f)];
 		_commentFormLabel.text = [NSString stringWithFormat:@"Commenting on %@", self.post.postTitle];
 		_commentFormLabel.textColor = [UIColor whiteColor];
-		_commentFormLabel.font = [UIFont systemFontOfSize:12.0f];
+		_commentFormLabel.font = [UIFont systemFontOfSize:14.0f];
 		_commentFormLabel.backgroundColor = [UIColor clearColor];
 		[_footerView addSubview:_commentFormLabel];
 
@@ -794,7 +810,7 @@
 		[_footerView addSubview:_commentPromptLabel];
 		
 		self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-		CGRect frame = _activityView.frame;
+		frame = _activityView.frame;
 		frame.origin.x = (width / 2.0f) - (frame.size.width / 2.0f);
 		frame.origin.y = (height / 2.0f) - (frame.size.height / 2.0f);
 		_activityView.frame = frame;
@@ -836,6 +852,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	ReaderComment *comment = [_comments objectAtIndex:indexPath.row];
 	_commentFormLabel.text = [NSString stringWithFormat:@"Replying to %@", comment.author];
+	
+	if(_isShowingKeyboard) {
+		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+	}
 }
 
 
@@ -879,6 +899,8 @@
 	_sendCommentButton.enabled = (_commentTextView.text.length == 0) ? NO : YES;
 	_isShowingKeyboard = YES;
 	_commentPromptLabel.hidden = YES;
+	
+	[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 
