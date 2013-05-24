@@ -679,6 +679,10 @@ NSLog(@"%@", self.sectionInfoArray);
 //    appDelegate.isUploadingPost = NO;
     [quickPhotoActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
 
+    // it's possible the media upload failed and since the post is set to
+    // the uploading state this will ensure the post is set to failed
+    [self.currentQuickPost setRemoteStatus:AbstractPostRemoteStatusFailed];
+    
     [quickPhotoButton showProgress:NO animated:YES];
 
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")

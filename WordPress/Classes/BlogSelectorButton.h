@@ -41,6 +41,5 @@ typedef enum {
 @property (nonatomic, weak) id<BlogSelectorButtonDelegate> delegate;
 
 - (void)loadBlogsForType:(BlogSelectorButtonType)aType;
-- (void)disableBlogSelection;
 
 @end

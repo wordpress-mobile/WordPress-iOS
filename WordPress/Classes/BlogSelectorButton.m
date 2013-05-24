@@ -143,15 +143,20 @@
             if ([results count] == 1) {
                 [postToLabel setText: NSLocalizedString(@"Posting to:", @"")];
                 self.enabled = NO;
-                selectorImageView.alpha = 0.0f;
             }
         }
     }
 }
 
-- (void)disableBlogSelection {
-    self.enabled = NO;
-    selectorImageView.alpha = 0.0f;
+- (void)setEnabled:(BOOL)enabled {
+    if (super.enabled == enabled) return;
+    
+    super.enabled = enabled;
+    if (enabled) {
+        selectorImageView.alpha = 1.0f;
+    } else {
+        selectorImageView.alpha = 0.0f;
+    }
 }
 
 - (void)setActiveBlog:(Blog *)aBlog {

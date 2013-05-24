@@ -27,7 +27,7 @@
         self.color = [UIColor whiteColor];
     }
     
-    CGPoint center = CGPointMake(rect.size.width/2, rect.size.height/2);
+    CGPoint center = CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
     CGFloat radius = MIN(rect.size.width, rect.size.height)/2;
     UIBezierPath *path = [UIBezierPath bezierPath];
     path.usesEvenOddFillRule = YES;

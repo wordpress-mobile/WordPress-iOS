@@ -88,7 +88,7 @@
         // if we are opening an existing post disable the blog selection since the photo
         // may already be uploaded and used in another post, maybe not required
         if (post) {
-            [self.blogSelector disableBlogSelection];
+            [self.blogSelector setEnabled:NO];
         }
     }
     

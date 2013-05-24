@@ -22,7 +22,7 @@
 @property (nonatomic, strong) UIButton *uploadingButton;
 
 - (void)setup;
-- (void)newQuickPhotoButtonTapped:(id)sender;
+- (void)quickPhotoButtonTapped:(id)sender;
 - (void)uploadingButtonTapped:(id)sender;
 - (void)showProgress:(BOOL)show animated:(BOOL)animated delayed:(BOOL)delayed;
 
@@ -71,7 +71,7 @@
     [button setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButton"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateNormal];
     [button setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButtonHighlighted"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateHighlighted];
     [button setTitle:NSLocalizedString(@"Photo", @"") forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(newQuickPhotoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(quickPhotoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [button setBackgroundColor:[UIColor clearColor]];
     [button setImage:[UIImage imageNamed:@"sidebar_camera"] forState:UIControlStateNormal];
     [button setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 12.0f, 0.0f, 10.0f)];
@@ -135,7 +135,7 @@
 #pragma mark -
 #pragma mark Instance Methods
 
-- (void)newQuickPhotoButtonTapped:(id)sender {
+- (void)quickPhotoButtonTapped:(id)sender {
     if (delegate) {
         [delegate quickPhotoButtonTapped:self];
     }
@@ -148,8 +148,6 @@
 }
 
 - (void)updateProgress:(float)progress {
-    if (!spinner.isAnimating) return;
-    
     if (progress < 1.0f) {
         self.progressView.hidden = NO;
         self.spinner.hidden = YES;
