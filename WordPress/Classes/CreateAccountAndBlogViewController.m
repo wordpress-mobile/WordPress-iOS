@@ -1247,6 +1247,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         if ([[_page2SiteAddressText.text trim] length] == 0) {
             _page2SiteAddressText.text = _defaultSiteUrl = [NSString stringWithFormat:@"%@.wordpress.com", _page1UsernameText.text];
         }
+        [self updatePage3Labels];
         [self moveToPage:2];
     };
     
