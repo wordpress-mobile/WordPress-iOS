@@ -30,6 +30,7 @@
 #import "CrashReportViewController.h"
 #import "NotificationsViewController.h"
 #import "SoundUtil.h"
+#import "EditPostViewController.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
@@ -41,6 +42,10 @@
 #define HEADER_HEIGHT 42.f
 #define DEFAULT_ROW_HEIGHT 48
 #define NUM_ROWS 6
+
+#define ACTION_SHEET_TAG_CHOOSE_QUICK_PHOTO 0
+#define ACTION_SHEET_TAG_UPLOADING_QUICK_PHOTO 1
+#define ACTION_SHEET_TAG_EXISTING_QUICK_PHOTO 2
 
 @interface SidebarViewController () <NSFetchedResultsControllerDelegate, QuickPhotoButtonViewDelegate> {
     QuickPhotoButtonView *quickPhotoButton;
@@ -238,11 +243,6 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    if (quickPhotoActionSheet) {
-        // The quickphoto actionsheet is showing but its location is probably off
-        // due to the rotation. Just represent it.
-        [self quickPhotoButtonViewTapped:nil];
-    }
 }
 
 #pragma mark -
@@ -514,7 +514,25 @@ NSLog(@"%@", self.sectionInfoArray);
 
 #pragma mark - Quick Photo Methods
 
-- (void)quickPhotoButtonViewTapped:(QuickPhotoButtonView *)sender {
+- (void)quickPhotoProgressButtonTapped:(QuickPhotoButtonView *)sender {
+    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@""
+                                                                           delegate:self
+                                                                  cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                                             destructiveButtonTitle:NSLocalizedString(@"Remove Post", @"")
+                                                                  otherButtonTitles:NSLocalizedString(@"Stop Uploading", @""), nil];
+    [actionSheet setTag:ACTION_SHEET_TAG_UPLOADING_QUICK_PHOTO];
+    actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+    if (IS_IPAD) {
+        [actionSheet showFromRect:quickPhotoButton.frame inView:utililtyView animated:YES];
+    } else {
+        [actionSheet showInView:self.panelNavigationController.view];
+    }
+    self.quickPhotoActionSheet = actionSheet;
+}
+
+- (void)quickPhotoButtonTapped:(QuickPhotoButtonView *)sender {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 
     if (quickPhotoActionSheet) {
@@ -525,25 +543,36 @@ NSLog(@"%@", self.sectionInfoArray);
     [self.panelNavigationController showSidebar];
     
 	UIActionSheet *actionSheet = nil;
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        if ([[CameraPlusPickerManager sharedManager] cameraPlusPickerAvailable]) {
-            actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
-                                                      delegate:self 
-                                             cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
-                                        destructiveButtonTitle:nil 
-                                             otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),NSLocalizedString(@"Add Photo from Camera+", @""), NSLocalizedString(@"Take Photo with Camera+", @""),nil];
+    if (self.currentQuickPost && [self.currentQuickPost.media anyObject]) {
+        actionSheet = [[UIActionSheet alloc] initWithTitle:@""
+                                                  delegate:self
+                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                    destructiveButtonTitle:nil
+                                         otherButtonTitles:NSLocalizedString(@"New Post", @""),NSLocalizedString(@"Retry Failed Post", @""),nil];
+        [actionSheet setTag:ACTION_SHEET_TAG_EXISTING_QUICK_PHOTO];
+    } else {
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            if ([[CameraPlusPickerManager sharedManager] cameraPlusPickerAvailable]) {
+                actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
+                                                          delegate:self 
+                                                 cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+                                            destructiveButtonTitle:nil 
+                                                 otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),NSLocalizedString(@"Add Photo from Camera+", @""), NSLocalizedString(@"Take Photo with Camera+", @""),nil];
+            } else {
+                actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
+                                                          delegate:self 
+                                                 cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+                                            destructiveButtonTitle:nil 
+                                                 otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),nil];            
+            }
         } else {
-            actionSheet = [[UIActionSheet alloc] initWithTitle:@"" 
-                                                      delegate:self 
-                                             cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
-                                        destructiveButtonTitle:nil 
-                                             otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),nil];            
+            [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary useCameraPlus:NO withImage:nil];
+            return;
         }
-	} else {
-        [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary useCameraPlus:NO withImage:nil];
-        return;
-	}
-    
+        
+        
+        [actionSheet setTag:ACTION_SHEET_TAG_CHOOSE_QUICK_PHOTO];
+    }
     actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
     if (IS_IPAD) {
         [actionSheet showFromRect:quickPhotoButton.frame inView:utililtyView animated:YES];
@@ -592,6 +621,40 @@ NSLog(@"%@", self.sectionInfoArray);
     }
 }
 
+- (void)updateQuickPostProgress:(float)progress {
+    [quickPhotoButton updateProgress:progress];
+}
+
+- (void)editQuickPost:(Post *)post {
+    QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] initWithPost:post];
+    quickPhotoViewController.sidebarViewController = self;
+    quickPhotoViewController.startingBlog = post.blog;
+    Media *media = [post.media anyObject];
+    quickPhotoViewController.photo = [UIImage imageWithContentsOfFile:media.localURL];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:quickPhotoViewController];
+    if (IS_IPAD) {
+        navController.modalPresentationStyle = UIModalPresentationFormSheet;
+        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self.panelNavigationController presentModalViewController:navController animated:YES];
+    } else {
+        [self.panelNavigationController presentModalViewController:navController animated:YES];
+    }
+}
+
+// this isn't used anywhere right now but it was planned for 
+// the quick post editor to open a post inside the full editor
+- (void)editPost:(Post *)post {
+    if (post != nil) {
+        // opening a post in the full editor so there should be no more quick post
+        self.currentQuickPost = nil;
+        [self selectBlog:post.blog];
+        EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[post createRevision]];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+        [self.panelNavigationController presentModalViewController:navController animated:YES];
+    }
+}
+
 - (void)uploadQuickPhoto:(Post *)post {
     if (post != nil) {
         self.currentQuickPost = post;
@@ -605,13 +668,21 @@ NSLog(@"%@", self.sectionInfoArray);
 
 - (void)postDidUploadSuccessfully:(NSNotification *)notification {
 //    appDelegate.isUploadingPost = NO;
+    [quickPhotoButton updateProgress:1.0f];
+    [quickPhotoActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
+    
     self.currentQuickPost = nil;
     [quickPhotoButton showSuccess];
 }
 
 - (void)postUploadFailed:(NSNotification *)notification {
 //    appDelegate.isUploadingPost = NO;
-    self.currentQuickPost = nil;
+    [quickPhotoActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
+
+    // it's possible the media upload failed and since the post is set to
+    // the uploading state this will ensure the post is set to failed
+    [self.currentQuickPost setRemoteStatus:AbstractPostRemoteStatusFailed];
+    
     [quickPhotoButton showProgress:NO animated:YES];
 
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Quick Photo Failed", @"")
@@ -623,7 +694,6 @@ NSLog(@"%@", self.sectionInfoArray);
 }
 
 - (void)postUploadCancelled:(NSNotification *)notification {
-    self.currentQuickPost = nil;
     [quickPhotoButton showProgress:NO animated:YES];
 }
 
@@ -690,14 +760,39 @@ NSLog(@"%@", self.sectionInfoArray);
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     self.quickPhotoActionSheet = nil;
-    if(buttonIndex == 0) {
-        [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary];
-    } else if(buttonIndex == 1) {
-        [self showQuickPhoto:UIImagePickerControllerSourceTypeCamera];
-    } else if(buttonIndex == 2) {
-        [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary useCameraPlus:YES];
-    } else if(buttonIndex == 3) {
-        [self showQuickPhoto:UIImagePickerControllerSourceTypeCamera useCameraPlus:YES];
+    switch (actionSheet.tag) {
+        case ACTION_SHEET_TAG_CHOOSE_QUICK_PHOTO:
+            if(buttonIndex == 0) {
+                [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary];
+            } else if(buttonIndex == 1) {
+                [self showQuickPhoto:UIImagePickerControllerSourceTypeCamera];
+            } else if(buttonIndex == 2) {
+                [self showQuickPhoto:UIImagePickerControllerSourceTypePhotoLibrary useCameraPlus:YES];
+            } else if(buttonIndex == 3) {
+                [self showQuickPhoto:UIImagePickerControllerSourceTypeCamera useCameraPlus:YES];
+            }
+            break;
+        case ACTION_SHEET_TAG_UPLOADING_QUICK_PHOTO:
+            if(buttonIndex == 0) { // remove post
+                [quickPhotoButton showProgress:NO animated:NO];
+                [[self.currentQuickPost.media anyObject] remove];
+                [self.currentQuickPost remove];
+                self.currentQuickPost = nil;
+            } else if(buttonIndex == 1) { // cancel uploading/save draft
+                [quickPhotoButton showProgress:NO animated:NO];
+                [[self.currentQuickPost.media anyObject] cancelUpload];
+                [self.currentQuickPost setRemoteStatus:AbstractPostRemoteStatusLocal];
+                [self.currentQuickPost save];
+            }
+            break;
+        case ACTION_SHEET_TAG_EXISTING_QUICK_PHOTO:
+            if(buttonIndex == 0) { // new post
+                self.currentQuickPost = nil;
+                [self quickPhotoButtonTapped:nil];
+            } else if(buttonIndex == 1) { // open existing post
+                [self editQuickPost:self.currentQuickPost];
+            } 
+            break;
     }
 }
 

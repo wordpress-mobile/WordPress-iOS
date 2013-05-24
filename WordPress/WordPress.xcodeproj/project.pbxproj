@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		000120E1173D57C0006A81CF /* CircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 000120E0173D57C0006A81CF /* CircularProgressView.m */; };
 		00F2E3F8166EEF9800D0527C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 834CE7371256D0F60046A4A3 /* CoreGraphics.framework */; };
 		00F2E3FA166EEFBE00D0527C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3653158F2D4500419A93 /* UIKit.framework */; };
 		00F2E3FB166EEFE100D0527C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3651158F2D3F00419A93 /* QuartzCore.framework */; };
@@ -724,6 +725,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		000120DF173D57C0006A81CF /* CircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularProgressView.h; sourceTree = "<group>"; };
+		000120E0173D57C0006A81CF /* CircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircularProgressView.m; sourceTree = "<group>"; };
 		031663050FFB151A0045D052 /* PostTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostTableViewCell.h; sourceTree = "<group>"; };
 		031663060FFB151A0045D052 /* PostTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTableViewCell.m; sourceTree = "<group>"; };
 		031666AC0FFC3E130045D052 /* CommentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentTableViewCell.h; sourceTree = "<group>"; };
@@ -1667,6 +1670,8 @@
 		031662E60FFB14C60045D052 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				000120DF173D57C0006A81CF /* CircularProgressView.h */,
+				000120E0173D57C0006A81CF /* CircularProgressView.m */,
 				CC669B241672C335009E16F8 /* NoteCommentPostBanner.h */,
 				CC669B251672C335009E16F8 /* NoteCommentPostBanner.m */,
 				CC669B1D1672C305009E16F8 /* FollowButton.h */,
@@ -3846,6 +3851,7 @@
 				E1D0D82B16D3D19200E33F4C /* PocketAPIOperation.m in Sources */,
 				E1D0D84716D3D2EA00E33F4C /* PocketActivity.m in Sources */,
 				E15051CB16CA5DDB00D3DDDC /* Blog+Jetpack.m in Sources */,
+				000120E1173D57C0006A81CF /* CircularProgressView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

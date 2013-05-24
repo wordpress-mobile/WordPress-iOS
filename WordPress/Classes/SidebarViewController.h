@@ -31,7 +31,10 @@
 - (void)selectNotificationsRow;
 
 - (void)uploadQuickPhoto:(Post *)post;
+- (void)editPost:(Post *)post;
 - (void)restorePreservedSelection;
 - (void)didReceiveUnseenNotesNotification;
+- (void)updateQuickPostProgress:(float)progress;
+- (void)postUploadFailed:(NSNotification*)notification;
 
 @end

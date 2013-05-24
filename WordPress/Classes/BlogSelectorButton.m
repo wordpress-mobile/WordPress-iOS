@@ -45,7 +45,7 @@
         
         CGRect postToFrame = self.bounds;
         postToFrame.origin.x = blavatarFrame.size.width + 15;
-        postToFrame.origin.y = postToFrame.origin.y + 6;
+        postToFrame.origin.y = postToFrame.origin.y + 3;
         postToFrame.size.width -= blavatarFrame.size.width + 10 + 50;
         postToFrame.size.height = 18.0f;
         postToLabel = [[UILabel alloc] initWithFrame:postToFrame];
@@ -143,9 +143,19 @@
             if ([results count] == 1) {
                 [postToLabel setText: NSLocalizedString(@"Posting to:", @"")];
                 self.enabled = NO;
-                selectorImageView.alpha = 0.0f;
             }
         }
+    }
+}
+
+- (void)setEnabled:(BOOL)enabled {
+    if (super.enabled == enabled) return;
+    
+    super.enabled = enabled;
+    if (enabled) {
+        selectorImageView.alpha = 1.0f;
+    } else {
+        selectorImageView.alpha = 0.0f;
     }
 }
 
