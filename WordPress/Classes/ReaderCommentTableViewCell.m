@@ -76,10 +76,24 @@
 		
 		self.textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, 44.0f);
 		
-		
 		UIView *view = [[UIView alloc] initWithFrame:self.bounds];
 		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		view.backgroundColor = [UIColor colorWithHexString:@"36A3CA"];
+		view.backgroundColor = [UIColor colorWithHexString:@"A9E2F3"];
+		
+		CGRect rect = CGRectMake(0, 0, 1, 1);
+		UIGraphicsBeginImageContext(rect.size);
+		CGContextRef context = UIGraphicsGetCurrentContext();
+		CGContextSetFillColorWithColor(context, [[UIColor colorWithHexString:@"EFEFEF"] CGColor]);
+		CGContextFillRect(context, rect);
+		UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+		
+		UIView *colorView = [[UIImageView alloc] initWithImage:img];
+		colorView.frame = CGRectMake(0.0f, 0.0f, width, 2.0f);
+		colorView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+
+		[view addSubview:colorView];
+
 		[self setSelectedBackgroundView:view];
     }
 	
