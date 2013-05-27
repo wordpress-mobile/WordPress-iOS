@@ -206,9 +206,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 #pragma mark - UITextField delegate methods
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	[textField resignFirstResponder];
-    
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {    
     if (textField == _usernameText) {
         [_passwordText becomeFirstResponder];
     } else if (textField == _passwordText) {
