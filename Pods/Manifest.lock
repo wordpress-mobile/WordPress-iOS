@@ -1,5 +1,5 @@
 PODS:
-  - AFNetworking (1.2.1)
+  - AFNetworking (1.2.0)
   - CTidy (0.3.0)
   - DTCoreText (1.0.2)
   - JSONKit (1.5pre)
@@ -18,7 +18,7 @@ PODS:
   - wpxmlrpc (0.1)
 
 DEPENDENCIES:
-  - AFNetworking (~> 1.0)
+  - AFNetworking (= 1.2)
   - CTidy (from `git://github.com/wordpress-mobile/CTidy.git`)
   - DTCoreText (~> 1.0.0)
   - JSONKit (~> 1.4)
@@ -45,7 +45,7 @@ EXTERNAL SOURCES:
     :podspec: https://raw.github.com/koke/WordPressApi/master/WordPressApi.podspec
 
 SPEC CHECKSUMS:
-  AFNetworking: a44069e3c9c89867544f6639482f155c7e5f9b41
+  AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
   CTidy: 6a35875a96dd441822e620732c1113be19769067
   DTCoreText: 4f2b9d62554c62dd7cd412c9f50ece1e70a548b9
   JSONKit: 409734ab3407fce90ef7eaa95d7168f38d9a6601
