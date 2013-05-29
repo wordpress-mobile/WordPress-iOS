@@ -266,6 +266,9 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 	
 	ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
 	
+    if (IS_IPAD)
+        [self.panelNavigationController popToRootViewControllerAnimated:NO];
+    
 	[self.panelNavigationController pushViewController:controller animated:YES];
 }
 
