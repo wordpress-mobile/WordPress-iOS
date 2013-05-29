@@ -82,7 +82,6 @@
     	
 	if(IS_IPAD)
 		self.tableView.backgroundView = nil;
-    
 }
 
 

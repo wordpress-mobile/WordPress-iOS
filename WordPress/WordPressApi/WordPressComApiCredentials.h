@@ -12,4 +12,5 @@
 + (NSString *)client;
 + (NSString *)secret;
 + (NSString *)pocketConsumerKey;
++ (NSString *)mixpanelAPIToken;
 @end

@@ -244,6 +244,7 @@
 	if(self.commentsViewController.blog.isSyncingComments) {
 		[self showSynchInProgressAlert];
 	} else {
+        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
 		[self showReplyToCommentViewWithAnimation:YES];
 	}
 }
@@ -272,6 +273,7 @@
 
 
 - (void)closeReplyViewAndSelectTheNewComment {
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailRepliedToComment];
 	[self dismissEditViewController];
 }
 
@@ -323,6 +325,7 @@
 }
 
 - (void)launchEditComment {
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
 	[self showEditCommentViewWithAnimation:YES];
 }
 
@@ -378,11 +381,12 @@
 		wasLastCommentPending = NO;
 	}
     if (segmentedControl.selectedSegmentIndex == 0) {
+        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedShowPreviousComment];
         [self.delegate showPreviousComment];
     } else {
+        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedShowNextComment];
         [self.delegate showNextComment];
     }
-
 }
 
 - (void)launchDeleteCommentActionSheet {
@@ -415,16 +419,19 @@
 }
 
 - (void)approveComment {
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailApprove];
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentWithSelector:@selector(approve)];
 }
 
 - (void)unApproveComment {
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailUnapprove];
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentWithSelector:@selector(unapprove)];
 }
 
 - (void)spamComment {
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [_comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(spam)];

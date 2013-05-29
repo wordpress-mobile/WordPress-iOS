@@ -10,7 +10,7 @@
 #define COCOAPODS_POD_AVAILABLE_AFNetworking
 #define COCOAPODS_VERSION_MAJOR_AFNetworking 1
 #define COCOAPODS_VERSION_MINOR_AFNetworking 2
-#define COCOAPODS_VERSION_PATCH_AFNetworking 1
+#define COCOAPODS_VERSION_PATCH_AFNetworking 0
 
 // CTidy
 #define COCOAPODS_POD_AVAILABLE_CTidy
@@ -30,6 +30,12 @@
 // so we were not able to define version macros.
 // Please contact the author.
 // Version: 1.5pre.
+
+// Mixpanel
+#define COCOAPODS_POD_AVAILABLE_Mixpanel
+#define COCOAPODS_VERSION_MAJOR_Mixpanel 2
+#define COCOAPODS_VERSION_MINOR_Mixpanel 0
+#define COCOAPODS_VERSION_PATCH_Mixpanel 0
 
 // NSObject-SafeExpectations
 #define COCOAPODS_POD_AVAILABLE_NSObject_SafeExpectations

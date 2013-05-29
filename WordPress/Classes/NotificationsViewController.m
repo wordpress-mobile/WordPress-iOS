@@ -19,7 +19,11 @@
 NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
-@interface NotificationsViewController ()
+@interface NotificationsViewController () {
+    BOOL _retrievingNotifications;
+    BOOL _viewHasAppeared;
+}
+
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *settingsButton;
 @property (nonatomic, strong) id authListener;
 @property (nonatomic, strong) WordPressComApi *user;
@@ -117,6 +121,12 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    if (!_viewHasAppeared) {
+        _viewHasAppeared = true;
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsOpened];
+    }
+    
     _isPushingViewController = NO;
     // If table is at the top, simulate a pull to refresh
     BOOL simulatePullToRefresh = (self.tableView.contentOffset.y == 0);
@@ -216,6 +226,8 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     
     BOOL hasDetailsView = [self noteHasDetailView:note];
     if (hasDetailsView) {
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsOpenedNotificationDetails];
+        
         _isPushingViewController = YES;
         if ([note isComment]) {
             NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];
@@ -323,17 +335,28 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     return YES;
 }
 
+- (BOOL)isSyncing
+{
+    return _retrievingNotifications;
+}
+
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     Note *lastNote = [self.resultsController.fetchedObjects lastObject];
     if (lastNote == nil) {
         return;
     }
-
+    
+    _retrievingNotifications = true;
+    
     [self.user getNotificationsBefore:lastNote.timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        _retrievingNotifications = false;
+                
         if (success) {
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        _retrievingNotifications = false;
+        
         if (failure) {
             failure(error);
         }

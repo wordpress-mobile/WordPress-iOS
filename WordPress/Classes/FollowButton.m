@@ -71,6 +71,11 @@
 - (void)toggleFollowState:(id)sender {
     
     BOOL isFollowing = self.followState == FollowButtonStateFollowing;
+    if (isFollowing) {
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnfollowBlog];
+    } else {
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailFollowBlog];
+    }
     // update the button to the new state
     self.followState = isFollowing ? FollowButtonStateNotFollowing : FollowButtonStateFollowing;
     

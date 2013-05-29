@@ -230,6 +230,12 @@
 
     BOOL isFollowing = [[noteDetails objectForKey:@"is_following"] boolValue];
     
+    if (isFollowing) {
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnfollowBlog];
+    } else {
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailFollowBlog];
+    }
+    
     NotificationsFollowTableViewCell *cell = (NotificationsFollowTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
     
     [cell setFollowing: !isFollowing];

@@ -38,6 +38,7 @@
 # * Chinese (Taiwan) [zh-Hant]
 
 LANGS={
+  'da' => 'da', # Danish
   'de' => 'de', # German
   'es' => 'es', # Spanish
   'fr' => 'fr', # French
@@ -47,10 +48,12 @@ LANGS={
   'id' => 'id', # Indonesian
   'it' => 'it', # Italian
   'ja' => 'ja', # Japanese
+  'ko' => 'ko', # Korean
   'nb' => 'nb', # Norwegian (Bokmål)
   'nl' => 'nl', # Dutch
   'pl' => 'pl', # Polish
   'pt' => 'pt', # Portuguese
+  'ru' => 'ru', # Russian
   'sv' => 'sv', # Swedish
   'tr' => 'tr', # Turkish
   'zh-cn' => 'zh-Hans', # Chinese (Chine)
