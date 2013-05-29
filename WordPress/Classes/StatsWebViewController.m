@@ -75,7 +75,7 @@ static NSString *_lastAuthedName = nil;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Stats";
+    self.title = NSLocalizedString(@"Stats", nil);
     
     // Bypass AFNetworking for ajax stats.
     webView.useWebViewLoading = YES;
