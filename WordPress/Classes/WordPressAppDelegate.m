@@ -164,6 +164,9 @@
         [[NSUserDefaults standardUserDefaults] setInteger:crashCount forKey:@"crashCount"];
     }
 
+    NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+
     NSString *extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
     WPFLog(@"===========================================================================");
 	WPFLog(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
@@ -177,6 +180,7 @@
     WPFLog(@"Extra debug: %@", extraDebug);
     WPFLog(@"Device model: %@ (%@)", [UIDeviceHardware platformString], [UIDeviceHardware platform]);
     WPFLog(@"OS:        %@ %@", [device systemName], [device systemVersion]);
+    WPFLog(@"Language:  %@", currentLanguage);
     WPFLog(@"UDID:      %@", [device wordpressIdentifier]);
     WPFLog(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]);
     WPFLog(@"===========================================================================");
