@@ -416,7 +416,7 @@
 							  fromSite:[self.post.siteID stringValue]
 						withParameters:params
 							   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-								   
+								   self.post.storedComment = nil;
 								   _commentTextView.editable = YES;
 								   _commentTextView.text = nil;
 								   [_activityView stopAnimating];
