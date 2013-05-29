@@ -32,6 +32,7 @@ extern NSInteger const ReaderTopicEndpointIndex;
 @property (nonatomic, strong) NSNumber *likeCount;
 @property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, strong) NSDate *sortDate;
+@property (nonatomic, strong) NSString *storedComment; // Formatted as commentID,string
 @property (nonatomic, strong) NSString *summary;
 @property (nonatomic, strong) NSMutableSet *comments;
 
@@ -98,6 +99,10 @@ extern NSInteger const ReaderTopicEndpointIndex;
 
 
 - (BOOL)isFreshlyPressed;
+
+- (void)storeComment:(NSNumber *)commentID comment:(NSString *)comment;
+
+- (NSDictionary *)getStoredComment;
 
 @end
 

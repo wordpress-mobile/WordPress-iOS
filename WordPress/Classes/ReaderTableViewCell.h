@@ -13,6 +13,7 @@
 
 @interface ReaderTableViewCell : UITableViewCell <DTAttributedTextContentViewDelegate>
 
+@property (nonatomic, weak) UIViewController *parentController;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 
 - (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;

@@ -20,6 +20,10 @@
 #import "WPToast.h"
 #import "ReaderPostDetailView.h"
 
+#define ReaderCommentFormFontSize 14.0f
+#define ReaderCommentFormMinLines 4
+#define ReaderCommentFormMaxLines 8
+
 @interface ReaderPostDetailViewController ()<ReaderPostDetailViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) ReaderPost *post;
@@ -30,6 +34,9 @@
 @property (nonatomic, strong) UIBarButtonItem *reblogButton;
 @property (nonatomic, strong) UIBarButtonItem *shareButton;
 @property (nonatomic, strong) UIBarButtonItem *sendCommentButton;
+@property (nonatomic, strong) UIView *navHeaderView;
+@property (nonatomic, strong) UILabel *navTitleLabel;
+@property (nonatomic, strong) UILabel *navDetailLabel;
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, strong) UIView *commentFormPointer;
 @property (nonatomic, strong) UILabel *commentFormLabel;
@@ -42,11 +49,16 @@
 @property (nonatomic, strong) NSArray *rowHeights;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic) BOOL isShowingKeyboard;
-@property (nonatomic) BOOL isReplying;
+@property (nonatomic) BOOL shouldShowKeyboard;
+@property (nonatomic) BOOL isScrollingCommentIntoView;
 
 - (void)prepareComments;
+- (void)showStoredComment;
 - (void)updateRowHeightsForWidth:(CGFloat)width;
 - (void)updateToolbar;
+- (void)updateNavHeader;
+- (BOOL)isReplying;
+- (CGFloat)heightForCommentForm;
 
 - (void)handleCommentButtonTapped:(id)sender;
 - (void)handleFollowButtonTapped:(id)sender;
@@ -120,7 +132,12 @@
 																		   target:self
 																		   action:@selector(handleShareButtonTapped:)];
 	}
-	self.navigationItem.rightBarButtonItem = _shareButton;
+	
+	if(IS_IPAD) {
+		self.toolbarItems = @[_shareButton];
+	} else {
+		self.navigationItem.rightBarButtonItem = _shareButton;
+	}
 
 	UIColor *color = [UIColor colorWithHexString:@"3478E3"];
 	CGFloat fontSize = 16.0f;
@@ -170,8 +187,13 @@
 	_headerView.backgroundColor = [UIColor whiteColor];
 	[self.tableView setTableHeaderView:_headerView];
 	
+	UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCloseKeyboard:)];
+	tgr.cancelsTouchesInView = NO;
+	[_headerView addGestureRecognizer:tgr];
+	
 	[self prepareComments];
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
+	[self showStoredComment];
 }
 
 
@@ -180,6 +202,9 @@
 	
 	self.panelNavigationController.delegate = self;
 	[self.navigationController setToolbarHidden:NO animated:YES];
+	[_headerView updateLayout];
+	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
+	[self showStoredComment];
 }
 
 
@@ -316,12 +341,17 @@
 
 
 - (void)handleCommentButtonTapped:(id)sender {
+	self.shouldShowKeyboard = YES;
 	if([[self.tableView visibleCells] count] == 0) {
 		if ([self.comments count] > 0) {
 			[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
 								  atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+		} else {
+			[self.tableView scrollRectToVisible:[self.tableView rectForFooterInSection:0] animated:YES];
 		}
 	}
+	
+	[_commentTextView becomeFirstResponder];
 }
 
 
@@ -405,6 +435,7 @@
 								   
 								   [self prepareComments];
 								   [self updateRowHeightsForWidth:self.tableView.frame.size.width];
+								   [self showStoredComment];
 								   [self.tableView reloadData];
 								   [self hideRefreshHeader];
 								   
@@ -475,6 +506,118 @@
 }
 
 
+- (void)updateNavHeader {
+
+	if (!_isShowingKeyboard) {
+		self.navigationItem.titleView = nil;
+		return;
+	}
+	
+	if (!_navHeaderView) {
+
+		CGFloat y = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? 6.0f : 0.0f;
+		self.navHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, y, 200.0f, 32.0f)];
+		_navHeaderView.backgroundColor = [UIColor clearColor];
+		_navHeaderView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+		
+		self.navTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 18.0f)];
+		_navTitleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+		_navTitleLabel.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
+		_navTitleLabel.shadowColor = [UIColor whiteColor];
+		_navTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+		_navTitleLabel.textAlignment = UITextAlignmentCenter;
+		_navTitleLabel.backgroundColor = [UIColor clearColor];
+		_navTitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		[_navHeaderView addSubview:_navTitleLabel];
+		
+		
+		self.navDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 18.0f, 200.0f, 14.0f)];
+		_navDetailLabel.font = [UIFont systemFontOfSize:12.0f];
+		_navDetailLabel.textColor = [UIColor grayColor];
+		_navDetailLabel.textAlignment = UITextAlignmentCenter;
+		_navDetailLabel.backgroundColor = [UIColor clearColor];
+		_navDetailLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		[_navHeaderView addSubview:_navDetailLabel];
+	}
+	
+	self.navigationItem.titleView = _navHeaderView;
+	
+	if ([self isReplying]) {
+		ReaderComment *comment = [_comments objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+		_navTitleLabel.text = NSLocalizedString(@"Replying", @"");
+		_navDetailLabel.text = [NSString stringWithFormat:@"to %@", comment.author];
+		[_sendCommentButton setTitle:NSLocalizedString(@"Reply", nil)];
+	} else {
+		_navTitleLabel.text = NSLocalizedString(@"Commenting", @"");
+		_navDetailLabel.text = [NSString stringWithFormat:@"on %@", self.post.postTitle];
+		[_sendCommentButton setTitle:NSLocalizedString(@"Comment", nil)];
+	}
+}
+
+
+- (CGFloat)heightForCommentForm {
+	
+	UIFont *font = [UIFont systemFontOfSize:ReaderCommentFormFontSize];
+	CGFloat maxHeight = ReaderCommentFormMaxLines * font.lineHeight;
+	CGFloat minHeight = ReaderCommentFormMinLines * font.lineHeight;
+	CGFloat height;
+	if (IS_IPAD) {
+		// Always max lines.
+		height = maxHeight;
+		
+	} else if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation) || _commentTextView == nil) {
+		// Always min lines.
+		height = minHeight;
+		
+	} else {
+		height = minHeight;
+//		CGSize size = [_commentTextView.text sizeWithFont:font constrainedToSize:CGSizeMake(_commentTextView.frame.size.width, maxHeight) lineBreakMode:NSLineBreakByWordWrapping];
+//		
+//		if (size.height > maxHeight) {
+//			height = maxHeight;
+//		} else if (size.height < minHeight) {
+//			height = minHeight;
+//		} else {
+//			height = size.height;
+//		}
+	}
+
+	return height + 30.0f; // 15px padding above and below the the UITextView;
+	
+}
+
+
+- (BOOL)isReplying {
+	return ([self.tableView indexPathForSelectedRow] != nil) ? YES : NO;
+}
+
+
+- (void)showStoredComment {
+	NSDictionary *storedComment = [self.post getStoredComment];
+	if (!storedComment) {
+		return;
+	}
+
+	_commentPromptLabel.hidden = YES;
+	_commentTextView.text = [storedComment objectForKey:@"comment"];
+
+	NSNumber *commentID = [storedComment objectForKey:@"commentID"];
+	NSInteger cid = [commentID integerValue];
+	
+	if (cid == 0) return;
+	
+	NSUInteger idx = [_comments indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		ReaderComment *c = (ReaderComment *)obj;
+		if([c.commentID integerValue] == cid) {
+			return YES;
+		}
+		return NO;
+	}];
+	NSIndexPath *path = [NSIndexPath indexPathForRow:idx inSection:0];
+	[self.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
+}
+
+
 #pragma mark - Sync methods
 
 - (void)syncWithUserInteraction:(BOOL)userInteraction {
@@ -519,7 +662,7 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	return 100.0f;
+	return [self heightForCommentForm];
 }
 
 
@@ -539,40 +682,32 @@
 	
 	if (_footerView == nil) {
 		CGFloat width = self.tableView.frame.size.width;
-		CGFloat height = 100.0f;
+		CGFloat height = [self heightForCommentForm];
+		
 		CGRect frame = CGRectMake(0.0f, 0.0f, width, height);
 		self.footerView = [[UIView alloc] initWithFrame:frame];
 		_footerView.backgroundColor = [UIColor colorWithHexString:@"1E8CBE"];
 		
-		UIButton *footerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		footerButton.frame = frame;
-		[footerButton addTarget:self action:@selector(handleFooterViewTapped:) forControlEvents:UIControlEventTouchUpInside];
-		[_footerView addSubview:footerButton];
-
-		self.commentFormLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 7.0f, width - 20.0f, 18.0f)];
-		_commentFormLabel.text = [NSString stringWithFormat:@"Commenting on %@", self.post.postTitle];
-		_commentFormLabel.textColor = [UIColor whiteColor];
-		_commentFormLabel.font = [UIFont systemFontOfSize:14.0f];
-		_commentFormLabel.backgroundColor = [UIColor clearColor];
-		[_footerView addSubview:_commentFormLabel];
-
 		UIImageView *imgView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"note-reply-field"] resizableImageWithCapInsets:UIEdgeInsetsMake(6.0f, 6.0f, 6.0f, 6.0f)]];
-		imgView.frame = CGRectMake(10.0f, 30.0f, width - 20.0f, 60.0f);
-		imgView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		imgView.frame = CGRectMake(10.0f, 10.0f, width - 20.0f, height - 20.0f);
+		imgView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		[_footerView addSubview:imgView];
 		
-		self.commentTextView = [[UITextView alloc] initWithFrame:CGRectMake(15.0f, 35.0f, width - 30.0, 50.0f)];
-		_commentTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_commentTextView.font = [UIFont systemFontOfSize:14.0f];
+		
+		UIFont *font = [UIFont systemFontOfSize:ReaderCommentFormFontSize];
+
+		self.commentTextView = [[UITextView alloc] initWithFrame:CGRectMake(15.0f, 15.0f, width - 50.0, height - 30.0f)];
+		_commentTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_commentTextView.font = font;
 		_commentTextView.delegate = self;
 		_commentTextView.backgroundColor = [UIColor clearColor];
 		[_footerView addSubview:_commentTextView];
 		
-		self.commentPromptLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 35.0f, width - 30.0f, 20.0f)];
+		self.commentPromptLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 15.0f, width - 50.0f, 20.0f)];
 		_commentPromptLabel.text = NSLocalizedString(@"Tap to reply", @"");
 		_commentPromptLabel.backgroundColor = [UIColor clearColor];
 		_commentPromptLabel.textColor = [UIColor grayColor];
-		_commentPromptLabel.font = [UIFont systemFontOfSize:14.0f];
+		_commentPromptLabel.font = [UIFont systemFontOfSize:ReaderCommentFormFontSize];
 		[_footerView addSubview:_commentPromptLabel];
 		
 		self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -584,7 +719,7 @@
 		_activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 		[_footerView addSubview:_activityView];
 	}
-	
+	[self showStoredComment];
 	return _footerView;
 }
 
@@ -594,6 +729,7 @@
     ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[ReaderCommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+		cell.parentController = self;
     }
 	cell.accessoryType = UITableViewCellAccessoryNone;
 		
@@ -605,31 +741,26 @@
 
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (_isShowingKeyboard) {
+		[self.view endEditing:YES];
+		return nil;
+	}
+
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 	if ([cell isSelected]) {
 		[tableView deselectRowAtIndexPath:indexPath animated:NO];
-		[tableView.delegate tableView:tableView didDeselectRowAtIndexPath:indexPath];
 		return nil;
 	}
+	[_commentTextView becomeFirstResponder];
 	return indexPath;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	ReaderComment *comment = [_comments objectAtIndex:indexPath.row];
-	_commentFormLabel.text = [NSString stringWithFormat:@"Replying to %@", comment.author];
-	
 	if(_isShowingKeyboard) {
 		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 	}
-}
-
-
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if ([tableView indexPathForSelectedRow]) {
-		return;
-	}
-	_commentFormLabel.text = [NSString stringWithFormat:@"Commenting on %@", self.post.postTitle];
+	[self updateNavHeader];
 }
 
 
@@ -645,9 +776,26 @@
 
 #pragma mark - UIScrollView Delegate Methods
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+	if (_shouldShowKeyboard){
+		[_commentTextView becomeFirstResponder];
+	}
+	if (_isScrollingCommentIntoView){
+		self.isScrollingCommentIntoView = NO;
+	}
+}
+
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-	if ([self.tableView.visibleCells count] == 0 && _isShowingKeyboard) {
-		[self handleCloseKeyboard:nil];
+	if (_isShowingKeyboard) {
+		if ([_comments count] == 0) {
+			CGRect rect = [self.tableView rectForFooterInSection:0];
+			if (self.tableView.contentOffset.y < rect.origin.y - (self.tableView.bounds.size.height - rect.size.height) ){
+				[self handleCloseKeyboard:nil];
+			}
+		} else if([self.tableView.visibleCells count] == 0) {
+			[self handleCloseKeyboard:nil];
+		}
 	}
 }
 
@@ -662,9 +810,10 @@
 #pragma mark - UITextView Delegate Methods
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCloseKeyboard:)];
+	self.shouldShowKeyboard = NO;
+	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(handleCloseKeyboard:)];
 	if (!_sendCommentButton) {
-		_sendCommentButton = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(handleSendCommentButtonTapped:)];
+		_sendCommentButton = [[UIBarButtonItem alloc] initWithTitle:@"Comment" style:UIBarButtonItemStyleDone target:self action:@selector(handleSendCommentButtonTapped:)];
 	}
 	[self.navigationItem setLeftBarButtonItem:cancelButton animated:NO];
 	[self.navigationItem setRightBarButtonItem:_sendCommentButton animated:NO];
@@ -673,12 +822,28 @@
 	_isShowingKeyboard = YES;
 	_commentPromptLabel.hidden = YES;
 	
-	[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+	[self updateNavHeader];
 }
 
 
 - (void)textViewDidChange:(UITextView *)textView {
 	_sendCommentButton.enabled = (_commentTextView.text.length == 0) ? NO : YES;
+	
+//	// Resize the comment field if necessary
+//	if (IS_IPHONE && UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+//		if (_footerView.frame.size.height != [self heightForCommentForm]) {
+//			[self.tableView reloadData];
+//		}
+//	}
+	
+	// If we are replying, and scrolled away from the comment, scroll back to it real quick.
+	if ([self isReplying] && !_isScrollingCommentIntoView) {
+		NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+		if (NSOrderedSame != [path compare:[self.tableView.indexPathsForVisibleRows objectAtIndex:0]]) {
+			self.isScrollingCommentIntoView = YES;
+			[self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:YES];
+		}
+	}
 }
 
 
@@ -687,6 +852,21 @@
 	[self.navigationItem setRightBarButtonItem:self.shareButton animated:NO];
 	_isShowingKeyboard = NO;
 	_commentPromptLabel.hidden = (_commentTextView.text.length > 0) ? YES : NO;
+
+	if ([_commentTextView.text length] > 0) {
+		// Save the text
+		NSNumber *commentID = nil;
+		if ([self isReplying]){
+			ReaderComment *comment = [_comments objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+			commentID = comment.commentID;
+		}
+		[self.post storeComment:commentID comment:_commentTextView.text];
+	} else {
+		self.post.storedComment = nil;
+	}
+	[self.post save];
+	
+	[self updateNavHeader];
 }
 
 

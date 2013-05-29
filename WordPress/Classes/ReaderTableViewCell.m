@@ -29,9 +29,8 @@
 		_textContentView.shouldDrawImages = NO;
 		_textContentView.shouldLayoutCustomSubviews = YES;
 		[self.contentView addSubview:_textContentView];
-		
-		
     }
+	
     return self;
 }
 
@@ -71,7 +70,7 @@
 - (void)handleLinkTapped:(id)sender {
 	WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:((DTLinkButton *)sender).URL];
-	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller animated:YES];
+	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller fromViewController:self.parentController animated:YES];
 }
 
 
