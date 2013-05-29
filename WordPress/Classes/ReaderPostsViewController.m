@@ -82,7 +82,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
     }
     
 	// Compute row heights now for smoother scrolling later.
-//	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
+	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 	
 }
 

@@ -142,7 +142,7 @@
 	// Are we showing an image? What size should it be?
 	if(_showImage) {
 		height = (contentWidth * 0.66f);
-		self.imageView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
+		self.imageView.frame = CGRectMake(10.0f, nextY, contentWidth, height);
 		nextY += ceilf(height + vpadding);
 	} else {
 		nextY += vpadding;

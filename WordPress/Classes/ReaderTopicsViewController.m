@@ -100,7 +100,7 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 		
 		for (NSDictionary *dict in arr) {
 			NSString *title = [dict objectForKey:@"cat_name"];
-			NSString *endpoint = [NSString stringWithFormat:topicEndpoint, [dict objectForKey:@"cat_id"]];
+			NSString *endpoint = [NSString stringWithFormat:topicEndpoint, [dict objectForKey:@"cat_name"]];
 			[topics addObject:@{@"title": title, @"endpoint":endpoint}];
 		}
 		
