@@ -15,6 +15,7 @@
 
 @property (nonatomic, weak) UIViewController *parentController;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
+@property (nonatomic, strong) UIImageView *cellImageView;
 
 - (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;
 - (NSAttributedString *)convertHTMLToAttributedString:(NSString *)html withOptions:(NSDictionary *)options;

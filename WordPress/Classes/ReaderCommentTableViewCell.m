@@ -50,8 +50,8 @@
     if (self) {
 		CGFloat width = self.frame.size.width;
 		
-		[self.imageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
-		self.imageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+		[self.cellImageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
+		self.cellImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 		
 		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - (10.0f + 30.0f), 10.0f, 30.0f, 20.0f)];
 		[_dateLabel setFont:[UIFont systemFontOfSize:14.0f]];
@@ -110,7 +110,7 @@
 	frame.size.width -= frame.origin.x;
 	self.contentView.frame = frame;
 	
-	[self.imageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
+	[self.cellImageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
 	
 	CGFloat width = self.contentView.frame.size.width;
 	CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width].height;
@@ -171,11 +171,11 @@
 	self.indentationWidth = 10.0f;
 	self.indentationLevel = [comment.depth integerValue];
 	
-	[self.contentView addSubview:self.imageView];
+	[self.contentView addSubview:self.cellImageView];
 	
 	_dateLabel.text = [comment shortDate];
 	_authorLabel.text = comment.author;
-	[self.imageView setImageWithURL:[NSURL URLWithString:comment.authorAvatarURL] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom.png"]];
+	[self.cellImageView setImageWithURL:[NSURL URLWithString:comment.authorAvatarURL] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom.png"]];
 	self.textContentView.attributedString = [self convertHTMLToAttributedString:comment.content withOptions:nil];
 }
 
