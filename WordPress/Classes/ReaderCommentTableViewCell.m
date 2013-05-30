@@ -63,7 +63,7 @@
 		
 		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(40.0f, 10.0f, (_dateLabel.frame.origin.x - 50.0f), 20.0f)];
 		[_authorLabel setFont:[UIFont systemFontOfSize:14.0f]];
-		_dateLabel.textColor = [UIColor grayColor];
+		_authorLabel.textColor = [UIColor grayColor];
 		_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_authorLabel.backgroundColor = [UIColor clearColor];
 		[self.contentView addSubview:_authorLabel];
