@@ -176,7 +176,9 @@
 	_dateLabel.text = [comment shortDate];
 	_authorLabel.text = comment.author;
 	[self.cellImageView setImageWithURL:[NSURL URLWithString:comment.authorAvatarURL] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom.png"]];
-	self.textContentView.attributedString = [self convertHTMLToAttributedString:comment.content withOptions:nil];
+	
+	NSString *html = [NSString stringWithFormat:@"<style>a{color:#3478E3;}</style>%@", comment.content];
+	self.textContentView.attributedString = [self convertHTMLToAttributedString:html withOptions:nil];
 }
 
 @end
