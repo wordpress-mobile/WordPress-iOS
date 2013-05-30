@@ -20,7 +20,7 @@
     return WPCOM_API_CLIENT_SECRET;
 }
 
-+ (NSString *)mixpanelAPIToken;
++ (NSString *)mixpanelAPIToken {
     return @"";
 }
 
