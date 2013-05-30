@@ -153,7 +153,9 @@
 	[commentBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
 //	[commentBtn setTitle:NSLocalizedString(@"Comment", @"") forState:UIControlStateNormal];
 	[commentBtn setTitleColor:color forState:UIControlStateNormal];
-	[commentBtn setImage:[UIImage imageNamed:@"note_icon_comment"] forState:UIControlStateNormal];
+	[commentBtn setImage:[UIImage imageNamed:@"toolbar_comment"] forState:UIControlStateNormal];
+    [commentBtn setImage:[UIImage imageNamed:@"toolbar_comment_active"] forState:UIControlStateHighlighted];
+    [commentBtn setImage:[UIImage imageNamed:@"toolbar_comment_active"] forState:UIControlStateSelected];
 	commentBtn.frame = CGRectMake(0.0f, 0.0f, 100.0f, 40.0f);
 	[commentBtn addTarget:self action:@selector(handleCommentButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	
@@ -161,7 +163,9 @@
 	[likeBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
 //	[likeBtn setTitle:NSLocalizedString(@"Like", @"") forState:UIControlStateNormal];
 	[likeBtn setTitleColor:color forState:UIControlStateNormal];
-	[likeBtn setImage:[UIImage imageNamed:@"note_icon_like"] forState:UIControlStateNormal];
+	[likeBtn setImage:[UIImage imageNamed:@"toolbar_like"] forState:UIControlStateNormal];
+    [likeBtn setImage:[UIImage imageNamed:@"toolbar_like_active"] forState:UIControlStateHighlighted];
+    [likeBtn setImage:[UIImage imageNamed:@"toolbar_like_active"] forState:UIControlStateSelected];
 	likeBtn.frame = CGRectMake(0.0f, 0.0f, 100.0f, 40.0f);
 	likeBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 	[likeBtn addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -170,7 +174,9 @@
 	[followBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
 //	[followBtn setTitle:NSLocalizedString(@"Follow", @"") forState:UIControlStateNormal];
 	[followBtn setTitleColor:color forState:UIControlStateNormal];
-	[followBtn setImage:[UIImage imageNamed:@"note_icon_follow"] forState:UIControlStateNormal];
+	[followBtn setImage:[UIImage imageNamed:@"toolbar_follow"] forState:UIControlStateNormal];
+    [followBtn setImage:[UIImage imageNamed:@"toolbar_follow_active"] forState:UIControlStateHighlighted];
+    [followBtn setImage:[UIImage imageNamed:@"toolbar_follow_active"] forState:UIControlStateSelected];
 	followBtn.frame = CGRectMake(0.0f, 0.0f, 100.0f, 40.0f);
 	[followBtn addTarget:self action:@selector(handleFollowButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	
@@ -178,7 +184,9 @@
 	[reblogBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
 //	[reblogBtn setTitle:NSLocalizedString(@"Reblog", @"") forState:UIControlStateNormal];
 	[reblogBtn setTitleColor:color forState:UIControlStateNormal];
-	[reblogBtn setImage:[UIImage imageNamed:@"note_icon_reblog"] forState:UIControlStateNormal];
+	[reblogBtn setImage:[UIImage imageNamed:@"toolbar_reblog"] forState:UIControlStateNormal];
+    [reblogBtn setImage:[UIImage imageNamed:@"toolbar_reblog_active"] forState:UIControlStateHighlighted];
+    [reblogBtn setImage:[UIImage imageNamed:@"toolbar_reblog_active"] forState:UIControlStateSelected];
 	reblogBtn.frame = CGRectMake(0.0f, 0.0f, 100.0f, 40.0f);
 	reblogBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	[reblogBtn addTarget:self action:@selector(handleReblogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -190,6 +198,10 @@
 	[self updateToolbar];
 	
 	CGFloat width = self.tableView.frame.size.width;
+    CGFloat padding = 20.0f;
+    CGFloat labelWidth = width - 100.0f;
+    CGFloat labelHeight = 20.0f;
+    CGFloat avatarSize = 60.0f;
 	
 	self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 190.0f)];
 	_headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -205,40 +217,40 @@
 	[button addTarget:self action:@selector(handleAuthorViewTapped:) forControlEvents:UIControlEventTouchUpInside];
 	[_authorView addSubview:button];
 	
-	self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10.0f, 10.0f, 60.0f, 60.0f)];
+	self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(padding, padding, avatarSize, avatarSize)];
 	_avatarImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 	[_avatarImageView setImageWithURL:[NSURL URLWithString:self.post.authorAvatarURL] placeholderImage:[UIImage imageNamed:@""]];
 	[_authorView addSubview:_avatarImageView];
 	
-	self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(75.0f, 10.0f, width - 90.0f, 20.0f)];
+	self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding, labelWidth, labelHeight)];
 	_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_authorLabel.backgroundColor = [UIColor clearColor];
-	_authorLabel.font = [UIFont systemFontOfSize:14.0f];
+	_authorLabel.font = [UIFont boldSystemFontOfSize:14.0f];
 	_authorLabel.text = (self.post.author != nil) ? self.post.author : self.post.authorDisplayName;
-	_authorLabel.textColor = [UIColor grayColor];
+	_authorLabel.textColor = [UIColor colorWithHexString:@"464646"];
 	[_authorView addSubview:_authorLabel];
 	
-	self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(75.0f, 30.0f, width - 90.0f, 20.0f)];
+	self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding + labelHeight, labelWidth, labelHeight)];
 	_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_dateLabel.backgroundColor = [UIColor clearColor];
 	_dateLabel.font = [UIFont systemFontOfSize:14.0f];
 	_dateLabel.text = [NSString stringWithFormat:@"%@ on", [self.post prettyDateString]];
-	_dateLabel.textColor = [UIColor grayColor];
+	_dateLabel.textColor = [UIColor colorWithHexString:@"aaaaaa"];
 	[_authorView addSubview:_dateLabel];
 	
-	self.blogLabel = [[UILabel alloc] initWithFrame:CGRectMake(75.0f, 50.0f, width - 90.0f, 20.0f)];
+	self.blogLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding + labelHeight * 2, labelWidth, labelHeight)];
 	_blogLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_blogLabel.backgroundColor = [UIColor clearColor];
 	_blogLabel.font = [UIFont systemFontOfSize:14.0f];
 	_blogLabel.text = self.post.blogName;
-	_blogLabel.textColor = [UIColor grayColor];
+	_blogLabel.textColor = [UIColor colorWithHexString:@"108bc0"];
 	[_authorView addSubview:_blogLabel];
 	
-	self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 80.0f, width, 100.0f)]; // Starting height is arbitrary
+	self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, _authorView.frame.size.height + padding, width, 100.0f)]; // Starting height is arbitrary
 	_textContentView.delegate = self;
 	_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_textContentView.backgroundColor = [UIColor clearColor];
-	_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
+	_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, padding, 0.0f, padding);
 	_textContentView.shouldDrawImages = NO;
 	_textContentView.shouldDrawLinks = NO;
 	[_headerView addSubview:_textContentView];
@@ -247,13 +259,13 @@
 	NSString *content = self.post.content;
 	
 	if([self.post.postTitle length] > 0) {
-		str = [NSString stringWithFormat:@"<h2 style=\"color:#000000;font-size:18px;font-weight:100;margin-bottom:8px;\">%@</h2>%@", self.post.postTitle, content];
+		str = [NSString stringWithFormat:@"<h2 style=\"color:#333333;font-size:18px;font-weight:100;margin-bottom:12px;\">%@</h2>%@", self.post.postTitle, content];
 	} else {
 		str = content;
 	}
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
 														  DTDefaultFontFamily:@"Helvetica",
-										   NSTextSizeMultiplierDocumentOption:[NSNumber numberWithFloat:1.3f]
+										   NSTextSizeMultiplierDocumentOption:[NSNumber numberWithFloat:1.4f]
 								 }];
 	_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
 																			 options:dict
