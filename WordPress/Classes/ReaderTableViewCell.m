@@ -17,9 +17,10 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 
-		[self.contentView addSubview:self.imageView]; // TODO: Not sure about this...
-		self.imageView.contentMode = UIViewContentModeScaleAspectFill;
-		self.imageView.clipsToBounds = YES;
+		self.cellImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 44.0f, 44.0f)]; // arbitrary size.
+		[self.contentView addSubview:_cellImageView]; // TODO: Not sure about this...
+		_cellImageView.contentMode = UIViewContentModeScaleAspectFill;
+		_cellImageView.clipsToBounds = YES;
 		
 		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 44.0f)];
 		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -29,17 +30,16 @@
 		_textContentView.shouldDrawImages = NO;
 		_textContentView.shouldLayoutCustomSubviews = YES;
 		[self.contentView addSubview:_textContentView];
-		
-		
     }
+	
     return self;
 }
 
 
 - (void)prepareForReuse {
 	[super prepareForReuse];
-	[self.imageView cancelImageRequestOperation];
-	self.imageView.image = nil;
+	[_cellImageView cancelImageRequestOperation];
+	_cellImageView.image = nil;
 	_textContentView.attributedString = nil;
 }
 
@@ -71,7 +71,7 @@
 - (void)handleLinkTapped:(id)sender {
 	WPWebViewController *controller = [[WPWebViewController alloc] init];
 	[controller setUrl:((DTLinkButton *)sender).URL];
-	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller animated:YES];
+	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller fromViewController:self.parentController animated:YES];
 }
 
 

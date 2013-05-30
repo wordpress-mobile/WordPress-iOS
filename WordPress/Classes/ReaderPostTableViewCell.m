@@ -68,8 +68,8 @@
 		_containerView.backgroundColor = [UIColor whiteColor];
 		[self.contentView addSubview:_containerView];
 		
-		self.imageView.contentMode = UIViewContentModeScaleAspectFill;
-		[_containerView addSubview:self.imageView];
+		self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
+		[_containerView addSubview:self.cellImageView];
 
 		self.textContentView.frame = CGRectMake(0.0f, 0.0f, width, 44.0f);
 		[_containerView addSubview:self.textContentView];
@@ -142,7 +142,7 @@
 	// Are we showing an image? What size should it be?
 	if(_showImage) {
 		height = (contentWidth * 0.66f);
-		self.imageView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
+		self.cellImageView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
 		nextY += ceilf(height + vpadding);
 	} else {
 		nextY += vpadding;
@@ -243,17 +243,17 @@
 	_bylineLabel.text = [NSString stringWithFormat:@"%@ \non %@", [post prettyDateString], post.blogName];
 
 	self.showImage = NO;
-	self.imageView.hidden = YES;
+	self.cellImageView.hidden = YES;
 	NSURL *url = nil;
 	if (post.featuredImage) {
 		self.showImage = YES;
-		self.imageView.hidden = NO;
+		self.cellImageView.hidden = NO;
 
 		NSInteger width = ceil(_containerView.frame.size.width);
 		NSString *path = [NSString stringWithFormat:@"https://i0.wp.com/%@?w=%i", post.featuredImage, width];
 		url = [NSURL URLWithString:path];
 
-		[self.imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
+		[self.cellImageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
 	}
 	
 	NSString *likeStr = NSLocalizedString(@"Like", @"Like button title.");

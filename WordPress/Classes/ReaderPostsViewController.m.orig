@@ -42,11 +42,8 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-<<<<<<< HEAD
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	
-=======
->>>>>>> 6f9706547d7855e4cb42616471754729f4c0ee29
 	// Topics button
 	UIBarButtonItem *button = nil;
     if (IS_IPHONE && [[UIButton class] respondsToSelector:@selector(appearance)]) {
@@ -85,7 +82,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
     }
     
 	// Compute row heights now for smoother scrolling later.
-	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
+//	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 	
 }
 
@@ -98,7 +95,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 	NSDictionary *dict = [self currentTopic];
 	NSString *title = [dict objectForKey:@"title"];
 	self.title = NSLocalizedString(title, @"");
-
+	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 }
 
 
@@ -204,12 +201,9 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 								 [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ReaderLastSyncDateKey];
 								 [NSUserDefaults resetStandardUserDefaults];
 								 
-<<<<<<< HEAD
 								 NSTimeInterval interval = - (60 * 60 * 24 * 7); // 7 days.
 								 [ReaderPost deletePostsSynedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]] withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
 								 
-=======
->>>>>>> 6f9706547d7855e4cb42616471754729f4c0ee29
 								 self.resultsController = nil;
 								 [self updateRowHeightsForWidth:self.tableView.frame.size.width];
 								 [self.tableView reloadData];
@@ -254,6 +248,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[ReaderPostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+		cell.parentController = self;
     }
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.accessoryType = UITableViewCellAccessoryNone;
@@ -271,8 +266,15 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
 	
 	ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
+<<<<<<< HEAD
+	[self.panelNavigationController pushViewController:controller fromViewController:self animated:YES];
+=======
 	
+    if (IS_IPAD)
+        [self.panelNavigationController popToRootViewControllerAnimated:NO];
+    
 	[self.panelNavigationController pushViewController:controller animated:YES];
+>>>>>>> 9dd91f4e82fc8f950f2cd4bdb8a15df00fc48739
 }
 
 

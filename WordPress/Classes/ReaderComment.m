@@ -111,7 +111,7 @@
 	
 	// Update depths
 	commentsArr = [self fetchParentCommentsForPost:post withContext:context];
-	__block void(__weak ^updateDepth)(NSArray *, NSNumber *) = ^void (NSArray *comments, NSNumber *depth) {
+	__block void(__unsafe_unretained ^updateDepth)(NSArray *, NSNumber *) = ^void (NSArray *comments, NSNumber *depth) {
 		for (ReaderComment *comment in comments) {
 			comment.depth = depth;
 			if([comment.childComments count] > 0) {

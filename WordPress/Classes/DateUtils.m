@@ -37,7 +37,13 @@
 
 + (NSDate *)dateFromISOString:(NSString *)dateString {
 	NSArray *formats = @[@"yyyy-MM-dd'T'HH:mm:ssZZZZZ", @"yyyy-MM-dd HH:mm:ss"];
-	NSDate *date;
+	NSDate *date = nil;
+	if ([dateString length] == 25) {
+		NSRange rng = [dateString rangeOfString:@":" options:NSBackwardsSearch range:NSMakeRange(20, 5)];
+		if(rng.location != NSNotFound) {
+			dateString = [dateString stringByReplacingCharactersInRange:rng withString:@""];
+		}
+	}
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	for (NSString *dateFormat in formats) {
 		[dateFormatter setDateFormat:dateFormat];
@@ -46,7 +52,7 @@
 			return date;
 		}
 	}
-	return nil;
+	return date;
 }
 
 @end

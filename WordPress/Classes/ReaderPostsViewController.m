@@ -95,7 +95,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 	NSDictionary *dict = [self currentTopic];
 	NSString *title = [dict objectForKey:@"title"];
 	self.title = NSLocalizedString(title, @"");
-
+	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 }
 
 
@@ -248,6 +248,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
     ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[ReaderPostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+		cell.parentController = self;
     }
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.accessoryType = UITableViewCellAccessoryNone;
@@ -265,8 +266,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
 	
 	ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
-	
-	[self.panelNavigationController pushViewController:controller animated:YES];
+	[self.panelNavigationController pushViewController:controller fromViewController:self animated:YES];
 }
 
 

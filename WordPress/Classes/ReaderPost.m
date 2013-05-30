@@ -41,6 +41,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 @dynamic likeCount;
 @dynamic siteID;
 @dynamic sortDate;
+@dynamic storedComment;
 @dynamic summary;
 @dynamic comments;
 
@@ -479,6 +480,23 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 - (BOOL)isFreshlyPressed {
 	return ([self.endpoint rangeOfString:@"freshly-pressed"].location != NSNotFound)? true : false;
+}
+
+
+- (void)storeComment:(NSNumber *)commentID comment:(NSString *)comment {
+	self.storedComment = [NSString stringWithFormat:@"%i|storedcomment|%@", [commentID integerValue], comment];
+}
+
+
+- (NSDictionary *)getStoredComment {
+	if (!self.storedComment) {
+		return nil;
+	}
+	
+	NSArray *arr = [self.storedComment componentsSeparatedByString:@"|storedcomment|"];
+	NSNumber *commentID = [[arr objectAtIndex:0] numericValue];
+	NSString *commentText = [arr objectAtIndex:1];
+	return @{@"commentID":commentID, @"comment":commentText};
 }
 
 
