@@ -256,7 +256,7 @@
 	self.resultsController = nil;
 	[_comments removeAllObjects];
 	
-	__block void(__weak ^flattenComments)(NSArray *) = ^void (NSArray *comments) {
+	__block void(__unsafe_unretained ^flattenComments)(NSArray *) = ^void (NSArray *comments) {
 		// Ensure the array is correctly sorted. 
 		comments = [comments sortedArrayUsingComparator: ^(id obj1, id obj2) {
 			ReaderComment *a = obj1;
