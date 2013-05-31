@@ -7,41 +7,36 @@
 //
 
 #import "ReaderPostDetailViewController.h"
-#import <DTCoreText/DTCoreText.h>
 #import <QuartzCore/QuartzCore.h>
-#import <MediaPlayer/MediaPlayer.h>
 #import <MessageUI/MFMailComposeViewController.h>
 #import "UIImageView+Gravatar.h"
 #import "WPActivities.h"
 #import "WPWebViewController.h"
-#import "ReaderMediaView.h"
-#import "ReaderImageView.h"
-#import "ReaderVideoView.h"
 #import "PanelNavigationConstants.h"
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
 #import "ReaderComment.h"
 #import "ReaderCommentTableViewCell.h"
-#import "WPImageViewController.h"
-#import "WPWebVideoViewController.h"
 #import "WPToast.h"
+#import "ReaderPostDetailView.h"
 
-@interface ReaderPostDetailViewController ()<DTAttributedTextContentViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate>
+#define ReaderCommentFormFontSize 14.0f
+#define ReaderCommentFormMinLines 4
+#define ReaderCommentFormMaxLines 8
+
+@interface ReaderPostDetailViewController ()<ReaderPostDetailViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) ReaderPost *post;
-@property (nonatomic, strong) UIView *headerView;
-@property (nonatomic, strong) UIView *authorView;
-@property (nonatomic, strong) UIImageView *avatarImageView;
-@property (nonatomic, strong) UILabel *authorLabel;
-@property (nonatomic, strong) UILabel *dateLabel;
-@property (nonatomic, strong) UILabel *blogLabel;
+@property (nonatomic, strong) ReaderPostDetailView *headerView;
 @property (nonatomic, strong) UIBarButtonItem *commentButton;
 @property (nonatomic, strong) UIBarButtonItem *likeButton;
 @property (nonatomic, strong) UIBarButtonItem *followButton;
 @property (nonatomic, strong) UIBarButtonItem *reblogButton;
 @property (nonatomic, strong) UIBarButtonItem *shareButton;
 @property (nonatomic, strong) UIBarButtonItem *sendCommentButton;
-@property (nonatomic, strong) DTAttributedTextContentView *textContentView;
+@property (nonatomic, strong) UIView *navHeaderView;
+@property (nonatomic, strong) UILabel *navTitleLabel;
+@property (nonatomic, strong) UILabel *navDetailLabel;
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, strong) UIView *commentFormPointer;
 @property (nonatomic, strong) UILabel *commentFormLabel;
@@ -49,36 +44,30 @@
 @property (nonatomic, strong) UITextView *commentTextView;
 @property (nonatomic, strong) UIButton *commentSubmitButton;
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
-@property (nonatomic, strong) NSMutableSet *mediaPlayers;
 @property (nonatomic, strong) UIActionSheet *linkOptionsActionSheet;
-@property (nonatomic, strong) NSMutableArray *mediaArray;
 @property (nonatomic, strong) NSMutableArray *comments;
 @property (nonatomic, strong) NSArray *rowHeights;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic) BOOL isShowingKeyboard;
-@property (nonatomic) BOOL isReplying;
+@property (nonatomic) BOOL shouldShowKeyboard;
+@property (nonatomic) BOOL isScrollingCommentIntoView;
 
 - (void)prepareComments;
+- (void)showStoredComment;
 - (void)updateRowHeightsForWidth:(CGFloat)width;
-- (void)updateLayout;
-- (void)updateMediaLayout:(ReaderMediaView *)mediaView;
 - (void)updateToolbar;
+- (void)updateNavHeader;
+- (BOOL)isReplying;
+- (CGFloat)heightForCommentForm;
 
-- (void)handleAuthorViewTapped:(id)sender;
 - (void)handleCommentButtonTapped:(id)sender;
 - (void)handleFollowButtonTapped:(id)sender;
-- (void)handleImageLinkTapped:(id)sender;
 - (void)handleLikeButtonTapped:(id)sender;
-- (void)handleLinkTapped:(id)sender;
 - (void)handleReblogButtonTapped:(id)sender;
 - (void)handleShareButtonTapped:(id)sender;
 - (void)handleSendCommentButtonTapped:(id)sender;
-- (void)handleTitleButtonTapped:(id)sender;
-- (void)handleVideoTapped:(id)sender;
 - (void)handleCloseKeyboard:(id)sender;
-- (void)handleCloseModal:(id)sender;
 - (void)handleFooterViewTapped:(id)sender;
-- (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView;
 - (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
 
 @end
@@ -99,7 +88,6 @@
 	self = [super initWithStyle:UITableViewStylePlain];
 	if(self) {
 		self.post = apost;
-		self.mediaArray = [NSMutableArray array];
 		self.comments = [NSMutableArray array];
 		self.rowHeights = [NSArray array];
 	}
@@ -144,7 +132,12 @@
 																		   target:self
 																		   action:@selector(handleShareButtonTapped:)];
 	}
-	self.navigationItem.rightBarButtonItem = _shareButton;
+
+	if(IS_IPAD) {
+		self.toolbarItems = @[_shareButton];
+	} else {
+		self.navigationItem.rightBarButtonItem = _shareButton;
+	}
 
 	UIColor *color = [UIColor colorWithHexString:@"3478E3"];
 	CGFloat fontSize = 16.0f;
@@ -196,84 +189,20 @@
 	self.followButton = [[UIBarButtonItem alloc] initWithCustomView:followBtn];
 	self.reblogButton = [[UIBarButtonItem alloc] initWithCustomView:reblogBtn];
 	[self updateToolbar];
-	
-	CGFloat width = self.tableView.frame.size.width;
-    CGFloat padding = 20.0f;
-    CGFloat labelWidth = width - 100.0f;
-    CGFloat labelHeight = 20.0f;
-    CGFloat avatarSize = 60.0f;
-	
-	self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 190.0f)];
+
+	self.headerView = [[ReaderPostDetailView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 190.0f) post:self.post delegate:self];
 	_headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_headerView.backgroundColor = [UIColor whiteColor];
+	[self.tableView setTableHeaderView:_headerView];
 	
-	self.authorView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 80.0f)];
-	_authorView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	[_headerView addSubview:_authorView];
-	
-	
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-	button.frame = _authorView.frame;
-	[button addTarget:self action:@selector(handleAuthorViewTapped:) forControlEvents:UIControlEventTouchUpInside];
-	[_authorView addSubview:button];
-	
-	self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(padding, padding, avatarSize, avatarSize)];
-	_avatarImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-	[_avatarImageView setImageWithURL:[NSURL URLWithString:self.post.authorAvatarURL] placeholderImage:[UIImage imageNamed:@""]];
-	[_authorView addSubview:_avatarImageView];
-	
-	self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding, labelWidth, labelHeight)];
-	_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_authorLabel.backgroundColor = [UIColor clearColor];
-	_authorLabel.font = [UIFont boldSystemFontOfSize:14.0f];
-	_authorLabel.text = (self.post.author != nil) ? self.post.author : self.post.authorDisplayName;
-	_authorLabel.textColor = [UIColor colorWithHexString:@"464646"];
-	[_authorView addSubview:_authorLabel];
-	
-	self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding + labelHeight, labelWidth, labelHeight)];
-	_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_dateLabel.backgroundColor = [UIColor clearColor];
-	_dateLabel.font = [UIFont systemFontOfSize:14.0f];
-	_dateLabel.text = [NSString stringWithFormat:@"%@ on", [self.post prettyDateString]];
-	_dateLabel.textColor = [UIColor colorWithHexString:@"aaaaaa"];
-	[_authorView addSubview:_dateLabel];
-	
-	self.blogLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding + labelHeight * 2, labelWidth, labelHeight)];
-	_blogLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_blogLabel.backgroundColor = [UIColor clearColor];
-	_blogLabel.font = [UIFont systemFontOfSize:14.0f];
-	_blogLabel.text = self.post.blogName;
-	_blogLabel.textColor = [UIColor colorWithHexString:@"108bc0"];
-	[_authorView addSubview:_blogLabel];
-	
-	self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, _authorView.frame.size.height + padding, width, 100.0f)]; // Starting height is arbitrary
-	_textContentView.delegate = self;
-	_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_textContentView.backgroundColor = [UIColor clearColor];
-	_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, padding, 0.0f, padding);
-	_textContentView.shouldDrawImages = NO;
-	_textContentView.shouldDrawLinks = NO;
-	[_headerView addSubview:_textContentView];
-		
-	NSString *str = @"";
-	NSString *content = self.post.content;
-	
-	if([self.post.postTitle length] > 0) {
-		str = [NSString stringWithFormat:@"<style>body{color:#464646;font-size:11px;line-height:15px;} a{color:#108bc0;text-decoration:none;}a:active{color:#005684;}</style><h2 style=\"color:#333333;font-size:18px;line-height:24px;font-weight:light;margin-bottom:14px;\">%@</h2>%@", self.post.postTitle, content];
-	} else {
-		str = content;
-	}
-	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
-														  DTDefaultFontFamily:@"Helvetica Neue Light",DTDefaultLineHeightMultiplier:[NSNumber numberWithFloat:1.7f],
-										   NSTextSizeMultiplierDocumentOption:[NSNumber numberWithFloat:1.7f]
-								 }];
-	_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
-																			 options:dict
-																  documentAttributes:NULL];
+	UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCloseKeyboard:)];
+	tgr.cancelsTouchesInView = NO;
+	[_headerView addGestureRecognizer:tgr];
 	
 	[self prepareComments];
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
-	[self updateLayout];
+	[self showStoredComment];
+
 }
 
 
@@ -282,6 +211,9 @@
 	
 	self.panelNavigationController.delegate = self;
 	[self.navigationController setToolbarHidden:NO animated:YES];
+	[_headerView updateLayout];
+	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
+	[self showStoredComment];
 }
 
 
@@ -324,19 +256,7 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
-	// Figure out image sizes after orientation change.
-	for (ReaderMediaView *mediaView in _mediaArray) {
-		[self updateMediaLayout:mediaView];
-	}
-	
-	// Then update the layout
-	// need to reset the layouter because otherwise we get the old framesetter or cached layout frames
-	_textContentView.layouter = nil;
-	
-	// layout might have changed due to image sizes
-	[_textContentView relayoutText];
-	
-	[self updateLayout];
+	[_headerView updateLayout];
 }
 
 
@@ -346,7 +266,7 @@
 	self.resultsController = nil;
 	[_comments removeAllObjects];
 	
-	__block void(__weak ^flattenComments)(NSArray *) = ^void (NSArray *comments) {
+	__block void(__unsafe_unretained ^flattenComments)(NSArray *) = ^void (NSArray *comments) {
 		// Ensure the array is correctly sorted. 
 		comments = [comments sortedArrayUsingComparator: ^(id obj1, id obj2) {
 			ReaderComment *a = obj1;
@@ -378,52 +298,6 @@
 															  tableStyle:UITableViewStylePlain
 															   cellStyle:UITableViewCellStyleDefault
 														 reuseIdentifier:@"ReaderCommentCell"];
-}
-
-
-- (void)updateLayout {
-	// Size the textContentView
-	CGRect frame = _textContentView.frame;
-	CGFloat height = [_textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:frame.size.width].height;
-	frame.size.height = height;
-	_textContentView.frame = frame;
-	
-	frame = _headerView.frame;
-	frame.size.height = height + _textContentView.frame.origin.y + 10.0f; // + bottom padding
-	_headerView.frame = frame;
-	
-	self.tableView.tableHeaderView = _headerView;
-}
-
-
-- (void)updateMediaLayout:(ReaderMediaView *)imageView {
-
-	NSURL *url = imageView.contentURL;
-
-	CGFloat width = _textContentView.frame.size.width;
-	CGSize viewSize = imageView.image.size;
-	viewSize.width = width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-	if (viewSize.height > 0 && (viewSize.width > _textContentView.frame.size.width)) {
-
-		// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
-		// so position it offset by the inverse of _textContentView's edgeInsets.
-		UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
-		edgeInsets.left = 0.0f - edgeInsets.left;
-		edgeInsets.top = 0.0f;
-		edgeInsets.right = 0.0f - edgeInsets.right;
-		edgeInsets.bottom = 0.0f;
-		imageView.edgeInsets = edgeInsets;
-		
-		viewSize.height = imageView.image.size.height * (width / imageView.image.size.width);
-	}
-	
-	NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
-	
-	// update all attachments that matchin this URL (possibly multiple images with same size)
-	for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
-		attachment.originalSize = imageView.image.size;
-		attachment.displaySize = viewSize;
-	}
 }
 
 
@@ -476,20 +350,18 @@
 }
 
 
-- (void)handleAuthorViewTapped:(id)sender {
-	WPWebViewController *controller = [[WPWebViewController alloc] init];
-	[controller setUrl:[NSURL URLWithString:self.post.permaLink]];
-	[self.panelNavigationController pushViewController:controller animated:YES];
-}
-
-
 - (void)handleCommentButtonTapped:(id)sender {
+	self.shouldShowKeyboard = YES;
 	if([[self.tableView visibleCells] count] == 0) {
 		if ([self.comments count] > 0) {
 			[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
 								  atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+		} else {
+			[self.tableView scrollRectToVisible:[self.tableView rectForFooterInSection:0] animated:YES];
 		}
 	}
+	
+	[_commentTextView becomeFirstResponder];
 }
 
 
@@ -504,34 +376,6 @@
 }
 
 
-- (void)handleImageLinkTapped:(id)sender {
-	ReaderImageView *imageView = (ReaderImageView *)sender;
-	
-	if(imageView.linkURL) {
-		NSString *url = [imageView.linkURL absoluteString];
-		
-		BOOL matched = NO;
-		NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
-		for (NSString *type in types) {
-			if (NSNotFound != [url rangeOfString:type].location) {
-				matched = YES;
-				break;
-			}
-		}
-		
-		if (matched) {
-			[WPImageViewController presentAsModalWithURL:((ReaderImageView *)sender).linkURL];
-		} else {
-			WPWebViewController *controller = [[WPWebViewController alloc] init];
-			[controller setUrl:((ReaderImageView *)sender).linkURL];
-			[self.panelNavigationController pushViewController:controller animated:YES];		
-		}
-	} else {
-		[WPImageViewController presentAsModalWithImage:imageView.image];
-	}
-}
-
-
 - (void)handleLikeButtonTapped:(id)sender {
 	NSLog(@"Like Tapped");
 	[self.post toggleLikedWithSuccess:^{
@@ -540,13 +384,6 @@
 		[self updateToolbar];
 	}];
 	[self updateToolbar];
-}
-
-
-- (void)handleLinkTapped:(id)sender {
-	WPWebViewController *controller = [[WPWebViewController alloc] init];
-	[controller setUrl:((DTLinkButton *)sender).URL];
-	[self.panelNavigationController pushViewController:controller animated:YES];
 }
 
 
@@ -568,7 +405,7 @@
 	if ([str length] == 0) {
 		return;
 	}
-
+	
 	_commentTextView.editable = NO;
 	_commentSubmitButton.enabled = NO;
 	[_activityView startAnimating];
@@ -579,7 +416,7 @@
 	} else {
 		path = [NSString stringWithFormat:@"sites/%@/posts/%@/replies/new", self.post.siteID, self.post.postID];
 	}
-
+	
 	NSDictionary *params = @{@"content":str};
 	[[WordPressComApi sharedApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		
@@ -589,7 +426,7 @@
 							  fromSite:[self.post.siteID stringValue]
 						withParameters:params
 							   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-								   
+								   self.post.storedComment = nil;
 								   _commentTextView.editable = YES;
 								   _commentTextView.text = nil;
 								   [_activityView stopAnimating];
@@ -608,6 +445,7 @@
 								   
 								   [self prepareComments];
 								   [self updateRowHeightsForWidth:self.tableView.frame.size.width];
+								   [self showStoredComment];
 								   [self.tableView reloadData];
 								   [self hideRefreshHeader];
 								   
@@ -664,51 +502,8 @@
 }
 
 
-- (void)handleTitleButtonTapped:(id)sender {
-	WPWebViewController *controller = [[WPWebViewController alloc] init];
-	[controller setUrl:[NSURL URLWithString:self.post.permaLink]];
-	[self.panelNavigationController pushViewController:controller animated:YES];
-}
-
-
-- (void)handleVideoTapped:(id)sender {
-	ReaderVideoView *videoView = (ReaderVideoView *)sender;
-	if(videoView.contentType == ReaderVideoContentTypeVideo) {
-		
-		MPMoviePlayerViewController *controller = [[MPMoviePlayerViewController alloc] initWithContentURL:videoView.contentURL];
-		controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-		controller.modalPresentationStyle = UIModalPresentationFormSheet;
-		[self.panelNavigationController presentModalViewController:controller animated:YES];
-		
-	} else {
-		// Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
-		// Assume this is content we can show and try to load it.
-		WPWebVideoViewController *controller = [WPWebVideoViewController presentAsModalWithURL:videoView.contentURL];
-		controller.title = (videoView.title != nil) ? videoView.title : @"Video";
-	}
-}
-
-
-- (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView {
-	
-	[self updateMediaLayout:mediaView];
-	
-	// need to reset the layouter because otherwise we get the old framesetter or cached layout frames
-	self.textContentView.layouter = nil;
-	
-	// layout might have changed due to image sizes
-	[self.textContentView relayoutText];
-	
-	[self updateLayout];
-}
-
-
 - (void)handleCloseKeyboard:(id)sender {
 	[self.view endEditing:YES];
-}
-
-- (void)handleCloseModal:(id)sender {
-	[self dismissModalViewControllerAnimated:YES];
 }
 
 
@@ -718,6 +513,118 @@
 			[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 		}
 	}
+}
+
+
+- (void)updateNavHeader {
+	
+	if (!_isShowingKeyboard) {
+		self.navigationItem.titleView = nil;
+		return;
+	}
+	
+	if (!_navHeaderView) {
+		
+		CGFloat y = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? 6.0f : 0.0f;
+		self.navHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, y, 200.0f, 32.0f)];
+		_navHeaderView.backgroundColor = [UIColor clearColor];
+		_navHeaderView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+		
+		self.navTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 18.0f)];
+		_navTitleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+		_navTitleLabel.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
+		_navTitleLabel.shadowColor = [UIColor whiteColor];
+		_navTitleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+		_navTitleLabel.textAlignment = UITextAlignmentCenter;
+		_navTitleLabel.backgroundColor = [UIColor clearColor];
+		_navTitleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		[_navHeaderView addSubview:_navTitleLabel];
+		
+		
+		self.navDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 18.0f, 200.0f, 14.0f)];
+		_navDetailLabel.font = [UIFont systemFontOfSize:12.0f];
+		_navDetailLabel.textColor = [UIColor grayColor];
+		_navDetailLabel.textAlignment = UITextAlignmentCenter;
+		_navDetailLabel.backgroundColor = [UIColor clearColor];
+		_navDetailLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		[_navHeaderView addSubview:_navDetailLabel];
+	}
+	
+	self.navigationItem.titleView = _navHeaderView;
+	
+	if ([self isReplying]) {
+		ReaderComment *comment = [_comments objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+		_navTitleLabel.text = NSLocalizedString(@"Replying", @"");
+		_navDetailLabel.text = [NSString stringWithFormat:@"to %@", comment.author];
+		[_sendCommentButton setTitle:NSLocalizedString(@"Reply", nil)];
+	} else {
+		_navTitleLabel.text = NSLocalizedString(@"Commenting", @"");
+		_navDetailLabel.text = [NSString stringWithFormat:@"on %@", self.post.postTitle];
+		[_sendCommentButton setTitle:NSLocalizedString(@"Comment", nil)];
+	}
+}
+
+
+- (CGFloat)heightForCommentForm {
+	
+	UIFont *font = [UIFont systemFontOfSize:ReaderCommentFormFontSize];
+	CGFloat maxHeight = ReaderCommentFormMaxLines * font.lineHeight;
+	CGFloat minHeight = ReaderCommentFormMinLines * font.lineHeight;
+	CGFloat height;
+	if (IS_IPAD) {
+		// Always max lines.
+		height = maxHeight;
+		
+	} else if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation) || _commentTextView == nil) {
+		// Always min lines.
+		height = minHeight;
+		
+	} else {
+		height = minHeight;
+//		CGSize size = [_commentTextView.text sizeWithFont:font constrainedToSize:CGSizeMake(_commentTextView.frame.size.width, maxHeight) lineBreakMode:NSLineBreakByWordWrapping];
+//
+//		if (size.height > maxHeight) {
+//			height = maxHeight;
+//		} else if (size.height < minHeight) {
+//			height = minHeight;
+//		} else {
+//			height = size.height;
+//		}
+	}
+	
+	return height + 30.0f; // 15px padding above and below the the UITextView;
+	
+}
+
+
+- (BOOL)isReplying {
+	return ([self.tableView indexPathForSelectedRow] != nil) ? YES : NO;
+}
+
+
+- (void)showStoredComment {
+	NSDictionary *storedComment = [self.post getStoredComment];
+	if (!storedComment) {
+		return;
+	}
+	
+	_commentPromptLabel.hidden = YES;
+	_commentTextView.text = [storedComment objectForKey:@"comment"];
+	
+	NSNumber *commentID = [storedComment objectForKey:@"commentID"];
+	NSInteger cid = [commentID integerValue];
+	
+	if (cid == 0) return;
+	
+	NSUInteger idx = [_comments indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		ReaderComment *c = (ReaderComment *)obj;
+		if([c.commentID integerValue] == cid) {
+			return YES;
+		}
+		return NO;
+	}];
+	NSIndexPath *path = [NSIndexPath indexPathForRow:idx inSection:0];
+	[self.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 
@@ -765,7 +672,7 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	return 100.0f;
+	return [self heightForCommentForm];
 }
 
 
@@ -785,40 +692,32 @@
 	
 	if (_footerView == nil) {
 		CGFloat width = self.tableView.frame.size.width;
-		CGFloat height = 100.0f;
+		CGFloat height = [self heightForCommentForm];
+		
 		CGRect frame = CGRectMake(0.0f, 0.0f, width, height);
 		self.footerView = [[UIView alloc] initWithFrame:frame];
 		_footerView.backgroundColor = [UIColor colorWithHexString:@"1E8CBE"];
 		
-		UIButton *footerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		footerButton.frame = frame;
-		[footerButton addTarget:self action:@selector(handleFooterViewTapped:) forControlEvents:UIControlEventTouchUpInside];
-		[_footerView addSubview:footerButton];
-
-		self.commentFormLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 7.0f, width - 20.0f, 18.0f)];
-		_commentFormLabel.text = [NSString stringWithFormat:@"Commenting on %@", self.post.postTitle];
-		_commentFormLabel.textColor = [UIColor whiteColor];
-		_commentFormLabel.font = [UIFont systemFontOfSize:14.0f];
-		_commentFormLabel.backgroundColor = [UIColor clearColor];
-		[_footerView addSubview:_commentFormLabel];
-
 		UIImageView *imgView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"note-reply-field"] resizableImageWithCapInsets:UIEdgeInsetsMake(6.0f, 6.0f, 6.0f, 6.0f)]];
-		imgView.frame = CGRectMake(10.0f, 30.0f, width - 20.0f, 60.0f);
-		imgView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		imgView.frame = CGRectMake(10.0f, 10.0f, width - 20.0f, height - 20.0f);
+		imgView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		[_footerView addSubview:imgView];
 		
-		self.commentTextView = [[UITextView alloc] initWithFrame:CGRectMake(15.0f, 35.0f, width - 30.0, 50.0f)];
-		_commentTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_commentTextView.font = [UIFont systemFontOfSize:14.0f];
+		
+		UIFont *font = [UIFont systemFontOfSize:ReaderCommentFormFontSize];
+		
+		self.commentTextView = [[UITextView alloc] initWithFrame:CGRectMake(15.0f, 15.0f, width - 50.0, height - 30.0f)];
+		_commentTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_commentTextView.font = font;
 		_commentTextView.delegate = self;
 		_commentTextView.backgroundColor = [UIColor clearColor];
 		[_footerView addSubview:_commentTextView];
 		
-		self.commentPromptLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 35.0f, width - 30.0f, 20.0f)];
+		self.commentPromptLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 15.0f, width - 50.0f, 20.0f)];
 		_commentPromptLabel.text = NSLocalizedString(@"Tap to reply", @"");
 		_commentPromptLabel.backgroundColor = [UIColor clearColor];
 		_commentPromptLabel.textColor = [UIColor grayColor];
-		_commentPromptLabel.font = [UIFont systemFontOfSize:14.0f];
+		_commentPromptLabel.font = [UIFont systemFontOfSize:ReaderCommentFormFontSize];
 		[_footerView addSubview:_commentPromptLabel];
 		
 		self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -830,7 +729,7 @@
 		_activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 		[_footerView addSubview:_activityView];
 	}
-	
+	[self showStoredComment];
 	return _footerView;
 }
 
@@ -840,6 +739,7 @@
     ReaderCommentTableViewCell *cell = (ReaderCommentTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [[ReaderCommentTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+		cell.parentController = self;
     }
 	cell.accessoryType = UITableViewCellAccessoryNone;
 		
@@ -851,31 +751,26 @@
 
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (_isShowingKeyboard) {
+		[self.view endEditing:YES];
+		return nil;
+	}
+	
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 	if ([cell isSelected]) {
 		[tableView deselectRowAtIndexPath:indexPath animated:NO];
-		[tableView.delegate tableView:tableView didDeselectRowAtIndexPath:indexPath];
 		return nil;
 	}
+	[_commentTextView becomeFirstResponder];
 	return indexPath;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	ReaderComment *comment = [_comments objectAtIndex:indexPath.row];
-	_commentFormLabel.text = [NSString stringWithFormat:@"Replying to %@", comment.author];
-	
 	if(_isShowingKeyboard) {
 		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 	}
-}
-
-
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if ([tableView indexPathForSelectedRow]) {
-		return;
-	}
-	_commentFormLabel.text = [NSString stringWithFormat:@"Commenting on %@", self.post.postTitle];
+	[self updateNavHeader];
 }
 
 
@@ -891,19 +786,44 @@
 
 #pragma mark - UIScrollView Delegate Methods
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-	if ([self.tableView.visibleCells count] == 0 && _isShowingKeyboard) {
-		[self handleCloseKeyboard:nil];
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+	if (_shouldShowKeyboard){
+		[_commentTextView becomeFirstResponder];
 	}
+	if (_isScrollingCommentIntoView){
+		self.isScrollingCommentIntoView = NO;
+	}
+}
+
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+	if (_isShowingKeyboard) {
+		if ([_comments count] == 0) {
+			CGRect rect = [self.tableView rectForFooterInSection:0];
+			if (self.tableView.contentOffset.y < rect.origin.y - (self.tableView.bounds.size.height - rect.size.height) ){
+				[self handleCloseKeyboard:nil];
+			}
+		} else if([self.tableView.visibleCells count] == 0) {
+			[self handleCloseKeyboard:nil];
+		}
+	}
+}
+
+
+#pragma mark - ReaderPostDetailView Delegate Methods
+
+- (void)readerPostDetailViewLayoutChanged {
+	self.tableView.tableHeaderView = _headerView;
 }
 
 
 #pragma mark - UITextView Delegate Methods
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCloseKeyboard:)];
+	self.shouldShowKeyboard = NO;
+	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Close" style:UIBarButtonItemStyleBordered target:self action:@selector(handleCloseKeyboard:)];
 	if (!_sendCommentButton) {
-		_sendCommentButton = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(handleSendCommentButtonTapped:)];
+		_sendCommentButton = [[UIBarButtonItem alloc] initWithTitle:@"Comment" style:UIBarButtonItemStyleDone target:self action:@selector(handleSendCommentButtonTapped:)];
 	}
 	[self.navigationItem setLeftBarButtonItem:cancelButton animated:NO];
 	[self.navigationItem setRightBarButtonItem:_sendCommentButton animated:NO];
@@ -912,12 +832,28 @@
 	_isShowingKeyboard = YES;
 	_commentPromptLabel.hidden = YES;
 	
-	[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+	[self updateNavHeader];
 }
 
 
 - (void)textViewDidChange:(UITextView *)textView {
 	_sendCommentButton.enabled = (_commentTextView.text.length == 0) ? NO : YES;
+	
+	//	// Resize the comment field if necessary
+	//	if (IS_IPHONE && UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+	//		if (_footerView.frame.size.height != [self heightForCommentForm]) {
+	//			[self.tableView reloadData];
+	//		}
+	//	}
+	
+	// If we are replying, and scrolled away from the comment, scroll back to it real quick.
+	if ([self isReplying] && !_isScrollingCommentIntoView) {
+		NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+		if (NSOrderedSame != [path compare:[self.tableView.indexPathsForVisibleRows objectAtIndex:0]]) {
+			self.isScrollingCommentIntoView = YES;
+			[self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:YES];
+		}
+	}
 }
 
 
@@ -926,6 +862,21 @@
 	[self.navigationItem setRightBarButtonItem:self.shareButton animated:NO];
 	_isShowingKeyboard = NO;
 	_commentPromptLabel.hidden = (_commentTextView.text.length > 0) ? YES : NO;
+	
+	if ([_commentTextView.text length] > 0) {
+		// Save the text
+		NSNumber *commentID = nil;
+		if ([self isReplying]){
+			ReaderComment *comment = [_comments objectAtIndex:[self.tableView indexPathForSelectedRow].row];
+			commentID = comment.commentID;
+		}
+		[self.post storeComment:commentID comment:_commentTextView.text];
+	} else {
+		self.post.storedComment = nil;
+	}
+	[self.post save];
+	
+	[self updateNavHeader];
 }
 
 
@@ -1001,6 +952,7 @@
     }
 }
 
+
 #pragma mark - MFMailComposeViewControllerDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
@@ -1033,87 +985,5 @@
     return NO;
 }
 
-
-#pragma mark - DTCoreAttributedTextContentView Delegate Methods
-
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
-	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
-	
-	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
-	NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
-	
-	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
-	button.URL = URL;
-	button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
-	button.GUID = identifier;
-	
-	// get image with normal link text
-	UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
-	[button setImage:normalImage forState:UIControlStateNormal];
-	
-	// get image for highlighted link text
-	UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
-	[button setImage:highlightImage forState:UIControlStateHighlighted];
-	
-	// use normal push action for opening URL
-	[button addTarget:self action:@selector(handleLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
-
-	return button;
-}
-
-
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame {
-	
-	if (attachment.contentType == DTTextAttachmentTypeImage) {
-		
-		ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
-		[_mediaArray addObject:imageView];
-		imageView.linkURL = attachment.hyperLinkURL;
-		[imageView addTarget:self action:@selector(handleImageLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
-		
-		if (attachment.contents) {
-			[imageView setImage:(UIImage *)attachment.contents];
-		} else {
-			[imageView setImageWithURL:attachment.contentURL
-					  placeholderImage:[UIImage imageNamed:@""]
-							   success:^(id readerImageView) {
-								   [self handleMediaViewLoaded:readerImageView];
-							   } failure:^(id readerImageView, NSError *error) {
-								   [self handleMediaViewLoaded:readerImageView];
-							   }];
-		}
-		return imageView;
-		
-	} else {
-		
-		ReaderVideoContentType videoType;
-		
-		if (attachment.contentType == DTTextAttachmentTypeVideoURL) {
-			videoType = ReaderVideoContentTypeVideo;
-		} else if (attachment.contentType == DTTextAttachmentTypeIframe) {
-			videoType = ReaderVideoContentTypeIFrame;
-		} else if (attachment.contentType == DTTextAttachmentTypeObject) {
-			videoType = ReaderVideoContentTypeEmbed;
-		} else {
-			return nil; // Can't handle whatever this is :P
-		}
-		
-		ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
-		[_mediaArray addObject:videoView];
-		[videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
-			[self handleMediaViewLoaded:readerVideoView];
-			
-		} failure:^(id readerVideoView, NSError *error) {
-			[self handleMediaViewLoaded:readerVideoView];
-			
-		}];
-		
-		[videoView addTarget:self action:@selector(handleVideoTapped:) forControlEvents:UIControlEventTouchUpInside];
-
-		[self handleMediaViewLoaded:videoView];
-		return videoView;
-	}
-
-}
 
 @end
