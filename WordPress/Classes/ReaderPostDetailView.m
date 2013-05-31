@@ -108,7 +108,7 @@
 		NSString *content = self.post.content;
 		
 		if([self.post.postTitle length] > 0) {
-			str = [NSString stringWithFormat:@"<style>a {color:#333333;}</style><h2 style=\"color:#000000;font-size:18px;font-weight:100;margin-bottom:12px;\">%@</h2>%@", self.post.postTitle, content];
+			str = [NSString stringWithFormat:@"<style>a {color:#333333;}</style><h2 style=\"color:#333333;font-size:18px;font-weight:100;margin-bottom:8px;\">%@</h2>%@", self.post.postTitle, content];
 		} else {
 			str = content;
 		}

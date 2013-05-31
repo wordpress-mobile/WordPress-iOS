@@ -259,13 +259,13 @@
 	NSString *content = self.post.content;
 	
 	if([self.post.postTitle length] > 0) {
-		str = [NSString stringWithFormat:@"<h2 style=\"color:#333333;font-size:18px;font-weight:100;margin-bottom:12px;\">%@</h2>%@", self.post.postTitle, content];
+		str = [NSString stringWithFormat:@"<style>body{color:#464646;font-size:11px;line-height:15px;} a{color:#108bc0;text-decoration:none;}a:active{color:#005684;}</style><h2 style=\"color:#333333;font-size:18px;line-height:24px;font-weight:light;margin-bottom:14px;\">%@</h2>%@", self.post.postTitle, content];
 	} else {
 		str = content;
 	}
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
-														  DTDefaultFontFamily:@"Helvetica",
-										   NSTextSizeMultiplierDocumentOption:[NSNumber numberWithFloat:1.4f]
+														  DTDefaultFontFamily:@"Helvetica Neue Light",DTDefaultLineHeightMultiplier:[NSNumber numberWithFloat:1.7f],
+										   NSTextSizeMultiplierDocumentOption:[NSNumber numberWithFloat:1.7f]
 								 }];
 	_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
 																			 options:dict
