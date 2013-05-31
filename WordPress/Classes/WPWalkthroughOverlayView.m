@@ -31,11 +31,11 @@
 
 @implementation WPWalkthroughOverlayView
 
-NSUInteger const WPWalkthroughGrayOverlayIconVerticalOffset = 75.0;
-NSUInteger const WPWalkthroughGrayOverlayStandardOffset = 16.0;
-NSUInteger const WPWalkthroughGrayOverlayBottomLabelOffset = 91.0;
-NSUInteger const WPWalkthroughGrayOverlayBottomPanelHeight = 64.0;
-NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
+CGFloat const WPWalkthroughGrayOverlayIconVerticalOffset = 75.0;
+CGFloat const WPWalkthroughGrayOverlayStandardOffset = 16.0;
+CGFloat const WPWalkthroughGrayOverlayBottomLabelOffset = 91.0;
+CGFloat const WPWalkthroughGrayOverlayBottomPanelHeight = 64.0;
+CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -304,8 +304,14 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
 - (void)tappedOnView:(UITapGestureRecognizer *)gestureRecognizer
 {
     CGPoint touchPoint = [gestureRecognizer locationInView:self];
-    BOOL touchedButton1 = CGRectContainsPoint(_leftButton.frame, touchPoint);
-    BOOL touchedButton2 = CGRectContainsPoint(_rightButton.frame, touchPoint);
+
+    // To avoid accidentally dismissing the view when the user was trying to tap one of the buttons,
+    // add some padding around the button frames.
+    CGRect button1Frame = CGRectInset(_leftButton.frame, -2 * WPWalkthroughGrayOverlayStandardOffset, -WPWalkthroughGrayOverlayStandardOffset);
+    CGRect button2Frame = CGRectInset(_rightButton.frame, -2 * WPWalkthroughGrayOverlayStandardOffset, -WPWalkthroughGrayOverlayStandardOffset);
+
+    BOOL touchedButton1 = CGRectContainsPoint(button1Frame, touchPoint);
+    BOOL touchedButton2 = CGRectContainsPoint(button2Frame, touchPoint);
     
     if (touchedButton1 || touchedButton2)
         return;
