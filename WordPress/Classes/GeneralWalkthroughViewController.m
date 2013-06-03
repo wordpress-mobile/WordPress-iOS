@@ -84,6 +84,7 @@
     BOOL _hasViewAppeared;
     BOOL _viewedPage2;
     BOOL _viewedPage3;
+    NSString *_dotComSiteUrl;
     NSUInteger _currentPage;
     NSArray *_blogs;
     Blog *_blog;
@@ -111,6 +112,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     _viewWidth = [self.view formSheetViewWidth];
     _viewHeight = [self.view formSheetViewHeight];
         
@@ -1063,6 +1065,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     
     NSString *username = _usernameText.text;
     NSString *password = _passwordText.text;
+    _dotComSiteUrl = nil;
     
     if ([self hasUserOnlyEnteredValuesForDotCom]) {
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughSignedInWithoutUrl];
@@ -1084,6 +1087,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
             [SVProgressHUD dismiss];
             
             if ([options objectForKey:@"wordpress.com"] != nil) {
+                NSDictionary *siteUrl = [options dictionaryForKey:@"home_url"];
+                _dotComSiteUrl = [siteUrl objectForKey:@"value"];
                 [self signInForWPComForUsername:username andPassword:password];
             } else {
                 [self signInForSelfHostedForUsername:username password:password options:options andApi:api];
@@ -1245,6 +1250,14 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 - (void)showAddUsersBlogsForWPCom
 {
     NewAddUsersBlogViewController *vc = [self addUsersBlogViewController];
+
+    NSString *siteUrl = [_siteUrlText.text trim];
+    if ([siteUrl length] != 0) {
+        vc.siteUrl = siteUrl;
+    } else if ([_dotComSiteUrl length] != 0) {
+        vc.siteUrl = _dotComSiteUrl;
+    }
+    
     vc.isWPCom = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
