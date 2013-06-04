@@ -7,27 +7,27 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "AddUsersBlogsViewController.h"
+#import "CreateWPComBlogViewController.h"
 #import "SFHFKeychainUtils.h"
 #import "NSString+XMLExtensions.h"
 #import "WordPressComApi.h"
 #import "UIBarButtonItem+Styled.h"
 #import "ReachabilityUtils.h"
-#import "WebSignupViewController.h"
 #import "UIImageView+Gravatar.h"
 
-@interface AddUsersBlogsViewController()
+@interface AddUsersBlogsViewController() <CreateWPComBlogViewControllerDelegate>
 
 @property (nonatomic, strong) UIView *noblogsView;
 
 - (void)showNoBlogsView;
 - (void)hideNoBlogsView;
-- (void)wpcomSignupNotificationReceived:(NSNotification *)notification;
 - (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner;
 
 @end
 
 @implementation AddUsersBlogsViewController {
     UIAlertView *failureAlertView;
+    BOOL _hideSignInButton;
 }
 
 @synthesize usersBlogs, isWPcom, selectedBlogs, tableView, buttonAddSelected, buttonSelectAll, hasCompletedGetUsersBlogs;
@@ -90,12 +90,19 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelAddWPcomBlogs) 
 												 name:@"didCancelWPcomLogin" object:nil];
     
-    if ([[UIBarButtonItem class] respondsToSelector:@selector(appearance)])
+    if ([[UIBarButtonItem class] respondsToSelector:@selector(appearance)]) {
         [UIBarButtonItem styleButtonAsPrimary:buttonAddSelected];
+    }    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    
+    if (self.hideBackButton) {
+        [self.navigationItem setHidesBackButton:YES animated:NO];
+    }
 
 	if (usersBlogs.count == 0) {
 		buttonSelectAll.enabled = FALSE;
@@ -267,6 +274,7 @@
             cell.accessoryType = UITableViewCellAccessoryNone; 
             cell.textLabel.text = NSLocalizedString(@"Sign Out", @"");
             cell.imageView.image = nil;
+            cell.hidden = _hideSignInButton;
             break;
         }
 		default:
@@ -498,6 +506,8 @@
     self.buttonSelectAll.enabled = NO;
     self.noblogsView.alpha = 0.0;
     self.noblogsView.hidden = NO;
+    _hideSignInButton = YES;
+    [self.tableView reloadData];
     
     [UIView animateWithDuration:0.3f animations:^{
         self.noblogsView.alpha = 1.0f;
@@ -506,26 +516,17 @@
 
 
 - (void)hideNoBlogsView {
+    _hideSignInButton = NO;
+    [self.tableView reloadData];
     if(!self.noblogsView) return;
     self.noblogsView.hidden = YES;
     self.buttonSelectAll.enabled = YES;
 }
 
-
 - (void)handleCreateBlogTapped:(id)sender {
-    NSString *newNibName = @"WebSignupViewController";
-    if(IS_IPAD == YES)
-        newNibName = @"WebSignupViewController-iPad";
-    WebSignupViewController *webSignup = [[WebSignupViewController alloc] initWithNibName:newNibName bundle:[NSBundle mainBundle]];
-    [self.navigationController pushViewController:webSignup animated:YES];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(wpcomSignupNotificationReceived:) name:@"wpcomSignupNotification" object:nil];
-
-   
-}
-
-- (void)wpcomSignupNotificationReceived:(NSNotification *)notification {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"wpcomSignupNotification" object:nil];
-    [self.navigationController popToViewController:self animated:YES]; // Discard the create blog view controller. 
+    CreateWPComBlogViewController *viewController = [[CreateWPComBlogViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    viewController.delegate = self;
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark -
@@ -631,6 +632,13 @@
 			topAddSelectedButton.enabled = TRUE;
 	}
 	
+}
+
+#pragma mark - CreateWPComBlogViewControllerDelegate
+
+- (void)createdBlogWithDetails:(NSDictionary *)blogDetails
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 @end

@@ -23,6 +23,7 @@
     #import "WPError.h"
     #import "UIColor+Helpers.h"
     #import "PanelNavigationController.h"
+    #import "WPMobileStats.h"
 
 #ifndef IS_IPAD
 #define IS_IPAD   ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)

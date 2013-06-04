@@ -23,8 +23,16 @@ typedef NS_ENUM(NSUInteger, WordPressComApiError) {
     WordPressComApiErrorAuthorizationRequired,
 };
 
+typedef NS_ENUM(NSUInteger, WordPressComApiBlogVisibility) {
+    WordPressComApiBlogVisibilityPublic = 0,
+    WordPressComApiComBlogVisibilityPrivate = 1,
+    WordPressComApiBlogVisibilityHidden = 2,
+};
+
 extern NSString *const WordPressComApiErrorDomain;
 extern NSString *const WordPressComApiErrorCodeKey;
+extern NSString *const WordPressComApiErrorMessageKey;
+
 
 @interface WordPressComApi : AFHTTPClient
 @property (nonatomic,readonly,strong) NSString *username;
@@ -41,6 +49,10 @@ extern NSString *const WordPressComApiErrorCodeKey;
 - (void)signInWithToken:(NSString *)token DEPRECATED_ATTRIBUTE;
 - (void)signOut;
 - (BOOL)hasCredentials;
+- (void)validateWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
+- (void)createWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
+- (void)validateWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId success:(void (^)(id))success failure:(void (^)(NSError *))failure;
+- (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId andBlogVisibility:(WordPressComApiBlogVisibility)visibility success:(void (^)(id))success failure:(void (^)(NSError *))failure;
 
 ///---------------------------
 /// @name Transitional methods
@@ -89,6 +101,7 @@ extern NSString *const WordPressComApiErrorCodeKey;
                                failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 - (void)refreshNotifications:(NSArray *)notes
+                      fields:(NSString *)fields
                      success:(WordPressComApiRestSuccessResponseBlock)success
                      failure:(WordPressComApiRestSuccessFailureBlock)failure;
 

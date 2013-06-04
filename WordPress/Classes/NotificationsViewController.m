@@ -19,7 +19,11 @@
 NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
-@interface NotificationsViewController ()
+@interface NotificationsViewController () {
+    BOOL _retrievingNotifications;
+    BOOL _viewHasAppeared;
+}
+
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *settingsButton;
 @property (nonatomic, strong) id authListener;
 @property (nonatomic, strong) WordPressComApi *user;
@@ -117,11 +121,17 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    if (!_viewHasAppeared) {
+        _viewHasAppeared = true;
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsOpened];
+    }
+    
     _isPushingViewController = NO;
     // If table is at the top, simulate a pull to refresh
     BOOL simulatePullToRefresh = (self.tableView.contentOffset.y == 0);
     [self syncItemsWithUserInteraction:simulatePullToRefresh];
-    [self refreshVisibleUnreadNotes];
+    [self refreshUnreadNotes];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -132,20 +142,8 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 #pragma mark - Custom methods
 
-- (void)refreshVisibleUnreadNotes {
-    // figure out which notifications are visible
-    NSArray *cells = [self.tableView visibleCells];
-    NSMutableArray *notes = [NSMutableArray arrayWithCapacity:[cells count]];
-    [cells enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        Note *note = [(NotificationsTableViewCell *)obj note];
-        if ([note isUnread]) {
-            [notes addObject:note];
-        }
-    }];
-
-    [self.user refreshNotifications:notes success:^(AFHTTPRequestOperation *operation, id responseObject) {
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-    }];
+- (void)refreshUnreadNotes {
+    [Note refreshUnreadNotesWithContext:self.resultsController.managedObjectContext];
 }
 
 - (void)updateSyncDate {
@@ -206,8 +204,9 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     if (IS_IPHONE)
         [self.panelNavigationController popToRootViewControllerAnimated:YES];
     [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
-    [self syncItemsWithUserInteraction:NO];
-    [self refreshVisibleUnreadNotes];
+    if (![self isSyncing]) {
+        [self syncItemsWithUserInteraction:NO];
+    }
 }
 
 #pragma mark - UITableViewDelegate
@@ -227,6 +226,8 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     
     BOOL hasDetailsView = [self noteHasDetailView:note];
     if (hasDetailsView) {
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsOpenedNotificationDetails];
+        
         _isPushingViewController = YES;
         if ([note isComment]) {
             NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];
@@ -334,17 +335,28 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     return YES;
 }
 
+- (BOOL)isSyncing
+{
+    return _retrievingNotifications;
+}
+
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     Note *lastNote = [self.resultsController.fetchedObjects lastObject];
     if (lastNote == nil) {
         return;
     }
-
+    
+    _retrievingNotifications = true;
+    
     [self.user getNotificationsBefore:lastNote.timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        _retrievingNotifications = false;
+                
         if (success) {
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        _retrievingNotifications = false;
+        
         if (failure) {
             failure(error);
         }

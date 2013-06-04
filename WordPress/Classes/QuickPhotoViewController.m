@@ -69,7 +69,7 @@
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-    
+        
     appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     self.titleTextField.placeholder = NSLocalizedString(@"Title (optional)", @"Quick Photo title");
@@ -96,6 +96,8 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    [WPMobileStats trackEventForWPCom:StatsEventQuickPhotoOpened];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -211,6 +213,8 @@
 }
 
 - (void)post {
+    [WPMobileStats trackEventForWPCom:StatsEventQuickPhotoPosted];
+    
     Blog *blog = self.blogSelector.activeBlog;
     Media *media = nil;
     if (post == nil) {

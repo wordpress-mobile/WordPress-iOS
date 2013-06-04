@@ -17,6 +17,7 @@
 #import "NoteCommentContentCell.h"
 #import "NoteComment.h"
 #import "NSString+XMLExtensions.h"
+#import "NSString+Helpers.h"
 #import "WPToast.h"
 
 #define APPROVE_BUTTON_TAG 1
@@ -164,7 +165,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             self.postBanner.titleLabel.text = postTitle;
             id authorAvatarURL = [self.post valueForKeyPath:@"author.avatar_URL"];
             if ([authorAvatarURL isKindOfClass:[NSString class]]) {
-                [self.postBanner.avatarImageView setImageWithURL:[NSURL URLWithString:authorAvatarURL]];
+                [self.postBanner setAvatarURL:[NSURL URLWithString:authorAvatarURL]];
             }
             
             NSString *headerUrl = [self.post objectForKey:@"URL"];
@@ -309,21 +310,27 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     
     UIBarButtonItem *pressedButton = nil;
     if (button.tag == APPROVE_BUTTON_TAG) {
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailApproveComment];
         commentAction = [self.commentActions objectForKey:@"approve-comment"];
         pressedButton = self.approveBarButton;
     } else if (button.tag == UNAPPROVE_BUTTON_TAG) {
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnapproveComment];
         commentAction = [self.commentActions objectForKey:@"unapprove-comment"];
         pressedButton = self.unapproveBarButton;
     } else if (button.tag == TRASH_BUTTON_TAG){
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailTrashComment];
         commentAction = [self.commentActions objectForKey:@"trash-comment"];
         pressedButton = self.trashBarButton;
     } else if (button.tag == UNTRASH_BUTTON_TAG){
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUntrashComment];
         commentAction = [self.commentActions objectForKey:@"untrash-comment"];
         pressedButton = self.trashBarButton;
     } else if (button.tag == SPAM_BUTTON_TAG){
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailFlagCommentAsSpam];
         commentAction = [self.commentActions objectForKey:@"spam-comment"];
         pressedButton = self.spamBarButton;
     } else if (button.tag == UNSPAM_BUTTON_TAG){
+        [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailUnflagCommentAsSpam];
         commentAction = [self.commentActions objectForKey:@"unspam-comment"];
         pressedButton = self.spamBarButton;
     }
@@ -359,7 +366,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         NSDictionary *response = (NSDictionary *)responseObject;
         if (response) {
             NSArray *noteArray = [NSArray arrayWithObject:_note];
-            [[WordPressComApi sharedApi] refreshNotifications:noteArray success:^(AFHTTPRequestOperation *operation, id refreshResponseObject) {
+            [[WordPressComApi sharedApi] refreshNotifications:noteArray fields:nil success:^(AFHTTPRequestOperation *operation, id refreshResponseObject) {
                 [spinner stopAnimating];
                 [self displayNote];
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -401,6 +408,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 }
 
 - (void)startReply:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailClickedReplyButton];
     [self.replyTextView becomeFirstResponder];
 }
 
@@ -410,6 +418,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 }
 
 - (void)publishReply:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventNotificationsDetailRepliedToComment];
     
     NSDictionary *action = [self.commentActions objectForKey:@"replyto-comment"];
     if (action){
@@ -636,12 +645,12 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 - (void)prepareCommentHeaderCell:(NoteCommentCell *)cell forCommment:(NoteComment *)comment {
     BOOL mainComment = comment == [self.commentThread lastObject];
     if (mainComment) {
-        cell.avatarURL = [NSURL URLWithString:[self decreaseGravatarSizeForURL: self.note.icon]];
+        cell.avatarURL = [NSURL URLWithString:self.note.icon];
         cell.followButton = self.followButton;
         cell.imageView.hidden = NO;
 
     } else if (comment.isLoaded){
-        cell.avatarURL = [NSURL URLWithString:[self decreaseGravatarSizeForURL:[comment.commentData valueForKeyPath:@"author.avatar_URL"]]];
+        cell.avatarURL = [NSURL URLWithString:[comment.commentData valueForKeyPath:@"author.avatar_URL"]];
         cell.followButton = nil;
         cell.imageView.hidden = NO;
     }
@@ -651,11 +660,6 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         NSString *authorURL = [comment.commentData valueForKeyPath:@"author.URL"];
         cell.profileURL = [NSURL URLWithString:authorURL];
     }
-}
-
-- (NSString *)decreaseGravatarSizeForURL:(NSString *)originalURL {
-    // REST API returns 256 by default, let's make it smaller
-    return [originalURL stringByReplacingOccurrencesOfString:@"s=256" withString:@"s=184"];
 }
 
 #pragma mark - UITableViewDelegate
@@ -756,7 +760,8 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     DTDefaultFontFamily : @"Helvetica",
     NSTextSizeMultiplierDocumentOption : [NSNumber numberWithFloat:1.3]
     };
-    
+
+    html = [html stringByReplacingHTMLEmoticonsWithEmoji];
     NSAttributedString *content = [[NSAttributedString alloc] initWithHTMLData:[html dataUsingEncoding:NSUTF8StringEncoding] options:options documentAttributes:NULL];
     return content;
 }

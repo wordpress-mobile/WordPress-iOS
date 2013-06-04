@@ -29,9 +29,11 @@
 - (BOOL)isUnread;
 
 - (void)syncAttributes:(NSDictionary *)data;
+- (void)updateAttributes:(NSDictionary *)data;
 - (NSDictionary *)getNoteData;
 
 + (BOOL)syncNotesWithResponse:(NSArray *)notesData withManagedObjectContext:(NSManagedObjectContext *)context;
++ (void)refreshUnreadNotesWithContext:(NSManagedObjectContext *)context;
 
 /**
  Remove old notes from Core Data storage

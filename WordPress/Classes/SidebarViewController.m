@@ -23,7 +23,6 @@
 #import "PanelNavigationConstants.h"
 #import "WPWebViewController.h"
 #import "WordPressComApi.h"
-#import "WelcomeViewController.h"
 #import "CameraPlusPickerManager.h"
 #import "QuickPhotoViewController.h"
 #import "QuickPhotoButtonView.h"
@@ -31,11 +30,14 @@
 #import "NotificationsViewController.h"
 #import "SoundUtil.h"
 #import "ReaderPostsViewController.h"
+#import "GeneralWalkthroughViewController.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
 // Height for secondary cells (posts/pages/comments/... inside a blog)
 #define SIDEBAR_CELL_SECONDARY_HEIGHT 48.0f
+// Max width for right view (currently : size of the sidebar_comment_bubble image)
+#define SIDEBAR_CELL_ACCESSORY_MAX_WIDTH 54.f
 #define SIDEBAR_BGCOLOR [UIColor colorWithWhite:0.921875f alpha:1.0f];
 #define HEADER_HEIGHT 42.f
 #define DEFAULT_ROW_HEIGHT 48
@@ -304,7 +306,7 @@
 }
 
 - (NSInteger)topSectionRowCount {
-    if ([WordPressComApi sharedApi].username) {
+    if ([[WordPressComApi sharedApi] hasCredentials]) {
         // reader and notifications
         return 2;
     } else {
@@ -340,9 +342,7 @@
         if ( ! [WordPressComApi sharedApi].username ) {
             //ohh auch! no .COM account? 
             _showingWelcomeScreen = YES;
-            WelcomeViewController *welcomeViewController = nil;
-            welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:[NSBundle mainBundle]];
-            [welcomeViewController automaticallyDismissOnLoginActions];
+            GeneralWalkthroughViewController *welcomeViewController = [[GeneralWalkthroughViewController alloc] init];
             
             UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
             aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -443,6 +443,8 @@ NSLog(@"%@", self.sectionInfoArray);
 }
 
 - (IBAction)showSettings:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventSidebarClickedSettings];
+    
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
     if (IS_IPAD)
@@ -572,6 +574,8 @@ NSLog(@"%@", self.sectionInfoArray);
 }
 
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)useCameraPlus withImage:(UIImage *)image {
+    [WPMobileStats trackEventForWPCom:StatsEventSidebarClickedQuickPhoto];
+    
     QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
     quickPhotoViewController.sidebarViewController = self;
     quickPhotoViewController.photo = image;
@@ -755,29 +759,39 @@ NSLog(@"%@", self.sectionInfoArray);
       
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            title = NSLocalizedString(@"Reader", @"");
+            title = NSLocalizedString(@"Reader", @"Menu item to view the Reader for WordPress.com blogs, a way to read and follow blogs that interests you");
             cell.imageView.image = [UIImage imageNamed:@"sidebar_read"];
         } else if(indexPath.row == 1){
-            title = NSLocalizedString(@"Notifications", @"");
+            title = NSLocalizedString(@"Notifications", @"Menu item to view Notifications for WordPress.com and Jetpack-enabled blogs");
             cell.imageView.image = [UIImage imageNamed:(self.hasUnseenNotes) ? @"sidebar_notifications_highlighted" : @"sidebar_notifications"];
         }
     } else {
         switch (indexPath.row) {
             case 0:
             {
-                title = NSLocalizedString(@"Posts", @"");
+                title = NSLocalizedString(@"Posts", @"Menu item to view posts");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_posts"];
+                UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SIDEBAR_CELL_ACCESSORY_MAX_WIDTH, SIDEBAR_CELL_SECONDARY_HEIGHT)];
+                [addButton setImage:[UIImage imageNamed:@"sidebar_icon_add"] forState:UIControlStateNormal];
+                [addButton addTarget:self action:@selector(quickAddNewPost:) forControlEvents:UIControlEventTouchUpInside];
+                cell.accessoryView = addButton;
+
                 break;
             }
             case 1:
             {
-                title = NSLocalizedString(@"Pages", @"");
+                title = NSLocalizedString(@"Pages", @"Menu item to view pages");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_pages"];
+                UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, SIDEBAR_CELL_ACCESSORY_MAX_WIDTH, SIDEBAR_CELL_SECONDARY_HEIGHT)];
+                [addButton setImage:[UIImage imageNamed:@"sidebar_icon_add"] forState:UIControlStateNormal];
+                [addButton addTarget:self action:@selector(quickAddNewPost:) forControlEvents:UIControlEventTouchUpInside];
+                cell.accessoryView = addButton;
+
                 break;
             }
             case 2:
             {
-                title = NSLocalizedString(@"Comments", @"");
+                title = NSLocalizedString(@"Comments", @"Menu item to view comments");
                 Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
                 cell.blog = blog;
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_comments"];
@@ -785,19 +799,19 @@ NSLog(@"%@", self.sectionInfoArray);
             }
             case 3:
             {
-                title = NSLocalizedString(@"Stats", @"");
+                title = NSLocalizedString(@"Stats", @"Menu item to view Jetpack stats associated with a blog");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_stats"];
                 break;
             }
             case 4:
             {
-                title = NSLocalizedString(@"View Site", @"");
+                title = NSLocalizedString(@"View Site", @"Menu item to view the site in a an in-app web view");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_view"];
                 break;
             }
             case 5:
             {
-                title = NSLocalizedString(@"Dashboard", @"Button to load the dashboard in a web view");
+                title = NSLocalizedString(@"View Admin", @"Menu item to load the dashboard in a an in-app web view");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_dashboard"];
                 break;
             }
@@ -812,6 +826,26 @@ NSLog(@"%@", self.sectionInfoArray);
     cell.textLabel.backgroundColor = SIDEBAR_BGCOLOR;
     
     return cell;
+}
+
+
+-(void)quickAddNewPost:(id)sender {
+    NSAssert([sender isKindOfClass:[UIView class]], nil);
+
+    UITableViewCell *cell = (UITableViewCell *)[(UIView *)sender superview];
+    NSAssert([cell isKindOfClass:[UITableViewCell class]], nil);
+    if (![cell isKindOfClass:[UITableViewCell class]]) {
+        return;
+    }
+
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+
+    [self processRowSelectionAtIndexPath:indexPath];
+    [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    self.currentIndexPath = indexPath;
+    if ([self.panelNavigationController.topViewController respondsToSelector:@selector(showAddPostView)]) {
+        [self.panelNavigationController.topViewController performSelector:@selector(showAddPostView)];
+    }
 }
 
 #pragma mark Section header delegate
@@ -962,6 +996,8 @@ NSLog(@"%@", self.sectionInfoArray);
             ReaderPostsViewController *readerViewController = [[ReaderPostsViewController alloc] init];
             detailViewController = readerViewController;
         } else if(indexPath.row == 1) { // Notifications
+            [WPMobileStats trackEventForWPCom:StatsEventSidebarClickedNotifications];
+            
             self.hasUnseenNotes = NO;
             NotificationsViewController *notificationsViewController = [[NotificationsViewController alloc] init];
             detailViewController = notificationsViewController;
@@ -976,18 +1012,28 @@ NSLog(@"%@", self.sectionInfoArray);
         //did user select the same item, but for a different blog? If so then just update the data in the view controller.
         switch (indexPath.row) {
             case 0:
+                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedPosts];
+                
                  controllerClass = [PostsViewController class];
                 break;
             case 1:
+                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedPages];
+                
                 controllerClass = [PagesViewController class];
                 break;
             case 2:
+                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedComments];
+                
                 controllerClass = [CommentsViewController class];
                 break;
             case 3:
+                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedStats];
+                
                 controllerClass =  [StatsWebViewController class];//IS_IPAD ? [StatsWebViewController class] : [StatsTableViewController class];
                 break;
-            case 4 : 
+            case 4 :
+                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedViewSite];
+                
                 blogURL = blog.url;
                 if (![blogURL hasPrefix:@"http"]) {
                     blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
@@ -1021,6 +1067,8 @@ NSLog(@"%@", self.sectionInfoArray);
                 }
                 return;
             case 5:
+                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedViewAdmin];
+                
                  dashboardURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
                 //dashboard already selected
                 if ([self.panelNavigationController.detailViewController isMemberOfClass:[WPWebViewController class]] 

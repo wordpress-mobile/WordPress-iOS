@@ -51,6 +51,7 @@
     IBOutlet UIActivityIndicatorView *featuredImageSpinner;
 }
 
+@property (nonatomic, strong) NSString *statsPrefix;
 @property (nonatomic, weak) EditPostViewController *postDetailViewController;
 @property (nonatomic, strong) IBOutlet UITableViewCell *postFormatTableViewCell;
 

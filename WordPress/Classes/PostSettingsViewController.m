@@ -53,6 +53,14 @@
     return self;
 }
 
+- (NSString *)statsPrefix {
+    if (_statsPrefix == nil) {
+        return @"Post Detail";
+    } else {
+        return _statsPrefix;
+    }
+}
+
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     
@@ -632,7 +640,9 @@
 				{
 					if ([self.apost.status isEqualToString:@"private"])
 						break;
-
+                    
+                    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedStatus]];
+                    
 					pickerView.tag = TAG_PICKER_STATUS;
 					[pickerView reloadAllComponents];
 					[pickerView selectRow:[statusList indexOfObject:self.apost.statusTitle] inComponent:0 animated:NO];
@@ -641,6 +651,8 @@
 				}
 				case 1:
 				{
+                    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedVisibility]];
+
 					pickerView.tag = TAG_PICKER_VISIBILITY;
 					[pickerView reloadAllComponents];
 					[pickerView selectRow:[visibilityList indexOfObject:visibilityLabel.text] inComponent:0 animated:NO];
@@ -648,6 +660,8 @@
 					break;
 				}
 				case 2:
+                    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedScheduleFor]];
+
 					datePickerView.tag = TAG_PICKER_DATE;
 					if (self.apost.dateCreated)
 						datePickerView.date = self.apost.dateCreated;
@@ -663,6 +677,9 @@
         case 1:
         {
             if( [formatsList count] == 0 ) break;
+            
+            [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedPostFormat]];
+
             pickerView.tag = TAG_PICKER_FORMAT;
             [pickerView reloadAllComponents];
             if ([formatsList count] != 0 && ([formatsList indexOfObject:self.post.postFormatText] != NSNotFound)) {
@@ -677,11 +694,12 @@
                 switch (indexPath.row) {
                     case 0:
                         if (!self.post.post_thumbnail) {
-                            
+                            [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedSetFeaturedImage]];
                             [self.postDetailViewController.postMediaViewController showPhotoPickerActionSheet:cell fromRect:cell.frame isFeaturedImage:YES];
                         }
                         break;
                     case 1:
+                        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedRemoveFeaturedImage]];
                         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Remove this Featured Image?", @"Prompt when removing a featured image from a post") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", "Cancel a prompt") destructiveButtonTitle:NSLocalizedString(@"Remove", @"Remove an image/posts/etc") otherButtonTitles:nil];
                         [actionSheet showFromRect:cell.frame inView:postDetailViewController.view animated:YES];
                         break;
@@ -723,12 +741,19 @@
             }
 
             if (!isUpdatingLocation) {
+                if (self.post.geolocation) {
+                    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedUpdateLocation]];
+                } else {
+                    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedAddLocation]];
+                }
                 // Add or replace geotag
                 isUpdatingLocation = YES;
                 [locationManager startUpdatingLocation];
             }
             break;
         case 2:
+            [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedRemoveLocation]];
+
             if (isUpdatingLocation) {
                 // Cancel update
                 isUpdatingLocation = NO;
@@ -779,6 +804,11 @@
     if (!featuredImageSpinner.isAnimating)
         [featuredImageSpinner startAnimating];
     [tableView reloadData];
+}
+
+- (NSString *)formattedStatEventString:(NSString *)event
+{
+    return [NSString stringWithFormat:@"%@ - %@", self.statsPrefix, event];
 }
 
 #pragma mark -

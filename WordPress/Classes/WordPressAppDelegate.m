@@ -1,6 +1,5 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <WordPressApi/WordPressApi.h>
-
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "NSString+Helpers.h"
@@ -23,6 +22,8 @@
 #import "SoundUtil.h"
 #import "WordPressComApiCredentials.h"
 #import "PocketAPI.h"
+#import "WPMobileStats.h"
+#import "WPComLanguages.h"
 
 @interface WordPressAppDelegate (Private)
 - (void)setAppBadge;
@@ -163,6 +164,9 @@
         [[NSUserDefaults standardUserDefaults] setInteger:crashCount forKey:@"crashCount"];
     }
 
+    NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
+    NSString *currentLanguage = [languages objectAtIndex:0];
+
     NSString *extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
     WPFLog(@"===========================================================================");
 	WPFLog(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
@@ -176,11 +180,13 @@
     WPFLog(@"Extra debug: %@", extraDebug);
     WPFLog(@"Device model: %@ (%@)", [UIDeviceHardware platformString], [UIDeviceHardware platform]);
     WPFLog(@"OS:        %@ %@", [device systemName], [device systemVersion]);
+    WPFLog(@"Language:  %@", currentLanguage);
     WPFLog(@"UDID:      %@", [device wordpressIdentifier]);
     WPFLog(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]);
     WPFLog(@"===========================================================================");
 
     [self setupUserAgent];
+    [WPMobileStats initializeStats];
 
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
         NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
@@ -234,6 +240,7 @@
     [window setBounds:bounds]; // for good measure.
     panelNavigationController = [[PanelNavigationController alloc] initWithDetailController:nil masterViewController:sidebarViewController];
     window.rootViewController = panelNavigationController;
+    window.backgroundColor = [UIColor blackColor];
 
 	//listener for XML-RPC errors
 	//in the future we could put the errors message in a dedicated screen that users can bring to front when samething went wrong, and can take a look at the error msg.
@@ -258,8 +265,12 @@
     //Information related to the reason for its launching, which can include things other than notifications.
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotif) {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
+
         NSLog(@"Launched with a remote notification as parameter:  %@", remoteNotif);
-        [self openNotificationScreenWithOptions:remoteNotif];  
+        [self openNotificationScreenWithOptions:remoteNotif];
+    } else {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpened properties:@{@"language": [[WPComLanguages currentLanguage] objectForKey:@"name"]}];
     }
     //the guide say: NO if the application cannot handle the URL resource, otherwise return YES. 
     //The return value is ignored if the application is launched as a result of a remote notification.
@@ -994,11 +1005,16 @@
             [SoundUtil playNotificationSound];
             break;
         case UIApplicationStateInactive:
+            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
+            
             NSLog(@"app state UIApplicationStateInactive"); //application is in bg and the user tapped the view button
              [self openNotificationScreenWithOptions:userInfo];
             break;
         case UIApplicationStateBackground:
-            NSLog(@" app state UIApplicationStateBackground"); //?? doh!
+            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
+
+            NSLog(@" app state UIApplicationStateBackground"); //application is in bg and the user tapped the view button
+            [self openNotificationScreenWithOptions:userInfo];
             break;
         default:
             break;

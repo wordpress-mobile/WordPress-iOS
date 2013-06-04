@@ -19,6 +19,7 @@
 	IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll, *topAddSelectedButton;
 }
 
+@property (nonatomic, assign) BOOL hideBackButton;
 @property (nonatomic, assign) BOOL hasCompletedGetUsersBlogs, isWPcom;
 @property (nonatomic, strong) NSArray *usersBlogs;
 @property (nonatomic, strong) NSMutableArray *selectedBlogs;

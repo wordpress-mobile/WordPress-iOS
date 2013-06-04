@@ -217,18 +217,22 @@
 #pragma mark Action Methods
 
 - (IBAction)deleteSelectedComments:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventCommentsDeleted properties:@{@"comment_count": @([_selectedComments count])}];
     [self moderateCommentsWithSelector:@selector(remove)];
 }
 
 - (IBAction)approveSelectedComments:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventCommentsApproved properties:@{@"comment_count": @([_selectedComments count])}];
     [self moderateCommentsWithSelector:@selector(approve)];
 }
 
 - (IBAction)unapproveSelectedComments:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventCommentsUnapproved properties:@{@"comment_count": @([_selectedComments count])}];
     [self moderateCommentsWithSelector:@selector(unapprove)];
 }
 
 - (IBAction)spamSelectedComments:(id)sender {
+    [WPMobileStats trackEventForWPCom:StatsEventCommentsFlagAsSpam properties:@{@"comment_count": @([_selectedComments count])}];
     [self moderateCommentsWithSelector:@selector(spam)];
 }
 
@@ -370,6 +374,8 @@
     }
     
 	if(comment) {
+        [WPMobileStats trackEventForWPCom:StatsEventCommentsViewCommentDetails];
+        
         self.currentIndexPath = indexPath;
         self.lastSelectedCommentID = comment.commentID; //store the latest user selection
         BOOL animated = ([self commentViewController] == nil) && IS_IPHONE;
@@ -413,6 +419,8 @@
         [ReachabilityUtils showAlertNoInternetConnection];
         return;
     }
+    
+    [WPMobileStats trackEventForWPCom:StatsEventCommentsReplied];
     
     Comment *selectedComment = [_selectedComments objectAtIndex:0];
 
