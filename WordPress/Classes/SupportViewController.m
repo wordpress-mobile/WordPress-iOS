@@ -119,16 +119,4 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             break;
     }
 }
-
-/*
- else if (indexPath.row == 3) {
-            // Extra Debug
-            cell.textLabel.text = NSLocalizedString(@"Extra Debug", @"A lable for the settings switch to enable extra debugging and logging.");
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            UISwitch *aSwitch = [[UISwitch alloc] initWithFrame:CGRectZero]; // Frame is ignored.
-            [aSwitch addTarget:self action:@selector(handleExtraDebugChanged:) forControlEvents:UIControlEventValueChanged];
-            aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
-            cell.accessoryView = aSwitch;
-        }
- */
 @end

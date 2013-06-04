@@ -416,7 +416,6 @@ typedef enum {
 #if DEBUG
             appversion = [appversion stringByAppendingString:@" (DEV)"];
 #endif
-            NSLog(appversion);
             cell.detailTextLabel.text = appversion;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else if (indexPath.row == 1) {
