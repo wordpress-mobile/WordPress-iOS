@@ -277,7 +277,6 @@
 }
 
 - (void)showWelcomeScreenIfNeeded {
-     WPFLogMethod();
     if ( [[self.resultsController fetchedObjects] count] == 0 ) {
         //ohh poor boy, no blogs yet?
         if ( ! [WordPressComApi sharedApi].username ) {
