@@ -728,10 +728,8 @@ CGFloat const LoginCompeltedWalkthroughSwipeToContinueTopOffset = 14.0;
 
 - (void)clickedScrollView:(UITapGestureRecognizer *)gestureRecognizer
 {
-    if (_currentPage == 4) {
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughClickedStartUsingAppOnFinalPage];
-        [self dismiss];
-    }
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughClickedStartUsingAppOnFinalPage];
+    [self dismiss];
 }
 
 - (void)dismiss
