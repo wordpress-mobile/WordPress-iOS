@@ -13,4 +13,5 @@
 + (NSString *)secret;
 + (NSString *)pocketConsumerKey;
 + (NSString *)mixpanelAPIToken;
++ (NSString *)crashlyticsApiKey;
 @end

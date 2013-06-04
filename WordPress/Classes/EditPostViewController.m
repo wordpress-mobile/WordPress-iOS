@@ -145,7 +145,6 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 	if (![self.postMediaViewController isDeviceSupportVideo]){
 		//no video icon for older devices
 		NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
-		NSLog(@"toolbar items: %@", toolbarItems);
 		
 		[toolbarItems removeObjectAtIndex:5];
 		[self.toolbar setItems:toolbarItems];
