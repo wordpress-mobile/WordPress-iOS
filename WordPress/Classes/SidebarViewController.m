@@ -990,11 +990,14 @@ NSLog(@"%@", self.sectionInfoArray);
     if (indexPath.section == 0) { // Reader & Notifications
         
         if (indexPath.row == 0) { // Reader
-            // Reader
+			[WPMobileStats trackEventForWPCom:StatsEventSidebarClickedReader];
+			
 //            WPReaderViewController *readerViewController = [[WPReaderViewController alloc] init];
 //            detailViewController = readerViewController;
-            ReaderPostsViewController *readerViewController = [[ReaderPostsViewController alloc] init];
+            
+			ReaderPostsViewController *readerViewController = [[ReaderPostsViewController alloc] init];
             detailViewController = readerViewController;
+			
         } else if(indexPath.row == 1) { // Notifications
             [WPMobileStats trackEventForWPCom:StatsEventSidebarClickedNotifications];
             
