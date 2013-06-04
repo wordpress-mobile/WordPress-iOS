@@ -1,7 +1,12 @@
 PODS:
   - AFNetworking (1.2.0)
   - CTidy (0.3.0)
-  - DTCoreText (1.0.2)
+  - DTCoreText (1.4.3):
+    - DTFoundation/Core (~> 1.2.0)
+    - DTFoundation/DTHMLParser (~> 1.2.0)
+  - DTFoundation/Core (1.2.0)
+  - DTFoundation/DTHMLParser (1.2.0):
+    - DTFoundation/Core
   - JSONKit (1.5pre)
   - Mixpanel (2.0.0)
   - NSObject-SafeExpectations (0.0.1)
@@ -20,7 +25,7 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (= 1.2)
   - CTidy (from `git://github.com/wordpress-mobile/CTidy.git`)
-  - DTCoreText (~> 1.0.0)
+  - DTCoreText (~> 1.4.0)
   - JSONKit (~> 1.4)
   - Mixpanel
   - NSObject-SafeExpectations (from `https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec`)
@@ -47,7 +52,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
   CTidy: 6a35875a96dd441822e620732c1113be19769067
-  DTCoreText: 4f2b9d62554c62dd7cd412c9f50ece1e70a548b9
+  DTCoreText: 85117d06868c19b16284560c14838140f21ce719
+  DTFoundation: e73ab1f43b86b37664a3f0148430d58da1eab713
   JSONKit: 409734ab3407fce90ef7eaa95d7168f38d9a6601
   Mixpanel: d456c27f7520e22784a15d0bcd9d5c287080b0cd
   NSObject-SafeExpectations: 241ab1289cbc33a00307cd025d22883646f2e1f0
@@ -61,4 +67,4 @@ SPEC CHECKSUMS:
   WordPressApi: 76f9d7752b090197c172e2c5e6fccbffbaf7c336
   wpxmlrpc: 0b27d4c3734db9470f0dccc3c8d4a6f8e491fd0b
 
-COCOAPODS: 0.19.1
+COCOAPODS: 0.18.1

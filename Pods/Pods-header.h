@@ -7,6 +7,7 @@
 #define __POD_DTFoundation_Core
 #define __POD_DTFoundation_DTHMLParser
 #define __POD_JSONKit
+#define __POD_Mixpanel
 #define __POD_NSObject_SafeExpectations
 #define __POD_NSURL_IDN
 #define __POD_Reachability
