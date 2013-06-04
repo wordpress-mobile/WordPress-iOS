@@ -42,8 +42,10 @@
 #import "NotificationSettingsViewController.h"
 #import "Blog+Jetpack.h"
 #import "GeneralWalkthroughViewController.h"
+#import "SupportViewController.h"
 
 typedef enum {
+
     SettingsSectionBlogs = 0,
     SettingsSectionBlogsAdd,
     SettingsSectionWpcom,
@@ -113,7 +115,7 @@ typedef enum {
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    // Remove the delegate to avoid a corddata error that can occur when a new
+    // Remove the delegate to avoid a core data error that can occur when a new
     // blog is added, and other rows/sections are added as well (e.g. notifications).
     self.resultsController.delegate = nil;
 }
@@ -374,22 +376,23 @@ typedef enum {
         }
     } else if (indexPath.section == SettingsSectionInfo) {
         if (indexPath.row == 0) {
+            // App Version
             cell.textLabel.text = NSLocalizedString(@"Version:", @"");
             NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 #if DEBUG
             appversion = [appversion stringByAppendingString:@" (DEV)"];
 #endif
+            NSLog(appversion);
             cell.detailTextLabel.text = appversion;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else if (indexPath.row == 1) {
+            // About
             cell.textLabel.text = NSLocalizedString(@"About", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         } else if (indexPath.row == 2) {
-            cell.textLabel.text = NSLocalizedString(@"Extra Debug", @"A lable for the settings switch to enable extra debugging and logging.");
-            UISwitch *aSwitch = [[UISwitch alloc] initWithFrame:CGRectZero]; // Frame is ignored.
-            [aSwitch addTarget:self action:@selector(handleExtraDebugChanged:) forControlEvents:UIControlEventValueChanged];
-            aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
-            cell.accessoryView = aSwitch;
+                // Settings
+                cell.textLabel.text = NSLocalizedString(@"Support", @"");
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
 }
@@ -547,6 +550,10 @@ typedef enum {
             
             AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
             [self.navigationController pushViewController:aboutViewController animated:YES];
+        } else if (indexPath.row == 2) {
+            // Support Page
+            SupportViewController *supportViewController = [[SupportViewController alloc] init];
+            [self.navigationController pushViewController:supportViewController animated:YES];
         }
     }
 }
