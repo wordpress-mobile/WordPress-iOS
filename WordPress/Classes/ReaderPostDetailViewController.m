@@ -144,17 +144,15 @@
 	
 	UIButton *commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 	[commentBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
-//	[commentBtn setTitle:NSLocalizedString(@"Comment", @"") forState:UIControlStateNormal];
 	[commentBtn setTitleColor:color forState:UIControlStateNormal];
 	[commentBtn setImage:[UIImage imageNamed:@"toolbar_comment"] forState:UIControlStateNormal];
     [commentBtn setImage:[UIImage imageNamed:@"toolbar_comment_active"] forState:UIControlStateHighlighted];
     [commentBtn setImage:[UIImage imageNamed:@"toolbar_comment_active"] forState:UIControlStateSelected];
-	commentBtn.frame = CGRectMake(0.0f, 0.0f, 100.0f, 40.0f);
+	commentBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
 	[commentBtn addTarget:self action:@selector(handleCommentButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	
 	UIButton *likeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 	[likeBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
-//	[likeBtn setTitle:NSLocalizedString(@"Like", @"") forState:UIControlStateNormal];
 	[likeBtn setTitleColor:color forState:UIControlStateNormal];
 	[likeBtn setImage:[UIImage imageNamed:@"toolbar_like"] forState:UIControlStateNormal];
     [likeBtn setImage:[UIImage imageNamed:@"toolbar_like_active"] forState:UIControlStateHighlighted];
@@ -165,22 +163,21 @@
 	
 	UIButton *followBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 	[followBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
-//	[followBtn setTitle:NSLocalizedString(@"Follow", @"") forState:UIControlStateNormal];
+
 	[followBtn setTitleColor:color forState:UIControlStateNormal];
 	[followBtn setImage:[UIImage imageNamed:@"toolbar_follow"] forState:UIControlStateNormal];
     [followBtn setImage:[UIImage imageNamed:@"toolbar_follow_active"] forState:UIControlStateHighlighted];
     [followBtn setImage:[UIImage imageNamed:@"toolbar_follow_active"] forState:UIControlStateSelected];
-	followBtn.frame = CGRectMake(0.0f, 0.0f, 100.0f, 40.0f);
+	followBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
 	[followBtn addTarget:self action:@selector(handleFollowButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	
 	UIButton *reblogBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 	[reblogBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
-//	[reblogBtn setTitle:NSLocalizedString(@"Reblog", @"") forState:UIControlStateNormal];
 	[reblogBtn setTitleColor:color forState:UIControlStateNormal];
 	[reblogBtn setImage:[UIImage imageNamed:@"toolbar_reblog"] forState:UIControlStateNormal];
     [reblogBtn setImage:[UIImage imageNamed:@"toolbar_reblog_active"] forState:UIControlStateHighlighted];
     [reblogBtn setImage:[UIImage imageNamed:@"toolbar_reblog_active"] forState:UIControlStateSelected];
-	reblogBtn.frame = CGRectMake(0.0f, 0.0f, 100.0f, 40.0f);
+	reblogBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
 	reblogBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	[reblogBtn addTarget:self action:@selector(handleReblogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	
