@@ -524,7 +524,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	
 	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%i/replies", siteID, postID];
 	
-	[[WordPressComApi sharedApi] getPath:path parameters:nil success:success failure:failure];
+	[[WordPressComApi sharedApi] getPath:path parameters:params success:success failure:failure];
 }
 
 
