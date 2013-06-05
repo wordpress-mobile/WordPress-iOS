@@ -9,13 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "EGORefreshTableHeaderView.h"
 
-@interface WPRefreshViewController : UITableViewController<EGORefreshTableHeaderDelegate> {
+@interface WPRefreshViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, EGORefreshTableHeaderDelegate> {
 	EGORefreshTableHeaderView *_refreshHeaderView;
 	BOOL didPlayPullSound;
     BOOL didTriggerRefresh;
 	BOOL didPromptForCredentials;
 	BOOL _isSyncing;
 }
+
+@property (nonatomic, strong) UITableView *tableView;
 
 - (void)doBeforeDealloc;
 - (void)simulatePullToRefresh;

@@ -59,6 +59,7 @@
 - (void)updateNavHeader;
 - (BOOL)isReplying;
 - (CGFloat)heightForCommentForm;
+- (BOOL)canComment;
 
 - (void)handleCommentButtonTapped:(id)sender;
 - (void)handleFollowButtonTapped:(id)sender;
@@ -85,7 +86,7 @@
 
 
 - (id)initWithPost:(ReaderPost *)apost {
-	self = [super initWithStyle:UITableViewStylePlain];
+	self = [super init];
 	if(self) {
 		self.post = apost;
 		self.comments = [NSMutableArray array];
@@ -96,7 +97,7 @@
 
 
 - (id)initWithDictionary:(NSDictionary *)dict {
-	self = [super initWithStyle:UITableViewStylePlain];
+	self = [super init];
 	if(self) {
 		// TODO: for supporting Twitter cards.
 	}
@@ -257,6 +258,11 @@
 
 
 #pragma mark - Instance Methods
+
+- (BOOL)canComment {
+	return [self.post.commentsOpen boolValue];
+}
+
 
 - (void)prepareComments {
 	self.resultsController = nil;

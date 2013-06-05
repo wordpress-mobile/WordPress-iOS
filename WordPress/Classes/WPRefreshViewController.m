@@ -19,7 +19,6 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 	CGPoint savedScrollOffset;
 }
 
-
 #pragma mark - LifeCycle Methods
 
 - (void)dealloc {
@@ -35,6 +34,12 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+	self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
+	_tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	_tableView.dataSource = self;
+	_tableView.delegate = self;
+	[self.view addSubview:_tableView];
+	
 	if (_refreshHeaderView == nil) {
 		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
 		_refreshHeaderView.delegate = self;
