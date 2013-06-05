@@ -157,13 +157,12 @@
 	[likeBtn setImage:[UIImage imageNamed:@"toolbar_like"] forState:UIControlStateNormal];
     [likeBtn setImage:[UIImage imageNamed:@"toolbar_like_active"] forState:UIControlStateHighlighted];
     [likeBtn setImage:[UIImage imageNamed:@"toolbar_like_active"] forState:UIControlStateSelected];
-	likeBtn.frame = CGRectMake(0.0f, 0.0f, 100.0f, 40.0f);
+	likeBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
 	likeBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 	[likeBtn addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	
 	UIButton *followBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 	[followBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
-
 	[followBtn setTitleColor:color forState:UIControlStateNormal];
 	[followBtn setImage:[UIImage imageNamed:@"toolbar_follow"] forState:UIControlStateNormal];
     [followBtn setImage:[UIImage imageNamed:@"toolbar_follow_active"] forState:UIControlStateHighlighted];
@@ -311,7 +310,7 @@
 		img = [UIImage imageNamed:@"note_navbar_icon_like"];
 		color = activeColor;
 	} else {
-		img = [UIImage imageNamed:@"note_icon_like"];
+		img = [UIImage imageNamed:@"toolbar_like"];
 		color = inactiveColor;
 	}
 	btn = (UIButton *)_likeButton.customView;
@@ -322,7 +321,7 @@
 		img = [UIImage imageNamed:@"note_navbar_icon_reblog"];
 		color = activeColor;
 	} else {
-		img = [UIImage imageNamed:@"note_icon_reblog"];
+		img = [UIImage imageNamed:@"toolbar_reblog"];
 		color = inactiveColor;
 	}
 	btn = (UIButton *)_reblogButton.customView;
@@ -333,7 +332,7 @@
 		img = [UIImage imageNamed:@"note_navbar_icon_follow"];
 		color = activeColor;
 	} else {
-		img = [UIImage imageNamed:@"note_icon_follow"];
+		img = [UIImage imageNamed:@"toolbar_follow"];
 		color = inactiveColor;
 	}
 	btn = (UIButton *)_followButton.customView;
@@ -341,7 +340,14 @@
 	[btn setTitleColor:color forState:UIControlStateNormal];
 	
 	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	[self setToolbarItems:@[_commentButton, placeholder, _likeButton, placeholder, _followButton, placeholder, _reblogButton] animated:YES];
+	
+	NSMutableArray *items = [NSMutableArray array];
+	if ([self.post.commentsOpen boolValue]) {
+		[items addObjectsFromArray:@[_commentButton, placeholder]];
+	}
+	[items addObjectsFromArray:@[_likeButton, placeholder, _followButton, placeholder, _reblogButton]];
+	[self setToolbarItems:items animated:YES];
+	
 	self.navigationController.toolbarHidden = NO;
 
 }

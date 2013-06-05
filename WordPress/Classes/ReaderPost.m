@@ -31,6 +31,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 @dynamic blogName;
 @dynamic blogURL;
 @dynamic commentCount;
+@dynamic commentsOpen;
 @dynamic dateSynced;
 @dynamic dateCommentsSynced;
 @dynamic endpoint;
@@ -272,6 +273,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	}
 
     self.commentCount = [dict numberForKey:@"comment_count"];
+	self.commentsOpen = [dict numberForKey:@"comments_open"];
 	self.dateSynced = [NSDate date];
 	self.featuredImage = featuredImage;
 	

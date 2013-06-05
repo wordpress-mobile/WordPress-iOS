@@ -22,6 +22,7 @@ extern NSInteger const ReaderTopicEndpointIndex;
 @property (nonatomic, strong) NSString *blogName;
 @property (nonatomic, strong) NSString *blogURL;
 @property (nonatomic, strong) NSNumber *commentCount;
+@property (nonatomic, strong) NSNumber *commentsOpen;
 @property (nonatomic, strong) NSDate *dateSynced;
 @property (nonatomic, strong) NSDate *dateCommentsSynced;
 @property (nonatomic, strong) NSString *endpoint;
