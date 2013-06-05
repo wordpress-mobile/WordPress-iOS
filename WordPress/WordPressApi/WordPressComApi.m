@@ -318,12 +318,25 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     };
     
     void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error){
-        NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
-        NSString *localizedErrorMessage = [self errorMessageForErrorCode:errorCode];
-        NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
-        [userInfo setValue:errorCode forKey:WordPressComApiErrorCodeKey];
-        [userInfo setValue:localizedErrorMessage forKey:WordPressComApiErrorMessageKey];
-        NSError *errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
+        NSError *errorWithLocalizedMessage;
+        
+        if ([error.userInfo objectForKey:WordPressComApiErrorCodeKey] == nil) {
+            NSString *responseString = [operation responseString];
+            if (responseString != nil && [responseString rangeOfString:@"Limit reached"].location != NSNotFound) {
+                NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
+                [userInfo setValue:NSLocalizedString(@"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support.", @"") forKey:WordPressComApiErrorMessageKey];
+                [userInfo setValue:@"too_many_requests" forKey:WordPressComApiErrorCodeKey];
+                errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
+            }
+        }
+        else {
+            NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
+            NSString *localizedErrorMessage = [self errorMessageForErrorCode:errorCode];
+            NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
+            [userInfo setValue:errorCode forKey:WordPressComApiErrorCodeKey];
+            [userInfo setValue:localizedErrorMessage forKey:WordPressComApiErrorMessageKey];
+            errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];            
+        }
         failure(errorWithLocalizedMessage);
     };
     
