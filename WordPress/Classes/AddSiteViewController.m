@@ -148,5 +148,10 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
     [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
 }
 
+- (BOOL)canEditUsernameAndURL
+{
+    return YES;
+}
+
 @end
 
