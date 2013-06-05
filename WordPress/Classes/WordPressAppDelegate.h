@@ -10,6 +10,8 @@
 #import "FBConnect.h"
 #import "CrashReportViewController.h"
 #import "Constants.h"
+#import "DDFileLogger.h"
+
 
 @class AutosaveManager;
 
@@ -60,6 +62,8 @@
 @property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, strong) Facebook *facebook;
 @property (nonatomic, strong) PanelNavigationController *panelNavigationController;
+@property (strong, nonatomic) DDFileLogger *fileLogger;
+
 
 //Connection Reachability variables
 @property (nonatomic, strong) Reachability *internetReachability, *wpcomReachability, *currentBlogReachability;
