@@ -32,7 +32,6 @@
 #import "DDLog.h"
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
-#import "DDFileLogger.h"
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 
@@ -43,12 +42,6 @@
 - (void)customizeAppearance;
 - (void)toggleExtraDebuggingIfNeeded;
 - (void)handleLogoutOrBlogsChangedNotification:(NSNotification *)notification;
-
-@end
-
-@interface WordPressAppDelegate ()
-
-@property (strong, nonatomic) DDFileLogger *fileLogger;
 
 @end
 

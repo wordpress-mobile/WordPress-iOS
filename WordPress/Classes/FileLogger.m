@@ -8,14 +8,16 @@
 
 #import "FileLogger.h"
 #import <Crashlytics/Crashlytics.h>
+#import "DDFileLogger.h"
+#import "WordPressAppDelegate.h"
 
 NSString *FileLoggerPath() {
-	static NSString *filePath;
+    static NSString *filePath;
 	
 	if (filePath == nil) {
-		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-		NSString *documentsDirectory = [paths objectAtIndex:0];
-		filePath = [documentsDirectory stringByAppendingPathComponent:@"wordpress.log"];		
+        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+        DDFileLogger *logger = appDelegate.fileLogger;
+        filePath = [logger.logFileManager.sortedLogFileNames objectAtIndex:0];
 	}
 	
 	return filePath;
@@ -23,32 +25,21 @@ NSString *FileLoggerPath() {
 
 @implementation FileLogger
 
-- (id) init {
-    self = [super init];
-	if (self) {
-//		NSFileManager *fileManager = [NSFileManager defaultManager];
-//		if (![fileManager fileExistsAtPath:FileLoggerPath()])
-//			[fileManager createFileAtPath:FileLoggerPath()
-//								 contents:nil
-//							   attributes:nil];
-//		logFile = [NSFileHandle fileHandleForWritingAtPath:FileLoggerPath()];
-//		[logFile seekToEndOfFile];
-	}
-	return self;
-}
-
 - (void)flush {
-	//[logFile synchronizeFile];
+    // This method is no longer appropriate
+
 }
 
 - (void)log:(NSString *)message {
-	//[logFile writeData:[[NSString stringWithFormat:@"%@ %@\n", [NSDate date], message] dataUsingEncoding:NSUTF8StringEncoding]];
     NSString *logMessage = [NSString stringWithFormat:@"%@ %@\n", [NSDate date], message];
     DDLogInfo(logMessage);
 }
 
 - (void)reset {
-    //[logFile truncateFileAtOffset:0];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    DDFileLogger *logger = appDelegate.fileLogger;
+
+    [logger rollLogFile];
 }
 
 + (void)log:(NSString *)format, ... {
