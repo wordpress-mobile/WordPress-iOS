@@ -15,6 +15,8 @@ pod 'wpxmlrpc', '~> 0.1'
 pod 'WordPressApi', :podspec => 'https://raw.github.com/koke/WordPressApi/master/WordPressApi.podspec'
 pod 'NSObject-SafeExpectations', :podspec => 'https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec'
 pod 'Mixpanel'
+pod 'CocoaLumberjack', '~>1.6.2'
+pod 'NSLogger-CocoaLumberjack-connector', '~>1.3'
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '~> 1.1'

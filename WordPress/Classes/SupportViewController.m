@@ -7,6 +7,7 @@
 //
 
 #import "SupportViewController.h"
+#import "WPWebViewController.h"
 
 @interface SupportViewController ()
 
@@ -57,15 +58,25 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
+    if (section == SettingsSectionActivityLog)
+        return 2;
+
     return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"SupportViewStandardCell";
+    static NSString *CellIdentifierExtraDebug = @"SupportViewExtraDebugCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
-    if (cell == nil) {
+    if (cell == nil && indexPath.section == SettingsSectionActivityLog && indexPath.row == 0) {
+        // Settings / Extra Debug
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierExtraDebug];
+        UISwitch *extraDebugSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
+        [extraDebugSwitch addTarget:self action:@selector(handleExtraDebugChanged:) forControlEvents:UIControlEventValueChanged];
+        cell.accessoryView = extraDebugSwitch;
+    } else {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
 
@@ -86,11 +97,20 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         cell.accessoryType = UITableViewCellAccessoryNone;
     } else if (indexPath.section == SettingsSectionFeedback) {
         cell.textLabel.text = NSLocalizedString(@"Send Us Feedback", @"");
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.accessoryType = UITableViewCellAccessoryNone;
     } else if (indexPath.section == SettingsSectionActivityLog) {
-        cell.textLabel.text = NSLocalizedString(@"Activity Log", @"");
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.textAlignment = NSTextAlignmentLeft;
+
+        if (indexPath.row == 0) {
+            cell.textLabel.text = NSLocalizedString(@"Extra Debug", @"");
+            UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
+            aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
+        } else if (indexPath.row == 1) {
+            cell.textLabel.text = NSLocalizedString(@"Activity Log", @"");
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
     }
+
 
 }
 
@@ -110,13 +130,61 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    switch (indexPath.section) {
-        case SettingsSectionFAQ:
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq"]];
-            break;
-        case SettingsSectionForums:
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.forums.wordpress.org"]];
-            break;
+    if (indexPath.section == SettingsSectionFAQ) {
+        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+        [webViewController setUrl:[NSURL URLWithString:@"http://ios.wordpress.org/faq"]];
+        [self.navigationController pushViewController:webViewController animated:YES];
+    } else if (indexPath.section == SettingsSectionForums) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.forums.wordpress.org"]];
+    } else if (indexPath.section == SettingsSectionFeedback) {
+        if ([MFMailComposeViewController canSendMail]) {
+            MFMailComposeViewController *mailComposeViewController = [self feedbackMailViewController];
+            [self presentViewController:mailComposeViewController animated:YES completion:nil];
+        } else {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Feedback", @"")
+                                                                message:NSLocalizedString(@"Your device is not configured to send e-mail.", @"")
+                                                               delegate:nil
+                                                      cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }
     }
 }
+
+#pragma mark - SupportViewController methods
+
+- (void)handleExtraDebugChanged:(id)sender {
+    UISwitch *aSwitch = (UISwitch *)sender;
+    [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:@"extra_debug"];
+    [NSUserDefaults resetStandardUserDefaults];
+}
+
+- (MFMailComposeViewController *)feedbackMailViewController
+{
+    MFMailComposeViewController *mailComposeViewController = [[MFMailComposeViewController alloc] init];
+    mailComposeViewController.mailComposeDelegate = self;
+
+    [mailComposeViewController setSubject:@"WordPress for iOS Help Request"];
+    [mailComposeViewController setToRecipients:@[@"support@wordpress.com"]];
+
+    return mailComposeViewController;
+}
+
+#pragma mark - MFMailComposeViewControllerDelegate methods
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    switch (result) {
+        case MFMailComposeResultCancelled:
+            break;
+        case MFMailComposeResultFailed:
+            break;
+        case MFMailComposeResultSaved:
+        case MFMailComposeResultSent:
+            break;
+    }
+
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 @end
