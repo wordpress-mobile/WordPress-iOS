@@ -328,7 +328,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 - (void)showArticleDetails:(id)item
 {
-    [WPMobileStats trackEventForWPCom:StatsEventReaderClickedArticleDetails];
+    [WPMobileStats incrementProperty:StatsPropertyReaderOpenedArticleDetails forEvent:StatsEventAppClosed];
     
     if(![ReachabilityUtils isInternetReachable]) {
         [ReachabilityUtils showAlertNoInternetConnection];

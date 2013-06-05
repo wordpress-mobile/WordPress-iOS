@@ -274,10 +274,14 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
     overlayView.rightButtonText = NSLocalizedString(@"Enable Now", nil);
     overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
+        
         [overlayView dismiss];
         [self showHelpViewController:NO];
     };
     overlayView.button2CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedEnableXMLRPCServices];
+        
         [overlayView dismiss];
         
         NSString *path = nil;
@@ -307,8 +311,9 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
     overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError];
-        [overlayView dismiss];        
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
+        
+        [overlayView dismiss];  
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         webViewController.url = [NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"];
         [self.navigationController setNavigationBarHidden:NO animated:NO];
@@ -324,7 +329,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
     overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError];
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
+        
         [overlayView dismiss];
         [self showHelpViewController:NO];
     };
@@ -955,6 +961,13 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
         _blogConnectedToJetpack = didAuthenticate;
+        
+        if (_blogConnectedToJetpack) {
+            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserConnectedToJetpack];
+        } else {
+            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpack];            
+        }
+        
         [self.navigationController popViewControllerAnimated:NO];
         [self showCompletionWalkthrough];
     }];
@@ -1282,6 +1295,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     void (^successBlock)() = ^{
         [[WordPressComApi sharedApi] syncPushNotificationInfo];
         [SVProgressHUD dismiss];
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserSignedInToBlogWithJetpack];
         if ([_blog hasJetpack]) {
             [self showJetpackAuthentication];
         } else {

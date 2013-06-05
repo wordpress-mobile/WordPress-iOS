@@ -641,7 +641,7 @@
 					if ([self.apost.status isEqualToString:@"private"])
 						break;
                     
-                    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedStatus]];
+                    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedStatus forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
                     
 					pickerView.tag = TAG_PICKER_STATUS;
 					[pickerView reloadAllComponents];
@@ -651,7 +651,7 @@
 				}
 				case 1:
 				{
-                    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedVisibility]];
+                    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedVisibility forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
 
 					pickerView.tag = TAG_PICKER_VISIBILITY;
 					[pickerView reloadAllComponents];
@@ -660,7 +660,7 @@
 					break;
 				}
 				case 2:
-                    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedScheduleFor]];
+                    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedScheduleFor forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
 
 					datePickerView.tag = TAG_PICKER_DATE;
 					if (self.apost.dateCreated)
@@ -678,7 +678,7 @@
         {
             if( [formatsList count] == 0 ) break;
             
-            [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedPostFormat]];
+            [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedPostFormat forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
 
             pickerView.tag = TAG_PICKER_FORMAT;
             [pickerView reloadAllComponents];

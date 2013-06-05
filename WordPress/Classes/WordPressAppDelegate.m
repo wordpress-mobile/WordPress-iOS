@@ -282,6 +282,7 @@
     
     //Information related to the reason for its launching, which can include things other than notifications.
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+
     if (remoteNotif) {
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
 
@@ -367,6 +368,9 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+
+    [WPMobileStats trackEventForWPComWithSavedProperties:StatsEventAppClosed];
+    [WPMobileStats clearPropertiesForAllEvents];
     
     //Keep the app alive in the background if we are uploading a post, currently only used for quick photo posts
     UIApplication *app = [UIApplication sharedApplication];

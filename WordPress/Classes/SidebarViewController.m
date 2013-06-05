@@ -383,7 +383,7 @@ NSLog(@"%@", self.sectionInfoArray);
 }
 
 - (IBAction)showSettings:(id)sender {
-    [WPMobileStats trackEventForWPCom:StatsEventSidebarClickedSettings];
+    [WPMobileStats incrementProperty:StatsPropertySidebarClickedSettings forEvent:StatsEventAppClosed];
     
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
@@ -514,7 +514,7 @@ NSLog(@"%@", self.sectionInfoArray);
 }
 
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)useCameraPlus withImage:(UIImage *)image {
-    [WPMobileStats trackEventForWPCom:StatsEventSidebarClickedQuickPhoto];
+    [WPMobileStats incrementProperty:StatsPropertySidebarClickedQuickPhoto forEvent:StatsEventAppClosed];
     
     QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
     quickPhotoViewController.sidebarViewController = self;
@@ -930,12 +930,12 @@ NSLog(@"%@", self.sectionInfoArray);
     if (indexPath.section == 0) { // Reader & Notifications
         
         if (indexPath.row == 0) { // Reader
-            [WPMobileStats trackEventForWPCom:StatsEventSidebarClickedReader];
-            
+            [WPMobileStats incrementProperty:StatsPropertySidebarClickedReader forEvent:StatsEventAppClosed];
+        
             WPReaderViewController *readerViewController = [[WPReaderViewController alloc] init];
             detailViewController = readerViewController;
         } else if(indexPath.row == 1) { // Notifications
-            [WPMobileStats trackEventForWPCom:StatsEventSidebarClickedNotifications];
+            [WPMobileStats incrementProperty:StatsPropertySidebarClickedNotifications forEvent:StatsEventAppClosed];
             
             self.hasUnseenNotes = NO;
             NotificationsViewController *notificationsViewController = [[NotificationsViewController alloc] init];
@@ -951,27 +951,27 @@ NSLog(@"%@", self.sectionInfoArray);
         //did user select the same item, but for a different blog? If so then just update the data in the view controller.
         switch (indexPath.row) {
             case 0:
-                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedPosts];
+                [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedPosts forEvent:StatsEventAppClosed];
                 
                  controllerClass = [PostsViewController class];
                 break;
             case 1:
-                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedPages];
+                [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedPages forEvent:StatsEventAppClosed];
                 
                 controllerClass = [PagesViewController class];
                 break;
             case 2:
-                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedComments];
+                [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedComments forEvent:StatsEventAppClosed];
                 
                 controllerClass = [CommentsViewController class];
                 break;
             case 3:
-                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedStats];
+                [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedStats forEvent:StatsEventAppClosed];
                 
                 controllerClass =  [StatsWebViewController class];//IS_IPAD ? [StatsWebViewController class] : [StatsTableViewController class];
                 break;
             case 4 :
-                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedViewSite];
+                [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedViewSite forEvent:StatsEventAppClosed];
                 
                 blogURL = blog.url;
                 if (![blogURL hasPrefix:@"http"]) {
@@ -1006,7 +1006,7 @@ NSLog(@"%@", self.sectionInfoArray);
                 }
                 return;
             case 5:
-                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedViewAdmin];
+                [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedViewAdmin forEvent:StatsEventAppClosed];
                 
                  dashboardURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
                 //dashboard already selected
