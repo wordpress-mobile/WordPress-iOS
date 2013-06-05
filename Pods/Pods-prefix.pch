@@ -16,20 +16,21 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#ifdef __OBJC__
 #import <CoreText/CoreText.h>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif
+#define ALLOW_IPHONE_SPECIAL_CASES 1

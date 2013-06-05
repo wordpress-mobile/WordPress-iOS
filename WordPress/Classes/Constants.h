@@ -6,6 +6,8 @@
 //
 
 // Blog archive file name
+#import "DDLog.h"
+
 #define BLOG_ARCHIVE_NAME       WordPress_Blogs
 
 // control dimensions
@@ -186,3 +188,6 @@ typedef NS_ENUM(NSUInteger, EditPageMode) {
 #define image_medium_size_h 360
 #define image_large_size_w 640
 #define image_large_size_h 480
+
+// CocoaLumberjack Default Logging Level
+static int ddLogLevel = LOG_LEVEL_INFO;

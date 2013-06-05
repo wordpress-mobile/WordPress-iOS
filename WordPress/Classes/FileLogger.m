@@ -26,27 +26,29 @@ NSString *FileLoggerPath() {
 - (id) init {
     self = [super init];
 	if (self) {
-		NSFileManager *fileManager = [NSFileManager defaultManager];
-		if (![fileManager fileExistsAtPath:FileLoggerPath()])
-			[fileManager createFileAtPath:FileLoggerPath()
-								 contents:nil
-							   attributes:nil];
-		logFile = [NSFileHandle fileHandleForWritingAtPath:FileLoggerPath()];
-		[logFile seekToEndOfFile];
+//		NSFileManager *fileManager = [NSFileManager defaultManager];
+//		if (![fileManager fileExistsAtPath:FileLoggerPath()])
+//			[fileManager createFileAtPath:FileLoggerPath()
+//								 contents:nil
+//							   attributes:nil];
+//		logFile = [NSFileHandle fileHandleForWritingAtPath:FileLoggerPath()];
+//		[logFile seekToEndOfFile];
 	}
 	return self;
 }
 
 - (void)flush {
-	[logFile synchronizeFile];
+	//[logFile synchronizeFile];
 }
 
 - (void)log:(NSString *)message {
-	[logFile writeData:[[NSString stringWithFormat:@"%@ %@\n", [NSDate date], message] dataUsingEncoding:NSUTF8StringEncoding]];
+	//[logFile writeData:[[NSString stringWithFormat:@"%@ %@\n", [NSDate date], message] dataUsingEncoding:NSUTF8StringEncoding]];
+    NSString *logMessage = [NSString stringWithFormat:@"%@ %@\n", [NSDate date], message];
+    DDLogInfo(logMessage);
 }
 
 - (void)reset {
-    [logFile truncateFileAtOffset:0];
+    //[logFile truncateFileAtOffset:0];
 }
 
 + (void)log:(NSString *)format, ... {
@@ -56,8 +58,7 @@ NSString *FileLoggerPath() {
 #if !FILELOGGER_ONLY_NSLOG_ON_DEBUG || defined(DEBUG)
 	NSLog(@"# %@", message); // The # symbol indicates that the message will be logged to file, useful when looking at the console
 #endif
-	[[FileLogger sharedInstance] log:message];
-    CLSLog(@"%@", message);
+	DDLogInfo(message);
     va_end(ap);
 }
 
