@@ -1013,7 +1013,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     [self.view endEditing:YES];
     
     if (![self page1FieldsValid]) {
-        [self showFieldsNotFilledError];
+        [self showPage1Errors];
         return;
     }
     
@@ -1223,6 +1223,11 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     return ([[_page1UsernameText.text trim] length] != 0);
 }
 
+- (BOOL)isUsernameUnderFiftyCharacters
+{
+    return [[_page1UsernameText.text trim] length] <= 50;
+}
+
 - (BOOL)isPasswordFilled
 {
     return ([[_page1PasswordText.text trim] length] != 0);
@@ -1230,7 +1235,16 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (BOOL)page1FieldsValid
 {
-    return [self page1FieldsFilled];
+    return [self page1FieldsFilled] && [self isUsernameUnderFiftyCharacters];
+}
+
+- (void)showPage1Errors
+{
+    if (![self isUsernameUnderFiftyCharacters]) {
+        [self showError:NSLocalizedString(@"Username must be less than fifty characters.", nil)];
+    } else {
+        [self showFieldsNotFilledError];
+    }
 }
 
 - (void)showFieldsNotFilledError
