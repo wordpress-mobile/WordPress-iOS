@@ -168,6 +168,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		self.blogName = [editorial objectForKey:@"blog_name"];
 		
 		self.content = [self normalizeParagraphs:[dict objectForKey:@"content"]];
+		self.commentsOpen = [dict numberForKey:@"comments_open"];
 		
 		self.date_created_gmt = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
 		self.sortDate = [DateUtils dateFromISOString:[editorial objectForKey:@"displayed_on"]];
@@ -221,7 +222,8 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		self.blogName = [dict objectForKey:@"blog_name"];
 
 		self.content = [self normalizeParagraphs:[dict objectForKey:@"post_content_full"]];
-
+		self.commentsOpen = [NSNumber numberWithBool:[@"open" isEqualToString:[dict stringForKey:@"comment_status"]]];
+		
 		NSDate *date;
 		NSString *timestamp = [dict objectForKey:@"post_timestamp"];
 		if (timestamp != nil) {
@@ -273,7 +275,6 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	}
 
     self.commentCount = [dict numberForKey:@"comment_count"];
-	self.commentsOpen = [dict numberForKey:@"comments_open"];
 	self.dateSynced = [NSDate date];
 	self.featuredImage = featuredImage;
 	

@@ -17,6 +17,7 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 
 @implementation WPRefreshViewController {
 	CGPoint savedScrollOffset;
+	CGFloat keyboardOffset;
 }
 
 #pragma mark - LifeCycle Methods
@@ -33,7 +34,7 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+	
 	self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
 	_tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	_tableView.dataSource = self;
@@ -72,6 +73,9 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
     } else {
         [self.tableView scrollRectToVisible:CGRectMake(0.0f, contentSize.height, 0.0f, 0.0f) animated:NO];
     }
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 
@@ -103,6 +107,8 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
     if (IS_IPHONE) {
         savedScrollOffset = self.tableView.contentOffset;
     }
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -137,6 +143,40 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
         [SoundUtil playPullSound];
         didPlayPullSound = YES;
     }
+}
+
+
+- (void)handleKeyboardDidShow:(NSNotification *)notification {
+	CGRect frame = self.view.frame;
+	CGRect startFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+	CGRect endFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+	
+	CGPoint point = [self.view.window convertPoint:CGPointMake(0.0f, frame.size.height) fromView:self.view];
+	keyboardOffset = startFrame.origin.y - point.y;
+	
+	point = [self.view.window convertPoint:endFrame.origin toView:self.view];
+	frame.size.height = point.y;
+	
+	// TODO: There is a bug with rotation that we need to sort out :/
+	[UIView animateWithDuration:0.3 animations:^{
+		self.view.frame = frame;
+	}];
+}
+
+
+- (void)handleKeyboardWillHide:(NSNotification *)notification {
+	CGRect frame = self.view.frame;
+	CGRect keyFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+	
+	CGPoint point = keyFrame.origin;
+	point.y -= keyboardOffset;
+	
+	point = [self.view.window convertPoint:point toView:self.view];
+	frame.size.height = point.y;
+	
+	[UIView animateWithDuration:0.3 animations:^{
+		self.view.frame = frame;
+	}];
 }
 
 

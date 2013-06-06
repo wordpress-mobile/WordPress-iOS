@@ -24,5 +24,7 @@
 - (void)hideRefreshHeader;
 - (BOOL)isSyncing;
 - (void)syncWithUserInteraction:(BOOL)userInteraction;
+- (void)handleKeyboardDidShow:(NSNotification *)notification;
+- (void)handleKeyboardWillHide:(NSNotification *)notification;
 
 @end
