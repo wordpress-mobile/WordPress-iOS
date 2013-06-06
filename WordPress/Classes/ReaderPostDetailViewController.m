@@ -189,7 +189,6 @@
 	_readerCommentFormView.post = self.post;
 	_readerCommentFormView.delegate = self;
 
-	[self.view addSubview:_readerCommentFormView];
 	if (_isShowingCommentForm) {
 		[self showCommentForm:NO]; // show the form but don't animate it.
 	}
@@ -486,6 +485,12 @@
 
 
 - (void)showCommentForm:(BOOL)animated {
+	if (_readerCommentFormView.superview == nil) {
+		CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderCommentFormView desiredHeight]);
+		self.readerCommentFormView.frame = frame;
+		[self.view addSubview:_readerCommentFormView];
+	}
+	
 	if (_isShowingCommentForm) {
 		[_readerCommentFormView.textView becomeFirstResponder];
 		
@@ -546,6 +551,9 @@
 	} completion:^(BOOL finished) {
 		self.commentButton.enabled = YES;
 		self.isShowingCommentForm = NO;
+		
+		// Remove the view so we don't glympsse it on the iPad when rotating
+		[_readerCommentFormView removeFromSuperview];
 	}];
 }
 
