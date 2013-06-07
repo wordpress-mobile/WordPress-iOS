@@ -681,6 +681,7 @@
 		E177088113AAC19700EA6C72 /* undoDisabled~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E177087D13AAC19700EA6C72 /* undoDisabled~ipad.png */; };
 		E17BE261134F5E4D00165C3D /* QuickPicturePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = E17BE260134F5E4D00165C3D /* QuickPicturePreviewView.m */; };
 		E18165FD14E4428B006CE885 /* loader.html in Resources */ = {isa = PBXBuildFile; fileRef = E18165FC14E4428B006CE885 /* loader.html */; };
+		E183BD7417621D87000B0822 /* WPCookie.m in Sources */ = {isa = PBXBuildFile; fileRef = E183BD7317621D86000B0822 /* WPCookie.m */; };
 		E183EC9A16B16CCF00C2EB11 /* AutosavingIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = E183EC9916B16CCF00C2EB11 /* AutosavingIndicatorView.m */; };
 		E183EC9C16B215FE00C2EB11 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		E183EC9D16B2160200C2EB11 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8355D67D11D13EAD00A61362 /* MobileCoreServices.framework */; };
@@ -1642,6 +1643,8 @@
 		E17BE260134F5E4D00165C3D /* QuickPicturePreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickPicturePreviewView.m; sourceTree = "<group>"; };
 		E17BE7A9134DEC12007285FD /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E18165FC14E4428B006CE885 /* loader.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = loader.html; path = Resources/HTML/loader.html; sourceTree = "<group>"; };
+		E183BD7217621D85000B0822 /* WPCookie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPCookie.h; sourceTree = "<group>"; };
+		E183BD7317621D86000B0822 /* WPCookie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPCookie.m; sourceTree = "<group>"; };
 		E183EC9816B16CCF00C2EB11 /* AutosavingIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutosavingIndicatorView.h; sourceTree = "<group>"; };
 		E183EC9916B16CCF00C2EB11 /* AutosavingIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutosavingIndicatorView.m; sourceTree = "<group>"; };
 		E183EC9B16B1C01D00C2EB11 /* EditPostViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditPostViewController_Internal.h; sourceTree = "<group>"; };
@@ -2885,6 +2888,8 @@
 				8525398A171761D9003F6B32 /* WPComLanguages.m */,
 				8514973F171E13DF00B87F3F /* WPAsyncBlockOperation.h */,
 				85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */,
+				E183BD7217621D85000B0822 /* WPCookie.h */,
+				E183BD7317621D86000B0822 /* WPCookie.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -4240,6 +4245,7 @@
 				85B6F74F1742DA1E00CE7F3A /* WPNUXMainButton.m in Sources */,
 				85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */,
 				85A1B6751742E7EF00BA5E35 /* WPMobileStats.m in Sources */,
+				E183BD7417621D87000B0822 /* WPCookie.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
