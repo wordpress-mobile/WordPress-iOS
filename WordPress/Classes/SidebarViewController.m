@@ -421,6 +421,7 @@ NSLog(@"%@", self.sectionInfoArray);
         if ([self.sectionInfoArray count] > (preservedIndexPath.section - 1)) {
             SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:(preservedIndexPath.section -1)];
             if (!sectionInfo.open) {
+                sectionInfo.open = YES;
                 [sectionInfo.headerView toggleOpenWithUserAction:YES];
             }
             
