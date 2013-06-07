@@ -112,16 +112,19 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     if (!self.postSettingsViewController) {
         self.postSettingsViewController = [[PostSettingsViewController alloc] initWithPost:self.apost];
         self.postSettingsViewController.postDetailViewController = self;
+        [self addChildViewController:self.postSettingsViewController];
     }
 
     if (!self.postPreviewViewController) {
         self.postPreviewViewController = [[PostPreviewViewController alloc] initWithPost:self.apost];
         self.postPreviewViewController.postDetailViewController = self;
+        [self addChildViewController:self.postPreviewViewController];
     }
 
     if (!self.postMediaViewController) {
         self.postMediaViewController = [[PostMediaViewController alloc] initWithPost:self.apost];
         self.postMediaViewController.postDetailViewController = self;
+        [self addChildViewController:self.postMediaViewController];
     }
 
     self.postSettingsViewController.view.frame = editView.frame;
