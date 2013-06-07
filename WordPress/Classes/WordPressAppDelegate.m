@@ -1311,6 +1311,7 @@
     crashCount += 1;
     [defaults setInteger:crashCount forKey:@"crashCount"];
     [defaults synchronize];
+    [WPMobileStats trackEventForSelfHostedAndWPCom:@"Crashed" properties:@{@"CrashID": crash.identifier}];
 }
 
 @end
