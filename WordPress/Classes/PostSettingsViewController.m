@@ -305,6 +305,7 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	self.apost.password = textField.text;
+    [postDetailViewController refreshButtons];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
