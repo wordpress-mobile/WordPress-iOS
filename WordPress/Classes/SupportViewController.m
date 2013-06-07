@@ -8,6 +8,7 @@
 
 #import "SupportViewController.h"
 #import "WPWebViewController.h"
+#import "ActivityLogViewController.h"
 
 @interface SupportViewController ()
 
@@ -51,13 +52,11 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
     if (section == SettingsSectionActivityLog)
         return 2;
 
@@ -102,11 +101,12 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         cell.textLabel.textAlignment = NSTextAlignmentLeft;
 
         if (indexPath.row == 0) {
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = NSLocalizedString(@"Extra Debug", @"");
             UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
             aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
         } else if (indexPath.row == 1) {
-            cell.textLabel.text = NSLocalizedString(@"Activity Log", @"");
+            cell.textLabel.text = NSLocalizedString(@"Activity Logs", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
@@ -117,7 +117,9 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     if (section == SettingsSectionFAQ) {
-        return NSLocalizedString(@"Please visit the FAQ to get answers to common questions. If you're still having trouble, please post in the forums.", @"");
+        return NSLocalizedString(@"Please visit the FAQ to get answers to common questions. If you're still having trouble, please post in the forums or send us feedback.", @"");
+    } else if (section == SettingsSectionActivityLog) {
+        return NSLocalizedString(@"Turning on Extra Debug will log additional items to assist with us helping you with resolving a problem.", @"");
     }
 
     return nil;
@@ -148,6 +150,11 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
                                                       otherButtonTitles:nil];
             [alertView show];
         }
+    } else if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 0) {
+        abort();
+    } else if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 1) {
+        ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
+        [self.navigationController pushViewController:activityLogViewController animated:YES];
     }
 }
 
