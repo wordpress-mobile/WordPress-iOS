@@ -115,7 +115,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillAppear:animated];
-    if (IS_IPAD)
+    if (IS_IPAD && [self.toolbarItems count] > 0)
         [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
 }
 
