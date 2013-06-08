@@ -97,7 +97,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 {
     void (^successBlock)() = ^{
         [[WordPressComApi sharedApi] syncPushNotificationInfo];
-        if ([self.blog hasJetpack]) {
+        if (![self.blog isWPcom] && [self.blog hasJetpack]) {
             [self connectToJetpack];
         } else {
             [self dismiss];
