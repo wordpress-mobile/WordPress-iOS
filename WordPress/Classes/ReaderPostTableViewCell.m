@@ -30,7 +30,6 @@
 - (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;
 - (void)handleLikeButtonTapped:(id)sender;
 - (void)handleFollowButtonTapped:(id)sender;
-- (void)handleReblogButtonTapped:(id)sender;
 
 @end
 
@@ -115,7 +114,6 @@
 		[_reblogButton setImage:[UIImage imageNamed:@"note_icon_reblog"] forState:UIControlStateNormal];
 		_reblogButton.frame = CGRectMake(200.0f, 0.0f, 100.0f, 40.0f);
 		_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-		[_reblogButton addTarget:self action:@selector(handleReblogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
 		self.controlView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 40.0f)];
 		_controlView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -175,6 +173,11 @@
 
 
 #pragma mark - Instance Methods
+
+- (void)setReblogTarget:(id)target action:(SEL)selector {
+	[_reblogButton addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
+}
+
 
 - (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style {
 	
@@ -262,6 +265,8 @@
 	}
 	[_likeButton setTitle:likeStr forState:UIControlStateNormal];
 	
+	_reblogButton.hidden = ![self.post isWPCom];
+	
 	[self.avatarImageView setImageWithBlavatarUrl:[[NSURL URLWithString:post.blogURL] host]];
 	
 	[self updateControlBar];
@@ -323,18 +328,6 @@
 - (void)handleFollowButtonTapped:(id)sender {
 	NSLog(@"Tapped follow");
 	[self.post toggleFollowingWithSuccess:^{
-		
-	} failure:^(NSError *error) {
-		[self updateControlBar];
-	}];
-	
-	[self updateControlBar];
-}
-
-
-- (void)handleReblogButtonTapped:(id)sender {
-	NSLog(@"Tapped reblog");
-	[self.post reblogPostToSite:nil success:^{
 		
 	} failure:^(NSError *error) {
 		[self updateControlBar];

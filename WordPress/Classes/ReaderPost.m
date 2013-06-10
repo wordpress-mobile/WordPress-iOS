@@ -29,6 +29,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 @dynamic authorEmail;
 @dynamic authorURL;
 @dynamic blogName;
+@dynamic blogSiteID;
 @dynamic blogURL;
 @dynamic commentCount;
 @dynamic commentsOpen;
@@ -166,6 +167,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		self.authorURL = [author objectForKey:@"URL"];
 
 		self.blogName = [editorial objectForKey:@"blog_name"];
+		self.blogSiteID = [editorial numberForKey:@"site_id"];
 		
 		self.content = [self normalizeParagraphs:[dict objectForKey:@"content"]];
 		self.commentsOpen = [dict numberForKey:@"comments_open"];
@@ -175,6 +177,8 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		self.likeCount = [dict numberForKey:@"like_count"];
 		self.permaLink = [dict objectForKey:@"URL"];
 		self.postTitle = [[dict objectForKey:@"title"] stringByDecodingXMLCharacters];
+		
+		self.isLiked = [dict numberForKey:@"i_like"];
 		
 		NSURL *url = [NSURL URLWithString:self.permaLink];
 		self.blogURL = [NSString stringWithFormat:@"%@://%@/", url.scheme, url.host];
@@ -220,6 +224,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		
 		self.blogURL = [dict objectForKey:@"blog_url"];
 		self.blogName = [dict objectForKey:@"blog_name"];
+		self.blogSiteID = [dict numberForKey:@"blog_site_id"];
 
 		self.content = [self normalizeParagraphs:[dict objectForKey:@"post_content_full"]];
 		self.commentsOpen = [NSNumber numberWithBool:[@"open" isEqualToString:[dict stringForKey:@"comment_status"]]];
@@ -237,6 +242,8 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		self.likeCount = [dict objectForKey:@"post_like_count"];
 		self.permaLink = [dict objectForKey:@"post_permalink"];
 		self.postTitle = [[dict objectForKey:@"post_title"] stringByDecodingXMLCharacters];
+		
+		self.isLiked = [dict numberForKey:@"is_liked"];
 		
 		self.siteID = [dict numberForKey:@"blog_id"];
 		
@@ -279,7 +286,6 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	self.featuredImage = featuredImage;
 	
 	self.isFollowing = [dict numberForKey:@"is_following"];
-	self.isLiked = [dict numberForKey:@"is_liked"];
 	self.isReblogged = [dict numberForKey:@"is_reblogged"];
 
 	self.status = [dict objectForKey:@"status"];
@@ -396,10 +402,15 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 }
 
 
-- (void)reblogPostToSite:(id)newSite success:(void (^)())success failure:(void (^)(NSError *error))failure {
-	return; // Short circuited until the API is updated
+- (void)reblogPostToSite:(id)site note:(NSString *)note success:(void (^)())success failure:(void (^)(NSError *error))failure {
+	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:site forKey:@"destination_site_id"];
+	
+	if ([note length] > 0) {
+		[params setObject:note forKey:@"note"];
+	}
+
 	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%d/reblogs/new", self.siteID, self.postID];
-	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[[WordPressComApi sharedApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if(success) {
 			success();
 		}
@@ -414,7 +425,6 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 - (NSString *)prettyDateString {
 	NSDate *date = [self isFreshlyPressed] ? self.sortDate : self.dateCreated;
 	NSString *str;
-//	date = 	[DateUtils localDateToGMTDate:date];
 	NSTimeInterval diff = [[NSDate date] timeIntervalSince1970] - [date timeIntervalSince1970];
 	
 	if(diff < 60) {
@@ -483,6 +493,11 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 - (BOOL)isFreshlyPressed {
 	return ([self.endpoint rangeOfString:@"freshly-pressed"].location != NSNotFound)? true : false;
+}
+
+
+- (BOOL)isWPCom {
+	return [self.blogSiteID integerValue] == 1 ? YES : NO;
 }
 
 

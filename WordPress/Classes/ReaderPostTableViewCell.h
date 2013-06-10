@@ -22,6 +22,6 @@
 					reuseIdentifier:(NSString *)reuseIdentifier;
 
 - (void)configureCell:(ReaderPost *)post;
-
+- (void)setReblogTarget:(id)target action:(SEL)selector;
 
 @end

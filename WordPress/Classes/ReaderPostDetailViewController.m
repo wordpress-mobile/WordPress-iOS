@@ -19,12 +19,14 @@
 #import "ReaderCommentTableViewCell.h"
 #import "ReaderPostDetailView.h"
 #import "ReaderCommentFormView.h"
+#import "ReaderReblogFormView.h"
 
 @interface ReaderPostDetailViewController ()<ReaderPostDetailViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate>
 
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) ReaderPostDetailView *headerView;
 @property (nonatomic, strong) ReaderCommentFormView *readerCommentFormView;
+@property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
 @property (nonatomic, strong) UIBarButtonItem *commentButton;
 @property (nonatomic, strong) UIBarButtonItem *likeButton;
 @property (nonatomic, strong) UIBarButtonItem *followButton;
@@ -38,6 +40,7 @@
 @property (nonatomic) BOOL shouldShowKeyboard;
 @property (nonatomic) BOOL isScrollingCommentIntoView;
 @property (nonatomic) BOOL isShowingCommentForm;
+@property (nonatomic) BOOL isShowingReblogForm;
 
 - (void)prepareComments;
 - (void)showStoredComment;
@@ -47,6 +50,8 @@
 - (BOOL)canComment;
 - (void)showCommentForm:(BOOL)animated;
 - (void)hideCommentForm:(BOOL)animated;
+- (void)showReblogForm:(BOOL)animated;
+- (void)hideReblogForm:(BOOL)animated;
 
 - (void)handleCommentButtonTapped:(id)sender;
 - (void)handleFollowButtonTapped:(id)sender;
@@ -191,6 +196,17 @@
 
 	if (_isShowingCommentForm) {
 		[self showCommentForm:NO]; // show the form but don't animate it.
+	}
+	
+	frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
+	self.readerReblogFormView = [[ReaderReblogFormView alloc] initWithFrame:frame];
+	_readerReblogFormView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+	_readerReblogFormView.navigationItem = self.navigationItem;
+	_readerReblogFormView.post = self.post;
+	_readerReblogFormView.delegate = self;
+	
+	if (_isShowingReblogForm) {
+		[self showReblogForm:NO]; // show the form but don't animate it.
 	}
 	
 	[self prepareComments];
@@ -350,7 +366,11 @@
 	if ([self.post.commentsOpen boolValue]) {
 		[items addObjectsFromArray:@[_commentButton, placeholder]];
 	}
-	[items addObjectsFromArray:@[_likeButton, placeholder, _followButton, placeholder, _reblogButton]];
+	[items addObjectsFromArray:@[_likeButton, placeholder, _followButton]];
+	if ([self.post isWPCom]) {
+		[items addObjectsFromArray:@[placeholder, _reblogButton]];
+	}
+	
 	[self setToolbarItems:items animated:YES];
 	
 	self.navigationController.toolbarHidden = NO;
@@ -394,12 +414,14 @@
 
 - (void)handleReblogButtonTapped:(id)sender {
 	NSLog(@"Reblog tapped");
-	[self.post reblogPostToSite:nil success:^{
-		
-	} failure:^(NSError *error) {
-		[self updateToolbar];
-	}];
-	[self updateToolbar];
+	
+	if (_isShowingReblogForm) {
+		[self hideReblogForm:YES];
+		return;
+	}
+	
+	self.shouldShowKeyboard = YES;
+	[self showReblogForm:YES];
 }
 
 
@@ -485,9 +507,10 @@
 
 
 - (void)showCommentForm:(BOOL)animated {
+	[self hideReblogForm:NO];
 	if (_readerCommentFormView.superview == nil) {
 		CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderCommentFormView desiredHeight]);
-		self.readerCommentFormView.frame = frame;
+		_readerCommentFormView.frame = frame;
 		[self.view addSubview:_readerCommentFormView];
 	}
 	
@@ -503,26 +526,25 @@
 	}
 	
 	self.isShowingCommentForm = YES;
-	CGRect formFrame = self.readerCommentFormView.frame;
+	CGRect formFrame = _readerCommentFormView.frame;
 	CGRect tableFrame = self.tableView.frame;
 	tableFrame.size.height = self.view.bounds.size.height - formFrame.size.height;
 	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
 	
 	if (!animated) {
 		self.tableView.frame = tableFrame;
-		self.readerCommentFormView.frame = formFrame;
+		_readerCommentFormView.frame = formFrame;
 		return;
 	}
 	
-	self.commentButton.enabled = NO;
+	_commentButton.enabled = NO;
 	[UIView animateWithDuration:0.3 animations:^{
 		self.tableView.frame = tableFrame;
-		self.readerCommentFormView.frame = formFrame;
+		_readerCommentFormView.frame = formFrame;
 	} completion:^(BOOL finished) {
-		self.commentButton.enabled = YES;
-		if (self.shouldShowKeyboard) {
-			[self.readerCommentFormView.textView becomeFirstResponder];
-
+		_commentButton.enabled = YES;
+		if (_shouldShowKeyboard) {
+			[_readerCommentFormView.textView becomeFirstResponder];
 		}
 	}];
 }
@@ -533,27 +555,103 @@
 		return;
 	}
 	
-	CGRect formFrame = self.readerCommentFormView.frame;
+	CGRect formFrame = _readerCommentFormView.frame;
 	CGRect tableFrame = self.tableView.frame;
 	tableFrame.size.height = self.view.bounds.size.height;
 	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
 	
 	if (!animated) {
 		self.tableView.frame = tableFrame;
-		self.readerCommentFormView.frame = formFrame;
+		_readerCommentFormView.frame = formFrame;
+		self.isShowingCommentForm = NO;
 		return;
 	}
 	
-	self.commentButton.enabled = NO;
+	_commentButton.enabled = NO;
 	[UIView animateWithDuration:0.3 animations:^{
 		self.tableView.frame = tableFrame;
-		self.readerCommentFormView.frame = formFrame;
+		_readerCommentFormView.frame = formFrame;
 	} completion:^(BOOL finished) {
-		self.commentButton.enabled = YES;
+		_commentButton.enabled = YES;
 		self.isShowingCommentForm = NO;
 		
 		// Remove the view so we don't glympsse it on the iPad when rotating
 		[_readerCommentFormView removeFromSuperview];
+	}];
+}
+
+
+- (void)showReblogForm:(BOOL)animated {
+	[self hideCommentForm:NO];
+	if (_readerReblogFormView.superview == nil) {
+		CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
+		_readerReblogFormView.frame = frame;
+		[self.view addSubview:_readerReblogFormView];
+	}
+	
+	NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+	if (path) {
+		[self.tableView deselectRowAtIndexPath:path animated:NO];
+	}
+	
+	if (_isShowingReblogForm) {
+		[_readerReblogFormView.textView becomeFirstResponder];
+		return;
+	}
+	
+	self.isShowingReblogForm = YES;
+	CGRect formFrame = _readerReblogFormView.frame;
+	CGRect tableFrame = self.tableView.frame;
+	tableFrame.size.height = self.view.bounds.size.height - formFrame.size.height;
+	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
+	
+	if (!animated) {
+		self.tableView.frame = tableFrame;
+		_readerReblogFormView.frame = formFrame;
+		return;
+	}
+	
+	_reblogButton.enabled = NO;
+	[UIView animateWithDuration:0.3 animations:^{
+		self.tableView.frame = tableFrame;
+		_readerReblogFormView.frame = formFrame;
+	} completion:^(BOOL finished) {
+		_reblogButton.enabled = YES;
+		if (_shouldShowKeyboard) {
+			[_readerReblogFormView.textView becomeFirstResponder];
+			
+		}
+	}];
+}
+
+
+- (void)hideReblogForm:(BOOL)animated {
+	if (!_isShowingReblogForm) {
+		return;
+	}
+	
+	CGRect formFrame = _readerReblogFormView.frame;
+	CGRect tableFrame = self.tableView.frame;
+	tableFrame.size.height = self.view.bounds.size.height;
+	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
+	
+	if (!animated) {
+		self.tableView.frame = tableFrame;
+		_readerReblogFormView.frame = formFrame;
+		self.isShowingReblogForm = NO;
+		return;
+	}
+	
+	_reblogButton.enabled = NO;
+	[UIView animateWithDuration:0.3 animations:^{
+		self.tableView.frame = tableFrame;
+		_readerReblogFormView.frame = formFrame;
+	} completion:^(BOOL finished) {
+		_reblogButton.enabled = YES;
+		self.isShowingReblogForm = NO;
+		
+		// Remove the view so we don't glympsse it on the iPad when rotating
+		[_readerReblogFormView removeFromSuperview];
 	}];
 }
 
@@ -637,9 +735,11 @@
 	if ([cell isSelected]) {
 		_readerCommentFormView.comment = nil;
 		[tableView deselectRowAtIndexPath:indexPath animated:NO];
+		[self hideCommentForm:YES];
 		return nil;
 	}
 
+	self.shouldShowKeyboard = YES;
 	[self showCommentForm:YES];
 
 	return indexPath;
@@ -647,10 +747,12 @@
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if(_isShowingKeyboard) {
+	_readerCommentFormView.comment = [_comments objectAtIndex:indexPath.row];
+	if (IS_IPAD) {
+		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+	} else {
 		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 	}
-	_readerCommentFormView.comment = [_comments objectAtIndex:indexPath.row];
 }
 
 
@@ -698,21 +800,6 @@
 
 
 #pragma mark - ReaderTextForm Delegate Methods
-
-- (void)readerTextFormShouldDismiss:(ReaderTextFormView *)readerTextForm {
-	
-}
-
-
-- (void)readerTextFormDidCancel:(ReaderTextFormView *)readerTextForm {
-	
-}
-
-
-- (void)readerTextFormWillSend:(ReaderTextFormView *)readerTextForm {
-	
-}
-
 
 - (void)readerTextFormDidSend:(ReaderTextFormView *)readerTextForm {
 	self.post.storedComment = nil;

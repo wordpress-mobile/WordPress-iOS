@@ -14,16 +14,25 @@
 #import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
 #import "PanelNavigationConstants.h"
+#import "SFHFKeychainUtils.h"
+#import "NSString+XMLExtensions.h"
+#import "ReaderReblogFormView.h"
 
 NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
-@interface ReaderPostsViewController ()<ReaderTopicsDelegate>
+@interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate>
 
 @property (nonatomic, strong) NSArray *rowHeights;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
+@property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
+@property (nonatomic) BOOL isShowingReblogForm;
+@property (nonatomic) BOOL isShowingKeyboard;
+@property (nonatomic) BOOL shouldShowKeyboard;
 
 - (NSDictionary *)currentTopic;
 - (void)updateRowHeightsForWidth:(CGFloat)width;
+- (void)fetchBlogsAndPrimaryBlog;
+- (void)handleReblogButtonTapped:(id)sender;
 
 @end
 
@@ -36,6 +45,16 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 - (void)doBeforeDealloc {
 	[super doBeforeDealloc];
 	_resultsController.delegate = nil;
+}
+
+
+- (id)init {
+	self = [super init];
+	if (self) {
+		// This is a convenient place to check for the user's blogs and primary blog for reblogging.
+		[self fetchBlogsAndPrimaryBlog];
+	}
+	return self;
 }
 
 
@@ -81,9 +100,15 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
         self.toolbarItems = [NSArray arrayWithObjects:button, nil];
     }
     
+	
+	CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
+	self.readerReblogFormView = [[ReaderReblogFormView alloc] initWithFrame:frame];
+	_readerReblogFormView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+	_readerReblogFormView.navigationItem = self.navigationItem;
+	_readerReblogFormView.delegate = self;
+		
 	// Compute row heights now for smoother scrolling later.
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
-	
 }
 
 
@@ -170,6 +195,155 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 }
 
 
+- (void)handleReblogButtonTapped:(id)sender {
+	// Locate the cell this originated from. 
+	UIView *v = (UIView *)sender;
+	while (![v isKindOfClass:[UITableViewCell class]]) {
+		v = (UIView *)v.superview;
+	}
+	
+	NSIndexPath *selectedPath = [self.tableView indexPathForSelectedRow];
+	
+	UITableViewCell *cell = (UITableViewCell *)v;
+	NSIndexPath *path = [self.tableView indexPathForCell:cell];
+	
+	// if not showing form, show the form.
+	if (!selectedPath) {
+		[self.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
+		[self showReblogForm:YES];
+		
+		return;
+	}
+	
+	// if showing form && same cell as before, dismiss the form.
+	if([selectedPath compare:path] == NSOrderedSame) {
+		[self hideReblogForm:YES];
+	} else {
+		[self.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
+	}
+}
+
+
+- (void)showReblogForm:(BOOL)animated {
+
+	if (_readerReblogFormView.superview == nil) {
+		CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
+		_readerReblogFormView.frame = frame;
+		[self.view addSubview:_readerReblogFormView];
+	}
+	
+	NSIndexPath *path = [self.tableView indexPathForSelectedRow];
+	_readerReblogFormView.post = (ReaderPost *)[self.resultsController objectAtIndexPath:path];
+	
+	if (_isShowingReblogForm) {
+		[_readerReblogFormView.textView becomeFirstResponder];
+		return;
+	}
+	
+	self.isShowingReblogForm = YES;
+	CGRect formFrame = _readerReblogFormView.frame;
+	CGRect tableFrame = self.tableView.frame;
+	tableFrame.size.height = self.view.bounds.size.height - formFrame.size.height;
+	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
+	
+	if (!animated) {
+		self.tableView.frame = tableFrame;
+		_readerReblogFormView.frame = formFrame;
+		return;
+	}
+	
+//	_reblogButton.enabled = NO;
+	[UIView animateWithDuration:0.3 animations:^{
+		self.tableView.frame = tableFrame;
+		_readerReblogFormView.frame = formFrame;
+	} completion:^(BOOL finished) {
+//		_reblogButton.enabled = YES;
+//		if (_shouldShowKeyboard) {
+			[_readerReblogFormView.textView becomeFirstResponder];
+//		}
+	}];
+}
+
+
+- (void)hideReblogForm:(BOOL)animated {
+	if(!_isShowingReblogForm) {
+		return;
+	}
+	
+	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:NO];
+	
+	CGRect formFrame = _readerReblogFormView.frame;
+	CGRect tableFrame = self.tableView.frame;
+	tableFrame.size.height = self.view.bounds.size.height;
+	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
+	
+	if (!animated) {
+		self.tableView.frame = tableFrame;
+		_readerReblogFormView.frame = formFrame;
+		self.isShowingReblogForm = NO;
+		return;
+	}
+	
+//	_reblogButton.enabled = NO;
+	[UIView animateWithDuration:0.3 animations:^{
+		self.tableView.frame = tableFrame;
+		_readerReblogFormView.frame = formFrame;
+	} completion:^(BOOL finished) {
+//		_reblogButton.enabled = YES;
+		self.isShowingReblogForm = NO;
+		
+		// Remove the view so we don't glympsse it on the iPad when rotating
+		[_readerReblogFormView removeFromSuperview];
+	}];
+}
+
+
+#pragma mark - ReaderTextForm Delegate Methods
+
+- (void)readerTextFormDidSend:(ReaderTextFormView *)readerTextForm {
+	
+}
+
+
+- (void)readerTextFormDidBeginEditing:(ReaderTextFormView *)readerTextForm {
+	self.isShowingKeyboard = YES;
+}
+
+
+- (void)readerTextFormDidChange:(ReaderTextFormView *)readerTextForm {
+	
+}
+
+
+- (void)readerTextFormDidEndEditing:(ReaderTextFormView *)readerTextForm {
+	self.isShowingKeyboard = NO;
+	
+}
+
+
+#pragma mark - UIScrollView Delegate Methods
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	if (!selectedIndexPath) {
+		return;
+	}
+
+	__block BOOL found = NO;
+	[[self.tableView indexPathsForVisibleRows] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		NSIndexPath *objPath = (NSIndexPath *)obj;
+		if ([objPath compare:selectedIndexPath] == NSOrderedSame) {
+			found = YES;
+		}
+		*stop = YES;
+	}];
+	
+	if (found) return;
+	
+	[self hideReblogForm:YES];
+}
+
+
 #pragma mark - DetailView Delegate Methods
 
 - (void)resetView {
@@ -249,6 +423,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
     if (cell == nil) {
         cell = [[ReaderPostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
 		cell.parentController = self;
+		[cell setReblogTarget:self action:@selector(handleReblogButtonTapped:)];
     }
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.accessoryType = UITableViewCellAccessoryNone;
@@ -257,6 +432,24 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 	[cell configureCell:post];
 	
     return cell;
+}
+
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (_isShowingKeyboard) {
+		[self.view endEditing:YES];
+		return nil;
+	}
+	
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+	if ([cell isSelected]) {
+		_readerReblogFormView.post = nil;
+		[tableView deselectRowAtIndexPath:indexPath animated:NO];
+		[self hideReblogForm:YES];
+		return nil;
+	}
+	
+	return indexPath;
 }
 
 
@@ -327,5 +520,67 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
     }
 }
 
+
+#pragma mark - Utility
+
+- (void)fetchBlogsAndPrimaryBlog {
+	
+	NSURL *xmlrpc;
+    NSString *username, *password;
+	NSError *error = nil;
+	xmlrpc = [NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"];
+	username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
+	password = [SFHFKeychainUtils getPasswordForUsername:username
+										  andServiceName:@"WordPress.com"
+												   error:&error];
+	
+    WPXMLRPCClient *api = [WPXMLRPCClient clientWithXMLRPCEndpoint:xmlrpc];
+    [api callMethod:@"wp.getUsersBlogs"
+         parameters:[NSArray arrayWithObjects:username, password, nil]
+            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSArray *usersBlogs = responseObject;
+				
+                if(usersBlogs.count > 0) {
+					
+                    [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                        NSString *title = [obj valueForKey:@"blogName"];
+                        title = [title stringByDecodingXMLCharacters];
+                        [obj setValue:title forKey:@"blogName"];
+                    }];
+                    
+                }
+				
+				[[NSUserDefaults standardUserDefaults] setObject:usersBlogs forKey:@"wpcom_users_blogs"];
+				
+				if ([usersBlogs count] == 1) {
+					NSDictionary *dict = [usersBlogs objectAtIndex:0];
+					[[NSUserDefaults standardUserDefaults] setObject:[dict numberForKey:@"blogid"] forKey:@"wpcom_users_prefered_blog_id"];
+					[NSUserDefaults resetStandardUserDefaults];
+				} else if ([usersBlogs count] > 1) {
+					
+					[[WordPressComApi sharedApi] getPath:@"me"
+											  parameters:nil
+												 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+													 NSDictionary *dict = (NSDictionary *)responseObject;
+													 NSNumber *primaryBlog = [dict objectForKey:@"primary_blog"];
+													 [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+														 if ([primaryBlog isEqualToNumber:[obj numberForKey:@"blogid"]]) {
+															 [[NSUserDefaults standardUserDefaults] setObject:[obj numberForKey:@"blogid"] forKey:@"wpcom_users_prefered_blog_id"];
+															 [NSUserDefaults resetStandardUserDefaults];
+															 *stop = YES;
+														 }
+													 }];
+												 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+													 // TODO: Handle Failure. Retry maybe?
+												 }];
+					
+					
+				}
+				
+			} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+				// Fail silently.
+            }];
+
+}
 
 @end

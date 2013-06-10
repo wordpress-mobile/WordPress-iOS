@@ -20,6 +20,7 @@ extern NSInteger const ReaderTopicEndpointIndex;
 @property (nonatomic, strong) NSString *authorEmail;
 @property (nonatomic, strong) NSString *authorURL;
 @property (nonatomic, strong) NSString *blogName;
+@property (nonatomic, strong) NSNumber *blogSiteID;
 @property (nonatomic, strong) NSString *blogURL;
 @property (nonatomic, strong) NSNumber *commentCount;
 @property (nonatomic, strong) NSNumber *commentsOpen;
@@ -93,7 +94,7 @@ extern NSInteger const ReaderTopicEndpointIndex;
 - (void)toggleFollowingWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 
-- (void)reblogPostToSite:(id)newSite success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)reblogPostToSite:(id)site note:(NSString *)note success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 
 - (NSString *)prettyDateString;
@@ -101,9 +102,15 @@ extern NSInteger const ReaderTopicEndpointIndex;
 
 - (BOOL)isFreshlyPressed;
 
+
+- (BOOL)isWPCom;
+
+
 - (void)storeComment:(NSNumber *)commentID comment:(NSString *)comment;
 
+
 - (NSDictionary *)getStoredComment;
+
 
 @end
 

@@ -16,5 +16,6 @@
 + (CGFloat)rowHeightWithText:(NSString *)text;
 - (void)setTitle:(NSString *)title;
 - (void)setBlavatarUrl:(NSString *)url;
+- (void)hideCheckmark:(BOOL)hide;
 
 @end
