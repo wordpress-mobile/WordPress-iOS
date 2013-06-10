@@ -105,7 +105,7 @@
 		[self addSubview:_textContentView];
 		
 		NSString *str = @"";
-		NSString *styles = @"<style>body{color:#464646;font-size:11px;line-height:15px;} a{color:#108bc0;text-decoration:none;}a:active{color:#005684;}</style>";
+		NSString *styles = @"<style>body{color:#464646;} a{color:#108bc0;text-decoration:none;}a:active{color:#005684;}</style>";
 		NSString *content = self.post.content;
 		
 		if([self.post.postTitle length] > 0) {
@@ -115,9 +115,9 @@
 		}
 
 		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
-															  DTDefaultFontFamily:@"Helvetica Neue Light",
-													DTDefaultLineHeightMultiplier:[NSNumber numberWithFloat:1.7f],
-											   NSTextSizeMultiplierDocumentOption:[NSNumber numberWithFloat:1.7f]
+															  DTDefaultFontFamily:@"Helvetica",
+//													DTDefaultLineHeightMultiplier:[NSNumber numberWithFloat:1.3f],
+											   NSTextSizeMultiplierDocumentOption:[NSNumber numberWithFloat:1.3f]
 									 }];
 		_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
 																				 options:dict
@@ -166,20 +166,23 @@
 	CGFloat width = _textContentView.frame.size.width;
 	CGSize viewSize = imageView.image.size;
 	viewSize.width = width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-	if (viewSize.height > 0 && (viewSize.width > _textContentView.frame.size.width)) {
+
+	if (viewSize.height > 0) {
 		
-		// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
-		// so position it offset by the inverse of _textContentView's edgeInsets.
-		UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
-		edgeInsets.left = 0.0f - edgeInsets.left;
-		edgeInsets.top = 0.0f;
-		edgeInsets.right = 0.0f - edgeInsets.right;
-		edgeInsets.bottom = 0.0f;
-		imageView.edgeInsets = edgeInsets;
+		if (imageView.image.size.width > _textContentView.frame.size.width) {
+			// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
+			// so position it offset by the inverse of _textContentView's edgeInsets.
+			UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
+			edgeInsets.left = 0.0f - edgeInsets.left;
+			edgeInsets.top = 0.0f;
+			edgeInsets.right = 0.0f - edgeInsets.right;
+			edgeInsets.bottom = 0.0f;
+			imageView.edgeInsets = edgeInsets;
+			
+			viewSize.height = imageView.image.size.height * (viewSize.width / imageView.image.size.width);
+		}
 		
-		viewSize.height = imageView.image.size.height * (width / imageView.image.size.width);
 	}
-	
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
 	
 	// update all attachments that matchin this URL (possibly multiple images with same size)
@@ -305,7 +308,7 @@
 			[imageView setImage:(UIImage *)attachment.contents];
 		} else {
 			[imageView setImageWithURL:attachment.contentURL
-					  placeholderImage:[UIImage imageNamed:@""]
+					  placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]
 							   success:^(id readerImageView) {
 								   [self handleMediaViewLoaded:readerImageView];
 							   } failure:^(id readerImageView, NSError *error) {
