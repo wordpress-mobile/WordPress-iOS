@@ -41,7 +41,7 @@
 	
 	NSArray *blogs = [[NSUserDefaults standardUserDefaults] arrayForKey:@"wpcom_users_blogs"];
 	if ([blogs count] > 1) {
-		height += 40.0f;
+		height += 30.0f;
 	}
 	
 	return height + 30.0f; // 15px padding above and below the the UITextView;
@@ -53,7 +53,7 @@
     if (self) {
 		self.promptLabel.text = NSLocalizedString(@"Add your thoughts here... (optional)", @"Placeholder text prompting the user to add a note to the post they are reblogging.");
 		
-		frame = CGRectMake(10.0f, 10.0, frame.size.width - 20.0f, 30.0f);
+		frame = CGRectMake(10.0f, 10.0, frame.size.width - 20.0f, 20.0f);
 		
 		NSArray *blogs = [[NSUserDefaults standardUserDefaults] arrayForKey:@"wpcom_users_blogs"];
 		if ([blogs count] > 1) {
@@ -68,16 +68,27 @@
 			buttonView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 			buttonView.userInteractionEnabled = NO;
 			
-			self.blogNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(35.0f, 0.0f, frame.size.width - 35.0f, frame.size.height)];
+			NSString *str = NSLocalizedString(@"Post to", @"Lable for the blog selector. Says 'Post to' followed by the blog's icon and its name.");
+			UIFont *font = [UIFont fontWithName:@"OpenSans" size:15.0f];
+			CGSize size = [str sizeWithFont:font];
+			UILabel *postToLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0, size.width, frame.size.height)];
+			postToLabel.text = str;
+			postToLabel.font = font;
+			postToLabel.textColor = [UIColor whiteColor];
+			postToLabel.backgroundColor = [UIColor clearColor];
+			[buttonView addSubview:postToLabel];
+
+			self.blavatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(size.width + 5.0f, 0.0f, 20.0f, 20.0f)];
+			_blavatarImageView.contentMode = UIViewContentModeScaleAspectFit;
+			[buttonView addSubview:_blavatarImageView];
+			
+			CGFloat x = _blavatarImageView.frame.origin.x + 25.0f;
+			self.blogNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0.0f, frame.size.width - x, frame.size.height)];
 			_blogNameLabel.backgroundColor = [UIColor clearColor];
-			_blogNameLabel.font = [UIFont systemFontOfSize:14.0f];
+			_blogNameLabel.font = font;
 			_blogNameLabel.textColor = [UIColor whiteColor];
 			_blogNameLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 			[buttonView addSubview:_blogNameLabel];
-			
-			self.blavatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)];
-			_blavatarImageView.contentMode = UIViewContentModeScaleAspectFit;
-			[buttonView addSubview:_blavatarImageView];
 
 			[_blogButton addSubview:buttonView];
 			[self addSubview:_blogButton];

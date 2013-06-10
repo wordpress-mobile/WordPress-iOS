@@ -291,7 +291,6 @@
 	}
 	
 	
-	
 	[self.avatarImageView setImageWithBlavatarUrl:[[NSURL URLWithString:post.blogURL] host]];
 	
 	[self updateControlBar];
