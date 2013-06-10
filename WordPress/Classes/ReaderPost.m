@@ -55,7 +55,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		
 		NSDictionary *fpDict = @{@"title": NSLocalizedString(@"Freshly Pressed", @""), @"endpoint":@"freshly-pressed", @"default":@YES};
 		NSDictionary *follows = @{@"title": NSLocalizedString(@"Blogs I Follow", @""), @"endpoint":@"reader/following", @"default":@YES};
-		NSDictionary *likes = @{@"title": NSLocalizedString(@"Blogs I Like", @""), @"endpoint":@"reader/liked", @"default":@YES};
+		NSDictionary *likes = @{@"title": NSLocalizedString(@"Posts I Like", @""), @"endpoint":@"reader/liked", @"default":@YES};
 		NSDictionary *topic = @{@"title": NSLocalizedString(@"Topics", @""), @"endpoint":@"reader/topics/%@", @"default":@NO};
 		
 		endpoints = @[fpDict, follows, likes, topic];
@@ -495,6 +495,10 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	return ([self.endpoint rangeOfString:@"freshly-pressed"].location != NSNotFound)? true : false;
 }
 
+
+- (BOOL)isBlogsIFollow {
+	return ([self.endpoint rangeOfString:@"reader/following"].location != NSNotFound)? true : false;
+}
 
 - (BOOL)isWPCom {
 	return [self.blogSiteID integerValue] == 1 ? YES : NO;

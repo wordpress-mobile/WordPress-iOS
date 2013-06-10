@@ -103,6 +103,9 @@ extern NSInteger const ReaderTopicEndpointIndex;
 - (BOOL)isFreshlyPressed;
 
 
+- (BOOL)isBlogsIFollow;
+
+
 - (BOOL)isWPCom;
 
 

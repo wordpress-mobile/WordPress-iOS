@@ -632,6 +632,12 @@
 
 - (void)syncWithUserInteraction:(BOOL)userInteraction {
 	
+	if ([self.post.postID integerValue] == 0 ) { // Weird that this should ever happen. 
+		self.post.dateCommentsSynced = [NSDate date];
+		[self performSelector:@selector(hideRefreshHeader) withObject:self afterDelay:0.5f];
+		return;
+	}
+	
 	NSDictionary *params = @{@"number":@100};
 	
 	[ReaderPost getCommentsForPost:[self.post.postID integerValue]

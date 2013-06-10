@@ -267,6 +267,31 @@
 	
 	_reblogButton.hidden = ![self.post isWPCom];
 	
+	CGRect frame;
+	if( [self.post isBlogsIFollow] ) {
+		_followButton.hidden = YES;
+		frame = _likeButton.frame;
+		frame.origin.x = 0.0f;
+		_likeButton.frame = frame;
+		
+		frame = _reblogButton.frame;
+		frame.origin.x = _likeButton.frame.size.width;
+		_reblogButton.frame = frame;
+		
+	} else {
+		_followButton.hidden = NO;
+
+		frame = _likeButton.frame;
+		frame.origin.x = _followButton.frame.size.width;
+		_likeButton.frame = frame;
+		
+		frame = _reblogButton.frame;
+		frame.origin.x = _likeButton.frame.size.width;
+		_reblogButton.frame = frame;
+	}
+	
+	
+	
 	[self.avatarImageView setImageWithBlavatarUrl:[[NSURL URLWithString:post.blogURL] host]];
 	
 	[self updateControlBar];
