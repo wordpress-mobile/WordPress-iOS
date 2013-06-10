@@ -157,8 +157,11 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 	point = [self.view.window convertPoint:endFrame.origin toView:self.view];
 	frame.size.height = point.y;
 	
-	// TODO: There is a bug with rotation that we need to sort out :/
-	[UIView animateWithDuration:0.3 animations:^{
+//	// TODO: There is a bug with rotation that we need to sort out :/
+//	[UIView animateWithDuration:0.3f delay:0.1f options:nil animations:^{
+//		self.view.frame = frame;
+//	} completion:NULL];
+	[UIView animateWithDuration:0.25 animations:^{
 		self.view.frame = frame;
 	}];
 }
@@ -173,10 +176,11 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 	
 	point = [self.view.window convertPoint:point toView:self.view];
 	frame.size.height = point.y;
+	self.view.frame = frame;
 	
-	[UIView animateWithDuration:0.3 animations:^{
-		self.view.frame = frame;
-	}];
+//	[UIView animateWithDuration:0.3 animations:^{
+//		self.view.frame = frame;
+//	}];
 }
 
 

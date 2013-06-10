@@ -246,22 +246,9 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 	tableFrame.size.height = self.view.bounds.size.height - formFrame.size.height;
 	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
 	
-	if (!animated) {
-		self.tableView.frame = tableFrame;
-		_readerReblogFormView.frame = formFrame;
-		return;
-	}
-	
-//	_reblogButton.enabled = NO;
-	[UIView animateWithDuration:0.3 animations:^{
-		self.tableView.frame = tableFrame;
-		_readerReblogFormView.frame = formFrame;
-	} completion:^(BOOL finished) {
-//		_reblogButton.enabled = YES;
-//		if (_shouldShowKeyboard) {
-			[_readerReblogFormView.textView becomeFirstResponder];
-//		}
-	}];
+	self.tableView.frame = tableFrame;
+	_readerReblogFormView.frame = formFrame;
+	[_readerReblogFormView.textView becomeFirstResponder];
 }
 
 
@@ -283,16 +270,14 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 		self.isShowingReblogForm = NO;
 		return;
 	}
-	
-//	_reblogButton.enabled = NO;
+
 	[UIView animateWithDuration:0.3 animations:^{
 		self.tableView.frame = tableFrame;
 		_readerReblogFormView.frame = formFrame;
 	} completion:^(BOOL finished) {
-//		_reblogButton.enabled = YES;
 		self.isShowingReblogForm = NO;
-		
-		// Remove the view so we don't glympsse it on the iPad when rotating
+
+		// Remove the view so we don't glympse it on the iPad when rotating
 		[_readerReblogFormView removeFromSuperview];
 	}];
 }

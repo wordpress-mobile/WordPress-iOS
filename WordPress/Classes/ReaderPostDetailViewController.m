@@ -36,8 +36,8 @@
 @property (nonatomic, strong) NSMutableArray *comments;
 @property (nonatomic, strong) NSArray *rowHeights;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
-@property (nonatomic) BOOL isShowingKeyboard; // TODO: Adjust this property
-@property (nonatomic) BOOL shouldShowKeyboard;
+@property (nonatomic) BOOL isShowingKeyboard;
+//@property (nonatomic) BOOL shouldShowKeyboard;
 @property (nonatomic) BOOL isScrollingCommentIntoView;
 @property (nonatomic) BOOL isShowingCommentForm;
 @property (nonatomic) BOOL isShowingReblogForm;
@@ -385,7 +385,6 @@
 		return;
 	}
 	
-	self.shouldShowKeyboard = YES;
 	[self showCommentForm:YES];
 }
 
@@ -420,7 +419,6 @@
 		return;
 	}
 	
-	self.shouldShowKeyboard = YES;
 	[self showReblogForm:YES];
 }
 
@@ -529,24 +527,11 @@
 	CGRect formFrame = _readerCommentFormView.frame;
 	CGRect tableFrame = self.tableView.frame;
 	tableFrame.size.height = self.view.bounds.size.height - formFrame.size.height;
-	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
-	
-	if (!animated) {
-		self.tableView.frame = tableFrame;
-		_readerCommentFormView.frame = formFrame;
-		return;
-	}
-	
-	_commentButton.enabled = NO;
-	[UIView animateWithDuration:0.3 animations:^{
-		self.tableView.frame = tableFrame;
-		_readerCommentFormView.frame = formFrame;
-	} completion:^(BOOL finished) {
-		_commentButton.enabled = YES;
-		if (_shouldShowKeyboard) {
-			[_readerCommentFormView.textView becomeFirstResponder];
-		}
-	}];
+	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;	
+
+	self.tableView.frame = tableFrame;
+	_readerCommentFormView.frame = formFrame;
+	[_readerCommentFormView.textView becomeFirstResponder];
 }
 
 
@@ -575,7 +560,7 @@
 		_commentButton.enabled = YES;
 		self.isShowingCommentForm = NO;
 		
-		// Remove the view so we don't glympsse it on the iPad when rotating
+		// Remove the view so we don't glympse it on the iPad when rotating
 		[_readerCommentFormView removeFromSuperview];
 	}];
 }
@@ -605,23 +590,10 @@
 	tableFrame.size.height = self.view.bounds.size.height - formFrame.size.height;
 	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
 	
-	if (!animated) {
-		self.tableView.frame = tableFrame;
-		_readerReblogFormView.frame = formFrame;
-		return;
-	}
-	
-	_reblogButton.enabled = NO;
-	[UIView animateWithDuration:0.3 animations:^{
-		self.tableView.frame = tableFrame;
-		_readerReblogFormView.frame = formFrame;
-	} completion:^(BOOL finished) {
-		_reblogButton.enabled = YES;
-		if (_shouldShowKeyboard) {
-			[_readerReblogFormView.textView becomeFirstResponder];
-			
-		}
-	}];
+	self.tableView.frame = tableFrame;
+	_readerReblogFormView.frame = formFrame;
+	[_readerReblogFormView.textView becomeFirstResponder];
+
 }
 
 
@@ -650,7 +622,7 @@
 		_reblogButton.enabled = YES;
 		self.isShowingReblogForm = NO;
 		
-		// Remove the view so we don't glympsse it on the iPad when rotating
+		// Remove the view so we don't glympse it on the iPad when rotating
 		[_readerReblogFormView removeFromSuperview];
 	}];
 }
@@ -739,7 +711,6 @@
 		return nil;
 	}
 
-	self.shouldShowKeyboard = YES;
 	[self showCommentForm:YES];
 
 	return indexPath;
@@ -769,9 +740,6 @@
 #pragma mark - UIScrollView Delegate Methods
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	if (_shouldShowKeyboard){
-// TODO: show commment form and keyboard
-	}
 	if (_isScrollingCommentIntoView){
 		self.isScrollingCommentIntoView = NO;
 	}
