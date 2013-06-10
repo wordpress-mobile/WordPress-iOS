@@ -208,7 +208,11 @@
 }
 
 - (NSString *)loginUrl {
-    return [self urlWithPath:@"wp-login.php"];
+    NSString *loginUrl = [self getOptionValue:@"login_url"];
+    if (!loginUrl) {
+        loginUrl = [self urlWithPath:@"wp-login.php"];
+    }
+    return loginUrl;
 }
 
 - (NSString *)urlWithPath:(NSString *)path {
@@ -218,7 +222,14 @@
 }
 
 - (NSString *)adminUrlWithPath:(NSString *)path {
-    return [self urlWithPath:[NSString stringWithFormat:@"wp-admin/%@", path]];
+    NSString *adminBaseUrl = [self getOptionValue:@"admin_url"];
+    if (!adminBaseUrl) {
+        adminBaseUrl = [self urlWithPath:@"wp-admin/"];
+    }
+    if (![adminBaseUrl hasSuffix:@"/"]) {
+        adminBaseUrl = [adminBaseUrl stringByAppendingString:@"/"];
+    }
+    return [NSString stringWithFormat:@"%@%@", adminBaseUrl, path];
 }
 
 - (int)numberOfPendingComments{
