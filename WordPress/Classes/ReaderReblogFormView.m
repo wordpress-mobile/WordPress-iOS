@@ -39,7 +39,10 @@
 	
 	CGFloat height = (IS_IPAD) ? maxHeight : minHeight;
 	
-	height += 40.0f;
+	NSArray *blogs = [[NSUserDefaults standardUserDefaults] arrayForKey:@"wpcom_users_blogs"];
+	if ([blogs count] > 1) {
+		height += 40.0f;
+	}
 	
 	return height + 30.0f; // 15px padding above and below the the UITextView;
 }
@@ -51,48 +54,50 @@
 		self.promptLabel.text = NSLocalizedString(@"Add your thoughts here... (optional)", @"Placeholder text prompting the user to add a note to the post they are reblogging.");
 		
 		frame = CGRectMake(10.0f, 10.0, frame.size.width - 20.0f, 30.0f);
-		self.blogButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		_blogButton.frame = frame;
-		_blogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		[_blogButton addTarget:self action:@selector(handleBlogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-
-		UIView *buttonView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, frame.size.height)];
-		buttonView.backgroundColor = [UIColor clearColor];
-		buttonView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		buttonView.userInteractionEnabled = NO;
-		
-		self.blogNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(35.0f, 0.0f, frame.size.width - 35.0f, frame.size.height)];
-		_blogNameLabel.backgroundColor = [UIColor clearColor];
-		_blogNameLabel.font = [UIFont systemFontOfSize:14.0f];
-		_blogNameLabel.textColor = [UIColor whiteColor];
-		_blogNameLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		[buttonView addSubview:_blogNameLabel];
-		
-		self.blavatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)];
-		_blavatarImageView.contentMode = UIViewContentModeScaleAspectFit;
-		[buttonView addSubview:_blavatarImageView];
-
-		[_blogButton addSubview:buttonView];
-		[self addSubview:_blogButton];
-		
-		CGFloat offset = _blogButton.frame.origin.y + _blogButton.frame.size.height;
-		
-		frame = self.borderImageView.frame;
-		frame.origin.y += offset;
-		frame.size.height -= offset;
-		self.borderImageView.frame = frame;
-
-		frame = self.textView.frame;
-		frame.origin.y += offset;
-		frame.size.height -= offset;
-		self.textView.frame = frame;
-		
-		frame = self.promptLabel.frame;
-		frame.origin.y += offset;
-		self.promptLabel.frame = frame;
 		
 		NSArray *blogs = [[NSUserDefaults standardUserDefaults] arrayForKey:@"wpcom_users_blogs"];
-		if([blogs count] > 1) {
+		if ([blogs count] > 1) {
+		
+			self.blogButton = [UIButton buttonWithType:UIButtonTypeCustom];
+			_blogButton.frame = frame;
+			_blogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+			[_blogButton addTarget:self action:@selector(handleBlogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+
+			UIView *buttonView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, frame.size.height)];
+			buttonView.backgroundColor = [UIColor clearColor];
+			buttonView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+			buttonView.userInteractionEnabled = NO;
+			
+			self.blogNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(35.0f, 0.0f, frame.size.width - 35.0f, frame.size.height)];
+			_blogNameLabel.backgroundColor = [UIColor clearColor];
+			_blogNameLabel.font = [UIFont systemFontOfSize:14.0f];
+			_blogNameLabel.textColor = [UIColor whiteColor];
+			_blogNameLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+			[buttonView addSubview:_blogNameLabel];
+			
+			self.blavatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30.0f, 30.0f)];
+			_blavatarImageView.contentMode = UIViewContentModeScaleAspectFit;
+			[buttonView addSubview:_blavatarImageView];
+
+			[_blogButton addSubview:buttonView];
+			[self addSubview:_blogButton];
+			
+			CGFloat offset = _blogButton.frame.origin.y + _blogButton.frame.size.height;
+			
+			frame = self.borderImageView.frame;
+			frame.origin.y += offset;
+			frame.size.height -= offset;
+			self.borderImageView.frame = frame;
+
+			frame = self.textView.frame;
+			frame.origin.y += offset;
+			frame.size.height -= offset;
+			self.textView.frame = frame;
+			
+			frame = self.promptLabel.frame;
+			frame.origin.y += offset;
+			self.promptLabel.frame = frame;
+
 			NSNumber *primaryBlogId = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_users_prefered_blog_id"];
 			[blogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 				if ([[obj numberForKey:@"blogid"] isEqualToNumber:primaryBlogId]) {
@@ -163,10 +168,12 @@
 	self.siteId = [dict numberForKey:@"blogid"];
 	self.siteTitle = [dict stringForKey:@"blogName"];
 
-	NSURL *url = [NSURL URLWithString:[dict stringForKey:@"url"]];
-	[_blavatarImageView setImageWithBlavatarUrl:[url host] isWPcom:YES];
-	_blogNameLabel.text = _siteTitle;
-	
+	if (_blogButton) {
+		NSURL *url = [NSURL URLWithString:[dict stringForKey:@"url"]];
+		[_blavatarImageView setImageWithBlavatarUrl:[url host] isWPcom:YES];
+		_blogNameLabel.text = _siteTitle;
+	}
+
 	[self updateNavItem];
 }
 
