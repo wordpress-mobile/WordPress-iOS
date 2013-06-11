@@ -17,8 +17,11 @@
 #import "SFHFKeychainUtils.h"
 #import "NSString+XMLExtensions.h"
 #import "ReaderReblogFormView.h"
+#import "WPFriendFinderViewController.h"
+#import "WPFriendFinderNudgeView.h"
 
 NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
+NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
 @interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate> {
     UIBarButtonItem *titleButton;
@@ -30,6 +33,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 @property (nonatomic) BOOL isShowingReblogForm;
 @property (nonatomic) BOOL isShowingKeyboard;
 @property (nonatomic) BOOL shouldShowKeyboard;
+@property (nonatomic, strong) WPFriendFinderNudgeView *friendFinderNudgeView;
 
 - (NSDictionary *)currentTopic;
 - (void)updateRowHeightsForWidth:(CGFloat)width;
@@ -128,6 +132,8 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 	
     if (IS_IPAD)
         [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
+    
+    [self performSelector:@selector(showFriendFinderNudgeView:) withObject:self afterDelay:3.0];
     
 	self.panelNavigationController.delegate = self;
 	
@@ -583,6 +589,71 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 				// Fail silently.
             }];
 
+}
+
+#pragma mark - Friend Finder Button
+
+
+- (BOOL) shouldDisplayfriendFinderNudgeView {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return ![userDefaults boolForKey:WPReaderViewControllerDisplayedNativeFriendFinder] && self.friendFinderNudgeView == nil;
+}
+
+- (void) showFriendFinderNudgeView:(id)sender {
+    if ([self shouldDisplayfriendFinderNudgeView]) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        
+        [userDefaults setBool:YES forKey:WPReaderViewControllerDisplayedNativeFriendFinder];
+        [userDefaults synchronize];
+        
+        CGRect buttonFrame = CGRectMake(0,self.view.frame.size.height,self.view.frame.size.width, 0.f);
+        WPFriendFinderNudgeView *nudgeView = [[WPFriendFinderNudgeView alloc] initWithFrame:buttonFrame];
+        self.friendFinderNudgeView = nudgeView;
+        self.friendFinderNudgeView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        [self.view addSubview:self.friendFinderNudgeView];
+        
+        buttonFrame = self.friendFinderNudgeView.frame;
+        CGRect viewFrame = self.view.frame;
+        buttonFrame.origin.y = viewFrame.size.height - buttonFrame.size.height + 1.f;
+        
+        [self.friendFinderNudgeView.cancelButton addTarget:self action:@selector(hideFriendFinderNudgeView:) forControlEvents:UIControlEventTouchUpInside];
+        [self.friendFinderNudgeView.confirmButton addTarget:self action:@selector(openFriendFinder:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            self.friendFinderNudgeView.frame = buttonFrame;
+        }];
+    }
+}
+
+- (void) hideFriendFinderNudgeView:(id)sender {
+    if (self.friendFinderNudgeView == nil) {
+        return;
+    }
+    
+    CGRect buttonFrame = self.friendFinderNudgeView.frame;
+    CGRect viewFrame = self.view.frame;
+    buttonFrame.origin.y = viewFrame.size.height + 1.f;
+    [UIView animateWithDuration:0.1 animations:^{
+        self.friendFinderNudgeView.frame = buttonFrame;
+    } completion:^(BOOL finished) {
+        [self.friendFinderNudgeView removeFromSuperview];
+        self.friendFinderNudgeView = nil;
+    }];
+}
+
+- (void)openFriendFinder:(id)sender {
+    [self hideFriendFinderNudgeView:sender];
+    WPFriendFinderViewController *controller = [[WPFriendFinderViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil];
+	
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    if (IS_IPAD) {
+        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+		navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
+	
+    [self presentModalViewController:navController animated:YES];
+    
+    [controller loadURL:kMobileReaderFFURL];
 }
 
 @end
