@@ -8,6 +8,7 @@
 
 #import "ReaderPostTableViewCell.h"
 #import <DTCoreText/DTCoreText.h>
+#import <QuartzCore/QuartzCore.h>
 #import "UIImageView+Gravatar.h"
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
@@ -57,7 +58,7 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-		
+
 		self.contentView.backgroundColor = [UIColor colorWithHexString:@"F1F1F1"];
 		CGRect frame = CGRectMake(10.0f, 0.0f, self.contentView.frame.size.width - 20.0f, self.contentView.frame.size.height - 10.0f);
 		CGFloat width = frame.size.width;
@@ -66,6 +67,10 @@
 		_containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_containerView.backgroundColor = [UIColor whiteColor];
 		[self.contentView addSubview:_containerView];
+		
+		_containerView.layer.masksToBounds = NO;
+		_containerView.layer.shadowOffset = CGSizeMake(0, 0);
+		_containerView.layer.shadowOpacity = 0.075;
 		
 		self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
 		[_containerView addSubview:self.cellImageView];
@@ -244,7 +249,6 @@
 	}
 
 	self.textContentView.attributedString = [self convertHTMLToAttributedString:str withOptions:nil];
-
 	
 	_bylineLabel.text = [NSString stringWithFormat:@"%@ \non %@", [post prettyDateString], post.blogName];
 
