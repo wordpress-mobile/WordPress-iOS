@@ -474,13 +474,31 @@
     return urlToValidate;
 }
 
-- (void)validateXmlprcURL:(NSURL *)xmlrpcURL
+- (void)validateXmlprcURL:(NSURL *)xmlRpcURL
 {
-    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlrpcURL username:usernameTextField.text password:passwordTextField.text];
+    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:usernameTextField.text password:passwordTextField.text];
+
+    [api getBlogOptionsWithSuccess:^(id options){
+        if ([options objectForKey:@"wordpress.com"] != nil) {
+            _isSiteDotCom = true;
+            [self loginForSiteWithXmlRpcUrl:[NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"]];
+        } else {
+            _isSiteDotCom = false;
+            [self loginForSiteWithXmlRpcUrl:xmlRpcURL];
+        }
+    } failure:^(NSError *failure){
+        [SVProgressHUD dismiss];
+        [self validationDidFail:failure];
+    }];
+}
+
+- (void)loginForSiteWithXmlRpcUrl:(NSURL *)xmlRpcURL
+{
+    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:usernameTextField.text password:passwordTextField.text];
     [api getBlogsWithSuccess:^(NSArray *blogs) {
         [SVProgressHUD dismiss];
         subsites = blogs;
-        [self validationSuccess:[xmlrpcURL absoluteString]];
+        [self validationSuccess:[xmlRpcURL absoluteString]];
     } failure:^(NSError *error) {
         [SVProgressHUD dismiss];
         [self validationDidFail:error];

@@ -22,6 +22,7 @@
     NSArray *subsites;
 	UIActivityIndicatorView *savingIndicator;
     BOOL isValidating;
+    BOOL _isSiteDotCom;
 }
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;

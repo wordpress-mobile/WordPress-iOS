@@ -55,6 +55,9 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
         if ([subsites count] > 1 && [[subsite objectForKey:@"blogid"] isEqualToString:@"1"]) {
             [self displayAddUsersBlogsForXmlRpc:xmlRpc];
         } else {
+            if (_isSiteDotCom) {
+                xmlRpc = [subsite objectForKey:@"xmlrpc"];
+            }
             [self createBlogWithXmlRpc:xmlRpc andBlogDetails:subsite];
             [self synchronizeNewlyAddedBlog];
         }
