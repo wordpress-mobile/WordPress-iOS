@@ -23,9 +23,7 @@
 NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate> {
-    UIBarButtonItem *titleButton;
-}
+@interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate>
 
 @property (nonatomic, strong) NSArray *rowHeights;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
@@ -34,6 +32,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 @property (nonatomic) BOOL isShowingKeyboard;
 @property (nonatomic) BOOL shouldShowKeyboard;
 @property (nonatomic, strong) WPFriendFinderNudgeView *friendFinderNudgeView;
+@property (nonatomic, strong) UIBarButtonItem *titleButton;
 
 - (NSDictionary *)currentTopic;
 - (void)updateRowHeightsForWidth:(CGFloat)width;
@@ -103,7 +102,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     if (IS_IPHONE) {
         [self.navigationItem setRightBarButtonItem:button animated:YES];
     } else {
-        titleButton = [[UIBarButtonItem alloc] initWithTitle:[self.currentTopic objectForKey:@"title"]
+        self.titleButton = [[UIBarButtonItem alloc] initWithTitle:[self.currentTopic objectForKey:@"title"]
                                                        style:UIBarButtonItemStylePlain
                                                       target:self
                                                       action:@selector(handleTopicsButtonTapped:)];
@@ -112,7 +111,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
                                                                                 target:nil
                                                                                 action:nil];
         spacer.width = 8.0f;
-        self.toolbarItems = [NSArray arrayWithObjects:button, spacer, titleButton, nil];
+        self.toolbarItems = [NSArray arrayWithObjects:button, spacer, self.titleButton, nil];
     }
     
 	
@@ -519,7 +518,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 - (void)readerTopicChanged {
 	self.resultsController = nil;
     
-    titleButton.title = [self.currentTopic objectForKey:@"title"];
+    self.titleButton.title = [self.currentTopic objectForKey:@"title"];
     
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
     [self.tableView reloadData];
