@@ -241,7 +241,7 @@
 	NSString *str;
 	NSString *contentSnippet = post.summary;
 	NSString *styles = @"<style>body{color:#404040;}</style>";
-	NSString *title = [NSString stringWithFormat:@"<h3 style=\"font-size:20px;line-height:26px;font-weight:200;margin-bottom:8px;\">%@</h3>", post.postTitle];
+	NSString *title = [NSString stringWithFormat:@"<h3 style=\"font-size:20px;line-height:24px;font-weight:200;padding-top:5px;margin-bottom:10px;margin-left:-1px;\">%@</h3>", post.postTitle];
 	if(contentSnippet && [contentSnippet length] > 0){
 		str = [NSString stringWithFormat:@"%@%@%@", styles, title, contentSnippet];
 	} else {

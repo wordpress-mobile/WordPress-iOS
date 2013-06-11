@@ -108,7 +108,7 @@
 		NSString *styles = @"<style>body{color:#404040;} a{color:#278dbc;text-decoration:none;}a:active{color:#005684;}</style>";
 		NSString *content = self.post.content;
 		if([self.post.postTitle length] > 0) {
-			str = [NSString stringWithFormat:@"%@<h2 style=\"font-size:20px;line-height:26px;font-weight:200;margin-bottom:14px;\">%@</h2>%@", styles, self.post.postTitle, content];
+			str = [NSString stringWithFormat:@"%@<h2 style=\"font-size:20px;line-height:24px;font-weight:200;padding-top:5px;margin-bottom:10px;margin-left:-1px;\">%@</h2>%@", styles, self.post.postTitle, content];
 		} else {
 			str = [NSString stringWithFormat:@"%@%@",styles, content];
 		}
