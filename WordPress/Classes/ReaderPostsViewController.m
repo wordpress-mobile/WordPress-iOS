@@ -20,7 +20,9 @@
 
 NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
-@interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate>
+@interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate> {
+    UIBarButtonItem *titleButton;
+}
 
 @property (nonatomic, strong) NSArray *rowHeights;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
@@ -97,7 +99,16 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
     if (IS_IPHONE) {
         [self.navigationItem setRightBarButtonItem:button animated:YES];
     } else {
-        self.toolbarItems = [NSArray arrayWithObjects:button, nil];
+        titleButton = [[UIBarButtonItem alloc] initWithTitle:[self.currentTopic objectForKey:@"title"]
+                                                       style:UIBarButtonItemStylePlain
+                                                      target:self
+                                                      action:@selector(handleTopicsButtonTapped:)];
+        
+        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                                target:nil
+                                                                                action:nil];
+        spacer.width = 8.0f;
+        self.toolbarItems = [NSArray arrayWithObjects:button, spacer, titleButton, nil];
     }
     
 	
@@ -115,6 +126,9 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
+    if (IS_IPAD)
+        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
+    
 	self.panelNavigationController.delegate = self;
 	
 	NSDictionary *dict = [self currentTopic];
@@ -498,6 +512,9 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
 - (void)readerTopicChanged {
 	self.resultsController = nil;
+    
+    titleButton.title = [self.currentTopic objectForKey:@"title"];
+    
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
     [self.tableView reloadData];
     if ( [WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && [self.resultsController.fetchedObjects count] == 0 && ![self isSyncing] ) {
