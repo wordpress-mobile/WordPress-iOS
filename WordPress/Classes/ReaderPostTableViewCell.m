@@ -84,12 +84,12 @@
 		_bylineLabel.numberOfLines = 2;
 		_bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_bylineLabel.font = [UIFont fontWithName:@"Open Sans" size:13.0f];//[UIFont systemFontOfSize:14.0f];
-		_bylineLabel.textColor = [UIColor colorWithHexString:@"404040"];//[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0f];
+		_bylineLabel.textColor = [UIColor colorWithHexString:@"c0c0c0"];//[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0f];
 //		_bylineLabel.textColor = [UIColor colorWithWhite:0.5f alpha:1.0f];
 		[_byView addSubview:_bylineLabel];
 		
 		
-		UIColor *color = [UIColor colorWithHexString:@"54add3"];
+		UIColor *color = [UIColor colorWithHexString:@"278dbc"];
 		CGFloat fontSize = 16.0f;
 		self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		[_followButton.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
@@ -236,7 +236,7 @@
 	NSString *str;
 	NSString *contentSnippet = post.summary;
 	NSString *styles = @"<style>body{color:#404040;}</style>";
-	NSString *title = [NSString stringWithFormat:@"<h3 style=\"font-size:20px;font-weight:200;margin-bottom:8px;\">%@</h3>", post.postTitle];
+	NSString *title = [NSString stringWithFormat:@"<h3 style=\"font-size:20px;line-height:26px;font-weight:200;margin-bottom:8px;\">%@</h3>", post.postTitle];
 	if(contentSnippet && [contentSnippet length] > 0){
 		str = [NSString stringWithFormat:@"%@%@%@", styles, title, contentSnippet];
 	} else {

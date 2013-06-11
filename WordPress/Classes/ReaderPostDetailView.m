@@ -92,7 +92,7 @@
 		_blogLabel.backgroundColor = [UIColor clearColor];
 		_blogLabel.font = [UIFont fontWithName:@"Open Sans" size:13.0f];//[UIFont systemFontOfSize:14.0f];
 		_blogLabel.text = self.post.blogName;
-		_blogLabel.textColor = [UIColor colorWithHexString:@"54add3"];
+		_blogLabel.textColor = [UIColor colorWithHexString:@"278dbc"];
 		[_authorView addSubview:_blogLabel];
 		
 		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, _authorView.frame.size.height + padding, width, 100.0f)]; // Starting height is arbitrary
@@ -105,10 +105,10 @@
 		[self addSubview:_textContentView];
 		
 		NSString *str = @"";
-		NSString *styles = @"<style>body{color:#404040;} a{color:#54add3;text-decoration:none;}a:active{color:#005684;}</style>";
+		NSString *styles = @"<style>body{color:#404040;} a{color:#278dbc;text-decoration:none;}a:active{color:#005684;}</style>";
 		NSString *content = self.post.content;
 		if([self.post.postTitle length] > 0) {
-			str = [NSString stringWithFormat:@"%@<h2 style=\"font-size:20px;line-height:24px;font-weight:200;margin-bottom:14px;\">%@</h2>%@", styles, self.post.postTitle, content];
+			str = [NSString stringWithFormat:@"%@<h2 style=\"font-size:20px;line-height:26px;font-weight:200;margin-bottom:14px;\">%@</h2>%@", styles, self.post.postTitle, content];
 		} else {
 			str = [NSString stringWithFormat:@"%@%@",styles, content];
 		}
