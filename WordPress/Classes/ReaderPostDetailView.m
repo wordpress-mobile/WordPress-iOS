@@ -74,25 +74,25 @@
 		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding, labelWidth, labelHeight)];
 		_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_authorLabel.backgroundColor = [UIColor clearColor];
-		_authorLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+		_authorLabel.font = [UIFont fontWithName:@"Open Sans" size:13.0f];//[UIFont boldSystemFontOfSize:14.0f];
 		_authorLabel.text = (self.post.author != nil) ? self.post.author : self.post.authorDisplayName;
-		_authorLabel.textColor = [UIColor colorWithHexString:@"464646"];
+		_authorLabel.textColor = [UIColor colorWithHexString:@"404040"];
 		[_authorView addSubview:_authorLabel];
 		
 		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding + labelHeight, labelWidth, labelHeight)];
 		_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_dateLabel.backgroundColor = [UIColor clearColor];
-		_dateLabel.font = [UIFont systemFontOfSize:14.0f];
+		_dateLabel.font = [UIFont fontWithName:@"Open Sans" size:13.0f];//[UIFont systemFontOfSize:14.0f];
 		_dateLabel.text = [NSString stringWithFormat:@"%@ on", [self.post prettyDateString]];
-		_dateLabel.textColor = [UIColor colorWithHexString:@"aaaaaa"];
+		_dateLabel.textColor = [UIColor colorWithHexString:@"404040"];//[UIColor colorWithHexString:@"aaaaaa"];
 		[_authorView addSubview:_dateLabel];
 		
 		self.blogLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding + labelHeight * 2, labelWidth, labelHeight)];
 		_blogLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_blogLabel.backgroundColor = [UIColor clearColor];
-		_blogLabel.font = [UIFont systemFontOfSize:14.0f];
+		_blogLabel.font = [UIFont fontWithName:@"Open Sans" size:13.0f];//[UIFont systemFontOfSize:14.0f];
 		_blogLabel.text = self.post.blogName;
-		_blogLabel.textColor = [UIColor colorWithHexString:@"108bc0"];
+		_blogLabel.textColor = [UIColor colorWithHexString:@"54add3"];
 		[_authorView addSubview:_blogLabel];
 		
 		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, _authorView.frame.size.height + padding, width, 100.0f)]; // Starting height is arbitrary
@@ -105,19 +105,19 @@
 		[self addSubview:_textContentView];
 		
 		NSString *str = @"";
-		NSString *styles = @"<style>body{color:#464646;} a{color:#108bc0;text-decoration:none;}a:active{color:#005684;}</style>";
+		NSString *styles = @"<style>body{color:#404040;} a{color:#54add3;text-decoration:none;}a:active{color:#005684;}</style>";
 		NSString *content = self.post.content;
-		
 		if([self.post.postTitle length] > 0) {
-			str = [NSString stringWithFormat:@"%@<h2 style=\"color:#333333;font-size:18px;line-height:24px;font-weight:light;margin-bottom:14px;\">%@</h2>%@", styles, self.post.postTitle, content];
+			str = [NSString stringWithFormat:@"%@<h2 style=\"font-size:20px;line-height:24px;font-weight:200;margin-bottom:14px;\">%@</h2>%@", styles, self.post.postTitle, content];
 		} else {
 			str = [NSString stringWithFormat:@"%@%@",styles, content];
 		}
 
 		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
-															  DTDefaultFontFamily:@"Helvetica",
-//													DTDefaultLineHeightMultiplier:[NSNumber numberWithFloat:1.3f],
-											   NSTextSizeMultiplierDocumentOption:[NSNumber numberWithFloat:1.3f]
+															  DTDefaultFontFamily:@"Open Sans",
+													DTDefaultLineHeightMultiplier:@0.9,
+																DTDefaultFontSize:@13,
+											   NSTextSizeMultiplierDocumentOption:@1.1
 									 }];
 		_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
 																				 options:dict

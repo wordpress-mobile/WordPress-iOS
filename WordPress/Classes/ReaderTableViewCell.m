@@ -56,8 +56,10 @@
     NSAssert(html != nil, @"Can't convert nil to AttributedString");
 	
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
-														  DTDefaultFontFamily:@"Helvetica",
-										   NSTextSizeMultiplierDocumentOption:[NSNumber numberWithFloat:1.3]
+														  DTDefaultFontFamily:@"Open Sans",
+												DTDefaultLineHeightMultiplier:@0.9,
+															DTDefaultFontSize:@13,
+										   NSTextSizeMultiplierDocumentOption:@1.1
 								 }];
 	
 	if(options) {
