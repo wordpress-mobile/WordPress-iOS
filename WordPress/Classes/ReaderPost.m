@@ -163,10 +163,10 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 		author = [dict objectForKey:@"author"];
 		
-		self.author = [author objectForKey:@"name"];
-		self.authorURL = [author objectForKey:@"URL"];
+		self.author = [author stringForKey:@"name"];
+		self.authorURL = [author stringForKey:@"URL"];
 
-		self.blogName = [editorial objectForKey:@"blog_name"];
+		self.blogName = [editorial stringForKey:@"blog_name"];
 		self.blogSiteID = [editorial numberForKey:@"site_id"];
 		
 		self.content = [self normalizeParagraphs:[dict objectForKey:@"content"]];
@@ -175,8 +175,8 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		self.date_created_gmt = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
 		self.sortDate = [DateUtils dateFromISOString:[editorial objectForKey:@"displayed_on"]];
 		self.likeCount = [dict numberForKey:@"like_count"];
-		self.permaLink = [dict objectForKey:@"URL"];
-		self.postTitle = [[dict objectForKey:@"title"] stringByDecodingXMLCharacters];
+		self.permaLink = [dict stringForKey:@"URL"];
+		self.postTitle = [[dict stringForKey:@"title"] stringByDecodingXMLCharacters];
 		
 		self.isLiked = [dict numberForKey:@"i_like"];
 		
@@ -218,12 +218,16 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 	} else {
 		author = [dict objectForKey:@"post_author"];
+		if ([author isKindOfClass:[NSDictionary class]]) {
+			self.author = [author stringForKey:@"post_author"];
+		} else {
+			// Some endpoints return a string and not an object
+			self.author = [dict stringForKey:@"post_author"];
+		}
+		self.authorURL = [dict stringForKey:@"blog_url"];
 		
-		self.author = [author objectForKey:@"post_author"];
-		self.authorURL = [dict objectForKey:@"blog_url"];
-		
-		self.blogURL = [dict objectForKey:@"blog_url"];
-		self.blogName = [dict objectForKey:@"blog_name"];
+		self.blogURL = [dict stringForKey:@"blog_url"];
+		self.blogName = [dict stringForKey:@"blog_name"];
 		self.blogSiteID = [dict numberForKey:@"blog_site_id"];
 
 		self.content = [self normalizeParagraphs:[dict objectForKey:@"post_content_full"]];
@@ -239,17 +243,17 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		}
 		self.date_created_gmt = date;
 		self.sortDate = date;
-		self.likeCount = [dict objectForKey:@"post_like_count"];
-		self.permaLink = [dict objectForKey:@"post_permalink"];
-		self.postTitle = [[dict objectForKey:@"post_title"] stringByDecodingXMLCharacters];
+		self.likeCount = [dict numberForKey:@"post_like_count"];
+		self.permaLink = [dict stringForKey:@"post_permalink"];
+		self.postTitle = [[dict stringForKey:@"post_title"] stringByDecodingXMLCharacters];
 		
 		self.isLiked = [dict numberForKey:@"is_liked"];
 		
 		self.siteID = [dict numberForKey:@"blog_id"];
 		
-		self.summary = [[[dict objectForKey:@"post_content"] stringByStrippingHTML] trim];
+		self.summary = [[[dict stringForKey:@"post_content"] stringByStrippingHTML] trim];
 				
-		NSString *img = [dict objectForKey:@"post_featured_thumbnail"];
+		NSString *img = [dict stringForKey:@"post_featured_thumbnail"];
 		if([img length]) {
 			// TODO: Regex this madness
 			NSRange rng = [img rangeOfString:@"://"];
@@ -267,20 +271,33 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 			featuredImage = [img substringWithRange:rng];
 		}
 		
-		NSString *media = [dict objectForKey:@"post_featured_media"];
+		img = [dict stringForKey:@"post_avatar"];
+		if ([img length]) {
+			NSError *error;
+			NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"src=\"\\S+#" options:NSRegularExpressionCaseInsensitive error:&error];
+			NSRange rng = [regex rangeOfFirstMatchInString:img options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [img length])];
+
+			if (NSNotFound != rng.location) {
+				rng = NSMakeRange(rng.location+5, rng.length-6);
+				self.authorAvatarURL = [img substringWithRange:rng];
+			}
+		}
+		
+		NSString *media = [dict stringForKey:@"post_featured_media"];
 	
 		if(media) {
 			self.content = [NSString stringWithFormat:@"%@%@", media, self.content];
 		}
 	}
 
-	self.authorAvatarURL = [author objectForKey:@"avatar_URL"];
-	self.authorDisplayName = [author objectForKey:@"display_name"];
-	// email can return a boolean.
-	if([[author objectForKey:@"email"] isKindOfClass:[NSString class]]) {
-		self.authorEmail = [author objectForKey:@"email"];
+	if([author isKindOfClass:[NSDictionary class]]) {
+		self.authorAvatarURL = [author objectForKey:@"avatar_URL"];
+		self.authorDisplayName = [author objectForKey:@"display_name"];
+		// email can return a boolean.
+		if([[author objectForKey:@"email"] isKindOfClass:[NSString class]]) {
+			self.authorEmail = [author objectForKey:@"email"];
+		}
 	}
-
     self.commentCount = [dict numberForKey:@"comment_count"];
 	self.dateSynced = [NSDate date];
 	self.featuredImage = featuredImage;

@@ -99,7 +99,10 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-	self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
+	if ([self.resultsController.fetchedObjects count] > 0) {
+		self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
+	}
+	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	
 	self.title = self.post.postTitle;
@@ -657,6 +660,10 @@
 							   [self updateRowHeightsForWidth:self.tableView.frame.size.width];
 							   [self.tableView reloadData];
 							   [self hideRefreshHeader];
+							   
+							   if ([self.resultsController.fetchedObjects count] > 0) {
+								   self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
+							   }
 							   
 						   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 							   [self hideRefreshHeader];

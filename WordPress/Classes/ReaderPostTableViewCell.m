@@ -286,7 +286,7 @@
 		_likeButton.frame = frame;
 		
 		frame = _reblogButton.frame;
-		frame.origin.x = _likeButton.frame.size.width;
+		frame.origin.x = _likeButton.frame.size.width + _likeButton.frame.origin.x;
 		_reblogButton.frame = frame;
 	}
 	

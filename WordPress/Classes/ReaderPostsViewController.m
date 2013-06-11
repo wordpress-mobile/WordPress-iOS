@@ -118,7 +118,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 	self.panelNavigationController.delegate = self;
 	
 	NSDictionary *dict = [self currentTopic];
-	NSString *title = [dict objectForKey:@"title"];
+	NSString *title = [[dict objectForKey:@"title"] capitalizedString];
 	self.title = NSLocalizedString(title, @"");
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 }

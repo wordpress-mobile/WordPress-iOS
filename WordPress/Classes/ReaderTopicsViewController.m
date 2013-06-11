@@ -45,6 +45,7 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 			return [[dict objectForKey:@"default"] boolValue];
 		}];
 		self.defaultTopicsArray = [arr objectsAtIndexes:indexSet];
+		self.topicsArray = @[];
 				
 		NSDictionary *dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ReaderCurrentTopicKey];
 		if (dict) {
@@ -104,7 +105,18 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 			[topics addObject:@{@"title": title, @"endpoint":endpoint}];
 		}
 		
-		self.topicsArray = topics;		
+		self.topicsArray = topics;
+		
+		arr = [dict objectForKey:@"extra"];
+		if (arr) {
+			NSMutableArray *extras = [NSMutableArray arrayWithArray:_defaultTopicsArray];
+			for (NSDictionary *dict in arr) {
+				NSString *title = [dict objectForKey:@"cat_name"];
+				NSString *endpoint = [dict objectForKey:@"endpoint"];
+				[extras addObject:@{@"title": title, @"endpoint":endpoint}];
+			}
+			self.defaultTopicsArray = extras;
+		}
 		
 		[self refreshIfReady];
 		
@@ -130,21 +142,18 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+	if ([_topicsArray count]) {
+		return 2;
+	}
+	return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
-	switch (section) {
-		case 0:
-			return [_defaultTopicsArray count];
-			break;
-			
-		default:
-			return [_topicsArray count];
-			break;
+	if (section == 0) {
+		return [_defaultTopicsArray count];
 	}
+	return [_topicsArray count];
 }
 
 
@@ -163,7 +172,7 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 	}
     
 	NSDictionary *dict = [arr objectAtIndex:indexPath.row];
-	cell.textLabel.text = [dict objectForKey:@"title"];
+	cell.textLabel.text = [[dict objectForKey:@"title"] capitalizedString];
 	cell.accessoryType = UITableViewCellAccessoryNone;
 	if([[_currentTopic objectForKey:@"endpoint"] isEqualToString:[dict objectForKey:@"endpoint"]]) {
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
