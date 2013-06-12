@@ -45,7 +45,12 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
         // assume they want to add that specific site.
         NSDictionary *subsite = nil;
         if ([subsites count] > 1) {
-            subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlRpc]] lastObject];
+            if (_blogId) {
+                subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"blogid = %@", _blogId]] lastObject];
+            }
+            if (!subsite) {
+                subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlRpc]] lastObject];
+            }
         }
         
         if (subsite == nil) {

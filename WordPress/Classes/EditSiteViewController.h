@@ -23,6 +23,7 @@
 	UIActivityIndicatorView *savingIndicator;
     BOOL isValidating;
     BOOL _isSiteDotCom;
+    NSString *_blogId;
 }
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
