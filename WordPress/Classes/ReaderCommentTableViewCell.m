@@ -54,20 +54,19 @@
 		self.cellImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
 		
 		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - (10.0f + 30.0f), 10.0f, 30.0f, 20.0f)];
-		[_dateLabel setFont:[UIFont systemFontOfSize:14.0f]];
-		_dateLabel.textColor = [UIColor grayColor];
+		[_dateLabel setFont:[UIFont fontWithName:@"Open Sans" size:14.0f]];//[UIFont systemFontOfSize:14.0f]];
+		_dateLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0f];//[UIColor grayColor];
 		_dateLabel.textAlignment = NSTextAlignmentRight;
 		_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 		_dateLabel.backgroundColor = [UIColor clearColor];
 		[self.contentView addSubview:_dateLabel];
 		
 		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(40.0f, 10.0f, (_dateLabel.frame.origin.x - 50.0f), 20.0f)];
-		[_authorLabel setFont:[UIFont systemFontOfSize:14.0f]];
-		_authorLabel.textColor = [UIColor grayColor];
+		[_authorLabel setFont:[UIFont fontWithName:@"Open Sans" size:14.0f]];
+		_authorLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0f];
 		_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_authorLabel.backgroundColor = [UIColor clearColor];
 		[self.contentView addSubview:_authorLabel];
-		
 		
 		UIImageView *separatorImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell-separator"]];
 		separatorImageView.frame = CGRectMake(0.0f, 0.0f, width, 2.0f);
@@ -177,7 +176,7 @@
 	_authorLabel.text = comment.author;
 	[self.cellImageView setImageWithURL:[NSURL URLWithString:comment.authorAvatarURL] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom.png"]];
 	
-	NSString *html = [NSString stringWithFormat:@"<style>a{color:#3478E3;}</style>%@", comment.content];
+	NSString *html = [NSString stringWithFormat:@"<style>body{color:#404040;} a{color:#54add3;text-decoration:none;}a:active{color:#005684;}</style>%@", comment.content];
 	self.textContentView.attributedString = [self convertHTMLToAttributedString:html withOptions:nil];
 }
 

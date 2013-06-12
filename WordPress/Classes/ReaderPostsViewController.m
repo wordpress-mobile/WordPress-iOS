@@ -68,6 +68,12 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	
+	UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 10.0f)];
+	paddingView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	paddingView.backgroundColor = [UIColor colorWithHexString:@"efefef"];
+	self.tableView.tableHeaderView = paddingView;
+	
+	
 	// Topics button
 	UIBarButtonItem *button = nil;
     if (IS_IPHONE && [[UIButton class] respondsToSelector:@selector(appearance)]) {
@@ -120,7 +126,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	_readerReblogFormView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 	_readerReblogFormView.navigationItem = self.navigationItem;
 	_readerReblogFormView.delegate = self;
-		
+	
 	// Compute row heights now for smoother scrolling later.
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 }
