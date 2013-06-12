@@ -381,10 +381,10 @@
 		wasLastCommentPending = NO;
 	}
     if (segmentedControl.selectedSegmentIndex == 0) {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedShowPreviousComment];
+        [WPMobileStats incrementProperty:StatsPropertyCommentDetailShowPreviousComment forEvent:StatsEventAppClosed];
         [self.delegate showPreviousComment];
     } else {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedShowNextComment];
+        [WPMobileStats incrementProperty:StatsPropertyCommentDetailShowNextComment forEvent:StatsEventAppClosed];
         [self.delegate showNextComment];
     }
 }

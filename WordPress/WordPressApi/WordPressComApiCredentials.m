@@ -27,4 +27,9 @@
 + (NSString *)pocketConsumerKey {
     return @"";
 }
+
++ (NSString *)crashlyticsApiKey {
+    return @"";
+}
+
 @end

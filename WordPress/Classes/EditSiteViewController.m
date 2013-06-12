@@ -194,6 +194,13 @@
                 } else {
                     urlTextField.text = @"";
                 }
+                if ([self canEditUsernameAndURL]) {
+                    urlTextField.enabled = YES;
+                    urlTextField.textColor = [UIColor blackColor];
+                } else {
+                    urlTextField.enabled = NO;
+                    urlTextField.textColor = [UIColor darkGrayColor];
+                }
             }
             
             return self.urlCell;
@@ -211,6 +218,13 @@
 					usernameTextField.text = blog.username;
                 } else {
                     usernameTextField.text = @"";
+                }
+                if ([self canEditUsernameAndURL]) {
+                    usernameTextField.enabled = YES;
+                    usernameTextField.textColor = [UIColor blackColor];
+                } else {
+                    usernameTextField.enabled = NO;
+                    usernameTextField.textColor = [UIColor darkGrayColor];
                 }
 			}
             
@@ -460,25 +474,46 @@
     return urlToValidate;
 }
 
+- (void)validateXmlprcURL:(NSURL *)xmlRpcURL
+{
+    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:usernameTextField.text password:passwordTextField.text];
+
+    [api getBlogOptionsWithSuccess:^(id options){
+        if ([options objectForKey:@"wordpress.com"] != nil) {
+            _isSiteDotCom = true;
+            _blogId = [options stringForKeyPath:@"blog_id.value"];
+            [self loginForSiteWithXmlRpcUrl:[NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"]];
+        } else {
+            _isSiteDotCom = false;
+            [self loginForSiteWithXmlRpcUrl:xmlRpcURL];
+        }
+    } failure:^(NSError *failure){
+        [SVProgressHUD dismiss];
+        [self validationDidFail:failure];
+    }];
+}
+
+- (void)loginForSiteWithXmlRpcUrl:(NSURL *)xmlRpcURL
+{
+    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:usernameTextField.text password:passwordTextField.text];
+    [api getBlogsWithSuccess:^(NSArray *blogs) {
+        [SVProgressHUD dismiss];
+        subsites = blogs;
+        [self validationSuccess:[xmlRpcURL absoluteString]];
+    } failure:^(NSError *error) {
+        [SVProgressHUD dismiss];
+        [self validationDidFail:error];
+    }];
+}
 
 - (void)checkURL {
 	NSString *urlToValidate = [self getURLToValidate];
 	
     [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate];
     
-    NSString *uname = usernameTextField.text;
-    NSString *pwd = passwordTextField.text;
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
     [WordPressXMLRPCApi guessXMLRPCURLForSite:urlToValidate success:^(NSURL *xmlrpcURL) {
-        WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlrpcURL username:uname password:pwd];
-        [api getBlogsWithSuccess:^(NSArray *blogs) {
-            [SVProgressHUD dismiss];
-            subsites = blogs;
-            [self validationSuccess:[xmlrpcURL absoluteString]];
-        } failure:^(NSError *error) {
-            [SVProgressHUD dismiss];
-            [self validationDidFail:error];
-        }];
+        [self validateXmlprcURL:xmlrpcURL];
     } failure:^(NSError *error){
         [SVProgressHUD dismiss];
         if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
@@ -618,7 +653,13 @@
     }
     
     if (validFields) {
-        [self checkURL];
+        if (blog) {
+            // If we are editing an existing blog, use the known XML-RPC URL
+            // We don't allow editing URL on existing blogs, so XML-RPC shouldn't change
+            [self validateXmlprcURL:[NSURL URLWithString:blog.xmlrpc]];
+        } else {
+            [self checkURL];
+        }
     } else {
         [self validationDidFail:nil];
     }
@@ -746,6 +787,11 @@
     } else {
         return YES;
     }
+}
+
+- (BOOL)canEditUsernameAndURL
+{
+    return NO;
 }
 
 #pragma mark -
