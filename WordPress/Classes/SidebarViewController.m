@@ -105,6 +105,7 @@
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.contentInset = UIEdgeInsetsMake(-80.f, 0, 0, 0);
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
 
     utililtyView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_footer_bg"]];
@@ -764,7 +765,6 @@ NSLog(@"%@", self.sectionInfoArray);
     }
     
     cell.textLabel.text = title;
-    cell.textLabel.backgroundColor = SIDEBAR_BGCOLOR;
     
     return cell;
 }
