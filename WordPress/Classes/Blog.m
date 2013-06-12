@@ -234,9 +234,17 @@
 
 - (int)numberOfPendingComments{
     int pendingComments = 0;
-    for (Comment *element in self.comments) {
-        if ( [@"hold" isEqualToString: element.status] )
-            pendingComments++;
+    if ([self hasFaultForRelationshipNamed:@"comments"]) {
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Comment"];
+        [request setPredicate:[NSPredicate predicateWithFormat:@"blog = %@ AND status like 'hold'", self]];
+        [request setIncludesSubentities:NO];
+        NSError *error;
+        pendingComments = [self.managedObjectContext countForFetchRequest:request error:&error];
+    } else {
+        for (Comment *element in self.comments) {
+            if ( [@"hold" isEqualToString: element.status] )
+                pendingComments++;
+        }
     }
     
     return pendingComments;
