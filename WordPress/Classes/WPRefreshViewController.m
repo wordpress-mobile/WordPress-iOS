@@ -11,6 +11,12 @@
 #import "WordPressAppDelegate.h"
 
 @interface WPRefreshViewController ()
+
+@property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
+
+- (void)enableInfiniteScrolling;
+- (void)disableInfiniteScrolling;
+
 @end
 
 NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
@@ -18,6 +24,7 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 @implementation WPRefreshViewController {
 	CGPoint savedScrollOffset;
 	CGFloat keyboardOffset;
+	BOOL _infiniteScrollEnabled;
 }
 
 #pragma mark - LifeCycle Methods
@@ -47,6 +54,10 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 		[self.tableView addSubview:_refreshHeaderView];
     }
 	
+	if (self.infiniteScrollEnabled) {
+        [self enableInfiniteScrolling];
+    }
+	
 	[self.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
     
 	//  update the last update date
@@ -62,6 +73,7 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 	[super viewDidUnload];
 	
 	_refreshHeaderView = nil;
+	self.activityFooter = nil;
 }
 
 
@@ -158,9 +170,6 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 	frame.size.height = point.y;
 	
 //	// TODO: There is a bug with rotation that we need to sort out :/
-//	[UIView animateWithDuration:0.3f delay:0.1f options:nil animations:^{
-//		self.view.frame = frame;
-//	} completion:NULL];
 	[UIView animateWithDuration:0.25 animations:^{
 		self.view.frame = frame;
 	}];
@@ -177,10 +186,6 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 	point = [self.view.window convertPoint:point toView:self.view];
 	frame.size.height = point.y;
 	self.view.frame = frame;
-	
-//	[UIView animateWithDuration:0.3 animations:^{
-//		self.view.frame = frame;
-//	}];
 }
 
 
@@ -216,9 +221,89 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 
+- (BOOL)hasMoreContent {
+    return NO;
+}
+
+
 - (void)syncWithUserInteraction:(BOOL)userInteraction {
 	// should be overridden
 }
+
+
+- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    // should be overridden
+}
+
+
+#pragma mark - Infinite Scrolling
+
+- (void)setInfiniteScrollEnabled:(BOOL)infiniteScrollEnabled {
+    if (infiniteScrollEnabled == _infiniteScrollEnabled)
+        return;
+	
+    _infiniteScrollEnabled = infiniteScrollEnabled;
+    if (self.isViewLoaded) {
+        if (_infiniteScrollEnabled) {
+            [self enableInfiniteScrolling];
+        } else {
+            [self disableInfiniteScrolling];
+        }
+    }
+}
+
+
+- (BOOL)infiniteScrollEnabled {
+    return _infiniteScrollEnabled;
+}
+
+
+- (void)enableInfiniteScrolling {
+    if (_activityFooter == nil) {
+        CGRect rect = CGRectMake(145.0f, 10.0f, 30.0f, 30.0f);
+        _activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
+        _activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+        _activityFooter.hidesWhenStopped = YES;
+        _activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        [_activityFooter stopAnimating];
+    }
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
+    footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [footerView addSubview:_activityFooter];
+    self.tableView.tableFooterView = footerView;
+}
+
+
+- (void)disableInfiniteScrolling {
+    self.tableView.tableFooterView = nil;
+    _activityFooter = nil;
+}
+
+
+#pragma mark - UITableView Delegate Methods
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (IS_IPAD == YES) {
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	}
+	
+    // Are we approaching the end of the table?
+    if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) &&
+		(indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) &&
+		[self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
+        
+		// Only 3 rows till the end of table
+        if (![self isSyncing] && [self hasMoreContent]) {
+            [_activityFooter startAnimating];
+            [self loadMoreWithSuccess:^{
+                [_activityFooter stopAnimating];
+            } failure:^(NSError *error) {
+                [_activityFooter stopAnimating];
+            }];
+        }
+    }
+}
+
 
 
 #pragma mark - EGORefreshTableHeaderDelegate Methods

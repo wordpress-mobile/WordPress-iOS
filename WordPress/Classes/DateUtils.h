@@ -13,5 +13,6 @@
 + (NSDate *)GMTDateTolocalDate:(NSDate *)gmtDate;
 + (NSDate *)localDateToGMTDate:(NSDate *)localDate;
 + (NSDate *)dateFromISOString:(NSString *)isoString;
++ (NSString *)isoStringFromDate:(NSDate *)date;
 
 @end

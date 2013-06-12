@@ -17,13 +17,16 @@
 	BOOL _isSyncing;
 }
 
+@property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong) UITableView *tableView;
 
 - (void)doBeforeDealloc;
 - (void)simulatePullToRefresh;
 - (void)hideRefreshHeader;
 - (BOOL)isSyncing;
+- (BOOL)hasMoreContent;
 - (void)syncWithUserInteraction:(BOOL)userInteraction;
+- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)handleKeyboardDidShow:(NSNotification *)notification;
 - (void)handleKeyboardWillHide:(NSNotification *)notification;
 

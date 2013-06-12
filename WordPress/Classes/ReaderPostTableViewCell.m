@@ -88,9 +88,8 @@
 		self.bylineLabel = [[UILabel alloc] initWithFrame:CGRectMake(37.0f, -2.0f, width - 57.0f, 36.0f)];
 		_bylineLabel.numberOfLines = 2;
 		_bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_bylineLabel.font = [UIFont fontWithName:@"Open Sans" size:13.0f];//[UIFont systemFontOfSize:14.0f];
-		_bylineLabel.textColor = [UIColor colorWithHexString:@"c0c0c0"];//[UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0f];
-//		_bylineLabel.textColor = [UIColor colorWithWhite:0.5f alpha:1.0f];
+		_bylineLabel.font = [UIFont fontWithName:@"Open Sans" size:13.0f];
+		_bylineLabel.textColor = [UIColor colorWithHexString:@"c0c0c0"];
 		[_byView addSubview:_bylineLabel];
 		
 		

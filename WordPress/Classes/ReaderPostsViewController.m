@@ -23,7 +23,10 @@
 NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate>
+@interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate> {
+	BOOL _hasMoreContent;
+	BOOL _loadingMore;
+}
 
 @property (nonatomic, strong) NSArray *rowHeights;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
@@ -57,6 +60,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	self = [super init];
 	if (self) {
 		// This is a convenient place to check for the user's blogs and primary blog for reblogging.
+		_hasMoreContent = YES;
 		[self fetchBlogsAndPrimaryBlog];
 	}
 	return self;
@@ -370,40 +374,109 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)syncWithUserInteraction:(BOOL)userInteraction {	
 	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
-	
 	[ReaderPost getPostsFromEndpoint:endpoint
 					  withParameters:nil
 							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-								 
-								 NSDictionary *resp = (NSDictionary *)responseObject;
-								 NSArray *postsArr = [resp objectForKey:@"posts"];
-								 
-								 [ReaderPost syncPostsFromEndpoint:endpoint
-														 withArray:postsArr
-													   withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
-								 
-								 [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ReaderLastSyncDateKey];
-								 [NSUserDefaults resetStandardUserDefaults];
-								 
-								 NSTimeInterval interval = - (60 * 60 * 24 * 7); // 7 days.
-								 [ReaderPost deletePostsSynedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]] withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
-								 
-								 self.resultsController = nil;
-								 [self updateRowHeightsForWidth:self.tableView.frame.size.width];
-								 [self.tableView reloadData];
-								 
-								 [self hideRefreshHeader];
+								 [self onSyncSuccess:operation response:responseObject];
 							 }
 							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-								 [self hideRefreshHeader];
-								 // TODO:
+								 [self onSyncFailure:operation error:error];
 							 }];
+	
+//	[ReaderPost getPostsFromEndpoint:endpoint
+//					  withParameters:nil
+//							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//								 
+//								 NSDictionary *resp = (NSDictionary *)responseObject;
+//								 NSArray *postsArr = [resp objectForKey:@"posts"];
+//								 
+//								 [ReaderPost syncPostsFromEndpoint:endpoint
+//														 withArray:postsArr
+//													   withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+//								 
+//								 [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ReaderLastSyncDateKey];
+//								 [NSUserDefaults resetStandardUserDefaults];
+//								 
+//								 NSTimeInterval interval = - (60 * 60 * 24 * 7); // 7 days.
+//								 [ReaderPost deletePostsSynedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]] withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+//								 
+//								 self.resultsController = nil;
+//								 [self updateRowHeightsForWidth:self.tableView.frame.size.width];
+//								 [self.tableView reloadData];
+//								 
+//								 [self hideRefreshHeader];
+//							 }
+//							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//								 [self hideRefreshHeader];
+//								 // TODO:
+//							 }];
 
 }
 
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+	if ([self.resultsController.fetchedObjects count] == 0) {
+		return;
+	}
 	
+	if (_loadingMore) return;
+	_loadingMore = YES;
+	
+	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
+	NSDictionary *params = @{@"before":[DateUtils isoStringFromDate:post.dateCreated]};
+	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
+
+	[ReaderPost getPostsFromEndpoint:endpoint
+					  withParameters:params
+							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+								 [self onSyncSuccess:operation response:responseObject];
+							 }
+							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+								 [self onSyncFailure:operation error:error];
+							 }];
+}
+
+
+- (BOOL)hasMoreContent {
+	return _hasMoreContent;
+}
+
+
+- (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject {
+	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
+	NSDictionary *resp = (NSDictionary *)responseObject;
+	NSArray *postsArr = [resp objectForKey:@"posts"];
+	
+	// if # of results is less than # requested then no more content.
+	if (NO) {
+		_hasMoreContent = NO;
+	}
+	
+	[ReaderPost syncPostsFromEndpoint:endpoint
+							withArray:postsArr
+						  withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+	
+	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ReaderLastSyncDateKey];
+	[NSUserDefaults resetStandardUserDefaults];
+	
+	if (!_loadingMore) {
+		NSTimeInterval interval = - (60 * 60 * 24 * 7); // 7 days.
+		[ReaderPost deletePostsSynedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]] withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+	}
+	
+	_loadingMore = NO;
+	
+	self.resultsController = nil;
+	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
+	[self.tableView reloadData];
+	
+	[self hideRefreshHeader];
+}
+
+
+- (void)onSyncFailure:(AFHTTPRequestOperation *)operation error:(NSError *)error {
+	[self hideRefreshHeader];
+	// TODO: prompt about failure.
 }
 
 
