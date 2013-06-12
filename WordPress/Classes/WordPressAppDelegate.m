@@ -423,7 +423,10 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ApplicationDidBecomeActive" object:nil];
     
     if (!_hasRecordedApplicationOpenedEvent) {
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpened properties:@{ @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]) }];
+        NSDictionary *properties = @{
+                                     @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
+                                     @"number_of_blogs" : @([Blog countWithContext:[self managedObjectContext]]) };
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpened properties:properties];
     }
     
     // Clear notifications badge and update server
