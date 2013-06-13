@@ -3306,6 +3306,21 @@
 			path = WordPressApi;
 			sourceTree = "<group>";
 		};
+		E1239B7B176A2E0F00D37220 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				E183EC9E16B2164900C2EB11 /* EditPostViewControllerTest.h */,
+				E183EC9F16B2164900C2EB11 /* EditPostViewControllerTest.m */,
+				E150520A16CAC5C400D3DDDC /* BlogJetpackTest.h */,
+				E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */,
+				5DD60A8D16FCA1BF002F1FE5 /* ReaderTest.h */,
+				5DD60A8E16FCA1BF002F1FE5 /* ReaderTest.m */,
+				E1512F19171BD7D900262C03 /* UINavigationControllerRotationTest.h */,
+				E1512F1A171BD7D900262C03 /* UINavigationControllerRotationTest.m */,
+			);
+			name = Tests;
+			sourceTree = "<group>";
+		};
 		E12F55F714A1F2640060A510 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
@@ -3412,17 +3427,10 @@
 		E16AB92F14D978240047A2E5 /* WordPressTest */ = {
 			isa = PBXGroup;
 			children = (
-				E131CB5B16CAD638004B0314 /* Test Helpers */,
-				E16AB94414D9A13A0047A2E5 /* Test Data */,
 				E16AB93014D978240047A2E5 /* Supporting Files */,
-				E183EC9E16B2164900C2EB11 /* EditPostViewControllerTest.h */,
-				E183EC9F16B2164900C2EB11 /* EditPostViewControllerTest.m */,
-				E150520A16CAC5C400D3DDDC /* BlogJetpackTest.h */,
-				E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */,
-				5DD60A8D16FCA1BF002F1FE5 /* ReaderTest.h */,
-				5DD60A8E16FCA1BF002F1FE5 /* ReaderTest.m */,
-				E1512F19171BD7D900262C03 /* UINavigationControllerRotationTest.h */,
-				E1512F1A171BD7D900262C03 /* UINavigationControllerRotationTest.m */,
+				E16AB94414D9A13A0047A2E5 /* Test Data */,
+				E131CB5B16CAD638004B0314 /* Test Helpers */,
+				E1239B7B176A2E0F00D37220 /* Tests */,
 			);
 			path = WordPressTest;
 			sourceTree = "<group>";
