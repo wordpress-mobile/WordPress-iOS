@@ -38,9 +38,11 @@
     _post = [Post newDraftForBlog:_blog];
     STAssertNoThrow(_controller = [[EditPostViewController alloc] initWithPost:[_post createRevision]], nil);
     UIViewController *rvc = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-    STAssertNoThrow([rvc presentModalViewController:_controller animated:NO], nil);
-    STAssertNotNil(_controller.view, nil);
-    STAssertNotNil(_controller.view.superview, nil);
+    STAssertNoThrow([rvc presentViewController:_controller animated:NO completion:^{
+        NSLog(@"subviews: %@", [rvc.view subviews]);
+        STAssertNotNil(_controller.view, nil);
+        STAssertNotNil(_controller.view.superview, nil);
+    }], nil);
 }
 
 - (void)tearDown {
