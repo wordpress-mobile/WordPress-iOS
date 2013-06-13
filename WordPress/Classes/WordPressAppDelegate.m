@@ -38,6 +38,11 @@
 
 @implementation WordPressAppDelegate {
     BOOL _listeningForBlogChanges;
+
+    // We have this so we can make sure not to send two Application Opened related events. This comes
+    // into play when we receive a push notification and the user opens the app in response to that. We
+    // don't want to double count the events in Mixpanel so we use this to ensure it doesn't happen.
+    BOOL _hasRecordedApplicationOpenedEvent;
 }
 
 @synthesize window, currentBlog, postID;
@@ -284,13 +289,13 @@
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
 
     if (remoteNotif) {
+        _hasRecordedApplicationOpenedEvent = true;
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
 
         NSLog(@"Launched with a remote notification as parameter:  %@", remoteNotif);
         [self openNotificationScreenWithOptions:remoteNotif];
-    } else {
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpened properties:@{@"language": [[WPComLanguages currentLanguage] objectForKey:@"name"]}];
     }
+    
     //the guide say: NO if the application cannot handle the URL resource, otherwise return YES. 
     //The return value is ignored if the application is launched as a result of a remote notification.
 
@@ -370,7 +375,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 
     [WPMobileStats trackEventForWPComWithSavedProperties:StatsEventAppClosed];
-    [WPMobileStats clearPropertiesForAllEvents];
+    [self resetStatRelatedVariables];
     
     //Keep the app alive in the background if we are uploading a post, currently only used for quick photo posts
     UIApplication *app = [UIApplication sharedApplication];
@@ -416,6 +421,13 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ApplicationDidBecomeActive" object:nil];
+    
+    if (!_hasRecordedApplicationOpenedEvent) {
+        NSDictionary *properties = @{
+                                     @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
+                                     @"number_of_blogs" : @([Blog countWithContext:[self managedObjectContext]]) };
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpened properties:properties];
+    }
     
     // Clear notifications badge and update server
     [self setAppBadge];
@@ -1026,12 +1038,14 @@
             [SoundUtil playNotificationSound];
             break;
         case UIApplicationStateInactive:
+            _hasRecordedApplicationOpenedEvent = true;
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
             
             NSLog(@"app state UIApplicationStateInactive"); //application is in bg and the user tapped the view button
              [self openNotificationScreenWithOptions:userInfo];
             break;
         case UIApplicationStateBackground:
+            _hasRecordedApplicationOpenedEvent = true;
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
 
             NSLog(@" app state UIApplicationStateBackground"); //application is in bg and the user tapped the view button
@@ -1312,6 +1326,12 @@
     [defaults setInteger:crashCount forKey:@"crashCount"];
     [defaults synchronize];
     [WPMobileStats trackEventForSelfHostedAndWPCom:@"Crashed" properties:@{@"crash_id": crash.identifier}];
+}
+
+- (void)resetStatRelatedVariables
+{
+    [WPMobileStats clearPropertiesForAllEvents];
+    _hasRecordedApplicationOpenedEvent = false;
 }
 
 @end
