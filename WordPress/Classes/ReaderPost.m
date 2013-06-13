@@ -86,16 +86,16 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 
 + (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr withContext:(NSManagedObjectContext *)context {
-	
-	[arr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		[self createOrUpdateWithDictionary:obj forEndpoint:endpoint withContext:context];
-	}];
-	
-    NSError *error;
-    if(![context save:&error]){
-        NSLog(@"Failed to sync ReaderPosts: %@", error);
+	if (arr && [arr isKindOfClass:[NSArray class]]) {
+        [arr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [self createOrUpdateWithDictionary:obj forEndpoint:endpoint withContext:context];
+        }];
+
+        NSError *error;
+        if(![context save:&error]){
+            NSLog(@"Failed to sync ReaderPosts: %@", error);
+        }
     }
-	
 }
 
 
