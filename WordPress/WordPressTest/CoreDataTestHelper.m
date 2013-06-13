@@ -7,6 +7,13 @@
 //
 
 #import "CoreDataTestHelper.h"
+#import "WordPressAppDelegate.h"
+
+@interface WordPressAppDelegate (CoreDataTestHelper)
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@end
 
 @implementation CoreDataTestHelper {
     NSManagedObjectContext *_context;
@@ -29,6 +36,10 @@
     if (self) {
         _context = [[NSManagedObjectContext alloc] init];
         [_context setPersistentStoreCoordinator:[self persistentStoreCoordinator]];
+        WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+        appDelegate.managedObjectContext = _context;
+        appDelegate.persistentStoreCoordinator = [self persistentStoreCoordinator];
+        appDelegate.managedObjectModel = [[self persistentStoreCoordinator] managedObjectModel];
     }
     return self;
 }

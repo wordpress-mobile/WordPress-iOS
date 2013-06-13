@@ -677,6 +677,17 @@
     return persistentStoreCoordinator_;
 }
 
+- (void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
+    managedObjectContext_ = managedObjectContext;
+}
+
+- (void)setManagedObjectModel:(NSManagedObjectModel *)managedObjectModel {
+    managedObjectModel_ = managedObjectModel;
+}
+
+- (void)setPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+    persistentStoreCoordinator_ = persistentStoreCoordinator;
+}
 
 #pragma mark -
 #pragma mark Application's Documents directory
