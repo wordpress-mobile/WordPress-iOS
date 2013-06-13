@@ -105,7 +105,7 @@
 - (void)testGetTopics {
 		
 	ATHStart();
-	[[WordPressComApi sharedApi] getReaderTopicsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[ReaderPost getReaderTopicsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
 		ATHNotify();
 		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -119,7 +119,7 @@
 - (void)testGetComments {
 		
 	ATHStart();
-	[[WordPressComApi sharedApi] getCommentsForPost:7 fromSite:@"en.blog.wordpress.com" success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[ReaderPost getCommentsForPost:7 fromSite:@"en.blog.wordpress.com" withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		ATHNotify();
 		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -153,7 +153,7 @@
 	
 	ATHStart();
 	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:0] objectForKey:@"endpoint"];
-	[[WordPressComApi sharedApi] getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[ReaderPost getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
 		[self checkResultForPath:path andResponseObject:responseObject];
 		ATHNotify();
@@ -172,7 +172,7 @@
 	
 	ATHStart();
 	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:2] objectForKey:@"endpoint"];
-	[[WordPressComApi sharedApi] getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[ReaderPost getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		
 		[self checkResultForPath:path andResponseObject:responseObject];
 		ATHNotify();
@@ -190,7 +190,7 @@
 	
 	ATHStart();
 	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:1] objectForKey:@"endpoint"];
-	[[WordPressComApi sharedApi] getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[ReaderPost getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		
 		[self checkResultForPath:path andResponseObject:responseObject];
 		ATHNotify();
@@ -209,7 +209,7 @@
 	ATHStart();
 	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:3] objectForKey:@"endpoint"];
 	path = [NSString stringWithFormat:path, @"1"];
-	[[WordPressComApi sharedApi] getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[ReaderPost getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
 		[self checkResultForPath:path andResponseObject:responseObject];
 		ATHNotify();
