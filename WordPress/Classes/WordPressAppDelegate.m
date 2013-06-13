@@ -248,7 +248,7 @@
 	// Clean media files asynchronously
     // dispatch_async feels a bit faster than performSelectorOnBackground:
     // and we're trying to launch the app as fast as possible
-    dispatch_async(dispatch_get_global_queue(0, 0), ^(void) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
         [self cleanUnusedMediaFileFromTmpDir];
     });
 
