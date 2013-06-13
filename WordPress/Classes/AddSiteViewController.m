@@ -50,7 +50,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
                 subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"blogid = %@", _blogId]] lastObject];
             }
             if (!subsite) {
-                subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlRpc]] lastObject];
+                subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlrpc]] lastObject];
             }
         }
         
@@ -62,9 +62,9 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
             [self displayAddUsersBlogsForXmlRpc:xmlrpc];
         } else {
             if (_isSiteDotCom) {
-                xmlRpc = [subsite objectForKey:@"xmlrpc"];
+                xmlrpc = [subsite objectForKey:@"xmlrpc"];
             }
-            [self createBlogWithXmlRpc:xmlRpc andBlogDetails:subsite];
+            [self createBlogWithXmlRpc:xmlrpc andBlogDetails:subsite];
             [self synchronizeNewlyAddedBlog];
         }
     } else {
