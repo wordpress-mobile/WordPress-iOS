@@ -68,9 +68,9 @@
 		_containerView.backgroundColor = [UIColor whiteColor];
 		[self.contentView addSubview:_containerView];
 		
-		_containerView.layer.masksToBounds = NO;
-		_containerView.layer.shadowOffset = CGSizeMake(0, 0);
-		_containerView.layer.shadowOpacity = 0.075;
+//		_containerView.layer.masksToBounds = NO;
+//		_containerView.layer.shadowOffset = CGSizeMake(0, 0);
+//		_containerView.layer.shadowOpacity = 0.075;
 		
 		self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
 		[_containerView addSubview:self.cellImageView];

@@ -20,6 +20,7 @@
 #import "WPFriendFinderViewController.h"
 #import "WPFriendFinderNudgeView.h"
 
+NSInteger const ReaderPostsToSync = 40;
 NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
@@ -41,6 +42,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 - (void)updateRowHeightsForWidth:(CGFloat)width;
 - (void)fetchBlogsAndPrimaryBlog;
 - (void)handleReblogButtonTapped:(id)sender;
+- (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject;
+- (void)onSyncFailure:(AFHTTPRequestOperation *)operation error:(NSError *)error;
 
 @end
 
@@ -374,43 +377,15 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)syncWithUserInteraction:(BOOL)userInteraction {	
 	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
+	NSDictionary *params = @{@"number": [NSNumber numberWithInteger:ReaderPostsToSync]};
 	[ReaderPost getPostsFromEndpoint:endpoint
-					  withParameters:nil
+					  withParameters:params
 							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 								 [self onSyncSuccess:operation response:responseObject];
 							 }
 							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 								 [self onSyncFailure:operation error:error];
 							 }];
-	
-//	[ReaderPost getPostsFromEndpoint:endpoint
-//					  withParameters:nil
-//							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//								 
-//								 NSDictionary *resp = (NSDictionary *)responseObject;
-//								 NSArray *postsArr = [resp objectForKey:@"posts"];
-//								 
-//								 [ReaderPost syncPostsFromEndpoint:endpoint
-//														 withArray:postsArr
-//													   withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
-//								 
-//								 [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ReaderLastSyncDateKey];
-//								 [NSUserDefaults resetStandardUserDefaults];
-//								 
-//								 NSTimeInterval interval = - (60 * 60 * 24 * 7); // 7 days.
-//								 [ReaderPost deletePostsSynedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]] withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
-//								 
-//								 self.resultsController = nil;
-//								 [self updateRowHeightsForWidth:self.tableView.frame.size.width];
-//								 [self.tableView reloadData];
-//								 
-//								 [self hideRefreshHeader];
-//							 }
-//							 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//								 [self hideRefreshHeader];
-//								 // TODO:
-//							 }];
-
 }
 
 
@@ -423,7 +398,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	_loadingMore = YES;
 	
 	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
-	NSDictionary *params = @{@"before":[DateUtils isoStringFromDate:post.dateCreated]};
+	NSDictionary *params = @{@"before":[DateUtils isoStringFromDate:post.dateCreated], @"number": [NSNumber numberWithInteger:ReaderPostsToSync]};
 	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
 
 	[ReaderPost getPostsFromEndpoint:endpoint
@@ -448,7 +423,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	NSArray *postsArr = [resp objectForKey:@"posts"];
 	
 	// if # of results is less than # requested then no more content.
-	if (NO) {
+	if ([postsArr count] < ReaderPostsToSync) {
 		_hasMoreContent = NO;
 	}
 	
@@ -592,9 +567,12 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     return _resultsController;
 }
 
+
 #pragma mark - ReaderTopicsDelegate Methods
 
 - (void)readerTopicChanged {
+	_hasMoreContent = YES;
+	
 	self.resultsController = nil;
     
     self.titleButton.title = [self.currentTopic objectForKey:@"title"];
