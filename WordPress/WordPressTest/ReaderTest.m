@@ -135,6 +135,10 @@
 
 	NSDictionary *resp = (NSDictionary *)responseObject;
 	NSArray *postsArr = [resp objectForKey:@"posts"];
+    if (!postsArr || ![postsArr isKindOfClass:[NSArray class]]) {
+        STFail(@"Posts is not an array");
+        return;
+    }
 	NSManagedObjectContext *moc = [[CoreDataTestHelper sharedHelper] managedObjectContext];
 	[ReaderPost syncPostsFromEndpoint:path withArray:postsArr withContext:moc];
 
