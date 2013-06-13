@@ -10,10 +10,12 @@
 #import "WPWebViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPFriendFinderViewController.h"
+#import "SFHFKeychainUtils.h"
 #import "JSONKit.h"
 #import "ReachabilityUtils.h"
 #import "NSString+Helpers.h"
 #import "WPAccount.h"
+#import "WPCookie.h"
 
 #ifdef DEBUG
 #define kReaderRefreshThreshold 10*60 // 10min
@@ -33,7 +35,6 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 - (void)refreshWebViewIfNeeded;
 - (void)retryWithLogin;
 - (void)pingStatsEndpoint:(NSString*)statName;
-- (void)canIHazCookie;
 
 @end
 
@@ -70,7 +71,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
             self.password = account.password;
         }
         
-        [self canIHazCookie];
+        [self logInIfNeeded];
         
         self.topicsViewController = [[WPReaderTopicsViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil];
         self.topicsViewController.delegate = self;
@@ -325,7 +326,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 
 - (void)showArticleDetails:(id)item
 {
-    [WPMobileStats trackEventForWPCom:StatsEventReaderClickedArticleDetails];
+    [WPMobileStats incrementProperty:StatsPropertyReaderOpenedArticleDetails forEvent:StatsEventAppClosed];
     
     if(![ReachabilityUtils isInternetReachable]) {
         [ReachabilityUtils showAlertNoInternetConnection];
@@ -362,13 +363,12 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     
 }
 
-- (bool)canIHazCookie {
-    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:kMobileReaderURL]];
-    for (NSHTTPCookie *cookie in cookies) {
-        if ([cookie.name isEqualToString:@"wordpress_logged_in"]) {
-            return YES;
-        }
+- (void)logInIfNeeded {
+    WPFLogMethod();
+    if ([WPCookie hasCookieForURL:[NSURL URLWithString:kMobileReaderURL] andUsername:self.username]) {
+        return;
     }
+
     // fetch the cookie using a NSURLRequest and NSURLConnection
     // when the cookie has been made available the Reader will automatically
     // be authenticated
@@ -387,15 +387,12 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     
     NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:loginRequest delegate:nil];
     [connection start];
-    
-    
-    return NO;
 }
 
 - (void)refreshWebView {
-    
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-        
+
+    [self logInIfNeeded];
     
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate]; 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.url];

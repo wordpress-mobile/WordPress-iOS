@@ -92,7 +92,7 @@
 
 - (void)loadNextItem:(id)sender
 {
-    [WPMobileStats trackEventForWPCom:StatsEventReaderDetailClickedNext];
+    [WPMobileStats incrementProperty:StatsPropertyReaderDetailClickedNext forEvent:StatsEventAppClosed];
     
     if (![ReachabilityUtils isInternetReachable]) {
         [ReachabilityUtils showAlertNoInternetConnection];
@@ -106,7 +106,7 @@
 
 - (void)loadPreviousItem:(id)sender
 {
-    [WPMobileStats trackEventForWPCom:StatsEventReaderDetailClickedPrevious];
+    [WPMobileStats incrementProperty:StatsPropertyReaderDetailClickedPrevious forEvent:StatsEventAppClosed];
 
     if (![ReachabilityUtils isInternetReachable]) {
         [ReachabilityUtils showAlertNoInternetConnection];

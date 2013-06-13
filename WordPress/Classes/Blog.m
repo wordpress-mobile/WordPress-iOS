@@ -146,7 +146,11 @@
 }
 
 - (NSString *)loginUrl {
-    return [self urlWithPath:@"wp-login.php"];
+    NSString *loginUrl = [self getOptionValue:@"login_url"];
+    if (!loginUrl) {
+        loginUrl = [self urlWithPath:@"wp-login.php"];
+    }
+    return loginUrl;
 }
 
 - (NSString *)urlWithPath:(NSString *)path {
@@ -156,14 +160,29 @@
 }
 
 - (NSString *)adminUrlWithPath:(NSString *)path {
-    return [self urlWithPath:[NSString stringWithFormat:@"wp-admin/%@", path]];
+    NSString *adminBaseUrl = [self getOptionValue:@"admin_url"];
+    if (!adminBaseUrl) {
+        adminBaseUrl = [self urlWithPath:@"wp-admin/"];
+    }
+    if (![adminBaseUrl hasSuffix:@"/"]) {
+        adminBaseUrl = [adminBaseUrl stringByAppendingString:@"/"];
+    }
+    return [NSString stringWithFormat:@"%@%@", adminBaseUrl, path];
 }
 
 - (int)numberOfPendingComments{
     int pendingComments = 0;
-    for (Comment *element in self.comments) {
-        if ( [@"hold" isEqualToString: element.status] )
-            pendingComments++;
+    if ([self hasFaultForRelationshipNamed:@"comments"]) {
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Comment"];
+        [request setPredicate:[NSPredicate predicateWithFormat:@"blog = %@ AND status like 'hold'", self]];
+        [request setIncludesSubentities:NO];
+        NSError *error;
+        pendingComments = [self.managedObjectContext countForFetchRequest:request error:&error];
+    } else {
+        for (Comment *element in self.comments) {
+            if ( [@"hold" isEqualToString: element.status] )
+                pendingComments++;
+        }
     }
     
     return pendingComments;

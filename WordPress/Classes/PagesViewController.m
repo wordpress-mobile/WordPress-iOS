@@ -78,14 +78,9 @@
     return [Page titleForRemoteStatus:[sectionName numericValue]];
 }
 
-- (NSString *)statsEventForViewOpening
+- (NSString *)statsPropertyForViewOpening
 {
-    return StatsEventPagesOpened;
-}
-
-- (NSString *)statsEventForViewingDetail
-{
-    return StatsEventPagesClickedPageDetail;
+    return StatsPropertyPagedOpened;
 }
 
 

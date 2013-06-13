@@ -1,5 +1,6 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <WordPressApi/WordPressApi.h>
+#import <Crashlytics/Crashlytics.h>
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "NSString+Helpers.h"
@@ -25,7 +26,7 @@
 #import "WPComLanguages.h"
 #import "WPAccount.h"
 
-@interface WordPressAppDelegate (Private)
+@interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 - (void)setAppBadge;
 - (void)checkIfStatsShouldRun;
 - (void)runStats;
@@ -37,6 +38,11 @@
 
 @implementation WordPressAppDelegate {
     BOOL _listeningForBlogChanges;
+
+    // We have this so we can make sure not to send two Application Opened related events. This comes
+    // into play when we receive a push notification and the user opens the app in response to that. We
+    // don't want to double count the events in Mixpanel so we use this to ensure it doesn't happen.
+    BOOL _hasRecordedApplicationOpenedEvent;
 }
 
 @synthesize window, currentBlog, postID;
@@ -150,19 +156,46 @@
     }
 }
 
+- (void)configureCrashlytics {
+#if DEBUG
+    return;
+#endif
+
+    if ([[WordPressComApiCredentials crashlyticsApiKey] length] == 0) {
+        return;
+    }
+    
+    [Crashlytics startWithAPIKey:[WordPressComApiCredentials crashlyticsApiKey]];
+    [[Crashlytics sharedInstance] setDelegate:self];
+
+    BOOL hasCredentials = [[WordPressComApi sharedApi] hasCredentials];
+    [Crashlytics setObjectValue:[NSNumber numberWithBool:hasCredentials] forKey:@"logged_in"];
+
+    if (hasCredentials && [WordPressComApi sharedApi].username != nil) {
+        [Crashlytics setUserName:[WordPressComApi sharedApi].username];
+    }
+
+    void (^wpcomLoggedInBlock)(NSNotification *) = ^(NSNotification *note) {
+        [Crashlytics setUserName:[WordPressComApi sharedApi].username];
+        [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
+    };
+    void (^wpcomLoggedOutBlock)(NSNotification *) = ^(NSNotification *note) {
+        [Crashlytics setUserName:nil];
+        [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
+    };
+    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomLoggedInBlock];
+    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomLoggedOutBlock];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     UIDevice *device = [UIDevice currentDevice];
-	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
     NSInteger crashCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"crashCount"];
 
-	// Check for pending crash reports
-	if (![crashReporter hasPendingCrashReport]) {
-        // Empty log file if we didn't crash last time
-        [[FileLogger sharedInstance] reset];
-    } else {
-        crashCount += 1;
-        [[NSUserDefaults standardUserDefaults] setInteger:crashCount forKey:@"crashCount"];
-    }
+    [self configureCrashlytics];
+
+    // Since crashlytics is keeping a copy of the logs, we don't need to anymore
+    // Start with an empty log file when the app launches
+    [[FileLogger sharedInstance] reset];
 
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
     NSString *currentLanguage = [languages objectAtIndex:0];
@@ -170,7 +203,6 @@
     NSString *extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
     WPFLog(@"===========================================================================");
 	WPFLog(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
-    WPFLog(@"Crashed last time: %@", [crashReporter hasPendingCrashReport] ? @"YES" : @"NO" );
     WPFLog(@"Crash count:       %d", crashCount);
 #ifdef DEBUG
     WPFLog(@"Debug mode:  Debug");
@@ -220,7 +252,7 @@
 	// Clean media files asynchronously
     // dispatch_async feels a bit faster than performSelectorOnBackground:
     // and we're trying to launch the app as fast as possible
-    dispatch_async(dispatch_get_global_queue(0, 0), ^(void) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
         [self cleanUnusedMediaFileFromTmpDir];
     });
 
@@ -252,26 +284,22 @@
     // another notification message came from WPWebViewController
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"OpenWebPageFailed" object:nil];
 
-    
-	// Enable the Crash Reporter
-    NSError *error;
-	if (![crashReporter enableCrashReporterAndReturnError: &error])
-		NSLog(@"Warning: Could not enable crash reporter: %@", error);
-	
+
 	[window makeKeyAndVisible];
 
 	[self registerForPushNotifications];
     
     //Information related to the reason for its launching, which can include things other than notifications.
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+
     if (remoteNotif) {
+        _hasRecordedApplicationOpenedEvent = true;
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
 
         NSLog(@"Launched with a remote notification as parameter:  %@", remoteNotif);
         [self openNotificationScreenWithOptions:remoteNotif];
-    } else {
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpened properties:@{@"language": [[WPComLanguages currentLanguage] objectForKey:@"name"]}];
     }
+    
     //the guide say: NO if the application cannot handle the URL resource, otherwise return YES. 
     //The return value is ignored if the application is launched as a result of a remote notification.
 
@@ -350,6 +378,9 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+
+    [WPMobileStats trackEventForWPComWithSavedProperties:StatsEventAppClosed];
+    [self resetStatRelatedVariables];
     
     //Keep the app alive in the background if we are uploading a post, currently only used for quick photo posts
     UIApplication *app = [UIApplication sharedApplication];
@@ -395,6 +426,13 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ApplicationDidBecomeActive" object:nil];
+    
+    if (!_hasRecordedApplicationOpenedEvent) {
+        NSDictionary *properties = @{
+                                     @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
+                                     @"number_of_blogs" : @([Blog countWithContext:[self managedObjectContext]]) };
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpened properties:properties];
+    }
     
     // Clear notifications badge and update server
     [self setAppBadge];
@@ -987,12 +1025,14 @@
             [SoundUtil playNotificationSound];
             break;
         case UIApplicationStateInactive:
+            _hasRecordedApplicationOpenedEvent = true;
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
             
             NSLog(@"app state UIApplicationStateInactive"); //application is in bg and the user tapped the view button
              [self openNotificationScreenWithOptions:userInfo];
             break;
         case UIApplicationStateBackground:
+            _hasRecordedApplicationOpenedEvent = true;
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
 
             NSLog(@" app state UIApplicationStateBackground"); //application is in bg and the user tapped the view button
@@ -1232,6 +1272,23 @@
  */
 - (void)fbSessionInvalidated
 {
+}
+
+- (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
+{
+    WPFLogMethod();
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSInteger crashCount = [defaults integerForKey:@"crashCount"];
+    crashCount += 1;
+    [defaults setInteger:crashCount forKey:@"crashCount"];
+    [defaults synchronize];
+    [WPMobileStats trackEventForSelfHostedAndWPCom:@"Crashed" properties:@{@"crash_id": crash.identifier}];
+}
+
+- (void)resetStatRelatedVariables
+{
+    [WPMobileStats clearPropertiesForAllEvents];
+    _hasRecordedApplicationOpenedEvent = false;
 }
 
 @end

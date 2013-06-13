@@ -285,12 +285,8 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
                     if (self.onNoBlogsLoaded) {
                         self.onNoBlogsLoaded(self);
                     }
-                } else {                    
-                    // Select First Blog
-                    NSString *firstBlogId = [[_usersBlogs objectAtIndex:0] objectForKey:@"blogid"];
-                    if (![_selectedBlogs containsObject:firstBlogId]) {
-                        [_selectedBlogs addObject:firstBlogId];                        
-                    }
+                } else {
+                    [self selectAppropriateBlog];
                     
                     if(_usersBlogs.count == 1 && self.autoAddSingleBlog) {
                         [self selectAllBlogs];
@@ -308,6 +304,47 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
                     self.onErrorLoading(self, error);
                 }
             }];
+}
+
+- (void)selectAppropriateBlog
+{
+    if (self.siteUrl == nil) {
+        [self selectFirstBlog];
+    } else {
+        // This strips out any leading http:// or https:// making for an easier string match.
+        NSString *desiredBlogUrl = [[NSURL URLWithString:self.siteUrl] absoluteString];
+        
+        __block BOOL blogFound = false;
+        __block NSUInteger indexOfBlog;
+        [_usersBlogs enumerateObjectsUsingBlock:^(id blogInfo, NSUInteger index, BOOL *stop){
+            NSString *blogUrl = [blogInfo objectForKey:@"url"];
+            if ([blogUrl rangeOfString:desiredBlogUrl options:NSCaseInsensitiveSearch].location != NSNotFound) {
+                blogFound = true;
+                [_selectedBlogs addObject:[blogInfo objectForKey:@"blogid"]];
+                indexOfBlog = index;
+                stop = true;
+            }
+        }];
+        
+        if (!blogFound) {
+            [self selectFirstBlog];
+        } else {
+            // Let's make sure the blog we selected is at the top of the list the user sees.
+            NSMutableArray *rearrangedUsersBlogs = [NSMutableArray arrayWithArray:_usersBlogs];
+            NSDictionary *selectedBlogInfo = [rearrangedUsersBlogs objectAtIndex:indexOfBlog];
+            [rearrangedUsersBlogs removeObjectAtIndex:indexOfBlog];
+            [rearrangedUsersBlogs insertObject:selectedBlogInfo atIndex:0];
+            _usersBlogs = rearrangedUsersBlogs;
+        }
+    }
+}
+
+- (void)selectFirstBlog
+{
+    NSString *firstBlogId = [[_usersBlogs objectAtIndex:0] objectForKey:@"blogid"];
+    if (![_selectedBlogs containsObject:firstBlogId]) {
+        [_selectedBlogs addObject:firstBlogId];
+    }
 }
 
 - (void)storeUsersVisibleBlogs:(NSArray *)blogs

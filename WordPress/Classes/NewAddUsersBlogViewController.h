@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *xmlRPCUrl;
+@property (nonatomic, strong) NSString *siteUrl;
 
 @property (nonatomic, copy ) void (^blogAdditionCompleted)(NewAddUsersBlogViewController *);
 @property (nonatomic, copy ) void (^onNoBlogsLoaded)(NewAddUsersBlogViewController *);

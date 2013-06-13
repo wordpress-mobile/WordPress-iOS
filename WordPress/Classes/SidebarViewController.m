@@ -26,7 +26,6 @@
 #import "CameraPlusPickerManager.h"
 #import "QuickPhotoViewController.h"
 #import "QuickPhotoButtonView.h"
-#import "CrashReportViewController.h"
 #import "NotificationsViewController.h"
 #import "SoundUtil.h"
 #import "ReaderPostsViewController.h"
@@ -83,8 +82,6 @@
 - (void)handleCameraPlusImages:(NSNotification *)notification;
 - (void)presentContent;
 - (void)checkNothingToShow;
-- (void)handleCrashReport;
-- (void)dismissCrashReporter:(NSNotification *)notification;
 
 @end
 
@@ -191,22 +188,16 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    // Check if we previously crashed
-	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-    if ( [crashReporter hasPendingCrashReport] )
-        [self performSelector:@selector(handleCrashReport) withObject:self afterDelay:0.01];
-    else {
-        // In iOS 5, the first detailViewController that we load during launch does not
-        // see its viewWillAppear and viewDidAppear methods fire. As a work around, we can
-        // present our content with a slight delay, and then the events fire.
-        // Need to find a true fix and remove this workaround.
-        // See http://ios.trac.wordpress.org/ticket/1114 and #1135
-        if (IS_IPHONE && !( [[self.resultsController fetchedObjects] count] == 0 && ![WPAccount defaultWordPressComAccount] )) {
-            // Don't delay presentation on iPhone, or the sidebar is briefly visible after launch
-            [self presentContent];
-        } else {
-            [self performSelector:@selector(presentContent) withObject:self afterDelay:0.01];
-        }
+    // In iOS 5, the first detailViewController that we load during launch does not
+    // see its viewWillAppear and viewDidAppear methods fire. As a work around, we can
+    // present our content with a slight delay, and then the events fire.
+    // Need to find a true fix and remove this workaround.
+    // See http://ios.trac.wordpress.org/ticket/1114 and #1135
+    if (IS_IPHONE && !( [[self.resultsController fetchedObjects] count] == 0 && ![WPAccount defaultWordPressComAccount] )) {
+        // Don't delay presentation on iPhone, or the sidebar is briefly visible after launch
+        [self presentContent];
+    } else {
+        [self performSelector:@selector(presentContent) withObject:self afterDelay:0.01];
     }
 }
 
@@ -244,55 +235,6 @@
         [self quickPhotoButtonViewTapped:nil];
     }
 }
-
-#pragma mark -
-#pragma mark CrashReport Methods
-
-- (void)handleCrashReport {
-	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
-	NSData *crashData;
-	NSError *error;
-	
-	// Try loading the crash report
-	crashData = [crashReporter loadPendingCrashReportDataAndReturnError: &error];
-	if (crashData == nil) {
-		NSLog(@"Could not load crash report: %@", error);
-		[crashReporter purgePendingCrashReport];
-	}
-	
-	// We could send the report from here, but we'll just print out
-	// some debugging info instead
-    PLCrashReport *report = [[PLCrashReport alloc] initWithData: crashData error: &error];
-    if (report == nil) {
-        NSLog(@"Could not parse crash report");
-        [crashReporter purgePendingCrashReport];
-    }
-    else {
-        if([[NSUserDefaults standardUserDefaults] objectForKey:@"crash_report_dontbug"] == nil) {
-            // Display CrashReportViewController
-            CrashReportViewController *crashReportView = nil;
-            crashReportView = [[CrashReportViewController alloc] initWithNibName:@"CrashReportView" bundle:[NSBundle mainBundle]];
-            
-            UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:crashReportView];
-            aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-            [self.view setHidden:YES];
-            
-            [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
-        }
-		else {
-            [crashReporter purgePendingCrashReport];
-        }
-    }
-	return;
-}
-
-- (void)dismissCrashReporter:(NSNotification *)notification {
-    [self.view setHidden:NO];
-    [self.panelNavigationController dismissModalViewControllerAnimated:YES];
-    [self performSelector:@selector(presentContent) withObject:self afterDelay:1.01];
-}
-
 
 #pragma mark - Custom methods
 
@@ -335,7 +277,6 @@
 }
 
 - (void)showWelcomeScreenIfNeeded {
-     WPFLogMethod();
     if ( [[self.resultsController fetchedObjects] count] == 0 ) {
         //ohh poor boy, no blogs yet?
         if (![WPAccount defaultWordPressComAccount]) {
@@ -442,7 +383,7 @@ NSLog(@"%@", self.sectionInfoArray);
 }
 
 - (IBAction)showSettings:(id)sender {
-    [WPMobileStats trackEventForWPCom:StatsEventSidebarClickedSettings];
+    [WPMobileStats incrementProperty:StatsPropertySidebarClickedSettings forEvent:StatsEventAppClosed];
     
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
@@ -480,6 +421,7 @@ NSLog(@"%@", self.sectionInfoArray);
         if ([self.sectionInfoArray count] > (preservedIndexPath.section - 1)) {
             SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:(preservedIndexPath.section -1)];
             if (!sectionInfo.open) {
+                sectionInfo.open = YES;
                 [sectionInfo.headerView toggleOpenWithUserAction:YES];
             }
             
@@ -573,7 +515,7 @@ NSLog(@"%@", self.sectionInfoArray);
 }
 
 - (void)showQuickPhoto:(UIImagePickerControllerSourceType)sourceType useCameraPlus:(BOOL)useCameraPlus withImage:(UIImage *)image {
-    [WPMobileStats trackEventForWPCom:StatsEventSidebarClickedQuickPhoto];
+    [WPMobileStats incrementProperty:StatsPropertySidebarClickedQuickPhoto forEvent:StatsEventAppClosed];
     
     QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
     quickPhotoViewController.sidebarViewController = self;
@@ -989,16 +931,12 @@ NSLog(@"%@", self.sectionInfoArray);
     if (indexPath.section == 0) { // Reader & Notifications
         
         if (indexPath.row == 0) { // Reader
-			[WPMobileStats trackEventForWPCom:StatsEventSidebarClickedReader];
-			
-//            WPReaderViewController *readerViewController = [[WPReaderViewController alloc] init];
-//            detailViewController = readerViewController;
-            
+            [WPMobileStats incrementProperty:StatsPropertySidebarClickedReader forEvent:StatsEventAppClosed];
 			ReaderPostsViewController *readerViewController = [[ReaderPostsViewController alloc] init];
             detailViewController = readerViewController;
 			
         } else if(indexPath.row == 1) { // Notifications
-            [WPMobileStats trackEventForWPCom:StatsEventSidebarClickedNotifications];
+            [WPMobileStats incrementProperty:StatsPropertySidebarClickedNotifications forEvent:StatsEventAppClosed];
             
             self.hasUnseenNotes = NO;
             NotificationsViewController *notificationsViewController = [[NotificationsViewController alloc] init];
@@ -1014,27 +952,27 @@ NSLog(@"%@", self.sectionInfoArray);
         //did user select the same item, but for a different blog? If so then just update the data in the view controller.
         switch (indexPath.row) {
             case 0:
-                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedPosts];
+                [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedPosts forEvent:StatsEventAppClosed];
                 
                  controllerClass = [PostsViewController class];
                 break;
             case 1:
-                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedPages];
+                [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedPages forEvent:StatsEventAppClosed];
                 
                 controllerClass = [PagesViewController class];
                 break;
             case 2:
-                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedComments];
+                [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedComments forEvent:StatsEventAppClosed];
                 
                 controllerClass = [CommentsViewController class];
                 break;
             case 3:
-                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedStats];
+                [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedStats forEvent:StatsEventAppClosed];
                 
                 controllerClass =  [StatsWebViewController class];//IS_IPAD ? [StatsWebViewController class] : [StatsTableViewController class];
                 break;
             case 4 :
-                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedViewSite];
+                [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedViewSite forEvent:StatsEventAppClosed];
                 
                 blogURL = blog.url;
                 if (![blogURL hasPrefix:@"http"]) {
@@ -1069,7 +1007,7 @@ NSLog(@"%@", self.sectionInfoArray);
                 }
                 return;
             case 5:
-                [WPMobileStats trackEventForWPCom:StatsEventSidebarSiteClickedViewAdmin];
+                [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedViewAdmin forEvent:StatsEventAppClosed];
                 
                  dashboardURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
                 //dashboard already selected
@@ -1141,6 +1079,7 @@ NSLog(@"%@", self.sectionInfoArray);
 
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
+    [fetchRequest setPropertiesToFetch:@[@"blogName", @"xmlrpc", @"url"]];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"blogName" ascending:YES];
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
     [fetchRequest setSortDescriptors:sortDescriptors];

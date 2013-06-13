@@ -264,10 +264,22 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 
 - (BOOL)areFieldsValid
 {
-    BOOL areFieldsFilled = [[_usernameTextField.text trim] length] != 0 && [[_passwordTextField.text trim] length] != 0 && [[_emailTextField.text trim] length] != 0 && [[_blogUrlTextField.text trim] length] != 0;
-    BOOL urlDoesNotHavePeriod = [_blogUrlTextField.text rangeOfString:@"."].location == NSNotFound;
-    
-    return areFieldsFilled && urlDoesNotHavePeriod;
+    return [self areInputFieldsFilled] && ![self doesUrlHavePeriod] && [self isUsernameLessThanFiftyCharacters];
+}
+
+- (BOOL)areInputFieldsFilled
+{
+    return [[_usernameTextField.text trim] length] != 0 && [[_passwordTextField.text trim] length] != 0 && [[_emailTextField.text trim] length] != 0 && [[_blogUrlTextField.text trim] length] != 0;;
+}
+
+- (BOOL)doesUrlHavePeriod
+{
+    return [_blogUrlTextField.text rangeOfString:@"."].location != NSNotFound;
+}
+
+- (BOOL)isUsernameLessThanFiftyCharacters
+{
+    return [[_usernameTextField.text trim] length] <= 50;
 }
 
 - (void)showErrorMessage
@@ -282,8 +294,10 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
         errorMessage = NSLocalizedString(@"Password is required.", nil);
     } else if ([[_blogUrlTextField.text trim] length] == 0) {
         errorMessage = NSLocalizedString(@"Blog address is required.", nil);
-    } else if ([_blogUrlTextField.text rangeOfString:@"."].location != NSNotFound) {
+    } else if ([self doesUrlHavePeriod]) {
         errorMessage = NSLocalizedString(@"Blog url cannot contain a period", nil);
+    } else if (![self isUsernameLessThanFiftyCharacters]) {
+        errorMessage = NSLocalizedString(@"Username must be less than fifty characters.", nil);        
     }
     
     if (errorMessage != nil) {

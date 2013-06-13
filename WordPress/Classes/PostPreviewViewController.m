@@ -163,19 +163,21 @@
 }
 
 - (void)showRealPreview {
+	BOOL needsLogin = NO;
 	NSString *status = self.apost.original.status;
-	//draft post
-	BOOL isDraft = NO;
-	BOOL isPrivate = NO;
-	BOOL isPending = NO;
-    BOOL isPrivateBlog = [self.apost.blog isPrivate];
+    NSDate *postGMTDate = self.apost.date_created_gmt;
+    NSDate *laterDate = self.apost.date_created_gmt;
 
 	if ([status isEqualToString:@"draft"])
-		isDraft = YES;
+		needsLogin = YES;
 	else if ([status isEqualToString:@"private"])
-		isPrivate = YES;
+		needsLogin = YES;
 	else if ([status isEqualToString:@"pending"])
-		isPending = YES;
+		needsLogin = YES;
+    else if ([self.apost.blog isPrivate])
+        needsLogin = YES; // Private blog
+    else if ([laterDate isEqualToDate:postGMTDate])
+        needsLogin = YES; // Scheduled post
 
     NSString *link = self.apost.original.permaLink;
 
@@ -188,20 +190,7 @@
     } else if (link == nil ) {
         [self showSimplePreview];
     } else {
-
-        // checks if this a scheduled post
-
-        /*
-         Forced the preview to use the login form. Otherwise the preview of pvt blog doesn't work.
-         We can switch back to the normal call when we can access the blogOptions within the app.
-         */
-
-        //			NSDate *currentGMTDate = [DateUtils currentGMTDate];
-        NSDate *postGMTDate = self.apost.date_created_gmt;
-        NSDate *laterDate = self.apost.date_created_gmt;//[currentGMTDate laterDate:postGMTDate];
-
-        if(isDraft || isPending || isPrivate || isPrivateBlog || ([laterDate isEqualToDate:postGMTDate])) {
-
+        if(needsLogin) {
             NSString *wpLoginURL = [self.apost.blog loginUrl];
             NSURL *url = [NSURL URLWithString:wpLoginURL];
             NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
@@ -266,11 +255,20 @@
 }
 
 - (BOOL)webView:(UIWebView *)awebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    if ([[[request URL] query] isEqualToString:@"action=postpass"]) {
+        // Password-protected post, user entered password
+        return YES;
+    }
+
+    if ([[[request URL] absoluteString] isEqualToString:self.apost.original.permaLink]) {
+        // Always allow loading the preview
+        return YES;
+    }
+
     if (navigationType == UIWebViewNavigationTypeLinkClicked || navigationType == UIWebViewNavigationTypeFormSubmitted) {
         return NO;
     }
     return YES;
-    //return isWebRefreshRequested || postDetailViewController.navigationItem.rightBarButtonItem != nil;
 }
 
 #pragma mark -

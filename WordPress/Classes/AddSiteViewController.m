@@ -46,7 +46,12 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
         // assume they want to add that specific site.
         NSDictionary *subsite = nil;
         if ([subsites count] > 1) {
-            subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlrpc]] lastObject];
+            if (_blogId) {
+                subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"blogid = %@", _blogId]] lastObject];
+            }
+            if (!subsite) {
+                subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlRpc]] lastObject];
+            }
         }
         
         if (subsite == nil) {
@@ -56,7 +61,10 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
         if ([subsites count] > 1 && [[subsite objectForKey:@"blogid"] isEqualToString:@"1"]) {
             [self displayAddUsersBlogsForXmlRpc:xmlrpc];
         } else {
-            [self createBlogWithXmlRpc:xmlrpc andBlogDetails:subsite];
+            if (_isSiteDotCom) {
+                xmlRpc = [subsite objectForKey:@"xmlrpc"];
+            }
+            [self createBlogWithXmlRpc:xmlRpc andBlogDetails:subsite];
             [self synchronizeNewlyAddedBlog];
         }
     } else {
@@ -99,7 +107,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 {
     void (^successBlock)() = ^{
         [[WordPressComApi sharedApi] syncPushNotificationInfo];
-        if ([self.blog hasJetpack]) {
+        if (![self.blog isWPcom] && [self.blog hasJetpack]) {
             [self connectToJetpack];
         } else {
             [self dismiss];
@@ -148,6 +156,11 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
         [self.presentingViewController dismissModalViewControllerAnimated:YES];
     }];
     [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
+}
+
+- (BOOL)canEditUsernameAndURL
+{
+    return YES;
 }
 
 @end
