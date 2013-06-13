@@ -313,11 +313,12 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 - (NSString *)createSummary:(NSString *)str {	
 	str = [str stringByStrippingHTML];
 	
-	NSString *snippet = [str substringToIndex:200];
+	NSInteger idx = MIN(200, [str length]);
+	NSString *snippet = [str substringToIndex:idx];
 	NSRange rng = [snippet rangeOfString:@"." options:NSBackwardsSearch];
 	
 	if (rng.location == NSNotFound) {
-		rng.location = 150;
+		rng.location = MIN(150, [str length]);
 	}
 	
 	if(rng.location > 150) {
