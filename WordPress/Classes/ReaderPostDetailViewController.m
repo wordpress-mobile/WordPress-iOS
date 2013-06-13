@@ -21,7 +21,12 @@
 #import "ReaderCommentFormView.h"
 #import "ReaderReblogFormView.h"
 
-@interface ReaderPostDetailViewController ()<ReaderPostDetailViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate>
+NSInteger const ReaderCommentsToSync = 100;
+
+@interface ReaderPostDetailViewController ()<ReaderPostDetailViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate> {
+	BOOL _hasMoreContent;
+	BOOL _loadingMore;
+}
 
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) ReaderPostDetailView *headerView;
@@ -633,6 +638,11 @@
 
 #pragma mark - Sync methods
 
+- (NSDate *)lastSyncDate {
+	return self.post.dateCommentsSynced;
+}
+
+
 - (void)syncWithUserInteraction:(BOOL)userInteraction {
 	
 	if ([self.post.postID integerValue] == 0 ) { // Weird that this should ever happen. 
@@ -641,39 +651,75 @@
 		return;
 	}
 	
-	NSDictionary *params = @{@"number":@100};
-	
+	NSDictionary *params = @{@"number":[NSNumber numberWithInteger:ReaderCommentsToSync]};
+
 	[ReaderPost getCommentsForPost:[self.post.postID integerValue]
 						  fromSite:[self.post.siteID stringValue]
 					withParameters:params
 						   success:^(AFHTTPRequestOperation *operation, id responseObject) {
-							   self.post.dateCommentsSynced = [NSDate date];
-							   
-							   NSDictionary *resp = (NSDictionary *)responseObject;
-							   NSArray *commentsArr = [resp objectForKey:@"comments"];
-							   
-							   [ReaderComment syncAndThreadComments:commentsArr
-															forPost:self.post
-														withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
-							   
-							   [self prepareComments];
-							   [self updateRowHeightsForWidth:self.tableView.frame.size.width];
-							   [self.tableView reloadData];
-							   [self hideRefreshHeader];
-							   
-							   if ([self.resultsController.fetchedObjects count] > 0) {
-								   self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
-							   }
-							   
+							   [self onSyncSuccess:operation response:responseObject];
 						   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-							   [self hideRefreshHeader];
-							   
+							   [self onSyncFailure:operation error:error];
 						   }];
 }
 
 
-- (NSDate *)lastSyncDate {
-	return self.post.dateCommentsSynced;
+- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+	if ([self.resultsController.fetchedObjects count] == 0) {
+		return;
+	}
+	
+	if (_loadingMore) return;
+	_loadingMore = YES;
+	
+	NSUInteger numberToSync = [_comments count] + ReaderCommentsToSync;
+	NSDictionary *params = @{@"number":[NSNumber numberWithInteger:numberToSync]};
+
+	[ReaderPost getCommentsForPost:[self.post.postID integerValue]
+						  fromSite:[self.post.siteID stringValue]
+					withParameters:params
+						   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+							   [self onSyncSuccess:operation response:responseObject];
+						   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+							   [self onSyncFailure:operation error:error];
+						   }];
+}
+
+
+- (BOOL)hasMoreContent {
+	return _hasMoreContent;
+}
+
+
+- (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject {
+	
+	NSDictionary *resp = (NSDictionary *)responseObject;
+	NSArray *commentsArr = [resp objectForKey:@"comments"];
+	
+	if([commentsArr count] < ([_comments count] + ReaderCommentsToSync)) {
+		_hasMoreContent = NO;
+	}
+	
+	self.post.dateCommentsSynced = [NSDate date];
+	[ReaderComment syncAndThreadComments:commentsArr
+								 forPost:self.post
+							 withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+	
+	[self prepareComments];
+	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
+	[self.tableView reloadData];
+	[self hideRefreshHeader];
+	
+	if ([self.resultsController.fetchedObjects count] > 0) {
+		self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
+	}
+
+}
+
+
+- (void)onSyncFailure:(AFHTTPRequestOperation *)operation error:(NSError *)error {
+	[self hideRefreshHeader];
+	// TODO: prompt about failure.
 }
 
 
