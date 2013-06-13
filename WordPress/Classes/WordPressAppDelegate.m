@@ -157,6 +157,10 @@
 }
 
 - (void)configureCrashlytics {
+#if DEBUG
+    return;
+#endif
+
     if ([[WordPressComApiCredentials crashlyticsApiKey] length] == 0) {
         return;
     }
