@@ -39,6 +39,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 @property (nonatomic, strong) UIBarButtonItem *titleButton;
 
 - (NSDictionary *)currentTopic;
+- (void)configureTableHeader;
 - (void)updateRowHeightsForWidth:(CGFloat)width;
 - (void)fetchBlogsAndPrimaryBlog;
 - (void)handleReblogButtonTapped:(id)sender;
@@ -75,11 +76,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	
-	UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 10.0f)];
-	paddingView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	paddingView.backgroundColor = [UIColor colorWithHexString:@"efefef"];
-	self.tableView.tableHeaderView = paddingView;
-	
+	[self configureTableHeader];
 	
 	// Topics button
 	UIBarButtonItem *button = nil;
@@ -202,6 +199,18 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 }
 
 
+- (void)configureTableHeader {
+	if (self.tableView.tableHeaderView != nil) {
+		return;
+	}
+	
+	UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 10.0f)];
+	paddingView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	paddingView.backgroundColor = [UIColor colorWithHexString:@"efefef"];
+	self.tableView.tableHeaderView = paddingView;
+}
+
+
 - (void)updateRowHeightsForWidth:(CGFloat)width {
 	self.rowHeights = [ReaderPostTableViewCell cellHeightsForPosts:self.resultsController.fetchedObjects
 															 width:width
@@ -317,18 +326,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 #pragma mark - ReaderTextForm Delegate Methods
 
-- (void)readerTextFormDidSend:(ReaderTextFormView *)readerTextForm {
-	
-}
-
-
 - (void)readerTextFormDidBeginEditing:(ReaderTextFormView *)readerTextForm {
 	self.isShowingKeyboard = YES;
-}
-
-
-- (void)readerTextFormDidChange:(ReaderTextFormView *)readerTextForm {
-	
 }
 
 
@@ -377,7 +376,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)syncWithUserInteraction:(BOOL)userInteraction {	
 	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
-	NSDictionary *params = @{@"number": [NSNumber numberWithInteger:ReaderPostsToSync]};
+	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
+	NSDictionary *params = @{@"number":numberToSync, @"per_page":numberToSync};
 	[ReaderPost getPostsFromEndpoint:endpoint
 					  withParameters:params
 							 success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -398,7 +398,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	_loadingMore = YES;
 	
 	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
-	NSDictionary *params = @{@"before":[DateUtils isoStringFromDate:post.dateCreated], @"number": [NSNumber numberWithInteger:ReaderPostsToSync]};
+	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
+	NSDictionary *params = @{@"before":[DateUtils isoStringFromDate:post.dateCreated], @"number":numberToSync, @"per_page":numberToSync};
 	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
 
 	[ReaderPost getPostsFromEndpoint:endpoint
@@ -418,15 +419,23 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject {
-	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
+	_loadingMore = NO;
+	[self hideRefreshHeader];
+	
 	NSDictionary *resp = (NSDictionary *)responseObject;
-	NSArray *postsArr = [resp objectForKey:@"posts"];
+	NSArray *postsArr = [resp arrayForKey:@"posts"];
+	
+	if (!postsArr) {
+		_hasMoreContent = NO;
+		return;
+	}
 	
 	// if # of results is less than # requested then no more content.
 	if ([postsArr count] < ReaderPostsToSync) {
 		_hasMoreContent = NO;
 	}
 	
+	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
 	[ReaderPost syncPostsFromEndpoint:endpoint
 							withArray:postsArr
 						  withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
@@ -439,13 +448,14 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		[ReaderPost deletePostsSynedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]] withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
 	}
 	
-	_loadingMore = NO;
-	
 	self.resultsController = nil;
+	
+	[self configureTableHeader];
+	
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 	[self.tableView reloadData];
 	
-	[self hideRefreshHeader];
+
 }
 
 

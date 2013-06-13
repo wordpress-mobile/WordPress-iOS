@@ -142,7 +142,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
     } else {
 		post = (ReaderPost *)[NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
 														   inManagedObjectContext:context];
-		post.postID = [dict objectForKey:@"ID"];
+		post.postID = [dict numberForKey:@"ID"];
 		post.endpoint = endpoint;
     }
     

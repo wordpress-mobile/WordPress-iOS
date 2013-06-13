@@ -692,15 +692,21 @@ NSInteger const ReaderCommentsToSync = 100;
 
 
 - (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject {
+	[self hideRefreshHeader];
+	self.post.dateCommentsSynced = [NSDate date];
 	
 	NSDictionary *resp = (NSDictionary *)responseObject;
-	NSArray *commentsArr = [resp objectForKey:@"comments"];
+	NSArray *commentsArr = [resp arrayForKey:@"comments"];
+	
+	if (!commentsArr) {
+		_hasMoreContent = NO;
+		return;
+	}
 	
 	if([commentsArr count] < ([_comments count] + ReaderCommentsToSync)) {
 		_hasMoreContent = NO;
 	}
 	
-	self.post.dateCommentsSynced = [NSDate date];
 	[ReaderComment syncAndThreadComments:commentsArr
 								 forPost:self.post
 							 withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
@@ -708,8 +714,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	[self prepareComments];
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 	[self.tableView reloadData];
-	[self hideRefreshHeader];
-	
+
 	if ([self.resultsController.fetchedObjects count] > 0) {
 		self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
 	}
