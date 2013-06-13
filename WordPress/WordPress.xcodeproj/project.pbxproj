@@ -759,6 +759,7 @@
 		E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B4A9E012FC8B1000EB3F67 /* EGORefreshTableHeaderView.m */; };
 		E1B4A9E412FC8B2500EB3F67 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E212FC8B2500EB3F67 /* blueArrow.png */; };
 		E1B4A9E512FC8B2500EB3F67 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B4A9E312FC8B2500EB3F67 /* blueArrow@2x.png */; };
+		E1B56F2B176A291E002D319B /* UINavigationControllerRotationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E1512F1A171BD7D900262C03 /* UINavigationControllerRotationTest.m */; };
 		E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */; };
 		E1B62A8213AA8D7700A6FCA4 /* blockquote~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A7C13AA8D7700A6FCA4 /* blockquote~ipad.png */; };
 		E1B62A8313AA8D7700A6FCA4 /* bold~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A7D13AA8D7700A6FCA4 /* bold~ipad.png */; };
@@ -4501,6 +4502,7 @@
 				E131CB5E16CAD659004B0314 /* AsyncTestHelper.m in Sources */,
 				E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */,
 				5DD60A8F16FCA1BF002F1FE5 /* ReaderTest.m in Sources */,
+				E1B56F2B176A291E002D319B /* UINavigationControllerRotationTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
