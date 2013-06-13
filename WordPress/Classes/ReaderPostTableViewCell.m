@@ -258,8 +258,12 @@
 		self.showImage = YES;
 		self.cellImageView.hidden = NO;
 
-		NSInteger width = ceil(_containerView.frame.size.width);
-		NSString *path = [NSString stringWithFormat:@"https://i0.wp.com/%@?w=%i", post.featuredImage, width];
+		NSInteger width = ceil(_containerView.frame.size.width) * [[UIScreen mainScreen] scale];
+        // FIXME: hacky, but just testing if it improves performance or not
+        // Height calculation might need refactoring
+        NSInteger height = (width * 0.66f);
+
+		NSString *path = [NSString stringWithFormat:@"https://i0.wp.com/%@?resize=%i,%i", post.featuredImage, width, height];
 		url = [NSURL URLWithString:path];
 
 		[self.cellImageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
