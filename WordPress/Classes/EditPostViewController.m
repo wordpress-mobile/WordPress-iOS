@@ -1043,8 +1043,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
                 if ((![self.apost hasRemote] || _isAutosaved) && [self.apost.status isEqualToString:@"publish"]) {
                     self.apost.status = @"draft";
                 }
-                BOOL upload = self.apost.blog.reachable;
-                [self savePost:upload];
+                [self savePost:YES];
 			}
         }
     }
