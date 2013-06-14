@@ -32,6 +32,7 @@ NSInteger const ReaderCommentsToSync = 100;
 @property (nonatomic, strong) ReaderPostDetailView *headerView;
 @property (nonatomic, strong) ReaderCommentFormView *readerCommentFormView;
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
+@property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic, strong) UIBarButtonItem *commentButton;
 @property (nonatomic, strong) UIBarButtonItem *likeButton;
 @property (nonatomic, strong) UIBarButtonItem *followButton;
@@ -133,10 +134,19 @@ NSInteger const ReaderCommentsToSync = 100;
 																		   action:@selector(handleShareButtonTapped:)];
 	}
 
+	self.navigationItem.rightBarButtonItem = _shareButton;
 	if(IS_IPAD) {
-		self.toolbarItems = @[_shareButton];
-	} else {
-		self.navigationItem.rightBarButtonItem = _shareButton;
+		 
+		self.navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0f)];
+		_navBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		[_navBar pushNavigationItem:self.navigationItem animated:NO];
+		[self.view addSubview:_navBar];
+		
+		CGRect frame = self.tableView.frame;
+		frame.origin.y = 44.0f;
+		frame.size.height -= 44.0f;
+		self.tableView.frame = frame;
+		
 	}
 
 	UIColor *color = [UIColor colorWithHexString:@"3478E3"];
@@ -229,6 +239,10 @@ NSInteger const ReaderCommentsToSync = 100;
 	
 	self.panelNavigationController.delegate = self;
 	[self.navigationController setToolbarHidden:NO animated:YES];
+
+	if (IS_IPAD)
+        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
+
 	[_headerView updateLayout];
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 	[self showStoredComment];

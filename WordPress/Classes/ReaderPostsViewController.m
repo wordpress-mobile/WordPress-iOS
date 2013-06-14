@@ -37,6 +37,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 @property (nonatomic) BOOL shouldShowKeyboard;
 @property (nonatomic, strong) WPFriendFinderNudgeView *friendFinderNudgeView;
 @property (nonatomic, strong) UIBarButtonItem *titleButton;
+@property (nonatomic, strong) UINavigationBar *navBar;
 
 - (NSDictionary *)currentTopic;
 - (void)configureTableHeader;
@@ -80,7 +81,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	// Topics button
 	UIBarButtonItem *button = nil;
-    if (IS_IPHONE && [[UIButton class] respondsToSelector:@selector(appearance)]) {
+    if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
 		
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [btn setImage:[UIImage imageNamed:@"navbar_read"] forState:UIControlStateNormal];
@@ -109,21 +110,19 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         button.tintColor = color;
     }
     
-    if (IS_IPHONE) {
-        [self.navigationItem setRightBarButtonItem:button animated:YES];
-    } else {
-        self.titleButton = [[UIBarButtonItem alloc] initWithTitle:[self.currentTopic objectForKey:@"title"]
-                                                       style:UIBarButtonItemStylePlain
-                                                      target:self
-                                                      action:@selector(handleTopicsButtonTapped:)];
-        
-        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                                target:nil
-                                                                                action:nil];
-        spacer.width = 8.0f;
-        self.toolbarItems = [NSArray arrayWithObjects:button, spacer, self.titleButton, nil];
+	[self.navigationItem setRightBarButtonItem:button animated:YES];
+    if (IS_IPAD) {
+
+		self.navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0f)];
+		_navBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		[_navBar pushNavigationItem:self.navigationItem animated:NO];
+		[self.view addSubview:_navBar];
+
+		CGRect frame = self.tableView.frame;
+		frame.origin.y = 44.0f;
+		frame.size.height -= 44.0f;
+		self.tableView.frame = frame;
     }
-    
 	
 	CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
 	self.readerReblogFormView = [[ReaderReblogFormView alloc] initWithFrame:frame];
@@ -139,9 +138,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
-    if (IS_IPAD)
-        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
-    
     [self performSelector:@selector(showFriendFinderNudgeView:) withObject:self afterDelay:3.0];
     
 	self.panelNavigationController.delegate = self;
