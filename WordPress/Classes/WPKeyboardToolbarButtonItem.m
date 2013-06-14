@@ -19,7 +19,6 @@
 - (id)init {
     self = [super init];
     if (self) {
-        WPFLogMethod();
     }
     return self;
 }
@@ -27,7 +26,6 @@
 - (id)initWithCoder:(NSCoder *)coder {
     self = [super initWithCoder:coder];
     if (self) {
-        WPFLogMethod();
     }
     return self;
 }
@@ -35,12 +33,6 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        WPFLogMethod();
-
-//        [self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//        [self setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//        self.titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-		
         if (IS_IPAD) {
             [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtoniPad"] stretchableImageWithLeftCapWidth:10.0f topCapHeight:0.0f] forState:UIControlStateNormal];
             [self setBackgroundImage:[[UIImage imageNamed:@"keyboardButtoniPadHighlighted"] stretchableImageWithLeftCapWidth:10.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];

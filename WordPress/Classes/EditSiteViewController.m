@@ -8,13 +8,13 @@
 #import "EditSiteViewController.h"
 #import "NSURL+IDN.h"
 #import "WordPressComApi.h"
-#import "SFHFKeychainUtils.h"
 #import "UIBarButtonItem+Styled.h"
 #import "AFHTTPClient.h"
 #import "HelpViewController.h"
 #import "WPWebViewController.h"
 #import "JetpackSettingsViewController.h"
 #import "ReachabilityUtils.h"
+#import "WPAccount.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 
@@ -68,7 +68,7 @@
         
         self.url = blog.url;
         self.username = blog.username;
-		self.password = [blog fetchPassword];
+		self.password = blog.password;
 
         self.startingUser = self.username;
         self.startingPwd = self.password;
@@ -194,6 +194,13 @@
                 } else {
                     urlTextField.text = @"";
                 }
+                if ([self canEditUsernameAndURL]) {
+                    urlTextField.enabled = YES;
+                    urlTextField.textColor = [UIColor blackColor];
+                } else {
+                    urlTextField.enabled = NO;
+                    urlTextField.textColor = [UIColor darkGrayColor];
+                }
             }
             
             return self.urlCell;
@@ -211,6 +218,13 @@
 					usernameTextField.text = blog.username;
                 } else {
                     usernameTextField.text = @"";
+                }
+                if ([self canEditUsernameAndURL]) {
+                    usernameTextField.enabled = YES;
+                    usernameTextField.textColor = [UIColor blackColor];
+                } else {
+                    usernameTextField.enabled = NO;
+                    usernameTextField.textColor = [UIColor darkGrayColor];
                 }
 			}
             
@@ -460,25 +474,46 @@
     return urlToValidate;
 }
 
+- (void)validateXmlprcURL:(NSURL *)xmlRpcURL
+{
+    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:usernameTextField.text password:passwordTextField.text];
+
+    [api getBlogOptionsWithSuccess:^(id options){
+        if ([options objectForKey:@"wordpress.com"] != nil) {
+            _isSiteDotCom = true;
+            _blogId = [options stringForKeyPath:@"blog_id.value"];
+            [self loginForSiteWithXmlRpcUrl:[NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"]];
+        } else {
+            _isSiteDotCom = false;
+            [self loginForSiteWithXmlRpcUrl:xmlRpcURL];
+        }
+    } failure:^(NSError *failure){
+        [SVProgressHUD dismiss];
+        [self validationDidFail:failure];
+    }];
+}
+
+- (void)loginForSiteWithXmlRpcUrl:(NSURL *)xmlRpcURL
+{
+    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:usernameTextField.text password:passwordTextField.text];
+    [api getBlogsWithSuccess:^(NSArray *blogs) {
+        [SVProgressHUD dismiss];
+        subsites = blogs;
+        [self validationSuccess:[xmlRpcURL absoluteString]];
+    } failure:^(NSError *error) {
+        [SVProgressHUD dismiss];
+        [self validationDidFail:error];
+    }];
+}
 
 - (void)checkURL {
 	NSString *urlToValidate = [self getURLToValidate];
 	
     [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate];
     
-    NSString *uname = usernameTextField.text;
-    NSString *pwd = passwordTextField.text;
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
     [WordPressXMLRPCApi guessXMLRPCURLForSite:urlToValidate success:^(NSURL *xmlrpcURL) {
-        WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlrpcURL username:uname password:pwd];
-        [api getBlogsWithSuccess:^(NSArray *blogs) {
-            [SVProgressHUD dismiss];
-            subsites = blogs;
-            [self validationSuccess:[xmlrpcURL absoluteString]];
-        } failure:^(NSError *error) {
-            [SVProgressHUD dismiss];
-            [self validationDidFail:error];
-        }];
+        [self validateXmlprcURL:xmlrpcURL];
     } failure:^(NSError *error){
         [SVProgressHUD dismiss];
         if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
@@ -508,36 +543,9 @@
 	[savingIndicator setHidden:YES];
     blog.url = self.url;
     blog.xmlrpc = xmlrpc;
-    blog.username = self.username;
     blog.geolocationEnabled = self.geolocationEnabled;
-	NSError *error = nil;
-	//check if the blog is a WP.COM blog
-	if(blog.isWPcom) {
-		[SFHFKeychainUtils storeUsername:blog.username
-                             andPassword:self.password
-                          forServiceName:@"WordPress.com"
-                          updateExisting:YES
-                                   error:&error];
+    blog.account.password = self.password;
 
-        // If this is the account associated with the api, update the singleton's credentials also.
-        WordPressComApi *wpComApi = [WordPressComApi sharedApi];
-        if ([wpComApi.username isEqualToString:blog.username]) {
-            [wpComApi updateCredentailsFromStore];
-        }
-	} else {
-		[SFHFKeychainUtils storeUsername:blog.username
-							 andPassword:self.password
-						  forServiceName:blog.hostURL
-						  updateExisting:YES
-								   error:&error];        
-	}
-    
-    if (error) {
-		[FileLogger log:@"%@ %@ Error saving password for %@: %@", self, NSStringFromSelector(_cmd), blog.url, error];
-    } else {
-		[FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), blog.url];
-	}
-    
     [self cancel:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 
@@ -618,7 +626,13 @@
     }
     
     if (validFields) {
-        [self checkURL];
+        if (blog) {
+            // If we are editing an existing blog, use the known XML-RPC URL
+            // We don't allow editing URL on existing blogs, so XML-RPC shouldn't change
+            [self validateXmlprcURL:[NSURL URLWithString:blog.xmlrpc]];
+        } else {
+            [self checkURL];
+        }
     } else {
         [self validationDidFail:nil];
     }
@@ -746,6 +760,11 @@
     } else {
         return YES;
     }
+}
+
+- (BOOL)canEditUsernameAndURL
+{
+    return NO;
 }
 
 #pragma mark -

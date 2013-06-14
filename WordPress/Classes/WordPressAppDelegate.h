@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import <CrashReporter/CrashReporter.h>
 
 #import "Constants.h"
 #import "Blog.h"
@@ -8,7 +7,6 @@
 #import "Reachability.h"
 #import "PanelNavigationController.h"
 #import "FBConnect.h"
-#import "CrashReportViewController.h"
 #import "Constants.h"
 
 @class AutosaveManager;

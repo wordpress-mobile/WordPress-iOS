@@ -1,5 +1,6 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <WordPressApi/WordPressApi.h>
+#import <Crashlytics/Crashlytics.h>
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "NSString+Helpers.h"
@@ -9,7 +10,6 @@
 //#import "InAppSettings.h"
 #import "Blog.h"
 #import "Media.h"
-#import "SFHFKeychainUtils.h"
 #import "CameraPlusPickerManager.h"
 #import "PanelNavigationController.h"
 #import "SidebarViewController.h"
@@ -24,8 +24,9 @@
 #import "PocketAPI.h"
 #import "WPMobileStats.h"
 #import "WPComLanguages.h"
+#import "WPAccount.h"
 
-@interface WordPressAppDelegate (Private)
+@interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 - (void)setAppBadge;
 - (void)checkIfStatsShouldRun;
 - (void)runStats;
@@ -37,6 +38,11 @@
 
 @implementation WordPressAppDelegate {
     BOOL _listeningForBlogChanges;
+
+    // We have this so we can make sure not to send two Application Opened related events. This comes
+    // into play when we receive a push notification and the user opens the app in response to that. We
+    // don't want to double count the events in Mixpanel so we use this to ensure it doesn't happen.
+    BOOL _hasRecordedApplicationOpenedEvent;
 }
 
 @synthesize window, currentBlog, postID;
@@ -150,19 +156,46 @@
     }
 }
 
+- (void)configureCrashlytics {
+#if DEBUG
+    return;
+#endif
+
+    if ([[WordPressComApiCredentials crashlyticsApiKey] length] == 0) {
+        return;
+    }
+    
+    [Crashlytics startWithAPIKey:[WordPressComApiCredentials crashlyticsApiKey]];
+    [[Crashlytics sharedInstance] setDelegate:self];
+
+    BOOL hasCredentials = [[WordPressComApi sharedApi] hasCredentials];
+    [Crashlytics setObjectValue:[NSNumber numberWithBool:hasCredentials] forKey:@"logged_in"];
+
+    if (hasCredentials && [WordPressComApi sharedApi].username != nil) {
+        [Crashlytics setUserName:[WordPressComApi sharedApi].username];
+    }
+
+    void (^wpcomLoggedInBlock)(NSNotification *) = ^(NSNotification *note) {
+        [Crashlytics setUserName:[WordPressComApi sharedApi].username];
+        [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
+    };
+    void (^wpcomLoggedOutBlock)(NSNotification *) = ^(NSNotification *note) {
+        [Crashlytics setUserName:nil];
+        [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
+    };
+    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomLoggedInBlock];
+    [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomLoggedOutBlock];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     UIDevice *device = [UIDevice currentDevice];
-	PLCrashReporter *crashReporter = [PLCrashReporter sharedReporter];
     NSInteger crashCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"crashCount"];
 
-	// Check for pending crash reports
-	if (![crashReporter hasPendingCrashReport]) {
-        // Empty log file if we didn't crash last time
-        [[FileLogger sharedInstance] reset];
-    } else {
-        crashCount += 1;
-        [[NSUserDefaults standardUserDefaults] setInteger:crashCount forKey:@"crashCount"];
-    }
+    [self configureCrashlytics];
+
+    // Since crashlytics is keeping a copy of the logs, we don't need to anymore
+    // Start with an empty log file when the app launches
+    [[FileLogger sharedInstance] reset];
 
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
     NSString *currentLanguage = [languages objectAtIndex:0];
@@ -170,7 +203,6 @@
     NSString *extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
     WPFLog(@"===========================================================================");
 	WPFLog(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
-    WPFLog(@"Crashed last time: %@", [crashReporter hasPendingCrashReport] ? @"YES" : @"NO" );
     WPFLog(@"Crash count:       %d", crashCount);
 #ifdef DEBUG
     WPFLog(@"Debug mode:  Debug");
@@ -220,7 +252,7 @@
 	// Clean media files asynchronously
     // dispatch_async feels a bit faster than performSelectorOnBackground:
     // and we're trying to launch the app as fast as possible
-    dispatch_async(dispatch_get_global_queue(0, 0), ^(void) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
         [self cleanUnusedMediaFileFromTmpDir];
     });
 
@@ -252,26 +284,22 @@
     // another notification message came from WPWebViewController
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNotificationErrorAlert:) name:@"OpenWebPageFailed" object:nil];
 
-    
-	// Enable the Crash Reporter
-    NSError *error;
-	if (![crashReporter enableCrashReporterAndReturnError: &error])
-		NSLog(@"Warning: Could not enable crash reporter: %@", error);
-	
+
 	[window makeKeyAndVisible];
 
 	[self registerForPushNotifications];
     
     //Information related to the reason for its launching, which can include things other than notifications.
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+
     if (remoteNotif) {
+        _hasRecordedApplicationOpenedEvent = true;
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
 
         NSLog(@"Launched with a remote notification as parameter:  %@", remoteNotif);
         [self openNotificationScreenWithOptions:remoteNotif];
-    } else {
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpened properties:@{@"language": [[WPComLanguages currentLanguage] objectForKey:@"name"]}];
     }
+    
     //the guide say: NO if the application cannot handle the URL resource, otherwise return YES. 
     //The return value is ignored if the application is launched as a result of a remote notification.
 
@@ -350,6 +378,9 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+
+    [WPMobileStats trackEventForWPComWithSavedProperties:StatsEventAppClosed];
+    [self resetStatRelatedVariables];
     
     //Keep the app alive in the background if we are uploading a post, currently only used for quick photo posts
     UIApplication *app = [UIApplication sharedApplication];
@@ -395,6 +426,13 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ApplicationDidBecomeActive" object:nil];
+    
+    if (!_hasRecordedApplicationOpenedEvent) {
+        NSDictionary *properties = @{
+                                     @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
+                                     @"number_of_blogs" : @([Blog countWithContext:[self managedObjectContext]]) };
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpened properties:properties];
+    }
     
     // Clear notifications badge and update server
     [self setAppBadge];
@@ -639,6 +677,17 @@
     return persistentStoreCoordinator_;
 }
 
+- (void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
+    managedObjectContext_ = managedObjectContext;
+}
+
+- (void)setManagedObjectModel:(NSManagedObjectModel *)managedObjectModel {
+    managedObjectModel_ = managedObjectModel;
+}
+
+- (void)setPersistentStoreCoordinator:(NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+    persistentStoreCoordinator_ = persistentStoreCoordinator;
+}
 
 #pragma mark -
 #pragma mark Application's Documents directory
@@ -733,44 +782,26 @@
 
 - (void)checkWPcomAuthentication {
 	NSString *authURL = @"https://wordpress.com/xmlrpc.php";
-	
-    NSError *error = nil;
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
-        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil) {
-            // Migrate password to keychain
-            [SFHFKeychainUtils storeUsername:username
-                                 andPassword:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]
-                              forServiceName:@"WordPress.com"
-                              updateExisting:YES error:&error];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                        andServiceName:@"WordPress.com"
-                                                                 error:&error];
-        if (password != nil) {
-            WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-            [client callMethod:@"wp.getUsersBlogs"
-                    parameters:[NSArray arrayWithObjects:username, password, nil]
-                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                           isWPcomAuthenticated = YES;
-                           WPFLog(@"Logged in to WordPress.com as %@", username);
-                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                           if ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403) {
-                               isWPcomAuthenticated = NO;
-                           }
-                           WPFLog(@"Error authenticating %@ with WordPress.com: %@", username, [error description]);
-                       }];            
-        } else {
-            isWPcomAuthenticated = NO;
-        }
-	}
-	else {
+
+    WPAccount *account = [WPAccount defaultWordPressComAccount];
+	if (account) {
+        WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+        [client callMethod:@"wp.getUsersBlogs"
+                parameters:[NSArray arrayWithObjects:account.username, account.password, nil]
+                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                       isWPcomAuthenticated = YES;
+                       WPFLog(@"Logged in to WordPress.com as %@", account.username);
+                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                       if ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403) {
+                           isWPcomAuthenticated = NO;
+                       }
+                       WPFLog(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
+                   }];
+	} else {
 		isWPcomAuthenticated = NO;
 	}
-	
-	if(isWPcomAuthenticated)
+
+	if (isWPcomAuthenticated)
 		[[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"wpcom_authenticated_flag"];
 	else
 		[[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"wpcom_authenticated_flag"];
@@ -1005,12 +1036,14 @@
             [SoundUtil playNotificationSound];
             break;
         case UIApplicationStateInactive:
+            _hasRecordedApplicationOpenedEvent = true;
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
             
             NSLog(@"app state UIApplicationStateInactive"); //application is in bg and the user tapped the view button
              [self openNotificationScreenWithOptions:userInfo];
             break;
         case UIApplicationStateBackground:
+            _hasRecordedApplicationOpenedEvent = true;
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
 
             NSLog(@" app state UIApplicationStateBackground"); //application is in bg and the user tapped the view button
@@ -1038,41 +1071,26 @@
         return;
     
     NSString *authURL = kNotificationAuthURL;   	
-    NSError *error = nil;
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
-        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil) {
-            // Migrate password to keychain
-            [SFHFKeychainUtils storeUsername:username
-                                 andPassword:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]
-                              forServiceName:@"WordPress.com"
-                              updateExisting:YES error:&error];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                        andServiceName:@"WordPress.com"
-                                                                 error:&error];
-        if (password != nil) {
+    WPAccount *account = [WPAccount defaultWordPressComAccount];
+	if (account) {
 #ifdef DEBUG
-            NSNumber *sandbox = [NSNumber numberWithBool:YES];
+        NSNumber *sandbox = [NSNumber numberWithBool:YES];
 #else
-            NSNumber *sandbox = [NSNumber numberWithBool:NO];
+        NSNumber *sandbox = [NSNumber numberWithBool:NO];
 #endif
-            WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-            
-            [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
-            
-            [api callMethod:@"wpcom.mobile_push_register_token"
-                 parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
-                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        WPFLog(@"Registered token %@, sending blogs list", token);
-                        [[WordPressComApi sharedApi] syncPushNotificationInfo];
-                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey]; //Remove the token from Preferences, otherwise the token is never re-sent to the server on the next startup
-                        WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
-                    }];
-        } 
+        WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+
+        [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
+
+        [api callMethod:@"wpcom.mobile_push_register_token"
+             parameters:[NSArray arrayWithObjects:account.username, account.password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
+                success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    WPFLog(@"Registered token %@, sending blogs list", token);
+                    [[WordPressComApi sharedApi] syncPushNotificationInfo];
+                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey]; //Remove the token from Preferences, otherwise the token is never re-sent to the server on the next startup
+                    WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
+                }];
 	}
 }
 
@@ -1084,38 +1102,23 @@
         return;
     
     NSString *authURL = kNotificationAuthURL;   	
-    NSError *error = nil;
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
-        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil) {
-            // Migrate password to keychain
-            [SFHFKeychainUtils storeUsername:username
-                                 andPassword:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]
-                              forServiceName:@"WordPress.com"
-                              updateExisting:YES error:&error];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                        andServiceName:@"WordPress.com"
-                                                                 error:&error];
-        if (password != nil) {
+    WPAccount *account = [WPAccount defaultWordPressComAccount];
+	if (account) {
 #ifdef DEBUG
-            NSNumber *sandbox = [NSNumber numberWithBool:YES];
+        NSNumber *sandbox = [NSNumber numberWithBool:YES];
 #else
-            NSNumber *sandbox = [NSNumber numberWithBool:NO];
+        NSNumber *sandbox = [NSNumber numberWithBool:NO];
 #endif
-            WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-            [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
-            [api callMethod:@"wpcom.mobile_push_unregister_token"
-                 parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
-                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        WPFLog(@"Unregistered token %@", token);
-                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        WPFLog(@"Couldn't unregister token: %@", [error localizedDescription]);
-                    }];
-        } 
-	}
+        WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
+        [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
+        [api callMethod:@"wpcom.mobile_push_unregister_token"
+             parameters:[NSArray arrayWithObjects:account.username, account.password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
+                success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                    WPFLog(@"Unregistered token %@", token);
+                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                    WPFLog(@"Couldn't unregister token: %@", [error localizedDescription]);
+                }];
+    }
 }
 
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {
@@ -1280,6 +1283,23 @@
  */
 - (void)fbSessionInvalidated
 {
+}
+
+- (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
+{
+    WPFLogMethod();
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSInteger crashCount = [defaults integerForKey:@"crashCount"];
+    crashCount += 1;
+    [defaults setInteger:crashCount forKey:@"crashCount"];
+    [defaults synchronize];
+    [WPMobileStats trackEventForSelfHostedAndWPCom:@"Crashed" properties:@{@"crash_id": crash.identifier}];
+}
+
+- (void)resetStatRelatedVariables
+{
+    [WPMobileStats clearPropertiesForAllEvents];
+    _hasRecordedApplicationOpenedEvent = false;
 }
 
 @end

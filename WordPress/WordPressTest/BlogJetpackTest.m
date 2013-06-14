@@ -17,6 +17,7 @@
 }
 
 - (void)setUp {
+    [[CoreDataTestHelper sharedHelper] registerDefaultContext];
     _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityWithName:@"Blog"];
     _blog.xmlrpc = @"http://test.blog/xmlrpc.php";
     _blog.url = @"http://test.blog/";

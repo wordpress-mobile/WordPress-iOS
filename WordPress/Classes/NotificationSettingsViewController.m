@@ -9,7 +9,6 @@
 #import <WordPressApi/WordPressApi.h>
 
 #import "NotificationSettingsViewController.h"
-#import "SFHFKeychainUtils.h"
 #import "EGORefreshTableHeaderView.h"
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
