@@ -204,7 +204,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	tgr.cancelsTouchesInView = NO;
 	[_headerView addGestureRecognizer:tgr];
 	
-	CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderCommentFormView desiredHeight]);
+	CGRect frame = CGRectMake(0.0f, self.tableView.frame.origin.y + self.tableView.bounds.size.height, self.view.bounds.size.width, [ReaderCommentFormView desiredHeight]);
 	self.readerCommentFormView = [[ReaderCommentFormView alloc] initWithFrame:frame];
 	_readerCommentFormView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 	_readerCommentFormView.navigationItem = self.navigationItem;
@@ -411,7 +411,6 @@ NSInteger const ReaderCommentsToSync = 100;
 
 
 - (void)handleFollowButtonTapped:(id)sender {
-	NSLog(@"Follow tapped");
 	[self.post toggleFollowingWithSuccess:^{
 		
 	} failure:^(NSError *error) {
@@ -422,7 +421,6 @@ NSInteger const ReaderCommentsToSync = 100;
 
 
 - (void)handleLikeButtonTapped:(id)sender {
-	NSLog(@"Like Tapped");
 	[self.post toggleLikedWithSuccess:^{
 		
 	} failure:^(NSError *error) {
@@ -433,8 +431,6 @@ NSInteger const ReaderCommentsToSync = 100;
 
 
 - (void)handleReblogButtonTapped:(id)sender {
-	NSLog(@"Reblog tapped");
-	
 	if (_isShowingReblogForm) {
 		[self hideReblogForm:YES];
 		return;
@@ -547,7 +543,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	self.isShowingCommentForm = YES;
 	CGRect formFrame = _readerCommentFormView.frame;
 	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.view.bounds.size.height - formFrame.size.height;
+	tableFrame.size.height = self.tableView.bounds.size.height - formFrame.size.height;
 	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;	
 
 	self.tableView.frame = tableFrame;
@@ -563,7 +559,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	
 	CGRect formFrame = _readerCommentFormView.frame;
 	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.view.bounds.size.height;
+	tableFrame.size.height = self.tableView.bounds.size.height + formFrame.size.height;
 	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
 	
 	if (!animated) {
@@ -608,7 +604,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	self.isShowingReblogForm = YES;
 	CGRect formFrame = _readerReblogFormView.frame;
 	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.view.bounds.size.height - formFrame.size.height;
+	tableFrame.size.height = self.tableView.bounds.size.height - formFrame.size.height;
 	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
 	
 	self.tableView.frame = tableFrame;
@@ -625,7 +621,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	
 	CGRect formFrame = _readerReblogFormView.frame;
 	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.view.bounds.size.height;
+	tableFrame.size.height = self.tableView.bounds.size.height + formFrame.size.height;
 	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
 	
 	if (!animated) {

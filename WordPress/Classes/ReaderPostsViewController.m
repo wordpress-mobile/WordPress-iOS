@@ -279,7 +279,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	self.isShowingReblogForm = YES;
 	CGRect formFrame = _readerReblogFormView.frame;
 	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.view.bounds.size.height - formFrame.size.height;
+	tableFrame.size.height = self.tableView.bounds.size.height - formFrame.size.height;
 	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
 	
 	self.tableView.frame = tableFrame;
@@ -297,7 +297,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	CGRect formFrame = _readerReblogFormView.frame;
 	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.view.bounds.size.height;
+	tableFrame.size.height = self.tableView.bounds.size.height + formFrame.size.height;
 	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
 	
 	if (!animated) {
@@ -607,7 +607,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
             success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSArray *usersBlogs = responseObject;
 				
-                if(usersBlogs.count > 0) {
+                if([usersBlogs count] > 0) {
 					
                     [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                         NSString *title = [obj valueForKey:@"blogName"];

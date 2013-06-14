@@ -160,8 +160,15 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 	CGRect startFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
 	CGRect endFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	
-	CGPoint point = [self.view.window convertPoint:CGPointMake(0.0f, frame.size.height) fromView:self.view];
-	keyboardOffset = startFrame.origin.y - point.y;
+	// Figure out the difference between the bottom of this view, and the top of the keyboard.
+	// This should account for any toolbars.
+	CGPoint point = [self.view.window convertPoint:startFrame.origin toView:self.view];
+	keyboardOffset = point.y - (frame.origin.y + frame.size.height);
+	
+	// if we're upside down, we need to adjust the origin.
+	if (endFrame.origin.x == 0 && endFrame.origin.y == 0) {
+		endFrame.origin.y = endFrame.origin.x += MIN(endFrame.size.height, endFrame.size.width);
+	}
 	
 	point = [self.view.window convertPoint:endFrame.origin toView:self.view];
 	frame.size.height = point.y;
@@ -176,12 +183,9 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
 	CGRect frame = self.view.frame;
 	CGRect keyFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-	
-	CGPoint point = keyFrame.origin;
-	point.y -= keyboardOffset;
-	
-	point = [self.view.window convertPoint:point toView:self.view];
-	frame.size.height = point.y;
+
+	CGPoint point = [self.view.window convertPoint:keyFrame.origin toView:self.view];
+	frame.size.height = point.y - (frame.origin.y + keyboardOffset);
 	self.view.frame = frame;
 }
 
