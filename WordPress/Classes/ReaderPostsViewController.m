@@ -55,8 +55,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 #pragma mark - Life Cycle methods
 
-- (void)doBeforeDealloc {
-	[super doBeforeDealloc];
+- (void)dealloc {
 	_resultsController.delegate = nil;
 }
 

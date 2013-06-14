@@ -20,7 +20,6 @@
 @property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong) UITableView *tableView;
 
-- (void)doBeforeDealloc;
 - (void)simulatePullToRefresh;
 - (void)hideRefreshHeader;
 - (BOOL)isSyncing;

@@ -30,14 +30,11 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 #pragma mark - LifeCycle Methods
 
 - (void)dealloc {
-	[self doBeforeDealloc];
-}
-
-- (void)doBeforeDealloc {
     if([self.tableView observationInfo]) {
         [self.tableView removeObserver:self forKeyPath:@"contentOffset"];
 	}
 }
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];

@@ -76,8 +76,7 @@ NSInteger const ReaderCommentsToSync = 100;
 
 #pragma mark - LifeCycle Methods
 
-- (void)doBeforeDealloc {
-	[super doBeforeDealloc];
+- (void)dealloc {
 	_resultsController.delegate = nil;
 }
 
