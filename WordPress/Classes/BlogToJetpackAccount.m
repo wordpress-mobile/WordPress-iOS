@@ -54,7 +54,7 @@ static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
         dest = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:destMOC];
         [dest setValue:xmlrpc forKey:@"xmlrpc"];
         [dest setValue:username forKey:@"username"];
-        [dest setValue:@(isWpcom) forKey:@"isWpcom"];
+        [dest setValue:@YES forKey:@"isWpcom"];
 
         // Migrate passwords
         NSError *error;
@@ -84,7 +84,7 @@ static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
     NSArray *sourceBlogs = [manager sourceInstancesForEntityMappingNamed:@"BlogToJetpackAccount" destinationInstances:@[source]];
     NSArray *destBlogs = [manager destinationInstancesForEntityMappingNamed:@"BlogToBlog" sourceInstances:sourceBlogs];
     NSLog(@"dest blogs: %@", destBlogs);
-    [source setValue:[NSSet setWithArray:destBlogs] forKey:@"blogs"];
+    [source setValue:[NSSet setWithArray:destBlogs] forKey:@"jetpackBlogs"];
 
     return YES;
 }

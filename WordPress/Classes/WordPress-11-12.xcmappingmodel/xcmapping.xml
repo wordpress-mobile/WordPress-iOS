@@ -619,7 +619,7 @@ cBIAAYagrxENZQAHAAgAFwAYADQANQA2AFYAVwBYAFkAWgBbAFwAXQBeAF8AYABhAGIAYwB+AH8AgACG
     </object>
     <object type="XDDEVENTITYMAPPING" id="z225">
         <attribute name="sourcename" type="string">Blog</attribute>
-        <attribute name="name" type="string">BlogToJetpacAccount</attribute>
+        <attribute name="name" type="string">BlogToJetpackAccount</attribute>
         <attribute name="migrationpolicyclassname" type="string">BlogToJetpackAccount</attribute>
         <attribute name="mappingtypename" type="string">Undefined</attribute>
         <attribute name="mappingnumber" type="int16">3</attribute>
