@@ -68,7 +68,7 @@
 		
 		self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(padding, padding, avatarSize, avatarSize)];
 		_avatarImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-		[_avatarImageView setImageWithURL:[NSURL URLWithString:self.post.authorAvatarURL] placeholderImage:[UIImage imageNamed:@""]];
+		[_avatarImageView setImageWithURL:[NSURL URLWithString:self.post.authorAvatarURL] placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
 		[_authorView addSubview:_avatarImageView];
 		
 		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding, labelWidth, labelHeight)];

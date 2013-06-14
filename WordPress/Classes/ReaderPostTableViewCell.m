@@ -68,10 +68,6 @@
 		_containerView.backgroundColor = [UIColor whiteColor];
 		[self.contentView addSubview:_containerView];
 		
-//		_containerView.layer.masksToBounds = NO;
-//		_containerView.layer.shadowOffset = CGSizeMake(0, 0);
-//		_containerView.layer.shadowOpacity = 0.075;
-		
 		self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
 		[_containerView addSubview:self.cellImageView];
 
@@ -277,6 +273,7 @@
 	
 	_reblogButton.hidden = ![self.post isWPCom];
 	
+	CGFloat padding = (self.containerView.frame.size.width - ( _followButton.frame.size.width * 3.0f ) ) / 2.0f;
 	CGRect frame;
 	if( [self.post isBlogsIFollow] ) {
 		_followButton.hidden = YES;
@@ -285,18 +282,18 @@
 		_likeButton.frame = frame;
 		
 		frame = _reblogButton.frame;
-		frame.origin.x = _likeButton.frame.size.width;
+		frame.origin.x = _likeButton.frame.size.width + padding;
 		_reblogButton.frame = frame;
 		
 	} else {
 		_followButton.hidden = NO;
 
 		frame = _likeButton.frame;
-		frame.origin.x = _followButton.frame.size.width;
+		frame.origin.x = _followButton.frame.size.width + padding;
 		_likeButton.frame = frame;
 		
 		frame = _reblogButton.frame;
-		frame.origin.x = _likeButton.frame.size.width + _likeButton.frame.origin.x;
+		frame.origin.x = _likeButton.frame.size.width + _likeButton.frame.origin.x + padding;
 		_reblogButton.frame = frame;
 	}
 	
