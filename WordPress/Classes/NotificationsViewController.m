@@ -115,7 +115,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 - (void)viewWillAppear:(BOOL)animated {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewWillAppear:animated];
-    if (IS_IPAD)
+    if (IS_IPAD && [self.toolbarItems count] > 0)
         [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
 }
 
@@ -124,7 +124,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     
     if (!_viewHasAppeared) {
         _viewHasAppeared = true;
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsOpened];
+        [WPMobileStats incrementProperty:StatsPropertyNotificationsOpened forEvent:StatsEventAppClosed];
     }
     
     _isPushingViewController = NO;
@@ -226,7 +226,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     
     BOOL hasDetailsView = [self noteHasDetailView:note];
     if (hasDetailsView) {
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsOpenedNotificationDetails];
+        [WPMobileStats incrementProperty:StatsPropertyNotificationsOpenedDetails forEvent:StatsEventAppClosed];
         
         _isPushingViewController = YES;
         if ([note isComment]) {

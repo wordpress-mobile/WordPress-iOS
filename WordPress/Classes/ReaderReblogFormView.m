@@ -9,7 +9,6 @@
 #import "ReaderReblogFormView.h"
 #import "WordPressComApi.h"
 #import "WPToast.h"
-#import "SFHFKeychainUtils.h"
 #import "NSString+XMLExtensions.h"
 #import "ReaderUsersBlogsViewController.h"
 #import "WordPressAppDelegate.h"

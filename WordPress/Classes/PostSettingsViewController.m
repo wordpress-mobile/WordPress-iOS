@@ -2,7 +2,6 @@
 #import "WPSelectionTableViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPPopoverBackgroundView.h"
-#import "SFHFKeychainUtils.h"
 #import "NSString+Helpers.h"
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
@@ -238,7 +237,7 @@
                 
                 Blog *blog = self.apost.blog;
                 NSString *username = blog.username;
-                NSString *password = [blog fetchPassword];
+                NSString *password = blog.password;
                 
                 NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
                 NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=",
@@ -305,6 +304,7 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	self.apost.password = textField.text;
+    [postDetailViewController refreshButtons];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -641,7 +641,7 @@
 					if ([self.apost.status isEqualToString:@"private"])
 						break;
                     
-                    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedStatus]];
+                    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedStatus forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
                     
 					pickerView.tag = TAG_PICKER_STATUS;
 					[pickerView reloadAllComponents];
@@ -651,7 +651,7 @@
 				}
 				case 1:
 				{
-                    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedVisibility]];
+                    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedVisibility forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
 
 					pickerView.tag = TAG_PICKER_VISIBILITY;
 					[pickerView reloadAllComponents];
@@ -660,7 +660,7 @@
 					break;
 				}
 				case 2:
-                    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedScheduleFor]];
+                    [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedScheduleFor forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
 
 					datePickerView.tag = TAG_PICKER_DATE;
 					if (self.apost.dateCreated)
@@ -678,7 +678,7 @@
         {
             if( [formatsList count] == 0 ) break;
             
-            [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedPostFormat]];
+            [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedPostFormat forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
 
             pickerView.tag = TAG_PICKER_FORMAT;
             [pickerView reloadAllComponents];

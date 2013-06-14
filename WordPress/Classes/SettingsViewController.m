@@ -629,7 +629,7 @@ typedef enum {
 #pragma mark - 
 #pragma mark WPComLoginViewControllerDelegate
 
-- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithUsername:(NSString *)username {
+- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithAccount:(WPAccount *)account {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
     [self.navigationController popToRootViewControllerAnimated:YES];
     [self checkCloseButton];

@@ -10,7 +10,6 @@
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
 #import <ImageIO/ImageIO.h>
-#import "SFHFKeychainUtils.h"
 #import "WPPopoverBackgroundView.h"
 
 #define TAG_ACTIONSHEET_PHOTO 1
@@ -234,6 +233,10 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
             [media save];
         } failure:^(NSError *error) {
+            // User canceled upload
+            if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+                return;
+            }
             [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
         }];
     } else if (media.remoteStatus == MediaRemoteStatusPushing) {

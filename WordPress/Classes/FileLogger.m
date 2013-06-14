@@ -7,6 +7,7 @@
 //
 
 #import "FileLogger.h"
+#import <Crashlytics/Crashlytics.h>
 
 NSString *FileLoggerPath() {
 	static NSString *filePath;
@@ -56,6 +57,7 @@ NSString *FileLoggerPath() {
 	NSLog(@"# %@", message); // The # symbol indicates that the message will be logged to file, useful when looking at the console
 #endif
 	[[FileLogger sharedInstance] log:message];
+    CLSLog(@"%@", message);
     va_end(ap);
 }
 

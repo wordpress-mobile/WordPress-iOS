@@ -15,9 +15,11 @@
 #import "EditPostViewControllerTest.h"
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
+#import "WPAccount.h"
 
 @implementation EditPostViewControllerTest {
     EditPostViewController *_controller;
+    WPAccount *_account;
     Blog *_blog;
     Post *_post;
 }
@@ -29,17 +31,18 @@
                                @"url": @"http://test.blog/",
                                @"xmlrpc": @"http://test.blog/xmlrpc.php",
                                @"blogName": @"A test blog",
-                               @"isAdmin": @YES,
-                               @"username": @"test",
-                               @"password": @"test"
+                               @"isAdmin": @YES
                                };
-    _blog = [Blog createFromDictionary:blogDict withContext:[[CoreDataTestHelper sharedHelper] managedObjectContext]];
+    _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:blogDict[@"xmlrpc"] username:@"test" andPassword:@"test"];
+    _blog = [_account findOrCreateBlogFromDictionary:blogDict];
     _post = [Post newDraftForBlog:_blog];
     STAssertNoThrow(_controller = [[EditPostViewController alloc] initWithPost:[_post createRevision]], nil);
     UIViewController *rvc = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-    STAssertNoThrow([rvc presentModalViewController:_controller animated:NO], nil);
-    STAssertNotNil(_controller.view, nil);
-    STAssertNotNil(_controller.view.superview, nil);
+    STAssertNoThrow([rvc presentViewController:_controller animated:NO completion:^{
+        NSLog(@"subviews: %@", [rvc.view subviews]);
+        STAssertNotNil(_controller.view, nil);
+        STAssertNotNil(_controller.view.superview, nil);
+    }], nil);
 }
 
 - (void)tearDown {

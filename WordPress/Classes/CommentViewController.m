@@ -11,7 +11,6 @@
 #import "NSString+XMLExtensions.h"
 #import "WPWebViewController.h"
 #import "UIImageView+Gravatar.h"
-#import "SFHFKeychainUtils.h"
 #import "UIColor+Helpers.h"
 #import "UIBarButtonItem+Styled.h"
 
@@ -381,10 +380,10 @@
 		wasLastCommentPending = NO;
 	}
     if (segmentedControl.selectedSegmentIndex == 0) {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedShowPreviousComment];
+        [WPMobileStats incrementProperty:StatsPropertyCommentDetailShowPreviousComment forEvent:StatsEventAppClosed];
         [self.delegate showPreviousComment];
     } else {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedShowNextComment];
+        [WPMobileStats incrementProperty:StatsPropertyCommentDetailShowNextComment forEvent:StatsEventAppClosed];
         [self.delegate showNextComment];
     }
 }
@@ -723,9 +722,8 @@
         [webViewController setUrl:url];
 
         if (blog.isPrivate && [blog isWPcom]) {
-            NSError *error;
             webViewController.username = blog.username;
-            webViewController.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:@"WordPress.com" error:&error];
+            webViewController.password = blog.password;
         }
         
         if ( self.panelNavigationController  )

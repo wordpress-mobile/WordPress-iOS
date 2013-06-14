@@ -136,7 +136,11 @@
     if (self) {
         _isAppeared = NO;
         if (IS_IPHONE) {
-            _navigationController = [[UINavigationController alloc] initWithRootViewController:detailController];
+            if (detailController) {
+                _navigationController = [[UINavigationController alloc] initWithRootViewController:detailController];
+            } else {
+                _navigationController = [[UINavigationController alloc] init];
+            }
         } else {
             _detailViewControllers = [[NSMutableArray alloc] init];
             _detailViews = [[NSMutableArray alloc] init];

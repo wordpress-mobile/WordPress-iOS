@@ -12,6 +12,7 @@
 #import "ReachabilityUtils.h"
 #import "WPActivities.h"
 #import "NSString+Helpers.h"
+#import "WPCookie.h"
 
 @class WPReaderDetailViewController;
 
@@ -297,16 +298,6 @@
     
 }
 
-- (bool)canIHazCookie {
-    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:kMobileReaderURL]];
-    for (NSHTTPCookie *cookie in cookies) {
-        if ([cookie.name isEqualToString:@"wordpress_logged_in"]) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
 - (void)refreshWebView {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     
@@ -317,7 +308,7 @@
         return;
     }
     
-    if (!needsLogin && self.username && self.password && ![self canIHazCookie]) {
+    if (!needsLogin && self.username && self.password && ![WPCookie hasCookieForURL:self.url andUsername:self.username]) {
         WPFLog(@"We have login credentials but no cookie, let's try login first");
         [self retryWithLogin];
         return;
