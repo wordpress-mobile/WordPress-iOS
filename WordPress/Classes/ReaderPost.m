@@ -41,6 +41,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 @dynamic isLiked;
 @dynamic isReblogged;
 @dynamic likeCount;
+@dynamic postAvatar;
 @dynamic siteID;
 @dynamic sortDate;
 @dynamic storedComment;
@@ -274,12 +275,13 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		img = [dict stringForKey:@"post_avatar"];
 		if ([img length]) {
 			NSError *error;
-			NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"src=\"\\S+#" options:NSRegularExpressionCaseInsensitive error:&error];
+			img = [img stringByDecodingXMLCharacters];
+			NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"src=\"\\S+\"" options:NSRegularExpressionCaseInsensitive error:&error];
 			NSRange rng = [regex rangeOfFirstMatchInString:img options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [img length])];
 
 			if (NSNotFound != rng.location) {
 				rng = NSMakeRange(rng.location+5, rng.length-6);
-				self.authorAvatarURL = [img substringWithRange:rng];
+				self.postAvatar = [img substringWithRange:rng];
 			}
 		}
 		
@@ -298,6 +300,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 			self.authorEmail = [author objectForKey:@"email"];
 		}
 	}
+	
     self.commentCount = [dict numberForKey:@"comment_count"];
 	self.dateSynced = [NSDate date];
 	self.featuredImage = featuredImage;
@@ -518,6 +521,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	return ([self.endpoint rangeOfString:@"reader/following"].location != NSNotFound)? true : false;
 }
 
+
 - (BOOL)isWPCom {
 	return [self.blogSiteID integerValue] == 1 ? YES : NO;
 }
@@ -537,6 +541,11 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	NSNumber *commentID = [[arr objectAtIndex:0] numericValue];
 	NSString *commentText = [arr objectAtIndex:1];
 	return @{@"commentID":commentID, @"comment":commentText};
+}
+
+
+- (NSString *)avatar {
+	return (self.postAvatar == nil) ? self.authorAvatarURL : self.postAvatar;
 }
 
 

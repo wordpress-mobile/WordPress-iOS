@@ -195,6 +195,11 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)configureTableHeader {
+	if ([self.resultsController.fetchedObjects count] == 0) {
+		self.tableView.tableHeaderView = nil;
+		return;
+	}
+	
 	if (self.tableView.tableHeaderView != nil) {
 		return;
 	}
@@ -579,7 +584,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	_hasMoreContent = YES;
 	
 	self.resultsController = nil;
-    
+    [self configureTableHeader];
+	
     self.titleButton.title = [self.currentTopic objectForKey:@"title"];
     
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];

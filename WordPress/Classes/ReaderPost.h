@@ -32,6 +32,7 @@ extern NSInteger const ReaderTopicEndpointIndex;
 @property (nonatomic, strong) NSNumber *isLiked;
 @property (nonatomic, strong) NSNumber *isReblogged;
 @property (nonatomic, strong) NSNumber *likeCount;
+@property (nonatomic, strong) NSString *postAvatar;
 @property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, strong) NSDate *sortDate;
 @property (nonatomic, strong) NSString *storedComment; // Formatted as commentID,string
@@ -113,6 +114,9 @@ extern NSInteger const ReaderTopicEndpointIndex;
 
 
 - (NSDictionary *)getStoredComment;
+
+
+- (NSString *)avatar;
 
 
 @end

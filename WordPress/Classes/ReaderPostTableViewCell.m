@@ -297,9 +297,12 @@
 		_reblogButton.frame = frame;
 	}
 	
-	
-	[self.avatarImageView setImageWithBlavatarUrl:[[NSURL URLWithString:post.blogURL] host]];
-	
+	if ([post avatar] != nil) {
+		[self.avatarImageView setImageWithURL:[NSURL URLWithString:[post avatar]] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom.png"]];
+	} else {
+		[self.avatarImageView setImageWithBlavatarUrl:[[NSURL URLWithString:post.blogURL] host] isWPcom:[post isWPCom]];
+	}
+
 	[self updateControlBar];
 }
 
