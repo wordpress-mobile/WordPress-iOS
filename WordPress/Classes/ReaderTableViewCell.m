@@ -18,9 +18,10 @@
     if (self) {
 
 		self.cellImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 44.0f, 44.0f)]; // arbitrary size.
-		[self.contentView addSubview:_cellImageView]; // TODO: Not sure about this...
+		_cellImageView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0f];
 		_cellImageView.contentMode = UIViewContentModeScaleAspectFill;
 		_cellImageView.clipsToBounds = YES;
+		[self.contentView addSubview:_cellImageView];
 		
 		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 44.0f)];
 		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;

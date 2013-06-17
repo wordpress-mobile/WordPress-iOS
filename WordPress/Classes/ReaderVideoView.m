@@ -68,8 +68,7 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-		self.imageView.backgroundColor = [UIColor blackColor];
-		[self.imageView setImage:[UIImage imageNamed:@"reader-video-placholder.png"]];
+		[self.imageView setImage:[UIImage imageNamed:@"wp_vid_placeholder.png"]];
 		
 		self.playButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		_playButton.frame = frame;
@@ -130,7 +129,10 @@
 											   NSArray *thumbs = [mediaGroup objectForKey:@"media$thumbnail"];
 											   NSDictionary *thumb = [thumbs objectAtIndex:3];
 											   NSString *url = [thumb objectForKey:@"url"];
-											   [selfRef setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil success:success failure:failure];
+											   [selfRef setImageWithURL:[NSURL URLWithString:url]
+													   placeholderImage:[UIImage imageNamed:@"wp_vid_placeholder.png"]
+																success:success
+																failure:failure];
 											   
 										   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 											   if (failure) {
@@ -155,7 +157,10 @@
 											 NSDictionary *dict = [arr objectAtIndex:0];
 											 selfRef.title = [dict objectForKey:@"title"];
 											 NSString *url = [dict objectForKey:@"thumbnail_large"];
-											 [selfRef setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil success:success failure:failure];
+											 [selfRef setImageWithURL:[NSURL URLWithString:url]
+													 placeholderImage:[UIImage imageNamed:@"wp_vid_placeholder.png"]
+															  success:success
+															  failure:failure];
 											 
 										 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 											 if (failure) {
@@ -177,7 +182,10 @@
 												   
 												   NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
 												   NSString *url = [dict objectForKey:@"thumbnail_large_url"];
-												   [selfRef setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil success:success failure:failure];
+												   [selfRef setImageWithURL:[NSURL URLWithString:url]
+														   placeholderImage:[UIImage imageNamed:@"wp_vid_placeholder.png"]
+																	success:success
+																	failure:failure];
 												   
 											   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 												   if (failure) {

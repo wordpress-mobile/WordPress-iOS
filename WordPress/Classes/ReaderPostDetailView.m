@@ -16,6 +16,7 @@
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
 #import "WPWebVideoViewController.h"
+#import "UIImageView+Gravatar.h"
 
 @interface ReaderPostDetailView()<DTAttributedTextContentViewDelegate>
 
@@ -68,7 +69,14 @@
 		
 		self.avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(padding, padding, avatarSize, avatarSize)];
 		_avatarImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-		[_avatarImageView setImageWithURL:[NSURL URLWithString:[post avatar]] placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
+				
+		if ([post avatar] != nil) {
+			[self.avatarImageView setImageWithURL:[NSURL URLWithString:[post avatar]] placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
+		} else {
+			NSString *img = ([post isWPCom]) ? @"wpcom-blavatar.png" : @"wporg-blavatar.png";
+			[self.avatarImageView setImageWithURL:[self.avatarImageView blavatarURLForHost:[[NSURL URLWithString:post.blogURL] host]] placeholderImage:[UIImage imageNamed:img]];
+		}
+		
 		[_authorView addSubview:_avatarImageView];
 		
 		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding, labelWidth, labelHeight)];
@@ -296,8 +304,18 @@
 
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame {
-	
+		
 	if (attachment.contentType == DTTextAttachmentTypeImage) {
+
+		// Starting out we'll have a real image or a placeholder, so no need to guess the right size.
+		UIImage *image = ([attachment.contents isKindOfClass:[UIImage class]]) ? (UIImage*)attachment.contents : [UIImage imageNamed:@"wp-img-placeholder.png"];
+		frame.size = image.size;
+		
+		if (frame.size.width > _textContentView.frame.size.width) {
+			CGFloat r = _textContentView.frame.size.width / frame.size.width;
+			frame.size.width = frame.size.width * r;
+			frame.size.height = frame.size.height * r;
+		}
 		
 		ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
 		[_mediaArray addObject:imageView];
@@ -307,9 +325,14 @@
 		if (attachment.contents) {
 			[imageView setImage:(UIImage *)attachment.contents];
 		} else {
+			imageView.imageView.contentMode = UIViewContentModeCenter;
+			imageView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0];
 			[imageView setImageWithURL:attachment.contentURL
-					  placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]
+					  placeholderImage:[UIImage imageNamed:@"wp_img_placeholder.png"]
 							   success:^(id readerImageView) {
+								   ReaderImageView *imageView = readerImageView;
+								   imageView.imageView.contentMode = UIViewContentModeScaleAspectFit;
+								   imageView.backgroundColor = [UIColor whiteColor];
 								   [self handleMediaViewLoaded:readerImageView];
 							   } failure:^(id readerImageView, NSError *error) {
 								   [self handleMediaViewLoaded:readerImageView];
@@ -330,6 +353,14 @@
 		} else {
 			return nil; // Can't handle whatever this is :P
 		}
+	
+		// make sure we have a reasonable size.
+		if (frame.size.width > _textContentView.frame.size.width) {
+			CGFloat r = _textContentView.frame.size.width / frame.size.width;
+			frame.size.width = frame.size.width * r;
+			frame.size.height = frame.size.height * r;
+		}
+
 		
 		ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
 		[_mediaArray addObject:videoView];

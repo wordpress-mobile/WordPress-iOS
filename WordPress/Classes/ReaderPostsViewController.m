@@ -236,7 +236,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     }
 	
     [self presentModalViewController:navController animated:YES];
-	
 }
 
 
@@ -570,9 +569,14 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
     [self.tableView reloadData];
-    if ( [WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && [self.resultsController.fetchedObjects count] == 0 && ![self isSyncing] ) {
+    if ( [WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && ![self isSyncing] ) {
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
+		[NSUserDefaults resetStandardUserDefaults];
+
         [self simulatePullToRefresh];
     }
+	
+	[self.tableView setContentOffset:CGPointZero animated:NO];
 }
 
 

@@ -7,6 +7,7 @@
 //
 
 #import "ReaderMediaView.h"
+#import "UIImageView+AFNetworkingExtra.h"
 
 @implementation ReaderMediaView
 
@@ -19,7 +20,6 @@
 		self.imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, frame.size.height)];
 		_imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_imageView.contentMode = UIViewContentModeScaleAspectFit;
-		
 		[self addSubview:_imageView];
     }
     return self;
@@ -69,26 +69,21 @@
 	   placeholderImage:(UIImage *)image
 				success:(void (^)(ReaderMediaView *))success
 				failure:(void (^)(ReaderMediaView *, NSError *))failure {
-	
+
 	// Weak refs to avoid retain loop.
-	__weak id selfRef = self;
-	__weak UIImageView *imageViewRef = _imageView;
+	__weak ReaderMediaView *selfRef = self;
+	[_imageView setImageWithURL:url
+			   placeholderImage:image
+						success:^(UIImage *image) {
+							if (success) {
+								success(selfRef);
+							}
+						} failure:^(NSError *error) {
+							if(failure) {
+								failure(selfRef, error);
+							}
+						}];
 	
-	void (^_success)(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) = ^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-		imageViewRef.image = image;
-		if (success) {
-			success(selfRef);
-		}
-	};
-	
-	void (^_failure)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) = ^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-		if(failure) {
-			failure(selfRef, error);
-		}
-	};
-	
-	NSURLRequest *req = [NSURLRequest requestWithURL:url];
-	[_imageView setImageWithURLRequest:req placeholderImage:image success:_success failure:_failure];
 }
 
 

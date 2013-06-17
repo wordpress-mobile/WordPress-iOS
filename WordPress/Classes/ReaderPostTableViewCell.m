@@ -12,6 +12,7 @@
 #import "UIImageView+Gravatar.h"
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
+#import "UIImageView+AFNetworkingExtra.h"
 
 #define RPTVCVerticalPadding 10.0f;
 
@@ -262,7 +263,13 @@
 		NSString *path = [NSString stringWithFormat:@"https://i0.wp.com/%@?resize=%i,%i", post.featuredImage, width, height];
 		url = [NSURL URLWithString:path];
 
-		[self.cellImageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
+		self.cellImageView.contentMode = UIViewContentModeCenter;
+		__block ReaderPostTableViewCell *selfRef = self;
+		[self.cellImageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"wp_img_placeholder.png"] success:^(UIImage *image) {
+			selfRef.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
+		} failure:^(NSError *error) {
+			
+		}];
 	}
 	
 	_reblogButton.hidden = ![self.post isWPCom];
@@ -291,10 +298,11 @@
 		_reblogButton.frame = frame;
 	}
 	
+	NSString *img = ([post isWPCom]) ? @"wpcom-blavatar.png" : @"wporg-blavatar.png";
 	if ([post avatar] != nil) {
-		[self.avatarImageView setImageWithURL:[NSURL URLWithString:[post avatar]] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom.png"]];
+		[self.avatarImageView setImageWithURL:[NSURL URLWithString:[post avatar]] placeholderImage:[UIImage imageNamed:img]];
 	} else {
-		[self.avatarImageView setImageWithBlavatarUrl:[[NSURL URLWithString:post.blogURL] host] isWPcom:[post isWPCom]];
+		[self.avatarImageView setImageWithURL:[self.avatarImageView blavatarURLForHost:[[NSURL URLWithString:post.blogURL] host]] placeholderImage:[UIImage imageNamed:img]];
 	}
 
 	[self updateControlBar];
