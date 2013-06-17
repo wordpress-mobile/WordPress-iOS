@@ -174,7 +174,7 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 	frame.size.height = point.y;
 	
 //	// TODO: There is a bug with rotation that we need to sort out :/
-	[UIView animateWithDuration:0.25 animations:^{
+	[UIView animateWithDuration:0.3 animations:^{
 		self.view.frame = frame;
 	}];
 }

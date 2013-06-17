@@ -54,10 +54,10 @@ NSInteger const ReaderCommentsToSync = 100;
 - (void)updateToolbar;
 - (BOOL)isReplying;
 - (BOOL)canComment;
-- (void)showCommentForm:(BOOL)animated;
-- (void)hideCommentForm:(BOOL)animated;
-- (void)showReblogForm:(BOOL)animated;
-- (void)hideReblogForm:(BOOL)animated;
+- (void)showCommentForm;
+- (void)hideCommentForm;
+- (void)showReblogForm;
+- (void)hideReblogForm;
 
 - (void)handleCommentButtonTapped:(id)sender;
 - (void)handleFollowButtonTapped:(id)sender;
@@ -212,7 +212,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	_readerCommentFormView.delegate = self;
 
 	if (_isShowingCommentForm) {
-		[self showCommentForm:NO]; // show the form but don't animate it.
+		[self showCommentForm]; 
 	}
 	
 	frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
@@ -223,7 +223,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	_readerReblogFormView.delegate = self;
 	
 	if (_isShowingReblogForm) {
-		[self showReblogForm:NO]; // show the form but don't animate it.
+		[self showReblogForm]; 
 	}
 	
 	[self prepareComments];
@@ -395,18 +395,17 @@ NSInteger const ReaderCommentsToSync = 100;
 	[self setToolbarItems:items animated:YES];
 	
 	self.navigationController.toolbarHidden = NO;
-
 }
 
 
 - (void)handleCommentButtonTapped:(id)sender {
 	
 	if (_isShowingCommentForm) {
-		[self hideCommentForm:YES];
+		[self hideCommentForm];
 		return;
 	}
 	
-	[self showCommentForm:YES];
+	[self showCommentForm];
 }
 
 
@@ -432,11 +431,11 @@ NSInteger const ReaderCommentsToSync = 100;
 
 - (void)handleReblogButtonTapped:(id)sender {
 	if (_isShowingReblogForm) {
-		[self hideReblogForm:YES];
+		[self hideReblogForm];
 		return;
 	}
 	
-	[self showReblogForm:YES];
+	[self showReblogForm];
 }
 
 
@@ -477,7 +476,11 @@ NSInteger const ReaderCommentsToSync = 100;
 
 
 - (void)handleCloseKeyboard:(id)sender {
-	[self.view endEditing:YES];
+	if (_readerCommentFormView.window != nil) {
+		[self hideCommentForm];
+	} else {
+		[self hideReblogForm];
+	}
 }
 
 
@@ -521,127 +524,83 @@ NSInteger const ReaderCommentsToSync = 100;
 }
 
 
-- (void)showCommentForm:(BOOL)animated {
-	[self hideReblogForm:NO];
-	if (_readerCommentFormView.superview == nil) {
-		CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderCommentFormView desiredHeight]);
-		_readerCommentFormView.frame = frame;
-		[self.view addSubview:_readerCommentFormView];
-	}
+- (void)showCommentForm {
+	[self hideReblogForm];
 	
-	if (_isShowingCommentForm) {
-		[_readerCommentFormView.textView becomeFirstResponder];
-		
-		NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-		if (path) {
-			[self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:YES];
-		}
-		
+	if (_readerCommentFormView.superview != nil) {
 		return;
-	}
-	
-	self.isShowingCommentForm = YES;
-	CGRect formFrame = _readerCommentFormView.frame;
-	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.tableView.bounds.size.height - formFrame.size.height;
-	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;	
-
-	self.tableView.frame = tableFrame;
-	_readerCommentFormView.frame = formFrame;
-	[_readerCommentFormView.textView becomeFirstResponder];
-}
-
-
-- (void)hideCommentForm:(BOOL)animated {
-	if (!_isShowingCommentForm) {
-		return;
-	}
-	
-	CGRect formFrame = _readerCommentFormView.frame;
-	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.tableView.bounds.size.height + formFrame.size.height;
-	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
-	
-	if (!animated) {
-		self.tableView.frame = tableFrame;
-		_readerCommentFormView.frame = formFrame;
-		self.isShowingCommentForm = NO;
-		return;
-	}
-	
-	_commentButton.enabled = NO;
-	[UIView animateWithDuration:0.3 animations:^{
-		self.tableView.frame = tableFrame;
-		_readerCommentFormView.frame = formFrame;
-	} completion:^(BOOL finished) {
-		_commentButton.enabled = YES;
-		self.isShowingCommentForm = NO;
-		
-		// Remove the view so we don't glympse it on the iPad when rotating
-		[_readerCommentFormView removeFromSuperview];
-	}];
-}
-
-
-- (void)showReblogForm:(BOOL)animated {
-	[self hideCommentForm:NO];
-	if (_readerReblogFormView.superview == nil) {
-		CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
-		_readerReblogFormView.frame = frame;
-		[self.view addSubview:_readerReblogFormView];
 	}
 	
 	NSIndexPath *path = [self.tableView indexPathForSelectedRow];
 	if (path) {
-		[self.tableView deselectRowAtIndexPath:path animated:NO];
+		_readerCommentFormView.comment = (ReaderComment *)[self.resultsController objectAtIndexPath:path];
 	}
 	
-	if (_isShowingReblogForm) {
-		[_readerReblogFormView.textView becomeFirstResponder];
-		return;
-	}
-	
-	self.isShowingReblogForm = YES;
-	CGRect formFrame = _readerReblogFormView.frame;
+	CGFloat formHeight = [ReaderCommentFormView desiredHeight];
 	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.tableView.bounds.size.height - formFrame.size.height;
-	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
-	
+	tableFrame.size.height = self.tableView.frame.size.height - formHeight;
 	self.tableView.frame = tableFrame;
-	_readerReblogFormView.frame = formFrame;
-	[_readerReblogFormView.textView becomeFirstResponder];
-
+	
+	CGFloat y = tableFrame.origin.y + tableFrame.size.height;
+	_readerCommentFormView.frame = CGRectMake(0.0f, y, self.view.bounds.size.width, formHeight);
+	[self.view addSubview:_readerCommentFormView];
+	self.isShowingCommentForm = YES;
+	[_readerCommentFormView.textView becomeFirstResponder];
 }
 
 
-- (void)hideReblogForm:(BOOL)animated {
-	if (!_isShowingReblogForm) {
+- (void)hideCommentForm {
+	if(_readerCommentFormView.superview == nil) {
 		return;
 	}
 	
-	CGRect formFrame = _readerReblogFormView.frame;
+	_readerCommentFormView.comment = nil;
+	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:NO];
+	
 	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.tableView.bounds.size.height + formFrame.size.height;
-	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
+	tableFrame.size.height = self.tableView.frame.size.height + _readerCommentFormView.frame.size.height;
 	
-	if (!animated) {
-		self.tableView.frame = tableFrame;
-		_readerReblogFormView.frame = formFrame;
-		self.isShowingReblogForm = NO;
+	self.tableView.frame = tableFrame;
+	[_readerCommentFormView removeFromSuperview];
+	self.isShowingCommentForm = NO;
+	[self.view endEditing:YES];
+}
+
+
+- (void)showReblogForm {
+	[self hideCommentForm];
+	
+	if (_readerReblogFormView.superview != nil) {
 		return;
 	}
 	
-	_reblogButton.enabled = NO;
-	[UIView animateWithDuration:0.3 animations:^{
-		self.tableView.frame = tableFrame;
-		_readerReblogFormView.frame = formFrame;
-	} completion:^(BOOL finished) {
-		_reblogButton.enabled = YES;
-		self.isShowingReblogForm = NO;
-		
-		// Remove the view so we don't glympse it on the iPad when rotating
-		[_readerReblogFormView removeFromSuperview];
-	}];
+	CGFloat reblogHeight = [ReaderReblogFormView desiredHeight];
+	CGRect tableFrame = self.tableView.frame;
+	tableFrame.size.height = self.tableView.frame.size.height - reblogHeight;
+	self.tableView.frame = tableFrame;
+	
+	CGFloat y = tableFrame.origin.y + tableFrame.size.height;
+	_readerReblogFormView.frame = CGRectMake(0.0f, y, self.view.bounds.size.width, reblogHeight);
+	[self.view addSubview:_readerReblogFormView];
+	self.isShowingReblogForm = YES;
+	[_readerReblogFormView.textView becomeFirstResponder];
+}
+
+
+- (void)hideReblogForm {
+	if(_readerReblogFormView.superview == nil) {
+		return;
+	}
+	
+	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:NO];
+	
+	CGRect tableFrame = self.tableView.frame;
+	tableFrame.size.height = self.tableView.frame.size.height + _readerReblogFormView.frame.size.height;
+	
+	self.tableView.frame = tableFrame;
+	[_readerReblogFormView removeFromSuperview];
+	self.isShowingReblogForm = NO;
+	[self.view endEditing:YES];
 }
 
 
@@ -771,20 +730,23 @@ NSInteger const ReaderCommentsToSync = 100;
 
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (_isShowingKeyboard) {
-		[self.view endEditing:YES];
+	
+	if (_readerReblogFormView.window != nil) {
+		[self hideReblogForm];
 		return nil;
 	}
 	
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-	if ([cell isSelected]) {
-		_readerCommentFormView.comment = nil;
-		[tableView deselectRowAtIndexPath:indexPath animated:NO];
-		[self hideCommentForm:YES];
+	if (_readerCommentFormView.window != nil) {
+		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+		if ([cell isSelected]) {
+			[tableView deselectRowAtIndexPath:indexPath animated:NO];
+		}
+		
+		[self hideCommentForm];
 		return nil;
 	}
-
-	[self showCommentForm:YES];
+	
+	[self showCommentForm];
 
 	return indexPath;
 }
@@ -820,16 +782,30 @@ NSInteger const ReaderCommentsToSync = 100;
 
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-	if (_isShowingKeyboard) {
-		if ([_comments count] == 0) {
-			CGRect rect = [self.tableView rectForFooterInSection:0];
-			if (self.tableView.contentOffset.y < rect.origin.y - (self.tableView.bounds.size.height - rect.size.height) ){
-				[self handleCloseKeyboard:nil];
-			}
-		} else if([self.tableView.visibleCells count] == 0) {
-			[self handleCloseKeyboard:nil];
-		}
+	
+	if (_readerReblogFormView.window) {
+		[self hideReblogForm];
+		return;
 	}
+	
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	if (!selectedIndexPath) {
+		[self hideCommentForm];
+	}
+	
+	__block BOOL found = NO;
+	[[self.tableView indexPathsForVisibleRows] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		NSIndexPath *objPath = (NSIndexPath *)obj;
+		if ([objPath compare:selectedIndexPath] == NSOrderedSame) {
+			found = YES;
+		}
+		*stop = YES;
+	}];
+	
+	if (found) return;
+	
+	[self hideCommentForm];
+
 }
 
 
@@ -842,23 +818,37 @@ NSInteger const ReaderCommentsToSync = 100;
 
 #pragma mark - ReaderTextForm Delegate Methods
 
+- (void)readerTextFormDidCancel:(ReaderTextFormView *)readerTextForm {
+	if ([readerTextForm isEqual:_readerCommentFormView]) {
+		[self hideCommentForm];
+	} else {
+		[self hideReblogForm];
+	}
+}
+
+
 - (void)readerTextFormDidSend:(ReaderTextFormView *)readerTextForm {
-	self.post.storedComment = nil;
-	[self prepareComments];
-	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
-	[self.tableView reloadData];
-	[self hideRefreshHeader];
+	if ([readerTextForm isEqual:_readerCommentFormView]) {
+		[self hideCommentForm];
+		self.post.storedComment = nil;
+		[self prepareComments];
+		[self updateRowHeightsForWidth:self.tableView.frame.size.width];
+		[self.tableView reloadData];
+		[self hideRefreshHeader];
+	} else {
+		[self hideReblogForm];
+	}
 }
 
 
-- (void)readerTextFormDidBeginEditing:(ReaderTextFormView *)readerTextForm {
-	self.isShowingKeyboard = YES;
-}
+//- (void)readerTextFormDidBeginEditing:(ReaderTextFormView *)readerTextForm {
+//	self.isShowingKeyboard = YES;
+//}
 
 
 - (void)readerTextFormDidChange:(ReaderTextFormView *)readerTextForm {
 	// If we are replying, and scrolled away from the comment, scroll back to it real quick.
-	if ([self isReplying] && !_isScrollingCommentIntoView) {
+	if ([readerTextForm isEqual:_readerCommentFormView] && [self isReplying] && !_isScrollingCommentIntoView) {
 		NSIndexPath *path = [self.tableView indexPathForSelectedRow];
 		if (NSOrderedSame != [path compare:[self.tableView.indexPathsForVisibleRows objectAtIndex:0]]) {
 			self.isScrollingCommentIntoView = YES;
@@ -870,6 +860,10 @@ NSInteger const ReaderCommentsToSync = 100;
 
 - (void)readerTextFormDidEndEditing:(ReaderTextFormView *)readerTextForm {
 	self.isShowingKeyboard = NO;
+	if (![readerTextForm isEqual:_readerCommentFormView]) {
+		return;
+	}
+	
 	if ([readerTextForm.text length] > 0) {
 		// Save the text
 		NSNumber *commentID = nil;

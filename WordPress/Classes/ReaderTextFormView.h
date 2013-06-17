@@ -27,7 +27,7 @@
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *detailLabel;
-@property (nonatomic, readonly) BOOL isShowingKeyboard;
+@property (nonatomic) BOOL requireText;
 
 - (NSString *)text;
 - (void)setText:(NSString *)text;
@@ -36,6 +36,7 @@
 - (void)handleCancelButtonTapped:(id)sender;
 - (void)updateNavItem;
 - (void)configureNavItem;
+- (void)enableForm:(BOOL)enabled;
 
 @end
 

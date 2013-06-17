@@ -42,8 +42,7 @@
 		return;
 	}
 	
-	self.textView.editable = NO;
-	self.sendButton.enabled = NO;
+	[self enableForm:NO];
 	[self.activityView startAnimating];
 
 	NSString *path;
@@ -83,17 +82,22 @@
 								   }
 								   
 							   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-								   self.sendButton.enabled = YES;
-								   self.textView.editable = YES;
+								   [self enableForm:YES];
 								   [self.activityView stopAnimating];
 								   // TODO: Failure reason.
 							   }];
 		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		self.sendButton.enabled = YES;
-		self.textView.editable = YES;
+		[self enableForm:YES];
 		[self.activityView stopAnimating];
+		[self.textView becomeFirstResponder];
 		// TODO: Failure reason.
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Comment failed", @"")
+															message:NSLocalizedString(@"There was a problem commenting. Please try again.", @"")
+														   delegate:nil
+												  cancelButtonTitle:nil
+												  otherButtonTitles:nil];
+		[alertView show];
 	}];
 }
 
@@ -129,6 +133,7 @@
 	}
 	
 	_comment = comment;
+	[self setText:@""];
 	[self updateNavItem];
 }
 

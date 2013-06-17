@@ -32,18 +32,18 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 @property (nonatomic, strong) NSArray *rowHeights;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
-@property (nonatomic) BOOL isShowingReblogForm;
-@property (nonatomic) BOOL isShowingKeyboard;
-@property (nonatomic) BOOL shouldShowKeyboard;
 @property (nonatomic, strong) WPFriendFinderNudgeView *friendFinderNudgeView;
 @property (nonatomic, strong) UIBarButtonItem *titleButton;
 @property (nonatomic, strong) UINavigationBar *navBar;
+@property (nonatomic) BOOL isShowingReblogForm;
 
 - (NSDictionary *)currentTopic;
 - (void)configureTableHeader;
 - (void)updateRowHeightsForWidth:(CGFloat)width;
 - (void)fetchBlogsAndPrimaryBlog;
 - (void)handleReblogButtonTapped:(id)sender;
+- (void)showReblogForm;
+- (void)hideReblogForm;
 - (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject;
 - (void)onSyncFailure:(AFHTTPRequestOperation *)operation error:(NSError *)error;
 
@@ -128,6 +128,10 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	_readerReblogFormView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 	_readerReblogFormView.navigationItem = self.navigationItem;
 	_readerReblogFormView.delegate = self;
+	
+	if (_isShowingReblogForm) {
+		[self showReblogForm];
+	}
 	
 	// Compute row heights now for smoother scrolling later.
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
@@ -251,89 +255,66 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	// if not showing form, show the form.
 	if (!selectedPath) {
 		[self.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
-		[self showReblogForm:YES];
-		
+		[self showReblogForm];
 		return;
 	}
 	
 	// if showing form && same cell as before, dismiss the form.
 	if([selectedPath compare:path] == NSOrderedSame) {
-		[self hideReblogForm:YES];
+		[self hideReblogForm];
 	} else {
 		[self.tableView selectRowAtIndexPath:path animated:NO scrollPosition:UITableViewScrollPositionNone];
 	}
 }
 
 
-- (void)showReblogForm:(BOOL)animated {
-
-	if (_readerReblogFormView.superview == nil) {
-		CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
-		_readerReblogFormView.frame = frame;
-		[self.view addSubview:_readerReblogFormView];
+- (void)showReblogForm {
+	if (_readerReblogFormView.superview != nil) {
+		return;
 	}
 	
 	NSIndexPath *path = [self.tableView indexPathForSelectedRow];
 	_readerReblogFormView.post = (ReaderPost *)[self.resultsController objectAtIndexPath:path];
 	
-	if (_isShowingReblogForm) {
-		[_readerReblogFormView.textView becomeFirstResponder];
-		return;
-	}
-	
-	self.isShowingReblogForm = YES;
-	CGRect formFrame = _readerReblogFormView.frame;
+	CGFloat reblogHeight = [ReaderReblogFormView desiredHeight];
 	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.tableView.bounds.size.height - formFrame.size.height;
-	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
-	
+	tableFrame.size.height = self.tableView.frame.size.height - reblogHeight;
 	self.tableView.frame = tableFrame;
-	_readerReblogFormView.frame = formFrame;
+	
+	CGFloat y = tableFrame.origin.y + tableFrame.size.height;
+	_readerReblogFormView.frame = CGRectMake(0.0f, y, self.view.bounds.size.width, reblogHeight);
+	[self.view addSubview:_readerReblogFormView];
+	self.isShowingReblogForm = YES;
 	[_readerReblogFormView.textView becomeFirstResponder];
 }
 
 
-- (void)hideReblogForm:(BOOL)animated {
-	if(!_isShowingReblogForm) {
+- (void)hideReblogForm {
+	if(_readerReblogFormView.superview == nil) {
 		return;
 	}
 	
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:NO];
 	
-	CGRect formFrame = _readerReblogFormView.frame;
 	CGRect tableFrame = self.tableView.frame;
-	tableFrame.size.height = self.tableView.bounds.size.height + formFrame.size.height;
-	formFrame.origin.y = tableFrame.origin.y + tableFrame.size.height;
+	tableFrame.size.height = self.tableView.frame.size.height + _readerReblogFormView.frame.size.height;
 	
-	if (!animated) {
-		self.tableView.frame = tableFrame;
-		_readerReblogFormView.frame = formFrame;
-		self.isShowingReblogForm = NO;
-		return;
-	}
-
-	[UIView animateWithDuration:0.3 animations:^{
-		self.tableView.frame = tableFrame;
-		_readerReblogFormView.frame = formFrame;
-	} completion:^(BOOL finished) {
-		self.isShowingReblogForm = NO;
-
-		// Remove the view so we don't glympse it on the iPad when rotating
-		[_readerReblogFormView removeFromSuperview];
-	}];
+	self.tableView.frame = tableFrame;
+	[_readerReblogFormView removeFromSuperview];
+	self.isShowingReblogForm = NO;
+	[self.view endEditing:YES];
 }
 
 
 #pragma mark - ReaderTextForm Delegate Methods
 
-- (void)readerTextFormDidBeginEditing:(ReaderTextFormView *)readerTextForm {
-	self.isShowingKeyboard = YES;
+- (void)readerTextFormDidSend:(ReaderTextFormView *)readerTextForm {
+	[self hideReblogForm];
 }
 
 
-- (void)readerTextFormDidEndEditing:(ReaderTextFormView *)readerTextForm {
-	self.isShowingKeyboard = NO;
-	
+- (void)readerTextFormDidCancel:(ReaderTextFormView *)readerTextForm {
+	[self hideReblogForm];
 }
 
 
@@ -356,7 +337,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	if (found) return;
 	
-	[self hideReblogForm:YES];
+	[self hideReblogForm];
 }
 
 
@@ -504,8 +485,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (_isShowingKeyboard) {
-		[self.view endEditing:YES];
+	if (_readerReblogFormView.superview != nil) {
+		[self hideReblogForm];
 		return nil;
 	}
 	
@@ -513,7 +494,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	if ([cell isSelected]) {
 		_readerReblogFormView.post = nil;
 		[tableView deselectRowAtIndexPath:indexPath animated:NO];
-		[self hideReblogForm:YES];
+		[self hideReblogForm];
 		return nil;
 	}
 	
@@ -539,7 +520,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
     return NO;
 }
-
 
 
 #pragma mark -
@@ -656,13 +636,14 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 }
 
-#pragma mark - Friend Finder Button
 
+#pragma mark - Friend Finder Button
 
 - (BOOL) shouldDisplayfriendFinderNudgeView {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     return ![userDefaults boolForKey:WPReaderViewControllerDisplayedNativeFriendFinder] && self.friendFinderNudgeView == nil;
 }
+
 
 - (void) showFriendFinderNudgeView:(id)sender {
     if ([self shouldDisplayfriendFinderNudgeView]) {
@@ -690,6 +671,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     }
 }
 
+
 - (void) hideFriendFinderNudgeView:(id)sender {
     if (self.friendFinderNudgeView == nil) {
         return;
@@ -705,6 +687,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         self.friendFinderNudgeView = nil;
     }];
 }
+
 
 - (void)openFriendFinder:(id)sender {
     [self hideFriendFinderNudgeView:sender];

@@ -11,7 +11,6 @@
 @interface ReaderTextFormView()
 
 @property (nonatomic, strong) UINavigationItem *oldNavigationItem;
-@property (nonatomic) BOOL isShowingKeyboard;
 
 @end
 
@@ -32,12 +31,14 @@
 		
 		UIFont *font = [UIFont systemFontOfSize:ReaderTextFormFontSize];
 		
-		self.textView = [[UITextView alloc] initWithFrame:CGRectMake(15.0f, 15.0f, width - 50.0, height - 30.0f)];
+		self.textView = [[UITextView alloc] initWithFrame:CGRectMake(15.0f, 15.0f, width - 30.0, height - 30.0f)];
 		_textView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_textView.font = font;
 		_textView.delegate = self;
 		_textView.backgroundColor = [UIColor clearColor];
 		[self addSubview:_textView];
+
+		self.requireText = YES;
 		
 		self.promptLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 15.0f, width - 50.0f, 20.0f)];
 		_promptLabel.backgroundColor = [UIColor clearColor];
@@ -51,12 +52,17 @@
 		frame.origin.y = (height / 2.0f) - (frame.size.height / 2.0f);
 		_activityView.frame = frame;
 		_activityView.hidesWhenStopped = YES;
-		_activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+		_activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
 		
 		[self addSubview:_activityView];
     }
 	
     return self;
+}
+
+
+- (void)didMoveToWindow {
+	[self updateNavItem];
 }
 
 
@@ -71,12 +77,29 @@
 }
 
 
+- (void)enableForm:(BOOL)enabled {
+
+	_textView.editable = enabled;
+	if (self.requireText) {
+		_sendButton.enabled = (([_textView.text length] > 0) && enabled);
+	} else {
+		_sendButton.enabled = enabled;
+	}
+	
+	if (enabled) {
+		_textView.backgroundColor = [UIColor whiteColor];
+	} else {
+		_textView.backgroundColor = [UIColor lightGrayColor];
+	}
+}
+
+
 - (void)updateNavItem {
 	if (!_navigationItem) return;
 	
 	[self configureNavItem];
-	
-	if (!_isShowingKeyboard) {
+
+	if (!self.window) {
 		self.navigationItem.titleView = self.oldNavigationItem.titleView;
 		self.navigationItem.leftBarButtonItem = self.oldNavigationItem.leftBarButtonItem;
 		self.navigationItem.rightBarButtonItem = self.oldNavigationItem.rightBarButtonItem;
@@ -171,11 +194,9 @@
 #pragma mark - UITextView Delegate Methods
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-	_isShowingKeyboard = YES;
 	_promptLabel.hidden = YES;
 	
-	[self updateNavItem];
-	_sendButton.enabled = (_textView.text.length == 0) ? NO : YES;
+	_sendButton.enabled = (([_textView.text length] > 0) || !_requireText);
 	
 	if([_delegate respondsToSelector:@selector(readerTextFormDidBeginEditing:)]) {
 		[_delegate readerTextFormDidBeginEditing:self];
@@ -184,7 +205,7 @@
 
 
 - (void)textViewDidChange:(UITextView *)textView {
-	_sendButton.enabled = (_textView.text.length == 0) ? NO : YES;
+	_sendButton.enabled = (([_textView.text length] > 0) || !_requireText);
 	
 	if([_delegate respondsToSelector:@selector(readerTextFormDidChange:)]) {
 		[_delegate readerTextFormDidChange:self];
@@ -193,9 +214,7 @@
 
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
-	_isShowingKeyboard = NO;
 	_promptLabel.hidden = (_textView.text.length > 0) ? YES : NO;
-	[self updateNavItem];
 	
 	if([_delegate respondsToSelector:@selector(readerTextFormDidEndEditing:)]) {
 		[_delegate readerTextFormDidEndEditing:self];

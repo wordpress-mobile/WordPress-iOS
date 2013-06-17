@@ -50,6 +50,7 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+		self.requireText = NO;
 		self.promptLabel.text = NSLocalizedString(@"Add your thoughts here... (optional)", @"Placeholder text prompting the user to add a note to the post they are reblogging.");
 		
 		frame = CGRectMake(10.0f, 10.0, frame.size.width - 20.0f, 20.0f);
@@ -107,6 +108,10 @@
 			frame = self.promptLabel.frame;
 			frame.origin.y += offset;
 			self.promptLabel.frame = frame;
+			
+			frame = self.activityView.frame;
+			frame.origin.y = ((self.textView.frame.origin.y + (self.textView.frame.size.height / 2.0f)) - frame.size.height / 2.0f) ;
+			self.activityView.frame = frame;
 
 			NSNumber *primaryBlogId = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_users_prefered_blog_id"];
 			[blogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -124,26 +129,37 @@
 }
 
 
-- (void)didMoveToWindow {
-	
-}
-
-
 - (void)handleSendButtonTapped:(id)sender {
 	[super handleSendButtonTapped:sender];
 	
-	self.textView.editable = NO;
-	self.sendButton.enabled = NO;
+	[self enableForm:NO];
 	[self.activityView startAnimating];
-	
+
 	[self.post reblogPostToSite:_siteId note:[[self text] trim] success:^{
-		[WPToast showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment")
+		
+		[WPToast showToastWithMessage:NSLocalizedString(@"Reblogged", @"User reblogged a post.")
 							 andImage:[UIImage imageNamed:@"action_icon_replied"]];
-	} failure:^(NSError *error) {
-		self.sendButton.enabled = YES;
-		self.textView.editable = YES;
+		
+		[self enableForm:YES];
 		[self.activityView stopAnimating];
+		[self setText:@""];
+		
+		if ([self.delegate respondsToSelector:@selector(readerTextFormDidSend:)]) {
+			[self.delegate readerTextFormDidSend:self];
+		}
+		
+	} failure:^(NSError *error) {
+		[self enableForm:YES];
+		[self.activityView stopAnimating];
+		[self.textView becomeFirstResponder];
+
 		// TODO: Failure reason.
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Reblog failed", @"")
+															message:NSLocalizedString(@"There was a problem reblogging. Please try again.", @"")
+														   delegate:nil
+												  cancelButtonTitle:nil
+												  otherButtonTitles:nil];
+		[alertView show];
 	}];
 
 }
@@ -169,6 +185,7 @@
 	}
 	
 	_post = post;
+	[self setText:@""];
 	[self updateNavItem];
 }
 
