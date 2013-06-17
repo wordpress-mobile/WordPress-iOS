@@ -42,8 +42,6 @@ NSInteger const ReaderCommentsToSync = 100;
 @property (nonatomic, strong) NSMutableArray *comments;
 @property (nonatomic, strong) NSArray *rowHeights;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
-@property (nonatomic) BOOL isShowingKeyboard;
-//@property (nonatomic) BOOL shouldShowKeyboard;
 @property (nonatomic) BOOL isScrollingCommentIntoView;
 @property (nonatomic) BOOL isShowingCommentForm;
 @property (nonatomic) BOOL isShowingReblogForm;
@@ -65,7 +63,6 @@ NSInteger const ReaderCommentsToSync = 100;
 - (void)handleReblogButtonTapped:(id)sender;
 - (void)handleShareButtonTapped:(id)sender;
 - (void)handleCloseKeyboard:(id)sender;
-- (void)handleFooterViewTapped:(id)sender;
 - (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
 
 @end
@@ -399,8 +396,7 @@ NSInteger const ReaderCommentsToSync = 100;
 
 
 - (void)handleCommentButtonTapped:(id)sender {
-	
-	if (_isShowingCommentForm) {
+	if (_readerCommentFormView.window != nil) {
 		[self hideCommentForm];
 		return;
 	}
@@ -413,6 +409,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	[self.post toggleFollowingWithSuccess:^{
 		
 	} failure:^(NSError *error) {
+		WPLog(@"Error Following Blog : %@", [error localizedDescription]);
 		[self updateToolbar];
 	}];
 	[self updateToolbar];
@@ -423,6 +420,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	[self.post toggleLikedWithSuccess:^{
 		
 	} failure:^(NSError *error) {
+		WPLog(@"Error Liking Post : %@", [error localizedDescription]);
 		[self updateToolbar];
 	}];
 	[self updateToolbar];
@@ -480,15 +478,6 @@ NSInteger const ReaderCommentsToSync = 100;
 		[self hideCommentForm];
 	} else {
 		[self hideReblogForm];
-	}
-}
-
-
-- (void)handleFooterViewTapped:(id)sender {
-	if (_isShowingKeyboard) {
-		if([self.tableView indexPathForSelectedRow]) {
-			[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-		}
 	}
 }
 
@@ -841,11 +830,6 @@ NSInteger const ReaderCommentsToSync = 100;
 }
 
 
-//- (void)readerTextFormDidBeginEditing:(ReaderTextFormView *)readerTextForm {
-//	self.isShowingKeyboard = YES;
-//}
-
-
 - (void)readerTextFormDidChange:(ReaderTextFormView *)readerTextForm {
 	// If we are replying, and scrolled away from the comment, scroll back to it real quick.
 	if ([readerTextForm isEqual:_readerCommentFormView] && [self isReplying] && !_isScrollingCommentIntoView) {
@@ -859,7 +843,6 @@ NSInteger const ReaderCommentsToSync = 100;
 
 
 - (void)readerTextFormDidEndEditing:(ReaderTextFormView *)readerTextForm {
-	self.isShowingKeyboard = NO;
 	if (![readerTextForm isEqual:_readerCommentFormView]) {
 		return;
 	}

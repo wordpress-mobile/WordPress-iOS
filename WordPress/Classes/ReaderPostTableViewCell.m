@@ -360,7 +360,6 @@
 
 
 - (void)handleFollowButtonTapped:(id)sender {
-	NSLog(@"Tapped follow");
 	[self.post toggleFollowingWithSuccess:^{
 		
 	} failure:^(NSError *error) {

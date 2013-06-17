@@ -173,9 +173,18 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 	point = [self.view.window convertPoint:endFrame.origin toView:self.view];
 	frame.size.height = point.y;
 	
-//	// TODO: There is a bug with rotation that we need to sort out :/
-	[UIView animateWithDuration:0.3 animations:^{
+	[UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
 		self.view.frame = frame;
+	} completion:^(BOOL finished) {
+		// BUG: When dismissing a modal view, and the keyboard is showing again, the animation can get clobbered in some cases.
+		// When this happens the view is set to the dimensions of its wrapper view, hiding content that should be visible
+		// above the keyboard.
+		// For now use a fallback animation.
+		if (CGRectEqualToRect(self.view.frame, frame) == false) {
+			[UIView animateWithDuration:0.3 animations:^{
+				self.view.frame = frame;
+			}];
+		}
 	}];
 }
 
