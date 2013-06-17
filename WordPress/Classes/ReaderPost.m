@@ -364,14 +364,17 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 	BOOL oldValue = self.isLiked.boolValue;
 	BOOL like = !oldValue;
+	NSNumber *oldCount = [self.likeCount copy];
 	
 	self.isLiked = [NSNumber numberWithBool:like];
 	
 	NSString *path = nil;
 	if (like) {
-		path = [NSString stringWithFormat:@"sites/%@/posts/%d/likes/new", self.siteID, self.postID];
+		self.likeCount = [NSNumber numberWithInteger:([self.likeCount integerValue] + 1)];
+		path = [NSString stringWithFormat:@"sites/%@/posts/%@/likes/new", self.siteID, self.postID];
 	} else {
-		path = [NSString stringWithFormat:@"sites/%@/posts/%d/likes/mine/delete", self.siteID, self.postID];
+		self.likeCount = [NSNumber numberWithInteger:([self.likeCount integerValue] - 1)];
+		path = [NSString stringWithFormat:@"sites/%@/posts/%@/likes/mine/delete", self.siteID, self.postID];
 	}
 
 	[[WordPressComApi sharedApi] postPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -384,7 +387,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		// undo the change.
 		self.isLiked = [NSNumber numberWithBool:oldValue];
-		
+		self.likeCount = oldCount;
 		if(failure) {
 			failure(error);
 		}
@@ -430,7 +433,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		[params setObject:note forKey:@"note"];
 	}
 
-	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%d/reblogs/new", self.siteID, self.postID];
+	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/reblogs/new", self.siteID, self.postID];
 	[[WordPressComApi sharedApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		if(success) {
 			success();

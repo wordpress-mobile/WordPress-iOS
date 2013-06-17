@@ -149,6 +149,7 @@
 		}
 		
 	} failure:^(NSError *error) {
+		WPLog(@"Error Reblogging Post : %@", [error localizedDescription]);
 		[self enableForm:YES];
 		[self.activityView stopAnimating];
 		[self.textView becomeFirstResponder];
@@ -157,7 +158,7 @@
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Reblog failed", @"")
 															message:NSLocalizedString(@"There was a problem reblogging. Please try again.", @"")
 														   delegate:nil
-												  cancelButtonTitle:nil
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 												  otherButtonTitles:nil];
 		[alertView show];
 	}];

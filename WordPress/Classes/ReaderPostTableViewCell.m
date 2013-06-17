@@ -265,12 +265,6 @@
 		[self.cellImageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
 	}
 	
-	NSString *likeStr = NSLocalizedString(@"Like", @"Like button title.");
-	if ([self.post.likeCount integerValue] > 0) {
-		likeStr = [NSString stringWithFormat:@"%@ (%@)", likeStr, [self.post.likeCount stringValue]];
-	}
-	[_likeButton setTitle:likeStr forState:UIControlStateNormal];
-	
 	_reblogButton.hidden = ![self.post isWPCom];
 	
 	CGFloat padding = (self.containerView.frame.size.width - ( _followButton.frame.size.width * 3.0f ) ) / 2.0f;
@@ -322,6 +316,11 @@
 		img = [UIImage imageNamed:@"note_icon_like"];
 		color = inactiveColor;
 	}
+	NSString *likeStr = NSLocalizedString(@"Like", @"Like button title.");
+	if ([self.post.likeCount integerValue] > 0) {
+		likeStr = [NSString stringWithFormat:@"%@ (%@)", likeStr, [self.post.likeCount stringValue]];
+	}
+	[_likeButton setTitle:likeStr forState:UIControlStateNormal];
 	[_likeButton.imageView setImage:img];
 	[_likeButton setTitleColor:color forState:UIControlStateNormal];
 	
@@ -348,10 +347,11 @@
 
 
 - (void)handleLikeButtonTapped:(id)sender {
-	NSLog(@"Tapped like");
+
 	[self.post toggleLikedWithSuccess:^{
 		// Nothing to see here?
 	} failure:^(NSError *error) {
+		WPLog(@"Error Liking Post : %@", [error localizedDescription]);
 		[self updateControlBar];
 	}];
 	
@@ -364,6 +364,7 @@
 	[self.post toggleFollowingWithSuccess:^{
 		
 	} failure:^(NSError *error) {
+		WPLog(@"Error Following Blog : %@", [error localizedDescription]);
 		[self updateControlBar];
 	}];
 	

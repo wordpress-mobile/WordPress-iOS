@@ -88,6 +88,7 @@
 							   }];
 		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		WPLog(@"Error Commenting from Reader : %@", [error localizedDescription]);
 		[self enableForm:YES];
 		[self.activityView stopAnimating];
 		[self.textView becomeFirstResponder];
@@ -95,7 +96,7 @@
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Comment failed", @"")
 															message:NSLocalizedString(@"There was a problem commenting. Please try again.", @"")
 														   delegate:nil
-												  cancelButtonTitle:nil
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"OK")
 												  otherButtonTitles:nil];
 		[alertView show];
 	}];
