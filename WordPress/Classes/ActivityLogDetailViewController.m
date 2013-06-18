@@ -7,7 +7,6 @@
 //
 
 #import "ActivityLogDetailViewController.h"
-#import <QuartzCore/QuartzCore.h>
 
 
 @interface ActivityLogDetailViewController ()
@@ -38,11 +37,9 @@
 
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
 
-    CGRect frame = CGRectInset(self.view.bounds, 10, 10);
-    self.textView = [[UITextView alloc] initWithFrame:frame];
+    self.textView = [[UITextView alloc] initWithFrame:self.view.bounds];
     self.textView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.textView.editable = NO;
-    self.textView.layer.cornerRadius = 5.0;
     self.textView.text = self.logText;
     [self.view addSubview:self.textView];
 
