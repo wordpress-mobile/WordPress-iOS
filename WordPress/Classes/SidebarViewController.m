@@ -422,6 +422,7 @@ NSLog(@"%@", self.sectionInfoArray);
             SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:(preservedIndexPath.section -1)];
             if (!sectionInfo.open) {
                 sectionInfo.open = YES;
+                self.openSection = sectionInfo;
                 [sectionInfo.headerView toggleOpenWithUserAction:YES];
             }
             
@@ -683,6 +684,9 @@ NSLog(@"%@", self.sectionInfoArray);
     SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:section - 1];
     if (!sectionInfo.headerView) {
         sectionInfo.headerView = [[SidebarSectionHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, SIDEBAR_WIDTH, HEADER_HEIGHT) blog:blog sectionInfo:sectionInfo delegate:self];
+        if (sectionInfo.open) {
+            [sectionInfo.headerView toggleOpenWithUserAction:NO];
+        }
     }
 
     return sectionInfo.headerView;
@@ -792,6 +796,10 @@ NSLog(@"%@", self.sectionInfoArray);
 #pragma mark Section header delegate
 
 -(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionOpened:(SectionInfo *)sectionOpened {
+    if (sectionOpened.open) {
+        // Aleady open, don't mess with the table view
+        return;
+    }
 	sectionOpened.open = YES;
     NSUInteger sectionNumber = [self.sectionInfoArray indexOfObject:sectionOpened] + 1;
     openSectionIdx = sectionNumber;
