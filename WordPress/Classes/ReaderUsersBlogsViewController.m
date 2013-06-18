@@ -110,7 +110,10 @@
     if (cell == nil) {
         cell = [[AddUsersBlogCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 		[cell hideCheckmark:YES];
-		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		UIView *backgroundView = [[UIView alloc] initWithFrame:cell.frame];
+		backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		backgroundView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0f];
+		cell.selectedBackgroundView = backgroundView;
 		cell.isWPCom = YES;
     }
 
