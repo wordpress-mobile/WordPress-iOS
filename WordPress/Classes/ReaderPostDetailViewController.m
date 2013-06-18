@@ -250,6 +250,16 @@ NSInteger const ReaderCommentsToSync = 100;
 	
     self.panelNavigationController.delegate = nil;
 	[self.navigationController setToolbarHidden:YES animated:YES];
+	
+	self.headerView = nil;
+	self.readerCommentFormView = nil;
+	self.readerReblogFormView = nil;
+	self.navBar = nil;
+	self.commentButton = nil;
+	self.likeButton = nil;
+	self.followButton = nil;
+	self.reblogButton = nil;
+	self.shareButton = nil;
 }
 
 

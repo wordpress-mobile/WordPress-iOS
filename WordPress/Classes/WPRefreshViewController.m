@@ -71,6 +71,7 @@ NSTimeInterval const WPRefreshViewControllerRefreshTimeout = 300; // 5 minutes
 	
 	_refreshHeaderView = nil;
 	self.activityFooter = nil;
+	self.tableView = nil;
 }
 
 

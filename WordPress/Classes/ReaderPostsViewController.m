@@ -163,6 +163,10 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	[super viewDidUnload];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+	self.readerReblogFormView = nil;
+	self.friendFinderNudgeView = nil;
+	self.titleButton = nil;
+	self.navBar = nil;
 }
 
 
