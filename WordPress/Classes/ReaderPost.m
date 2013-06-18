@@ -167,7 +167,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		self.author = [author stringForKey:@"name"];
 		self.authorURL = [author stringForKey:@"URL"];
 
-		self.blogName = [editorial stringForKey:@"blog_name"];
+		self.blogName = [[editorial stringForKey:@"blog_name"] stringByDecodingXMLCharacters];
 		self.blogSiteID = [editorial numberForKey:@"site_id"];
 		
 		self.content = [self normalizeParagraphs:[dict objectForKey:@"content"]];
@@ -228,7 +228,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		self.authorURL = [dict stringForKey:@"blog_url"];
 		
 		self.blogURL = [dict stringForKey:@"blog_url"];
-		self.blogName = [dict stringForKey:@"blog_name"];
+		self.blogName = [[dict stringForKey:@"blog_name"] stringByDecodingXMLCharacters];
 		self.blogSiteID = [dict numberForKey:@"blog_site_id"];
 
 		self.content = [self normalizeParagraphs:[dict objectForKey:@"post_content_full"]];

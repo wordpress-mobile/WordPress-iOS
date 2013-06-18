@@ -72,6 +72,12 @@
 		_containerView.backgroundColor = [UIColor whiteColor];
 		[self.contentView addSubview:_containerView];
 		
+		UIImage *image = [UIImage imageNamed:@"reader-post-cell-shadow.png"];
+		UIImageView *dropShadow = [[UIImageView alloc] initWithImage:[image resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 1.0f, 2.0f, 1.0f)]];
+		dropShadow.frame = CGRectMake(-1.0f, 0.0f, width + 2, frame.size.height + 2);
+		dropShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		[_containerView addSubview:dropShadow];
+		
 		self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
 		[_containerView addSubview:self.cellImageView];
 				
@@ -85,14 +91,15 @@
 		self.bylineLabel = [[UILabel alloc] initWithFrame:CGRectMake(37.0f, -2.0f, width - 57.0f, 36.0f)];
 		_bylineLabel.numberOfLines = 2;
 		_bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_bylineLabel.font = [UIFont fontWithName:@"Open Sans" size:12.0f];
+		_bylineLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
+		_bylineLabel.adjustsFontSizeToFitWidth = NO;
 		_bylineLabel.textColor = [UIColor colorWithHexString:@"c0c0c0"];
 		[_byView addSubview:_bylineLabel];
 		
 		self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, width, 44.0f)];
 		_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_titleLabel.backgroundColor = [UIColor clearColor];
-		_titleLabel.font = [UIFont fontWithName:@"Open Sans" size:20.0f];
+		_titleLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:20.0f];
 		_titleLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
 		_titleLabel.lineBreakMode = UILineBreakModeWordWrap;
 		_titleLabel.numberOfLines = 0;
@@ -101,7 +108,7 @@
 		self.snippetLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, width, 44.0f)];
 		_snippetLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_snippetLabel.backgroundColor = [UIColor clearColor];
-		_snippetLabel.font = [UIFont fontWithName:@"Open Sans" size:13.0f];
+		_snippetLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];
 		_snippetLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
 		_snippetLabel.lineBreakMode = UILineBreakModeWordWrap;
 		_snippetLabel.numberOfLines = 0;
