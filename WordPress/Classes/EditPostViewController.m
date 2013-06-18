@@ -112,16 +112,19 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     if (!self.postSettingsViewController) {
         self.postSettingsViewController = [[PostSettingsViewController alloc] initWithPost:self.apost];
         self.postSettingsViewController.postDetailViewController = self;
+        [self addChildViewController:self.postSettingsViewController];
     }
 
     if (!self.postPreviewViewController) {
         self.postPreviewViewController = [[PostPreviewViewController alloc] initWithPost:self.apost];
         self.postPreviewViewController.postDetailViewController = self;
+        [self addChildViewController:self.postPreviewViewController];
     }
 
     if (!self.postMediaViewController) {
         self.postMediaViewController = [[PostMediaViewController alloc] initWithPost:self.apost];
         self.postMediaViewController.postDetailViewController = self;
+        [self addChildViewController:self.postMediaViewController];
     }
 
     self.postSettingsViewController.view.frame = editView.frame;
@@ -145,7 +148,6 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 	if (![self.postMediaViewController isDeviceSupportVideo]){
 		//no video icon for older devices
 		NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
-		NSLog(@"toolbar items: %@", toolbarItems);
 		
 		[toolbarItems removeObjectAtIndex:5];
 		[self.toolbar setItems:toolbarItems];
@@ -182,10 +184,6 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 - (void)viewWillAppear:(BOOL)animated {
     WPFLogMethod();
     [super viewWillAppear:animated];
-
-	self.postSettingsViewController.view.frame = editView.frame;
-    self.postMediaViewController.view.frame = editView.frame;
-    self.postPreviewViewController.view.frame = editView.frame;
 
 	[self refreshButtons];
 	
@@ -333,7 +331,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 - (IBAction)switchToEdit {
     if (currentView != editView) {
-        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClickedEdit]];
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedEdit forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self switchToView:editView];
     }
     self.navigationItem.title = [self editorTitle];
@@ -342,7 +340,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 - (IBAction)switchToSettings {
     if (currentView != self.postSettingsViewController.view) {
         self.postSettingsViewController.statsPrefix = self.statsPrefix;
-        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClickedSettings]];
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedSettings forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self switchToView:self.postSettingsViewController.view];
     }
 	self.navigationItem.title = NSLocalizedString(@"Settings", @"Post Editor / Settings screen title.");
@@ -350,7 +348,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 - (IBAction)switchToMedia {
     if (currentView != self.postMediaViewController.view) {
-        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClickedMedia]];
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedMedia forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self switchToView:self.postMediaViewController.view];
     }
 	self.navigationItem.title = NSLocalizedString(@"Media", @"Post Editor / Media screen title.");
@@ -358,24 +356,24 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 - (IBAction)switchToPreview {
     if (currentView != self.postPreviewViewController.view) {
-        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClickedPreview]];
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedPreview forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self switchToView:self.postPreviewViewController.view];
     }
 	self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
 }
 
 - (IBAction)addVideo:(id)sender {
-    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClickedAddVideo]];
+    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddVideo forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     [self.postMediaViewController showVideoPickerActionSheet:sender];
 }
 
 - (IBAction)addPhoto:(id)sender {
-    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClickedAddPhoto]];
+    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddPhoto forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     [self.postMediaViewController showPhotoPickerActionSheet:sender];
 }
 
 - (IBAction)showCategories:(id)sender {
-    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClickedShowCategories]];
+    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedShowCategories forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     [textView resignFirstResponder];
     [currentEditingTextField resignFirstResponder];
     [self populateSelectionsControllerWithCategories];
@@ -628,7 +626,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 }
 
 - (void)savePost:(BOOL)upload{
-    [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+    [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     
     [self logSavePostStats];
     
@@ -849,7 +847,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 	}
 
     if (!self.hasChanges) {
-        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+        [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self discard];
         return;
     }
@@ -1027,18 +1025,19 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     if ([actionSheet tag] == 201) {
         // Discard
         if (buttonIndex == 0) {
+            [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
             [self discard];
         }
 
         if (buttonIndex == 1) {
             // Cancel / Keep editing
 			if ([actionSheet numberOfButtons] == 2) {
-                [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+                [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
                 
 				[actionSheet dismissWithClickedButtonIndex:0 animated:YES];
             // Save draft
 			} else {
-                [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+                [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
                 
                 // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
                 if ((![self.apost hasRemote] || _isAutosaved) && [self.apost.status isEqualToString:@"publish"]) {
@@ -1472,31 +1471,31 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 - (void)logWPKeyboardToolbarButtonStat:(WPKeyboardToolbarButtonItem *)buttonItem {
     NSString *actionTag = buttonItem.actionTag;
-    NSString *event;
+    NSString *property;
     if ([actionTag isEqualToString:@"strong"]) {
-        event = StatsEventPostDetailClickedKeyboardToolbarBoldButton;
+        property = StatsEventPostDetailClickedKeyboardToolbarBoldButton;
     } else if ([actionTag isEqualToString:@"em"]) {
-        event = StatsEventPostDetailClickedKeyboardToolbarItalicButton;
+        property = StatsEventPostDetailClickedKeyboardToolbarItalicButton;
     } else if ([actionTag isEqualToString:@"link"]) {
-        event = StatsEventPostDetailClickedKeyboardToolbarLinkButton;
+        property = StatsEventPostDetailClickedKeyboardToolbarLinkButton;
     } else if ([actionTag isEqualToString:@"blockquote"]) {
-        event = StatsEventPostDetailClickedKeyboardToolbarBlockquoteButton;
+        property = StatsEventPostDetailClickedKeyboardToolbarBlockquoteButton;
     } else if ([actionTag isEqualToString:@"del"]) {
-        event = StatsEventPostDetailClickedKeyboardToolbarDelButton;
+        property = StatsEventPostDetailClickedKeyboardToolbarDelButton;
     } else if ([actionTag isEqualToString:@"ul"]) {
-        event = StatsEventPostDetailClickedKeyboardToolbarUnorderedListButton;
+        property = StatsEventPostDetailClickedKeyboardToolbarUnorderedListButton;
     } else if ([actionTag isEqualToString:@"ol"]) {
-        event = StatsEventPostDetailClickedKeyboardToolbarOrderedListButton;
+        property = StatsEventPostDetailClickedKeyboardToolbarOrderedListButton;
     } else if ([actionTag isEqualToString:@"li"]) {
-        event = StatsEventPostDetailClickedKeyboardToolbarListItemButton;
+        property = StatsEventPostDetailClickedKeyboardToolbarListItemButton;
     } else if ([actionTag isEqualToString:@"code"]) {
-        event = StatsEventPostDetailClickedKeyboardToolbarCodeButton;
+        property = StatsEventPostDetailClickedKeyboardToolbarCodeButton;
     } else if ([actionTag isEqualToString:@"more"]) {
-        event = StatsEventPostDetailClickedKeyboardToolbarMoreButton;
+        property = StatsEventPostDetailClickedKeyboardToolbarMoreButton;
     }
     
-    if (event != nil) {
-        [WPMobileStats trackEventForWPCom:[self formattedStatEventString:event]];
+    if (property != nil) {
+        [WPMobileStats flagProperty:property forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     }
 }
 

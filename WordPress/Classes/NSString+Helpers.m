@@ -12,9 +12,14 @@
 @implementation NSString (Helpers)
 
 #pragma mark Helpers
-- (NSString *) stringByUrlEncoding
+
+// Taken from AFNetworking's AFPercentEscapedQueryStringPairMemberFromStringWithEncoding
+- (NSString *)stringByUrlEncoding
 {
-	return (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,  (CFStringRef)self,  NULL,  (CFStringRef)@"!*'();:@&=+$,/?%#[]",  kCFStringEncodingUTF8));
+    static NSString * const kAFCharactersToBeEscaped = @":/?&=;+!@#$()~',*";
+    static NSString * const kAFCharactersToLeaveUnescaped = @"[].";
+
+	return (__bridge_transfer  NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)self, (__bridge CFStringRef)kAFCharactersToLeaveUnescaped, (__bridge CFStringRef)kAFCharactersToBeEscaped, kCFStringEncodingUTF8);
 }
 
 - (NSString *)md5

@@ -8,12 +8,6 @@
 
 #define TAG_OFFSET 1010
 
-@interface PostsViewController() {
-    BOOL _hasViewAppeared;
-}
-
-@end
-
 @implementation PostsViewController
 
 @synthesize postReaderViewController;
@@ -80,10 +74,7 @@
 {
     [super viewDidAppear:animated];
 
-    if (!_hasViewAppeared) {
-        _hasViewAppeared = true;
-        [WPMobileStats trackEventForWPCom:[self statsEventForViewOpening]];
-    }
+    [WPMobileStats flagProperty:[self statsPropertyForViewOpening] forEvent:StatsEventAppClosed];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -136,14 +127,9 @@
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
-- (NSString *)statsEventForViewOpening
+- (NSString *)statsPropertyForViewOpening
 {
-    return StatsEventPostsOpened;
-}
-
-- (NSString *)statsEventForViewingDetail
-{
-    return StatsEventPostsClickedPostDetail;
+    return StatsPropertyPostsOpened;
 }
 
 #pragma mark -
@@ -201,8 +187,6 @@
 		// Don't allow editing while pushing changes
 		return;
 	}
-    
-    [WPMobileStats trackEventForWPCom:[self statsEventForViewingDetail]];
     
     if (IS_IPAD) {
         self.selectedIndexPath = indexPath;
