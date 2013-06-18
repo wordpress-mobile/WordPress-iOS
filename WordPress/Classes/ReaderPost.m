@@ -314,7 +314,9 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 
 - (NSString *)createSummary:(NSString *)str {	
-	str = [str stringByStrippingHTML];
+	str = [[str stringByStrippingHTML] stringByDecodingXMLCharacters];
+	
+	str = [str stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
 	
 	NSInteger idx = MIN(200, [str length]);
 	NSString *snippet = [str substringToIndex:idx];
@@ -331,7 +333,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		snippet = [NSString stringWithFormat:@"%@ ...", [snippet substringToIndex:rng.location]];
 	}
 
-	return [[self normalizeParagraphs:snippet] trim];
+	return [snippet trim];
 }
 
 

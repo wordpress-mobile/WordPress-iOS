@@ -7,6 +7,7 @@
 //
 
 #import "ReaderPostDetailViewController.h"
+#import <DTCoreText/DTCoreText.h>
 #import <QuartzCore/QuartzCore.h>
 #import <MessageUI/MFMailComposeViewController.h>
 #import "UIImageView+Gravatar.h"

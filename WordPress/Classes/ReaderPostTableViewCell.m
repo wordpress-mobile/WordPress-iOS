@@ -13,10 +13,11 @@
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
 #import "UIImageView+AFNetworkingExtra.h"
+#import "UILabel+SuggestSize.h"
 
 #define RPTVCVerticalPadding 10.0f;
 
-@interface ReaderPostTableViewCell() <DTAttributedTextContentViewDelegate>
+@interface ReaderPostTableViewCell()
 
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) UIView *containerView;
@@ -27,6 +28,8 @@
 @property (nonatomic, strong) UIButton *followButton;
 @property (nonatomic, strong) UIButton *reblogButton;
 @property (nonatomic, strong) UILabel *bylineLabel;
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *snippetLabel;
 @property (nonatomic, assign) BOOL showImage;
 
 - (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;
@@ -71,9 +74,6 @@
 		
 		self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
 		[_containerView addSubview:self.cellImageView];
-
-		self.textContentView.frame = CGRectMake(0.0f, 0.0f, width, 44.0f);
-		[_containerView addSubview:self.textContentView];
 				
 		self.byView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, (width - 20.0f), 32.0f)];
 		_byView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -85,10 +85,27 @@
 		self.bylineLabel = [[UILabel alloc] initWithFrame:CGRectMake(37.0f, -2.0f, width - 57.0f, 36.0f)];
 		_bylineLabel.numberOfLines = 2;
 		_bylineLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_bylineLabel.font = [UIFont fontWithName:@"Open Sans" size:13.0f];
+		_bylineLabel.font = [UIFont fontWithName:@"Open Sans" size:12.0f];
 		_bylineLabel.textColor = [UIColor colorWithHexString:@"c0c0c0"];
 		[_byView addSubview:_bylineLabel];
 		
+		self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, width, 44.0f)];
+		_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		_titleLabel.backgroundColor = [UIColor clearColor];
+		_titleLabel.font = [UIFont fontWithName:@"Open Sans" size:20.0f];
+		_titleLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
+		_titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+		_titleLabel.numberOfLines = 0;
+		[_containerView addSubview:_titleLabel];
+
+		self.snippetLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, width, 44.0f)];
+		_snippetLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		_snippetLabel.backgroundColor = [UIColor clearColor];
+		_snippetLabel.font = [UIFont fontWithName:@"Open Sans" size:13.0f];
+		_snippetLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
+		_snippetLabel.lineBreakMode = UILineBreakModeWordWrap;
+		_snippetLabel.numberOfLines = 0;
+		[_containerView addSubview:_snippetLabel];
 		
 		UIColor *color = [UIColor colorWithHexString:@"278dbc"];
 		CGFloat fontSize = 16.0f;
@@ -148,11 +165,20 @@
 		nextY += vpadding;
 	}
 
-	// Position the snippet
-	height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
-	self.textContentView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
-	[self.textContentView layoutSubviews];
+	// Position the title
+	height = [_titleLabel suggestedSizeForWidth:contentWidth].height;
+	_titleLabel.frame = CGRectMake(10.0f, nextY, contentWidth-20.0f, height);
 	nextY += ceilf(height + vpadding);
+
+	// Position the snippet
+	height = [_snippetLabel suggestedSizeForWidth:contentWidth].height;
+	_snippetLabel.frame = CGRectMake(10.0f, nextY, contentWidth-20.0f, height);
+	nextY += ceilf(height + vpadding);
+	
+//	height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
+//	self.textContentView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
+//	[self.textContentView layoutSubviews];
+//	nextY += ceilf(height + vpadding);
 
 	// position the byView
 	height = _byView.frame.size.height;
@@ -215,10 +241,16 @@
 	}
 	
 	desiredHeight += vpadding;
+
+	desiredHeight += [_titleLabel suggestedSizeForWidth:contentWidth].height;
+	desiredHeight += vpadding;
+	
+	desiredHeight += [_snippetLabel suggestedSizeForWidth:contentWidth].height;
+	desiredHeight += vpadding;
 	
 	// Size of the snippet
-	desiredHeight += [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
-	desiredHeight += vpadding;
+//	desiredHeight += [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
+//	desiredHeight += vpadding;
 	
 	// Size of the byview
 	desiredHeight += (_byView.frame.size.height + vpadding);
@@ -234,17 +266,9 @@
 
 - (void)configureCell:(ReaderPost *)post {
 	self.post = post;
-	NSString *str;
-	NSString *contentSnippet = post.summary;
-	NSString *styles = @"<style>body{color:#404040;}</style>";
-	NSString *title = [NSString stringWithFormat:@"<h3 style=\"font-size:20px;line-height:24px;font-weight:200;padding-top:5px;margin-bottom:10px;margin-left:-1px;\">%@</h3>", post.postTitle];
-	if(contentSnippet && [contentSnippet length] > 0){
-		str = [NSString stringWithFormat:@"%@%@%@", styles, title, contentSnippet];
-	} else {
-		str = [NSString stringWithFormat:@"%@%@", styles, post.postTitle];
-	}
 
-	self.textContentView.attributedString = [self convertHTMLToAttributedString:str withOptions:nil];
+	_titleLabel.text = [post.postTitle trim];
+	_snippetLabel.text = post.summary;
 	
 	_bylineLabel.text = [NSString stringWithFormat:@"%@ \non %@", [post prettyDateString], post.blogName];
 

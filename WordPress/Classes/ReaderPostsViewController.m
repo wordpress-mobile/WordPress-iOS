@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
+#import <DTCoreText/DTCoreText.h>
 #import "ReaderPostsViewController.h"
 #import "ReaderPostTableViewCell.h"
 #import "ReaderTopicsViewController.h"

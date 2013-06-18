@@ -10,16 +10,20 @@
 #import <DTCoreText/DTCoreText.h>
 #import "UIImageView+Gravatar.h"
 #import "WordPressAppDelegate.h"
+#import "WPWebViewController.h"
 
 #define RCTVCVerticalPadding 5.0f;
 
 @interface ReaderCommentTableViewCell()<DTAttributedTextContentViewDelegate>
 
 @property (nonatomic, strong) ReaderComment *comment;
+@property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) UILabel *authorLabel;
 @property (nonatomic, strong) UILabel *dateLabel;
 
 - (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;
+- (NSAttributedString *)convertHTMLToAttributedString:(NSString *)html withOptions:(NSDictionary *)options;
+- (void)handleLinkTapped:(id)sender;
 
 @end
 
@@ -52,6 +56,15 @@
 		
 		[self.cellImageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
 		self.cellImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+		
+		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 44.0f)];
+		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		_textContentView.backgroundColor = [UIColor clearColor];
+		_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
+		_textContentView.delegate = self;
+		_textContentView.shouldDrawImages = NO;
+		_textContentView.shouldLayoutCustomSubviews = YES;
+		[self.contentView addSubview:_textContentView];
 		
 		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - (10.0f + 30.0f), 10.0f, 30.0f, 20.0f)];
 		[_dateLabel setFont:[UIFont fontWithName:@"Open Sans" size:14.0f]];//[UIFont systemFontOfSize:14.0f]];
@@ -122,6 +135,7 @@
 - (void)prepareForReuse {
 	[super prepareForReuse];
 	
+	_textContentView.attributedString = nil;
 	_authorLabel.text = @"";
 	_dateLabel.text = @"";
 }
@@ -179,5 +193,61 @@
 	NSString *html = [NSString stringWithFormat:@"<style>body{color:#404040;} a{color:#54add3;text-decoration:none;}a:active{color:#005684;}</style>%@", comment.content];
 	self.textContentView.attributedString = [self convertHTMLToAttributedString:html withOptions:nil];
 }
+
+
+- (NSAttributedString *)convertHTMLToAttributedString:(NSString *)html withOptions:(NSDictionary *)options {
+    NSAssert(html != nil, @"Can't convert nil to AttributedString");
+	
+	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
+														  DTDefaultFontFamily:@"Open Sans",
+												DTDefaultLineHeightMultiplier:@0.9,
+															DTDefaultFontSize:@13,
+										   NSTextSizeMultiplierDocumentOption:@1.1
+								 }];
+	
+	if(options) {
+		[dict addEntriesFromDictionary:options];
+	}
+	
+    return [[NSAttributedString alloc] initWithHTMLData:[html dataUsingEncoding:NSUTF8StringEncoding] options:dict documentAttributes:NULL];
+}
+
+
+- (void)handleLinkTapped:(id)sender {
+	WPWebViewController *controller = [[WPWebViewController alloc] init];
+	[controller setUrl:((DTLinkButton *)sender).URL];
+	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller
+																						   fromViewController:self.parentController
+																									 animated:YES];
+}
+
+
+#pragma mark - DTAttributedTextContentView Delegate Methods
+
+- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
+	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
+	
+	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
+	NSString *identifier = [attributes objectForKey:DTGUIDAttribute];
+	
+	DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
+	button.URL = URL;
+	button.minimumHitSize = CGSizeMake(25, 25); // adjusts it's bounds so that button is always large enough
+	button.GUID = identifier;
+	
+	// get image with normal link text
+	UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
+	[button setImage:normalImage forState:UIControlStateNormal];
+	
+	// get image for highlighted link text
+	UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
+	[button setImage:highlightImage forState:UIControlStateHighlighted];
+	
+	// use normal push action for opening URL
+	[button addTarget:self action:@selector(handleLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
+	
+	return button;
+}
+
 
 @end
