@@ -87,16 +87,31 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 
 + (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr withContext:(NSManagedObjectContext *)context {
-	if (arr && [arr isKindOfClass:[NSArray class]]) {
+    if (![arr isKindOfClass:[NSArray class]] || [arr count] == 0) {
+        return;
+    }
+    NSManagedObjectContext *backgroundMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    [backgroundMoc setParentContext:context];
+
+    [backgroundMoc performBlock:^{
+        NSError *error;
         [arr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            if (![obj isKindOfClass:[NSDictionary class]]) {
+                return;
+            }
             [self createOrUpdateWithDictionary:obj forEndpoint:endpoint withContext:context];
         }];
-
-        NSError *error;
-        if(![context save:&error]){
-            NSLog(@"Failed to sync ReaderPosts: %@", error);
+        
+        if(![backgroundMoc save:&error]){
+            WPFLog(@"Failed to sync ReaderPosts: %@", error);
         }
-    }
+        [context performBlock:^{
+            NSError *error;
+            if (![context save:&error]) {
+                WPFLog(@"Failed to sync ReaderPosts: %@", error);
+            }
+        }];
+    }];
 }
 
 
