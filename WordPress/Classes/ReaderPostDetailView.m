@@ -308,13 +308,15 @@
 	if (attachment.contentType == DTTextAttachmentTypeImage) {
 
 		// Starting out we'll have a real image or a placeholder, so no need to guess the right size.
-		UIImage *image = ([attachment.contents isKindOfClass:[UIImage class]]) ? (UIImage*)attachment.contents : [UIImage imageNamed:@"wp-img-placeholder.png"];
+		UIImage *image = ([attachment.contents isKindOfClass:[UIImage class]]) ? (UIImage*)attachment.contents : [UIImage imageNamed:@"wp_img_placeholder.png"];
 		frame.size = image.size;
 		
 		if (frame.size.width > _textContentView.frame.size.width) {
 			CGFloat r = _textContentView.frame.size.width / frame.size.width;
 			frame.size.width = frame.size.width * r;
 			frame.size.height = frame.size.height * r;
+		} else {
+			frame.size.width = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right); // Match the frame width so the image is centered.
 		}
 		
 		ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
