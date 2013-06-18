@@ -73,7 +73,7 @@
 		if ([post avatar] != nil) {
 			[self.avatarImageView setImageWithURL:[NSURL URLWithString:[post avatar]] placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
 		} else {
-			NSString *img = ([post isWPCom]) ? @"wpcom-blavatar.png" : @"wporg-blavatar.png";
+			NSString *img = ([post isWPCom]) ? @"wpcom_blavatar.png" : @"wporg_blavatar.png";
 			[self.avatarImageView setImageWithURL:[self.avatarImageView blavatarURLForHost:[[NSURL URLWithString:post.blogURL] host]] placeholderImage:[UIImage imageNamed:img]];
 		}
 		
@@ -82,7 +82,7 @@
 		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding, labelWidth, labelHeight)];
 		_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_authorLabel.backgroundColor = [UIColor clearColor];
-		_authorLabel.font = [UIFont fontWithName:@"Open Sans" size:13.0f];//[UIFont boldSystemFontOfSize:14.0f];
+		_authorLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];//[UIFont boldSystemFontOfSize:14.0f];
 		_authorLabel.text = (self.post.author != nil) ? self.post.author : self.post.authorDisplayName;
 		_authorLabel.textColor = [UIColor colorWithHexString:@"404040"];
 		[_authorView addSubview:_authorLabel];
@@ -90,7 +90,7 @@
 		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding + labelHeight, labelWidth, labelHeight)];
 		_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_dateLabel.backgroundColor = [UIColor clearColor];
-		_dateLabel.font = [UIFont fontWithName:@"Open Sans" size:13.0f];//[UIFont systemFontOfSize:14.0f];
+		_dateLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];//[UIFont systemFontOfSize:14.0f];
 		_dateLabel.text = [NSString stringWithFormat:@"%@ on", [self.post prettyDateString]];
 		_dateLabel.textColor = [UIColor colorWithHexString:@"404040"];//[UIColor colorWithHexString:@"aaaaaa"];
 		[_authorView addSubview:_dateLabel];
@@ -98,7 +98,7 @@
 		self.blogLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarSize + padding + 10.0f, padding + labelHeight * 2, labelWidth, labelHeight)];
 		_blogLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_blogLabel.backgroundColor = [UIColor clearColor];
-		_blogLabel.font = [UIFont fontWithName:@"Open Sans" size:13.0f];//[UIFont systemFontOfSize:14.0f];
+		_blogLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];//[UIFont systemFontOfSize:14.0f];
 		_blogLabel.text = self.post.blogName;
 		_blogLabel.textColor = [UIColor colorWithHexString:@"278dbc"];
 		[_authorView addSubview:_blogLabel];

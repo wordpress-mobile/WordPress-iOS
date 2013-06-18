@@ -191,11 +191,14 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		NSString *img = [editorial objectForKey:@"image"];
 		NSRange rng = [img rangeOfString:@"mshots/"];
 		if(NSNotFound != rng.location) {
-			img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-			rng = [img rangeOfString:@"://" options:NSBackwardsSearch];
-			rng.location += 3;
-			rng.length = [img rangeOfString:@"?" options:NSBackwardsSearch].location - rng.location;
-			img = [img substringWithRange:rng];
+			rng = [img rangeOfString:@"?" options:NSBackwardsSearch];
+			img = [img substringWithRange:NSMakeRange(0, rng.location)]; // Just strip the query string off the end and we'll specify it later.
+
+//			img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//			rng = [img rangeOfString:@"://" options:NSBackwardsSearch];
+//			rng.location += 3;
+//			rng.length = [img rangeOfString:@"?" options:NSBackwardsSearch].location - rng.location;
+//			img = [img substringWithRange:rng];
 			
 		} else if(NSNotFound != [img rangeOfString:@"imgpress"].location) {
 			NSRange rng;
@@ -551,6 +554,17 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 - (NSString *)avatar {
 	return (self.postAvatar == nil) ? self.authorAvatarURL : self.postAvatar;
+}
+
+
+- (NSString *)featuredImageForWidth:(NSUInteger)width height:(NSUInteger)height {
+	NSString *fmt = nil;
+	if ([self.featuredImage rangeOfString:@"mshots/"].location == NSNotFound) {
+		fmt = @"https://i0.wp.com/%@?resize=%i,%i";
+	} else {
+		fmt = @"%@?w=%i&h=%i";
+	}
+	return [NSString stringWithFormat:fmt, self.featuredImage, width, height];
 }
 
 

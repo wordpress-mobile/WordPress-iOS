@@ -291,15 +291,14 @@
         // Height calculation might need refactoring
         NSInteger height = (width * 0.66f);
 
-		NSString *path = [NSString stringWithFormat:@"https://i0.wp.com/%@?resize=%i,%i", post.featuredImage, width, height];
-		url = [NSURL URLWithString:path];
+		url = [NSURL URLWithString:[post featuredImageForWidth:width height:height]];
 
 		self.cellImageView.contentMode = UIViewContentModeCenter;
 		__block ReaderPostTableViewCell *selfRef = self;
 		[self.cellImageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"wp_img_placeholder.png"] success:^(UIImage *image) {
 			selfRef.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
 		} failure:^(NSError *error) {
-			
+			// fail silently.
 		}];
 	}
 	
@@ -329,7 +328,7 @@
 		_reblogButton.frame = frame;
 	}
 	
-	NSString *img = ([post isWPCom]) ? @"wpcom-blavatar.png" : @"wporg-blavatar.png";
+	NSString *img = ([post isWPCom]) ? @"wpcom_blavatar.png" : @"wporg_blavatar.png";
 	if ([post avatar] != nil) {
 		[self.avatarImageView setImageWithURL:[NSURL URLWithString:[post avatar]] placeholderImage:[UIImage imageNamed:img]];
 	} else {
