@@ -17,6 +17,7 @@
 #import "WPWebViewController.h"
 #import "WPWebVideoViewController.h"
 #import "UIImageView+Gravatar.h"
+#import "UILabel+SuggestSize.h"
 
 @interface ReaderPostDetailView()<DTAttributedTextContentViewDelegate>
 
@@ -26,6 +27,7 @@
 @property (nonatomic, strong) UILabel *authorLabel;
 @property (nonatomic, strong) UILabel *dateLabel;
 @property (nonatomic, strong) UILabel *blogLabel;
+@property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) NSMutableArray *mediaArray;
 @property (nonatomic, weak) id<ReaderPostDetailViewDelegate>delegate;
@@ -103,7 +105,25 @@
 		_blogLabel.textColor = [UIColor colorWithHexString:@"278dbc"];
 		[_authorView addSubview:_blogLabel];
 		
-		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, _authorView.frame.size.height + padding, width, 100.0f)]; // Starting height is arbitrary
+		CGFloat contentY = _authorView.frame.size.height;
+		
+		if ([self.post.postTitle length]) {		
+			CGRect titleFrame = CGRectMake(padding, contentY + padding, width - (padding * 2), 44.0f);
+			self.titleLabel = [[UILabel alloc] initWithFrame:titleFrame];
+			_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+			_titleLabel.backgroundColor = [UIColor clearColor];
+			_titleLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:20.0f];
+			_titleLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0f];
+			_titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+			_titleLabel.numberOfLines = 0;
+			_titleLabel.text = self.post.postTitle;
+			[self addSubview:_titleLabel];
+			titleFrame.size.height = [_titleLabel suggestedSizeForWidth:_titleLabel.frame.size.width].height;
+			_titleLabel.frame = titleFrame;
+			contentY = titleFrame.origin.y + titleFrame.size.height;
+		}
+		
+		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, contentY + 10.0f, width, 100.0f)]; // Starting height is arbitrary
 		_textContentView.delegate = self;
 		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_textContentView.backgroundColor = [UIColor clearColor];
@@ -112,15 +132,8 @@
 		_textContentView.shouldDrawLinks = NO;
 		[self addSubview:_textContentView];
 		
-		NSString *str = @"";
-		NSString *styles = @"<style>body{color:#404040;} a{color:#278dbc;text-decoration:none;}a:active{color:#005684;}</style>";
-		NSString *content = self.post.content;
-		if([self.post.postTitle length] > 0) {
-			str = [NSString stringWithFormat:@"%@<h2 style=\"font-size:20px;line-height:24px;font-weight:200;padding-top:5px;margin-bottom:10px;margin-left:-1px;\">%@</h2>%@", styles, self.post.postTitle, content];
-		} else {
-			str = [NSString stringWithFormat:@"%@%@",styles, content];
-		}
 
+		NSString *str = [NSString stringWithFormat:@"<style>body{color:#404040;} a{color:#278dbc;text-decoration:none;}a:active{color:#005684;}</style>%@", [self.post.content trim]];
 		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
 															  DTDefaultFontFamily:@"Open Sans",
 													DTDefaultLineHeightMultiplier:@0.9,
@@ -141,6 +154,16 @@
 		[self updateMediaLayout:mediaView];
 	}
 
+	if (_titleLabel) {
+		CGRect titleFrame = _titleLabel.frame;
+		titleFrame.size.height = [_titleLabel suggestedSizeForWidth:titleFrame.size.width].height;
+		_titleLabel.frame = titleFrame;
+		
+		CGRect contentFrame = _textContentView.frame;
+		contentFrame.origin.y = titleFrame.origin.y + titleFrame.size.height + 10.0f;
+		_textContentView.frame = contentFrame;
+	}
+	
 	// Then update the layout
 	// need to reset the layouter because otherwise we get the old framesetter or cached layout frames
 	_textContentView.layouter = nil;
@@ -191,6 +214,7 @@
 		}
 		
 	}
+NSLog(@"IMAGE SIZING - ORIGINAL: w%f h%f | ADJUSTED: w%f h%f", imageView.image.size.width, imageView.image.size.height, viewSize.width, viewSize.height);
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
 	
 	// update all attachments that matchin this URL (possibly multiple images with same size)
@@ -310,7 +334,7 @@
 		// Starting out we'll have a real image or a placeholder, so no need to guess the right size.
 		UIImage *image = ([attachment.contents isKindOfClass:[UIImage class]]) ? (UIImage*)attachment.contents : [UIImage imageNamed:@"wp_img_placeholder.png"];
 		frame.size = image.size;
-		
+
 		if (frame.size.width > _textContentView.frame.size.width) {
 			CGFloat r = _textContentView.frame.size.width / frame.size.width;
 			frame.size.width = frame.size.width * r;
@@ -334,7 +358,7 @@
 							   success:^(id readerImageView) {
 								   ReaderImageView *imageView = readerImageView;
 								   imageView.imageView.contentMode = UIViewContentModeScaleAspectFit;
-								   imageView.backgroundColor = [UIColor whiteColor];
+								   imageView.backgroundColor = [UIColor clearColor];
 								   [self handleMediaViewLoaded:readerImageView];
 							   } failure:^(id readerImageView, NSError *error) {
 								   [self handleMediaViewLoaded:readerImageView];
