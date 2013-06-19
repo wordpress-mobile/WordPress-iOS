@@ -12,14 +12,7 @@
 
 @interface ReaderPostTableViewCell : ReaderTableViewCell
 
-/**
- Return's an array of required cell heights to display the specified posts. 
- */
-+ (NSArray *)cellHeightsForPosts:(NSArray *)posts
-						   width:(CGFloat)width
-					  tableStyle:(UITableViewStyle)tableStyle
-						  cellStyle:(UITableViewCellStyle)cellStyle
-					reuseIdentifier:(NSString *)reuseIdentifier;
++ (CGFloat)cellHeightForPost:(ReaderPost *)post withWidth:(CGFloat)width;
 
 - (void)configureCell:(ReaderPost *)post;
 - (void)setReblogTarget:(id)target action:(SEL)selector;

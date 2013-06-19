@@ -32,7 +32,6 @@
 @property (nonatomic, strong) UILabel *snippetLabel;
 @property (nonatomic, assign) BOOL showImage;
 
-- (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;
 - (void)handleLikeButtonTapped:(id)sender;
 - (void)handleFollowButtonTapped:(id)sender;
 
@@ -40,22 +39,38 @@
 
 @implementation ReaderPostTableViewCell
 
-+ (NSArray *)cellHeightsForPosts:(NSArray *)posts
-						   width:(CGFloat)width
-					  tableStyle:(UITableViewStyle)tableStyle
-					   cellStyle:(UITableViewCellStyle)cellStyle
-				 reuseIdentifier:(NSString *)reuseIdentifier {
++ (CGFloat)cellHeightForPost:(ReaderPost *)post withWidth:(CGFloat)width {
+	CGFloat desiredHeight = 0.0f;
+	CGFloat vpadding = RPTVCVerticalPadding;
 
-	NSMutableArray *heights = [NSMutableArray arrayWithCapacity:[posts count]];
-	ReaderPostTableViewCell *cell = [[ReaderPostTableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:reuseIdentifier];
-	for (ReaderPost *post in posts) {
-		[cell configureCell:post];
-		CGFloat height = [cell requiredRowHeightForWidth:width tableStyle:tableStyle];
-		[heights addObject:[NSNumber numberWithFloat:height]];
+	// Do the math. We can't trust the cell's contentView's frame because
+	// its not updated at a useful time during rotation.
+	CGFloat contentWidth = width - 20.0f; // 10px padding on either side.
+
+	// Are we showing an image? What size should it be?
+	if(post.featuredImage) {
+		CGFloat height = (contentWidth * 0.66f);
+		desiredHeight += height;
 	}
-	return heights;
-}
 
+	desiredHeight += vpadding;
+
+	desiredHeight += [post.postTitle sizeWithFont:[UIFont fontWithName:@"OpenSans-Light" size:20.0f] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height;
+	desiredHeight += vpadding;
+
+	desiredHeight += [post.summary sizeWithFont:[UIFont fontWithName:@"OpenSans" size:13.0f] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height;
+	desiredHeight += vpadding;
+
+	// Size of the byview
+	desiredHeight += 32.f;
+
+	// size of the control bar
+	desiredHeight += 40.f;
+
+	desiredHeight += vpadding;
+
+	return desiredHeight;
+}
 
 #pragma mark - Lifecycle Methods
 
@@ -212,64 +227,6 @@
 - (void)setReblogTarget:(id)target action:(SEL)selector {
 	[_reblogButton addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
 }
-
-
-- (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style {
-	
-	CGFloat desiredHeight = 0.0f;
-	CGFloat vpadding = RPTVCVerticalPadding;
-	
-	// Do the math. We can't trust the cell's contentView's frame because
-	// its not updated at a useful time during rotation.
-	CGFloat contentWidth = width - 20.0f; // 10px padding on either side.
-	
-	// reduce width for accessories
-	switch (self.accessoryType) {
-		case UITableViewCellAccessoryDisclosureIndicator:
-		case UITableViewCellAccessoryCheckmark:
-			contentWidth -= 20.0f;
-			break;
-		case UITableViewCellAccessoryDetailDisclosureButton:
-			contentWidth -= 33.0f;
-			break;
-		case UITableViewCellAccessoryNone:
-			break;
-	}
-	
-	// reduce width for grouped table views
-	if (style == UITableViewStyleGrouped) {
-		contentWidth -= 19;
-	}
-	
-	// Are we showing an image? What size should it be?
-	if(_showImage) {
-		CGFloat height = (contentWidth * 0.66f);
-		desiredHeight += height;
-	}
-	
-	desiredHeight += vpadding;
-
-	desiredHeight += [_titleLabel suggestedSizeForWidth:contentWidth].height;
-	desiredHeight += vpadding;
-	
-	desiredHeight += [_snippetLabel suggestedSizeForWidth:contentWidth].height;
-	desiredHeight += vpadding;
-	
-	// Size of the snippet
-//	desiredHeight += [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
-//	desiredHeight += vpadding;
-	
-	// Size of the byview
-	desiredHeight += (_byView.frame.size.height + vpadding);
-	
-	// size of the control bar
-	desiredHeight += (_controlView.frame.size.height + vpadding);
-	
-	desiredHeight += vpadding;
-	
-	return desiredHeight;
-}
-
 
 - (void)configureCell:(ReaderPost *)post {
 	self.post = post;

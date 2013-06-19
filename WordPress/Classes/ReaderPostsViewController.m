@@ -445,8 +445,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-	return [cell requiredRowHeightForWidth:self.tableView.bounds.size.width tableStyle:self.tableView.style];
+    return [ReaderPostTableViewCell cellHeightForPost:[self.resultsController objectAtIndexPath:indexPath] withWidth:self.tableView.bounds.size.width];
 }
 
 
