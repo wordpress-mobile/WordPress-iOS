@@ -17,6 +17,9 @@
 
 #define RPTVCVerticalPadding 10.0f;
 
+static UIColor *ControlActiveColor;
+static UIColor *ControlInactiveColor;
+
 @interface ReaderPostTableViewCell()
 
 @property (nonatomic, strong) ReaderPost *post;
@@ -38,6 +41,11 @@
 @end
 
 @implementation ReaderPostTableViewCell
+
++ (void)initialize {
+    ControlActiveColor = [UIColor colorWithHexString:@"F1831E"];
+	ControlInactiveColor = [UIColor colorWithHexString:@"3478E3"];
+}
 
 + (CGFloat)cellHeightForPost:(ReaderPost *)post withWidth:(CGFloat)width {
 	CGFloat desiredHeight = 0.0f;
@@ -134,25 +142,31 @@
 		self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		[_followButton.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
 		[_followButton setTitle:NSLocalizedString(@"Follow", @"") forState:UIControlStateNormal];
-		[_followButton setTitleColor:color forState:UIControlStateNormal];
+		[_followButton setTitleColor:ControlInactiveColor forState:UIControlStateNormal];
+		[_followButton setTitleColor:ControlActiveColor forState:UIControlStateSelected];
 		[_followButton setImage:[UIImage imageNamed:@"note_icon_follow"] forState:UIControlStateNormal];
+		[_followButton setImage:[UIImage imageNamed:@"note_navbar_icon_follow"] forState:UIControlStateSelected];
 		_followButton.frame = CGRectMake(0.0f, 0.0f, 100.0f, 40.0f);
 		[_followButton addTarget:self action:@selector(handleFollowButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 
 		self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		[_likeButton.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
 		[_likeButton setTitle:NSLocalizedString(@"Like", @"") forState:UIControlStateNormal];
-		[_likeButton setTitleColor:color forState:UIControlStateNormal];
+		[_likeButton setTitleColor:ControlInactiveColor forState:UIControlStateNormal];
+		[_likeButton setTitleColor:ControlActiveColor forState:UIControlStateSelected];
 		[_likeButton setImage:[UIImage imageNamed:@"note_icon_like"] forState:UIControlStateNormal];
+		[_likeButton setImage:[UIImage imageNamed:@"note_navbar_icon_like"] forState:UIControlStateSelected];
 		_likeButton.frame = CGRectMake(100.0f, 0.0f, 100.0f, 40.0f);
 		_likeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 		[_likeButton addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-		
+
 		self.reblogButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		[_reblogButton.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
 		[_reblogButton setTitle:NSLocalizedString(@"Reblog", @"") forState:UIControlStateNormal];
-		[_reblogButton setTitleColor:color forState:UIControlStateNormal];
+		[_reblogButton setTitleColor:ControlInactiveColor forState:UIControlStateNormal];
+		[_reblogButton setTitleColor:ControlActiveColor forState:UIControlStateSelected];
 		[_reblogButton setImage:[UIImage imageNamed:@"note_icon_reblog"] forState:UIControlStateNormal];
+		[_reblogButton setImage:[UIImage imageNamed:@"note_navbar_icon_reblog"] forState:UIControlStateSelected];
 		_reblogButton.frame = CGRectMake(200.0f, 0.0f, 100.0f, 40.0f);
 		_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 		
@@ -295,49 +309,18 @@
 	[self updateControlBar];
 }
 
-
 - (void)updateControlBar {
 	if (!_post) return;
 	
-	UIColor *activeColor = [UIColor colorWithHexString:@"F1831E"];
-	UIColor *inactiveColor = [UIColor colorWithHexString:@"3478E3"];;
-	
-	UIImage *img = nil;
-	UIColor *color;
-	if (_post.isLiked.boolValue) {
-		img = [UIImage imageNamed:@"note_navbar_icon_like"];
-		color = activeColor;
-	} else {
-		img = [UIImage imageNamed:@"note_icon_like"];
-		color = inactiveColor;
-	}
+    _likeButton.selected = _post.isLiked.boolValue;
+    _followButton.selected = _post.isFollowing.boolValue;
+    _reblogButton.selected = _post.isReblogged.boolValue;
+
 	NSString *likeStr = NSLocalizedString(@"Like", @"Like button title.");
 	if ([self.post.likeCount integerValue] > 0) {
 		likeStr = [NSString stringWithFormat:@"%@ (%@)", likeStr, [self.post.likeCount stringValue]];
 	}
 	[_likeButton setTitle:likeStr forState:UIControlStateNormal];
-	[_likeButton.imageView setImage:img];
-	[_likeButton setTitleColor:color forState:UIControlStateNormal];
-	
-	if (_post.isReblogged.boolValue) {
-		img = [UIImage imageNamed:@"note_navbar_icon_reblog"];
-		color = activeColor;
-	} else {
-		img = [UIImage imageNamed:@"note_icon_reblog"];
-		color = inactiveColor;
-	}
-	[_reblogButton.imageView setImage:img];
-	[_reblogButton setTitleColor:color forState:UIControlStateNormal];
-	
-	if (_post.isFollowing.boolValue) {
-		img = [UIImage imageNamed:@"note_navbar_icon_follow"];
-		color = activeColor;
-	} else {
-		img = [UIImage imageNamed:@"note_icon_follow"];
-		color = inactiveColor;
-	}
-	[_followButton.imageView setImage:img];
-	[_followButton setTitleColor:color forState:UIControlStateNormal];
 }
 
 
