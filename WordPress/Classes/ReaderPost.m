@@ -95,13 +95,14 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
     [backgroundMoc performBlock:^{
         NSError *error;
-        [arr enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            if (![obj isKindOfClass:[NSDictionary class]]) {
-                return;
+        for (NSDictionary *postData in arr) {
+            if (![postData isKindOfClass:[NSDictionary class]]) {
+                continue;
             }
-            [self createOrUpdateWithDictionary:obj forEndpoint:endpoint withContext:context];
-        }];
-        
+            [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMoc];
+
+        }
+
         if(![backgroundMoc save:&error]){
             WPFLog(@"Failed to sync ReaderPosts: %@", error);
         }
