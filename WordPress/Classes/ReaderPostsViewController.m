@@ -30,7 +30,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	BOOL _loadingMore;
 }
 
-@property (nonatomic, strong) NSArray *rowHeights;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
 @property (nonatomic, strong) WPFriendFinderNudgeView *friendFinderNudgeView;
@@ -40,7 +39,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (NSDictionary *)currentTopic;
 - (void)configureTableHeader;
-- (void)updateRowHeightsForWidth:(CGFloat)width;
 - (void)fetchBlogsAndPrimaryBlog;
 - (void)handleReblogButtonTapped:(id)sender;
 - (void)showReblogForm;
@@ -51,8 +49,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 @end
 
 @implementation ReaderPostsViewController
-
-@synthesize rowHeights;
 
 #pragma mark - Life Cycle methods
 
@@ -134,8 +130,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		[self showReblogForm];
 	}
 	
-	// Compute row heights now for smoother scrolling later.
-	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 }
 
 
@@ -149,7 +143,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	NSDictionary *dict = [self currentTopic];
 	NSString *title = [[dict objectForKey:@"title"] capitalizedString];
 	self.title = NSLocalizedString(title, @"");
-	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 }
 
 
@@ -187,8 +180,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		CGRect frame = self.view.window.frame;
 		width = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? frame.size.height : frame.size.width;
 	}
-	
-	[self updateRowHeightsForWidth:width];
 }
 
 
@@ -218,17 +209,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	paddingView.backgroundColor = [UIColor colorWithHexString:@"efefef"];
 	self.tableView.tableHeaderView = paddingView;
 }
-
-
-- (void)updateRowHeightsForWidth:(CGFloat)width {
-	self.rowHeights = [ReaderPostTableViewCell cellHeightsForPosts:self.resultsController.fetchedObjects
-															 width:width
-														tableStyle:UITableViewStylePlain
-														 cellStyle:UITableViewCellStyleDefault
-												   reuseIdentifier:@"ReaderPostCell"];
-
-}
-
 
 - (void)handleTopicsButtonTapped:(id)sender {
 	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -437,7 +417,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	[self configureTableHeader];
 	
-	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 	[self.tableView reloadData];
 	
 
@@ -466,7 +445,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return [(NSNumber *)[self.rowHeights objectAtIndex:indexPath.row] floatValue];
+    return [ReaderPostTableViewCell cellHeightForPost:[self.resultsController objectAtIndexPath:indexPath] withWidth:self.tableView.bounds.size.width];
 }
 
 
@@ -572,7 +551,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
     self.titleButton.title = [self.currentTopic objectForKey:@"title"];
     
-	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
     [self.tableView reloadData];
     if ( [WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && ![self isSyncing] ) {
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];

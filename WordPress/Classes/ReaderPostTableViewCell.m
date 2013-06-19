@@ -17,6 +17,9 @@
 
 #define RPTVCVerticalPadding 10.0f;
 
+static UIColor *ControlActiveColor;
+static UIColor *ControlInactiveColor;
+
 @interface ReaderPostTableViewCell()
 
 @property (nonatomic, strong) ReaderPost *post;
@@ -32,7 +35,6 @@
 @property (nonatomic, strong) UILabel *snippetLabel;
 @property (nonatomic, assign) BOOL showImage;
 
-- (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;
 - (void)handleLikeButtonTapped:(id)sender;
 - (void)handleFollowButtonTapped:(id)sender;
 
@@ -40,22 +42,43 @@
 
 @implementation ReaderPostTableViewCell
 
-+ (NSArray *)cellHeightsForPosts:(NSArray *)posts
-						   width:(CGFloat)width
-					  tableStyle:(UITableViewStyle)tableStyle
-					   cellStyle:(UITableViewCellStyle)cellStyle
-				 reuseIdentifier:(NSString *)reuseIdentifier {
-
-	NSMutableArray *heights = [NSMutableArray arrayWithCapacity:[posts count]];
-	ReaderPostTableViewCell *cell = [[ReaderPostTableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:reuseIdentifier];
-	for (ReaderPost *post in posts) {
-		[cell configureCell:post];
-		CGFloat height = [cell requiredRowHeightForWidth:width tableStyle:tableStyle];
-		[heights addObject:[NSNumber numberWithFloat:height]];
-	}
-	return heights;
++ (void)initialize {
+    ControlActiveColor = [UIColor colorWithHexString:@"F1831E"];
+	ControlInactiveColor = [UIColor colorWithHexString:@"3478E3"];
 }
 
++ (CGFloat)cellHeightForPost:(ReaderPost *)post withWidth:(CGFloat)width {
+	CGFloat desiredHeight = 0.0f;
+	CGFloat vpadding = RPTVCVerticalPadding;
+
+	// Do the math. We can't trust the cell's contentView's frame because
+	// its not updated at a useful time during rotation.
+	CGFloat contentWidth = width - 20.0f; // 10px padding on either side.
+
+	// Are we showing an image? What size should it be?
+	if(post.featuredImage) {
+		CGFloat height = (contentWidth * 0.66f);
+		desiredHeight += height;
+	}
+
+	desiredHeight += vpadding;
+
+	desiredHeight += [post.postTitle sizeWithFont:[UIFont fontWithName:@"OpenSans-Light" size:20.0f] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height;
+	desiredHeight += vpadding;
+
+	desiredHeight += [post.summary sizeWithFont:[UIFont fontWithName:@"OpenSans" size:13.0f] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height;
+	desiredHeight += vpadding;
+
+	// Size of the byview
+	desiredHeight += 32.f;
+
+	// size of the control bar
+	desiredHeight += 40.f;
+
+	desiredHeight += vpadding;
+
+	return desiredHeight;
+}
 
 #pragma mark - Lifecycle Methods
 
@@ -119,25 +142,31 @@
 		self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		[_followButton.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
 		[_followButton setTitle:NSLocalizedString(@"Follow", @"") forState:UIControlStateNormal];
-		[_followButton setTitleColor:color forState:UIControlStateNormal];
+		[_followButton setTitleColor:ControlInactiveColor forState:UIControlStateNormal];
+		[_followButton setTitleColor:ControlActiveColor forState:UIControlStateSelected];
 		[_followButton setImage:[UIImage imageNamed:@"note_icon_follow"] forState:UIControlStateNormal];
+		[_followButton setImage:[UIImage imageNamed:@"note_navbar_icon_follow"] forState:UIControlStateSelected];
 		_followButton.frame = CGRectMake(0.0f, 0.0f, 100.0f, 40.0f);
 		[_followButton addTarget:self action:@selector(handleFollowButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 
 		self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		[_likeButton.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
 		[_likeButton setTitle:NSLocalizedString(@"Like", @"") forState:UIControlStateNormal];
-		[_likeButton setTitleColor:color forState:UIControlStateNormal];
+		[_likeButton setTitleColor:ControlInactiveColor forState:UIControlStateNormal];
+		[_likeButton setTitleColor:ControlActiveColor forState:UIControlStateSelected];
 		[_likeButton setImage:[UIImage imageNamed:@"note_icon_like"] forState:UIControlStateNormal];
+		[_likeButton setImage:[UIImage imageNamed:@"note_navbar_icon_like"] forState:UIControlStateSelected];
 		_likeButton.frame = CGRectMake(100.0f, 0.0f, 100.0f, 40.0f);
 		_likeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 		[_likeButton addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-		
+
 		self.reblogButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		[_reblogButton.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
 		[_reblogButton setTitle:NSLocalizedString(@"Reblog", @"") forState:UIControlStateNormal];
-		[_reblogButton setTitleColor:color forState:UIControlStateNormal];
+		[_reblogButton setTitleColor:ControlInactiveColor forState:UIControlStateNormal];
+		[_reblogButton setTitleColor:ControlActiveColor forState:UIControlStateSelected];
 		[_reblogButton setImage:[UIImage imageNamed:@"note_icon_reblog"] forState:UIControlStateNormal];
+		[_reblogButton setImage:[UIImage imageNamed:@"note_navbar_icon_reblog"] forState:UIControlStateSelected];
 		_reblogButton.frame = CGRectMake(200.0f, 0.0f, 100.0f, 40.0f);
 		_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 		
@@ -213,64 +242,6 @@
 	[_reblogButton addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
 }
 
-
-- (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style {
-	
-	CGFloat desiredHeight = 0.0f;
-	CGFloat vpadding = RPTVCVerticalPadding;
-	
-	// Do the math. We can't trust the cell's contentView's frame because
-	// its not updated at a useful time during rotation.
-	CGFloat contentWidth = width - 20.0f; // 10px padding on either side.
-	
-	// reduce width for accessories
-	switch (self.accessoryType) {
-		case UITableViewCellAccessoryDisclosureIndicator:
-		case UITableViewCellAccessoryCheckmark:
-			contentWidth -= 20.0f;
-			break;
-		case UITableViewCellAccessoryDetailDisclosureButton:
-			contentWidth -= 33.0f;
-			break;
-		case UITableViewCellAccessoryNone:
-			break;
-	}
-	
-	// reduce width for grouped table views
-	if (style == UITableViewStyleGrouped) {
-		contentWidth -= 19;
-	}
-	
-	// Are we showing an image? What size should it be?
-	if(_showImage) {
-		CGFloat height = (contentWidth * 0.66f);
-		desiredHeight += height;
-	}
-	
-	desiredHeight += vpadding;
-
-	desiredHeight += [_titleLabel suggestedSizeForWidth:contentWidth].height;
-	desiredHeight += vpadding;
-	
-	desiredHeight += [_snippetLabel suggestedSizeForWidth:contentWidth].height;
-	desiredHeight += vpadding;
-	
-	// Size of the snippet
-//	desiredHeight += [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
-//	desiredHeight += vpadding;
-	
-	// Size of the byview
-	desiredHeight += (_byView.frame.size.height + vpadding);
-	
-	// size of the control bar
-	desiredHeight += (_controlView.frame.size.height + vpadding);
-	
-	desiredHeight += vpadding;
-	
-	return desiredHeight;
-}
-
-
 - (void)configureCell:(ReaderPost *)post {
 	self.post = post;
 
@@ -338,49 +309,18 @@
 	[self updateControlBar];
 }
 
-
 - (void)updateControlBar {
 	if (!_post) return;
 	
-	UIColor *activeColor = [UIColor colorWithHexString:@"F1831E"];
-	UIColor *inactiveColor = [UIColor colorWithHexString:@"3478E3"];;
-	
-	UIImage *img = nil;
-	UIColor *color;
-	if (_post.isLiked.boolValue) {
-		img = [UIImage imageNamed:@"note_navbar_icon_like"];
-		color = activeColor;
-	} else {
-		img = [UIImage imageNamed:@"note_icon_like"];
-		color = inactiveColor;
-	}
+    _likeButton.selected = _post.isLiked.boolValue;
+    _followButton.selected = _post.isFollowing.boolValue;
+    _reblogButton.selected = _post.isReblogged.boolValue;
+
 	NSString *likeStr = NSLocalizedString(@"Like", @"Like button title.");
 	if ([self.post.likeCount integerValue] > 0) {
 		likeStr = [NSString stringWithFormat:@"%@ (%@)", likeStr, [self.post.likeCount stringValue]];
 	}
 	[_likeButton setTitle:likeStr forState:UIControlStateNormal];
-	[_likeButton.imageView setImage:img];
-	[_likeButton setTitleColor:color forState:UIControlStateNormal];
-	
-	if (_post.isReblogged.boolValue) {
-		img = [UIImage imageNamed:@"note_navbar_icon_reblog"];
-		color = activeColor;
-	} else {
-		img = [UIImage imageNamed:@"note_icon_reblog"];
-		color = inactiveColor;
-	}
-	[_reblogButton.imageView setImage:img];
-	[_reblogButton setTitleColor:color forState:UIControlStateNormal];
-	
-	if (_post.isFollowing.boolValue) {
-		img = [UIImage imageNamed:@"note_navbar_icon_follow"];
-		color = activeColor;
-	} else {
-		img = [UIImage imageNamed:@"note_icon_follow"];
-		color = inactiveColor;
-	}
-	[_followButton.imageView setImage:img];
-	[_followButton setTitleColor:color forState:UIControlStateNormal];
 }
 
 
