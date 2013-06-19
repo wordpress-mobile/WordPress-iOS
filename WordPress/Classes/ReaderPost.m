@@ -271,7 +271,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		
 		self.siteID = [dict numberForKey:@"blog_id"];
 		
-		self.summary = [[[dict stringForKey:@"post_content"] stringByStrippingHTML] trim];
+		self.summary = [[[[dict stringForKey:@"post_content"] stringByStrippingHTML] trim] stringByDecodingXMLCharacters];
 				
 		NSString *img = [dict stringForKey:@"post_featured_thumbnail"];
 		if([img length]) {
