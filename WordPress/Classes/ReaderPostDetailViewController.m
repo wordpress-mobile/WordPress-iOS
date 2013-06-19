@@ -36,7 +36,6 @@ NSInteger const ReaderCommentsToSync = 100;
 @property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic, strong) UIBarButtonItem *commentButton;
 @property (nonatomic, strong) UIBarButtonItem *likeButton;
-@property (nonatomic, strong) UIBarButtonItem *followButton;
 @property (nonatomic, strong) UIBarButtonItem *reblogButton;
 @property (nonatomic, strong) UIBarButtonItem *shareButton;
 @property (nonatomic, strong) UIActionSheet *linkOptionsActionSheet;
@@ -47,6 +46,10 @@ NSInteger const ReaderCommentsToSync = 100;
 @property (nonatomic) BOOL isShowingCommentForm;
 @property (nonatomic) BOOL isShowingReblogForm;
 
+- (void)buildHeader;
+- (void)buildTopToolbar;
+- (void)buildBottomToolbar;
+- (void)buildForms;
 - (void)prepareComments;
 - (void)showStoredComment;
 - (void)updateRowHeightsForWidth:(CGFloat)width;
@@ -59,7 +62,6 @@ NSInteger const ReaderCommentsToSync = 100;
 - (void)hideReblogForm;
 
 - (void)handleCommentButtonTapped:(id)sender;
-- (void)handleFollowButtonTapped:(id)sender;
 - (void)handleLikeButtonTapped:(id)sender;
 - (void)handleReblogButtonTapped:(id)sender;
 - (void)handleShareButtonTapped:(id)sender;
@@ -102,127 +104,18 @@ NSInteger const ReaderCommentsToSync = 100;
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
+	self.title = self.post.postTitle;
+	
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	
 	if ([self.resultsController.fetchedObjects count] > 0) {
 		self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
 	}
 	
-	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-	
-	self.title = self.post.postTitle;
-	
-	if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
-		UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-		
-		[btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
-		[btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateHighlighted];
-		
-		UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-		[btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
-		
-		backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-		[btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
-		btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
-		[btn addTarget:self action:@selector(handleShareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-		
-		self.shareButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
-	} else {
-		self.shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-																		   target:self
-																		   action:@selector(handleShareButtonTapped:)];
-	}
-
-	self.navigationItem.rightBarButtonItem = _shareButton;
-	if(IS_IPAD) {
-		 
-		self.navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0f)];
-		_navBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		[_navBar pushNavigationItem:self.navigationItem animated:NO];
-		[self.view addSubview:_navBar];
-		
-		CGRect frame = self.tableView.frame;
-		frame.origin.y = 44.0f;
-		frame.size.height -= 44.0f;
-		self.tableView.frame = frame;
-		
-	}
-
-	UIColor *color = [UIColor colorWithHexString:@"3478E3"];
-	CGFloat fontSize = 16.0f;
-	
-	UIButton *commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-	[commentBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
-	[commentBtn setTitleColor:color forState:UIControlStateNormal];
-	[commentBtn setImage:[UIImage imageNamed:@"toolbar_comment"] forState:UIControlStateNormal];
-    [commentBtn setImage:[UIImage imageNamed:@"toolbar_comment_active"] forState:UIControlStateHighlighted];
-    [commentBtn setImage:[UIImage imageNamed:@"toolbar_comment_active"] forState:UIControlStateSelected];
-	commentBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
-	[commentBtn addTarget:self action:@selector(handleCommentButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-	
-	UIButton *likeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-	[likeBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
-	[likeBtn setTitleColor:color forState:UIControlStateNormal];
-	[likeBtn setImage:[UIImage imageNamed:@"toolbar_like"] forState:UIControlStateNormal];
-    [likeBtn setImage:[UIImage imageNamed:@"toolbar_like_active"] forState:UIControlStateHighlighted];
-    [likeBtn setImage:[UIImage imageNamed:@"toolbar_like_active"] forState:UIControlStateSelected];
-	likeBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
-	likeBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-	[likeBtn addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-	
-	UIButton *followBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-	[followBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
-	[followBtn setTitleColor:color forState:UIControlStateNormal];
-	[followBtn setImage:[UIImage imageNamed:@"toolbar_follow"] forState:UIControlStateNormal];
-    [followBtn setImage:[UIImage imageNamed:@"toolbar_follow_active"] forState:UIControlStateHighlighted];
-    [followBtn setImage:[UIImage imageNamed:@"toolbar_follow_active"] forState:UIControlStateSelected];
-	followBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
-	[followBtn addTarget:self action:@selector(handleFollowButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-	
-	UIButton *reblogBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-	[reblogBtn.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
-	[reblogBtn setTitleColor:color forState:UIControlStateNormal];
-	[reblogBtn setImage:[UIImage imageNamed:@"toolbar_reblog"] forState:UIControlStateNormal];
-    [reblogBtn setImage:[UIImage imageNamed:@"toolbar_reblog_active"] forState:UIControlStateHighlighted];
-    [reblogBtn setImage:[UIImage imageNamed:@"toolbar_reblog_active"] forState:UIControlStateSelected];
-	reblogBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
-	reblogBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-	[reblogBtn addTarget:self action:@selector(handleReblogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-	
-	self.commentButton = [[UIBarButtonItem alloc] initWithCustomView:commentBtn];
-	self.likeButton = [[UIBarButtonItem alloc] initWithCustomView:likeBtn];
-	self.followButton = [[UIBarButtonItem alloc] initWithCustomView:followBtn];
-	self.reblogButton = [[UIBarButtonItem alloc] initWithCustomView:reblogBtn];
-	[self updateToolbar];
-
-	self.headerView = [[ReaderPostDetailView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 190.0f) post:self.post delegate:self];
-	_headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_headerView.backgroundColor = [UIColor whiteColor];
-	[self.tableView setTableHeaderView:_headerView];
-	
-	UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCloseKeyboard:)];
-	tgr.cancelsTouchesInView = NO;
-	[_headerView addGestureRecognizer:tgr];
-	
-	CGRect frame = CGRectMake(0.0f, self.tableView.frame.origin.y + self.tableView.bounds.size.height, self.view.bounds.size.width, [ReaderCommentFormView desiredHeight]);
-	self.readerCommentFormView = [[ReaderCommentFormView alloc] initWithFrame:frame];
-	_readerCommentFormView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-	_readerCommentFormView.navigationItem = self.navigationItem;
-	_readerCommentFormView.post = self.post;
-	_readerCommentFormView.delegate = self;
-
-	if (_isShowingCommentForm) {
-		[self showCommentForm]; 
-	}
-	
-	frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
-	self.readerReblogFormView = [[ReaderReblogFormView alloc] initWithFrame:frame];
-	_readerReblogFormView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-	_readerReblogFormView.navigationItem = self.navigationItem;
-	_readerReblogFormView.post = self.post;
-	_readerReblogFormView.delegate = self;
-	
-	if (_isShowingReblogForm) {
-		[self showReblogForm]; 
-	}
+	[self buildHeader];
+	[self buildTopToolbar];
+	[self buildBottomToolbar];
+	[self buildForms];
 	
 	[self prepareComments];
 	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
@@ -251,23 +144,20 @@ NSInteger const ReaderCommentsToSync = 100;
 	
     self.panelNavigationController.delegate = nil;
 	[self.navigationController setToolbarHidden:YES animated:YES];
-	
-	self.headerView = nil;
-	self.readerCommentFormView = nil;
-	self.readerReblogFormView = nil;
-	self.navBar = nil;
-	self.commentButton = nil;
-	self.likeButton = nil;
-	self.followButton = nil;
-	self.reblogButton = nil;
-	self.shareButton = nil;
 }
 
 
 - (void)viewDidUnload {
 	[super viewDidUnload];
     
-	// TODO: Release views
+	self.headerView = nil;
+	self.readerCommentFormView = nil;
+	self.readerReblogFormView = nil;
+	self.navBar = nil;
+	self.commentButton = nil;
+	self.likeButton = nil;
+	self.reblogButton = nil;
+	self.shareButton = nil;
 	
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -302,6 +192,115 @@ NSInteger const ReaderCommentsToSync = 100;
 
 
 #pragma mark - Instance Methods
+
+- (void)buildHeader{
+	self.headerView = [[ReaderPostDetailView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, 190.0f) post:self.post delegate:self];
+	_headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_headerView.backgroundColor = [UIColor whiteColor];
+	[self.tableView setTableHeaderView:_headerView];
+	
+	UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCloseKeyboard:)];
+	tgr.cancelsTouchesInView = NO;
+	[_headerView addGestureRecognizer:tgr];
+}
+
+
+- (void)buildTopToolbar {
+	// Top Navigation bar and Sharing.
+	if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
+		UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+		
+		[btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
+		[btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateHighlighted];
+		
+		UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+		[btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+		
+		backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
+		[btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
+		btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
+		[btn addTarget:self action:@selector(handleShareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+		
+		self.shareButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
+	} else {
+		self.shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+																		 target:self
+																		 action:@selector(handleShareButtonTapped:)];
+	}
+	
+	self.navigationItem.rightBarButtonItem = _shareButton;
+}
+
+
+- (void)buildBottomToolbar {
+	// Bottom navigation for the iPad
+	if(IS_IPAD) {
+		
+		self.navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0f)];
+		_navBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		[_navBar pushNavigationItem:self.navigationItem animated:NO];
+		[self.view addSubview:_navBar];
+		
+		CGRect frame = self.tableView.frame;
+		frame.origin.y = 44.0f;
+		frame.size.height -= 44.0f;
+		self.tableView.frame = frame;
+	}
+	
+	UIButton *commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+	[commentBtn setImage:[UIImage imageNamed:@"reader-postaction-comment"] forState:UIControlStateNormal];
+    [commentBtn setImage:[UIImage imageNamed:@"reader-postaction-comment-active"] forState:UIControlStateHighlighted];
+	commentBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
+	[commentBtn addTarget:self action:@selector(handleCommentButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+	self.commentButton = [[UIBarButtonItem alloc] initWithCustomView:commentBtn];
+	
+	UIButton *likeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+	[likeBtn.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Bold" size:10.0f]];
+	[likeBtn setTitleColor:[UIColor colorWithRed:84.0f/255.0f green:173.0f/255.0f blue:211.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+	[likeBtn setTitleColor:[UIColor colorWithRed:221.0f/255.0f green:118.0f/255.0f blue:43.0f/255.0f alpha:1.0f] forState:UIControlStateSelected];
+	[likeBtn setImage:[UIImage imageNamed:@"reader-postaction-like"] forState:UIControlStateNormal];
+    [likeBtn setImage:[UIImage imageNamed:@"reader-postaction-like-active"] forState:UIControlStateSelected];
+	likeBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
+	likeBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+	[likeBtn addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+	self.likeButton = [[UIBarButtonItem alloc] initWithCustomView:likeBtn];
+	
+	UIButton *reblogBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+	[reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog"] forState:UIControlStateNormal];
+    [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog-active"] forState:UIControlStateSelected];
+	reblogBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
+	reblogBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+	[reblogBtn addTarget:self action:@selector(handleReblogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+	self.reblogButton = [[UIBarButtonItem alloc] initWithCustomView:reblogBtn];
+	
+	[self updateToolbar];
+}
+
+
+- (void)buildForms {
+	CGRect frame = CGRectMake(0.0f, self.tableView.frame.origin.y + self.tableView.bounds.size.height, self.view.bounds.size.width, [ReaderCommentFormView desiredHeight]);
+	self.readerCommentFormView = [[ReaderCommentFormView alloc] initWithFrame:frame];
+	_readerCommentFormView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+	_readerCommentFormView.navigationItem = self.navigationItem;
+	_readerCommentFormView.post = self.post;
+	_readerCommentFormView.delegate = self;
+	
+	if (_isShowingCommentForm) {
+		[self showCommentForm];
+	}
+	
+	frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
+	self.readerReblogFormView = [[ReaderReblogFormView alloc] initWithFrame:frame];
+	_readerReblogFormView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+	_readerReblogFormView.navigationItem = self.navigationItem;
+	_readerReblogFormView.post = self.post;
+	_readerReblogFormView.delegate = self;
+	
+	if (_isShowingReblogForm) {
+		[self showReblogForm];
+	}
+}
+
 
 - (BOOL)canComment {
 	return [self.post.commentsOpen boolValue];
@@ -349,55 +348,24 @@ NSInteger const ReaderCommentsToSync = 100;
 
 - (void)updateToolbar {
 	if (!self.post) return;
-
-	UIColor *activeColor = [UIColor colorWithHexString:@"F1831E"];
-	UIColor *inactiveColor = [UIColor colorWithHexString:@"3478E3"];
 	
-	UIImage *img = nil;
-	UIColor *color;
-	UIButton *btn;
-	if (self.post.isLiked.boolValue) {
-		img = [UIImage imageNamed:@"note_navbar_icon_like"];
-		color = activeColor;
-	} else {
-		img = [UIImage imageNamed:@"toolbar_like"];
-		color = inactiveColor;
-	}
-	btn = (UIButton *)_likeButton.customView;
-	[btn.imageView setImage:img];
-	[btn setTitleColor:color forState:UIControlStateNormal];
+	UIButton *btn = (UIButton *)_likeButton.customView;
+	[btn setSelected:[self.post.isLiked boolValue]];
+	[btn setTitle:[self.post.likeCount stringValue] forState:UIControlStateNormal];
+	_likeButton.customView = btn;
 	
-	if (self.post.isReblogged.boolValue) {
-		img = [UIImage imageNamed:@"note_navbar_icon_reblog"];
-		color = activeColor;
-	} else {
-		img = [UIImage imageNamed:@"toolbar_reblog"];
-		color = inactiveColor;
-	}
 	btn = (UIButton *)_reblogButton.customView;
-	[btn.imageView setImage:img];
-	[btn setTitleColor:color forState:UIControlStateNormal];
-	
-	if (self.post.isFollowing.boolValue) {
-		img = [UIImage imageNamed:@"note_navbar_icon_follow"];
-		color = activeColor;
-	} else {
-		img = [UIImage imageNamed:@"toolbar_follow"];
-		color = inactiveColor;
-	}
-	btn = (UIButton *)_followButton.customView;
-	[btn.imageView setImage:img];
-	[btn setTitleColor:color forState:UIControlStateNormal];
+	[btn setSelected:[self.post.isReblogged boolValue]];
+	_reblogButton.customView = btn;
 	
 	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	
 	NSMutableArray *items = [NSMutableArray array];
-	if ([self.post.commentsOpen boolValue]) {
+	if ([self canComment]) {
 		[items addObjectsFromArray:@[_commentButton, placeholder]];
 	}
-	[items addObjectsFromArray:@[_likeButton, placeholder, _followButton]];
+	
 	if ([self.post isWPCom]) {
-		[items addObjectsFromArray:@[placeholder, _reblogButton]];
+		[items addObjectsFromArray:@[_likeButton, placeholder, _reblogButton]];
 	}
 	
 	[self setToolbarItems:items animated:YES];
@@ -413,17 +381,6 @@ NSInteger const ReaderCommentsToSync = 100;
 	}
 	
 	[self showCommentForm];
-}
-
-
-- (void)handleFollowButtonTapped:(id)sender {
-	[self.post toggleFollowingWithSuccess:^{
-		
-	} failure:^(NSError *error) {
-		WPLog(@"Error Following Blog : %@", [error localizedDescription]);
-		[self updateToolbar];
-	}];
-	[self updateToolbar];
 }
 
 

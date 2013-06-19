@@ -9,6 +9,7 @@
 #import "ReaderPostDetailView.h"
 #import <DTCoreText/DTCoreText.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import <QuartzCore/QuartzCore.h>
 #import "ReaderMediaView.h"
 #import "ReaderImageView.h"
 #import "ReaderVideoView.h"
@@ -28,6 +29,7 @@
 @property (nonatomic, strong) UILabel *dateLabel;
 @property (nonatomic, strong) UILabel *blogLabel;
 @property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UIButton *followButton;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) NSMutableArray *mediaArray;
 @property (nonatomic, weak) id<ReaderPostDetailViewDelegate>delegate;
@@ -39,6 +41,7 @@
 - (void)handleLinkTapped:(id)sender;
 - (void)handleVideoTapped:(id)sender;
 - (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView;
+- (void)handleFollowButtonTapped:(id)sender;
 
 @end
 
@@ -105,6 +108,24 @@
 		_blogLabel.textColor = [UIColor colorWithHexString:@"278dbc"];
 		[_authorView addSubview:_blogLabel];
 		
+		CGRect followFrame = _blogLabel.frame;
+		followFrame.origin.y += 2.0f;
+		followFrame.size.height += 4.0f;
+		self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		_followButton.frame = followFrame; // Arbitrary width and x. The height and y are correct.
+		[_followButton setSelected:[post.isFollowing boolValue]];
+		_followButton.layer.cornerRadius = 3.0f;
+		_followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+		_followButton.backgroundColor = [UIColor colorWithRed:234.0f/255.0f green:234.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
+		_followButton.titleLabel.font = [UIFont fontWithName:@"Open Sans" size:11.0f];
+		[_followButton setTitle:NSLocalizedString(@"FOLLOW", @"Prompt to follow a blog.") forState:UIControlStateNormal];
+		[_followButton setTitle:NSLocalizedString(@"FOLLOWING", @"User is following the blog.") forState:UIControlStateSelected];
+		[_followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
+		[_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
+		[_followButton setTitleColor:[UIColor colorWithRed:116.0f/255.0f green:116.0f/255.0f blue:116.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+		[_followButton addTarget:self action:@selector(handleFollowButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+		[_authorView addSubview:_followButton];
+		
 		CGFloat contentY = _authorView.frame.size.height;
 		
 		if ([self.post.postTitle length]) {		
@@ -145,6 +166,31 @@
 																	  documentAttributes:NULL];
     }
     return self;
+}
+
+
+- (void)layoutSubviews {
+	[super layoutSubviews];
+	
+	NSString *str = _followButton.currentTitle;
+	CGSize sz = [str sizeWithFont:_followButton.titleLabel.font];
+	[_followButton sizeToFit];
+	sz = _followButton.frame.size;
+	sz.width += 2.0f; // just a little extra width so the text has better padding on the right.
+	
+	CGFloat desiredWidth = [_blogLabel.text sizeWithFont:_blogLabel.font].width;
+	CGFloat availableWidth = (_authorView.frame.size.width - _blogLabel.frame.origin.x) - 20.0f;
+	availableWidth -= (sz.width + 5.0f);
+
+	CGRect frame = _blogLabel.frame;
+	frame.size.width = MIN(availableWidth, desiredWidth);
+	_blogLabel.frame = frame;
+	
+	frame = _followButton.frame;
+	frame.origin.x = _blogLabel.frame.origin.x + _blogLabel.frame.size.width + 5.0f;
+	frame.size.width = sz.width;
+	_followButton.frame = frame;
+
 }
 
 
@@ -222,6 +268,37 @@ NSLog(@"IMAGE SIZING - ORIGINAL: w%f h%f | ADJUSTED: w%f h%f", imageView.image.s
 		attachment.originalSize = imageView.image.size;
 		attachment.displaySize = viewSize;
 	}
+}
+
+
+- (void)handleFollowButtonTapped:(id)sender {
+	[self.post toggleFollowingWithSuccess:^{
+		// nothing to do. 
+	} failure:^(NSError *error) {
+		WPLog(@"Error Following Blog : %@", [error localizedDescription]);
+		[_followButton setSelected:self.post.isFollowing];
+		[self setNeedsLayout];
+		
+		NSString *title;
+		NSString *description;
+		if (self.post.isFollowing) {
+			title = NSLocalizedString(@"Could Not Unfollow Blog", @"Title of prompt. Says a blog could not be unfollowed.");
+			description = NSLocalizedString(@"There was a problem unfollowing this blog.", @"Prompts the user that there was a problem unfollowing a blog.");
+		} else {
+			title = NSLocalizedString(@"Could Not Follow Blog", @"Title of prompt. Says a blog could not be followed.");
+			description = NSLocalizedString(@"There was a problem following this blog.", @"Prompts the user there was a problem following a blog.");
+		}
+		
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+															message:description
+														   delegate:nil
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"")
+												  otherButtonTitles:nil];
+		[alertView show];
+		
+	}];
+	[_followButton setSelected:self.post.isFollowing];
+	[self setNeedsLayout];
 }
 
 
