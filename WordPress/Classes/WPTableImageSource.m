@@ -99,7 +99,7 @@
         CGSize requestSize = CGSizeMake(MAX(size.width, _maxSize.width), MAX(size.height, _maxSize.height));
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSURLRequest *request = [NSURLRequest requestWithURL:[self photonURLForURL:url withSize:requestSize]];
+            NSURLRequest *request = [NSURLRequest requestWithURL:[self photonURLForURL:url withSize:requestSize] cachePolicy:NSURLRequestReturnCacheDataElseLoad timeoutInterval:60];
             AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:request
                                                                                       imageProcessingBlock:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                                                                                           [self processImage:image forURL:url];
