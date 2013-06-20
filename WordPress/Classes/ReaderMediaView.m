@@ -44,6 +44,11 @@
 
 #pragma mark - Instance Methods
 
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+	[super setBackgroundColor:backgroundColor];
+	[_imageView setBackgroundColor:backgroundColor];
+}
+
 - (void)setContentMode:(UIViewContentMode)contentMode {
 	[super setContentMode:contentMode];
 	_imageView.contentMode = contentMode;
