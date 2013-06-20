@@ -48,7 +48,6 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 @dynamic summary;
 @dynamic comments;
 
-
 + (NSArray *)readerEndpoints {
 	static NSArray *endpoints = nil;
 	static dispatch_once_t token;
@@ -573,6 +572,10 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	return (self.postAvatar == nil) ? self.authorAvatarURL : self.postAvatar;
 }
 
+- (NSURL *)featuredImageURL {
+    // FIXME: NSURL fails if the URL contains spaces.
+    return [NSURL URLWithString:self.featuredImage];
+}
 
 - (NSString *)featuredImageForWidth:(NSUInteger)width height:(NSUInteger)height {
 	NSString *fmt = nil;
