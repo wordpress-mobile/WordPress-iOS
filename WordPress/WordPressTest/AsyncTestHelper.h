@@ -28,6 +28,10 @@ extern const NSTimeInterval AsyncTestCaseDefaultTimeout;
     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode\
                              beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];\
     timedOut = (lockStatus != 0);\
-    dispatch_release(ATHSemaphore);\
     STAssertFalse(timedOut, @"Lock timed out");\
+} while (0)
+
+#define ATHEnd() do {\
+    ATHWait(); \
+    dispatch_release(ATHSemaphore);\
 } while (0)

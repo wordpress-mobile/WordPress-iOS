@@ -112,7 +112,7 @@
 		STFail(@"Call to Reader Topics Failed: %@", error);
 		ATHNotify();
 	}];
-	ATHWait();
+	ATHEnd();
 }
 
 
@@ -126,7 +126,7 @@
 		STFail(@"Call to Reader Comments Failed: %@", error);
 		ATHNotify();
 	}];
-	ATHWait();
+	ATHEnd();
 	
 }
 
@@ -167,7 +167,7 @@
 		ATHNotify();
 	}];
 	
-	ATHWait();
+	ATHEnd();
 	
 }
 
@@ -185,7 +185,7 @@
 		STFail(@"Call to Reader Following Failed: %@", error);
 		ATHNotify();
 	}];
-	ATHWait();
+	ATHEnd();
 	
 }
 
@@ -203,7 +203,7 @@
 		STFail(@"Call to Reader Liked Failed: %@", error);
 		ATHNotify();
 	}];
-	ATHWait();
+	ATHEnd();
 	
 }
 
@@ -222,7 +222,7 @@
 		STFail(@"Call to Reader Topic Posts Failed: %@", error);
 		ATHNotify();
 	}];
-	ATHWait();
+	ATHEnd();
 	
 }
 
