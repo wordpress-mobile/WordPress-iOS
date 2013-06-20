@@ -199,6 +199,18 @@
 - (NSURL *)photonURLForURL:(NSURL *)url withSize:(CGSize)size
 {
     NSString *urlString = [url absoluteString];
+    if ([urlString hasPrefix:@"http"]) {
+        NSRange range = [urlString rangeOfString:@"http://"];
+        if (range.location == 0) {
+            urlString = [urlString substringFromIndex:range.length];
+        } else {
+            range = [urlString rangeOfString:@"https://"];
+            if (range.location == 0) {
+                // Photon doesn't support https
+                return url;
+            }
+        }
+    }
     CGFloat scale = [[UIScreen mainScreen] scale];
     NSUInteger width = scale * size.width;
     NSUInteger height = scale * size.height;
