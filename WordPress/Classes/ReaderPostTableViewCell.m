@@ -90,7 +90,6 @@
 
 		self.contentView.backgroundColor = [UIColor colorWithHexString:@"F1F1F1"];
 		CGRect frame = CGRectMake(10.0f, 0.0f, self.contentView.frame.size.width - 20.0f, self.contentView.frame.size.height - 10.0f);
-		CGFloat width = frame.size.width;
 
 		self.containerView = [[UIView alloc] initWithFrame:frame];
 		_containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -99,6 +98,7 @@
 		[self.contentView addSubview:_containerView];
 
 		/* TODO: add shadow without performance hit
+		CGFloat width = frame.size.width;
 		UIImage *image = [UIImage imageNamed:@"reader-post-cell-shadow.png"];
 		UIImageView *dropShadow = [[UIImageView alloc] initWithImage:[image resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 1.0f, 2.0f, 1.0f)]];
 		dropShadow.frame = CGRectMake(-1.0f, 0.0f, width + 2, frame.size.height + 2);
