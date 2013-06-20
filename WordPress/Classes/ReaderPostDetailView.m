@@ -42,6 +42,7 @@
 - (void)handleVideoTapped:(id)sender;
 - (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView;
 - (void)handleFollowButtonTapped:(id)sender;
+- (void)handleFollowButtonInteraction:(id)sender;
 
 @end
 
@@ -117,13 +118,14 @@
 		_followButton.layer.cornerRadius = 3.0f;
 		_followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 		_followButton.backgroundColor = [UIColor colorWithRed:234.0f/255.0f green:234.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
-		_followButton.titleLabel.font = [UIFont fontWithName:@"Open Sans" size:11.0f];
+		_followButton.titleLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:10.0f];
 		[_followButton setTitle:NSLocalizedString(@"FOLLOW", @"Prompt to follow a blog.") forState:UIControlStateNormal];
 		[_followButton setTitle:NSLocalizedString(@"FOLLOWING", @"User is following the blog.") forState:UIControlStateSelected];
 		[_followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
 		[_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
 		[_followButton setTitleColor:[UIColor colorWithRed:116.0f/255.0f green:116.0f/255.0f blue:116.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
-		[_followButton addTarget:self action:@selector(handleFollowButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+		[_followButton addTarget:self action:@selector(handleFollowButtonInteraction:) forControlEvents:UIControlEventAllTouchEvents];
+		
 		[_authorView addSubview:_followButton];
 		
 		CGFloat contentY = _authorView.frame.size.height;
@@ -268,6 +270,11 @@ NSLog(@"IMAGE SIZING - ORIGINAL: w%f h%f | ADJUSTED: w%f h%f", imageView.image.s
 		attachment.originalSize = imageView.image.size;
 		attachment.displaySize = viewSize;
 	}
+}
+
+
+- (void)handleFollowButtonInteraction:(id)sender {
+	[self setNeedsLayout];
 }
 
 
