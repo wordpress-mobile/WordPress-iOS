@@ -198,11 +198,6 @@
  */
 - (NSURL *)photonURLForURL:(NSURL *)url withSize:(CGSize)size
 {
-    // If the URL doesn't have a http prefix, add it
-    if (![url scheme]) {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", [url absoluteString]]];
-    }
-
     NSString *urlString = [url absoluteString];
     CGFloat scale = [[UIScreen mainScreen] scale];
     NSUInteger width = scale * size.width;
