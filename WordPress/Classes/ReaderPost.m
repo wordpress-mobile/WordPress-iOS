@@ -163,8 +163,9 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		post.endpoint = endpoint;
     }
     
-    [post updateFromDictionary:dict];
-	
+    @autoreleasepool {
+        [post updateFromDictionary:dict];
+    }
 }
 
 
