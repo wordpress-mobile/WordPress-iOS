@@ -16,6 +16,9 @@
 
 @interface PostSettingsViewController () {
     BOOL triedAuthOnce;
+    BOOL featuredImageViewFullScreen;
+    UIView *featuredImageViewSuperview;
+    CGRect featuredImageViewOriginalFrame;
 }
 
 @property (nonatomic, strong) AbstractPost *apost;
@@ -155,6 +158,12 @@
             }];
         }
     }
+    
+    UITapGestureRecognizer *featuredImageTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(respondToFeaturedImageTap)];
+    [featuredImageTapGestureRecognizer setNumberOfTapsRequired:1];
+    [featuredImageView addGestureRecognizer:featuredImageTapGestureRecognizer];
+    [featuredImageView setUserInteractionEnabled:YES];
+    
 }
 
 - (void)viewDidUnload {
@@ -228,6 +237,9 @@
         [featuredImageSpinner stopAnimating];
         [featuredImageSpinner setHidden:YES];
         [featuredImageLabel setHidden:YES];
+        
+        featuredImageViewOriginalFrame = featuredImageView.frame;
+        featuredImageViewSuperview = featuredImageView.superview;
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // private blog, auth needed.
@@ -1109,6 +1121,31 @@
             addressLabel.text = address;
         }
     }];
+}
+
+#pragma mark - UIGestureRocognizer method
+
+- (void)respondToFeaturedImageTap {
+    
+    if(featuredImageViewFullScreen) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            [featuredImageViewSuperview addSubview:featuredImageView];
+            [featuredImageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+            [featuredImageView setFrame:featuredImageViewOriginalFrame];
+            featuredImageViewFullScreen = NO;
+        }];
+        
+    } else {
+        UIViewController *featuredImageViewController = [[UIViewController alloc] initWithNibName:nil bundle:nil];
+        featuredImageViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        featuredImageViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
+        
+        [featuredImageViewController.view addSubview:featuredImageView];
+        [featuredImageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+        [featuredImageView setFrame:featuredImageViewController.view.frame];
+        
+        [self presentViewController:featuredImageViewController animated:YES completion:^{featuredImageViewFullScreen = YES;}];
+    }
 }
 
 @end
