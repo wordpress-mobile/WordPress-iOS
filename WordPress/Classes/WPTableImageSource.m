@@ -130,6 +130,8 @@
     [_urlDownloadsInProgress removeObject:url];
     [_urlDownloadRequests removeObjectForKey:url];
 
+    [self setCachedImage:image forURL:url withSize:_maxSize];
+
     if (receivers) {
         NSArray *uniqueSizes = [receivers valueForKeyPath:@"@distinctUnionOfObjects.size"];
         for (NSString *sizeString in uniqueSizes) {
