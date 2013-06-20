@@ -20,14 +20,16 @@
 #import "WPFriendFinderViewController.h"
 #import "WPFriendFinderNudgeView.h"
 #import "WPAccount.h"
+#import "WPTableImageSource.h"
 
 NSInteger const ReaderPostsToSync = 40;
 NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate> {
+@interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate, WPTableImageSourceDelegate> {
 	BOOL _hasMoreContent;
 	BOOL _loadingMore;
+    WPTableImageSource *_featuredImageSource;
 }
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
@@ -54,6 +56,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)dealloc {
 	_resultsController.delegate = nil;
+    _featuredImageSource.delegate = nil;
 }
 
 
@@ -70,7 +73,15 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	
+
+    CGFloat maxWidth = self.tableView.bounds.size.width;
+    if (IS_IPHONE) {
+        maxWidth = MAX(self.tableView.bounds.size.width, self.tableView.bounds.size.height);
+    }
+    maxWidth -= 20.f; // Container frame
+    CGFloat maxHeight = maxWidth * 0.66f;
+    _featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
+    _featuredImageSource.delegate = self;
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	
 	[self configureTableHeader];
@@ -289,6 +300,26 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	[self.view endEditing:YES];
 }
 
+- (void)loadImagesForVisibleRows
+{
+    NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
+    for (NSIndexPath *indexPath in visiblePaths)
+    {
+        ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+
+        if (post.featuredImageURL) {
+            ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+            NSURL *imageURL = post.featuredImageURL;
+            CGSize imageSize = cell.cellImageView.bounds.size;
+            UIImage *image = [_featuredImageSource imageForURL:imageURL withSize:imageSize];
+            if (image) {
+                [cell setFeaturedImage:image];
+            } else {
+                [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath];
+            }
+        }
+    }
+}
 
 #pragma mark - ReaderTextForm Delegate Methods
 
@@ -304,7 +335,17 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 #pragma mark - UIScrollView Delegate Methods
 
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    // Instead of loading images only when scrolling stops, start loading them when
+    // the scroll view starts decelerating, if it's not going too fast
+    if (fabs(velocity.y) <= 2.f) {
+        [self loadImagesForVisibleRows];
+    }
+}
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self loadImagesForVisibleRows];
+
 	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
 	if (!selectedIndexPath) {
 		return;
@@ -462,7 +503,21 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 	[cell configureCell:post];
-	
+    if (post.featuredImageURL) {
+        NSURL *imageURL = post.featuredImageURL;
+        CGSize imageSize = cell.cellImageView.bounds.size;
+        if (CGSizeEqualToSize(imageSize, CGSizeZero)) {
+            imageSize.width = self.tableView.bounds.size.width;
+            imageSize.height = round(imageSize.width * 0.66f);
+        }
+        UIImage *image = [_featuredImageSource imageForURL:imageURL withSize:imageSize];
+        if (image) {
+            [cell setFeaturedImage:image];
+        } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
+            [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath];
+        }
+    }
+
     return cell;
 }
 
@@ -689,6 +744,16 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     [self presentModalViewController:navController animated:YES];
     
     [controller loadURL:kMobileReaderFFURL];
+}
+
+#pragma mark - WPTableImageSourceDelegate
+
+- (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
+{
+    if (!self.tableView.isDecelerating && !self.tableView.isDragging) {
+        ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        [cell setFeaturedImage:image];
+    }
 }
 
 @end
