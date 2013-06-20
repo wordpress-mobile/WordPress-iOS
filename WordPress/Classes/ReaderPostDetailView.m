@@ -43,6 +43,7 @@
 - (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView;
 - (void)handleFollowButtonTapped:(id)sender;
 - (void)handleFollowButtonInteraction:(id)sender;
+- (BOOL)isEmoji:(NSURL *)url;
 
 @end
 
@@ -245,10 +246,17 @@
 	
 	CGSize originalSize = imageView.frame.size;
 	CGSize viewSize = imageView.image.size;
-	viewSize.width = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-	viewSize.height = viewSize.height * (_textContentView.frame.size.width / imageView.image.size.width);
-	viewSize.height += imageView.edgeInsets.top; // account for the top edge inset.
 	
+	if ([self isEmoji:url]) {
+		CGFloat scale = [UIScreen mainScreen].scale;
+		viewSize.width *= scale;
+		viewSize.height *= scale;
+	} else {
+		viewSize.width = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+		viewSize.height = viewSize.height * (_textContentView.frame.size.width / imageView.image.size.width);
+		viewSize.height += imageView.edgeInsets.top; // account for the top edge inset.
+	}
+
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
 	
 	// update all attachments that matchin this URL (possibly multiple images with same size)
@@ -256,7 +264,11 @@
 		attachment.originalSize = originalSize;
 		attachment.displaySize = viewSize;
 	}
-	
+}
+
+
+- (BOOL)isEmoji:(NSURL *)url {
+	return ([[url absoluteString] rangeOfString:@"wp.com/wp-includes/images/smilies"].location != NSNotFound);
 }
 
 
@@ -418,6 +430,22 @@
 	
 	if (attachment.contentType == DTTextAttachmentTypeImage) {
 
+		if ([self isEmoji:attachment.contentURL]) {
+			// minimal frame to suppress draing context errors with 0 height or width.
+			frame.size.width = MAX(frame.size.width, 1.0f);
+			frame.size.height = MAX(frame.size.height, 1.0f);
+			ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
+			[imageView setImageWithURL:attachment.contentURL
+					  placeholderImage:nil
+							   success:^(ReaderMediaView *readerMediaView) {
+								   [self handleMediaViewLoaded:(ReaderImageView *)readerMediaView];
+							   } failure:^(ReaderMediaView *readerMediaView, NSError *error) {
+								   [self handleMediaViewLoaded:readerMediaView];
+							   }];
+			return imageView;
+		}
+		
+		
 		UIImage *image;
 		
 		if( [attachment.contents isKindOfClass:[UIImage class]] ) {

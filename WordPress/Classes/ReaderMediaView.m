@@ -21,6 +21,7 @@
 		_imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_imageView.contentMode = UIViewContentModeScaleAspectFit;
 		[self addSubview:_imageView];
+		[super setBackgroundColor:[UIColor clearColor]];
     }
     return self;
 }
@@ -45,7 +46,7 @@
 #pragma mark - Instance Methods
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
-	[super setBackgroundColor:backgroundColor];
+//	[super setBackgroundColor:backgroundColor];
 	[_imageView setBackgroundColor:backgroundColor];
 }
 
