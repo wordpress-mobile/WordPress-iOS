@@ -13,11 +13,13 @@
 #import "NSString+XMLExtensions.h"
 
 NSInteger const ReaderTopicEndpointIndex = 3;
+NSInteger const ReaderPostSummaryLength = 150;
 
 @interface ReaderPost()
 
 - (void)updateFromDictionary:(NSDictionary *)dict;
-- (NSString *)createSummary:(NSString *)str;
+- (NSString *)createSummary:(NSString *)str makePlainText:(BOOL)makePlainText;
+- (NSString *)makePlainText:(NSString *)string;
 - (NSString *)normalizeParagraphs:(NSString *)string;
 
 @end
@@ -202,7 +204,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		
 		self.siteID = [editorial numberForKey:@"blog_id"];
 
-		self.summary = [self createSummary:[dict objectForKey:@"content"]];
+		self.summary = [self createSummary:[dict objectForKey:@"content"] makePlainText:YES];
 		
 		NSString *img = [editorial objectForKey:@"image"];
 		NSRange rng = [img rangeOfString:@"mshots/"];
@@ -265,7 +267,11 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		
 		self.siteID = [dict numberForKey:@"blog_id"];
 		
-		self.summary = [[[[dict stringForKey:@"post_content"] stringByStrippingHTML] trim] stringByDecodingXMLCharacters];
+		NSString *summary = [self makePlainText:[dict stringForKey:@"post_content"]];
+		if ([summary length] > ReaderPostSummaryLength) {
+			summary = [self createSummary:summary makePlainText:NO];
+		}
+		self.summary = summary;
 				
 		NSString *img = [dict stringForKey:@"post_featured_thumbnail"];
 		if([img length]) {
@@ -325,9 +331,15 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 }
 
+- (NSString *)makePlainText:(NSString *)string {
+	return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] trim];
+}
 
-- (NSString *)createSummary:(NSString *)str {	
-	str = [[str stringByStrippingHTML] stringByDecodingXMLCharacters];
+
+- (NSString *)createSummary:(NSString *)str makePlainText:(BOOL)makePlainText {
+	if (makePlainText) {
+		str = [self makePlainText:str];
+	}
 	
 	str = [str stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
 	
@@ -336,17 +348,17 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	NSRange rng = [snippet rangeOfString:@"." options:NSBackwardsSearch];
 	
 	if (rng.location == NSNotFound) {
-		rng.location = MIN(150, [str length]);
+		rng.location = MIN(ReaderPostSummaryLength, [str length]);
 	}
 	
-	if(rng.location > 150) {
+	if(rng.location > ReaderPostSummaryLength) {
 		snippet = [snippet substringToIndex:(rng.location + 1)];
 	} else {
 		rng = [snippet rangeOfString:@" " options:NSBackwardsSearch];
 		snippet = [NSString stringWithFormat:@"%@ ...", [snippet substringToIndex:rng.location]];
 	}
 
-	return [snippet trim];
+	return snippet;
 }
 
 
