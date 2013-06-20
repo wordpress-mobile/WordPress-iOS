@@ -21,8 +21,20 @@
 // DTCoreText
 #define COCOAPODS_POD_AVAILABLE_DTCoreText
 #define COCOAPODS_VERSION_MAJOR_DTCoreText 1
-#define COCOAPODS_VERSION_MINOR_DTCoreText 0
-#define COCOAPODS_VERSION_PATCH_DTCoreText 2
+#define COCOAPODS_VERSION_MINOR_DTCoreText 4
+#define COCOAPODS_VERSION_PATCH_DTCoreText 3
+
+// DTFoundation/Core
+#define COCOAPODS_POD_AVAILABLE_DTFoundation_Core
+#define COCOAPODS_VERSION_MAJOR_DTFoundation_Core 1
+#define COCOAPODS_VERSION_MINOR_DTFoundation_Core 2
+#define COCOAPODS_VERSION_PATCH_DTFoundation_Core 0
+
+// DTFoundation/DTHMLParser
+#define COCOAPODS_POD_AVAILABLE_DTFoundation_DTHMLParser
+#define COCOAPODS_VERSION_MAJOR_DTFoundation_DTHMLParser 1
+#define COCOAPODS_VERSION_MINOR_DTFoundation_DTHMLParser 2
+#define COCOAPODS_VERSION_PATCH_DTFoundation_DTHMLParser 0
 
 // JSONKit
 #define COCOAPODS_POD_AVAILABLE_JSONKit
@@ -30,6 +42,12 @@
 // so we were not able to define version macros.
 // Please contact the author.
 // Version: 1.5pre.
+
+// MGImageUtilities
+#define COCOAPODS_POD_AVAILABLE_MGImageUtilities
+#define COCOAPODS_VERSION_MAJOR_MGImageUtilities 0
+#define COCOAPODS_VERSION_MINOR_MGImageUtilities 0
+#define COCOAPODS_VERSION_PATCH_MGImageUtilities 1
 
 // Mixpanel
 #define COCOAPODS_POD_AVAILABLE_Mixpanel
