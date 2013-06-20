@@ -260,7 +260,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	[likeBtn setTitleColor:[UIColor colorWithRed:221.0f/255.0f green:118.0f/255.0f blue:43.0f/255.0f alpha:1.0f] forState:UIControlStateSelected];
 	[likeBtn setImage:[UIImage imageNamed:@"reader-postaction-like"] forState:UIControlStateNormal];
     [likeBtn setImage:[UIImage imageNamed:@"reader-postaction-like-active"] forState:UIControlStateSelected];
-	likeBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
+	likeBtn.frame = CGRectMake(0.0f, 0.0f, 60.0f, 40.0f);
 	likeBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 	[likeBtn addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	self.likeButton = [[UIBarButtonItem alloc] initWithCustomView:likeBtn];

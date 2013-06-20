@@ -180,11 +180,11 @@
 	CGSize sz = [str sizeWithFont:_followButton.titleLabel.font];
 	[_followButton sizeToFit];
 	sz = _followButton.frame.size;
-	sz.width += 2.0f; // just a little extra width so the text has better padding on the right.
+	sz.width += 7.0f; // just a little extra width so the text has better padding on the right.
 	
 	CGFloat desiredWidth = [_blogLabel.text sizeWithFont:_blogLabel.font].width;
 	CGFloat availableWidth = (_authorView.frame.size.width - _blogLabel.frame.origin.x) - 20.0f;
-	availableWidth -= (sz.width + 5.0f);
+	availableWidth -= (sz.width + 10.0f);
 
 	CGRect frame = _blogLabel.frame;
 	frame.size.width = MIN(availableWidth, desiredWidth);
