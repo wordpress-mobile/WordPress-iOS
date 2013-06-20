@@ -153,6 +153,7 @@
 		_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, padding, 0.0f, padding);
 		_textContentView.shouldDrawImages = NO;
 		_textContentView.shouldDrawLinks = NO;
+		_textContentView.clipsToBounds = YES;
 		[self addSubview:_textContentView];
 		
 
@@ -408,6 +409,12 @@
 	edgeInsets.top = 12.0f;
 	edgeInsets.right = 0.0f - edgeInsets.right;
 	edgeInsets.bottom = 0.0f;
+	
+	// Maybe a bug in DTCoreText. If there is no text preceeding an image, the frame for the image has a negative y value.
+	// In this case let the top edgeInset be the inverse of the y value so the image is correctly positioned visually.
+	if (frame.origin.y < 0) {
+		edgeInsets.top = ABS(frame.origin.y);
+	}
 	
 	if (attachment.contentType == DTTextAttachmentTypeImage) {
 

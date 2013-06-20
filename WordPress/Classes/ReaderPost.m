@@ -209,12 +209,6 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		if(NSNotFound != rng.location) {
 			rng = [img rangeOfString:@"?" options:NSBackwardsSearch];
 			img = [img substringWithRange:NSMakeRange(0, rng.location)]; // Just strip the query string off the end and we'll specify it later.
-
-//			img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//			rng = [img rangeOfString:@"://" options:NSBackwardsSearch];
-//			rng.location += 3;
-//			rng.length = [img rangeOfString:@"?" options:NSBackwardsSearch].location - rng.location;
-//			img = [img substringWithRange:rng];
 			
 		} else if(NSNotFound != [img rangeOfString:@"imgpress"].location) {
 			NSRange rng;
@@ -374,7 +368,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"</p>"];
 	
 	// Remove inline styles.
-	regex = [NSRegularExpression regularExpressionWithPattern:@"style=\".*\"" options:NSRegularExpressionCaseInsensitive error:&error];
+	regex = [NSRegularExpression regularExpressionWithPattern:@"style=\"[^\"]*\"" options:NSRegularExpressionCaseInsensitive error:&error];
 	string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@""];
 	
 	return string;
@@ -572,7 +566,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	return (self.postAvatar == nil) ? self.authorAvatarURL : self.postAvatar;
 }
 
-- (NSURL *)featuredImageURL {
+- (NSURL *)featuredImageURL {	
     // FIXME: NSURL fails if the URL contains spaces.
     return [NSURL URLWithString:self.featuredImage];
 }
