@@ -38,6 +38,7 @@ extern NSInteger const ReaderTopicEndpointIndex;
 @property (nonatomic, strong) NSString *storedComment; // Formatted as commentID,string
 @property (nonatomic, strong) NSString *summary;
 @property (nonatomic, strong) NSMutableSet *comments;
+@property (nonatomic, readonly, strong) NSURL *featuredImageURL;
 
 /**
  An array of dictionaries representing available REST API endpoints to retrieve posts for the Reader.

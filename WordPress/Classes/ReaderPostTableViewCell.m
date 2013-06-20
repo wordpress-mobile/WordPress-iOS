@@ -40,7 +40,9 @@ static UIColor *ControlInactiveColor;
 
 @end
 
-@implementation ReaderPostTableViewCell
+@implementation ReaderPostTableViewCell {
+    BOOL _featuredImageIsSet;
+}
 
 + (void)initialize {
     ControlActiveColor = [UIColor colorWithHexString:@"F1831E"];
@@ -56,7 +58,7 @@ static UIColor *ControlInactiveColor;
 	CGFloat contentWidth = width - 20.0f; // 10px padding on either side.
 
 	// Are we showing an image? What size should it be?
-	if(post.featuredImage) {
+	if(post.featuredImageURL) {
 		CGFloat height = (contentWidth * 0.66f);
 		desiredHeight += height;
 	}
@@ -77,7 +79,7 @@ static UIColor *ControlInactiveColor;
 
 	desiredHeight += vpadding;
 
-	return desiredHeight;
+	return ceil(desiredHeight);
 }
 
 #pragma mark - Lifecycle Methods
@@ -93,15 +95,21 @@ static UIColor *ControlInactiveColor;
 		self.containerView = [[UIView alloc] initWithFrame:frame];
 		_containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_containerView.backgroundColor = [UIColor whiteColor];
+        _containerView.opaque = YES;
 		[self.contentView addSubview:_containerView];
-		
+
+		/* TODO: add shadow without performance hit
 		UIImage *image = [UIImage imageNamed:@"reader-post-cell-shadow.png"];
 		UIImageView *dropShadow = [[UIImageView alloc] initWithImage:[image resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 1.0f, 2.0f, 1.0f)]];
 		dropShadow.frame = CGRectMake(-1.0f, 0.0f, width + 2, frame.size.height + 2);
 		dropShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		[_containerView addSubview:dropShadow];
+         */
 		
-		self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.cellImageView.contentMode = UIViewContentModeCenter;
+        self.cellImageView.image = [UIImage imageNamed:@"wp_img_placeholder"];
+        // FIXME: use darker color and make placeholder opaque
+//        self.cellImageView.backgroundColor = self.contentView.backgroundColor;
 		[_containerView addSubview:self.cellImageView];
 				
 		self.byView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, (width - 20.0f), 32.0f)];
@@ -117,11 +125,12 @@ static UIColor *ControlInactiveColor;
 		_bylineLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0f];
 		_bylineLabel.adjustsFontSizeToFitWidth = NO;
 		_bylineLabel.textColor = [UIColor colorWithHexString:@"c0c0c0"];
+        _bylineLabel.backgroundColor = [UIColor whiteColor];
 		[_byView addSubview:_bylineLabel];
 		
 		self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, width, 44.0f)];
 		_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_titleLabel.backgroundColor = [UIColor clearColor];
+		_titleLabel.backgroundColor = [UIColor whiteColor];
 		_titleLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:20.0f];
 		_titleLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
 		_titleLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -130,14 +139,13 @@ static UIColor *ControlInactiveColor;
 
 		self.snippetLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, width, 44.0f)];
 		_snippetLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_snippetLabel.backgroundColor = [UIColor clearColor];
+		_snippetLabel.backgroundColor = [UIColor whiteColor];
 		_snippetLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];
 		_snippetLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
 		_snippetLabel.lineBreakMode = UILineBreakModeWordWrap;
 		_snippetLabel.numberOfLines = 0;
 		[_containerView addSubview:_snippetLabel];
 		
-		UIColor *color = [UIColor colorWithHexString:@"278dbc"];
 		CGFloat fontSize = 16.0f;
 		self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		[_followButton.titleLabel setFont:[UIFont systemFontOfSize:fontSize]];
@@ -194,22 +202,22 @@ static UIColor *ControlInactiveColor;
 
 	// Are we showing an image? What size should it be?
 	if(_showImage) {
-		height = (contentWidth * 0.66f);
+		height = ceil(contentWidth * 0.66f);
 		self.cellImageView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
-		nextY += ceilf(height + vpadding);
+		nextY += height + vpadding;
 	} else {
 		nextY += vpadding;
 	}
 
 	// Position the title
-	height = [_titleLabel suggestedSizeForWidth:contentWidth].height;
+	height = ceil([_titleLabel suggestedSizeForWidth:contentWidth].height);
 	_titleLabel.frame = CGRectMake(10.0f, nextY, contentWidth-20.0f, height);
-	nextY += ceilf(height + vpadding);
+	nextY += height + vpadding;
 
 	// Position the snippet
-	height = [_snippetLabel suggestedSizeForWidth:contentWidth].height;
+	height = ceil([_snippetLabel suggestedSizeForWidth:contentWidth].height);
 	_snippetLabel.frame = CGRectMake(10.0f, nextY, contentWidth-20.0f, height);
-	nextY += ceilf(height + vpadding);
+	nextY += height + vpadding;
 	
 //	height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:contentWidth].height;
 //	self.textContentView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
@@ -230,7 +238,11 @@ static UIColor *ControlInactiveColor;
 
 - (void)prepareForReuse {
 	[super prepareForReuse];
-	
+
+    self.cellImageView.contentMode = UIViewContentModeCenter;
+    self.cellImageView.image = [UIImage imageNamed:@"wp_img_placeholder"];
+    _featuredImageIsSet = NO;
+
 	_avatarImageView.image = nil;
 	_bylineLabel.text = nil;
 }
@@ -252,25 +264,16 @@ static UIColor *ControlInactiveColor;
 
 	self.showImage = NO;
 	self.cellImageView.hidden = YES;
-	NSURL *url = nil;
-	if (post.featuredImage) {
+	if (post.featuredImageURL) {
 		self.showImage = YES;
 		self.cellImageView.hidden = NO;
 
-		NSInteger width = ceil(_containerView.frame.size.width) * [[UIScreen mainScreen] scale];
-        // FIXME: hacky, but just testing if it improves performance or not
-        // Height calculation might need refactoring
+		NSInteger width = ceil(_containerView.frame.size.width);
         NSInteger height = (width * 0.66f);
-
-		url = [NSURL URLWithString:[post featuredImageForWidth:width height:height]];
-
-		self.cellImageView.contentMode = UIViewContentModeCenter;
-		__block ReaderPostTableViewCell *selfRef = self;
-		[self.cellImageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"wp_img_placeholder.png"] success:^(UIImage *image) {
-			selfRef.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
-		} failure:^(NSError *error) {
-			// fail silently.
-		}];
+        CGRect imageFrame = self.cellImageView.frame;
+        imageFrame.size.width = width;
+        imageFrame.size.height = height;
+        self.cellImageView.frame = imageFrame;
 	}
 	
 	_reblogButton.hidden = ![self.post isWPCom];
@@ -298,15 +301,31 @@ static UIColor *ControlInactiveColor;
 		frame.origin.x = _likeButton.frame.size.width + _likeButton.frame.origin.x + padding;
 		_reblogButton.frame = frame;
 	}
-	
-	NSString *img = ([post isWPCom]) ? @"wpcom_blavatar.png" : @"wporg_blavatar.png";
+
+    static UIImage *wpcomBlavatar;
+    static UIImage *wporgBlavatar;
+    if (!wpcomBlavatar) {
+        wpcomBlavatar = [UIImage imageNamed:@"wpcom_blavatar"];
+    }
+    if (!wporgBlavatar) {
+        wporgBlavatar = [UIImage imageNamed:@"wporg_blavatar"];
+    }
+    self.avatarImageView.image = [post isWPCom] ? wpcomBlavatar : wporgBlavatar;
 	if ([post avatar] != nil) {
-		[self.avatarImageView setImageWithURL:[NSURL URLWithString:[post avatar]] placeholderImage:[UIImage imageNamed:img]];
+		[self.avatarImageView setImageWithURL:[NSURL URLWithString:[post avatar]]];
 	} else {
-		[self.avatarImageView setImageWithURL:[self.avatarImageView blavatarURLForHost:[[NSURL URLWithString:post.blogURL] host]] placeholderImage:[UIImage imageNamed:img]];
+		[self.avatarImageView setImageWithURL:[self.avatarImageView blavatarURLForHost:[[NSURL URLWithString:post.blogURL] host]]];
 	}
 
 	[self updateControlBar];
+}
+
+- (void)setFeaturedImage:(UIImage *)image {
+    if (_featuredImageIsSet) {
+        return;
+    }
+    _featuredImageIsSet = YES;
+    self.cellImageView.image = image;
 }
 
 - (void)updateControlBar {
