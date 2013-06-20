@@ -239,37 +239,23 @@
 
 
 - (void)updateMediaLayout:(ReaderMediaView *)imageView {
-	
+
 	NSURL *url = imageView.contentURL;
 	
-	CGFloat width = _textContentView.frame.size.width;
+	CGSize originalSize = imageView.frame.size;
 	CGSize viewSize = imageView.image.size;
-	viewSize.width = width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-
-	if (viewSize.height > 0) {
-		
-		if (imageView.image.size.width > _textContentView.frame.size.width) {
-			// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
-			// so position it offset by the inverse of _textContentView's edgeInsets.
-			UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
-			edgeInsets.left = 0.0f - edgeInsets.left;
-			edgeInsets.top = 0.0f;
-			edgeInsets.right = 0.0f - edgeInsets.right;
-			edgeInsets.bottom = 0.0f;
-			imageView.edgeInsets = edgeInsets;
-			
-			viewSize.height = imageView.image.size.height * (viewSize.width / imageView.image.size.width);
-		}
-		
-	}
-NSLog(@"IMAGE SIZING - ORIGINAL: w%f h%f | ADJUSTED: w%f h%f", imageView.image.size.width, imageView.image.size.height, viewSize.width, viewSize.height);
+	viewSize.width = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+	viewSize.height = viewSize.height * (_textContentView.frame.size.width / imageView.image.size.width);
+	viewSize.height += imageView.edgeInsets.top; // account for the top edge inset.
+	
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
 	
 	// update all attachments that matchin this URL (possibly multiple images with same size)
 	for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
-		attachment.originalSize = imageView.image.size;
+		attachment.originalSize = originalSize;
 		attachment.displaySize = viewSize;
 	}
+	
 }
 
 
@@ -412,36 +398,55 @@ NSLog(@"IMAGE SIZING - ORIGINAL: w%f h%f | ADJUSTED: w%f h%f", imageView.image.s
 
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame {
-		
+	
+	CGFloat width = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+	// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
+	// so position it offset by the inverse of _textContentView's edgeInsets. Also add top padding so we don't bump into a line of text.
+	// Remeber to add an extra 10px to the frame to preserve aspect ratio.
+	UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
+	edgeInsets.left = 0.0f - edgeInsets.left;
+	edgeInsets.top = 12.0f;
+	edgeInsets.right = 0.0f - edgeInsets.right;
+	edgeInsets.bottom = 0.0f;
+	
 	if (attachment.contentType == DTTextAttachmentTypeImage) {
 
-		// Starting out we'll have a real image or a placeholder, so no need to guess the right size.
-		UIImage *image = ([attachment.contents isKindOfClass:[UIImage class]]) ? (UIImage*)attachment.contents : [UIImage imageNamed:@"wp_img_placeholder.png"];
-		frame.size = image.size;
-
-		if (frame.size.width > _textContentView.frame.size.width) {
-			CGFloat r = _textContentView.frame.size.width / frame.size.width;
-			frame.size.width = frame.size.width * r;
-			frame.size.height = frame.size.height * r;
+		UIImage *image;
+		
+		if( [attachment.contents isKindOfClass:[UIImage class]] ) {
+			image = (UIImage *)attachment.contents;
+			
+			frame.size.width = width;
+			frame.size.height = image.size.height * (width / image.size.width);
+			
 		} else {
-			frame.size.width = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right); // Match the frame width so the image is centered.
+			image = [UIImage imageNamed:@"wp_img_placeholder.png"];
+
+			frame.size.width = width;
+			frame.size.height = width * 0.66f;
 		}
 		
+		// extra 10px to offset the top edge inset keeping the image from bumping the text above it.
+		frame.size.height += edgeInsets.top;
+		
 		ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
+		imageView.contentMode = UIViewContentModeScaleAspectFit;
+		imageView.edgeInsets = edgeInsets;
+
 		[_mediaArray addObject:imageView];
 		imageView.linkURL = attachment.hyperLinkURL;
 		[imageView addTarget:self action:@selector(handleImageLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
-		if (attachment.contents) {
-			[imageView setImage:(UIImage *)attachment.contents];
+		if ([attachment.contents isKindOfClass:[UIImage class]]) {
+			[imageView setImage:image];
 		} else {
-			imageView.imageView.contentMode = UIViewContentModeCenter;
+			imageView.contentMode = UIViewContentModeCenter;
 			imageView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0];
 			[imageView setImageWithURL:attachment.contentURL
-					  placeholderImage:[UIImage imageNamed:@"wp_img_placeholder.png"]
+					  placeholderImage:image
 							   success:^(id readerImageView) {
 								   ReaderImageView *imageView = readerImageView;
-								   imageView.imageView.contentMode = UIViewContentModeScaleAspectFit;
+								   imageView.contentMode = UIViewContentModeScaleAspectFit;
 								   imageView.backgroundColor = [UIColor clearColor];
 								   [self handleMediaViewLoaded:readerImageView];
 							   } failure:^(id readerImageView, NSError *error) {
@@ -466,13 +471,17 @@ NSLog(@"IMAGE SIZING - ORIGINAL: w%f h%f | ADJUSTED: w%f h%f", imageView.image.s
 	
 		// make sure we have a reasonable size.
 		if (frame.size.width > _textContentView.frame.size.width) {
-			CGFloat r = _textContentView.frame.size.width / frame.size.width;
-			frame.size.width = frame.size.width * r;
-			frame.size.height = frame.size.height * r;
+			frame.size.width = width;
+			frame.size.height = frame.size.height * (width / frame.size.width);
 		}
-
 		
+		// extra 10px to offset the top edge inset keeping the image from bumping the text above it.
+		frame.size.height += edgeInsets.top;
+
 		ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
+		videoView.contentMode = UIViewContentModeScaleAspectFit;
+		videoView.edgeInsets = edgeInsets;
+
 		[_mediaArray addObject:videoView];
 		[videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
 			[self handleMediaViewLoaded:readerVideoView];
