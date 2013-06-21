@@ -98,15 +98,7 @@
         _containerView.opaque = YES;
 		[self.contentView addSubview:_containerView];
 
-		/* TODO: add shadow without performance hit
-		CGFloat width = frame.size.width;
-		UIImage *image = [UIImage imageNamed:@"reader-post-cell-shadow.png"];
-		UIImageView *dropShadow = [[UIImageView alloc] initWithImage:[image resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 1.0f, 2.0f, 1.0f)]];
-		dropShadow.frame = CGRectMake(-1.0f, 0.0f, width + 2, frame.size.height + 2);
-		dropShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		[_containerView addSubview:dropShadow];
-         */
-		
+        [self setShadowEnabled:YES];
 		[self buildPostContent];
 		[self buildMetaContent];
     }
@@ -114,6 +106,15 @@
     return self;
 }
 
+- (void)setShadowEnabled:(BOOL)enabled {
+    if (enabled) {
+        _containerView.layer.masksToBounds = NO;
+        _containerView.layer.shadowOffset = CGSizeMake(0, 0);
+        _containerView.layer.shadowOpacity = 0.075f;
+    } else {
+        _containerView.layer.shadowOpacity = 0.f;
+    }
+}
 
 - (void)buildPostContent {
 	self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;

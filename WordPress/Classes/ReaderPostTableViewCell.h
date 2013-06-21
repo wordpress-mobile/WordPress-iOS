@@ -19,5 +19,6 @@
 - (void)setReblogTarget:(id)target action:(SEL)selector;
 - (void)setFeaturedImage:(UIImage *)image;
 - (void)setAvatar:(UIImage *)avatar;
+- (void)setShadowEnabled:(BOOL)enabled;
 
 @end
