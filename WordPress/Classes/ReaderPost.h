@@ -119,6 +119,9 @@ extern NSInteger const ReaderTopicEndpointIndex;
 
 - (NSString *)avatar;
 
+- (UIImage *)cachedAvatarWithSize:(CGSize)size;
+
+- (void)fetchAvatarWithSize:(CGSize)size success:(void (^)(UIImage *image))success;
 
 - (NSString *)featuredImageForWidth:(NSUInteger)width height:(NSUInteger)height;
 

@@ -14,6 +14,7 @@
 #import "WPWebViewController.h"
 #import "UIImageView+AFNetworkingExtra.h"
 #import "UILabel+SuggestSize.h"
+#import "WPAvatarSource.h"
 
 #define RPTVCVerticalPadding 10.0f;
 
@@ -28,7 +29,6 @@
 
 @property (nonatomic, strong) UIView *byView;
 @property (nonatomic, strong) UILabel *bylineLabel;
-@property (nonatomic, strong) UIImageView *avatarImageView;
 
 @property (nonatomic, strong) UIView *controlView;
 @property (nonatomic, strong) UIButton *likeButton;
@@ -44,6 +44,7 @@
 
 @implementation ReaderPostTableViewCell {
     BOOL _featuredImageIsSet;
+    BOOL _avatarIsSet;
 }
 
 + (CGFloat)cellHeightForPost:(ReaderPost *)post withWidth:(CGFloat)width {
@@ -227,6 +228,7 @@
     self.cellImageView.contentMode = UIViewContentModeCenter;
     self.cellImageView.image = [UIImage imageNamed:@"wp_img_placeholder"];
     _featuredImageIsSet = NO;
+    _avatarIsSet = NO;
 
 	_avatarImageView.image = nil;
 	_bylineLabel.text = nil;
@@ -278,6 +280,13 @@
 		_reblogButton.hidden = YES;
 	}
 
+	[self updateControlBar];
+}
+
+- (void)setAvatar:(UIImage *)avatar {
+    if (_avatarIsSet) {
+        return;
+    }
     static UIImage *wpcomBlavatar;
     static UIImage *wporgBlavatar;
     if (!wpcomBlavatar) {
@@ -286,14 +295,13 @@
     if (!wporgBlavatar) {
         wporgBlavatar = [UIImage imageNamed:@"wporg_blavatar"];
     }
-    self.avatarImageView.image = [post isWPCom] ? wpcomBlavatar : wporgBlavatar;
-	if ([post avatar] != nil) {
-		[self.avatarImageView setImageWithURL:[NSURL URLWithString:[post avatar]]];
-	} else {
-		[self.avatarImageView setImageWithURL:[self.avatarImageView blavatarURLForHost:[[NSURL URLWithString:post.blogURL] host]]];
-	}
 
-	[self updateControlBar];
+    if (avatar) {
+        self.avatarImageView.image = avatar;
+        _avatarIsSet = YES;
+    } else {
+        self.avatarImageView.image = [self.post isWPCom] ? wpcomBlavatar : wporgBlavatar;
+    }
 }
 
 - (void)setFeaturedImage:(UIImage *)image {
