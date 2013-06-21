@@ -9,6 +9,7 @@
 #import "ReaderPostDetailView.h"
 #import <DTCoreText/DTCoreText.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import <QuartzCore/QuartzCore.h>
 #import "ReaderMediaView.h"
 #import "ReaderImageView.h"
 #import "ReaderVideoView.h"
@@ -17,6 +18,7 @@
 #import "WPWebViewController.h"
 #import "WPWebVideoViewController.h"
 #import "UIImageView+Gravatar.h"
+#import "UILabel+SuggestSize.h"
 
 @interface ReaderPostDetailView()<DTAttributedTextContentViewDelegate>
 
@@ -26,6 +28,8 @@
 @property (nonatomic, strong) UILabel *authorLabel;
 @property (nonatomic, strong) UILabel *dateLabel;
 @property (nonatomic, strong) UILabel *blogLabel;
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UIButton *followButton;
 @property (nonatomic, strong) DTAttributedTextContentView *textContentView;
 @property (nonatomic, strong) NSMutableArray *mediaArray;
 @property (nonatomic, weak) id<ReaderPostDetailViewDelegate>delegate;
@@ -37,6 +41,9 @@
 - (void)handleLinkTapped:(id)sender;
 - (void)handleVideoTapped:(id)sender;
 - (void)handleMediaViewLoaded:(ReaderMediaView *)mediaView;
+- (void)handleFollowButtonTapped:(id)sender;
+- (void)handleFollowButtonInteraction:(id)sender;
+- (BOOL)isEmoji:(NSURL *)url;
 
 @end
 
@@ -103,24 +110,55 @@
 		_blogLabel.textColor = [UIColor colorWithHexString:@"278dbc"];
 		[_authorView addSubview:_blogLabel];
 		
-		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, _authorView.frame.size.height + padding, width, 100.0f)]; // Starting height is arbitrary
+		CGRect followFrame = _blogLabel.frame;
+		followFrame.origin.y += 2.0f;
+		followFrame.size.height += 4.0f;
+		self.followButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		_followButton.frame = followFrame; // Arbitrary width and x. The height and y are correct.
+		[_followButton setSelected:[post.isFollowing boolValue]];
+		_followButton.layer.cornerRadius = 3.0f;
+		_followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+		_followButton.backgroundColor = [UIColor colorWithRed:234.0f/255.0f green:234.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
+		_followButton.titleLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:10.0f];
+		[_followButton setTitle:NSLocalizedString(@"FOLLOW", @"Prompt to follow a blog.") forState:UIControlStateNormal];
+		[_followButton setTitle:NSLocalizedString(@"FOLLOWING", @"User is following the blog.") forState:UIControlStateSelected];
+		[_followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
+		[_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
+		[_followButton setTitleColor:[UIColor colorWithRed:116.0f/255.0f green:116.0f/255.0f blue:116.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+		[_followButton addTarget:self action:@selector(handleFollowButtonInteraction:) forControlEvents:UIControlEventAllTouchEvents];
+		
+		[_authorView addSubview:_followButton];
+		
+		CGFloat contentY = _authorView.frame.size.height;
+		
+		if ([self.post.postTitle length]) {		
+			CGRect titleFrame = CGRectMake(padding, contentY + padding, width - (padding * 2), 44.0f);
+			self.titleLabel = [[UILabel alloc] initWithFrame:titleFrame];
+			_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+			_titleLabel.backgroundColor = [UIColor clearColor];
+			_titleLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:20.0f];
+			_titleLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0f];
+			_titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+			_titleLabel.numberOfLines = 0;
+			_titleLabel.text = self.post.postTitle;
+			[self addSubview:_titleLabel];
+			titleFrame.size.height = [_titleLabel suggestedSizeForWidth:_titleLabel.frame.size.width].height;
+			_titleLabel.frame = titleFrame;
+			contentY = titleFrame.origin.y + titleFrame.size.height;
+		}
+		
+		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, contentY + 10.0f, width, 100.0f)]; // Starting height is arbitrary
 		_textContentView.delegate = self;
 		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_textContentView.backgroundColor = [UIColor clearColor];
 		_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, padding, 0.0f, padding);
 		_textContentView.shouldDrawImages = NO;
 		_textContentView.shouldDrawLinks = NO;
+		_textContentView.clipsToBounds = YES;
 		[self addSubview:_textContentView];
 		
-		NSString *str = @"";
-		NSString *styles = @"<style>body{color:#404040;} a{color:#278dbc;text-decoration:none;}a:active{color:#005684;}</style>";
-		NSString *content = self.post.content;
-		if([self.post.postTitle length] > 0) {
-			str = [NSString stringWithFormat:@"%@<h2 style=\"font-size:20px;line-height:24px;font-weight:200;padding-top:5px;margin-bottom:10px;margin-left:-1px;\">%@</h2>%@", styles, self.post.postTitle, content];
-		} else {
-			str = [NSString stringWithFormat:@"%@%@",styles, content];
-		}
 
+		NSString *str = [NSString stringWithFormat:@"<style>body{color:#404040;} a{color:#278dbc;text-decoration:none;}a:active{color:#005684;}</style>%@", [self.post.content trim]];
 		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
 															  DTDefaultFontFamily:@"Open Sans",
 													DTDefaultLineHeightMultiplier:@0.9,
@@ -135,12 +173,47 @@
 }
 
 
+- (void)layoutSubviews {
+	[super layoutSubviews];
+	
+	NSString *str = _followButton.currentTitle;
+	CGSize sz = [str sizeWithFont:_followButton.titleLabel.font];
+	[_followButton sizeToFit];
+	sz = _followButton.frame.size;
+	sz.width += 7.0f; // just a little extra width so the text has better padding on the right.
+	
+	CGFloat desiredWidth = [_blogLabel.text sizeWithFont:_blogLabel.font].width;
+	CGFloat availableWidth = (_authorView.frame.size.width - _blogLabel.frame.origin.x) - 20.0f;
+	availableWidth -= (sz.width + 10.0f);
+
+	CGRect frame = _blogLabel.frame;
+	frame.size.width = MIN(availableWidth, desiredWidth);
+	_blogLabel.frame = frame;
+	
+	frame = _followButton.frame;
+	frame.origin.x = _blogLabel.frame.origin.x + _blogLabel.frame.size.width + 5.0f;
+	frame.size.width = sz.width;
+	_followButton.frame = frame;
+
+}
+
+
 - (void)updateLayout {
 	// Figure out image sizes after orientation change.
 	for (ReaderMediaView *mediaView in _mediaArray) {
 		[self updateMediaLayout:mediaView];
 	}
 
+	if (_titleLabel) {
+		CGRect titleFrame = _titleLabel.frame;
+		titleFrame.size.height = [_titleLabel suggestedSizeForWidth:titleFrame.size.width].height;
+		_titleLabel.frame = titleFrame;
+		
+		CGRect contentFrame = _textContentView.frame;
+		contentFrame.origin.y = titleFrame.origin.y + titleFrame.size.height + 10.0f;
+		_textContentView.frame = contentFrame;
+	}
+	
 	// Then update the layout
 	// need to reset the layouter because otherwise we get the old framesetter or cached layout frames
 	_textContentView.layouter = nil;
@@ -168,36 +241,70 @@
 
 
 - (void)updateMediaLayout:(ReaderMediaView *)imageView {
-	
+
 	NSURL *url = imageView.contentURL;
 	
-	CGFloat width = _textContentView.frame.size.width;
+	CGSize originalSize = imageView.frame.size;
 	CGSize viewSize = imageView.image.size;
-	viewSize.width = width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-
-	if (viewSize.height > 0) {
-		
-		if (imageView.image.size.width > _textContentView.frame.size.width) {
-			// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
-			// so position it offset by the inverse of _textContentView's edgeInsets.
-			UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
-			edgeInsets.left = 0.0f - edgeInsets.left;
-			edgeInsets.top = 0.0f;
-			edgeInsets.right = 0.0f - edgeInsets.right;
-			edgeInsets.bottom = 0.0f;
-			imageView.edgeInsets = edgeInsets;
-			
-			viewSize.height = imageView.image.size.height * (viewSize.width / imageView.image.size.width);
-		}
-		
+	
+	if ([self isEmoji:url]) {
+		CGFloat scale = [UIScreen mainScreen].scale;
+		viewSize.width *= scale;
+		viewSize.height *= scale;
+	} else {
+		viewSize.width = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+		viewSize.height = viewSize.height * (_textContentView.frame.size.width / imageView.image.size.width);
+		viewSize.height += imageView.edgeInsets.top; // account for the top edge inset.
 	}
+
 	NSPredicate *pred = [NSPredicate predicateWithFormat:@"contentURL == %@", url];
 	
 	// update all attachments that matchin this URL (possibly multiple images with same size)
 	for (DTTextAttachment *attachment in [self.textContentView.layoutFrame textAttachmentsWithPredicate:pred]) {
-		attachment.originalSize = imageView.image.size;
+		attachment.originalSize = originalSize;
 		attachment.displaySize = viewSize;
 	}
+}
+
+
+- (BOOL)isEmoji:(NSURL *)url {
+	return ([[url absoluteString] rangeOfString:@"wp.com/wp-includes/images/smilies"].location != NSNotFound);
+}
+
+
+- (void)handleFollowButtonInteraction:(id)sender {
+	[self setNeedsLayout];
+}
+
+
+- (void)handleFollowButtonTapped:(id)sender {
+	[self.post toggleFollowingWithSuccess:^{
+		// nothing to do. 
+	} failure:^(NSError *error) {
+		WPLog(@"Error Following Blog : %@", [error localizedDescription]);
+		[_followButton setSelected:self.post.isFollowing];
+		[self setNeedsLayout];
+		
+		NSString *title;
+		NSString *description;
+		if (self.post.isFollowing) {
+			title = NSLocalizedString(@"Could Not Unfollow Blog", @"Title of prompt. Says a blog could not be unfollowed.");
+			description = NSLocalizedString(@"There was a problem unfollowing this blog.", @"Prompts the user that there was a problem unfollowing a blog.");
+		} else {
+			title = NSLocalizedString(@"Could Not Follow Blog", @"Title of prompt. Says a blog could not be followed.");
+			description = NSLocalizedString(@"There was a problem following this blog.", @"Prompts the user there was a problem following a blog.");
+		}
+		
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+															message:description
+														   delegate:nil
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"")
+												  otherButtonTitles:nil];
+		[alertView show];
+		
+	}];
+	[_followButton setSelected:self.post.isFollowing];
+	[self setNeedsLayout];
 }
 
 
@@ -304,37 +411,78 @@
 
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttachment:(DTTextAttachment *)attachment frame:(CGRect)frame {
-		
+	
+	CGFloat width = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
+	// The ReaderImageView view will conform to the width constraints of the _textContentView. We want the image itself to run out to the edges,
+	// so position it offset by the inverse of _textContentView's edgeInsets. Also add top padding so we don't bump into a line of text.
+	// Remeber to add an extra 10px to the frame to preserve aspect ratio.
+	UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
+	edgeInsets.left = 0.0f - edgeInsets.left;
+	edgeInsets.top = 12.0f;
+	edgeInsets.right = 0.0f - edgeInsets.right;
+	edgeInsets.bottom = 0.0f;
+	
+	// Maybe a bug in DTCoreText. If there is no text preceeding an image, the frame for the image has a negative y value.
+	// In this case let the top edgeInset be the inverse of the y value so the image is correctly positioned visually.
+	if (frame.origin.y < 0) {
+		edgeInsets.top = ABS(frame.origin.y);
+	}
+	
 	if (attachment.contentType == DTTextAttachmentTypeImage) {
 
-		// Starting out we'll have a real image or a placeholder, so no need to guess the right size.
-		UIImage *image = ([attachment.contents isKindOfClass:[UIImage class]]) ? (UIImage*)attachment.contents : [UIImage imageNamed:@"wp_img_placeholder.png"];
-		frame.size = image.size;
-		
-		if (frame.size.width > _textContentView.frame.size.width) {
-			CGFloat r = _textContentView.frame.size.width / frame.size.width;
-			frame.size.width = frame.size.width * r;
-			frame.size.height = frame.size.height * r;
-		} else {
-			frame.size.width = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right); // Match the frame width so the image is centered.
+		if ([self isEmoji:attachment.contentURL]) {
+			// minimal frame to suppress draing context errors with 0 height or width.
+			frame.size.width = MAX(frame.size.width, 1.0f);
+			frame.size.height = MAX(frame.size.height, 1.0f);
+			ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
+			[imageView setImageWithURL:attachment.contentURL
+					  placeholderImage:nil
+							   success:^(ReaderMediaView *readerMediaView) {
+								   [self handleMediaViewLoaded:(ReaderImageView *)readerMediaView];
+							   } failure:^(ReaderMediaView *readerMediaView, NSError *error) {
+								   [self handleMediaViewLoaded:readerMediaView];
+							   }];
+			return imageView;
 		}
 		
+		
+		UIImage *image;
+		
+		if( [attachment.contents isKindOfClass:[UIImage class]] ) {
+			image = (UIImage *)attachment.contents;
+			
+			frame.size.width = width;
+			frame.size.height = image.size.height * (width / image.size.width);
+			
+		} else {
+			image = [UIImage imageNamed:@"wp_img_placeholder.png"];
+
+			frame.size.width = width;
+			frame.size.height = width * 0.66f;
+		}
+		
+		// extra 10px to offset the top edge inset keeping the image from bumping the text above it.
+		frame.size.height += edgeInsets.top;
+		
 		ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
+		imageView.contentMode = UIViewContentModeScaleAspectFit;
+		imageView.edgeInsets = edgeInsets;
+
 		[_mediaArray addObject:imageView];
 		imageView.linkURL = attachment.hyperLinkURL;
 		[imageView addTarget:self action:@selector(handleImageLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
-		if (attachment.contents) {
-			[imageView setImage:(UIImage *)attachment.contents];
+		if ([attachment.contents isKindOfClass:[UIImage class]]) {
+			[imageView setImage:image];
 		} else {
-			imageView.imageView.contentMode = UIViewContentModeCenter;
+			imageView.contentMode = UIViewContentModeCenter;
 			imageView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0];
 			[imageView setImageWithURL:attachment.contentURL
-					  placeholderImage:[UIImage imageNamed:@"wp_img_placeholder.png"]
+					  placeholderImage:image
 							   success:^(id readerImageView) {
 								   ReaderImageView *imageView = readerImageView;
-								   imageView.imageView.contentMode = UIViewContentModeScaleAspectFit;
-								   imageView.backgroundColor = [UIColor whiteColor];
+								   imageView.contentMode = UIViewContentModeScaleAspectFit;
+								   imageView.backgroundColor = [UIColor clearColor];
 								   [self handleMediaViewLoaded:readerImageView];
 							   } failure:^(id readerImageView, NSError *error) {
 								   [self handleMediaViewLoaded:readerImageView];
@@ -358,13 +506,17 @@
 	
 		// make sure we have a reasonable size.
 		if (frame.size.width > _textContentView.frame.size.width) {
-			CGFloat r = _textContentView.frame.size.width / frame.size.width;
-			frame.size.width = frame.size.width * r;
-			frame.size.height = frame.size.height * r;
+			frame.size.width = width;
+			frame.size.height = frame.size.height * (width / frame.size.width);
 		}
-
 		
+		// extra 10px to offset the top edge inset keeping the image from bumping the text above it.
+		frame.size.height += edgeInsets.top;
+
 		ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
+		videoView.contentMode = UIViewContentModeScaleAspectFit;
+		videoView.edgeInsets = edgeInsets;
+
 		[_mediaArray addObject:videoView];
 		[videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
 			[self handleMediaViewLoaded:readerVideoView];

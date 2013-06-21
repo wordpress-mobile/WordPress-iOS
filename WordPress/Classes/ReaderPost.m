@@ -15,11 +15,13 @@
 #import "NSString+Helpers.h"
 
 NSInteger const ReaderTopicEndpointIndex = 3;
+NSInteger const ReaderPostSummaryLength = 150;
 
 @interface ReaderPost()
 
 - (void)updateFromDictionary:(NSDictionary *)dict;
-- (NSString *)createSummary:(NSString *)str;
+- (NSString *)createSummary:(NSString *)str makePlainText:(BOOL)makePlainText;
+- (NSString *)makePlainText:(NSString *)string;
 - (NSString *)normalizeParagraphs:(NSString *)string;
 
 @end
@@ -204,19 +206,13 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		
 		self.siteID = [editorial numberForKey:@"blog_id"];
 
-		self.summary = [self createSummary:[dict objectForKey:@"content"]];
+		self.summary = [self createSummary:[dict objectForKey:@"content"] makePlainText:YES];
 		
 		NSString *img = [editorial objectForKey:@"image"];
 		NSRange rng = [img rangeOfString:@"mshots/"];
 		if(NSNotFound != rng.location) {
 			rng = [img rangeOfString:@"?" options:NSBackwardsSearch];
 			img = [img substringWithRange:NSMakeRange(0, rng.location)]; // Just strip the query string off the end and we'll specify it later.
-
-//			img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//			rng = [img rangeOfString:@"://" options:NSBackwardsSearch];
-//			rng.location += 3;
-//			rng.length = [img rangeOfString:@"?" options:NSBackwardsSearch].location - rng.location;
-//			img = [img substringWithRange:rng];
 			
 		} else if(NSNotFound != [img rangeOfString:@"imgpress"].location) {
 			NSRange rng;
@@ -273,7 +269,11 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 		
 		self.siteID = [dict numberForKey:@"blog_id"];
 		
-		self.summary = [[[dict stringForKey:@"post_content"] stringByStrippingHTML] trim];
+		NSString *summary = [self makePlainText:[dict stringForKey:@"post_content"]];
+		if ([summary length] > ReaderPostSummaryLength) {
+			summary = [self createSummary:summary makePlainText:NO];
+		}
+		self.summary = summary;
 				
 		NSString *img = [dict stringForKey:@"post_featured_thumbnail"];
 		if([img length]) {
@@ -333,9 +333,15 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 }
 
+- (NSString *)makePlainText:(NSString *)string {
+	return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] trim];
+}
 
-- (NSString *)createSummary:(NSString *)str {	
-	str = [[str stringByStrippingHTML] stringByDecodingXMLCharacters];
+
+- (NSString *)createSummary:(NSString *)str makePlainText:(BOOL)makePlainText {
+	if (makePlainText) {
+		str = [self makePlainText:str];
+	}
 	
 	str = [str stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
 	
@@ -344,17 +350,17 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	NSRange rng = [snippet rangeOfString:@"." options:NSBackwardsSearch];
 	
 	if (rng.location == NSNotFound) {
-		rng.location = MIN(150, [str length]);
+		rng.location = MIN(ReaderPostSummaryLength, [str length]);
 	}
 	
-	if(rng.location > 150) {
+	if(rng.location > ReaderPostSummaryLength) {
 		snippet = [snippet substringToIndex:(rng.location + 1)];
 	} else {
 		rng = [snippet rangeOfString:@" " options:NSBackwardsSearch];
 		snippet = [NSString stringWithFormat:@"%@ ...", [snippet substringToIndex:rng.location]];
 	}
 
-	return [snippet trim];
+	return snippet;
 }
 
 
@@ -376,7 +382,7 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 	string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@"</p>"];
 	
 	// Remove inline styles.
-	regex = [NSRegularExpression regularExpressionWithPattern:@"style=\".*\"" options:NSRegularExpressionCaseInsensitive error:&error];
+	regex = [NSRegularExpression regularExpressionWithPattern:@"style=\"[^\"]*\"" options:NSRegularExpressionCaseInsensitive error:&error];
 	string = [regex stringByReplacingMatchesInString:string options:NSMatchingReportCompletion range:NSMakeRange(0, [string length]) withTemplate:@""];
 	
 	return string;

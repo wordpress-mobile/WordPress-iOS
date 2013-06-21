@@ -21,6 +21,7 @@
 		_imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_imageView.contentMode = UIViewContentModeScaleAspectFit;
 		[self addSubview:_imageView];
+		[super setBackgroundColor:[UIColor clearColor]];
     }
     return self;
 }
@@ -33,21 +34,26 @@
 	if (UIEdgeInsetsEqualToEdgeInsets(UIEdgeInsetsZero, _edgeInsets)) {
 		_imageView.frame = frame;
 	} else {
-		CGFloat width = frame.size.width - (_edgeInsets.left + _edgeInsets.right);
-		frame.size.width = width;
+		frame.size.width -= (_edgeInsets.left + _edgeInsets.right);
+		frame.size.height -= (_edgeInsets.top + _edgeInsets.bottom);
 		frame.origin.x = _edgeInsets.left;
+		frame.origin.y = _edgeInsets.top;
 	}
 	_imageView.frame = frame;
-	
-	if (_imageView.image.size.width < frame.size.width && _imageView.image.size.height < frame.size.height) {
-		_imageView.contentMode = UIViewContentModeCenter;
-	} else {
-		_imageView.contentMode = UIViewContentModeScaleAspectFit;
-	}
 }
 
 
 #pragma mark - Instance Methods
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+//	[super setBackgroundColor:backgroundColor];
+	[_imageView setBackgroundColor:backgroundColor];
+}
+
+- (void)setContentMode:(UIViewContentMode)contentMode {
+	[super setContentMode:contentMode];
+	_imageView.contentMode = contentMode;
+}
 
 - (void)setEdgeInsets:(UIEdgeInsets)edgeInsets {
 	_edgeInsets = edgeInsets;
