@@ -170,6 +170,7 @@
 	_likeButton.frame = CGRectMake(0.0f, 53.0f, w, 40.0f);
 	_likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
 	_likeButton.backgroundColor = [UIColor whiteColor];
+	[_likeButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, -5.0f, 0.0f, 0.0f)];
 	[_likeButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Bold" size:10.0f]];
 	[_likeButton setTitleColor:[UIColor colorWithRed:84.0f/255.0f green:173.0f/255.0f blue:211.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
 	[_likeButton setTitleColor:[UIColor colorWithRed:221.0f/255.0f green:118.0f/255.0f blue:43.0f/255.0f alpha:1.0f] forState:UIControlStateSelected];
@@ -318,7 +319,8 @@
     _likeButton.selected = _post.isLiked.boolValue;
     _reblogButton.selected = _post.isReblogged.boolValue;
 
-	[_likeButton setTitle:[self.post.likeCount stringValue] forState:UIControlStateNormal];
+	NSString *str = ([self.post.likeCount integerValue] > 0) ? [self.post.likeCount stringValue] : nil;
+	[_likeButton setTitle:str forState:UIControlStateNormal];
 }
 
 

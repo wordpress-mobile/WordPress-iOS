@@ -256,6 +256,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	
 	UIButton *likeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 	[likeBtn.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Bold" size:10.0f]];
+	[likeBtn setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, -5.0f, 0.0f, 0.0f)];
 	[likeBtn setTitleColor:[UIColor colorWithRed:84.0f/255.0f green:173.0f/255.0f blue:211.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
 	[likeBtn setTitleColor:[UIColor colorWithRed:221.0f/255.0f green:118.0f/255.0f blue:43.0f/255.0f alpha:1.0f] forState:UIControlStateSelected];
 	[likeBtn setImage:[UIImage imageNamed:@"reader-postaction-like"] forState:UIControlStateNormal];
@@ -351,7 +352,8 @@ NSInteger const ReaderCommentsToSync = 100;
 	
 	UIButton *btn = (UIButton *)_likeButton.customView;
 	[btn setSelected:[self.post.isLiked boolValue]];
-	[btn setTitle:[self.post.likeCount stringValue] forState:UIControlStateNormal];
+	NSString *str = ([self.post.likeCount integerValue] > 0) ? [self.post.likeCount stringValue] : nil;
+	[btn setTitle:str forState:UIControlStateNormal];
 	_likeButton.customView = btn;
 	
 	btn = (UIButton *)_reblogButton.customView;
