@@ -77,7 +77,7 @@ extern NSInteger const ReaderTopicEndpointIndex;
  @param context The managed object context to query.
  
  */
-+ (void)deletePostsSynedEarlierThan:(NSDate *)syncedDate withContext:(NSManagedObjectContext *)context;
++ (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate withContext:(NSManagedObjectContext *)context;
 
 
 /**
