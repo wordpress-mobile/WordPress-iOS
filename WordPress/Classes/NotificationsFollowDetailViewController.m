@@ -241,7 +241,7 @@
     [cell setFollowing: !isFollowing];
 
     
-    NSUInteger blogID = [[noteDetails objectForKey:@"blog_id"] intValue];
+    NSUInteger blogID = [[noteDetails objectForKey:@"site_id"] intValue];
     if (blogID) {
         [[WordPressComApi sharedApi] followBlog:blogID isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSDictionary *followResponse = (NSDictionary *)responseObject;
