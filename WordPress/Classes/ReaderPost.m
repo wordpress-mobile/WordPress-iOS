@@ -11,6 +11,8 @@
 #import "NSString+Helpers.h"
 #import "NSString+Util.h"
 #import "NSString+XMLExtensions.h"
+#import "WPAvatarSource.h"
+#import "NSString+Helpers.h"
 
 NSInteger const ReaderTopicEndpointIndex = 3;
 
@@ -570,6 +572,34 @@ NSInteger const ReaderTopicEndpointIndex = 3;
 
 - (NSString *)avatar {
 	return (self.postAvatar == nil) ? self.authorAvatarURL : self.postAvatar;
+}
+
+- (UIImage *)cachedAvatarWithSize:(CGSize)size {
+    NSString *hash;
+    WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash];
+    return [[WPAvatarSource sharedSource] cachedImageForAvatarHash:hash ofType:type withSize:size];
+}
+
+- (void)fetchAvatarWithSize:(CGSize)size success:(void (^)(UIImage *image))success {
+    NSString *hash;
+    WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash];
+
+    [[WPAvatarSource sharedSource] fetchImageForAvatarHash:hash ofType:type withSize:size success:success];
+}
+
+- (WPAvatarSourceType)avatarSourceTypeWithHash:(NSString **)hash {
+    NSString *url = self.postAvatar ? self.postAvatar : self.authorAvatarURL;
+    if (url) {
+        NSURL *avatarURL = [NSURL URLWithString:url];
+        if (avatarURL) {
+            return [[WPAvatarSource sharedSource] parseURL:avatarURL forAvatarHash:hash];
+        }
+    }
+    if (self.blogURL) {
+        *hash = [[[NSURL URLWithString:self.blogURL] host] md5];
+        return WPAvatarSourceTypeBlavatar;
+    }
+    return WPAvatarSourceTypeUnknown;
 }
 
 - (NSURL *)featuredImageURL {

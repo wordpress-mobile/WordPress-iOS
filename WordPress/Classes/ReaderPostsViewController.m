@@ -309,13 +309,22 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
         ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
         if (post.featuredImageURL) {
-            UIImage *avatarImage = [post cachedAvatarWithSize:cell.avatarImageView.bounds.size];
-            if (avatarImage) {
-                [cell setAvatar:avatarImage];
+            UIImage *image = [post cachedAvatarWithSize:cell.avatarImageView.bounds.size];
+            CGSize imageSize = cell.avatarImageView.bounds.size;
+            if (image) {
+                [cell setAvatar:image];
+            } else {
+                __weak UITableView *tableView = self.tableView;
+                [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+                    if (cell == [tableView cellForRowAtIndexPath:indexPath]) {
+                        [cell setAvatar:image];
+                    }
+                }];
             }
+
             NSURL *imageURL = post.featuredImageURL;
-            CGSize imageSize = cell.cellImageView.bounds.size;
-            UIImage *image = [_featuredImageSource imageForURL:imageURL withSize:imageSize];
+            imageSize = cell.cellImageView.bounds.size;
+            image = [_featuredImageSource imageForURL:imageURL withSize:imageSize];
             if (image) {
                 [cell setFeaturedImage:image];
             } else {

@@ -14,6 +14,7 @@
 #import "WPWebViewController.h"
 #import "UIImageView+AFNetworkingExtra.h"
 #import "UILabel+SuggestSize.h"
+#import "WPAvatarSource.h"
 
 #define RPTVCVerticalPadding 10.0f;
 
@@ -24,7 +25,6 @@ static UIColor *ControlInactiveColor;
 
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) UIView *containerView;
-@property (nonatomic, strong) UIImageView *avatarImageView;
 @property (nonatomic, strong) UIView *byView;
 @property (nonatomic, strong) UIView *controlView;
 @property (nonatomic, strong) UIButton *likeButton;
@@ -42,6 +42,7 @@ static UIColor *ControlInactiveColor;
 
 @implementation ReaderPostTableViewCell {
     BOOL _featuredImageIsSet;
+    BOOL _avatarIsSet;
 }
 
 + (void)initialize {
@@ -242,6 +243,7 @@ static UIColor *ControlInactiveColor;
     self.cellImageView.contentMode = UIViewContentModeCenter;
     self.cellImageView.image = [UIImage imageNamed:@"wp_img_placeholder"];
     _featuredImageIsSet = NO;
+    _avatarIsSet = NO;
 
 	_avatarImageView.image = nil;
 	_bylineLabel.text = nil;
@@ -302,6 +304,13 @@ static UIColor *ControlInactiveColor;
 		_reblogButton.frame = frame;
 	}
 
+	[self updateControlBar];
+}
+
+- (void)setAvatar:(UIImage *)avatar {
+    if (_avatarIsSet) {
+        return;
+    }
     static UIImage *wpcomBlavatar;
     static UIImage *wporgBlavatar;
     if (!wpcomBlavatar) {
@@ -310,14 +319,13 @@ static UIColor *ControlInactiveColor;
     if (!wporgBlavatar) {
         wporgBlavatar = [UIImage imageNamed:@"wporg_blavatar"];
     }
-    self.avatarImageView.image = [post isWPCom] ? wpcomBlavatar : wporgBlavatar;
-	if ([post avatar] != nil) {
-		[self.avatarImageView setImageWithURL:[NSURL URLWithString:[post avatar]]];
-	} else {
-		[self.avatarImageView setImageWithURL:[self.avatarImageView blavatarURLForHost:[[NSURL URLWithString:post.blogURL] host]]];
-	}
 
-	[self updateControlBar];
+    if (avatar) {
+        self.avatarImageView.image = avatar;
+        _avatarIsSet = YES;
+    } else {
+        self.avatarImageView.image = [self.post isWPCom] ? wpcomBlavatar : wporgBlavatar;
+    }
 }
 
 - (void)setFeaturedImage:(UIImage *)image {
