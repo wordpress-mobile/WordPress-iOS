@@ -64,6 +64,11 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 + (void)setDefaultWordPressComAccount:(WPAccount *)account {
     NSAssert(account.isWpcom, @"account should be a wordpress.com account");
     __defaultDotcomAccount = account;
+    // When the account object hasn't been saved yet, its objectID is temporary
+    // If we store a reference to that objectID it will be invalid the next time we launch
+    if ([[account objectID] isTemporaryID]) {
+        [account.managedObjectContext obtainPermanentIDsForObjects:@[account] error:nil];
+    }
     NSURL *accountURL = [[account objectID] URIRepresentation];
     [[NSUserDefaults standardUserDefaults] setURL:accountURL forKey:DefaultDotcomAccountDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
