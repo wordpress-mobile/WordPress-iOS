@@ -818,6 +818,9 @@
 		E1E4CE0417739E3300430844 /* WPImageSourceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E4CE0317739E3300430844 /* WPImageSourceTest.m */; };
 		E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E1E4CE0517739FAB00430844 /* test-image.jpg */; };
 		E1E4CE081773AB4200430844 /* WPTableImageSourceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E4CE071773AB4200430844 /* WPTableImageSourceTest.m */; };
+		E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */; };
+		E1E4CE0D177439D100430844 /* WPAvatarSourceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */; };
+		E1E4CE0F1774563F00430844 /* misteryman.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E1E4CE0E1774531500430844 /* misteryman.jpg */; };
 		E1EE23E512E62864000B2BE6 /* movie.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E312E62864000B2BE6 /* movie.png */; };
 		E1EE23E612E62864000B2BE6 /* movie@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E412E62864000B2BE6 /* movie@2x.png */; };
 		E1EE23E912E628F6000B2BE6 /* attachment.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E712E628F6000B2BE6 /* attachment.png */; };
@@ -1887,6 +1890,10 @@
 		E1E4CE0317739E3300430844 /* WPImageSourceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPImageSourceTest.m; sourceTree = "<group>"; };
 		E1E4CE0517739FAB00430844 /* test-image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "test-image.jpg"; sourceTree = "<group>"; };
 		E1E4CE071773AB4200430844 /* WPTableImageSourceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableImageSourceTest.m; sourceTree = "<group>"; };
+		E1E4CE091773C59B00430844 /* WPAvatarSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAvatarSource.h; sourceTree = "<group>"; };
+		E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAvatarSource.m; sourceTree = "<group>"; };
+		E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAvatarSourceTest.m; sourceTree = "<group>"; };
+		E1E4CE0E1774531500430844 /* misteryman.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = misteryman.jpg; sourceTree = "<group>"; };
 		E1EE23E312E62864000B2BE6 /* movie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = movie.png; path = Resources/Images/movie.png; sourceTree = "<group>"; };
 		E1EE23E412E62864000B2BE6 /* movie@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "movie@2x.png"; path = "Resources/Images/movie@2x.png"; sourceTree = "<group>"; };
 		E1EE23E712E628F6000B2BE6 /* attachment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = attachment.png; path = Resources/Images/attachment.png; sourceTree = "<group>"; };
@@ -3094,6 +3101,8 @@
 				E1F5A1BB1771C90A00E0495F /* WPTableImageSource.m */,
 				E1921F5817733C3E000F4079 /* WPImageSource.h */,
 				E1921F5917733C3E000F4079 /* WPImageSource.m */,
+				E1E4CE091773C59B00430844 /* WPAvatarSource.h */,
+				E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -3369,6 +3378,7 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */,
 				E1E4CE0317739E3300430844 /* WPImageSourceTest.m */,
 				E183EC9E16B2164900C2EB11 /* EditPostViewControllerTest.h */,
 				E183EC9F16B2164900C2EB11 /* EditPostViewControllerTest.m */,
@@ -3512,6 +3522,7 @@
 		E16AB94414D9A13A0047A2E5 /* Test Data */ = {
 			isa = PBXGroup;
 			children = (
+				E1E4CE0E1774531500430844 /* misteryman.jpg */,
 				E1E4CE0517739FAB00430844 /* test-image.jpg */,
 				E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */,
 				E131CB5716CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json */,
@@ -4305,6 +4316,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E16AB93414D978240047A2E5 /* InfoPlist.strings in Resources */,
+				E1E4CE0F1774563F00430844 /* misteryman.jpg in Resources */,
 				E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */,
 				E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */,
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
@@ -4478,6 +4490,7 @@
 				CC24E5EF1577D1EA00A6D5B5 /* WPFriendFinderViewController.m in Sources */,
 				E1AB07AD1578D34300D6AD64 /* SettingsViewController.m in Sources */,
 				E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */,
+				E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */,
 				5D1392A7157D4D92007D51B8 /* StatsWebViewController.m in Sources */,
 				FDC528AC157E551100A3FD91 /* SidebarTableViewCell.m in Sources */,
 				FD4500D11580DF3600F2B0E6 /* UIColor+Helpers.m in Sources */,
@@ -4591,6 +4604,7 @@
 				E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */,
 				E18C1C50176A3A880002F8AC /* AccountMigrationTest.m in Sources */,
 				5DD60A8F16FCA1BF002F1FE5 /* ReaderTest.m in Sources */,
+				E1E4CE0D177439D100430844 /* WPAvatarSourceTest.m in Sources */,
 				E1B56F2B176A291E002D319B /* UINavigationControllerRotationTest.m in Sources */,
 				E1E4CE0417739E3300430844 /* WPImageSourceTest.m in Sources */,
 				E1E4CE081773AB4200430844 /* WPTableImageSourceTest.m in Sources */,
