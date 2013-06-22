@@ -583,6 +583,9 @@ NSInteger const ReaderPostSummaryLength = 150;
 - (UIImage *)cachedAvatarWithSize:(CGSize)size {
     NSString *hash;
     WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash];
+    if (!hash) {
+        return nil;
+    }
     return [[WPAvatarSource sharedSource] cachedImageForAvatarHash:hash ofType:type withSize:size];
 }
 
@@ -590,7 +593,11 @@ NSInteger const ReaderPostSummaryLength = 150;
     NSString *hash;
     WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash];
 
-    [[WPAvatarSource sharedSource] fetchImageForAvatarHash:hash ofType:type withSize:size success:success];
+    if (hash) {
+        [[WPAvatarSource sharedSource] fetchImageForAvatarHash:hash ofType:type withSize:size success:success];
+    } else if (success) {
+        success(nil);
+    }
 }
 
 - (WPAvatarSourceType)avatarSourceTypeWithHash:(NSString **)hash {
