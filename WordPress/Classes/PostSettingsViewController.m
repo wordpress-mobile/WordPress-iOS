@@ -17,8 +17,6 @@
 @interface PostSettingsViewController () {
     BOOL triedAuthOnce;
     BOOL featuredImageViewFullScreen;
-    UIView *featuredImageViewSuperview;
-    CGRect featuredImageViewOriginalFrame;
 }
 
 @property (nonatomic, strong) AbstractPost *apost;
@@ -237,9 +235,6 @@
         [featuredImageSpinner stopAnimating];
         [featuredImageSpinner setHidden:YES];
         [featuredImageLabel setHidden:YES];
-        
-        featuredImageViewOriginalFrame = featuredImageView.frame;
-        featuredImageViewSuperview = featuredImageView.superview;
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         // private blog, auth needed.
@@ -1129,9 +1124,6 @@
     
     if(featuredImageViewFullScreen) {
         [self dismissViewControllerAnimated:YES completion:^{
-            [featuredImageViewSuperview addSubview:featuredImageView];
-            [featuredImageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-            [featuredImageView setFrame:featuredImageViewOriginalFrame];
             featuredImageViewFullScreen = NO;
         }];
         
@@ -1140,9 +1132,16 @@
         featuredImageViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         featuredImageViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
         
-        [featuredImageViewController.view addSubview:featuredImageView];
-        [featuredImageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-        [featuredImageView setFrame:featuredImageViewController.view.frame];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:featuredImageView.image];
+        [imageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+        [imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [featuredImageViewController.view addSubview:imageView];
+        [imageView setFrame:featuredImageViewController.view.frame];
+        
+        UITapGestureRecognizer *featuredImageTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(respondToFeaturedImageTap)];
+        [featuredImageTapGestureRecognizer setNumberOfTapsRequired:1];
+        [imageView addGestureRecognizer:featuredImageTapGestureRecognizer];
+        [imageView setUserInteractionEnabled:YES];
         
         [self presentViewController:featuredImageViewController animated:YES completion:^{featuredImageViewFullScreen = YES;}];
     }
