@@ -476,9 +476,9 @@ NSInteger const ReaderPostSummaryLength = 150;
 
 
 - (NSString *)prettyDateString {
-	NSDate *date = [self isFreshlyPressed] ? self.sortDate : self.dateCreated;
+	NSDate *date = [self isFreshlyPressed] ? self.sortDate : self.date_created_gmt;
 	NSString *str;
-	NSTimeInterval diff = [[NSDate date] timeIntervalSince1970] - [date timeIntervalSince1970];
+	NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:date];
 	
 	if(diff < 60) {
 		NSString *fmt = NSLocalizedString(@"%i second ago", @"second ago");
