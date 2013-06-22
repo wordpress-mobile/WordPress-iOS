@@ -313,20 +313,21 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 
         ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        if (post.featuredImageURL) {
-            UIImage *image = [post cachedAvatarWithSize:cell.avatarImageView.bounds.size];
-            CGSize imageSize = cell.avatarImageView.bounds.size;
-            if (image) {
-                [cell setAvatar:image];
-            } else {
-                __weak UITableView *tableView = self.tableView;
-                [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
-                    if (cell == [tableView cellForRowAtIndexPath:indexPath]) {
-                        [cell setAvatar:image];
-                    }
-                }];
-            }
 
+        UIImage *image = [post cachedAvatarWithSize:cell.avatarImageView.bounds.size];
+        CGSize imageSize = cell.avatarImageView.bounds.size;
+        if (image) {
+            [cell setAvatar:image];
+        } else {
+            __weak UITableView *tableView = self.tableView;
+            [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+                if (cell == [tableView cellForRowAtIndexPath:indexPath]) {
+                    [cell setAvatar:image];
+                }
+            }];
+        }
+
+        if (post.featuredImageURL) {
             NSURL *imageURL = post.featuredImageURL;
             imageSize = cell.cellImageView.bounds.size;
             image = [_featuredImageSource imageForURL:imageURL withSize:imageSize];
@@ -548,19 +549,20 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
             [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath];
         }
-
-        imageSize = cell.avatarImageView.bounds.size;
-        image = [post cachedAvatarWithSize:imageSize];
-        if (image) {
-            [cell setAvatar:image];
-        } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
-            [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
-                if (cell == [tableView cellForRowAtIndexPath:indexPath]) {
-                    [cell setAvatar:image];
-                }
-            }];
-        }
     }
+
+    CGSize imageSize = cell.avatarImageView.bounds.size;
+    UIImage *image = [post cachedAvatarWithSize:imageSize];
+    if (image) {
+        [cell setAvatar:image];
+    } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
+        [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+            if (cell == [tableView cellForRowAtIndexPath:indexPath]) {
+                [cell setAvatar:image];
+            }
+        }];
+    }
+
     if (!self.tableView.isDecelerating && !self.tableView.isDragging) {
         [cell setShadowEnabled:YES];
     } else {
