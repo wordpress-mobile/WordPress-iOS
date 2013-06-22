@@ -49,6 +49,11 @@
 
 @implementation ReaderPostDetailView
 
+- (void)dealloc
+{
+    _textContentView.delegate = nil;
+}
+
 - (id)initWithFrame:(CGRect)frame post:(ReaderPost *)post delegate:(id<ReaderPostDetailViewDelegate>)delegate {
     self = [super initWithFrame:frame];
     if (self) {
