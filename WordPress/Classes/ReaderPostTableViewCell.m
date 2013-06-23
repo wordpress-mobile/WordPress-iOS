@@ -98,6 +98,11 @@
         _containerView.opaque = YES;
 		[self.contentView addSubview:_containerView];
 
+		UIView *view = [[UIView alloc] initWithFrame:self.bounds];
+		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		view.backgroundColor = [UIColor colorWithRed:239.0f/255.0f green:239.0f/255.0f blue:239.0f/255.0f alpha:1.0f];
+		[self setSelectedBackgroundView:view];
+		
         [self setShadowEnabled:YES];
 		[self buildPostContent];
 		[self buildMetaContent];
