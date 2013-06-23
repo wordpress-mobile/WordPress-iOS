@@ -517,6 +517,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath {
 	if(!aCell) return;
+
 	ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)aCell;
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.accessoryType = UITableViewCellAccessoryNone;
@@ -536,24 +537,26 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
             [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath];
         }
-		
-        imageSize = cell.avatarImageView.bounds.size;
-        image = [post cachedAvatarWithSize:imageSize];
-        if (image) {
-            [cell setAvatar:image];
-        } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
-            [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
-                if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
-                    [cell setAvatar:image];
-                }
-            }];
-        }
     }
+	
+    CGSize imageSize = cell.avatarImageView.bounds.size;
+    UIImage *image = [post cachedAvatarWithSize:imageSize];
+    if (image) {
+        [cell setAvatar:image];
+    } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
+        [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+            if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
+                [cell setAvatar:image];
+            }
+        }];
+    }
+	
     if (!self.tableView.isDecelerating && !self.tableView.isDragging) {
         [cell setShadowEnabled:YES];
     } else {
         [cell setShadowEnabled:NO];
     }
+
 }
 
 
@@ -643,56 +646,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return [ReaderPostTableViewCell cellHeightForPost:[self.resultsController objectAtIndexPath:indexPath] withWidth:self.tableView.bounds.size.width];
-}
-
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellIdentifier = @"ReaderPostCell";
-    ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[ReaderPostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-		cell.parentController = self;
-		[cell setReblogTarget:self action:@selector(handleReblogButtonTapped:)];
-    }
-	cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	cell.accessoryType = UITableViewCellAccessoryNone;
-	
-	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
-	[cell configureCell:post];
-    if (post.featuredImageURL) {
-        NSURL *imageURL = post.featuredImageURL;
-        CGSize imageSize = cell.cellImageView.bounds.size;
-        if (CGSizeEqualToSize(imageSize, CGSizeZero)) {
-            imageSize.width = self.tableView.bounds.size.width;
-            imageSize.height = round(imageSize.width * 0.66f);
-        }
-        UIImage *image = [_featuredImageSource imageForURL:imageURL withSize:imageSize];
-        if (image) {
-            [cell setFeaturedImage:image];
-        } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
-            [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath];
-        }
-    }
-
-    CGSize imageSize = cell.avatarImageView.bounds.size;
-    UIImage *image = [post cachedAvatarWithSize:imageSize];
-    if (image) {
-        [cell setAvatar:image];
-    } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
-        [post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
-            if (cell == [tableView cellForRowAtIndexPath:indexPath]) {
-                [cell setAvatar:image];
-            }
-        }];
-    }
-
-    if (!self.tableView.isDecelerating && !self.tableView.isDragging) {
-        [cell setShadowEnabled:YES];
-    } else {
-        [cell setShadowEnabled:NO];
-    }
-
-    return cell;
 }
 
 
