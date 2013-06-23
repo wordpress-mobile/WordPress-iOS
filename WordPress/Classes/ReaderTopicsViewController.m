@@ -11,6 +11,7 @@
 #import "ReaderPost.h"
 
 NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
+NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 
 @interface ReaderTopicsViewController ()
 
@@ -29,23 +30,22 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 
 #pragma mark - LifeCycle Methods
 
-- (void)dealloc {
-	
-}
-
-
 - (id)initWithStyle:(UITableViewStyle)style {
 	self = [super initWithStyle:style];
 	if (self) {
-		[self loadTopics];
-		
 		NSArray *arr = [ReaderPost readerEndpoints];
 		NSIndexSet *indexSet = [arr indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 			NSDictionary *dict = (NSDictionary *)obj;
 			return [[dict objectForKey:@"default"] boolValue];
 		}];
 		self.defaultTopicsArray = [arr objectsAtIndexes:indexSet];
-		self.topicsArray = @[];
+		
+		arr = [[NSUserDefaults standardUserDefaults] arrayForKey:ReaderTopicsArrayKey];
+		if (arr == nil) {
+			arr = @[];
+		}
+		self.topicsArray = arr;
+		
 				
 		NSDictionary *dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ReaderCurrentTopicKey];
 		if (dict) {
@@ -55,6 +55,8 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 			[[NSUserDefaults standardUserDefaults] setObject:_currentTopic forKey:ReaderCurrentTopicKey];
 			[[NSUserDefaults standardUserDefaults] synchronize];
 		}
+		
+		[self loadTopics];
 	}
 	
 	return self;
@@ -106,6 +108,8 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 		}
 		
 		self.topicsArray = topics;
+		[[NSUserDefaults standardUserDefaults] setObject:topics forKey:ReaderTopicsArrayKey];
+		[NSUserDefaults resetStandardUserDefaults];
 		
 		arr = [dict objectForKey:@"extra"];
 		if (arr) {
@@ -121,7 +125,15 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 		[self refreshIfReady];
 		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		// TODO. 
+		if ([_topicsArray count] == 0) {
+			
+		}
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Unable to Load Topics", @"")
+															message:NSLocalizedString(@"Sorry. There was a problem loading the topics list.  Please try again later.", @"")
+														   delegate:nil
+												  cancelButtonTitle:NSLocalizedString(@"OK", @"")
+												  otherButtonTitles:nil, nil];
+		[alertView show];
 	}];
 }
 
