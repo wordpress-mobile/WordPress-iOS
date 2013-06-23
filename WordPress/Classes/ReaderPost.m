@@ -478,9 +478,9 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
 
 - (NSString *)prettyDateString {
-	NSDate *date = [self isFreshlyPressed] ? self.sortDate : self.dateCreated;
+	NSDate *date = [self isFreshlyPressed] ? self.sortDate : self.date_created_gmt;
 	NSString *str;
-	NSTimeInterval diff = [[NSDate date] timeIntervalSince1970] - [date timeIntervalSince1970];
+	NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:date];
 	
 	if(diff < 60) {
 		NSString *fmt = NSLocalizedString(@"%i second ago", @"second ago");
@@ -585,6 +585,9 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 - (UIImage *)cachedAvatarWithSize:(CGSize)size {
     NSString *hash;
     WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash];
+    if (!hash) {
+        return nil;
+    }
     return [[WPAvatarSource sharedSource] cachedImageForAvatarHash:hash ofType:type withSize:size];
 }
 
@@ -592,7 +595,11 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
     NSString *hash;
     WPAvatarSourceType type = [self avatarSourceTypeWithHash:&hash];
 
-    [[WPAvatarSource sharedSource] fetchImageForAvatarHash:hash ofType:type withSize:size success:success];
+    if (hash) {
+        [[WPAvatarSource sharedSource] fetchImageForAvatarHash:hash ofType:type withSize:size success:success];
+    } else if (success) {
+        success(nil);
+    }
 }
 
 - (WPAvatarSourceType)avatarSourceTypeWithHash:(NSString **)hash {

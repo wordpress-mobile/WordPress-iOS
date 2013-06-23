@@ -49,6 +49,11 @@
 
 @implementation ReaderPostDetailView
 
+- (void)dealloc
+{
+    _textContentView.delegate = nil;
+}
+
 - (id)initWithFrame:(CGRect)frame post:(ReaderPost *)post delegate:(id<ReaderPostDetailViewDelegate>)delegate {
     self = [super initWithFrame:frame];
     if (self) {
@@ -158,11 +163,15 @@
 		[self addSubview:_textContentView];
 		
 
-		NSString *str = [NSString stringWithFormat:@"<style>body{color:#404040;} a{color:#278dbc;text-decoration:none;}a:active{color:#005684;}</style>%@", [self.post.content trim]];
+		NSString *str = [self.post.content trim];
 		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
 															  DTDefaultFontFamily:@"Open Sans",
 													DTDefaultLineHeightMultiplier:@0.9,
 																DTDefaultFontSize:@13,
+                                                              DTDefaultTextColor:[UIColor colorWithHexString:@"404040"],
+                                                              DTDefaultLinkColor:[UIColor colorWithHexString:@"278dbc"],
+                                                              DTDefaultLinkHighlightColor:[UIColor colorWithHexString:@"005684"],
+                                                              DTDefaultLinkDecoration:@NO,
 											   NSTextSizeMultiplierDocumentOption:@1.1
 									 }];
 		_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
