@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WPRefreshViewController.h"
 #import "PanelNavigationController.h"
+#import "WPTableViewController.h"
 
-@interface ReaderPostsViewController : WPRefreshViewController <NSFetchedResultsControllerDelegate, DetailViewDelegate>
+@interface ReaderPostsViewController : WPTableViewController <DetailViewDelegate>
 
 @end

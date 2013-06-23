@@ -12,6 +12,7 @@
 #import "WordPressComApi.h"
 
 extern NSInteger const ReaderTopicEndpointIndex;
+extern NSString *const ReaderLastSyncDateKey;
 
 @interface ReaderPost : BasePost
 
@@ -159,11 +160,13 @@ extern NSInteger const ReaderTopicEndpointIndex;
  @param endpoint The path for the endpoint to qurey (see the docs). The path should already include any ID (siteID, topicID, etc) required for the request.
  @param params A dictionary of modifiers to limit or modify the result set. Possible values include number, offset, page, order, order_by, before, after.
  Check the documentation for the desired endpoint for a full list. ( http://developer.wordpress.com/docs/api/1/ )
+ @param loadingMore True if the call is loading more posts. Fails if this is a regular sync.  Older posts are deleted from core data on regular syncs but not when loading more.
  @param success a block called if the REST API call is successful.
  @param failure a block called if there is any error. `error` can be any underlying network error
  */
 + (void)getPostsFromEndpoint:(NSString *)path
 			  withParameters:(NSDictionary *)params
+				 loadingMore:(BOOL)loadingMore
 					 success:(WordPressComApiRestSuccessResponseBlock)success
 					 failure:(WordPressComApiRestSuccessFailureBlock)failure;
 

@@ -13,9 +13,11 @@
 #import "NSString+XMLExtensions.h"
 #import "WPAvatarSource.h"
 #import "NSString+Helpers.h"
+#import "WordPressAppDelegate.h"
 
 NSInteger const ReaderTopicEndpointIndex = 3;
 NSInteger const ReaderPostSummaryLength = 150;
+NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
 @interface ReaderPost()
 
@@ -652,10 +654,38 @@ NSInteger const ReaderPostSummaryLength = 150;
 
 + (void)getPostsFromEndpoint:(NSString *)path
 			  withParameters:(NSDictionary *)params
+				 loadingMore:(BOOL)loadingMore
 					 success:(WordPressComApiRestSuccessResponseBlock)success
 					 failure:(WordPressComApiRestSuccessFailureBlock)failure {
 	
-	[[WordPressComApi sharedApi] getPath:path parameters:params success:success failure:failure];
+	[[WordPressComApi sharedApi] getPath:path
+							  parameters:params
+								 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+									 
+									 NSArray *postsArr = [responseObject arrayForKey:@"posts"];
+									 if (postsArr) {									 
+										 [ReaderPost syncPostsFromEndpoint:path
+																 withArray:postsArr
+															   withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+			
+										 [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ReaderLastSyncDateKey];
+										 [NSUserDefaults resetStandardUserDefaults];
+										 
+										 if (!loadingMore) {
+											 NSTimeInterval interval = - (60 * 60 * 24 * 7); // 7 days.
+											 [ReaderPost deletePostsSyncedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]] withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+										 }
+									 }
+									 if (success) {
+										 success(operation, responseObject);
+									 }
+									 
+								 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+									 if (failure) {
+										 failure(operation, error);
+									 }
+								 }];
+
 }
 
 @end
