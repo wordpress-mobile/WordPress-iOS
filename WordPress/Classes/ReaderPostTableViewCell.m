@@ -170,8 +170,7 @@
 	_bylineLabel.textColor = [UIColor colorWithHexString:@"c0c0c0"];
 	[_byView addSubview:_bylineLabel];
 	
-	
-	CGFloat w = (width - 1.0f) / 2.0f;
+	CGFloat w = width / 2.0f;
 	self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	_likeButton.frame = CGRectMake(0.0f, 53.0f, w, 40.0f);
 	_likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
@@ -186,7 +185,7 @@
 	[_metaView addSubview:_likeButton];
 	
 	self.reblogButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	_reblogButton.frame = CGRectMake(w + 1.0f, 53.0f, w, 40.0f);
+	_reblogButton.frame = CGRectMake(w + 1.0f, 53.0f, w - 1.0f, 40.0f);
 	_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
 	_reblogButton.backgroundColor = [UIColor whiteColor];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog"] forState:UIControlStateNormal];
