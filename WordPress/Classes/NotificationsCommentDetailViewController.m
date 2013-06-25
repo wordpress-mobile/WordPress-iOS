@@ -141,7 +141,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     NSArray *actions = [self.note.noteData valueForKeyPath:@"body.actions"];
     NSDictionary *action = [actions objectAtIndex:0];
     NSArray *items = [self.note.noteData valueForKeyPath:@"body.items"];
-    self.siteID = [action valueForKeyPath:@"params.blog_id"];
+    self.siteID = [action valueForKeyPath:@"params.site_id"];
     
     NoteComment *comment = [[NoteComment alloc] initWithCommentID:[action valueForKeyPath:@"params.comment_id"]];
     [self.commentThread addObject:comment];
@@ -152,7 +152,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         self.followButton = [FollowButton buttonFromAction:self.followAction withApi:self.user];
     }
     
-    NSString *postPath = [NSString stringWithFormat:@"sites/%@/posts/%@", [action valueForKeyPath:@"params.blog_id"], [action valueForKeyPath:@"params.post_id"]];
+    NSString *postPath = [NSString stringWithFormat:@"sites/%@/posts/%@", [action valueForKeyPath:@"params.site_id"], [action valueForKeyPath:@"params.post_id"]];
     
     // if we don't have post information fetch it from the api
     if (self.post == nil) {
@@ -566,7 +566,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 
 - (void)performNoteAction:(NSDictionary *)action success:(WordPressComApiRestSuccessFailureBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
     NSDictionary *params = [action objectForKey:@"params"];
-    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", [params objectForKey:@"blog_id"], [params objectForKey:@"comment_id"]];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", [params objectForKey:@"site_id"], [params objectForKey:@"comment_id"]];
     [self.user postPath:path parameters:[params objectForKey:@"rest_body"] success:success failure:failure];
     
 }
