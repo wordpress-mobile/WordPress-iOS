@@ -218,7 +218,7 @@
 	NSMutableSet *categories = nil;
 	
     for (NSString *categoryName in categoryNames) {
-        NSSet *results = [self.blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryName like %@", categoryName]];
+        NSSet *results = [self.blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryName = %@", categoryName]];
         if (results && (results.count > 0)) {
 			if(categories == nil) {
 				categories = [NSMutableSet setWithSet:results];
