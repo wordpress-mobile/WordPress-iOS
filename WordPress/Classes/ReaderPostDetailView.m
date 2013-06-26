@@ -162,8 +162,6 @@
 		_textContentView.clipsToBounds = YES;
 		[self addSubview:_textContentView];
 		
-
-		NSString *str = [self.post.content trim];
 		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
 															  DTDefaultFontFamily:@"Open Sans",
 													DTDefaultLineHeightMultiplier:@0.9,
@@ -174,7 +172,7 @@
                                                               DTDefaultLinkDecoration:@NO,
 											   NSTextSizeMultiplierDocumentOption:@1.1
 									 }];
-		_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
+		_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:[self.post.content dataUsingEncoding:NSUTF8StringEncoding]
 																				 options:dict
 																	  documentAttributes:NULL];
     }

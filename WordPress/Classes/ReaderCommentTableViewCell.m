@@ -12,7 +12,8 @@
 #import "WordPressAppDelegate.h"
 #import "WPWebViewController.h"
 
-#define RCTVCVerticalPadding 5.0f;
+#define RCTVCVerticalPadding 5.0f
+#define RCTVCIndentationWidth 10.0f
 
 @interface ReaderCommentTableViewCell()<DTAttributedTextContentViewDelegate>
 
@@ -52,6 +53,8 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+		
+		UIColor *color = [UIColor colorWithHexString:@"EFEFEF"];
 		CGFloat width = self.frame.size.width;
 		
 		[self.cellImageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
@@ -59,7 +62,7 @@
 		
 		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, 44.0f)];
 		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_textContentView.backgroundColor = [UIColor clearColor];
+		_textContentView.backgroundColor = color;
 		_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f);
 		_textContentView.delegate = self;
 		_textContentView.shouldDrawImages = NO;
@@ -71,14 +74,14 @@
 		_dateLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0f];//[UIColor grayColor];
 		_dateLabel.textAlignment = NSTextAlignmentRight;
 		_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-		_dateLabel.backgroundColor = [UIColor clearColor];
+		_dateLabel.backgroundColor = color;
 		[self.contentView addSubview:_dateLabel];
 		
 		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(40.0f, 10.0f, (_dateLabel.frame.origin.x - 50.0f), 20.0f)];
 		[_authorLabel setFont:[UIFont fontWithName:@"OpenSans" size:14.0f]];
 		_authorLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0f];
 		_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_authorLabel.backgroundColor = [UIColor clearColor];
+		_authorLabel.backgroundColor = color;
 		[self.contentView addSubview:_authorLabel];
 		
 		UIImageView *separatorImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell-separator"]];
@@ -95,7 +98,7 @@
 		CGRect rect = CGRectMake(0, 0, 1, 1);
 		UIGraphicsBeginImageContext(rect.size);
 		CGContextRef context = UIGraphicsGetCurrentContext();
-		CGContextSetFillColorWithColor(context, [[UIColor colorWithHexString:@"EFEFEF"] CGColor]);
+		CGContextSetFillColorWithColor(context, [color CGColor]);
 		CGContextFillRect(context, rect);
 		UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
@@ -189,9 +192,8 @@
 	_dateLabel.text = [comment shortDate];
 	_authorLabel.text = comment.author;
 	[self.cellImageView setImageWithURL:[NSURL URLWithString:comment.authorAvatarURL] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom.png"]];
-	
-	NSString *html = [NSString stringWithFormat:@"<style>body{color:#404040;} a{color:#54add3;text-decoration:none;}a:active{color:#005684;}</style>%@", comment.content];
-	self.textContentView.attributedString = [self convertHTMLToAttributedString:html withOptions:nil];
+
+	self.textContentView.attributedString = [self convertHTMLToAttributedString:comment.content withOptions:nil];
 }
 
 
@@ -202,7 +204,11 @@
 														  DTDefaultFontFamily:@"Open Sans",
 												DTDefaultLineHeightMultiplier:@0.9,
 															DTDefaultFontSize:@13,
-										   NSTextSizeMultiplierDocumentOption:@1.1
+										   NSTextSizeMultiplierDocumentOption:@1.1,
+														   DTDefaultTextColor:[UIColor colorWithHexString:@"404040"],
+														   DTDefaultLinkColor:[UIColor colorWithHexString:@"278dbc"],
+												  DTDefaultLinkHighlightColor:[UIColor colorWithHexString:@"005684"],
+													  DTDefaultLinkDecoration:@NO
 								 }];
 	
 	if(options) {

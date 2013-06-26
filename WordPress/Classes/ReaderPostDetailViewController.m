@@ -361,7 +361,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	_reblogButton.customView = btn;
 	
 	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-	NSMutableArray *items = [NSMutableArray array];
+	NSMutableArray *items = [NSMutableArray arrayWithObject:placeholder];
 	if ([self canComment]) {
 		[items addObjectsFromArray:@[_commentButton, placeholder]];
 	}
@@ -369,6 +369,8 @@ NSInteger const ReaderCommentsToSync = 100;
 	if ([self.post isWPCom]) {
 		[items addObjectsFromArray:@[_likeButton, placeholder, _reblogButton]];
 	}
+	
+	[items addObject:placeholder];
 	
 	[self setToolbarItems:items animated:YES];
 	

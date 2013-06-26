@@ -21,6 +21,7 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
 @interface ReaderPost()
 
++ (void)handleLogoutNotification:(NSNotification *)notification;
 - (void)updateFromDictionary:(NSDictionary *)dict;
 - (NSString *)createSummary:(NSString *)str makePlainText:(BOOL)makePlainText;
 - (NSString *)makePlainText:(NSString *)string;
@@ -53,6 +54,26 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 @dynamic storedComment;
 @dynamic summary;
 @dynamic comments;
+
++ (void)load {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutNotification:) name:WordPressComApiDidLogoutNotification object:nil];
+}
+
+
++ (void)handleLogoutNotification:(NSNotification *)notification {
+	NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
+    request.includesPropertyValues = NO;
+    NSError *error;
+    NSArray *posts = [context executeFetchRequest:request error:&error];
+    if (posts) {
+        for (ReaderPost *post in posts) {
+            [context deleteObject:post];
+        }
+    }
+    [context save:&error];
+}
+
 
 + (NSArray *)readerEndpoints {
 	static NSArray *endpoints = nil;
