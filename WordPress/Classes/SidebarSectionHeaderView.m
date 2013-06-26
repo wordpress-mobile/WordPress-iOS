@@ -219,16 +219,13 @@ CGFloat const BadgeHeight = 24.f;
         [blavatarView setAlpha:BLAVATAR_ALPHA];
     }
     
-    // If this was a user action, send the delegate the appropriate message.
-    if (userAction) {
-        if (_isOpen) {
-            if ([self.delegate respondsToSelector:@selector(sectionHeaderView:sectionOpened:)]) {
-                [self.delegate sectionHeaderView:self sectionOpened:self.sectionInfo];
-            }
-        } else {
-            if ([self.delegate respondsToSelector:@selector(sectionHeaderView:sectionClosed:)]) {
-                [self.delegate sectionHeaderView:self sectionClosed:self.sectionInfo];
-            }
+    if (_isOpen) {
+        if ([self.delegate respondsToSelector:@selector(sectionHeaderView:sectionOpened:)]) {
+            [self.delegate sectionHeaderView:self sectionOpened:self.sectionInfo];
+        }
+    } else {
+        if ([self.delegate respondsToSelector:@selector(sectionHeaderView:sectionClosed:)]) {
+            [self.delegate sectionHeaderView:self sectionClosed:self.sectionInfo];
         }
     }
 }
