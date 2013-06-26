@@ -19,6 +19,10 @@ static NSString * const WPCookieName = @"wordpress_logged_in";
 
 + (BOOL)hasCookieForURL:(NSURL *)url andUsername:(NSString *)username
 {
+    NSAssert(url != nil, @"url shouldn't be nil");
+    if (![url isKindOfClass:[NSURL class]]) {
+        return NO;
+    }
     NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:url];
     for (NSHTTPCookie *cookie in cookies) {
         if ([cookie.name isEqualToString:WPCookieName]) {

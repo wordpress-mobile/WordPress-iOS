@@ -147,8 +147,9 @@ const CGFloat NoteCommentCellHeight = 102.f;
 
 - (void)linkPushed:(id)sender {
     DTLinkButton *button = (DTLinkButton *)sender;
-    [self sendUrlToDelegate:button.URL];
-
+    if (button.URL) {
+        [self sendUrlToDelegate:button.URL];
+    }
 }
 
 - (void)openProfileURL:(id)sender {
