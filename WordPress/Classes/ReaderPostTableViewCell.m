@@ -118,7 +118,7 @@
     return self;
 }
 
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+- (void)setHighlightedEffect:(BOOL)highlighted animated:(BOOL)animated {
     [UIView animateWithDuration:animated ? .1f : 0.f
                           delay:0
                         options:UIViewAnimationCurveEaseInOut
@@ -136,6 +136,25 @@
                              self.layer.transform = CATransform3DIdentity;
                          }
                      } completion:nil];
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    [super setHighlighted:highlighted animated:animated];
+
+    if (highlighted) {
+        [self setHighlightedEffect:highlighted animated:animated];
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!self.selected) {
+                [self setHighlightedEffect:highlighted animated:animated];
+            }
+        });
+    }
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    [self setHighlightedEffect:selected animated:animated];
 }
 
 - (void)buildPostContent {
