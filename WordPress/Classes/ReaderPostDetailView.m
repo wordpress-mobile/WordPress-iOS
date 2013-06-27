@@ -35,6 +35,7 @@
 @property (nonatomic, weak) id<ReaderPostDetailViewDelegate>delegate;
 
 - (void)_updateLayout;
+- (void)updateAttributedString:(NSAttributedString *)attrString;
 - (void)updateMediaLayout:(ReaderMediaView *)mediaView;
 - (void)handleAuthorViewTapped:(id)sender;
 - (void)handleImageLinkTapped:(id)sender;
@@ -162,21 +163,32 @@
 		_textContentView.clipsToBounds = YES;
 		[self addSubview:_textContentView];
 		
-		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
-															  DTDefaultFontFamily:@"Open Sans",
-													DTDefaultLineHeightMultiplier:@0.9,
-																DTDefaultFontSize:@13,
-                                                              DTDefaultTextColor:[UIColor colorWithHexString:@"404040"],
-                                                              DTDefaultLinkColor:[UIColor colorWithHexString:@"278dbc"],
-                                                              DTDefaultLinkHighlightColor:[UIColor colorWithHexString:@"005684"],
+		dispatch_async(dispatch_get_main_queue(), ^{
+			NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
+																  DTDefaultFontFamily:@"Open Sans",
+														DTDefaultLineHeightMultiplier:@0.9,
+																	DTDefaultFontSize:@13,
+																   DTDefaultTextColor:[UIColor colorWithHexString:@"404040"],
+																   DTDefaultLinkColor:[UIColor colorWithHexString:@"278dbc"],
+														  DTDefaultLinkHighlightColor:[UIColor colorWithHexString:@"005684"],
                                                               DTDefaultLinkDecoration:@NO,
-											   NSTextSizeMultiplierDocumentOption:@1.1
-									 }];
-		_textContentView.attributedString = [[NSAttributedString alloc] initWithHTMLData:[self.post.content dataUsingEncoding:NSUTF8StringEncoding]
-																				 options:dict
-																	  documentAttributes:NULL];
+												   NSTextSizeMultiplierDocumentOption:@1.1
+										 }];
+			
+			[self updateAttributedString: [[NSAttributedString alloc] initWithHTMLData:[self.post.content dataUsingEncoding:NSUTF8StringEncoding]
+																			   options:dict
+																	documentAttributes:NULL]];
+
+			
+		});
+
     }
     return self;
+}
+
+
+- (void)updateAttributedString:(NSAttributedString *)attrString {
+	_textContentView.attributedString = attrString;
 }
 
 
