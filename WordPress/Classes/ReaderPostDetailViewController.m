@@ -236,9 +236,6 @@ NSInteger const ReaderCommentsToSync = 100;
 
 - (void)buildBottomToolbar {
 	
-	
-	
-	
 	UIButton *commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 	[commentBtn setImage:[UIImage imageNamed:@"reader-postaction-comment"] forState:UIControlStateNormal];
     [commentBtn setImage:[UIImage imageNamed:@"reader-postaction-comment-active"] forState:UIControlStateHighlighted];
@@ -604,7 +601,6 @@ NSInteger const ReaderCommentsToSync = 100;
 
 
 - (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject {
-	[self hideRefreshHeader];
 	self.post.dateCommentsSynced = [NSDate date];
 	
 	NSDictionary *resp = (NSDictionary *)responseObject;
@@ -634,7 +630,6 @@ NSInteger const ReaderCommentsToSync = 100;
 
 
 - (void)onSyncFailure:(AFHTTPRequestOperation *)operation error:(NSError *)error {
-	[self hideRefreshHeader];
 	// TODO: prompt about failure.
 }
 
@@ -784,7 +779,6 @@ NSInteger const ReaderCommentsToSync = 100;
 		self.post.storedComment = nil;
 		[self prepareComments];
 		[self.tableView reloadData];
-		[self hideRefreshHeader];
 	} else {
 		[self hideReblogForm];
 	}

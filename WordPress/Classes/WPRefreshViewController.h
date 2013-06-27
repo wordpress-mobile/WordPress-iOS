@@ -7,12 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "EGORefreshTableHeaderView.h"
 
-@interface WPRefreshViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, EGORefreshTableHeaderDelegate> {
-	EGORefreshTableHeaderView *_refreshHeaderView;
-	BOOL didPlayPullSound;
-    BOOL didTriggerRefresh;
+@interface WPRefreshViewController : UIViewController<UITableViewDataSource, UITableViewDelegate> {
 	BOOL didPromptForCredentials;
 	BOOL _isSyncing;
 }
@@ -20,8 +16,6 @@
 @property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong) UITableView *tableView;
 
-- (void)simulatePullToRefresh;
-- (void)hideRefreshHeader;
 - (BOOL)isSyncing;
 - (BOOL)hasMoreContent;
 - (void)syncWithUserInteraction:(BOOL)userInteraction;
