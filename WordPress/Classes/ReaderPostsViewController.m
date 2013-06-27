@@ -519,7 +519,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	if(!aCell) return;
 
 	ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)aCell;
-	cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	cell.accessoryType = UITableViewCellAccessoryNone;
 	
 	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];

@@ -98,11 +98,6 @@
         _containerView.opaque = YES;
 		[self.contentView addSubview:_containerView];
 
-		UIView *view = [[UIView alloc] initWithFrame:self.bounds];
-		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		view.backgroundColor = [UIColor colorWithRed:239.0f/255.0f green:239.0f/255.0f blue:239.0f/255.0f alpha:1.0f];
-		[self setSelectedBackgroundView:view];
-		
         [self setShadowEnabled:YES];
 		[self buildPostContent];
 		[self buildMetaContent];
@@ -110,6 +105,13 @@
 	
     return self;
 }
+
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+	[super setHighlighted:highlighted animated:animated];
+	[self setShadowEnabled:!highlighted];
+}
+
 
 - (void)setShadowEnabled:(BOOL)enabled {
     if (enabled) {
@@ -120,6 +122,7 @@
         _containerView.layer.shadowOpacity = 0.f;
     }
 }
+
 
 - (void)buildPostContent {
 	self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
