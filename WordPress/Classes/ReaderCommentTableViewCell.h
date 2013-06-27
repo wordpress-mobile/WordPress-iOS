@@ -12,14 +12,10 @@
 
 @interface ReaderCommentTableViewCell : ReaderTableViewCell
 
-/**
- Return's an array of required cell heights to display the specified comments.
- */
-+ (NSArray *)cellHeightsForComments:(NSArray *)comments
-							  width:(CGFloat)width
-						 tableStyle:(UITableViewStyle)tableStyle
-						  cellStyle:(UITableViewCellStyle)cellStyle
-					reuseIdentifier:(NSString *)reuseIdentifier;
++ (CGFloat)heightForComment:(ReaderComment *)comment
+					  width:(CGFloat)width
+				 tableStyle:(UITableViewStyle)tableStyle
+			  accessoryType:(UITableViewCellAccessoryType *)accessoryType;
 
 - (void)configureCell:(ReaderComment *)comment;
 

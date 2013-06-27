@@ -15,6 +15,4 @@
 @property (nonatomic, weak) UIViewController *parentController;
 @property (nonatomic, strong) UIImageView *cellImageView;
 
-- (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style;
-
 @end

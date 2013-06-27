@@ -35,12 +35,4 @@
 }
 
 
-#pragma mark - Instance Methods
-
-- (CGFloat)requiredRowHeightForWidth:(CGFloat)width tableStyle:(UITableViewStyle)style {
-	// Subclasses should override.
-	return 44.0f;
-}
-
-
 @end

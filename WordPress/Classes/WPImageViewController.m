@@ -42,6 +42,15 @@
 }
 
 
++ (id)presentAsModalWithImage:(UIImage *)image andURL:(NSURL *)url {
+	UIViewController *controller = [[self alloc] initWithImage:image andURL:url];
+	controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+	controller.modalPresentationStyle = UIModalPresentationFullScreen;
+	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentModalViewController:controller animated:YES];
+	return controller;
+}
+
+
 #pragma mark - LifeCycle Methods
 
 - (id)initWithImage:(UIImage *)image {
@@ -60,6 +69,16 @@
 		self.url = url;
 	}
 	
+	return self;
+}
+
+
+- (id)initWithImage:(UIImage *)image andURL:(NSURL *)url {
+	self = [self init];
+	if (self) {
+		self.image = [image copy];
+		self.url = url;
+	}
 	return self;
 }
 
@@ -100,22 +119,12 @@
 		
 	} else if(self.url) {
 		
-		UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-		activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-		CGRect frame = activityView.frame;
-		frame.origin.x = (_scrollView.frame.size.width / 2.0f) - (frame.size.width / 2.0f);
-		frame.origin.y = (_scrollView.frame.size.height / 2.0f) - (frame.size.height / 2.0f);
-		activityView.frame = frame;
-		[self.view addSubview:activityView];
-		[activityView startAnimating];
-		
 		__weak UIImageView *imageViewRef = _imageView;
 		__weak UIScrollView *scrollViewRef = _scrollView;
 		__weak WPImageViewController *selfRef = self;
 		[_imageView setImageWithURLRequest:[NSURLRequest requestWithURL:self.url]
-						 placeholderImage:nil
+						 placeholderImage:self.image
 								  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-									  [activityView removeFromSuperview];
 									  imageViewRef.image = image;
 									  [imageViewRef sizeToFit];
 									  scrollViewRef.contentSize = imageViewRef.image.size;

@@ -21,6 +21,7 @@
 #import "WPFriendFinderNudgeView.h"
 #import "WPAccount.h"
 #import "WPTableImageSource.h"
+#import "WPInfoView.h"
 
 NSInteger const ReaderPostsToSync = 20;
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
@@ -28,6 +29,10 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 @interface WPTableViewController (SubclassMethodOverride)
 // Override the readonly subclass method so we can set the resultsController to nil when topics change.
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
+/**
+ A view to show the user when the tableview is empty.
+ */
+@property (nonatomic, strong) UIView *noResultsView;
 @end
 
 @interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate, WPTableImageSourceDelegate> {
@@ -460,6 +465,49 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 #pragma mark - WPTableViewSublass methods
 
+
+- (NSString *)noResultsPrompt {
+	NSString *prompt; 
+	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
+	NSArray *endpoints = [ReaderPost readerEndpoints];
+	NSInteger idx = [endpoints indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		BOOL match = NO;
+		
+		if ([endpoint isEqualToString:[obj objectForKey:@"endpoint"]]) {
+			match = YES;
+			*stop = YES;
+		}
+				
+		return match;
+	}];
+	
+	switch (idx) {
+		case 1:
+			// Blogs I follow
+			prompt = NSLocalizedString(@"You are not following any blogs.", @"");
+			break;
+			
+		case 2:
+			// Posts I like
+			prompt = NSLocalizedString(@"You have not liked any posts.", @"");
+			break;
+			
+		default:
+			// Topics // freshly pressed.
+			prompt = NSLocalizedString(@"Sorry. No posts yet.", @"");
+			break;
+			
+
+	}
+	return prompt;
+}
+
+
+- (UIView *)createNoResultsView {	
+	return [WPInfoView WPInfoViewWithTitle:[self noResultsPrompt] message:nil cancelButton:nil];
+}
+
+
 - (NSString *)entityName {
 	return @"ReaderPost";
 }
@@ -669,7 +717,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)readerTopicChanged {
 	_hasMoreContent = YES;
-	
+	[[(WPInfoView *)self.noResultsView titleLabel] setText:[self noResultsPrompt]];
 	self.resultsController.delegate = nil;
 	self.resultsController = nil;
 	[self.tableView reloadData];
@@ -742,7 +790,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 			} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 				// Fail silently.
             }];
-
 }
 
 

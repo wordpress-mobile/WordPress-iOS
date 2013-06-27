@@ -157,6 +157,7 @@
     [self setHighlightedEffect:selected animated:animated];
 }
 
+
 - (void)buildPostContent {
 	self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
 	[_containerView addSubview:self.cellImageView];
@@ -364,6 +365,7 @@
 	NSString *str = ([self.post.likeCount integerValue] > 0) ? [self.post.likeCount stringValue] : nil;
 	[_likeButton setTitle:str forState:UIControlStateNormal];
 }
+
 
 - (void)handleLikeButtonTapped:(id)sender {
 
