@@ -15,6 +15,7 @@
 #import "UIImageView+AFNetworkingExtra.h"
 #import "UILabel+SuggestSize.h"
 #import "WPAvatarSource.h"
+#import "ReaderButton.h"
 
 #define RPTVCVerticalPadding 10.0f;
 
@@ -110,12 +111,6 @@
         _containerView.opaque = YES;
 		[self.contentView addSubview:_containerView];
 
-		UIView *view = [[UIView alloc] initWithFrame:self.bounds];
-		view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		view.backgroundColor = [UIColor colorWithRed:239.0f/255.0f green:239.0f/255.0f blue:239.0f/255.0f alpha:1.0f];
-		[self setSelectedBackgroundView:view];
-		
-        [self setShadowEnabled:YES];
 		[self buildPostContent];
 		[self buildMetaContent];
     }
@@ -123,9 +118,10 @@
     return self;
 }
 
-- (void)setShadowEnabled:(BOOL)enabled {
-    _sideBorderView.hidden = !enabled;
-    _bottomBorderView.hidden = !enabled;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    _sideBorderView.hidden = highlighted;
+    _bottomBorderView.hidden = highlighted;
+    self.alpha = highlighted ? .7f : 1.f;
 }
 
 - (void)buildPostContent {
@@ -179,7 +175,7 @@
 	
 	
 	CGFloat w = width / 2.0f;
-	self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	self.likeButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_likeButton.frame = CGRectMake(0.0f, 53.0f, w, 48.0f);
 	_likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
 	_likeButton.backgroundColor = [UIColor whiteColor];
@@ -192,7 +188,7 @@
 	[_likeButton addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	[_metaView addSubview:_likeButton];
 	
-	self.reblogButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	self.reblogButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
 	_reblogButton.frame = CGRectMake(w + 1.0f, 53.0f, width - w - 1.f, 48.0f);
 	_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
 	_reblogButton.backgroundColor = [UIColor whiteColor];
@@ -335,7 +331,6 @@
 	NSString *str = ([self.post.likeCount integerValue] > 0) ? [self.post.likeCount stringValue] : nil;
 	[_likeButton setTitle:str forState:UIControlStateNormal];
 }
-
 
 - (void)handleLikeButtonTapped:(id)sender {
 
