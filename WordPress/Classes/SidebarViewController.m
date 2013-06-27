@@ -796,10 +796,6 @@ NSLog(@"%@", self.sectionInfoArray);
 #pragma mark Section header delegate
 
 -(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionOpened:(SectionInfo *)sectionOpened {
-    if (sectionOpened.open) {
-        // Aleady open, don't mess with the table view
-        return;
-    }
 	sectionOpened.open = YES;
     NSUInteger sectionNumber = [self.sectionInfoArray indexOfObject:sectionOpened] + 1;
     openSectionIdx = sectionNumber;
@@ -816,7 +812,8 @@ NSLog(@"%@", self.sectionInfoArray);
     
     SectionInfo *previousOpenSection = self.openSection;
     NSUInteger previousOpenSectionIndex = NSNotFound;
-    if (previousOpenSection) {
+    [self.tableView beginUpdates];
+    if (previousOpenSection && previousOpenSection != sectionOpened) {
         previousOpenSection.open = NO;
         [previousOpenSection.headerView toggleOpenWithUserAction:NO];
         previousOpenSectionIndex = [self.sectionInfoArray indexOfObject:previousOpenSection] + 1;
@@ -826,9 +823,12 @@ NSLog(@"%@", self.sectionInfoArray);
     }
     
     // Apply the updates.
-    [self.tableView beginUpdates];
-    [self.tableView insertRowsAtIndexPaths:indexPathsToInsert withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:UITableViewRowAnimationFade];
+    if ([self.tableView numberOfRowsInSection:sectionNumber] == 0) {
+        [self.tableView insertRowsAtIndexPaths:indexPathsToInsert withRowAnimation:UITableViewRowAnimationFade];
+    }
+    if ([self.tableView numberOfRowsInSection:previousOpenSectionIndex] == NUM_ROWS) {
+        [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:UITableViewRowAnimationFade];
+    }
     [self.tableView endUpdates];
     self.openSection = sectionOpened;
     // select the first row in the section
@@ -844,15 +844,6 @@ NSLog(@"%@", self.sectionInfoArray);
 
 
 -(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionClosed:(SectionInfo *)sectionClosed {    
-    NSUInteger sectionNumber = [self.sectionInfoArray indexOfObject:sectionClosed] + 1;
-	sectionClosed.open = NO;
-
-    NSMutableArray *indexPathsToDelete = [[NSMutableArray alloc] init];
-    for (NSInteger i = 0; i < NUM_ROWS; i++) {
-        [indexPathsToDelete addObject:[NSIndexPath indexPathForRow:i inSection:sectionNumber]];
-    }
-    [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:UITableViewRowAnimationTop];
-    self.openSection = nil;
 }
 
 - (void)didReceiveUnseenNotesNotification {
