@@ -189,6 +189,7 @@
 
 - (void)updateAttributedString:(NSAttributedString *)attrString {
 	_textContentView.attributedString = attrString;
+	[self _updateLayout];
 }
 
 
