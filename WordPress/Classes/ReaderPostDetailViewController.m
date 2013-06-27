@@ -126,6 +126,10 @@ NSInteger const ReaderCommentsToSync = 100;
 	self.panelNavigationController.delegate = self;
 	[self.navigationController setToolbarHidden:NO animated:YES];
 
+	UIToolbar *toolbar = self.navigationController.toolbar;
+	[toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+	[toolbar setTintColor:[UIColor colorWithHexString:@"F1F1F1"]];
+	
 	if (IS_IPAD)
         [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
 
@@ -213,11 +217,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	}
 	
 	self.navigationItem.rightBarButtonItem = _shareButton;
-}
-
-
-- (void)buildBottomToolbar {
-	// Bottom navigation for the iPad
+	
 	if(IS_IPAD) {
 		
 		self.navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0f)];
@@ -230,6 +230,14 @@ NSInteger const ReaderCommentsToSync = 100;
 		frame.size.height -= 44.0f;
 		self.tableView.frame = frame;
 	}
+
+}
+
+
+- (void)buildBottomToolbar {
+	
+	
+	
 	
 	UIButton *commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 	[commentBtn setImage:[UIImage imageNamed:@"reader-postaction-comment"] forState:UIControlStateNormal];
