@@ -73,7 +73,7 @@
 
 	// Size of the meta view
 	if ([post isWPCom]) {
-		desiredHeight += 93.0f;
+		desiredHeight += 101.f;
 	} else {
 		desiredHeight += 52.0f;
 	}
@@ -155,9 +155,9 @@
 
 - (void)buildMetaContent {
 	CGFloat width = _containerView.frame.size.width;
-	self.metaView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 94.0f)];
+	self.metaView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 102.0f)];
 	_metaView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_metaView.backgroundColor = [UIColor colorWithHexString:@"F1F1F1"];
+	_metaView.backgroundColor = [UIColor colorWithWhite:0.95703125f alpha:1.f];
 	[_containerView addSubview:_metaView];
 
 	self.byView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 52.0f)];
@@ -178,9 +178,9 @@
 	[_byView addSubview:_bylineLabel];
 	
 	
-	CGFloat w = (width - 1.0f) / 2.0f;
+	CGFloat w = width / 2.0f;
 	self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	_likeButton.frame = CGRectMake(0.0f, 53.0f, w, 40.0f);
+	_likeButton.frame = CGRectMake(0.0f, 53.0f, w, 48.0f);
 	_likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
 	_likeButton.backgroundColor = [UIColor whiteColor];
 	[_likeButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, -5.0f, 0.0f, 0.0f)];
@@ -193,7 +193,7 @@
 	[_metaView addSubview:_likeButton];
 	
 	self.reblogButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	_reblogButton.frame = CGRectMake(w + 1.0f, 53.0f, w, 40.0f);
+	_reblogButton.frame = CGRectMake(w + 1.0f, 53.0f, width - w - 1.f, 48.0f);
 	_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
 	_reblogButton.backgroundColor = [UIColor whiteColor];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog"] forState:UIControlStateNormal];
@@ -231,7 +231,7 @@
 	nextY += ceilf(height + vpadding);
 
 	// position the meta view
-	height = [self.post isWPCom] ? 93.0f : 52.0f;
+	height = [self.post isWPCom] ? 101.0f : 52.0f;
 	_metaView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
 }
 
