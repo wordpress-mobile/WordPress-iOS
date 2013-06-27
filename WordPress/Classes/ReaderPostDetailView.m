@@ -351,7 +351,8 @@
 		}
 		
 		if (matched) {
-			[WPImageViewController presentAsModalWithURL:((ReaderImageView *)sender).linkURL];
+			[WPImageViewController presentAsModalWithImage:imageView.image andURL:((ReaderImageView *)sender).linkURL];
+//			[WPImageViewController presentAsModalWithURL:((ReaderImageView *)sender).linkURL];
 		} else {
 			WPWebViewController *controller = [[WPWebViewController alloc] init];
 			[controller setUrl:((ReaderImageView *)sender).linkURL];
