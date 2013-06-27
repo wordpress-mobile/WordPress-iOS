@@ -40,7 +40,6 @@ NSInteger const ReaderCommentsToSync = 100;
 @property (nonatomic, strong) UIBarButtonItem *shareButton;
 @property (nonatomic, strong) UIActionSheet *linkOptionsActionSheet;
 @property (nonatomic, strong) NSMutableArray *comments;
-@property (nonatomic, strong) NSArray *rowHeights;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic) BOOL isScrollingCommentIntoView;
 @property (nonatomic) BOOL isShowingCommentForm;
@@ -52,7 +51,6 @@ NSInteger const ReaderCommentsToSync = 100;
 - (void)buildForms;
 - (void)prepareComments;
 - (void)showStoredComment;
-- (void)updateRowHeightsForWidth:(CGFloat)width;
 - (void)updateToolbar;
 - (BOOL)isReplying;
 - (BOOL)canComment;
@@ -86,7 +84,6 @@ NSInteger const ReaderCommentsToSync = 100;
 	if(self) {
 		self.post = apost;
 		self.comments = [NSMutableArray array];
-		self.rowHeights = [NSArray array];
 	}
 	return self;
 }
@@ -118,7 +115,6 @@ NSInteger const ReaderCommentsToSync = 100;
 	[self buildForms];
 	
 	[self prepareComments];
-	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 	[self showStoredComment];
 
 }
@@ -134,7 +130,6 @@ NSInteger const ReaderCommentsToSync = 100;
         [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
 
 	[_headerView updateLayout];
-	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 	[self showStoredComment];
 }
 
@@ -170,17 +165,6 @@ NSInteger const ReaderCommentsToSync = 100;
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	
-	CGFloat width;
-	// The new width should be the window
-	if (IS_IPAD) {
-		width = IPAD_DETAIL_WIDTH;
-	} else {
-		CGRect frame = self.view.window.frame;
-		width = UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? frame.size.height : frame.size.width;
-	}
-	
-	[self updateRowHeightsForWidth:width];
 }
 
 
@@ -335,15 +319,6 @@ NSInteger const ReaderCommentsToSync = 100;
 	};
 	
 	flattenComments(self.resultsController.fetchedObjects);
-}
-
-
-- (void)updateRowHeightsForWidth:(CGFloat)width {
-	self.rowHeights = [ReaderCommentTableViewCell cellHeightsForComments:_comments
-																   width:width
-															  tableStyle:UITableViewStylePlain
-															   cellStyle:UITableViewCellStyleDefault
-														 reuseIdentifier:@"ReaderCommentCell"];
 }
 
 
@@ -641,7 +616,6 @@ NSInteger const ReaderCommentsToSync = 100;
 							 withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
 	
 	[self prepareComments];
-	[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 	[self.tableView reloadData];
 
 	if ([self.resultsController.fetchedObjects count] > 0) {
@@ -660,7 +634,15 @@ NSInteger const ReaderCommentsToSync = 100;
 #pragma mark - UITableView Delegate Methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return [[_rowHeights objectAtIndex:indexPath.row] floatValue];
+	if (![_comments count]) {
+		return 0.0f;
+	}
+	
+	ReaderComment *comment = [_comments objectAtIndex:indexPath.row];
+	return [ReaderCommentTableViewCell heightForComment:comment
+												  width:tableView.frame.size.width
+											 tableStyle:tableView.style
+										  accessoryType:UITableViewCellAccessoryNone];
 }
 
 
@@ -793,7 +775,6 @@ NSInteger const ReaderCommentsToSync = 100;
 		[self hideCommentForm];
 		self.post.storedComment = nil;
 		[self prepareComments];
-		[self updateRowHeightsForWidth:self.tableView.frame.size.width];
 		[self.tableView reloadData];
 		[self hideRefreshHeader];
 	} else {
