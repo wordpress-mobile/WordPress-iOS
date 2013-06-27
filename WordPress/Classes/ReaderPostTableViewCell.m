@@ -45,6 +45,8 @@
 @implementation ReaderPostTableViewCell {
     BOOL _featuredImageIsSet;
     BOOL _avatarIsSet;
+    UIView *_sideBorderView;
+    UIView *_bottomBorderView;
 }
 
 + (CGFloat)cellHeightForPost:(ReaderPost *)post withWidth:(CGFloat)width {
@@ -92,6 +94,16 @@
 		self.contentView.backgroundColor = [UIColor colorWithHexString:@"F1F1F1"];
 		CGRect frame = CGRectMake(10.0f, 0.0f, self.contentView.frame.size.width - 20.0f, self.contentView.frame.size.height - 10.0f);
 
+        _sideBorderView = [[UIView alloc] initWithFrame:CGRectMake(9.f, 0.f, self.contentView.frame.size.width - 18.f, frame.size.height + 3.f)];
+        _sideBorderView.backgroundColor = [UIColor colorWithWhite:0.9296875f alpha:1.f];
+		_sideBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.contentView addSubview:_sideBorderView];
+
+        _bottomBorderView = [[UIView alloc] initWithFrame:CGRectMake(10.f, CGRectGetMaxY(frame) + 1.f, self.contentView.frame.size.width - 20.f, 2.f)];
+        _bottomBorderView.backgroundColor = [UIColor colorWithWhite:0.90625f alpha:1.f];
+		_bottomBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        [self.contentView addSubview:_bottomBorderView];
+
 		self.containerView = [[UIView alloc] initWithFrame:frame];
 		_containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_containerView.backgroundColor = [UIColor whiteColor];
@@ -112,13 +124,8 @@
 }
 
 - (void)setShadowEnabled:(BOOL)enabled {
-    if (enabled) {
-        _containerView.layer.masksToBounds = NO;
-        _containerView.layer.shadowOffset = CGSizeMake(0, 0);
-        _containerView.layer.shadowOpacity = 0.075f;
-    } else {
-        _containerView.layer.shadowOpacity = 0.f;
-    }
+    _sideBorderView.hidden = !enabled;
+    _bottomBorderView.hidden = !enabled;
 }
 
 - (void)buildPostContent {
