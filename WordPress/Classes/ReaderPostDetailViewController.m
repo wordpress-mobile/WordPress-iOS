@@ -367,7 +367,6 @@ NSInteger const ReaderCommentsToSync = 100;
 	[self showCommentForm];
 }
 
-
 - (void)handleLikeButtonTapped:(id)sender {
 	[self.post toggleLikedWithSuccess:^{
 		

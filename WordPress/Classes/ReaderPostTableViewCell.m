@@ -15,6 +15,7 @@
 #import "UIImageView+AFNetworkingExtra.h"
 #import "UILabel+SuggestSize.h"
 #import "WPAvatarSource.h"
+#import "ReaderButton.h"
 
 #define RPTVCVerticalPadding 10.0f;
 
@@ -45,6 +46,8 @@
 @implementation ReaderPostTableViewCell {
     BOOL _featuredImageIsSet;
     BOOL _avatarIsSet;
+    UIView *_sideBorderView;
+    UIView *_bottomBorderView;
 }
 
 + (CGFloat)cellHeightForPost:(ReaderPost *)post withWidth:(CGFloat)width {
@@ -71,7 +74,7 @@
 
 	// Size of the meta view
 	if ([post isWPCom]) {
-		desiredHeight += 93.0f;
+		desiredHeight += 101.f;
 	} else {
 		desiredHeight += 52.0f;
 	}
@@ -92,13 +95,22 @@
 		self.contentView.backgroundColor = [UIColor colorWithHexString:@"F1F1F1"];
 		CGRect frame = CGRectMake(10.0f, 0.0f, self.contentView.frame.size.width - 20.0f, self.contentView.frame.size.height - 10.0f);
 
+        _sideBorderView = [[UIView alloc] initWithFrame:CGRectMake(9.f, 0.f, self.contentView.frame.size.width - 18.f, frame.size.height + 3.f)];
+        _sideBorderView.backgroundColor = [UIColor colorWithWhite:0.9296875f alpha:1.f];
+		_sideBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.contentView addSubview:_sideBorderView];
+
+        _bottomBorderView = [[UIView alloc] initWithFrame:CGRectMake(10.f, CGRectGetMaxY(frame) + 1.f, self.contentView.frame.size.width - 20.f, 2.f)];
+        _bottomBorderView.backgroundColor = [UIColor colorWithWhite:0.90625f alpha:1.f];
+		_bottomBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        [self.contentView addSubview:_bottomBorderView];
+
 		self.containerView = [[UIView alloc] initWithFrame:frame];
 		_containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_containerView.backgroundColor = [UIColor whiteColor];
         _containerView.opaque = YES;
 		[self.contentView addSubview:_containerView];
 
-        [self setShadowEnabled:YES];
 		[self buildPostContent];
 		[self buildMetaContent];
     }
@@ -106,21 +118,10 @@
     return self;
 }
 
-
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-	[super setHighlighted:highlighted animated:animated];
-	[self setShadowEnabled:!highlighted];
-}
-
-
-- (void)setShadowEnabled:(BOOL)enabled {
-    if (enabled) {
-        _containerView.layer.masksToBounds = NO;
-        _containerView.layer.shadowOffset = CGSizeMake(0, 0);
-        _containerView.layer.shadowOpacity = 0.075f;
-    } else {
-        _containerView.layer.shadowOpacity = 0.f;
-    }
+    _sideBorderView.hidden = highlighted;
+    _bottomBorderView.hidden = highlighted;
+    self.alpha = highlighted ? .7f : 1.f;
 }
 
 
@@ -151,9 +152,9 @@
 
 - (void)buildMetaContent {
 	CGFloat width = _containerView.frame.size.width;
-	self.metaView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 94.0f)];
+	self.metaView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 102.0f)];
 	_metaView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	_metaView.backgroundColor = [UIColor colorWithHexString:@"F1F1F1"];
+	_metaView.backgroundColor = [UIColor colorWithWhite:0.95703125f alpha:1.f];
 	[_containerView addSubview:_metaView];
 
 	self.byView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 52.0f)];
@@ -173,9 +174,10 @@
 	_bylineLabel.textColor = [UIColor colorWithHexString:@"c0c0c0"];
 	[_byView addSubview:_bylineLabel];
 	
+	
 	CGFloat w = width / 2.0f;
-	self.likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	_likeButton.frame = CGRectMake(0.0f, 53.0f, w, 40.0f);
+	self.likeButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+	_likeButton.frame = CGRectMake(0.0f, 53.0f, w, 48.0f);
 	_likeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
 	_likeButton.backgroundColor = [UIColor whiteColor];
 	[_likeButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, -5.0f, 0.0f, 0.0f)];
@@ -187,8 +189,8 @@
 	[_likeButton addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	[_metaView addSubview:_likeButton];
 	
-	self.reblogButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	_reblogButton.frame = CGRectMake(w + 1.0f, 53.0f, w - 1.0f, 40.0f);
+	self.reblogButton = [ReaderButton buttonWithType:UIButtonTypeCustom];
+	_reblogButton.frame = CGRectMake(w + 1.0f, 53.0f, width - w - 1.f, 48.0f);
 	_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
 	_reblogButton.backgroundColor = [UIColor whiteColor];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog"] forState:UIControlStateNormal];
@@ -226,7 +228,7 @@
 	nextY += ceilf(height + vpadding);
 
 	// position the meta view
-	height = [self.post isWPCom] ? 93.0f : 52.0f;
+	height = [self.post isWPCom] ? 101.0f : 52.0f;
 	_metaView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
 }
 

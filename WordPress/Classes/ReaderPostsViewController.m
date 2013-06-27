@@ -199,7 +199,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-    [self setShadowForVisibleRowsEnabled:NO];
 	CGFloat width;
 	// The new width should be the window
 	if (IS_IPAD) {
@@ -213,7 +212,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    [self setShadowForVisibleRowsEnabled:YES];
 }
 
 #pragma mark - Instance Methods
@@ -402,17 +400,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     }
 }
 
-
-- (void)setShadowForVisibleRowsEnabled:(BOOL)enabled {
-    NSArray *visiblePaths = [self.tableView indexPathsForVisibleRows];
-    for (NSIndexPath *indexPath in visiblePaths)
-    {
-        ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        [cell setShadowEnabled:enabled];
-    }
-}
-
-
 #pragma mark - ReaderTextForm Delegate Methods
 
 - (void)readerTextFormDidSend:(ReaderTextFormView *)readerTextForm {
@@ -428,7 +415,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 #pragma mark - UIScrollView Delegate Methods
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [self setShadowForVisibleRowsEnabled:NO];
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
@@ -441,7 +427,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [self loadImagesForVisibleRows];
-    [self setShadowForVisibleRowsEnabled:YES];
 
 	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
 	if (!selectedIndexPath) {
@@ -598,13 +583,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
             }
         }];
     }
-	
-    if (!self.tableView.isDecelerating && !self.tableView.isDragging) {
-        [cell setShadowEnabled:YES];
-    } else {
-        [cell setShadowEnabled:NO];
-    }
-
 }
 
 
