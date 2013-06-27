@@ -119,9 +119,23 @@
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    _sideBorderView.hidden = highlighted;
-    _bottomBorderView.hidden = highlighted;
-    self.alpha = highlighted ? .7f : 1.f;
+    [UIView animateWithDuration:animated ? .1f : 0.f
+                          delay:0
+                        options:UIViewAnimationCurveEaseInOut
+                     animations:^{
+                         _sideBorderView.hidden = highlighted;
+                         _bottomBorderView.hidden = highlighted;
+                         self.alpha = highlighted ? .7f : 1.f;
+                         if (highlighted) {
+                             CGFloat perspective = -0.0001;
+                             CATransform3D transform = CATransform3DIdentity;
+                             transform.m24 = perspective;
+                             transform = CATransform3DScale(transform, .98f, .98f, 1);
+                             self.layer.transform = transform;
+                         } else {
+                             self.layer.transform = CATransform3DIdentity;
+                         }
+                     } completion:nil];
 }
 
 - (void)buildPostContent {
