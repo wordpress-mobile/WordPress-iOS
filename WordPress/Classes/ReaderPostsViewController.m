@@ -40,6 +40,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	BOOL _loadingMore;
     WPTableImageSource *_featuredImageSource;
 	CGFloat keyboardOffset;
+    NSInteger _rowsSeen;
 }
 
 //@property (nonatomic, strong) NSFetchedResultsController *resultsController;
@@ -712,11 +713,46 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	[self.panelNavigationController pushViewController:controller fromViewController:self animated:YES];
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row <= _rowsSeen) {
+        return;
+    }
+    CGPoint origin = cell.center;
+    CGFloat horizontalOffset = (rand() % 300) - 150.f;
+    CGFloat verticalOffset = 20;
+    CGFloat zoom = 1.2f;
+    NSTimeInterval duration = .2;
+
+    CAKeyframeAnimation *opacityAnimation = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
+    opacityAnimation.values = @[ @0, @.2, @1];
+
+    CAKeyframeAnimation *movementAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathMoveToPoint(path, NULL, origin.x + horizontalOffset, origin.y + verticalOffset);
+    CGPathAddQuadCurveToPoint(path, NULL, origin.x - 0.15 * horizontalOffset, origin.y + 0.2 * verticalOffset, origin.x, origin.y);
+    movementAnimation.path = path;
+
+    CAKeyframeAnimation *zoomAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+    zoomAnimation.values = @[
+                             [NSValue valueWithCATransform3D:CATransform3DIdentity],
+                             [NSValue valueWithCATransform3D:CATransform3DMakeScale(zoom, zoom, zoom)],
+                             [NSValue valueWithCATransform3D:CATransform3DIdentity],
+                             ];
+
+    CAAnimationGroup *group = [CAAnimationGroup animation];
+    group.animations = @[opacityAnimation, movementAnimation, zoomAnimation];
+    group.duration = duration;
+
+    [cell.layer addAnimation:group forKey:@"FlyIn"];
+
+    _rowsSeen = MAX(_rowsSeen, indexPath.row);
+}
 
 #pragma mark - ReaderTopicsDelegate Methods
 
 - (void)readerTopicChanged {
 	_hasMoreContent = YES;
+    _rowsSeen = 0;
 	[[(WPInfoView *)self.noResultsView titleLabel] setText:[self noResultsPrompt]];
 	self.resultsController.delegate = nil;
 	self.resultsController = nil;

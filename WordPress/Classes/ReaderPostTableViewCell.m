@@ -139,7 +139,12 @@
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    BOOL previouslyHighlighted = self.highlighted;
     [super setHighlighted:highlighted animated:animated];
+
+    if (previouslyHighlighted == highlighted) {
+        return;
+    }
 
     if (highlighted) {
         [self setHighlightedEffect:highlighted animated:animated];
@@ -231,7 +236,6 @@
 	[_metaView addSubview:_reblogButton];
 	
 }
-
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
