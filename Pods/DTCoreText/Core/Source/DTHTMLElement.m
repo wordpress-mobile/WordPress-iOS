@@ -8,13 +8,13 @@
 
 #import "DTCoreText.h"
 #import "DTHTMLElement.h"
-#import "DTHTMLElementA.h"
-#import "DTHTMLElementAttachment.h"
-#import "DTHTMLElementBR.h"
-#import "DTHTMLElementHR.h"
-#import "DTHTMLElementLI.h"
-#import "DTHTMLElementStylesheet.h"
-#import "DTHTMLElementText.h"
+#import "DTAnchorHTMLElement.h"
+#import "DTTextAttachmentHTMLElement.h"
+#import "DTBreakHTMLElement.h"
+#import "DTHorizontalRuleHTMLElement.h"
+#import "DTListItemHTMLElement.h"
+#import "DTStylesheetHTMLElement.h"
+#import "DTTextHTMLElement.h"
 #import "NSString+DTUtilities.h"
 
 @interface DTHTMLElement ()
@@ -46,15 +46,15 @@ NSDictionary *_classesForNames = nil;
 	// lookup table so that we quickly get the correct class to instantiate for special tags
 	NSMutableDictionary *tmpDict = [[NSMutableDictionary alloc] init];
 	
-	[tmpDict setObject:[DTHTMLElementA class] forKey:@"a"];
-	[tmpDict setObject:[DTHTMLElementBR class] forKey:@"br"];
-	[tmpDict setObject:[DTHTMLElementHR class] forKey:@"hr"];
-	[tmpDict setObject:[DTHTMLElementLI class] forKey:@"li"];
-	[tmpDict setObject:[DTHTMLElementStylesheet class] forKey:@"style"];
-	[tmpDict setObject:[DTHTMLElementAttachment class] forKey:@"img"];
-	[tmpDict setObject:[DTHTMLElementAttachment class] forKey:@"object"];
-	[tmpDict setObject:[DTHTMLElementAttachment class] forKey:@"video"];
-	[tmpDict setObject:[DTHTMLElementAttachment class] forKey:@"iframe"];
+	[tmpDict setObject:[DTAnchorHTMLElement class] forKey:@"a"];
+	[tmpDict setObject:[DTBreakHTMLElement class] forKey:@"br"];
+	[tmpDict setObject:[DTHorizontalRuleHTMLElement class] forKey:@"hr"];
+	[tmpDict setObject:[DTListItemHTMLElement class] forKey:@"li"];
+	[tmpDict setObject:[DTStylesheetHTMLElement class] forKey:@"style"];
+	[tmpDict setObject:[DTTextAttachmentHTMLElement class] forKey:@"img"];
+	[tmpDict setObject:[DTTextAttachmentHTMLElement class] forKey:@"object"];
+	[tmpDict setObject:[DTTextAttachmentHTMLElement class] forKey:@"video"];
+	[tmpDict setObject:[DTTextAttachmentHTMLElement class] forKey:@"iframe"];
 	
 	_classesForNames = [tmpDict copy];
 }
@@ -63,11 +63,21 @@ NSDictionary *_classesForNames = nil;
 {
 	// look for specialized class
 	Class class = [_classesForNames objectForKey:name];
-	
-	// use generic of none found
+
 	if (!class)
 	{
-		class = [DTHTMLElement class];
+		// see if this is a custom attachment class
+		Class attachmentClass = [DTTextAttachment registeredClassForTagName:name];
+		
+		if (attachmentClass)
+		{
+			class = [DTTextAttachmentHTMLElement class];
+		}
+		else
+		{
+			// use generic of none found
+			class = [DTHTMLElement class];
+		}
 	}
 	
 	DTHTMLElement *element = [[class alloc] initWithName:name attributes:attributes options:options];
@@ -90,8 +100,6 @@ NSDictionary *_classesForNames = nil;
 {
 	NSMutableDictionary *tmpDict = [NSMutableDictionary dictionary];
 	
-	BOOL shouldAddFont = YES;
-	
 	// copy additional attributes
 	if (_additionalAttributes)
 	{
@@ -112,39 +120,30 @@ NSDictionary *_classesForNames = nil;
 		
 		// remember original paragraphSpacing
 		[tmpDict setObject:[NSNumber numberWithFloat:self.paragraphStyle.paragraphSpacing] forKey:DTAttachmentParagraphSpacingAttribute];
-		
-#ifndef DT_ADD_FONT_ON_ATTACHMENTS
-		// omit adding a font unless we need it also on attachments, e.g. for editing
-		shouldAddFont = NO;
-#endif
 	}
 	
-	// otherwise we have a font
-	if (shouldAddFont)
+	CTFontRef font = [_fontDescriptor newMatchingFont];
+	
+	if (font)
 	{
-		CTFontRef font = [_fontDescriptor newMatchingFont];
-		
-		if (font)
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES && __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_5_1
+		if (___useiOS6Attributes)
 		{
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_5_1
-			if (___useiOS6Attributes)
-			{
-				UIFont *uiFont = [UIFont fontWithCTFont:font];
-				[tmpDict setObject:uiFont forKey:NSFontAttributeName];
-			}
-			else
-#endif
-			{
-				// __bridge since its already retained elsewhere
-				[tmpDict setObject:(__bridge id)(font) forKey:(id)kCTFontAttributeName];
-			}
-			
-			
-			// use this font to adjust the values needed for the run delegate during layout time
-			[_textAttachment adjustVerticalAlignmentForFont:font];
-			
-			CFRelease(font);
+			UIFont *uiFont = [UIFont fontWithCTFont:font];
+			[tmpDict setObject:uiFont forKey:NSFontAttributeName];
 		}
+		else
+#endif
+		{
+			// __bridge since its already retained elsewhere
+			[tmpDict setObject:(__bridge id)(font) forKey:(id)kCTFontAttributeName];
+		}
+		
+		
+		// use this font to adjust the values needed for the run delegate during layout time
+		[_textAttachment adjustVerticalAlignmentForFont:font];
+		
+		CFRelease(font);
 	}
 	
 	// add hyperlink
@@ -165,7 +164,7 @@ NSDictionary *_classesForNames = nil;
 	// add strikout if applicable
 	if (_strikeOut)
 	{
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_5_1
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES
 		if (___useiOS6Attributes)
 		{
 			[tmpDict setObject:[NSNumber numberWithInteger:NSUnderlineStyleSingle] forKey:NSStrikethroughStyleAttributeName];
@@ -180,7 +179,7 @@ NSDictionary *_classesForNames = nil;
 	// set underline style
 	if (_underlineStyle)
 	{
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_5_1
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES
 		if (___useiOS6Attributes)
 		{
 			[tmpDict setObject:[NSNumber numberWithInteger:NSUnderlineStyleSingle] forKey:NSUnderlineStyleAttributeName];
@@ -197,7 +196,7 @@ NSDictionary *_classesForNames = nil;
 	
 	if (_textColor)
 	{
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_5_1
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES
 		if (___useiOS6Attributes)
 		{
 			[tmpDict setObject:_textColor forKey:NSForegroundColorAttributeName];
@@ -211,7 +210,7 @@ NSDictionary *_classesForNames = nil;
 	
 	if (_backgroundColor)
 	{
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_5_1
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES
 		if (___useiOS6Attributes)
 		{
 			[tmpDict setObject:_backgroundColor forKey:NSBackgroundColorAttributeName];
@@ -231,7 +230,7 @@ NSDictionary *_classesForNames = nil;
 	// add paragraph style
 	if (_paragraphStyle)
 	{
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_5_1
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES
 		if (___useiOS6Attributes)
 		{
 			NSParagraphStyle *style = [self.paragraphStyle NSParagraphStyle];
@@ -248,7 +247,7 @@ NSDictionary *_classesForNames = nil;
 	// add shadow array if applicable
 	if (_shadows)
 	{
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_5_1
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES
 		if (___useiOS6Attributes)
 		{
 			// only a single shadow supported
@@ -266,13 +265,7 @@ NSDictionary *_classesForNames = nil;
 			[tmpDict setObject:_shadows forKey:DTShadowsAttribute];
 		}
 	}
-	
-	// add tag for PRE so that we can omit changing this font if we override fonts
-	if (_preserveNewlines)
-	{
-		[tmpDict setObject:[NSNumber numberWithBool:YES] forKey:DTPreserveNewlinesAttribute];
-	}
-	
+
 	if (_headerLevel)
 	{
 		[tmpDict setObject:[NSNumber numberWithInteger:_headerLevel] forKey:DTHeaderLevelAttribute];
@@ -309,6 +302,26 @@ NSDictionary *_classesForNames = nil;
 		
 		return YES;
 	}
+}
+
+- (BOOL)_isNotChildOfList
+{
+	DTHTMLElement *parent = self.parentElement;
+	
+	if (parent.displayStyle == DTHTMLElementDisplayStyleListItem)
+	{
+		return NO;
+	}
+	
+	if (parent.displayStyle == DTHTMLElementDisplayStyleBlock)
+	{
+		if ([parent.name isEqualToString:@"ol"] || [parent.name isEqualToString:@"ul"])
+		{
+			return NO;
+		}
+	}
+	
+	return YES;
 }
 
 - (NSAttributedString *)attributedString
@@ -396,19 +409,8 @@ NSDictionary *_classesForNames = nil;
 			{
 				if (![[tmpString string] hasSuffix:@"\n"])
 				{
-					if ([tmpString length])
-					{
-						// extend same paragraph and font style
-						[tmpString appendString:@"\n"];
-					}
-					else
-					{
-						// tmpString has no attributes to extend, so we make a new string with attributes
-						
-						// need all attributes to e.g. extend list to include this character
-						NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@"\n" attributes:[self attributesDictionary]];
-						[tmpString appendAttributedString:attributedString];
-					}
+					NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@"\n" attributes:[self attributesDictionary]];
+					[tmpString appendAttributedString:attributedString];
 				}
 			}
 		}
@@ -417,49 +419,53 @@ NSDictionary *_classesForNames = nil;
 		// e.g. last LI needs to inherit the margin-after of the UL
 		if (self.displayStyle == DTHTMLElementDisplayStyleBlock && [tmpString length]>0)
 		{
-			NSRange paragraphRange = [[tmpString string] rangeOfParagraphAtIndex:[tmpString length]-1];
 			
-			
-#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_5_1
-			if (___useiOS6Attributes)
+			// if this is latest
+			if ([self _isNotChildOfList])
 			{
-				NSParagraphStyle *paraStyle = [tmpString attribute:NSParagraphStyleAttributeName atIndex:paragraphRange.location effectiveRange:NULL];
+				NSRange paragraphRange = [[tmpString string] rangeOfParagraphAtIndex:[tmpString length]-1];
 				
-				DTCoreTextParagraphStyle *paragraphStyle = [DTCoreTextParagraphStyle paragraphStyleWithNSParagraphStyle:paraStyle];
-				
-				if (paragraphStyle.paragraphSpacing < self.paragraphStyle.paragraphSpacing)
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES
+				if (___useiOS6Attributes)
 				{
-					paragraphStyle.paragraphSpacing = self.paragraphStyle.paragraphSpacing;
+					NSParagraphStyle *paraStyle = [tmpString attribute:NSParagraphStyleAttributeName atIndex:paragraphRange.location effectiveRange:NULL];
 					
-					// make new paragraph style
-					NSParagraphStyle *newParaStyle = [paragraphStyle NSParagraphStyle];
+					DTCoreTextParagraphStyle *paragraphStyle = [DTCoreTextParagraphStyle paragraphStyleWithNSParagraphStyle:paraStyle];
 					
-					// remove old (works around iOS 4.3 leak)
-					[tmpString removeAttribute:NSParagraphStyleAttributeName range:paragraphRange];
-					
-					// set new
-					[tmpString addAttribute:NSParagraphStyleAttributeName value:newParaStyle range:paragraphRange];
+					if (paragraphStyle.paragraphSpacing < self.paragraphStyle.paragraphSpacing)
+					{
+						paragraphStyle.paragraphSpacing = self.paragraphStyle.paragraphSpacing;
+						
+						// make new paragraph style
+						NSParagraphStyle *newParaStyle = [paragraphStyle NSParagraphStyle];
+						
+						// remove old (works around iOS 4.3 leak)
+						[tmpString removeAttribute:NSParagraphStyleAttributeName range:paragraphRange];
+						
+						// set new
+						[tmpString addAttribute:NSParagraphStyleAttributeName value:newParaStyle range:paragraphRange];
+					}
 				}
-			}
-			else
+				else
 #endif
-			{
-				CTParagraphStyleRef paraStyle = (__bridge CTParagraphStyleRef)[tmpString attribute:(id)kCTParagraphStyleAttributeName atIndex:paragraphRange.location effectiveRange:NULL];
-				
-				DTCoreTextParagraphStyle *paragraphStyle = [DTCoreTextParagraphStyle paragraphStyleWithCTParagraphStyle:paraStyle];
-				
-				if (paragraphStyle.paragraphSpacing < self.paragraphStyle.paragraphSpacing)
 				{
-					paragraphStyle.paragraphSpacing = self.paragraphStyle.paragraphSpacing;
+					CTParagraphStyleRef paraStyle = (__bridge CTParagraphStyleRef)[tmpString attribute:(id)kCTParagraphStyleAttributeName atIndex:paragraphRange.location effectiveRange:NULL];
 					
-					// make new paragraph style
-					CTParagraphStyleRef newParaStyle = [paragraphStyle createCTParagraphStyle];
+					DTCoreTextParagraphStyle *paragraphStyle = [DTCoreTextParagraphStyle paragraphStyleWithCTParagraphStyle:paraStyle];
 					
-					// remove old (works around iOS 4.3 leak)
-					[tmpString removeAttribute:(id)kCTParagraphStyleAttributeName range:paragraphRange];
-					
-					// set new
-					[tmpString addAttribute:(id)kCTParagraphStyleAttributeName value:(__bridge_transfer id)newParaStyle range:paragraphRange];
+					if (paragraphStyle.paragraphSpacing < self.paragraphStyle.paragraphSpacing)
+					{
+						paragraphStyle.paragraphSpacing = self.paragraphStyle.paragraphSpacing;
+						
+						// make new paragraph style
+						CTParagraphStyleRef newParaStyle = [paragraphStyle createCTParagraphStyle];
+						
+						// remove old (works around iOS 4.3 leak)
+						[tmpString removeAttribute:(id)kCTParagraphStyleAttributeName range:paragraphRange];
+						
+						// set new
+						[tmpString addAttribute:(id)kCTParagraphStyleAttributeName value:(__bridge_transfer id)newParaStyle range:paragraphRange];
+					}
 				}
 			}
 		}
@@ -661,9 +667,9 @@ NSDictionary *_classesForNames = nil;
 		}
 		else if ([fontSize isEqualToString:@"inherit"])
 		{
-			_fontDescriptor.pointSize = _parent.fontDescriptor.pointSize;
+			_fontDescriptor.pointSize = self.parentElement.fontDescriptor.pointSize;
 		}
-		else
+		else if ([fontSize isCSSLengthValue])
 		{
 			CGFloat fontSizeValue = [fontSize pixelSizeOfCSSMeasureRelativeToCurrentTextSize:_fontDescriptor.pointSize textScale:_textScale];
 			_fontDescriptor.pointSize = fontSizeValue;
@@ -742,6 +748,10 @@ NSDictionary *_classesForNames = nil;
 		else if ([lowercaseFontFamily rangeOfString:@"times"].length)
 		{
 			_fontDescriptor.fontFamily = @"Times New Roman";
+		}
+		else if ([lowercaseFontFamily isEqualToString:@"inherit"])
+		{
+			_fontDescriptor.fontFamily = self.parentElement.fontDescriptor.fontFamily;
 		}
 		else
 		{
@@ -1035,7 +1045,7 @@ NSDictionary *_classesForNames = nil;
 		// FIXME: this is a workaround because having a text block padding in addition to list ident messes up indenting of the list
 		if ([self.name isEqualToString:@"ul"] || [self.name isEqualToString:@"ol"])
 		{
-			self.paragraphStyle.listIndent = _padding.left;
+			_listIndent = _padding.left;
 			_padding.left = 0;
 		}
 		
@@ -1089,6 +1099,10 @@ NSDictionary *_classesForNames = nil;
 			self.paragraphStyle.textBlocks = blocks;
 		}
 	}
+	else if (_displayStyle == DTHTMLElementDisplayStyleListItem)
+	{
+		self.paragraphStyle.paragraphSpacing = _margins.bottom;
+	}
 }
 
 - (DTCSSListStyle *)listStyle
@@ -1125,14 +1139,12 @@ NSDictionary *_classesForNames = nil;
 
 - (id)valueForKeyPathWithInheritance:(NSString *)keyPath
 {
-	
-	
 	id value = [self valueForKeyPath:keyPath];
 	
 	// if property is not set we also go to parent
-	if (!value && _parent)
+	if (!value && self.parentElement)
 	{
-		return [_parent valueForKeyPathWithInheritance:keyPath];
+		return [self.parentElement valueForKeyPathWithInheritance:keyPath];
 	}
 	
 	// enum properties have 0 for inherit
@@ -1140,9 +1152,9 @@ NSDictionary *_classesForNames = nil;
 	{
 		NSNumber *number = value;
 		
-		if (([number integerValue]==0) && _parent)
+		if (([number integerValue]==0) && self.parentElement)
 		{
-			return [_parent valueForKeyPathWithInheritance:keyPath];
+			return [self.parentElement valueForKeyPathWithInheritance:keyPath];
 		}
 	}
 	
@@ -1151,9 +1163,9 @@ NSDictionary *_classesForNames = nil;
 	{
 		NSString *string = value;
 		
-		if ([string isEqualToString:@"inherit"] && _parent)
+		if ([string isEqualToString:@"inherit"] && self.parentElement)
 		{
-			return [_parent valueForKeyPathWithInheritance:keyPath];
+			return [self.parentElement valueForKeyPathWithInheritance:keyPath];
 		}
 	}
 	
@@ -1183,7 +1195,9 @@ NSDictionary *_classesForNames = nil;
 {
 	_fontDescriptor = [element.fontDescriptor copy];
 	_paragraphStyle = [element.paragraphStyle copy];
-	
+
+	_headerLevel = element.headerLevel;
+
 	_fontVariant = element.fontVariant;
 	_underlineStyle = element.underlineStyle;
 	_strikeOut = element.strikeOut;
@@ -1292,9 +1306,9 @@ NSDictionary *_classesForNames = nil;
 {
 	if (_fontVariant == DTHTMLElementFontVariantInherit)
 	{
-		if (_parent)
+		if (self.parentElement)
 		{
-			return _parent.fontVariant;
+			return self.parentElement.fontVariant;
 		}
 		
 		return DTHTMLElementFontVariantNormal;

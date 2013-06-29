@@ -449,8 +449,7 @@
 		edgeInsets.top = ABS(frame.origin.y);
 	}
 	
-	if (attachment.contentType == DTTextAttachmentTypeImage) {
-
+	if ([attachment isKindOfClass:[DTImageTextAttachment class]]) {
 		if ([self isEmoji:attachment.contentURL]) {
 			// minimal frame to suppress draing context errors with 0 height or width.
 			frame.size.width = MAX(frame.size.width, 1.0f);
@@ -467,10 +466,11 @@
 		}
 		
 		
+        DTImageTextAttachment *imageAttachment = (DTImageTextAttachment *)attachment;
 		UIImage *image;
 		
-		if( [attachment.contents isKindOfClass:[UIImage class]] ) {
-			image = (UIImage *)attachment.contents;
+		if( [imageAttachment.image isKindOfClass:[UIImage class]] ) {
+			image = imageAttachment.image;
 			
 			frame.size.width = width;
 			frame.size.height = image.size.height * (width / image.size.width);
@@ -493,7 +493,7 @@
 		imageView.linkURL = attachment.hyperLinkURL;
 		[imageView addTarget:self action:@selector(handleImageLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
-		if ([attachment.contents isKindOfClass:[UIImage class]]) {
+		if ([imageAttachment.image isKindOfClass:[UIImage class]]) {
 			[imageView setImage:image];
 		} else {
 			imageView.contentMode = UIViewContentModeCenter;
@@ -515,11 +515,11 @@
 		
 		ReaderVideoContentType videoType;
 		
-		if (attachment.contentType == DTTextAttachmentTypeVideoURL) {
+		if ([attachment isKindOfClass:[DTVideoTextAttachment class]]) {
 			videoType = ReaderVideoContentTypeVideo;
-		} else if (attachment.contentType == DTTextAttachmentTypeIframe) {
+		} else if ([attachment isKindOfClass:[DTIframeTextAttachment class]]) {
 			videoType = ReaderVideoContentTypeIFrame;
-		} else if (attachment.contentType == DTTextAttachmentTypeObject) {
+		} else if ([attachment isKindOfClass:[DTObjectTextAttachment class]]) {
 			videoType = ReaderVideoContentTypeEmbed;
 		} else {
 			return nil; // Can't handle whatever this is :P

@@ -16,15 +16,13 @@
 #import "DTTextAttachment.h"
 #import "DTCompatibility.h"
 
-@class DTHTMLElementBR;
+@class DTBreakHTMLElement;
 
 /**
  Class to represent a element (aka "tag") in a HTML document. Structure information - like parent or children - is inherited from its superclass <DTHTMLParserNode>.
  */
 @interface DTHTMLElement : DTHTMLParserNode
 {
-	DTHTMLElement *_parent;
-	
 	DTCoreTextFontDescriptor *_fontDescriptor;
 	DTCoreTextParagraphStyle *_paragraphStyle;
 	DTTextAttachment *_textAttachment;
@@ -74,6 +72,9 @@
 	// margins/padding
 	DTEdgeInsets _margins;
 	DTEdgeInsets _padding;
+	
+	// indent of lists
+	CGFloat _listIndent;
 }
 
 /**

@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 Drobnik KG. All rights reserved.
 //
 
+#import "DTWeakSupport.h"
+
 // types of ASN1 tags
 typedef enum 
 {

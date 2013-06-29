@@ -174,7 +174,7 @@ void _processingInstruction (void *context, const xmlChar *target, const xmlChar
 	NSData *_data;
 	NSStringEncoding _encoding;
 	
-	__unsafe_unretained id <DTHTMLParserDelegate> _delegate;
+	DT_WEAK_VARIABLE id <DTHTMLParserDelegate> _delegate;
 	htmlParserCtxtPtr _parserContext;
 	
 	BOOL _isAborting;
@@ -277,12 +277,12 @@ void _processingInstruction (void *context, const xmlChar *target, const xmlChar
 
 #pragma mark Properties
 
-- (__unsafe_unretained id<DTHTMLParserDelegate>)delegate
+- (id <DTHTMLParserDelegate>)delegate
 {
 	return _delegate;
 }
 
-- (void)setDelegate:(__unsafe_unretained id<DTHTMLParserDelegate>)delegate;
+- (void)setDelegate:(id <DTHTMLParserDelegate>)delegate;
 {
 	_delegate = delegate;
 	

@@ -41,7 +41,7 @@
 		
 	} _delegateFlags;
 	
-	__unsafe_unretained id <DTASN1ParserDelegate> _delegate;
+	DT_WEAK_VARIABLE id <DTASN1ParserDelegate> _delegate;
 }
 
 - (id)initWithData:(NSData *)data
@@ -508,12 +508,12 @@
 
 #pragma mark Properties
 
-- (__unsafe_unretained id<DTASN1ParserDelegate>)delegate
+- (id <DTASN1ParserDelegate>)delegate
 {
 	return _delegate;
 }
 
-- (void)setDelegate:(__unsafe_unretained id<DTASN1ParserDelegate>)delegate;
+- (void)setDelegate:(id <DTASN1ParserDelegate>)delegate;
 {
 	_delegate = delegate;
 	
