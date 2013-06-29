@@ -157,7 +157,7 @@
 		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, contentY + 10.0f, width, 100.0f)]; // Starting height is arbitrary
 		_textContentView.delegate = self;
 		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		_textContentView.backgroundColor = [UIColor clearColor];
+		_textContentView.backgroundColor = [UIColor whiteColor];
 		_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, padding, 0.0f, padding);
 		_textContentView.shouldDrawImages = NO;
 		_textContentView.shouldDrawLinks = NO;
