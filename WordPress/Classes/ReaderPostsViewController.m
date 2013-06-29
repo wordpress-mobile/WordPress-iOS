@@ -246,7 +246,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 10.0f)];
 	paddingView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	paddingView.backgroundColor = [UIColor colorWithRed:239.0f/255.0f green:239.0f/255.0f blue:239.0f/255.0f alpha:1.0f];
+	paddingView.backgroundColor = [UIColor colorWithWhite:0.9453125f alpha:1.f];
+;
 	self.tableView.tableHeaderView = paddingView;
 }
 
