@@ -152,7 +152,8 @@
 			_titleLabel.frame = titleFrame;
 			contentY = titleFrame.origin.y + titleFrame.size.height;
 		}
-		
+
+        [DTAttributedTextContentView setLayerClass:[CATiledLayer class]];
 		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, contentY + 10.0f, width, 100.0f)]; // Starting height is arbitrary
 		_textContentView.delegate = self;
 		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
