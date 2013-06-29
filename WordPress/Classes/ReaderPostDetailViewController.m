@@ -27,6 +27,7 @@ NSInteger const ReaderCommentsToSync = 100;
 @interface ReaderPostDetailViewController ()<ReaderPostDetailViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate> {
 	BOOL _hasMoreContent;
 	BOOL _loadingMore;
+    CGFloat _previousOffset;
 }
 
 @property (nonatomic, strong) ReaderPost *post;
@@ -84,6 +85,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	if(self) {
 		self.post = apost;
 		self.comments = [NSMutableArray array];
+        self.wantsFullScreenLayout = YES;
 	}
 	return self;
 }
@@ -104,6 +106,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	self.title = self.post.postTitle;
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.contentInset = UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height, 0, self.navigationController.toolbar.frame.size.height, 0);
 	
 	if ([self.resultsController.fetchedObjects count] > 0) {
 		self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
@@ -124,7 +127,10 @@ NSInteger const ReaderCommentsToSync = 100;
 	[super viewWillAppear:animated];
 	
 	self.panelNavigationController.delegate = self;
-	[self.navigationController setToolbarHidden:NO animated:YES];
+    [self setFullScreen:NO];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.toolbar.translucent = YES;
 
 	UIToolbar *toolbar = self.navigationController.toolbar;
 	[toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
@@ -137,14 +143,15 @@ NSInteger const ReaderCommentsToSync = 100;
 	[self showStoredComment];
 }
 
-
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 	
     self.panelNavigationController.delegate = nil;
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.toolbar.translucent = NO;
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 	[self.navigationController setToolbarHidden:YES animated:YES];
 }
-
 
 - (void)viewDidUnload {
 	[super viewDidUnload];
@@ -430,8 +437,12 @@ NSInteger const ReaderCommentsToSync = 100;
 	} else {
 		[self hideReblogForm];
 	}
+    BOOL hideBars = !self.navigationController.toolbarHidden;
+    if (!hideBars || self.tableView.contentOffset.y > 60) {
+        [self.navigationController setToolbarHidden:hideBars animated:YES];
+        [self setFullScreen:hideBars];
+    }
 }
-
 
 - (BOOL)isReplying {
 	return ([self.tableView indexPathForSelectedRow] != nil) ? YES : NO;
@@ -543,6 +554,32 @@ NSInteger const ReaderCommentsToSync = 100;
 	[self.view endEditing:YES];
 }
 
+- (void)setFullScreen:(BOOL)fullScreen {
+    [self.navigationController setToolbarHidden:fullScreen animated:YES];
+    [self.navigationController setNavigationBarHidden:fullScreen animated:YES];
+    return;
+
+    if (fullScreen) {
+        [UIView animateWithDuration:.3f
+                         animations:^{
+                             self.navigationController.toolbar.alpha = 0.f;
+                             self.navigationController.navigationBar.alpha = 0.f;
+                         } completion:^(BOOL finished) {
+                             [self.navigationController setToolbarHidden:YES animated:NO];
+                             [self.navigationController setNavigationBarHidden:YES animated:NO];
+                         }];
+    } else {
+        [self.navigationController setToolbarHidden:NO animated:NO];
+        self.navigationController.toolbar.alpha = 0.f;
+        [self.navigationController setNavigationBarHidden:NO animated:NO];
+        self.navigationController.navigationBar.alpha = 0.f;
+        [UIView animateWithDuration:.3f
+                         animations:^{
+                             self.navigationController.toolbar.alpha = 1.f;
+                             self.navigationController.navigationBar.alpha = 1.f;
+                         }];
+    }
+}
 
 #pragma mark - Sync methods
 
@@ -723,6 +760,22 @@ NSInteger const ReaderCommentsToSync = 100;
 	if (_isScrollingCommentIntoView){
 		self.isScrollingCommentIntoView = NO;
 	}
+    CGFloat dY = scrollView.contentOffset.y - _previousOffset;
+    BOOL toolbarHidden = self.navigationController.toolbarHidden;
+    if (toolbarHidden &&
+        (dY < 0
+         || (dY > 0 && scrollView.contentOffset.y < 10)
+         || (dY > 0 && scrollView.contentOffset.y > _headerView.frame.size.height))) {
+            [self setFullScreen:NO];
+    }
+
+    // Should be around the start of the post
+    CGFloat hideThreshold = 60;
+    if (!toolbarHidden && _previousOffset < hideThreshold && scrollView.contentOffset.y > hideThreshold) {
+        [self setFullScreen:YES];
+    }
+
+    _previousOffset = scrollView.contentOffset.y;
 }
 
 
