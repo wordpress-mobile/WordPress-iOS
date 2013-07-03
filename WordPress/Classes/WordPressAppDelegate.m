@@ -1103,7 +1103,7 @@
             [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
             
             [api callMethod:@"wpcom.mobile_push_register_token"
-                 parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
+                 parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox,  [[UIDevice currentDevice] name], nil]
                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         WPFLog(@"Registered token %@, sending blogs list", token);
                         [[WordPressComApi sharedApi] syncPushNotificationInfo];
