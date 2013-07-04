@@ -16,6 +16,7 @@
 
 @interface PostSettingsViewController () {
     BOOL triedAuthOnce;
+    BOOL featuredImageViewFullScreen;
 }
 
 @property (nonatomic, strong) AbstractPost *apost;
@@ -155,6 +156,12 @@
             }];
         }
     }
+    
+    UITapGestureRecognizer *featuredImageTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(respondToFeaturedImageTap)];
+    [featuredImageTapGestureRecognizer setNumberOfTapsRequired:1];
+    [featuredImageView addGestureRecognizer:featuredImageTapGestureRecognizer];
+    [featuredImageView setUserInteractionEnabled:YES];
+    
 }
 
 - (void)viewDidUnload {
@@ -1111,6 +1118,35 @@
             addressLabel.text = address;
         }
     }];
+}
+
+#pragma mark - UIGestureRocognizer method
+
+- (void)respondToFeaturedImageTap {
+    
+    if(featuredImageViewFullScreen) {
+        [self dismissViewControllerAnimated:YES completion:^{
+            featuredImageViewFullScreen = NO;
+        }];
+        
+    } else {
+        UIViewController *featuredImageViewController = [[UIViewController alloc] initWithNibName:nil bundle:nil];
+        featuredImageViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        featuredImageViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
+        
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:featuredImageView.image];
+        [imageView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+        [imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [featuredImageViewController.view addSubview:imageView];
+        [imageView setFrame:featuredImageViewController.view.frame];
+        
+        UITapGestureRecognizer *featuredImageTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(respondToFeaturedImageTap)];
+        [featuredImageTapGestureRecognizer setNumberOfTapsRequired:1];
+        [imageView addGestureRecognizer:featuredImageTapGestureRecognizer];
+        [imageView setUserInteractionEnabled:YES];
+        
+        [self presentViewController:featuredImageViewController animated:YES completion:^{featuredImageViewFullScreen = YES;}];
+    }
 }
 
 @end
