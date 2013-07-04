@@ -26,19 +26,6 @@
 
 
 @implementation Comment
-@dynamic author;
-@dynamic author_email;
-@dynamic author_ip;
-@dynamic author_url;
-@dynamic commentID;
-@dynamic content;
-@dynamic dateCreated;
-@dynamic link;
-@dynamic parentID;
-@dynamic postID;
-@dynamic postTitle;
-@dynamic status;
-@dynamic type;
 @dynamic blog;
 @dynamic post;
 @synthesize isNew;

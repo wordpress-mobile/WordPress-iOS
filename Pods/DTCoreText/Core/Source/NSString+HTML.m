@@ -1,6 +1,6 @@
 //
 //  NSString+HTML.m
-//  CoreTextExtensions
+//  DTCoreText
 //
 //  Created by Oliver Drobnik on 1/9/11.
 //  Copyright 2011 Drobnik.com. All rights reserved.
@@ -35,6 +35,15 @@ static NSDictionary *entityReverseLookup = nil;
 	}
 	
 	return YES;
+}
+
+- (BOOL)isIgnorableWhitespace
+{
+	NSCharacterSet *whitespaceCharacterSet = [NSCharacterSet ignorableWhitespaceCharacterSet];
+	
+	NSString *tmpStr = [self stringByTrimmingCharactersInSet:whitespaceCharacterSet];
+	
+	return [tmpStr length]==0;
 }
 
 - (float)percentValue
@@ -393,10 +402,19 @@ static NSDictionary *entityReverseLookup = nil;
 		{
 			if (oneChar<=255)
 			{
+				// output as is
 				[tmpString appendFormat:@"%C", oneChar];
+			}
+			else if (CFStringIsSurrogateHighCharacter(oneChar) && i < [self length]-1)
+			{
+				i++;
+				unichar surrogateLowChar = [self characterAtIndex:i];
+				UTF32Char u32code = CFStringGetLongCharacterForSurrogatePair(oneChar, surrogateLowChar);
+				[tmpString appendFormat:@"&#%lu;", (unsigned long)u32code];
 			}
 			else
 			{
+				// output encoded
 				[tmpString appendFormat:@"&#%d;", oneChar];
 			}
 		}
@@ -720,18 +738,54 @@ static NSDictionary *entityReverseLookup = nil;
 	return [NSString stringWithString:output];
 }
 
-#pragma mark Utility
-+ (NSString *)guid
+- (NSString *)stringByAddingAppleConvertedSpace
 {
-	CFUUIDRef uuid = CFUUIDCreate(NULL);
-	CFStringRef cfStr = CFUUIDCreateString(NULL, uuid);
+	NSMutableString *output = [NSMutableString string];
 	
-	NSString *ret = [NSString stringWithString:CFBridgingRelease(cfStr)];
+	NSScanner *scanner = [NSScanner scannerWithString:self];
+	scanner.charactersToBeSkipped = nil;
 	
-	CFRelease(uuid);
-	// CFRelease(cfStr);
+	NSCharacterSet *spaceSet = [NSCharacterSet characterSetWithCharactersInString:@" "];
 	
-	return ret;
+	while (![scanner isAtEnd])
+	{
+		NSString *part;
+		if ([scanner scanUpToString:@"  " intoString:&part])
+		{
+			[output appendString:part];
+		}
+		
+		NSString *spaces;
+		if ([scanner scanCharactersFromSet:spaceSet intoString:&spaces])
+		{
+			// first space always output as is
+			[output appendString:@" "];
+			
+			NSUInteger numSpaces = [spaces length]-1;
+			
+			if (numSpaces > 1)
+			{
+				[output appendString:@"<span class=\"Apple-converted-space\">"];
+				
+				// alternate nbsp; and normal space
+				for (int i=0; i<numSpaces;i++)
+				{
+					if (i%2)
+					{
+						[output appendString:@" "];
+					}
+					else
+					{
+						[output appendString:UNICODE_NON_BREAKING_SPACE];
+					}
+				}
+				
+				[output appendString:@"</span>"];
+			}
+		}
+	}
+	
+	return output;
 }
 
 @end

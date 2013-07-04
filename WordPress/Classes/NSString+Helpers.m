@@ -108,12 +108,7 @@
  * Uses a RegEx to strip all HTML tags from a string and unencode entites
  */
 - (NSString *)stringByStrippingHTML {
-    NSRange r;
-    NSString *s = [self copy];
-    while ((r = [s rangeOfString:@"<[^>]+>" options:NSRegularExpressionSearch]).location != NSNotFound)
-        s = [s stringByReplacingCharactersInRange:r withString:@""];
-        
-    return s;
+    return [self stringByReplacingOccurrencesOfString:@"<[^>]+>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, self.length)];
 }
 
 @end

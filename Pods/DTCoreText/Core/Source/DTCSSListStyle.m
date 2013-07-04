@@ -1,6 +1,6 @@
 //
 //  DTCSSListStyle.m
-//  CoreTextExtensions
+//  DTCoreText
 //
 //  Created by Oliver Drobnik on 8/11/11.
 //  Copyright 2011 Drobnik.com. All rights reserved.
@@ -254,6 +254,7 @@
 	newStyle.type = self.type;
 	newStyle.position = self.position;
 	newStyle.imageName = self.imageName;
+	newStyle.startingItemNumber = self.startingItemNumber;
 	
 	return newStyle;
 }

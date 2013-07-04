@@ -39,6 +39,20 @@
 /// ----------------------------------------------
 
 /**
+ The NSManagedObjectContext to use. 
+ 
+ Optional. Only needed if there subclass needs a custom context. 
+ */
+- (NSManagedObjectContext *)managedObjectContext;
+
+/**
+ The name of the cache to use for the NSFetchResultsController. 
+ 
+ Optiona. Only needed if the subclass is using multiple caches.
+ */
+- (NSString *)resultsControllerCacheName;
+
+/**
  Core Data entity name used by NSFetchedResultsController
  
  e.g. Post, Page, Comment, ...
@@ -134,5 +148,23 @@
  Subclasses should call this method if one of the swipe actions needs to dismiss the secondary menu
  */
 - (void)removeSwipeView:(BOOL)animated;
+
+
+/**
+ Create a custom view to display to the user when there are no results to show.
+ 
+ Optional. If a subclass does not override this method a default view is constructed.
+ @return The view to use for the no results view.
+ */
+- (UIView *)createNoResultsView;
+
+
+/**
+ Returns the row animation style the tableview should use.
+ 
+ Optional. If the sub class does not implment this method the default will be used.
+ @return The row animation style that the tableview should use.
+ */
+- (UITableViewRowAnimation)tableViewRowAnimation;
 
 @end

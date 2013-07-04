@@ -13,14 +13,39 @@
 
 + (NSAttributedString *)synthesizedSmallCapsAttributedStringWithText:(NSString *)text attributes:(NSDictionary *)attributes
 {
-	CTFontRef normalFont = (__bridge CTFontRef)[attributes objectForKey:(id)kCTFontAttributeName];
+	DTCoreTextFontDescriptor *fontDescriptor = [attributes fontDescriptor];
 	
-	DTCoreTextFontDescriptor *smallerFontDesc = [DTCoreTextFontDescriptor fontDescriptorForCTFont:normalFont];
+	if (!fontDescriptor)
+	{
+		return nil;
+	}
+	
+	DTCoreTextFontDescriptor *smallerFontDesc = [fontDescriptor copy];
 	smallerFontDesc.pointSize *= 0.7;
+	
 	CTFontRef smallerFont = [smallerFontDesc newMatchingFont];
 	
+	if (!smallerFont)
+	{
+		return nil;
+	}
+	
 	NSMutableDictionary *smallAttributes = [attributes mutableCopy];
-	[smallAttributes setObject:CFBridgingRelease(smallerFont) forKey:(id)kCTFontAttributeName];
+
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES && TARGET_OS_IPHONE
+	if (___useiOS6Attributes)
+	{
+		UIFont *uiFont = [UIFont fontWithCTFont:smallerFont];
+		
+		[smallAttributes setObject:uiFont forKey:NSFontAttributeName];
+		
+		CFRelease(smallerFont);
+	}
+	else
+#endif
+	{
+		[smallAttributes setObject:CFBridgingRelease(smallerFont) forKey:(id)kCTFontAttributeName];
+	}
 	
 	NSMutableAttributedString *tmpString = [[NSMutableAttributedString alloc] init];
 	NSScanner *scanner = [NSScanner scannerWithString:text];
@@ -46,7 +71,7 @@
 		}
 	}
 	
-	return 	tmpString;
+	return tmpString;
 }
 
 @end
