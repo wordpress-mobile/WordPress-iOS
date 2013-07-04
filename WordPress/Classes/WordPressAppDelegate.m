@@ -1002,14 +1002,16 @@
 					stringByReplacingOccurrencesOfString: @">" withString: @""]
 				   stringByReplacingOccurrencesOfString: @" " withString: @""];
 
-    NSLog(@"Registered for push notifications and stored device token: %@", myToken);
+    NSLog(@"Device token received in didRegisterForRemoteNotificationsWithDeviceToken: %@", myToken);
     
 	// Store the token
     NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if (![previousToken isEqualToString:myToken]) {
+         NSLog(@"Device Token has changed! OLD Value %@, NEW value %@", previousToken, myToken);
         [[NSUserDefaults standardUserDefaults] setObject:myToken forKey:kApnsDeviceTokenPrefKey];
-        [self sendApnsToken];
+        [[WordPressComApi sharedApi] syncPushNotificationInfo]; //synch info again since the device token has changed.
     }
+
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
@@ -1067,52 +1069,6 @@
                                              UIRemoteNotificationTypeSound |
                                              UIRemoteNotificationTypeAlert)];
     }
-}
-
-- (void)sendApnsToken {	
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
-    if( nil == token ) return; //no apns token available
-    
-    if(![[WordPressComApi sharedApi] hasCredentials])
-        return;
-    
-    NSString *authURL = kNotificationAuthURL;   	
-    NSError *error = nil;
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
-        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil) {
-            // Migrate password to keychain
-            [SFHFKeychainUtils storeUsername:username
-                                 andPassword:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]
-                              forServiceName:@"WordPress.com"
-                              updateExisting:YES error:&error];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                        andServiceName:@"WordPress.com"
-                                                                 error:&error];
-        if (password != nil) {
-#ifdef DEBUG
-            NSNumber *sandbox = [NSNumber numberWithBool:YES];
-#else
-            NSNumber *sandbox = [NSNumber numberWithBool:NO];
-#endif
-            WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-            
-            [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
-            
-            [api callMethod:@"wpcom.mobile_push_register_token"
-                 parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox,  [[UIDevice currentDevice] name], nil]
-                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        WPFLog(@"Registered token %@, sending blogs list", token);
-                        [[WordPressComApi sharedApi] syncPushNotificationInfo];
-                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey]; //Remove the token from Preferences, otherwise the token is never re-sent to the server on the next startup
-                        WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
-                    }];
-        } 
-	}
 }
 
 - (void)unregisterApnsToken {
