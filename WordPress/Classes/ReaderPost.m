@@ -112,13 +112,13 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 }
 
 
-+ (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr withContext:(NSManagedObjectContext *)context {
++ (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr withContext:(NSManagedObjectContext *)context success:(void (^)())success {
     if (![arr isKindOfClass:[NSArray class]] || [arr count] == 0) {
         return;
     }
     NSManagedObjectContext *backgroundMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     [backgroundMoc setParentContext:context];
-
+	
     [backgroundMoc performBlock:^{
         NSError *error;
         for (NSDictionary *postData in arr) {
@@ -126,9 +126,9 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
                 continue;
             }
             [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMoc];
-
+			
         }
-
+		
         if(![backgroundMoc save:&error]){
             WPFLog(@"Failed to sync ReaderPosts: %@", error);
         }
@@ -138,6 +138,10 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
                 WPFLog(@"Failed to sync ReaderPosts: %@", error);
             }
         }];
+		
+		if (success) {
+			success();
+		}
     }];
 }
 
@@ -380,7 +384,9 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 		snippet = [snippet substringToIndex:(rng.location + 1)];
 	} else {
 		rng = [snippet rangeOfString:@" " options:NSBackwardsSearch];
-		snippet = [NSString stringWithFormat:@"%@ ...", [snippet substringToIndex:rng.location]];
+		if (rng.location != NSNotFound) {
+			snippet = [NSString stringWithFormat:@"%@ ...", [snippet substringToIndex:rng.location]];
+		}
 	}
 
 	return snippet;
@@ -698,7 +704,12 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 									 if (postsArr) {									 
 										 [ReaderPost syncPostsFromEndpoint:path
 																 withArray:postsArr
-															   withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+															   withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]
+																   success:^{
+																	   if (success) {
+																		   success(operation, responseObject);
+																	   }
+																   }];
 			
 										 [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ReaderLastSyncDateKey];
 										 [NSUserDefaults resetStandardUserDefaults];
@@ -707,7 +718,9 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 											 NSTimeInterval interval = - (60 * 60 * 24 * 7); // 7 days.
 											 [ReaderPost deletePostsSyncedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]] withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
 										 }
+										 return;
 									 }
+									 
 									 if (success) {
 										 success(operation, responseObject);
 									 }

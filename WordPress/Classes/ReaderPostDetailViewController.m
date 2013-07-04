@@ -581,6 +581,7 @@ NSInteger const ReaderCommentsToSync = 100;
     }
 }
 
+
 #pragma mark - Sync methods
 
 - (NSDate *)lastSyncDate {

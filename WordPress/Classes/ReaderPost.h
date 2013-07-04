@@ -64,11 +64,12 @@ extern NSString *const ReaderLastSyncDateKey;
  
  @param endpoint REST endpoint that sourced the posts.
  @param arr An array of dictionaries from which to build posts. 
- @param context The managed object context to query.
+ @param context The managed object context to query. Note that saves will happen in the background on a child context.
+ @param success  A block to execute when the save has finished.
  
  @return Returns an array of posts.
  */
-+ (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr withContext:(NSManagedObjectContext *)context;
++ (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr withContext:(NSManagedObjectContext *)context success:(void (^)())success;
 
 
 /*
