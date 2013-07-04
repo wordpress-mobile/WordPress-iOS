@@ -26,15 +26,6 @@
 NSInteger const ReaderPostsToSync = 20;
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
-@interface WPTableViewController (SubclassMethodOverride)
-// Override the readonly subclass method so we can set the resultsController to nil when topics change.
-@property (nonatomic, strong) NSFetchedResultsController *resultsController;
-/**
- A view to show the user when the tableview is empty.
- */
-@property (nonatomic, strong) UIView *noResultsView;
-@end
-
 @interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate, WPTableImageSourceDelegate> {
 	BOOL _hasMoreContent;
 	BOOL _loadingMore;
@@ -755,8 +746,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	_hasMoreContent = YES;
     _rowsSeen = 0;
 	[[(WPInfoView *)self.noResultsView titleLabel] setText:[self noResultsPrompt]];
-	self.resultsController.delegate = nil;
-	self.resultsController = nil;
+	[self resetResultsController];
 	[self.tableView reloadData];
 	
     [self configureTableHeader];

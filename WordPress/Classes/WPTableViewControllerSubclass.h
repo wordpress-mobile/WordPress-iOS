@@ -25,6 +25,11 @@
 @property (nonatomic) BOOL infiniteScrollEnabled;
 
 /**
+ The noResultsView is made available to subclasses so they can customize its content.
+ */
+@property (nonatomic, readonly, strong) UIView *noResultsView;
+
+/**
  Sync content with the server
  
  Subclasses can call this method if they need to invoke a refresh, but it's not meant to be implemented by subclasses.
@@ -166,5 +171,11 @@
  @return The row animation style that the tableview should use.
  */
 - (UITableViewRowAnimation)tableViewRowAnimation;
+
+
+/**
+ Completely reset the resultsController. Useful if the fetchRequest needs to be recreated with a new predicate.
+ */
+- (void)resetResultsController;
 
 @end

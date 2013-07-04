@@ -931,4 +931,9 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     AssertSubclassMethod();
 }
 
+- (void)resetResultsController {
+	_resultsController.delegate = nil;
+	_resultsController = nil;
+}
+
 @end
