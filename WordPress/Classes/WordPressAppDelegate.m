@@ -25,6 +25,7 @@
 #import "WPMobileStats.h"
 #import "WPComLanguages.h"
 #import "WPAccount.h"
+#import "Note.h"
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 - (void)setAppBadge;
@@ -1052,6 +1053,22 @@
         default:
             break;
     }
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    WPFLogMethod();
+
+    [Note getNewNotificationswithContext:self.managedObjectContext success:^(BOOL hasNewNotes) {
+        WPFLog(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
+        if (hasNewNotes) {
+            completionHandler(UIBackgroundFetchResultNewData);
+        } else {
+            completionHandler(UIBackgroundFetchResultNewData);
+        }
+    } failure:^(NSError *error) {
+        WPFLog(@"notification fetch completion handler failed with error: %@", error);
+        completionHandler(UIBackgroundFetchResultFailed);
+    }];
 }
 
 - (void)registerForPushNotifications {

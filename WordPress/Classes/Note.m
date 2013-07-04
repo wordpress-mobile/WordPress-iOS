@@ -126,6 +126,36 @@ const NSUInteger NoteKeepCount = 20;
     [context save:&error];
 }
 
++ (void)getNewNotificationswithContext:(NSManagedObjectContext *)context success:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure {
+    NSNumber *timestamp = [self lastNoteTimestampWithContext:context];
+
+    [[WordPressComApi sharedApi] getNotificationsSince:timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *notes = [responseObject arrayForKey:@"notes"];
+        if (success) {
+            success([notes count] > 0);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
++ (NSNumber *)lastNoteTimestampWithContext:(NSManagedObjectContext *)context {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Note"];
+    request.resultType = NSDictionaryResultType;
+    request.propertiesToFetch = @[@"timestamp"];
+    request.fetchLimit = 1;
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO]];
+    NSArray *results = [context executeFetchRequest:request error:nil];
+    NSNumber *timestamp;
+    if ([results count]) {
+        NSDictionary *note = results[0];
+        timestamp = [note objectForKey:@"timestamp"];
+    }
+    return timestamp;
+}
+
 - (NSDictionary *)getNoteData {
     return self.noteData;
 }
