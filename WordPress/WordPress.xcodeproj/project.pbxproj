@@ -376,6 +376,8 @@
 		5D4DE6EF167165060030518D /* icon_info_message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D4DE6ED167165060030518D /* icon_info_message@2x.png */; };
 		5D4DE6F4167177560030518D /* WPInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D4DE6F2167177560030518D /* WPInfoView.m */; };
 		5D4DE6F5167177560030518D /* WPInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D4DE6F3167177560030518D /* WPInfoView.xib */; };
+		5D570F6D1785EAF0008F2C27 /* reader-postaction-reblog-done.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D570F6B1785EAF0008F2C27 /* reader-postaction-reblog-done.png */; };
+		5D570F6E1785EAF0008F2C27 /* reader-postaction-reblog-done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D570F6C1785EAF0008F2C27 /* reader-postaction-reblog-done@2x.png */; };
 		5D5A953B1760DDE0000F7A1E /* ReaderReblogFormView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D5A953A1760DDDF000F7A1E /* ReaderReblogFormView.m */; };
 		5D66514C1637325800EBDA7D /* snd_swipe.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D6651481637325800EBDA7D /* snd_swipe.caf */; };
 		5D66514D1637325800EBDA7D /* snd_rollup.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D6651491637325800EBDA7D /* snd_rollup.caf */; };
@@ -1301,6 +1303,8 @@
 		5D4DE6F1167177560030518D /* WPInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPInfoView.h; sourceTree = "<group>"; };
 		5D4DE6F2167177560030518D /* WPInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPInfoView.m; sourceTree = "<group>"; };
 		5D4DE6F3167177560030518D /* WPInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPInfoView.xib; sourceTree = "<group>"; };
+		5D570F6B1785EAF0008F2C27 /* reader-postaction-reblog-done.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-reblog-done.png"; path = "Resources/Images/reader-postaction-reblog-done.png"; sourceTree = "<group>"; };
+		5D570F6C1785EAF0008F2C27 /* reader-postaction-reblog-done@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "reader-postaction-reblog-done@2x.png"; path = "Resources/Images/reader-postaction-reblog-done@2x.png"; sourceTree = "<group>"; };
 		5D5A95391760DDDF000F7A1E /* ReaderReblogFormView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderReblogFormView.h; sourceTree = "<group>"; };
 		5D5A953A1760DDDF000F7A1E /* ReaderReblogFormView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderReblogFormView.m; sourceTree = "<group>"; };
 		5D6651481637325800EBDA7D /* snd_swipe.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = snd_swipe.caf; path = Resources/Sounds/snd_swipe.caf; sourceTree = "<group>"; };
@@ -2907,6 +2911,8 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5D570F6B1785EAF0008F2C27 /* reader-postaction-reblog-done.png */,
+				5D570F6C1785EAF0008F2C27 /* reader-postaction-reblog-done@2x.png */,
 				5D7BEA2817749FFC00423E7F /* wp_img_placeholder.png */,
 				5D7BEA2917749FFD00423E7F /* wp_img_placeholder@2x.png */,
 				5D7BEA2A17749FFD00423E7F /* wp_vid_placeholder.png */,
@@ -4373,6 +4379,8 @@
 				5D7BEAC61774A10D00423E7F /* ui-texture.png in Resources */,
 				5D7BEAC71774A10D00423E7F /* ui-texture@2x.png in Resources */,
 				5D7BEAC91774A12800423E7F /* note_comment_table_threaded.png in Resources */,
+				5D570F6D1785EAF0008F2C27 /* reader-postaction-reblog-done.png in Resources */,
+				5D570F6E1785EAF0008F2C27 /* reader-postaction-reblog-done@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

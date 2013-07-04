@@ -232,7 +232,8 @@
 	_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
 	_reblogButton.backgroundColor = [UIColor whiteColor];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog"] forState:UIControlStateNormal];
-	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-active"] forState:UIControlStateSelected];
+	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-active"] forState:UIControlStateHighlighted];
+	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-done"] forState:UIControlStateSelected];
 	[_metaView addSubview:_reblogButton];
 	
 }

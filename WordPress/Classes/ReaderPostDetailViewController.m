@@ -264,7 +264,8 @@ NSInteger const ReaderCommentsToSync = 100;
 	
 	UIButton *reblogBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 	[reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog"] forState:UIControlStateNormal];
-    [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog-active"] forState:UIControlStateSelected];
+	[reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog-active"] forState:UIControlStateHighlighted];
+    [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog-done"] forState:UIControlStateSelected];
 	reblogBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
 	reblogBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	[reblogBtn addTarget:self action:@selector(handleReblogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
