@@ -388,6 +388,10 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
 
 - (NSString *)normalizeParagraphs:(NSString *)string {
+	if (!string) {
+		return @"";
+	}
+	
 	NSError *error;
 	
 	// Convert div tags to p tags
