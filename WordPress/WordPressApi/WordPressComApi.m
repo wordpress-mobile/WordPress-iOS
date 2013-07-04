@@ -508,8 +508,6 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     }];
     
     [operations addObject:tokenOperation];
-    //}
-	
     
     NSArray *settingsParameters = [NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], token, @"apple", nil];
     WPXMLRPCRequest *settingsRequest = [api XMLRPCRequestWithMethod:@"wpcom.get_mobile_push_notification_settings" parameters:settingsParameters];
