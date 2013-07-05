@@ -17,7 +17,9 @@
 
 NSInteger const ReaderTopicEndpointIndex = 3;
 NSInteger const ReaderPostSummaryLength = 150;
+NSInteger const ReaderPostsToSync = 20;
 NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
+NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 
 @interface ReaderPost()
 
@@ -89,6 +91,20 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 		
 	});
 	return endpoints;
+}
+
+
++ (NSDictionary *)currentTopic {
+	NSDictionary *topic = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ReaderCurrentTopicKey];
+	if(!topic) {
+		topic = [[ReaderPost readerEndpoints] objectAtIndex:0];
+	}
+	return topic;
+}
+
+
++ (NSString *)currentEndpoint {
+	return [[self currentTopic] objectForKey:@"endpoint"];
 }
 
 
@@ -731,6 +747,25 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 									 }
 								 }];
 
+}
+
+
++ (void)fetchPostsWithCompletionHandler:(void (^)(NSInteger count, NSError *error))completionHandler {
+	NSString *endpoint = [self currentEndpoint];
+	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
+	NSDictionary *params = @{@"number":numberToSync, @"per_page":numberToSync};
+	
+	[self getPostsFromEndpoint:endpoint
+				withParameters:params
+				   loadingMore:NO
+					   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+						   NSArray *postsArr = [responseObject arrayForKey:@"posts"];
+						   if(completionHandler){
+							   completionHandler([postsArr count], NULL);
+						   }
+					   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+						   completionHandler(0, error);
+					   }];
 }
 
 @end

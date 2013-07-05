@@ -12,7 +12,9 @@
 #import "WordPressComApi.h"
 
 extern NSInteger const ReaderTopicEndpointIndex;
+extern NSInteger const ReaderPostsToSync;
 extern NSString *const ReaderLastSyncDateKey;
+extern NSString *const ReaderCurrentTopicKey;
 
 @interface ReaderPost : BasePost
 
@@ -47,6 +49,9 @@ extern NSString *const ReaderLastSyncDateKey;
  */
 + (NSArray *)readerEndpoints;
 
++ (NSDictionary *)currentTopic;
+
++ (NSString *)currentEndpoint;
 
 /**
  Fetch posts for the specified endpoint. 
@@ -170,5 +175,13 @@ extern NSString *const ReaderLastSyncDateKey;
 				 loadingMore:(BOOL)loadingMore
 					 success:(WordPressComApiRestSuccessResponseBlock)success
 					 failure:(WordPressComApiRestSuccessFailureBlock)failure;
+
+/**
+ Wrapper for getPostsFromEndPoint:withParameters:loadingMore:success:failure: that passes in the current endpoint and default params. 
+ Anticipates future improvements to background syncing. 
+ 
+ @param completionHandler a block called when the fetch completes successfully or unsuccessfully. `count` is the number of posts fetched. `error` can be any underlying network error
+ */
++ (void)fetchPostsWithCompletionHandler:(void (^)(NSInteger count, NSError *error))completionHandler;
 
 @end

@@ -10,7 +10,6 @@
 #import "WordPressComApi.h"
 #import "ReaderPost.h"
 
-NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 
 @interface ReaderTopicsViewController ()

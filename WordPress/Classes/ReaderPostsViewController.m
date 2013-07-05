@@ -23,7 +23,6 @@
 #import "WPTableImageSource.h"
 #import "WPInfoView.h"
 
-NSInteger const ReaderPostsToSync = 20;
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
 @interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate, WPTableImageSourceDelegate> {
@@ -41,7 +40,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 @property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic) BOOL isShowingReblogForm;
 
-- (NSDictionary *)currentTopic;
 - (void)configureTableHeader;
 - (void)fetchBlogsAndPrimaryBlog;
 - (void)handleReblogButtonTapped:(id)sender;
@@ -155,7 +153,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     
 	self.panelNavigationController.delegate = self;
 	
-	NSDictionary *dict = [self currentTopic];
+	NSDictionary *dict = [ReaderPost currentTopic];
 	NSString *title = [[dict objectForKey:@"title"] capitalizedString];
 	self.title = NSLocalizedString(title, @"");
 	
@@ -215,15 +213,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 }
 
 #pragma mark - Instance Methods
-
-- (NSDictionary *)currentTopic {
-	NSDictionary *topic = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ReaderCurrentTopicKey];
-	if(!topic) {
-		topic = [[ReaderPost readerEndpoints] objectAtIndex:0];
-	}
-	return topic;
-}
-
 
 - (void)configureTableHeader {
 	if ([self.resultsController.fetchedObjects count] == 0) {
@@ -461,7 +450,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (NSString *)noResultsPrompt {
 	NSString *prompt; 
-	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
+	NSString *endpoint = [ReaderPost currentEndpoint];
 	NSArray *endpoints = [ReaderPost readerEndpoints];
 	NSInteger idx = [endpoints indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 		BOOL match = NO;
@@ -507,7 +496,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (NSString *)resultsControllerCacheName {
-	return [[self currentTopic] objectForKey:@"endpoint"];
+	return [ReaderPost currentEndpoint];
 }
 
 
@@ -518,7 +507,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (NSFetchRequest *)fetchRequest {
 	
-	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
+	NSString *endpoint = [ReaderPost currentEndpoint];
 	
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:[self managedObjectContext]]];
@@ -593,7 +582,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
-	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
+	NSString *endpoint = [ReaderPost currentEndpoint];
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
 	NSDictionary *params = @{@"number":numberToSync, @"per_page":numberToSync};
 	[ReaderPost getPostsFromEndpoint:endpoint
@@ -624,7 +613,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
 	NSDictionary *params = @{@"before":[DateUtils isoStringFromDate:post.dateCreated], @"number":numberToSync, @"per_page":numberToSync};
-	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
+	NSString *endpoint = [ReaderPost currentEndpoint];
 
 	[ReaderPost getPostsFromEndpoint:endpoint
 					  withParameters:params
@@ -751,7 +740,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
     [self configureTableHeader];
 	
-    self.titleButton.title = [self.currentTopic objectForKey:@"title"];
+    self.titleButton.title = [[ReaderPost currentTopic] objectForKey:@"title"];
     
     if ( [WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && ![self isSyncing] ) {
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];

@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString *const ReaderCurrentTopicKey;
-
 @protocol ReaderTopicsDelegate <NSObject>
 
 - (void)readerTopicChanged;
