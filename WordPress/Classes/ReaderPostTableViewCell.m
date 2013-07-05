@@ -131,9 +131,9 @@
                              CATransform3D transform = CATransform3DIdentity;
                              transform.m24 = perspective;
                              transform = CATransform3DScale(transform, .98f, .98f, 1);
-                             self.layer.transform = transform;
+                             self.contentView.layer.transform = transform;
                          } else {
-                             self.layer.transform = CATransform3DIdentity;
+                             self.contentView.layer.transform = CATransform3DIdentity;
                          }
                      } completion:nil];
 }
