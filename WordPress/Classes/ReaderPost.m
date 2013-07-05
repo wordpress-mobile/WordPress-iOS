@@ -156,7 +156,7 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
         }];
 		
 		if (success) {
-			success();
+			dispatch_async(dispatch_get_main_queue(), success);
 		}
     }];
 }
