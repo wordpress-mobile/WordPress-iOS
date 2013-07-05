@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "ReaderPost.h"
-#import "WPRefreshViewController.h"
 
-@interface ReaderPostDetailViewController : WPRefreshViewController <DetailViewDelegate>
+@interface ReaderPostDetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, DetailViewDelegate>
 
 - (id)initWithPost:(ReaderPost *)apost;
 
