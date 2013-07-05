@@ -161,7 +161,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
-	
 	self.panelNavigationController.delegate = self;
     [self setFullScreen:NO];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
@@ -190,6 +189,8 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) {
 		[self syncWithUserInteraction:NO];
     }
+	
+	[self.post addObserver:self forKeyPath:@"isReblogged" options:NSKeyValueObservingOptionNew context:@"reblogging"];
 }
 
 
@@ -201,6 +202,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
     }
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self.post removeObserver:self forKeyPath:@"isReblogged" context:@"reblogging"];
 	
     self.panelNavigationController.delegate = nil;
     self.navigationController.navigationBar.translucent = NO;
@@ -405,6 +407,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	
 	btn = (UIButton *)_reblogButton.customView;
 	[btn setSelected:[self.post.isReblogged boolValue]];
+	btn.userInteractionEnabled = !btn.selected;
 	_reblogButton.customView = btn;
 	
 	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -422,6 +425,11 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	[self setToolbarItems:items animated:YES];
 	
 	self.navigationController.toolbarHidden = NO;
+}
+
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	[self updateToolbar];
 }
 
 

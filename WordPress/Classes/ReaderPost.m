@@ -513,6 +513,9 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 
 	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/reblogs/new", self.siteID, self.postID];
 	[[WordPressComApi sharedApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		NSDictionary *dict = (NSDictionary *)responseObject;
+		self.isReblogged = [dict numberForKey:@"is_reblogged"];
+
 		if(success) {
 			success();
 		}

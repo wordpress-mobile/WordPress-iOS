@@ -90,6 +90,11 @@
 
 #pragma mark - Lifecycle Methods
 
+- (void)dealloc {
+	self.post = nil;
+}
+
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
@@ -139,6 +144,21 @@
                          }
                      } completion:nil];
 }
+
+
+- (void)setPost:(ReaderPost *)post {
+	if ([post isEqual:_post]) {
+		return;
+	}
+	
+	if (_post) {
+		[_post removeObserver:self forKeyPath:@"isReblogged" context:@"reblogging"];
+	}
+	
+	_post = post;
+	[_post addObserver:self forKeyPath:@"isReblogged" options:NSKeyValueObservingOptionNew context:@"reblogging"];
+}
+
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
     BOOL previouslyHighlighted = self.highlighted;
@@ -290,12 +310,18 @@
 
 #pragma mark - Instance Methods
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	[self updateControlBar];
+}
+
+
 - (void)setReblogTarget:(id)target action:(SEL)selector {
 	[_reblogButton addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
 }
 
 
 - (void)configureCell:(ReaderPost *)post {
+	
 	self.post = post;
 
 	_titleLabel.text = [post.postTitle trim];
@@ -331,8 +357,11 @@
 		_reblogButton.hidden = YES;
 	}
 	
+	_reblogButton.userInteractionEnabled = ![post.isReblogged boolValue];
+	
 	[self updateControlBar];
 }
+
 
 - (void)setAvatar:(UIImage *)avatar {
     if (_avatarIsSet) {
@@ -355,6 +384,7 @@
     }
 }
 
+
 - (void)setFeaturedImage:(UIImage *)image {
     if (_featuredImageIsSet) {
         return;
@@ -363,11 +393,13 @@
     self.cellImageView.image = image;
 }
 
+
 - (void)updateControlBar {
 	if (!_post) return;
 	
     _likeButton.selected = _post.isLiked.boolValue;
     _reblogButton.selected = _post.isReblogged.boolValue;
+	_reblogButton.userInteractionEnabled = !_reblogButton.selected;
 
 	NSString *str = ([self.post.likeCount integerValue] > 0) ? [self.post.likeCount stringValue] : nil;
 	[_likeButton setTitle:str forState:UIControlStateNormal];
