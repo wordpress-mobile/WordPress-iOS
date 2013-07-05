@@ -17,7 +17,9 @@
 #import "WPAvatarSource.h"
 #import "ReaderButton.h"
 
-#define RPTVCVerticalPadding 10.0f;
+#define RPTVCVerticalPadding 10.0f
+#define MetaViewHeightWithButtons 101.0f
+#define MetaViewHeightSansButtons 52.0f
 
 @interface ReaderPostTableViewCell()
 
@@ -74,9 +76,9 @@
 
 	// Size of the meta view
 	if ([post isWPCom]) {
-		desiredHeight += 101.f;
+		desiredHeight += MetaViewHeightWithButtons;
 	} else {
-		desiredHeight += 52.0f;
+		desiredHeight += MetaViewHeightSansButtons;
 	}
 	
 	// bottom padding
@@ -266,7 +268,7 @@
 	nextY += ceilf(height + vpadding);
 
 	// position the meta view
-	height = [self.post isWPCom] ? 101.0f : 52.0f;
+	height = [self.post isWPCom] ? MetaViewHeightWithButtons : MetaViewHeightSansButtons;
 	_metaView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
 }
 
@@ -317,18 +319,18 @@
 
 	if ([self.post isWPCom]) {
 		CGRect frame = _metaView.frame;
-		frame.size.height = 93.0f;
+		frame.size.height = MetaViewHeightWithButtons;
 		_metaView.frame = frame;
 		_likeButton.hidden = NO;
 		_reblogButton.hidden = NO;
 	} else {
 		CGRect frame = _metaView.frame;
-		frame.size.height = 52.0f;
+		frame.size.height = MetaViewHeightSansButtons;
 		_metaView.frame = frame;
 		_likeButton.hidden = YES;
 		_reblogButton.hidden = YES;
 	}
-
+	
 	[self updateControlBar];
 }
 
