@@ -422,6 +422,7 @@ NSLog(@"%@", self.sectionInfoArray);
             SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:(preservedIndexPath.section -1)];
             if (!sectionInfo.open) {
                 sectionInfo.open = YES;
+                self.openSection = sectionInfo;
                 [sectionInfo.headerView toggleOpenWithUserAction:YES];
             }
             
@@ -683,6 +684,9 @@ NSLog(@"%@", self.sectionInfoArray);
     SectionInfo *sectionInfo = [self.sectionInfoArray objectAtIndex:section - 1];
     if (!sectionInfo.headerView) {
         sectionInfo.headerView = [[SidebarSectionHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, SIDEBAR_WIDTH, HEADER_HEIGHT) blog:blog sectionInfo:sectionInfo delegate:self];
+        if (sectionInfo.open) {
+            [sectionInfo.headerView toggleOpenWithUserAction:NO];
+        }
     }
 
     return sectionInfo.headerView;
@@ -808,7 +812,8 @@ NSLog(@"%@", self.sectionInfoArray);
     
     SectionInfo *previousOpenSection = self.openSection;
     NSUInteger previousOpenSectionIndex = NSNotFound;
-    if (previousOpenSection) {
+    [self.tableView beginUpdates];
+    if (previousOpenSection && previousOpenSection != sectionOpened) {
         previousOpenSection.open = NO;
         [previousOpenSection.headerView toggleOpenWithUserAction:NO];
         previousOpenSectionIndex = [self.sectionInfoArray indexOfObject:previousOpenSection] + 1;
@@ -818,9 +823,12 @@ NSLog(@"%@", self.sectionInfoArray);
     }
     
     // Apply the updates.
-    [self.tableView beginUpdates];
-    [self.tableView insertRowsAtIndexPaths:indexPathsToInsert withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:UITableViewRowAnimationFade];
+    if ([self.tableView numberOfRowsInSection:sectionNumber] == 0) {
+        [self.tableView insertRowsAtIndexPaths:indexPathsToInsert withRowAnimation:UITableViewRowAnimationFade];
+    }
+    if ([self.tableView numberOfRowsInSection:previousOpenSectionIndex] == NUM_ROWS) {
+        [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:UITableViewRowAnimationFade];
+    }
     [self.tableView endUpdates];
     self.openSection = sectionOpened;
     // select the first row in the section
@@ -836,15 +844,6 @@ NSLog(@"%@", self.sectionInfoArray);
 
 
 -(void)sectionHeaderView:(SidebarSectionHeaderView*)sectionHeaderView sectionClosed:(SectionInfo *)sectionClosed {    
-    NSUInteger sectionNumber = [self.sectionInfoArray indexOfObject:sectionClosed] + 1;
-	sectionClosed.open = NO;
-
-    NSMutableArray *indexPathsToDelete = [[NSMutableArray alloc] init];
-    for (NSInteger i = 0; i < NUM_ROWS; i++) {
-        [indexPathsToDelete addObject:[NSIndexPath indexPathForRow:i inSection:sectionNumber]];
-    }
-    [self.tableView deleteRowsAtIndexPaths:indexPathsToDelete withRowAnimation:UITableViewRowAnimationTop];
-    self.openSection = nil;
 }
 
 - (void)didReceiveUnseenNotesNotification {

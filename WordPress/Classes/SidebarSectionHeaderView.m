@@ -23,7 +23,9 @@
 CGFloat const BlavatarHeight = 32.f;
 CGFloat const BadgeHeight = 24.f;
     
-@implementation SidebarSectionHeaderView
+@implementation SidebarSectionHeaderView {
+    BOOL _isOpen;
+}
 
 
 @synthesize titleLabel=_titleLabel, disclosureButton=_disclosureButton, delegate=_delegate, sectionInfo=_sectionInfo, numberOfCommentsImageView=_numberOfCommentsImageView, blog = _blog, numberOfcommentsLabel = _numberOfcommentsLabel;
@@ -44,7 +46,8 @@ CGFloat const BadgeHeight = 24.f;
         [self addGestureRecognizer:tapGesture];
         
         _blog = blog;
-        _delegate = delegate;        
+        _delegate = delegate;
+        _isOpen = NO;
         self.userInteractionEnabled = YES;
         
         CGFloat blavatarOffset = (frame.size.height - BlavatarHeight) / 2.f - 1.f;
@@ -170,7 +173,7 @@ CGFloat const BadgeHeight = 24.f;
 }
 
 -(void)updatePendingCommentsIcon {
-    if( self.disclosureButton.selected ) {
+    if( _isOpen ) {
         self.numberOfCommentsImageView.image = nil;
         self.numberOfcommentsLabel.text = nil;
         self.titleLabel.frame = [self titleLabelFrame:NO];
@@ -194,11 +197,12 @@ CGFloat const BadgeHeight = 24.f;
 }
 
 -(void)toggleOpenWithUserAction:(BOOL)userAction {
-    
     // Don't allow section to be collapsed if it is already open
-    if (userAction && self.disclosureButton.selected)
+    if (userAction && _isOpen)
         return;
-    
+
+    _isOpen = !_isOpen;
+
     // Toggle the disclosure button state.
     self.disclosureButton.selected = !self.disclosureButton.selected;
     
@@ -206,7 +210,7 @@ CGFloat const BadgeHeight = 24.f;
     [self updatePendingCommentsIcon];
     [self updateGradient];
     
-    if (self.disclosureButton.selected) {
+    if (_isOpen) {
         [self.titleLabel setTextColor:[UIColor whiteColor]];
         [blavatarView setAlpha:1.0f];
     }
@@ -215,25 +219,21 @@ CGFloat const BadgeHeight = 24.f;
         [blavatarView setAlpha:BLAVATAR_ALPHA];
     }
     
-    // If this was a user action, send the delegate the appropriate message.
-    if (userAction) {
-        if (self.disclosureButton.selected) {
-            if ([self.delegate respondsToSelector:@selector(sectionHeaderView:sectionOpened:)]) {
-                [self.delegate sectionHeaderView:self sectionOpened:self.sectionInfo];
-            }
+    if (_isOpen) {
+        if ([self.delegate respondsToSelector:@selector(sectionHeaderView:sectionOpened:)]) {
+            [self.delegate sectionHeaderView:self sectionOpened:self.sectionInfo];
         }
-        /*else {
-            if ([self.delegate respondsToSelector:@selector(sectionHeaderView:sectionClosed:)]) {
-                [self.delegate sectionHeaderView:self sectionClosed:self.sectionInfo];
-            }
-        }*/
+    } else {
+        if ([self.delegate respondsToSelector:@selector(sectionHeaderView:sectionClosed:)]) {
+            [self.delegate sectionHeaderView:self sectionClosed:self.sectionInfo];
+        }
     }
 }
 
 - (void)updateGradient {
     CAGradientLayer *gradient = (CAGradientLayer *)self.layer;
     UIColor *startColor, *endColor;
-    if (self.disclosureButton.selected) {
+    if (_isOpen) {
         startColor = [UIColor colorWithWhite:0.6f alpha:0.4f];
         endColor = [UIColor colorWithWhite:0.6f alpha:0.0f];
     } else {

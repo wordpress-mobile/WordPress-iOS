@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong) IBOutlet UIView *logoView;
 @property (nonatomic, strong) IBOutlet UIView *buttonsView;
-
+@property (nonatomic, strong) IBOutlet UILabel *versionLabel;
 @end
 
 @implementation AboutViewController
@@ -32,6 +32,7 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
 	
     self.navigationItem.title = NSLocalizedString(@"About", @"About this app (information page title)");
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
+    self.versionLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     
     if([self.navigationController.viewControllers count] == 1)
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
