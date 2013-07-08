@@ -1025,7 +1025,8 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	// If we are replying, and scrolled away from the comment, scroll back to it real quick.
 	if ([readerTextForm isEqual:_readerCommentFormView] && [self isReplying] && !_isScrollingCommentIntoView) {
 		NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-		if (NSOrderedSame != [path compare:[self.tableView.indexPathsForVisibleRows objectAtIndex:0]]) {
+		NSArray *paths = [self.tableView indexPathsForVisibleRows];
+		if ([paths count] > 0 && NSOrderedSame != [path compare:[paths objectAtIndex:0]]) {
 			self.isScrollingCommentIntoView = YES;
 			[self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:YES];
 		}
