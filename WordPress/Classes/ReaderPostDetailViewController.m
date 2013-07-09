@@ -53,6 +53,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 @property (nonatomic) BOOL isScrollingCommentIntoView;
 @property (nonatomic) BOOL isShowingCommentForm;
 @property (nonatomic) BOOL isShowingReblogForm;
+@property (nonatomic) BOOL canUseFullScreen;
 
 - (void)buildHeader;
 - (void)buildTopToolbar;
@@ -74,7 +75,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 - (void)handleLikeButtonTapped:(id)sender;
 - (void)handleReblogButtonTapped:(id)sender;
 - (void)handleShareButtonTapped:(id)sender;
-- (void)handleCloseKeyboard:(id)sender;
+- (void)handleDismissForm:(id)sender;
 - (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
 
 - (void)syncWithUserInteraction:(BOOL)userInteraction;
@@ -102,6 +103,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		self.post = apost;
 		self.comments = [NSMutableArray array];
         self.wantsFullScreenLayout = YES;
+		self.canUseFullScreen = YES;
 	}
 	return self;
 }
@@ -159,7 +161,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 
 	self.panelNavigationController.delegate = self;
     [self setFullScreen:NO];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
     self.navigationController.navigationBar.translucent = YES;
     self.navigationController.toolbar.translucent = YES;
 
@@ -203,8 +204,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
     self.panelNavigationController.delegate = nil;
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.toolbar.translucent = NO;
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-	[self.navigationController setToolbarHidden:YES animated:YES];
+	[self setFullScreen:NO];
 }
 
 
@@ -251,7 +251,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	_headerView.backgroundColor = [UIColor whiteColor];
 	[self.tableView setTableHeaderView:_headerView];
 	
-	UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCloseKeyboard:)];
+	UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDismissForm:)];
 	tgr.cancelsTouchesInView = NO;
 	[_headerView addGestureRecognizer:tgr];
 }
@@ -499,7 +499,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 }
 
 
-- (void)handleCloseKeyboard:(id)sender {
+- (void)handleDismissForm:(id)sender {
 	if (_readerCommentFormView.window != nil) {
 		[self hideCommentForm];
 	} else {
@@ -550,6 +550,9 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		return;
 	}
 	
+	self.canUseFullScreen = NO;
+	[self.navigationController setToolbarHidden:YES animated:NO];
+	
 	NSIndexPath *path = [self.tableView indexPathForSelectedRow];
 	if (path) {
 		_readerCommentFormView.comment = (ReaderComment *)[self.resultsController objectAtIndexPath:path];
@@ -583,11 +586,16 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	[_readerCommentFormView removeFromSuperview];
 	self.isShowingCommentForm = NO;
 	[self.view endEditing:YES];
+	self.canUseFullScreen = YES;
+	[self.navigationController setToolbarHidden:NO animated:YES];
 }
 
 
 - (void)showReblogForm {
 	[self hideCommentForm];
+	
+	self.canUseFullScreen = NO;
+	[self.navigationController setToolbarHidden:YES animated:NO];
 	
 	if (_readerReblogFormView.superview != nil) {
 		return;
@@ -620,10 +628,25 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	[_readerReblogFormView removeFromSuperview];
 	self.isShowingReblogForm = NO;
 	[self.view endEditing:YES];
+	
+	self.canUseFullScreen = YES;
+	[self.navigationController setToolbarHidden:NO animated:YES];
+}
+
+
+- (void)setCanUseFullScreen:(BOOL)canUseFullScreen{
+	_canUseFullScreen = canUseFullScreen;
+	if (!_canUseFullScreen){
+		[self setFullScreen:NO];
+	}
 }
 
 
 - (void)setFullScreen:(BOOL)fullScreen {
+	if (!self.canUseFullScreen) {
+		fullScreen = NO;
+	}
+	
     [self.navigationController setToolbarHidden:fullScreen animated:YES];
     [self.navigationController setNavigationBarHidden:fullScreen animated:YES];
     return;
@@ -686,6 +709,8 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
+	[self.navigationController setToolbarHidden:YES animated:NO];
+	
 	CGRect frame = self.view.frame;
 	CGRect keyFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
 	
@@ -946,6 +971,16 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	if (_isScrollingCommentIntoView){
 		self.isScrollingCommentIntoView = NO;
 	}
+	
+	if (!self.canUseFullScreen) {
+		return;
+	}
+	
+	// Toolbars can vanish if the content is smaller than the screen and the user swipes quickly. 
+	if (self.tableView.contentSize.height < self.tableView.frame.size.height) {
+		return;
+	}
+	
     CGFloat dY = scrollView.contentOffset.y - _previousOffset;
     BOOL toolbarHidden = self.navigationController.toolbarHidden;
     if (toolbarHidden &&
