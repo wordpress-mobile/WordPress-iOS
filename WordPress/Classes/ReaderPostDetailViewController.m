@@ -878,13 +878,20 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		return nil;
 	}
 	
-	[self showCommentForm];
-
+	if ([[self.post commentsOpen] boolValue]) {
+		[self showCommentForm];
+	}
+	
 	return indexPath;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if(![[self.post commentsOpen] boolValue]) {
+		[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+		return;
+	}
+	
 	_readerCommentFormView.comment = [_comments objectAtIndex:indexPath.row];
 	if (IS_IPAD) {
 		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
