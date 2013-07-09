@@ -92,6 +92,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 
 - (void)dealloc {
 	_resultsController.delegate = nil;
+    _tableView.delegate = nil;
 }
 
 
