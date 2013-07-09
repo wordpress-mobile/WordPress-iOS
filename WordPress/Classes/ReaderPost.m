@@ -132,6 +132,9 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 
 + (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr withContext:(NSManagedObjectContext *)context success:(void (^)())success {
     if (![arr isKindOfClass:[NSArray class]] || [arr count] == 0) {
+		if (success) {
+			dispatch_async(dispatch_get_main_queue(), success);
+		}
         return;
     }
     NSManagedObjectContext *backgroundMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];

@@ -608,10 +608,19 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	if (_loadingMore) return;
 	_loadingMore = YES;
 	
+	
 	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
-	NSDictionary *params = @{@"before":[DateUtils isoStringFromDate:post.dateCreated], @"number":numberToSync, @"per_page":numberToSync};
 	NSString *endpoint = [ReaderPost currentEndpoint];
+	id before;
+	if([endpoint isEqualToString:@"freshly-pressed"]) {
+		// freshly-pressed wants an ISO string but the rest want a timestamp.
+		before = [DateUtils isoStringFromDate:post.dateCreated];
+	} else {
+		before = [NSNumber numberWithInteger:[post.dateCreated timeIntervalSince1970]];
+	}
+
+	NSDictionary *params = @{@"before":before, @"number":numberToSync, @"per_page":numberToSync};
 
 	[ReaderPost getPostsFromEndpoint:endpoint
 					  withParameters:params
@@ -692,7 +701,10 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	[self.panelNavigationController pushViewController:controller fromViewController:self animated:YES];
 }
 
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	[super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
+	
     if (indexPath.row <= _rowsSeen) {
         return;
     }
@@ -730,6 +742,11 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 #pragma mark - ReaderTopicsDelegate Methods
 
 - (void)readerTopicChanged {
+	if (IS_IPAD){
+		[self.panelNavigationController popToRootViewControllerAnimated:YES];
+	}
+	
+	_loadingMore = NO;
 	_hasMoreContent = YES;
     _rowsSeen = 0;
 	[[(WPInfoView *)self.noResultsView titleLabel] setText:[self noResultsPrompt]];
@@ -750,9 +767,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 			[self simulatePullToRefresh];
 		}
     }
-	if (IS_IPAD){
-		[self.panelNavigationController popToRootViewControllerAnimated:YES];
-	}
 }
 
 
