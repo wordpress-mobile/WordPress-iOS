@@ -761,6 +761,10 @@
 		E1EE23E912E628F6000B2BE6 /* attachment.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E712E628F6000B2BE6 /* attachment.png */; };
 		E1EE23EA12E628F6000B2BE6 /* attachment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E812E628F6000B2BE6 /* attachment@2x.png */; };
 		E1F0258913AF588C00E3A76A /* keyboardClose~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F0258813AF588C00E3A76A /* keyboardClose~ipad.png */; };
+		E1F77435178C282000E70764 /* NNGPlusActivity@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F77431178C282000E70764 /* NNGPlusActivity@2x~ipad.png */; };
+		E1F77436178C282000E70764 /* NNGPlusActivity@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F77432178C282000E70764 /* NNGPlusActivity@2x~iphone.png */; };
+		E1F77437178C282000E70764 /* NNGPlusActivity~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F77433178C282000E70764 /* NNGPlusActivity~ipad.png */; };
+		E1F77438178C282000E70764 /* NNGPlusActivity~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = E1F77434178C282000E70764 /* NNGPlusActivity~iphone.png */; };
 		E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */ = {isa = PBXBuildFile; fileRef = E1F80824146420B000726BC7 /* UIImageView+Gravatar.m */; };
 		E1FC3DB413C7788700F6B60F /* WPWebViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1FC3DB313C7788700F6B60F /* WPWebViewController~ipad.xib */; };
 		EC4696FF0EA75D460040EE8E /* PagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EC4696FE0EA75D460040EE8E /* PagesViewController.m */; };
@@ -1739,6 +1743,10 @@
 		E1EE23E712E628F6000B2BE6 /* attachment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = attachment.png; path = Resources/Images/attachment.png; sourceTree = "<group>"; };
 		E1EE23E812E628F6000B2BE6 /* attachment@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "attachment@2x.png"; path = "Resources/Images/attachment@2x.png"; sourceTree = "<group>"; };
 		E1F0258813AF588C00E3A76A /* keyboardClose~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keyboardClose~ipad.png"; path = "Resources/Images/keyboardClose~ipad.png"; sourceTree = "<group>"; };
+		E1F77431178C282000E70764 /* NNGPlusActivity@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNGPlusActivity@2x~ipad.png"; path = "Resources/Images/NNGPlusActivity@2x~ipad.png"; sourceTree = "<group>"; };
+		E1F77432178C282000E70764 /* NNGPlusActivity@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNGPlusActivity@2x~iphone.png"; path = "Resources/Images/NNGPlusActivity@2x~iphone.png"; sourceTree = "<group>"; };
+		E1F77433178C282000E70764 /* NNGPlusActivity~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNGPlusActivity~ipad.png"; path = "Resources/Images/NNGPlusActivity~ipad.png"; sourceTree = "<group>"; };
+		E1F77434178C282000E70764 /* NNGPlusActivity~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNGPlusActivity~iphone.png"; path = "Resources/Images/NNGPlusActivity~iphone.png"; sourceTree = "<group>"; };
 		E1F80823146420B000726BC7 /* UIImageView+Gravatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Gravatar.h"; sourceTree = "<group>"; };
 		E1F80824146420B000726BC7 /* UIImageView+Gravatar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Gravatar.m"; sourceTree = "<group>"; };
 		E1FC3DB313C7788700F6B60F /* WPWebViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WPWebViewController~ipad.xib"; path = "Resources-iPad/WPWebViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -2700,6 +2708,10 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E1F77431178C282000E70764 /* NNGPlusActivity@2x~ipad.png */,
+				E1F77432178C282000E70764 /* NNGPlusActivity@2x~iphone.png */,
+				E1F77433178C282000E70764 /* NNGPlusActivity~ipad.png */,
+				E1F77434178C282000E70764 /* NNGPlusActivity~iphone.png */,
 				E1D0D82D16D3D2BA00E33F4C /* NNInstapaperActivity@2x~ipad.png */,
 				E1D0D82E16D3D2BA00E33F4C /* NNInstapaperActivity@2x~iphone.png */,
 				E1D0D82F16D3D2BA00E33F4C /* NNInstapaperActivity~ipad.png */,
@@ -4004,6 +4016,10 @@
 				85AD6B17173E2DA4002CB896 /* ui-texture@2x.png in Resources */,
 				85AD6B1A173E3595002CB896 /* ui-line-dark.png in Resources */,
 				85AD6B1B173E3595002CB896 /* ui-line-dark@2x.png in Resources */,
+				E1F77435178C282000E70764 /* NNGPlusActivity@2x~ipad.png in Resources */,
+				E1F77436178C282000E70764 /* NNGPlusActivity@2x~iphone.png in Resources */,
+				E1F77437178C282000E70764 /* NNGPlusActivity~ipad.png in Resources */,
+				E1F77438178C282000E70764 /* NNGPlusActivity~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

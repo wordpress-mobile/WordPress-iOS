@@ -21,7 +21,7 @@
 }
 
 - (UIImage *)activityImage {
-	return [UIImage imageNamed:@"NNPocketActivity"];
+	return [UIImage imageNamed:@"NNGPlusActivity"];
 }
 
 - (NSString *)activityTitle {
