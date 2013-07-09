@@ -785,12 +785,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 				
 				[[NSUserDefaults standardUserDefaults] setObject:usersBlogs forKey:@"wpcom_users_blogs"];
 				
-				if ([usersBlogs count] == 1) {
-					NSDictionary *dict = [usersBlogs objectAtIndex:0];
-					[[NSUserDefaults standardUserDefaults] setObject:[dict numberForKey:@"blogid"] forKey:@"wpcom_users_prefered_blog_id"];
-					[NSUserDefaults resetStandardUserDefaults];
-				} else if ([usersBlogs count] > 1) {
-					
+                __block NSNumber *preferredBlogId;
+                if ([usersBlogs count] > 1) {
 					[[WordPressComApi sharedApi] getPath:@"me"
 											  parameters:nil
 												 success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -798,8 +794,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 													 NSNumber *primaryBlog = [dict objectForKey:@"primary_blog"];
 													 [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 														 if ([primaryBlog isEqualToNumber:[obj numberForKey:@"blogid"]]) {
-															 [[NSUserDefaults standardUserDefaults] setObject:[obj numberForKey:@"blogid"] forKey:@"wpcom_users_prefered_blog_id"];
-															 [NSUserDefaults resetStandardUserDefaults];
+                                                             preferredBlogId = [obj numberForKey:@"blogid"];
 															 *stop = YES;
 														 }
 													 }];
@@ -809,7 +804,14 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 					
 					
 				}
-				
+
+                if (!preferredBlogId) {
+                    NSDictionary *dict = [usersBlogs objectAtIndex:0];
+                    preferredBlogId = [dict numberForKey:@"blogid"];
+                }
+                
+                [[NSUserDefaults standardUserDefaults] setObject:preferredBlogId forKey:@"wpcom_users_prefered_blog_id"];
+                [NSUserDefaults resetStandardUserDefaults];
 			} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 				// Fail silently.
             }];

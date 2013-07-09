@@ -138,9 +138,12 @@
                              CATransform3D transform = CATransform3DIdentity;
                              transform.m24 = perspective;
                              transform = CATransform3DScale(transform, .98f, .98f, 1);
-                             self.contentView.layer.transform = transform;
+                             self.layer.transform = transform;
+                             self.layer.shouldRasterize = YES;
+                             self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
                          } else {
-                             self.contentView.layer.transform = CATransform3DIdentity;
+                             self.layer.shouldRasterize = NO;
+                             self.layer.transform = CATransform3DIdentity;
                          }
                      } completion:nil];
 }
@@ -305,6 +308,8 @@
 	_bylineLabel.text = nil;
 	_titleLabel.text = nil;
 	_snippetLabel.text = nil;
+
+    [self setHighlightedEffect:NO animated:NO];
 }
 
 
