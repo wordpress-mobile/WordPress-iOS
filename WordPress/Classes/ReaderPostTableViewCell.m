@@ -139,7 +139,10 @@
                              transform.m24 = perspective;
                              transform = CATransform3DScale(transform, .98f, .98f, 1);
                              self.layer.transform = transform;
+                             self.layer.shouldRasterize = YES;
+                             self.layer.rasterizationScale = [[UIScreen mainScreen] scale];
                          } else {
+                             self.layer.shouldRasterize = NO;
                              self.layer.transform = CATransform3DIdentity;
                          }
                      } completion:nil];
