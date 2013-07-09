@@ -134,10 +134,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.contentInset = UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height, 0, self.navigationController.toolbar.frame.size.height, 0);
 	
-	if ([self.resultsController.fetchedObjects count] > 0) {
-		self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
-	}
-	
 	[self buildHeader];
 	[self buildTopToolbar];
 	[self buildBottomToolbar];
@@ -145,7 +141,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	
 	[self prepareComments];
 	[self showStoredComment];
-
 }
 
 
@@ -394,6 +389,9 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	};
 	
 	flattenComments(self.resultsController.fetchedObjects);
+	if ([_comments count] > 0) {
+		self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
+	}
 }
 
 
@@ -769,10 +767,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	
 	[self prepareComments];
 	[self.tableView reloadData];
-
-	if ([self.resultsController.fetchedObjects count] > 0) {
-		self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
-	}
 
 }
 
