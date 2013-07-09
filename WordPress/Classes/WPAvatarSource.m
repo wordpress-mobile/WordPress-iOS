@@ -121,7 +121,6 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
                                               if (success) {
                                                   success(nil);
                                               }
-                                              WPFLog(@"Failed geting avatar %@: %@", url, error);
                                           }];
 }
 
