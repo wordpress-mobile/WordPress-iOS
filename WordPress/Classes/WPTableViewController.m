@@ -27,7 +27,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 @property (nonatomic, strong) UITableViewCell *swipeCell;
 @property (nonatomic, strong) UIView *noResultsView;
 
-- (void)simulatePullToRefresh;
 - (void)enableSwipeGestureRecognizer;
 - (void)disableSwipeGestureRecognizer;
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer direction:(UISwipeGestureRecognizerDirection)direction;

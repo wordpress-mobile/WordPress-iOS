@@ -36,7 +36,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 //@property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
 @property (nonatomic, strong) WPFriendFinderNudgeView *friendFinderNudgeView;
-@property (nonatomic, strong) UIBarButtonItem *titleButton;
 @property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic) BOOL isShowingReblogForm;
 
@@ -184,7 +183,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.readerReblogFormView = nil;
 	self.friendFinderNudgeView = nil;
-	self.titleButton = nil;
 	self.navBar = nil;
 }
 
@@ -735,17 +733,26 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	_hasMoreContent = YES;
     _rowsSeen = 0;
 	[[(WPInfoView *)self.noResultsView titleLabel] setText:[self noResultsPrompt]];
+
+	[self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
 	[self resetResultsController];
 	[self.tableView reloadData];
 	
     [self configureTableHeader];
 	
-    self.titleButton.title = [[ReaderPost currentTopic] objectForKey:@"title"];
-    
-    if ( [WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && ![self isSyncing] ) {
+	NSString *title = [[[ReaderPost currentTopic] stringForKey:@"title"] capitalizedString];
+	self.title = NSLocalizedString(title, @"");
+
+    if ([WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && ![self isSyncing] ) {
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
 		[NSUserDefaults resetStandardUserDefaults];
+		if (IS_IPAD) {
+			[self simulatePullToRefresh];
+		}
     }
+	if (IS_IPAD){
+		[self.panelNavigationController popToRootViewControllerAnimated:YES];
+	}
 }
 
 
