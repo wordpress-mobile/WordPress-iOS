@@ -853,7 +853,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		cell.parentController = self;
     }
 	cell.accessoryType = UITableViewCellAccessoryNone;
-		
+	
 	ReaderComment *comment = [_comments objectAtIndex:indexPath.row];
 	[cell configureCell:comment];
 
@@ -878,7 +878,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		return nil;
 	}
 	
-	if ([[self.post commentsOpen] boolValue]) {
+	if ([self canComment]) {
 		[self showCommentForm];
 	}
 	
@@ -887,7 +887,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if(![[self.post commentsOpen] boolValue]) {
+	if(![self canComment]) {
 		[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 		return;
 	}
