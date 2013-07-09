@@ -72,7 +72,7 @@
 
 
 - (void)setText:(NSString *)text {
-	_promptLabel.hidden = ([text length] > 0) ? YES : NO;
+	_promptLabel.hidden = (_textView.isFirstResponder || [text length] > 0) ? YES : NO;
 	_textView.text = text;
 }
 
