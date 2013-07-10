@@ -55,15 +55,16 @@
     }
     [subview initStyle];
     AbstractPost *aPost = [self.revisions objectAtIndex:index];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
     if (conflictMode && index == 1) {
         revisionName.text = NSLocalizedString(@"Local Revision",
                                               @"Local revision label when a conflict is detected.");
     } else {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        NSDate *localModifiedDate = [DateUtils GMTDateTolocalDate:aPost.date_modified_gmt];
         revisionName.text = [NSString stringWithFormat:@"%@ by %@",
-                             [dateFormatter stringFromDate:aPost.date_modified_gmt], aPost.author];
+                             [dateFormatter stringFromDate:localModifiedDate], aPost.author];
     }
     postContent.text = [NSString stringWithFormat:@"Title: %@\n%@", aPost.postTitle, aPost.content];
     [self.scrollView addSubview:subview];
@@ -81,6 +82,12 @@
     [self.view layoutSubviews];
 }
 
+- (void)useSelectedRevision:(id)sender {
+    AbstractPost *selectedRevision = [self.revisions objectAtIndex:self.pageControl.currentPage];
+    [selectedRevision uploadWithSuccess:nil failure:nil];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     if (conflictMode) {
@@ -89,11 +96,12 @@
     
     // Set up navigation items
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
-    UIBarButtonItem *updateButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Use", @"")
+    UIBarButtonItem *updateButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Use", @"The Use button on navigation bar in the RevisionSelector view")
                                                                      style:UIBarButtonItemStyleDone target:self
-                                                                    action:@selector(refreshPropertyList:)]; // FIXME
+                                                                    action:@selector(useSelectedRevision:)];
     self.navigationItem.rightBarButtonItem = updateButton;
-    self.navigationItem.title = NSLocalizedString(@"Revisions", @"");
+    self.navigationItem.title = NSLocalizedString(@"Revisions",
+                                                  @"Title on navigation bar in the RevisionSelector view");
 
     // Instantiate and update revision subviews
     for (int i = 0; i < self.revisions.count; i++) {
