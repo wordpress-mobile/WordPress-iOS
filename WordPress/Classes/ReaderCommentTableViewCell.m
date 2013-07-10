@@ -185,7 +185,7 @@
 	CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width].height;
 
 	self.textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, height);
-	[self.textContentView layoutSubviews];
+	[self.textContentView setNeedsLayout];
 }
 
 
