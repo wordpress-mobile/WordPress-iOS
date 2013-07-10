@@ -241,6 +241,11 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
 	[_headerView updateLayout];
+
+	// Make sure a selected comment is visible after rotating.
+	if ([self.tableView indexPathForSelectedRow] != nil && self.isShowingCommentForm) {
+		[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:NO];
+	}
 }
 
 
