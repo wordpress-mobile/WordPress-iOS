@@ -275,7 +275,12 @@
 		viewSize.height *= scale;
 	} else {
 		viewSize.width = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-		viewSize.height = viewSize.height * (_textContentView.frame.size.width / imageView.image.size.width);
+		if (imageView.isShowingPlaceholder) {
+			viewSize.height = viewSize.width * 0.66f;
+		} else {
+			viewSize.height = viewSize.height * (_textContentView.frame.size.width / imageView.image.size.width);
+		}
+		
 		viewSize.height += imageView.edgeInsets.top; // account for the top edge inset.
 	}
 
@@ -456,7 +461,7 @@
 	
 	if ([attachment isKindOfClass:[DTImageTextAttachment class]]) {
 		if ([self isEmoji:attachment.contentURL]) {
-			// minimal frame to suppress draing context errors with 0 height or width.
+			// minimal frame to suppress drawing context errors with 0 height or width.
 			frame.size.width = MAX(frame.size.width, 1.0f);
 			frame.size.height = MAX(frame.size.height, 1.0f);
 			ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
@@ -514,6 +519,7 @@
 								   [self handleMediaViewLoaded:readerImageView];
 							   }];
 		}
+		[self handleMediaViewLoaded:imageView];
 		return imageView;
 		
 	} else {

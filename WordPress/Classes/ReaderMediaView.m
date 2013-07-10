@@ -9,6 +9,10 @@
 #import "ReaderMediaView.h"
 #import "UIImageView+AFNetworkingExtra.h"
 
+@interface ReaderMediaView()
+@property (nonatomic, readwrite) BOOL isShowingPlaceholder;
+@end
+
 @implementation ReaderMediaView
 
 #pragma mark - LifeCycle Methods
@@ -46,7 +50,6 @@
 #pragma mark - Instance Methods
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor {
-//	[super setBackgroundColor:backgroundColor];
 	[_imageView setBackgroundColor:backgroundColor];
 }
 
@@ -68,6 +71,7 @@
 
 - (void)setImage:(UIImage *)image {
 	_imageView.image = image;
+	self.isShowingPlaceholder = NO;
 }
 
 
@@ -75,12 +79,15 @@
 	   placeholderImage:(UIImage *)image
 				success:(void (^)(ReaderMediaView *))success
 				failure:(void (^)(ReaderMediaView *, NSError *))failure {
-
+	if (image) {
+		self.isShowingPlaceholder = YES;
+	}
 	// Weak refs to avoid retain loop.
 	__weak ReaderMediaView *selfRef = self;
 	[_imageView setImageWithURL:url
 			   placeholderImage:image
 						success:^(UIImage *image) {
+							selfRef.isShowingPlaceholder = NO;
 							if (success) {
 								success(selfRef);
 							}

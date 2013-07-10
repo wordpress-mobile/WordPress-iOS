@@ -732,7 +732,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	
 	if ([self.post.postID integerValue] == 0 ) { // Weird that this should ever happen. 
 		self.post.dateCommentsSynced = [NSDate date];
-		[self performSelector:@selector(hideRefreshHeader) withObject:self afterDelay:0.5f];
 		return;
 	}
 	_isSyncing = YES;
