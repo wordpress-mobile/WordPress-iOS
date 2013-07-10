@@ -541,9 +541,6 @@
 - (void)validationSuccess:(NSString *)xmlrpc {
 	[savingIndicator stopAnimating];
 	[savingIndicator setHidden:YES];
-    blog.url = self.url;
-    blog.xmlrpc = xmlrpc;
-    blog.username = self.username;
     blog.geolocationEnabled = self.geolocationEnabled;
 	NSError *error = nil;
 	//check if the blog is a WP.COM blog

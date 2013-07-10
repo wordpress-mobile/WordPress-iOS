@@ -15,6 +15,7 @@ pod 'wpxmlrpc', '~> 0.1'
 pod 'WordPressApi', :podspec => 'https://raw.github.com/koke/WordPressApi/master/WordPressApi.podspec'
 pod 'NSObject-SafeExpectations', :podspec => 'https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec'
 pod 'Mixpanel'
+pod 'google-plus-ios-sdk', '~> 1.2'
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '~> 1.1'
