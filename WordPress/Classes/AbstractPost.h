@@ -69,6 +69,8 @@ typedef enum {
 - (BOOL)isRevision;
 - (BOOL)isOriginal;
 - (void)cloneFrom:(AbstractPost *)source;
+- (void)checkConflictingRevisionWithConflict:(void (^)(AbstractPost *current, AbstractPost *previous))conflict
+                                  noConflict:(void (^)())noConflict failure:(void (^)(NSError *))failure;
 
 //comments
 - (void)findComments;
@@ -81,6 +83,7 @@ typedef enum {
 // Autosave for local drafts
 - (void)autosave;
 
+- (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 @end

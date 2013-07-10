@@ -111,6 +111,26 @@
 
 #pragma mark -
 #pragma mark Revision management
+
+- (void)checkConflictingRevisionWithConflict:(void (^)(AbstractPost *current, AbstractPost *previous))conflict
+                                  noConflict:(void (^)())noConflict failure:(void (^)(NSError *))failure {
+    AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:[[self entity] name]
+                                               inManagedObjectContext:[self managedObjectContext]];
+    [post cloneFrom:self];
+    [post setValue:self forKey:@"original"];
+    [post setValue:nil forKey:@"revision"];
+    [post getPostWithSuccess:^{
+        if ([post.date_modified_gmt timeIntervalSinceDate:self.date_modified_gmt] > 0) { // server revision is
+                                                                                         // newer than synced post
+            conflict(self, post);
+        } else {
+            noConflict();
+        }
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
 - (void)cloneFrom:(AbstractPost *)source {
     for (NSString *key in [[[source entity] attributesByName] allKeys]) {
         if ([key isEqualToString:@"permalink"]) {
