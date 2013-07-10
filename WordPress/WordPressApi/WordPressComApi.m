@@ -180,6 +180,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
         parameters:params
            success:successBlock
            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               WPFLog(@"Couldn't signin the user: %@", [error localizedDescription]);
                self.password = nil;
                if (operation.response.statusCode != 400) {
                    [WPError showAlertWithError:error];
