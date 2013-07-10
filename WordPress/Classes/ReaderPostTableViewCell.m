@@ -304,7 +304,7 @@
     _featuredImageIsSet = NO;
     _avatarIsSet = NO;
 
-	_avatarImageView.image = nil;
+	[self setAvatar:nil];
 	_bylineLabel.text = nil;
 	_titleLabel.text = nil;
 	_snippetLabel.text = nil;
