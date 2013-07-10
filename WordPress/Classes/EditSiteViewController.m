@@ -541,8 +541,6 @@
 - (void)validationSuccess:(NSString *)xmlrpc {
 	[savingIndicator stopAnimating];
 	[savingIndicator setHidden:YES];
-    blog.url = self.url;
-    blog.xmlrpc = xmlrpc;
     blog.geolocationEnabled = self.geolocationEnabled;
     blog.account.password = self.password;
 
