@@ -204,7 +204,8 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
     self.panelNavigationController.delegate = nil;
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.toolbar.translucent = NO;
-	[self setFullScreen:NO];
+	[self.navigationController setToolbarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 
