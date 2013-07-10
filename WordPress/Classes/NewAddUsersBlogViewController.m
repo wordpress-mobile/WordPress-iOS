@@ -266,7 +266,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     NSString *username = self.username;
     NSString *password = self.password;
     if (self.isWPCom) {
-        xmlrpc = [NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"];
+        xmlrpc = [NSURL URLWithString:kWPcomXMLRPCUrl];
     } else {
         xmlrpc = [NSURL URLWithString:self.xmlRPCUrl];
     }
