@@ -132,6 +132,7 @@
 		[_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
 		[_followButton setTitleColor:[UIColor colorWithRed:116.0f/255.0f green:116.0f/255.0f blue:116.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
 		[_followButton addTarget:self action:@selector(handleFollowButtonInteraction:) forControlEvents:UIControlEventAllTouchEvents];
+		[_followButton addTarget:self action:@selector(handleFollowButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
 		[_authorView addSubview:_followButton];
 		
@@ -299,8 +300,11 @@
 
 
 - (void)handleFollowButtonTapped:(id)sender {
+	self.followButton.selected = ![self.post.isFollowing boolValue]; // to fake the call.
+	[self setNeedsLayout];
 	[self.post toggleFollowingWithSuccess:^{
-		// nothing to do. 
+		self.followButton.selected = [self.post.isFollowing boolValue]; // for good measure!
+		[self setNeedsLayout];
 	} failure:^(NSError *error) {
 		WPLog(@"Error Following Blog : %@", [error localizedDescription]);
 		[_followButton setSelected:self.post.isFollowing];
