@@ -17,8 +17,8 @@
 @end
 
 @implementation AbstractPost
-@dynamic author, content, date_created_gmt, postID, postTitle, status, password, remoteStatusNumber, permaLink, 
-		mt_excerpt, mt_text_more, wp_slug, post_thumbnail;
+@dynamic author, content, date_created_gmt, date_modified_gmt, postID, postTitle, status, password,
+         remoteStatusNumber, permaLink, mt_excerpt, mt_text_more, wp_slug, post_thumbnail;
 @dynamic blog, media;
 @dynamic comments;
 
@@ -288,7 +288,6 @@
 		self.date_created_gmt = [DateUtils localDateToGMTDate:localDate];
 }
 
-
 - (void)findComments {
     NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
                        [NSPredicate predicateWithFormat:@"(postID == %@) AND (post == NULL)", self.postID]];
@@ -301,7 +300,6 @@
 }
 
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    
 }
 
 - (NSDictionary *)XMLRPCDictionary {
