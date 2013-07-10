@@ -10,4 +10,6 @@
 
 @interface RevisionView : UIView
 
+- (void)initStyle;
+
 @end

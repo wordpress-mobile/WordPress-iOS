@@ -6,26 +6,16 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "RevisionView.h"
 
 @implementation RevisionView
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
+- (void)initStyle {
+    self.layer.cornerRadius = 10;
+    self.layer.masksToBounds = YES;
+    self.layer.borderWidth = 1;
+    self.layer.borderColor = [UIColor grayColor].CGColor;
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end
