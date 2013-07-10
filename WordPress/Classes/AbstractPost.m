@@ -322,6 +322,9 @@
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
 }
 
+- (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+}
+
 - (NSDictionary *)XMLRPCDictionary {
     NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
     

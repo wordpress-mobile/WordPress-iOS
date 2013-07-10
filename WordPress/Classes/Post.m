@@ -101,6 +101,7 @@
 
 - (void )updateFromDictionary:(NSDictionary *)postInfo {
     self.postTitle      = [postInfo objectForKey:@"title"];
+    self.author      = [postInfo objectForKey:@"wp_author_display_name"];
 	//keep attention: getPosts and getPost returning IDs in different types
 	if ([[postInfo objectForKey:@"postid"] isKindOfClass:[NSString class]]) {
 	  self.postID         = [[postInfo objectForKey:@"postid"] numericValue];

@@ -75,6 +75,7 @@
 
 - (void )updateFromDictionary:(NSDictionary *)postInfo {
 	self.postTitle      = [postInfo objectForKey:@"title"];
+    self.author         = [postInfo objectForKey:@"wp_author_display_name"];
     self.postID         = [[postInfo objectForKey:@"page_id"] numericValue];
     self.content        = [postInfo objectForKey:@"description"];
     self.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
