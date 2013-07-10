@@ -402,9 +402,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 #pragma mark - UIScrollView Delegate Methods
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-}
-
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     // Instead of loading images only when scrolling stops, start loading them when
     // the scroll view starts decelerating, if it's not going too fast
