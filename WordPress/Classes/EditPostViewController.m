@@ -128,10 +128,6 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         [self addChildViewController:self.postMediaViewController];
     }
 
-    self.postSettingsViewController.view.frame = editView.frame;
-    self.postMediaViewController.view.frame = editView.frame;
-    self.postPreviewViewController.view.frame = editView.frame;
-
     self.title = [self editorTitle];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
