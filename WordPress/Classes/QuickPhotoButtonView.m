@@ -60,7 +60,7 @@
     button.titleLabel.shadowOffset = CGSizeMake(0, -1.0f);
     button.titleLabel.lineBreakMode = NSLineBreakByClipping;
     button.titleLabel.adjustsFontSizeToFitWidth = YES;
-    button.titleLabel.minimumFontSize = 12.0f;
+    button.titleLabel.minimumScaleFactor = 12.0f/button.titleLabel.font.pointSize;
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
     [button.titleLabel setFont:[UIFont boldSystemFontOfSize:15.0f]];
     [button setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButton"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateNormal];
@@ -99,7 +99,7 @@
     label.frame = CGRectMake((spinner.frame.origin.x + spinner.frame.size.width + 6.0f), 0.0, (self.frame.size.width - spinner.frame.origin.x - spinner.frame.size.width), self.frame.size.height);
     label.text = NSLocalizedString(@"Uploading...", @"");
     label.adjustsFontSizeToFitWidth = YES;
-    label.minimumFontSize = 12.0f;
+    label.minimumScaleFactor = 12.0f/label.font.pointSize;
     label.shadowColor = [UIColor UIColorFromHex:0x000000 alpha:0.45f];
     label.shadowOffset = CGSizeMake(0, -1.0f);
     [self addSubview:label];
