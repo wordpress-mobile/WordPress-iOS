@@ -24,7 +24,8 @@
 @property (nonatomic, retain) IBOutlet UIPageControl *pageControl;
 
 // Subview references
-@property (nonatomic, strong) IBOutlet UILabel *revisionName;
+@property (nonatomic, strong) IBOutlet UILabel *revisionDate;
+@property (nonatomic, strong) IBOutlet UILabel *revisionAuthor;
 @property (nonatomic, strong) IBOutlet UITextView *postContent;
 
 - (IBAction)scrollToCurrentPage;

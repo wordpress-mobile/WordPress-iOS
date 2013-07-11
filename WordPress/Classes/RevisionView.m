@@ -12,10 +12,22 @@
 @implementation RevisionView
 
 - (void)initStyle {
+    // Main view
     self.layer.cornerRadius = 10;
     self.layer.masksToBounds = YES;
     self.layer.borderWidth = 1;
     self.layer.borderColor = [UIColor grayColor].CGColor;
+
+    // Textview
+    UITextView *textView;
+    for (id subview in self.subviews) {
+        if([subview isKindOfClass:[UITextView class]]) {
+            textView = (UITextView *) subview;
+            break;
+        }
+    }
+    textView.layer.cornerRadius = 5;
+    textView.layer.masksToBounds = YES;
 }
 
 @end

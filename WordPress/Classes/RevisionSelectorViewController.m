@@ -10,7 +10,7 @@
 #import "AbstractPost.h"
 #import "RevisionView.h"
 
-#define LEFT_MARGIN_PERCENTAGE 0.05
+#define LEFT_MARGIN_PERCENTAGE 0.02
 
 @interface RevisionSelectorViewController ()
 
@@ -18,7 +18,7 @@
 
 @implementation RevisionSelectorViewController
 @synthesize revisions, conflictMode, scrollingLocked, scrollView, pageControl;
-@synthesize revisionName, postContent;
+@synthesize revisionDate, revisionAuthor, postContent;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -56,15 +56,17 @@
     [subview initStyle];
     AbstractPost *aPost = [self.revisions objectAtIndex:index];
     if (conflictMode && index == 1) {
-        revisionName.text = NSLocalizedString(@"Local Revision",
+        revisionDate.text = NSLocalizedString(@"Local Revision",
                                               @"Local revision label when a conflict is detected.");
+        revisionAuthor.text = @"";
     } else {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
         NSDate *localModifiedDate = [DateUtils GMTDateTolocalDate:aPost.date_modified_gmt];
-        revisionName.text = [NSString stringWithFormat:@"%@ by %@",
-                             [dateFormatter stringFromDate:localModifiedDate], aPost.author];
+        revisionDate.text = [dateFormatter stringFromDate:localModifiedDate];
+        revisionAuthor.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"by", "by [author]"),
+                               aPost.author];
     }
     postContent.text = [NSString stringWithFormat:@"Title: %@\n%@", aPost.postTitle, aPost.content];
     [self.scrollView addSubview:subview];
