@@ -58,7 +58,7 @@
     button.titleLabel.textColor = [UIColor whiteColor];
     button.titleLabel.shadowColor = [UIColor UIColorFromHex:0x000000 alpha:0.45f];
     button.titleLabel.shadowOffset = CGSizeMake(0, -1.0f);
-    button.titleLabel.lineBreakMode = UILineBreakModeClip;
+    button.titleLabel.lineBreakMode = NSLineBreakByClipping;
     button.titleLabel.adjustsFontSizeToFitWidth = YES;
     button.titleLabel.minimumFontSize = 12.0f;
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
@@ -92,7 +92,7 @@
     self.label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.textColor = [UIColor whiteColor];
     label.backgroundColor = [UIColor clearColor];
-    label.textAlignment = UITextAlignmentLeft;
+    label.textAlignment = NSTextAlignmentLeft;
     label.font = [UIFont systemFontOfSize:(15.0f)];
     label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
 
@@ -124,7 +124,7 @@
         spinner.alpha = 0.0f;
         label.text = NSLocalizedString(@"Published!", @"");
         label.font = [UIFont boldSystemFontOfSize:(15.0f)];
-        label.textAlignment = UITextAlignmentCenter;
+        label.textAlignment = NSTextAlignmentCenter;
         label.frame = CGRectMake(self.frame.origin.x, 0.0, self.frame.size.width, self.frame.size.height);
         label.textColor = [UIColor UIColorFromRGBAColorWithRed:200.0f green:228.0f blue:125.0f alpha:1.0f];
     } completion:^(BOOL finished) {
@@ -201,7 +201,7 @@
             label.hidden = YES;
             label.textColor = [UIColor whiteColor];
             label.frame = CGRectMake((spinner.frame.origin.x + spinner.frame.size.width + 6.0f), 0.0, (self.frame.size.width - spinner.frame.origin.x - spinner.frame.size.width), self.frame.size.height);
-            label.textAlignment = UITextAlignmentLeft;
+            label.textAlignment = NSTextAlignmentLeft;
             label.font = [UIFont systemFontOfSize:(15.0f)];
             label.text = NSLocalizedString(@"Uploading...", @"");
         }];

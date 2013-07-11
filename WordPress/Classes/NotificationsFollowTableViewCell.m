@@ -25,7 +25,7 @@
         [actionButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 9.0f, 0.0f, 2.0f)];
         [actionButton.imageView setContentMode:UIViewContentModeLeft];
         [actionButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
-        [actionButton.titleLabel setLineBreakMode:UILineBreakModeTailTruncation];
+        [actionButton.titleLabel setLineBreakMode:NSLineBreakByTruncatingTail];
         [actionButton.titleLabel setShadowOffset:CGSizeMake(0.0f, 1.0f)];
         [self addSubview:actionButton];
         
@@ -38,7 +38,7 @@
         [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
         [self.detailTextLabel setNumberOfLines:1];
         [self.detailTextLabel setAdjustsFontSizeToFitWidth:NO];
-        [self.detailTextLabel setLineBreakMode:UILineBreakModeTailTruncation];
+        [self.detailTextLabel setLineBreakMode:NSLineBreakByTruncatingTail];
         
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
         [self setBackgroundView:imageView];
