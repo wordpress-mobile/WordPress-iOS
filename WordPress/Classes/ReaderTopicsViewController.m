@@ -97,7 +97,7 @@ NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 		NSDictionary *dict = (NSDictionary *)responseObject;
 		
 		NSString *topicEndpoint = [[[ReaderPost readerEndpoints] objectAtIndex:ReaderTopicEndpointIndex] objectForKey:@"endpoint"];
-		NSArray *arr = [dict objectForKey:@"topics"];
+		NSArray *arr = [dict arrayForKey:@"topics"];
 		NSMutableArray *topics = [NSMutableArray arrayWithCapacity:[arr count]];
 		
 		for (NSDictionary *dict in arr) {
