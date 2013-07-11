@@ -66,6 +66,10 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 
 
 + (void)handleLogoutNotification:(NSNotification *)notification {
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderCurrentTopicKey];
+	[NSUserDefaults resetStandardUserDefaults];
+	
 	NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
 	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
     request.includesPropertyValues = NO;
