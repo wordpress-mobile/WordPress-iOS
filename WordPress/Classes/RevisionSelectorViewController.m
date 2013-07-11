@@ -157,7 +157,7 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)sender {
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)sender {
     if (self.scrollingLocked) {
         return ;
     }
@@ -167,6 +167,7 @@
 }
 
 - (void)forcePage:(int)page animated:(BOOL)animated {
+    self.pageControl.currentPage = page;
     CGRect frame;
     frame.origin.x = self.scrollView.frame.size.width * page;
     frame.origin.y = 0;

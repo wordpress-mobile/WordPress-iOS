@@ -29,6 +29,6 @@
 @property (nonatomic, strong) IBOutlet UITextView *postContent;
 
 - (IBAction)scrollToCurrentPage;
-- (void)scrollViewDidScroll:(UIScrollView *)sender;
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)sender;
 @end
 
