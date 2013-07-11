@@ -20,10 +20,72 @@
 @synthesize revisions, conflictMode, scrollingLocked, scrollView, pageControl, originalPost;
 @synthesize revisionDate, revisionAuthor, postContent;
 
+#pragma mark -
+#pragma mark Lifecycle Methods
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     return self;
 }
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    for (int i = 0; i < self.scrollView.subviews.count; i++) {
+        UIView *subview = [self.scrollView.subviews objectAtIndex:i];
+        [subview setFrame:[self calculateRevisionViewRectForIndex:i]];
+    }
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * revisions.count,
+                                             self.scrollView.frame.size.height);
+    [self.view layoutSubviews];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    if (conflictMode) {
+        [self showConflictAlert];
+    }
+
+    // Set up navigation items
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                  target:self
+                                                                                  action:@selector(cancel:)];
+
+    self.navigationItem.leftBarButtonItem = cancelButton;
+    UIBarButtonItem *useButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Use", @"The Use button on navigation bar in the RevisionSelector view")
+                                                                     style:UIBarButtonItemStyleDone target:self
+                                                                    action:@selector(useSelectedRevision:)];
+    self.navigationItem.rightBarButtonItem = useButton;
+    self.navigationItem.title = NSLocalizedString(@"Revisions",
+                                                  @"Title on navigation bar in the RevisionSelector view");
+
+    // Instantiate and update revision subviews
+    for (int i = 0; i < self.revisions.count; i++) {
+        [self loadRevisionViewWithIndex:i];
+    }
+
+    // Update scrollView and pageControl
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * revisions.count,
+                                             self.scrollView.frame.size.height);
+    self.pageControl.numberOfPages = revisions.count;
+
+    // Move to last page / revision
+    self.pageControl.currentPage = revisions.count - 1;
+
+    // If conflict mode enabled show the local revision
+    if (conflictMode) {
+        [self forcePage:revisions.count - 1 animated:NO];
+    }
+}
+
+- (void)viewDidUnload {
+    scrollView = nil;
+    pageControl = nil;
+    revisions = nil;
+}
+
+#pragma mark -
+#pragma mark Instance Methods
 
 - (void)showConflictAlert {
     UIAlertView *conflictAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Conflict Detected", @"")
@@ -72,20 +134,13 @@
                                    aPost.author];
         }
     }
-    postContent.text = [NSString stringWithFormat:@"Title: %@\n%@", aPost.postTitle, aPost.content];
+    postContent.text = [NSString stringWithFormat:@"%@: %@\n%@",
+                        NSLocalizedString(@"Title", "post or page title label"), aPost.postTitle, aPost.content];
     [self.scrollView addSubview:subview];
 }
 
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    for (int i = 0; i < self.scrollView.subviews.count; i++) {
-        UIView *subview = [self.scrollView.subviews objectAtIndex:i];
-        [subview setFrame:[self calculateRevisionViewRectForIndex:i]];
-    }
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * revisions.count,
-                                             self.scrollView.frame.size.height);
-    [self.view layoutSubviews];
-}
+#pragma mark -
+#pragma mark Buttons Delegate
 
 - (void)useSelectedRevision:(id)sender {
     AbstractPost *selectedRevision = [self.revisions objectAtIndex:self.pageControl.currentPage];
@@ -105,46 +160,8 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    if (conflictMode) {
-        [self showConflictAlert];
-    }
-    
-    // Set up navigation items
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                  target:self
-                                                                                  action:@selector(cancel:)];
-
-    self.navigationItem.leftBarButtonItem = cancelButton;
-    UIBarButtonItem *useButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Use", @"The Use button on navigation bar in the RevisionSelector view")
-                                                                     style:UIBarButtonItemStyleDone target:self
-                                                                    action:@selector(useSelectedRevision:)];
-    self.navigationItem.rightBarButtonItem = useButton;
-    self.navigationItem.title = NSLocalizedString(@"Revisions",
-                                                  @"Title on navigation bar in the RevisionSelector view");
-
-    // Instantiate and update revision subviews
-    for (int i = 0; i < self.revisions.count; i++) {
-        [self loadRevisionViewWithIndex:i];
-    }
-    
-    // Update scrollView and pageControl
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * revisions.count,
-                                             self.scrollView.frame.size.height);
-    self.pageControl.numberOfPages = revisions.count;
-
-    // Move to last page / revision
-    self.pageControl.currentPage = revisions.count - 1;
-    [self forcePage:revisions.count - 1 animated:NO];
-}
-
-- (void)viewDidUnload {
-    scrollView = nil;
-    pageControl = nil;
-    revisions = nil;
-}
+#pragma mark -
+#pragma mark Rotation
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
                                 duration:(NSTimeInterval)duration {
@@ -165,16 +182,14 @@
     [UIView commitAnimations];
 }
 
-
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * revisions.count,
                                              self.scrollView.frame.size.height);
     self.scrollingLocked = NO;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)sender {
     if (self.scrollingLocked) {
@@ -184,6 +199,9 @@
     int page = floor((self.scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     self.pageControl.currentPage = page;
 }
+
+#pragma mark -
+#pragma mark Paging
 
 - (void)forcePage:(int)page animated:(BOOL)animated {
     self.pageControl.currentPage = page;
@@ -196,6 +214,13 @@
 
 - (IBAction)scrollToCurrentPage {
     [self forcePage:self.pageControl.currentPage animated:YES];
+}
+
+#pragma mark -
+#pragma mark Memory Management
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
 }
 
 @end
