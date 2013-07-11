@@ -84,6 +84,7 @@ typedef enum {
 - (void)autosave;
 
 - (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)checkPostNotModifiedWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 @end
