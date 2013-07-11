@@ -451,12 +451,12 @@
         }
         return;
     }
-
+    
     NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, [self.blog fetchPassword], [self XMLRPCDictionary], nil];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
-    
-    if( self.isFeaturedImageChanged == NO ) {
-        NSMutableDictionary *xmlrpcDictionary = (NSMutableDictionary*) [parameters objectAtIndex:3] ;
+    NSMutableDictionary *xmlrpcDictionary = (NSMutableDictionary*) [parameters objectAtIndex:3];
+    [xmlrpcDictionary setValue:self.date_modified_gmt forKey:@"if_not_modified_since"];
+    if (self.isFeaturedImageChanged == NO) {
         [xmlrpcDictionary removeObjectForKey:@"wp_post_thumbnail"];
     }
     

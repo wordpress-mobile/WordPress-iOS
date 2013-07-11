@@ -112,48 +112,6 @@
 #pragma mark -
 #pragma mark Revision management
 
-- (void)checkPostNotModifiedWithSuccess:(void (^)())success
-                                failure:(void (^)(NSError *error))failure {
-    WPFLogMethod();
-    NSMutableDictionary *xmlrpcDictionary = [NSMutableDictionary dictionary];
-    [xmlrpcDictionary setValue:self.date_modified_gmt forKey:@"if_not_modified_since"];
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, [self.blog fetchPassword],
-                           self.postID, xmlrpcDictionary, nil];
-    [self.blog.api callMethod:@"wp.editPost"
-                   parameters:parameters
-                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                          if (success) success();
-                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                          if (failure) {
-                              failure(error);
-                          }
-                      }];
-}
-
-- (void)checkConflictingRevisionWithConflict:(void (^)(AbstractPost *current, AbstractPost *previous))conflict
-                                  noConflict:(void (^)())noConflict failure:(void (^)(NSError *))failure {
-    AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:[[self entity] name]
-                                               inManagedObjectContext:[self managedObjectContext]];
-    [post cloneFrom:self];
-    [post setValue:self forKey:@"original"];
-    [post setValue:nil forKey:@"revision"];
-    [post checkPostNotModifiedWithSuccess:^{
-        noConflict();
-    } failure:^(NSError *error) {
-        // code 409 means a newer revision exists on server
-        if (error.code == 409) {
-            // Fetch the newer revision and fire callback
-            [post getPostWithSuccess:^{
-                conflict(self, post);
-            } failure:^(NSError *error) {
-                failure(error);
-            }];
-        } else {
-            failure(error);
-        }
-    }];
-}
-
 - (void)cloneFrom:(AbstractPost *)source {
     for (NSString *key in [[[source entity] attributesByName] allKeys]) {
         if ([key isEqualToString:@"permalink"]) {
