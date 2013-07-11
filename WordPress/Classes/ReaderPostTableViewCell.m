@@ -98,7 +98,7 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-
+        self.backgroundColor = [UIColor colorWithWhite:0.9453125f alpha:1.f];
         self.contentView.backgroundColor = [UIColor colorWithWhite:0.9453125f alpha:1.f];
 		CGRect frame = CGRectMake(10.0f, 0.0f, self.contentView.frame.size.width - 20.0f, self.contentView.frame.size.height - 10.0f);
 
