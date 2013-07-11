@@ -9,6 +9,7 @@
 #import "SupportViewController.h"
 #import "WPWebViewController.h"
 #import "ActivityLogViewController.h"
+#import <UIDeviceIdentifier/UIDeviceHardware.h>
 
 @interface SupportViewController ()
 
@@ -168,9 +169,22 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (MFMailComposeViewController *)feedbackMailViewController
 {
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];;
+    NSString *device = [UIDeviceHardware platformString];
+    NSString *locale = [[NSLocale currentLocale] localeIdentifier];
+    NSString *iosVersion = [[UIDevice currentDevice] systemVersion];
+    
+    NSMutableString *messageBody = [NSMutableString string];
+    [messageBody appendFormat:@"\n\n==========\n%@\n\n", NSLocalizedString(@"Please leave your comments above this line.", @"")];
+    [messageBody appendFormat:@"%@: %@\n", NSLocalizedString(@"Device", @""), device];
+    [messageBody appendFormat:@"%@: %@\n", NSLocalizedString(@"App Version", @""), appVersion];
+    [messageBody appendFormat:@"%@: %@\n", NSLocalizedString(@"Locale", @""), locale];
+    [messageBody appendFormat:@"%@: %@\n", NSLocalizedString(@"iOS Version", @""), iosVersion];
+    
     MFMailComposeViewController *mailComposeViewController = [[MFMailComposeViewController alloc] init];
     mailComposeViewController.mailComposeDelegate = self;
-
+    
+    [mailComposeViewController setMessageBody:messageBody isHTML:NO];
     [mailComposeViewController setSubject:@"WordPress for iOS Help Request"];
     [mailComposeViewController setToRecipients:@[@"support@wordpress.com"]];
 
