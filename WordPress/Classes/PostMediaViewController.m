@@ -252,7 +252,7 @@
 			mediaView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 			mediaView.modalPresentationStyle = UIModalPresentationFormSheet;
 			
-            [self presentModalViewController:mediaView animated:YES];
+            [self presentViewController:mediaView animated:YES completion:nil];
 		}
         else
             [self.postDetailViewController.navigationController pushViewController:mediaView animated:YES];
@@ -519,8 +519,8 @@
             }
 			[[CPopoverManager instance] setCurrentPopoverController:addPopover];
 		}
-		else {			
-			[postDetailViewController.navigationController presentModalViewController:picker animated:YES];
+		else {
+            [postDetailViewController.navigationController presentViewController:picker animated:YES completion:nil];
 		}
     }
 }
@@ -565,7 +565,7 @@
 		[[CPopoverManager instance] setCurrentPopoverController:addPopover];
 	}
 	else {
-		[postDetailViewController.navigationController presentModalViewController:picker animated:YES];
+        [postDetailViewController.navigationController presentViewController:picker animated:YES completion:nil];
 	}
 	
 	/*[[NSNotificationCenter defaultCenter] addObserver:self
@@ -631,7 +631,7 @@
             [[CPopoverManager instance] setCurrentPopoverController:addPopover];
 		}
 		else {
-			[postDetailViewController.navigationController presentModalViewController:picker animated:YES];
+            [postDetailViewController.navigationController presentViewController:picker animated:YES completion:nil];
 		}
     }
 }
@@ -1025,7 +1025,7 @@
 		}
 		
 		if(!IS_IPAD) {
-			[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
+            [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 		}
 	}
 	
@@ -1093,14 +1093,14 @@
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-	[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
+    [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)processRecordedVideo {
 	if(IS_IPAD == YES)
 		[addPopover dismissPopoverAnimated:YES];
 	else {
-		[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
+        [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 	}
 	
 	[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];
@@ -1120,7 +1120,7 @@
 		if(IS_IPAD == YES)
 			[addPopover dismissPopoverAnimated:YES];
 		else {
-			[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
+            [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 		}
 		
 		[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];

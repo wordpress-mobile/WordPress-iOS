@@ -192,7 +192,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
         nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		nav.modalPresentationStyle = UIModalPresentationFormSheet;
       
-        [self presentModalViewController:nav animated:YES];
+        [self presentViewController:nav animated:YES completion:nil];
     } else {
         [self.panelNavigationController pushViewController:notificationSettingsViewController fromViewController:self animated:YES];
     }

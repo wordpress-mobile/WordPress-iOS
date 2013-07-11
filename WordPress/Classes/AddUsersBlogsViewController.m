@@ -110,7 +110,7 @@
 
 	if((isWPcom) && (!appDelegate.isWPcomAuthenticated)) {
         WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        [self.navigationController presentModalViewController:wpComLogin animated:YES];
+        [self.navigationController presentViewController:wpComLogin animated:YES completion:nil];
 	}
 	else if(isWPcom) {
 		if((usersBlogs == nil) && ([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"] != nil)) {
@@ -544,7 +544,7 @@
                 [self.navigationController pushViewController:helpViewController animated:YES];
             }
             else
-                [appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
+                [appDelegate.navigationController presentViewController:helpViewController animated:YES completion:nil];
             
         }
     } else {

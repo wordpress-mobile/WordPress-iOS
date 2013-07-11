@@ -217,8 +217,8 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
         nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		nav.modalPresentationStyle = UIModalPresentationFormSheet;
     }
-   
-    [self presentModalViewController:nav animated:YES];
+
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)topicsController:(WPReaderTopicsViewController *)topicsController didDismissSelectingTopic:(NSString *)topic withTitle:(NSString *)title
@@ -429,7 +429,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
 }
 
 - (void)dismiss {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)reload {        
@@ -595,7 +595,7 @@ NSString *const WPReaderViewControllerDisplayedFriendFinder = @"displayed friend
     WPFriendFinderViewController *friendFinder = [[WPFriendFinderViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil];
     [navController pushViewController:friendFinder animated:NO];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentModalViewController:navController animated:YES];
+    [self presentViewController:navController animated:YES completion:nil];
     [friendFinder loadURL:kMobileReaderFFURL];
 
 }

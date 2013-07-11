@@ -138,7 +138,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 - (void)dismiss {
     [SVProgressHUD dismiss];
     if (IS_IPAD) {
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
     else {
         [self.navigationController popToRootViewControllerAnimated:YES];
@@ -151,7 +151,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
     JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
-        [self.presentingViewController dismissModalViewControllerAnimated:YES];
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }];
     [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
 }

@@ -263,12 +263,12 @@
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:replyToCommentViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navController animated:YES];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)dismissEditViewController;
 {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -287,8 +287,8 @@
 			[replyToCommentViewController.comment remove]; //delete the empty comment
 			replyToCommentViewController.comment = nil;
 			
-			if (IS_IPAD == YES)  //an half-patch for #790: sometimes the modal view is not disposed when click on cancel. 
-				[self dismissModalViewControllerAnimated:YES];
+			if (IS_IPAD == YES)  //an half-patch for #790: sometimes the modal view is not disposed when click on cancel.
+                [self dismissViewControllerAnimated:YES completion:nil];
 			
 		} 
 		return;
@@ -341,7 +341,7 @@
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editCommentViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navController animated:animate];
+    [self presentViewController:navController animated:animate completion:nil];
 }
 
 
@@ -711,7 +711,7 @@
 		[controller setToRecipients: recipient];
 		[controller setSubject:[NSString stringWithFormat:NSLocalizedString(@"Re: %@", @""), self.comment.postTitle]]; 
 		[controller setMessageBody:[NSString stringWithFormat:NSLocalizedString(@"Hi %@,", @""), self.comment.author] isHTML:NO];
-		[self presentModalViewController:controller animated:YES];
+        [self presentViewController:controller animated:YES completion:nil];
 	}
 }
 
@@ -739,7 +739,7 @@
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
 {
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)addOrRemoveSegmentedControl {

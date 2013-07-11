@@ -736,7 +736,7 @@
 
 - (IBAction)cancel:(id)sender {
     if (isCancellable) {
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     } else {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }

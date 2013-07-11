@@ -517,8 +517,8 @@
 }
 
 - (UIViewController *)visibleViewController {
-    if (self.modalViewController) {
-        return self.modalViewController;
+    if (self.presentedViewController) {
+        return self.presentedViewController;
     } else if (self.navigationController) {
         return self.navigationController.visibleViewController;
     } else {
@@ -903,7 +903,7 @@
         [self enableDetailView];
     }];
     
-    if(IS_IPHONE && !self.modalViewController) {
+    if(IS_IPHONE && !self.presentedViewController) {
         [SoundUtil playSwipeSound];
     }
 }

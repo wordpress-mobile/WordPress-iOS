@@ -1236,10 +1236,10 @@
                 }
 
                 UIViewController *presenter = self.panelNavigationController;
-                if (presenter.modalViewController) {
-                    presenter = presenter.modalViewController;
+                if (presenter.presentedViewController) {
+                    presenter = presenter.presentedViewController;
                 }
-                [presenter presentModalViewController:aNavigationController animated:YES];
+                [presenter presentViewController:aNavigationController animated:YES completion:nil];
 
 				break;
 			}

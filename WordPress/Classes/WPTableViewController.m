@@ -501,7 +501,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                 navController.modalPresentationStyle = UIModalPresentationFormSheet;
                 navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             }
-            [self.panelNavigationController presentModalViewController:navController animated:YES];
+            [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
 
 			break;
 		}
@@ -540,7 +540,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                     navController.modalPresentationStyle = UIModalPresentationFormSheet;
                     navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 }
-                [self.panelNavigationController presentModalViewController:navController animated:YES];
+                [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
             }
 			break;
 		default:
@@ -592,7 +592,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)dismissModal:(id)sender {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)simulatePullToRefresh {
@@ -675,7 +675,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 	}
 	
-	[self.panelNavigationController presentModalViewController:navController animated:YES];
+    [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - Swipe gestures

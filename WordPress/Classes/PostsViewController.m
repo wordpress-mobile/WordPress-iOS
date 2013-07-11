@@ -264,7 +264,7 @@
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[post createRevision]];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
-    [self.panelNavigationController presentModalViewController:navController animated:YES];
+    [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
 }
 
 // For iPhone
@@ -272,7 +272,7 @@
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[apost createRevision]];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
-    [self.panelNavigationController presentModalViewController:navController animated:YES];
+    [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
 }
 
 // For iPad

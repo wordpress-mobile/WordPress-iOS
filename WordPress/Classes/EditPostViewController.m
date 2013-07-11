@@ -426,7 +426,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 #if USE_AUTOSAVES
     [self deleteBackupPost];
 #endif
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -587,7 +587,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         [segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
  	} else {
 		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
-		[segmentedTableViewController presentModalViewController:nc animated:YES];
+        [segmentedTableViewController presentViewController:nc animated:YES completion:nil];
 	}
 }
 
