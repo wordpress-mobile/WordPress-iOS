@@ -537,22 +537,23 @@
 		}
 	
 		// make sure we have a reasonable size.
-		if (frame.size.width > _textContentView.frame.size.width) {
-			frame.size.width = width;
+		if (frame.size.width > width) {
 			frame.size.height = frame.size.height * (width / frame.size.width);
+			frame.size.width = width;
 		}
 		
 		// extra 10px to offset the top edge inset keeping the image from bumping the text above it.
 		frame.size.height += edgeInsets.top;
 
 		ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
-		videoView.contentMode = UIViewContentModeScaleAspectFit;
+		videoView.contentMode = UIViewContentModeCenter;
+		videoView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0];
 		videoView.edgeInsets = edgeInsets;
 
 		[_mediaArray addObject:videoView];
 		[videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
+			[(ReaderVideoView *)readerVideoView setContentMode:UIViewContentModeScaleAspectFit];
 			[self handleMediaViewLoaded:readerVideoView];
-			
 		} failure:^(id readerVideoView, NSError *error) {
 			[self handleMediaViewLoaded:readerVideoView];
 			

@@ -11,14 +11,12 @@
 
 @interface ReaderVideoView()
 
-@property (nonatomic, strong) UIButton *playButton;
 @property (readwrite, nonatomic, assign) ReaderVideoContentType contentType;
 
 + (AFHTTPClient *)sharedYoutubeClient;
 + (AFHTTPClient *)sharedVimeoClient;
 + (AFHTTPClient *)sharedDailyMotionClient;
 
-- (void)handlePlayButtonTapped:(id)sender;
 - (void)getYoutubeThumb:(NSString *)vidId
 				success:(void (^)(id videoView))success
 				failure:(void (^)(id videoView, NSError *error))failure;
@@ -68,25 +66,14 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-		[self.imageView setImage:[UIImage imageNamed:@"wp_vid_placeholder.png"]];
-		
-		self.playButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		_playButton.frame = frame;
-		_playButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		[_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-		[_playButton setImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
-		[_playButton addTarget:self action:@selector(handlePlayButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+		[self.imageView setImage:[UIImage imageNamed:@"wp_vid_placeholder"]];
+		self.isShowingPlaceholder = YES;
     }
     return self;
 }
 
 
 #pragma mark - Instance Methods
-
-- (void)handlePlayButtonTapped:(id)sender {
-	[self sendActionsForControlEvents:UIControlEventTouchUpInside];
-}
-
 
 - (void)setContentURL:(NSURL *)url
 			   ofType:(ReaderVideoContentType)type
@@ -95,7 +82,7 @@
 	
 	self.contentType = type;
 	self.contentURL = url;
-	
+
 	NSString *path = [self.contentURL path];
 	NSRange rng = [path rangeOfString:@"/" options:NSBackwardsSearch];
 	NSString *vidId = [path substringFromIndex:rng.location + 1];

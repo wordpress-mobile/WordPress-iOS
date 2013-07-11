@@ -13,7 +13,7 @@
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, assign) UIEdgeInsets edgeInsets;
 @property (nonatomic, strong) NSURL *contentURL;
-@property (nonatomic, readonly) BOOL isShowingPlaceholder;
+@property (nonatomic) BOOL isShowingPlaceholder;
 
 - (UIImage *)image;
 - (void)setImage:(UIImage *)image;

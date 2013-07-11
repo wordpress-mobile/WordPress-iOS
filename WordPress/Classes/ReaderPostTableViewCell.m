@@ -62,7 +62,7 @@
 
 	// Are we showing an image? What size should it be?
 	if(post.featuredImageURL) {
-		CGFloat height = (contentWidth * 0.66f);
+		CGFloat height = ceilf((contentWidth * 0.66f));
 		desiredHeight += height;
 	}
 
@@ -273,7 +273,7 @@
 
 	// Are we showing an image? What size should it be?
 	if(_showImage) {
-		height = ceil(contentWidth * 0.66f);
+		height = ceilf(contentWidth * 0.66f);
 		self.cellImageView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
 		nextY += height + vpadding;
 	} else {
@@ -304,7 +304,7 @@
     _featuredImageIsSet = NO;
     _avatarIsSet = NO;
 
-	_avatarImageView.image = nil;
+	[self setAvatar:nil];
 	_bylineLabel.text = nil;
 	_titleLabel.text = nil;
 	_snippetLabel.text = nil;
@@ -341,7 +341,7 @@
 		self.cellImageView.hidden = NO;
 
 		NSInteger width = ceil(_containerView.frame.size.width);
-        NSInteger height = (width * 0.66f);
+        NSInteger height = ceil(width * 0.66f);
         CGRect imageFrame = self.cellImageView.frame;
         imageFrame.size.width = width;
         imageFrame.size.height = height;

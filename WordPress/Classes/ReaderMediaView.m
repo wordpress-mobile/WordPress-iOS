@@ -9,10 +9,6 @@
 #import "ReaderMediaView.h"
 #import "UIImageView+AFNetworkingExtra.h"
 
-@interface ReaderMediaView()
-@property (nonatomic, readwrite) BOOL isShowingPlaceholder;
-@end
-
 @implementation ReaderMediaView
 
 #pragma mark - LifeCycle Methods
