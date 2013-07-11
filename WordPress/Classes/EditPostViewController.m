@@ -646,12 +646,17 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
                 RevisionSelectorViewController *revisionSelector = [[RevisionSelectorViewController alloc]
                                                                     initWithNibName:@"RevisionSelectorViewController"
                                                                     bundle:nil];
-                UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow]
-                                                        rootViewController];
                 NSArray *revisions = [[NSArray alloc] initWithObjects:conflictingPost, localPost, nil];
                 [revisionSelector setRevisions:revisions];
                 [revisionSelector setConflictMode:YES];
-                [rootViewController.navigationController pushViewController:revisionSelector animated:YES];
+                [revisionSelector setOriginalPost:originalPost];
+                UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow]
+                                                        rootViewController];
+                UINavigationController *nav = [[UINavigationController alloc]
+                                               initWithRootViewController:revisionSelector];
+                nav.modalPresentationStyle = UIModalPresentationPageSheet;
+                nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+                [rootViewController presentModalViewController:nav animated:YES];
             } noConflict:^{
                 [originalPost uploadWithSuccess:^{
                     WPFLog(@"post uploaded: %@", postTitle);

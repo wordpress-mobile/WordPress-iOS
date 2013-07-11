@@ -8,16 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
+@class AbstractPost;
+
 @interface RevisionSelectorViewController : UIViewController <UIScrollViewDelegate> {
     UIScrollView *scrollView;
     UIPageControl *pageControl;
     NSArray *revisions;
+    AbstractPost *originalPost;
     // To avoid scrolling during rotation
     BOOL scrollingLocked;
     BOOL conflictMode;
 }
 
 @property (nonatomic, strong) NSArray *revisions;
+@property (nonatomic, strong) AbstractPost *originalPost;
 @property (nonatomic) BOOL conflictMode;
 @property (nonatomic) BOOL scrollingLocked;
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;

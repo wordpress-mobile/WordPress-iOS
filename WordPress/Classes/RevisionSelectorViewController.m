@@ -17,7 +17,7 @@
 @end
 
 @implementation RevisionSelectorViewController
-@synthesize revisions, conflictMode, scrollingLocked, scrollView, pageControl;
+@synthesize revisions, conflictMode, scrollingLocked, scrollView, pageControl, originalPost;
 @synthesize revisionDate, revisionAuthor, postContent;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -35,12 +35,12 @@
 }
 
 - (CGRect)calculateRevisionViewRectForIndex:(int) index {
-    CGSize frameSize = self.scrollView.frame.size;
     CGRect frame;
-    float leftMargin = frameSize.width * LEFT_MARGIN_PERCENTAGE;
-    frame.origin.x = self.scrollView.frame.size.width * index + leftMargin / 2;
+    CGSize parentFrameSize = self.scrollView.frame.size;
+    float leftMargin = parentFrameSize.width * LEFT_MARGIN_PERCENTAGE / 2;
+    frame.origin.x = self.scrollView.frame.size.width * index + leftMargin;
     frame.origin.y = 0;
-    frame.size = CGSizeMake(frameSize.width * (1 - LEFT_MARGIN_PERCENTAGE), frameSize.height);
+    frame.size = CGSizeMake(parentFrameSize.width * (1 - LEFT_MARGIN_PERCENTAGE), parentFrameSize.height);
     return frame;
 }
 
@@ -60,13 +60,17 @@
                                               @"Local revision label when a conflict is detected.");
         revisionAuthor.text = @"";
     } else {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        NSDate *localModifiedDate = [DateUtils GMTDateTolocalDate:aPost.date_modified_gmt];
-        revisionDate.text = [dateFormatter stringFromDate:localModifiedDate];
-        revisionAuthor.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"by", "by [author]"),
-                               aPost.author];
+        if (aPost.date_modified_gmt) {
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+            [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+            NSDate *localModifiedDate = [DateUtils GMTDateTolocalDate:aPost.date_modified_gmt];
+            revisionDate.text = [dateFormatter stringFromDate:localModifiedDate];
+        }
+        if (aPost.author) {
+            revisionAuthor.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"by", "by [author]"),
+                                   aPost.author];
+        }
     }
     postContent.text = [NSString stringWithFormat:@"Title: %@\n%@", aPost.postTitle, aPost.content];
     [self.scrollView addSubview:subview];
@@ -80,14 +84,25 @@
     }
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * revisions.count,
                                              self.scrollView.frame.size.height);
-    [self forcePage:revisions.count - 1 animated:NO];
     [self.view layoutSubviews];
 }
 
 - (void)useSelectedRevision:(id)sender {
     AbstractPost *selectedRevision = [self.revisions objectAtIndex:self.pageControl.currentPage];
-    [selectedRevision uploadWithSuccess:nil failure:nil];
-    [self.navigationController popViewControllerAnimated:YES];
+    NSString *postTitle = selectedRevision.postTitle;
+    if (selectedRevision != originalPost) {
+        [originalPost cloneFrom:selectedRevision];
+    }
+    [originalPost uploadWithSuccess:^{
+        WPFLog(@"post uploaded: %@", postTitle);
+    } failure:^(NSError *error) {
+        WPFLog(@"post failed: %@", [error localizedDescription]);
+    }];
+    [self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)cancel:(id)sender {
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)viewDidLoad {
@@ -98,10 +113,15 @@
     
     // Set up navigation items
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"sidebar_bg"]];
-    UIBarButtonItem *updateButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Use", @"The Use button on navigation bar in the RevisionSelector view")
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                  target:self
+                                                                                  action:@selector(cancel:)];
+
+    self.navigationItem.leftBarButtonItem = cancelButton;
+    UIBarButtonItem *useButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Use", @"The Use button on navigation bar in the RevisionSelector view")
                                                                      style:UIBarButtonItemStyleDone target:self
                                                                     action:@selector(useSelectedRevision:)];
-    self.navigationItem.rightBarButtonItem = updateButton;
+    self.navigationItem.rightBarButtonItem = useButton;
     self.navigationItem.title = NSLocalizedString(@"Revisions",
                                                   @"Title on navigation bar in the RevisionSelector view");
 
@@ -117,6 +137,7 @@
 
     // Move to last page / revision
     self.pageControl.currentPage = revisions.count - 1;
+    [self forcePage:revisions.count - 1 animated:NO];
 }
 
 - (void)viewDidUnload {
@@ -132,7 +153,7 @@
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
                                          duration:(NSTimeInterval)duration {
-    [self forcePage:self.pageControl.currentPage animated:YES];
+    [self scrollToCurrentPage];
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:duration];
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * revisions.count,
@@ -146,11 +167,9 @@
 
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    // Update scroll view and force current page
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * revisions.count,
                                              self.scrollView.frame.size.height);
     self.scrollingLocked = NO;
-    [self scrollToCurrentPage];
 }
 
 - (void)didReceiveMemoryWarning {

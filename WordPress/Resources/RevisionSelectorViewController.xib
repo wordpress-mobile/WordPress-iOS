@@ -58,7 +58,6 @@
 						<string key="NSFrame">{{141, 380}, {38, 36}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -135,12 +134,12 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">changePage</string>
+						<string key="label">scrollToCurrentPage</string>
 						<reference key="source" ref="960330226"/>
 						<reference key="destination" ref="372490531"/>
 						<int key="IBEventType">13</int>
 					</object>
-					<int key="connectionID">25</int>
+					<int key="connectionID">58</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -338,7 +337,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">57</int>
+			<int key="maxID">58</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -367,7 +366,8 @@
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="pageControl">UIPageControl</string>
 						<string key="postContent">UITextView</string>
-						<string key="revisionName">UILabel</string>
+						<string key="revisionAuthor">UILabel</string>
+						<string key="revisionDate">UILabel</string>
 						<string key="scrollView">UIScrollView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -379,8 +379,12 @@
 							<string key="name">postContent</string>
 							<string key="candidateClassName">UITextView</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="revisionName">
-							<string key="name">revisionName</string>
+						<object class="IBToOneOutletInfo" key="revisionAuthor">
+							<string key="name">revisionAuthor</string>
+							<string key="candidateClassName">UILabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="revisionDate">
+							<string key="name">revisionDate</string>
 							<string key="candidateClassName">UILabel</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="scrollView">
