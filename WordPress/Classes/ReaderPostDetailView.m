@@ -10,6 +10,7 @@
 #import <DTCoreText/DTCoreText.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/QuartzCore.h>
+#import "DTTiledLayerWithoutFade.h"
 #import "ReaderMediaView.h"
 #import "ReaderImageView.h"
 #import "ReaderVideoView.h"
@@ -156,7 +157,7 @@
 			contentY = titleFrame.origin.y + titleFrame.size.height;
 		}
 
-        [DTAttributedTextContentView setLayerClass:[CATiledLayer class]];
+		[DTAttributedTextContentView setLayerClass:[DTTiledLayerWithoutFade class]];
 		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, contentY + 10.0f, width, 100.0f)]; // Starting height is arbitrary
 		_textContentView.delegate = self;
 		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
