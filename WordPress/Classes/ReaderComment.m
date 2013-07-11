@@ -7,6 +7,7 @@
 //
 
 #import "ReaderComment.h"
+#import "NSString+XMLExtensions.h"
 
 @interface ReaderComment()
 
@@ -161,7 +162,7 @@
 	
 	NSDictionary *author = [dict objectForKey:@"author"];
 	
-	self.author = [author stringForKey:@"name"];
+	self.author = [[author stringForKey:@"name"] stringByDecodingXMLCharacters];
 	self.author_email = [author stringForKey:@"email"];
 	self.author_url = [author stringForKey:@"URL"];
 	self.authorAvatarURL = [author stringForKey:@"avatar_URL"];
