@@ -10,38 +10,42 @@
 #import "AbstractPost.h"
 #import "RevisionView.h"
 
-#define LEFT_MARGIN_PERCENTAGE 0.02
+float const LeftMarginPercentage = 0.02f;
 
 @interface RevisionSelectorViewController ()
+    @property (nonatomic) BOOL scrollingLocked;
+    @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
+    @property (nonatomic, retain) IBOutlet UIPageControl *pageControl;
 
+    // Subview references
+    @property (nonatomic, strong) IBOutlet UILabel *revisionDate;
+    @property (nonatomic, strong) IBOutlet UILabel *revisionAuthor;
+    @property (nonatomic, strong) IBOutlet UITextView *postContent;
+
+    - (IBAction)scrollToCurrentPage;
 @end
 
 @implementation RevisionSelectorViewController
-@synthesize revisions, conflictMode, scrollingLocked, scrollView, pageControl, originalPost;
-@synthesize revisionDate, revisionAuthor, postContent;
+//@synthesize revisions, conflictMode, scrollingLocked, scrollView, pageControl, originalPost;
+//@synthesize revisionDate, revisionAuthor, postContent;
 
 #pragma mark -
 #pragma mark Lifecycle Methods
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    return self;
-}
-
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    for (int i = 0; i < self.scrollView.subviews.count; i++) {
-        UIView *subview = [self.scrollView.subviews objectAtIndex:i];
+    for (int i = 0; i < _scrollView.subviews.count; i++) {
+        UIView *subview = [_scrollView.subviews objectAtIndex:i];
         [subview setFrame:[self calculateRevisionViewRectForIndex:i]];
     }
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * revisions.count,
-                                             self.scrollView.frame.size.height);
+    _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width * _revisions.count,
+                                         _scrollView.frame.size.height);
     [self.view layoutSubviews];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if (conflictMode) {
+    if (_conflictMode) {
         [self showConflictAlert];
     }
 
@@ -59,28 +63,22 @@
                                                   @"Title on navigation bar in the RevisionSelector view");
 
     // Instantiate and update revision subviews
-    for (int i = 0; i < self.revisions.count; i++) {
+    for (int i = 0; i < _revisions.count; i++) {
         [self loadRevisionViewWithIndex:i];
     }
 
     // Update scrollView and pageControl
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * revisions.count,
-                                             self.scrollView.frame.size.height);
-    self.pageControl.numberOfPages = revisions.count;
+    _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width * _revisions.count,
+                                             _scrollView.frame.size.height);
+    _pageControl.numberOfPages = _revisions.count;
 
     // Move to last page / revision
-    self.pageControl.currentPage = revisions.count - 1;
+    _pageControl.currentPage = _revisions.count - 1;
 
     // If conflict mode enabled show the local revision
-    if (conflictMode) {
-        [self forcePage:revisions.count - 1 animated:NO];
+    if (_conflictMode) {
+        [self forcePage:_revisions.count - 1 animated:NO];
     }
-}
-
-- (void)viewDidUnload {
-    scrollView = nil;
-    pageControl = nil;
-    revisions = nil;
 }
 
 #pragma mark -
@@ -97,11 +95,11 @@
 
 - (CGRect)calculateRevisionViewRectForIndex:(int) index {
     CGRect frame;
-    CGSize parentFrameSize = self.scrollView.frame.size;
-    float leftMargin = parentFrameSize.width * LEFT_MARGIN_PERCENTAGE / 2;
-    frame.origin.x = self.scrollView.frame.size.width * index + leftMargin;
+    CGSize parentFrameSize = _scrollView.frame.size;
+    float leftMargin = parentFrameSize.width * LeftMarginPercentage / 2;
+    frame.origin.x = _scrollView.frame.size.width * index + leftMargin;
     frame.origin.y = 0;
-    frame.size = CGSizeMake(parentFrameSize.width * (1 - LEFT_MARGIN_PERCENTAGE), parentFrameSize.height);
+    frame.size = CGSizeMake(parentFrameSize.width * (1 - LeftMarginPercentage), parentFrameSize.height);
     return frame;
 }
 
@@ -114,40 +112,39 @@
             break;
         }
     }
-    [subview initStyle];
-    AbstractPost *aPost = [self.revisions objectAtIndex:index];
-    if (conflictMode && index == 1) {
-        revisionDate.text = NSLocalizedString(@"Local Revision",
+    AbstractPost *aPost = [_revisions objectAtIndex:index];
+    if (_conflictMode && index == 1) {
+        _revisionDate.text = NSLocalizedString(@"Local Revision",
                                               @"Local revision label when a conflict is detected.");
-        revisionAuthor.text = @"";
+        _revisionAuthor.text = @"";
     } else {
         if (aPost.date_modified_gmt) {
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
             [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
             [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
             NSDate *localModifiedDate = [DateUtils GMTDateTolocalDate:aPost.date_modified_gmt];
-            revisionDate.text = [dateFormatter stringFromDate:localModifiedDate];
+            _revisionDate.text = [dateFormatter stringFromDate:localModifiedDate];
         }
         if (aPost.author) {
-            revisionAuthor.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"by", "by [author]"),
+            _revisionAuthor.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"by", "by [author]"),
                                    aPost.author];
         }
     }
-    postContent.text = [NSString stringWithFormat:@"%@: %@\n%@",
+    _postContent.text = [NSString stringWithFormat:@"%@: %@\n%@",
                         NSLocalizedString(@"Title", "post or page title label"), aPost.postTitle, aPost.content];
-    [self.scrollView addSubview:subview];
+    [_scrollView addSubview:subview];
 }
 
 #pragma mark -
 #pragma mark Buttons Delegate
 
 - (void)useSelectedRevision:(id)sender {
-    AbstractPost *selectedRevision = [self.revisions objectAtIndex:self.pageControl.currentPage];
+    AbstractPost *selectedRevision = [_revisions objectAtIndex:_pageControl.currentPage];
     NSString *postTitle = selectedRevision.postTitle;
-    if (selectedRevision != originalPost) {
-        [originalPost cloneFrom:selectedRevision];
+    if (selectedRevision != _originalPost) {
+        [_originalPost cloneFrom:selectedRevision];
     }
-    [originalPost uploadWithSuccess:^{
+    [_originalPost uploadWithSuccess:^{
         WPFLog(@"post uploaded: %@", postTitle);
     } failure:^(NSError *error) {
         WPFLog(@"post failed: %@", [error localizedDescription]);
@@ -164,7 +161,7 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
                                 duration:(NSTimeInterval)duration {
-    self.scrollingLocked = YES;
+    _scrollingLocked = YES;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -172,47 +169,47 @@
     [self scrollToCurrentPage];
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:duration];
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * revisions.count,
-                                             self.scrollView.frame.size.height);
-    for (int i = 0; i < self.scrollView.subviews.count; i++) {
-        UIView *subview = [self.scrollView.subviews objectAtIndex:i];
+    _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width * _revisions.count,
+                                             _scrollView.frame.size.height);
+    for (int i = 0; i < _scrollView.subviews.count; i++) {
+        UIView *subview = [_scrollView.subviews objectAtIndex:i];
         [subview setFrame:[self calculateRevisionViewRectForIndex:i]];
     }
     [UIView commitAnimations];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * revisions.count,
-                                             self.scrollView.frame.size.height);
-    self.scrollingLocked = NO;
+    _scrollView.contentSize = CGSizeMake(_scrollView.frame.size.width * _revisions.count,
+                                         _scrollView.frame.size.height);
+    _scrollingLocked = NO;
 }
 
 #pragma mark -
 #pragma mark UIScrollViewDelegate Methods
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)sender {
-    if (self.scrollingLocked) {
+    if (_scrollingLocked) {
         return ;
     }
-    CGFloat pageWidth = self.scrollView.frame.size.width;
-    int page = floor((self.scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-    self.pageControl.currentPage = page;
+    CGFloat pageWidth = _scrollView.frame.size.width;
+    int page = floor((_scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    _pageControl.currentPage = page;
 }
 
 #pragma mark -
 #pragma mark Paging
 
 - (void)forcePage:(int)page animated:(BOOL)animated {
-    self.pageControl.currentPage = page;
+    _pageControl.currentPage = page;
     CGRect frame;
-    frame.origin.x = self.scrollView.frame.size.width * page;
+    frame.origin.x = _scrollView.frame.size.width * page;
     frame.origin.y = 0;
-    frame.size = self.scrollView.frame.size;
-    [self.scrollView scrollRectToVisible:frame animated:animated];
+    frame.size = _scrollView.frame.size;
+    [_scrollView scrollRectToVisible:frame animated:animated];
 }
 
 - (IBAction)scrollToCurrentPage {
-    [self forcePage:self.pageControl.currentPage animated:YES];
+    [self forcePage:_pageControl.currentPage animated:YES];
 }
 
 #pragma mark -
