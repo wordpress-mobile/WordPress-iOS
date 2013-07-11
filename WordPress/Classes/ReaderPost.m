@@ -302,7 +302,7 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 	
 	self.likeCount = [dict numberForKey:@"like_count"];
 	self.permaLink = [dict stringForKey:@"URL"];
-	self.postTitle = [[dict stringForKey:@"title"] stringByDecodingXMLCharacters];
+	self.postTitle = [[[dict stringForKey:@"title"] stringByDecodingXMLCharacters] trim];
 	
 	self.isLiked = [dict numberForKey:@"i_like"];
 	
@@ -350,7 +350,7 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 	self.sortDate = date;
 	self.likeCount = [dict numberForKey:@"post_like_count"];
 	self.permaLink = [dict stringForKey:@"post_permalink"];
-	self.postTitle = [[dict stringForKey:@"post_title"] stringByDecodingXMLCharacters];
+	self.postTitle = [[[dict stringForKey:@"post_title"] stringByDecodingXMLCharacters] trim];
 	
 	self.isLiked = [dict numberForKey:@"is_liked"];
 	
