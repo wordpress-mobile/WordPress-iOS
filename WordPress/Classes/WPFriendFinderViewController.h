@@ -7,6 +7,7 @@
 //
 
 #import "WPWebAppViewController.h"
+#import "FBRequest.h"
 
 @interface WPFriendFinderViewController : WPWebAppViewController <FBRequestDelegate>
 
