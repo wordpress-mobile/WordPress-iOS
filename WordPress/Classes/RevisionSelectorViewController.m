@@ -19,15 +19,12 @@ float const LeftMarginPercentage = 0.02f;
 
     // Subview references
     @property (nonatomic, strong) IBOutlet UILabel *revisionDate;
-    @property (nonatomic, strong) IBOutlet UILabel *revisionAuthor;
     @property (nonatomic, strong) IBOutlet UITextView *postContent;
 
     - (IBAction)scrollToCurrentPage;
 @end
 
 @implementation RevisionSelectorViewController
-//@synthesize revisions, conflictMode, scrollingLocked, scrollView, pageControl, originalPost;
-//@synthesize revisionDate, revisionAuthor, postContent;
 
 #pragma mark -
 #pragma mark Lifecycle Methods
@@ -116,7 +113,6 @@ float const LeftMarginPercentage = 0.02f;
     if (_conflictMode && index == 1) {
         _revisionDate.text = NSLocalizedString(@"Local Revision",
                                               @"Local revision label when a conflict is detected.");
-        _revisionAuthor.text = @"";
     } else {
         if (aPost.date_modified_gmt) {
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -124,10 +120,6 @@ float const LeftMarginPercentage = 0.02f;
             [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
             NSDate *localModifiedDate = [DateUtils GMTDateTolocalDate:aPost.date_modified_gmt];
             _revisionDate.text = [dateFormatter stringFromDate:localModifiedDate];
-        }
-        if (aPost.author) {
-            _revisionAuthor.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"by", "by [author]"),
-                                   aPost.author];
         }
     }
     _postContent.text = [NSString stringWithFormat:@"%@: %@\n%@",
