@@ -167,25 +167,20 @@
 		_textContentView.shouldDrawLinks = NO;
 		[self addSubview:_textContentView];
 		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
-																  DTDefaultFontFamily:@"Open Sans",
-														DTDefaultLineHeightMultiplier:@0.9,
-																	DTDefaultFontSize:@13,
-																   DTDefaultTextColor:[UIColor colorWithHexString:@"404040"],
-																   DTDefaultLinkColor:[UIColor colorWithHexString:@"278dbc"],
-														  DTDefaultLinkHighlightColor:[UIColor colorWithHexString:@"005684"],
-                                                              DTDefaultLinkDecoration:@NO,
-												   NSTextSizeMultiplierDocumentOption:@1.1
-										 }];
-			
-			[self updateAttributedString: [[NSAttributedString alloc] initWithHTMLData:[self.post.content dataUsingEncoding:NSUTF8StringEncoding]
-																			   options:dict
-																	documentAttributes:NULL]];
-
-			
-		});
-
+		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
+															  DTDefaultFontFamily:@"Open Sans",
+													DTDefaultLineHeightMultiplier:@0.9,
+																DTDefaultFontSize:@13,
+															   DTDefaultTextColor:[UIColor colorWithHexString:@"404040"],
+															   DTDefaultLinkColor:[UIColor colorWithHexString:@"278dbc"],
+													  DTDefaultLinkHighlightColor:[UIColor colorWithHexString:@"005684"],
+														  DTDefaultLinkDecoration:@NO,
+											   NSTextSizeMultiplierDocumentOption:@1.1
+									 }];
+		
+		[self updateAttributedString: [[NSAttributedString alloc] initWithHTMLData:[self.post.content dataUsingEncoding:NSUTF8StringEncoding]
+																		   options:dict
+																documentAttributes:NULL]];
     }
     return self;
 }

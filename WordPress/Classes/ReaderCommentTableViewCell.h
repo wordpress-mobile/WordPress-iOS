@@ -12,6 +12,8 @@
 
 @interface ReaderCommentTableViewCell : ReaderTableViewCell
 
++ (NSAttributedString *)convertHTMLToAttributedString:(NSString *)html withOptions:(NSDictionary *)options;
+
 + (CGFloat)heightForComment:(ReaderComment *)comment
 					  width:(CGFloat)width
 				 tableStyle:(UITableViewStyle)tableStyle

@@ -23,6 +23,7 @@
 @dynamic post;
 @dynamic childComments;
 @dynamic parentComment;
+@synthesize attributedContent;
 
 + (NSArray *)fetchCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];

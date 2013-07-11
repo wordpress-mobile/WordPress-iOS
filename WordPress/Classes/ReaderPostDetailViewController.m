@@ -398,6 +398,14 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	if ([_comments count] > 0) {
 		self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
 	}
+	
+	// Cache attributed strings.
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL), ^{
+		for (ReaderComment *comment in _comments) {
+			comment.attributedContent = [ReaderCommentTableViewCell convertHTMLToAttributedString:comment.content withOptions:nil];
+		}
+	   [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+	});
 }
 
 
@@ -796,8 +804,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 							 withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
 	
 	[self prepareComments];
-	[self.tableView reloadData];
-
 }
 
 
@@ -1056,7 +1062,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		[self hideCommentForm];
 		self.post.storedComment = nil;
 		[self prepareComments];
-		[self.tableView reloadData];
 	} else {
 		[self hideReblogForm];
 	}
