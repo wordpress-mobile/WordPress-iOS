@@ -6,6 +6,9 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
+#import <DTCoreText/DTCoreText.h>
+#import "DTCoreTextFontDescriptor.h"
+
 #import "WPTableViewControllerSubclass.h"
 #import "ReaderPostsViewController.h"
 #import "ReaderPostTableViewCell.h"
@@ -51,6 +54,14 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 @end
 
 @implementation ReaderPostsViewController
+
++ (void)initialize {
+	// DTCoreText will cache font descriptors on a background thread. However, because the font cache
+	// updated synchronously, the detail view controller ends up waiting for the fonts to load anyway
+	// (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready
+	// for the detail view, and avoid a perceived lag. 
+	[DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
+}
 
 #pragma mark - Life Cycle methods
 
