@@ -293,6 +293,16 @@
 	// position the meta view
 	height = [self.post isWPCom] ? MetaViewHeightWithButtons : MetaViewHeightSansButtons;
 	_metaView.frame = CGRectMake(0.0f, nextY, contentWidth, height);
+	
+	CGFloat w = ceilf(contentWidth / 2.0f);
+	CGRect frame = _likeButton.frame;
+	frame.size.width = w;
+	_likeButton.frame = frame;
+	
+	frame = _reblogButton.frame;
+	frame.origin.x = w + 1.0f;
+	frame.size.width = w - 1.0f;
+	_reblogButton.frame = frame;
 }
 
 
