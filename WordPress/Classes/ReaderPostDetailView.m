@@ -186,8 +186,8 @@
 		[self updateAttributedString: [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
 																		   options:dict
 																documentAttributes:NULL]];
+		[self bringSubviewToFront:_titleLabel];
     }
-	
     return self;
 }
 
