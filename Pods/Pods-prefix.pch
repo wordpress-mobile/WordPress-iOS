@@ -2,7 +2,7 @@
 #import <UIKit/UIKit.h>
 #endif
 
-#import "Pods-environment.h"
+#import "Pods-header.h"
 #ifdef __OBJC__
 #import <Availability.h>
 #if __IPHONE_OS_VERSION_MIN_REQUIRED
@@ -32,11 +32,4 @@
 
 
 
-<<<<<<< HEAD
 
-#ifdef __OBJC__
-#import <CoreText/CoreText.h>
-#endif
-#define ALLOW_IPHONE_SPECIAL_CASES 1
-=======
->>>>>>> reader

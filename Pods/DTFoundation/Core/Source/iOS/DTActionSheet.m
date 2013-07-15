@@ -90,7 +90,7 @@
 	return retIndex;
 }
 
-#pragma UIActionSheetDelegate (forwarded)
+#pragma mark - UIActionSheetDelegate (forwarded)
 
 - (void)actionSheetCancel:(UIActionSheet *)actionSheet
 {
@@ -143,7 +143,7 @@
 }
 
 
-#pragma mark Properties
+#pragma mark - Properties
 
 - (id <UIActionSheetDelegate>)delegate
 {
