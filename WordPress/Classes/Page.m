@@ -78,10 +78,14 @@
     self.author         = [postInfo objectForKey:@"wp_author_display_name"];
     self.postID         = [[postInfo objectForKey:@"page_id"] numericValue];
     self.content        = [postInfo objectForKey:@"description"];
-    self.date_created_gmt = [postInfo objectForKey:@"date_created_gmt"];
     self.date_modified_gmt = [postInfo objectForKey:@"date_modified_gmt"];
-    self.status         = [postInfo objectForKey:@"page_status"];
-    NSString *password  = [postInfo objectForKey:@"wp_password"];
+    self.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
+    NSString *status = [postInfo objectForKey:@"page_status"];
+    if ([status isEqualToString:@"future"]) {
+        status = @"publish";
+    }
+    self.status         = status;
+    NSString *password = [postInfo objectForKey:@"wp_password"];
     if ([password isEqualToString:@""]) {
         password = nil;
     }
@@ -158,7 +162,7 @@
 }
 
 - (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, [self.blog fetchPassword], nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, self.blog.password, nil];
     [self.blog.api callMethod:@"wp.getPage"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -185,7 +189,7 @@
         return;
     }
     
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, [self.blog fetchPassword], [self XMLRPCDictionary], nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, self.blog.password, [self XMLRPCDictionary], nil];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
     [self.blog.api callMethod:@"wp.editPage"
                    parameters:parameters

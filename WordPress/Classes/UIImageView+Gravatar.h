@@ -10,6 +10,7 @@
 
 @interface UIImageView (Gravatar)
 
+- (NSURL *)blavatarURLForHost:(NSString *)host;
 - (void)setImageWithGravatarEmail:(NSString *)emailAddress;
 - (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl;
 - (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl isWPcom:(BOOL)wpcom;

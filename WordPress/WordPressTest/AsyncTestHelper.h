@@ -26,8 +26,28 @@ extern const NSTimeInterval AsyncTestCaseDefaultTimeout;
     long lockStatus = 0;\
     while ((lockStatus = dispatch_semaphore_wait(ATHSemaphore, DISPATCH_TIME_NOW)) && [timeoutDate compare:[NSDate date]] == NSOrderedDescending)\
     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode\
-                             beforeDate:[NSDate dateWithTimeIntervalSinceNow:10]];\
+                             beforeDate:[NSDate dateWithTimeIntervalSinceNow:AsyncTestCaseDefaultTimeout]];\
     timedOut = (lockStatus != 0);\
-    dispatch_release(ATHSemaphore);\
     STAssertFalse(timedOut, @"Lock timed out");\
+} while (0)
+
+#define ATHNeverCalled(timeout) do {\
+    BOOL timedOut;\
+    NSDate *timeoutDate = [NSDate dateWithTimeIntervalSinceNow:timeout];\
+    long lockStatus = 0;\
+    while ((lockStatus = dispatch_semaphore_wait(ATHSemaphore, DISPATCH_TIME_NOW)) && [timeoutDate compare:[NSDate date]] == NSOrderedDescending)\
+    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode\
+                             beforeDate:[NSDate dateWithTimeIntervalSinceNow:timeout]];\
+    timedOut = (lockStatus != 0);\
+    STAssertTrue(timedOut, @"Lock timed out");\
+} while (0)
+
+#define ATHEnd() do {\
+    ATHWait(); \
+    dispatch_release(ATHSemaphore);\
+} while (0)
+
+#define ATHEndNeverCalled(timeout) do {\
+    ATHNeverCalled(timeout); \
+    dispatch_release(ATHSemaphore);\
 } while (0)

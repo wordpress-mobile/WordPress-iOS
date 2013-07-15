@@ -491,6 +491,7 @@
         SafariActivity *safariActivity = [[SafariActivity alloc] init];
         InstapaperActivity *instapaperActivity = [[InstapaperActivity alloc] init];
         PocketActivity *pocketActivity = [[PocketActivity alloc] init];
+        GooglePlusActivity *googlePlusActivity = [[GooglePlusActivity alloc] init];
 
         NSMutableArray *activityItems = [NSMutableArray array];
         if (title) {
@@ -498,7 +499,7 @@
         }
 
         [activityItems addObject:[NSURL URLWithString:permaLink]];
-        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:@[safariActivity, instapaperActivity, pocketActivity]];
+        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:@[safariActivity, instapaperActivity, pocketActivity, googlePlusActivity]];
         activityViewController.completionHandler = ^(NSString *activityType, BOOL completed) {
             if (!completed)
                 return;
@@ -698,8 +699,7 @@
 
 #pragma mark - MFMailComposeViewControllerDelegate
 
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
-{
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
 	[self dismissModalViewControllerAnimated:YES];
 }
 

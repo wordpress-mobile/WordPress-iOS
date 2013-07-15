@@ -17,6 +17,7 @@
 }
 
 - (void)setUp {
+    [[CoreDataTestHelper sharedHelper] registerDefaultContext];
     _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityWithName:@"Blog"];
     _blog.xmlrpc = @"http://test.blog/xmlrpc.php";
     _blog.url = @"http://test.blog/";
@@ -99,7 +100,7 @@
         STAssertEquals(error.code, BlogJetpackErrorCodeNoRecordForBlog, nil);
         ATHNotify();
     }];
-    ATHWait();
+    ATHEnd();
 
     ATHStart();
     [_blog validateJetpackUsername:@"test2" password:@"test2" success:^{
@@ -108,7 +109,7 @@
         STFail(@"User test2 should have access to test.blog");
         ATHNotify();
     }];
-    ATHWait();
+    ATHEnd();
 }
 
 @end

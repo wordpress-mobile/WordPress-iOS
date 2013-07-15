@@ -136,6 +136,11 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
     return [self rowHeightForTextWithSize:textSize];
 }
 
+- (void)hideCheckmark:(BOOL)hide
+{
+	_checkboxImage.hidden = hide;
+}
+
 #pragma mark - Private Methods
 
 + (CGFloat)rowHeightForTextWithSize:(CGSize)size

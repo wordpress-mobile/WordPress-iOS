@@ -8,13 +8,13 @@
 #import "EditSiteViewController.h"
 #import "NSURL+IDN.h"
 #import "WordPressComApi.h"
-#import "SFHFKeychainUtils.h"
 #import "UIBarButtonItem+Styled.h"
 #import "AFHTTPClient.h"
 #import "HelpViewController.h"
 #import "WPWebViewController.h"
 #import "JetpackSettingsViewController.h"
 #import "ReachabilityUtils.h"
+#import "WPAccount.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 
@@ -68,7 +68,7 @@
         
         self.url = blog.url;
         self.username = blog.username;
-		self.password = [blog fetchPassword];
+		self.password = blog.password;
 
         self.startingUser = self.username;
         self.startingPwd = self.password;
@@ -543,36 +543,9 @@
 	[savingIndicator setHidden:YES];
     blog.url = self.url;
     blog.xmlrpc = xmlrpc;
-    blog.username = self.username;
     blog.geolocationEnabled = self.geolocationEnabled;
-	NSError *error = nil;
-	//check if the blog is a WP.COM blog
-	if(blog.isWPcom) {
-		[SFHFKeychainUtils storeUsername:blog.username
-                             andPassword:self.password
-                          forServiceName:@"WordPress.com"
-                          updateExisting:YES
-                                   error:&error];
+    blog.account.password = self.password;
 
-        // If this is the account associated with the api, update the singleton's credentials also.
-        WordPressComApi *wpComApi = [WordPressComApi sharedApi];
-        if ([wpComApi.username isEqualToString:blog.username]) {
-            [wpComApi updateCredentailsFromStore];
-        }
-	} else {
-		[SFHFKeychainUtils storeUsername:blog.username
-							 andPassword:self.password
-						  forServiceName:blog.hostURL
-						  updateExisting:YES
-								   error:&error];        
-	}
-    
-    if (error) {
-		[FileLogger log:@"%@ %@ Error saving password for %@: %@", self, NSStringFromSelector(_cmd), blog.url, error];
-    } else {
-		[FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), blog.url];
-	}
-    
     [self cancel:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 

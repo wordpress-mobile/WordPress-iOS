@@ -42,6 +42,7 @@
 #import "NotificationSettingsViewController.h"
 #import "Blog+Jetpack.h"
 #import "GeneralWalkthroughViewController.h"
+#import "WPAccount.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,
@@ -629,7 +630,7 @@ typedef enum {
 #pragma mark - 
 #pragma mark WPComLoginViewControllerDelegate
 
-- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithUsername:(NSString *)username {
+- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithAccount:(WPAccount *)account {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
     [self.navigationController popToRootViewControllerAnimated:YES];
     [self checkCloseButton];
@@ -649,6 +650,7 @@ typedef enum {
         [WPMobileStats trackEventForWPCom:StatsEventSettingsSignedOutOfDotCom];
         
         // Sign out
+		[WPAccount removeDefaultWordPressComAccount];
         [[WordPressComApi sharedApi] signOut];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
         [self checkCloseButton];

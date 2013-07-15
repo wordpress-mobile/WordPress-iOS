@@ -45,6 +45,7 @@
 				<string>wordpress</string>
 				<string>fb249643311490</string>
 				<string>pocketapp12013</string>
+				<string>org.wordpress</string>
 			</array>
 		</dict>
 	</array>
@@ -58,15 +59,16 @@
 	<string>MainWindow</string>
 	<key>NSMainNibFile~ipad</key>
 	<string>MainWindow-iPad</string>
-	<key>UIPrerenderedIcon</key>
-	<true/>
-	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleBlackOpaque</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>OpenSans-Light.ttf</string>
 		<string>OpenSans-Regular.ttf</string>
+		<string>OpenSans-Bold.ttf</string>
 	</array>
+	<key>UIPrerenderedIcon</key>
+	<true/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleBlackOpaque</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

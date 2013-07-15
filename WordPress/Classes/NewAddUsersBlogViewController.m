@@ -14,11 +14,11 @@
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "AddUsersBlogCell.h"
-#import "SFHFKeychainUtils.h"
 #import "NSString+XMLExtensions.h"
 #import "WordPressComApi.h"
 #import "Blog.h"
 #import "WPNUXUtility.h"
+#import "WPAccount.h"
 
 @interface NewAddUsersBlogViewController () <
     UITableViewDelegate,
@@ -266,7 +266,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     NSString *username = self.username;
     NSString *password = self.password;
     if (self.isWPCom) {
-        xmlrpc = [NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"];
+        xmlrpc = [NSURL URLWithString:kWPcomXMLRPCUrl];
     } else {
         xmlrpc = [NSURL URLWithString:self.xmlRPCUrl];
     }
@@ -366,10 +366,16 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAddBlogsClickedAddSelected properties:properties];
 
     _addSelectedButton.enabled = NO;
-    
+
+    WPAccount *account;
+    if (_isWPCom) {
+        account = [WPAccount createOrUpdateWordPressComAccountWithUsername:self.username andPassword:self.password];
+    } else {
+        account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:self.xmlRPCUrl username:self.username andPassword:self.password];
+    }
     for (NSDictionary *blog in _usersBlogs) {
 		if([_selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
-			[self createBlog:blog];
+			[self createBlog:blog withAccount:account];
 		}
 	}
     
@@ -384,13 +390,10 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     }
 }
 
-- (void)createBlog:(NSDictionary *)blogInfo
+- (void)createBlog:(NSDictionary *)blogInfo withAccount:(WPAccount *)account
 {
-    NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogInfo];
-    [newBlog setObject:self.username forKey:@"username"];
-    [newBlog setObject:self.password forKey:@"password"];
-    WPLog(@"creating blog: %@", newBlog);
-    Blog *blog = [Blog createFromDictionary:newBlog withContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext];
+    WPLog(@"creating blog: %@", blogInfo);
+    Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo];
 	blog.geolocationEnabled = true;
 	[blog dataSave];
     [blog syncBlogWithSuccess:^{
