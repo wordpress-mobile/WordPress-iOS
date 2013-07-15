@@ -17,3 +17,4 @@
 - (NSString *)statsPropertyForViewOpening;
 
 @end
+

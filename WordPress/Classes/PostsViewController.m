@@ -2,11 +2,24 @@
 #import "WPTableViewControllerSubclass.h"
 #import "PostsViewController.h"
 #import "EditPostViewController.h"
+#import "RevisionSelectorViewController.h"
 #import "PostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 
 #define TAG_OFFSET 1010
+
+@implementation NSFetchRequest (Comparator)
+    - (NSComparisonResult)compareRemoteStatus:(NSFetchRequest *) obj1 {
+        /*
+        int remoteStatusOrder[] = {AbstractPostRemoteStatusPushing, AbstractPostRemoteStatusFailed,
+            AbstractPostRemoteStatusConflicted, AbstractPostRemoteStatusLocal,
+            AbstractPostRemoteStatusSync };
+         */
+        //NSComparisonResult a;
+        return 0;
+    }
+@end
 
 @implementation PostsViewController
 
@@ -98,7 +111,7 @@
 			[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 			[self.tableView scrollToRowAtIndexPath:self.selectedIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
 		} else {
-			//There are no content yet, push an the WP logo on the right.  
+			//There are no content yet, push an the WP logo on the right.
 			WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate]; 
 			[delegate showContentDetailViewController:nil];
 		}
@@ -267,10 +280,42 @@
     [self.panelNavigationController presentModalViewController:navController animated:YES];
 }
 
+- (UIViewController *)getRevisionSelector:(AbstractPost *) apost {
+    RevisionSelectorViewController *revisionSelector = [[RevisionSelectorViewController alloc]
+                                                        initWithNibName:@"RevisionSelectorViewController"
+                                                        bundle:nil];
+    [revisionSelector setOriginalPost:apost];
+    [revisionSelector setIsWaitingForRevisions:YES];
+    [revisionSelector setConflictMode:YES];
+    // Fetch server revision
+    AbstractPost *serverRevision = [NSEntityDescription insertNewObjectForEntityForName:[[apost entity] name] inManagedObjectContext:[apost managedObjectContext]];
+    [serverRevision cloneFrom:apost];
+    [serverRevision setValue:apost forKey:@"original"];
+    [serverRevision setValue:nil forKey:@"revision"];
+    [serverRevision getPostWithSuccess:^{
+        NSArray *revisions = [[NSArray alloc] initWithObjects:serverRevision, apost, nil];
+        [revisionSelector setRevisions:revisions];
+        [revisionSelector setIsWaitingForRevisions:NO];
+    } failure:^(NSError *error) {
+        WPFLog(@"post failed: %@", [error localizedDescription]);
+    }];
+    return revisionSelector;
+}
+
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[apost createRevision]];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    UIViewController *editPostViewController;
+    switch (apost.remoteStatus) {
+        case AbstractPostRemoteStatusConflicted: {
+            editPostViewController = [self getRevisionSelector:apost];
+            break;
+            }
+        default:
+            editPostViewController = [[EditPostViewController alloc] initWithPost:[apost createRevision]];
+            break;
+    }
+    UINavigationController *navController = [[UINavigationController alloc]
+                                             initWithRootViewController:editPostViewController];
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentModalViewController:navController animated:YES];
 }
@@ -291,8 +336,22 @@
         NSLog(@"results: %@", self.resultsController.fetchedObjects);
         post = nil;
     }
-    self.postReaderViewController = [[PostViewController alloc] initWithPost:post];
-    [self.panelNavigationController pushViewController:self.postReaderViewController fromViewController:self animated:YES];
+
+    switch (post.remoteStatus) {
+        case AbstractPostRemoteStatusConflicted: {
+            UIViewController *editPostViewController;
+            editPostViewController = [self getRevisionSelector:post];
+            UINavigationController *navController = [[UINavigationController alloc]
+                                                     initWithRootViewController:editPostViewController];
+            navController.modalPresentationStyle = UIModalPresentationPageSheet;
+            [self.panelNavigationController presentModalViewController:navController animated:YES];
+            break;
+        }
+        default:
+            self.postReaderViewController = [[PostViewController alloc] initWithPost:post];
+            [self.panelNavigationController pushViewController:self.postReaderViewController fromViewController:self animated:YES];
+            break;
+    }
 }
 
 - (void)setSelectedIndexPath:(NSIndexPath *)indexPath {
