@@ -5,23 +5,24 @@
 //  Created by Chris Boyd on 7/19/10.
 //
 
+#import "WPcomLoginViewController.h"
+
 #import <WordPressApi/WordPressApi.h>
 
-#import "WPcomLoginViewController.h"
 #import "UITableViewTextFieldCell.h"
-#import "SFHFKeychainUtils.h"
+#import "UITableViewActivityCell.h"
+#import "WPAccount.h"
 #import "WordPressComApi.h"
-#import "WPWebViewController.h"
 #import "ReachabilityUtils.h"
 
 @interface WPcomLoginViewController () <UITextFieldDelegate> {
     UITableViewTextFieldCell *loginCell, *passwordCell;
 }
+@property (nonatomic, assign) BOOL isCancellable;
+@property (nonatomic, assign) BOOL dismissWhenFinished;
 @property (nonatomic, strong) NSString *footerText, *buttonText;
 @property (nonatomic, assign) BOOL isSigningIn;
 @property (nonatomic, strong) WordPressComApi *wpComApi;
-@property (nonatomic, strong) void (^successBlock)(NSString *username, NSString *password);
-@property (nonatomic, strong) void (^cancelBlock)();
 - (void)signIn:(id)sender;
 @end
 
@@ -30,13 +31,11 @@
 
 @synthesize footerText, buttonText, isSigningIn, isCancellable, predefinedUsername;
 @synthesize delegate;
-@synthesize wpComApi = _wpComApi, blog = _blog;
+@synthesize wpComApi = _wpComApi;
 
-+ (void)presentLoginScreenWithSuccess:(void (^)(NSString *username, NSString *password))success cancel:(void (^)())cancel {
++ (void)presentLoginScreen {
     UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
     WPcomLoginViewController *loginViewController = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    loginViewController.successBlock = success;
-    loginViewController.cancelBlock = cancel;
     loginViewController.isCancellable = YES;
     loginViewController.dismissWhenFinished = YES;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
@@ -157,7 +156,7 @@
             if (loginCell == nil) {
                 loginCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault 
                                                             reuseIdentifier:@"TextCell"];
-                loginCell.textField.text = self.wpComApi.username;
+                loginCell.textField.text = [[WPAccount defaultWordPressComAccount] username];
             }
             loginCell.textLabel.text = NSLocalizedString(@"Username", @"");
             loginCell.textField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
@@ -175,7 +174,6 @@
             if (passwordCell == nil) {
                 passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault 
                                                                reuseIdentifier:@"TextCell"];
-                passwordCell.textField.text = self.wpComApi.password;
             }
             passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
             passwordCell.textField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
@@ -324,12 +322,11 @@
         [self.wpComApi signInWithUsername:username
                                  password:password
                                   success:^{
+                                      WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username andPassword:password];
+                                      [WPAccount setDefaultWordPressComAccount:account];
                                       [loginController.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
                                       if (loginController.delegate) {
-                                          [loginController.delegate loginController:loginController didAuthenticateWithUsername:loginController.wpComApi.username];
-                                      }
-                                      if (loginController.successBlock) {
-                                          loginController.successBlock(username, password);
+                                          [loginController.delegate loginController:loginController didAuthenticateWithAccount:account];
                                       }
                                       if (self.dismissWhenFinished) {
                                           [self dismissViewControllerAnimated:YES completion:nil];
@@ -349,9 +346,6 @@
 - (IBAction)cancel:(id)sender {
     if (self.delegate) {
         [self.delegate loginControllerDidDismiss:self];
-    }
-    if (self.cancelBlock) {
-        self.cancelBlock();
     }
     if (self.dismissWhenFinished) {
         [self dismissViewControllerAnimated:YES completion:nil];

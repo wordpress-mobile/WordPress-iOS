@@ -63,6 +63,7 @@
 	<array>
 		<string>OpenSans-Light.ttf</string>
 		<string>OpenSans-Regular.ttf</string>
+		<string>OpenSans-Bold.ttf</string>
 	</array>
 	<key>UIPrerenderedIcon</key>
 	<true/>

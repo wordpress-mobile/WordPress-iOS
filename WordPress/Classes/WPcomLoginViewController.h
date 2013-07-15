@@ -6,28 +6,23 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AddUsersBlogsViewController.h"
-#import "UITableViewActivityCell.h"
-#import "WordPressAppDelegate.h"
-#import "Blog.h"
 
 @protocol WPcomLoginViewControllerDelegate;
+
+@class WPAccount;
 
 @interface WPcomLoginViewController : UITableViewController
 
 @property (weak) id<WPcomLoginViewControllerDelegate> delegate;
-@property (nonatomic, assign) BOOL isCancellable;
-@property (nonatomic, assign) BOOL dismissWhenFinished;
+
+// Pre-filled username. Used for signup.
 @property (nonatomic, strong) NSString *predefinedUsername;
-@property (nonatomic, strong) Blog *blog;
 
-- (IBAction)cancel:(id)sender;
-
-+ (void)presentLoginScreenWithSuccess:(void (^)(NSString *username, NSString *password))success cancel:(void (^)())cancel;
++ (void)presentLoginScreen;
 
 @end
 
 @protocol WPcomLoginViewControllerDelegate <NSObject>
-- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithUsername:(NSString *)username;
+- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithAccount:(WPAccount *)account;
 - (void)loginControllerDidDismiss:(WPcomLoginViewController *)loginController;
 @end

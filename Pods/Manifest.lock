@@ -1,9 +1,22 @@
 PODS:
   - AFNetworking (1.2.0)
   - CTidy (0.3.0)
+<<<<<<< HEAD
   - DTCoreText (1.0.2)
   - google-plus-ios-sdk (1.2.1)
+=======
+  - DTCoreText (1.5.3):
+    - DTFoundation/Core (~> 1.4.3)
+    - DTFoundation/DTHMLParser (~> 1.4.3)
+    - DTFoundation/UIKit (~> 1.4.3)
+  - DTFoundation/Core (1.4.3)
+  - DTFoundation/DTHMLParser (1.4.3):
+    - DTFoundation/Core
+  - DTFoundation/UIKit (1.4.3):
+    - DTFoundation/Core
+>>>>>>> reader
   - JSONKit (1.5pre)
+  - MGImageUtilities (0.0.1)
   - Mixpanel (2.0.0)
   - NSObject-SafeExpectations (0.0.1)
   - NSURL+IDN (0.1)
@@ -21,9 +34,14 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (= 1.2)
   - CTidy (from `git://github.com/wordpress-mobile/CTidy.git`)
+<<<<<<< HEAD
   - DTCoreText (~> 1.0.0)
   - google-plus-ios-sdk (~> 1.2)
+=======
+  - DTCoreText (~> 1.5)
+>>>>>>> reader
   - JSONKit (~> 1.4)
+  - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`)
   - Mixpanel
   - NSObject-SafeExpectations (from `https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec`)
   - NSURL+IDN (from `https://raw.github.com/koke/NSURL-IDN/master/Podfile`)
@@ -39,6 +57,8 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   CTidy:
     :git: git://github.com/wordpress-mobile/CTidy.git
+  MGImageUtilities:
+    :git: git://github.com/wordpress-mobile/MGImageUtilities.git
   NSObject-SafeExpectations:
     :podspec: https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec
   NSURL+IDN:
@@ -49,9 +69,15 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
   CTidy: 6a35875a96dd441822e620732c1113be19769067
+<<<<<<< HEAD
   DTCoreText: 4f2b9d62554c62dd7cd412c9f50ece1e70a548b9
   google-plus-ios-sdk: fd312bf0eed88cfc708fe2cdcb9c1084598af99e
+=======
+  DTCoreText: 5fd652092630ef9254c538d870c115ee548bfe18
+  DTFoundation: a434724c451be0fa44c1afd183349192cf643830
+>>>>>>> reader
   JSONKit: 409734ab3407fce90ef7eaa95d7168f38d9a6601
+  MGImageUtilities: ab3580f2161b10f8a41331baea87aaafbd688950
   Mixpanel: d456c27f7520e22784a15d0bcd9d5c287080b0cd
   NSObject-SafeExpectations: 241ab1289cbc33a00307cd025d22883646f2e1f0
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
