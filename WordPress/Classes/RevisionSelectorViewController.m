@@ -143,6 +143,7 @@ float const LeftMarginPercentage = 0.02f;
 - (void)useSelectedRevision:(id)sender {
     AbstractPost *selectedRevision = [_revisions objectAtIndex:_pageControl.currentPage];
     NSString *postTitle = selectedRevision.postTitle;
+    [_originalPost deleteRevision];
     [_originalPost cloneFrom:selectedRevision];
     _originalPost.ignoreConflictCheck = YES;
     [_originalPost uploadWithSuccess:^{

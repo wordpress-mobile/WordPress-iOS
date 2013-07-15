@@ -9,18 +9,6 @@
 
 #define TAG_OFFSET 1010
 
-@implementation NSFetchRequest (Comparator)
-    - (NSComparisonResult)compareRemoteStatus:(NSFetchRequest *) obj1 {
-        /*
-        int remoteStatusOrder[] = {AbstractPostRemoteStatusPushing, AbstractPostRemoteStatusFailed,
-            AbstractPostRemoteStatusConflicted, AbstractPostRemoteStatusLocal,
-            AbstractPostRemoteStatusSync };
-         */
-        //NSComparisonResult a;
-        return 0;
-    }
-@end
-
 @implementation PostsViewController
 
 @synthesize postReaderViewController;

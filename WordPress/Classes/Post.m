@@ -318,7 +318,7 @@
 - (NSDictionary *)XMLRPCDictionary {
     NSMutableDictionary *postParams = [NSMutableDictionary dictionaryWithDictionary:[super XMLRPCDictionary]];
     
-    [postParams setValueIfNotNil:self.postFormat forKey:@"wp_post_format"];
+    [postParams setValueIfNotNil:self.postFormat forKey:@"post_format"];
     [postParams setValueIfNotNil:self.tags forKey:@"mt_keywords"];
 
     if ([self valueForKey:@"categories"] != nil) {
@@ -474,7 +474,7 @@
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           if ([self isDeleted] || self.managedObjectContext == nil)
                               return;
-                          // code 409 means a newer revision exists on server
+                          // code 409 means "if_not_modified_since" is set and a newer revision exists on server
                           if (error.code == 409) {
                               self.remoteStatus = AbstractPostRemoteStatusConflicted;
                           } else {
