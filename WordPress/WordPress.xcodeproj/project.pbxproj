@@ -281,6 +281,10 @@
 		45F285DB1149BD020014D36C /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F285D81149BD020014D36C /* Icon-72.png */; };
 		45F285DD1149BD020014D36C /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F285DA1149BD020014D36C /* Icon.png */; };
 		45F45B3611614BA50022D394 /* CPopoverManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F45B3511614BA50022D394 /* CPopoverManager.m */; };
+		501A19AE178D56630045AB4F /* RevisionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 501A19AD178D56630045AB4F /* RevisionView.xib */; };
+		501A19B5178D663E0045AB4F /* RevisionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 501A19B4178D663D0045AB4F /* RevisionView.m */; };
+		50CC2672178C372C00CD19A3 /* RevisionSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CC2670178C372C00CD19A3 /* RevisionSelectorViewController.m */; };
+		50CC2675178C3BD400CD19A3 /* RevisionSelectorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50CC2674178C3BD400CD19A3 /* RevisionSelectorViewController.xib */; };
 		58CA2D1B1738B90F000D1612 /* sidebar_icon_add.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CA2D191738B90F000D1612 /* sidebar_icon_add.png */; };
 		58CA2D1C1738B90F000D1612 /* sidebar_icon_add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CA2D1A1738B90F000D1612 /* sidebar_icon_add@2x.png */; };
 		5D1392A7157D4D92007D51B8 /* StatsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */; };
@@ -1095,6 +1099,12 @@
 		45F285DA1149BD020014D36C /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		45F45B3411614BA50022D394 /* CPopoverManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPopoverManager.h; sourceTree = "<group>"; };
 		45F45B3511614BA50022D394 /* CPopoverManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPopoverManager.m; sourceTree = "<group>"; };
+		501A19AD178D56630045AB4F /* RevisionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RevisionView.xib; path = Resources/RevisionView.xib; sourceTree = "<group>"; };
+		501A19B3178D663C0045AB4F /* RevisionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevisionView.h; sourceTree = "<group>"; };
+		501A19B4178D663D0045AB4F /* RevisionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevisionView.m; sourceTree = "<group>"; };
+		50CC266F178C372B00CD19A3 /* RevisionSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevisionSelectorViewController.h; sourceTree = "<group>"; };
+		50CC2670178C372C00CD19A3 /* RevisionSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevisionSelectorViewController.m; sourceTree = "<group>"; };
+		50CC2674178C3BD400CD19A3 /* RevisionSelectorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RevisionSelectorViewController.xib; path = Resources/RevisionSelectorViewController.xib; sourceTree = "<group>"; };
 		58CA2D191738B90F000D1612 /* sidebar_icon_add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sidebar_icon_add.png; sourceTree = "<group>"; };
 		58CA2D1A1738B90F000D1612 /* sidebar_icon_add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sidebar_icon_add@2x.png"; sourceTree = "<group>"; };
 		5D1392A5157D4D92007D51B8 /* StatsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsWebViewController.h; sourceTree = "<group>"; };
@@ -2252,6 +2262,26 @@
 			name = "Resources-iPad";
 			sourceTree = "<group>";
 		};
+		501A19A7178D49B10045AB4F /* Revisions */ = {
+			isa = PBXGroup;
+			children = (
+				501A19AD178D56630045AB4F /* RevisionView.xib */,
+				50CC2674178C3BD400CD19A3 /* RevisionSelectorViewController.xib */,
+			);
+			name = Revisions;
+			sourceTree = "<group>";
+		};
+		501A19AF178D566F0045AB4F /* Revisions */ = {
+			isa = PBXGroup;
+			children = (
+				501A19B3178D663C0045AB4F /* RevisionView.h */,
+				501A19B4178D663D0045AB4F /* RevisionView.m */,
+				50CC266F178C372B00CD19A3 /* RevisionSelectorViewController.h */,
+				50CC2670178C372C00CD19A3 /* RevisionSelectorViewController.m */,
+			);
+			name = Revisions;
+			sourceTree = "<group>";
+		};
 		5D27716D15A33A6200F4DCAA /* editing */ = {
 			isa = PBXGroup;
 			children = (
@@ -2649,6 +2679,7 @@
 		AC34397A0E11435A00E5D79B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				501A19AF178D566F0045AB4F /* Revisions */,
 				850D22B21729EE8600EC6A16 /* NUX */,
 				CC1D800D1656D8B2002A542F /* Notifications */,
 				E15D46C7156A506A00227392 /* Panels */,
@@ -3275,6 +3306,7 @@
 		E19472D8134E3E4A00879F63 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				501A19A7178D49B10045AB4F /* Revisions */,
 				85C720A317307B3600460645 /* NUX */,
 				37195B7F166A5DDC005F2292 /* Notifications */,
 				373C5181156D0504007C2977 /* Panels */,
@@ -3999,6 +4031,8 @@
 				85AD6B17173E2DA4002CB896 /* ui-texture@2x.png in Resources */,
 				85AD6B1A173E3595002CB896 /* ui-line-dark.png in Resources */,
 				85AD6B1B173E3595002CB896 /* ui-line-dark@2x.png in Resources */,
+				50CC2675178C3BD400CD19A3 /* RevisionSelectorViewController.xib in Resources */,
+				501A19AE178D56630045AB4F /* RevisionView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4246,6 +4280,8 @@
 				85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */,
 				85A1B6751742E7EF00BA5E35 /* WPMobileStats.m in Sources */,
 				E183BD7417621D87000B0822 /* WPCookie.m in Sources */,
+				50CC2672178C372C00CD19A3 /* RevisionSelectorViewController.m in Sources */,
+				501A19B5178D663E0045AB4F /* RevisionView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

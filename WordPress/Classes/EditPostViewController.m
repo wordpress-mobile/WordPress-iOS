@@ -5,6 +5,7 @@
 #import "NSString+XMLExtensions.h"
 #import "WPPopoverBackgroundView.h"
 #import "WPAddCategoryViewController.h"
+#import "RevisionSelectorViewController.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -130,7 +131,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     self.postSettingsViewController.view.frame = editView.frame;
     self.postMediaViewController.view.frame = editView.frame;
     self.postPreviewViewController.view.frame = editView.frame;
-    
+
     self.title = [self editorTitle];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -636,13 +637,42 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
     [self.apost.original applyRevision];
     [self.apost.original deleteRevision];
-	if (upload) {
+    if (upload) {
 		NSString *postTitle = self.apost.postTitle;
-        [self.apost.original uploadWithSuccess:^{
-            WPFLog(@"post uploaded: %@", postTitle);
-        } failure:^(NSError *error) {
-            WPFLog(@"post failed: %@", [error localizedDescription]);
-        }];
+        AbstractPost *originalPost = self.apost.original;
+        if ([self.apost hasRemote]) {
+            [originalPost checkConflictingRevisionWithConflict:^(AbstractPost *localPost,
+                                                                 AbstractPost *conflictingPost) {
+                RevisionSelectorViewController *revisionSelector = [[RevisionSelectorViewController alloc]
+                                                                    initWithNibName:@"RevisionSelectorViewController"
+                                                                    bundle:nil];
+                NSArray *revisions = [[NSArray alloc] initWithObjects:conflictingPost, localPost, nil];
+                [revisionSelector setRevisions:revisions];
+                [revisionSelector setConflictMode:YES];
+                [revisionSelector setOriginalPost:originalPost];
+                UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow]
+                                                        rootViewController];
+                UINavigationController *nav = [[UINavigationController alloc]
+                                               initWithRootViewController:revisionSelector];
+                nav.modalPresentationStyle = UIModalPresentationPageSheet;
+                nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+                [rootViewController presentModalViewController:nav animated:YES];
+            } noConflict:^{
+                [originalPost uploadWithSuccess:^{
+                    WPFLog(@"post uploaded: %@", postTitle);
+                } failure:^(NSError *error) {
+                    WPFLog(@"post failed: %@", [error localizedDescription]);
+                }];
+            } failure:^(NSError *error){
+                WPFLog(@"post check conflict failed: %@", [error localizedDescription]);
+            }];
+        } else { // No remote post, so don't need to check for a conflict
+            [originalPost uploadWithSuccess:^{
+                WPFLog(@"post uploaded: %@", postTitle);
+            } failure:^(NSError *error) {
+                WPFLog(@"post failed: %@", [error localizedDescription]);
+            }];
+        }
 	} else {
 		[self.apost.original save];
 	}
@@ -1433,7 +1463,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         suffix = [NSString stringWithFormat:@"</%@>\n", tag];
     } else {
         prefix = [NSString stringWithFormat:@"<%@>", tag];
-        suffix = [NSString stringWithFormat:@"</%@>", tag];        
+        suffix = [NSString stringWithFormat:@"</%@>", tag];
     }
     textView.scrollEnabled = NO;
     NSString *replacement = [NSString stringWithFormat:@"%@%@%@",prefix,selection,suffix];

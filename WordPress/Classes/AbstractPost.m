@@ -17,8 +17,8 @@
 @end
 
 @implementation AbstractPost
-@dynamic author, content, date_created_gmt, postID, postTitle, status, password, remoteStatusNumber, permaLink, 
-		mt_excerpt, mt_text_more, wp_slug, post_thumbnail;
+@dynamic author, content, date_created_gmt, date_modified_gmt, postID, postTitle, status, password,
+         remoteStatusNumber, permaLink, mt_excerpt, mt_text_more, wp_slug, post_thumbnail;
 @dynamic blog, media;
 @dynamic comments;
 
@@ -111,6 +111,49 @@
 
 #pragma mark -
 #pragma mark Revision management
+
+- (void)checkPostNotModifiedWithSuccess:(void (^)())success
+                                failure:(void (^)(NSError *error))failure {
+    WPFLogMethod();
+    NSMutableDictionary *xmlrpcDictionary = [NSMutableDictionary dictionary];
+    [xmlrpcDictionary setValue:self.date_modified_gmt forKey:@"if_not_modified_since"];
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, [self.blog fetchPassword],
+                           self.postID, xmlrpcDictionary, nil];
+    [self.blog.api callMethod:@"wp.editPost"
+                   parameters:parameters
+                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                          if (success) success();
+                      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                          if (failure) {
+                              failure(error);
+                          }
+                      }];
+}
+
+- (void)checkConflictingRevisionWithConflict:(void (^)(AbstractPost *current, AbstractPost *previous))conflict
+                                  noConflict:(void (^)())noConflict failure:(void (^)(NSError *))failure {
+    AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:[[self entity] name]
+                                               inManagedObjectContext:[self managedObjectContext]];
+    [post cloneFrom:self];
+    [post setValue:self forKey:@"original"];
+    [post setValue:nil forKey:@"revision"];
+    [post checkPostNotModifiedWithSuccess:^{
+        noConflict();
+    } failure:^(NSError *error) {
+        // code 409 means a newer revision exists on server
+        if (error.code == 409) {
+            // Fetch the newer revision and fire callback
+            [post getPostWithSuccess:^{
+                conflict(self, post);
+            } failure:^(NSError *error) {
+                failure(error);
+            }];
+        } else {
+            failure(error);
+        }
+    }];
+}
+
 - (void)cloneFrom:(AbstractPost *)source {
     for (NSString *key in [[[source entity] attributesByName] allKeys]) {
         if ([key isEqualToString:@"permalink"]) {
@@ -288,7 +331,6 @@
 		self.date_created_gmt = [DateUtils localDateToGMTDate:localDate];
 }
 
-
 - (void)findComments {
     NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
                        [NSPredicate predicateWithFormat:@"(postID == %@) AND (post == NULL)", self.postID]];
@@ -301,7 +343,9 @@
 }
 
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    
+}
+
+- (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
 }
 
 - (NSDictionary *)XMLRPCDictionary {
