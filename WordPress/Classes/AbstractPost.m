@@ -279,7 +279,6 @@
 		return [DateUtils GMTDateTolocalDate:self.date_created_gmt];
 	else 
 		return nil;
-
 }
 
 - (void)setDateCreated:(NSDate *)localDate {

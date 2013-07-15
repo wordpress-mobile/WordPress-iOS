@@ -11,7 +11,7 @@
 
 @implementation RevisionView
 
-- (void)initStyle {
+- (void)awakeFromNib {
     // Main view
     self.layer.cornerRadius = 10;
     self.layer.masksToBounds = YES;
