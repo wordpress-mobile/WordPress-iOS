@@ -22,3 +22,5 @@ WordPress/WordPress.xcodeproj/*.perspectivev3
 WordPress/WordPress.xcodeproj/project.xcworkspace
 WordPress/WordPress.xcodeproj/xcuserdata
 /build
+
+.DS_Store
