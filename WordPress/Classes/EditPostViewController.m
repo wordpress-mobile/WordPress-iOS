@@ -621,32 +621,15 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 	[self savePost:YES];
 }
 
-- (void)presentRevisionSelectorWithRevisions:(NSArray *) revisions originalPost:(AbstractPost *)originalPost {
-    RevisionSelectorViewController *revisionSelector = [[RevisionSelectorViewController alloc]
-                                                        initWithNibName:@"RevisionSelectorViewController"
-                                                        bundle:nil];
-    // NSArray *revisions = [[NSArray alloc] initWithObjects:conflictingPost, localPost, nil];
-    [revisionSelector setRevisions:revisions];
-    [revisionSelector setConflictMode:YES];
-    [revisionSelector setOriginalPost:originalPost];
-    UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow]
-                                            rootViewController];
-    UINavigationController *nav = [[UINavigationController alloc]
-                                   initWithRootViewController:revisionSelector];
-    nav.modalPresentationStyle = UIModalPresentationPageSheet;
-    nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [rootViewController presentModalViewController:nav animated:YES];
-}
-
 - (void)savePost:(BOOL)upload{
     [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     
     [self logSavePostStats];
     
     [self autosaveContent];
-    
+
     [self.view endEditing:YES];
-    
+
     [self.apost.original applyRevision];
     [self.apost.original deleteRevision];
 	if (upload) {
@@ -654,25 +637,11 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         [self.apost.original uploadWithSuccess:^{
             WPFLog(@"post uploaded: %@", postTitle);
         } failure:^(NSError *error) {
-            // code 409 means a newer revision exists on server
-            if (error.code == 409) {
-                AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:[[self.apost entity] name]
-                                                           inManagedObjectContext:[self.apost managedObjectContext]];
-                [post cloneFrom:self.apost];
-                [post setValue:self.apost forKey:@"original"];
-                [post setValue:nil forKey:@"revision"];
-                // Fetch the newer revision and fire callback
-                [post getPostWithSuccess:^{
-                    NSArray *revisions = [[NSArray alloc] initWithObjects:post, self.apost, nil];
-                    [self presentRevisionSelectorWithRevisions:revisions originalPost:self.apost];
-                } failure:^(NSError *error) {
-                    WPFLog(@"post failed: %@", [error localizedDescription]);
-                }];
-            } else {
-                WPFLog(@"post failed: %@", [error localizedDescription]);
-            }
+            WPFLog(@"post failed: %@", [error localizedDescription]);
         }];
-    }
+    } else {
+		[self.apost.original save];
+	}
 
     [self dismissEditView];
 }

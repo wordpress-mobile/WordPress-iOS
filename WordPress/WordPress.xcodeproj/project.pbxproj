@@ -1102,6 +1102,7 @@
 		501A19AD178D56630045AB4F /* RevisionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RevisionView.xib; path = Resources/RevisionView.xib; sourceTree = "<group>"; };
 		501A19B3178D663C0045AB4F /* RevisionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevisionView.h; sourceTree = "<group>"; };
 		501A19B4178D663D0045AB4F /* RevisionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevisionView.m; sourceTree = "<group>"; };
+		50A36F4C1794350300F3985E /* WordPress 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WordPress 12.xcdatamodel"; sourceTree = "<group>"; };
 		50CC266F178C372B00CD19A3 /* RevisionSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevisionSelectorViewController.h; sourceTree = "<group>"; };
 		50CC2670178C372C00CD19A3 /* RevisionSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevisionSelectorViewController.m; sourceTree = "<group>"; };
 		50CC2674178C3BD400CD19A3 /* RevisionSelectorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RevisionSelectorViewController.xib; path = Resources/RevisionSelectorViewController.xib; sourceTree = "<group>"; };
@@ -4734,6 +4735,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				50A36F4C1794350300F3985E /* WordPress 12.xcdatamodel */,
 				E17B98E7171FFB450073E30D /* WordPress 11.xcdatamodel */,
 				FDFB011916B1EA1C00F589A8 /* WordPress 10.xcdatamodel */,
 				E1874BFE161C5DBC0058BDC4 /* WordPress 7.xcdatamodel */,
@@ -4746,7 +4748,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = E17B98E7171FFB450073E30D /* WordPress 11.xcdatamodel */;
+			currentVersion = 50A36F4C1794350300F3985E /* WordPress 12.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
