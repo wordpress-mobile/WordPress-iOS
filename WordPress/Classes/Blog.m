@@ -628,7 +628,7 @@
             return;
 
         self.options = [NSDictionary dictionaryWithDictionary:(NSDictionary *)responseObject];
-        NSString *minimumVersion = @"3.1";
+        NSString *minimumVersion = @"3.4";
         float version = [[self version] floatValue];
         if (version < [minimumVersion floatValue]) {
             if (self.lastUpdateWarning == nil || [self.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {

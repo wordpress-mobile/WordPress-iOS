@@ -11,10 +11,11 @@
 #import "DateUtils.h"
 
 typedef enum {
-    AbstractPostRemoteStatusPushing,    // Uploading post
+    AbstractPostRemoteStatusPushing,     // Uploading post
     AbstractPostRemoteStatusFailed,      // Upload failed
     AbstractPostRemoteStatusLocal,       // Only local version
-    AbstractPostRemoteStatusSync,       // Post uploaded
+    AbstractPostRemoteStatusSync,        // Post uploaded
+    AbstractPostRemoteStatusConflicted,  // Upload conflicts with a newer server revision
 } AbstractPostRemoteStatus;
 
 @interface AbstractPost : NSManagedObject {
@@ -48,6 +49,7 @@ typedef enum {
 
 @property (readonly) BOOL hasChanges;
 @property (nonatomic, assign) BOOL isFeaturedImageChanged;
+@property (nonatomic) BOOL ignoreConflictCheck;
 
 - (NSArray *)availableStatuses;
 // Does the post exist on the blog?

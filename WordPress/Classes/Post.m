@@ -452,15 +452,17 @@
         return;
     }
     
-    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, [self.blog fetchPassword], [self XMLRPCDictionary], nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, [self.blog fetchPassword], self.postID, [self XMLRPCDictionary], nil];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
-    NSMutableDictionary *xmlrpcDictionary = (NSMutableDictionary*) [parameters objectAtIndex:3];
-    [xmlrpcDictionary setValue:self.date_modified_gmt forKey:@"if_not_modified_since"];
+    NSMutableDictionary *xmlrpcDictionary = (NSMutableDictionary*) [parameters objectAtIndex:4];
+    if (self.ignoreConflictCheck == NO) {
+        [xmlrpcDictionary setValue:self.date_modified_gmt forKey:@"if_not_modified_since"];
+    }
     if (self.isFeaturedImageChanged == NO) {
         [xmlrpcDictionary removeObjectForKey:@"wp_post_thumbnail"];
     }
     
-    [self.blog.api callMethod:@"metaWeblog.editPost"
+    [self.blog.api callMethod:@"wp.editPost"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
                           if ([self isDeleted] || self.managedObjectContext == nil)
@@ -473,8 +475,12 @@
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           if ([self isDeleted] || self.managedObjectContext == nil)
                               return;
-
-                          self.remoteStatus = AbstractPostRemoteStatusFailed;
+                          // code 409 means a newer revision exists on server
+                          if (error.code == 409) {
+                              self.remoteStatus = AbstractPostRemoteStatusConflicted;
+                          } else {
+                              self.remoteStatus = AbstractPostRemoteStatusFailed;
+                          }
                           if (failure) failure(error);
                           [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
                       }];

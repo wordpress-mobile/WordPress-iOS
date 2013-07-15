@@ -22,7 +22,7 @@
 @dynamic blog, media;
 @dynamic comments;
 
-@synthesize isFeaturedImageChanged;
+@synthesize isFeaturedImageChanged, ignoreConflictCheck;
 
 + (NSString *)titleForStatus:(NSString *)status {
     if ([status isEqualToString:@"draft"]) {
@@ -264,6 +264,9 @@
         case AbstractPostRemoteStatusSync:
             return NSLocalizedString(@"Posts", @"");
             break;
+        case AbstractPostRemoteStatusConflicted:
+            return NSLocalizedString(@"Conflicted", @"");
+            break;
         default:
             return NSLocalizedString(@"Local", @"");
             break;
@@ -308,27 +311,27 @@
 - (NSDictionary *)XMLRPCDictionary {
     NSMutableDictionary *postParams = [NSMutableDictionary dictionary];
     
-    [postParams setValueIfNotNil:self.postTitle forKey:@"title"];
-    [postParams setValueIfNotNil:self.content forKey:@"description"];    
-    [postParams setValueIfNotNil:self.date_created_gmt forKey:@"date_created_gmt"];
-    [postParams setValueIfNotNil:self.password forKey:@"wp_password"];
-    [postParams setValueIfNotNil:self.permaLink forKey:@"permalink"];
-    [postParams setValueIfNotNil:self.mt_excerpt forKey:@"mt_excerpt"];
-    [postParams setValueIfNotNil:self.wp_slug forKey:@"wp_slug"];
+    [postParams setValueIfNotNil:self.postTitle forKey:@"post_title"];
+    [postParams setValueIfNotNil:self.content forKey:@"post_content"];
+    [postParams setValueIfNotNil:self.date_created_gmt forKey:@"post_date_gmt"];
+    [postParams setValueIfNotNil:self.password forKey:@"post_password"];
+    [postParams setValueIfNotNil:self.permaLink forKey:@"link"];
+    [postParams setValueIfNotNil:self.mt_excerpt forKey:@"post_excerpt"];
+    [postParams setValueIfNotNil:self.wp_slug forKey:@"post_name"];
     // To remove a featured image, you have to send an empty string to the API
     if (self.post_thumbnail == nil) {
         // Including an empty string for wp_post_thumbnail generates
         // an "Invalid attachment ID" error in the call to wp.newPage
         if ([self.postID longLongValue] > 0) {
-            [postParams setValue:@"" forKey:@"wp_post_thumbnail"];
+            [postParams setValue:@"" forKey:@"post_thumbnail"];
         }
 
     } else {
-        [postParams setValue:self.post_thumbnail forKey:@"wp_post_thumbnail"];
+        [postParams setValue:self.post_thumbnail forKey:@"post_thumbnail"];
 	}
     
 	if (self.mt_text_more != nil && [self.mt_text_more length] > 0)
-        [postParams setObject:self.mt_text_more forKey:@"mt_text_more"];
+        [postParams setObject:self.mt_text_more forKey:@"post_more"];
 	
     return postParams;
 }
