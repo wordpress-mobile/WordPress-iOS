@@ -2,4 +2,4 @@
 #import <UIKit/UIKit.h>
 #endif
 
-#import "Pods-WordPressTest-environment.h"
+#import "Pods-WordPressTest-header.h"

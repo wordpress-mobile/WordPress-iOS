@@ -523,6 +523,8 @@
                 event = StatsEventWebviewSentArticleToInstapaper;
             } else if ([activityType isEqualToString:NSStringFromClass([PocketActivity class])]) {
                 event = StatsEventWebviewSentArticleToPocket;
+            } else if ([activityType isEqualToString:NSStringFromClass([GooglePlusActivity class])]) {
+                event = StatsEventWebviewSentArticleToGooglePlus;
             }
             
             if (event != nil) {
@@ -699,8 +701,7 @@
 
 #pragma mark - MFMailComposeViewControllerDelegate
 
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
-{
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
 	[self dismissModalViewControllerAnimated:YES];
 }
 

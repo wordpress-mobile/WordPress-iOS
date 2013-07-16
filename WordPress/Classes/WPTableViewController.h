@@ -9,9 +9,11 @@
 #import "Blog.h"
 #import "SettingsViewControllerDelegate.h"
 
-@interface WPTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate, SettingsViewControllerDelegate>
+//@interface WPTableViewController : UITableViewController <NSFetchedResultsControllerDelegate, UIAlertViewDelegate, SettingsViewControllerDelegate>
+@interface WPTableViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIAlertViewDelegate, SettingsViewControllerDelegate>
 
 @property (nonatomic, strong) Blog *blog;
+@property (nonatomic, strong) UITableView *tableView;
 
 - (void)promptForPassword;
 

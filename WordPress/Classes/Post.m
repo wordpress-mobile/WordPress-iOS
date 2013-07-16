@@ -295,7 +295,7 @@
 
 - (void)getFeaturedImageURLWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPFLogMethod();
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, [self.blog fetchPassword], self.post_thumbnail, nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, self.blog.password, self.post_thumbnail, nil];
     [self.blog.api callMethod:@"wp.getMediaItem"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -422,7 +422,7 @@
 
 - (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPFLogMethod();
-    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, [self.blog fetchPassword], nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, self.blog.password, nil];
     [self.blog.api callMethod:@"metaWeblog.getPost"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -450,7 +450,7 @@
         return;
     }
 
-    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, [self.blog fetchPassword], [self XMLRPCDictionary], nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, self.blog.password, [self XMLRPCDictionary], nil];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
     
     if( self.isFeaturedImageChanged == NO ) {
@@ -482,7 +482,7 @@
     WPFLogMethod();
     BOOL remote = [self hasRemote];
     if (remote) {
-        NSArray *parameters = [NSArray arrayWithObjects:@"unused", self.postID, self.blog.username, [self.blog fetchPassword], nil];
+        NSArray *parameters = [NSArray arrayWithObjects:@"unused", self.postID, self.blog.username, self.blog.password, nil];
         [self.blog.api callMethod:@"metaWeblog.deletePost"
                        parameters:parameters
                           success:^(AFHTTPRequestOperation *operation, id responseObject) {

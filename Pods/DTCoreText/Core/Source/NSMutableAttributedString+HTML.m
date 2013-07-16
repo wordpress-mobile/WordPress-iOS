@@ -1,6 +1,6 @@
 //
 //  NSMutableAttributedString+HTML.m
-//  CoreTextExtensions
+//  DTCoreText
 //
 //  Created by Oliver Drobnik on 4/14/11.
 //  Copyright 2011 Drobnik.com. All rights reserved.
@@ -13,58 +13,94 @@
 @implementation NSMutableAttributedString (HTML)
 
 
-// apends a plain string extending the attributes at this position
+// appends a plain string extending the attributes at this position
 - (void)appendString:(NSString *)string
 {
-	NSInteger length = [self length];
+	NSParameterAssert(string);
 	
-	NSDictionary *previousAttributes = nil;
+	NSUInteger length = [self length];
+	NSAttributedString *appendString = nil;
 	
 	if (length)
 	{
-		// get attributes from last character
-		previousAttributes = [self attributesAtIndex:length-1 effectiveRange:NULL];
+		// get attributes at end of self
+		NSMutableDictionary *attributes = [[self attributesAtIndex:length-1 effectiveRange:NULL] mutableCopy];
+		
+		// we need to remove the image placeholder (if any) to prevent duplication
+		[attributes removeObjectForKey:NSAttachmentAttributeName];
+		[attributes removeObjectForKey:(id)kCTRunDelegateAttributeName];
+		
+		// we also remove field attribute, because appending plain strings should never extend an field
+		[attributes removeObjectForKey:DTFieldAttribute];
+		
+		// create a temp attributed string from the appended part
+		appendString = [[NSAttributedString alloc] initWithString:string attributes:attributes];
 	}
-	
-	// need to remove image placeholder to prevent duplication
-	if ([previousAttributes objectForKey:NSAttachmentAttributeName])
+	else
 	{
-		NSMutableDictionary *tmpDict = [previousAttributes mutableCopy];
-		
-		[tmpDict removeObjectForKey:NSAttachmentAttributeName];
-		[tmpDict removeObjectForKey:(id)kCTRunDelegateAttributeName];
-		
-		 previousAttributes = tmpDict;
+		// no attributes to extend
+		appendString = [[NSAttributedString alloc] initWithString:string];
 	}
-	
-	NSAttributedString *tmpString = [[NSAttributedString alloc] initWithString:string attributes:previousAttributes];
-	[self appendAttributedString:tmpString];
+
+	[self appendAttributedString:appendString];
 }
 
 - (void)appendString:(NSString *)string withParagraphStyle:(DTCoreTextParagraphStyle *)paragraphStyle fontDescriptor:(DTCoreTextFontDescriptor *)fontDescriptor
 {
-	NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
-
-	if (paragraphStyle)
-	{
-		CTParagraphStyleRef newParagraphStyle = [paragraphStyle createCTParagraphStyle];
-		[attributes setObject:CFBridgingRelease(newParagraphStyle) forKey:(id)kCTParagraphStyleAttributeName];
-	}
+	NSUInteger selfLengthBefore = [self length];
 	
-	if (fontDescriptor)
-	{
-		CTFontRef newFont = [fontDescriptor newMatchingFont];
-		[attributes setObject:CFBridgingRelease(newFont) forKey:(id)kCTFontAttributeName];
-	}
+	[self.mutableString appendString:string];
 	
-	NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:string attributes:attributes];
-	[self appendAttributedString:attributedString];
-}
+	NSRange appendedStringRange = NSMakeRange(selfLengthBefore, [string length]);
 
-// appends a string without any attributes
-- (void)appendNakedString:(NSString *)string
-{
-	[self appendString:string withParagraphStyle:nil fontDescriptor:nil];
+	if (paragraphStyle || fontDescriptor)
+	{
+		NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
+		
+		if (paragraphStyle)
+		{
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES
+			if (___useiOS6Attributes)
+			{
+				NSParagraphStyle *style = [paragraphStyle NSParagraphStyle];
+				[attributes setObject:style forKey:NSParagraphStyleAttributeName];
+			}
+			else
+#endif
+			{
+				CTParagraphStyleRef newParagraphStyle = [paragraphStyle createCTParagraphStyle];
+				[attributes setObject:CFBridgingRelease(newParagraphStyle) forKey:(id)kCTParagraphStyleAttributeName];
+			}
+		}
+		
+		if (fontDescriptor)
+		{
+			CTFontRef newFont = [fontDescriptor newMatchingFont];
+			
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES && TARGET_OS_IPHONE
+			if (___useiOS6Attributes)
+			{
+				// convert to UIFont
+				UIFont *uiFont = [UIFont fontWithCTFont:newFont];
+				[attributes setObject:uiFont forKey:NSFontAttributeName];
+			
+				CFRelease(newFont);
+			}
+			else
+#endif
+			{
+				[attributes setObject:CFBridgingRelease(newFont) forKey:(id)kCTFontAttributeName];
+			}
+		}
+		
+		// Replace attributes
+		[self setAttributes:attributes range:appendedStringRange];
+	}
+	else
+	{
+		// Remove attributes
+		[self setAttributes:[NSDictionary dictionary] range:appendedStringRange];
+	}
 }
 
 @end

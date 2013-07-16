@@ -2,7 +2,6 @@
 #import "WPSelectionTableViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WPPopoverBackgroundView.h"
-#import "SFHFKeychainUtils.h"
 #import "NSString+Helpers.h"
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
@@ -238,7 +237,7 @@
                 
                 Blog *blog = self.apost.blog;
                 NSString *username = blog.username;
-                NSString *password = [blog fetchPassword];
+                NSString *password = blog.password;
                 
                 NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
                 NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=",

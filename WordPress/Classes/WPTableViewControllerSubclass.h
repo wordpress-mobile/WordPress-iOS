@@ -25,6 +25,11 @@
 @property (nonatomic) BOOL infiniteScrollEnabled;
 
 /**
+ The noResultsView is made available to subclasses so they can customize its content.
+ */
+@property (nonatomic, readonly, strong) UIView *noResultsView;
+
+/**
  Sync content with the server
  
  Subclasses can call this method if they need to invoke a refresh, but it's not meant to be implemented by subclasses.
@@ -34,9 +39,30 @@
  */
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction;
 
+/**
+ Simulate a pull to refresh.
+ 
+ Subclasses can call this method if they need to simulate a pull to refresh, but it is not meant to be implemented by subclasses.
+ */
+- (void)simulatePullToRefresh;
+
 /// ----------------------------------------------
 /// @name Methods that subclasses should implement
 /// ----------------------------------------------
+
+/**
+ The NSManagedObjectContext to use. 
+ 
+ Optional. Only needed if there subclass needs a custom context. 
+ */
+- (NSManagedObjectContext *)managedObjectContext;
+
+/**
+ The name of the cache to use for the NSFetchResultsController. 
+ 
+ Optiona. Only needed if the subclass is using multiple caches.
+ */
+- (NSString *)resultsControllerCacheName;
 
 /**
  Core Data entity name used by NSFetchedResultsController
@@ -134,5 +160,29 @@
  Subclasses should call this method if one of the swipe actions needs to dismiss the secondary menu
  */
 - (void)removeSwipeView:(BOOL)animated;
+
+
+/**
+ Create a custom view to display to the user when there are no results to show.
+ 
+ Optional. If a subclass does not override this method a default view is constructed.
+ @return The view to use for the no results view.
+ */
+- (UIView *)createNoResultsView;
+
+
+/**
+ Returns the row animation style the tableview should use.
+ 
+ Optional. If the sub class does not implment this method the default will be used.
+ @return The row animation style that the tableview should use.
+ */
+- (UITableViewRowAnimation)tableViewRowAnimation;
+
+
+/**
+ Completely reset the resultsController. Useful if the fetchRequest needs to be recreated with a new predicate.
+ */
+- (void)resetResultsController;
 
 @end
