@@ -47,6 +47,7 @@ extern NSString *const StatsEventWebviewCopiedArticleDetails;
 extern NSString *const StatsEventWebviewOpenedArticleInSafari;
 extern NSString *const StatsEventWebviewSentArticleToPocket;
 extern NSString *const StatsEventWebviewSentArticleToInstapaper;
+extern NSString *const StatsEventWebviewSentArticleToGooglePlus;
 
 // Notifications
 extern NSString *const StatsPropertyNotificationsOpened;
