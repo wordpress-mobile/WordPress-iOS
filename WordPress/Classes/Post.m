@@ -328,9 +328,15 @@
         }
         [termsNames setObject:categoryNames forKey:@"category"];
     }
-    if ([self.tags isEmpty] == NO) {
-        NSArray *tagsArray;
-        tagsArray = [self.tags componentsSeparatedByString:@","];
+    NSArray *rawTagsArray = [self.tags componentsSeparatedByString:@","];
+    NSMutableArray *tagsArray = [[NSMutableArray alloc] initWithCapacity:[rawTagsArray count]];
+    // filter empty strings
+    if (rawTagsArray && [rawTagsArray count] > 0) {
+        for (NSString *tag in rawTagsArray) {
+            if ([tag isEmpty] == NO) {
+                [tagsArray addObject:tag];
+            }
+        }
         [termsNames setObject:tagsArray forKey:@"post_tag"];
     };
     [postParams setObject:termsNames forKey:@"terms_names"];
@@ -391,7 +397,7 @@
     NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:xmlrpcDictionary];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
 
-    NSMutableURLRequest *request = [self.blog.api requestWithMethod:@"metaWeblog.newPost"
+    NSMutableURLRequest *request = [self.blog.api requestWithMethod:@"wp.newPost"
                                                   parameters:parameters];
     if (self.specialType != nil) {
         [request addValue:self.specialType forHTTPHeaderField:@"WP-Quick-Post"];
