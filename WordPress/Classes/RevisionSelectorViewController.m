@@ -156,6 +156,10 @@ float const LeftMarginPercentage = 0.02f;
 }
 
 - (void)cancel:(id)sender {
+    for (__strong id revision in _revisions) {
+        [revision deleteRevision];
+        revision = nil;
+    }
     [self dismissModalViewControllerAnimated:YES];
 }
 
