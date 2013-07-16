@@ -523,6 +523,8 @@
                 event = StatsEventWebviewSentArticleToInstapaper;
             } else if ([activityType isEqualToString:NSStringFromClass([PocketActivity class])]) {
                 event = StatsEventWebviewSentArticleToPocket;
+            } else if ([activityType isEqualToString:NSStringFromClass([GooglePlusActivity class])]) {
+                event = StatsEventWebviewSentArticleToGooglePlus;
             }
             
             if (event != nil) {
