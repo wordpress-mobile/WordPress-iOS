@@ -474,8 +474,9 @@
                           if ([self isDeleted] || self.managedObjectContext == nil)
                               return;
 
-                          self.remoteStatus = AbstractPostRemoteStatusSync;
-                          [self getPostWithSuccess:nil failure:nil];
+                          [self getPostWithSuccess:^{
+                              self.remoteStatus = AbstractPostRemoteStatusSync;
+                          } failure:nil];
                           if (success) success();
                           [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
