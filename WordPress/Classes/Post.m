@@ -317,18 +317,24 @@
 
 - (NSDictionary *)XMLRPCDictionary {
     NSMutableDictionary *postParams = [NSMutableDictionary dictionaryWithDictionary:[super XMLRPCDictionary]];
-    
-    [postParams setValueIfNotNil:self.postFormat forKey:@"post_format"];
-    [postParams setValueIfNotNil:self.tags forKey:@"mt_keywords"];
 
+    [postParams setValueIfNotNil:self.postFormat forKey:@"post_format"];
+    NSMutableDictionary *termsNames = [NSMutableDictionary dictionaryWithCapacity:2];
     if ([self valueForKey:@"categories"] != nil) {
         NSMutableSet *categories = [self mutableSetValueForKey:@"categories"];
         NSMutableArray *categoryNames = [NSMutableArray arrayWithCapacity:[categories count]];
         for (Category *cat in categories) {
             [categoryNames addObject:cat.categoryName];
         }
-        [postParams setObject:categoryNames forKey:@"categories"];
+        [termsNames setObject:categoryNames forKey:@"category"];
     }
+    if ([self.tags isEmpty] == NO) {
+        NSArray *tagsArray;
+        tagsArray = [self.tags componentsSeparatedByString:@","];
+        [termsNames setObject:tagsArray forKey:@"post_tag"];
+    };
+    [postParams setObject:termsNames forKey:@"terms_names"];
+
     Coordinate *c = [self valueForKey:@"geolocation"];
     // Warning
     // XMLRPCEncoder sends floats with an integer type (i4), so WordPress ignores the decimal part
@@ -451,7 +457,8 @@
         }
         return;
     }    
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, self.blog.password, self.postID, [self XMLRPCDictionary], nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, self.blog.password,
+                           self.postID, [self XMLRPCDictionary], nil];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
     NSMutableDictionary *xmlrpcDictionary = (NSMutableDictionary*) [parameters objectAtIndex:4];
     if (self.ignoreConflictCheck == NO) {
