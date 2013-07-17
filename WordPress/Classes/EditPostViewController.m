@@ -558,7 +558,9 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     if (selContext == kSelectionsCategoriesContext) {
         NSLog(@"selected categories: %@", selectedObjects);
         NSLog(@"post: %@", self.post);
-        self.post.categories = [NSMutableSet setWithArray:selectedObjects];
+        NSMutableSet *categories = [self.post mutableSetValueForKey:@"categories"];
+        [categories removeAllObjects];
+        [categories addObjectsFromArray:selectedObjects];
         [categoriesButton setTitle:[NSString decodeXMLCharactersIn:[self.post categoriesText]] forState:UIControlStateNormal];
     }
 
