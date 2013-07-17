@@ -50,6 +50,7 @@ NSString *const StatsEventWebviewCopiedArticleDetails = @"Copied Article Details
 NSString *const StatsEventWebviewOpenedArticleInSafari = @"Opened Article in Safari";
 NSString *const StatsEventWebviewSentArticleToPocket = @"Sent Article to Pocket";
 NSString *const StatsEventWebviewSentArticleToInstapaper = @"Sent Article to Instapaper";
+NSString *const StatsEventWebviewSentArticleToGooglePlus = @"Sent Article to Google Plus";
 
 // Notifications
 NSString *const StatsPropertyNotificationsOpened = @"notifications_opened";
