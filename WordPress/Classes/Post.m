@@ -101,6 +101,7 @@
 
 - (void )updateFromDictionary:(NSDictionary *)postInfo {
     self.postTitle      = [postInfo objectForKey:@"title"];
+    self.author      = [postInfo objectForKey:@"wp_author_display_name"];
 	//keep attention: getPosts and getPost returning IDs in different types
 	if ([[postInfo objectForKey:@"postid"] isKindOfClass:[NSString class]]) {
 	  self.postID         = [[postInfo objectForKey:@"postid"] numericValue];
@@ -114,6 +115,7 @@
     } else {
         self.dateCreated = [postInfo objectForKey:@"dateCreated"];
     }
+    self.date_modified_gmt = [postInfo objectForKey:@"date_modified_gmt"];
     self.status         = [postInfo objectForKey:@"post_status"];
     NSString *password = [postInfo objectForKey:@"wp_password"];
     if ([password isEqualToString:@""]) {
@@ -315,18 +317,30 @@
 
 - (NSDictionary *)XMLRPCDictionary {
     NSMutableDictionary *postParams = [NSMutableDictionary dictionaryWithDictionary:[super XMLRPCDictionary]];
-    
-    [postParams setValueIfNotNil:self.postFormat forKey:@"wp_post_format"];
-    [postParams setValueIfNotNil:self.tags forKey:@"mt_keywords"];
 
+    [postParams setValueIfNotNil:self.postFormat forKey:@"post_format"];
+    NSMutableDictionary *termsNames = [NSMutableDictionary dictionaryWithCapacity:2];
     if ([self valueForKey:@"categories"] != nil) {
         NSMutableSet *categories = [self mutableSetValueForKey:@"categories"];
         NSMutableArray *categoryNames = [NSMutableArray arrayWithCapacity:[categories count]];
         for (Category *cat in categories) {
             [categoryNames addObject:cat.categoryName];
         }
-        [postParams setObject:categoryNames forKey:@"categories"];
+        [termsNames setObject:categoryNames forKey:@"category"];
     }
+    NSArray *rawTagsArray = [self.tags componentsSeparatedByString:@","];
+    NSMutableArray *tagsArray = [[NSMutableArray alloc] initWithCapacity:[rawTagsArray count]];
+    // filter empty strings
+    if (rawTagsArray && [rawTagsArray count] > 0) {
+        for (NSString *tag in rawTagsArray) {
+            if ([tag isEmpty] == NO) {
+                [tagsArray addObject:tag];
+            }
+        }
+        [termsNames setObject:tagsArray forKey:@"post_tag"];
+    };
+    [postParams setObject:termsNames forKey:@"terms_names"];
+
     Coordinate *c = [self valueForKey:@"geolocation"];
     // Warning
     // XMLRPCEncoder sends floats with an integer type (i4), so WordPress ignores the decimal part
@@ -383,7 +397,7 @@
     NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:xmlrpcDictionary];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
 
-    NSMutableURLRequest *request = [self.blog.api requestWithMethod:@"metaWeblog.newPost"
+    NSMutableURLRequest *request = [self.blog.api requestWithMethod:@"wp.newPost"
                                                   parameters:parameters];
     if (self.specialType != nil) {
         [request addValue:self.specialType forHTTPHeaderField:@"WP-Quick-Post"];
@@ -448,31 +462,38 @@
             failure(error);
         }
         return;
-    }
-
-    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, self.blog.password, [self XMLRPCDictionary], nil];
+    }    
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, self.blog.password,
+                           self.postID, [self XMLRPCDictionary], nil];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
-    
-    if( self.isFeaturedImageChanged == NO ) {
-        NSMutableDictionary *xmlrpcDictionary = (NSMutableDictionary*) [parameters objectAtIndex:3] ;
+    NSMutableDictionary *xmlrpcDictionary = (NSMutableDictionary*) [parameters objectAtIndex:4];
+    if (self.ignoreConflictCheck == NO) {
+        [xmlrpcDictionary setValue:self.date_modified_gmt forKey:@"if_not_modified_since"];
+    }
+    if (self.isFeaturedImageChanged == NO) {
         [xmlrpcDictionary removeObjectForKey:@"wp_post_thumbnail"];
     }
     
-    [self.blog.api callMethod:@"metaWeblog.editPost"
+    [self.blog.api callMethod:@"wp.editPost"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
                           if ([self isDeleted] || self.managedObjectContext == nil)
                               return;
 
-                          self.remoteStatus = AbstractPostRemoteStatusSync;
-                          [self getPostWithSuccess:nil failure:nil];
+                          [self getPostWithSuccess:^{
+                              self.remoteStatus = AbstractPostRemoteStatusSync;
+                          } failure:nil];
                           if (success) success();
                           [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           if ([self isDeleted] || self.managedObjectContext == nil)
                               return;
-
-                          self.remoteStatus = AbstractPostRemoteStatusFailed;
+                          // code 409 means "if_not_modified_since" is set and a newer revision exists on server
+                          if (error.code == 409) {
+                              self.remoteStatus = AbstractPostRemoteStatusConflicted;
+                          } else {
+                              self.remoteStatus = AbstractPostRemoteStatusFailed;
+                          }
                           if (failure) failure(error);
                           [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadFailed" object:self];
                       }];

@@ -12,8 +12,9 @@
 
 typedef enum {
     AbstractPostRemoteStatusPushing,    // Uploading post
-    AbstractPostRemoteStatusFailed,      // Upload failed
-    AbstractPostRemoteStatusLocal,       // Only local version
+    AbstractPostRemoteStatusFailed,     // Upload failed
+    AbstractPostRemoteStatusConflicted, // Upload conflicts with a newer server revision
+    AbstractPostRemoteStatusLocal,      // Only local version
     AbstractPostRemoteStatusSync,       // Post uploaded
 } AbstractPostRemoteStatus;
 
@@ -25,6 +26,7 @@ typedef enum {
 @property (nonatomic, strong) NSNumber * postID;
 @property (nonatomic, strong) NSString * author;
 @property (nonatomic, strong) NSDate * date_created_gmt;
+@property (nonatomic, strong) NSDate * date_modified_gmt;
 @property (nonatomic, strong) NSString * postTitle;
 @property (nonatomic, strong) NSString * content;
 @property (nonatomic, strong) NSString * status;
@@ -40,6 +42,7 @@ typedef enum {
 
 @property (readonly) BOOL hasChanges;
 @property (nonatomic, assign) BOOL isFeaturedImageChanged;
+@property (nonatomic, assign) BOOL ignoreConflictCheck;
 
 - (NSArray *)availableStatuses;
 // Does the post exist on the blog?
@@ -63,5 +66,6 @@ typedef enum {
 #pragma mark     Data Management
 - (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end

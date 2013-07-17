@@ -23,14 +23,14 @@
 
 - (void)awakeFromFetch {
     [super awakeFromFetch];
-    
+
     if (self.remoteStatus == AbstractPostRemoteStatusPushing) {
         // If we've just been fetched and our status is AbstractPostRemoteStatusPushing then something
         // when wrong saving -- the app crashed for instance. So change our remote status to failed.
         // Do this after a delay since property changes and saves are ignored during awakeFromFetch. See docs.
         [self performSelector:@selector(markRemoteStatusFailed) withObject:nil afterDelay:0.1];
     }
-    
+
 }
 
 - (void)markRemoteStatusFailed {
@@ -72,7 +72,7 @@
         NSLog(@"!!! Already have revision");
         return self.revision;
     }
-	
+
     AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:[[self entity] name] inManagedObjectContext:[self managedObjectContext]];
     [post cloneFrom:self];
     [post setValue:self forKey:@"original"];
@@ -121,7 +121,7 @@
 - (BOOL)hasChanges {
     if (![self isRevision])
         return NO;
-    
+
     //Do not move the Featured Image check below in the code.
     if ((self.post_thumbnail != self.original.post_thumbnail)
         && (![self.post_thumbnail  isEqual:self.original.post_thumbnail])){
@@ -129,12 +129,12 @@
         return YES;
     } else
         self.isFeaturedImageChanged = NO;
-	
-    
+
+
     //first let's check if there's no post title or content (in case a cheeky user deleted them both)
     if ((self.postTitle == nil || [self.postTitle isEqualToString:@""]) && (self.content == nil || [self.content isEqualToString:@""]))
         return NO;
-	
+
     // We need the extra check since [nil isEqual:nil] returns NO
     if ((self.postTitle != self.original.postTitle)
         && (![self.postTitle isEqual:self.original.postTitle]))
@@ -142,41 +142,33 @@
     if ((self.content != self.original.content)
         && (![self.content isEqual:self.original.content]))
         return YES;
-	
+
     if ((self.status != self.original.status)
         && (![self.status isEqual:self.original.status]))
         return YES;
-	
+
     if ((self.password != self.original.password)
         && (![self.password isEqual:self.original.password]))
         return YES;
-	
+
     if ((self.dateCreated != self.original.dateCreated)
         && (![self.dateCreated isEqual:self.original.dateCreated]))
         return YES;
-	
+
 	if ((self.permaLink != self.original.permaLink)
         && (![self.permaLink  isEqual:self.original.permaLink]))
         return YES;
-	
+
     if (self.hasRemote == NO) {
         return YES;
     }
-    
+
     // Relationships are not going to be nil, just empty sets,
     // so we can avoid the extra check
     if (![self.media isEqual:self.original.media])
         return YES;
-	
-    return NO;
-}
 
-- (void)findComments {
-    NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
-                       [NSPredicate predicateWithFormat:@"(postID == %@) AND (post == NULL)", self.postID]];
-    if (comments && [comments count] > 0) {
-        [self.comments unionSet:comments];
-    }
+    return NO;
 }
 
 - (void)autosave {

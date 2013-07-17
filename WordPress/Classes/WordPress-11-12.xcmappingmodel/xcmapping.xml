@@ -5,7 +5,7 @@
     <databaseInfo>
         <version>134481920</version>
         <UUID>79F99919-4BFD-432A-8987-B7E091460649</UUID>
-        <nextObjectID>225</nextObjectID>
+        <nextObjectID>227</nextObjectID>
         <metadata>
             <plist version="1.0">
                 <dict>
@@ -163,7 +163,7 @@
     </object>
     <object type="XDDEVATTRIBUTEMAPPING" id="z127">
         <attribute name="name" type="string">date_created_gmt</attribute>
-        <relationship name="entitymapping" type="1/1" destination="XDDEVENTITYMAPPING" idrefs="z195"></relationship>
+        <relationship name="entitymapping" type="1/1" destination="XDDEVENTITYMAPPING"></relationship>
     </object>
     <object type="XDDEVENTITYMAPPING" id="z128">
         <attribute name="sourcename" type="string">Media</attribute>
@@ -488,8 +488,8 @@ cBIAAYagrxENZQAHAAgAFwAYADQANQA2AFYAVwBYAFkAWgBbAFwAXQBeAF8AYABhAGIAYwB+AH8AgACG
         <attribute name="destinationname" type="string">Post</attribute>
         <attribute name="autogenerateexpression" type="bool">1</attribute>
         <relationship name="mappingmodel" type="1/1" destination="XDDEVMAPPINGMODEL" idrefs="z129"></relationship>
-        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z140 z142 z221 z108 z144 z147 z164 z217 z145 z141 z216 z186 z203 z114 z177 z179 z102 z220 z127"></relationship>
-        <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING" idrefs="z119 z190 z210 z209 z168 z206"></relationship>
+        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z216 z221 z145 z147 z141 z186 z220 z144 z226 z108 z203 z102 z177 z140 z114 z142 z164 z179 z217"></relationship>
+        <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING" idrefs="z190 z119 z209 z206 z168 z210"></relationship>
     </object>
     <object type="XDDEVATTRIBUTEMAPPING" id="z196">
         <attribute name="name" type="string">parentID</attribute>
@@ -628,5 +628,12 @@ cBIAAYagrxENZQAHAAgAFwAYADQANQA2AFYAVwBYAFkAWgBbAFwAXQBeAF8AYABhAGIAYwB+AH8AgACG
         <relationship name="mappingmodel" type="1/1" destination="XDDEVMAPPINGMODEL" idrefs="z129"></relationship>
         <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING"></relationship>
         <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING"></relationship>
+    </object>
+    <object type="XDDEVATTRIBUTEMAPPING" id="z226">
+        <attribute name="name" type="string">date_created_gmt</attribute>
+        <relationship name="entitymapping" type="1/1" destination="XDDEVENTITYMAPPING" idrefs="z195"></relationship>
+    </object>
+    <object type="XDDEVATTRIBUTEMAPPING" id="z227">
+        <relationship name="entitymapping" type="1/1" destination="XDDEVENTITYMAPPING"></relationship>
     </object>
 </database>

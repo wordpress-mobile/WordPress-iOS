@@ -5,6 +5,7 @@
 #import "NSString+XMLExtensions.h"
 #import "WPPopoverBackgroundView.h"
 #import "WPAddCategoryViewController.h"
+#import "RevisionSelectorViewController.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -127,10 +128,6 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         [self addChildViewController:self.postMediaViewController];
     }
 
-    self.postSettingsViewController.view.frame = editView.frame;
-    self.postMediaViewController.view.frame = editView.frame;
-    self.postPreviewViewController.view.frame = editView.frame;
-    
     self.title = [self editorTitle];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -578,8 +575,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 }
 
 
-- (IBAction)showAddNewCategoryView:(id)sender
-{
+- (IBAction)showAddNewCategoryView:(id)sender {
     WPFLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
     addCategoryViewController.blog = self.post.blog;
@@ -643,15 +639,14 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         } failure:^(NSError *error) {
             WPFLog(@"post failed: %@", [error localizedDescription]);
         }];
-	} else {
+    } else {
 		[self.apost.original save];
 	}
 
     [self dismissEditView];
 }
 
-- (void)logSavePostStats
-{
+- (void)logSavePostStats {
     NSString *buttonTitle = self.navigationItem.rightBarButtonItem.title;
     NSString *event;
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
@@ -1433,7 +1428,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         suffix = [NSString stringWithFormat:@"</%@>\n", tag];
     } else {
         prefix = [NSString stringWithFormat:@"<%@>", tag];
-        suffix = [NSString stringWithFormat:@"</%@>", tag];        
+        suffix = [NSString stringWithFormat:@"</%@>", tag];
     }
     textView.scrollEnabled = NO;
     NSString *replacement = [NSString stringWithFormat:@"%@%@%@",prefix,selection,suffix];

@@ -297,6 +297,12 @@
 		45F285DB1149BD020014D36C /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F285D81149BD020014D36C /* Icon-72.png */; };
 		45F285DD1149BD020014D36C /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 45F285DA1149BD020014D36C /* Icon.png */; };
 		45F45B3611614BA50022D394 /* CPopoverManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F45B3511614BA50022D394 /* CPopoverManager.m */; };
+		501A19AE178D56630045AB4F /* RevisionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 501A19AD178D56630045AB4F /* RevisionView.xib */; };
+		501A19B5178D663E0045AB4F /* RevisionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 501A19B4178D663D0045AB4F /* RevisionView.m */; };
+		50CC2672178C372C00CD19A3 /* RevisionSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 50CC2670178C372C00CD19A3 /* RevisionSelectorViewController.m */; };
+		50CC2675178C3BD400CD19A3 /* RevisionSelectorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 50CC2674178C3BD400CD19A3 /* RevisionSelectorViewController.xib */; };
+		50D0293A1795CDC20039B227 /* WordPress-12-13.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 50D029391795CDC20039B227 /* WordPress-12-13.xcmappingmodel */; };
+		50EA8D5817967CC8008BB0CA /* PostToPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 50EA8D5717967CC8008BB0CA /* PostToPost.m */; };
 		5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */; };
 		5D1392A7157D4D92007D51B8 /* StatsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1392A6157D4D92007D51B8 /* StatsWebViewController.m */; };
 		5D15F4AF15B8C407001B14EA /* toolbarItalicHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 5D15F49715B8C407001B14EA /* toolbarItalicHighlighted.png */; };
@@ -1197,6 +1203,17 @@
 		45F285DA1149BD020014D36C /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		45F45B3411614BA50022D394 /* CPopoverManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPopoverManager.h; sourceTree = "<group>"; };
 		45F45B3511614BA50022D394 /* CPopoverManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPopoverManager.m; sourceTree = "<group>"; };
+		501A19AD178D56630045AB4F /* RevisionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RevisionView.xib; path = Resources/RevisionView.xib; sourceTree = "<group>"; };
+		501A19B3178D663C0045AB4F /* RevisionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevisionView.h; sourceTree = "<group>"; };
+		501A19B4178D663D0045AB4F /* RevisionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevisionView.m; sourceTree = "<group>"; };
+		5077925D179498DD0080E015 /* WordPress 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 12.xcdatamodel"; sourceTree = "<group>"; };
+		50CC266F178C372B00CD19A3 /* RevisionSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RevisionSelectorViewController.h; sourceTree = "<group>"; };
+		50CC2670178C372C00CD19A3 /* RevisionSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RevisionSelectorViewController.m; sourceTree = "<group>"; };
+		50CC2674178C3BD400CD19A3 /* RevisionSelectorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RevisionSelectorViewController.xib; path = Resources/RevisionSelectorViewController.xib; sourceTree = "<group>"; };
+		50D029381795CD6B0039B227 /* WordPress 13.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 13.xcdatamodel"; sourceTree = "<group>"; };
+		50D029391795CDC20039B227 /* WordPress-12-13.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-12-13.xcmappingmodel"; sourceTree = "<group>"; };
+		50EA8D5617967CC8008BB0CA /* PostToPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostToPost.h; sourceTree = "<group>"; };
+		50EA8D5717967CC8008BB0CA /* PostToPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostToPost.m; sourceTree = "<group>"; };
 		5D119DA1176FBE040073D83A /* UIImageView+AFNetworkingExtra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworkingExtra.h"; sourceTree = "<group>"; };
 		5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworkingExtra.m"; sourceTree = "<group>"; };
 		5D1392A5157D4D92007D51B8 /* StatsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsWebViewController.h; sourceTree = "<group>"; };
@@ -1260,7 +1277,6 @@
 		5D358D6417723DB500739AA4 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		5D3E334C15EEBB6B005FC6F2 /* ReachabilityUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReachabilityUtils.h; sourceTree = "<group>"; };
 		5D3E334D15EEBB6B005FC6F2 /* ReachabilityUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReachabilityUtils.m; sourceTree = "<group>"; };
-		5D42A3BB175E686F005CFF05 /* WordPress 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 12.xcdatamodel"; sourceTree = "<group>"; };
 		5D42A3D4175E7452005CFF05 /* AbstractComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractComment.h; sourceTree = "<group>"; };
 		5D42A3D5175E7452005CFF05 /* AbstractComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractComment.m; sourceTree = "<group>"; };
 		5D42A3D6175E7452005CFF05 /* AbstractPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractPost.h; sourceTree = "<group>"; };
@@ -1909,18 +1925,6 @@
 		E1D0D82416D3D19200E33F4C /* PocketAPIOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPIOperation.h; sourceTree = "<group>"; };
 		E1D0D82516D3D19200E33F4C /* PocketAPIOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketAPIOperation.m; sourceTree = "<group>"; };
 		E1D0D82616D3D19200E33F4C /* PocketAPITypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPITypes.h; sourceTree = "<group>"; };
-		E1D0D82D16D3D2BA00E33F4C /* NNInstapaperActivity@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNInstapaperActivity@2x~ipad.png"; path = "Resources/Images/NNInstapaperActivity@2x~ipad.png"; sourceTree = "<group>"; };
-		E1D0D82E16D3D2BA00E33F4C /* NNInstapaperActivity@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNInstapaperActivity@2x~iphone.png"; path = "Resources/Images/NNInstapaperActivity@2x~iphone.png"; sourceTree = "<group>"; };
-		E1D0D82F16D3D2BA00E33F4C /* NNInstapaperActivity~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNInstapaperActivity~ipad.png"; path = "Resources/Images/NNInstapaperActivity~ipad.png"; sourceTree = "<group>"; };
-		E1D0D83016D3D2BA00E33F4C /* NNInstapaperActivity~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNInstapaperActivity~iphone.png"; path = "Resources/Images/NNInstapaperActivity~iphone.png"; sourceTree = "<group>"; };
-		E1D0D83116D3D2BA00E33F4C /* NNPocketActivity@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNPocketActivity@2x~ipad.png"; path = "Resources/Images/NNPocketActivity@2x~ipad.png"; sourceTree = "<group>"; };
-		E1D0D83216D3D2BA00E33F4C /* NNPocketActivity@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNPocketActivity@2x~iphone.png"; path = "Resources/Images/NNPocketActivity@2x~iphone.png"; sourceTree = "<group>"; };
-		E1D0D83316D3D2BA00E33F4C /* NNPocketActivity~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNPocketActivity~ipad.png"; path = "Resources/Images/NNPocketActivity~ipad.png"; sourceTree = "<group>"; };
-		E1D0D83416D3D2BA00E33F4C /* NNPocketActivity~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNPocketActivity~iphone.png"; path = "Resources/Images/NNPocketActivity~iphone.png"; sourceTree = "<group>"; };
-		E1D0D83516D3D2BA00E33F4C /* NNReadabilityActivity@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNReadabilityActivity@2x~ipad.png"; path = "Resources/Images/NNReadabilityActivity@2x~ipad.png"; sourceTree = "<group>"; };
-		E1D0D83616D3D2BA00E33F4C /* NNReadabilityActivity@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNReadabilityActivity@2x~iphone.png"; path = "Resources/Images/NNReadabilityActivity@2x~iphone.png"; sourceTree = "<group>"; };
-		E1D0D83716D3D2BA00E33F4C /* NNReadabilityActivity~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNReadabilityActivity~ipad.png"; path = "Resources/Images/NNReadabilityActivity~ipad.png"; sourceTree = "<group>"; };
-		E1D0D83816D3D2BA00E33F4C /* NNReadabilityActivity~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NNReadabilityActivity~iphone.png"; path = "Resources/Images/NNReadabilityActivity~iphone.png"; sourceTree = "<group>"; };
 		E1D0D84516D3D2EA00E33F4C /* PocketActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketActivity.h; sourceTree = "<group>"; };
 		E1D0D84616D3D2EA00E33F4C /* PocketActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketActivity.m; sourceTree = "<group>"; };
 		E1D0D84816D3D62100E33F4C /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
@@ -2476,6 +2480,42 @@
 			name = "Resources-iPad";
 			sourceTree = "<group>";
 		};
+		501A19A7178D49B10045AB4F /* Revisions */ = {
+			isa = PBXGroup;
+			children = (
+				501A19AD178D56630045AB4F /* RevisionView.xib */,
+				50CC2674178C3BD400CD19A3 /* RevisionSelectorViewController.xib */,
+			);
+			name = Revisions;
+			sourceTree = "<group>";
+		};
+		501A19AF178D566F0045AB4F /* Revisions */ = {
+			isa = PBXGroup;
+			children = (
+				501A19B3178D663C0045AB4F /* RevisionView.h */,
+				501A19B4178D663D0045AB4F /* RevisionView.m */,
+				50CC266F178C372B00CD19A3 /* RevisionSelectorViewController.h */,
+				50CC2670178C372C00CD19A3 /* RevisionSelectorViewController.m */,
+			);
+			name = Revisions;
+			sourceTree = "<group>";
+		};
+		50D029371795CD3C0039B227 /* 11-12 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "11-12";
+			sourceTree = "<group>";
+		};
+		50EA8D5517967C89008BB0CA /* 12-13 */ = {
+			isa = PBXGroup;
+			children = (
+				50EA8D5617967CC8008BB0CA /* PostToPost.h */,
+				50EA8D5717967CC8008BB0CA /* PostToPost.m */,
+			);
+			name = "12-13";
+			sourceTree = "<group>";
+		};
 		5D27716D15A33A6200F4DCAA /* editing */ = {
 			isa = PBXGroup;
 			children = (
@@ -2874,6 +2914,7 @@
 		AC34397A0E11435A00E5D79B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				501A19AF178D566F0045AB4F /* Revisions */,
 				850D22B21729EE8600EC6A16 /* NUX */,
 				CC1D800D1656D8B2002A542F /* Notifications */,
 				E15D46C7156A506A00227392 /* Panels */,
@@ -3512,10 +3553,13 @@
 		E159D1011309AAF200F498E2 /* Migrations */ = {
 			isa = PBXGroup;
 			children = (
+				50EA8D5517967C89008BB0CA /* 12-13 */,
+				50D029371795CD3C0039B227 /* 11-12 */,
 				E1A03EDF17422DBC0085D192 /* 10-11 */,
 				E159D1021309AAFF00F498E2 /* 1-2 */,
 				E17078FC130A95B600F30433 /* WordPress-1-2.xcmappingmodel */,
 				E100C6BA1741472F00AE48D8 /* WordPress-11-12.xcmappingmodel */,
+				50D029391795CDC20039B227 /* WordPress-12-13.xcmappingmodel */,
 			);
 			name = Migrations;
 			path = Classes;
@@ -3610,6 +3654,8 @@
 		E19472D8134E3E4A00879F63 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				501A19A7178D49B10045AB4F /* Revisions */,
+				85C720A317307B3600460645 /* NUX */,
 				37195B7F166A5DDC005F2292 /* Notifications */,
 				373C5181156D0504007C2977 /* Panels */,
 				ACFF1DC00E231EF600EC6BF5 /* Blog */,
@@ -4394,6 +4440,8 @@
 				E1F77436178C282000E70764 /* NNGPlusActivity@2x~iphone.png in Resources */,
 				E1F77437178C282000E70764 /* NNGPlusActivity~ipad.png in Resources */,
 				E1F77438178C282000E70764 /* NNGPlusActivity~iphone.png in Resources */,
+				50CC2675178C3BD400CD19A3 /* RevisionSelectorViewController.xib in Resources */,
+				501A19AE178D56630045AB4F /* RevisionView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4640,6 +4688,8 @@
 				85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */,
 				85A1B6751742E7EF00BA5E35 /* WPMobileStats.m in Sources */,
 				E183BD7417621D87000B0822 /* WPCookie.m in Sources */,
+				50CC2672178C372C00CD19A3 /* RevisionSelectorViewController.m in Sources */,
+				501A19B5178D663E0045AB4F /* RevisionView.m in Sources */,
 				E10DB0081771926D00B7A0A3 /* GooglePlusActivity.m in Sources */,
 				5D42A3DE175E7452005CFF05 /* AbstractComment.m in Sources */,
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,
@@ -4671,6 +4721,8 @@
 				5DF59C0B1770AE3A00171208 /* UILabel+SuggestSize.m in Sources */,
 				E1F5A1BC1771C90A00E0495F /* WPTableImageSource.m in Sources */,
 				E1921F5A17733C3E000F4079 /* WPImageSource.m in Sources */,
+				50D0293A1795CDC20039B227 /* WordPress-12-13.xcmappingmodel in Sources */,
+				50EA8D5817967CC8008BB0CA /* PostToPost.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5129,7 +5181,8 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				5D42A3BB175E686F005CFF05 /* WordPress 12.xcdatamodel */,
+				50D029381795CD6B0039B227 /* WordPress 13.xcdatamodel */,
+				5077925D179498DD0080E015 /* WordPress 12.xcdatamodel */,
 				E17B98E7171FFB450073E30D /* WordPress 11.xcdatamodel */,
 				FDFB011916B1EA1C00F589A8 /* WordPress 10.xcdatamodel */,
 				E1874BFE161C5DBC0058BDC4 /* WordPress 7.xcdatamodel */,
@@ -5142,7 +5195,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = 5D42A3BB175E686F005CFF05 /* WordPress 12.xcdatamodel */;
+			currentVersion = 50D029381795CD6B0039B227 /* WordPress 13.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
