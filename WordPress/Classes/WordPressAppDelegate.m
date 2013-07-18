@@ -1,8 +1,7 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <WordPressApi/WordPressApi.h>
 #import <Crashlytics/Crashlytics.h>
-#import <GPPSignIn.h>
-#import <GPPShare.h>
+#import <GooglePlus/GooglePlus.h>
 
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
