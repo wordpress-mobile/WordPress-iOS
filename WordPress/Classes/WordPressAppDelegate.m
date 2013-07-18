@@ -724,7 +724,7 @@
           UITextAttributeTextShadowOffset,
           nil]];
         
-        [[UIBarButtonItem appearance] setTintColor:[UIColor colorWithRed:229.0/255.0 green:229.0/255.0 blue:229.0/255.0 alpha:1.0]];
+//        [[UIBarButtonItem appearance] setTintColor:[UIColor colorWithRed:229.0/255.0 green:229.0/255.0 blue:229.0/255.0 alpha:1.0]];
 
         [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
         [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_active"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
@@ -770,7 +770,7 @@
         [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateDisabled forState:UIControlStateDisabled];
         [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateHighlighted forState:UIControlStateHighlighted];
         
-        [[UISegmentedControl appearance] setTintColor:[UIColor UIColorFromHex:0xeeeeee]];
+//        [[UISegmentedControl appearance] setTintColor:[UIColor UIColorFromHex:0xeeeeee]];
         [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateNormal];
         [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateDisabled forState:UIControlStateDisabled];
         [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateHighlighted forState:UIControlStateHighlighted];
@@ -1235,10 +1235,10 @@
                 }
 
                 UIViewController *presenter = self.panelNavigationController;
-                if (presenter.modalViewController) {
-                    presenter = presenter.modalViewController;
+                if (presenter.presentedViewController) {
+                    presenter = presenter.presentedViewController;
                 }
-                [presenter presentModalViewController:aNavigationController animated:YES];
+                [presenter presentViewController:aNavigationController animated:YES completion:nil];
 
 				break;
 			}

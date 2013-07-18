@@ -132,14 +132,14 @@
     [self.settingsButton setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButton"] stretchableImageWithLeftCapWidth:14.0 topCapHeight:0.0] forState:UIControlStateNormal];
     [self.settingsButton setBackgroundImage:[[UIImage imageNamed:@"SidebarToolbarButtonHighlighted"] stretchableImageWithLeftCapWidth:14.0 topCapHeight:0.0] forState:UIControlStateHighlighted];
     [self.settingsButton setTitle:NSLocalizedString(@"Settings", @"App settings") forState:UIControlStateNormal ];
-    self.settingsButton.titleLabel.lineBreakMode = UILineBreakModeClip;
+    self.settingsButton.titleLabel.lineBreakMode = NSLineBreakByClipping;
     self.settingsButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-    self.settingsButton.titleLabel.minimumFontSize = 12.0f;
+    self.settingsButton.titleLabel.minimumScaleFactor = 12.0f/self.settingsButton.titleLabel.font.pointSize;
     self.settingsButton.titleEdgeInsets = UIEdgeInsetsMake (0.0f, 12.0f, 0.0f, 10.0f);
     self.settingsButton.imageEdgeInsets = UIEdgeInsetsMake(0.0f, 8.0f, 0.0f, 0.0f);
     self.settingsButton.titleLabel.shadowColor = [UIColor UIColorFromHex:0x000000 alpha:0.45f];
     self.settingsButton.titleLabel.shadowOffset = CGSizeMake(0, -1.0f);
-    [settingsButton.titleLabel setTextAlignment:UITextAlignmentCenter];
+    [settingsButton.titleLabel setTextAlignment:NSTextAlignmentCenter];
 
     if ([[self.resultsController fetchedObjects] count] > 0) {
         [self setupQuickPhotoButton];
@@ -289,7 +289,7 @@
             aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 
-            [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
+            [self.panelNavigationController presentViewController:aNavigationController animated:YES completion:nil];
             [self checkNothingToShow];
         }
     }
@@ -383,7 +383,7 @@ NSLog(@"%@", self.sectionInfoArray);
     }
 }
 
-- (IBAction)showSettings:(id)sender {
+- (IBAction)showSettings:(id)sender {    
     [WPMobileStats incrementProperty:StatsPropertySidebarClickedSettings forEvent:StatsEventAppClosed];
     
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -392,7 +392,7 @@ NSLog(@"%@", self.sectionInfoArray);
         aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     
-    [self.panelNavigationController presentModalViewController:aNavigationController animated:YES];
+    [self.panelNavigationController presentViewController:aNavigationController animated:YES completion:nil];
 }
 
 
@@ -531,9 +531,9 @@ NSLog(@"%@", self.sectionInfoArray);
     if (IS_IPAD) {
         navController.modalPresentationStyle = UIModalPresentationFormSheet;
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self.panelNavigationController presentModalViewController:navController animated:YES];
+        [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
     } else {
-        [self.panelNavigationController presentModalViewController:navController animated:YES];
+        [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
     }
 }
 

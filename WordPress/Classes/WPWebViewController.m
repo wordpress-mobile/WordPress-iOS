@@ -686,8 +686,9 @@
         NSString *body = [permaLink trim];
         [controller setMessageBody:body isHTML:NO];
         
-        if (controller) 
-            [self.panelNavigationController presentModalViewController:controller animated:YES];        
+        if (controller) {
+            [self.panelNavigationController presentViewController:controller animated:YES completion:nil];
+        }
         [self setMFMailFieldAsFirstResponder:controller.view mfMailField:@"MFRecipientTextField"];
     } else if ( buttonIndex == 2 ) {
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
@@ -699,7 +700,7 @@
 #pragma mark - MFMailComposeViewControllerDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - custom methods

@@ -261,7 +261,7 @@
 
 
 - (void)showModalEditor {
-    if (self.modalViewController) {
+    if (self.presentedViewController) {
         NSLog(@"Trying to show modal a second time: bad");
         return;
     }
@@ -283,11 +283,11 @@
     nav.modalPresentationStyle = UIModalPresentationPageSheet;
     nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     //nav.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
-    [self presentModalViewController:nav animated:YES];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)showModalPreview {
-    if (self.modalViewController) {
+    if (self.presentedViewController) {
         NSLog(@"Trying to show modal a second time: bad");
         return;
     }
@@ -306,7 +306,7 @@
     UIBarButtonItem *c = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissPreview)];
     nav.navigationBar.topItem.leftBarButtonItem = c;
     
-    [self presentModalViewController:nav animated:YES];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 - (EditPostViewController *)getPostOrPageController:(AbstractPost *)revision {
@@ -320,7 +320,7 @@
 }
 
 - (void)dismissPreview {
-    [self.presentedViewController dismissModalViewControllerAnimated:YES];
+    [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {

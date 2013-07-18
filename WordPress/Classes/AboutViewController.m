@@ -60,7 +60,7 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
 #pragma mark - Custom methods
 
 - (void)dismiss {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)viewTermsOfService:(id)sender {

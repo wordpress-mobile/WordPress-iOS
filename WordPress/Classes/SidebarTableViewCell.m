@@ -88,7 +88,7 @@
     aRect.origin.y = -1.0f;
     UILabel *commentsLbl = [[UILabel alloc]initWithFrame:aRect];
     commentsLbl.backgroundColor = [UIColor clearColor];
-    commentsLbl.textAlignment = UITextAlignmentCenter;
+    commentsLbl.textAlignment = NSTextAlignmentCenter;
     commentsLbl.text = text;
     commentsLbl.font = [UIFont systemFontOfSize:17.0];
     commentsLbl.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];

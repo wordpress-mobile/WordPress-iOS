@@ -251,7 +251,7 @@
         doneButton = [WPKeyboardToolbarButtonItem button];
         doneButton.frame = CGRectMake(4, 2, 50, 39);
         [doneButton setTitle:@"Done" forState:UIControlStateNormal];
-		doneButton.titleLabel.textAlignment = UITextAlignmentCenter;
+		doneButton.titleLabel.textAlignment = NSTextAlignmentCenter;
 		//doneButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         doneButton.actionTag = @"done";
         [doneButton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];

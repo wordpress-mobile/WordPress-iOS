@@ -119,7 +119,7 @@
 
 	if((isWPcom) && (!appDelegate.isWPcomAuthenticated)) {
         WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        [self.navigationController presentModalViewController:wpComLogin animated:YES];
+        [self.navigationController presentViewController:wpComLogin animated:YES completion:nil];
 	}
 	else if(isWPcom) {
 		if (usersBlogs == nil) {
@@ -207,7 +207,7 @@
 			
 			UILabel *footerText = [[UILabel alloc] initWithFrame:footerTextFrame];
             footerText.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
-            footerText.textAlignment = UITextAlignmentCenter;
+            footerText.textAlignment = NSTextAlignmentCenter;
 			footerText.backgroundColor = [UIColor clearColor];
 			footerText.textColor = [UIColor darkGrayColor];
 			footerText.text = NSLocalizedString(@"Loading blogs...", @"");
@@ -246,11 +246,13 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    
+    cell.backgroundColor = [UIColor clearColor];
 	
 	switch (indexPath.section) {
 		case 0:
         {
-			cell.textLabel.textAlignment = UITextAlignmentLeft;
+			cell.textLabel.textAlignment = NSTextAlignmentLeft;
 			
 			NSDictionary *blog = [usersBlogs objectAtIndex:indexPath.row];
 			if([selectedBlogs containsObject:[blog valueForKey:@"blogid"]])
@@ -276,7 +278,7 @@
         }
         case 1:
         {
-            cell.textLabel.textAlignment = UITextAlignmentCenter;
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.accessoryType = UITableViewCellAccessoryNone; 
             cell.textLabel.text = NSLocalizedString(@"Sign Out", @"");
             cell.imageView.image = nil;
@@ -466,12 +468,12 @@
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
         label.backgroundColor = [UIColor clearColor];
         label.numberOfLines = 0;
-        label.lineBreakMode = UILineBreakModeWordWrap;
+        label.lineBreakMode = NSLineBreakByWordWrapping;
         label.font = [UIFont fontWithName:@"Georgia" size:16.0f];
         label.shadowOffset = CGSizeMake(0.0f, 1.0f);
         label.textColor = textColor;
         label.shadowColor = [UIColor whiteColor];
-        label.textAlignment = UITextAlignmentCenter;
+        label.textAlignment = NSTextAlignmentCenter;
 
         if ([WordPressComApi sharedApi].username) {
             label.text = NSLocalizedString(@"You do not seem to have any blogs. Would you like to create one now?", @"");
@@ -547,7 +549,7 @@
                 [self.navigationController pushViewController:helpViewController animated:YES];
             }
             else
-                [appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
+                [appDelegate.navigationController presentViewController:helpViewController animated:YES completion:nil];
             
         }
     } else {
