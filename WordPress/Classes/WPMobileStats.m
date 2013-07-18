@@ -10,6 +10,7 @@
 #import <Mixpanel/Mixpanel.h>
 #import "WordPressComApiCredentials.h"
 #import "WordPressComApi.h"
+#import "WordPressAppDelegate.h"
 
 // General
 NSString *const StatsEventAppOpened = @"Application Opened";
@@ -253,6 +254,10 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 + (void)initializeStats
 {
     [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
+    NSDictionary *properties = @{
+                                 @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
+                                 @"number_of_blogs" : @([Blog countWithContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]]) };
+    [[Mixpanel sharedInstance] registerSuperProperties:properties];
 }
 
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event
