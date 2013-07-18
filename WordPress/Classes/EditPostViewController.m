@@ -620,6 +620,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     }
     
     if (_isAutosaving) {
+        WPFLog(@"Canceling all auto save operations as user is about to force a save");
         // Cancel all blog network operations since the user tapped the save/publish button
         [self.apost.blog.api cancelAllHTTPOperations];
     }
@@ -628,6 +629,8 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 }
 
 - (void)savePost:(BOOL)upload{
+    WPFLogMethod();
+    
     [WPMobileStats trackEventForWPComWithSavedProperties:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     
     [self logSavePostStats];
@@ -1001,6 +1004,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         _linkHelperAlertView = nil;
     } else if (alertView.tag == EditPostViewControllerAlertTagFailedMedia) {
         if (buttonIndex == 1) {
+            WPFLog(@"Saving post even after some media failed to upload");
             [self savePost:YES];
         } else {
             [self switchToMedia];
@@ -1045,6 +1049,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
                 if ((![self.apost hasRemote] || _isAutosaved) && [self.apost.status isEqualToString:@"publish"]) {
                     self.apost.status = @"draft";
                 }
+                WPFLog(@"Saving post as a draft after user initially attempted to cancel");
                 [self savePost:YES];
 			}
         }
