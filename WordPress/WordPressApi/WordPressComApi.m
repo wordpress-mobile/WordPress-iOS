@@ -497,11 +497,19 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     [api setAuthorizationHeaderWithToken:self.authToken];
     
 #ifdef DEBUG
-    NSNumber *sandbox = [NSNumber numberWithBool:YES];
+    NSNumber *production = [NSNumber numberWithBool:NO];
 #else
-    NSNumber *sandbox = [NSNumber numberWithBool:NO];
+    NSNumber *production = [NSNumber numberWithBool:YES];
 #endif
-    WPXMLRPCRequest *tokenRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_register_token" parameters:[NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox,  [[UIDevice currentDevice] name], nil]];
+
+    NSDictionary *params = @{ @"device_family":@"apple",
+                              @"device_name":[[UIDevice currentDevice] name],
+                              @"device_uuid":[[UIDevice currentDevice] wordpressIdentifier],
+                              @"app_version":[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
+                              @"os_version":[[UIDevice currentDevice] systemVersion],
+                              @"production" : production};
+    
+    WPXMLRPCRequest *tokenRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_register_token" parameters:[NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], token, params, nil]];
     WPXMLRPCRequestOperation *tokenOperation = [api XMLRPCRequestOperationWithRequest:tokenRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         WPFLog(@"Registered token %@" , token);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
