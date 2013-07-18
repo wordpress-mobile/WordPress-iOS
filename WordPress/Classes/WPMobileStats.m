@@ -258,6 +258,13 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
                                  @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
                                  @"number_of_blogs" : @([Blog countWithContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]]) };
     [[Mixpanel sharedInstance] registerSuperProperties:properties];
+    
+    NSString *username = [WordPressComApi sharedApi].username;
+    if ([[WordPressComApi sharedApi] hasCredentials] && [username length] > 0) {
+        [[Mixpanel sharedInstance] identify:username];
+        [[Mixpanel sharedInstance].people increment:@"Application Opened" by:@(1)];
+        [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
+    }
 }
 
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event
