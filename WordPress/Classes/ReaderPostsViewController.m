@@ -163,9 +163,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     
 	self.panelNavigationController.delegate = self;
 	
-	NSDictionary *dict = [ReaderPost currentTopic];
-	NSString *title = [[dict objectForKey:@"title"] capitalizedString];
-	self.title = NSLocalizedString(title, @"");
+	self.title = [[[ReaderPost currentTopic] objectForKey:@"title"] capitalizedString];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -765,8 +763,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
     [self configureTableHeader];
 	
-	NSString *title = [[[ReaderPost currentTopic] stringForKey:@"title"] capitalizedString];
-	self.title = NSLocalizedString(title, @"");
+	self.title = [[[ReaderPost currentTopic] stringForKey:@"title"] capitalizedString];
 
     if ([WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && ![self isSyncing] ) {
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
