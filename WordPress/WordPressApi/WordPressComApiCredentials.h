@@ -14,4 +14,5 @@
 + (NSString *)pocketConsumerKey;
 + (NSString *)mixpanelAPIToken;
 + (NSString *)crashlyticsApiKey;
++ (NSString *)googlePlusClientId;
 @end

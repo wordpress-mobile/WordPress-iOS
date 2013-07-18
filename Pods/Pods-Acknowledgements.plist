@@ -514,6 +514,14 @@ SOFTWARE.
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>Copyright 2013 Google Inc.</string>
+			<key>Title</key>
+			<string>google-plus-ios-sdk</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string># License
 
 ## WordPress XML-RPC library is distributed under the MIT License:

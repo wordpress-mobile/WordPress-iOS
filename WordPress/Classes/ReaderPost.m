@@ -17,15 +17,20 @@
 
 NSInteger const ReaderTopicEndpointIndex = 3;
 NSInteger const ReaderPostSummaryLength = 150;
+NSInteger const ReaderPostsToSync = 20;
 NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
+NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 
 @interface ReaderPost()
 
 + (void)handleLogoutNotification:(NSNotification *)notification;
 - (void)updateFromDictionary:(NSDictionary *)dict;
+- (void)updateFromRESTDictionary:(NSDictionary *)dict;
+- (void)updateFromReaderDictionary:(NSDictionary *)dict;
 - (NSString *)createSummary:(NSString *)str makePlainText:(BOOL)makePlainText;
 - (NSString *)makePlainText:(NSString *)string;
 - (NSString *)normalizeParagraphs:(NSString *)string;
+- (NSString *)parseImageSrcFromHTML:(NSString *)html;
 
 @end
 
@@ -61,6 +66,10 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
 
 + (void)handleLogoutNotification:(NSNotification *)notification {
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderCurrentTopicKey];
+	[NSUserDefaults resetStandardUserDefaults];
+	
 	NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
 	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
     request.includesPropertyValues = NO;
@@ -92,6 +101,20 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 }
 
 
++ (NSDictionary *)currentTopic {
+	NSDictionary *topic = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ReaderCurrentTopicKey];
+	if(!topic) {
+		topic = [[ReaderPost readerEndpoints] objectAtIndex:0];
+	}
+	return topic;
+}
+
+
++ (NSString *)currentEndpoint {
+	return [[self currentTopic] objectForKey:@"endpoint"];
+}
+
+
 + (NSArray *)fetchPostsForEndpoint:(NSString *)endpoint withContext:(NSManagedObjectContext *)context {
 
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -112,13 +135,16 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 }
 
 
-+ (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr withContext:(NSManagedObjectContext *)context {
++ (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr withContext:(NSManagedObjectContext *)context success:(void (^)())success {
     if (![arr isKindOfClass:[NSArray class]] || [arr count] == 0) {
+		if (success) {
+			dispatch_async(dispatch_get_main_queue(), success);
+		}
         return;
     }
     NSManagedObjectContext *backgroundMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     [backgroundMoc setParentContext:context];
-
+	
     [backgroundMoc performBlock:^{
         NSError *error;
         for (NSDictionary *postData in arr) {
@@ -126,9 +152,9 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
                 continue;
             }
             [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMoc];
-
+			
         }
-
+		
         if(![backgroundMoc save:&error]){
             WPFLog(@"Failed to sync ReaderPosts: %@", error);
         }
@@ -138,6 +164,10 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
                 WPFLog(@"Failed to sync ReaderPosts: %@", error);
             }
         }];
+		
+		if (success) {
+			dispatch_async(dispatch_get_main_queue(), success);
+		}
     }];
 }
 
@@ -196,42 +226,37 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
 
 - (void)updateFromDictionary:(NSDictionary *)dict {
-
-	NSDictionary *author = nil;
-	NSString *featuredImage = nil;
-
-	// The results come in two flavors.  If editorial key, then its the freshly-pressed flavor.
-	if ([dict objectForKey:@"editorial"]) {
+	// The results come in two flavors.  If post_content_full then its the "reader" api, otherwise its the REST api.
+	if (![dict objectForKey:@"post_content_full"]) {
+		// REST feeds: fresly-pressed, sites/site/posts
+		[self updateFromRESTDictionary:dict];
 		
-		NSDictionary *editorial = [dict objectForKey:@"editorial"];
+	} else {
+		// "Reader" feeds: following, liked, and topics.
+		[self updateFromReaderDictionary:dict];
+	}
 
-		author = [dict objectForKey:@"author"];
-		
-		self.author = [author stringForKey:@"name"];
-		self.authorURL = [author stringForKey:@"URL"];
+    self.commentCount = [dict numberForKey:@"comment_count"];
+	self.isFollowing = [dict numberForKey:@"is_following"];
+	self.isReblogged = [dict numberForKey:@"is_reblogged"];
+	self.status = [dict objectForKey:@"status"];
 
+	self.dateSynced = [NSDate date];
+}
+
+
+- (void)updateFromRESTDictionary:(NSDictionary *)dict {
+	// REST api.  Freshly Pressed, sites/site/posts
+	
+	// Freshly Pressed posts will have an editorial section.
+	NSDictionary *editorial = [dict objectForKey:@"editorial"];
+	if (editorial) {
 		self.blogName = [[editorial stringForKey:@"blog_name"] stringByDecodingXMLCharacters];
 		self.blogSiteID = [editorial numberForKey:@"site_id"];
-		
-		self.content = [self normalizeParagraphs:[dict objectForKey:@"content"]];
-		self.commentsOpen = [dict numberForKey:@"comments_open"];
-		
-		self.date_created_gmt = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
-		self.sortDate = [DateUtils dateFromISOString:[editorial objectForKey:@"displayed_on"]];
-		self.likeCount = [dict numberForKey:@"like_count"];
-		self.permaLink = [dict stringForKey:@"URL"];
-		self.postTitle = [[dict stringForKey:@"title"] stringByDecodingXMLCharacters];
-		
-		self.isLiked = [dict numberForKey:@"i_like"];
-		
-		NSURL *url = [NSURL URLWithString:self.permaLink];
-		self.blogURL = [NSString stringWithFormat:@"%@://%@/", url.scheme, url.host];
-		
 		self.siteID = [editorial numberForKey:@"blog_id"];
-
-		self.summary = [self createSummary:[dict objectForKey:@"content"] makePlainText:YES];
+		self.sortDate = [DateUtils dateFromISOString:[editorial objectForKey:@"displayed_on"]];
 		
-		NSString *img = [editorial objectForKey:@"image"];
+		NSString *img = [editorial stringForKey:@"image"];
 		NSRange rng = [img rangeOfString:@"mshots/"];
 		if(NSNotFound != rng.location) {
 			rng = [img rangeOfString:@"?" options:NSBackwardsSearch];
@@ -242,11 +267,11 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 			rng.location = [img rangeOfString:@"http" options:NSBackwardsSearch].location;
 			rng.length = [img rangeOfString:@"&unsharp" options:NSBackwardsSearch].location - rng.location;
 			img = [img substringWithRange:rng];
-
+			
 			// Actually decode twice.
 			img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 			img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
+			
 			rng = [img rangeOfString:@"://"];
 			img = [img substringFromIndex:rng.location + 3];
 			
@@ -255,106 +280,122 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 			rng.location = [img rangeOfString:@"://" options:NSBackwardsSearch].location + 3;
 			img = [img substringFromIndex:rng.location];
 		}
-		featuredImage = img;
-
+		self.featuredImage = img;
+		
 	} else {
-		author = [dict objectForKey:@"post_author"];
-		if ([author isKindOfClass:[NSDictionary class]]) {
-			self.author = [author stringForKey:@"post_author"];
-		} else {
-			// Some endpoints return a string and not an object
-			self.author = [dict stringForKey:@"post_author"];
-		}
-		self.authorURL = [dict stringForKey:@"blog_url"];
-		
-		self.blogURL = [dict stringForKey:@"blog_url"];
 		self.blogName = [[dict stringForKey:@"blog_name"] stringByDecodingXMLCharacters];
-		self.blogSiteID = [dict numberForKey:@"blog_site_id"];
-
-		self.content = [self normalizeParagraphs:[dict objectForKey:@"post_content_full"]];
-		self.commentsOpen = [NSNumber numberWithBool:[@"open" isEqualToString:[dict stringForKey:@"comment_status"]]];
-		
-		NSDate *date;
-		NSString *timestamp = [dict objectForKey:@"post_timestamp"];
-		if (timestamp != nil) {
-			NSTimeInterval timeInterval = [timestamp doubleValue];
-			date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
-		} else {
-			date = [DateUtils dateFromISOString:[dict objectForKey:@"post_date_gmt"]];
-		}
-		self.date_created_gmt = date;
-		self.sortDate = date;
-		self.likeCount = [dict numberForKey:@"post_like_count"];
-		self.permaLink = [dict stringForKey:@"post_permalink"];
-		self.postTitle = [[dict stringForKey:@"post_title"] stringByDecodingXMLCharacters];
-		
-		self.isLiked = [dict numberForKey:@"is_liked"];
-		
+		self.blogSiteID = [dict numberForKey:@"site_id"];
 		self.siteID = [dict numberForKey:@"blog_id"];
-		
-		NSString *summary = [self makePlainText:[dict stringForKey:@"post_content"]];
-		if ([summary length] > ReaderPostSummaryLength) {
-			summary = [self createSummary:summary makePlainText:NO];
-		}
-		self.summary = summary;
-				
-		NSString *img = [dict stringForKey:@"post_featured_thumbnail"];
-		if([img length]) {
-			// TODO: Regex this madness
-			NSRange rng = [img rangeOfString:@"://"];
-			rng.location += 3;
-			NSRange endRng = [img rangeOfString:@"?" options:NSBackwardsSearch];
-			if(endRng.location == NSNotFound) {
-				NSRange tmpRng;
-				tmpRng.location = rng.location;
-				tmpRng.length = [img length] - rng.location;
-				endRng = [img rangeOfString:@"\"" options:nil range:tmpRng];
-			}
-
-			rng.length = endRng.location - rng.location;
-
-			featuredImage = [img substringWithRange:rng];
-		}
-		
-		img = [dict stringForKey:@"post_avatar"];
-		if ([img length]) {
-			NSError *error;
-			img = [img stringByDecodingXMLCharacters];
-			NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"src=\"\\S+\"" options:NSRegularExpressionCaseInsensitive error:&error];
-			NSRange rng = [regex rangeOfFirstMatchInString:img options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [img length])];
-
-			if (NSNotFound != rng.location) {
-				rng = NSMakeRange(rng.location+5, rng.length-6);
-				self.postAvatar = [img substringWithRange:rng];
-			}
-		}
-		
-		NSString *media = [dict stringForKey:@"post_featured_media"];
-	
-		if(media) {
-			self.content = [NSString stringWithFormat:@"%@%@", media, self.content];
-		}
+		self.sortDate = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
 	}
+	
+	NSDictionary *author = [dict objectForKey:@"author"];
+	self.author = [author stringForKey:@"name"];
+	self.authorURL = [author stringForKey:@"URL"];
+	self.authorAvatarURL = [author stringForKey:@"avatar_URL"];
+	// email can return a boolean.
+	if([[author objectForKey:@"email"] isKindOfClass:[NSString class]]) {
+		self.authorEmail = [author stringForKey:@"email"];
+	}
+	
+	
+	self.content = [self normalizeParagraphs:[dict objectForKey:@"content"]];
+	self.commentsOpen = [dict numberForKey:@"comments_open"];
+	
+	self.date_created_gmt = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
+	
+	self.likeCount = [dict numberForKey:@"like_count"];
+	self.permaLink = [dict stringForKey:@"URL"];
+	self.postTitle = [[[dict stringForKey:@"title"] stringByDecodingXMLCharacters] trim];
+	
+	self.isLiked = [dict numberForKey:@"i_like"];
+	
+	NSURL *url = [NSURL URLWithString:self.permaLink];
+	self.blogURL = [NSString stringWithFormat:@"%@://%@/", url.scheme, url.host];
+	
+	self.summary = [self createSummary:[dict objectForKey:@"content"] makePlainText:YES];
+}
 
-	if([author isKindOfClass:[NSDictionary class]]) {
-		self.authorAvatarURL = [author objectForKey:@"avatar_URL"];
-		self.authorDisplayName = [author objectForKey:@"display_name"];
+
+- (void)updateFromReaderDictionary:(NSDictionary *)dict {
+	
+	NSDictionary *author = [dict objectForKey:@"post_author"];
+	if ([author isKindOfClass:[NSDictionary class]]) {
+		self.author = [author stringForKey:@"post_author"];
+		self.authorAvatarURL = [author stringForKey:@"avatar_URL"];
+		self.authorDisplayName = [author stringForKey:@"display_name"];
 		// email can return a boolean.
 		if([[author objectForKey:@"email"] isKindOfClass:[NSString class]]) {
-			self.authorEmail = [author objectForKey:@"email"];
+			self.authorEmail = [author stringForKey:@"email"];
+		}
+		
+	} else {
+		// Some endpoints return a string and not an object
+		self.author = [dict stringForKey:@"post_author"];
+	}
+	self.authorURL = [dict stringForKey:@"blog_url"];
+	
+	self.blogURL = [dict stringForKey:@"blog_url"];
+	self.blogName = [[dict stringForKey:@"blog_name"] stringByDecodingXMLCharacters];
+	self.blogSiteID = [dict numberForKey:@"blog_site_id"];
+	
+	self.content = [self normalizeParagraphs:[dict objectForKey:@"post_content_full"]];
+	self.commentsOpen = [NSNumber numberWithBool:[@"open" isEqualToString:[dict stringForKey:@"comment_status"]]];
+	
+	NSDate *date;
+	NSString *timestamp = [dict objectForKey:@"post_timestamp"];
+	if (timestamp != nil) {
+		NSTimeInterval timeInterval = [timestamp doubleValue];
+		date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+	} else {
+		date = [DateUtils dateFromISOString:[dict objectForKey:@"post_date_gmt"]];
+	}
+	self.date_created_gmt = date;
+	self.sortDate = date;
+	self.likeCount = [dict numberForKey:@"post_like_count"];
+	self.permaLink = [dict stringForKey:@"post_permalink"];
+	self.postTitle = [[[dict stringForKey:@"post_title"] stringByDecodingXMLCharacters] trim];
+	
+	self.isLiked = [dict numberForKey:@"is_liked"];
+	
+	self.siteID = [dict numberForKey:@"blog_id"];
+	
+	NSString *summary = [self makePlainText:[dict stringForKey:@"post_content"]];
+	if ([summary length] > ReaderPostSummaryLength) {
+		summary = [self createSummary:summary makePlainText:NO];
+	}
+	self.summary = summary;
+	
+	NSString *img = [dict stringForKey:@"post_featured_thumbnail"];
+	if (![img length]) {
+		img = [dict stringForKey:@"post_featured_media"];
+	}
+	if([img length]) {
+		if (NSNotFound != [img rangeOfString:@"<img "].location) {
+			self.featuredImage = [self parseImageSrcFromHTML:img];
 		}
 	}
 	
-    self.commentCount = [dict numberForKey:@"comment_count"];
-	self.dateSynced = [NSDate date];
-	self.featuredImage = featuredImage;
-	
-	self.isFollowing = [dict numberForKey:@"is_following"];
-	self.isReblogged = [dict numberForKey:@"is_reblogged"];
-
-	self.status = [dict objectForKey:@"status"];
-
+	img = [dict stringForKey:@"post_avatar"];
+	if ([img length]) {
+		img = [img stringByDecodingXMLCharacters];
+		self.postAvatar = [self parseImageSrcFromHTML:img];
+	}
 }
+
+
+- (NSString *)parseImageSrcFromHTML:(NSString *)html {
+	NSError *error;
+	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"src=\"\\S+\"" options:NSRegularExpressionCaseInsensitive error:&error];
+	NSRange rng = [regex rangeOfFirstMatchInString:html options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [html length])];
+	
+	if (NSNotFound != rng.location) {
+		rng = NSMakeRange(rng.location+5, rng.length-6);
+		return [html substringWithRange:rng];
+	}
+	return nil;
+}
+
 
 - (NSString *)makePlainText:(NSString *)string {
 	return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] trim];
@@ -380,7 +421,9 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 		snippet = [snippet substringToIndex:(rng.location + 1)];
 	} else {
 		rng = [snippet rangeOfString:@" " options:NSBackwardsSearch];
-		snippet = [NSString stringWithFormat:@"%@ ...", [snippet substringToIndex:rng.location]];
+		if (rng.location != NSNotFound) {
+			snippet = [NSString stringWithFormat:@"%@ ...", [snippet substringToIndex:rng.location]];
+		}
 	}
 
 	return snippet;
@@ -388,6 +431,11 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
 
 - (NSString *)normalizeParagraphs:(NSString *)string {
+
+	if (!string) {
+		return @"";
+	}
+	
 	NSError *error;
 	
 	// Convert div tags to p tags
@@ -487,6 +535,9 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 
 	NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/reblogs/new", self.siteID, self.postID];
 	[[WordPressComApi sharedApi] postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+		NSDictionary *dict = (NSDictionary *)responseObject;
+		self.isReblogged = [dict numberForKey:@"is_reblogged"];
+
 		if(success) {
 			success();
 		}
@@ -694,7 +745,12 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 									 if (postsArr) {									 
 										 [ReaderPost syncPostsFromEndpoint:path
 																 withArray:postsArr
-															   withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
+															   withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]
+																   success:^{
+																	   if (success) {
+																		   success(operation, responseObject);
+																	   }
+																   }];
 			
 										 [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:ReaderLastSyncDateKey];
 										 [NSUserDefaults resetStandardUserDefaults];
@@ -703,7 +759,9 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 											 NSTimeInterval interval = - (60 * 60 * 24 * 7); // 7 days.
 											 [ReaderPost deletePostsSyncedEarlierThan:[NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]] withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
 										 }
+										 return;
 									 }
+									 
 									 if (success) {
 										 success(operation, responseObject);
 									 }
@@ -714,6 +772,25 @@ NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 									 }
 								 }];
 
+}
+
+
++ (void)fetchPostsWithCompletionHandler:(void (^)(NSInteger count, NSError *error))completionHandler {
+	NSString *endpoint = [self currentEndpoint];
+	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
+	NSDictionary *params = @{@"number":numberToSync, @"per_page":numberToSync};
+	
+	[self getPostsFromEndpoint:endpoint
+				withParameters:params
+				   loadingMore:NO
+					   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+						   NSArray *postsArr = [responseObject arrayForKey:@"posts"];
+						   if(completionHandler){
+							   completionHandler([postsArr count], NULL);
+						   }
+					   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+						   completionHandler(0, error);
+					   }];
 }
 
 @end

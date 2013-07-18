@@ -453,6 +453,10 @@ OUT  OF  OR  IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
+## google-plus-ios-sdk
+
+Copyright 2013 Google Inc.
+
 ## wpxmlrpc
 
 # License

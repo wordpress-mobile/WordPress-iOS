@@ -439,12 +439,15 @@
 
 
 - (void)setToolbarHidden:(BOOL)hidden forViewController:(UIViewController *)controller animated:(BOOL)animated {
+	PanelViewWrapper *wrapView = [self wrapViewForViewController:controller];
     if (!hidden) {
         CGRect frame = controller.view.frame;
-        frame.size.height -= 44.0f;
-        controller.view.frame = frame;
+		if (wrapView.frame.size.height == frame.size.height) {
+			frame.size.height -= 44.0f;
+			controller.view.frame = frame;
+		}
     }
-    [[self wrapViewForViewController:controller] setToolbarHidden:hidden animated:animated];
+    [wrapView setToolbarHidden:hidden animated:animated];
 }
 
 - (void)viewControllerWantsToBeFullyVisible:(UIViewController *)controller {

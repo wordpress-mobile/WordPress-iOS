@@ -1,6 +1,9 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <WordPressApi/WordPressApi.h>
 #import <Crashlytics/Crashlytics.h>
+#import <GPPSignIn.h>
+#import <GPPShare.h>
+
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "NSString+Helpers.h"
@@ -220,6 +223,7 @@
 
     [self setupUserAgent];
     [WPMobileStats initializeStats];
+    [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
 
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
         NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
@@ -360,6 +364,14 @@
             }];
             return YES;
         }
+    }
+    return NO;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    if ([[GPPShare sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
+        return YES;
     }
     return NO;
 }
@@ -997,14 +1009,16 @@
 					stringByReplacingOccurrencesOfString: @">" withString: @""]
 				   stringByReplacingOccurrencesOfString: @" " withString: @""];
 
-    NSLog(@"Registered for push notifications and stored device token: %@", myToken);
+    NSLog(@"Device token received in didRegisterForRemoteNotificationsWithDeviceToken: %@", myToken);
     
 	// Store the token
     NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if (![previousToken isEqualToString:myToken]) {
+         NSLog(@"Device Token has changed! OLD Value %@, NEW value %@", previousToken, myToken);
         [[NSUserDefaults standardUserDefaults] setObject:myToken forKey:kApnsDeviceTokenPrefKey];
-        [self sendApnsToken];
+        [[WordPressComApi sharedApi] syncPushNotificationInfo]; //synch info again since the device token has changed.
     }
+
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {

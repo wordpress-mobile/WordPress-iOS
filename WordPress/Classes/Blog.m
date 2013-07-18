@@ -112,9 +112,15 @@
 
 // used as a key to store passwords, if you change the algorithm, logins will break
 - (NSString *)displayURL {
+    NSString *url = [NSURL IDNDecodedHostname:self.url];
+    NSAssert(url != nil, @"Decoded url shouldn't be nil");
+    if (url == nil) {
+        WPFLog(@"displayURL: decoded url is nil: %@", self.url);
+        return self.url;
+    }
     NSError *error = NULL;
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
-    NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:[NSURL IDNDecodedHostname:self.url] options:0 range:NSMakeRange(0, [[NSURL IDNDecodedHostname:self.url] length]) withTemplate:@""]];
+    NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""]];
     
     if([result hasSuffix:@"/"])
         result = [result substringToIndex:[result length] - 1];

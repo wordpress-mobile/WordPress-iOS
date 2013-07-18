@@ -23,17 +23,25 @@
 #import "ReaderReblogFormView.h"
 
 NSInteger const ReaderCommentsToSync = 100;
+NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
 
 @interface ReaderPostDetailViewController ()<ReaderPostDetailViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate> {
 	BOOL _hasMoreContent;
 	BOOL _loadingMore;
     CGFloat _previousOffset;
+	CGPoint savedScrollOffset;
+	CGFloat keyboardOffset;
+	BOOL _infiniteScrollEnabled;
+	BOOL _isSyncing;
 }
 
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) ReaderPostDetailView *headerView;
 @property (nonatomic, strong) ReaderCommentFormView *readerCommentFormView;
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
+@property (nonatomic) BOOL infiniteScrollEnabled;
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic, strong) UIBarButtonItem *commentButton;
 @property (nonatomic, strong) UIBarButtonItem *likeButton;
@@ -45,6 +53,7 @@ NSInteger const ReaderCommentsToSync = 100;
 @property (nonatomic) BOOL isScrollingCommentIntoView;
 @property (nonatomic) BOOL isShowingCommentForm;
 @property (nonatomic) BOOL isShowingReblogForm;
+@property (nonatomic) BOOL canUseFullScreen;
 
 - (void)buildHeader;
 - (void)buildTopToolbar;
@@ -59,13 +68,20 @@ NSInteger const ReaderCommentsToSync = 100;
 - (void)hideCommentForm;
 - (void)showReblogForm;
 - (void)hideReblogForm;
+- (void)enableInfiniteScrolling;
+- (void)disableInfiniteScrolling;
 
 - (void)handleCommentButtonTapped:(id)sender;
 - (void)handleLikeButtonTapped:(id)sender;
 - (void)handleReblogButtonTapped:(id)sender;
 - (void)handleShareButtonTapped:(id)sender;
-- (void)handleCloseKeyboard:(id)sender;
+- (void)handleDismissForm:(id)sender;
 - (BOOL)setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field;
+
+- (void)syncWithUserInteraction:(BOOL)userInteraction;
+- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)handleKeyboardDidShow:(NSNotification *)notification;
+- (void)handleKeyboardWillHide:(NSNotification *)notification;
 
 @end
 
@@ -77,6 +93,7 @@ NSInteger const ReaderCommentsToSync = 100;
 
 - (void)dealloc {
 	_resultsController.delegate = nil;
+    _tableView.delegate = nil;
 }
 
 
@@ -86,6 +103,7 @@ NSInteger const ReaderCommentsToSync = 100;
 		self.post = apost;
 		self.comments = [NSMutableArray array];
         self.wantsFullScreenLayout = YES;
+		self.canUseFullScreen = YES;
 	}
 	return self;
 }
@@ -103,14 +121,20 @@ NSInteger const ReaderCommentsToSync = 100;
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
+	self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
+	_tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	_tableView.dataSource = self;
+	_tableView.delegate = self;
+	[self.view addSubview:_tableView];
+	
+	if (self.infiniteScrollEnabled) {
+        [self enableInfiniteScrolling];
+    }
+	
 	self.title = self.post.postTitle;
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.contentInset = UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height, 0, self.navigationController.toolbar.frame.size.height, 0);
-	
-	if ([self.resultsController.fetchedObjects count] > 0) {
-		self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
-	}
 	
 	[self buildHeader];
 	[self buildTopToolbar];
@@ -119,16 +143,24 @@ NSInteger const ReaderCommentsToSync = 100;
 	
 	[self prepareComments];
 	[self showStoredComment];
-
 }
 
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
+	CGSize contentSize = self.tableView.contentSize;
+    if(contentSize.height > savedScrollOffset.y) {
+        [self.tableView scrollRectToVisible:CGRectMake(savedScrollOffset.x, savedScrollOffset.y, 0.0f, 0.0f) animated:NO];
+    } else {
+        [self.tableView scrollRectToVisible:CGRectMake(0.0f, contentSize.height, 0.0f, 0.0f) animated:NO];
+    }
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+
 	self.panelNavigationController.delegate = self;
     [self setFullScreen:NO];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
     self.navigationController.navigationBar.translucent = YES;
     self.navigationController.toolbar.translucent = YES;
 
@@ -143,19 +175,45 @@ NSInteger const ReaderCommentsToSync = 100;
 	[self showStoredComment];
 }
 
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	
+	WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    if( appDelegate.connectionAvailable == NO ) return; //do not start auto-sync if connection is down
+	
+    NSDate *lastSynced = [self lastSyncDate];
+    if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) {
+		[self syncWithUserInteraction:NO];
+    }
+	
+	[self.post addObserver:self forKeyPath:@"isReblogged" options:NSKeyValueObservingOptionNew context:@"reblogging"];
+}
+
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+	
+	if (IS_IPHONE) {
+        savedScrollOffset = self.tableView.contentOffset;
+    }
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self.post removeObserver:self forKeyPath:@"isReblogged" context:@"reblogging"];
 	
     self.panelNavigationController.delegate = nil;
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.toolbar.translucent = NO;
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
 	[self.navigationController setToolbarHidden:YES animated:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
+
 
 - (void)viewDidUnload {
 	[super viewDidUnload];
-    
+
+	self.activityFooter = nil;
+	self.tableView = nil;
 	self.headerView = nil;
 	self.readerCommentFormView = nil;
 	self.readerReblogFormView = nil;
@@ -183,6 +241,11 @@ NSInteger const ReaderCommentsToSync = 100;
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
 	[_headerView updateLayout];
+
+	// Make sure a selected comment is visible after rotating.
+	if ([self.tableView indexPathForSelectedRow] != nil && self.isShowingCommentForm) {
+		[self.tableView scrollToNearestSelectedRowAtScrollPosition:UITableViewScrollPositionNone animated:NO];
+	}
 }
 
 
@@ -194,7 +257,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	_headerView.backgroundColor = [UIColor whiteColor];
 	[self.tableView setTableHeaderView:_headerView];
 	
-	UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCloseKeyboard:)];
+	UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDismissForm:)];
 	tgr.cancelsTouchesInView = NO;
 	[_headerView addGestureRecognizer:tgr];
 }
@@ -264,7 +327,8 @@ NSInteger const ReaderCommentsToSync = 100;
 	
 	UIButton *reblogBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 	[reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog"] forState:UIControlStateNormal];
-    [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog-active"] forState:UIControlStateSelected];
+	[reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog-active"] forState:UIControlStateHighlighted];
+    [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog-done"] forState:UIControlStateSelected];
 	reblogBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
 	reblogBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 	[reblogBtn addTarget:self action:@selector(handleReblogButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -331,6 +395,17 @@ NSInteger const ReaderCommentsToSync = 100;
 	};
 	
 	flattenComments(self.resultsController.fetchedObjects);
+	if ([_comments count] > 0) {
+		self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
+	}
+	
+	// Cache attributed strings.
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, NULL), ^{
+		for (ReaderComment *comment in _comments) {
+			comment.attributedContent = [ReaderCommentTableViewCell convertHTMLToAttributedString:comment.content withOptions:nil];
+		}
+	   [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+	});
 }
 
 
@@ -345,6 +420,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	
 	btn = (UIButton *)_reblogButton.customView;
 	[btn setSelected:[self.post.isReblogged boolValue]];
+	btn.userInteractionEnabled = !btn.selected;
 	_reblogButton.customView = btn;
 	
 	UIBarButtonItem *placeholder = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -365,6 +441,11 @@ NSInteger const ReaderCommentsToSync = 100;
 }
 
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	[self updateToolbar];
+}
+
+
 - (void)handleCommentButtonTapped:(id)sender {
 	if (_readerCommentFormView.window != nil) {
 		[self hideCommentForm];
@@ -373,6 +454,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	
 	[self showCommentForm];
 }
+
 
 - (void)handleLikeButtonTapped:(id)sender {
 	[self.post toggleLikedWithSuccess:^{
@@ -431,7 +513,7 @@ NSInteger const ReaderCommentsToSync = 100;
 }
 
 
-- (void)handleCloseKeyboard:(id)sender {
+- (void)handleDismissForm:(id)sender {
 	if (_readerCommentFormView.window != nil) {
 		[self hideCommentForm];
 	} else {
@@ -482,6 +564,9 @@ NSInteger const ReaderCommentsToSync = 100;
 		return;
 	}
 	
+	self.canUseFullScreen = NO;
+	[self.navigationController setToolbarHidden:YES animated:NO];
+	
 	NSIndexPath *path = [self.tableView indexPathForSelectedRow];
 	if (path) {
 		_readerCommentFormView.comment = (ReaderComment *)[self.resultsController objectAtIndexPath:path];
@@ -515,11 +600,16 @@ NSInteger const ReaderCommentsToSync = 100;
 	[_readerCommentFormView removeFromSuperview];
 	self.isShowingCommentForm = NO;
 	[self.view endEditing:YES];
+	self.canUseFullScreen = YES;
+	[self.navigationController setToolbarHidden:NO animated:YES];
 }
 
 
 - (void)showReblogForm {
 	[self hideCommentForm];
+	
+	self.canUseFullScreen = NO;
+	[self.navigationController setToolbarHidden:YES animated:NO];
 	
 	if (_readerReblogFormView.superview != nil) {
 		return;
@@ -552,9 +642,25 @@ NSInteger const ReaderCommentsToSync = 100;
 	[_readerReblogFormView removeFromSuperview];
 	self.isShowingReblogForm = NO;
 	[self.view endEditing:YES];
+	
+	self.canUseFullScreen = YES;
+	[self.navigationController setToolbarHidden:NO animated:YES];
 }
 
+
+- (void)setCanUseFullScreen:(BOOL)canUseFullScreen{
+	_canUseFullScreen = canUseFullScreen;
+	if (!_canUseFullScreen){
+		[self setFullScreen:NO];
+	}
+}
+
+
 - (void)setFullScreen:(BOOL)fullScreen {
+	if (!self.canUseFullScreen) {
+		fullScreen = NO;
+	}
+	
     [self.navigationController setToolbarHidden:fullScreen animated:YES];
     [self.navigationController setNavigationBarHidden:fullScreen animated:YES];
     return;
@@ -581,6 +687,53 @@ NSInteger const ReaderCommentsToSync = 100;
     }
 }
 
+
+- (void)handleKeyboardDidShow:(NSNotification *)notification {
+	CGRect frame = self.view.frame;
+	CGRect startFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+	CGRect endFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+	
+	// Figure out the difference between the bottom of this view, and the top of the keyboard.
+	// This should account for any toolbars.
+	CGPoint point = [self.view.window convertPoint:startFrame.origin toView:self.view];
+	keyboardOffset = point.y - (frame.origin.y + frame.size.height);
+	
+	// if we're upside down, we need to adjust the origin.
+	if (endFrame.origin.x == 0 && endFrame.origin.y == 0) {
+		endFrame.origin.y = endFrame.origin.x += MIN(endFrame.size.height, endFrame.size.width);
+	}
+	
+	point = [self.view.window convertPoint:endFrame.origin toView:self.view];
+	frame.size.height = point.y;
+	
+	[UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+		self.view.frame = frame;
+	} completion:^(BOOL finished) {
+		// BUG: When dismissing a modal view, and the keyboard is showing again, the animation can get clobbered in some cases.
+		// When this happens the view is set to the dimensions of its wrapper view, hiding content that should be visible
+		// above the keyboard.
+		// For now use a fallback animation.
+		if (CGRectEqualToRect(self.view.frame, frame) == false) {
+			[UIView animateWithDuration:0.3 animations:^{
+				self.view.frame = frame;
+			}];
+		}
+	}];
+}
+
+
+- (void)handleKeyboardWillHide:(NSNotification *)notification {
+	[self.navigationController setToolbarHidden:YES animated:NO];
+	
+	CGRect frame = self.view.frame;
+	CGRect keyFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+	
+	CGPoint point = [self.view.window convertPoint:keyFrame.origin toView:self.view];
+	frame.size.height = point.y - (frame.origin.y + keyboardOffset);
+	self.view.frame = frame;
+}
+
+
 #pragma mark - Sync methods
 
 - (NSDate *)lastSyncDate {
@@ -592,10 +745,9 @@ NSInteger const ReaderCommentsToSync = 100;
 	
 	if ([self.post.postID integerValue] == 0 ) { // Weird that this should ever happen. 
 		self.post.dateCommentsSynced = [NSDate date];
-		[self performSelector:@selector(hideRefreshHeader) withObject:self afterDelay:0.5f];
 		return;
 	}
-	
+	_isSyncing = YES;
 	NSDictionary *params = @{@"number":[NSNumber numberWithInteger:ReaderCommentsToSync]};
 
 	[ReaderPost getCommentsForPost:[self.post.postID integerValue]
@@ -616,7 +768,7 @@ NSInteger const ReaderCommentsToSync = 100;
 	
 	if (_loadingMore) return;
 	_loadingMore = YES;
-	
+	_isSyncing = YES;
 	NSUInteger numberToSync = [_comments count] + ReaderCommentsToSync;
 	NSDictionary *params = @{@"number":[NSNumber numberWithInteger:numberToSync]};
 
@@ -631,14 +783,10 @@ NSInteger const ReaderCommentsToSync = 100;
 }
 
 
-- (BOOL)hasMoreContent {
-	return _hasMoreContent;
-}
-
-
 - (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject {
 	self.post.dateCommentsSynced = [NSDate date];
-	
+	_loadingMore = NO;
+	_isSyncing = NO;
 	NSDictionary *resp = (NSDictionary *)responseObject;
 	NSArray *commentsArr = [resp arrayForKey:@"comments"];
 	
@@ -656,17 +804,55 @@ NSInteger const ReaderCommentsToSync = 100;
 							 withContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
 	
 	[self prepareComments];
-	[self.tableView reloadData];
-
-	if ([self.resultsController.fetchedObjects count] > 0) {
-		self.tableView.backgroundColor = [UIColor colorWithHexString:@"EFEFEF"];
-	}
-
 }
 
 
 - (void)onSyncFailure:(AFHTTPRequestOperation *)operation error:(NSError *)error {
 	// TODO: prompt about failure.
+}
+
+
+#pragma mark - Infinite Scrolling
+
+- (void)setInfiniteScrollEnabled:(BOOL)infiniteScrollEnabled {
+    if (infiniteScrollEnabled == _infiniteScrollEnabled)
+        return;
+	
+    _infiniteScrollEnabled = infiniteScrollEnabled;
+    if (self.isViewLoaded) {
+        if (_infiniteScrollEnabled) {
+            [self enableInfiniteScrolling];
+        } else {
+            [self disableInfiniteScrolling];
+        }
+    }
+}
+
+
+- (BOOL)infiniteScrollEnabled {
+    return _infiniteScrollEnabled;
+}
+
+
+- (void)enableInfiniteScrolling {
+    if (_activityFooter == nil) {
+        CGRect rect = CGRectMake(145.0f, 10.0f, 30.0f, 30.0f);
+        _activityFooter = [[UIActivityIndicatorView alloc] initWithFrame:rect];
+        _activityFooter.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+        _activityFooter.hidesWhenStopped = YES;
+        _activityFooter.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        [_activityFooter stopAnimating];
+    }
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
+    footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [footerView addSubview:_activityFooter];
+    self.tableView.tableFooterView = footerView;
+}
+
+
+- (void)disableInfiniteScrolling {
+    self.tableView.tableFooterView = nil;
+    _activityFooter = nil;
 }
 
 
@@ -703,7 +889,7 @@ NSInteger const ReaderCommentsToSync = 100;
 		cell.parentController = self;
     }
 	cell.accessoryType = UITableViewCellAccessoryNone;
-		
+	
 	ReaderComment *comment = [_comments objectAtIndex:indexPath.row];
 	[cell configureCell:comment];
 
@@ -728,13 +914,20 @@ NSInteger const ReaderCommentsToSync = 100;
 		return nil;
 	}
 	
-	[self showCommentForm];
-
+	if ([self canComment]) {
+		[self showCommentForm];
+	}
+	
 	return indexPath;
 }
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if(![self canComment]) {
+		[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+		return;
+	}
+	
 	_readerCommentFormView.comment = [_comments objectAtIndex:indexPath.row];
 	if (IS_IPAD) {
 		[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
@@ -754,12 +947,51 @@ NSInteger const ReaderCommentsToSync = 100;
 }
 
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (IS_IPAD == YES) {
+		cell.accessoryType = UITableViewCellAccessoryNone;
+	}
+	
+    // Are we approaching the end of the table?
+    if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) &&
+		(indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) &&
+		[self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
+        
+		// Only 3 rows till the end of table
+        if (!_isSyncing && _hasMoreContent) {
+            [_activityFooter startAnimating];
+            [self loadMoreWithSuccess:^{
+                [_activityFooter stopAnimating];
+            } failure:^(NSError *error) {
+                [_activityFooter stopAnimating];
+            }];
+        }
+    }
+}
+
 #pragma mark - UIScrollView Delegate Methods
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    if (self.panelNavigationController) {
+        [self.panelNavigationController viewControllerWantsToBeFullyVisible:self];
+    }
+}
+
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 	if (_isScrollingCommentIntoView){
 		self.isScrollingCommentIntoView = NO;
 	}
+	
+	if (!self.canUseFullScreen) {
+		return;
+	}
+	
+	// Toolbars can vanish if the content is smaller than the screen and the user swipes quickly. 
+	if (self.tableView.contentSize.height < self.tableView.frame.size.height) {
+		return;
+	}
+	
     CGFloat dY = scrollView.contentOffset.y - _previousOffset;
     BOOL toolbarHidden = self.navigationController.toolbarHidden;
     if (toolbarHidden &&
@@ -830,7 +1062,6 @@ NSInteger const ReaderCommentsToSync = 100;
 		[self hideCommentForm];
 		self.post.storedComment = nil;
 		[self prepareComments];
-		[self.tableView reloadData];
 	} else {
 		[self hideReblogForm];
 	}
@@ -841,7 +1072,8 @@ NSInteger const ReaderCommentsToSync = 100;
 	// If we are replying, and scrolled away from the comment, scroll back to it real quick.
 	if ([readerTextForm isEqual:_readerCommentFormView] && [self isReplying] && !_isScrollingCommentIntoView) {
 		NSIndexPath *path = [self.tableView indexPathForSelectedRow];
-		if (NSOrderedSame != [path compare:[self.tableView.indexPathsForVisibleRows objectAtIndex:0]]) {
+		NSArray *paths = [self.tableView indexPathsForVisibleRows];
+		if ([paths count] > 0 && NSOrderedSame != [path compare:[paths objectAtIndex:0]]) {
 			self.isScrollingCommentIntoView = YES;
 			[self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:YES];
 		}

@@ -10,6 +10,7 @@
 #import <DTCoreText/DTCoreText.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <QuartzCore/QuartzCore.h>
+#import "DTTiledLayerWithoutFade.h"
 #import "ReaderMediaView.h"
 #import "ReaderImageView.h"
 #import "ReaderVideoView.h"
@@ -20,7 +21,11 @@
 #import "UIImageView+Gravatar.h"
 #import "UILabel+SuggestSize.h"
 
-@interface ReaderPostDetailView()<DTAttributedTextContentViewDelegate>
+#define ContentTextViewYOffset -20
+
+@interface ReaderPostDetailView()<DTAttributedTextContentViewDelegate> {
+	BOOL _relayoutTextFlag;
+}
 
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) UIView *authorView;
@@ -132,6 +137,7 @@
 		[_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
 		[_followButton setTitleColor:[UIColor colorWithRed:116.0f/255.0f green:116.0f/255.0f blue:116.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
 		[_followButton addTarget:self action:@selector(handleFollowButtonInteraction:) forControlEvents:UIControlEventAllTouchEvents];
+		[_followButton addTarget:self action:@selector(handleFollowButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
 		[_authorView addSubview:_followButton];
 		
@@ -141,7 +147,7 @@
 			CGRect titleFrame = CGRectMake(padding, contentY + padding, width - (padding * 2), 44.0f);
 			self.titleLabel = [[UILabel alloc] initWithFrame:titleFrame];
 			_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-			_titleLabel.backgroundColor = [UIColor clearColor];
+			_titleLabel.backgroundColor = [UIColor whiteColor];
 			_titleLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:20.0f];
 			_titleLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0f];
 			_titleLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -153,36 +159,34 @@
 			contentY = titleFrame.origin.y + titleFrame.size.height;
 		}
 
-        [DTAttributedTextContentView setLayerClass:[CATiledLayer class]];
-		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, contentY + 10.0f, width, 100.0f)]; // Starting height is arbitrary
+		[DTAttributedTextContentView setLayerClass:[DTTiledLayerWithoutFade class]];
+		self.textContentView = [[DTAttributedTextContentView alloc] initWithFrame:CGRectMake(0.0f, contentY + ContentTextViewYOffset, width, 100.0f)]; // Starting height is arbitrary
 		_textContentView.delegate = self;
 		_textContentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_textContentView.backgroundColor = [UIColor whiteColor];
 		_textContentView.edgeInsets = UIEdgeInsetsMake(0.0f, padding, 0.0f, padding);
 		_textContentView.shouldDrawImages = NO;
 		_textContentView.shouldDrawLinks = NO;
-		_textContentView.clipsToBounds = YES;
 		[self addSubview:_textContentView];
 		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
-																  DTDefaultFontFamily:@"Open Sans",
-														DTDefaultLineHeightMultiplier:@0.9,
-																	DTDefaultFontSize:@13,
-																   DTDefaultTextColor:[UIColor colorWithHexString:@"404040"],
-																   DTDefaultLinkColor:[UIColor colorWithHexString:@"278dbc"],
-														  DTDefaultLinkHighlightColor:[UIColor colorWithHexString:@"005684"],
-                                                              DTDefaultLinkDecoration:@NO,
-												   NSTextSizeMultiplierDocumentOption:@1.1
-										 }];
-			
-			[self updateAttributedString: [[NSAttributedString alloc] initWithHTMLData:[self.post.content dataUsingEncoding:NSUTF8StringEncoding]
-																			   options:dict
-																	documentAttributes:NULL]];
+		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
+															  DTDefaultFontFamily:@"Open Sans",
+													DTDefaultLineHeightMultiplier:@0.9,
+																DTDefaultFontSize:@13,
+															   DTDefaultTextColor:[UIColor colorWithHexString:@"404040"],
+															   DTDefaultLinkColor:[UIColor colorWithHexString:@"278dbc"],
+													  DTDefaultLinkHighlightColor:[UIColor colorWithHexString:@"005684"],
+														  DTDefaultLinkDecoration:@NO,
+											   NSTextSizeMultiplierDocumentOption:@1.1
+									 }];
 
-			
-		});
-
+		// There seems to be a bug with DTCoreText causing images on the first line to have a negative y origin.
+		// As a work around, let the first line always be empty. We shift the text view's origin to compensate.
+		NSString *str = [NSString stringWithFormat:@"<p> </p>%@", self.post.content];
+		[self updateAttributedString: [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
+																		   options:dict
+																documentAttributes:NULL]];
+		[self sendSubviewToBack:_textContentView];
     }
     return self;
 }
@@ -215,7 +219,15 @@
 	frame.origin.x = _blogLabel.frame.origin.x + _blogLabel.frame.size.width + 5.0f;
 	frame.size.width = sz.width;
 	_followButton.frame = frame;
-
+	
+	// The first time layoutSubviews is called our text control will build all its custom attachments. We're
+	// rejecting the attachment frame desired by the text control and substituting our own. Because expected
+	// and actual frames differ, DTCoreText can end up redrawing text on top of the DTLinkButtons. A work
+	// around is to call updateLayout once after all custom attachments are created.
+	if (!_relayoutTextFlag) {
+		_relayoutTextFlag = YES;
+		[self performSelector:@selector(updateLayout) withObject:self afterDelay:.1];
+	}
 }
 
 
@@ -231,7 +243,7 @@
 		_titleLabel.frame = titleFrame;
 		
 		CGRect contentFrame = _textContentView.frame;
-		contentFrame.origin.y = titleFrame.origin.y + titleFrame.size.height + 10.0f;
+		contentFrame.origin.y = titleFrame.origin.y + titleFrame.size.height + ContentTextViewYOffset;
 		_textContentView.frame = contentFrame;
 	}
 	
@@ -274,7 +286,12 @@
 		viewSize.height *= scale;
 	} else {
 		viewSize.width = _textContentView.frame.size.width - (_textContentView.edgeInsets.left + _textContentView.edgeInsets.right);
-		viewSize.height = viewSize.height * (_textContentView.frame.size.width / imageView.image.size.width);
+		if (imageView.isShowingPlaceholder) {
+			viewSize.height = viewSize.width * 0.66f;
+		} else {
+			viewSize.height = viewSize.height * (_textContentView.frame.size.width / imageView.image.size.width);
+		}
+		
 		viewSize.height += imageView.edgeInsets.top; // account for the top edge inset.
 	}
 
@@ -299,8 +316,11 @@
 
 
 - (void)handleFollowButtonTapped:(id)sender {
+	self.followButton.selected = ![self.post.isFollowing boolValue]; // to fake the call.
+	[self setNeedsLayout];
 	[self.post toggleFollowingWithSuccess:^{
-		// nothing to do. 
+		self.followButton.selected = [self.post.isFollowing boolValue]; // for good measure!
+		[self setNeedsLayout];
 	} failure:^(NSError *error) {
 		WPLog(@"Error Following Blog : %@", [error localizedDescription]);
 		[_followButton setSelected:self.post.isFollowing];
@@ -440,19 +460,13 @@
 	// Remeber to add an extra 10px to the frame to preserve aspect ratio.
 	UIEdgeInsets edgeInsets = _textContentView.edgeInsets;
 	edgeInsets.left = 0.0f - edgeInsets.left;
-	edgeInsets.top = 12.0f;
+	edgeInsets.top = 15.0f;
 	edgeInsets.right = 0.0f - edgeInsets.right;
 	edgeInsets.bottom = 0.0f;
 	
-	// Maybe a bug in DTCoreText. If there is no text preceeding an image, the frame for the image has a negative y value.
-	// In this case let the top edgeInset be the inverse of the y value so the image is correctly positioned visually.
-	if (frame.origin.y < 0) {
-		edgeInsets.top = ABS(frame.origin.y);
-	}
-	
 	if ([attachment isKindOfClass:[DTImageTextAttachment class]]) {
 		if ([self isEmoji:attachment.contentURL]) {
-			// minimal frame to suppress draing context errors with 0 height or width.
+			// minimal frame to suppress drawing context errors with 0 height or width.
 			frame.size.width = MAX(frame.size.width, 1.0f);
 			frame.size.height = MAX(frame.size.height, 1.0f);
 			ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
@@ -465,7 +479,6 @@
 							   }];
 			return imageView;
 		}
-		
 		
         DTImageTextAttachment *imageAttachment = (DTImageTextAttachment *)attachment;
 		UIImage *image;
@@ -483,7 +496,7 @@
 			frame.size.height = width * 0.66f;
 		}
 		
-		// extra 10px to offset the top edge inset keeping the image from bumping the text above it.
+		// offset the top edge inset keeping the image from bumping the text above it.
 		frame.size.height += edgeInsets.top;
 		
 		ReaderImageView *imageView = [[ReaderImageView alloc] initWithFrame:frame];
@@ -510,6 +523,7 @@
 								   [self handleMediaViewLoaded:readerImageView];
 							   }];
 		}
+
 		return imageView;
 		
 	} else {
@@ -527,22 +541,23 @@
 		}
 	
 		// make sure we have a reasonable size.
-		if (frame.size.width > _textContentView.frame.size.width) {
-			frame.size.width = width;
+		if (frame.size.width > width) {
 			frame.size.height = frame.size.height * (width / frame.size.width);
+			frame.size.width = width;
 		}
 		
-		// extra 10px to offset the top edge inset keeping the image from bumping the text above it.
+		// offset the top edge inset keeping the image from bumping the text above it.
 		frame.size.height += edgeInsets.top;
 
 		ReaderVideoView *videoView = [[ReaderVideoView alloc] initWithFrame:frame];
-		videoView.contentMode = UIViewContentModeScaleAspectFit;
+		videoView.contentMode = UIViewContentModeCenter;
+		videoView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0];
 		videoView.edgeInsets = edgeInsets;
 
 		[_mediaArray addObject:videoView];
 		[videoView setContentURL:attachment.contentURL ofType:videoType success:^(id readerVideoView) {
+			[(ReaderVideoView *)readerVideoView setContentMode:UIViewContentModeScaleAspectFit];
 			[self handleMediaViewLoaded:readerVideoView];
-			
 		} failure:^(id readerVideoView, NSError *error) {
 			[self handleMediaViewLoaded:readerVideoView];
 			
@@ -550,7 +565,7 @@
 		
 		[videoView addTarget:self action:@selector(handleVideoTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
-		[self handleMediaViewLoaded:videoView];
+
 		return videoView;
 	}
 	

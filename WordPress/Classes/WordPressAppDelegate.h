@@ -74,7 +74,6 @@
 - (void)checkWPcomAuthentication;
 - (void)showContentDetailViewController:(UIViewController *)viewController;
 - (void)registerForPushNotifications;
-- (void)sendApnsToken;
 - (void)unregisterApnsToken;
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif;
 - (void)useDefaultUserAgent;

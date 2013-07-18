@@ -29,6 +29,7 @@ install_resource()
   esac
 }
 install_resource 'SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle'
+install_resource 'google-plus-ios-sdk/google-plus-ios-sdk-1.3.0/GooglePlus.bundle'
 
 rsync -avr --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 rm "$RESOURCES_TO_COPY"

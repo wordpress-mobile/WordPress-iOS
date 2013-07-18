@@ -786,7 +786,9 @@
         [featuredImageSpinner setHidden:YES];
         [featuredImageLabel setHidden:YES];
         [featuredImageView setHidden:NO];
-        self.post.post_thumbnail = media.mediaID;
+        if (![self.post isDeleted] && [self.post managedObjectContext]) {
+            self.post.post_thumbnail = media.mediaID;
+        }
         [featuredImageView setImage:[UIImage imageWithContentsOfFile:media.localURL]];
     } else {
         //reset buttons

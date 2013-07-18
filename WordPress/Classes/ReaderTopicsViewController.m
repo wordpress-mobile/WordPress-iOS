@@ -9,8 +9,8 @@
 #import "ReaderTopicsViewController.h"
 #import "WordPressComApi.h"
 #import "ReaderPost.h"
+#import "WPFriendFinderViewController.h"
 
-NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 
 @interface ReaderTopicsViewController ()
@@ -21,6 +21,7 @@ NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 @property (nonatomic, strong) NSDictionary *currentTopic;
 
 - (void)loadTopics;
+- (void)handleFriendFinderButtonTapped:(id)sender;
 
 @end
 
@@ -46,7 +47,6 @@ NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 		}
 		self.topicsArray = arr;
 		
-				
 		NSDictionary *dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ReaderCurrentTopicKey];
 		if (dict) {
 			self.currentTopic = dict;
@@ -72,6 +72,12 @@ NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
                                                                                   action:@selector(handleCancelButtonTapped:)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
+	UIBarButtonItem *friendFinderButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Friends", @"")
+																		   style:UIBarButtonItemStyleBordered
+																		  target:self
+																		  action:@selector(handleFriendFinderButtonTapped:)];
+	self.navigationItem.leftBarButtonItem = friendFinderButton;
+	
     self.tableView.backgroundView = nil;
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
 	
@@ -94,11 +100,27 @@ NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 
 
 - (void)loadTopics {
+	
+	if ([self.topicsArray count] == 0) {
+		CGFloat width = self.tableView.frame.size.width;
+		UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+		activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+		UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, activityView.frame.size.height)];
+		footerView.backgroundColor = [UIColor clearColor];
+		CGRect frame = activityView.frame;
+		frame.origin.x = (width / 2.0f ) - (activityView.frame.size.width / 2.0f);
+		activityView.frame = frame;
+		[footerView addSubview:activityView];
+		[self.tableView setTableFooterView:footerView];
+		[activityView startAnimating];
+	}
+	
 	[ReaderPost getReaderTopicsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+		[self.tableView setTableFooterView:nil];
 		NSDictionary *dict = (NSDictionary *)responseObject;
 		
 		NSString *topicEndpoint = [[[ReaderPost readerEndpoints] objectAtIndex:ReaderTopicEndpointIndex] objectForKey:@"endpoint"];
-		NSArray *arr = [dict objectForKey:@"topics"];
+		NSArray *arr = [dict arrayForKey:@"topics"];
 		NSMutableArray *topics = [NSMutableArray arrayWithCapacity:[arr count]];
 		
 		for (NSDictionary *dict in arr) {
@@ -125,9 +147,7 @@ NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 		[self refreshIfReady];
 		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		if ([_topicsArray count] == 0) {
-			
-		}
+		[self.tableView setTableFooterView:nil];
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Unable to Load Topics", @"")
 															message:NSLocalizedString(@"Sorry. There was a problem loading the topics list.  Please try again later.", @"")
 														   delegate:nil
@@ -135,6 +155,14 @@ NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 												  otherButtonTitles:nil, nil];
 		[alertView show];
 	}];
+}
+
+
+- (void)handleFriendFinderButtonTapped:(id)sender {
+	NSLog(@"Tapped");
+    WPFriendFinderViewController *controller = [[WPFriendFinderViewController alloc] initWithNibName:@"WPReaderViewController" bundle:nil];
+	[self.navigationController pushViewController:controller animated:YES];
+    [controller loadURL:kMobileReaderFFURL];
 }
 
 

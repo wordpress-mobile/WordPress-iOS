@@ -78,7 +78,11 @@
     self.postID         = [[postInfo objectForKey:@"page_id"] numericValue];
     self.content        = [postInfo objectForKey:@"description"];
     self.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
-    self.status         = [postInfo objectForKey:@"page_status"];
+    NSString *status = [postInfo objectForKey:@"page_status"];
+    if ([status isEqualToString:@"future"]) {
+        status = @"publish";
+    }
+    self.status         = status;
     NSString *password = [postInfo objectForKey:@"wp_password"];
     if ([password isEqualToString:@""]) {
         password = nil;

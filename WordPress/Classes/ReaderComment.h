@@ -18,7 +18,7 @@
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) NSSet *childComments;
 @property (nonatomic, strong) ReaderComment *parentComment;
-
+@property (nonatomic, strong) NSAttributedString *attributedContent;
 
 /*
  Fetches comments for the specified post.
@@ -60,6 +60,7 @@
  @param context The Managed Object Context to fetch from.
  */
 + (void)createOrUpdateWithDictionary:(NSDictionary *)dict forPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context;
+
 
 - (NSString *)shortDate;
 

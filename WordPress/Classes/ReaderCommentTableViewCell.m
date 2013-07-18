@@ -14,7 +14,6 @@
 
 #define RCTVCVerticalPadding 5.0f
 #define RCTVCIndentationWidth 10.0f
-
 #define RCTVCAuthorLabelHeight 20.0f
 
 @interface ReaderCommentTableViewCell()<DTAttributedTextContentViewDelegate>
@@ -24,8 +23,6 @@
 @property (nonatomic, strong) UILabel *authorLabel;
 @property (nonatomic, strong) UILabel *dateLabel;
 
-
-+ (NSAttributedString *)convertHTMLToAttributedString:(NSString *)html withOptions:(NSDictionary *)options;
 - (void)handleLinkTapped:(id)sender;
 
 @end
@@ -185,7 +182,7 @@
 	CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:width].height;
 
 	self.textContentView.frame = CGRectMake(0.0f, _authorLabel.frame.size.height + 10.0f, width, height);
-	[self.textContentView layoutSubviews];
+	[self.textContentView setNeedsLayout];
 }
 
 
@@ -212,7 +209,10 @@
 	_authorLabel.text = comment.author;
 	[self.cellImageView setImageWithURL:[NSURL URLWithString:comment.authorAvatarURL] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom.png"]];
 
-	self.textContentView.attributedString = [[self class] convertHTMLToAttributedString:comment.content withOptions:nil];
+	if (!comment.attributedContent) {
+		comment.attributedContent = [[self class] convertHTMLToAttributedString:comment.content withOptions:nil];
+	}
+	self.textContentView.attributedString = comment.attributedContent;
 }
 
 

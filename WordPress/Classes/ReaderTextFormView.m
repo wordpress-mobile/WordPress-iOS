@@ -72,7 +72,7 @@
 
 
 - (void)setText:(NSString *)text {
-	_promptLabel.hidden = ([text length] > 0) ? YES : NO;
+	_promptLabel.hidden = (_textView.isFirstResponder || [text length] > 0) ? YES : NO;
 	_textView.text = text;
 }
 
@@ -127,7 +127,7 @@
 		CGFloat y = UIInterfaceOrientationIsPortrait([[[UIApplication sharedApplication] keyWindow] rootViewController].interfaceOrientation) ? 6.0f : 0.0f;
 		self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, y, 200.0f, 32.0f)];
 		_headerView.backgroundColor = [UIColor clearColor];
-		_headerView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
+		_headerView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
 		
 		self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 18.0f)];
 		_titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];

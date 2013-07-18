@@ -7,6 +7,7 @@
 //
 
 #import "ReaderComment.h"
+#import "NSString+XMLExtensions.h"
 
 @interface ReaderComment()
 
@@ -22,6 +23,7 @@
 @dynamic post;
 @dynamic childComments;
 @dynamic parentComment;
+@synthesize attributedContent;
 
 + (NSArray *)fetchCommentsForPost:(ReaderPost *)post withContext:(NSManagedObjectContext *)context {
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -161,7 +163,7 @@
 	
 	NSDictionary *author = [dict objectForKey:@"author"];
 	
-	self.author = [author stringForKey:@"name"];
+	self.author = [[author stringForKey:@"name"] stringByDecodingXMLCharacters];
 	self.author_email = [author stringForKey:@"email"];
 	self.author_url = [author stringForKey:@"URL"];
 	self.authorAvatarURL = [author stringForKey:@"avatar_URL"];

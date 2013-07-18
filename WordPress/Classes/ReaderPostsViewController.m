@@ -6,6 +6,9 @@
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
+#import <DTCoreText/DTCoreText.h>
+#import "DTCoreTextFontDescriptor.h"
+
 #import "WPTableViewControllerSubclass.h"
 #import "ReaderPostsViewController.h"
 #import "ReaderPostTableViewCell.h"
@@ -23,17 +26,7 @@
 #import "WPTableImageSource.h"
 #import "WPInfoView.h"
 
-NSInteger const ReaderPostsToSync = 20;
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
-
-@interface WPTableViewController (SubclassMethodOverride)
-// Override the readonly subclass method so we can set the resultsController to nil when topics change.
-@property (nonatomic, strong) NSFetchedResultsController *resultsController;
-/**
- A view to show the user when the tableview is empty.
- */
-@property (nonatomic, strong) UIView *noResultsView;
-@end
 
 @interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate, WPTableImageSourceDelegate> {
 	BOOL _hasMoreContent;
@@ -46,11 +39,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 //@property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) ReaderReblogFormView *readerReblogFormView;
 @property (nonatomic, strong) WPFriendFinderNudgeView *friendFinderNudgeView;
-@property (nonatomic, strong) UIBarButtonItem *titleButton;
 @property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic) BOOL isShowingReblogForm;
 
-- (NSDictionary *)currentTopic;
 - (void)configureTableHeader;
 - (void)fetchBlogsAndPrimaryBlog;
 - (void)handleReblogButtonTapped:(id)sender;
@@ -63,6 +54,14 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 @end
 
 @implementation ReaderPostsViewController
+
++ (void)initialize {
+	// DTCoreText will cache font descriptors on a background thread. However, because the font cache
+	// updated synchronously, the detail view controller ends up waiting for the fonts to load anyway
+	// (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready
+	// for the detail view, and avoid a perceived lag. 
+	[DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
+}
 
 #pragma mark - Life Cycle methods
 
@@ -164,9 +163,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     
 	self.panelNavigationController.delegate = self;
 	
-	NSDictionary *dict = [self currentTopic];
-	NSString *title = [[dict objectForKey:@"title"] capitalizedString];
-	self.title = NSLocalizedString(title, @"");
+	self.title = [[[ReaderPost currentTopic] objectForKey:@"title"] capitalizedString];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -195,7 +192,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.readerReblogFormView = nil;
 	self.friendFinderNudgeView = nil;
-	self.titleButton = nil;
 	self.navBar = nil;
 }
 
@@ -224,15 +220,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 }
 
 #pragma mark - Instance Methods
-
-- (NSDictionary *)currentTopic {
-	NSDictionary *topic = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ReaderCurrentTopicKey];
-	if(!topic) {
-		topic = [[ReaderPost readerEndpoints] objectAtIndex:0];
-	}
-	return topic;
-}
-
 
 - (void)configureTableHeader {
 	if ([self.resultsController.fetchedObjects count] == 0) {
@@ -424,9 +411,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 #pragma mark - UIScrollView Delegate Methods
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-}
-
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     // Instead of loading images only when scrolling stops, start loading them when
     // the scroll view starts decelerating, if it's not going too fast
@@ -470,7 +454,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (NSString *)noResultsPrompt {
 	NSString *prompt; 
-	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
+	NSString *endpoint = [ReaderPost currentEndpoint];
 	NSArray *endpoints = [ReaderPost readerEndpoints];
 	NSInteger idx = [endpoints indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 		BOOL match = NO;
@@ -516,7 +500,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (NSString *)resultsControllerCacheName {
-	return [[self currentTopic] objectForKey:@"endpoint"];
+	return [ReaderPost currentEndpoint];
 }
 
 
@@ -527,7 +511,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (NSFetchRequest *)fetchRequest {
 	
-	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
+	NSString *endpoint = [ReaderPost currentEndpoint];
 	
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:[self managedObjectContext]]];
@@ -602,7 +586,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
-	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
+	NSString *endpoint = [ReaderPost currentEndpoint];
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
 	NSDictionary *params = @{@"number":numberToSync, @"per_page":numberToSync};
 	[ReaderPost getPostsFromEndpoint:endpoint
@@ -630,10 +614,19 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	if (_loadingMore) return;
 	_loadingMore = YES;
 	
+	
 	ReaderPost *post = self.resultsController.fetchedObjects.lastObject;
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
-	NSDictionary *params = @{@"before":[DateUtils isoStringFromDate:post.dateCreated], @"number":numberToSync, @"per_page":numberToSync};
-	NSString *endpoint = [[self currentTopic] objectForKey:@"endpoint"];
+	NSString *endpoint = [ReaderPost currentEndpoint];
+	id before;
+	if([endpoint isEqualToString:@"freshly-pressed"]) {
+		// freshly-pressed wants an ISO string but the rest want a timestamp.
+		before = [DateUtils isoStringFromDate:post.dateCreated];
+	} else {
+		before = [NSNumber numberWithInteger:[post.dateCreated timeIntervalSince1970]];
+	}
+
+	NSDictionary *params = @{@"before":before, @"number":numberToSync, @"per_page":numberToSync};
 
 	[ReaderPost getPostsFromEndpoint:endpoint
 					  withParameters:params
@@ -714,7 +707,10 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	[self.panelNavigationController pushViewController:controller fromViewController:self animated:YES];
 }
 
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	[super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
+	
     if (indexPath.row <= _rowsSeen) {
         return;
     }
@@ -752,20 +748,29 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 #pragma mark - ReaderTopicsDelegate Methods
 
 - (void)readerTopicChanged {
+	if (IS_IPAD){
+		[self.panelNavigationController popToRootViewControllerAnimated:YES];
+	}
+	
+	_loadingMore = NO;
 	_hasMoreContent = YES;
     _rowsSeen = 0;
 	[[(WPInfoView *)self.noResultsView titleLabel] setText:[self noResultsPrompt]];
-	self.resultsController.delegate = nil;
-	self.resultsController = nil;
+
+	[self.tableView setContentOffset:CGPointMake(0, 0) animated:NO];
+	[self resetResultsController];
 	[self.tableView reloadData];
 	
     [self configureTableHeader];
 	
-    self.titleButton.title = [self.currentTopic objectForKey:@"title"];
-    
-    if ( [WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && ![self isSyncing] ) {
+	self.title = [[[ReaderPost currentTopic] stringForKey:@"title"] capitalizedString];
+
+    if ([WordPressAppDelegate sharedWordPressApplicationDelegate].connectionAvailable == YES && ![self isSyncing] ) {
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
 		[NSUserDefaults resetStandardUserDefaults];
+		if (IS_IPAD) {
+			[self simulatePullToRefresh];
+		}
     }
 }
 
@@ -799,12 +804,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 				
 				[[NSUserDefaults standardUserDefaults] setObject:usersBlogs forKey:@"wpcom_users_blogs"];
 				
-				if ([usersBlogs count] == 1) {
-					NSDictionary *dict = [usersBlogs objectAtIndex:0];
-					[[NSUserDefaults standardUserDefaults] setObject:[dict numberForKey:@"blogid"] forKey:@"wpcom_users_prefered_blog_id"];
-					[NSUserDefaults resetStandardUserDefaults];
-				} else if ([usersBlogs count] > 1) {
-					
+                __block NSNumber *preferredBlogId;
+                if ([usersBlogs count] > 1) {
 					[[WordPressComApi sharedApi] getPath:@"me"
 											  parameters:nil
 												 success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -812,8 +813,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 													 NSNumber *primaryBlog = [dict objectForKey:@"primary_blog"];
 													 [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 														 if ([primaryBlog isEqualToNumber:[obj numberForKey:@"blogid"]]) {
-															 [[NSUserDefaults standardUserDefaults] setObject:[obj numberForKey:@"blogid"] forKey:@"wpcom_users_prefered_blog_id"];
-															 [NSUserDefaults resetStandardUserDefaults];
+                                                             preferredBlogId = [obj numberForKey:@"blogid"];
 															 *stop = YES;
 														 }
 													 }];
@@ -823,7 +823,14 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 					
 					
 				}
-				
+
+                if (!preferredBlogId) {
+                    NSDictionary *dict = [usersBlogs objectAtIndex:0];
+                    preferredBlogId = [dict numberForKey:@"blogid"];
+                }
+                
+                [[NSUserDefaults standardUserDefaults] setObject:preferredBlogId forKey:@"wpcom_users_prefered_blog_id"];
+                [NSUserDefaults resetStandardUserDefaults];
 			} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 				// Fail silently.
             }];
