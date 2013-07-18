@@ -172,7 +172,7 @@
     [[Crashlytics sharedInstance] setDelegate:self];
 
     BOOL hasCredentials = [[WordPressComApi sharedApi] hasCredentials];
-    [Crashlytics setObjectValue:[NSNumber numberWithBool:hasCredentials] forKey:@"logged_in"];
+    [self setCommonCrashlyticsParameters];
 
     if (hasCredentials && [WordPressComApi sharedApi].username != nil) {
         [Crashlytics setUserName:[WordPressComApi sharedApi].username];
@@ -180,14 +180,21 @@
 
     void (^wpcomLoggedInBlock)(NSNotification *) = ^(NSNotification *note) {
         [Crashlytics setUserName:[WordPressComApi sharedApi].username];
-        [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
+        [self setCommonCrashlyticsParameters];
     };
     void (^wpcomLoggedOutBlock)(NSNotification *) = ^(NSNotification *note) {
         [Crashlytics setUserName:nil];
-        [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
+        [self setCommonCrashlyticsParameters];
     };
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomLoggedInBlock];
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomLoggedOutBlock];
+}
+
+- (void)setCommonCrashlyticsParameters
+{
+    [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
+    [Crashlytics setObjectValue:@([[WordPressComApi sharedApi] hasCredentials]) forKey:@"connected_to_dotcom"];
+    [Crashlytics setObjectValue:@([Blog countWithContext:[self managedObjectContext]]) forKey:@"number_of_blogs"];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
