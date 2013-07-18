@@ -1093,37 +1093,6 @@
     }
 }
 
-- (void)sendApnsToken {	
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
-    if( nil == token ) return; //no apns token available
-    
-    if(![[WordPressComApi sharedApi] hasCredentials])
-        return;
-    
-    NSString *authURL = kNotificationAuthURL;   	
-    WPAccount *account = [WPAccount defaultWordPressComAccount];
-	if (account) {
-#ifdef DEBUG
-        NSNumber *sandbox = [NSNumber numberWithBool:YES];
-#else
-        NSNumber *sandbox = [NSNumber numberWithBool:NO];
-#endif
-        WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-
-        [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
-
-        [api callMethod:@"wpcom.mobile_push_register_token"
-             parameters:[NSArray arrayWithObjects:account.username, account.password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
-                success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    WPFLog(@"Registered token %@, sending blogs list", token);
-                    [[WordPressComApi sharedApi] syncPushNotificationInfo];
-                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey]; //Remove the token from Preferences, otherwise the token is never re-sent to the server on the next startup
-                    WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
-                }];
-	}
-}
-
 - (void)unregisterApnsToken {
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if( nil == token ) return; //no apns token available
