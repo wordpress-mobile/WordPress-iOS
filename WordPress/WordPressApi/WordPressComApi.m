@@ -15,6 +15,7 @@
 #import "NSString+Helpers.h"
 #import "WPToast.h"
 #import <AFJSONRequestOperation.h>
+#import <UIDeviceHardware.h>
 #import "UIDevice+WordPressIdentifier.h"
 
 NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
@@ -497,11 +498,21 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     [api setAuthorizationHeaderWithToken:self.authToken];
     
 #ifdef DEBUG
-    NSNumber *sandbox = [NSNumber numberWithBool:YES];
+    NSNumber *production = @NO;
 #else
-    NSNumber *sandbox = [NSNumber numberWithBool:NO];
+    NSNumber *production = @YES;
 #endif
-    WPXMLRPCRequest *tokenRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_register_token" parameters:[NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox,  [[UIDevice currentDevice] name], nil]];
+
+    NSDictionary *tokenOptions = @{
+                                   @"device_family": @"apple",
+                                   @"device_model": [UIDeviceHardware platform],
+                                   @"device_name": [[UIDevice currentDevice] name],
+                                   @"device_uuid": [[UIDevice currentDevice] wordpressIdentifier],
+                                   @"production": production,
+                                   @"app_version": [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
+                                   @"os_version": [[UIDevice currentDevice] systemVersion],
+                                   };
+    WPXMLRPCRequest *tokenRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_register_token" parameters:[NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], token, tokenOptions, nil]];
     WPXMLRPCRequestOperation *tokenOperation = [api XMLRPCRequestOperationWithRequest:tokenRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         WPFLog(@"Registered token %@" , token);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
