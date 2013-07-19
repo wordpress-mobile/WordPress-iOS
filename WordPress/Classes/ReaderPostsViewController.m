@@ -823,6 +823,10 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 					
 					
 				}
+                
+                if ([usersBlogs count] == 0) {
+                    return;
+                }
 
                 if (!preferredBlogId) {
                     NSDictionary *dict = [usersBlogs objectAtIndex:0];
