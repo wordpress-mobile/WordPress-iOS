@@ -651,18 +651,21 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject {
+	BOOL wasLoadingMore = _loadingMore;
 	_loadingMore = NO;
 	
 	NSDictionary *resp = (NSDictionary *)responseObject;
 	NSArray *postsArr = [resp arrayForKey:@"posts"];
 	
 	if (!postsArr) {
-		_hasMoreContent = NO;
+		if(wasLoadingMore) {
+			_hasMoreContent = NO;
+		}
 		return;
 	}
 	
 	// if # of results is less than # requested then no more content.
-	if ([postsArr count] < ReaderPostsToSync) {
+	if ([postsArr count] < ReaderPostsToSync && wasLoadingMore) {
 		_hasMoreContent = NO;
 	}
 	
