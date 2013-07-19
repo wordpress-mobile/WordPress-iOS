@@ -15,6 +15,7 @@
 #import "NSString+Helpers.h"
 #import "WPToast.h"
 #import <AFJSONRequestOperation.h>
+#import <UIDeviceHardware.h>
 #import "UIDevice+WordPressIdentifier.h"
 
 NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
@@ -504,6 +505,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 
     NSDictionary *params = @{ @"device_family":@"apple",
                               @"device_name":[[UIDevice currentDevice] name],
+                              @"device_model": [UIDeviceHardware platform],
                               @"device_uuid":[[UIDevice currentDevice] wordpressIdentifier],
                               @"app_version":[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
                               @"os_version":[[UIDevice currentDevice] systemVersion],
