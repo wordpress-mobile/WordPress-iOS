@@ -831,6 +831,10 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 												 }];
 					
 				}
+                
+                if ([usersBlogs count] == 0) {
+                    return;
+                }
 
 			} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 				// Fail silently.
