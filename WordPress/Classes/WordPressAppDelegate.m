@@ -21,7 +21,6 @@
 #import "PostsViewController.h"
 #import "CommentsViewController.h"
 #import "StatsWebViewController.h"
-#import "WPReaderViewController.h"
 #import "SoundUtil.h"
 #import "WordPressComApiCredentials.h"
 #import "PocketAPI.h"
