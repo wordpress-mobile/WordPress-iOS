@@ -804,11 +804,11 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 				
 				[[NSUserDefaults standardUserDefaults] setObject:usersBlogs forKey:@"wpcom_users_blogs"];
 				
-                __block NSNumber *preferredBlogId;
                 if ([usersBlogs count] > 1) {
 					[[WordPressComApi sharedApi] getPath:@"me"
 											  parameters:nil
 												 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+													 __block NSNumber *preferredBlogId;
 													 NSDictionary *dict = (NSDictionary *)responseObject;
 													 NSNumber *primaryBlog = [dict objectForKey:@"primary_blog"];
 													 [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -817,20 +817,21 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 															 *stop = YES;
 														 }
 													 }];
+													 
+													 if (!preferredBlogId) {
+														 NSDictionary *dict = [usersBlogs objectAtIndex:0];
+														 preferredBlogId = [dict numberForKey:@"blogid"];
+													 }
+													 
+													 [[NSUserDefaults standardUserDefaults] setObject:preferredBlogId forKey:@"wpcom_users_prefered_blog_id"];
+													 [NSUserDefaults resetStandardUserDefaults];
+													 
 												 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 													 // TODO: Handle Failure. Retry maybe?
 												 }];
 					
-					
 				}
 
-                if (!preferredBlogId) {
-                    NSDictionary *dict = [usersBlogs objectAtIndex:0];
-                    preferredBlogId = [dict numberForKey:@"blogid"];
-                }
-                
-                [[NSUserDefaults standardUserDefaults] setObject:preferredBlogId forKey:@"wpcom_users_prefered_blog_id"];
-                [NSUserDefaults resetStandardUserDefaults];
 			} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 				// Fail silently.
             }];
