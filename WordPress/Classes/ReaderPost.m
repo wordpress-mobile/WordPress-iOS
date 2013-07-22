@@ -571,70 +571,17 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 
 - (NSString *)prettyDateString {
 	NSDate *date = [self isFreshlyPressed] ? self.sortDate : self.date_created_gmt;
-	NSString *str;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	NSTimeInterval diff = [[NSDate date] timeIntervalSinceDate:date];
-	
-	if(diff < 60) {
-		NSString *fmt = NSLocalizedString(@"%i second ago", @"second ago");
-		if(diff == 1) {
-			fmt = NSLocalizedString(@"%i seconds ago", @"seconds ago");
-		}
-		
-		str = [NSString stringWithFormat:fmt, (NSInteger)diff];
-
-	} else if(diff < 3600) {
-		
-		NSInteger min = (NSInteger)floor(diff / 60);
-		NSInteger sec = (NSInteger)floor(fmod(diff, 60));
-		NSString *minFmt = NSLocalizedString(@"%i minutes ago", @"minutes ago");
-		NSString *secFmt = NSLocalizedString(@"%i seconds ago", @"seconds ago");
-		if (min == 1) {
-			minFmt = NSLocalizedString(@"%i minute ago", @"minute ago");
-		}
-		if (sec == 1) {
-			secFmt = NSLocalizedString(@"%i second ago", @"second ago");
-		}
-
-		NSString *fmt = [NSString stringWithFormat:@"%@, %@", minFmt, secFmt];
-		str = [NSString stringWithFormat:fmt, min, sec];
-		
-	} else if (diff < 86400) {
-		
-		NSInteger hr = (NSInteger)floor(diff / 3600);
-		NSInteger min = (NSInteger)floor(fmod(diff, 3600) / 60);
-		
-		NSString *hrFmt = NSLocalizedString(@"%i hours ago", @"hours ago");
-		NSString *minFmt = NSLocalizedString(@"%i minutes ago", @"minutes ago");
-		if (hr == 1) {
-			hrFmt = NSLocalizedString(@"%i hour ago", @"hour ago");
-		}
-		if (min == 1) {
-			minFmt = NSLocalizedString(@"%i minute ago", @"minute ago");
-		}
-		
-		NSString *fmt = [NSString stringWithFormat:@"%@, %@", hrFmt, minFmt];
-		str = [NSString stringWithFormat:fmt, hr, min];
-		
-	} else {
-
-		NSInteger day = (NSInteger)floor(diff / 86400);
-		NSInteger hr = (NSInteger)floor(fmod(diff, 86400) / 3600);
-
-		NSString *dayFmt = NSLocalizedString(@"%i days ago", @"days ago");
-		NSString *hrFmt = NSLocalizedString(@"%i hours ago", @"hours ago");
-		if (day == 1) {
-			dayFmt = NSLocalizedString(@"%i day ago", @"day ago");
-		}
-		if (hr == 1) {
-			hrFmt = NSLocalizedString(@"%i hour ago", @"hour ago");
-		}
-		
-		NSString *fmt = [NSString stringWithFormat:@"%@, %@", dayFmt, hrFmt];
-		str = [NSString stringWithFormat:fmt, day, hr];
-		
-	}
-	
-	return str;
+    if (diff < 86400) {
+        formatter.dateStyle = NSDateFormatterNoStyle;
+        formatter.timeStyle = NSDateFormatterShortStyle;
+    } else {
+        formatter.dateStyle = NSDateFormatterShortStyle;
+        formatter.timeStyle = NSDateFormatterNoStyle;
+    }
+    formatter.doesRelativeDateFormatting = YES;
+    return [formatter stringFromDate:date];
 }
 
 
