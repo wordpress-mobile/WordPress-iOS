@@ -12,6 +12,6 @@
 
 + (BOOL)isInternetReachable;
 + (void)showAlertNoInternetConnection;
-+ (void)showAlertNoInternetConnectionWithDelegate:(id)delegate;
++ (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)())retryBlock;
 
 @end

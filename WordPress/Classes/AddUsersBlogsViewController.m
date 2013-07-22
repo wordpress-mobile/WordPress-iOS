@@ -373,8 +373,11 @@
 
 - (void)refreshBlogs {
     
-    if(![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
+    if (![ReachabilityUtils isInternetReachable]) {
+        __weak AddUsersBlogsViewController *weakSelf = self;
+        [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
+            [weakSelf refreshBlogs];
+        }];
         hasCompletedGetUsersBlogs = YES; 
         [self.tableView reloadData];
         return;
@@ -534,26 +537,14 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
-        if (alertView.tag == 1) {
-            HelpViewController *helpViewController = [[HelpViewController alloc] init];
-            
-            if (IS_IPAD) {
-                helpViewController.isBlogSetup = YES;
-                [self.navigationController pushViewController:helpViewController animated:YES];
-            }
-            else
-                [appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
-            
+        HelpViewController *helpViewController = [[HelpViewController alloc] init];
+
+        if (IS_IPAD) {
+            helpViewController.isBlogSetup = YES;
+            [self.navigationController pushViewController:helpViewController animated:YES];
         }
-    } else {
-        if (alertView.tag == 1) {
-            //OK
-        } else {
-            // Retry
-            hasCompletedGetUsersBlogs = NO; 
-            [self.tableView reloadData];
-            [self performSelector:@selector(refreshBlogs) withObject:nil afterDelay:0.1]; // Short delay so tableview can redraw.
-        }
+        else
+            [appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
     }
 
     if (failureAlertView == alertView) {
