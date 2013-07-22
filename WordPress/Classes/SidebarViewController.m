@@ -17,7 +17,6 @@
 #import "PostsViewController.h"
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
-#import "WPReaderViewController.h"
 #import "SettingsViewController.h"
 #import "StatsWebViewController.h"
 #import "PanelNavigationConstants.h"

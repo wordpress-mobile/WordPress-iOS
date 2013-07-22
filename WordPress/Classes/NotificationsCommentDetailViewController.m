@@ -18,6 +18,7 @@
 #import "NoteComment.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
+#import "NSURL+Util.h"
 #import "WPToast.h"
 
 #define APPROVE_BUTTON_TAG 1
@@ -295,9 +296,13 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         [self.replyTextView resignFirstResponder];
     }
     WPWebViewController *webViewController = [[WPWebViewController alloc] initWithNibName:nil bundle:nil];
-    [webViewController setUsername:[WordPressComApi sharedApi].username];
-    [webViewController setPassword:[WordPressComApi sharedApi].password];
-    [webViewController setUrl:url];
+    if ([url isWordPressDotComUrl]) {
+        [webViewController setUsername:[WordPressComApi sharedApi].username];
+        [webViewController setPassword:[WordPressComApi sharedApi].password];
+        [webViewController setUrl:[url ensureSecureURL]];
+    } else {
+        [webViewController setUrl:url];        
+    }
     [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
 }
 
