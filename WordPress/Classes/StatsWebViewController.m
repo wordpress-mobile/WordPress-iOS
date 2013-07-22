@@ -185,7 +185,10 @@ static NSString *_lastAuthedName = nil;
         WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
         if( !appDelegate.connectionAvailable ) {
             [webView hideRefreshingState];
-            [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
+            __weak StatsWebViewController *weakSelf = self;
+            [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
+                [weakSelf loadStats];
+            }];
             [webView loadHTMLString:@"<html><head></head><body></body></html>" baseURL:nil];
             
         } else {
@@ -342,7 +345,10 @@ static NSString *_lastAuthedName = nil;
     
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if( !appDelegate.connectionAvailable ) {
-        [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self]; 
+        __weak StatsWebViewController *weakSelf = self;
+        [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
+            [weakSelf loadStats];
+        }];
         return;
     }
 

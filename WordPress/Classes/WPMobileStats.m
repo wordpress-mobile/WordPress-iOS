@@ -10,6 +10,7 @@
 #import <Mixpanel/Mixpanel.h>
 #import "WordPressComApiCredentials.h"
 #import "WordPressComApi.h"
+#import "WordPressAppDelegate.h"
 
 // General
 NSString *const StatsEventAppOpened = @"Application Opened";
@@ -50,6 +51,7 @@ NSString *const StatsEventWebviewCopiedArticleDetails = @"Copied Article Details
 NSString *const StatsEventWebviewOpenedArticleInSafari = @"Opened Article in Safari";
 NSString *const StatsEventWebviewSentArticleToPocket = @"Sent Article to Pocket";
 NSString *const StatsEventWebviewSentArticleToInstapaper = @"Sent Article to Instapaper";
+NSString *const StatsEventWebviewSentArticleToGooglePlus = @"Sent Article to Google Plus";
 
 // Notifications
 NSString *const StatsPropertyNotificationsOpened = @"notifications_opened";
@@ -252,6 +254,17 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 + (void)initializeStats
 {
     [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
+    NSDictionary *properties = @{
+                                 @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
+                                 @"number_of_blogs" : @([Blog countWithContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]]) };
+    [[Mixpanel sharedInstance] registerSuperProperties:properties];
+    
+    NSString *username = [WordPressComApi sharedApi].username;
+    if ([[WordPressComApi sharedApi] hasCredentials] && [username length] > 0) {
+        [[Mixpanel sharedInstance] identify:username];
+        [[Mixpanel sharedInstance].people increment:@"Application Opened" by:@(1)];
+        [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
+    }
 }
 
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event

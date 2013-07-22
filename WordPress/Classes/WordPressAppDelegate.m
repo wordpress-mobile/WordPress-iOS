@@ -1,6 +1,9 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <WordPressApi/WordPressApi.h>
 #import <Crashlytics/Crashlytics.h>
+#import <GPPSignIn.h>
+#import <GPPShare.h>
+
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 #import "NSString+Helpers.h"
@@ -169,7 +172,7 @@
     [[Crashlytics sharedInstance] setDelegate:self];
 
     BOOL hasCredentials = [[WordPressComApi sharedApi] hasCredentials];
-    [Crashlytics setObjectValue:[NSNumber numberWithBool:hasCredentials] forKey:@"logged_in"];
+    [self setCommonCrashlyticsParameters];
 
     if (hasCredentials && [WordPressComApi sharedApi].username != nil) {
         [Crashlytics setUserName:[WordPressComApi sharedApi].username];
@@ -177,14 +180,21 @@
 
     void (^wpcomLoggedInBlock)(NSNotification *) = ^(NSNotification *note) {
         [Crashlytics setUserName:[WordPressComApi sharedApi].username];
-        [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
+        [self setCommonCrashlyticsParameters];
     };
     void (^wpcomLoggedOutBlock)(NSNotification *) = ^(NSNotification *note) {
         [Crashlytics setUserName:nil];
-        [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
+        [self setCommonCrashlyticsParameters];
     };
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:wpcomLoggedInBlock];
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLogoutNotification object:nil queue:nil usingBlock:wpcomLoggedOutBlock];
+}
+
+- (void)setCommonCrashlyticsParameters
+{
+    [Crashlytics setObjectValue:[NSNumber numberWithBool:[[WordPressComApi sharedApi] hasCredentials]] forKey:@"logged_in"];
+    [Crashlytics setObjectValue:@([[WordPressComApi sharedApi] hasCredentials]) forKey:@"connected_to_dotcom"];
+    [Crashlytics setObjectValue:@([Blog countWithContext:[self managedObjectContext]]) forKey:@"number_of_blogs"];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -219,6 +229,7 @@
 
     [self setupUserAgent];
     [WPMobileStats initializeStats];
+    [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
 
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] != nil) {
         NSString *tempIsAuthenticated = (NSString *)[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"];
@@ -362,6 +373,14 @@
     return NO;
 }
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    if ([[GPPShare sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)applicationWillTerminate:(UIApplication *)application {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setAppBadge];
@@ -427,10 +446,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ApplicationDidBecomeActive" object:nil];
     
     if (!_hasRecordedApplicationOpenedEvent) {
-        NSDictionary *properties = @{
-                                     @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
-                                     @"number_of_blogs" : @([Blog countWithContext:[self managedObjectContext]]) };
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpened properties:properties];
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpened];
     }
     
     // Clear notifications badge and update server
@@ -1002,14 +1018,16 @@
 					stringByReplacingOccurrencesOfString: @">" withString: @""]
 				   stringByReplacingOccurrencesOfString: @" " withString: @""];
 
-    NSLog(@"Registered for push notifications and stored device token: %@", myToken);
+    NSLog(@"Device token received in didRegisterForRemoteNotificationsWithDeviceToken: %@", myToken);
     
 	// Store the token
     NSString *previousToken = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if (![previousToken isEqualToString:myToken]) {
+         NSLog(@"Device Token has changed! OLD Value %@, NEW value %@", previousToken, myToken);
         [[NSUserDefaults standardUserDefaults] setObject:myToken forKey:kApnsDeviceTokenPrefKey];
-        [self sendApnsToken];
+        [[WordPressComApi sharedApi] syncPushNotificationInfo]; //synch info again since the device token has changed.
     }
+
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
@@ -1067,52 +1085,6 @@
                                              UIRemoteNotificationTypeSound |
                                              UIRemoteNotificationTypeAlert)];
     }
-}
-
-- (void)sendApnsToken {	
-    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
-    if( nil == token ) return; //no apns token available
-    
-    if(![[WordPressComApi sharedApi] hasCredentials])
-        return;
-    
-    NSString *authURL = kNotificationAuthURL;   	
-    NSError *error = nil;
-	if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
-        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"] != nil) {
-            // Migrate password to keychain
-            [SFHFKeychainUtils storeUsername:username
-                                 andPassword:[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_password_preference"]
-                              forServiceName:@"WordPress.com"
-                              updateExisting:YES error:&error];
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_password_preference"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-        NSString *password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                        andServiceName:@"WordPress.com"
-                                                                 error:&error];
-        if (password != nil) {
-#ifdef DEBUG
-            NSNumber *sandbox = [NSNumber numberWithBool:YES];
-#else
-            NSNumber *sandbox = [NSNumber numberWithBool:NO];
-#endif
-            WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
-            
-            [api setAuthorizationHeaderWithToken:[[WordPressComApi sharedApi] authToken]];
-            
-            [api callMethod:@"wpcom.mobile_push_register_token"
-                 parameters:[NSArray arrayWithObjects:username, password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
-                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        WPFLog(@"Registered token %@, sending blogs list", token);
-                        [[WordPressComApi sharedApi] syncPushNotificationInfo];
-                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey]; //Remove the token from Preferences, otherwise the token is never re-sent to the server on the next startup
-                        WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
-                    }];
-        } 
-	}
 }
 
 - (void)unregisterApnsToken {

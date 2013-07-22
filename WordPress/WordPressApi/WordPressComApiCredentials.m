@@ -32,4 +32,8 @@
     return @"";
 }
 
++ (NSString *)googlePlusClientId {
+    return @"";
+}
+
 @end

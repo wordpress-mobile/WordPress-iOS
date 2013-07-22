@@ -15,6 +15,8 @@
 #import "NSString+Helpers.h"
 #import "WPToast.h"
 #import <AFJSONRequestOperation.h>
+#import <UIDeviceHardware.h>
+#import "UIDevice+WordPressIdentifier.h"
 
 NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
@@ -179,6 +181,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
         parameters:params
            success:successBlock
            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               WPFLog(@"Couldn't signin the user: %@", error);
                self.password = nil;
                if (operation.response.statusCode != 400) {
                    [WPError showAlertWithError:error];
@@ -482,62 +485,54 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 - (void)syncPushNotificationInfo {
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if( nil == token ) return; //no apns token available
-
+    
     if(![[WordPressComApi sharedApi] hasCredentials])
         return;
     
     NSString *authURL = kNotificationAuthURL;
-    NSError *error;
-    NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:context]];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"blogName" ascending:YES];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
-    NSArray *blogs = [context executeFetchRequest:fetchRequest error:&error];
-
-    NSMutableArray *blogsID = [NSMutableArray array];
-
-    //get a references to media files linked in a post
-    for (Blog *blog in blogs) {
-        if( [blog isWPcom] ) {
-            [blogsID addObject:[blog blogID] ];
-        } else {
-            if ( [blog getOptionValue:@"jetpack_client_id"] )
-                [blogsID addObject:[blog getOptionValue:@"jetpack_client_id"] ];
-        }
-    }
-
-    // Send a multicall for the blogs list and retrieval of push notification settings
+    
+    // Send a multicall for register the token and retrieval of push notification settings
     NSMutableArray *operations = [NSMutableArray arrayWithCapacity:2];
     WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
     
     [api setAuthorizationHeaderWithToken:self.authToken];
-  
-    NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
-	NSString *appversion = [[info objectForKey:@"CFBundleVersion"] stringByUrlEncoding];
     
-    NSArray *blogsListParameters = [NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], token, blogsID, @"apple", appversion, nil];
-    WPXMLRPCRequest *blogsListRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_set_blogs_list" parameters:blogsListParameters];
-    WPXMLRPCRequestOperation *blogsListOperation = [api XMLRPCRequestOperationWithRequest:blogsListRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        WPFLog(@"Sent blogs list (%d blogs)", [blogsID count]);
+#ifdef DEBUG
+    NSNumber *production = @NO;
+#else
+    NSNumber *production = @YES;
+#endif
+
+    NSDictionary *tokenOptions = @{
+                                   @"device_family": @"apple",
+                                   @"device_model": [UIDeviceHardware platform],
+                                   @"device_name": [[UIDevice currentDevice] name],
+                                   @"device_uuid": [[UIDevice currentDevice] wordpressIdentifier],
+                                   @"production": production,
+                                   @"app_version": [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
+                                   @"os_version": [[UIDevice currentDevice] systemVersion],
+                                   };
+    WPXMLRPCRequest *tokenRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_register_token" parameters:[NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], token, tokenOptions, nil]];
+    WPXMLRPCRequestOperation *tokenOperation = [api XMLRPCRequestOperationWithRequest:tokenRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        WPFLog(@"Registered token %@" , token);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Failed registering blogs list: %@", [error localizedDescription]);
+        WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
     }];
-
-    [operations addObject:blogsListOperation];
-
+    
+    [operations addObject:tokenOperation];
+    
     NSArray *settingsParameters = [NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], token, @"apple", nil];
     WPXMLRPCRequest *settingsRequest = [api XMLRPCRequestWithMethod:@"wpcom.get_mobile_push_notification_settings" parameters:settingsParameters];
     WPXMLRPCRequestOperation *settingsOperation = [api XMLRPCRequestOperationWithRequest:settingsRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
         [[NSUserDefaults standardUserDefaults] setObject:supportedNotifications forKey:@"notification_preferences"];
+        WPFLog(@"Notification settings loaded!");
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         WPFLog(@"Failed to receive supported notification list: %@", [error localizedDescription]);
     }];
-
+    
     [operations addObject:settingsOperation];
-
+    
     AFHTTPRequestOperation *combinedOperation = [api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {} failure:^(AFHTTPRequestOperation *operation, NSError *error) {}];
     [api enqueueHTTPRequestOperation:combinedOperation];
 }

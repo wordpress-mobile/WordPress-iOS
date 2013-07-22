@@ -302,7 +302,11 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     
     if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
+        __weak WPWebViewController *weakSelf = self;
+        [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
+            [weakSelf refreshWebView];
+        }];
+
         self.optionsButton.enabled = NO;
         self.refreshButton.enabled = NO;
         return;
@@ -491,6 +495,7 @@
         SafariActivity *safariActivity = [[SafariActivity alloc] init];
         InstapaperActivity *instapaperActivity = [[InstapaperActivity alloc] init];
         PocketActivity *pocketActivity = [[PocketActivity alloc] init];
+        GooglePlusActivity *googlePlusActivity = [[GooglePlusActivity alloc] init];
 
         NSMutableArray *activityItems = [NSMutableArray array];
         if (title) {
@@ -498,7 +503,7 @@
         }
 
         [activityItems addObject:[NSURL URLWithString:permaLink]];
-        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:@[safariActivity, instapaperActivity, pocketActivity]];
+        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:@[safariActivity, instapaperActivity, pocketActivity, googlePlusActivity]];
         activityViewController.completionHandler = ^(NSString *activityType, BOOL completed) {
             if (!completed)
                 return;
@@ -522,6 +527,8 @@
                 event = StatsEventWebviewSentArticleToInstapaper;
             } else if ([activityType isEqualToString:NSStringFromClass([PocketActivity class])]) {
                 event = StatsEventWebviewSentArticleToPocket;
+            } else if ([activityType isEqualToString:NSStringFromClass([GooglePlusActivity class])]) {
+                event = StatsEventWebviewSentArticleToGooglePlus;
             }
             
             if (event != nil) {
@@ -544,7 +551,10 @@
 
 - (void)reload {
     if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
+        __weak WPWebViewController *weakSelf = self;
+        [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
+            [weakSelf refreshWebView];
+        }];
         self.optionsButton.enabled = NO;
         self.refreshButton.enabled = NO;
         return;
@@ -653,17 +663,6 @@
         [self.scrollView setContentOffset:bottomOffset animated:YES];
     }
 }
-
-
-#pragma mark -
-#pragma mark AlertView Delegate Methods
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if(buttonIndex > 0) {
-        [self refreshWebView];
-    }
-}
-
 
 #pragma mark - UIActionSheetDelegate
 

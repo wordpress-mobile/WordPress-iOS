@@ -9,3 +9,4 @@
 #import "SafariActivity.h"
 #import "InstapaperActivity.h"
 #import "PocketActivity.h"
+#import "GooglePlusActivity.h"
