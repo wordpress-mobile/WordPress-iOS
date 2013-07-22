@@ -302,7 +302,11 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     
     if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
+        __weak WPWebViewController *weakSelf = self;
+        [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
+            [weakSelf refreshWebView];
+        }];
+
         self.optionsButton.enabled = NO;
         self.refreshButton.enabled = NO;
         return;
@@ -547,7 +551,10 @@
 
 - (void)reload {
     if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
+        __weak WPWebViewController *weakSelf = self;
+        [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
+            [weakSelf refreshWebView];
+        }];
         self.optionsButton.enabled = NO;
         self.refreshButton.enabled = NO;
         return;
@@ -656,17 +663,6 @@
         [self.scrollView setContentOffset:bottomOffset animated:YES];
     }
 }
-
-
-#pragma mark -
-#pragma mark AlertView Delegate Methods
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if(buttonIndex > 0) {
-        [self refreshWebView];
-    }
-}
-
 
 #pragma mark - UIActionSheetDelegate
 

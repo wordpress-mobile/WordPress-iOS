@@ -195,9 +195,34 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 
 
 + (void)createOrUpdateWithDictionary:(NSDictionary *)dict forEndpoint:(NSString *)endpoint withContext:(NSManagedObjectContext *)context {
+	NSNumber *blogSiteID = [dict numberForKey:@"site_id"];
+	NSNumber *siteID = [dict numberForKey:@"blog_id"];
+	NSNumber *postID = [dict numberForKey:@"ID"];
+
+	// following, likes and topics endpoints
+	if ([dict valueForKey:@"blog_site_id"] != nil) {
+		blogSiteID = [dict numberForKey:@"blog_site_id"];
+	}
 	
+	// freshly pressed
+	if ([dict valueForKey:@"editorial"]) {
+		NSDictionary *ed = [dict objectForKey:@"editorial"];
+		blogSiteID = [ed numberForKey:@"site_id"];
+		siteID = [ed numberForKey:@"blog_id"];
+	}
+	
+	// If the post is from the feedbag it won't have a siteID or postID (wtf!).
+	// Substitute the feed_id and feed_item_id for these. Since should be unique values for the feedback
+	// and we should avoid collisons with non-feedbag posts by checking the blogSiteID.
+	// Feedbag posts will never be .com posts and should never show comments, likes or reblogs options in the reader.
+	// Possible in following, likes and topics endpoints
+	if ([dict valueForKey:@"feed_item_id"]) {
+		postID = [dict numberForKey:@"feed_item_id"];
+		siteID = [dict numberForKey:@"feed_id"];
+	}
+
 	NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
-    request.predicate = [NSPredicate predicateWithFormat:@"(postID = %@) AND (endpoint = %@)", [dict objectForKey:@"ID"], endpoint];
+    request.predicate = [NSPredicate predicateWithFormat:@"(postID = %@) AND (siteID = %@) AND (blogSiteID = %@) AND (endpoint = %@)", postID, siteID, blogSiteID, endpoint];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:YES]];
     request.fetchLimit = 1;
     
@@ -215,7 +240,9 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
     } else {
 		post = (ReaderPost *)[NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
 														   inManagedObjectContext:context];
-		post.postID = [dict numberForKey:@"ID"];
+		post.postID = postID;
+		post.siteID = siteID;
+		post.blogSiteID = blogSiteID;
 		post.endpoint = endpoint;
     }
     
@@ -252,8 +279,6 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 	NSDictionary *editorial = [dict objectForKey:@"editorial"];
 	if (editorial) {
 		self.blogName = [[editorial stringForKey:@"blog_name"] stringByDecodingXMLCharacters];
-		self.blogSiteID = [editorial numberForKey:@"site_id"];
-		self.siteID = [editorial numberForKey:@"blog_id"];
 		self.sortDate = [DateUtils dateFromISOString:[editorial objectForKey:@"displayed_on"]];
 		
 		NSString *img = [editorial stringForKey:@"image"];
@@ -284,8 +309,6 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 		
 	} else {
 		self.blogName = [[dict stringForKey:@"blog_name"] stringByDecodingXMLCharacters];
-		self.blogSiteID = [dict numberForKey:@"site_id"];
-		self.siteID = [dict numberForKey:@"blog_id"];
 		self.sortDate = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
 	}
 	
@@ -337,7 +360,6 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 	
 	self.blogURL = [dict stringForKey:@"blog_url"];
 	self.blogName = [[dict stringForKey:@"blog_name"] stringByDecodingXMLCharacters];
-	self.blogSiteID = [dict numberForKey:@"blog_site_id"];
 	
 	self.content = [self normalizeParagraphs:[dict objectForKey:@"post_content_full"]];
 	self.commentsOpen = [NSNumber numberWithBool:[@"open" isEqualToString:[dict stringForKey:@"comment_status"]]];
@@ -357,8 +379,6 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 	self.postTitle = [[[dict stringForKey:@"post_title"] stringByDecodingXMLCharacters] trim];
 	
 	self.isLiked = [dict numberForKey:@"is_liked"];
-	
-	self.siteID = [dict numberForKey:@"blog_id"];
 	
 	NSString *summary = [self makePlainText:[dict stringForKey:@"post_content"]];
 	if ([summary length] > ReaderPostSummaryLength) {
