@@ -300,7 +300,7 @@
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
                           NSDictionary *mediaItem = (NSDictionary *)responseObject;
-                          self.featuredImageURL = [mediaItem objectForKey:@"link"];
+                          self.featuredImageURL = [mediaItem stringForKey:@"link"];
                           if (success) success();
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           if (failure) {
