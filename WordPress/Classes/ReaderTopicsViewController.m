@@ -11,8 +11,6 @@
 #import "ReaderPost.h"
 #import "WPFriendFinderViewController.h"
 
-NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
-
 @interface ReaderTopicsViewController ()
 
 @property (nonatomic, assign) BOOL topicsLoaded;
@@ -20,6 +18,7 @@ NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 @property (nonatomic, strong) NSArray *defaultTopicsArray;
 @property (nonatomic, strong) NSDictionary *currentTopic;
 
+- (NSArray *)fetchDefaultTopics;
 - (void)loadTopics;
 - (void)handleFriendFinderButtonTapped:(id)sender;
 
@@ -34,13 +33,13 @@ NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 - (id)initWithStyle:(UITableViewStyle)style {
 	self = [super initWithStyle:style];
 	if (self) {
-		NSArray *arr = [ReaderPost readerEndpoints];
-		NSIndexSet *indexSet = [arr indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-			NSDictionary *dict = (NSDictionary *)obj;
-			return [[dict objectForKey:@"default"] boolValue];
-		}];
-		self.defaultTopicsArray = [arr objectsAtIndexes:indexSet];
-		
+		self.defaultTopicsArray = [self fetchDefaultTopics];
+        
+        NSArray *arr = [[NSUserDefaults standardUserDefaults] arrayForKey:ReaderExtrasArrayKey];
+        if (arr != nil) {
+            self.defaultTopicsArray = [_defaultTopicsArray arrayByAddingObjectsFromArray:arr];
+        }
+        
 		arr = [[NSUserDefaults standardUserDefaults] arrayForKey:ReaderTopicsArrayKey];
 		if (arr == nil) {
 			arr = @[];
@@ -87,6 +86,16 @@ NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 
 #pragma mark - Instance Methods
 
+- (NSArray *)fetchDefaultTopics {
+    NSArray *arr = [ReaderPost readerEndpoints];
+    NSIndexSet *indexSet = [arr indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        NSDictionary *dict = (NSDictionary *)obj;
+        return [[dict objectForKey:@"default"] boolValue];
+    }];
+    return [arr objectsAtIndexes:indexSet];
+}
+
+
 - (void)refreshIfReady {
 	if([self.topicsArray count] && [self isViewLoaded]) {
 		[self.tableView reloadData];
@@ -125,25 +134,26 @@ NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
 		
 		for (NSDictionary *dict in arr) {
 			NSString *title = [dict objectForKey:@"cat_name"];
-			NSString *endpoint = [NSString stringWithFormat:topicEndpoint, [dict objectForKey:@"category_nicename"]];
+			NSString *endpoint = [NSString stringWithFormat:topicEndpoint, [dict stringForKey:@"category_nicename"]];
 			[topics addObject:@{@"title": title, @"endpoint":endpoint}];
 		}
 		
 		self.topicsArray = topics;
 		[[NSUserDefaults standardUserDefaults] setObject:topics forKey:ReaderTopicsArrayKey];
-		[NSUserDefaults resetStandardUserDefaults];
 		
 		arr = [dict objectForKey:@"extra"];
 		if (arr) {
-			NSMutableArray *extras = [NSMutableArray arrayWithArray:_defaultTopicsArray];
+			NSMutableArray *extras = [NSMutableArray array];
 			for (NSDictionary *dict in arr) {
 				NSString *title = [dict objectForKey:@"cat_name"];
 				NSString *endpoint = [dict objectForKey:@"endpoint"];
 				[extras addObject:@{@"title": title, @"endpoint":endpoint}];
 			}
-			self.defaultTopicsArray = extras;
+            [[NSUserDefaults standardUserDefaults] setObject:extras forKey:ReaderExtrasArrayKey];
+			self.defaultTopicsArray = [[self fetchDefaultTopics] arrayByAddingObjectsFromArray:extras];
 		}
-		
+        [NSUserDefaults resetStandardUserDefaults];
+        
 		[self refreshIfReady];
 		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {

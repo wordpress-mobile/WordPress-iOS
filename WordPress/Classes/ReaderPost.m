@@ -20,6 +20,8 @@ NSInteger const ReaderPostSummaryLength = 150;
 NSInteger const ReaderPostsToSync = 20;
 NSString *const ReaderLastSyncDateKey = @"ReaderLastSyncDate";
 NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
+NSString *const ReaderTopicsArrayKey = @"ReaderTopicsArrayKey";
+NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 @interface ReaderPost()
 
@@ -68,6 +70,8 @@ NSString *const ReaderCurrentTopicKey = @"ReaderCurrentTopicKey";
 + (void)handleLogoutNotification:(NSNotification *)notification {
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderLastSyncDateKey];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderCurrentTopicKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderTopicsArrayKey];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderExtrasArrayKey];
 	[NSUserDefaults resetStandardUserDefaults];
 	
 	NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
