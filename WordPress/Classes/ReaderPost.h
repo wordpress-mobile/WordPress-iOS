@@ -15,6 +15,8 @@ extern NSInteger const ReaderTopicEndpointIndex;
 extern NSInteger const ReaderPostsToSync;
 extern NSString *const ReaderLastSyncDateKey;
 extern NSString *const ReaderCurrentTopicKey;
+extern NSString *const ReaderTopicsArrayKey;
+extern NSString *const ReaderExtrasArrayKey;
 
 @interface ReaderPost : BasePost
 
