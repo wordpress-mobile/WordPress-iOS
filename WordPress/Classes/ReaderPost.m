@@ -108,7 +108,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 + (NSDictionary *)currentTopic {
 	NSDictionary *topic = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ReaderCurrentTopicKey];
 	if(!topic) {
-		topic = [[ReaderPost readerEndpoints] objectAtIndex:0];
+		topic = [[ReaderPost readerEndpoints] objectAtIndex:1];
 	}
 	return topic;
 }
