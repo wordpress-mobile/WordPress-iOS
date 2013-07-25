@@ -314,7 +314,6 @@
     _featuredImageIsSet = NO;
     _avatarIsSet = NO;
 
-	[self setAvatar:nil];
 	_bylineLabel.text = nil;
 	_titleLabel.text = nil;
 	_snippetLabel.text = nil;
@@ -338,6 +337,10 @@
 - (void)configureCell:(ReaderPost *)post {
 	
 	self.post = post;
+    
+    // This will show the placeholder avatar. Do this here instead of prepareForReusue
+    // so avatars show up after a cell is created, and not dequeued.
+    [self setAvatar:nil];
 
 	_titleLabel.text = [post.postTitle trim];
 	_snippetLabel.text = post.summary;
