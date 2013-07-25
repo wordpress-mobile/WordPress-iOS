@@ -46,14 +46,7 @@
 		}
 		self.topicsArray = arr;
 		
-		NSDictionary *dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ReaderCurrentTopicKey];
-		if (dict) {
-			self.currentTopic = dict;
-		} else {
-			self.currentTopic = [_defaultTopicsArray objectAtIndex:0];
-			[[NSUserDefaults standardUserDefaults] setObject:_currentTopic forKey:ReaderCurrentTopicKey];
-			[[NSUserDefaults standardUserDefaults] synchronize];
-		}
+        self.currentTopic = [ReaderPost currentTopic];
 		
 		[self loadTopics];
 	}
