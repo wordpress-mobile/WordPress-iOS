@@ -53,7 +53,7 @@
     return image;
 }
 
-- (void)fetchImageForURL:(NSURL *)url withSize:(CGSize)size indexPath:(NSIndexPath *)indexPath
+- (void)fetchImageForURL:(NSURL *)url withSize:(CGSize)size indexPath:(NSIndexPath *)indexPath isPrivate:(BOOL)isPrivate
 {
     NSAssert(url!=nil, @"url shouldn't be nil");
     NSAssert(!CGSizeEqualToSize(size, CGSizeZero), @"size shouldn't be zero");
@@ -69,7 +69,12 @@
         [self setCachedImage:image forURL:url withSize:_maxSize];
         [self processImage:image forURL:url receiver:receiver];
     };
-    [[WPImageSource sharedSource] downloadImageForURL:[self photonURLForURL:url withSize:requestSize]
+    
+    if (!isPrivate) {
+        url = [self photonURLForURL:url withSize:requestSize];
+    }
+    
+    [[WPImageSource sharedSource] downloadImageForURL:url
                                           withSuccess:successBlock
                                               failure:^(NSError *error) {
                                               WPFLog(@"Failed getting image %@: %@", url, error);

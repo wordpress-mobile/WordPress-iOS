@@ -33,6 +33,7 @@ extern NSString *const ReaderExtrasArrayKey;
 @property (nonatomic, strong) NSDate *dateCommentsSynced;
 @property (nonatomic, strong) NSString *endpoint;
 @property (nonatomic, strong) NSString *featuredImage;
+@property (nonatomic, strong) NSNumber *isBlogPrivate;
 @property (nonatomic, strong) NSNumber *isFollowing;
 @property (nonatomic, strong) NSNumber *isLiked;
 @property (nonatomic, strong) NSNumber *isReblogged;
@@ -115,6 +116,9 @@ extern NSString *const ReaderExtrasArrayKey;
 
 
 - (BOOL)isBlogsIFollow;
+
+
+- (BOOL)isPrivate;
 
 
 - (BOOL)isWPCom;

@@ -74,6 +74,9 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 @property (readwrite, nonatomic, strong) NSString *username;
 @property (readwrite, nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *authToken;
+
+- (void)clearWpcomCookies;
+
 @end
 
 @implementation WordPressComApi {
@@ -223,7 +226,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     // Remove all notes
     [Note removeAllNotesWithContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
 
-    [self clearReaderCookies];
+    [self clearWpcomCookies];
 
     // Notify the world
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLogoutNotification object:nil];
@@ -379,16 +382,16 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     self.password = [SFHFKeychainUtils getPasswordForUsername:self.username
                                           andServiceName:@"WordPress.com"
                                                    error:&error];
-    [self clearReaderCookies];
+    [self clearWpcomCookies];
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLogoutNotification object:nil];
     [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] registerForPushNotifications];
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
 }
 
-- (void)clearReaderCookies {
-    NSArray *readerCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    for (NSHTTPCookie *cookie in readerCookies) {
+- (void)clearWpcomCookies {
+    NSArray *wpcomCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    for (NSHTTPCookie *cookie in wpcomCookies) {
         if ([cookie.domain hasSuffix:@"wordpress.com"]) {
             [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
         }

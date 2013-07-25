@@ -51,6 +51,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 @dynamic dateCommentsSynced;
 @dynamic endpoint;
 @dynamic featuredImage;
+@dynamic isBlogPrivate;
 @dynamic isFollowing;
 @dynamic isLiked;
 @dynamic isReblogged;
@@ -98,7 +99,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		NSDictionary *likes = @{@"title": NSLocalizedString(@"Posts I Like", @""), @"endpoint":@"reader/liked", @"default":@YES};
 		NSDictionary *topic = @{@"title": NSLocalizedString(@"Topics", @""), @"endpoint":@"reader/topics/%@", @"default":@NO};
 		
-		endpoints = @[fpDict, follows, likes, topic];
+		endpoints = @[follows, fpDict, likes, topic];
 		
 	});
 	return endpoints;
@@ -108,7 +109,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 + (NSDictionary *)currentTopic {
 	NSDictionary *topic = [[NSUserDefaults standardUserDefaults] dictionaryForKey:ReaderCurrentTopicKey];
 	if(!topic) {
-		topic = [[ReaderPost readerEndpoints] objectAtIndex:1];
+		topic = [[ReaderPost readerEndpoints] objectAtIndex:0];
 	}
 	return topic;
 }
@@ -382,6 +383,10 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	self.permaLink = [dict stringForKey:@"post_permalink"];
 	self.postTitle = [[[dict stringForKey:@"post_title"] stringByDecodingXMLCharacters] trim];
 	
+    // blog_public is either a 1 or a -1.
+    NSInteger isPublic = [[dict numberForKey:@"blog_public"] integerValue];
+    self.isBlogPrivate = [NSNumber numberWithBool:(1 > isPublic)];
+    
 	self.isLiked = [dict numberForKey:@"is_liked"];
 	
 	NSString *summary = [self makePlainText:[dict stringForKey:@"post_content"]];
@@ -596,6 +601,11 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 - (BOOL)isBlogsIFollow {
 	return ([self.endpoint rangeOfString:@"reader/following"].location != NSNotFound)? true : false;
+}
+
+
+- (BOOL)isPrivate {
+    return [self.isBlogPrivate boolValue];
 }
 
 

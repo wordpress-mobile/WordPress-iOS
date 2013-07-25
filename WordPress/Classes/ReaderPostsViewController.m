@@ -25,6 +25,8 @@
 #import "WPAccount.h"
 #import "WPTableImageSource.h"
 #import "WPInfoView.h"
+#import "WPCookie.h"
+#import "NSString+Helpers.h"
 
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
@@ -47,6 +49,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 - (void)handleReblogButtonTapped:(id)sender;
 - (void)showReblogForm;
 - (void)hideReblogForm;
+- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure;
 - (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject;
 - (void)handleKeyboardDidShow:(NSNotification *)notification;
 - (void)handleKeyboardWillHide:(NSNotification *)notification;
@@ -61,6 +64,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	// (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready
 	// for the detail view, and avoid a perceived lag. 
 	[DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
+    
+    [AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"image/jpg"]];
 }
 
 #pragma mark - Life Cycle methods
@@ -84,7 +89,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-
 
     CGFloat maxWidth = self.tableView.bounds.size.width;
     if (IS_IPHONE) {
@@ -391,7 +395,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
             if (image) {
                 [cell setFeaturedImage:image];
             } else {
-                [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath];
+                [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath isPrivate:post.isPrivate];
             }
         }
     }
@@ -562,7 +566,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         if (image) {
             [cell setFeaturedImage:image];
         } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
-            [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath];
+            [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath isPrivate:post.isPrivate];
         }
     }
 	
@@ -586,6 +590,43 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+    
+    // if needs auth.
+    if([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com"] andUsername:[[WordPressComApi sharedApi] username]]) {
+       [self syncItemsWithSuccess:success failure:failure];
+        return;
+    }
+    
+    //
+    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useDefaultUserAgent];
+    NSString *username = [[WordPressComApi sharedApi] username];
+    NSString *password = [[WordPressComApi sharedApi] password];
+    NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
+    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=http://wordpress.com",
+                             [username stringByUrlEncoding],
+                             [password stringByUrlEncoding]];
+    
+    [mRequest setURL:[NSURL URLWithString:@"https://wordpress.com/wp-login.php"]];
+    [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
+    [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
+    [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
+    [mRequest setHTTPMethod:@"POST"];
+    
+    
+    AFHTTPRequestOperation *authRequest = [[AFHTTPRequestOperation alloc] initWithRequest:mRequest];
+    [authRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
+        [self syncItemsWithSuccess:success failure:failure];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
+        [self syncItemsWithSuccess:success failure:failure];
+    }];
+    
+    [authRequest start];
+}
+
+    
+- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
 	NSString *endpoint = [ReaderPost currentEndpoint];
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
 	NSDictionary *params = @{@"number":numberToSync, @"per_page":numberToSync};
