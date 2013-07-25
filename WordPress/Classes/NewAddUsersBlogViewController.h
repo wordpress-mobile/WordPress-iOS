@@ -12,12 +12,9 @@
 
 @interface NewAddUsersBlogViewController : UIViewController
 
-@property (nonatomic, assign) BOOL isWPCom;
 @property (nonatomic, assign) BOOL autoAddSingleBlog;
-@property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSString *password;
-@property (nonatomic, strong) NSString *xmlRPCUrl;
 @property (nonatomic, strong) NSString *siteUrl;
+@property (nonatomic, strong) WPAccount *account;
 
 @property (nonatomic, copy ) void (^blogAdditionCompleted)(NewAddUsersBlogViewController *);
 @property (nonatomic, copy ) void (^onNoBlogsLoaded)(NewAddUsersBlogViewController *);

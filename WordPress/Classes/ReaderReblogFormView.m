@@ -120,7 +120,7 @@
 					stop = YES;
 				}
 			}];
-		} else {
+		} else if ([blogs count]) {
 			[self setDestinationBlog:[blogs objectAtIndex:0]];
 		}
     }
