@@ -662,9 +662,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	id before;
 	if([endpoint isEqualToString:@"freshly-pressed"]) {
 		// freshly-pressed wants an ISO string but the rest want a timestamp.
-		before = [DateUtils isoStringFromDate:post.dateCreated];
+		before = [DateUtils isoStringFromDate:post.date_created_gmt];
 	} else {
-		before = [NSNumber numberWithInteger:[post.dateCreated timeIntervalSince1970]];
+		before = [NSNumber numberWithInteger:[post.date_created_gmt timeIntervalSince1970]];
 	}
 
 	NSDictionary *params = @{@"before":before, @"number":numberToSync, @"per_page":numberToSync};
