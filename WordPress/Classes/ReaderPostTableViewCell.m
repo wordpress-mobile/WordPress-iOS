@@ -309,7 +309,6 @@
 - (void)prepareForReuse {
 	[super prepareForReuse];
 
-    self.cellImageView.contentMode = UIViewContentModeCenter;
     _featuredImageIsSet = NO;
     _avatarIsSet = NO;
 
@@ -348,6 +347,7 @@
 
 	self.showImage = NO;
 	self.cellImageView.hidden = YES;
+    self.cellImageView.contentMode = UIViewContentModeCenter;
     self.cellImageView.image = [UIImage imageNamed:@"wp_img_placeholder"];
 	if (post.featuredImageURL) {
 		self.showImage = YES;
