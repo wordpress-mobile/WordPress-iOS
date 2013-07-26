@@ -29,7 +29,9 @@
 
 @end
 
-@implementation ReaderVideoView
+@implementation ReaderVideoView {
+    UIImageView *_playView;
+}
 
 + (AFHTTPClient *)sharedYoutubeClient {
 	static AFHTTPClient *_sharedClient = nil;
@@ -68,10 +70,27 @@
     if (self) {
 		[self.imageView setImage:[UIImage imageNamed:@"wp_vid_placeholder"]];
 		self.isShowingPlaceholder = YES;
+        _playView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"video_play"]];
+        _playView.contentMode = UIViewContentModeCenter;
+        [self addSubview:_playView];
     }
     return self;
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+
+    _playView.center = CGPointMake(round(CGRectGetMidX(self.bounds)), round(CGRectGetMidY(self.bounds)));
+}
+
+- (void)setHighlighted:(BOOL)highlighted {
+    [super setHighlighted:highlighted];
+    if (highlighted) {
+        self.alpha = .8f;
+    } else {
+        self.alpha = 1.f;
+    }
+}
 
 #pragma mark - Instance Methods
 
