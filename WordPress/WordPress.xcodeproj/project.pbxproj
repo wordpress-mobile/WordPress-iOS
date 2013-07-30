@@ -841,6 +841,7 @@
 		E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */; };
 		E1E4CE0D177439D100430844 /* WPAvatarSourceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */; };
 		E1E4CE0F1774563F00430844 /* misteryman.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E1E4CE0E1774531500430844 /* misteryman.jpg */; };
+		E1ECF7DF17A7CEE600535A05 /* ViewAdminButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E1ECF7DE17A7CEE600535A05 /* ViewAdminButton.m */; };
 		E1EE23E512E62864000B2BE6 /* movie.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E312E62864000B2BE6 /* movie.png */; };
 		E1EE23E612E62864000B2BE6 /* movie@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E412E62864000B2BE6 /* movie@2x.png */; };
 		E1EE23E912E628F6000B2BE6 /* attachment.png in Resources */ = {isa = PBXBuildFile; fileRef = E1EE23E712E628F6000B2BE6 /* attachment.png */; };
@@ -1937,6 +1938,8 @@
 		E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAvatarSource.m; sourceTree = "<group>"; };
 		E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAvatarSourceTest.m; sourceTree = "<group>"; };
 		E1E4CE0E1774531500430844 /* misteryman.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = misteryman.jpg; sourceTree = "<group>"; };
+		E1ECF7DD17A7CEE600535A05 /* ViewAdminButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewAdminButton.h; sourceTree = "<group>"; };
+		E1ECF7DE17A7CEE600535A05 /* ViewAdminButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewAdminButton.m; sourceTree = "<group>"; };
 		E1EE23E312E62864000B2BE6 /* movie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = movie.png; path = Resources/Images/movie.png; sourceTree = "<group>"; };
 		E1EE23E412E62864000B2BE6 /* movie@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "movie@2x.png"; path = "Resources/Images/movie@2x.png"; sourceTree = "<group>"; };
 		E1EE23E712E628F6000B2BE6 /* attachment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = attachment.png; path = Resources/Images/attachment.png; sourceTree = "<group>"; };
@@ -2077,6 +2080,8 @@
 				CC6B3BE615A33E16005A4523 /* WPFriendFinderNudgeView.m */,
 				E183EC9816B16CCF00C2EB11 /* AutosavingIndicatorView.h */,
 				E183EC9916B16CCF00C2EB11 /* AutosavingIndicatorView.m */,
+				E1ECF7DD17A7CEE600535A05 /* ViewAdminButton.h */,
+				E1ECF7DE17A7CEE600535A05 /* ViewAdminButton.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -4677,6 +4682,7 @@
 				E1921F5A17733C3E000F4079 /* WPImageSource.m in Sources */,
 				851734431798C64700A30E27 /* NSURL+Util.m in Sources */,
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
+				E1ECF7DF17A7CEE600535A05 /* ViewAdminButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
