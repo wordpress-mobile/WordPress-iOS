@@ -1,0 +1,161 @@
+//
+//  NewLoginCompletedWalkthroughViewController.m
+//  WordPress
+//
+//  Created by Sendhil Panchadsaram on 7/29/13.
+//  Copyright (c) 2013 WordPress. All rights reserved.
+//
+
+#import "NewLoginCompletedWalkthroughViewController.h"
+#import "LoginCompletedWalkthroughPage1ViewController.h"
+#import "LoginCompletedWalkthroughPage2ViewController.h"
+#import "LoginCompletedWalkthroughPage3ViewController.h"
+#import "LoginCompletedWalkthroughPage4ViewController.h"
+#import "WPNUXUtility.h"
+
+@interface NewLoginCompletedWalkthroughViewController () <UIPageViewControllerDataSource> {
+    UIPageViewController *_pageViewController;
+    CGFloat _heightToUseForCentering;
+}
+
+@property (nonatomic, strong) IBOutlet UIView *bottomPanel;
+@property (nonatomic, strong) IBOutlet UIPageControl *pageControl;
+@property (nonatomic, strong) IBOutlet UILabel *tapToDismiss;
+@property (nonatomic, strong) IBOutlet UILabel *swipeToContinue;
+
+@end
+
+@implementation NewLoginCompletedWalkthroughViewController
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    // This view just helps us visually see the page controller layout
+    _pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+    _pageViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
+    _pageViewController.dataSource = self;
+    UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginCompletedPage1"];
+    [_pageViewController setViewControllers:@[vc] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    [self addChildViewController:_pageViewController];
+    [[self view] addSubview:_pageViewController.view];
+    
+    UIView *pageViewController = _pageViewController.view;
+    UIView *bottomPanel = self.bottomPanel;
+    NSDictionary *views = NSDictionaryOfVariableBindings(pageViewController, bottomPanel);
+    NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"|[pageViewController]|" options:0 metrics:0 views:views];
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[pageViewController][bottomPanel]|" options:0 metrics:0 views:views];
+    [self.view addConstraints:horizontalConstraints];
+    [self.view addConstraints:verticalConstraints];
+    [_pageViewController didMoveToParentViewController:self];
+    
+    self.swipeToContinue.text = [NSLocalizedString(@"swipe to continue", nil) uppercaseString];
+    self.swipeToContinue.font = [WPNUXUtility swipeToContinueFont];
+    
+    self.tapToDismiss.text = NSLocalizedString(@"Tap to start using WordPress", @"NUX Second Walkthrough Bottom Skip Label");
+    self.tapToDismiss.font = [UIFont fontWithName:@"OpenSans" size:15.0];
+    
+    [WPNUXUtility configurePageControlTintColors:self.pageControl];
+    
+    [self.view bringSubviewToFront:self.swipeToContinue];
+    
+    [self.view bringSubviewToFront:self.pageControl];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    _heightToUseForCentering = CGRectGetMinY(self.swipeToContinue.frame);
+    for (UIViewController *vc in _pageViewController.childViewControllers) {
+        if ([vc isKindOfClass:[LoginCompletedWalkthroughPage1ViewController class]]) {
+            LoginCompletedWalkthroughPage1ViewController *page1 = (LoginCompletedWalkthroughPage1ViewController *)vc;
+            page1.heightToUseForCentering = _heightToUseForCentering;
+            [page1.view setNeedsUpdateConstraints];
+        } else if ([vc isKindOfClass:[LoginCompletedWalkthroughPage2ViewController class]]) {
+            LoginCompletedWalkthroughPage2ViewController *page2 = (LoginCompletedWalkthroughPage2ViewController *)vc;
+            page2.heightToUseForCentering = _heightToUseForCentering;
+            [page2.view setNeedsUpdateConstraints];
+        } else if ([vc isKindOfClass:[LoginCompletedWalkthroughPage3ViewController class]]) {
+            LoginCompletedWalkthroughPage3ViewController *page3 = (LoginCompletedWalkthroughPage3ViewController *)vc;
+            page3.heightToUseForCentering = _heightToUseForCentering;
+            [page3.view setNeedsUpdateConstraints];
+        } else if ([vc isKindOfClass:[LoginCompletedWalkthroughPage4ViewController class]]) {
+            LoginCompletedWalkthroughPage4ViewController *page4 = (LoginCompletedWalkthroughPage4ViewController *)vc;
+            page4.heightToUseForCentering = _heightToUseForCentering;
+            [page4.view setNeedsUpdateConstraints];
+        }
+    }
+}
+
+- (NSUInteger)supportedInterfaceOrientations {
+    if (IS_IPHONE)
+        return UIInterfaceOrientationMaskPortrait;
+    
+    return UIInterfaceOrientationMaskAll;
+}
+
+
+#pragma mark - UIPageViewController Delegate methods
+
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
+{
+    UIViewController *vc;
+    
+    if ([viewController isKindOfClass:[LoginCompletedWalkthroughPage1ViewController class]]) {
+        vc = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginCompletedPage2"];
+        LoginCompletedWalkthroughPage2ViewController *page2 = (LoginCompletedWalkthroughPage2ViewController *)vc;
+        page2.heightToUseForCentering = _heightToUseForCentering;
+    } else if ([viewController isKindOfClass:[LoginCompletedWalkthroughPage2ViewController class]]) {
+        vc = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginCompletedPage3"];
+        LoginCompletedWalkthroughPage3ViewController *page3 = (LoginCompletedWalkthroughPage3ViewController *)vc;
+        page3.heightToUseForCentering = _heightToUseForCentering;
+    } else if ([viewController isKindOfClass:[LoginCompletedWalkthroughPage3ViewController class]]) {
+        vc = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginCompletedPage4"];
+        LoginCompletedWalkthroughPage4ViewController *page4 = (LoginCompletedWalkthroughPage4ViewController *)vc;
+        page4.heightToUseForCentering = _heightToUseForCentering;
+    }
+    
+    return vc;
+}
+
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
+{
+    UIViewController *vc;
+    
+    if ([viewController isKindOfClass:[LoginCompletedWalkthroughPage2ViewController class]]) {
+        vc = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginCompletedPage1"];
+        LoginCompletedWalkthroughPage1ViewController *page1 = (LoginCompletedWalkthroughPage1ViewController *)vc;
+        page1.heightToUseForCentering = _heightToUseForCentering;
+    } else if ([viewController isKindOfClass:[LoginCompletedWalkthroughPage3ViewController class]]) {
+        vc = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginCompletedPage2"];
+        LoginCompletedWalkthroughPage2ViewController *page2 = (LoginCompletedWalkthroughPage2ViewController *)vc;
+        page2.heightToUseForCentering = _heightToUseForCentering;
+    } else if ([viewController isKindOfClass:[LoginCompletedWalkthroughPage4ViewController class]]) {
+        vc = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginCompletedPage3"];
+        LoginCompletedWalkthroughPage3ViewController *page3 = (LoginCompletedWalkthroughPage3ViewController *)vc;
+        page3.heightToUseForCentering = _heightToUseForCentering;
+    }
+    
+    return vc;
+}
+
+- (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController
+{
+    return 4;
+}
+
+@end

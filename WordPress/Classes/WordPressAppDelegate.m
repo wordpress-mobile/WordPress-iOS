@@ -1234,7 +1234,7 @@
                     aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
                 }
-
+                
                 UIViewController *presenter = self.panelNavigationController;
                 if (presenter.presentedViewController) {
                     presenter = presenter.presentedViewController;
