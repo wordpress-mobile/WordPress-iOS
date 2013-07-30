@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseNUXViewController.h"
 
-@interface CreateAccountAndBlogPage2ViewController : UIViewController
+@interface CreateAccountAndBlogPage2ViewController : BaseNUXViewController
 
 @end

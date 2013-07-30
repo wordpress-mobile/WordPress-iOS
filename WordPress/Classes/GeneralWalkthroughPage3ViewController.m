@@ -11,11 +11,7 @@
 #import "WPNUXMainButton.h"
 #import "WPNUXUtility.h"
 
-@interface GeneralWalkthroughPage3ViewController () <UITextFieldDelegate> {
-    NSLayoutConstraint *_adjustedCenteringConstraint;
-    BOOL _correctedCenteringLayout;
-}
-
+@interface GeneralWalkthroughPage3ViewController () <UITextFieldDelegate>
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *verticalCenteringConstraint;
 @property (nonatomic, strong) IBOutlet UIImageView *logo;
@@ -54,34 +50,16 @@
     self.siteAddress.delegate = self;
     
     [self.signInButton setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
-    
-    [self.view removeConstraint:self.verticalCenteringConstraint];
 }
 
-- (void)updateViewConstraints
+- (UIView *)topViewToCenterAgainst
 {
-    [super updateViewConstraints];
-    [self.view removeConstraint:_adjustedCenteringConstraint];
-    
-    CGFloat heightOfMiddleControls = CGRectGetMaxY(self.siteAddress.frame) - CGRectGetMinY(self.logo.frame);
-    CGFloat verticalOffset = (self.heightToUseForCentering - heightOfMiddleControls)/2.0;
-    
-    _adjustedCenteringConstraint = [NSLayoutConstraint constraintWithItem:self.logo attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:verticalOffset];
-    
-    [self.view addConstraint:_adjustedCenteringConstraint];
+    return self.logo;
 }
 
-- (void)viewDidLayoutSubviews
+- (UIView *)bottomViewToCenterAgainst
 {
-    [super viewDidLayoutSubviews];
-    
-    // Because we want to customize the centering of the logo -> bottom divider we need to wait until the first layout pass
-    // happens before our customized constraint will work correctly as otherwise the values will look like they belong to an
-    // iPhone 5 and the logo -> bottom divider controls won't be centered.
-    if (!_correctedCenteringLayout) {
-        _correctedCenteringLayout = true;
-        [self.view setNeedsUpdateConstraints];
-    }
+    return self.siteAddress;
 }
 
 #pragma mark - UITextFieldDelegate methods

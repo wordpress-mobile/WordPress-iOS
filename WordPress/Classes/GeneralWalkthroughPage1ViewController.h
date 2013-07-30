@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BaseNUXViewController.h"
 
-@interface GeneralWalkthroughPage1ViewController : UIViewController
+@interface GeneralWalkthroughPage1ViewController : BaseNUXViewController
 
 @property (nonatomic, assign) CGFloat heightToUseForCentering;
 

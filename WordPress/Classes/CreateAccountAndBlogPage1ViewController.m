@@ -11,10 +11,7 @@
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXUtility.h"
 
-@interface CreateAccountAndBlogPage1ViewController () {
-    BOOL _correctedCenteringLayout;
-    NSLayoutConstraint *_adjustedCenteringConstraint;
-}
+@interface CreateAccountAndBlogPage1ViewController ()
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *verticalCenteringConstraint;
 @property (nonatomic, strong) IBOutlet UIImageView *logo;
@@ -59,34 +56,16 @@
     self.tosLabel.text = NSLocalizedString(@"You agree to the fascinating terms of service by pressing the next button.", @"NUX Create Account TOS Label");
     self.tosLabel.font = [WPNUXUtility tosLabelFont];
     self.tosLabel.layer.shadowRadius = 2.0;
-    
-    [self.view removeConstraint:self.verticalCenteringConstraint];
 }
 
-- (void)updateViewConstraints
+- (UIView *)topViewToCenterAgainst
 {
-    [super updateViewConstraints];
-    [self.view removeConstraint:_adjustedCenteringConstraint];
-    
-    CGFloat heightOfMiddleControls = CGRectGetMaxY(self.tosLabel.frame) - CGRectGetMinY(self.logo.frame);
-    CGFloat verticalOffset = (CGRectGetHeight(self.view.bounds) - heightOfMiddleControls)/2.0;
-    
-    _adjustedCenteringConstraint = [NSLayoutConstraint constraintWithItem:self.logo attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:verticalOffset];
-    
-    [self.view addConstraint:_adjustedCenteringConstraint];
+    return self.logo;
 }
 
-- (void)viewDidLayoutSubviews
+- (UIView *)bottomViewToCenterAgainst
 {
-    [super viewDidLayoutSubviews];
-    
-    // Because we want to customize the centering of the logo -> bottom divider we need to wait until the first layout pass
-    // happens before our customized constraint will work correctly as otherwise the values will look like they belong to an
-    // iPhone 5 and the logo -> bottom divider controls won't be centered.
-    if (!_correctedCenteringLayout) {
-        _correctedCenteringLayout = true;
-        [self.view setNeedsUpdateConstraints];
-    }
+    return self.tosLabel;
 }
 
 @end

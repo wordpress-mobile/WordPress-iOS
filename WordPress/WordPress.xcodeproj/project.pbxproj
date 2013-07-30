@@ -495,6 +495,7 @@
 		853E11361739CD6500657E1F /* textDropdownIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 853E11341739CD6500657E1F /* textDropdownIcon@2x.png */; };
 		853E11371739CD6500657E1F /* textDropdownIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 853E11351739CD6500657E1F /* textDropdownIcon.png */; };
 		8566BC95170F84BC003C6BCF /* CreateWPComAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8566BC93170F84BC003C6BCF /* CreateWPComAccountViewController.m */; };
+		85730D5617A85EB1008E591A /* BaseNUXViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85730D5517A85EB1008E591A /* BaseNUXViewController.m */; };
 		858DE40F1730384F000AC628 /* GeneralWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 858DE40E1730384F000AC628 /* GeneralWalkthroughViewController.m */; };
 		858DE41217303BB4000AC628 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 858DE41017303BB4000AC628 /* OpenSans-Light.ttf */; };
 		858DE41317303BB4000AC628 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 858DE41117303BB4000AC628 /* OpenSans-Regular.ttf */; };
@@ -1376,6 +1377,8 @@
 		85607ADF17A05ECA00C27E4D /* NewCreateAccountAndBlogViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewCreateAccountAndBlogViewController.m; sourceTree = "<group>"; };
 		8566BC92170F84BC003C6BCF /* CreateWPComAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateWPComAccountViewController.h; sourceTree = "<group>"; };
 		8566BC93170F84BC003C6BCF /* CreateWPComAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateWPComAccountViewController.m; sourceTree = "<group>"; };
+		85730D5417A85EB1008E591A /* BaseNUXViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNUXViewController.h; sourceTree = "<group>"; };
+		85730D5517A85EB1008E591A /* BaseNUXViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNUXViewController.m; sourceTree = "<group>"; };
 		858DE40D1730384F000AC628 /* GeneralWalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralWalkthroughViewController.h; sourceTree = "<group>"; };
 		858DE40E1730384F000AC628 /* GeneralWalkthroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralWalkthroughViewController.m; sourceTree = "<group>"; };
 		858DE41017303BB4000AC628 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
@@ -2609,6 +2612,8 @@
 				85D8572C17A7261300F7174F /* LoginCompletedWalkthroughPage3ViewController.m */,
 				85D8572E17A7261F00F7174F /* LoginCompletedWalkthroughPage4ViewController.h */,
 				85D8572F17A7261F00F7174F /* LoginCompletedWalkthroughPage4ViewController.m */,
+				85730D5417A85EB1008E591A /* BaseNUXViewController.h */,
+				85730D5517A85EB1008E591A /* BaseNUXViewController.m */,
 			);
 			name = "Refactored NUX";
 			sourceTree = "<group>";
@@ -4327,6 +4332,7 @@
 				8566BC95170F84BC003C6BCF /* CreateWPComAccountViewController.m in Sources */,
 				85D805521715F4EA0075EEAC /* CreateWPComBlogViewController.m in Sources */,
 				85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */,
+				85730D5617A85EB1008E591A /* BaseNUXViewController.m in Sources */,
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */,
 				85149747171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m in Sources */,
