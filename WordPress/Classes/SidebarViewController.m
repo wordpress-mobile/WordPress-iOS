@@ -963,7 +963,6 @@ NSLog(@"%@", self.sectionInfoArray);
     } else {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
         NSString *blogURL = @"";
-        NSString *dashboardURL = @"";
         
         Class controllerClass = nil;
         //did user select the same item, but for a different blog? If so then just update the data in the view controller.
