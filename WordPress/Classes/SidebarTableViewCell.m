@@ -94,4 +94,14 @@
     commentsLbl.shadowColor = [UIColor blackColor];
     return commentsLbl;
 }
+
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    if (self.accessoryView && [self.accessoryView isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton *)self.accessoryView;
+        [btn setHighlighted:NO];
+    }
+}
+
 @end
