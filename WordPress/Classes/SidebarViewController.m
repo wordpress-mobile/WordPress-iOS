@@ -40,7 +40,7 @@
 #define SIDEBAR_BGCOLOR [UIColor colorWithWhite:0.921875f alpha:1.0f];
 #define HEADER_HEIGHT 42.f
 #define DEFAULT_ROW_HEIGHT 48
-#define NUM_ROWS 5
+#define NUM_ROWS 6
 
 @interface SidebarViewController () <NSFetchedResultsControllerDelegate, QuickPhotoButtonViewDelegate> {
     QuickPhotoButtonView *quickPhotoButton;
@@ -682,14 +682,6 @@ NSLog(@"%@", self.sectionInfoArray);
         return HEADER_HEIGHT;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    if (section == 0) {
-        return 0.f;
-    } else {
-        return DEFAULT_ROW_HEIGHT;
-    }
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return SIDEBAR_CELL_SECONDARY_HEIGHT;
 }
@@ -709,19 +701,6 @@ NSLog(@"%@", self.sectionInfoArray);
     return sectionInfo.headerView;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (section == 0) {
-        return nil;
-    }
-    ViewAdminButton *viewAdminButton = [[ViewAdminButton alloc] initWithFrame:CGRectMake(0.0, 0.0, SIDEBAR_WIDTH, DEFAULT_ROW_HEIGHT)];
-
-    [viewAdminButton setTitle:NSLocalizedString(@"View Admin", @"Menu item to load the dashboard in a an in-app web view") forState:UIControlStateNormal];
-    [viewAdminButton setTag:section];
-    [viewAdminButton addTarget:self action:@selector(viewAdmin:) forControlEvents:UIControlEventTouchUpInside];
-
-    return viewAdminButton;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"SideBarCell";
@@ -729,6 +708,7 @@ NSLog(@"%@", self.sectionInfoArray);
     if (cell == nil) {
         cell = [[SidebarTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    [[cell.contentView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     NSString *title = nil;
       
@@ -782,6 +762,21 @@ NSLog(@"%@", self.sectionInfoArray);
             {
                 title = NSLocalizedString(@"View Site", @"Menu item to view the site in a an in-app web view");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_view"];
+                break;
+            }
+            case 5:
+            {
+                
+                ViewAdminButton *viewAdminButton = [[ViewAdminButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIDEBAR_WIDTH, DEFAULT_ROW_HEIGHT)];
+
+                [viewAdminButton setTitle:NSLocalizedString(@"View Admin", @"Menu item to load the dashboard in a an in-app web view") forState:UIControlStateNormal];
+                [viewAdminButton setTag:indexPath.section];
+                [viewAdminButton addTarget:self action:@selector(viewAdmin:) forControlEvents:UIControlEventTouchUpInside];
+
+                [cell.contentView addSubview:viewAdminButton];
+                
+                title = nil;
+                cell.imageView.image = nil;
                 break;
             }
             default:
@@ -878,46 +873,6 @@ NSLog(@"%@", self.sectionInfoArray);
     }
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -944,7 +899,7 @@ NSLog(@"%@", self.sectionInfoArray);
         }
     }
     
-    UIViewController *detailViewController = nil;  
+    UIViewController *detailViewController = nil;
     if (indexPath.section == 0) { // Reader & Notifications
         
         if (indexPath.row == 0) { // Reader
@@ -1022,6 +977,8 @@ NSLog(@"%@", self.sectionInfoArray);
                     [SoundUtil playSwipeSound];
                 }
                 return;
+            case 5 :
+                break;
             default:
                 controllerClass = [PostsViewController class];
                 break;    
