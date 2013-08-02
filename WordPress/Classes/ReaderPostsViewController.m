@@ -229,6 +229,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    // After rotation, visible images might be scaled up/down
+    // Force them to reload so they're pixel perfect
+    [self loadImagesForVisibleRows];
 }
 
 #pragma mark - Instance Methods
@@ -563,21 +566,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
 	[cell configureCell:post];
-    if (post.featuredImageURL) {
-        NSURL *imageURL = post.featuredImageURL;
-        CGSize imageSize = cell.cellImageView.bounds.size;
-        if (CGSizeEqualToSize(imageSize, CGSizeZero)) {
-            imageSize.width = self.tableView.bounds.size.width;
-            imageSize.height = round(imageSize.width * 0.66f);
-        }
-        UIImage *image = [_featuredImageSource imageForURL:imageURL withSize:imageSize];
-        if (image) {
-            [cell setFeaturedImage:image];
-        } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
-            [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath isPrivate:post.isPrivate];
-        }
-    }
-	
+    [self setImageForPost:post forCell:cell indexPath:indexPath];
+
     CGSize imageSize = cell.avatarImageView.bounds.size;
     UIImage *image = [post cachedAvatarWithSize:imageSize];
     if (image) {
@@ -591,6 +581,23 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     }
 }
 
+- (void)setImageForPost:(ReaderPost *)post forCell:(ReaderPostTableViewCell *)cell indexPath:(NSIndexPath *)indexPath {
+    NSURL *imageURL = post.featuredImageURL;
+    if (!imageURL) {
+        return;
+    }
+    CGSize imageSize = cell.cellImageView.bounds.size;
+    if (CGSizeEqualToSize(imageSize, CGSizeZero)) {
+        imageSize.width = self.tableView.bounds.size.width;
+        imageSize.height = round(imageSize.width * 0.66f);
+    }
+    UIImage *image = [_featuredImageSource imageForURL:imageURL withSize:imageSize];
+    if (image) {
+        [cell setFeaturedImage:image];
+    } else if (!_isScrollingFast) {
+        [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath isPrivate:post.isPrivate];
+    }
+}
 
 - (BOOL)hasMoreContent {
 	return _hasMoreContent;
@@ -766,9 +773,13 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 }
 
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	[super tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
-	
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)aCell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	[super tableView:tableView willDisplayCell:aCell forRowAtIndexPath:indexPath];
+
+	ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)aCell;
+	ReaderPost *post = (ReaderPost *)[self.resultsController objectAtIndexPath:indexPath];
+    [self setImageForPost:post forCell:cell indexPath:indexPath];
+
     if (indexPath.row <= _rowsSeen) {
         return;
     }
