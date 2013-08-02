@@ -433,7 +433,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     CGFloat offset = self.tableView.contentOffset.y;
     // We just take a diff from the last known offset, as the approximation is good enough
     CGFloat velocity = fabsf(offset - _lastOffset);
-    if (velocity > ScrollingFastVelocityThreshold) {
+    if (velocity > ScrollingFastVelocityThreshold && !self.isSettingRefreshOffset) {
         _isScrollingFast = YES;
     } else {
         _isScrollingFast = NO;
