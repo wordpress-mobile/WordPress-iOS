@@ -28,6 +28,7 @@
 #import "WPCookie.h"
 #import "NSString+Helpers.h"
 
+static CGFloat const ScrollingFastVelocityThreshold = 30.f;
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
 @interface ReaderPostsViewController ()<ReaderTopicsDelegate, ReaderTextFormDelegate, WPTableImageSourceDelegate> {
@@ -36,6 +37,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     WPTableImageSource *_featuredImageSource;
 	CGFloat keyboardOffset;
     NSInteger _rowsSeen;
+    BOOL _isScrollingFast;
+    CGFloat _lastOffset;
 }
 
 //@property (nonatomic, strong) NSFetchedResultsController *resultsController;
@@ -426,15 +429,20 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 #pragma mark - UIScrollView Delegate Methods
 
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
-    // Instead of loading images only when scrolling stops, start loading them when
-    // the scroll view starts decelerating, if it's not going too fast
-    if (fabs(velocity.y) <= 2.f) {
-        [self loadImagesForVisibleRows];
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat offset = self.tableView.contentOffset.y;
+    // We just take a diff from the last known offset, as the approximation is good enough
+    CGFloat velocity = fabsf(offset - _lastOffset);
+    if (velocity > ScrollingFastVelocityThreshold) {
+        _isScrollingFast = YES;
+    } else {
+        _isScrollingFast = NO;
     }
+    _lastOffset = offset;
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    _isScrollingFast = NO;
     [self loadImagesForVisibleRows];
 
 	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
@@ -991,7 +999,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
 {
-    if (!self.tableView.isDecelerating && !self.tableView.isDragging) {
+    if (!_isScrollingFast) {
         ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
         [cell setFeaturedImage:image];
     }
