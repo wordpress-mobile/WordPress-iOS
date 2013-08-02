@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, readonly) BOOL isSettingRefreshOffset;
+@property (nonatomic, readonly) BOOL isScrolling;
 
 - (void)promptForPassword;
 

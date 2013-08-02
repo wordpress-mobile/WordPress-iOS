@@ -492,12 +492,17 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    _isScrolling = YES;
     if (self.panelNavigationController) {
         [self.panelNavigationController viewControllerWantsToBeFullyVisible:self];
     }
     if (self.swipeActionsEnabled) {
         [self removeSwipeView:YES];
     }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    _isScrolling = NO;
 }
 
 
@@ -603,9 +608,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)hideRefreshHeader {
-    _isSettingRefreshOffset = YES;
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-    _isSettingRefreshOffset = NO;
     if ([self isViewLoaded] && self.tableView.window && didTriggerRefresh) {
         [SoundUtil playRollupSound];
     }
@@ -621,9 +624,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     
     CGPoint offset = self.tableView.contentOffset;
     offset.y = - 65.0f;
-    _isSettingRefreshOffset = YES;
     [self.tableView setContentOffset:offset];
-    _isSettingRefreshOffset = NO;
     [_refreshHeaderView egoRefreshScrollViewDidEndDragging:self.tableView];
 }
 
