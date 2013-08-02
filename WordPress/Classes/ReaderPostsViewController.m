@@ -156,7 +156,14 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	if (_isShowingReblogForm) {
 		[self showReblogForm];
 	}
-	
+
+    NSDictionary *categoryDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
+    NSString *category = [categoryDetails stringForKey:@"endpoint"];
+    if (category != nil) {
+        [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:@{@"category": category}];
+    } else {
+        [WPMobileStats trackEventForWPCom:StatsEventReaderOpened];
+    }
 }
 
 
@@ -624,6 +631,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     }];
     
     [authRequest start];
+    
+    [WPMobileStats trackEventForWPCom:StatsEventReaderHomePageRefresh];
 }
 
     
@@ -684,6 +693,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 									 failure(error);
 								 }
 							 }];
+    
+    [WPMobileStats trackEventForWPCom:StatsEventReaderInfiniteScroll];
 }
 
 
@@ -750,6 +761,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
 	[self.panelNavigationController pushViewController:controller fromViewController:self animated:YES];
+    
+    [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedArticleDetails];
 }
 
 
@@ -816,6 +829,14 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		if (IS_IPAD) {
 			[self simulatePullToRefresh];
 		}
+    }
+
+    NSDictionary *categoryDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
+    NSString *category = [categoryDetails stringForKey:@"endpoint"];
+    if ([category isEqualToString:@"freshly-pressed"]) {
+        [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedFreshlyPressedTopic];
+    } else {
+        [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedCategory properties:@{@"category": category}];
     }
 }
 
