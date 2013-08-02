@@ -122,6 +122,8 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+    
     if (!_viewHasAppeared) {
         _viewHasAppeared = true;
         [WPMobileStats incrementProperty:StatsPropertyNotificationsOpened forEvent:StatsEventAppClosed];
