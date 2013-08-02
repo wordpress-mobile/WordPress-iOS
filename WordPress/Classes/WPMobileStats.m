@@ -31,10 +31,14 @@ NSString *const StatsPropertySidebarClickedQuickPhoto = @"sidebar_clicked_quick_
 
 // Reader
 NSString *const StatsEventReaderOpened = @"Reader - Opened";
-NSString *const StatsEventReaderClickedShowTopicSelector = @"Reader - Show Topic Selector";
+NSString *const StatsEventReaderHomePageRefresh = @"Reader - Home Page Refreshed";
+NSString *const StatsEventReaderInfiniteScroll = @"Reader - Infinite Scroll";
 NSString *const StatsEventReaderSelectedFreshlyPressedTopic = @"Reader - Selected Freshly Pressed Topic";
-NSString *const StatsEventReaderSelectedTopic = @"Reader - Selected Topic";
-NSString *const StatsPropertyReaderOpenedArticleDetails = @"reader_opened_article_details";
+NSString *const StatsEventReaderSelectedCategory = @"Reader - Selected Category";
+NSString *const StatsEventReaderOpenedArticleDetails = @"Reader - Opened Article Details";
+NSString *const StatsEventReaderPublishedComment = @"Reader - Published Comment";
+NSString *const StatsEventReaderReblogged = @"Reader - Reblogged";
+NSString *const StatsEventReaderLikedPost = @"Reader - Liked Post";
 
 // Reader Detail
 NSString *const StatsPropertyReaderDetailClickedPrevious = @"reader_detail_clicked_previous";

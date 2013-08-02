@@ -27,10 +27,15 @@ extern NSString *const StatsPropertySidebarClickedQuickPhoto;
 
 // Reader
 extern NSString *const StatsEventReaderOpened;
-extern NSString *const StatsEventReaderClickedShowTopicSelector;
+extern NSString *const StatsEventReaderHomePageRefresh;
+extern NSString *const StatsEventReaderInfiniteScroll;
 extern NSString *const StatsEventReaderSelectedFreshlyPressedTopic;
-extern NSString *const StatsEventReaderSelectedTopic;
-extern NSString *const StatsPropertyReaderOpenedArticleDetails;
+extern NSString *const StatsEventReaderSelectedCategory;
+extern NSString *const StatsEventReaderOpenedArticleDetails;
+extern NSString *const StatsEventReaderPublishedComment;
+extern NSString *const StatsEventReaderReblogged;
+extern NSString *const StatsEventReaderLikedPost;
+
 
 // Reader Detail
 extern NSString *const StatsPropertyReaderDetailClickedPrevious;

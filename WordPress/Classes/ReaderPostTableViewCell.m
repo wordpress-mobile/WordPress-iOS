@@ -428,6 +428,7 @@
 
 	[self.post toggleLikedWithSuccess:^{
 		// Nothing to see here?
+        [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
 	} failure:^(NSError *error) {
 		WPLog(@"Error Liking Post : %@", [error localizedDescription]);
 		[self updateControlBar];
