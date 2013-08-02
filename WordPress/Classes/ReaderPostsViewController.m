@@ -157,13 +157,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		[self showReblogForm];
 	}
 
-    NSDictionary *categoryDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
-    NSString *category = [categoryDetails stringForKey:@"endpoint"];
-    if (category != nil) {
-        [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:@{@"category": category}];
-    } else {
-        [WPMobileStats trackEventForWPCom:StatsEventReaderOpened];
-    }
+    [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:[self categoryPropertyForStats]];
 }
 
 
@@ -694,7 +688,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 								 }
 							 }];
     
-    [WPMobileStats trackEventForWPCom:StatsEventReaderInfiniteScroll];
+    [WPMobileStats trackEventForWPCom:StatsEventReaderInfiniteScroll properties:[self categoryPropertyForStats]];
 }
 
 
@@ -831,17 +825,30 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		}
     }
 
-    NSDictionary *categoryDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
-    NSString *category = [categoryDetails stringForKey:@"endpoint"];
-    if ([category isEqualToString:@"freshly-pressed"]) {
+    if ([[self currentCategory] isEqualToString:@"freshly-pressed"]) {
         [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedFreshlyPressedTopic];
     } else {
-        [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedCategory properties:@{@"category": category}];
+        [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedCategory properties:[self categoryPropertyForStats]];
     }
 }
 
 
 #pragma mark - Utility
+
+- (NSString *)currentCategory
+{
+    NSDictionary *categoryDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
+    NSString *category = [categoryDetails stringForKey:@"endpoint"];
+    if (category == nil)
+        return @"reader/following";
+    else
+        return category;
+}
+
+- (NSDictionary *)categoryPropertyForStats
+{
+    return @{@"category": [self currentCategory]};
+}
 
 - (void)fetchBlogsAndPrimaryBlog {
 	

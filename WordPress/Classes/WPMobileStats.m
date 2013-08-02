@@ -39,6 +39,7 @@ NSString *const StatsEventReaderOpenedArticleDetails = @"Reader - Opened Article
 NSString *const StatsEventReaderPublishedComment = @"Reader - Published Comment";
 NSString *const StatsEventReaderReblogged = @"Reader - Reblogged";
 NSString *const StatsEventReaderLikedPost = @"Reader - Liked Post";
+NSString *const StatsEventReaderUnlikedPost = @"Reader - Unliked Post";
 
 // Reader Detail
 NSString *const StatsPropertyReaderDetailClickedPrevious = @"reader_detail_clicked_previous";

@@ -35,6 +35,8 @@ extern NSString *const StatsEventReaderOpenedArticleDetails;
 extern NSString *const StatsEventReaderPublishedComment;
 extern NSString *const StatsEventReaderReblogged;
 extern NSString *const StatsEventReaderLikedPost;
+extern NSString *const StatsEventReaderUnlikedPost;
+
 
 
 // Reader Detail

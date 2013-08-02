@@ -427,8 +427,11 @@
 - (void)handleLikeButtonTapped:(id)sender {
 
 	[self.post toggleLikedWithSuccess:^{
-		// Nothing to see here?
-        [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
+        if ([self.post.isLiked boolValue]) {
+            [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
+        } else {
+            [WPMobileStats trackEventForWPCom:StatsEventReaderUnlikedPost];
+        }
 	} failure:^(NSError *error) {
 		WPLog(@"Error Liking Post : %@", [error localizedDescription]);
 		[self updateControlBar];
