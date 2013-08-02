@@ -1,4 +1,5 @@
 ALWAYS_SEARCH_USER_PATHS = YES
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = ${PODS_HEADERS_SEARCH_PATHS} "$(SDKROOT)/usr/include/libxml2" $(SDKROOT)/usr/include/libxml2
 LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/google-plus-ios-sdk/google-plus-ios-sdk-1.2.1/lib"
 OTHER_LDFLAGS = -ObjC -lGooglePlusUniversal -liconv -lxml2 -framework AdSupport -framework CoreGraphics -framework CoreTelephony -framework CoreText -framework Foundation -framework ImageIO -framework MediaPlayer -framework MobileCoreServices -framework QuartzCore -framework Security -framework SystemConfiguration -framework UIKit

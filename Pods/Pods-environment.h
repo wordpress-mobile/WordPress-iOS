@@ -28,19 +28,19 @@
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_Core
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_Core 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_Core 4
-#define COCOAPODS_VERSION_PATCH_DTFoundation_Core 3
+#define COCOAPODS_VERSION_PATCH_DTFoundation_Core 4
 
 // DTFoundation/DTHMLParser
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_DTHMLParser
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_DTHMLParser 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_DTHMLParser 4
-#define COCOAPODS_VERSION_PATCH_DTFoundation_DTHMLParser 3
+#define COCOAPODS_VERSION_PATCH_DTFoundation_DTHMLParser 4
 
 // DTFoundation/UIKit
 #define COCOAPODS_POD_AVAILABLE_DTFoundation_UIKit
 #define COCOAPODS_VERSION_MAJOR_DTFoundation_UIKit 1
 #define COCOAPODS_VERSION_MINOR_DTFoundation_UIKit 4
-#define COCOAPODS_VERSION_PATCH_DTFoundation_UIKit 3
+#define COCOAPODS_VERSION_PATCH_DTFoundation_UIKit 4
 
 // JSONKit
 #define COCOAPODS_POD_AVAILABLE_JSONKit
