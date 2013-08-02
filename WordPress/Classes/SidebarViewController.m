@@ -914,8 +914,6 @@ NSLog(@"%@", self.sectionInfoArray);
             NotificationsViewController *notificationsViewController = [[NotificationsViewController alloc] init];
             detailViewController = notificationsViewController;
         }
-
-        self.currentIndexPath = indexPath;
     } else {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
         NSString *blogURL = @"";
@@ -989,12 +987,6 @@ NSLog(@"%@", self.sectionInfoArray);
             [SoundUtil playSwipeSound];
         }
 
-        self.currentIndexPath = indexPath;
-
-        NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:indexPath.row], @"row", [NSNumber numberWithInteger:indexPath.section], @"section", nil];
-        [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"kSelectedSidebarIndexDictionary"];
-        [NSUserDefaults resetStandardUserDefaults];
-
         [[NSNotificationCenter defaultCenter] postNotificationName:kSelectedBlogChanged 
                                                             object:nil 
                                                           userInfo:[NSDictionary dictionaryWithObject:blog forKey:@"blog"]];
@@ -1016,7 +1008,13 @@ NSLog(@"%@", self.sectionInfoArray);
                 [detailViewController performSelector:@selector(setBlog:) withObject:blog];
             }
         }
-    } 
+    }
+
+    self.currentIndexPath = indexPath;
+
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:indexPath.row], @"row", [NSNumber numberWithInteger:indexPath.section], @"section", nil];
+    [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"kSelectedSidebarIndexDictionary"];
+    [NSUserDefaults resetStandardUserDefaults];
 
     if (detailViewController) {
         [self.panelNavigationController setDetailViewController:detailViewController closingSidebar:closingSidebar];
