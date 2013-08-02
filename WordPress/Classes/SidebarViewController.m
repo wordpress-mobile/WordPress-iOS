@@ -915,6 +915,7 @@ NSLog(@"%@", self.sectionInfoArray);
             detailViewController = notificationsViewController;
         }
 
+        self.currentIndexPath = indexPath;
     } else {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
         NSString *blogURL = @"";
