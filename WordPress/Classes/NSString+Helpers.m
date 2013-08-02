@@ -111,5 +111,17 @@
     return [self stringByReplacingOccurrencesOfString:@"<[^>]+>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, self.length)];
 }
 
+
+- (NSString *)stringByRemovingScriptsAndStrippingHTML {
+    NSMutableString *mString = [self mutableCopy];
+    NSError *error;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<script[^>]*>[\\w\\W]*</script>" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSArray *matches = [regex matchesInString:mString options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mString length])];
+    for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
+        [mString replaceCharactersInRange:match.range withString:@""];
+    }
+    return [mString stringByStrippingHTML];
+}
+
 @end
 
