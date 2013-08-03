@@ -40,9 +40,8 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 #pragma mark - View Lifecycle methods
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+- (id)init {
+    self = [super init];
     if (self) {
         // Custom initialization
         self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
@@ -59,6 +58,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
+    
     self.panelNavigationController.delegate = self;
     self.infiniteScrollEnabled = YES;
     // -[UITableView registerClass:forCellReuseIdentifier:] available in iOS 6.0 and later
@@ -121,6 +121,8 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     
     if (!_viewHasAppeared) {
         _viewHasAppeared = true;
@@ -371,5 +373,6 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
         [self.tableView deselectRowAtIndexPath:selectedIndexPath animated:NO];
     }
 }
+
 
 @end

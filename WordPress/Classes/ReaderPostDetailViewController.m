@@ -11,7 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <MessageUI/MFMailComposeViewController.h>
 #import "UIImageView+Gravatar.h"
-#import "WPActivities.h"
+#import "WPActivityDefaults.h"
 #import "WPWebViewController.h"
 #import "PanelNavigationConstants.h"
 #import "WordPressAppDelegate.h"
@@ -487,17 +487,22 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
     	
     if (NSClassFromString(@"UIActivity") != nil) {
         NSString *title = self.post.postTitle;
-        SafariActivity *safariActivity = [[SafariActivity alloc] init];
-        InstapaperActivity *instapaperActivity = [[InstapaperActivity alloc] init];
-        PocketActivity *pocketActivity = [[PocketActivity alloc] init];
-		
+
         NSMutableArray *activityItems = [NSMutableArray array];
         if (title) {
             [activityItems addObject:title];
         }
 		
         [activityItems addObject:[NSURL URLWithString:permaLink]];
-        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:@[safariActivity, instapaperActivity, pocketActivity]];
+        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:[WPActivityDefaults defaultActivities]];
+        if (title) {
+            [activityViewController setValue:title forKey:@"subject"];
+        }
+        activityViewController.completionHandler = ^(NSString *activityType, BOOL completed) {
+            if (!completed)
+                return;
+            [WPActivityDefaults trackActivityType:activityType withPrefix:@"ReaderDetail"];
+        };
         [self presentViewController:activityViewController animated:YES completion:nil];
         return;
     }

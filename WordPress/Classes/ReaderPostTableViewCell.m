@@ -309,12 +309,9 @@
 - (void)prepareForReuse {
 	[super prepareForReuse];
 
-    self.cellImageView.contentMode = UIViewContentModeCenter;
-    self.cellImageView.image = [UIImage imageNamed:@"wp_img_placeholder"];
     _featuredImageIsSet = NO;
     _avatarIsSet = NO;
 
-	[self setAvatar:nil];
 	_bylineLabel.text = nil;
 	_titleLabel.text = nil;
 	_snippetLabel.text = nil;
@@ -338,6 +335,10 @@
 - (void)configureCell:(ReaderPost *)post {
 	
 	self.post = post;
+    
+    // This will show the placeholder avatar. Do this here instead of prepareForReusue
+    // so avatars show up after a cell is created, and not dequeued.
+    [self setAvatar:nil];
 
 	_titleLabel.text = [post.postTitle trim];
 	_snippetLabel.text = post.summary;
@@ -346,6 +347,8 @@
 
 	self.showImage = NO;
 	self.cellImageView.hidden = YES;
+    self.cellImageView.contentMode = UIViewContentModeCenter;
+    self.cellImageView.image = [UIImage imageNamed:@"wp_img_placeholder"];
 	if (post.featuredImageURL) {
 		self.showImage = YES;
 		self.cellImageView.hidden = NO;
@@ -424,7 +427,11 @@
 - (void)handleLikeButtonTapped:(id)sender {
 
 	[self.post toggleLikedWithSuccess:^{
-		// Nothing to see here?
+        if ([self.post.isLiked boolValue]) {
+            [WPMobileStats trackEventForWPCom:StatsEventReaderLikedPost];
+        } else {
+            [WPMobileStats trackEventForWPCom:StatsEventReaderUnlikedPost];
+        }
 	} failure:^(NSError *error) {
 		WPLog(@"Error Liking Post : %@", [error localizedDescription]);
 		[self updateControlBar];

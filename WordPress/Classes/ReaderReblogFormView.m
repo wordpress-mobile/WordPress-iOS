@@ -120,7 +120,7 @@
 					stop = YES;
 				}
 			}];
-		} else {
+		} else if ([blogs count]) {
 			[self setDestinationBlog:[blogs objectAtIndex:0]];
 		}
     }
@@ -147,6 +147,8 @@
 		if ([self.delegate respondsToSelector:@selector(readerTextFormDidSend:)]) {
 			[self.delegate readerTextFormDidSend:self];
 		}
+        
+        [WPMobileStats trackEventForWPCom:StatsEventReaderReblogged];
 		
 	} failure:^(NSError *error) {
 		WPLog(@"Error Reblogging Post : %@", [error localizedDescription]);

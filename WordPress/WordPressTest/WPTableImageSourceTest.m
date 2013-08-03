@@ -56,8 +56,8 @@ static NSString *const requestUrl = @"http://test.blog/images/test-image.jpg";
 - (void)testImageIsDownloadedOnce
 {
     ATHStart();
-    [_source fetchImageForURL:_url withSize:CGSizeMake(400, 300) indexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-    [_source fetchImageForURL:_url withSize:CGSizeMake(300, 200) indexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+    [_source fetchImageForURL:_url withSize:CGSizeMake(400, 300) indexPath:[NSIndexPath indexPathForRow:1 inSection:0] isPrivate:NO];
+    [_source fetchImageForURL:_url withSize:CGSizeMake(300, 200) indexPath:[NSIndexPath indexPathForRow:2 inSection:0] isPrivate:NO];
     ATHWait();
     ATHEnd();
     STAssertEquals(_downloadCount, 1, nil);
@@ -67,7 +67,7 @@ static NSString *const requestUrl = @"http://test.blog/images/test-image.jpg";
 {
     CGSize wantedSize = CGSizeMake(300, 200);
     ATHStart();
-    [_source fetchImageForURL:_url withSize:wantedSize indexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    [_source fetchImageForURL:_url withSize:wantedSize indexPath:[NSIndexPath indexPathForRow:1 inSection:0] isPrivate:NO];
     ATHEnd();
     STAssertNotNil(_delegateImage, nil);
     CGSize size = _delegateImage.size;
@@ -79,7 +79,7 @@ static NSString *const requestUrl = @"http://test.blog/images/test-image.jpg";
     CGSize wantedSize = CGSizeMake(300, 200);
     STAssertNil([_source imageForURL:_url withSize:wantedSize], nil);
     ATHStart();
-    [_source fetchImageForURL:_url withSize:wantedSize indexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    [_source fetchImageForURL:_url withSize:wantedSize indexPath:[NSIndexPath indexPathForRow:1 inSection:0] isPrivate:NO];
     ATHEnd();
     STAssertNotNil([_source imageForURL:_url withSize:wantedSize], nil);
     CGSize size = _delegateImage.size;
@@ -92,7 +92,7 @@ static NSString *const requestUrl = @"http://test.blog/images/test-image.jpg";
     STAssertNil([_source imageForURL:_url withSize:wantedSize], nil);
 
     ATHStart();
-    [_source fetchImageForURL:_url withSize:wantedSize indexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    [_source fetchImageForURL:_url withSize:wantedSize indexPath:[NSIndexPath indexPathForRow:1 inSection:0] isPrivate:NO];
     ATHEnd();
 
     wantedSize = CGSizeMake(200, 150);
@@ -109,7 +109,7 @@ static NSString *const requestUrl = @"http://test.blog/images/test-image.jpg";
 {
     CGSize wantedSize = CGSizeMake(300, 200);
     ATHStart();
-    [_source fetchImageForURL:_url withSize:wantedSize indexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    [_source fetchImageForURL:_url withSize:wantedSize indexPath:[NSIndexPath indexPathForRow:1 inSection:0] isPrivate:NO];
     [_source invalidateIndexPaths];
     ATHEndNeverCalled(2);
 

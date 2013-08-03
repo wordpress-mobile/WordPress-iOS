@@ -131,8 +131,18 @@
 		_followButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 		_followButton.backgroundColor = [UIColor colorWithRed:234.0f/255.0f green:234.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
 		_followButton.titleLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:10.0f];
-		[_followButton setTitle:NSLocalizedString(@"FOLLOW", @"Prompt to follow a blog.") forState:UIControlStateNormal];
-		[_followButton setTitle:NSLocalizedString(@"FOLLOWING", @"User is following the blog.") forState:UIControlStateSelected];
+        NSString *followString = NSLocalizedString(@"Follow", @"Prompt to follow a blog.");
+        NSString *followedString = NSLocalizedString(@"Following", @"User is following the blog.");
+        // -[NSString uppercaseStringWithLocale:] available since iOS6
+        if ([followString respondsToSelector:@selector(uppercaseStringWithLocale:)]) {
+            followString = [followString uppercaseStringWithLocale:[NSLocale currentLocale]];
+            followedString = [followedString uppercaseStringWithLocale:[NSLocale currentLocale]];
+        } else {
+            followString = [followString uppercaseString];
+            followedString = [followedString uppercaseString];
+        }
+		[_followButton setTitle:followString forState:UIControlStateNormal];
+		[_followButton setTitle:followedString forState:UIControlStateSelected];
 		[_followButton setImage:[UIImage imageNamed:@"reader-postaction-follow"] forState:UIControlStateNormal];
 		[_followButton setImage:[UIImage imageNamed:@"reader-postaction-following"] forState:UIControlStateSelected];
 		[_followButton setTitleColor:[UIColor colorWithRed:116.0f/255.0f green:116.0f/255.0f blue:116.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];

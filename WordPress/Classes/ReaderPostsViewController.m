@@ -25,6 +25,8 @@
 #import "WPAccount.h"
 #import "WPTableImageSource.h"
 #import "WPInfoView.h"
+#import "WPCookie.h"
+#import "NSString+Helpers.h"
 
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
 
@@ -47,6 +49,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 - (void)handleReblogButtonTapped:(id)sender;
 - (void)showReblogForm;
 - (void)hideReblogForm;
+- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure;
 - (void)onSyncSuccess:(AFHTTPRequestOperation *)operation response:(id)responseObject;
 - (void)handleKeyboardDidShow:(NSNotification *)notification;
 - (void)handleKeyboardWillHide:(NSNotification *)notification;
@@ -61,6 +64,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	// (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready
 	// for the detail view, and avoid a perceived lag. 
 	[DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
+    
+    [AFImageRequestOperation addAcceptableContentTypes:[NSSet setWithObject:@"image/jpg"]];
 }
 
 #pragma mark - Life Cycle methods
@@ -84,7 +89,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-
 
     CGFloat maxWidth = self.tableView.bounds.size.width;
     if (IS_IPHONE) {
@@ -152,7 +156,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	if (_isShowingReblogForm) {
 		[self showReblogForm];
 	}
-	
+
+    [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:[self categoryPropertyForStats]];
 }
 
 
@@ -164,6 +169,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	self.panelNavigationController.delegate = self;
 	
 	self.title = [[[ReaderPost currentTopic] objectForKey:@"title"] capitalizedString];
+    [self loadImagesForVisibleRows];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -391,7 +397,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
             if (image) {
                 [cell setFeaturedImage:image];
             } else {
-                [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath];
+                [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath isPrivate:post.isPrivate];
             }
         }
     }
@@ -562,7 +568,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         if (image) {
             [cell setFeaturedImage:image];
         } else if (!self.tableView.isDragging && !self.tableView.isDecelerating) {
-            [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath];
+            [_featuredImageSource fetchImageForURL:imageURL withSize:imageSize indexPath:indexPath isPrivate:post.isPrivate];
         }
     }
 	
@@ -586,6 +592,45 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
+    
+    // if needs auth.
+    if([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com"] andUsername:[[WordPressComApi sharedApi] username]]) {
+       [self syncItemsWithSuccess:success failure:failure];
+        return;
+    }
+    
+    //
+    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useDefaultUserAgent];
+    NSString *username = [[WordPressComApi sharedApi] username];
+    NSString *password = [[WordPressComApi sharedApi] password];
+    NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
+    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=http://wordpress.com",
+                             [username stringByUrlEncoding],
+                             [password stringByUrlEncoding]];
+    
+    [mRequest setURL:[NSURL URLWithString:@"https://wordpress.com/wp-login.php"]];
+    [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
+    [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
+    [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
+    [mRequest setHTTPMethod:@"POST"];
+    
+    
+    AFHTTPRequestOperation *authRequest = [[AFHTTPRequestOperation alloc] initWithRequest:mRequest];
+    [authRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
+        [self syncItemsWithSuccess:success failure:failure];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
+        [self syncItemsWithSuccess:success failure:failure];
+    }];
+    
+    [authRequest start];
+    
+    [WPMobileStats trackEventForWPCom:StatsEventReaderHomePageRefresh];
+}
+
+    
+- (void)syncItemsWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
 	NSString *endpoint = [ReaderPost currentEndpoint];
 	NSNumber *numberToSync = [NSNumber numberWithInteger:ReaderPostsToSync];
 	NSDictionary *params = @{@"number":numberToSync, @"per_page":numberToSync};
@@ -621,9 +666,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	id before;
 	if([endpoint isEqualToString:@"freshly-pressed"]) {
 		// freshly-pressed wants an ISO string but the rest want a timestamp.
-		before = [DateUtils isoStringFromDate:post.dateCreated];
+		before = [DateUtils isoStringFromDate:post.date_created_gmt];
 	} else {
-		before = [NSNumber numberWithInteger:[post.dateCreated timeIntervalSince1970]];
+		before = [NSNumber numberWithInteger:[post.date_created_gmt timeIntervalSince1970]];
 	}
 
 	NSDictionary *params = @{@"before":before, @"number":numberToSync, @"per_page":numberToSync};
@@ -642,6 +687,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 									 failure(error);
 								 }
 							 }];
+    
+    [WPMobileStats trackEventForWPCom:StatsEventReaderInfiniteScroll properties:[self categoryPropertyForStats]];
 }
 
 
@@ -708,6 +755,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
 	[self.panelNavigationController pushViewController:controller fromViewController:self animated:YES];
+    
+    [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedArticleDetails];
 }
 
 
@@ -775,10 +824,31 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 			[self simulatePullToRefresh];
 		}
     }
+
+    if ([[self currentCategory] isEqualToString:@"freshly-pressed"]) {
+        [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedFreshlyPressedTopic];
+    } else {
+        [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedCategory properties:[self categoryPropertyForStats]];
+    }
 }
 
 
 #pragma mark - Utility
+
+- (NSString *)currentCategory
+{
+    NSDictionary *categoryDetails = [[NSUserDefaults standardUserDefaults] objectForKey:ReaderCurrentTopicKey];
+    NSString *category = [categoryDetails stringForKey:@"endpoint"];
+    if (category == nil)
+        return @"reader/following";
+    else
+        return category;
+}
+
+- (NSDictionary *)categoryPropertyForStats
+{
+    return @{@"category": [self currentCategory]};
+}
 
 - (void)fetchBlogsAndPrimaryBlog {
 	

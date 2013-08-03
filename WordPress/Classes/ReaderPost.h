@@ -15,6 +15,8 @@ extern NSInteger const ReaderTopicEndpointIndex;
 extern NSInteger const ReaderPostsToSync;
 extern NSString *const ReaderLastSyncDateKey;
 extern NSString *const ReaderCurrentTopicKey;
+extern NSString *const ReaderTopicsArrayKey;
+extern NSString *const ReaderExtrasArrayKey;
 
 @interface ReaderPost : BasePost
 
@@ -31,6 +33,7 @@ extern NSString *const ReaderCurrentTopicKey;
 @property (nonatomic, strong) NSDate *dateCommentsSynced;
 @property (nonatomic, strong) NSString *endpoint;
 @property (nonatomic, strong) NSString *featuredImage;
+@property (nonatomic, strong) NSNumber *isBlogPrivate;
 @property (nonatomic, strong) NSNumber *isFollowing;
 @property (nonatomic, strong) NSNumber *isLiked;
 @property (nonatomic, strong) NSNumber *isReblogged;
@@ -113,6 +116,9 @@ extern NSString *const ReaderCurrentTopicKey;
 
 
 - (BOOL)isBlogsIFollow;
+
+
+- (BOOL)isPrivate;
 
 
 - (BOOL)isWPCom;
