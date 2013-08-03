@@ -19,18 +19,16 @@ CGFloat const WPNUXBackButtonExtraHorizontalWidthForSpace = 30;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        UIImage *mainImage = [[UIImage imageNamed:@"btn-back"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 21, 0, 18)];
-        UIImage *tappedImage = [[UIImage imageNamed:@"btn-back-tap"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 21, 0, 18)];
-        self.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0];
-        self.titleLabel.shadowOffset = CGSizeMake(0, -1);
-        [self setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 6.0, 0, 10.0)];
-        [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.8] forState:UIControlStateNormal];
-        [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5] forState:UIControlStateHighlighted];
-        [self setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.1] forState:UIControlStateNormal];
-        [self setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.05] forState:UIControlStateNormal];
-        [self setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
-        [self setBackgroundImage:mainImage forState:UIControlStateNormal];
-        [self setBackgroundImage:tappedImage forState:UIControlStateHighlighted];
+        [self configureButton];
+    }
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self configureButton];
     }
     return self;
 }
@@ -43,6 +41,29 @@ CGFloat const WPNUXBackButtonExtraHorizontalWidthForSpace = 30;
     CGRect frame = self.frame;
     frame.size.width += self.titleEdgeInsets.left + self.titleEdgeInsets.right + WPNUXBackButtonExtraHorizontalWidthForSpace;
     self.frame = frame;
+}
+
+- (CGSize)intrinsicContentSize
+{
+    CGSize size = [self sizeThatFits:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX)];
+    size.width += self.titleEdgeInsets.left + self.titleEdgeInsets.right + WPNUXBackButtonExtraHorizontalWidthForSpace;
+    return size;
+}
+
+- (void)configureButton
+{
+    UIImage *mainImage = [[UIImage imageNamed:@"btn-back"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 21, 0, 18)];
+    UIImage *tappedImage = [[UIImage imageNamed:@"btn-back-tap"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 21, 0, 18)];
+    self.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:12.0];
+    self.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    [self setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 6.0, 0, 10.0)];
+    [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.8] forState:UIControlStateNormal];
+    [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5] forState:UIControlStateHighlighted];
+    [self setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.1] forState:UIControlStateNormal];
+    [self setTitleShadowColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.05] forState:UIControlStateNormal];
+    [self setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
+    [self setBackgroundImage:mainImage forState:UIControlStateNormal];
+    [self setBackgroundImage:tappedImage forState:UIControlStateHighlighted];
 }
 
 @end
