@@ -255,7 +255,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
     }
 	
-    [self presentModalViewController:navController animated:YES];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 
@@ -977,7 +977,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
     }
 	
-    [self presentModalViewController:navController animated:YES];
+    [self presentViewController:navController animated:YES completion:nil];
     
     [controller loadURL:kMobileReaderFFURL];
 }

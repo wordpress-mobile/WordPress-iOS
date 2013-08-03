@@ -32,7 +32,7 @@
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 	navController.modalPresentationStyle = UIModalPresentationFormSheet;
 	navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentModalViewController:navController animated:YES];
+	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentViewController:navController animated:YES completion:nil];
 
 	return controller;
 }
@@ -90,7 +90,7 @@
 
 
 - (void)handleCloseButtonTapped:(id)sender {
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -137,7 +137,7 @@
     NSDictionary *dict = [_blogs objectAtIndex:indexPath.row];
 	[self.delegate userDidSelectBlog:dict];
 	
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

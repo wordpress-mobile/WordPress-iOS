@@ -1169,7 +1169,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
         [controller setMessageBody:body isHTML:NO];
         
         if (controller)
-            [self.panelNavigationController presentModalViewController:controller animated:YES];
+            [self.panelNavigationController presentViewController:controller animated:YES completion:nil];
 		
         [self setMFMailFieldAsFirstResponder:controller.view mfMailField:@"MFRecipientTextField"];
 		
@@ -1183,7 +1183,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 #pragma mark - MFMailComposeViewControllerDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 //Returns true if the ToAddress field was found any of the sub views and made first responder

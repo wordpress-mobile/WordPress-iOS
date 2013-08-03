@@ -160,7 +160,7 @@
 			_titleLabel.backgroundColor = [UIColor whiteColor];
 			_titleLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:20.0f];
 			_titleLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0f];
-			_titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+			_titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
 			_titleLabel.numberOfLines = 0;
 			_titleLabel.text = self.post.postTitle;
 			[self addSubview:_titleLabel];
