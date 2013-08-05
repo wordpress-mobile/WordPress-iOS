@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4488.1" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Pqx-yn-Eun">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4488.1" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="E1r-8e-LNS">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3715.3"/>
@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="504" width="320" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VLp-Md-5ra" customClass="WPNUXSecondaryButton">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VLp-Md-5ra" userLabel="Create Account Button" customClass="WPNUXSecondaryButton">
                                         <rect key="frame" x="16" y="17" width="110" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -33,10 +33,11 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="bZb-RD-sl1" kind="push" id="y8r-h0-DO4"/>
+                                            <action selector="clickedCreateAccount:" destination="E1r-8e-LNS" eventType="touchUpInside" id="IGb-8I-Ric"/>
+                                            <segue destination="bZb-RD-sl1" kind="push" id="NoL-in-lCX"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hg1-CI-14N" customClass="WPNUXPrimaryButton">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hg1-CI-14N" userLabel="Sign In Button" customClass="WPNUXPrimaryButton">
                                         <rect key="frame" x="255" y="17" width="49" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
@@ -47,18 +48,34 @@
                                         <state key="highlighted">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="clickedSignIn:" destination="E1r-8e-LNS" eventType="touchUpInside" id="AqZ-06-l5L"/>
+                                        </connections>
                                     </button>
+                                    <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't have an account? Create one!" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="288" translatesAutoresizingMaskIntoConstraints="NO" id="gOy-15-XLg" userLabel="Create Account Label">
+                                        <rect key="frame" x="16" y="22" width="288" height="19"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <color key="shadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <size key="shadowOffset" width="0.0" height="1"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.1647058824" green="0.1647058824" blue="0.1647058824" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="hg1-CI-14N" secondAttribute="trailing" constant="16" id="6Ko-Ag-ry2"/>
                                     <constraint firstAttribute="height" constant="64" id="9LC-wm-t3y"/>
+                                    <constraint firstAttribute="centerY" secondItem="gOy-15-XLg" secondAttribute="centerY" id="Aoh-F9-nBz"/>
+                                    <constraint firstAttribute="centerX" secondItem="gOy-15-XLg" secondAttribute="centerX" id="CYj-aN-Ei0"/>
                                     <constraint firstAttribute="centerY" secondItem="VLp-Md-5ra" secondAttribute="centerY" id="D8R-Qz-NnI"/>
                                     <constraint firstAttribute="centerY" secondItem="hg1-CI-14N" secondAttribute="centerY" id="E44-Zd-K69"/>
+                                    <constraint firstAttribute="trailing" secondItem="gOy-15-XLg" secondAttribute="trailing" constant="16" id="MbE-kU-pdn"/>
                                     <constraint firstItem="VLp-Md-5ra" firstAttribute="leading" secondItem="12E-ku-4lp" secondAttribute="leading" constant="16" id="b41-Ph-GXT"/>
+                                    <constraint firstItem="gOy-15-XLg" firstAttribute="leading" secondItem="12E-ku-4lp" secondAttribute="leading" constant="16" id="ceX-S7-z77"/>
                                 </constraints>
                             </view>
-                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="SVS-cf-sVE">
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="SVS-cf-sVE" userLabel="Page Control Label Used to Layout &quot;Swipe to Continue&quot; text">
                                 <rect key="frame" x="141" y="467" width="39" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </pageControl>
@@ -84,7 +101,10 @@
                     </view>
                     <connections>
                         <outlet property="bottomPanel" destination="12E-ku-4lp" id="dbf-zs-8b0"/>
+                        <outlet property="createAccountButton" destination="VLp-Md-5ra" id="YNS-Th-Fwg"/>
+                        <outlet property="createAccountLabel" destination="gOy-15-XLg" id="G6B-Em-slx"/>
                         <outlet property="pageControl" destination="SVS-cf-sVE" id="bOJ-21-BnH"/>
+                        <outlet property="signInButton" destination="hg1-CI-14N" id="6n2-LA-WWv"/>
                         <outlet property="swipeToContinue" destination="4Eg-3n-DkE" id="tHE-xH-YAy"/>
                     </connections>
                 </viewController>
@@ -95,7 +115,7 @@
         <!--New Create Account And Blog View Controller-->
         <scene sceneID="ZFp-Pb-rLl">
             <objects>
-                <viewController id="bZb-RD-sl1" customClass="NewCreateAccountAndBlogViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CreateAccount" id="bZb-RD-sl1" customClass="NewCreateAccountAndBlogViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dCC-RE-QNf"/>
                         <viewControllerLayoutGuide type="bottom" id="7fD-nO-jGD"/>
@@ -115,6 +135,9 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="clickedCancel:" destination="bZb-RD-sl1" eventType="touchUpInside" id="sDR-Du-Rvx"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kOJ-S4-ipi">
                                 <rect key="frame" x="268" y="0.0" width="52" height="44"/>
@@ -648,6 +671,9 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="clickedInfoButton:" destination="c5e-wp-B7t" eventType="touchUpInside" id="ZIB-0l-YeF"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.1176470588" green="0.54901960780000003" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -804,7 +830,7 @@
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="URL"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rmf-91-PB3" customClass="WPNUXMainButton">
-                                <rect key="frame" x="81" y="354" width="160" height="41"/>
+                                <rect key="frame" x="80" y="354" width="160" height="41"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="41" id="NbA-QM-yGq"/>
@@ -818,6 +844,9 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="clickedSignIn:" destination="XkL-r0-4pT" eventType="touchUpInside" id="gM0-it-Ppf"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.1176470588" green="0.54901960780000003" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -826,7 +855,7 @@
                             <constraint firstItem="pKC-cM-WPa" firstAttribute="top" secondItem="cGr-z2-5zH" secondAttribute="top" constant="134" id="O1d-WN-ukZ"/>
                             <constraint firstAttribute="centerX" secondItem="Wvq-F6-Ljl" secondAttribute="centerX" id="PXb-S1-mY2"/>
                             <constraint firstAttribute="centerX" secondItem="sGG-EJ-68q" secondAttribute="centerX" id="fqu-yx-lEf"/>
-                            <constraint firstAttribute="centerX" secondItem="Rmf-91-PB3" secondAttribute="centerX" constant="-0.5" id="h62-SA-FBi"/>
+                            <constraint firstAttribute="centerX" secondItem="Rmf-91-PB3" secondAttribute="centerX" id="h62-SA-FBi"/>
                             <constraint firstItem="sGG-EJ-68q" firstAttribute="top" secondItem="pKC-cM-WPa" secondAttribute="bottom" constant="16" id="hse-iI-mnC"/>
                             <constraint firstItem="Wvq-F6-Ljl" firstAttribute="top" secondItem="sGG-EJ-68q" secondAttribute="bottom" constant="8" id="r0e-YF-IGD"/>
                             <constraint firstItem="swV-CR-3Aj" firstAttribute="top" secondItem="Wvq-F6-Ljl" secondAttribute="bottom" constant="8" id="wE6-LU-EuJ"/>

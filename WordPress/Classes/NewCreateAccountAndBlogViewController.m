@@ -87,5 +87,12 @@
     return 3;
 }
 
+#pragma mark - IBAction methods
+
+- (IBAction)clickedCancel:(id)sender
+{
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXCreateAccountClickedCancel];
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 @end

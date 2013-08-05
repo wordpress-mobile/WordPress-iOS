@@ -10,4 +10,6 @@
 
 @interface NewCreateAccountAndBlogViewController : UIViewController
 
+@property (nonatomic, copy) void(^onCreatedUser)(NSString *, NSString *);
+
 @end

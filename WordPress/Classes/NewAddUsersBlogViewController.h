@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class NewAddUsersBlogViewController;
-
+@class WPAccount;
 @interface NewAddUsersBlogViewController : UIViewController
 
 @property (nonatomic, assign) BOOL autoAddSingleBlog;

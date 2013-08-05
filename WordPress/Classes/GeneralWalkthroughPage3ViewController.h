@@ -9,8 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "BaseNUXViewController.h"
 
+@class WPWalkthroughOverlayView;
 @interface GeneralWalkthroughPage3ViewController : BaseNUXViewController
 
 @property (nonatomic, assign) CGFloat heightToUseForCentering;
+@property (nonatomic, weak) UIView *containingView;
+
+- (void)showCreateAccountView;
 
 @end

@@ -10,4 +10,6 @@
 
 @interface NewLoginCompletedWalkthroughViewController : UIViewController
 
+@property (nonatomic, assign) BOOL showsExtraWalkthroughPages;
+
 @end

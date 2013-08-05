@@ -10,6 +10,7 @@
 #import "WPNUXUtility.h"
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
+#import "AboutViewController.h"
 
 @interface GeneralWalkthroughPage1ViewController ()
 
@@ -20,8 +21,6 @@
 @property (nonatomic, strong) IBOutlet UIPageControl *pageControl;
 @property (nonatomic, strong) IBOutlet UIImageView *helpButton;
 @property (nonatomic, strong) IBOutlet UIImageView *bottomDivider;
-@property (nonatomic, strong) IBOutlet WPNUXSecondaryButton *createAccountButton;
-@property (nonatomic, strong) IBOutlet WPNUXPrimaryButton *signInButton;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *verticalCenteringConstraint;
 
 
@@ -52,11 +51,7 @@
     
     self.swipeToContinueLabel.text = [NSLocalizedString(@"swipe to continue", nil) uppercaseString];
     self.swipeToContinueLabel.font = [WPNUXUtility swipeToContinueFont];
-    
-    [self.createAccountButton setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
-
-    [self.signInButton setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
-    
+        
     [WPNUXUtility configurePageControlTintColors:self.pageControl];
 }
 
@@ -69,5 +64,19 @@
 {
     return self.bottomDivider;
 }
+
+#pragma mark IBAction Methods
+
+- (IBAction)clickedInfoButton:(id)sender
+{
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedInfo];
+    AboutViewController *aboutViewController = [[AboutViewController alloc] init];
+	aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
+    nc.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self.navigationController presentViewController:nc animated:YES completion:nil];
+	[self.navigationController setNavigationBarHidden:YES];
+}
+
 
 @end

@@ -10,9 +10,7 @@
 
 @interface BaseNUXViewController () {
     BOOL _correctedCenteringLayout;
-    NSLayoutConstraint *_adjustedCenteringConstraint;
 }
-
 
 @end
 
