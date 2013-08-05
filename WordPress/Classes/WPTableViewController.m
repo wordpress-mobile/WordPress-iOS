@@ -135,6 +135,9 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     } else {
         [self.tableView scrollRectToVisible:CGRectMake(0.0, contentSize.height, 0.0, 0.0) animated:NO];
     }
+    if ([self.tableView indexPathForSelectedRow]) {
+        [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
