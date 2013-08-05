@@ -12,10 +12,13 @@
 #import "LoginCompletedWalkthroughPage3ViewController.h"
 #import "LoginCompletedWalkthroughPage4ViewController.h"
 #import "WPNUXUtility.h"
+#import "WPWalkthroughOverlayView.h"
+#import "WordPressAppDelegate.h"
 
-@interface NewLoginCompletedWalkthroughViewController () <UIPageViewControllerDataSource> {
+@interface NewLoginCompletedWalkthroughViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate> {
     UIPageViewController *_pageViewController;
     CGFloat _heightToUseForCentering;
+    BOOL _isDismissing;
 }
 
 @property (nonatomic, strong) IBOutlet UIView *bottomPanel;
@@ -44,6 +47,7 @@
     _pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     _pageViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
     _pageViewController.dataSource = self;
+    _pageViewController.delegate = self;
     UIViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"LoginCompletedPage1"];
     [_pageViewController setViewControllers:@[vc] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     [self addChildViewController:_pageViewController];
@@ -64,11 +68,14 @@
     self.tapToDismiss.text = NSLocalizedString(@"Tap to start using WordPress", @"NUX Second Walkthrough Bottom Skip Label");
     self.tapToDismiss.font = [UIFont fontWithName:@"OpenSans" size:15.0];
     
+    self.pageControl.numberOfPages = 4;
+    
     [WPNUXUtility configurePageControlTintColors:self.pageControl];
     
     [self.view bringSubviewToFront:self.swipeToContinue];
-    
     [self.view bringSubviewToFront:self.pageControl];
+    
+    [self showLoginSuccess];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -153,9 +160,88 @@
     return vc;
 }
 
-- (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController
+- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers
 {
-    return 4;
+    [self setPageNumberForViewController:[pendingViewControllers objectAtIndex:0]];
+}
+
+
+#pragma mark - Private Methods
+
+- (void)showLoginSuccess
+{
+    WPWalkthroughOverlayView *grayOverlay = [[WPWalkthroughOverlayView alloc] initWithFrame:self.view.bounds];
+    grayOverlay.overlayTitle = NSLocalizedString(@"Success!", @"NUX Second Walkthrough Success Overlay Title");
+    grayOverlay.overlayDescription = NSLocalizedString(@"You have successfully signed into your WordPress account!", @"NUX Second Walkthrough Success Overlay Description");
+    grayOverlay.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
+    grayOverlay.footerDescription = [NSLocalizedString(@"tap to continue", nil) uppercaseString];
+    grayOverlay.icon = WPWalkthroughGrayOverlayViewBlueCheckmarkIcon;
+    grayOverlay.hideBackgroundView = YES;
+    grayOverlay.singleTapCompletionBlock = ^(WPWalkthroughOverlayView * overlayView){
+        if (!self.showsExtraWalkthroughPages) {
+            [self dismiss];
+        } else {
+            [overlayView dismiss];
+            [self addGestureRecognizers];
+        }
+    };
+    [self.view addSubview:grayOverlay];
+}
+
+- (void)dismiss
+{
+    if (!_isDismissing) {
+        _isDismissing = true;
+        self.parentViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate].panelNavigationController teaseSidebar];
+    }
+}
+
+- (void)addGestureRecognizers
+{
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedBackground:)];
+    gestureRecognizer.cancelsTouchesInView = NO;
+    gestureRecognizer.numberOfTapsRequired = 1;
+    [self.view addGestureRecognizer:gestureRecognizer];
+    
+    gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedBottomPanel:)];
+    gestureRecognizer.numberOfTapsRequired = 1;
+    [self.bottomPanel addGestureRecognizer:gestureRecognizer];
+}
+
+- (void)clickedBackground:(UITapGestureRecognizer *)gestureRecognizer
+{
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughClickedStartUsingAppOnFinalPage];
+    [self dismiss];
+}
+
+- (void)clickedBottomPanel:(UITapGestureRecognizer *)gestureRecognizer
+{
+    [self clickedSkipToApp:nil];
+}
+
+- (void)clickedSkipToApp:(UITapGestureRecognizer *)gestureRecognizer
+{
+    if (self.pageControl.currentPage == 3) {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughClickedStartUsingAppOnFinalPage];
+    } else {
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXSecondWalkthroughClickedStartUsingApp];
+    }
+    [self dismiss];
+}
+
+- (void)setPageNumberForViewController:(UIView *)viewController
+{
+    if ([viewController isKindOfClass:[LoginCompletedWalkthroughPage1ViewController class]]) {
+        self.pageControl.currentPage = 0;
+    } else if ([viewController isKindOfClass:[LoginCompletedWalkthroughPage2ViewController class]]) {
+        self.pageControl.currentPage = 1;
+    } else if ([viewController isKindOfClass:[LoginCompletedWalkthroughPage3ViewController class]]) {
+        self.pageControl.currentPage = 2;
+    } else if ([viewController isKindOfClass:[LoginCompletedWalkthroughPage4ViewController class]]) {
+        self.pageControl.currentPage = 3;
+    }
 }
 
 @end

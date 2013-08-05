@@ -13,6 +13,7 @@
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPWalkthroughOverlayView.h"
+#import "WPNUXUtility.h"
 
 @interface NewGeneralWalkthroughViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate> {
     UIPageViewController *_pageViewController;
@@ -78,6 +79,9 @@
     [self.createAccountButton setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
     
     [self.signInButton setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
+    
+    self.pageControl.numberOfPages = 3;
+    [WPNUXUtility configurePageControlTintColors:self.pageControl];
     
     [self.view bringSubviewToFront:self.swipeToContinue];
     [self.view bringSubviewToFront:self.pageControl];
