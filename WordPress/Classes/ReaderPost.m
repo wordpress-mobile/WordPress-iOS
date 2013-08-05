@@ -326,8 +326,11 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		self.authorEmail = [author stringForKey:@"email"];
 	}
 	
-	
-	self.content = [self normalizeParagraphs:[dict objectForKey:@"content"]];
+	NSString *content = [dict stringForKey:@"content"];
+    if ([self containsVideoPress:content]) {
+        content = [self formatVideoPress:content];
+    }
+	self.content = [self normalizeParagraphs:content];
 	self.commentsOpen = [dict numberForKey:@"comments_open"];
 	
 	self.date_created_gmt = [DateUtils dateFromISOString:[dict objectForKey:@"date"]];
@@ -341,7 +344,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	NSURL *url = [NSURL URLWithString:self.permaLink];
 	self.blogURL = [NSString stringWithFormat:@"%@://%@/", url.scheme, url.host];
 	
-	self.summary = [self createSummary:[dict objectForKey:@"content"] makePlainText:YES];
+	self.summary = [self createSummary:self.content makePlainText:YES];
 }
 
 
@@ -366,7 +369,11 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	self.blogURL = [dict stringForKey:@"blog_url"];
 	self.blogName = [[dict stringForKey:@"blog_name"] stringByDecodingXMLCharacters];
 	
-	self.content = [self normalizeParagraphs:[dict objectForKey:@"post_content_full"]];
+    NSString *content = [dict stringForKey:@"post_content_full"];
+    if ([self containsVideoPress:content]) {
+        content = [self formatVideoPress:content];
+    }
+	self.content = [self normalizeParagraphs:content];
 	self.commentsOpen = [NSNumber numberWithBool:[@"open" isEqualToString:[dict stringForKey:@"comment_status"]]];
 	
 	NSDate *date;
@@ -389,7 +396,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     
 	self.isLiked = [dict numberForKey:@"is_liked"];
 	
-	NSString *summary = [self makePlainText:[dict stringForKey:@"post_content"]];
+	NSString *summary = [self makePlainText:self.content];
 	if ([summary length] > ReaderPostSummaryLength) {
 		summary = [self createSummary:summary makePlainText:NO];
 	}
@@ -427,7 +434,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 
 - (NSString *)makePlainText:(NSString *)string {
-	return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] trim];
+	return [[[string stringByRemovingScriptsAndStrippingHTML] stringByDecodingXMLCharacters] trim];
 }
 
 
@@ -685,6 +692,39 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 	return [NSString stringWithFormat:fmt, self.featuredImage, width, height];
 }
 
+- (BOOL)containsVideoPress:(NSString *)str {
+    NSError *error;
+
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<div[\\S\\s]+?<div.*class=\"videopress-placeholder[\\s\\S]*?</noscript>" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSRange match = [regex rangeOfFirstMatchInString:str options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [str length])];
+    return (match.location != NSNotFound);
+}
+
+- (NSString *)formatVideoPress:(NSString *)str {
+    NSMutableString *mstr = [str mutableCopy];
+    NSError *error;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<div[\\S\\s]+?<div.*class=\"videopress-placeholder[\\s\\S]*?</noscript>" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSArray *matches = [regex matchesInString:mstr options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mstr length])];
+    for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
+        // compose videopress string
+
+        NSRegularExpression *mregex = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSRange mmatch = [mregex rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
+        NSString *mp4 = [mstr substringWithRange:mmatch];
+        NSRegularExpression *sregex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSRange smatch = [sregex rangeOfFirstMatchInString:mp4 options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mp4 length])];
+        NSString *src = [mp4 substringWithRange:smatch];
+        src = [src stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
+        
+        NSString *fmt = @"<video src=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
+        NSString *vid = [NSString stringWithFormat:fmt, src, src];
+        
+        [mstr replaceCharactersInRange:match.range withString:vid];
+
+    }
+
+    return mstr;
+}
 
 @end
 

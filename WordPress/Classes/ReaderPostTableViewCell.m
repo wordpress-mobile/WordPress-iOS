@@ -46,7 +46,6 @@
 @end
 
 @implementation ReaderPostTableViewCell {
-    BOOL _featuredImageIsSet;
     BOOL _avatarIsSet;
     UIView *_sideBorderView;
     UIView *_bottomBorderView;
@@ -309,7 +308,6 @@
 - (void)prepareForReuse {
 	[super prepareForReuse];
 
-    _featuredImageIsSet = NO;
     _avatarIsSet = NO;
 
 	_bylineLabel.text = nil;
@@ -404,10 +402,7 @@
 
 
 - (void)setFeaturedImage:(UIImage *)image {
-    if (_featuredImageIsSet) {
-        return;
-    }
-    _featuredImageIsSet = YES;
+    self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
     self.cellImageView.image = image;
 }
 

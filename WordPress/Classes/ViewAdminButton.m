@@ -15,6 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self setImage:[UIImage imageNamed:@"sidebar_dashboard"] forState:UIControlStateNormal];
+        [self setImage:[UIImage imageNamed:@"sidebar_dashboard"] forState:UIControlStateHighlighted];
         [self setBackgroundImage:[[UIImage imageNamed:@"sidebar_cell_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1] forState:UIControlStateNormal];
         [self setBackgroundImage:[[UIImage imageNamed:@"sidebar_cell_bg_selected"] stretchableImageWithLeftCapWidth:0 topCapHeight:1] forState:UIControlStateHighlighted];
         [self setTitleColor:[UIColor colorWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];

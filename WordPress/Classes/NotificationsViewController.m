@@ -121,9 +121,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-    
+
     if (!_viewHasAppeared) {
         _viewHasAppeared = true;
         [WPMobileStats incrementProperty:StatsPropertyNotificationsOpened forEvent:StatsEventAppClosed];
@@ -229,7 +227,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     BOOL hasDetailsView = [self noteHasDetailView:note];
     if (hasDetailsView) {
         [WPMobileStats incrementProperty:StatsPropertyNotificationsOpenedDetails forEvent:StatsEventAppClosed];
-        
+
         _isPushingViewController = YES;
         if ([note isComment]) {
             NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];

@@ -31,7 +31,10 @@
 	
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 	navController.modalPresentationStyle = UIModalPresentationFormSheet;
-	navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    if (!IS_IPAD) {
+        // Avoid a weird issue on the iPad with cross dissolves when the keyboard is visible. 
+        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    }
 	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentModalViewController:navController animated:YES];
 
 	return controller;

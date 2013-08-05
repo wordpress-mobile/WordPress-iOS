@@ -13,20 +13,6 @@
 
 @property (readwrite, nonatomic, assign) ReaderVideoContentType contentType;
 
-+ (AFHTTPClient *)sharedYoutubeClient;
-+ (AFHTTPClient *)sharedVimeoClient;
-+ (AFHTTPClient *)sharedDailyMotionClient;
-
-- (void)getYoutubeThumb:(NSString *)vidId
-				success:(void (^)(id videoView))success
-				failure:(void (^)(id videoView, NSError *error))failure;
-- (void)getVimeoThumb:(NSString *)vidId
-			  success:(void (^)(id videoView))success
-			  failure:(void (^)(id videoView, NSError *error))failure;
-- (void)getDailyMotionThumb:(NSString *)vidId
-					success:(void (^)(id videoView))success
-					failure:(void (^)(id videoView, NSError *error))failure;
-
 @end
 
 @implementation ReaderVideoView {
@@ -108,6 +94,9 @@
 	
 	if (NSNotFound != [[self.contentURL absoluteString] rangeOfString:@"youtube.com/embed"].location) {
 		[self getYoutubeThumb:vidId success:success failure:failure];
+    } else if (NSNotFound != [[self.contentURL absoluteString] rangeOfString:@"videos.files.wordpress.com"].location ||
+               NSNotFound != [[self.contentURL absoluteString] rangeOfString:@"videos.videopress.com"].location) {
+        [self getVideoPressThumb:url success:success failure:failure];
 	} else if (NSNotFound != [[self.contentURL absoluteString] rangeOfString:@"vimeo.com/video"].location) {
 		[self getVimeoThumb:vidId success:success failure:failure];
 	} else if (NSNotFound != [[self.contentURL absoluteString] rangeOfString:@"dailymotion.com/embed/video"].location) {
@@ -146,6 +135,20 @@
 											   }
 										   }];
 
+}
+
+
+- (void)getVideoPressThumb:(NSURL *)url
+				success:(void (^)(id videoView))success
+				failure:(void (^)(id videoView, NSError *error))failure {
+	
+    NSString *path = [NSString stringWithFormat:@"http://i0.wp.com/%@%@", [url host], [[url path] stringByReplacingOccurrencesOfString:@".mp4" withString:@".original.jpg?w=640"]];
+
+    url = [NSURL URLWithString:path];
+    [self setImageWithURL:url
+            placeholderImage:[UIImage imageNamed:@"wp_vid_placeholder.png"]
+                     success:success
+                     failure:failure];
 }
 
 
