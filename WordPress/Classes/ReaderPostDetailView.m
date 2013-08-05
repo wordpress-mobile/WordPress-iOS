@@ -58,6 +58,7 @@
 - (void)dealloc
 {
     _textContentView.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (id)initWithFrame:(CGRect)frame post:(ReaderPost *)post delegate:(id<ReaderPostDetailViewDelegate>)delegate {
@@ -407,9 +408,20 @@
 	if(videoView.contentType == ReaderVideoContentTypeVideo) {
 		
 		MPMoviePlayerViewController *controller = [[MPMoviePlayerViewController alloc] initWithContentURL:videoView.contentURL];
+        // Remove the movie player view controller from the "playback did finish" notification observers
+        [[NSNotificationCenter defaultCenter] removeObserver:controller
+                                                        name:MPMoviePlayerPlaybackDidFinishNotification
+                                                      object:controller.moviePlayer];
+        
+        // Register this class as an observer instead
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(handleMoviePlaybackFinishedNotification:)
+                                                     name:MPMoviePlayerPlaybackDidFinishNotification
+                                                   object:controller.moviePlayer];
+        
 		controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		controller.modalPresentationStyle = UIModalPresentationFormSheet;
-		[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] pushViewController:controller animated:YES];
+        [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentModalViewController:controller animated:YES];
 		
 	} else {
 		// Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
@@ -431,6 +443,25 @@
 	[self.textContentView relayoutText];
 	
 	[self _updateLayout];
+}
+
+
+- (void)handleMoviePlaybackFinishedNotification:(NSNotification *)notification {
+    // Obtain the reason why the movie playback finished
+    NSNumber *finishReason = [[notification userInfo] objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
+    
+    // Dismiss the view controller ONLY when the reason is not "playback ended"
+    if ([finishReason intValue] != MPMovieFinishReasonPlaybackEnded) {
+        MPMoviePlayerController *moviePlayer = [notification object];
+        
+        // Remove this class from the observers
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:MPMoviePlayerPlaybackDidFinishNotification
+                                                      object:moviePlayer];
+        
+        // Dismiss the view controller
+        [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] dismissModalViewControllerAnimated:YES];
+    }
 }
 
 
