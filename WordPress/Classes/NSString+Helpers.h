@@ -15,4 +15,5 @@
 - (NSMutableDictionary *)dictionaryFromQueryString;
 - (NSString *)stringByReplacingHTMLEmoticonsWithEmoji;
 - (NSString *)stringByStrippingHTML;
+- (NSString *)stringByRemovingScriptsAndStrippingHTML;
 @end

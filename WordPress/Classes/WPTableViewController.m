@@ -495,12 +495,17 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    _isScrolling = YES;
     if (self.panelNavigationController) {
         [self.panelNavigationController viewControllerWantsToBeFullyVisible:self];
     }
     if (self.swipeActionsEnabled) {
         [self removeSwipeView:YES];
     }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    _isScrolling = NO;
 }
 
 

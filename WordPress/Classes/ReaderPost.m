@@ -427,7 +427,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 
 - (NSString *)makePlainText:(NSString *)string {
-	return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] trim];
+	return [[[string stringByRemovingScriptsAndStrippingHTML] stringByDecodingXMLCharacters] trim];
 }
 
 
