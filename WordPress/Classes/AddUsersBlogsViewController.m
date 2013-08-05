@@ -121,19 +121,6 @@
         WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
         [self.navigationController presentModalViewController:wpComLogin animated:YES];
 	}
-	else if(isWPcom) {
-		if (usersBlogs == nil) {
-			[self refreshBlogs];
-		} else if([usersBlogs count] == 0){
-            [self refreshBlogs]; //Maybe just returning from creating a blog
-            [self hideNoBlogsView];
-        }
-	}
-	else {
-        if (usersBlogs == nil) {
-            [self refreshBlogs];
-        }
-	}
 	
 	if(IS_IPAD == YES) {
 		topAddSelectedButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add Selected", @"") 
@@ -149,6 +136,26 @@
 	buttonAddSelected.enabled = FALSE;
 	
 	[self checkAddSelectedButtonStatus];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if(isWPcom) {
+		if((usersBlogs == nil) && ([[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"] != nil)) {
+			usersBlogs = [[NSUserDefaults standardUserDefaults] objectForKey:@"WPcomUsersBlogs"];
+		}
+		else if(usersBlogs == nil) {
+			[self refreshBlogs];
+		} else if([usersBlogs count] == 0){
+            [self refreshBlogs]; //Maybe just returning from creating a blog
+            [self hideNoBlogsView];
+        }
+	}
+	else {
+        if (usersBlogs == nil) {
+            [self refreshBlogs];
+        }
+	}
 }
 
 - (void)viewDidUnload {
