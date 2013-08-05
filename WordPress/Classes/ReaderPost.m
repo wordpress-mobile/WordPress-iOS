@@ -707,14 +707,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     NSArray *matches = [regex matchesInString:mstr options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [mstr length])];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         // compose videopress string
-        NSRegularExpression *wregex = [NSRegularExpression regularExpressionWithPattern:@"width:[\\s\\S]+?;" options:NSRegularExpressionCaseInsensitive error:&error];
-        NSRange wmatch = [wregex rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
-        NSString *width = [mstr substringWithRange:NSMakeRange(wmatch.location + 6, wmatch.length - 7)];
-        
-        NSRegularExpression *hregex = [NSRegularExpression regularExpressionWithPattern:@"height:[\\s\\S]+?\"" options:NSRegularExpressionCaseInsensitive error:&error];
-        NSRange hmatch = [hregex rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
-        NSString *height = [mstr substringWithRange:NSMakeRange(hmatch.location + 7, hmatch.length - 8)];
-        
+
         NSRegularExpression *mregex = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
         NSRange mmatch = [mregex rangeOfFirstMatchInString:mstr options:NSRegularExpressionCaseInsensitive range:match.range];
         NSString *mp4 = [mstr substringWithRange:mmatch];
@@ -723,8 +716,9 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
         NSString *src = [mp4 substringWithRange:smatch];
         src = [src stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
         
-        NSString *fmt = @"<video width=\"%@\" height=\"%@\" src=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
-        NSString *vid = [NSString stringWithFormat:fmt, width, height, src, src];
+        NSString *fmt = @"<video src=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
+        NSString *vid = [NSString stringWithFormat:fmt, src, src];
+        
         [mstr replaceCharactersInRange:match.range withString:vid];
 
     }
