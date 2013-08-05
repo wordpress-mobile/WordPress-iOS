@@ -184,7 +184,7 @@
         
     } else {
         picker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self presentModalViewController:picker animated:YES];
+        [self presentViewController:picker animated:YES completion:nil];
     }
 }
 
@@ -260,7 +260,7 @@
 }
 
 - (void)dismiss {
-    [[self sidebarViewController] dismissModalViewControllerAnimated:YES];
+    [[self sidebarViewController] dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)cancel {
@@ -344,7 +344,7 @@
         }
     }
     
-    [picker dismissModalViewControllerAnimated:NO];
+    [picker dismissViewControllerAnimated:YES completion:nil];
     [self saveImage];
     
     [self.titleTextField performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.f];

@@ -190,12 +190,12 @@
 
 - (void)blogsRefreshNotificationReceived:(NSNotification *)notification {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
-    [super dismissModalViewControllerAnimated:YES];
+    [super dismissViewControllerAnimated:YES completion:nil];
 }
 
 
 - (IBAction)cancel:(id)sender {
-	[super dismissModalViewControllerAnimated:YES];
+    [super dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)showAboutView {
@@ -203,7 +203,7 @@
 	aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
     nc.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self.navigationController presentModalViewController:nc animated:YES];
+    [self.navigationController presentViewController:nc animated:YES completion:nil];
 	[self.navigationController setNavigationBarHidden:YES];
 }
 

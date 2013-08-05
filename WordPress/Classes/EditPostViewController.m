@@ -99,7 +99,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     tagsTextField.placeholder = NSLocalizedString(@"Separate tags with commas", @"Placeholder text for the tags field. Should be the same as WP core.");
     categoriesLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
     textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
-	textViewPlaceHolderField.textAlignment = UITextAlignmentCenter;
+	textViewPlaceHolderField.textAlignment = NSTextAlignmentCenter;
 
     if (editorToolbar == nil) {
         CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_PORTRAIT);
@@ -426,7 +426,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 #if USE_AUTOSAVES
     [self deleteBackupPost];
 #endif
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -589,7 +589,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         [segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
  	} else {
 		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
-		[segmentedTableViewController presentModalViewController:nc animated:YES];
+        [segmentedTableViewController presentViewController:nc animated:YES completion:nil];
 	}
 }
 

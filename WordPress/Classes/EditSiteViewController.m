@@ -365,6 +365,11 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     UITableViewCell *cell = (UITableViewCell *)[textField superview];
+    
+    if (NSClassFromString(@"UITableViewCellScrollView")) {
+        // iOS7 introduced a private class in between the normal UITableViewCell and the cell views.
+        cell = (UITableViewCell*)[cell superview];
+    }
     NSMutableString *result = [NSMutableString stringWithString:textField.text];
     [result replaceCharactersInRange:range withString:string];
 
@@ -707,7 +712,7 @@
 
 - (IBAction)cancel:(id)sender {
     if (isCancellable) {
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     } else {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }

@@ -1,8 +1,7 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <WordPressApi/WordPressApi.h>
 #import <Crashlytics/Crashlytics.h>
-#import <GPPSignIn.h>
-#import <GPPShare.h>
+#import <GooglePlus/GooglePlus.h>
 
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
@@ -27,6 +26,7 @@
 #import "WPMobileStats.h"
 #import "WPComLanguages.h"
 #import "WPAccount.h"
+#import "Note.h"
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 - (void)setAppBadge;
@@ -738,7 +738,7 @@
           UITextAttributeTextShadowOffset,
           nil]];
         
-        [[UIBarButtonItem appearance] setTintColor:[UIColor colorWithRed:229.0/255.0 green:229.0/255.0 blue:229.0/255.0 alpha:1.0]];
+//        [[UIBarButtonItem appearance] setTintColor:[UIColor colorWithRed:229.0/255.0 green:229.0/255.0 blue:229.0/255.0 alpha:1.0]];
 
         [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
         [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_active"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
@@ -784,7 +784,7 @@
         [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateDisabled forState:UIControlStateDisabled];
         [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateHighlighted forState:UIControlStateHighlighted];
         
-        [[UISegmentedControl appearance] setTintColor:[UIColor UIColorFromHex:0xeeeeee]];
+//        [[UISegmentedControl appearance] setTintColor:[UIColor UIColorFromHex:0xeeeeee]];
         [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateNormal];
         [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateDisabled forState:UIControlStateDisabled];
         [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateHighlighted forState:UIControlStateHighlighted];
@@ -1071,6 +1071,22 @@
     }
 }
 
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    WPFLogMethod();
+
+    [Note getNewNotificationswithContext:self.managedObjectContext success:^(BOOL hasNewNotes) {
+        WPFLog(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
+        if (hasNewNotes) {
+            completionHandler(UIBackgroundFetchResultNewData);
+        } else {
+            completionHandler(UIBackgroundFetchResultNewData);
+        }
+    } failure:^(NSError *error) {
+        WPFLog(@"notification fetch completion handler failed with error: %@", error);
+        completionHandler(UIBackgroundFetchResultFailed);
+    }];
+}
+
 - (void)registerForPushNotifications {
     if (isWPcomAuthenticated) {
         [[UIApplication sharedApplication]
@@ -1202,12 +1218,12 @@
                     aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
                 }
-
+                
                 UIViewController *presenter = self.panelNavigationController;
-                if (presenter.modalViewController) {
-                    presenter = presenter.modalViewController;
+                if (presenter.presentedViewController) {
+                    presenter = presenter.presentedViewController;
                 }
-                [presenter presentModalViewController:aNavigationController animated:YES];
+                [presenter presentViewController:aNavigationController animated:YES completion:nil];
 
 				break;
 			}

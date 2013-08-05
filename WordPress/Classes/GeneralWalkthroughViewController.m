@@ -349,7 +349,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 	aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
     nc.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self.navigationController presentModalViewController:nc animated:YES];
+    [self.navigationController presentViewController:nc animated:YES completion:nil];
 	[self.navigationController setNavigationBarHidden:YES];
 }
 
@@ -467,9 +467,9 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_page1Title == nil) {
         _page1Title = [[UILabel alloc] init];
         _page1Title.backgroundColor = [UIColor clearColor];
-        _page1Title.textAlignment = UITextAlignmentCenter;
+        _page1Title.textAlignment = NSTextAlignmentCenter;
         _page1Title.numberOfLines = 0;
-        _page1Title.lineBreakMode = UILineBreakModeWordWrap;
+        _page1Title.lineBreakMode = NSLineBreakByWordWrapping;
         _page1Title.font = [WPNUXUtility titleFont];        
         _page1Title.text = NSLocalizedString(@"Welcome to WordPress", @"NUX First Walkthrough Page 1 Title");
         _page1Title.shadowColor = [WPNUXUtility textShadowColor];
@@ -489,9 +489,9 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_page1Description == nil) {
         _page1Description = [[UILabel alloc] init];
         _page1Description.backgroundColor = [UIColor clearColor];
-        _page1Description.textAlignment = UITextAlignmentCenter;
+        _page1Description.textAlignment = NSTextAlignmentCenter;
         _page1Description.numberOfLines = 0;
-        _page1Description.lineBreakMode = UILineBreakModeWordWrap;
+        _page1Description.lineBreakMode = NSLineBreakByWordWrapping;
         _page1Description.font = [WPNUXUtility descriptionTextFont];
         _page1Description.text = NSLocalizedString(@"Hold the web in the palm of your hand. Full publishing power in a pint-sized package.", @"NUX First Walkthrough Page 1 Description");
         _page1Description.shadowColor = [WPNUXUtility textShadowColor];
@@ -548,7 +548,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         [_page1SwipeToContinue setTextColor:[WPNUXUtility swipeToContinueTextColor]];
         [_page1SwipeToContinue setShadowColor:[WPNUXUtility textShadowColor]];
         _page1SwipeToContinue.backgroundColor = [UIColor clearColor];
-        _page1SwipeToContinue.textAlignment = UITextAlignmentCenter;
+        _page1SwipeToContinue.textAlignment = NSTextAlignmentCenter;
         _page1SwipeToContinue.numberOfLines = 1;
         _page1SwipeToContinue.font = [WPNUXUtility swipeToContinueFont];
         _page1SwipeToContinue.text = [NSLocalizedString(@"swipe to continue", nil) uppercaseString];
@@ -602,7 +602,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     _page1Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1Icon.frame), CGRectGetHeight(_page1Icon.frame)));
  
     // Layout Title
-    CGSize titleSize = [_page1Title.text sizeWithFont:_page1Title.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize titleSize = [_page1Title.text sizeWithFont:_page1Title.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - titleSize.width)/2.0;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMaxY(_page1Icon.frame) + 0.5*GeneralWalkthroughStandardOffset;
@@ -615,7 +615,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     _page1TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
     
     // Layout Description
-    CGSize labelSize = [_page1Description.text sizeWithFont:_page1Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize labelSize = [_page1Description.text sizeWithFont:_page1Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMaxY(_page1TopSeparator.frame) + 0.5*GeneralWalkthroughStandardOffset;
@@ -695,9 +695,9 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_page2Title == nil) {
         _page2Title = [[UILabel alloc] init];
         _page2Title.backgroundColor = [UIColor clearColor];
-        _page2Title.textAlignment = UITextAlignmentCenter;
+        _page2Title.textAlignment = NSTextAlignmentCenter;
         _page2Title.numberOfLines = 0;
-        _page2Title.lineBreakMode = UILineBreakModeWordWrap;
+        _page2Title.lineBreakMode = NSLineBreakByWordWrapping;
         _page2Title.font = [WPNUXUtility titleFont];
         _page2Title.text = NSLocalizedString(@"Publish whenever inspiration strikes", @"NUX First Walkthrough Page 2 Title");
         _page2Title.shadowColor = [WPNUXUtility textShadowColor];
@@ -717,9 +717,9 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_page2Description == nil) {
         _page2Description = [[UILabel alloc] init];
         _page2Description.backgroundColor = [UIColor clearColor];
-        _page2Description.textAlignment = UITextAlignmentCenter;
+        _page2Description.textAlignment = NSTextAlignmentCenter;
         _page2Description.numberOfLines = 0;
-        _page2Description.lineBreakMode = UILineBreakModeWordWrap;
+        _page2Description.lineBreakMode = NSLineBreakByWordWrapping;
         _page2Description.font = [WPNUXUtility descriptionTextFont];
         _page2Description.text = NSLocalizedString(@"Brilliant insight? Hilarious link? Perfect pic? Capture genius as it happens and post in real time.", @"NUX First Walkthrough Page 2 Description");
         _page2Description.shadowColor = [WPNUXUtility textShadowColor];
@@ -747,7 +747,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     _page2Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2Icon.frame), CGRectGetHeight(_page2Icon.frame)));
 
     // Layout Title
-    CGSize titleSize = [_page2Title.text sizeWithFont:_page2Title.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize titleSize = [_page2Title.text sizeWithFont:_page2Title.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - titleSize.width)/2.0;
     x = [self adjustX:x forPage:2];
     y = CGRectGetMaxY(_page2Icon.frame) + 0.5*GeneralWalkthroughStandardOffset;
@@ -760,7 +760,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     _page2TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
 
     // Layout Description
-    CGSize labelSize = [_page2Description.text sizeWithFont:_page2Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize labelSize = [_page2Description.text sizeWithFont:_page2Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:2];
     y = CGRectGetMaxY(_page2TopSeparator.frame) + 0.5*GeneralWalkthroughStandardOffset;
@@ -842,8 +842,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_createAccountLabel == nil) {
         _createAccountLabel = [[UILabel alloc] init];
         _createAccountLabel.numberOfLines = 2;
-        _createAccountLabel.lineBreakMode = UILineBreakModeWordWrap;
-        _createAccountLabel.textAlignment = UITextAlignmentCenter;
+        _createAccountLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        _createAccountLabel.textAlignment = NSTextAlignmentCenter;
         _createAccountLabel.backgroundColor = [UIColor clearColor];
         _createAccountLabel.textColor = [UIColor whiteColor];
         _createAccountLabel.font = [UIFont fontWithName:@"OpenSans" size:15.0];
@@ -891,7 +891,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     _signInButton.frame = CGRectMake(x, y, GeneralWalkthroughSignInButtonWidth, GeneralWalkthroughSignInButtonHeight);
 
     // Layout Create Account Label
-    CGSize createAccountLabelSize = [_createAccountLabel.text sizeWithFont:_createAccountLabel.font constrainedToSize:CGSizeMake(_viewWidth - 2*GeneralWalkthroughStandardOffset, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize createAccountLabelSize = [_createAccountLabel.text sizeWithFont:_createAccountLabel.font constrainedToSize:CGSizeMake(_viewWidth - 2*GeneralWalkthroughStandardOffset, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - createAccountLabelSize.width)/2.0;
     x = [self adjustX:x forPage:3];
     y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame) - createAccountLabelSize.height)/2.0;

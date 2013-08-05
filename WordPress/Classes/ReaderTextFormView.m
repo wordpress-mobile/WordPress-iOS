@@ -134,7 +134,7 @@
 		_titleLabel.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
 		_titleLabel.shadowColor = [UIColor whiteColor];
 		_titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-		_titleLabel.textAlignment = UITextAlignmentCenter;
+		_titleLabel.textAlignment = NSTextAlignmentCenter;
 		_titleLabel.backgroundColor = [UIColor clearColor];
 		_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[_headerView addSubview:_titleLabel];
@@ -143,7 +143,7 @@
 		self.detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 18.0f, 200.0f, 14.0f)];
 		_detailLabel.font = [UIFont systemFontOfSize:12.0f];
 		_detailLabel.textColor = [UIColor grayColor];
-		_detailLabel.textAlignment = UITextAlignmentCenter;
+		_detailLabel.textAlignment = NSTextAlignmentCenter;
 		_detailLabel.backgroundColor = [UIColor clearColor];
 		_detailLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[_headerView addSubview:_detailLabel];

@@ -76,7 +76,7 @@
 	if (delegate) {
 		[delegate cancelReplyToCommentViewController:self];
 	} else {
-		[self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
 	}
 }
 

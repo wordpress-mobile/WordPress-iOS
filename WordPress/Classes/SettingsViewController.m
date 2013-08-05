@@ -179,7 +179,7 @@ typedef enum {
 
 
 - (void)dismiss {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -302,7 +302,7 @@ typedef enum {
 
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
-    cell.textLabel.textAlignment = UITextAlignmentLeft;
+    cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
     if (indexPath.section == SettingsSectionBlogs) {
@@ -321,7 +321,7 @@ typedef enum {
         
     } else if (indexPath.section == SettingsSectionBlogsAdd) {
         cell.textLabel.text = NSLocalizedString(@"Add a Blog", @"");
-        cell.textLabel.textAlignment = UITextAlignmentCenter;
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
@@ -333,11 +333,11 @@ typedef enum {
                 cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             } else {
-                cell.textLabel.textAlignment = UITextAlignmentCenter;
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
                 cell.textLabel.text = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
             }
         } else {
-            cell.textLabel.textAlignment = UITextAlignmentCenter;
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.text = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }

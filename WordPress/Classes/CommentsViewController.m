@@ -142,7 +142,7 @@
 }
 
 - (void)cancelReplyToCommentViewController:(id)sender {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
@@ -435,7 +435,7 @@
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:replyToCommentViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navController animated:YES];
+    [self presentViewController:navController animated:YES completion:nil];
 
     [self removeSwipeView:NO];
 }

@@ -1,0 +1,1 @@
+PODS_SFHFKEYCHAINUTILS_OTHER_LDFLAGS = -framework Security

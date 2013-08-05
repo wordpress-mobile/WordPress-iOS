@@ -512,7 +512,7 @@
                 if (!cell) {
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GeolocationDisabledCell"];
                     cell.textLabel.text = NSLocalizedString(@"Enable Geotagging to Edit", @"Prompt the user to enable geolocation tagging on their blog.");
-                    cell.textLabel.textAlignment = UITextAlignmentCenter;
+                    cell.textLabel.textAlignment = NSTextAlignmentCenter;
                 }
                 return cell;
                 
@@ -521,7 +521,7 @@
                 if (!cell) {
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"locationServicesCell"];
                     cell.textLabel.text = NSLocalizedString(@"Please Enable Location Services", @"Prompt the user to enable location services on their device.");
-                    cell.textLabel.textAlignment = UITextAlignmentCenter;
+                    cell.textLabel.textAlignment = NSTextAlignmentCenter;
                 }
                 return cell;
                 
@@ -610,7 +610,7 @@
             if (removeGeotagTableViewCell == nil)
                 removeGeotagTableViewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RemoveGeotag"];
             removeGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Remove Location", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
-            removeGeotagTableViewCell.textLabel.textAlignment = UITextAlignmentCenter;
+            removeGeotagTableViewCell.textLabel.textAlignment = NSTextAlignmentCenter;
             return removeGeotagTableViewCell;
             break;
         }

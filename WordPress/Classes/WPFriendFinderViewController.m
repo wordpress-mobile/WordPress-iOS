@@ -73,7 +73,7 @@ typedef void (^CancelBlock)();
 
 - (void)dismissFriendFinder:(id)sender
 {
-    [self.navigationController dismissModalViewControllerAnimated:YES];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)configureFriendFinder:(id)config
@@ -89,8 +89,6 @@ typedef void (^CancelBlock)();
     
     
     [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.enableSources(%@)", [available JSONString]]];
-    
-    
 }
 
 - (void)authorizeSource:(NSString *)source

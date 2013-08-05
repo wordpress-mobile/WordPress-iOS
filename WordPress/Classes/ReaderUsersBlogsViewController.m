@@ -93,7 +93,7 @@
 
 
 - (void)handleCloseButtonTapped:(id)sender {
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -140,7 +140,7 @@
     NSDictionary *dict = [_blogs objectAtIndex:indexPath.row];
 	[self.delegate userDidSelectBlog:dict];
 	
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

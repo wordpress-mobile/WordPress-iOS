@@ -55,7 +55,7 @@
 }
 
 -(void)cancel: (id)sender {
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)helpButtonTap: (id)sender {

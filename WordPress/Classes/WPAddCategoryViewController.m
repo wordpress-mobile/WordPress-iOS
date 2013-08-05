@@ -90,7 +90,7 @@
     if (IS_IPAD == YES) {
         [(WPSelectionTableViewController *)self.parentViewController popViewControllerAnimated:YES];
     } else {
-        [self.parentViewController dismissModalViewControllerAnimated:YES];
+        [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

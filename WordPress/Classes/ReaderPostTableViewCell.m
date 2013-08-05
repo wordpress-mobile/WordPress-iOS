@@ -67,10 +67,10 @@
 
 	desiredHeight += vpadding;
 
-	desiredHeight += [post.postTitle sizeWithFont:[UIFont fontWithName:@"OpenSans-Light" size:20.0f] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height;
+	desiredHeight += [post.postTitle sizeWithFont:[UIFont fontWithName:@"OpenSans-Light" size:20.0f] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
 	desiredHeight += vpadding;
 
-	desiredHeight += [post.summary sizeWithFont:[UIFont fontWithName:@"OpenSans" size:13.0f] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap].height;
+	desiredHeight += [post.summary sizeWithFont:[UIFont fontWithName:@"OpenSans" size:13.0f] constrainedToSize:CGSizeMake(contentWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping].height;
 	desiredHeight += vpadding;
 
 	// Size of the meta view
@@ -197,7 +197,7 @@
 	_titleLabel.backgroundColor = [UIColor clearColor];
 	_titleLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:20.0f];
 	_titleLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
-	_titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+	_titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
 	_titleLabel.numberOfLines = 0;
 	[_containerView addSubview:_titleLabel];
 	
@@ -206,7 +206,7 @@
 	_snippetLabel.backgroundColor = [UIColor clearColor];
 	_snippetLabel.font = [UIFont fontWithName:@"OpenSans" size:13.0f];
 	_snippetLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0];
-	_snippetLabel.lineBreakMode = UILineBreakModeWordWrap;
+	_snippetLabel.lineBreakMode = NSLineBreakByWordWrapping;
 	_snippetLabel.numberOfLines = 0;
 	[_containerView addSubview:_snippetLabel];
 }

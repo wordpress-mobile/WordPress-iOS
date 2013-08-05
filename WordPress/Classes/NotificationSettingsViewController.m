@@ -243,7 +243,7 @@ BOOL hasChanges;
 }
 
 - (void)dismiss {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

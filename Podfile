@@ -3,7 +3,7 @@ xcodeproj 'WordPress/WordPress.xcodeproj'
 platform :ios, '5.0'
 pod 'AFNetworking',	'1.2'
 pod 'Reachability',	'~> 3.0.0'
-pod 'JSONKit',		  '~> 1.4'
+pod 'JSONKit',		  '~> 1.4', :inhibit_warnings => true
 pod 'NSURL+IDN', :podspec => 'https://raw.github.com/koke/NSURL-IDN/master/Podfile'
 pod 'CTidy', :git => 'git://github.com/wordpress-mobile/CTidy.git'
 pod 'DTCoreText',   '~> 1.5'
@@ -15,7 +15,7 @@ pod 'wpxmlrpc', '~> 0.1'
 pod 'WordPressApi', :podspec => 'https://raw.github.com/koke/WordPressApi/master/WordPressApi.podspec'
 pod 'NSObject-SafeExpectations', :podspec => 'https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec'
 pod 'Mixpanel'
-pod 'google-plus-ios-sdk', '~> 1.2'
+pod 'google-plus-ios-sdk', '~> 1.3.0'
 pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git'
 
 target :WordPressTest, :exclusive => true do

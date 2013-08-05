@@ -32,12 +32,15 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.backgroundColor = [UIColor clearColor];
+        
         _titleLabel = [[UILabel alloc] init];
+        _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.font = [UIFont fontWithName:@"OpenSans" size:15.0];
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.numberOfLines = 0;
         _titleLabel.textColor = [UIColor whiteColor];
-        _titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+        _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         _titleLabel.shadowOffset = CGSizeMake(0.0, 1.0);
         [self addSubview:_titleLabel];
         
@@ -156,7 +159,7 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
 + (CGSize)sizeForText:(NSString *)text
 {
     UIFont *titleFont = [UIFont fontWithName:@"OpenSans" size:15.0];
-    CGSize textSize = [text sizeWithFont:titleFont constrainedToSize:CGSizeMake(AddUsersBlogCellMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize textSize = [text sizeWithFont:titleFont constrainedToSize:CGSizeMake(AddUsersBlogCellMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     return textSize;
 }
 
