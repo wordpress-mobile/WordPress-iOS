@@ -168,6 +168,14 @@
             }
         }
     }
+    // Photon will fail if the URL doesn't end in one of the accepted extensions
+    NSArray *acceptedImageTypes = @[@"gif", @"jpg", @"jpeg", @"png"];
+    if ([acceptedImageTypes indexOfObject:url.pathExtension] == NSNotFound) {
+        if (![url scheme]) {
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@", [url absoluteString]]];
+        }
+        return url;
+    }
     CGFloat scale = [[UIScreen mainScreen] scale];
     NSUInteger width = scale * size.width;
     NSUInteger height = scale * size.height;
