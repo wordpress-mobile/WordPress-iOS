@@ -15,6 +15,7 @@
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, readonly) BOOL isScrolling;
+@property (nonatomic) BOOL incrementalLoadingSupported;
 
 - (void)promptForPassword;
 

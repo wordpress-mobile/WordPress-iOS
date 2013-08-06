@@ -84,6 +84,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		// This is a convenient place to check for the user's blogs and primary blog for reblogging.
 		_hasMoreContent = YES;
 		self.infiniteScrollEnabled = YES;
+        self.incrementalLoadingSupported = YES;
 		[self fetchBlogsAndPrimaryBlog];
 	}
 	return self;
