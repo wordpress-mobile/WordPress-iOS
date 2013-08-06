@@ -1935,6 +1935,7 @@
 		E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAvatarSource.m; sourceTree = "<group>"; };
 		E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAvatarSourceTest.m; sourceTree = "<group>"; };
 		E1E4CE0E1774531500430844 /* misteryman.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = misteryman.jpg; sourceTree = "<group>"; };
+		E1E977BC17B0FA9A00AFB867 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1ECF7DD17A7CEE600535A05 /* ViewAdminButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewAdminButton.h; sourceTree = "<group>"; };
 		E1ECF7DE17A7CEE600535A05 /* ViewAdminButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewAdminButton.m; sourceTree = "<group>"; };
 		E1EE23E312E62864000B2BE6 /* movie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = movie.png; path = Resources/Images/movie.png; sourceTree = "<group>"; };
@@ -3781,6 +3782,7 @@
 				ru,
 				da,
 				ko,
+				th,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
@@ -4743,6 +4745,7 @@
 				E12963A8174654B2002E7744 /* ru */,
 				E19853331755E461001CC6D5 /* da */,
 				E19853341755E4B3001CC6D5 /* ko */,
+				E1E977BC17B0FA9A00AFB867 /* th */,
 			);
 			name = Localizable.strings;
 			path = Resources;
