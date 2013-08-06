@@ -377,6 +377,8 @@
 {
     if ([[GPPShare sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
         return YES;
+    } else if ([[PocketAPI sharedAPI] handleOpenURL:url]) {
+        return YES;
     }
     return NO;
 }
