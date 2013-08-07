@@ -421,7 +421,7 @@
         
 		controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		controller.modalPresentationStyle = UIModalPresentationFormSheet;
-        [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentModalViewController:controller animated:YES];
+        [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentViewController:controller animated:YES completion:nil];
 		
 	} else {
 		// Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
@@ -460,7 +460,7 @@
                                                       object:moviePlayer];
         
         // Dismiss the view controller
-        [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] dismissModalViewControllerAnimated:YES];
+        [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
