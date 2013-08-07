@@ -46,7 +46,8 @@
 {
     [super viewDidLoad];
     
-    // This view just helps us visually see the page controller layout
+    [self addBackgroundTexture];
+    
     _pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     _pageViewController.view.translatesAutoresizingMaskIntoConstraints = NO;
     _pageViewController.dataSource = self;
@@ -235,6 +236,21 @@
 }
 
 #pragma mark - Private Methods
+
+- (void)addBackgroundTexture
+{
+    UIView *mainTextureView = [[UIView alloc] initWithFrame:self.view.bounds];
+    mainTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
+    [self.view addSubview:mainTextureView];
+    mainTextureView.userInteractionEnabled = NO;
+    
+    NSDictionary *views = NSDictionaryOfVariableBindings(mainTextureView);
+    NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[mainTextureView]|" options:0 metrics:0 views:views];
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[mainTextureView]|" options:0 metrics:0 views:views];
+    
+    [self.view addConstraints:horizontalConstraints];
+    [self.view addConstraints:verticalConstraints];
+}
 
 - (void)hideCreateAccountLabelAndShowButtons
 {
