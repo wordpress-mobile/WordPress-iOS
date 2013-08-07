@@ -386,6 +386,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setAppBadge];
+    [WPMobileStats endSession];
 	
 	if (IS_IPAD) {
 //		UIViewController *topVC = self.masterNavigationController.topViewController;
@@ -401,6 +402,7 @@
 
     [WPMobileStats trackEventForWPComWithSavedProperties:StatsEventAppClosed];
     [self resetStatRelatedVariables];
+    [WPMobileStats pauseSession];
     
     //Keep the app alive in the background if we are uploading a post, currently only used for quick photo posts
     UIApplication *app = [UIApplication sharedApplication];
@@ -430,6 +432,11 @@
         WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
         exit(-1);
     }
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+    [WPMobileStats resumeSession];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

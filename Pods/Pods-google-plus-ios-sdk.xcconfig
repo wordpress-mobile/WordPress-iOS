@@ -1,0 +1,2 @@
+PODS_GOOGLE_PLUS_IOS_SDK_LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/google-plus-ios-sdk/google-plus-ios-sdk-1.2.1/lib"
+PODS_GOOGLE_PLUS_IOS_SDK_OTHER_LDFLAGS = -lGooglePlusUniversal -framework Security -framework SystemConfiguration

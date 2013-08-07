@@ -15,4 +15,5 @@
 + (NSString *)mixpanelAPIToken;
 + (NSString *)crashlyticsApiKey;
 + (NSString *)googlePlusClientId;
++ (NSString *)quantcastAPIKey;
 @end
