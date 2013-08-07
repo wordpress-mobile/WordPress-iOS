@@ -163,9 +163,11 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
     [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:[self categoryPropertyForStats]];
     [WPMobileStats pingWPComStatsEndpoint:@"home_page"];
-    [WPMobileStats logQuantcastEvent:@"home_page"];
+    [WPMobileStats logQuantcastEvent:@"newdash.home_page"];
+    [WPMobileStats logQuantcastEvent:@"mobile.home_page"];
     if ([self isCurrentCategoryFreshlyPressed]) {
-        [WPMobileStats logQuantcastEvent:@"freshly"];
+        [WPMobileStats logQuantcastEvent:@"newdash.freshly"];
+        [WPMobileStats logQuantcastEvent:@"mobile.freshly"];
     }
 }
 
@@ -711,7 +713,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 							 }];
     
     [WPMobileStats trackEventForWPCom:StatsEventReaderInfiniteScroll properties:[self categoryPropertyForStats]];
-    [WPMobileStats logQuantcastEvent:@"infinite_scroll"];
+    [WPMobileStats logQuantcastEvent:@"newdash.infinite_scroll"];
+    [WPMobileStats logQuantcastEvent:@"mobile.infinite_scroll"];
 }
 
 
@@ -853,10 +856,11 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		}
     }
 
-    if ([[self currentCategory] isEqualToString:@"freshly-pressed"]) {
+    if ([self isCurrentCategoryFreshlyPressed]) {
         [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedFreshlyPressedTopic];
         [WPMobileStats pingWPComStatsEndpoint:@"freshly"];
-        [WPMobileStats logQuantcastEvent:@"fresh"];
+        [WPMobileStats logQuantcastEvent:@"newdash.fresh"];
+        [WPMobileStats logQuantcastEvent:@"mobile.fresh"];
     } else {
         [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedCategory properties:[self categoryPropertyForStats]];
     }
