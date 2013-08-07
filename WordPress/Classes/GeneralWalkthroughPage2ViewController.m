@@ -56,9 +56,4 @@
     return self.bottomDivider;
 }
 
-//- (CGFloat)heightToUseForCentering
-//{
-//    return self.heightToUseForCentering;
-//}
-
 @end

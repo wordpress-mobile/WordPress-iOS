@@ -16,5 +16,8 @@
 @property (nonatomic, weak) UIView *containingView;
 
 - (void)showCreateAccountView;
+- (void)setUsername:(NSString *)username;
+- (void)setPassword:(NSString *)password;
+- (void)showAddUsersBlogsForWPCom;
 
 @end

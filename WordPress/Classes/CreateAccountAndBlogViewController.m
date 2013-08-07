@@ -1306,7 +1306,6 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     return [dotCom stringByReplacingMatchesInString:_page2SiteAddressText.text options:0 range:NSMakeRange(0, [_page2SiteAddressText.text length]) withTemplate:@""];
 }
 
-
 - (void)showError:(NSString *)message
 {
     WPWalkthroughOverlayView *overlayView = [[WPWalkthroughOverlayView alloc] initWithFrame:self.view.bounds];

@@ -34,7 +34,6 @@
                                         </state>
                                         <connections>
                                             <action selector="clickedCreateAccount:" destination="E1r-8e-LNS" eventType="touchUpInside" id="IGb-8I-Ric"/>
-                                            <segue destination="bZb-RD-sl1" kind="push" id="NoL-in-lCX"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hg1-CI-14N" userLabel="Sign In Button" customClass="WPNUXPrimaryButton">
@@ -204,6 +203,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="emailAddress"/>
+                                <connections>
+                                    <outlet property="delegate" destination="faU-W5-GYp" id="4p7-TH-idX"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vil-0f-p8r" userLabel="Username text" customClass="WPWalkthroughTextField">
                                 <rect key="frame" x="16" y="303" width="289" height="40"/>
@@ -214,6 +216,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                                <connections>
+                                    <outlet property="delegate" destination="faU-W5-GYp" id="HWR-4T-q3R"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aaA-gx-wop" userLabel="Password Text" customClass="WPWalkthroughTextField">
                                 <rect key="frame" x="16" y="351" width="289" height="40"/>
@@ -224,6 +229,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" secureTextEntry="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="faU-W5-GYp" id="ZDB-qg-pKE"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ov5-Jc-Ru1" userLabel="Next Button" customClass="WPNUXPrimaryButton">
                                 <rect key="frame" x="144" y="399" width="33" height="30"/>
@@ -236,6 +244,9 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="clickedNext:" destination="faU-W5-GYp" eventType="touchUpInside" id="9zQ-eB-Ixe"/>
+                                </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You agree to the fascinating terms of service by pressing the next button." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="288" translatesAutoresizingMaskIntoConstraints="NO" id="TSa-eh-Oh3">
                                 <rect key="frame" x="16" y="437" width="288" height="30"/>
@@ -272,6 +283,7 @@
                     <connections>
                         <outlet property="email" destination="2mc-8l-LVe" id="aQo-Pt-Eu3"/>
                         <outlet property="logo" destination="bIO-vf-cgX" id="IWi-nM-HFY"/>
+                        <outlet property="nextButton" destination="ov5-Jc-Ru1" id="rbx-AB-H91"/>
                         <outlet property="password" destination="aaA-gx-wop" id="AKN-o9-E5b"/>
                         <outlet property="titleLabel" destination="45p-BK-ScE" id="CQ4-TC-YSf"/>
                         <outlet property="tosLabel" destination="TSa-eh-Oh3" id="2F5-IO-YCl"/>
@@ -317,6 +329,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                                <connections>
+                                    <outlet property="delegate" destination="75Q-OE-Ryg" id="t67-Yy-0Wu"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="yoursite.wordpress.com" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tkm-Og-axN" userLabel="Site Address" customClass="WPWalkthroughTextField">
                                 <rect key="frame" x="16" y="310" width="289" height="40"/>
@@ -327,6 +342,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                                <connections>
+                                    <outlet property="delegate" destination="75Q-OE-Ryg" id="oAq-AL-F9h"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="English" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TRh-MQ-brd" userLabel="Site Language" customClass="WPWalkthroughTextField">
                                 <rect key="frame" x="16" y="358" width="289" height="40"/>
@@ -337,6 +355,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                                <connections>
+                                    <outlet property="delegate" destination="75Q-OE-Ryg" id="kJl-X5-vqI"/>
+                                </connections>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tTU-lJ-JUr" userLabel="Button Container">
                                 <rect key="frame" x="91" y="414" width="138" height="30"/>
@@ -353,6 +374,9 @@
                                         <state key="highlighted">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="clickedPrevious:" destination="75Q-OE-Ryg" eventType="touchUpInside" id="pkV-V4-qcH"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ugF-YV-VUT" customClass="WPNUXPrimaryButton">
                                         <rect key="frame" x="77" y="0.0" width="61" height="30"/>
@@ -365,6 +389,9 @@
                                         <state key="highlighted">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="clickedNext:" destination="75Q-OE-Ryg" eventType="touchUpInside" id="eXw-Ck-Eip"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -383,7 +410,7 @@
                                 <rect key="frame" x="274" y="374" width="15" height="8"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You agree to the fascinating terms of service by pressing the next button." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="252" translatesAutoresizingMaskIntoConstraints="NO" id="S6A-p3-B39">
+                            <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You agree to the fascinating terms of service by pressing the next button." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="252" translatesAutoresizingMaskIntoConstraints="NO" id="S6A-p3-B39">
                                 <rect key="frame" x="34" y="452" width="252" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -417,8 +444,8 @@
                     <connections>
                         <outlet property="dropdownImage" destination="SFs-bP-ttg" id="afA-yx-qg6"/>
                         <outlet property="logo" destination="8RE-RO-H03" id="5S0-CG-Duh"/>
-                        <outlet property="nextButton" destination="ugF-YV-VUT" id="Vgd-vj-w3R"/>
-                        <outlet property="previousButton" destination="H4m-gi-4KV" id="K5p-0u-oOG"/>
+                        <outlet property="nextButton" destination="ugF-YV-VUT" id="EJQ-Oe-TFk"/>
+                        <outlet property="previousButton" destination="H4m-gi-4KV" id="sFi-Ke-g9M"/>
                         <outlet property="siteAddress" destination="tkm-Og-axN" id="Kaq-G0-IAI"/>
                         <outlet property="siteLanguage" destination="TRh-MQ-brd" id="o1r-O8-cSL"/>
                         <outlet property="siteTitle" destination="YsP-sE-88d" id="t7c-g2-oPi"/>
@@ -540,6 +567,9 @@
                                         <state key="highlighted">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="clickedPrevious:" destination="VsA-BJ-P9E" eventType="touchUpInside" id="SuY-AI-4rC"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5pQ-Hr-CK9" customClass="WPNUXPrimaryButton">
                                         <rect key="frame" x="77" y="0.0" width="61" height="30"/>
@@ -552,6 +582,9 @@
                                         <state key="highlighted">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="clickedNext:" destination="VsA-BJ-P9E" eventType="touchUpInside" id="A3e-gR-q3U"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -865,10 +898,10 @@
                     </view>
                     <connections>
                         <outlet property="logo" destination="pKC-cM-WPa" id="yj0-BB-TQH"/>
-                        <outlet property="password" destination="Wvq-F6-Ljl" id="R21-HI-1m0"/>
+                        <outlet property="passwordText" destination="Wvq-F6-Ljl" id="ChA-7r-OYZ"/>
                         <outlet property="signInButton" destination="Rmf-91-PB3" id="Vzy-m7-MEg"/>
                         <outlet property="siteAddress" destination="swV-CR-3Aj" id="7HC-1v-pd1"/>
-                        <outlet property="username" destination="sGG-EJ-68q" id="RDt-PW-ztv"/>
+                        <outlet property="usernameText" destination="sGG-EJ-68q" id="qUC-bk-tX0"/>
                         <outlet property="verticalCenteringConstraint" destination="O1d-WN-ukZ" id="wed-oE-jvv"/>
                     </connections>
                 </viewController>

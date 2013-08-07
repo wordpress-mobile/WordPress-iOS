@@ -11,4 +11,8 @@
 
 @interface CreateAccountAndBlogPage1ViewController : BaseNUXViewController
 
+@property (nonatomic, copy) void (^onClickedNext)(void);
+@property (nonatomic, copy) void (^onValidatedUserFields)(NSString *, NSString *, NSString *);
+@property (nonatomic, weak) UIView *containingView;
+
 @end

@@ -11,4 +11,15 @@
 
 @interface CreateAccountAndBlogPage3ViewController : BaseNUXViewController
 
+@property (nonatomic, copy) void(^onClickedPrevious)(void);
+@property (nonatomic, copy) void(^onClickedNext)(void);
+@property (nonatomic, copy) void(^onCreatedUser)(NSString *, NSString *);
+
+- (void)setEmail:(NSString *)email;
+- (void)setUsername:(NSString *)username;
+- (void)setSiteTitle:(NSString *)siteTitle;
+- (void)setSiteAddress:(NSString *)siteAddress;
+- (void)setLanguage:(NSDictionary *)language;
+- (void)setPassword:(NSString *)password;
+
 @end

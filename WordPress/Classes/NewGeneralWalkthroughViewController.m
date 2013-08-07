@@ -10,6 +10,7 @@
 #import "GeneralWalkthroughPage1ViewController.h"
 #import "GeneralWalkthroughPage2ViewController.h"
 #import "GeneralWalkthroughPage3ViewController.h"
+#import "NewCreateAccountAndBlogViewController.h"
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
 #import "WPWalkthroughOverlayView.h"
@@ -211,7 +212,26 @@
 
 - (IBAction)clickedCreateAccount:(id)sender
 {
-    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedCreateAccount];    
+    [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedCreateAccount];
+    NewCreateAccountAndBlogViewController *vc = (NewCreateAccountAndBlogViewController *)[self.storyboard instantiateViewControllerWithIdentifier:@"CreateAccount"];
+    vc.onCreatedUser = ^(NSString *username, NSString *password) {
+        [self.navigationController popViewControllerAnimated:NO];
+        GeneralWalkthroughPage3ViewController *page3 = (GeneralWalkthroughPage3ViewController *)[self page3ViewController];
+        
+        if (![[_pageViewController.viewControllers objectAtIndex:0] isKindOfClass:[GeneralWalkthroughPage3ViewController class]]) {
+            [_pageViewController setViewControllers:@[page3] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:^(BOOL finished){
+                [page3 setUsername:username];
+                [page3 setPassword:password];
+                [page3 showAddUsersBlogsForWPCom];
+            }];
+        } else {
+            [page3 setUsername:username];
+            [page3 setPassword:password];
+            [page3 showAddUsersBlogsForWPCom];
+        }
+    };
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Private Methods

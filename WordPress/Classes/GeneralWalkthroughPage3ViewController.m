@@ -34,12 +34,14 @@
     BOOL _blogConnectedToJetpack;
     NSArray *_blogs;
     Blog *_blog;
+    NSString *_presetUsername;
+    NSString *_presetPassword;
 }
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *verticalCenteringConstraint;
 @property (nonatomic, strong) IBOutlet UIImageView *logo;
-@property (nonatomic, strong) IBOutlet WPWalkthroughTextField *username;
-@property (nonatomic, strong) IBOutlet WPWalkthroughTextField *password;
+@property (nonatomic, strong) IBOutlet WPWalkthroughTextField *usernameText;
+@property (nonatomic, strong) IBOutlet WPWalkthroughTextField *passwordText;
 @property (nonatomic, strong) IBOutlet WPWalkthroughTextField *siteAddress;
 @property (nonatomic, strong) IBOutlet WPNUXMainButton *signInButton;
 
@@ -65,13 +67,13 @@
 {
     [super viewDidLoad];
     
-    self.username.placeholder = NSLocalizedString(@"Username / Email", @"NUX First Walkthrough Page 3 Username Placeholder");
-    self.username.font = [WPNUXUtility textFieldFont];
-    self.username.delegate = self;
+    self.usernameText.placeholder = NSLocalizedString(@"Username / Email", @"NUX First Walkthrough Page 3 Username Placeholder");
+    self.usernameText.font = [WPNUXUtility textFieldFont];
+    self.usernameText.delegate = self;
 
-    self.password.placeholder = NSLocalizedString(@"Password", nil);
-    self.password.font = [WPNUXUtility textFieldFont];
-    self.password.delegate = self;
+    self.passwordText.placeholder = NSLocalizedString(@"Password", nil);
+    self.passwordText.font = [WPNUXUtility textFieldFont];
+    self.passwordText.delegate = self;
     
     self.siteAddress.placeholder = NSLocalizedString(@"Site Address (URL)", @"NUX First Walkthrough Page 3 Site Address Placeholder");
     self.siteAddress.font = [WPNUXUtility textFieldFont];
@@ -90,7 +92,6 @@
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughOpened];
 }
 
-
 - (UIView *)topViewToCenterAgainst
 {
     return self.logo;
@@ -101,12 +102,22 @@
     return self.siteAddress;
 }
 
+- (void)setUsername:(NSString *)username
+{
+    self.usernameText.text = username;
+}
+
+- (void)setPassword:(NSString *)password
+{
+    self.passwordText.text = password;
+}
+
 #pragma mark - UITextField delegate methods
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField == self.username) {
-        [self.password becomeFirstResponder];
-    } else if (textField == self.password) {
+    if (textField == self.usernameText) {
+        [self.passwordText becomeFirstResponder];
+    } else if (textField == self.passwordText) {
         [self.siteAddress becomeFirstResponder];
     } else if (textField == self.siteAddress) {
         if (self.signInButton.enabled) {
@@ -137,9 +148,9 @@
     NSMutableString *updatedString = [[NSMutableString alloc] initWithString:textField.text];
     [updatedString replaceCharactersInRange:range withString:string];
     BOOL updatedStringHasContent = [[updatedString trim] length] != 0;
-    if (textField == self.username) {
+    if (textField == self.usernameText) {
         isUsernameFilled = updatedStringHasContent;
-    } else if (textField == self.password) {
+    } else if (textField == self.passwordText) {
         isPasswordFilled = updatedStringHasContent;
     }
     self.signInButton.enabled = isUsernameFilled && isPasswordFilled;
@@ -226,8 +237,8 @@
         
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         [webViewController setUrl:[NSURL URLWithString:path]];
-        [webViewController setUsername:self.username.text];
-        [webViewController setPassword:self.password.text];
+        [webViewController setUsername:self.usernameText.text];
+        [webViewController setPassword:self.passwordText.text];
         webViewController.shouldScrollToBottom = YES;
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         [self.navigationController pushViewController:webViewController animated:NO];
@@ -334,12 +345,12 @@
 
 - (BOOL)isUsernameFilled
 {
-    return [[self.username.text trim] length] != 0;
+    return [[self.usernameText.text trim] length] != 0;
 }
 
 - (BOOL)isPasswordFilled
 {
-    return [[self.password.text trim] length] != 0;
+    return [[self.passwordText.text trim] length] != 0;
 }
 
 - (BOOL)areDotComFieldsFilled
@@ -359,7 +370,7 @@
 
 - (BOOL)areFieldsFilled
 {
-    return [[self.username.text trim] length] != 0 && [[self.password.text trim] length] != 0 && [[self.siteAddress.text trim] length] != 0;
+    return [[self.usernameText.text trim] length] != 0 && [[self.passwordText.text trim] length] != 0 && [[self.siteAddress.text trim] length] != 0;
 }
 
 - (BOOL)isUrlValid
@@ -400,8 +411,8 @@
 {
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", nil) maskType:SVProgressHUDMaskTypeBlack];
     
-    NSString *username = self.username.text;
-    NSString *password = self.password.text;
+    NSString *username = self.usernameText.text;
+    NSString *password = self.passwordText.text;
     _dotComSiteUrl = nil;
     
     if ([self hasUserOnlyEnteredValuesForDotCom]) {
@@ -559,7 +570,7 @@
     //TODO : Implement Using New VC
     BOOL isWPCom = (xmlRPCUrl == nil);
     NewAddUsersBlogViewController *vc = [[NewAddUsersBlogViewController alloc] init];
-    vc.account = [self createAccountWithUsername:self.username.text andPassword:self.password.text isWPCom:isWPCom xmlRPCUrl:xmlRPCUrl];
+    vc.account = [self createAccountWithUsername:self.usernameText.text andPassword:self.passwordText.text isWPCom:isWPCom xmlRPCUrl:xmlRPCUrl];
     vc.blogAdditionCompleted = ^(NewAddUsersBlogViewController * viewController){
         [self.navigationController popViewControllerAnimated:NO];
         [self showCompletionWalkthrough];
@@ -603,7 +614,7 @@
 {
     NSParameterAssert(blogDetails != nil);
     
-    WPAccount *account = [self createAccountWithUsername:self.username.text andPassword:self.password.text isWPCom:NO xmlRPCUrl:xmlRPCUrl];
+    WPAccount *account = [self createAccountWithUsername:self.usernameText.text andPassword:self.passwordText.text isWPCom:NO xmlRPCUrl:xmlRPCUrl];
     
     NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
     [newBlog setObject:xmlRPCUrl forKey:@"xmlrpc"];
@@ -653,8 +664,8 @@
 {
     NewCreateAccountAndBlogViewController *createAccountViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"CreateAccount"];
     createAccountViewController.onCreatedUser = ^(NSString *username, NSString *password) {
-        self.username.text = username;
-        self.password.text = password;
+        self.usernameText.text = username;
+        self.passwordText.text = password;
         _userIsDotCom = true;
         [self.navigationController popViewControllerAnimated:NO];
         [self showAddUsersBlogsForWPCom];
