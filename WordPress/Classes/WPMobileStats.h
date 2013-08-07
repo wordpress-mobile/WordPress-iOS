@@ -236,6 +236,7 @@ extern NSString *const StatsEventAddBlogsClickedAddSelected;
 + (void)trackEventForWPCom:(NSString *)event;
 + (void)trackEventForWPCom:(NSString *)event properties:(NSDictionary *)properties;
 + (void)trackEventForWPComWithSavedProperties:(NSString *)event;
++ (void)pingWPComStatsEndpoint:(NSString *)statName;
 
 // Property Related
 + (void)clearPropertiesForAllEvents;

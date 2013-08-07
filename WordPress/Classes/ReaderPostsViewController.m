@@ -162,6 +162,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	}
 
     [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:[self categoryPropertyForStats]];
+    [WPMobileStats pingWPComStatsEndpoint:@"home_page"];
 }
 
 
@@ -641,9 +642,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
         [self syncItemsWithSuccess:success failure:failure];
     }];
     
-    [authRequest start];
-    
-    [WPMobileStats trackEventForWPCom:StatsEventReaderHomePageRefresh];
+    [authRequest start];    
 }
 
     
@@ -665,6 +664,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 									 failure(error);
 								 }
 							 }];
+    [WPMobileStats trackEventForWPCom:StatsEventReaderHomePageRefresh];
+    [WPMobileStats pingWPComStatsEndpoint:@"home_page_refresh"];
 }
 
 
@@ -774,6 +775,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	[self.panelNavigationController pushViewController:controller fromViewController:self animated:YES];
     
     [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedArticleDetails];
+    [WPMobileStats pingWPComStatsEndpoint:@"details_page"];
 }
 
 
@@ -848,6 +850,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
     if ([[self currentCategory] isEqualToString:@"freshly-pressed"]) {
         [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedFreshlyPressedTopic];
+        [WPMobileStats pingWPComStatsEndpoint:@"freshly"];
     } else {
         [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedCategory properties:[self categoryPropertyForStats]];
     }
