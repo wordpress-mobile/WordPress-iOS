@@ -21,6 +21,14 @@
                BlueprintName = "WordPressTest"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "BlogJetpackTest">
+               </Test>
+               <Test
+                  Identifier = "EditPostViewControllerTest">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>

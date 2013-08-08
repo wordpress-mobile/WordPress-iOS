@@ -55,6 +55,7 @@ LANGS={
   'pt' => 'pt', # Portuguese
   'ru' => 'ru', # Russian
   'sv' => 'sv', # Swedish
+  'th' => 'th', # Thai
   'tr' => 'tr', # Turkish
   'zh-cn' => 'zh-Hans', # Chinese (Chine)
   'zh-tw' => 'zh-Hant' # Chinese (Taiwan)

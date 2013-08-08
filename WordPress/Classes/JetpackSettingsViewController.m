@@ -224,7 +224,7 @@
             NSString *jetpackURL = [_blog adminUrlWithPath:@"plugin-install.php?tab=plugin-information&plugin=jetpack"];
             [webViewController setUrl:[NSURL URLWithString:jetpackURL]];
             [webViewController setUsername:_blog.username];
-            [webViewController setPassword:[_blog fetchPassword]];
+            [webViewController setPassword:_blog.password];
             [webViewController setWpLoginURL:[NSURL URLWithString:_blog.loginUrl]];
         } else {
             [webViewController setUrl:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_15"]];

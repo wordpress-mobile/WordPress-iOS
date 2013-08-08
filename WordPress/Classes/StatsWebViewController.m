@@ -7,7 +7,6 @@
 #import "StatsWebViewController.h"
 #import "Blog+Jetpack.h"
 #import "WordPressAppDelegate.h"
-#import "SFHFKeychainUtils.h"
 #import "WordPressComApi.h"
 #import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
@@ -266,7 +265,7 @@ static NSString *_lastAuthedName = nil;
     if ([blog isWPcom]) {
         //use set username/pw for wpcom blogs
         username = blog.username;
-        password = [blog fetchPassword];
+        password = blog.password;
         
     } else {
         username = blog.jetpackUsername;

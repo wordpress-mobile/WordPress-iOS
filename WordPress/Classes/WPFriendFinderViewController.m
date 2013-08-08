@@ -23,6 +23,7 @@ typedef void (^CancelBlock)();
 @interface WPFriendFinderViewController () <UIAlertViewDelegate>
 
 @property (nonatomic, copy) DismissBlock dismissBlock;
+@property (nonatomic, strong) UIActivityIndicatorView *activityView;
 
 - (void)findEmails;
 - (void)findTwitterFriends;
@@ -49,6 +50,16 @@ typedef void (^CancelBlock)();
                                                                                            action:@selector(dismissFriendFinder:)];
     if([[UIBarButtonItem class] respondsToSelector:@selector(appearance)])
        [UIBarButtonItem styleButtonAsPrimary:self.navigationItem.rightBarButtonItem];
+    
+    self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.activityView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
+    CGRect f1 = self.activityView.frame;
+    CGRect f2 = self.view.frame;
+    f1.origin.x = (f2.size.width / 2.0f) - (f1.size.width / 2.0f);
+    f1.origin.y = (f2.size.height / 2.0f) - (f1.size.height / 2.0f);
+    self.activityView.frame = f1;
+    
+    [self.view addSubview:self.activityView];
 }
 
 - (void)viewDidUnload
@@ -57,6 +68,7 @@ typedef void (^CancelBlock)();
     // remove notification
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.dismissBlock = nil;
+    self.activityView = nil;
 }
 
 - (void)dismissFriendFinder:(id)sender
@@ -319,5 +331,20 @@ typedef void (^CancelBlock)();
     }
 }
 
+#pragma mark - UIWebView Delegate Methods
+
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    if ([[[webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML.length"] numericValue] integerValue] == 0) {
+        [self.activityView startAnimating];
+    }
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [self.activityView stopAnimating];
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [self.activityView stopAnimating];
+}
 
 @end

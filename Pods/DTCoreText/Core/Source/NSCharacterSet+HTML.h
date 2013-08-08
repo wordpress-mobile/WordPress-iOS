@@ -1,6 +1,6 @@
 //
 //  NSCharacterSet+HTML.h
-//  CoreTextExtensions
+//  DTCoreText
 //
 //  Created by Oliver Drobnik on 1/15/11.
 //  Copyright 2011 Drobnik.com. All rights reserved.
@@ -12,6 +12,10 @@
  Category on NSCharacterSet to create character sets frequently used and relevant to HTML and CSS string manipulations. Each character set is only initialized once. 
  */
 @interface NSCharacterSet (HTML)
+
+/**
+ @name HTML Character Sets
+ */
 
 
 /** 
@@ -28,6 +32,12 @@
 + (NSCharacterSet *)tagAttributeNameCharacterSet;
 
 
+/**
+ Creates a characterset of all whitespace and newline characters that can be ignored between HTML tags
+ @returns An NSCharacterSet of ignorable characters
+ */
++ (NSCharacterSet *)ignorableWhitespaceCharacterSet;
+
 /** 
  Creates a character set with the apostrophe character ' (used as single quote agnostic of direction) and double quote character " (agnostic of direction).  
  @returns An NSCharacterSet with the single quote and double quote characters: ', ". 
@@ -42,10 +52,28 @@
 + (NSCharacterSet *)nonQuotedAttributeEndCharacterSet;
 
 
+/**
+ @name CSS Character Sets
+ */
+
 /** 
  Creates an alpha-numeric character set just as tagNameCharacterSet does but also with the dash and underscore characters. Does not contain the colon character because it will mess up parsing of CSS style attributes. Useful for CSS attribute names. 
  @returns An NSCharacterSet with alpha-numeric characters, dash, and underscore characters. 
  */
 + (NSCharacterSet *)cssStyleAttributeNameCharacterSet;
+
+
+/**
+ Characterset of characters that make up units in CSS values
+ @returns An NSCharacterSet
+ */
++ (NSCharacterSet *)cssLengthValueCharacterSet;
+
+
+/**
+ Characterset of characters that make up units in CSS lengths
+ @returns An NSCharacterSet
+ */
++ (NSCharacterSet *)cssLengthUnitCharacterSet;
 
 @end

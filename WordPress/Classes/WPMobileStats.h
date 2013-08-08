@@ -27,10 +27,17 @@ extern NSString *const StatsPropertySidebarClickedQuickPhoto;
 
 // Reader
 extern NSString *const StatsEventReaderOpened;
-extern NSString *const StatsEventReaderClickedShowTopicSelector;
+extern NSString *const StatsEventReaderHomePageRefresh;
+extern NSString *const StatsEventReaderInfiniteScroll;
 extern NSString *const StatsEventReaderSelectedFreshlyPressedTopic;
-extern NSString *const StatsEventReaderSelectedTopic;
-extern NSString *const StatsPropertyReaderOpenedArticleDetails;
+extern NSString *const StatsEventReaderSelectedCategory;
+extern NSString *const StatsEventReaderOpenedArticleDetails;
+extern NSString *const StatsEventReaderPublishedComment;
+extern NSString *const StatsEventReaderReblogged;
+extern NSString *const StatsEventReaderLikedPost;
+extern NSString *const StatsEventReaderUnlikedPost;
+
+
 
 // Reader Detail
 extern NSString *const StatsPropertyReaderDetailClickedPrevious;
@@ -222,6 +229,11 @@ extern NSString *const StatsEventAddBlogsClickedAddSelected;
 @interface WPMobileStats : NSObject
 
 + (void)initializeStats;
++ (void)updateUserIDForStats:(NSString *)userID;
+
++ (void)pauseSession;
++ (void)endSession;
++ (void)resumeSession;
 
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event;
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event properties:(NSDictionary *)properties;
@@ -229,6 +241,8 @@ extern NSString *const StatsEventAddBlogsClickedAddSelected;
 + (void)trackEventForWPCom:(NSString *)event;
 + (void)trackEventForWPCom:(NSString *)event properties:(NSDictionary *)properties;
 + (void)trackEventForWPComWithSavedProperties:(NSString *)event;
++ (void)pingWPComStatsEndpoint:(NSString *)statName;
++ (void)logQuantcastEvent:(NSString *)quantcast;
 
 // Property Related
 + (void)clearPropertiesForAllEvents;

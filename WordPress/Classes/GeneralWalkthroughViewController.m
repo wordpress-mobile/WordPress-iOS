@@ -27,8 +27,8 @@
 #import "WPWalkthroughOverlayView.h"
 #import "LoginCompletedWalkthroughViewController.h"
 #import "ReachabilityUtils.h"
-#import "SFHFKeychainUtils.h"
 #import "WPNUXUtility.h"
+#import "WPAccount.h"
 
 @interface GeneralWalkthroughViewController () <
     UIScrollViewDelegate,
@@ -1230,11 +1230,11 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     }
 }
 
-- (NewAddUsersBlogViewController *)addUsersBlogViewController
+- (NewAddUsersBlogViewController *)addUsersBlogViewController:(NSString *)xmlRPCUrl
 {
+    BOOL isWPCom = (xmlRPCUrl == nil);
     NewAddUsersBlogViewController *vc = [[NewAddUsersBlogViewController alloc] init];
-    vc.username = _usernameText.text;
-    vc.password = _passwordText.text;
+    vc.account = [self createAccountWithUsername:_usernameText.text andPassword:_passwordText.text isWPCom:isWPCom xmlRPCUrl:xmlRPCUrl];
     vc.blogAdditionCompleted = ^(NewAddUsersBlogViewController * viewController){
         [self.navigationController popViewControllerAnimated:NO];
         [self showCompletionWalkthrough];
@@ -1254,15 +1254,14 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)showAddUsersBlogsForSelfHosted:(NSString *)xmlRPCUrl
 {
-    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController];
-    vc.isWPCom = NO;
-    vc.xmlRPCUrl = xmlRPCUrl;
+    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController:xmlRPCUrl];
+
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showAddUsersBlogsForWPCom
 {
-    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController];
+    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController:nil];
 
     NSString *siteUrl = [_siteUrlText.text trim];
     if ([siteUrl length] != 0) {
@@ -1270,8 +1269,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     } else if ([_dotComSiteUrl length] != 0) {
         vc.siteUrl = _dotComSiteUrl;
     }
-    
-    vc.isWPCom = YES;
+
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -1279,14 +1277,24 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 {
     NSParameterAssert(blogDetails != nil);
     
-    NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
-    [newBlog setObject:_usernameText.text forKey:@"username"];
-    [newBlog setObject:_passwordText.text forKey:@"password"];
-    [newBlog setObject:xmlRPCUrl forKey:@"xmlrpc"];
+    WPAccount *account = [self createAccountWithUsername:_usernameText.text andPassword:_passwordText.text isWPCom:NO xmlRPCUrl:xmlRPCUrl];
     
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    _blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
+    NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
+    [newBlog setObject:xmlRPCUrl forKey:@"xmlrpc"];
+
+    _blog = [account findOrCreateBlogFromDictionary:newBlog];
     [_blog dataSave];
+
+}
+
+- (WPAccount *)createAccountWithUsername:(NSString *)username andPassword:(NSString *)password isWPCom:(BOOL)isWPCom xmlRPCUrl:(NSString *)xmlRPCUrl {
+    WPAccount *account;
+    if (isWPCom) {
+        account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username andPassword:password];
+    } else {
+        account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlRPCUrl username:username andPassword:password];
+    }
+    return account;
 }
 
 - (void)synchronizeNewlyAddedBlog
