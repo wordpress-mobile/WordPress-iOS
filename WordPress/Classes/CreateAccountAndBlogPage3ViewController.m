@@ -13,7 +13,7 @@
 #import "WPComLanguages.h"
 #import "WPAsyncBlockOperation.h"
 #import "WordPressComApi.h"
-#import "WPWalkthroughOverlayView.h"
+#import "NewWPWalkthroughOverlayView.h"
 
 @interface CreateAccountAndBlogPage3ViewController () {
     NSString *_email;
@@ -225,12 +225,12 @@
 
 - (void)showError:(NSString *)message
 {
-    WPWalkthroughOverlayView *overlayView = [[WPWalkthroughOverlayView alloc] initWithFrame:self.view.bounds];
-    overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
+    NewWPWalkthroughOverlayView *overlayView = [[NewWPWalkthroughOverlayView alloc] initWithFrame:self.view.bounds];
+    overlayView.overlayMode = NewWPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
     overlayView.overlayTitle = NSLocalizedString(@"Error", nil);
     overlayView.overlayDescription = message;
     overlayView.footerDescription = [NSLocalizedString(@"tap to dismiss", nil) uppercaseString];
-    overlayView.singleTapCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.singleTapCompletionBlock = ^(NewWPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
     [self.view addSubview:overlayView];

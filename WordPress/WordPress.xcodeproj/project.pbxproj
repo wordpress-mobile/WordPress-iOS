@@ -604,6 +604,8 @@
 		83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
 		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
 		83FEFC7611FF6C5A0078B462 /* EditSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */; };
+		8501FC7D17B3075400D2BC6B /* NewWPWalkthroughOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8501FC7C17B3075400D2BC6B /* NewWPWalkthroughOverlayView.m */; };
+		8501FC7F17B3080400D2BC6B /* NewWPWalkthroughOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8501FC7E17B3080400D2BC6B /* NewWPWalkthroughOverlayView.xib */; };
 		850830B217A09BDF00E5329B /* NewerAddUsersBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 850830B117A09BDF00E5329B /* NewerAddUsersBlogViewController.m */; };
 		85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */; };
 		85149747171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85149746171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m */; };
@@ -1586,6 +1588,9 @@
 		83FB4D3E122C38F700DB9506 /* MediaPlayer.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		83FEFC7311FF6C5A0078B462 /* EditSiteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditSiteViewController.h; sourceTree = "<group>"; };
 		83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSiteViewController.m; sourceTree = "<group>"; };
+		8501FC7B17B3075400D2BC6B /* NewWPWalkthroughOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewWPWalkthroughOverlayView.h; sourceTree = "<group>"; };
+		8501FC7C17B3075400D2BC6B /* NewWPWalkthroughOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewWPWalkthroughOverlayView.m; sourceTree = "<group>"; };
+		8501FC7E17B3080400D2BC6B /* NewWPWalkthroughOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewWPWalkthroughOverlayView.xib; sourceTree = "<group>"; };
 		850830B017A09BDF00E5329B /* NewerAddUsersBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewerAddUsersBlogViewController.h; sourceTree = "<group>"; };
 		850830B117A09BDF00E5329B /* NewerAddUsersBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewerAddUsersBlogViewController.m; sourceTree = "<group>"; };
 		8514973F171E13DF00B87F3F /* WPAsyncBlockOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAsyncBlockOperation.h; sourceTree = "<group>"; };
@@ -2835,6 +2840,9 @@
 				85D8572F17A7261F00F7174F /* LoginCompletedWalkthroughPage4ViewController.m */,
 				85730D5417A85EB1008E591A /* BaseNUXViewController.h */,
 				85730D5517A85EB1008E591A /* BaseNUXViewController.m */,
+				8501FC7B17B3075400D2BC6B /* NewWPWalkthroughOverlayView.h */,
+				8501FC7C17B3075400D2BC6B /* NewWPWalkthroughOverlayView.m */,
+				8501FC7E17B3080400D2BC6B /* NewWPWalkthroughOverlayView.xib */,
 			);
 			name = "Refactored NUX";
 			sourceTree = "<group>";
@@ -4156,6 +4164,7 @@
 				5D9832F815A790FE00A5E783 /* navbar_shadow.png in Resources */,
 				5D9832F915A790FE00A5E783 /* navbar_shadow@2x.png in Resources */,
 				5D9832FA15A790FE00A5E783 /* toolbar_shadow.png in Resources */,
+				8501FC7F17B3080400D2BC6B /* NewWPWalkthroughOverlayView.xib in Resources */,
 				5D9832FB15A790FE00A5E783 /* toolbar_shadow@2x.png in Resources */,
 				37363A3915AB0DE000D3A6B4 /* cell_gradient_bg.png in Resources */,
 				37363A3D15AB105200D3A6B4 /* cell_gradient_bg@2x.png in Resources */,
@@ -4709,6 +4718,7 @@
 				379DA051166E938E001A43CC /* NotificationsFollowTableViewCell.m in Sources */,
 				CC669B1F1672C305009E16F8 /* FollowButton.m in Sources */,
 				CC669B231672C328009E16F8 /* NoteCommentCell.m in Sources */,
+				8501FC7D17B3075400D2BC6B /* NewWPWalkthroughOverlayView.m in Sources */,
 				CC669B261672C335009E16F8 /* NoteCommentPostBanner.m in Sources */,
 				37B7924D16768FCC0021B3A4 /* NotificationSettingsViewController.m in Sources */,
 				85D8573017A7261F00F7174F /* LoginCompletedWalkthroughPage4ViewController.m in Sources */,

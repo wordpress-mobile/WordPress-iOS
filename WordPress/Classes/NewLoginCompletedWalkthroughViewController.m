@@ -12,7 +12,7 @@
 #import "LoginCompletedWalkthroughPage3ViewController.h"
 #import "LoginCompletedWalkthroughPage4ViewController.h"
 #import "WPNUXUtility.h"
-#import "WPWalkthroughOverlayView.h"
+#import "NewWPWalkthroughOverlayView.h"
 #import "WordPressAppDelegate.h"
 
 @interface NewLoginCompletedWalkthroughViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate> {
@@ -76,14 +76,15 @@
     
     [self.view bringSubviewToFront:self.swipeToContinue];
     [self.view bringSubviewToFront:self.pageControl];
-    
-    [self showLoginSuccess];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+
+    [self showLoginSuccess];
+
 }
 
 - (void)viewDidLayoutSubviews
@@ -173,6 +174,7 @@
 - (void)addBackgroundTexture
 {
     UIView *mainTextureView = [[UIView alloc] initWithFrame:self.view.bounds];
+    mainTextureView.translatesAutoresizingMaskIntoConstraints = NO;
     mainTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
     [self.view addSubview:mainTextureView];
     mainTextureView.userInteractionEnabled = NO;
@@ -187,14 +189,14 @@
 
 - (void)showLoginSuccess
 {
-    WPWalkthroughOverlayView *grayOverlay = [[WPWalkthroughOverlayView alloc] initWithFrame:self.view.bounds];
+    NewWPWalkthroughOverlayView *grayOverlay = [[NewWPWalkthroughOverlayView alloc] initWithFrame:self.view.bounds];
     grayOverlay.overlayTitle = NSLocalizedString(@"Success!", @"NUX Second Walkthrough Success Overlay Title");
     grayOverlay.overlayDescription = NSLocalizedString(@"You have successfully signed into your WordPress account!", @"NUX Second Walkthrough Success Overlay Description");
-    grayOverlay.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
+    grayOverlay.overlayMode = NewWPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
     grayOverlay.footerDescription = [NSLocalizedString(@"tap to continue", nil) uppercaseString];
-    grayOverlay.icon = WPWalkthroughGrayOverlayViewBlueCheckmarkIcon;
+    grayOverlay.icon = NewWPWalkthroughGrayOverlayViewBlueCheckmarkIcon;
     grayOverlay.hideBackgroundView = YES;
-    grayOverlay.singleTapCompletionBlock = ^(WPWalkthroughOverlayView * overlayView){
+    grayOverlay.singleTapCompletionBlock = ^(NewWPWalkthroughOverlayView * overlayView){
         if (!self.showsExtraWalkthroughPages) {
             [self dismiss];
         } else {

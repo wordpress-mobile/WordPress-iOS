@@ -20,7 +20,7 @@
 #import "WPWalkthroughTextField.h"
 #import "WPNUXMainButton.h"
 #import "WPNUXUtility.h"
-#import "WPWalkthroughOverlayView.h"
+#import "NewWPWalkthroughOverlayView.h"
 #import "WPWebViewController.h"
 #import "HelpViewController.h"
 #import "WPAccount.h"
@@ -193,16 +193,16 @@
 
 #pragma mark - Displaying of Error Messages
 
-- (WPWalkthroughOverlayView *)baseLoginErrorOverlayView:(NSString *)message
+- (NewWPWalkthroughOverlayView *)baseLoginErrorOverlayView:(NSString *)message
 {
-    WPWalkthroughOverlayView *overlayView = [[WPWalkthroughOverlayView alloc] initWithFrame:self.view.bounds];
-    overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode;
+    NewWPWalkthroughOverlayView *overlayView = [[NewWPWalkthroughOverlayView alloc] initWithFrame:self.containingView.bounds];
+    overlayView.overlayMode = NewWPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode;
     overlayView.overlayTitle = NSLocalizedString(@"Sorry, we can't log you in.", nil);
     overlayView.overlayDescription = message;
     overlayView.footerDescription = [NSLocalizedString(@"tap to dismiss", nil) uppercaseString];
     overlayView.leftButtonText = NSLocalizedString(@"Need Help?", nil);
     overlayView.rightButtonText = NSLocalizedString(@"OK", nil);
-    overlayView.singleTapCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.singleTapCompletionBlock = ^(NewWPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
     return overlayView;
@@ -210,15 +210,15 @@
 
 - (void)displayErrorMessageForXMLRPC:(NSString *)message
 {
-    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
+    NewWPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
     overlayView.rightButtonText = NSLocalizedString(@"Enable Now", nil);
-    overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.button1CompletionBlock = ^(NewWPWalkthroughOverlayView *overlayView){
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
         
         [overlayView dismiss];
         [self showHelpViewController:NO];
     };
-    overlayView.button2CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.button2CompletionBlock = ^(NewWPWalkthroughOverlayView *overlayView){
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedEnableXMLRPCServices];
         
         [overlayView dismiss];
@@ -249,8 +249,8 @@
 
 - (void)displayErrorMessageForBadUrl:(NSString *)message
 {
-    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    NewWPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
+    overlayView.button1CompletionBlock = ^(NewWPWalkthroughOverlayView *overlayView){
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
         
         [overlayView dismiss];
@@ -259,7 +259,7 @@
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         [self.navigationController pushViewController:webViewController animated:NO];
     };
-    overlayView.button2CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.button2CompletionBlock = ^(NewWPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
     overlayView.frame = self.containingView.bounds;
@@ -268,14 +268,14 @@
 
 - (void)displayGenericErrorMessage:(NSString *)message
 {
-    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    NewWPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
+    overlayView.button1CompletionBlock = ^(NewWPWalkthroughOverlayView *overlayView){
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
         
         [overlayView dismiss];
         [self showHelpViewController:NO];
     };
-    overlayView.button2CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.button2CompletionBlock = ^(NewWPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
     overlayView.frame = self.containingView.bounds;

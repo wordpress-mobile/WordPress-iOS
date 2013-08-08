@@ -15,6 +15,7 @@
 #import "WPNUXSecondaryButton.h"
 #import "WPWalkthroughOverlayView.h"
 #import "WPNUXUtility.h"
+#import "NewWPWalkthroughOverlayView.h"
 
 @interface NewGeneralWalkthroughViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate> {
     UIPageViewController *_pageViewController;
@@ -240,6 +241,7 @@
 - (void)addBackgroundTexture
 {
     UIView *mainTextureView = [[UIView alloc] initWithFrame:self.view.bounds];
+    mainTextureView.translatesAutoresizingMaskIntoConstraints = NO;
     mainTextureView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ui-texture"]];
     [self.view addSubview:mainTextureView];
     mainTextureView.userInteractionEnabled = NO;

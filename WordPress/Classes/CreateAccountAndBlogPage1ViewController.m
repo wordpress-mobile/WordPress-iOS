@@ -11,7 +11,7 @@
 #import "WPWalkthroughTextField.h"
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXUtility.h"
-#import "WPWalkthroughOverlayView.h"
+#import "NewWPWalkthroughOverlayView.h"
 #import "WordPressComApi.h"
 #import "WPWebViewController.h"
 
@@ -262,12 +262,12 @@
 
 - (void)showError:(NSString *)message
 {
-    WPWalkthroughOverlayView *overlayView = [[WPWalkthroughOverlayView alloc] initWithFrame:self.containingView.bounds];
-    overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
+    NewWPWalkthroughOverlayView *overlayView = [[NewWPWalkthroughOverlayView alloc] initWithFrame:self.containingView.bounds];
+    overlayView.overlayMode = NewWPWalkthroughGrayOverlayViewOverlayModeTapToDismiss;
     overlayView.overlayTitle = NSLocalizedString(@"Error", nil);
     overlayView.overlayDescription = message;
     overlayView.footerDescription = [NSLocalizedString(@"tap to dismiss", nil) uppercaseString];
-    overlayView.singleTapCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+    overlayView.singleTapCompletionBlock = ^(NewWPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
     };
     [self.containingView addSubview:overlayView];
