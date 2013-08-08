@@ -194,7 +194,7 @@
     _keyboardOffset = (CGRectGetMaxY([self.nextButton convertRect:self.nextButton.frame toView:self.view]) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(self.nextButton.frame);
     
     [UIView animateWithDuration:animationDuration animations:^{
-        _adjustedCenteringConstraint.constant -= _keyboardOffset;
+        self.verticalCenteringConstraint.constant -= _keyboardOffset;
         [self.view layoutIfNeeded];
     }];
 }
@@ -205,7 +205,7 @@
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     
     [UIView animateWithDuration:animationDuration animations:^{
-        _adjustedCenteringConstraint.constant += _keyboardOffset;
+        self.verticalCenteringConstraint.constant += _keyboardOffset;
         [self.view layoutIfNeeded];
     }];
 }

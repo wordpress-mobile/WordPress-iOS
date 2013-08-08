@@ -19,20 +19,11 @@
 - (void)updateViewConstraints
 {
     [super updateViewConstraints];
-    [self.view removeConstraint:_adjustedCenteringConstraint];
 
     CGFloat heightOfMiddleControls = CGRectGetMaxY([self bottomViewToCenterAgainst].frame) - CGRectGetMinY([self topViewToCenterAgainst].frame);
     CGFloat verticalOffset = ([self heightToUseForCentering] - heightOfMiddleControls)/2.0;
     
-    _adjustedCenteringConstraint = [NSLayoutConstraint constraintWithItem:self.topViewToCenterAgainst attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:verticalOffset];
-    
-    [self.view addConstraint:_adjustedCenteringConstraint];
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [self.view removeConstraint:[self verticalCenteringConstraint]];
+    self.verticalCenteringConstraint.constant = verticalOffset;
 }
 
 - (void)viewDidLayoutSubviews

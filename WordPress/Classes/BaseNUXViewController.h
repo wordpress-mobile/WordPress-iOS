@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BaseNUXViewController : UIViewController {
-    NSLayoutConstraint *_adjustedCenteringConstraint;
-}
+@interface BaseNUXViewController : UIViewController
 
 - (UIView *)topViewToCenterAgainst;
 - (UIView *)bottomViewToCenterAgainst;

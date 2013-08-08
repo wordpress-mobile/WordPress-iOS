@@ -168,7 +168,7 @@
     _keyboardOffset = (CGRectGetMaxY(self.signInButton.frame) - CGRectGetMinY(keyboardFrame)) + CGRectGetHeight(self.signInButton.frame);
     
     [UIView animateWithDuration:animationDuration animations:^{
-        _adjustedCenteringConstraint.constant -= _keyboardOffset;
+        self.verticalCenteringConstraint.constant -= _keyboardOffset;
         [self.view layoutIfNeeded];
     }];
 }
@@ -178,7 +178,7 @@
     NSDictionary *keyboardInfo = notification.userInfo;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     [UIView animateWithDuration:animationDuration animations:^{
-        _adjustedCenteringConstraint.constant += _keyboardOffset;
+        self.verticalCenteringConstraint.constant += _keyboardOffset;
         [self.view layoutIfNeeded];
     }];
 }
