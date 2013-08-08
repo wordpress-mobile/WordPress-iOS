@@ -17,6 +17,7 @@ pod 'NSObject-SafeExpectations', :podspec => 'https://raw.github.com/koke/NSObje
 pod 'Mixpanel'
 pod 'google-plus-ios-sdk', '~> 1.2'
 pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git'
+pod 'Quantcast-Measure'
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '~> 1.1'

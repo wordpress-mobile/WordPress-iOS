@@ -163,6 +163,12 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
     [WPMobileStats trackEventForWPCom:StatsEventReaderOpened properties:[self categoryPropertyForStats]];
     [WPMobileStats pingWPComStatsEndpoint:@"home_page"];
+    [WPMobileStats logQuantcastEvent:@"newdash.home_page"];
+    [WPMobileStats logQuantcastEvent:@"mobile.home_page"];
+    if ([self isCurrentCategoryFreshlyPressed]) {
+        [WPMobileStats logQuantcastEvent:@"newdash.freshly"];
+        [WPMobileStats logQuantcastEvent:@"mobile.freshly"];
+    }
 }
 
 
@@ -707,6 +713,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 							 }];
     
     [WPMobileStats trackEventForWPCom:StatsEventReaderInfiniteScroll properties:[self categoryPropertyForStats]];
+    [WPMobileStats logQuantcastEvent:@"newdash.infinite_scroll"];
+    [WPMobileStats logQuantcastEvent:@"mobile.infinite_scroll"];
 }
 
 
@@ -848,9 +856,11 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		}
     }
 
-    if ([[self currentCategory] isEqualToString:@"freshly-pressed"]) {
+    if ([self isCurrentCategoryFreshlyPressed]) {
         [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedFreshlyPressedTopic];
         [WPMobileStats pingWPComStatsEndpoint:@"freshly"];
+        [WPMobileStats logQuantcastEvent:@"newdash.fresh"];
+        [WPMobileStats logQuantcastEvent:@"mobile.fresh"];
     } else {
         [WPMobileStats trackEventForWPCom:StatsEventReaderSelectedCategory properties:[self categoryPropertyForStats]];
     }
@@ -858,6 +868,11 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 #pragma mark - Utility
+
+- (BOOL)isCurrentCategoryFreshlyPressed
+{
+    return [[self currentCategory] isEqualToString:@"freshly-pressed"];
+}
 
 - (NSString *)currentCategory
 {
@@ -901,33 +916,40 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 				
 				[[NSUserDefaults standardUserDefaults] setObject:usersBlogs forKey:@"wpcom_users_blogs"];
 				
-                if ([usersBlogs count] > 1) {
-					[[WordPressComApi sharedApi] getPath:@"me"
-											  parameters:nil
-												 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-													 __block NSNumber *preferredBlogId;
-													 NSDictionary *dict = (NSDictionary *)responseObject;
-													 NSNumber *primaryBlog = [dict objectForKey:@"primary_blog"];
-													 [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-														 if ([primaryBlog isEqualToNumber:[obj numberForKey:@"blogid"]]) {
-                                                             preferredBlogId = [obj numberForKey:@"blogid"];
-															 *stop = YES;
-														 }
-													 }];
-													 
-													 if (!preferredBlogId) {
-														 NSDictionary *dict = [usersBlogs objectAtIndex:0];
-														 preferredBlogId = [dict numberForKey:@"blogid"];
-													 }
-													 
-													 [[NSUserDefaults standardUserDefaults] setObject:preferredBlogId forKey:@"wpcom_users_prefered_blog_id"];
-													 [NSUserDefaults resetStandardUserDefaults];
-													 
-												 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-													 // TODO: Handle Failure. Retry maybe?
-												 }];
-					
-				}
+                [[WordPressComApi sharedApi] getPath:@"me"
+                                          parameters:nil
+                                             success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                 if ([usersBlogs count] < 1)
+                                                     return;
+                                                 
+                                                 NSDictionary *dict = (NSDictionary *)responseObject;
+                                                 NSString *userID = [dict stringForKey:@"ID"];
+                                                 if (userID != nil) {
+                                                     [WPMobileStats updateUserIDForStats:userID];
+                                                     [[NSUserDefaults standardUserDefaults] setObject:userID forKey:@"wpcom_user_id"];
+                                                     [NSUserDefaults resetStandardUserDefaults];
+                                                 }
+                                                 
+                                                 __block NSNumber *preferredBlogId;
+                                                 NSNumber *primaryBlog = [dict objectForKey:@"primary_blog"];
+                                                 [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                                                     if ([primaryBlog isEqualToNumber:[obj numberForKey:@"blogid"]]) {
+                                                         preferredBlogId = [obj numberForKey:@"blogid"];
+                                                         *stop = YES;
+                                                     }
+                                                 }];
+                                                 
+                                                 if (!preferredBlogId) {
+                                                     NSDictionary *dict = [usersBlogs objectAtIndex:0];
+                                                     preferredBlogId = [dict numberForKey:@"blogid"];
+                                                 }
+                                                 
+                                                 [[NSUserDefaults standardUserDefaults] setObject:preferredBlogId forKey:@"wpcom_users_prefered_blog_id"];
+                                                 [NSUserDefaults resetStandardUserDefaults];
+                                                 
+                                             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                 // TODO: Handle Failure. Retry maybe?
+                                             }];
                 
                 if ([usersBlogs count] == 0) {
                     return;

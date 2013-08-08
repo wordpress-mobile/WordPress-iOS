@@ -17,6 +17,7 @@ PODS:
   - NSObject-SafeExpectations (0.0.1)
   - NSURL+IDN (0.1)
   - OHHTTPStubs (1.1.1)
+  - Quantcast-Measure (1.2.7)
   - Reachability (3.0.0)
   - SFHFKeychainUtils (0.0.1)
   - SSKeychain (0.2.1)
@@ -38,6 +39,7 @@ DEPENDENCIES:
   - NSObject-SafeExpectations (from `https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec`)
   - NSURL+IDN (from `https://raw.github.com/koke/NSURL-IDN/master/Podfile`)
   - OHHTTPStubs (~> 1.1)
+  - Quantcast-Measure
   - Reachability (~> 3.0.0)
   - SFHFKeychainUtils (~> 0.0.1)
   - SSKeychain (~> 0.2)
@@ -70,6 +72,7 @@ SPEC CHECKSUMS:
   NSObject-SafeExpectations: 241ab1289cbc33a00307cd025d22883646f2e1f0
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
   OHHTTPStubs: cb1cef742f2fba18b192fb92ede52a69cf3a04d5
+  Quantcast-Measure: 534b21e7231f46f72e7d36dcb4ba392d0f6a1de2
   Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
   SFHFKeychainUtils: e828dbd9eaa509486acf95d8de2ebd414c4b7451
   SSKeychain: ffa1a79eb716d9ed1ca184fb0cf218087ca28486
@@ -78,4 +81,4 @@ SPEC CHECKSUMS:
   WordPressApi: 76f9d7752b090197c172e2c5e6fccbffbaf7c336
   wpxmlrpc: 0b27d4c3734db9470f0dccc3c8d4a6f8e491fd0b
 
-COCOAPODS: 0.18.1
+COCOAPODS: 0.22.3

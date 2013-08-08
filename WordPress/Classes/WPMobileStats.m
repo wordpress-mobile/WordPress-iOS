@@ -8,9 +8,11 @@
 
 #import "WPMobileStats.h"
 #import <Mixpanel/Mixpanel.h>
+#import <Quantcast-Measure/QuantcastMeasurement.h>
 #import "WordPressComApiCredentials.h"
 #import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
+#import "NSString+Helpers.h"
 
 // General
 NSString *const StatsEventAppOpened = @"Application Opened";
@@ -270,6 +272,29 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
         [[Mixpanel sharedInstance].people increment:@"Application Opened" by:@(1)];
         [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
     }
+    
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_user_id"];
+    [[QuantcastMeasurement sharedInstance] beginMeasurementSessionWithAPIKey:[WordPressComApiCredentials quantcastAPIKey] userIdentifier:userId labels:nil];
+}
+
++ (void)updateUserIDForStats:(NSString *)userID
+{
+    [[QuantcastMeasurement sharedInstance] recordUserIdentifier:[userID md5] withLabels:nil];
+}
+
++ (void)pauseSession
+{
+    [[QuantcastMeasurement sharedInstance] pauseSessionWithLabels:nil];
+}
+
++ (void)endSession
+{
+    [[QuantcastMeasurement sharedInstance] endMeasurementSessionWithLabels:nil];
+}
+
++ (void)resumeSession
+{
+    [[QuantcastMeasurement sharedInstance] resumeSessionWithLabels:nil];
 }
 
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event
@@ -313,6 +338,11 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
         NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:nil];
         [conn start];
     }
+}
+
++ (void)logQuantcastEvent:(NSString *)quantcast
+{
+    [[QuantcastMeasurement sharedInstance] logEvent:quantcast withLabels:nil];
 }
 
 + (void)clearPropertiesForAllEvents
