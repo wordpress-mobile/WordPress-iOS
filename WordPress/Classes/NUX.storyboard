@@ -912,7 +912,7 @@
         <!--Newer Add Users Blog View Controller-->
         <scene sceneID="M6u-TC-0uz">
             <objects>
-                <viewController id="D2X-cv-vVm" customClass="NewerAddUsersBlogViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddBlogs" id="D2X-cv-vVm" customClass="NewerAddUsersBlogViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="K7F-ET-1fU"/>
                         <viewControllerLayoutGuide type="bottom" id="xZc-Mx-wSo"/>
@@ -948,6 +948,9 @@
                                         <state key="highlighted">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="createBlogs" destination="D2X-cv-vVm" eventType="touchUpInside" id="lXB-Sm-KSK"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.16470588235294117" green="0.16470588235294117" blue="0.16470588235294117" alpha="1" colorSpace="calibratedRGB"/>

@@ -81,16 +81,9 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
     [_blavatarImage setImageWithBlavatarUrl:[blogURL host] isWPcom:self.isWPCom];
     
     // Setup Checkbox
-    UIImage *image;
-    if (self.selected) {
-        image = [UIImage imageNamed:@"icon-check-small-white"];
-    } else {
-        image = [UIImage imageNamed:@"icon-check-small-blue"];
-    }
-    _checkboxImage.image = image;
     x = cellWidth - AddUsersBlogCellStandardOffset - CGRectGetWidth(_checkboxImage.frame);
     y = (rowHeight - _checkboxImage.image.size.height)/2.0;
-    _checkboxImage.frame = CGRectIntegral(CGRectMake(x, y, image.size.width, image.size.height));
+    _checkboxImage.frame = CGRectIntegral(CGRectMake(x, y, _checkboxImage.image.size.width, _checkboxImage.image.size.height));
     
     // Setup Title
     x = CGRectGetMaxX(_blavatarImage.frame) + AddUsersBlogCellStandardOffset;
@@ -142,6 +135,19 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
 - (void)hideCheckmark:(BOOL)hide
 {
 	_checkboxImage.hidden = hide;
+}
+
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
+
+    UIImage *image;
+    if (self.selected) {
+        image = [UIImage imageNamed:@"icon-check-small-white"];
+    } else {
+        image = [UIImage imageNamed:@"icon-check-small-blue"];
+    }
+    _checkboxImage.image = image;
 }
 
 #pragma mark - Private Methods

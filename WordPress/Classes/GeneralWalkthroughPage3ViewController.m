@@ -9,7 +9,7 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <WPXMLRPC/WPXMLRPC.h>
 #import "GeneralWalkthroughPage3ViewController.h"
-#import "NewAddUsersBlogViewController.h"
+#import "NewerAddUsersBlogViewController.h"
 #import "LoginCompletedWalkthroughViewController.h"
 #import "JetpackSettingsViewController.h"
 #import "CreateAccountAndBlogViewController.h"
@@ -565,21 +565,20 @@
     }
 }
 
-- (NewAddUsersBlogViewController *)addUsersBlogViewController:(NSString *)xmlRPCUrl
+- (NewerAddUsersBlogViewController *)addUsersBlogViewController:(NSString *)xmlRPCUrl
 {
-    //TODO : Implement Using New VC
     BOOL isWPCom = (xmlRPCUrl == nil);
-    NewAddUsersBlogViewController *vc = [[NewAddUsersBlogViewController alloc] init];
+    NewerAddUsersBlogViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"AddBlogs"];
     vc.account = [self createAccountWithUsername:self.usernameText.text andPassword:self.passwordText.text isWPCom:isWPCom xmlRPCUrl:xmlRPCUrl];
-    vc.blogAdditionCompleted = ^(NewAddUsersBlogViewController * viewController){
+    vc.blogAdditionCompleted = ^(NewerAddUsersBlogViewController * viewController){
         [self.navigationController popViewControllerAnimated:NO];
         [self showCompletionWalkthrough];
     };
-    vc.onNoBlogsLoaded = ^(NewAddUsersBlogViewController *viewController) {
+    vc.onNoBlogsLoaded = ^(NewerAddUsersBlogViewController *viewController) {
         [self.navigationController popViewControllerAnimated:NO];
         [self showCompletionWalkthrough];
     };
-    vc.onErrorLoading = ^(NewAddUsersBlogViewController *viewController, NSError *error) {
+    vc.onErrorLoading = ^(NewerAddUsersBlogViewController *viewController, NSError *error) {
         WPFLog(@"There was an error loading blogs after sign in");
         [self.navigationController popViewControllerAnimated:YES];
         [self displayGenericErrorMessage:[error localizedDescription]];
@@ -590,15 +589,13 @@
 
 - (void)showAddUsersBlogsForSelfHosted:(NSString *)xmlRPCUrl
 {
-    //TODO : Implement Using New VC
-    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController:xmlRPCUrl];
+    NewerAddUsersBlogViewController *vc = [self addUsersBlogViewController:xmlRPCUrl];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showAddUsersBlogsForWPCom
 {
-    //TODO : Implement Using New VC
-    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController:nil];
+    NewerAddUsersBlogViewController *vc = [self addUsersBlogViewController:nil];
     
     NSString *siteUrl = [self.siteAddress.text trim];
     if ([siteUrl length] != 0) {
