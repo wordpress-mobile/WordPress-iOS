@@ -82,6 +82,7 @@
 								   }
                                    
                                    [WPMobileStats trackEventForWPCom:StatsEventReaderPublishedComment];
+                                   [WPMobileStats pingWPComStatsEndpoint:@"publish_comment"];
 							   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 								   [self enableForm:YES];
 								   [self.activityView stopAnimating];

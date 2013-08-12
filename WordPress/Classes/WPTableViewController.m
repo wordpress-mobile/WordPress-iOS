@@ -51,6 +51,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     BOOL _animatingRemovalOfModerationSwipeView;
     BOOL didPromptForCredentials;
     BOOL _isSyncing;
+    BOOL _isLoadingMore;
     BOOL didPlayPullSound;
     BOOL didTriggerRefresh;
     CGPoint savedScrollOffset;
@@ -312,13 +313,19 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) && [self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
         // Only 3 rows till the end of table
-        if (![self isSyncing] && [self hasMoreContent]) {
-            [_activityFooter startAnimating];
-            [self loadMoreWithSuccess:^{
-                [_activityFooter stopAnimating];
-            } failure:^(NSError *error) {
-                [_activityFooter stopAnimating];
-            }];
+        
+        if ([self hasMoreContent] && !_isLoadingMore) {
+            if (![self isSyncing] || self.incrementalLoadingSupported) {
+                [_activityFooter startAnimating];
+                _isLoadingMore = YES;
+                [self loadMoreWithSuccess:^{
+                    _isLoadingMore = NO;
+                    [_activityFooter stopAnimating];
+                } failure:^(NSError *error) {
+                    _isLoadingMore = NO;
+                    [_activityFooter stopAnimating];
+                }];
+            }
         }
     }
 }
