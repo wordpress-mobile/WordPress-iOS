@@ -629,6 +629,23 @@
 		85E105911731D066001071A3 /* LoginCompletedWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E105901731D066001071A3 /* LoginCompletedWalkthroughViewController.m */; };
 		85EC44D11738C24500686604 /* UIView+FormSheetHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EC44D01738C24500686604 /* UIView+FormSheetHelpers.m */; };
 		85EC44D41739826A00686604 /* CreateAccountAndBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */; };
+		85F2C4BC17B9F6E600A303E0 /* CreateAccountAndBlogPage3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C49C17B9F6E600A303E0 /* CreateAccountAndBlogPage3ViewController.m */; };
+		85F2C4BE17B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4A117B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.m */; };
+		85F2C4BF17B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4A317B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.m */; };
+		85F2C4C017B9F6E600A303E0 /* GeneralWalkthroughPage3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4A517B9F6E600A303E0 /* GeneralWalkthroughPage3ViewController.m */; };
+		85F2C4C117B9F6E600A303E0 /* LoginCompletedWalkthroughPage1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4A717B9F6E600A303E0 /* LoginCompletedWalkthroughPage1ViewController.m */; };
+		85F2C4C217B9F6E600A303E0 /* LoginCompletedWalkthroughPage2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4A917B9F6E600A303E0 /* LoginCompletedWalkthroughPage2ViewController.m */; };
+		85F2C4C317B9F6E600A303E0 /* LoginCompletedWalkthroughPage3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4AB17B9F6E600A303E0 /* LoginCompletedWalkthroughPage3ViewController.m */; };
+		85F2C4C417B9F6E600A303E0 /* LoginCompletedWalkthroughPage4ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4AD17B9F6E600A303E0 /* LoginCompletedWalkthroughPage4ViewController.m */; };
+		85F2C4C517B9F6E600A303E0 /* NewCreateAccountAndBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4AF17B9F6E600A303E0 /* NewCreateAccountAndBlogViewController.m */; };
+		85F2C4C617B9F6E600A303E0 /* NewerAddUsersBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4B117B9F6E600A303E0 /* NewerAddUsersBlogViewController.m */; };
+		85F2C4C717B9F6E600A303E0 /* NewGeneralWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4B317B9F6E600A303E0 /* NewGeneralWalkthroughViewController.m */; };
+		85F2C4C817B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4B517B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.m */; };
+		85F2C4C917B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4B717B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m */; };
+		85F2C4CA17B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85F2C4B817B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib */; };
+		85F2C4CB17B9F6E600A303E0 /* NotificationsTableViewDatasource.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4BA17B9F6E600A303E0 /* NotificationsTableViewDatasource.m */; };
+		85F2C4CC17B9F6E600A303E0 /* NUX.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85F2C4BB17B9F6E600A303E0 /* NUX.storyboard */; };
+		85F2C4CF17B9F81A00A303E0 /* BaseNUXViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4CE17B9F81A00A303E0 /* BaseNUXViewController.m */; };
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */; };
@@ -1617,6 +1634,37 @@
 		85EC44D01738C24500686604 /* UIView+FormSheetHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+FormSheetHelpers.m"; sourceTree = "<group>"; };
 		85EC44D21739826A00686604 /* CreateAccountAndBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateAccountAndBlogViewController.h; sourceTree = "<group>"; };
 		85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateAccountAndBlogViewController.m; sourceTree = "<group>"; };
+		85F2C49C17B9F6E600A303E0 /* CreateAccountAndBlogPage3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateAccountAndBlogPage3ViewController.m; sourceTree = "<group>"; };
+		85F2C4A017B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralWalkthroughPage1ViewController.h; sourceTree = "<group>"; };
+		85F2C4A117B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralWalkthroughPage1ViewController.m; sourceTree = "<group>"; };
+		85F2C4A217B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralWalkthroughPage2ViewController.h; sourceTree = "<group>"; };
+		85F2C4A317B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralWalkthroughPage2ViewController.m; sourceTree = "<group>"; };
+		85F2C4A417B9F6E600A303E0 /* GeneralWalkthroughPage3ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralWalkthroughPage3ViewController.h; sourceTree = "<group>"; };
+		85F2C4A517B9F6E600A303E0 /* GeneralWalkthroughPage3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralWalkthroughPage3ViewController.m; sourceTree = "<group>"; };
+		85F2C4A617B9F6E600A303E0 /* LoginCompletedWalkthroughPage1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginCompletedWalkthroughPage1ViewController.h; sourceTree = "<group>"; };
+		85F2C4A717B9F6E600A303E0 /* LoginCompletedWalkthroughPage1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginCompletedWalkthroughPage1ViewController.m; sourceTree = "<group>"; };
+		85F2C4A817B9F6E600A303E0 /* LoginCompletedWalkthroughPage2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginCompletedWalkthroughPage2ViewController.h; sourceTree = "<group>"; };
+		85F2C4A917B9F6E600A303E0 /* LoginCompletedWalkthroughPage2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginCompletedWalkthroughPage2ViewController.m; sourceTree = "<group>"; };
+		85F2C4AA17B9F6E600A303E0 /* LoginCompletedWalkthroughPage3ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginCompletedWalkthroughPage3ViewController.h; sourceTree = "<group>"; };
+		85F2C4AB17B9F6E600A303E0 /* LoginCompletedWalkthroughPage3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginCompletedWalkthroughPage3ViewController.m; sourceTree = "<group>"; };
+		85F2C4AC17B9F6E600A303E0 /* LoginCompletedWalkthroughPage4ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginCompletedWalkthroughPage4ViewController.h; sourceTree = "<group>"; };
+		85F2C4AD17B9F6E600A303E0 /* LoginCompletedWalkthroughPage4ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginCompletedWalkthroughPage4ViewController.m; sourceTree = "<group>"; };
+		85F2C4AE17B9F6E600A303E0 /* NewCreateAccountAndBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewCreateAccountAndBlogViewController.h; sourceTree = "<group>"; };
+		85F2C4AF17B9F6E600A303E0 /* NewCreateAccountAndBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewCreateAccountAndBlogViewController.m; sourceTree = "<group>"; };
+		85F2C4B017B9F6E600A303E0 /* NewerAddUsersBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewerAddUsersBlogViewController.h; sourceTree = "<group>"; };
+		85F2C4B117B9F6E600A303E0 /* NewerAddUsersBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewerAddUsersBlogViewController.m; sourceTree = "<group>"; };
+		85F2C4B217B9F6E600A303E0 /* NewGeneralWalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewGeneralWalkthroughViewController.h; sourceTree = "<group>"; };
+		85F2C4B317B9F6E600A303E0 /* NewGeneralWalkthroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewGeneralWalkthroughViewController.m; sourceTree = "<group>"; };
+		85F2C4B417B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewLoginCompletedWalkthroughViewController.h; sourceTree = "<group>"; };
+		85F2C4B517B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewLoginCompletedWalkthroughViewController.m; sourceTree = "<group>"; };
+		85F2C4B617B9F6E600A303E0 /* NewWPWalkthroughOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewWPWalkthroughOverlayView.h; sourceTree = "<group>"; };
+		85F2C4B717B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewWPWalkthroughOverlayView.m; sourceTree = "<group>"; };
+		85F2C4B817B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewWPWalkthroughOverlayView.xib; sourceTree = "<group>"; };
+		85F2C4B917B9F6E600A303E0 /* NotificationsTableViewDatasource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsTableViewDatasource.h; sourceTree = "<group>"; };
+		85F2C4BA17B9F6E600A303E0 /* NotificationsTableViewDatasource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTableViewDatasource.m; sourceTree = "<group>"; };
+		85F2C4BB17B9F6E600A303E0 /* NUX.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NUX.storyboard; sourceTree = "<group>"; };
+		85F2C4CD17B9F81A00A303E0 /* BaseNUXViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNUXViewController.h; sourceTree = "<group>"; };
+		85F2C4CE17B9F81A00A303E0 /* BaseNUXViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNUXViewController.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate.html; path = Resources/HTML/defaultPostTemplate.html; sourceTree = "<group>"; };
@@ -2086,6 +2134,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				85F2C49B17B9F68500A303E0 /* New NUX */,
 				85A1B6721742E7DB00BA5E35 /* Stats */,
 				E159D1011309AAF200F498E2 /* Migrations */,
 				C59D3D480E6410BC00AA591D /* Categories */,
@@ -2840,6 +2889,44 @@
 				5D7BEAAB1774A10D00423E7F /* ui-texture@2x.png */,
 			);
 			name = NUX;
+			sourceTree = "<group>";
+		};
+		85F2C49B17B9F68500A303E0 /* New NUX */ = {
+			isa = PBXGroup;
+			children = (
+				85F2C4CD17B9F81A00A303E0 /* BaseNUXViewController.h */,
+				85F2C4CE17B9F81A00A303E0 /* BaseNUXViewController.m */,
+				85F2C49C17B9F6E600A303E0 /* CreateAccountAndBlogPage3ViewController.m */,
+				85F2C4A017B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.h */,
+				85F2C4A117B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.m */,
+				85F2C4A217B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.h */,
+				85F2C4A317B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.m */,
+				85F2C4A417B9F6E600A303E0 /* GeneralWalkthroughPage3ViewController.h */,
+				85F2C4A517B9F6E600A303E0 /* GeneralWalkthroughPage3ViewController.m */,
+				85F2C4A617B9F6E600A303E0 /* LoginCompletedWalkthroughPage1ViewController.h */,
+				85F2C4A717B9F6E600A303E0 /* LoginCompletedWalkthroughPage1ViewController.m */,
+				85F2C4A817B9F6E600A303E0 /* LoginCompletedWalkthroughPage2ViewController.h */,
+				85F2C4A917B9F6E600A303E0 /* LoginCompletedWalkthroughPage2ViewController.m */,
+				85F2C4AA17B9F6E600A303E0 /* LoginCompletedWalkthroughPage3ViewController.h */,
+				85F2C4AB17B9F6E600A303E0 /* LoginCompletedWalkthroughPage3ViewController.m */,
+				85F2C4AC17B9F6E600A303E0 /* LoginCompletedWalkthroughPage4ViewController.h */,
+				85F2C4AD17B9F6E600A303E0 /* LoginCompletedWalkthroughPage4ViewController.m */,
+				85F2C4AE17B9F6E600A303E0 /* NewCreateAccountAndBlogViewController.h */,
+				85F2C4AF17B9F6E600A303E0 /* NewCreateAccountAndBlogViewController.m */,
+				85F2C4B017B9F6E600A303E0 /* NewerAddUsersBlogViewController.h */,
+				85F2C4B117B9F6E600A303E0 /* NewerAddUsersBlogViewController.m */,
+				85F2C4B217B9F6E600A303E0 /* NewGeneralWalkthroughViewController.h */,
+				85F2C4B317B9F6E600A303E0 /* NewGeneralWalkthroughViewController.m */,
+				85F2C4B417B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.h */,
+				85F2C4B517B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.m */,
+				85F2C4B617B9F6E600A303E0 /* NewWPWalkthroughOverlayView.h */,
+				85F2C4B717B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m */,
+				85F2C4B817B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib */,
+				85F2C4B917B9F6E600A303E0 /* NotificationsTableViewDatasource.h */,
+				85F2C4BA17B9F6E600A303E0 /* NotificationsTableViewDatasource.m */,
+				85F2C4BB17B9F6E600A303E0 /* NUX.storyboard */,
+			);
+			name = "New NUX";
 			sourceTree = "<group>";
 		};
 		A2F140A415E464C900132A5E /* Rich Text */ = {
@@ -4111,6 +4198,7 @@
 				30B5533215AFBFD200077318 /* navbar_actions@2x.png in Resources */,
 				377636F215B0360C00C1C5C6 /* tabPointer_black.png in Resources */,
 				377636F315B0360C00C1C5C6 /* tabPointer_black@2x.png in Resources */,
+				85F2C4CC17B9F6E600A303E0 /* NUX.storyboard in Resources */,
 				5DEB6EF915B48404004E81F3 /* popover_arrow.png in Resources */,
 				5DEB6EFA15B48404004E81F3 /* popover_bg.png in Resources */,
 				5DC7368115B4C07500D72BDB /* popover_arrow@2x.png in Resources */,
@@ -4358,6 +4446,7 @@
 				5D7BEA8B1774A0C500423E7F /* btn-primary@2x.png in Resources */,
 				5D7BEA8C1774A0C500423E7F /* btn-secondary-tap.png in Resources */,
 				5D7BEA8D1774A0C500423E7F /* btn-secondary-tap@2x.png in Resources */,
+				85F2C4CA17B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib in Resources */,
 				5D7BEA8E1774A0C500423E7F /* btn-secondary.png in Resources */,
 				5D7BEA8F1774A0C500423E7F /* btn-secondary@2x.png in Resources */,
 				5D7BEAAC1774A10D00423E7F /* icon-alert.png in Resources */,
@@ -4502,6 +4591,7 @@
 				2F970F740DF92274006BD934 /* PostsViewController.m in Sources */,
 				ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */,
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
+				85F2C4BE17B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.m in Sources */,
 				ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */,
 				ACAC79C60E1F50EB00AC7074 /* WPSelectionTableViewController.m in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */,
@@ -4514,11 +4604,14 @@
 				03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */,
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
 				031663070FFB151A0045D052 /* PostTableViewCell.m in Sources */,
+				85F2C4CB17B9F6E600A303E0 /* NotificationsTableViewDatasource.m in Sources */,
 				031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */,
 				03958062100D6CFC00850742 /* WPLabel.m in Sources */,
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
 				2994EEEE10DF0FCD008336A6 /* ReplyToCommentViewController.m in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
+				85F2C4CF17B9F81A00A303E0 /* BaseNUXViewController.m in Sources */,
+				85F2C4C217B9F6E600A303E0 /* LoginCompletedWalkthroughPage2ViewController.m in Sources */,
 				45F45B3611614BA50022D394 /* CPopoverManager.m in Sources */,
 				8398EE3511ACE206000FE6E0 /* WelcomeViewController.m in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
@@ -4549,6 +4642,8 @@
 				3744A0DE130ABB0800CE7BE1 /* HelpViewController.m in Sources */,
 				E159D1051309AB0D00F498E2 /* MigrateBlogsFromFiles.m in Sources */,
 				E17078FD130A95B600F30433 /* WordPress-1-2.xcmappingmodel in Sources */,
+				85F2C4C717B9F6E600A303E0 /* NewGeneralWalkthroughViewController.m in Sources */,
+				85F2C4C117B9F6E600A303E0 /* LoginCompletedWalkthroughPage1ViewController.m in Sources */,
 				E18D43E1130BD8E9006155DE /* PostToAbstractPost.m in Sources */,
 				E11930C41312F8A800F34124 /* FakeMigration.m in Sources */,
 				E1B7B983131553FF005318BD /* FileLogger.m in Sources */,
@@ -4584,6 +4679,7 @@
 				5D2B80D11592447200161F6E /* QuickPhotoButtonView.m in Sources */,
 				CC6B3BE715A33E16005A4523 /* WPFriendFinderNudgeView.m in Sources */,
 				5D9832F015A78AB400A5E783 /* UINavigationBar+Styled.m in Sources */,
+				85F2C4C917B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m in Sources */,
 				5D9832F315A78CCB00A5E783 /* UIToolbar+Styled.m in Sources */,
 				E1745A9A15AF49C000A3F7C5 /* UIViewController+Styled.m in Sources */,
 				E1745AA715AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m in Sources */,
@@ -4594,9 +4690,11 @@
 				5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */,
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
 				5D87E10C15F5120C0012C595 /* SettingsPageViewController.m in Sources */,
+				85F2C4C017B9F6E600A303E0 /* GeneralWalkthroughPage3ViewController.m in Sources */,
 				5DC3A44D1610B9BC00A890BE /* UINavigationController+Rotation.m in Sources */,
 				E1A0FAE7162F11CF0063B098 /* UIDevice+WordPressIdentifier.m in Sources */,
 				CC1D80141656D938002A542F /* NotificationsViewController.m in Sources */,
+				85F2C4C617B9F6E600A303E0 /* NewerAddUsersBlogViewController.m in Sources */,
 				CC1D802B165830AB002A542F /* NotificationsTableViewCell.m in Sources */,
 				CC1D80311658354C002A542F /* Note.m in Sources */,
 				CC0199E9165C17020073A966 /* NotificationsCommentDetailViewController.m in Sources */,
@@ -4618,10 +4716,12 @@
 				E1523EB516D3B305002C5A36 /* InstapaperActivity.m in Sources */,
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,
 				E1D0D82916D3D19200E33F4C /* PocketAPI.m in Sources */,
+				85F2C4C417B9F6E600A303E0 /* LoginCompletedWalkthroughPage4ViewController.m in Sources */,
 				E1D0D82A16D3D19200E33F4C /* PocketAPILogin.m in Sources */,
 				E1D0D82B16D3D19200E33F4C /* PocketAPIOperation.m in Sources */,
 				E1D0D84716D3D2EA00E33F4C /* PocketActivity.m in Sources */,
 				E15051CB16CA5DDB00D3DDDC /* Blog+Jetpack.m in Sources */,
+				85F2C4C817B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.m in Sources */,
 				8566BC95170F84BC003C6BCF /* CreateWPComAccountViewController.m in Sources */,
 				85D805521715F4EA0075EEAC /* CreateWPComBlogViewController.m in Sources */,
 				85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */,
@@ -4645,18 +4745,21 @@
 				E183BD7417621D87000B0822 /* WPCookie.m in Sources */,
 				E10DB0081771926D00B7A0A3 /* GooglePlusActivity.m in Sources */,
 				5D42A3DE175E7452005CFF05 /* AbstractComment.m in Sources */,
+				85F2C4BF17B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.m in Sources */,
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,
 				5D42A3E0175E7452005CFF05 /* BasePost.m in Sources */,
 				5D42A3E1175E7452005CFF05 /* ReaderComment.m in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				5D42A3F7175E75EE005CFF05 /* ReaderCommentTableViewCell.m in Sources */,
 				5D42A3F8175E75EE005CFF05 /* ReaderImageView.m in Sources */,
+				85F2C4C517B9F6E600A303E0 /* NewCreateAccountAndBlogViewController.m in Sources */,
 				E1D062D4177C685C00644185 /* ReaderButton.m in Sources */,
 				5D42A3F9175E75EE005CFF05 /* ReaderMediaView.m in Sources */,
 				5D42A3FA175E75EE005CFF05 /* ReaderPostDetailView.m in Sources */,
 				5D42A3FB175E75EE005CFF05 /* ReaderPostDetailViewController.m in Sources */,
 				5D42A3FC175E75EE005CFF05 /* ReaderPostsViewController.m in Sources */,
 				5D42A3FD175E75EE005CFF05 /* ReaderPostTableViewCell.m in Sources */,
+				85F2C4C317B9F6E600A303E0 /* LoginCompletedWalkthroughPage3ViewController.m in Sources */,
 				5D42A3FE175E75EE005CFF05 /* ReaderTableViewCell.m in Sources */,
 				5D42A3FF175E75EE005CFF05 /* ReaderTopicsViewController.m in Sources */,
 				5D42A400175E75EE005CFF05 /* ReaderVideoView.m in Sources */,
@@ -4664,6 +4767,7 @@
 				5D42A406175E76A7005CFF05 /* WPWebVideoViewController.m in Sources */,
 				5D2A8FF2175EC15800263144 /* ReaderTextFormView.m in Sources */,
 				5D477099175F73CA0086C6A3 /* ReaderCommentFormView.m in Sources */,
+				85F2C4BC17B9F6E600A303E0 /* CreateAccountAndBlogPage3ViewController.m in Sources */,
 				5D5A953B1760DDE0000F7A1E /* ReaderReblogFormView.m in Sources */,
 				5D8572BA17611B36004CC20D /* ReaderUsersBlogsViewController.m in Sources */,
 				E174F6E6172A73960004F23A /* WPAccount.m in Sources */,
@@ -4774,6 +4878,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Vendor/facebook-ios-sdk\"",
@@ -4809,6 +4914,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Vendor/facebook-ios-sdk\"",
@@ -4865,6 +4971,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Vendor/facebook-ios-sdk\"",
@@ -4920,6 +5027,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				INFOPLIST_FILE = "Info-beta.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Vendor/facebook-ios-sdk\"",
