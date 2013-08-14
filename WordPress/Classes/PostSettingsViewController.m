@@ -123,6 +123,7 @@
     featuredImageView.layer.shadowColor = [[UIColor blackColor] CGColor];
     featuredImageView.layer.shadowOpacity = 0.5f;
     featuredImageView.layer.shadowRadius = 1.0f;
+    featuredImageView.fullView = self.view;
     
     // Check if blog supports featured images
     id supportsFeaturedImages = [self.post.blog getOptionValue:@"post_thumbnail"];
@@ -186,6 +187,7 @@
     [super viewWillAppear:animated];
     [self reloadData];
 	[statusTableViewCell becomeFirstResponder];
+    [featuredImageView shrinkFullImageView:FALSE];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -196,15 +198,13 @@
 #pragma mark -
 #pragma mark Rotation Methods
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self reloadData];
 }
-
 
 #pragma mark -
 #pragma mark Instance Methods
@@ -276,7 +276,6 @@
     [operation start];
 }
 
-
 - (void)endEditingAction:(id)sender {
 	if (passwordTextField != nil){
         [passwordTextField resignFirstResponder];
@@ -311,7 +310,6 @@
     [textField resignFirstResponder];
     return YES;
 }
-
 
 #pragma mark -
 #pragma mark TableView Methods
@@ -452,7 +450,7 @@
                         }
                     }
                 }
-                [activityCell.textLabel setText:@"Set Featured Image"];
+                [activityCell.textLabel setText:NSLocalizedString(@"Set Featured Image", @"Set Featured Image")];
                 return activityCell;
                 
                 
@@ -630,7 +628,6 @@
 	else
         return 44.0f;
 }
-
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
@@ -817,13 +814,13 @@
     [tableView reloadData];
 }
 
-- (NSString *)formattedStatEventString:(NSString *)event
-{
+- (NSString *)formattedStatEventString:(NSString *)event {
     return [NSString stringWithFormat:@"%@ - %@", self.statsPrefix, event];
 }
 
 #pragma mark -
 #pragma mark UIActionSheetDelegate
+
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         [featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleBlue];
@@ -891,7 +888,6 @@
 	[postDetailViewController refreshButtons];
     [tableView reloadData];
 }
-
 
 #pragma mark -
 #pragma mark Pickers and keyboard animations
@@ -1092,7 +1088,8 @@
     // else skip the event and process the next one.
 }
 
-#pragma mark - CLGecocoder wrapper
+#pragma mark - 
+#pragma mark CLGecocoder wrapper
 
 - (void)geocodeCoordinate:(CLLocationCoordinate2D)c {
 	if (reverseGeocoder) {

@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">784</int>
-		<string key="IBDocument.SystemVersion">12B19</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2840</string>
-		<string key="IBDocument.AppKitVersion">1187</string>
-		<string key="IBDocument.HIToolboxVersion">624.00</string>
+		<string key="IBDocument.SystemVersion">12E55</string>
+		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1926</string>
+			<string key="NS.object.0">2083</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBMKMapView</string>
@@ -532,7 +532,7 @@
 								<string key="NSFrame">{{20, 13}, {280, 163}}</string>
 								<reference key="NSSuperview" ref="216573381"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="61865946"/>
+								<reference key="NSNextKeyView" ref="564950200"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<int key="IBUIContentMode">1</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -544,7 +544,7 @@
 								<string key="NSFrame">{{20, 96.5}, {280, 21}}</string>
 								<reference key="NSSuperview" ref="216573381"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="564950200"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="961271066"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -577,7 +577,7 @@
 								<string key="NSFrame">{{150, 71}, {20, 20}}</string>
 								<reference key="NSSuperview" ref="216573381"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
+								<reference key="NSNextKeyView" ref="61865946"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -1010,6 +1010,7 @@
 				<string key="263.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="264.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="265.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="266.CustomClassName">GrowingImageView</string>
 				<string key="266.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="78.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1024,6 +1025,39 @@
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
+					<string key="className">GrowingImageView</string>
+					<string key="superclassName">UIImageView</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="fullImageViewTapped:">id</string>
+						<string key="originalImageViewTapped:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="fullImageViewTapped:">
+							<string key="name">fullImageViewTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="originalImageViewTapped:">
+							<string key="name">originalImageViewTapped:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">fullView</string>
+						<string key="NS.object.0">UIView</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">fullView</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">fullView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/GrowingImageView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">PostSettingsViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
@@ -1032,7 +1066,7 @@
 						<string key="featuredImageLabel">UILabel</string>
 						<string key="featuredImageSpinner">UIActivityIndicatorView</string>
 						<string key="featuredImageTableViewCell">UITableViewCell</string>
-						<string key="featuredImageView">UIImageView</string>
+						<string key="featuredImageView">GrowingImageView</string>
 						<string key="mapGeotagTableViewCell">UITableViewCell</string>
 						<string key="mapView">MKMapView</string>
 						<string key="passwordTextField">UITextField</string>
@@ -1073,7 +1107,7 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="featuredImageView">
 							<string key="name">featuredImageView</string>
-							<string key="candidateClassName">UIImageView</string>
+							<string key="candidateClassName">GrowingImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="mapGeotagTableViewCell">
 							<string key="name">mapGeotagTableViewCell</string>
@@ -1155,10 +1189,10 @@
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<real value="1536" key="NS.object.0"/>
+			<real value="1552" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">1926</string>
+		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
 </archive>
