@@ -141,6 +141,7 @@
             } else {
                 _navigationController = [[UINavigationController alloc] init];
             }
+            _navigationController.navigationBar.translucent = NO;
         } else {
             _detailViewControllers = [[NSMutableArray alloc] init];
             _detailViews = [[NSMutableArray alloc] init];
@@ -643,14 +644,15 @@
             [_menuView addSubview:_dividerImageView];
             [_menuView addSubview:_spacerImageView];
             
-            sidebarButton = [[UIBarButtonItem alloc] initWithCustomView:_menuView];
+            if (IS_IOS_7) {
+                sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-drawermenu"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleSidebar)];
+            }
             _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
 
         } else {
             [self addChildViewController:_detailViewController];
 
             UIView *wrappedView = [self createWrapViewForViewController:_detailViewController];
-
 
             BOOL newIsWide = [self viewControllerExpectsWidePanel:_detailViewController];
             

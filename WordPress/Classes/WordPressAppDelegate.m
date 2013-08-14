@@ -27,6 +27,7 @@
 #import "WPComLanguages.h"
 #import "WPAccount.h"
 #import "Note.h"
+#import "UIColor+Helpers.h"
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 - (void)setAppBadge;
@@ -731,73 +732,91 @@
 #pragma mark Private Methods
 
 - (void)customizeAppearance {
+    if (IS_IOS_7) {
+        [self customizeForiOS7];
+    } else {
+        [self customizeForiOS6];
+    }
+}
+
+- (void)customizeForiOS6
+{
     // If UIAppearance is supported, configure global styles.
     //Configure navigation bar style if >= iOS 5
     if ([[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
         [[UIToolbar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar_bg"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
-
+        
         [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
         [[UINavigationBar appearance] setTitleTextAttributes:
          [NSDictionary dictionaryWithObjectsAndKeys:
-          [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0], 
-          UITextAttributeTextColor, 
-          [UIColor whiteColor], 
-          UITextAttributeTextShadowColor, 
-          [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+          [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0],
+          UITextAttributeTextColor,
+          [UIColor whiteColor],
+          UITextAttributeTextShadowColor,
+          [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
           UITextAttributeTextShadowOffset,
           nil]];
         
-//        [[UIBarButtonItem appearance] setTintColor:[UIColor colorWithRed:229.0/255.0 green:229.0/255.0 blue:229.0/255.0 alpha:1.0]];
-
+        //        [[UIBarButtonItem appearance] setTintColor:[UIColor colorWithRed:229.0/255.0 green:229.0/255.0 blue:229.0/255.0 alpha:1.0]];
+        
         [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
         [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_active"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
         [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_landscape"] forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
         [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_landscape_active"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
-
+        
         [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"navbar_back_button_bg"] stretchableImageWithLeftCapWidth:14.f topCapHeight:0] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
         [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"navbar_back_button_bg_active"] stretchableImageWithLeftCapWidth:14.f topCapHeight:0] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
         [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"navbar_back_button_bg_landscape"] stretchableImageWithLeftCapWidth:14.f topCapHeight:0] forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
         [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"navbar_back_button_bg_landscape_active"] stretchableImageWithLeftCapWidth:14.f topCapHeight:0] forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
-
+        
         NSDictionary *titleTextAttributesForStateNormal = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                           [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0], 
-                                                           UITextAttributeTextColor, 
+                                                           [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0],
+                                                           UITextAttributeTextColor,
                                                            [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0],
-                                                           UITextAttributeTextShadowColor,  
-                                                           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+                                                           UITextAttributeTextShadowColor,
+                                                           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
                                                            UITextAttributeTextShadowOffset,
                                                            nil];
         
         
         NSDictionary *titleTextAttributesForStateDisabled = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                             [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0], 
-                                                             UITextAttributeTextColor, 
-                                                             //          [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0], 
+                                                             [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0],
+                                                             UITextAttributeTextColor,
+                                                             //          [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0],
                                                              [UIColor UIColorFromHex:0xeeeeee],
-                                                             UITextAttributeTextShadowColor,  
-                                                             [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+                                                             UITextAttributeTextShadowColor,
+                                                             [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
                                                              UITextAttributeTextShadowOffset,
                                                              nil];
         
         NSDictionary *titleTextAttributesForStateHighlighted = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                             [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0],
-                                                             UITextAttributeTextColor,
-                                                             [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0],
-                                                             UITextAttributeTextShadowColor,
-                                                             [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-                                                             UITextAttributeTextShadowOffset,
-                                                             nil]; 
+                                                                [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0],
+                                                                UITextAttributeTextColor,
+                                                                [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0],
+                                                                UITextAttributeTextShadowColor,
+                                                                [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
+                                                                UITextAttributeTextShadowOffset,
+                                                                nil];
         
         
         [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateNormal];
         [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateDisabled forState:UIControlStateDisabled];
         [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateHighlighted forState:UIControlStateHighlighted];
         
-//        [[UISegmentedControl appearance] setTintColor:[UIColor UIColorFromHex:0xeeeeee]];
+        //        [[UISegmentedControl appearance] setTintColor:[UIColor UIColorFromHex:0xeeeeee]];
         [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateNormal];
         [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateDisabled forState:UIControlStateDisabled];
         [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateHighlighted forState:UIControlStateHighlighted];
     }
+}
+
+- (void)customizeForiOS7
+{
+    [[UINavigationBar appearance] setBarTintColor:[UIColor UIColorFromHex:0x2EA2CC]];
+    
+    [[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]}];
+
+    self.window.tintColor = [UIColor whiteColor];
 }
 
 - (void)setAppBadge {
@@ -1223,6 +1242,7 @@
 			case 0: {
 				HelpViewController *helpViewController = [[HelpViewController alloc] init];
                 UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
+                aNavigationController.navigationBar.translucent = NO;
                 if (IS_IPAD) {
                     aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;

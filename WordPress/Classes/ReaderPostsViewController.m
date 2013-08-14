@@ -264,6 +264,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	controller.delegate = self;
 	
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.navigationBar.translucent = NO;
     if (IS_IPAD) {
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -1018,6 +1019,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     WPFriendFinderViewController *controller = [[WPFriendFinderViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
 	
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.navigationBar.translucent = NO;
     if (IS_IPAD) {
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;

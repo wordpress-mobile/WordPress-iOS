@@ -30,6 +30,8 @@
 #import "ReaderPostsViewController.h"
 #import "GeneralWalkthroughViewController.h"
 #import "ViewAdminButton.h"
+#import "NewGeneralWalkthroughViewController.h"
+#import "UIColor+Helpers.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
@@ -101,7 +103,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -115,7 +117,7 @@
     utililtyView.layer.shadowColor = [[UIColor blackColor] CGColor];
     utililtyView.layer.shadowOffset = CGSizeMake(0.0f, 5.0f);
     utililtyView.layer.shadowPath = [[UIBezierPath bezierPathWithRoundedRect:utililtyView.bounds cornerRadius:PANEL_CORNER_RADIUS] CGPath];
-        
+    
     //self.view.backgroundColor = SIDEBAR_BGCOLOR;
 //    self.openSection = nil;
     
@@ -204,7 +206,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated]; 
-
     if (IS_IPHONE && _showingWelcomeScreen) {
         _showingWelcomeScreen = NO;
         static dispatch_once_t sidebarTeaseToken;
@@ -286,6 +287,7 @@
             GeneralWalkthroughViewController *welcomeViewController = [[GeneralWalkthroughViewController alloc] init];
             
             UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:welcomeViewController];
+            aNavigationController.navigationBar.translucent = NO;
             aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 
@@ -388,6 +390,7 @@ NSLog(@"%@", self.sectionInfoArray);
     
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
+    aNavigationController.navigationBar.translucent = NO;
     if (IS_IPAD)
         aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -538,6 +541,7 @@ NSLog(@"%@", self.sectionInfoArray);
 
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:quickPhotoViewController];
+    navController.navigationBar.translucent = NO;
     if (IS_IPAD) {
         navController.modalPresentationStyle = UIModalPresentationFormSheet;
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;

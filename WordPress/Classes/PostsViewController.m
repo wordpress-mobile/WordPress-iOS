@@ -29,7 +29,7 @@
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-
+    
 	// ShouldRefreshPosts
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
@@ -47,6 +47,9 @@
     }
     if ([composeButtonItem respondsToSelector:@selector(setTintColor:)]) {
         composeButtonItem.tintColor = [UIColor UIColorFromHex:0x333333];
+    }
+    if (IS_IOS_7) {
+        composeButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-posts-add"] style:UIBarButtonItemStylePlain target:self action:@selector(showAddPostView)];
     }
     if (!IS_IPAD) {
         self.navigationItem.rightBarButtonItem = composeButtonItem;
@@ -263,6 +266,7 @@
     Post *post = [Post newDraftForBlog:self.blog];
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[post createRevision]];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    navController.navigationBar.translucent = NO;
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
 }
@@ -271,6 +275,7 @@
 - (void)editPost:(AbstractPost *)apost {
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[apost createRevision]];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    navController.navigationBar.translucent = NO;
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
 }

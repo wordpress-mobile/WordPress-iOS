@@ -529,6 +529,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
             } else {
                 navController = [[UINavigationController alloc] initWithRootViewController:segmentedTableViewController];
             }
+            navController.navigationBar.translucent = NO;
  			UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:navController];
             if ([popover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
                 popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
@@ -589,6 +590,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         [segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
  	} else {
 		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
+        nc.navigationBar.translucent = NO;
         [segmentedTableViewController presentViewController:nc animated:YES completion:nil];
 	}
 }

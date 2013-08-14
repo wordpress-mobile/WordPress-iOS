@@ -149,6 +149,7 @@ static NSString *_lastAuthedName = nil;
         controller.isCancellable = YES;
         controller.blog = self.blog;
         navController = [[UINavigationController alloc] initWithRootViewController:controller];
+        navController.navigationBar.translucent = NO;
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         navController.modalPresentationStyle = UIModalPresentationFormSheet;
         [self.panelNavigationController presentViewController:navController animated:YES completion:nil];

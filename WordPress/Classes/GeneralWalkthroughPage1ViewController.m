@@ -73,6 +73,7 @@
     AboutViewController *aboutViewController = [[AboutViewController alloc] init];
 	aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
+    nc.navigationBar.translucent = NO;
     nc.modalPresentationStyle = UIModalPresentationFormSheet;
     [self.navigationController presentViewController:nc animated:YES completion:nil];
 	[self.navigationController setNavigationBarHidden:YES];

@@ -233,6 +233,7 @@
             [self.navigationController pushViewController:webViewController animated:YES];
         } else {
             UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+            navController.navigationBar.translucent = NO;
             navController.modalPresentationStyle = UIModalPresentationPageSheet;
             webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissBrowser)];
             [self presentViewController:navController animated:YES completion:nil];

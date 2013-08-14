@@ -262,6 +262,7 @@
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:replyToCommentViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent = NO;
     [self presentViewController:navController animated:YES completion:nil];
 }
 

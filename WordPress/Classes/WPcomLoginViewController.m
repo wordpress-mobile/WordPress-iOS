@@ -39,6 +39,7 @@
     loginViewController.isCancellable = YES;
     loginViewController.dismissWhenFinished = YES;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    navController.navigationBar.translucent = NO;
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [rootViewController presentViewController:navController animated:YES completion:nil];

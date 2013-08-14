@@ -527,6 +527,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
             helpViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModal:)];
             // Probably should be modal
             UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
+            navController.navigationBar.translucent = NO;
             if (IS_IPAD) {
                 navController.modalPresentationStyle = UIModalPresentationFormSheet;
                 navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -566,6 +567,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                 webViewController.shouldScrollToBottom = YES;
                 // Probably should be modal.
                 UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+                navController.navigationBar.translucent = NO;
                 if (IS_IPAD) {
                     navController.modalPresentationStyle = UIModalPresentationFormSheet;
                     navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -703,6 +705,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 	editSiteViewController.isCancellable = YES;
 	editSiteViewController.delegate = self;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
+    navController.navigationBar.translucent = NO;
 	
 	if(IS_IPAD == YES) {
 		navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;

@@ -654,6 +654,10 @@
 		85325A4A17BB0DF8008E87D1 /* icon-menu-comments.png in Resources */ = {isa = PBXBuildFile; fileRef = 85325A2217BB0DF8008E87D1 /* icon-menu-comments.png */; };
 		85325A4B17BB0DF8008E87D1 /* icon-menu-comments-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85325A2317BB0DF8008E87D1 /* icon-menu-comments-active@2x.png */; };
 		85325A4C17BB0DF8008E87D1 /* icon-menu-comments-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 85325A2417BB0DF8008E87D1 /* icon-menu-comments-active.png */; };
+		85325A5217BB2337008E87D1 /* icon-posts-add.png in Resources */ = {isa = PBXBuildFile; fileRef = 85325A4E17BB2337008E87D1 /* icon-posts-add.png */; };
+		85325A5317BB2337008E87D1 /* icon-drawermenu.png in Resources */ = {isa = PBXBuildFile; fileRef = 85325A4F17BB2337008E87D1 /* icon-drawermenu.png */; };
+		85325A5417BB2337008E87D1 /* icon-posts-add@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85325A5017BB2337008E87D1 /* icon-posts-add@2x.png */; };
+		85325A5517BB2337008E87D1 /* icon-drawermenu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85325A5117BB2337008E87D1 /* icon-drawermenu@2x.png */; };
 		8566BC95170F84BC003C6BCF /* CreateWPComAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8566BC93170F84BC003C6BCF /* CreateWPComAccountViewController.m */; };
 		858DE40F1730384F000AC628 /* GeneralWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 858DE40E1730384F000AC628 /* GeneralWalkthroughViewController.m */; };
 		858DE41217303BB4000AC628 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 858DE41017303BB4000AC628 /* OpenSans-Light.ttf */; };
@@ -1692,6 +1696,10 @@
 		85325A2217BB0DF8008E87D1 /* icon-menu-comments.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-menu-comments.png"; sourceTree = "<group>"; };
 		85325A2317BB0DF8008E87D1 /* icon-menu-comments-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-menu-comments-active@2x.png"; sourceTree = "<group>"; };
 		85325A2417BB0DF8008E87D1 /* icon-menu-comments-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-menu-comments-active.png"; sourceTree = "<group>"; };
+		85325A4E17BB2337008E87D1 /* icon-posts-add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-posts-add.png"; sourceTree = "<group>"; };
+		85325A4F17BB2337008E87D1 /* icon-drawermenu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-drawermenu.png"; sourceTree = "<group>"; };
+		85325A5017BB2337008E87D1 /* icon-posts-add@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-posts-add@2x.png"; sourceTree = "<group>"; };
+		85325A5117BB2337008E87D1 /* icon-drawermenu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-drawermenu@2x.png"; sourceTree = "<group>"; };
 		8566BC92170F84BC003C6BCF /* CreateWPComAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateWPComAccountViewController.h; sourceTree = "<group>"; };
 		8566BC93170F84BC003C6BCF /* CreateWPComAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateWPComAccountViewController.m; sourceTree = "<group>"; };
 		858DE40D1730384F000AC628 /* GeneralWalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralWalkthroughViewController.h; sourceTree = "<group>"; };
@@ -2290,6 +2298,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				85325A4D17BB22F4008E87D1 /* iOS 7 */,
 				853259E417BAC6CE008E87D1 /* New Sidebar */,
 				858DE3FF172F9991000AC628 /* Fonts */,
 				CC098B8116A9EB0400450976 /* HTML */,
@@ -2947,6 +2956,17 @@
 				85325A2417BB0DF8008E87D1 /* icon-menu-comments-active.png */,
 			);
 			name = "New Sidebar";
+			sourceTree = "<group>";
+		};
+		85325A4D17BB22F4008E87D1 /* iOS 7 */ = {
+			isa = PBXGroup;
+			children = (
+				85325A4E17BB2337008E87D1 /* icon-posts-add.png */,
+				85325A4F17BB2337008E87D1 /* icon-drawermenu.png */,
+				85325A5017BB2337008E87D1 /* icon-posts-add@2x.png */,
+				85325A5117BB2337008E87D1 /* icon-drawermenu@2x.png */,
+			);
+			name = "iOS 7";
 			sourceTree = "<group>";
 		};
 		858DE3FF172F9991000AC628 /* Fonts */ = {
@@ -4097,12 +4117,14 @@
 				6E461BB011C0C06100B07942 /* uncheck@2x.png in Resources */,
 				6E61862011C0C465001E755E /* category_child@2x.png in Resources */,
 				6E61862111C0C465001E755E /* down@2x.png in Resources */,
+				85325A5217BB2337008E87D1 /* icon-posts-add.png in Resources */,
 				85325A3B17BB0DF8008E87D1 /* icon-menu-posts-quickphoto@2x.png in Resources */,
 				6E61862211C0C465001E755E /* up@2x.png in Resources */,
 				6E05AEE411EE8C1B00237983 /* Icon-Small-50.png in Resources */,
 				6E05AEE711EE8DDD00237983 /* Icon-Small.png in Resources */,
 				6E05AEF311EE8EF800237983 /* Icon-Small@2x.png in Resources */,
 				8369FF9211F4F3BF003106C7 /* AddUsersBlogsViewController.xib in Resources */,
+				85325A5317BB2337008E87D1 /* icon-drawermenu.png in Resources */,
 				83BC943C11F94AA00041141A /* whitebg.png in Resources */,
 				8370D10C11FA4A1B009D650F /* UITableViewActivityCell.xib in Resources */,
 				8370D11811FA4CCF009D650F /* welcome_bg.png in Resources */,
@@ -4212,6 +4234,7 @@
 				85325A2D17BB0DF8008E87D1 /* icon-menu-stats@2x.png in Resources */,
 				30E5DD59140E7747003FA092 /* toolbarLi@2x.png in Resources */,
 				30E5DD5A140E7747003FA092 /* toolbarOl@2x.png in Resources */,
+				85325A5417BB2337008E87D1 /* icon-posts-add@2x.png in Resources */,
 				30E5DD5B140E7747003FA092 /* toolbarLi.png in Resources */,
 				30E5DD5C140E7747003FA092 /* toolbarOl.png in Resources */,
 				85325A3E17BB0DF8008E87D1 /* icon-menu-posts-add.png in Resources */,
@@ -4438,6 +4461,7 @@
 				5D15F4E115B8C43E001B14EA /* toolbarCodeHighlighted@2x.png in Resources */,
 				5D15F4E215B8C43E001B14EA /* toolbarCodeiPad.png in Resources */,
 				5D15F4E315B8C43E001B14EA /* toolbarCodeiPad@2x.png in Resources */,
+				85325A5517BB2337008E87D1 /* icon-drawermenu@2x.png in Resources */,
 				5D15F4E415B8C43E001B14EA /* toolbarDelHighlighted.png in Resources */,
 				5D15F4E515B8C43E001B14EA /* toolbarDelHighlighted@2x.png in Resources */,
 				5D15F4E615B8C43E001B14EA /* toolbarDeliPad.png in Resources */,

@@ -188,7 +188,8 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     if (IS_IPAD) {
         notificationSettingsViewController.showCloseButton = YES;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:notificationSettingsViewController];
-        
+
+        nav.navigationBar.translucent = NO;
         nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		nav.modalPresentationStyle = UIModalPresentationFormSheet;
       

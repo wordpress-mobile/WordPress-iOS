@@ -433,6 +433,7 @@
     replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:replyToCommentViewController];
+    navController.navigationBar.translucent = NO;
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:navController animated:YES completion:nil];

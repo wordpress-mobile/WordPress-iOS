@@ -35,6 +35,7 @@
 - (void)editPost:(AbstractPost *)apost {
     EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[apost createRevision]];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    navController.navigationBar.translucent = NO;
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
 }
@@ -67,6 +68,7 @@
     Page *post = [Page newDraftForBlog:self.blog];
     EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[post createRevision]];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    navController.navigationBar.translucent = NO;
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
     [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
 }

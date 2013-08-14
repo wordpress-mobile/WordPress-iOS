@@ -280,6 +280,7 @@
     postViewController = [self getPostOrPageController: postRevision];
 
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:postViewController];
+    nav.navigationBar.translucent = NO;
     nav.modalPresentationStyle = UIModalPresentationPageSheet;
     nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     //nav.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
@@ -298,6 +299,7 @@
     PostPreviewViewController *postPreviewViewController = [[PostPreviewViewController alloc] initWithPost:postRevision];
 
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:postPreviewViewController];
+    nav.navigationBar.translucent = NO;
     nav.modalPresentationStyle = UIModalPresentationPageSheet;
     nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     //nav.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];

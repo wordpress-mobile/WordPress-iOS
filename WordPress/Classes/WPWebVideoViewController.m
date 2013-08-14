@@ -26,6 +26,7 @@
 + (id)presentAsModalWithURL:(NSURL *)url {
 	UIViewController *controller = [[self alloc] initWithURL:url];
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.navigationBar.translucent = NO;
 	navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	navController.modalPresentationStyle = UIModalPresentationFullScreen;
 

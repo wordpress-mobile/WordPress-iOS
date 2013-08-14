@@ -30,6 +30,7 @@
 	controller.title = NSLocalizedString(@"My Blogs", @"Title of the list of the user's blogs as shown in the reader.");
 	
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.navigationBar.translucent = NO;
 	navController.modalPresentationStyle = UIModalPresentationFormSheet;
     if (!IS_IPAD) {
         // Avoid a weird issue on the iPad with cross dissolves when the keyboard is visible. 
