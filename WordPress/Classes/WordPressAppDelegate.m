@@ -327,7 +327,7 @@
         }];
     }];
 #endif
-
+    
     return YES;
 }
 
@@ -732,7 +732,7 @@
 #pragma mark Private Methods
 
 - (void)customizeAppearance {
-    if (IS_IOS_7) {
+    if (IS_IOS7) {
         [self customizeForiOS7];
     } else {
         [self customizeForiOS6];
@@ -813,9 +813,10 @@
 - (void)customizeForiOS7
 {
     [[UINavigationBar appearance] setBarTintColor:[UIColor UIColorFromHex:0x2EA2CC]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeFont : [UIFont fontWithName:@"OpenSans-Bold" size:17.0]} ];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [UIFont fontWithName:@"OpenSans" size:17.0]} forState:UIControlStateNormal];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    [[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor]}];
-
     self.window.tintColor = [UIColor whiteColor];
 }
 

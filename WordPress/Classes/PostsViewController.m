@@ -3,6 +3,7 @@
 #import "PostsViewController.h"
 #import "EditPostViewController.h"
 #import "PostTableViewCell.h"
+#import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 
@@ -20,11 +21,10 @@
 - (id)init {
     self = [super init];
     if(self) {
-        self.title = NSLocalizedString(@"Posts", @"");
+        self.title = [NSLocalizedString(@"Posts", @"") uppercaseString];
     }
     return self;
 }
-
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -48,11 +48,17 @@
     if ([composeButtonItem respondsToSelector:@selector(setTintColor:)]) {
         composeButtonItem.tintColor = [UIColor UIColorFromHex:0x333333];
     }
-    if (IS_IOS_7) {
-        composeButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-posts-add"] style:UIBarButtonItemStylePlain target:self action:@selector(showAddPostView)];
+    if (IS_IOS7) {
+        UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+        [button setImage:image forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(showAddPostView) forControlEvents:UIControlEventTouchUpInside];
+        composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     }
     if (!IS_IPAD) {
-        self.navigationItem.rightBarButtonItem = composeButtonItem;
+        UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+        spacerButton.width = -12.0;
+        self.navigationItem.rightBarButtonItems = @[spacerButton, composeButtonItem];
     } else {
         self.toolbarItems = [NSArray arrayWithObject:composeButtonItem];
     }
@@ -71,6 +77,8 @@
     }
     
     self.infiniteScrollEnabled = YES;
+    
+    self.tableView.backgroundColor = [UIColor colorWithRed:238/255.0f green:238/255.0f blue:238/255.0f alpha:1.0f];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -168,14 +176,27 @@
 #pragma mark TableView delegate
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (IS_IOS7) {
+        return nil;
+    }
+    
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     NSString *sectionName = [sectionInfo name];
     
     return [Post titleForRemoteStatus:[sectionName numericValue]];
 }
 
-- (void)configureCell:(PostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    AbstractPost *apost = (AbstractPost*) [self.resultsController objectAtIndexPath:indexPath];
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (IS_IOS7) {
+        return 0.0;
+    } else {
+        return [super tableView:tableView heightForHeaderInSection:section];
+    }
+}
+
+- (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
+    Post *apost = (Post*) [self.resultsController objectAtIndexPath:indexPath];
     cell.post = apost;
 	if (cell.post.remoteStatus == AbstractPostRemoteStatusPushing) {
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -200,7 +221,8 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return POST_ROW_HEIGHT;
+    AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
+    return [NewPostTableViewCell rowHeightForPost:post andWidth:CGRectGetWidth(self.tableView.bounds)];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -379,9 +401,11 @@
     NSString *cellIdentifier = @"PostCell";
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[PostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
-        [cell setBackgroundView:imageView];
+        cell = [[NewPostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        if (!IS_IOS7) {
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
+            [cell setBackgroundView:imageView];
+        }
     }
     return cell;
 }

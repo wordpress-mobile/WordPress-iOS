@@ -644,10 +644,21 @@
             [_menuView addSubview:_dividerImageView];
             [_menuView addSubview:_spacerImageView];
             
-            if (IS_IOS_7) {
-                sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-drawermenu"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleSidebar)];
+            if (IS_IOS7) {
+                UIImage *image = [UIImage imageNamed:@"icon-drawermenu"];
+                UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+                [button setImage:image forState:UIControlStateNormal];
+                [button addTarget:self action:@selector(toggleSidebar) forControlEvents:UIControlEventTouchUpInside];
+                
+                sidebarButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+
+                UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+                spacerButton.width = -12.0;
+                
+                _detailViewController.navigationItem.leftBarButtonItems = @[spacerButton, sidebarButton];
+            } else {
+                _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
             }
-            _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
 
         } else {
             [self addChildViewController:_detailViewController];
