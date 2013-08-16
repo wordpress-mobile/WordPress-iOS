@@ -51,12 +51,21 @@
 }
 
 - (CGRect)originalFrame {
-    CGPoint point = [self.fullView convertPoint:self.fullView.frame.origin fromView:self];
+    CGPoint point = [self.fullView convertPoint:self.bounds.origin fromView:self];
     CGFloat width = CGRectGetWidth(self.frame);
     CGFloat height = CGRectGetHeight(self.frame);
     
-    return CGRectMake(point.x - 20, point.y - 20, width, height);
-
+    if ([[UIApplication sharedApplication] isStatusBarHidden]) {
+        return CGRectMake(point.x, point.y, width, height);
+    }
+    else {
+        if (!UIDeviceOrientationIsLandscape([[UIDevice currentDevice] orientation])) {
+            return CGRectMake(point.x, point.y, width, height);
+        }
+        else {
+            return CGRectMake(point.x, point.y, width, height);
+        }
+    }
 }
 
 - (CGRect)fullFrame {
