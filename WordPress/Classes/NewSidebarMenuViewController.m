@@ -12,7 +12,9 @@
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
 
-@interface NewSidebarMenuViewController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
+@interface NewSidebarMenuViewController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate> {
+    NSInteger _currentlyOpenedSection;
+}
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
@@ -25,7 +27,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        _currentlyOpenedSection = 0;
     }
     return self;
 }
@@ -92,7 +94,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if ([self isLastSection:section])
-        return 30.0;
+        return 0.0;
     else
         return 44.0;
 }
@@ -100,25 +102,53 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if ([self isLastSection:section]) {
-        UIView *spacerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(tableView.frame), 30.0)];
-        spacerView.backgroundColor = [UIColor clearColor];
-        return spacerView;
+        return nil;
     }
     
     SidebarTopLevelView *headerView = [[SidebarTopLevelView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), 44)];
     Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:section];
     headerView.blogTitle = blog.blogName;
     headerView.blavatarUrl = blog.blavatarUrl;
+    headerView.onTap = ^{
+        [self toggleSection:section];
+    };
     return headerView;
+}
+
+- (void)toggleSection:(NSUInteger)section
+{
+    NSUInteger oldSection = _currentlyOpenedSection;
+    if (section == _currentlyOpenedSection) {
+        // Collapse Currently Opened Section
+        _currentlyOpenedSection = -1;
+        [self.tableView beginUpdates];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:oldSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+    } else {
+        // Collapse Old Section and Expand New Section
+        _currentlyOpenedSection = section;
+        [self.tableView beginUpdates];
+        if (oldSection != -1) {
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:oldSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:_currentlyOpenedSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if ([self isLastSection:section])
+    if ([self isLastSection:section]) {
         return 3;
-    else
-        return 5;
+    }
+    else {
+        if (_currentlyOpenedSection == section) {
+            return 5;
+        } else {
+            return 0;
+        }
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -183,7 +213,7 @@
         } else if (row == 2) {
             text = @"Comments";
             image = [UIImage imageNamed:@"icon-menu-comments"];
-            selectedImage = [UIImage imageNamed:@"icon-menu-pages-active"];
+            selectedImage = [UIImage imageNamed:@"icon-menu-comments-active"];
             cell.showsBadge = true;
             cell.badgeNumber = arc4random() % 100;
         } else if (row == 3) {

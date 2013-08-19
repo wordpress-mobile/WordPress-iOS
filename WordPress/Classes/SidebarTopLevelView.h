@@ -14,4 +14,6 @@
 @property (nonatomic, strong) NSString *blavatarUrl;
 @property (nonatomic, assign) BOOL isWPCom;
 
+@property (nonatomic, copy) void(^onTap)(void);
+
 @end
