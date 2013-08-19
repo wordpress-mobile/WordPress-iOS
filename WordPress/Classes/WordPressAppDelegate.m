@@ -812,12 +812,14 @@
 
 - (void)customizeForiOS7
 {
+    self.window.tintColor = [UIColor UIColorFromHex:0x2EA2CC];
+
     [[UINavigationBar appearance] setBarTintColor:[UIColor UIColorFromHex:0x2EA2CC]];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeFont : [UIFont fontWithName:@"OpenSans-Bold" size:17.0]} ];
-    [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [UIFont fontWithName:@"OpenSans" size:17.0]} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [UIFont fontWithName:@"OpenSans" size:17.0], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
+    [[UIToolbar appearance] setBarTintColor:[UIColor UIColorFromHex:0x2EA2CC]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    
-    self.window.tintColor = [UIColor whiteColor];
 }
 
 - (void)setAppBadge {

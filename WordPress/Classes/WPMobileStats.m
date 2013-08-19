@@ -85,6 +85,7 @@ NSString *const StatsPropertyPostDetailClickedEdit = @"clicked_edit";
 NSString *const StatsPropertyPostDetailClickedSettings = @"clicked_settings";
 NSString *const StatsPropertyPostDetailClickedMedia = @"clicked_media";
 NSString *const StatsPropertyPostDetailClickedPreview = @"clicked_preview";
+NSString *const StatsPropertyPostDetailClickedMediaOptions = @"clicked_media_options";
 NSString *const StatsPropertyPostDetailClickedAddVideo = @"clicked_add_video";
 NSString *const StatsPropertyPostDetailClickedAddPhoto = @"clicked_add_photo";
 NSString *const StatsPropertyPostDetailClickedShowCategories = @"clicked_show_categories";

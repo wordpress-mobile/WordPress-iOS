@@ -14,6 +14,7 @@
 
 #define TAG_ACTIONSHEET_PHOTO 1
 #define TAG_ACTIONSHEET_VIDEO 2
+#define TAG_ACTIONSHEET_PHOTO_SELECTION_PROMPT 3
 #define NUMBERS	@"0123456789"
 
 
@@ -66,14 +67,49 @@
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
+    
+    if (IS_IOS7) {
+        self.table.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 10)];
+    }
+    
+    self.title = NSLocalizedString(@"Media", nil);
 	
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
 		
 	[self initObjects];
 	self.videoEnabled = YES;
     [self checkVideoPressEnabled];
+    
+    if (IS_IOS7) {
+        [self customizeForiOS7];
+    }
 	
-    [self addNotifications];
+    [self addNotifications];    
+}
+
+- (void)customizeForiOS7
+{
+    UIBarButtonItem *addPhoto = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(tappedAddButton)];
+    self.navigationItem.rightBarButtonItem = addPhoto;
+}
+
+- (void)tappedAddButton
+{
+    UIActionSheet *addMediaActionSheet;
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        if ([self isDeviceSupportVideoAndVideoPressEnabled]) {
+            addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), NSLocalizedString(@"Take Photo", nil), NSLocalizedString(@"Add Video from Library", @""), NSLocalizedString(@"Record Video", @""),nil];
+            
+        } else {
+            addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), NSLocalizedString(@"Take Photo", nil), nil];
+        }
+    } else {
+        addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), nil];
+    }
+    
+    addMediaActionSheet.tag = TAG_ACTIONSHEET_PHOTO_SELECTION_PROMPT;
+    [addMediaActionSheet showInView:self.view];
 }
 
 
@@ -250,8 +286,9 @@
 			
             [self presentViewController:mediaView animated:YES completion:nil];
 		}
-        else
+        else {
             [self.postDetailViewController.navigationController pushViewController:mediaView animated:YES];
+        }
     }
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -375,7 +412,11 @@
             [actionSheet showFromBarButtonItem:postDetailViewController.photoButton animated:YES];
         }
     } else {
-        [actionSheet showInView:postDetailViewController.view];
+        if (IS_IOS7) {
+            [actionSheet showInView:self.view];
+        } else {
+            [actionSheet showInView:postDetailViewController.view];
+        }
     }
     
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -402,6 +443,11 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
 
+    if (actionSheet.tag == TAG_ACTIONSHEET_PHOTO_SELECTION_PROMPT) {
+        [self processPhotoPickerActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
+        return;
+    }
+    
 	if(isShowingMediaPickerActionSheet == YES) {
 		switch (actionSheet.numberOfButtons) {
 			case 2:
@@ -487,6 +533,25 @@
     [appDelegate setAlertRunning:NO];
     
     self.currentActionSheet = nil;
+}
+
+- (void)processPhotoPickerActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    UIActionSheet *savedCurrentActionSheet = currentActionSheet;
+    currentActionSheet = nil;
+    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Photo From Library", nil)]) {
+        [self pickPhotoFromPhotoLibrary:nil];
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
+        [self pickPhotoFromCamera:nil];
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Video from Library", nil)]) {
+        actionSheet.tag = TAG_ACTIONSHEET_VIDEO;
+        [self pickPhotoFromPhotoLibrary:actionSheet];
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Record Video", nil)]) {
+        [self pickVideoFromCamera:actionSheet];
+    } else {
+        //
+        currentActionSheet = savedCurrentActionSheet;
+    }
 }
 
 #pragma mark -
@@ -747,7 +812,11 @@
 												   otherButtonTitles: originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 		}
 		
-        [resizeActionSheet showInView:postDetailViewController.view];
+        if (IS_IOS7) {
+            [resizeActionSheet showInView:self.view];
+        } else {
+            [resizeActionSheet showInView:postDetailViewController.view];
+        }
 	}
 }
 
@@ -796,7 +865,6 @@
                                                 delegate:self
                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                        otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-
     labelWidth = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 50.0, 125.0, 25.0)];
     labelWidth.backgroundColor = [UIColor clearColor];
     labelWidth.textColor = [UIColor whiteColor];
@@ -809,7 +877,7 @@
     [textWidth setKeyboardType:UIKeyboardTypeNumberPad];
     [textWidth setDelegate:self];
     [textWidth setTag:123];
-
+    
     // Check for previous width setting
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil)
         [textWidth setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"]];
@@ -988,15 +1056,11 @@
 		NSNumber *resizePreference = [NSNumber numberWithInt:-1];
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
 			resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
-		
+		BOOL showResizeActionSheet;
 		switch ([resizePreference intValue]) {
 			case 0:
             {
-                // Dispatch async to detal with a rare bug presenting the actionsheet after a memory warning when the
-                // view has been recreated.
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self showResizeActionSheet];
-                });
+                showResizeActionSheet = true;
 				break;
             }
 			case 1:
@@ -1022,17 +1086,17 @@
             }
 			default:
             {
-                // Dispatch async to detal with a rare bug presenting the actionsheet after a memory warning when the
-                // view has been recreated.
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self showResizeActionSheet];
-                });
+                showResizeActionSheet = true;
 				break;
             }
 		}
 		
 		if(!IS_IPAD) {
-            [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
+            [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:^{
+                if (showResizeActionSheet) {
+                    [self showResizeActionSheet];
+                }
+            }];
 		}
 	}
 	
@@ -1112,7 +1176,7 @@
 	
 	[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];
 	NSString *tempVideoPath = [(NSURL *)[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
-	tempVideoPath = [tempVideoPath substringFromIndex:16];
+    tempVideoPath = [self videoPathFromVideoUrl:tempVideoPath];
 	if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(tempVideoPath)) {
 		UISaveVideoAtPathToSavedPhotosAlbum(tempVideoPath, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
 	}
@@ -1132,9 +1196,7 @@
 		
 		[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];
 		
-		// Determine the video's library path
-		NSString *videoPath = [[videoURL absoluteString] substringFromIndex:16];
-		[self useVideo:videoPath];
+		[self useVideo:[self videoPathFromVideoUrl:[videoURL absoluteString]]];
 		self.currentVideo = nil;
 		self.isLibraryMedia = NO;
 	}
@@ -1367,16 +1429,21 @@
         }
         [imageMedia save];
     } failure:^(NSError *error) {
+        if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+            return;
+        }
+
         [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
     }];
 	
 	isAddingMedia = NO;
 	
-	if (isPickingFeaturedImage)
-        [postDetailViewController switchToSettings];
-    else
-        [postDetailViewController switchToMedia];
-	
+    if (!IS_IOS7) {
+        if (isPickingFeaturedImage)
+            [postDetailViewController switchToSettings];
+        else
+            [postDetailViewController switchToMedia];
+    }
 }
 
 - (void)useVideo:(NSString *)videoURL {
@@ -1460,8 +1527,10 @@
         }];
 		isAddingMedia = NO;
 		
-		//switch to the attachment view if we're not already there 
-		[postDetailViewController switchToMedia];
+        if (!IS_IOS7) {
+            //switch to the attachment view if we're not already there
+            [postDetailViewController switchToMedia];            
+        }
 	}
 	else {
         if (currentAlert == nil) {
@@ -1585,6 +1654,26 @@
         [self configureCell:cell atIndexPath:indexPath];
     }
 
+}
+
+- (NSString *)videoPathFromVideoUrl:(NSString *)videoUrl
+{
+    // Determine the video's library path.
+    // In iOS 6 this returns as file://localhost/private/var/mobile/Applications/73DCDAD0-397C-404D-9456-4C5A360ABE0D/tmp//trim.lmhYmN.MOV
+    // In iOS 7 this returns as file:///private/var/mobile/Applications/9946F4C5-5B16-4EA5-850C-DDA701A47E61/tmp/trim.4F72621B-04AE-47F2-A551-068F62E8D16F.MOV
+
+    NSError *error;
+    NSRegularExpression *regEx = [NSRegularExpression regularExpressionWithPattern:@"(/var.*$)" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSString *videoPath = videoUrl;
+    NSArray *matches = [regEx matchesInString:videoUrl options:0 range:NSMakeRange(0, [videoUrl length])];
+    for (NSTextCheckingResult *result in matches) {
+        if ([result numberOfRanges] < 2)
+            continue;
+        NSRange videoUrlRange = [result rangeAtIndex:1];
+        videoPath = [videoUrl substringWithRange:videoUrlRange];
+    }
+    
+    return videoPath;
 }
 
 

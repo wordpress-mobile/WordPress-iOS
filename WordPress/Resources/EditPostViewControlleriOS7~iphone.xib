@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4488.2" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+    <dependencies>
+        <deployment version="1280" defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3715.3"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditPostViewController">
+            <connections>
+                <outlet property="contentView" destination="348" id="349"/>
+                <outlet property="createCategoryBarButtonItem" destination="372" id="380"/>
+                <outlet property="editView" destination="297" id="350"/>
+                <outlet property="photoButton" destination="296" id="307"/>
+                <outlet property="previewButton" destination="366" id="368"/>
+                <outlet property="settingsButton" destination="351" id="355"/>
+                <outlet property="textView" destination="323" id="331"/>
+                <outlet property="textViewPlaceHolderField" destination="327" id="332"/>
+                <outlet property="titleTextField" destination="322" id="334"/>
+                <outlet property="toolbar" destination="289" id="333"/>
+                <outlet property="view" destination="191" id="284"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="191">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" id="348">
+                    <rect key="frame" x="-20" y="-20" width="340" height="500"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" id="297">
+                            <rect key="frame" x="20" y="20" width="320" height="436"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="" minimumFontSize="16" id="322" userLabel="titleTextField">
+                                    <rect key="frame" x="16" y="0.0" width="288" height="43"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="17"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="EditorTitleField"/>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="356"/>
+                                    </connections>
+                                </textField>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="table_sep.png" id="326" userLabel="separator">
+                                    <rect key="frame" x="0.0" y="42" width="320" height="1"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                </imageView>
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="323">
+                                    <rect key="frame" x="0.0" y="43" width="320" height="393"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <inset key="contentInset" minX="0.0" minY="2" maxX="0.0" maxY="0.0"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="359"/>
+                                    </connections>
+                                </textView>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="top" placeholder="Tap here to begin writing." minimumFontSize="17" id="327" userLabel="placeholderTextField">
+                                    <rect key="frame" x="7" y="136" width="310" height="31"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                    <connections>
+                                        <action selector="touchTextView:" destination="-1" eventType="touchUpInside" id="375"/>
+                                        <outlet property="delegate" destination="-1" id="360"/>
+                                    </connections>
+                                </textField>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                </view>
+                <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" id="289">
+                    <rect key="frame" x="0.0" y="436" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <items>
+                        <barButtonItem image="settings.png" width="32" style="plain" id="351">
+                            <connections>
+                                <action selector="showSettings:" destination="-1" id="Ec7-p4-sa7"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem image="preview.png" style="plain" id="366">
+                            <connections>
+                                <action selector="showPreview:" destination="-1" id="Fap-3e-Gm3"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="293"/>
+                        <barButtonItem tag="1" image="photos.png" width="32" style="plain" id="296">
+                            <connections>
+                                <action selector="showMediaOptions:" destination="-1" id="1rh-lf-Dcr"/>
+                            </connections>
+                        </barButtonItem>
+                    </items>
+                </toolbar>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+        </view>
+        <barButtonItem systemItem="add" id="372" userLabel="Add cat btn">
+            <connections>
+                <action selector="showAddNewCategoryView:" destination="-1" id="373"/>
+            </connections>
+        </barButtonItem>
+    </objects>
+    <resources>
+        <image name="photos.png" width="24" height="18"/>
+        <image name="preview.png" width="28" height="20"/>
+        <image name="settings.png" width="26" height="26"/>
+        <image name="table_sep.png" width="320" height="1"/>
+    </resources>
+</document>

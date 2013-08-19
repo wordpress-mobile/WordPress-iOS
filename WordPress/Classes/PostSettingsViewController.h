@@ -13,16 +13,20 @@
 @class EditPostViewController;
 @interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, UIActionSheetDelegate> {
     IBOutlet UITableView *tableView;
+    IBOutlet UITableViewCell *categoriesTableViewCell;
+    IBOutlet UITableViewCell *tagsTableViewCell;
     IBOutlet UITableViewCell *statusTableViewCell;
     IBOutlet UITableViewCell *visibilityTableViewCell;
     IBOutlet UITableViewCell *publishOnTableViewCell;
     IBOutlet UITableViewCell *postFormatTableViewCell;
+    IBOutlet UILabel *categoriesLabel;
     IBOutlet UILabel *statusLabel;
     IBOutlet UILabel *visibilityLabel;
     IBOutlet UILabel *postFormatLabel;
     IBOutlet UITextField *passwordTextField;
     IBOutlet UILabel *publishOnLabel;
     IBOutlet UILabel *publishOnDateLabel;
+    IBOutlet UITextField *tagsTextField;
     EditPostViewController *__weak postDetailViewController;
     NSArray *statusList;
     NSArray *visibilityList;
@@ -45,7 +49,7 @@
 	PostAnnotation *annotation;
 	NSString *address;
 	BOOL isUpdatingLocation, isUploadingFeaturedImage;
-    IBOutlet UILabel *visibilityTitleLabel, *statusTitleLabel, *postFormatTitleLabel, *featuredImageLabel;
+    IBOutlet UILabel *visibilityTitleLabel, *statusTitleLabel, *postFormatTitleLabel, *featuredImageLabel, *categoriesTitleLabel, *tagsTitleLabel;
     IBOutlet UIImageView *featuredImageView;
     IBOutlet UITableViewCell *featuredImageTableViewCell;
     IBOutlet UIActivityIndicatorView *featuredImageSpinner;

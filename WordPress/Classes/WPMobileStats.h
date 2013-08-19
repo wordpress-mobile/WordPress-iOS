@@ -81,6 +81,7 @@ extern NSString *const StatsPropertyPostDetailClickedEdit;
 extern NSString *const StatsPropertyPostDetailClickedSettings;
 extern NSString *const StatsPropertyPostDetailClickedMedia;
 extern NSString *const StatsPropertyPostDetailClickedPreview;
+extern NSString *const StatsPropertyPostDetailClickedMediaOptions;
 extern NSString *const StatsPropertyPostDetailClickedAddVideo;
 extern NSString *const StatsPropertyPostDetailClickedAddPhoto;
 extern NSString *const StatsPropertyPostDetailClickedShowCategories;

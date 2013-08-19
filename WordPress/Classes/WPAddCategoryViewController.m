@@ -13,7 +13,11 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[super viewDidLoad];
     catTableView.sectionFooterHeight = 0.0;
-    saveButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:UIBarButtonItemStyleDone target:self action:@selector(saveAddCategory:)];
+    if (IS_IOS7) {
+        saveButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:UIBarButtonItemStylePlain target:self action:@selector(saveAddCategory:)];
+    } else {
+        saveButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:UIBarButtonItemStyleDone target:self action:@selector(saveAddCategory:)];
+    }
 
     newCatNameField.font = [UIFont fontWithName:@"Helvetica" size:17];
     parentCatNameField.font = [UIFont fontWithName:@"Helvetica" size:17];

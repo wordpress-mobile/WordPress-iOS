@@ -4,6 +4,11 @@
 #import "WPPopoverBackgroundView.h"
 #import "NSString+Helpers.h"
 #import "EditPostViewController_Internal.h"
+#import "PostSettingsSelectionViewController.h"
+#import "NSString+XMLExtensions.h"
+#import <ImageIO/ImageIO.h>
+#import "WPSegmentedSelectionTableViewController.h"
+#import "WPAddCategoryViewController.h"
 #import "Post.h"
 
 #define kPasswordFooterSectionHeight         68.0f
@@ -12,9 +17,18 @@
 #define TAG_PICKER_VISIBILITY   1
 #define TAG_PICKER_DATE         2
 #define TAG_PICKER_FORMAT       3
+#define TAG_ACTIONSHEET_PHOTO 10
+#define TAG_ACTIONSHEET_RESIZE_PHOTO 20
 
-@interface PostSettingsViewController () {
+@interface PostSettingsViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate, UIPopoverControllerDelegate>  {
     BOOL triedAuthOnce;
+    BOOL _isNewCategory;
+    NSDictionary *_currentImageMetadata;
+    BOOL _isShowingResizeActionSheet;
+    BOOL _isShowingCustomSizeAlert;
+    UIImage *_currentImage;
+    UIAlertView *_customSizeAlert;
+    WPSegmentedSelectionTableViewController *_segmentedTableViewController;
 }
 
 @property (nonatomic, strong) AbstractPost *apost;
@@ -61,6 +75,8 @@
 }
 
 - (void)viewDidLoad {
+    self.title = NSLocalizedString(@"Settings", @"Post Settings");
+
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -68,6 +84,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showFeaturedImageUploader:) name:@"UploadingFeaturedImage" object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadSucceeded:) name:FeaturedImageUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(featuredImageUploadFailed:) name:FeaturedImageUploadFailed object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newCategoryCreatedNotificationReceived:) name:WPNewCategoryCreatedAndUpdatedInBlogNotificationName object:nil];
     
     [tableView setBackgroundView:nil];
     [tableView setBackgroundColor:[UIColor clearColor]]; //Fix for black corners on iOS4. http://stackoverflow.com/questions/1557856/black-corners-on-uitableview-group-style
@@ -154,6 +171,11 @@
             }];
         }
     }
+    
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissTagsKeyboardIfAppropriate:)];
+    gestureRecognizer.cancelsTouchesInView = NO;
+    gestureRecognizer.numberOfTapsRequired = 1;
+    [tableView addGestureRecognizer:gestureRecognizer];
 }
 
 - (void)viewDidUnload {
@@ -312,12 +334,21 @@
     return YES;
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField == tagsTextField) {
+        self.post.tags = [tagsTextField.text stringByReplacingCharactersInRange:range withString:string];
+    }
+    
+    return YES;
+}
+
+
 
 #pragma mark -
 #pragma mark TableView Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    NSInteger sections = 1; // Always have the status section
+    NSInteger sections = 2; // Always have the status section and meta data section
 	if (self.post) {
         sections += 1; // Post formats
         if (blogSupportsFeaturedImage)
@@ -330,16 +361,18 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (section == 0) {
-		return 3;
+    if (section == 0) {
+        return 2;
     } else if (section == 1) {
+		return 3;
+    } else if (section == 2) {
         return 1;
-    } else if (section == 2 && blogSupportsFeaturedImage) {
+    } else if (section == 3 && blogSupportsFeaturedImage) {
         if (self.post.post_thumbnail && !isUploadingFeaturedImage)
             return 2;
         else
             return 1;
-	} else if ((section == 2 && !blogSupportsFeaturedImage) || section == 3) {
+	} else if ((section == 3 && !blogSupportsFeaturedImage) || section == 4) {
 		if (self.post.geolocation)
 			return 3; // Add/Update | Map | Remove
 		else
@@ -350,16 +383,19 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (section == 0)
+	if (section == 0) {
+        return NSLocalizedString(@"Post Metadata", nil);
+    } else if (section == 0) {
 		return NSLocalizedString(@"Publish", @"The grandiose Publish button in the Post Editor! Should use the same translation as core WP.");
-	else if (section == 1)
+    } else if (section == 1) {
 		return NSLocalizedString(@"Post Format", @"For setting the format of a post.");
-    else if ((section == 2 && blogSupportsFeaturedImage))
+    } else if ((section == 2 && blogSupportsFeaturedImage)) {
 		return NSLocalizedString(@"Featured Image", @"Label for the Featured Image area in post settings.");
-	else if ((section == 2 && !blogSupportsFeaturedImage) || section == 3)
+    } else if ((section == 2 && !blogSupportsFeaturedImage) || section == 3) {
 		return NSLocalizedString(@"Geolocation", @"Label for the geolocation feature (tagging posts by their physical location).");
-	else
+    } else {
 		return nil;
+    }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -368,7 +404,21 @@
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
-	case 0:
+    case 0:
+            switch (indexPath.row) {
+                case 0:
+                    categoriesTitleLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
+                    categoriesLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
+                    return categoriesTableViewCell;
+                    break;
+                case 1:
+                    tagsTitleLabel.text = NSLocalizedString(@"Tags:", @"Label for the tags field. Should be the same as WP core.");
+                    tagsTextField.placeholder = NSLocalizedString(@"Separate tags with commas", @"Placeholder text for the tags field. Should be the same as WP core.");
+                    tagsTextField.text = self.post.tags;
+                    return tagsTableViewCell;
+                    break;
+            }
+	case 1:
 		switch (indexPath.row) {
 			case 0:
 				if (([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)
@@ -388,12 +438,9 @@
 				if (self.apost.password) {
 					passwordTextField.text = self.apost.password;
 					passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-					visibilityLabel.text = NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP.");
-				} else if ([self.apost.status isEqualToString:@"private"]) {
-					visibilityLabel.text = NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.");
-				} else {
-					visibilityLabel.text = NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.");
 				}
+            
+                visibilityLabel.text = [self titleForVisibility];
 				
 				return visibilityTableViewCell;
 				break;
@@ -430,14 +477,14 @@
 				break;
 		}
 		break;
-    case 1: // Post format
+    case 2: // Post format
         {
             if ([formatsList count] != 0) {
                 postFormatLabel.text = self.post.postFormatText;
             }
             return postFormatTableViewCell;
         }
-	case 2: 
+	case 3:
         if (blogSupportsFeaturedImage) {
             if (!self.post.post_thumbnail && !isUploadingFeaturedImage) {
                 UITableViewActivityCell *activityCell = (UITableViewActivityCell *)[tableView dequeueReusableCellWithIdentifier:@"CustomCell"];
@@ -494,7 +541,7 @@
             return [self getGeolactionCellWithIndexPath: indexPath];
         }
         break;
-    case 3:
+    case 4:
         return [self getGeolactionCellWithIndexPath: indexPath];
         break;
 	}
@@ -619,12 +666,12 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ((indexPath.section == 0) && (indexPath.row == 1) && (self.apost.password))
+    if ((indexPath.section == 1) && (indexPath.row == 1) && (self.apost.password))
         return 88.f;
     else if (
-             (!blogSupportsFeaturedImage && (indexPath.section == 2) && (indexPath.row == 1))
-             || (blogSupportsFeaturedImage && (self.post.post_thumbnail || isUploadingFeaturedImage) && indexPath.section == 2 && indexPath.row == 0)
-             || (blogSupportsFeaturedImage && (indexPath.section == 3) && (indexPath.row == 1))
+             (!blogSupportsFeaturedImage && (indexPath.section == 3) && (indexPath.row == 1))
+             || (blogSupportsFeaturedImage && (self.post.post_thumbnail || isUploadingFeaturedImage) && indexPath.section == 3 && indexPath.row == 0)
+             || (blogSupportsFeaturedImage && (indexPath.section == 4) && (indexPath.row == 1))
              )
 		return 188.0f;
 	else
@@ -634,7 +681,15 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
-		case 0:
+        case 0:
+            switch (indexPath.row) {
+                case 0:
+                    [self showCategoriesSelectionView:[tableView cellForRowAtIndexPath:indexPath].frame];
+                case 1:
+                    break;
+            }
+            break;
+		case 1:
 			switch (indexPath.row) {
 				case 0:
 				{
@@ -642,28 +697,65 @@
 						break;
                     
                     [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedStatus forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+
+                    NSMutableArray *titles = [NSMutableArray arrayWithArray:[self.apost availableStatuses]];
+                    [titles removeObject:NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
                     
-					pickerView.tag = TAG_PICKER_STATUS;
-					[pickerView reloadAllComponents];
-                    NSInteger selectedRowIndex = [statusList indexOfObject:self.apost.statusTitle];
-                    if (selectedRowIndex != NSNotFound) {
-                        [pickerView selectRow:selectedRowIndex inComponent:0 animated:NO];
-                    }
-					[self showPicker:pickerView];
-					break;
+                    NSDictionary *statusDict = @{
+                                                    @"DefaultValue": NSLocalizedString(@"Published", @""),
+                                                    @"Title" : NSLocalizedString(@"Status", nil),
+                                                    @"Titles" : titles,
+                                                    @"Values" : titles,
+                                                    @"CurrentValue" : self.apost.statusTitle
+                                                    };
+                    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:statusDict];
+                    __weak PostSettingsSelectionViewController *weakVc = vc;
+                    vc.onItemSelected = ^(NSString *status) {
+                        [weakVc dismiss];
+                        self.apost.status = status;
+                        [tableView reloadData];
+                    };
+                    [self.navigationController pushViewController:vc animated:YES];
+                    break;
 				}
 				case 1:
 				{
                     [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedVisibility forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-
-					pickerView.tag = TAG_PICKER_VISIBILITY;
-					[pickerView reloadAllComponents];
-                    NSInteger selectedRowIndex = [visibilityList indexOfObject:visibilityLabel.text];
-                    if (selectedRowIndex != NSNotFound) {
-                        [pickerView selectRow:selectedRowIndex inComponent:0 animated:NO];
-                    }
-					[self showPicker:pickerView];
-					break;
+                    
+                    NSArray *titles = @[
+                                        NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
+                                        NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
+                                        NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")
+                                        ];
+                    NSDictionary *visiblityDict = @{
+                                                    @"DefaultValue": NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
+                                                    @"Title" : NSLocalizedString(@"Visiblity", nil),
+                                                    @"Titles" : titles,
+                                                    @"Values" : titles,
+                                                    @"CurrentValue" : [self titleForVisibility]};
+                    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:visiblityDict];
+                    __weak PostSettingsSelectionViewController *weakVc = vc;
+                    vc.onItemSelected = ^(NSString *visibility) {
+                        [weakVc dismiss];
+                        
+                        if ([visibility isEqualToString:NSLocalizedString(@"Private", @"Post privacy status in the Post Editor/Settings area (compare with WP core translations).")]) {
+                            self.apost.status = @"private";
+                            self.apost.password = nil;
+                        } else {
+                            if ([self.apost.status isEqualToString:@"private"]) {
+                                self.apost.status = @"publish";
+                            }
+                            if ([visibility isEqualToString:NSLocalizedString(@"Password protected", @"Post password protection in the Post Editor/Settings area (compare with WP core translations).")]) {
+                                self.apost.password = @"";
+                            } else {
+                                self.apost.password = nil;
+                            }
+                        }
+                        
+                        [tableView reloadData];
+                    };
+                    [self.navigationController pushViewController:vc animated:YES];
+                    break;
 				}
 				case 2:
                     [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedScheduleFor forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
@@ -680,44 +772,56 @@
 					break;
 			}
 			break;
-        case 1:
+        case 2:
         {
             if( [formatsList count] == 0 ) break;
             
             [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedPostFormat forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-
-            pickerView.tag = TAG_PICKER_FORMAT;
-            [pickerView reloadAllComponents];
-            if ([formatsList count] != 0 && ([formatsList indexOfObject:self.post.postFormatText] != NSNotFound)) {
-                NSInteger selectedRowIndex = [formatsList indexOfObject:self.post.postFormatText];
-                if (selectedRowIndex != NSNotFound) {
-                    [pickerView selectRow:selectedRowIndex inComponent:0 animated:NO];
-                }
-            }
-            [self showPicker:pickerView];
+            
+            NSArray *titles = self.post.blog.sortedPostFormatNames;
+            NSDictionary *postFormatsDict = @{
+                                            @"DefaultValue": NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
+                                            @"Title" : NSLocalizedString(@"Visiblity", nil),
+                                            @"Titles" : titles,
+                                            @"Values" : titles,
+                                            @"CurrentValue" : self.post.postFormatText
+                                            };
+            
+            PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
+            __weak PostSettingsSelectionViewController *weakVc = vc;
+            vc.onItemSelected = ^(NSString *status) {
+                [weakVc dismiss];
+                self.post.postFormatText = status;
+                [tableView reloadData];
+            };
+            [self.navigationController pushViewController:vc animated:YES];
             break;
         }
-		case 2:
+		case 3:
             if (blogSupportsFeaturedImage) {
                 UITableViewCell *cell = [aTableView cellForRowAtIndexPath:indexPath];
                 switch (indexPath.row) {
                     case 0:
                         if (!self.post.post_thumbnail) {
                             [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedSetFeaturedImage]];
-                            [self.postDetailViewController.postMediaViewController showPhotoPickerActionSheet:cell fromRect:cell.frame isFeaturedImage:YES];
+                            if (IS_IOS7) {
+                                [self showPhotoPickerForRect:cell.frame];
+                            } else {
+                                [self.postDetailViewController.postMediaViewController showPhotoPickerActionSheet:cell fromRect:cell.frame isFeaturedImage:YES];                                
+                            }
                         }
                         break;
                     case 1:
                         [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedRemoveFeaturedImage]];
                         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Remove this Featured Image?", @"Prompt when removing a featured image from a post") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", "Cancel a prompt") destructiveButtonTitle:NSLocalizedString(@"Remove", @"Remove an image/posts/etc") otherButtonTitles:nil];
-                        [actionSheet showFromRect:cell.frame inView:postDetailViewController.view animated:YES];
+                        [actionSheet showFromRect:cell.frame inView:self.view animated:YES];
                         break;
                 }
             } else {
                 [self geolocationCellTapped:indexPath];
             }
             break;
-          case 3:
+          case 4:
             [self geolocationCellTapped:indexPath];
             break;
 	}
@@ -824,15 +928,134 @@
 
 #pragma mark -
 #pragma mark UIActionSheetDelegate
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        [featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleBlue];
-        self.post.post_thumbnail = nil;
-        [postDetailViewController refreshButtons];
-        [tableView reloadData];
+- (void)actionSheet:(UIActionSheet *)acSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (acSheet.tag == TAG_ACTIONSHEET_PHOTO) {
+        [self processPhotoTypeActionSheet:actionSheet thatDismissedWithButtonIndex:buttonIndex];
+    } else if (acSheet.tag == TAG_ACTIONSHEET_RESIZE_PHOTO) {
+        [self processPhotoResizeActionSheet:acSheet thatDismissedWithButtonIndex:buttonIndex];
+    } else {
+        if (buttonIndex == 0) {
+            [featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleBlue];
+            self.post.post_thumbnail = nil;
+            [postDetailViewController refreshButtons];
+            [tableView reloadData];
+        }
+    }
+}
+
+- (void)processPhotoTypeActionSheet:(UIActionSheet *)actionSheet thatDismissedWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        [self pickPhotoFromLibrary];
+    }
+}
+
+- (void)processPhotoResizeActionSheet:(UIActionSheet *)acSheet thatDismissedWithButtonIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0:
+            if (acSheet.numberOfButtons == 2)
+                [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+            else
+                [self useImage:[self resizeImage:_currentImage toSize:kResizeSmall]];
+            break;
+        case 1:
+            if (acSheet.numberOfButtons == 2)
+                [self showCustomSizeAlert];
+            else if (acSheet.numberOfButtons == 3)
+                [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+            else
+                [self useImage:[self resizeImage:_currentImage toSize:kResizeMedium]];
+            break;
+        case 2:
+            if (acSheet.numberOfButtons == 3)
+                [self showCustomSizeAlert];
+            else if (acSheet.numberOfButtons == 4)
+                [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+            else
+                [self useImage:[self resizeImage:_currentImage toSize:kResizeLarge]];
+            break;
+        case 3:
+            if (acSheet.numberOfButtons == 4)
+                [self showCustomSizeAlert];
+            else
+                [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+            break;
+        case 4:
+            [self showCustomSizeAlert];
+            break;
     }
     
+    _isShowingResizeActionSheet = NO;
 }
+
+
+- (void)showCustomSizeAlert {
+	if(_isShowingCustomSizeAlert || _customSizeAlert != nil)
+        return;
+    
+    _isShowingCustomSizeAlert = YES;
+    
+    UITextField *textWidth, *textHeight;
+    UILabel *labelWidth, *labelHeight;
+    
+    NSString *lineBreaks;
+    
+    if (IS_IPAD)
+        lineBreaks = @"\n\n\n\n";
+    else
+        lineBreaks = @"\n\n\n";
+    
+    
+    _customSizeAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Custom Size", @"")
+                                                 message:lineBreaks // IMPORTANT
+                                                delegate:self
+                                       cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                       otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
+    
+    labelWidth = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 50.0, 125.0, 25.0)];
+    labelWidth.backgroundColor = [UIColor clearColor];
+    labelWidth.textColor = [UIColor whiteColor];
+    labelWidth.text = NSLocalizedString(@"Width", @"");
+    [_customSizeAlert addSubview:labelWidth];
+    
+    textWidth = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 80.0, 125.0, 25.0)];
+    [textWidth setBackgroundColor:[UIColor whiteColor]];
+    [textWidth setPlaceholder:NSLocalizedString(@"Width", @"")];
+    [textWidth setKeyboardType:UIKeyboardTypeNumberPad];
+    [textWidth setDelegate:self];
+    [textWidth setTag:123];
+    
+    // Check for previous width setting
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil)
+        [textWidth setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"]];
+    else
+        [textWidth setText:[NSString stringWithFormat:@"%d", (int)_currentImage.size.width]];
+    
+    [_customSizeAlert addSubview:textWidth];
+    
+    labelHeight = [[UILabel alloc] initWithFrame:CGRectMake(145.0, 650.0, 125.0, 25.0)];
+    labelHeight.backgroundColor = [UIColor clearColor];
+    labelHeight.textColor = [UIColor whiteColor];
+    labelHeight.text = NSLocalizedString(@"Height", @"");
+    [_customSizeAlert addSubview:labelHeight];
+    
+    textHeight = [[UITextField alloc] initWithFrame:CGRectMake(145.0, 80.0, 125.0, 25.0)];
+    [textHeight setBackgroundColor:[UIColor whiteColor]];
+    [textHeight setPlaceholder:NSLocalizedString(@"Height", @"")];
+    [textHeight setDelegate:self];
+    [textHeight setKeyboardType:UIKeyboardTypeNumberPad];
+    [textHeight setTag:456];
+    
+    // Check for previous height setting
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil)
+        [textHeight setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"]];
+    else
+        [textHeight setText:[NSString stringWithFormat:@"%d", (int)_currentImage.size.height]];
+    
+    [_customSizeAlert addSubview:textHeight];
+    [_customSizeAlert show];
+    [textWidth becomeFirstResponder];
+}
+
 
 #pragma mark -
 #pragma mark UIPickerViewDataSource
@@ -972,7 +1195,7 @@
         [actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)];
         
         [actionSheet addSubview:pickerWrapperView];
-
+        
         UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")]];
         closeButton.momentary = YES;
         CGFloat x = self.view.frame.size.width - 60.0f;
@@ -1022,7 +1245,11 @@
             }
         }
         
-        [actionSheet showInView:postDetailViewController.view];
+        if (IS_IOS7) {
+            [actionSheet showInView:self.view];
+        } else {
+            [actionSheet showInView:postDetailViewController.view];
+        }
         [actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)]; // Update the bounds again now that its in the view else it won't draw correctly.
     }
 }
@@ -1120,5 +1347,568 @@
         }
     }];
 }
+
+#pragma mark - Featured Image Selection related methods
+// TODO: Remove duplication with these methods and PostMediaViewController
+- (void)imagePickerController:(UIImagePickerController *)thePicker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
+
+    if (thePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+    }
+    
+    _currentImage = image;
+    
+    //UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
+    NSURL *assetURL = nil;
+    if (&UIImagePickerControllerReferenceURL != NULL) {
+        assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+    }
+    if (assetURL) {
+        [self getMetadataFromAssetForURL:assetURL];
+    } else {
+        NSDictionary *metadata = nil;
+        if (&UIImagePickerControllerMediaMetadata != NULL) {
+            metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
+        }
+        if (metadata) {
+            NSMutableDictionary *mutableMetadata = [metadata mutableCopy];
+            NSDictionary *gpsData = [mutableMetadata objectForKey:@"{GPS}"];
+            if (!gpsData && self.post.geolocation) {
+                /*
+                 Sample GPS data dictionary
+                 "{GPS}" =     {
+                 Altitude = 188;
+                 AltitudeRef = 0;
+                 ImgDirection = "84.19556";
+                 ImgDirectionRef = T;
+                 Latitude = "41.01333333333333";
+                 LatitudeRef = N;
+                 Longitude = "0.01666666666666";
+                 LongitudeRef = W;
+                 TimeStamp = "10:34:04.00";
+                 };
+                 */
+                CLLocationDegrees latitude = self.post.geolocation.latitude;
+                CLLocationDegrees longitude = self.post.geolocation.longitude;
+                NSDictionary *gps = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [NSNumber numberWithDouble:fabs(latitude)], @"Latitude",
+                                     (latitude < 0.0) ? @"S" : @"N", @"LatitudeRef",
+                                     [NSNumber numberWithDouble:fabs(longitude)], @"Longitude",
+                                     (longitude < 0.0) ? @"W" : @"E", @"LongitudeRef",
+                                     nil];
+                [mutableMetadata setObject:gps forKey:@"{GPS}"];
+            }
+            [mutableMetadata removeObjectForKey:@"Orientation"];
+            [mutableMetadata removeObjectForKey:@"{TIFF}"];
+            _currentImageMetadata = mutableMetadata;
+        }
+    }
+    
+    NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+    [nf setNumberStyle:NSNumberFormatterDecimalStyle];
+    NSNumber *resizePreference = [NSNumber numberWithInt:-1];
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
+        resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
+    BOOL showResizeActionSheet;
+    switch ([resizePreference intValue]) {
+        case 0:
+        {
+            // Dispatch async to detal with a rare bug presenting the actionsheet after a memory warning when the
+            // view has been recreated.
+            showResizeActionSheet = true;
+            break;
+        }
+        case 1:
+        {
+            [self useImage:[self resizeImage:_currentImage toSize:kResizeSmall]];
+            break;
+        }
+        case 2:
+        {
+            [self useImage:[self resizeImage:_currentImage toSize:kResizeMedium]];
+            break;
+        }
+        case 3:
+        {
+            [self useImage:[self resizeImage:_currentImage toSize:kResizeLarge]];
+            break;
+        }
+        case 4:
+        {
+            //[self useImage:currentImage];
+            [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
+            break;
+        }
+        default:
+        {
+            showResizeActionSheet = true;
+            break;
+        }
+    }
+    
+    if(!IS_IPAD) {
+        [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:^{
+            if (showResizeActionSheet) {
+                [self showResizeActionSheet];
+            }
+        }];
+    }
+}
+
+/*
+ * Take Asset URL and set imageJPEG property to NSData containing the
+ * associated JPEG, including the metadata we're after.
+ */
+-(void)getMetadataFromAssetForURL:(NSURL *)url {
+    ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
+    [assetslibrary assetForURL:url
+				   resultBlock: ^(ALAsset *myasset) {
+					   ALAssetRepresentation *rep = [myasset defaultRepresentation];
+					   
+					   WPLog(@"getJPEGFromAssetForURL: default asset representation for %@: uti: %@ size: %lld url: %@ orientation: %d scale: %f metadata: %@",
+							 url, [rep UTI], [rep size], [rep url], [rep orientation],
+							 [rep scale], [rep metadata]);
+					   
+					   Byte *buf = malloc([rep size]);  // will be freed automatically when associated NSData is deallocated
+					   NSError *err = nil;
+					   NSUInteger bytes = [rep getBytes:buf fromOffset:0LL
+												 length:[rep size] error:&err];
+					   if (err || bytes == 0) {
+						   // Are err and bytes == 0 redundant? Doc says 0 return means
+						   // error occurred which presumably means NSError is returned.
+						   free(buf); // Free up memory so we don't leak.
+						   WPLog(@"error from getBytes: %@", err);
+						   
+						   return;
+					   }
+					   NSData *imageJPEG = [NSData dataWithBytesNoCopy:buf length:[rep size]
+														  freeWhenDone:YES];  // YES means free malloc'ed buf that backs this when deallocated
+					   
+					   CGImageSourceRef  source ;
+					   source = CGImageSourceCreateWithData((__bridge CFDataRef)imageJPEG, NULL);
+					   
+                       NSDictionary *metadata = (NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,NULL));
+                       
+                       //make the metadata dictionary mutable so we can remove properties to it
+                       NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
+                       
+					   if(!self.apost.blog.geolocationEnabled) {
+						   //we should remove the GPS info if the blog has the geolocation set to off
+						   
+						   //get all the metadata in the image
+						   [metadataAsMutable removeObjectForKey:@"{GPS}"];
+					   }
+                       [metadataAsMutable removeObjectForKey:@"Orientation"];
+                       [metadataAsMutable removeObjectForKey:@"{TIFF}"];
+                       _currentImageMetadata = [NSDictionary dictionaryWithDictionary:metadataAsMutable];
+					   
+					   CFRelease(source);
+				   }
+				  failureBlock: ^(NSError *err) {
+					  WPLog(@"can't get asset %@: %@", url, err);
+					  _currentImageMetadata = nil;
+				  }];
+}
+
+- (UIImage *)resizeImage:(UIImage *)original toSize:(MediaResize)resize {
+    NSDictionary* predefDim = [self.apost.blog getImageResizeDimensions];
+    CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
+    CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
+    CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
+    switch (original.imageOrientation) {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            smallSize = CGSizeMake(smallSize.height, smallSize.width);
+            mediumSize = CGSizeMake(mediumSize.height, mediumSize.width);
+            largeSize = CGSizeMake(largeSize.height, largeSize.width);
+            break;
+        default:
+            break;
+    }
+    
+    CGSize originalSize = CGSizeMake(original.size.width, original.size.height); //The dimensions of the image, taking orientation into account.
+	
+	// Resize the image using the selected dimensions
+	UIImage *resizedImage = original;
+	switch (resize) {
+		case kResizeSmall:
+			if(original.size.width > smallSize.width  || original.size.height > smallSize.height) {
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
+															  bounds:smallSize
+												interpolationQuality:kCGInterpolationHigh];
+            } else {
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
+															  bounds:originalSize
+												interpolationQuality:kCGInterpolationHigh];
+            }
+			break;
+		case kResizeMedium:
+			if(original.size.width > mediumSize.width  || original.size.height > mediumSize.height) {
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
+															  bounds:mediumSize
+												interpolationQuality:kCGInterpolationHigh];
+            } else {
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
+															  bounds:originalSize
+												interpolationQuality:kCGInterpolationHigh];
+            }
+			break;
+		case kResizeLarge:
+			if(original.size.width > largeSize.width || original.size.height > largeSize.height) {
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
+															  bounds:largeSize
+												interpolationQuality:kCGInterpolationHigh];
+            } else {
+				resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
+															  bounds:originalSize
+												interpolationQuality:kCGInterpolationHigh];
+            }
+			break;
+		case kResizeOriginal:
+			resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
+														  bounds:originalSize
+											interpolationQuality:kCGInterpolationHigh];
+			break;
+	}
+    
+	return resizedImage;
+}
+
+- (void)useImage:(UIImage *)theImage {
+	Media *imageMedia = [Media newMediaForPost:self.apost];
+	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.90);
+	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setDateFormat:@"yyyyMMdd-HHmmss"];
+    
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+	NSString *filename = [NSString stringWithFormat:@"%@.jpg", [formatter stringFromDate:[NSDate date]]];
+	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
+    
+	if (_currentImageMetadata != nil) {
+		// Write the EXIF data with the image data to disk
+		CGImageSourceRef  source = NULL;
+        CGImageDestinationRef destination = NULL;
+		BOOL success = NO;
+        //this will be the data CGImageDestinationRef will write into
+        NSMutableData *dest_data = [NSMutableData data];
+        
+		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
+        if (source) {
+            CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
+            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,NULL);
+            
+            if(destination) {
+                //add the image contained in the image source to the destination, copying the old metadata
+                CGImageDestinationAddImageFromSource(destination,source,0, (__bridge CFDictionaryRef) _currentImageMetadata);
+                
+                //tell the destination to write the image data and metadata into our data object.
+                //It will return false if something goes wrong
+                success = CGImageDestinationFinalize(destination);
+            } else {
+                WPFLog(@"***Could not create image destination ***");
+            }
+        } else {
+            WPFLog(@"***Could not create image source ***");
+        }
+		
+		if(!success) {
+			WPLog(@"***Could not create data from image destination ***");
+			//write the data without EXIF to disk
+			NSFileManager *fileManager = [NSFileManager defaultManager];
+			[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
+		} else {
+			//write it to disk
+			[dest_data writeToFile:filepath atomically:YES];
+		}
+		//cleanup
+        if (destination) {
+            CFRelease(destination);
+        }
+        if (source) {
+            CFRelease(source);
+        }
+    } else {
+		NSFileManager *fileManager = [NSFileManager defaultManager];
+		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
+	}
+    
+	if([self interpretOrientation] == kLandscape) {
+		imageMedia.orientation = @"landscape";
+    } else {
+		imageMedia.orientation = @"portrait";
+    }
+	imageMedia.creationDate = [NSDate date];
+	imageMedia.filename = filename;
+	imageMedia.localURL = filepath;
+	imageMedia.filesize = [NSNumber numberWithInt:(imageData.length/1024)];
+    imageMedia.mediaType = @"featured";
+	imageMedia.thumbnail = UIImageJPEGRepresentation(imageThumbnail, 0.90);
+	imageMedia.width = [NSNumber numberWithInt:theImage.size.width];
+	imageMedia.height = [NSNumber numberWithInt:theImage.size.height];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"UploadingFeaturedImage" object:nil];
+    
+    [imageMedia uploadWithSuccess:^{
+        if ([imageMedia isDeleted]) {
+            NSLog(@"Media deleted while uploading (%@)", imageMedia);
+            return;
+        }
+        [imageMedia save];
+    } failure:^(NSError *error) {
+        [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+    }];
+}
+
+- (UIImage *)generateThumbnailFromImage:(UIImage *)theImage andSize:(CGSize)targetSize {
+    return [theImage thumbnailImage:75 transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
+}
+
+- (MediaOrientation)interpretOrientation {
+	MediaOrientation result = kPortrait;
+	switch ([[UIDevice currentDevice] orientation]) {
+		case UIDeviceOrientationPortrait:
+			result = kPortrait;
+			break;
+		case UIDeviceOrientationPortraitUpsideDown:
+			result = kPortrait;
+			break;
+		case UIDeviceOrientationLandscapeLeft:
+			result = kLandscape;
+			break;
+		case UIDeviceOrientationLandscapeRight:
+			result = kLandscape;
+			break;
+		case UIDeviceOrientationFaceUp:
+			result = kPortrait;
+			break;
+		case UIDeviceOrientationFaceDown:
+			result = kPortrait;
+			break;
+		case UIDeviceOrientationUnknown:
+			result = kPortrait;
+			break;
+	}
+	
+	return result;
+}
+
+- (void)showResizeActionSheet {
+	if(_isShowingResizeActionSheet == NO) {
+		_isShowingResizeActionSheet = YES;
+        
+        Blog *currentBlog = self.apost.blog;
+        NSDictionary* predefDim = [currentBlog getImageResizeDimensions];
+        CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
+        CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
+        CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
+        CGSize originalSize = CGSizeMake(_currentImage.size.width, _currentImage.size.height); //The dimensions of the image, taking orientation into account.
+        
+        switch (_currentImage.imageOrientation) {
+            case UIImageOrientationLeft:
+            case UIImageOrientationLeftMirrored:
+            case UIImageOrientationRight:
+            case UIImageOrientationRightMirrored:
+                smallSize = CGSizeMake(smallSize.height, smallSize.width);
+                mediumSize = CGSizeMake(mediumSize.height, mediumSize.width);
+                largeSize = CGSizeMake(largeSize.height, largeSize.width);
+                break;
+            default:
+                break;
+        }
+        
+		NSString *resizeSmallStr = [NSString stringWithFormat:NSLocalizedString(@"Small (%@)", @"Small (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)smallSize.width, (int)smallSize.height]];
+   		NSString *resizeMediumStr = [NSString stringWithFormat:NSLocalizedString(@"Medium (%@)", @"Medium (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)mediumSize.width, (int)mediumSize.height]];
+        NSString *resizeLargeStr = [NSString stringWithFormat:NSLocalizedString(@"Large (%@)", @"Large (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)largeSize.width, (int)largeSize.height]];
+        NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original (%@)", @"Original (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)originalSize.width, (int)originalSize.height]];
+        
+		UIActionSheet *resizeActionSheet;
+		//NSLog(@"img dimension: %f x %f ",_currentImage.size.width, _currentImage.size.height );
+		
+		if(_currentImage.size.width > largeSize.width  && _currentImage.size.height > largeSize.height) {
+			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
+															delegate:self
+												   cancelButtonTitle:nil
+											  destructiveButtonTitle:nil
+												   otherButtonTitles:resizeSmallStr, resizeMediumStr, resizeLargeStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
+			
+		} else if(_currentImage.size.width > mediumSize.width  && _currentImage.size.height > mediumSize.height) {
+			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
+															delegate:self
+												   cancelButtonTitle:nil
+											  destructiveButtonTitle:nil
+												   otherButtonTitles:resizeSmallStr, resizeMediumStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
+			
+		} else if(_currentImage.size.width > smallSize.width  && _currentImage.size.height > smallSize.height) {
+			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
+															delegate:self
+												   cancelButtonTitle:nil
+											  destructiveButtonTitle:nil
+												   otherButtonTitles:resizeSmallStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
+			
+		} else {
+			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
+															delegate:self
+												   cancelButtonTitle:nil
+											  destructiveButtonTitle:nil
+												   otherButtonTitles: originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
+		}
+		
+        resizeActionSheet.tag = TAG_ACTIONSHEET_RESIZE_PHOTO;
+        [resizeActionSheet showInView:self.view];
+	}
+}
+
+
+
+
+#pragma mark - Private Methods
+
+- (NSString *)titleForVisibility
+{
+    if (self.apost.password) {
+        return NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP.");
+    } else if ([self.apost.status isEqualToString:@"private"]) {
+        return NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.");
+    } else {
+        return NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.");
+    }
+}
+
+- (void)showPhotoPickerForRect:(CGRect)frame
+{
+    UIActionSheet *photoActionSheet;
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+		photoActionSheet = [[UIActionSheet alloc] initWithTitle:@""
+												  delegate:self
+										 cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+									destructiveButtonTitle:nil
+										 otherButtonTitles:NSLocalizedString(@"Add Photo from Library", @""),NSLocalizedString(@"Take Photo", @""),nil];
+        photoActionSheet.tag = TAG_ACTIONSHEET_PHOTO;
+        photoActionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+        [photoActionSheet showFromRect:frame inView:self.view animated:YES];
+	}
+	else {
+        [self pickPhotoFromLibrary];
+	}
+}
+
+- (void)pickPhotoFromLibrary
+{
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+	picker.delegate = self;
+	picker.allowsEditing = NO;
+    [self.navigationController presentViewController:picker animated:YES completion:nil];
+}
+
+- (void)dismissTagsKeyboardIfAppropriate:(UITapGestureRecognizer *)gestureRecognizer
+{
+    CGPoint touchPoint = [gestureRecognizer locationInView:tableView];
+    if (!CGRectContainsPoint(tagsTextField.frame, touchPoint) && [tagsTextField isFirstResponder]) {
+        [tagsTextField resignFirstResponder];
+    }
+}
+
+#pragma mark - Categories Related
+
+- (void)showCategoriesSelectionView:(CGRect)cellFrame
+{
+    [self populateSelectionsControllerWithCategories:cellFrame];
+}
+
+- (void)populateSelectionsControllerWithCategories:(CGRect)cellFrame
+{
+    WPFLogMethod();
+    if (_segmentedTableViewController == nil) {
+        _segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc]
+                                        initWithNibName:@"WPSelectionTableViewController"
+                                        bundle:nil];
+    }
+    
+    NSArray *cats = [self.post.blog sortedCategories];
+    NSArray *selObject = [self.post.categories allObjects];
+    
+    [_segmentedTableViewController populateDataSource:cats    //datasource
+                                       havingContext:kSelectionsCategoriesContext
+                                     selectedObjects:selObject
+                                       selectionType:kCheckbox
+                                         andDelegate:self];
+    
+    _segmentedTableViewController.title = NSLocalizedString(@"Categories", @"");
+    UIBarButtonItem *createCategoryBarButtonItem;
+    createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(showAddNewCategoryView:)];
+    
+    _segmentedTableViewController.navigationItem.rightBarButtonItem = createCategoryBarButtonItem;
+    
+    if (!_isNewCategory) {
+        if (IS_IPAD == YES) {
+            UINavigationController *navController;
+            if (_segmentedTableViewController.navigationController) {
+                navController = _segmentedTableViewController.navigationController;
+            } else {
+                navController = [[UINavigationController alloc] initWithRootViewController:_segmentedTableViewController];
+            }
+            navController.navigationBar.translucent = NO;
+            UIPopoverController *categoriesPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
+            if ([categoriesPopover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
+                categoriesPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
+            }
+            categoriesPopover.delegate = self;
+            CGRect popoverRect = cellFrame;
+            categoriesPopover.popoverContentSize = CGSizeMake(320.0f, 460.0f);
+            [categoriesPopover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            [[CPopoverManager instance] setCurrentPopoverController:categoriesPopover];
+            
+        } else {
+            [self.navigationController pushViewController:_segmentedTableViewController animated:YES];
+        }
+    }
+    
+    _isNewCategory = NO;
+}
+
+- (IBAction)showAddNewCategoryView:(id)sender
+{
+    WPFLogMethod();
+    WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
+    addCategoryViewController.blog = self.post.blog;
+	if (IS_IPAD == YES) {
+        [_segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
+ 	} else {
+		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
+        nc.navigationBar.translucent = NO;
+        [_segmentedTableViewController presentViewController:nc animated:YES completion:nil];
+	}
+}
+
+- (void)selectionTableViewController:(WPSelectionTableViewController *)selctionController completedSelectionsWithContext:(void *)selContext selectedObjects:(NSArray *)selectedObjects haveChanges:(BOOL)isChanged {
+    if (!isChanged) {
+        return;
+    }
+    
+    if (selContext == kSelectionsCategoriesContext) {
+        NSMutableSet *categories = [self.post mutableSetValueForKey:@"categories"];
+        [categories removeAllObjects];
+        [categories addObjectsFromArray:selectedObjects];
+        [tableView reloadData];
+    }
+}
+
+- (void)newCategoryCreatedNotificationReceived:(NSNotification *)notification {
+    WPFLogMethod();
+    if ([_segmentedTableViewController curContext] == kSelectionsCategoriesContext) {
+        _isNewCategory = YES;
+        [self populateSelectionsControllerWithCategories:CGRectZero];
+    }
+}
+
 
 @end

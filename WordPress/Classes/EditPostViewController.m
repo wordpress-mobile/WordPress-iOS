@@ -74,7 +74,12 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
-    if (self = [super initWithNibName:@"EditPostViewController" bundle:nil]) {
+    if (IS_IOS7) {
+        self = [super initWithNibName:@"EditPostViewControlleriOS7" bundle:nil];
+    } else {
+        self = [super initWithNibName:@"EditPostViewController" bundle:nil];
+    }
+    if (self) {
         self.apost = aPost;
         if (self.apost.remoteStatus == AbstractPostRemoteStatusLocal) {
             self.editMode = EditPostViewControllerModeNewPost;
@@ -93,7 +98,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 - (void)viewDidLoad {
     WPFLogMethod();
     [super viewDidLoad];
-
+    
     titleLabel.text = NSLocalizedString(@"Title:", @"Label for the title of the post field. Should be the same as WP core.");
     tagsLabel.text = NSLocalizedString(@"Tags:", @"Label for the tags field. Should be the same as WP core.");
     tagsTextField.placeholder = NSLocalizedString(@"Separate tags with commas", @"Placeholder text for the tags field. Should be the same as WP core.");
@@ -145,8 +150,9 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 	writeButton.enabled = NO;
     attachmentButton.enabled = [self shouldEnableMediaTab];
 	
-	if (![self.postMediaViewController isDeviceSupportVideo]){
-		//no video icon for older devices
+	if (![self.postMediaViewController isDeviceSupportVideo] && !IS_IOS7){
+		// No video icon for older devices.
+        // Don't remove anything for IOS7 as we re-configured the icons in the XIB file.
 		NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
 		
 		[toolbarItems removeObjectAtIndex:5];
@@ -178,6 +184,13 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         [self positionAutosaveView:nil];
     }
     
+    if (IS_IOS7) {
+        self.toolbar.translucent = NO;
+        self.toolbar.barStyle = UIBarStyleDefault;
+        titleTextField.placeholder = NSLocalizedString(@"Title:", @"Label for the title of the post field. Should be the same as WP core.");
+        self.navigationController.navigationBar.translucent = NO;
+    }
+    
     [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailOpenedEditor]];
 }
 
@@ -188,9 +201,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 	[self refreshButtons];
 	
     textView.frame = self.normalTextFrame;
-    CGRect frame = CGRectInset(self.normalTextFrame, 7.f, 7.f);
-	frame.size.height = 200;
-    textViewPlaceHolderField.frame = frame;
+    textViewPlaceHolderField.frame = [self textviewPlaceholderFrame];
 	textViewPlaceHolderField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 
 	CABasicAnimation *animateWiggleIt;
@@ -243,6 +254,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
             title = NSLocalizedString(@"Edit Post", @"Post Editor screen title.");
         }
     }
+    self.navigationItem.backBarButtonItem.title = title;
     return title;
 }
 
@@ -346,12 +358,29 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 	self.navigationItem.title = NSLocalizedString(@"Settings", @"Post Editor / Settings screen title.");
 }
 
+// IOS 7 Version which pushes a view controller instead of "swapping" it
+- (IBAction)showSettings:(id)sender
+{
+    PostSettingsViewController *vc = [[PostSettingsViewController alloc] initWithPost:self.apost];
+    vc.statsPrefix = self.statsPrefix;
+    vc.postDetailViewController = self;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (IBAction)switchToMedia {
     if (currentView != self.postMediaViewController.view) {
         [WPMobileStats flagProperty:StatsPropertyPostDetailClickedMedia forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self switchToView:self.postMediaViewController.view];
     }
 	self.navigationItem.title = NSLocalizedString(@"Media", @"Post Editor / Media screen title.");
+}
+
+// IOS 7 Version which pushes a view controller instead of "swapping" it
+- (IBAction)showPreview:(id)sender
+{
+    PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.apost];
+    vc.postDetailViewController = self;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (IBAction)switchToPreview {
@@ -372,6 +401,13 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     [self.postMediaViewController showPhotoPickerActionSheet:sender];
 }
 
+- (IBAction)showMediaOptions:(id)sender {
+    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedMediaOptions forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+    PostMediaViewController *vc = [[PostMediaViewController alloc] initWithPost:self.apost];
+    vc.postDetailViewController = self;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (IBAction)showCategories:(id)sender {
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedShowCategories forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     [textView resignFirstResponder];
@@ -388,6 +424,10 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
             return CGRectMake(0, 143, self.view.bounds.size.width, 753);
     } else {
         CGFloat y = 136.f;
+        if (IS_IOS7) {
+            // On IOS7 we get rid of the Tags and Categories fields, so place the textview right under the title
+            y = CGRectGetMaxY(titleTextField.frame);
+        }
         CGFloat height = self.toolbar.frame.origin.y - y;
         if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
             || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
@@ -395,6 +435,11 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 		else // Portrait
 			return CGRectMake(0, y, self.view.bounds.size.width, height);
     }
+}
+
+- (CGRect)textviewPlaceholderFrame
+{
+    return CGRectInset(textView.frame, 7.f, 7.f);
 }
 
 - (void)deleteBackupPost {
@@ -459,7 +504,12 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     }
 
     if (self.navigationItem.rightBarButtonItem == nil) {
-        UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleDone target:self action:@selector(saveAction:)];
+        UIBarButtonItem *saveButton;
+        if (IS_IOS7) {
+            saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStylePlain target:self action:@selector(saveAction:)];
+        } else {
+            saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleDone target:self action:@selector(saveAction:)];
+        }
         self.navigationItem.rightBarButtonItem = saveButton;
     } else {
         self.navigationItem.rightBarButtonItem.title = buttonTitle;
@@ -499,8 +549,11 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 - (void)populateSelectionsControllerWithCategories {
     WPFLogMethod();
-    if (segmentedTableViewController == nil)
-        segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc] initWithNibName:@"WPSelectionTableViewController" bundle:nil];
+    if (segmentedTableViewController == nil) {
+        segmentedTableViewController = [[WPSegmentedSelectionTableViewController alloc]
+                                        initWithNibName:@"WPSelectionTableViewController"
+                                        bundle:nil];
+    }
 	
 	NSArray *cats = [self.post.blog sortedCategories];
 
@@ -679,7 +732,10 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 - (void)autosaveContent {
     self.apost.postTitle = titleTextField.text;
     self.navigationItem.title = [self editorTitle];
-    self.post.tags = tagsTextField.text;
+    if (!IS_IOS7) {
+        // Tags isn't on the main editor in iOS 7
+        self.post.tags = tagsTextField.text;
+    }
     self.apost.content = textView.text;
 	if ([self.apost.content rangeOfString:@"<!--more-->"].location != NSNotFound)
 		self.apost.mt_text_more = @"";
@@ -1144,8 +1200,9 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         self.apost.postTitle = [textField.text stringByReplacingCharactersInRange:range withString:string];
         self.navigationItem.title = [self editorTitle];
 
-    } else if (textField == tagsTextField)
+    } else if (textField == tagsTextField) {
         self.post.tags = [tagsTextField.text stringByReplacingCharactersInRange:range withString:string];
+    }
 
     _hasChangesToAutosave = YES;
     [self refreshButtons];
@@ -1229,6 +1286,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 	}
 
     [textView setFrame:newFrame];
+    textViewPlaceHolderField.frame = [self textviewPlaceholderFrame];
 	
 	[UIView commitAnimations];
 }
@@ -1518,6 +1576,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         editorToolbar.doneButton.hidden = IS_IPAD && ! isExternalKeyboard;
     }
     [self positionAutosaveView:notification];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
@@ -1525,6 +1584,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 	isShowingKeyboard = NO;
     [self positionTextView:notification];
     [self positionAutosaveView:notification];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 }
 
 #pragma mark -
