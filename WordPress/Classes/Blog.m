@@ -339,11 +339,11 @@
 }
 
 - (NSString *)username {
-    return self.account.username;
+    return self.account.username ?: @"";
 }
 
 - (NSString *)password {
-    return self.account.password;
+    return self.account.password ?: @"";
 }
 
 #pragma mark -
