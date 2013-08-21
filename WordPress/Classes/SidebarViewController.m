@@ -32,6 +32,7 @@
 #import "ViewAdminButton.h"
 #import "NewGeneralWalkthroughViewController.h"
 #import "UIColor+Helpers.h"
+#import "NewSidebarViewController.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
@@ -385,7 +386,7 @@ NSLog(@"%@", self.sectionInfoArray);
     }
 }
 
-- (IBAction)showSettings:(id)sender {    
+- (IBAction)showSettings:(id)sender {
     [WPMobileStats incrementProperty:StatsPropertySidebarClickedSettings forEvent:StatsEventAppClosed];
     
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -828,7 +829,6 @@ NSLog(@"%@", self.sectionInfoArray);
     for (NSInteger i = 0; i < NUM_ROWS; i++) {
         [indexPathsToInsert addObject:[NSIndexPath indexPathForRow:i inSection:sectionNumber]];
     }
-    
     
     //Create an array containing the index paths of the rows to delete
     NSMutableArray *indexPathsToDelete = [NSMutableArray array];

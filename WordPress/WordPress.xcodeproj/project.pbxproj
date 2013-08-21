@@ -698,8 +698,8 @@
 		85F2C4CB17B9F6E600A303E0 /* NotificationsTableViewDatasource.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4BA17B9F6E600A303E0 /* NotificationsTableViewDatasource.m */; };
 		85F2C4CC17B9F6E600A303E0 /* NUX.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85F2C4BB17B9F6E600A303E0 /* NUX.storyboard */; };
 		85F2C4CF17B9F81A00A303E0 /* BaseNUXViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4CE17B9F81A00A303E0 /* BaseNUXViewController.m */; };
-		85F2C4D417BA0ED400A303E0 /* NewSidebarMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4D217BA0ED400A303E0 /* NewSidebarMenuViewController.m */; };
-		85F2C4D517BA0ED400A303E0 /* NewSidebarMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85F2C4D317BA0ED400A303E0 /* NewSidebarMenuViewController.xib */; };
+		85F2C4D417BA0ED400A303E0 /* NewSidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4D217BA0ED400A303E0 /* NewSidebarViewController.m */; };
+		85F2C4D517BA0ED400A303E0 /* NewSidebarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85F2C4D317BA0ED400A303E0 /* NewSidebarViewController.xib */; };
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */; };
@@ -1776,9 +1776,9 @@
 		85F2C4BB17B9F6E600A303E0 /* NUX.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NUX.storyboard; sourceTree = "<group>"; };
 		85F2C4CD17B9F81A00A303E0 /* BaseNUXViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNUXViewController.h; sourceTree = "<group>"; };
 		85F2C4CE17B9F81A00A303E0 /* BaseNUXViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNUXViewController.m; sourceTree = "<group>"; };
-		85F2C4D117BA0ED400A303E0 /* NewSidebarMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewSidebarMenuViewController.h; sourceTree = "<group>"; };
-		85F2C4D217BA0ED400A303E0 /* NewSidebarMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewSidebarMenuViewController.m; sourceTree = "<group>"; };
-		85F2C4D317BA0ED400A303E0 /* NewSidebarMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewSidebarMenuViewController.xib; sourceTree = "<group>"; };
+		85F2C4D117BA0ED400A303E0 /* NewSidebarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewSidebarViewController.h; sourceTree = "<group>"; };
+		85F2C4D217BA0ED400A303E0 /* NewSidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewSidebarViewController.m; sourceTree = "<group>"; };
+		85F2C4D317BA0ED400A303E0 /* NewSidebarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewSidebarViewController.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate.html; path = Resources/HTML/defaultPostTemplate.html; sourceTree = "<group>"; };
@@ -3118,9 +3118,9 @@
 		85F2C4D017BA0EB300A303E0 /* New Menu */ = {
 			isa = PBXGroup;
 			children = (
-				85F2C4D117BA0ED400A303E0 /* NewSidebarMenuViewController.h */,
-				85F2C4D217BA0ED400A303E0 /* NewSidebarMenuViewController.m */,
-				85F2C4D317BA0ED400A303E0 /* NewSidebarMenuViewController.xib */,
+				85F2C4D117BA0ED400A303E0 /* NewSidebarViewController.h */,
+				85F2C4D217BA0ED400A303E0 /* NewSidebarViewController.m */,
+				85F2C4D317BA0ED400A303E0 /* NewSidebarViewController.xib */,
 				853259DF17BABC4A008E87D1 /* SidebarTopLevelView.h */,
 				853259E017BABC4A008E87D1 /* SidebarTopLevelView.m */,
 				853259E217BABC5E008E87D1 /* SidebarTopLevelView.xib */,
@@ -4318,7 +4318,7 @@
 				371C163515A3A3F800BC653C /* navbar_read@2x.png in Resources */,
 				CC313AD115A4360800F7B7C6 /* friend_follow_service_icons.png in Resources */,
 				CC313AD215A4360800F7B7C6 /* friend_follow_service_icons@2x.png in Resources */,
-				85F2C4D517BA0ED400A303E0 /* NewSidebarMenuViewController.xib in Resources */,
+				85F2C4D517BA0ED400A303E0 /* NewSidebarViewController.xib in Resources */,
 				5D7C22B615A4FCFE00FCE1C2 /* down_dim.png in Resources */,
 				5D7C22B715A4FCFE00FCE1C2 /* down_dim@2x.png in Resources */,
 				5D7C22B815A4FCFE00FCE1C2 /* up_dim.png in Resources */,
@@ -5002,7 +5002,7 @@
 				85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */,
 				85A1B6751742E7EF00BA5E35 /* WPMobileStats.m in Sources */,
 				E183BD7417621D87000B0822 /* WPCookie.m in Sources */,
-				85F2C4D417BA0ED400A303E0 /* NewSidebarMenuViewController.m in Sources */,
+				85F2C4D417BA0ED400A303E0 /* NewSidebarViewController.m in Sources */,
 				E10DB0081771926D00B7A0A3 /* GooglePlusActivity.m in Sources */,
 				5D42A3DE175E7452005CFF05 /* AbstractComment.m in Sources */,
 				85F2C4BF17B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.m in Sources */,
@@ -5200,7 +5200,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-Wno-format-security";
 				OTHER_LDFLAGS = (
 					"-lxml2",
@@ -5257,7 +5257,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = (
 					"-lxml2",
 					"-licucore",
@@ -5310,7 +5310,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-DDEBUG",
@@ -5335,7 +5335,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-Wno-format-security";
 				OTHER_LDFLAGS = (
 					"-lxml2",

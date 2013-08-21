@@ -100,14 +100,12 @@ CGFloat const NewPostTableViewCellStandardOffset = 16.0;
 
 - (void)setPost:(AbstractPost *)post
 {
-    if (_post != post) {
-        _post = post;
-        
-        _titleLabel.text = [[self class] titleText:post];
-        _statusLabel.text = [[self class] statusTextForPost:post];
-        _statusLabel.textColor = [[self class] statusColorForPost:post];
-        _dateLabel.text = [[self class] dateText:post];        
-    }
+    _post = post;
+    
+    _titleLabel.text = [[self class] titleText:post];
+    _statusLabel.text = [[self class] statusTextForPost:post];
+    _statusLabel.textColor = [[self class] statusColorForPost:post];
+    _dateLabel.text = [[self class] dateText:post];
 }
 
 + (UIFont *)statusFont
