@@ -727,6 +727,8 @@
 		C57B7CA617C586E600A64A3C /* ThemeBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C57B7CA517C586E600A64A3C /* ThemeBrowserCell.m */; };
 		C57B7CA917C591D000A64A3C /* ThemeBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C57B7CA817C591C800A64A3C /* ThemeBrowserViewController.xib */; };
 		C57B7CAC17C66C0B00A64A3C /* ThemeSearchFilterHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C57B7CAB17C66C0B00A64A3C /* ThemeSearchFilterHeaderView.m */; };
+		C57B7CB017C6ACD400A64A3C /* ThemeDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C57B7CAF17C6ACD400A64A3C /* ThemeDetailsViewController.xib */; };
+		C57B7CB117C6AD2100A64A3C /* ThemeDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C57B7CAE17C6ACC100A64A3C /* ThemeDetailsViewController.m */; };
 		C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C5C272DF0E7EC00A0034AA46 /* uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272DE0E7EC00A0034AA46 /* uncheck.png */; };
 		C5C272E10E7EC00F0034AA46 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272E00E7EC00F0034AA46 /* check.png */; };
@@ -1826,6 +1828,9 @@
 		C57B7CA817C591C800A64A3C /* ThemeBrowserViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ThemeBrowserViewController.xib; path = Resources/ThemeBrowserViewController.xib; sourceTree = "<group>"; };
 		C57B7CAA17C66C0B00A64A3C /* ThemeSearchFilterHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeSearchFilterHeaderView.h; sourceTree = "<group>"; };
 		C57B7CAB17C66C0B00A64A3C /* ThemeSearchFilterHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeSearchFilterHeaderView.m; sourceTree = "<group>"; };
+		C57B7CAD17C6ACC100A64A3C /* ThemeDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThemeDetailsViewController.h; sourceTree = "<group>"; };
+		C57B7CAE17C6ACC100A64A3C /* ThemeDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThemeDetailsViewController.m; sourceTree = "<group>"; };
+		C57B7CAF17C6ACD400A64A3C /* ThemeDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ThemeDetailsViewController.xib; path = Resources/ThemeDetailsViewController.xib; sourceTree = "<group>"; };
 		C59D3D490E6410D300AA591D /* NSString+XMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+XMLExtensions.h"; sourceTree = "<group>"; };
 		C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLExtensions.m"; sourceTree = "<group>"; };
 		C5C272DE0E7EC00A0034AA46 /* uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uncheck.png; path = Resources/Images/uncheck.png; sourceTree = "<group>"; };
@@ -3557,6 +3562,8 @@
 		C57B7C8317C53BF500A64A3C /* Themes */ = {
 			isa = PBXGroup;
 			children = (
+				C57B7CAD17C6ACC100A64A3C /* ThemeDetailsViewController.h */,
+				C57B7CAE17C6ACC100A64A3C /* ThemeDetailsViewController.m */,
 				C57B7C8B17C558C600A64A3C /* ThemeBrowserViewController.h */,
 				C57B7C8C17C558C600A64A3C /* ThemeBrowserViewController.m */,
 			);
@@ -3566,6 +3573,7 @@
 		C57B7CA717C591BA00A64A3C /* Themes */ = {
 			isa = PBXGroup;
 			children = (
+				C57B7CAF17C6ACD400A64A3C /* ThemeDetailsViewController.xib */,
 				C57B7CA817C591C800A64A3C /* ThemeBrowserViewController.xib */,
 			);
 			name = Themes;
@@ -4589,6 +4597,7 @@
 				CC669B2916769BAE009E16F8 /* note-reply-field.png in Resources */,
 				CC669B2A16769BAE009E16F8 /* note-reply-field@2x.png in Resources */,
 				CC669B36167AA523009E16F8 /* note_header_shadow.png in Resources */,
+				C57B7CB017C6ACD400A64A3C /* ThemeDetailsViewController.xib in Resources */,
 				CC669B37167AA523009E16F8 /* note_header_shadow@2x.png in Resources */,
 				CC669B3F167B0AF2009E16F8 /* note-comment-grandparent-footer.png in Resources */,
 				CC669B40167B0AF2009E16F8 /* note-comment-grandparent-footer@2x.png in Resources */,
@@ -4879,6 +4888,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C57B7CB117C6AD2100A64A3C /* ThemeDetailsViewController.m in Sources */,
 				371C3682156CD12D007EA03E /* SectionInfo.m in Sources */,
 				371C3683156CD12D007EA03E /* SidebarSectionHeaderView.m in Sources */,
 				853259FC17BAFA77008E87D1 /* SidebarBadgeView.m in Sources */,

@@ -12,6 +12,7 @@
 #import "WordPressAppDelegate.h"
 #import "ThemeBrowserCell.h"
 #import "ThemeSearchFilterHeaderView.h"
+#import "ThemeDetailsViewController.h"
 
 static NSString *const ThemeCellIdentifier = @"theme";
 static NSString *const SearchFilterCellIdentifier = @"search_filter";
@@ -95,7 +96,9 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    // TODO Theme details
+    Theme *theme = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    ThemeDetailsViewController *details = [[ThemeDetailsViewController alloc] initWithTheme:theme];
+    [self.navigationController pushViewController:details animated:true];
 }
 
 #pragma mark - NSFetchedResultsController
