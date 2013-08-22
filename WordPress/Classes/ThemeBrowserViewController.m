@@ -11,14 +11,17 @@
 #import "Theme.h"
 #import "WordPressAppDelegate.h"
 #import "ThemeBrowserCell.h"
+#import "ThemeSearchFilterHeaderView.h"
 
-static NSString *const cellIdentifier = @"theme";
+static NSString *const ThemeCellIdentifier = @"theme";
+static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
 @interface ThemeBrowserViewController () <UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet UIView *searchFilterView;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NSBlockOperation *resultsChanges;
+@property (nonatomic, strong) NSString *currentFilter;
 
 @end
 
@@ -29,6 +32,7 @@ static NSString *const cellIdentifier = @"theme";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = NSLocalizedString(@"Themes", @"Title for Themes browser");
+        self.currentFilter = @"themeId";
     }
     return self;
 }
@@ -39,15 +43,16 @@ static NSString *const cellIdentifier = @"theme";
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    [self.collectionView registerClass:[ThemeBrowserCell class] forCellWithReuseIdentifier:cellIdentifier];
+    [self.collectionView registerClass:[ThemeBrowserCell class] forCellWithReuseIdentifier:ThemeCellIdentifier];
+    [self.collectionView registerClass:[ThemeSearchFilterHeaderView class]
+            forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:SearchFilterCellIdentifier];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     [Theme fetchAndInsertThemesWithSuccess:^{
-        // TODO dismiss loading and use NSFetchedResultsController instead
-        [self.collectionView reloadData];
+        // TODO dismiss loading
     } failure:^(NSError *error) {
         // TODO show error/dismiss loading
     }];
@@ -71,10 +76,21 @@ static NSString *const cellIdentifier = @"theme";
     return [[sectionInfo objects] count];
 }
 
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+        ThemeSearchFilterHeaderView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:SearchFilterCellIdentifier forIndexPath:indexPath];
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            header.delegate = self;
+        });
+        return header;
+    }
+    return nil;
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ThemeBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-        cell.theme = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    
+    ThemeBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ThemeCellIdentifier forIndexPath:indexPath];
+    cell.theme = [self.fetchedResultsController objectAtIndexPath:indexPath];
     return cell;
 }
 
@@ -93,11 +109,11 @@ static NSString *const cellIdentifier = @"theme";
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Theme class])];
     
     // TODO current sort that's applied
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"themeId" ascending:YES]]];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:self.currentFilter ascending:YES]]];
     [fetchRequest setFetchBatchSize:10];
     
     _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                    managedObjectContext:context sectionNameKeyPath:nil cacheName:@"themes"];
+                                                                    managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
     _fetchedResultsController.delegate = self;
     NSError *error;
     if (![_fetchedResultsController performFetch:&error]) {
@@ -107,12 +123,61 @@ static NSString *const cellIdentifier = @"theme";
     return _fetchedResultsController;
 }
 
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+//    self.resultsChanges = [NSBlockOperation new];
+}
+
 - (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-    // TODO queue individual changes for collection view and batch update as below
+//    __weak UICollectionView *collectionView = self.collectionView;
+//    switch (type) {
+//        case NSFetchedResultsChangeInsert:
+//        {
+//            [_resultsChanges addExecutionBlock:^{
+//                [collectionView insertItemsAtIndexPaths:@[newIndexPath]];
+//                if ([collectionView numberOfItemsInSection:indexPath.section] == 0) {
+//                    // First item, reload
+//                    [collectionView reloadData];
+//                }
+//            }];
+//            break;
+//        }
+//        case NSFetchedResultsChangeDelete:
+//        {
+//            [_resultsChanges addExecutionBlock:^{
+//                [collectionView deleteItemsAtIndexPaths:@[indexPath]];
+//                if ([collectionView numberOfItemsInSection:indexPath.section] == 1) {
+//                    // Last item, reload the collection view
+//                    [collectionView reloadData];
+//                }
+//            }];
+//            break;
+//        }
+//        case NSFetchedResultsChangeMove:
+//        {
+//            [_resultsChanges addExecutionBlock:^{
+//                [collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
+//            }];
+//            break;
+//        }
+//        case NSFetchedResultsChangeUpdate:
+//        {
+//            [_resultsChanges addExecutionBlock:^{
+//                [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+//            }];
+//            break;
+//        }
+//        default:
+//            break;
+//    }
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    // TODO propagate changes to UICollectionView with performBatchUpdates:
+//    [self.collectionView performBatchUpdates:^{
+//        [_resultsChanges start];
+//    } completion:nil];
+    // TODO above isn't working atm, causes crazy malloc errors. Related to http://openradar.appspot.com/12954582 ?
+    // Since we're loading all themes at once anyways, this doesn't change much.
+    [self.collectionView reloadData];
 }
 
 @end
