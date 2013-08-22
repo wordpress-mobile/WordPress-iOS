@@ -9,6 +9,12 @@
 #import "EditCommentViewController.h"
 #import "CommentViewController.h"
 
+@interface EditCommentViewController() {
+    CGRect _keyboardFrame;
+}
+
+@end
+
 @implementation EditCommentViewController
 
 @synthesize commentViewController, comment, hasChanges, textViewText, textView, isTransitioning, isEditing;
@@ -20,16 +26,24 @@
 
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    textView.backgroundColor = [UIColor redColor];
     [super viewDidLoad];
 
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                           target:self
                                                                                           action:@selector(cancelView:)];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).")
-                                                                              style:UIBarButtonItemStyleDone
-                                                                             target:self
-                                                                             action:@selector(initiateSaveCommentReply:)];
+    if (IS_IOS7) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).")
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(initiateSaveCommentReply:)];
+    } else {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).")
+                                                                                  style:UIBarButtonItemStyleDone
+                                                                                 target:self
+                                                                                 action:@selector(initiateSaveCommentReply:)];
+    }
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleKeyboardDidShow:)
@@ -43,7 +57,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    WPFLogMethod();
 	[super viewWillAppear:animated];
 	
 	self.textView.text = self.comment.content;
@@ -57,20 +71,8 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    WPFLogMethod();
     [super viewWillDisappear:animated];
-}
-
-- (void)didReceiveMemoryWarning {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super didReceiveMemoryWarning];
-}
-
-- (void)viewDidUnload {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super viewDidUnload];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -82,17 +84,24 @@
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification {
     NSDictionary *info = notification.userInfo;
-    CGRect keyFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGRect rect = [self.view convertRect:keyFrame fromView:self.view.window];
-    CGRect frm = self.view.frame;
-    frm.size.height = rect.origin.y;
-    self.textView.frame = frm;
+    _keyboardFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    _keyboardFrame = [self.view convertRect:_keyboardFrame fromView:self.view.window];
+    float animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    [UIView animateWithDuration:animationDuration animations:^{
+        CGRect frm = self.textView.frame;
+        frm.size.height = CGRectGetMinY(_keyboardFrame);
+        self.textView.frame = frm;
+    }];
 }
 
 - (void)handleKeyboardWillHide:(NSNotification *)notification {
-    CGRect frm = self.textView.frame;
-    frm.size.height = self.view.frame.size.height;
-    self.textView.frame = frm;
+    NSDictionary *info = notification.userInfo;
+    float animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    [UIView animateWithDuration:animationDuration animations:^{
+        CGRect frm = self.textView.frame;
+        frm.size.height = CGRectGetMaxY(self.view.bounds);
+        self.textView.frame = frm;
+    }];
 }
 
 #pragma mark -
@@ -119,10 +128,17 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
 	if (IS_IPAD == NO) {
-		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"")
-                                                                                 style:UIBarButtonItemStyleDone
-                                                                                target:self
-                                                                                action:@selector(endTextEnteringButtonAction:)];
+        if (IS_IOS7) {
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"")
+                                                                                     style:UIBarButtonItemStylePlain
+                                                                                    target:self
+                                                                                    action:@selector(endTextEnteringButtonAction:)];
+        } else {
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"")
+                                                                                     style:UIBarButtonItemStyleDone
+                                                                                    target:self
+                                                                                    action:@selector(endTextEnteringButtonAction:)];
+        }
 	}
 	self.isEditing = YES;
 }
