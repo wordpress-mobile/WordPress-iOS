@@ -32,6 +32,7 @@
 #import "ViewAdminButton.h"
 #import "NewGeneralWalkthroughViewController.h"
 #import "UIColor+Helpers.h"
+#import "ThemeBrowserViewController.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f
@@ -759,17 +760,23 @@ NSLog(@"%@", self.sectionInfoArray);
             }
             case 3:
             {
+                title = NSLocalizedString(@"Themes", @"Menu item to browse and activate themes");
+                cell.imageView.image = nil;
+                break;
+            }
+            case 4:
+            {
                 title = NSLocalizedString(@"Stats", @"Menu item to view Jetpack stats associated with a blog");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_stats"];
                 break;
             }
-            case 4:
+            case 5:
             {
                 title = NSLocalizedString(@"View Site", @"Menu item to view the site in a an in-app web view");
                 cell.imageView.image = [UIImage imageNamed:@"sidebar_view"];
                 break;
             }
-            case 5:
+            case 6:
             {
                 
                 ViewAdminButton *viewAdminButton = [[ViewAdminButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, SIDEBAR_WIDTH, DEFAULT_ROW_HEIGHT)];
@@ -941,11 +948,15 @@ NSLog(@"%@", self.sectionInfoArray);
                 controllerClass = [CommentsViewController class];
                 break;
             case 3:
+                // TODO Add stat
+                controllerClass = [ThemeBrowserViewController class];
+                break;
+            case 4:
                 [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedStats forEvent:StatsEventAppClosed];
                 
                 controllerClass =  [StatsWebViewController class];//IS_IPAD ? [StatsWebViewController class] : [StatsTableViewController class];
                 break;
-            case 4 :
+            case 5:
                 [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedViewSite forEvent:StatsEventAppClosed];
                 
                 blogURL = blog.url;
@@ -980,7 +991,7 @@ NSLog(@"%@", self.sectionInfoArray);
                     [SoundUtil playSwipeSound];
                 }
                 return;
-            case 5 :
+            case 6:
                 break;
             default:
                 controllerClass = [PostsViewController class];
