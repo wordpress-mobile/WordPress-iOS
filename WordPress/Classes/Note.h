@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class WPAccount;
 
 @interface Note : NSManagedObject
 
@@ -19,6 +20,7 @@
 @property (nonatomic, retain) NSNumber *unread;
 @property (nonatomic, retain) NSString * icon;
 @property (nonatomic, retain) NSString * noteID;
+@property (nonatomic, retain) WPAccount *account;
 @property (nonatomic, strong, readonly) NSString *commentText;
 @property (nonatomic, strong, readonly) NSDictionary *noteData;
 

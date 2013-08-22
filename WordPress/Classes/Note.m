@@ -11,6 +11,7 @@
 #import "JSONKit.h"
 #import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
+#import "WPAccount.h"
 
 const NSUInteger NoteKeepCount = 20;
 
@@ -47,6 +48,7 @@ const NSUInteger NoteKeepCount = 20;
 @dynamic unread;
 @dynamic icon;
 @dynamic noteID;
+@dynamic account;
 @synthesize commentText = _commentText, noteData = _noteData;
 
 
@@ -181,6 +183,7 @@ const NSUInteger NoteKeepCount = 20;
                                                      inManagedObjectContext:context];
         
         note.noteID = [noteData objectForKey:@"id"];
+        note.account = [WPAccount defaultWordPressComAccount];
     }
     
     [note syncAttributes:noteData];
