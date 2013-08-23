@@ -13,6 +13,7 @@
 #import "ThemeBrowserCell.h"
 #import "ThemeSearchFilterHeaderView.h"
 #import "ThemeDetailsViewController.h"
+#import "Blog.h"
 
 static NSString *const ThemeCellIdentifier = @"theme";
 static NSString *const SearchFilterCellIdentifier = @"search_filter";
@@ -28,8 +29,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
 @implementation ThemeBrowserViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = NSLocalizedString(@"Themes", @"Title for Themes browser");
@@ -52,10 +52,10 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [Theme fetchAndInsertThemesWithSuccess:^{
-        // TODO dismiss loading
+    [Theme fetchAndInsertThemesForBlogId:self.blog.blogID.stringValue success:^{
+        
     } failure:^(NSError *error) {
-        // TODO show error/dismiss loading
+        
     }];
 }
 

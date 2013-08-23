@@ -17,11 +17,11 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="DGf-ap-P0O">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="510"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="503"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="7" minimumInteritemSpacing="7" id="QDL-tV-f3E">
-                        <size key="itemSize" width="149" height="125"/>
+                        <size key="itemSize" width="149" height="127"/>
                         <size key="headerReferenceSize" width="0.0" height="44"/>
                         <size key="footerReferenceSize" width="0.0" height="0.0"/>
                         <inset key="sectionInset" minX="7" minY="7" maxX="7" maxY="7"/>

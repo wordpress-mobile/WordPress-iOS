@@ -9,8 +9,8 @@
 
 #import "Theme.h"
 #import "WordPressAppDelegate.h"
+#import "WordPressComApi.h"
 
-NSString *const WordPressPublicAPI = @"http://public-api.wordpress.com/rest/v1";
 static NSDateFormatter *dateFormatter;
 
 @implementation Theme
@@ -70,30 +70,21 @@ static NSDateFormatter *dateFormatter;
 
 @implementation Theme (PublicAPI)
 
-+ (void)fetchAndInsertThemesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    AFHTTPClient *publicApiClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:WordPressPublicAPI]];
-    
-    NSURLRequest *request = [publicApiClient requestWithMethod:@"GET" path:@"themes" parameters:nil];
-    AFJSONRequestOperation *getThemes = [AFJSONRequestOperation
-                                         JSONRequestOperationWithRequest:(NSURLRequest *)request
-                                         success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                                             // Two strategies for uniqueness: destroy all themes and repopulate
-                                             // or find existing and only add new ones:
-                                             // Clear all existing themes and insert new ones
-                                             [self removeAllThemesWithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext];
-                                             for (NSDictionary *t in JSON[@"themes"]) {
-                                                 [self themeFromDictionary:t];
-                                             }
-                                             dateFormatter = nil;
-                                             if (success) {
-                                                 success();
-                                             }
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
++ (void)fetchAndInsertThemesForBlogId:(NSString *)blogId success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    [[WordPressComApi sharedApi] fetchThemesForBlogId:blogId success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self removeAllThemesWithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext];
+        for (NSDictionary *t in responseObject[@"themes"]) {
+            [self themeFromDictionary:t];
+        }
+        dateFormatter = nil;
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             failure(error);
         }
     }];
-    [publicApiClient enqueueHTTPRequestOperation:getThemes];
 }
 
 @end

@@ -25,9 +25,8 @@
 @end
 
 
+@interface Theme (WordPressComApi)
 
-@interface Theme (PublicAPI)
-
-+ (void)fetchAndInsertThemesWithSuccess:(void(^)())success failure:(void(^)(NSError *error))failure;
++ (void)fetchAndInsertThemesForBlogId:(NSString *)blogId success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end
