@@ -73,7 +73,11 @@
 
     if( IS_IPHONE ) {
         
-        if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
+        if (IS_IOS7) {
+            self.optionsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                               target:self
+                                                                               action:@selector(showLinkOptions)];
+        } else {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
             
             [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
@@ -90,10 +94,6 @@
             [btn addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
             
             self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
-        } else {
-            self.optionsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                                                               target:self
-                                                                               action:@selector(showLinkOptions)];
         }
         
         if (!self.hidesLinkOptions) {
@@ -705,7 +705,11 @@
     if ( IS_IPAD ) {
         if(self.navigationController.navigationBarHidden) {
             UINavigationItem *topItem = self.iPadNavBar.topItem;
-            topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+            if (IS_IOS7) {
+                topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+            } else {
+                topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+            }
         }
     }
 }

@@ -12,21 +12,11 @@
 #import "Blog.h"
 #import "ReplyToCommentViewController.h"
 
-@class CommentViewController;
-
 @interface CommentsViewController : WPTableViewController <ReplyToCommentViewControllerDelegate, CommentsTableViewDelegate, DetailViewDelegate> {
 @private
 }
 
 @property (nonatomic, strong) NSNumber *wantedCommentId;
 @property (nonatomic, strong) NSNumber *lastSelectedCommentID;
-
-#pragma mark -
-#pragma mark Comment navigation
-
-- (BOOL)hasPreviousComment;
-- (BOOL)hasNextComment;
-- (void)showPreviousComment;
-- (void)showNextComment;
 
 @end

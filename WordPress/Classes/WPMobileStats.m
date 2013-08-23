@@ -139,8 +139,6 @@ NSString *const StatsEventCommentDetailFlagAsSpam = @"Comment Detail - Flag Comm
 NSString *const StatsEventCommentDetailEditComment = @"Comment Detail - Edit Comment";
 NSString *const StatsEventCommentDetailClickedReplyToComment = @"Comment Detail - Clicked Reply to Comment";
 NSString *const StatsEventCommentDetailRepliedToComment = @"Comment Detail - Replied to Comment";
-NSString *const StatsPropertyCommentDetailShowPreviousComment = @"comment_detail_clicked_show_previous_comment";
-NSString *const StatsPropertyCommentDetailShowNextComment = @"comment_detail_clicked_show_next_comment";
 
 
 // Settings

@@ -15,7 +15,7 @@
 #import "UIColor+Helpers.h"
 #import "UIBarButtonItem+Styled.h"
 
-@interface CommentsViewController () <CommentViewControllerDelegate, UIActionSheetDelegate> {
+@interface CommentsViewController () <UIActionSheetDelegate> {
     NSMutableArray *_selectedComments;
 }
 
@@ -25,11 +25,6 @@
 @end
 
 @implementation CommentsViewController
-
-@synthesize wantedCommentId = _wantedCommentId;
-@synthesize commentViewController = _commentViewController;
-@synthesize currentIndexPath = _currentIndexPath;
-@synthesize lastSelectedCommentID = _lastSelectedCommentID;
 
 CGFloat const ModerateCommentsActionSheetTag = 10;
 CGFloat const ConfirmDeletionActionSheetTag = 20;
@@ -45,7 +40,6 @@ CGFloat const ConfirmDeletionActionSheetTag = 20;
 - (void)dealloc {
     WPFLogMethod();
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-    self.commentViewController.delegate = nil;
 }
 
 - (void)viewDidLoad {
@@ -73,7 +67,6 @@ CGFloat const ConfirmDeletionActionSheetTag = 20;
 
 	[super viewWillAppear:animated];
     
-    self.commentViewController.delegate = nil;
     self.commentViewController = nil;
     self.panelNavigationController.delegate = self;
 }
@@ -246,12 +239,11 @@ CGFloat const ConfirmDeletionActionSheetTag = 20;
         self.lastSelectedCommentID = comment.commentID; //store the latest user selection
         BOOL animated = ([self commentViewController] == nil) && IS_IPHONE;
         
-        self.commentViewController = [[CommentViewController alloc] init];
-        self.commentViewController.delegate = self;
-        [self.commentViewController showComment:comment];
+        CommentViewController *vc = [[CommentViewController alloc] init];
+        vc.comment = comment;
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
         
-        [self.panelNavigationController pushViewController:self.commentViewController fromViewController:self animated:animated];
+        [self.panelNavigationController pushViewController:vc fromViewController:self animated:animated];
     } else {
         [self.panelNavigationController popToViewController:self animated:NO];
     }
@@ -356,69 +348,6 @@ CGFloat const ConfirmDeletionActionSheetTag = 20;
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return NSLocalizedString(@"Moderate", nil);
-}
-
-#pragma mark -
-#pragma mark Comment navigation
-
-// TODO : REMOVE
-- (NSIndexPath *)indexPathForPreviousComment {
-    NSIndexPath *currentIndexPath = self.currentIndexPath;
-    if (currentIndexPath == nil) return nil;
-
-    NSIndexPath *indexPath = nil;
-    if (currentIndexPath.row == 0 && currentIndexPath.section > 0) {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:currentIndexPath.section - 1];
-        indexPath = [NSIndexPath indexPathForRow:sectionInfo.numberOfObjects - 1 inSection:currentIndexPath.section - 1];
-    } else if (currentIndexPath.row > 0) {
-        indexPath = [NSIndexPath indexPathForRow:currentIndexPath.row - 1 inSection:currentIndexPath.section];
-    }
-    return indexPath;
-}
-
-// TODO : REMOVE
-- (BOOL)hasPreviousComment {
-    return ([self indexPathForPreviousComment] != nil);
-}
-
-// TODO : REMOVE
-- (void)showPreviousComment {
-    NSIndexPath *indexPath = [self indexPathForPreviousComment];
-
-    if (indexPath) {
-        [self showCommentAtIndexPath:indexPath];
-	}
-}
-
-- (NSIndexPath *)indexPathForNextComment {
-    NSIndexPath *currentIndexPath = self.currentIndexPath;
-    if (currentIndexPath == nil) return nil;
-
-    NSIndexPath *indexPath = nil;
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:currentIndexPath.section];
-    if ((currentIndexPath.row + 1) >= sectionInfo.numberOfObjects) {
-        // Was last row in section
-        if ((currentIndexPath.section + 1) < [[self.resultsController sections] count]) {
-            // There are more sections
-            indexPath = [NSIndexPath indexPathForRow:0 inSection:currentIndexPath.section + 1];
-        }
-    } else {
-        indexPath = [NSIndexPath indexPathForRow:currentIndexPath.row + 1 inSection:currentIndexPath.section];
-    }
-
-    return indexPath;
-}
-
-- (BOOL)hasNextComment {
-    return ([self indexPathForNextComment] != nil);
-}
-
-- (void)showNextComment {
-    NSIndexPath *indexPath = [self indexPathForNextComment];
-
-    if (indexPath) {
-        [self showCommentAtIndexPath:indexPath];
-    }
 }
 
 #pragma mark - Subclass methods
