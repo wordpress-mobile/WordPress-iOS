@@ -66,6 +66,14 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     self.fetchedResultsController = nil;
 }
 
+- (NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationPortrait|UIInterfaceOrientationPortraitUpsideDown;
+}
+
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+
 #pragma mark - UICollectionViewDelegate/DataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -126,59 +134,9 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     return _fetchedResultsController;
 }
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-//    self.resultsChanges = [NSBlockOperation new];
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-//    __weak UICollectionView *collectionView = self.collectionView;
-//    switch (type) {
-//        case NSFetchedResultsChangeInsert:
-//        {
-//            [_resultsChanges addExecutionBlock:^{
-//                [collectionView insertItemsAtIndexPaths:@[newIndexPath]];
-//                if ([collectionView numberOfItemsInSection:indexPath.section] == 0) {
-//                    // First item, reload
-//                    [collectionView reloadData];
-//                }
-//            }];
-//            break;
-//        }
-//        case NSFetchedResultsChangeDelete:
-//        {
-//            [_resultsChanges addExecutionBlock:^{
-//                [collectionView deleteItemsAtIndexPaths:@[indexPath]];
-//                if ([collectionView numberOfItemsInSection:indexPath.section] == 1) {
-//                    // Last item, reload the collection view
-//                    [collectionView reloadData];
-//                }
-//            }];
-//            break;
-//        }
-//        case NSFetchedResultsChangeMove:
-//        {
-//            [_resultsChanges addExecutionBlock:^{
-//                [collectionView moveItemAtIndexPath:indexPath toIndexPath:newIndexPath];
-//            }];
-//            break;
-//        }
-//        case NSFetchedResultsChangeUpdate:
-//        {
-//            [_resultsChanges addExecutionBlock:^{
-//                [collectionView reloadItemsAtIndexPaths:@[indexPath]];
-//            }];
-//            break;
-//        }
-//        default:
-//            break;
-//    }
-}
-
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-//    [self.collectionView performBatchUpdates:^{
-//        [_resultsChanges start];
-//    } completion:nil];
-    // TODO above isn't working atm, causes crazy malloc errors. Related to http://openradar.appspot.com/12954582 ?
+    // The ideal would be to accumulate changes and use performBatchUpdates:
+    // but this doesn't work. Related to http://openradar.appspot.com/12954582
     // Since we're loading all themes at once anyways, this doesn't change much.
     [self.collectionView reloadData];
 }
