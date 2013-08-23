@@ -11,6 +11,7 @@
 #import "WordPressAppDelegate.h"
 
 NSString *const WordPressPublicAPI = @"http://public-api.wordpress.com/rest/v1";
+static NSDateFormatter *dateFormatter;
 
 @implementation Theme
 
@@ -39,10 +40,11 @@ NSString *const WordPressPublicAPI = @"http://public-api.wordpress.com/rest/v1";
     newTheme.isPremium = @(NO); // TODO change based on themeInfo[@"cost"][@"number"] > 0
     newTheme.tags = themeInfo[@"tags"];
     
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"YYYY-MM-dd";
-    newTheme.launchDate = [formatter dateFromString:themeInfo[@"launch_date"]];
-    formatter = nil;
+    if (!dateFormatter) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = @"YYYY-MM-dd";
+    }
+    newTheme.launchDate = [dateFormatter dateFromString:themeInfo[@"launch_date"]];
     
     return newTheme;
 }
@@ -82,6 +84,7 @@ NSString *const WordPressPublicAPI = @"http://public-api.wordpress.com/rest/v1";
                                              for (NSDictionary *t in JSON[@"themes"]) {
                                                  [self themeFromDictionary:t];
                                              }
+                                             dateFormatter = nil;
                                              if (success) {
                                                  success();
                                              }

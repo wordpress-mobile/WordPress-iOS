@@ -25,22 +25,24 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.contentView.layer.borderWidth = 0.5f;
-        self.contentView.layer.borderColor = [[UIColor grayColor] CGColor];
+        self.contentView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         self.contentView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
         
-        UIImageView *screenshot = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.bounds.size.width, 110.0f)];
+        UIImageView *screenshot = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.bounds.size.width, 112.0f)];
         self.screenshot = screenshot;
         [self.screenshot setContentMode:UIViewContentModeScaleAspectFit];
-        self.screenshot.opaque = true;
         [self.contentView addSubview:self.screenshot];
         
-        UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.screenshot.frame), self.contentView.bounds.size.width, 15.0f)];
+        UIView *titleContainer = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.screenshot.frame), self.contentView.bounds.size.width, 15.0f)];
+        titleContainer.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+        [self.contentView addSubview:titleContainer];
+        
+        UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(3, 0, titleContainer.frame.size.width-6, titleContainer.frame.size.height)];
         self.title = title;
-        self.title.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-        self.title.opaque = true;
+        self.title.backgroundColor = [UIColor clearColor];
         self.title.textColor = [UIColor whiteColor];
-        self.title.font = [UIFont systemFontOfSize:12.0f];
-        [self.contentView addSubview:self.title];
+        self.title.font = [UIFont fontWithName:@"OpenSans" size:9.0f];
+        [titleContainer addSubview:title];
     }
     return self;
 }

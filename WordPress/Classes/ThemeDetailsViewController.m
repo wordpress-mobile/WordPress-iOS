@@ -27,7 +27,7 @@
 - (id)initWithTheme:(Theme *)theme {
     self = [super init];
     if (self) {
-        self.theme = theme;
+        _theme = theme;
         self.title = theme.name;
     }
     return self;
@@ -40,8 +40,11 @@
     // This seems redundant with the title of the navbar being the same
     // Also some theme names are long. Recommend that this is just static: Details / Theme Details
     self.themeTitle.text = self.theme.name;
+    self.themeTitle.font = [UIFont fontWithName:@"OpenSans" size:20.0f];
     
     self.activateThemeButton.layer.cornerRadius = 4.0f;
+    self.activateThemeButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:16.0f];
+    self.livePreviewButton.titleLabel.font = self.activateThemeButton.titleLabel.font;
     self.livePreviewButton.layer.cornerRadius = self.activateThemeButton.layer.cornerRadius;
 }
 
