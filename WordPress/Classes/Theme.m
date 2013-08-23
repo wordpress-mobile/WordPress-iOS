@@ -8,23 +8,26 @@
  */
 
 #import "Theme.h"
-#import "WordPressAppDelegate.h"
+#import "Blog.h"
 #import "WordPressComApi.h"
+#import "WordPressAppDelegate.h"
 
 static NSDateFormatter *dateFormatter;
 
 @implementation Theme
 
-@dynamic themeId;
-@dynamic name;
-@dynamic details;
-@dynamic trendingRank;
 @dynamic popularityRank;
-@dynamic screenshotUrl;
-@dynamic version;
+@dynamic details;
+@dynamic themeId;
 @dynamic isPremium;
 @dynamic launchDate;
+@dynamic screenshotUrl;
+@dynamic trendingRank;
+@dynamic version;
 @dynamic tags;
+@dynamic name;
+@dynamic previewUrl;
+@dynamic blog;
 
 + (Theme *)themeFromDictionary:(NSDictionary *)themeInfo {
     NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
@@ -39,6 +42,7 @@ static NSDateFormatter *dateFormatter;
     newTheme.version = themeInfo[@"version"];
     newTheme.isPremium = @(NO); // TODO change based on themeInfo[@"cost"][@"number"] > 0
     newTheme.tags = themeInfo[@"tags"];
+    newTheme.previewUrl = themeInfo[@"preview_url"];
     
     if (!dateFormatter) {
         dateFormatter = [[NSDateFormatter alloc] init];
@@ -70,11 +74,12 @@ static NSDateFormatter *dateFormatter;
 
 @implementation Theme (PublicAPI)
 
-+ (void)fetchAndInsertThemesForBlogId:(NSString *)blogId success:(void (^)())success failure:(void (^)(NSError *error))failure {
-    [[WordPressComApi sharedApi] fetchThemesForBlogId:blogId success:^(AFHTTPRequestOperation *operation, id responseObject) {
++ (void)fetchAndInsertThemesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    [[WordPressComApi sharedApi] fetchThemesForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [self removeAllThemesWithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext];
         for (NSDictionary *t in responseObject[@"themes"]) {
-            [self themeFromDictionary:t];
+            Theme *theme = [self themeFromDictionary:t];
+            theme.blog = blog;
         }
         dateFormatter = nil;
         if (success) {

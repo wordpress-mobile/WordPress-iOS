@@ -52,7 +52,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    [Theme fetchAndInsertThemesForBlogId:self.blog.blogID.stringValue success:^{
+    [Theme fetchAndInsertThemesForBlog:self.blog success:^{
         
     } failure:^(NSError *error) {
         

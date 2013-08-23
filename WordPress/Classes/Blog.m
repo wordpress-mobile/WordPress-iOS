@@ -42,7 +42,7 @@
 
 @dynamic blogID, blogName, url, xmlrpc, apiKey;
 @dynamic isAdmin, hasOlderPosts, hasOlderPages;
-@dynamic posts, categories, comments; 
+@dynamic posts, categories, comments, themes;
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync, lastUpdateWarning;
 @synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
 @dynamic geolocationEnabled, options, postFormats, isActivated;
