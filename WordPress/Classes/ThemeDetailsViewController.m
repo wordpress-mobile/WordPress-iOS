@@ -10,6 +10,8 @@
 #import "ThemeDetailsViewController.h"
 #import "Theme.h"
 #import "WPImageSource.h"
+#import "WPWebViewController.h"
+#import "WPAccount.h"
 
 @interface ThemeDetailsViewController ()
 
@@ -36,6 +38,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     // This seems redundant with the title of the navbar being the same
     // Also some theme names are long. Recommend that this is just static: Details / Theme Details
@@ -64,6 +68,11 @@
 
 - (IBAction)livePreviewPressed:(id)sender {
     // TODO Open WPWebViewController for site with live preview
+    WPWebViewController *livePreviewController = [[WPWebViewController alloc] init];
+    livePreviewController.username = [WPAccount defaultWordPressComAccount].username;
+    livePreviewController.password = [WPAccount defaultWordPressComAccount].password;
+    livePreviewController.url = [NSURL URLWithString:self.theme.previewUrl];
+    [self.navigationController pushViewController:livePreviewController animated:true];
 }
 
 - (IBAction)activatePressed:(id)sender {
