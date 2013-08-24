@@ -417,11 +417,16 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 - (CGRect)normalTextFrame {
     if (IS_IPAD) {
+        CGFloat y = 143;
+        if (IS_IOS7) {
+            y = CGRectGetMaxY(titleTextField.frame);
+        }
+        CGFloat height = self.toolbar.frame.origin.y - y;
         if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
             || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-            return CGRectMake(0, 143, self.view.bounds.size.width, 517);
+            return CGRectMake(0, y, self.view.bounds.size.width, height);
         else // Portrait
-            return CGRectMake(0, 143, self.view.bounds.size.width, 753);
+            return CGRectMake(0, y, self.view.bounds.size.width, height);
     } else {
         CGFloat y = 136.f;
         if (IS_IOS7) {
@@ -471,7 +476,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 #if USE_AUTOSAVES
     [self deleteBackupPost];
 #endif
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -938,7 +943,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
                                     destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
                                          otherButtonTitles:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post."), nil];
     }
-
+    
     actionSheet.tag = 201;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     if (IS_IPAD) {

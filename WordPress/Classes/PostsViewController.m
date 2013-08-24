@@ -36,7 +36,7 @@
     
     UIBarButtonItem *composeButtonItem  = nil;
     
-    if (IS_IPHONE && [self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
+    if ([self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
         composeButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]style:UIBarButtonItemStyleBordered 
                                                              target:self 
                                                              action:@selector(showAddPostView)];
@@ -55,14 +55,10 @@
         [button addTarget:self action:@selector(showAddPostView) forControlEvents:UIControlEventTouchUpInside];
         composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     }
-    if (!IS_IPAD) {
-        UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        spacerButton.width = -12.0;
-        self.navigationItem.rightBarButtonItems = @[spacerButton, composeButtonItem];
-    } else {
-        self.toolbarItems = [NSArray arrayWithObject:composeButtonItem];
-    }
-    
+
+    UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    spacerButton.width = -12.0;
+    self.navigationItem.rightBarButtonItems = @[spacerButton, composeButtonItem];
     
     if (IS_IPAD && self.selectedIndexPath && self.postReaderViewController) {
         @try {
@@ -211,13 +207,9 @@
 		// Don't allow editing while pushing changes
 		return;
 	}
-    
-    if (IS_IPAD) {
-        self.selectedIndexPath = indexPath;
-    } else {
-        [self editPost:post];
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    }
+
+    [self editPost:post];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -285,21 +277,16 @@
 
     if (IS_IPAD)
         [self resetView];
+    
     Post *post = [Post newDraftForBlog:self.blog];
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[post createRevision]];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-    navController.navigationBar.translucent = NO;
-    navController.modalPresentationStyle = UIModalPresentationPageSheet;
-    [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
+    [self.navigationController pushViewController:editPostViewController animated:YES];
 }
 
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[apost createRevision]];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-    navController.navigationBar.translucent = NO;
-    navController.modalPresentationStyle = UIModalPresentationPageSheet;
-    [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
+    [self.navigationController pushViewController:editPostViewController animated:YES];
 }
 
 // For iPad
@@ -319,7 +306,7 @@
         post = nil;
     }
     self.postReaderViewController = [[PostViewController alloc] initWithPost:post];
-    [self.panelNavigationController pushViewController:self.postReaderViewController fromViewController:self animated:YES];
+    [self.panelNavigationController.navigationController pushViewController:self.postReaderViewController animated:YES];
 }
 
 - (void)setSelectedIndexPath:(NSIndexPath *)indexPath {
@@ -329,7 +316,6 @@
         }
     } else {
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        
 
         if (indexPath != nil) {
             @try {
@@ -343,7 +329,7 @@
             }
         } else {
             selectedIndexPath = nil;
-            if ( IS_IPHONE == NO ) //Fixes #1292. popToViewController:animated was called twice
+            if (IS_IPHONE == NO) //Fixes #1292. popToViewController:animated was called twice
                 [delegate showContentDetailViewController:nil];
         }
     }

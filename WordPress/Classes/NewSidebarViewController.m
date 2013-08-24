@@ -137,14 +137,12 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
             [self.panelNavigationController teaseSidebar];
         });
     }
-    if (!IS_IPAD) {
-        // Called here to ensure the section is opened after launch on the iPad.
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            [self restorePreservedSelection];
-            [self presentContent];
-        });
-    }
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [self restorePreservedSelection];
+        [self presentContent];
+    });
 }
 
 - (NSFetchedResultsController *)resultsController {

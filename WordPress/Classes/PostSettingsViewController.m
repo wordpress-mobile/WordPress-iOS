@@ -348,9 +348,10 @@
 #pragma mark TableView Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    NSInteger sections = 2; // Always have the status section and meta data section
+    NSInteger sections = 1; // Always have the status section
 	if (self.post) {
         sections += 1; // Post formats
+        sections += 1; // Post Metadata
         if (blogSupportsFeaturedImage)
             sections += 1;
         if (self.post.blog.geolocationEnabled || self.post.geolocation) {
@@ -362,7 +363,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        return 2;
+        if (self.post)
+            return 2; // Post Metadata
+        else
+            return 3;
     } else if (section == 1) {
 		return 3;
     } else if (section == 2) {
@@ -403,7 +407,13 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	switch (indexPath.section) {
+    NSInteger section = indexPath.section;
+    if (!self.post && section == 0) {
+        // We only show the status section for Pages
+        section = 1;
+    }
+    
+	switch (section) {
     case 0:
             switch (indexPath.row) {
                 case 0:
@@ -680,7 +690,13 @@
 
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	switch (indexPath.section) {
+    NSInteger section = indexPath.section;
+    if (!self.post && section == 0) {
+        // We only show the status section for Pages
+        section = 1;
+    }
+
+	switch (section) {
         case 0:
             switch (indexPath.row) {
                 case 0:
@@ -945,7 +961,7 @@
 
 - (void)processPhotoTypeActionSheet:(UIActionSheet *)actionSheet thatDismissedWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        [self pickPhotoFromLibrary];
+        [self pickPhotoFromLibrary:self.view.bounds];
     }
 }
 
@@ -1163,9 +1179,7 @@
 
         popoverRect.size.width = 100.0f;
         [popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        
     } else {
-    
         CGFloat width = postDetailViewController.view.frame.size.width;
         CGFloat height = 0.0;
         
@@ -1447,12 +1461,11 @@
         }
     }
     
-    if(!IS_IPAD) {
-        [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:^{
-            if (showResizeActionSheet) {
-                [self showResizeActionSheet];
-            }
-        }];
+    if(IS_IPAD) {
+        [popover dismissPopoverAnimated:YES];
+        if (showResizeActionSheet) {
+            [self showResizeActionSheet];
+        }
     }
 }
 
@@ -1793,17 +1806,24 @@
         [photoActionSheet showFromRect:frame inView:self.view animated:YES];
 	}
 	else {
-        [self pickPhotoFromLibrary];
+        [self pickPhotoFromLibrary:frame];
 	}
 }
 
-- (void)pickPhotoFromLibrary
+- (void)pickPhotoFromLibrary:(CGRect)frame
 {
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 	picker.delegate = self;
 	picker.allowsEditing = NO;
-    [self.navigationController presentViewController:picker animated:YES completion:nil];
+    
+    if (IS_IPAD) {
+        popover = [[UIPopoverController alloc] initWithContentViewController:picker];
+        [popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [[CPopoverManager instance] setCurrentPopoverController:popover];
+    } else {
+        [self.navigationController presentViewController:picker animated:YES completion:nil];
+    }
 }
 
 - (void)dismissTagsKeyboardIfAppropriate:(UITapGestureRecognizer *)gestureRecognizer

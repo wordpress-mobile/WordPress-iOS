@@ -85,21 +85,21 @@
                                 <action selector="launchDeleteCommentActionSheet" destination="-1" id="PXr-1m-6Ry"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="P8w-0p-CZ2"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="P8w-0p-CZ2"/>
                         <barButtonItem image="icon-comments-flag.png" id="qWC-ZV-ETT" userLabel="Flag Button">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="showOptionsForFlaggingComment:" destination="-1" id="Pbz-DN-TCi"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="Acp-56-0gn"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Acp-56-0gn"/>
                         <barButtonItem image="icon-comments-edit.png" id="H11-4y-LK6" userLabel="Edit Button">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="launchEditComment" destination="-1" id="Xc5-hc-eJi"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="dMn-Zl-Hb5"/>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="dMn-Zl-Hb5"/>
                         <barButtonItem image="icon-comments-reply.png" id="J9s-A0-jd6" userLabel="Reply Button">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>

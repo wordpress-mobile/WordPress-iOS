@@ -135,18 +135,26 @@
     self = [super init];
     if (self) {
         _isAppeared = NO;
-        if (IS_IPHONE) {
-            if (detailController) {
-                _navigationController = [[UINavigationController alloc] initWithRootViewController:detailController];
-            } else {
-                _navigationController = [[UINavigationController alloc] init];
-            }
-            _navigationController.navigationBar.translucent = NO;
+//        if (IS_IPHONE) {
+//            if (detailController) {
+//                _navigationController = [[UINavigationController alloc] initWithRootViewController:detailController];
+//            } else {
+//                _navigationController = [[UINavigationController alloc] init];
+//            }
+//            _navigationController.navigationBar.translucent = NO;
+//        } else {
+//            _detailViewControllers = [[NSMutableArray alloc] init];
+//            _detailViews = [[NSMutableArray alloc] init];
+//            _detailViewWidths = [[NSMutableArray alloc] init];
+//        }
+
+        if (detailController) {
+            _navigationController = [[UINavigationController alloc] initWithRootViewController:detailController];
         } else {
-            _detailViewControllers = [[NSMutableArray alloc] init];
-            _detailViews = [[NSMutableArray alloc] init];
-            _detailViewWidths = [[NSMutableArray alloc] init];
+            _navigationController = [[UINavigationController alloc] init];
         }
+        _navigationController.navigationBar.translucent = NO;
+        
         self.detailViewController = detailController;
         self.masterViewController = masterController;        
     }
@@ -184,9 +192,10 @@
         UIView *wrappedView = [self createWrapViewForViewController:self.detailViewController];
         [self.detailViewContainer addSubview:wrappedView];
     }
-    self.detailViewContainer.frame = CGRectMake(0, 0, DETAIL_WIDTH, DETAIL_HEIGHT);
+    self.detailViewContainer.frame = CGRectMake(0, 0, DETAIL_WIDE_WIDTH, DETAIL_HEIGHT);
+
     [self.detailViews addObject:self.detailViewContainer];
-    [self.detailViewWidths addObject:[NSNumber numberWithFloat:DETAIL_WIDTH]];
+    [self.detailViewWidths addObject:[NSNumber numberWithFloat:DETAIL_WIDE_WIDTH]];
     self.masterView.frame = CGRectMake(0, 0, DETAIL_LEDGE_OFFSET, self.view.frame.size.height);
     self.masterView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self.view insertSubview:self.masterViewController.view belowSubview:self.detailViewContainer];
@@ -206,30 +215,30 @@
         _stackOffset = 0;
     }
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
-    if (IS_IPAD) {
-        CGFloat height = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? self.view.bounds.size.height: self.view.bounds.size.width;
-        //The iOS simulator would pull in the wrong values
-        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && height > self.view.bounds.size.width)
-            height = self.view.bounds.size.width;
-        _popPanelsView = [[UIView alloc] initWithFrame:CGRectMake(SIDEBAR_WIDTH + 10.0f, (height / 2) - 82.0f, 200.0f, 82.0f)];
-        [_popPanelsView setBackgroundColor:[UIColor clearColor]];
-        
-        [_popPanelsView addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]]];
-        
-        UIImageView *popperImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]];
-        CGRect frame = popperImageView.frame;
-        frame.origin.x += 10.0f;
-        popperImageView.frame = frame;
-        UIImageView *trashIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UIButtonBarTrash"]];
-        trashIcon.center = CGPointMake(popperImageView.bounds.size.width/2,popperImageView.bounds.size.height/2);
-        trashIcon.alpha = 0.0f;
-        [popperImageView addSubview:trashIcon];
-        [_popPanelsView addSubview:popperImageView];
-        [_popPanelsView setAlpha:0.0f];
-        
-        [self.view addSubview:_popPanelsView];
-        [self.view sendSubviewToBack:_popPanelsView];
-    }
+//    if (IS_IPAD) {
+//        CGFloat height = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? self.view.bounds.size.height: self.view.bounds.size.width;
+//        //The iOS simulator would pull in the wrong values
+//        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && height > self.view.bounds.size.width)
+//            height = self.view.bounds.size.width;
+//        _popPanelsView = [[UIView alloc] initWithFrame:CGRectMake(SIDEBAR_WIDTH + 10.0f, (height / 2) - 82.0f, 200.0f, 82.0f)];
+//        [_popPanelsView setBackgroundColor:[UIColor clearColor]];
+//        
+//        [_popPanelsView addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]]];
+//        
+//        UIImageView *popperImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]];
+//        CGRect frame = popperImageView.frame;
+//        frame.origin.x += 10.0f;
+//        popperImageView.frame = frame;
+//        UIImageView *trashIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UIButtonBarTrash"]];
+//        trashIcon.center = CGPointMake(popperImageView.bounds.size.width/2,popperImageView.bounds.size.height/2);
+//        trashIcon.alpha = 0.0f;
+//        [popperImageView addSubview:trashIcon];
+//        [_popPanelsView addSubview:popperImageView];
+//        [_popPanelsView setAlpha:0.0f];
+//        
+//        [self.view addSubview:_popPanelsView];
+//        [self.view sendSubviewToBack:_popPanelsView];
+//    }
     if (IS_IPAD) {
         [self showSidebarAnimated:NO];
     }
@@ -306,8 +315,8 @@
 
     [self adjustFramesForRotation];
     
-    if (IS_IPAD)
-        [self setStackOffset:[self nearestValidOffsetWithVelocity:0] duration:duration];
+//    if (IS_IPAD)
+//        [self setStackOffset:[self nearestValidOffsetWithVelocity:0] duration:duration];
     
     [self relayAppearanceMethod:^(UIViewController *controller) {
         [controller willAnimateRotationToInterfaceOrientation:interfaceOrientation duration:duration];
@@ -329,13 +338,13 @@
         [controller didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     }];
     
-    // Redraw shadows. This fixes an issue where the 1..n-1 detail view's shadow can be
-    // incorrect when there are more than two detail views on the stack.
-    if (self.detailViewController) {
-        for (UIView *view in self.detailViews) {
-            [self addShadowTo:view];
-        }
-    }
+//    // Redraw shadows. This fixes an issue where the 1..n-1 detail view's shadow can be
+//    // incorrect when there are more than two detail views on the stack.
+//    if (self.detailViewController) {
+//        for (UIView *view in self.detailViews) {
+//            [self addShadowTo:view];
+//        }
+//    }
 }
 
 - (void)adjustFramesForRotation {
@@ -554,10 +563,12 @@
 
 
 - (BOOL)viewControllerExpectsWidePanel:(UIViewController *)controller {
-    if ([controller respondsToSelector:@selector(expectsWidePanel)]) {
-        return (BOOL)[controller performSelector:@selector(expectsWidePanel)];
-    }
-    return NO;
+    return YES;
+    
+//    if ([controller respondsToSelector:@selector(expectsWidePanel)]) {
+//        return (BOOL)[controller performSelector:@selector(expectsWidePanel)];
+//    }
+//    return NO;
 }
 
 
@@ -1031,18 +1042,19 @@
         newPanelWidth = IPAD_WIDE_PANEL_WIDTH;
     }
     CGFloat originX = view.frame.origin.x;
-    if (controller == _detailViewController)
+    if (controller == _detailViewController) {
         originX = 0.0f;
+    }
     view.frame = CGRectMake(originX, 0.0f, newPanelWidth, DETAIL_HEIGHT);
 }
 
 - (void)addShadowTo:(UIView *)view {
-    view.layer.masksToBounds = NO;
-    view.layer.shadowRadius = 6.0f;
-    view.layer.shadowOpacity = 0.8f;
-    view.layer.shadowColor = [[UIColor blackColor] CGColor];
-    view.layer.shadowOffset = CGSizeZero;
-    view.layer.shadowPath = [[UIBezierPath bezierPathWithRect:view.bounds] CGPath];
+//    view.layer.masksToBounds = NO;
+//    view.layer.shadowRadius = 6.0f;
+//    view.layer.shadowOpacity = 0.8f;
+//    view.layer.shadowColor = [[UIColor blackColor] CGColor];
+//    view.layer.shadowOffset = CGSizeZero;
+//    view.layer.shadowPath = [[UIBezierPath bezierPathWithRect:view.bounds] CGPath];
 }
 
 - (void)removeShadowFrom:(UIView *)view {

@@ -237,15 +237,14 @@ CGFloat const ConfirmDeletionActionSheetTag = 20;
         
         self.currentIndexPath = indexPath;
         self.lastSelectedCommentID = comment.commentID; //store the latest user selection
-        BOOL animated = ([self commentViewController] == nil) && IS_IPHONE;
         
         CommentViewController *vc = [[CommentViewController alloc] init];
         vc.comment = comment;
         [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
         
-        [self.panelNavigationController pushViewController:vc fromViewController:self animated:animated];
+        [self.panelNavigationController pushViewController:vc fromViewController:self animated:YES];
     } else {
-        [self.panelNavigationController popToViewController:self animated:NO];
+        [self.panelNavigationController popToViewController:self animated:YES];
     }
 }
 

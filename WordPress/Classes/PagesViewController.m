@@ -34,10 +34,8 @@
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
     EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[apost createRevision]];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-    navController.navigationBar.translucent = NO;
-    navController.modalPresentationStyle = UIModalPresentationPageSheet;
-    [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
+    [self.navigationController pushViewController:editPostViewController animated:YES];
+    
 }
 
 // For iPad
@@ -57,7 +55,7 @@
     }
     
     self.postReaderViewController = [[PageViewController alloc] initWithPost:page];
-    [self.panelNavigationController pushViewController:self.postReaderViewController fromViewController:self animated:YES];
+    [self.panelNavigationController.navigationController pushViewController:self.postReaderViewController animated:YES];
 }
 
 - (void)showAddPostView {
@@ -65,12 +63,10 @@
 
     if (IS_IPAD)
         [self resetView];
+    
     Page *post = [Page newDraftForBlog:self.blog];
     EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[post createRevision]];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-    navController.navigationBar.translucent = NO;
-    navController.modalPresentationStyle = UIModalPresentationPageSheet;
-    [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
+    [self.navigationController pushViewController:editPostViewController animated:YES];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
