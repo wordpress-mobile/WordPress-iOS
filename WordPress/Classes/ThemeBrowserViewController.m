@@ -47,10 +47,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [self.collectionView registerClass:[ThemeBrowserCell class] forCellWithReuseIdentifier:ThemeCellIdentifier];
     [self.collectionView registerClass:[ThemeSearchFilterHeaderView class]
             forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:SearchFilterCellIdentifier];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
     
     [Theme fetchAndInsertThemesForBlog:self.blog success:^{
         

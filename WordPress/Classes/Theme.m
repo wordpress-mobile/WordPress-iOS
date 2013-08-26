@@ -70,6 +70,10 @@ static NSDateFormatter *dateFormatter;
     }
 }
 
+- (BOOL)isCurrentTheme {
+    return [self.blog.currentThemeId isEqualToString:self.themeId];
+}
+
 @end
 
 @implementation Theme (PublicAPI)

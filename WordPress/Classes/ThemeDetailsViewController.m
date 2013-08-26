@@ -13,6 +13,9 @@
 #import "WPWebViewController.h"
 #import "WPAccount.h"
 #import "WPStyleGuide.h"
+#import "Blog.h"
+#import "WordPressComApi.h"
+#import "WordPressAppDelegate.h"
 
 @interface ThemeDetailsViewController ()
 
@@ -33,7 +36,6 @@
     self = [super init];
     if (self) {
         _theme = theme;
-        self.title = theme.name;
     }
     return self;
 }
@@ -41,52 +43,56 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.title = NSLocalizedString(@"Details", @"Theme details. Final string TBD");
+
     self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
     [self.view addSubview:self.themeControlsView];
     
-    // This seems redundant with the title of the navbar being the same
-    // Also some theme names are long. Recommend that this is just static: Details / Theme Details
     self.themeName.text = self.theme.name;
     self.themeName.font = [WPStyleGuide largePostTitleFont];
+    [self.themeName sizeToFit];
     
-    self.activateButton.layer.cornerRadius = 4.0f;
-    self.activateButton.titleLabel.font = [WPStyleGuide regularTextFont];
-    self.livePreviewButton.titleLabel.font = self.activateButton.titleLabel.font;
-    self.livePreviewButton.layer.cornerRadius = self.activateButton.layer.cornerRadius;
+    self.livePreviewButton.titleLabel.font = [WPStyleGuide regularTextFont];
+    self.livePreviewButton.layer.cornerRadius = 4.0f;
     
-    UILabel *tagsTitle = [[UILabel alloc] initWithFrame:CGRectMake(self.livePreviewButton.frame.origin.x, CGRectGetMaxY(self.themeControlsView.frame) + 10, 0, 0)];
-    tagsTitle.text = NSLocalizedString(@"Tags", @"Title for theme tags");
-    tagsTitle.font = [WPStyleGuide postTitleFont];
-    [tagsTitle sizeToFit];
-    [self.view addSubview:tagsTitle];
+    if ([self.theme isCurrentTheme]) {
+        [self showAsCurrentTheme];
+    } else {
+        self.activateButton.layer.cornerRadius = self.livePreviewButton.layer.cornerRadius;
+        self.activateButton.titleLabel.font = self.livePreviewButton.titleLabel.font;
+    }
+
+    // Should just be text and no background if iOS7
+    [self.livePreviewButton setBackgroundColor:[WPStyleGuide baseDarkBlue]];
     
-    UILabel *tags = [[UILabel alloc] initWithFrame:CGRectMake(tagsTitle.frame.origin.x, CGRectGetMaxY(tagsTitle.frame), self.view.frame.size.width-tagsTitle.frame.origin.x*2, 0)];
-    tags.text = [self.theme.tags componentsJoinedByString:@", "];
-    tags.numberOfLines = 0;
-    tags.font = [WPStyleGuide regularTextFont];
-    [tags sizeToFit];
-    [self.view addSubview:tags];
-    
-    UILabel *detailsTitle = [[UILabel alloc] initWithFrame:CGRectMake(tags.frame.origin.x, CGRectGetMaxY(tags.frame) + 20, 0, 0)];
+    UILabel *detailsTitle = [[UILabel alloc] initWithFrame:CGRectMake(self.livePreviewButton.frame.origin.x, CGRectGetMaxY(self.themeControlsView.frame) + 10, 0, 0)];
     detailsTitle.text = NSLocalizedString(@"Details", @"Title for theme details");
-        detailsTitle.font = tagsTitle.font;
+    detailsTitle.font = [WPStyleGuide postTitleFont];
     [detailsTitle sizeToFit];
     [self.view addSubview:detailsTitle];
     
-    UILabel *detailsText = [[UILabel alloc] initWithFrame:CGRectMake(detailsTitle.frame.origin.x, CGRectGetMaxY(detailsTitle.frame), tags.frame.size.width, 0)];
+    UILabel *detailsText = [[UILabel alloc] initWithFrame:CGRectMake(detailsTitle.frame.origin.x, CGRectGetMaxY(detailsTitle.frame), self.view.frame.size.width-detailsTitle.frame.origin.x*2, 0)];
     detailsText.text = self.theme.details;
     detailsText.numberOfLines = 0;
-    detailsText.font = tags.font;
+    detailsText.font = [WPStyleGuide regularTextFont];
     [detailsText sizeToFit];
     [self.view addSubview:detailsText];
     
-    ((UIScrollView*)self.view).contentSize = CGSizeMake(self.view.frame.size.width, CGRectGetMaxY(detailsText.frame));
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+    UILabel *tagsTitle = [[UILabel alloc] initWithFrame:CGRectMake(detailsTitle.frame.origin.x, CGRectGetMaxY(detailsText.frame) + 20, 0, 0)];
+    tagsTitle.text = NSLocalizedString(@"Tags", @"Title for theme tags");
+    tagsTitle.font = detailsTitle.font;
+    [tagsTitle sizeToFit];
+    [self.view addSubview:tagsTitle];
+    
+    UILabel *tags = [[UILabel alloc] initWithFrame:CGRectMake(tagsTitle.frame.origin.x, CGRectGetMaxY(tagsTitle.frame), detailsText.frame.size.width, 0)];
+    tags.text = [self.theme.tags componentsJoinedByString:@", "];
+    tags.numberOfLines = 0;
+    tags.font = detailsText.font;
+    [tags sizeToFit];
+    [self.view addSubview:tags];
+    
+    ((UIScrollView*)self.view).contentSize = CGSizeMake(self.view.frame.size.width, CGRectGetMaxY(tags.frame));
     
     // TODO replace with real image cacher
     [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:self.theme.screenshotUrl] withSuccess:^(UIImage *image) {
@@ -97,20 +103,59 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    
+    [self.screenshot removeFromSuperview];
+    self.screenshot.image = nil;
+}
+
+- (void)showAsCurrentTheme {
+    // Remove activate theme button, and live preview becomes the 'View Site' button
+    [self.livePreviewButton setTitle:NSLocalizedString(@"View Site", @"") forState:UIControlStateNormal];
+    CGRect f = self.livePreviewButton.frame;
+    f.size.width = CGRectGetMaxX(self.activateButton.frame) - self.livePreviewButton.frame.origin.x;
+    self.livePreviewButton.frame = f;
+    self.activateButton.alpha = 0;
 }
 
 - (IBAction)livePreviewPressed:(id)sender {
-    // TODO Open WPWebViewController for site with live preview
+    // Is it kosher to use the same URL if this theme is the current? It yields the same result.
     WPWebViewController *livePreviewController = [[WPWebViewController alloc] init];
     livePreviewController.username = [WPAccount defaultWordPressComAccount].username;
     livePreviewController.password = [WPAccount defaultWordPressComAccount].password;
+    [livePreviewController setWpLoginURL:[NSURL URLWithString:self.theme.blog.loginUrl]];
     livePreviewController.url = [NSURL URLWithString:self.theme.previewUrl];
     [self.navigationController pushViewController:livePreviewController animated:true];
 }
 
 - (IBAction)activatePressed:(id)sender {
-    // TODO Activate theme on site
+    __block UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    [loading startAnimating];
+    loading.center = CGPointMake(self.activateButton.bounds.size.width/2, self.activateButton.bounds.size.height/2);
+    [self.activateButton setTitle:@"" forState:UIControlStateNormal];
+    [self.activateButton addSubview:loading];
     
+    [[WordPressComApi sharedApi] activateThemeForBlogId:self.theme.blog.blogID.stringValue themeId:self.theme.themeId success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [loading removeFromSuperview];
+        
+        [UIView animateWithDuration:0.3 delay:0.2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+            [self showAsCurrentTheme];
+        } completion:nil];
+        
+        self.theme.blog.currentThemeId = self.theme.themeId;
+        NSError *error;
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext save:&error];
+        if (error) {
+            WPFLog(@"Error saving current theme to blog %@", error);
+        }
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [loading removeFromSuperview];
+        
+        // TODO Message of some sort and revert state
+        WPFLog(@"Theme activation failed for %@ with error %@", self.theme.name, error);
+        [WPError showAlertWithError:error];
+    }];
 }
+
 
 @end

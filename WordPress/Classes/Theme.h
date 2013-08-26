@@ -26,6 +26,8 @@
 @property (nonatomic, retain) NSString * previewUrl;
 @property (nonatomic, retain) Blog *blog;
 
+- (BOOL)isCurrentTheme;
+
 @end
 
 @interface Theme (WordPressComApi)

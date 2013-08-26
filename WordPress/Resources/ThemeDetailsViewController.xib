@@ -23,8 +23,8 @@
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
-        <view contentMode="scaleToFill" id="3CU-sT-LO6" userLabel="Theme controls">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="319"/>
+        <view autoresizesSubviews="NO" contentMode="scaleToFill" id="3CU-sT-LO6" userLabel="Theme controls">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="363"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tcq-Ue-RSx" userLabel="Theme name">
@@ -35,11 +35,11 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7t5-hU-3n4">
-                    <rect key="frame" x="7" y="56" width="306" height="195"/>
+                    <rect key="frame" x="0.0" y="62" width="320" height="240"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7xB-8l-c4O">
-                    <rect key="frame" x="7" y="263" width="148" height="43"/>
+                <button autoresizesSubviews="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7xB-8l-c4O">
+                    <rect key="frame" x="7" y="311" width="148" height="43"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" name="controlShadowColor" catalog="System" colorSpace="catalog"/>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -52,7 +52,7 @@
                     </connections>
                 </button>
                 <button contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SpD-xm-1Vb">
-                    <rect key="frame" x="165" y="263" width="148" height="43"/>
+                    <rect key="frame" x="165" y="311" width="148" height="43"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" name="controlShadowColor" catalog="System" colorSpace="catalog"/>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -61,7 +61,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="activatePressed:" destination="-1" eventType="touchUpInside" id="lgk-pF-7Si"/>
+                        <action selector="activatePressed:" destination="-1" eventType="touchUpInside" id="Tbc-jg-VUH"/>
                     </connections>
                 </button>
             </subviews>

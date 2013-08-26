@@ -19,6 +19,8 @@
 + (UIFont *)regularTextFont;
 
 // Colors
++ (UIColor *)baseLightBlue;
++ (UIColor *)baseDarkBlue;
 + (UIColor *)lightBlue;
 + (UIColor *)newKidOnTheBlockBlue;
 + (UIColor *)midnightBlue;
