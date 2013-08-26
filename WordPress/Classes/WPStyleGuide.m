@@ -16,9 +16,25 @@
     return [UIFont fontWithName:@"OpenSans-Light" size:32.0];
 }
 
++ (NSDictionary *)largePostTitleAttributes
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.minimumLineHeight = 35;
+    paragraphStyle.maximumLineHeight = 35;
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self largePostTitleFont]};
+}
+
 + (UIFont *)postTitleFont
 {
     return [UIFont fontWithName:@"OpenSans" size:18.0];
+}
+
++ (NSDictionary *)postTitleAttributes
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.minimumLineHeight = 20;
+    paragraphStyle.maximumLineHeight = 20;
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self postTitleFont]};
 }
 
 + (UIFont *)subtitleFont
@@ -26,9 +42,25 @@
     return [UIFont fontWithName:@"OpenSans" size:12.0];
 }
 
++ (NSDictionary *)subtitleAttributes
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.minimumLineHeight = 14;
+    paragraphStyle.maximumLineHeight = 14;
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self subtitleFont]};
+}
+
 + (UIFont *)subtitleFontItalic
 {
     return [UIFont fontWithName:@"OpenSans-Italic" size:12.0];
+}
+
++ (NSDictionary *)subtitleItalicAttributes
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.minimumLineHeight = 14;
+    paragraphStyle.maximumLineHeight = 14;
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self subtitleFontItalic]};
 }
 
 + (UIFont *)labelFont
@@ -36,9 +68,25 @@
     return [UIFont fontWithName:@"OpenSans-Bold" size:10.0];
 }
 
++ (NSDictionary *)labelAttributes
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.minimumLineHeight = 12;
+    paragraphStyle.maximumLineHeight = 12;
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self labelFont]};
+}
+
 + (UIFont *)regularTextFont
 {
     return [UIFont fontWithName:@"OpenSans" size:16.0];
+}
+
++ (NSDictionary *)regularTextAttributes
+{
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.minimumLineHeight = 24;
+    paragraphStyle.maximumLineHeight = 24;
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self regularTextFont]};
 }
 
 #pragma mark - Colors
