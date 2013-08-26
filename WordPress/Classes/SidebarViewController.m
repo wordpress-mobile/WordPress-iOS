@@ -33,7 +33,6 @@
 #import "NewGeneralWalkthroughViewController.h"
 #import "UIColor+Helpers.h"
 #import "ThemeBrowserViewController.h"
-#import "NewSidebarViewController.h"
 
 // Height for reader/notification/blog cells
 #define SIDEBAR_CELL_HEIGHT 51.0f

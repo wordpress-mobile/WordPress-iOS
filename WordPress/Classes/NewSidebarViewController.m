@@ -23,6 +23,7 @@
 #import "WPAccount.h"
 #import "QuickPhotoViewController.h"
 #import "GeneralWalkthroughViewController.h"
+#import "ThemeBrowserViewController.h"
 
 @interface NewSidebarViewController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIActionSheetDelegate> {
     Blog *_currentlyOpenedBlog;
@@ -43,7 +44,7 @@
 
 @implementation NewSidebarViewController
 
-CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
+CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -351,6 +352,10 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
             image = [UIImage imageNamed:@"icon-menu-stats"];
             selectedImage = [UIImage imageNamed:@"icon-menu-stats-active"];
         } else if (row == 4) {
+            text = NSLocalizedString(@"Themes", @"Menu item for themes");
+            image = [UIImage imageNamed:@"icon-menu-stats"]; // TODO Replace with themes icon
+            selectedImage = [UIImage imageNamed:@"icon-menu-stats-active"];
+        } else if (row == 5) {
             text = @"View Site";
             image = [UIImage imageNamed:@"icon-menu-viewsite"];
             selectedImage = [UIImage imageNamed:@"icon-menu-viewsite-active"];
@@ -433,6 +438,9 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
             [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedStats forEvent:StatsEventAppClosed];
             
             controllerClass =  [StatsWebViewController class];
+        } else if ([self isRowForThemes:indexPath]) {
+            // TODO Stats
+            controllerClass = [ThemeBrowserViewController class];
         } else if ([self isRowForViewSite:indexPath]) {
             [self showViewSiteForBlog:blog andClosingSidebar:closingSidebar];
         } else {
@@ -532,6 +540,11 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
     return indexPath.row == 2;
 }
 
+- (BOOL)isRowForThemes:(NSIndexPath *)indexPath
+{
+    return indexPath.row == 4;
+}
+
 - (BOOL)isRowForStats:(NSIndexPath *)indexPath
 {
     return indexPath.row == 3;
@@ -539,7 +552,7 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
 
 - (BOOL)isRowForViewSite:(NSIndexPath *)indexPath
 {
-    return indexPath.row == 4;
+    return indexPath.row == 5;
 }
 
 - (void)showSettings

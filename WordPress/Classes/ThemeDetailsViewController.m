@@ -12,13 +12,16 @@
 #import "WPImageSource.h"
 #import "WPWebViewController.h"
 #import "WPAccount.h"
+#import "WPStyleGuide.h"
 
 @interface ThemeDetailsViewController ()
 
-@property (weak, nonatomic) IBOutlet UILabel *themeTitle;
-@property (weak, nonatomic) IBOutlet UIImageView *themePreviewImageView;
+@property (weak, nonatomic) IBOutlet UIView *themeControlsView;
+@property (weak, nonatomic) IBOutlet UILabel *themeName;
+@property (weak, nonatomic) IBOutlet UIImageView *screenshot;
 @property (weak, nonatomic) IBOutlet UIButton *livePreviewButton;
-@property (weak, nonatomic) IBOutlet UIButton *activateThemeButton;
+@property (weak, nonatomic) IBOutlet UIButton *activateButton;
+
 @property (nonatomic, strong) Theme *theme;
 @property (nonatomic, weak) UILabel *tagCloud;
 
@@ -41,29 +44,59 @@
     
     self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
+    [self.view addSubview:self.themeControlsView];
+    
     // This seems redundant with the title of the navbar being the same
     // Also some theme names are long. Recommend that this is just static: Details / Theme Details
-    self.themeTitle.text = self.theme.name;
-    self.themeTitle.font = [UIFont fontWithName:@"OpenSans" size:20.0f];
+    self.themeName.text = self.theme.name;
+    self.themeName.font = [WPStyleGuide largePostTitleFont];
     
-    self.activateThemeButton.layer.cornerRadius = 4.0f;
-    self.activateThemeButton.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:16.0f];
-    self.livePreviewButton.titleLabel.font = self.activateThemeButton.titleLabel.font;
-    self.livePreviewButton.layer.cornerRadius = self.activateThemeButton.layer.cornerRadius;
+    self.activateButton.layer.cornerRadius = 4.0f;
+    self.activateButton.titleLabel.font = [WPStyleGuide regularTextFont];
+    self.livePreviewButton.titleLabel.font = self.activateButton.titleLabel.font;
+    self.livePreviewButton.layer.cornerRadius = self.activateButton.layer.cornerRadius;
+    
+    UILabel *tagsTitle = [[UILabel alloc] initWithFrame:CGRectMake(self.livePreviewButton.frame.origin.x, CGRectGetMaxY(self.themeControlsView.frame) + 10, 0, 0)];
+    tagsTitle.text = NSLocalizedString(@"Tags", @"Title for theme tags");
+    tagsTitle.font = [WPStyleGuide postTitleFont];
+    [tagsTitle sizeToFit];
+    [self.view addSubview:tagsTitle];
+    
+    UILabel *tags = [[UILabel alloc] initWithFrame:CGRectMake(tagsTitle.frame.origin.x, CGRectGetMaxY(tagsTitle.frame), self.view.frame.size.width-tagsTitle.frame.origin.x*2, 0)];
+    tags.text = [self.theme.tags componentsJoinedByString:@", "];
+    tags.numberOfLines = 0;
+    tags.font = [WPStyleGuide regularTextFont];
+    [tags sizeToFit];
+    [self.view addSubview:tags];
+    
+    UILabel *detailsTitle = [[UILabel alloc] initWithFrame:CGRectMake(tags.frame.origin.x, CGRectGetMaxY(tags.frame) + 20, 0, 0)];
+    detailsTitle.text = NSLocalizedString(@"Details", @"Title for theme details");
+        detailsTitle.font = tagsTitle.font;
+    [detailsTitle sizeToFit];
+    [self.view addSubview:detailsTitle];
+    
+    UILabel *detailsText = [[UILabel alloc] initWithFrame:CGRectMake(detailsTitle.frame.origin.x, CGRectGetMaxY(detailsTitle.frame), tags.frame.size.width, 0)];
+    detailsText.text = self.theme.details;
+    detailsText.numberOfLines = 0;
+    detailsText.font = tags.font;
+    [detailsText sizeToFit];
+    [self.view addSubview:detailsText];
+    
+    ((UIScrollView*)self.view).contentSize = CGSizeMake(self.view.frame.size.width, CGRectGetMaxY(detailsText.frame));
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    // TODO replace with real image cacher
     [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:self.theme.screenshotUrl] withSuccess:^(UIImage *image) {
-        self.themePreviewImageView.image = image;
+        self.screenshot.image = image;
     } failure:nil];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (IBAction)livePreviewPressed:(id)sender {
