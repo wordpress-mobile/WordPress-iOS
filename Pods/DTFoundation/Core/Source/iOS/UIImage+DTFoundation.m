@@ -7,10 +7,60 @@
 //
 
 #import "UIImage+DTFoundation.h"
+#import "DTLog.h"
 
 @implementation UIImage (DTFoundation)
 
-#pragma mark Loading
+#pragma mark - Generating Images
+
++ (UIImage *)imageWithSolidColor:(UIColor *)color size:(CGSize)size
+{
+	NSParameterAssert(color);
+	NSAssert(!CGSizeEqualToSize(size, CGSizeZero), @"Size cannot be CGSizeZero");
+
+	CGRect rect = CGRectMake(0, 0, size.width, size.height);
+	
+	// Create a context depending on given size
+	UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+	
+	// Fill it with your color
+	[color setFill];
+	UIRectFill(rect);
+	
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	return image;
+}
+
+- (UIImage *)imageMaskedAndTintedWithColor:(UIColor *)color
+{
+	NSParameterAssert(color);
+	
+	UIGraphicsBeginImageContextWithOptions(self.size, NO, self.scale);
+	CGContextRef ctx = UIGraphicsGetCurrentContext();
+	
+	CGRect bounds = (CGRect){CGPointZero, self.size};
+	
+	// do a vertical flip so that image is correct
+	CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, bounds.size.height);
+	CGContextConcatCTM(ctx, flipVertical);
+	
+	// create mask of image
+	CGContextClipToMask(ctx, bounds, self.CGImage);
+		
+	// fill with given color
+	[color setFill];
+	CGContextFillRect(ctx, bounds);
+	
+	// get back new image
+	UIImage *retImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	return retImage;
+}
+
+#pragma mark - Loading
 
 + (UIImage *)imageWithContentsOfURL:(NSURL *)URL cachePolicy:(NSURLRequestCachePolicy)cachePolicy error:(NSError **)error
 {
@@ -23,12 +73,12 @@
 	if (cacheResponse)
 	{
 		data = [cacheResponse data];
-		NSLog(@"cache hit");
+		DTLogDebug(@"cache hit for %@", [URL absoluteString]);
 	}
-	else {
-		NSLog(@"cache fail");
+	else
+	{
+		DTLogDebug(@"cache fail for %@", [URL absoluteString]);
 	}
-
 	
 	NSURLResponse *response;
 	data = [NSURLConnection sendSynchronousRequest:request
@@ -37,7 +87,7 @@
 	
 	if (!data)
 	{
-		NSLog(@"Error loading image at %@", URL);
+		DTLogError(@"Error loading image at %@", URL);
 		return nil;
 	}
 	

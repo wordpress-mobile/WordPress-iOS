@@ -11,6 +11,25 @@
  */
 @interface UIImage (DTFoundation)
 
+/**
+ @name Generating Images
+ */
+
+/**
+ Creates an image filled with a solid color
+ @param color The solid color that fills the image
+ @param size The size of the image
+ @returns The image filled with given color and given size
+ */
++ (UIImage *)imageWithSolidColor:(UIColor *)color size:(CGSize)size;
+
+
+/**
+ Creates an image filled with a tint color using the receiver as image mask. The resulting image ignores the receiver's color values and instead uses the alpha values combined with the passed color.
+ @param color The color to use for tinting
+ @returns A new image
+ */
+- (UIImage *)imageMaskedAndTintedWithColor:(UIColor *)color;
 
 /**
  @name Loading from RemoteURLs

@@ -138,14 +138,12 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
             [self.panelNavigationController teaseSidebar];
         });
     }
-    if (!IS_IPAD) {
-        // Called here to ensure the section is opened after launch on the iPad.
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
-            [self restorePreservedSelection];
-            [self presentContent];
-        });
-    }
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [self restorePreservedSelection];
+        [self presentContent];
+    });
 }
 
 - (NSFetchedResultsController *)resultsController {
@@ -277,22 +275,26 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
         NSString *text;
         UIImage *image;
         UIImage *selectedImage;
-        if (row == 0) {
-            text = @"Settings";
-            image = [UIImage imageNamed:@"icon-menu-settings"];
-            selectedImage = [UIImage imageNamed:@"icon-menu-settings-active"];
-        } else if (row == 1) {
-            text = @"Reader";
-            image = [UIImage imageNamed:@"icon-menu-reader"];
-            selectedImage = [UIImage imageNamed:@"icon-menu-reader-active"];
-        } else if (row == 2) {
-            text = @"Notifications";
-            image = [UIImage imageNamed:@"icon-menu-notifications"];
-            selectedImage = [UIImage imageNamed:@"icon-menu-notifications-active"];
-            if (_unseenNotificationCount > 0) {
-                cell.showsBadge = YES;
-                cell.badgeNumber = _unseenNotificationCount;
-            }
+        switch (row) {
+            case 0:
+                text = NSLocalizedString(@"Settings", nil);
+                image = [UIImage imageNamed:@"icon-menu-settings"];
+                selectedImage = [UIImage imageNamed:@"icon-menu-settings-active"];
+                break;
+            case 1:
+                text = NSLocalizedString(@"Reader", nil);
+                image = [UIImage imageNamed:@"icon-menu-reader"];
+                selectedImage = [UIImage imageNamed:@"icon-menu-reader-active"];
+                break;
+            case 2:
+                text = NSLocalizedString(@"Notifications", nil);
+                image = [UIImage imageNamed:@"icon-menu-notifications"];
+                selectedImage = [UIImage imageNamed:@"icon-menu-notifications-active"];
+                if (_unseenNotificationCount > 0) {
+                    cell.showsBadge = YES;
+                    cell.badgeNumber = _unseenNotificationCount;
+                }
+                break;
         }
         
         cell.cellBackgroundColor = SidebarTableViewCellBackgroundColorDark;
@@ -316,49 +318,61 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
         NSString *text;
         UIImage *image;
         UIImage *selectedImage;
-        if (row == 0) {
-            text = @"Posts";
-            image = [UIImage imageNamed:@"icon-menu-posts"];
-            selectedImage = [UIImage imageNamed:@"icon-menu-posts-active"];
-            cell.firstAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-quickphoto"];
-            __weak UITableViewCell *weakCell = cell;
-            cell.tappedFirstAccessoryView = ^{
-                [self showQuickPhotoForFrame:weakCell.frame];
-            };
-            cell.secondAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-add"];
-            cell.tappedSecondAccessoryView = ^{
-                [self quickAddNewPost:indexPath];
-            };
-        } else if (row == 1) {
-            text = @"Pages";
-            image = [UIImage imageNamed:@"icon-menu-pages"];
-            selectedImage = [UIImage imageNamed:@"icon-menu-pages-active"];
-            cell.secondAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-add"];
-            cell.tappedSecondAccessoryView = ^{
-                [self quickAddNewPost:indexPath];
-            };
-        } else if (row == 2) {
-            text = @"Comments";
-            image = [UIImage imageNamed:@"icon-menu-comments"];
-            selectedImage = [UIImage imageNamed:@"icon-menu-comments-active"];
-            Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:indexPath.section];
-            int numberOfPendingComments = [blog numberOfPendingComments];
-            if (numberOfPendingComments > 0) {
-                cell.showsBadge = true;
-                cell.badgeNumber = numberOfPendingComments;
+        switch (row) {
+            case 0: {
+                text = NSLocalizedString(@"Posts", nil);
+                image = [UIImage imageNamed:@"icon-menu-posts"];
+                selectedImage = [UIImage imageNamed:@"icon-menu-posts-active"];
+                cell.firstAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-quickphoto"];
+                __weak UITableViewCell *weakCell = cell;
+                cell.tappedFirstAccessoryView = ^{
+                    [self showQuickPhotoForFrame:weakCell.frame];
+                };
+                cell.secondAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-add"];
+                cell.tappedSecondAccessoryView = ^{
+                    [self quickAddNewPost:indexPath];
+                };
+                break;
             }
-        } else if (row == 3) {
-            text = @"Stats";
-            image = [UIImage imageNamed:@"icon-menu-stats"];
-            selectedImage = [UIImage imageNamed:@"icon-menu-stats-active"];
-        } else if (row == 4) {
-            text = NSLocalizedString(@"Themes", @"Menu item for themes");
-            image = [UIImage imageNamed:@"icon-menu-stats"]; // TODO Replace with themes icon
-            selectedImage = [UIImage imageNamed:@"icon-menu-stats-active"];
-        } else if (row == 5) {
-            text = @"View Site";
-            image = [UIImage imageNamed:@"icon-menu-viewsite"];
-            selectedImage = [UIImage imageNamed:@"icon-menu-viewsite-active"];
+            case 1: {
+                text = NSLocalizedString(@"Pages", nil);
+                image = [UIImage imageNamed:@"icon-menu-pages"];
+                selectedImage = [UIImage imageNamed:@"icon-menu-pages-active"];
+                cell.secondAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-add"];
+                cell.tappedSecondAccessoryView = ^{
+                    [self quickAddNewPost:indexPath];
+                };
+                break;
+            }
+            case 2: {
+                text = NSLocalizedString(@"Comments", nil);
+                image = [UIImage imageNamed:@"icon-menu-comments"];
+                selectedImage = [UIImage imageNamed:@"icon-menu-comments-active"];
+                Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:indexPath.section];
+                int numberOfPendingComments = [blog numberOfPendingComments];
+                if (numberOfPendingComments > 0) {
+                    cell.showsBadge = true;
+                    cell.badgeNumber = numberOfPendingComments;
+                }
+                break;
+            }
+            case 3:
+                text = NSLocalizedString(@"Stats", nil);
+                image = [UIImage imageNamed:@"icon-menu-stats"];
+                selectedImage = [UIImage imageNamed:@"icon-menu-stats-active"];
+                break;
+            case 4:
+                text = NSLocalizedString(@"View Site", nil);
+                image = [UIImage imageNamed:@"icon-menu-viewsite"];
+                selectedImage = [UIImage imageNamed:@"icon-menu-viewsite-active"];
+                break;
+            case 5: // TODO Determine if we can switch themes as a user
+                text = NSLocalizedString(@"Themes", @"Menu item for themes");
+                image = [UIImage imageNamed:@"icon-menu-stats"]; // TODO Replace with themes icon
+                selectedImage = [UIImage imageNamed:@"icon-menu-stats-active"];
+                break;
+            default:
+                break;
         }
         
         cell.cellBackgroundColor = SidebarTableViewCellBackgroundColorLight;

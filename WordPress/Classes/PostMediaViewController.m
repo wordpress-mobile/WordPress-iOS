@@ -109,7 +109,11 @@
     }
     
     addMediaActionSheet.tag = TAG_ACTIONSHEET_PHOTO_SELECTION_PROMPT;
-    [addMediaActionSheet showInView:self.view];
+    if (IS_IPAD) {
+        [addMediaActionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+    } else {
+        [addMediaActionSheet showInView:self.view];
+    }
 }
 
 
@@ -364,8 +368,12 @@
 	
     actionSheet.tag = TAG_ACTIONSHEET_VIDEO;
     actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-    if (IS_IPAD) { 
-        [actionSheet showFromBarButtonItem:postDetailViewController.movieButton animated:YES];
+    if (IS_IPAD) {
+        if (IS_IOS7) {
+            [actionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+        } else {
+            [actionSheet showFromBarButtonItem:postDetailViewController.movieButton animated:YES];
+        }
     } else {
         [actionSheet showInView:postDetailViewController.view];
     }
@@ -576,12 +584,14 @@
 			UIBarButtonItem *barButton = postDetailViewController.photoButton;
 			if (addPopover == nil) {
 				addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
-                if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
+                if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)] && !IS_IOS7) {
                     addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
                 }
 				addPopover.delegate = self;
 			}
-			
+            if (IS_IOS7) {
+                barButton = self.navigationItem.rightBarButtonItem;
+            }
             if (!CGRectIsEmpty(actionSheetRect)) {
                 [addPopover presentPopoverFromRect:actionSheetRect inView:self.postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
             } else {
@@ -624,7 +634,7 @@
 	}
 	
 	if(IS_IPAD == YES) {
-		UIBarButtonItem *barButton = postDetailViewController.movieButton;	
+		UIBarButtonItem *barButton = IS_IOS7 ? self.navigationItem.rightBarButtonItem : postDetailViewController.movieButton;
 		if (addPopover == nil) {
 			addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
             if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
@@ -690,10 +700,13 @@
 		if(IS_IPAD == YES) {
             if (addPopover == nil) {
                 addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
-                if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
+                if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)] && !IS_IOS7) {
                     addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
                 }
                 addPopover.delegate = self;
+            }
+            if (IS_IOS7) {
+                barButton = self.navigationItem.rightBarButtonItem;
             }
             if (!CGRectIsEmpty(actionSheetRect)) {
                 [addPopover presentPopoverFromRect:actionSheetRect inView:self.postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -813,7 +826,11 @@
 		}
 		
         if (IS_IOS7) {
-            [resizeActionSheet showInView:self.view];
+            if (IS_IPAD) {
+                [resizeActionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+            } else {
+                [resizeActionSheet showInView:self.view];
+            }
         } else {
             [resizeActionSheet showInView:postDetailViewController.view];
         }
@@ -1097,7 +1114,9 @@
                     [self showResizeActionSheet];
                 }
             }];
-		}
+		} else {
+            [self showResizeActionSheet];
+        }
 	}
 	
 	if(IS_IPAD){

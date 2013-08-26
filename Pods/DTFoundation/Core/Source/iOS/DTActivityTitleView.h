@@ -1,12 +1,10 @@
 //
-// Created by rene on 12.09.12.
+//  DTActivityTitleView.h
+//  DTFoundation
 //
-// To change the template use AppCode | Preferences | File Templates.
+//  Created by Rene Pirringer on 12.09.12.
+//  Copyright (c) 2012 Cocoanetics. All rights reserved.
 //
-
-
-#import <Foundation/Foundation.h>
-
 
 /**
  Alternative view for showing titles with a configurable activity indicator

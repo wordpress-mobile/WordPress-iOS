@@ -1,20 +1,20 @@
 //
-// Created by rene on 12.09.12.
+//  DTActivityTitleView.m
+//  DTFoundation
 //
-// To change the template use AppCode | Preferences | File Templates.
+//  Created by Rene Pirringer on 12.09.12.
+//  Copyright (c) 2012 Cocoanetics. All rights reserved.
 //
-
 
 #import "DTActivityTitleView.h"
-
 
 @interface DTActivityTitleView ()
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, strong) UILabel *titleLabel;
 
-
 @end
+
 
 @implementation DTActivityTitleView
 
