@@ -910,6 +910,9 @@
 
 - (void)closeSidebar {
     [self closeSidebarAnimated:YES];
+    if (IS_IOS7) {
+        [self showStatusBarForiOS7];
+    }
 }
 
 - (void)closeSidebarAnimated:(BOOL)animated {
@@ -934,11 +937,24 @@
 }
 
 - (void)toggleSidebar {
+    if (IS_IOS7) {
+        [self hideStatusBarForiOS7];
+    }
     if (!self.detailTapper) {
         [self showSidebar];
     } else {
         [self closeSidebar];
     }
+}
+
+- (void)hideStatusBarForiOS7
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+}
+
+- (void)showStatusBarForiOS7
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 
 - (void)teaseSidebar {

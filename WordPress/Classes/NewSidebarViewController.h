@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewSidebarMenuViewController : UIViewController
+@class Post;
+@interface NewSidebarViewController : UIViewController
+
+- (void)showCommentWithId:(NSNumber *)itemId blogId:(NSNumber *)blogId;
+- (void)uploadQuickPhoto:(Post *)post;
 
 @end

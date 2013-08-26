@@ -31,6 +31,27 @@ NSString *const GravatarDefault = @"gravatar.png";
     [self setImageWithURL:[self gravatarURLForEmail:emailAddress] placeholderImage:gravatarDefaultImage];
 }
 
+- (void)setImageWithGravatarEmail:(NSString *)emailAddress fallbackImage:(UIImage *)fallbackImage
+{
+    static UIImage *gravatarDefaultImage;
+    if (gravatarDefaultImage == nil) {
+        gravatarDefaultImage = [UIImage imageNamed:GravatarDefault];
+    }
+    
+    UIImage *defaultImage = fallbackImage;
+    if (defaultImage == nil) {
+        defaultImage = gravatarDefaultImage;
+    }
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[self gravatarURLForEmail:emailAddress]];
+    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    
+    __weak UIImageView *weakSelf = self;
+    [self setImageWithURLRequest:request placeholderImage:fallbackImage success:nil failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error){
+        weakSelf.image = fallbackImage;
+    }];
+}
+
 - (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl {
     BOOL wpcom = ([blavatarUrl rangeOfString:@".wordpress.com"].location != NSNotFound);
     [self setImageWithBlavatarUrl:blavatarUrl isWPcom:wpcom];

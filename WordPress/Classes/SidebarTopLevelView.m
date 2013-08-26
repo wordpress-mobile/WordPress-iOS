@@ -35,6 +35,10 @@
         NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view]|" options:0 metrics:0 views:views];
         [self addConstraints:verticalConstraints];
         
+        UITapGestureRecognizer *gr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedView)];
+        gr.numberOfTapsRequired = 1;
+        [self addGestureRecognizer:gr];
+        
     }
     return self;
 }
@@ -66,6 +70,15 @@
     
     NSURL *blogURL = [NSURL URLWithString:self.blavatarUrl];
     [self.blavatarImage setImageWithBlavatarUrl:[blogURL host] isWPcom:self.isWPCom];
+}
+
+#pragma mark - Private Methods
+
+- (void)tappedView
+{
+    if (self.onTap != nil) {
+        self.onTap();
+    }
 }
 
 @end

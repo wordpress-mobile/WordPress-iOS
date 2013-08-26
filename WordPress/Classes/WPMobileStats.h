@@ -135,8 +135,6 @@ extern NSString *const StatsEventCommentDetailFlagAsSpam;
 extern NSString *const StatsEventCommentDetailEditComment;
 extern NSString *const StatsEventCommentDetailClickedReplyToComment;
 extern NSString *const StatsEventCommentDetailRepliedToComment;
-extern NSString *const StatsPropertyCommentDetailShowPreviousComment;
-extern NSString *const StatsPropertyCommentDetailShowNextComment;
 
 
 // Settings

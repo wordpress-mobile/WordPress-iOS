@@ -47,9 +47,21 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [super touchesBegan:touches withEvent:event];
+    UITouch *touch = [touches anyObject];
+    CGPoint touchPoint = [touch locationInView:self];
+    
+    if (CGRectContainsPoint(self.accessoryViewFirstImageView.frame, touchPoint)) {
+        if (self.tappedFirstAccessoryView != nil) {
+            self.tappedFirstAccessoryView();
+        }
+    } else if (CGRectContainsPoint(self.accessoryViewSecondImageView.frame, touchPoint)) {
+        if (self.tappedSecondAccessoryView != nil) {
+            self.tappedSecondAccessoryView();
+        }
+    } else {
+        [super touchesBegan:touches withEvent:event];
+    }
 }
-
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
@@ -108,6 +120,15 @@
         }
         [self setNeedsDisplay];
     }
+}
+
+- (void)prepareForReuse
+{
+    self.showsBadge = NO;
+    self.badgeNumber = 0;
+    self.tappedFirstAccessoryView = nil;
+    self.tappedSecondAccessoryView = nil;
+    self.selected = NO;
 }
 
 - (void)layoutSubviews
