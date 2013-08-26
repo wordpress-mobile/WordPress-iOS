@@ -554,17 +554,17 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
     return indexPath.row == 2;
 }
 
-- (BOOL)isRowForThemes:(NSIndexPath *)indexPath
-{
-    return indexPath.row == 4;
-}
-
 - (BOOL)isRowForStats:(NSIndexPath *)indexPath
 {
     return indexPath.row == 3;
 }
 
 - (BOOL)isRowForViewSite:(NSIndexPath *)indexPath
+{
+    return indexPath.row == 4;
+}
+
+- (BOOL)isRowForThemes:(NSIndexPath *)indexPath
 {
     return indexPath.row == 5;
 }
