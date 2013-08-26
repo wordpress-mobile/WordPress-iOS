@@ -14,6 +14,7 @@
 #import "ReplyToCommentViewController.h"
 #import "UIColor+Helpers.h"
 #import "UIBarButtonItem+Styled.h"
+#import "WPStyleGuide.h"
 
 @interface CommentsViewController () <UIActionSheetDelegate> {
     NSMutableArray *_selectedComments;
@@ -28,6 +29,8 @@
 
 CGFloat const ModerateCommentsActionSheetTag = 10;
 CGFloat const ConfirmDeletionActionSheetTag = 20;
+CGFloat const CommentsStandardOffset = 16.0;
+CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (id)init {
     self = [super init];
@@ -302,9 +305,29 @@ CGFloat const ConfirmDeletionActionSheetTag = 20;
     return comment;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-    return [Comment titleForStatus:[sectionInfo name]];
+    NSString *title = [Comment titleForStatus:[sectionInfo name]];
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), CommentsSectionHeaderHeight)];
+    view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+
+    UILabel *label = [[UILabel alloc] init];
+    label.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    label.text = [title uppercaseString];
+    label.font = [WPStyleGuide labelFont];
+    [label sizeToFit];
+    CGFloat y = (CGRectGetHeight(view.frame) - CGRectGetHeight(label.frame))/2.0;
+    label.frame = CGRectMake(16, y, CGRectGetWidth(label.frame), CGRectGetHeight(label.frame));
+    [view addSubview:label];
+
+    return view;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return CommentsSectionHeaderHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -6,6 +6,7 @@
 #import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
+#import "WPStyleGuide.h"
 
 #define TAG_OFFSET 1010
 
@@ -74,7 +75,7 @@
     
     self.infiniteScrollEnabled = YES;
     
-    self.tableView.backgroundColor = [UIColor colorWithRed:238/255.0f green:238/255.0f blue:238/255.0f alpha:1.0f];
+    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 }
 
 - (void)viewDidAppear:(BOOL)animated
