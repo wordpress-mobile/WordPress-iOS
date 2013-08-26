@@ -10,6 +10,7 @@
 #import "ThemeBrowserCell.h"
 #import "Theme.h"
 #import "WPImageSource.h"
+#import "WPStyleGuide.h"
 
 @interface ThemeBrowserCell ()
 
@@ -28,12 +29,12 @@
         self.contentView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         self.contentView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
         
-        UIImageView *screenshot = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.bounds.size.width, 112.0f)];
+        UIImageView *screenshot = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.bounds.size.width, 204.0f)];
         self.screenshot = screenshot;
         [self.screenshot setContentMode:UIViewContentModeScaleAspectFit];
         [self.contentView addSubview:self.screenshot];
         
-        UIView *titleContainer = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.screenshot.frame), self.contentView.bounds.size.width, 15.0f)];
+        UIView *titleContainer = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.screenshot.frame), self.contentView.bounds.size.width, 30.0f)];
         titleContainer.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
         [self.contentView addSubview:titleContainer];
         
@@ -41,7 +42,7 @@
         self.title = title;
         self.title.backgroundColor = [UIColor clearColor];
         self.title.textColor = [UIColor whiteColor];
-        self.title.font = [UIFont fontWithName:@"OpenSans" size:9.0f];
+        self.title.font = [WPStyleGuide regularTextFont];
         [titleContainer addSubview:title];
     }
     return self;

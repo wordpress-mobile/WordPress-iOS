@@ -86,9 +86,9 @@
     [self.view addSubview:tagsTitle];
     
     UILabel *tags = [[UILabel alloc] initWithFrame:CGRectMake(tagsTitle.frame.origin.x, CGRectGetMaxY(tagsTitle.frame), detailsText.frame.size.width, 0)];
-    tags.text = [self.theme.tags componentsJoinedByString:@", "];
+    tags.text = [self formattedTags];
     tags.numberOfLines = 0;
-    tags.font = detailsText.font;
+    tags.font = [WPStyleGuide subtitleFont];
     [tags sizeToFit];
     [self.view addSubview:tags];
     
@@ -98,6 +98,16 @@
     [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:self.theme.screenshotUrl] withSuccess:^(UIImage *image) {
         self.screenshot.image = image;
     } failure:nil];
+}
+
+- (NSString *)formattedTags {
+    NSMutableArray *formattedTags = [NSMutableArray array];
+    [self.theme.tags enumerateObjectsUsingBlock:^(NSString *obj, NSUInteger idx, BOOL *stop) {
+        obj = [obj stringByReplacingOccurrencesOfString:@"-" withString:@" "];
+        obj = [obj capitalizedString];
+        [formattedTags addObject:obj];
+    }];
+    return [formattedTags componentsJoinedByString:@", "];
 }
 
 - (void)didReceiveMemoryWarning

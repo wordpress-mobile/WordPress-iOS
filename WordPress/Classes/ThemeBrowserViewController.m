@@ -42,6 +42,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 {
     [super viewDidLoad];
     
+    
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     [self.collectionView registerClass:[ThemeBrowserCell class] forCellWithReuseIdentifier:ThemeCellIdentifier];
@@ -60,14 +61,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [super didReceiveMemoryWarning];
     
     self.fetchedResultsController = nil;
-}
-
-- (NSUInteger)supportedInterfaceOrientations {
-    return UIInterfaceOrientationPortrait|UIInterfaceOrientationPortraitUpsideDown;
-}
-
-- (BOOL)shouldAutorotate {
-    return NO;
 }
 
 #pragma mark - UICollectionViewDelegate/DataSource
