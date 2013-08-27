@@ -202,7 +202,8 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
         Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:section];
         if ([blog isEqual:_currentlyOpenedBlog]) {
             // Don't show themes for non admin users
-            return [blog.isAdmin isEqualToNumber:@(1)] ? SidebarViewControllerNumberOfRowsForBlog : SidebarViewControllerNumberOfRowsForBlog - 1;
+            BOOL showThemes = blog.isWPcom && [blog.isAdmin isEqualToNumber:@(1)];
+            return showThemes ? SidebarViewControllerNumberOfRowsForBlog : SidebarViewControllerNumberOfRowsForBlog - 1;
         } else {
             return 0;
         }
