@@ -711,7 +711,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 - (void)fetchCurrentThemeForBlogId:(NSString *)blogId
                            success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/themes/mine"];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
     [self getPath:path parameters:nil
           success:success failure:failure];
 }

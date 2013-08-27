@@ -91,6 +91,7 @@ static NSDateFormatter *dateFormatter;
             theme.blog = blog;
         }
         dateFormatter = nil;
+        
         if (success) {
             success();
         }
@@ -117,6 +118,9 @@ static NSDateFormatter *dateFormatter;
 
 - (void)activateThemeWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     [[WordPressComApi sharedApi] activateThemeForBlogId:self.blog.blogID.stringValue themeId:self.themeId success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        self.blog.currentThemeId = self.themeId;
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext save:nil];
+        
         if (success) {
             success();
         }

@@ -15,6 +15,7 @@
 #import "NSURL+IDN.h"
 #import "NSString+XMLExtensions.h"
 #import "WPError.h"
+#import "Theme.h"
 
 @interface Blog (PrivateMethods)
 - (WPXMLRPCRequestOperation *)operationForOptionsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
@@ -258,6 +259,10 @@
 
 - (void)awakeFromFetch {
     [self reachability];
+    
+    if (self.isWPcom && [self.isAdmin isEqualToNumber:@(1)]) {
+        [Theme fetchCurrentThemeForBlog:self success:nil failure:nil];
+    }
 }
 
 - (void)dataSave {

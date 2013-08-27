@@ -128,7 +128,7 @@
 }
 
 - (IBAction)livePreviewPressed:(id)sender {
-    // Is it kosher to use the same URL if this theme is the current? It yields the same result.
+    // Live preview URL yields the same result as 'view current site'.
     WPWebViewController *livePreviewController = [[WPWebViewController alloc] init];
     livePreviewController.username = [WPAccount defaultWordPressComAccount].username;
     livePreviewController.password = [WPAccount defaultWordPressComAccount].password;
