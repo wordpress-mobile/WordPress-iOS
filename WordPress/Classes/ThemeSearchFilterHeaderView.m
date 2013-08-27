@@ -56,19 +56,21 @@ CGFloat const SortButtonWidth = 120.0f;
     _delegate = delegate;
     
     UIView *sortOptions = self.sortOptionsView;
-    
-#warning make this proper
-    id hackView = nil;
+
+    // Adding the options/button to the collection view instead of this header
+    // due to the cells being drawn after
+    // This causes the taps for the sort options to be grabbed by the cell instead
+    id collectionView = nil;
     for (id view in _delegate.view.subviews) {
         if ([view isKindOfClass:[UICollectionView class]]) {
-            hackView = view;
+            collectionView = view;
             [view addSubview:sortOptions];
             break;
         }
     }
     
     UIButton *sortButton = self.sortButton;
-    [hackView addSubview:sortButton]; // adding to hackview causes loss of magical rotation layout changes
+    [collectionView addSubview:sortButton];
 }
 
 - (UIButton*)sortOptionButtonWithTitle:(NSString*)title {
@@ -110,6 +112,7 @@ CGFloat const SortButtonWidth = 120.0f;
     [_sortButton setTitle:[_delegate themeSortingOptions][0] forState:UIControlStateNormal];
     _sortButton.titleLabel.font = [WPStyleGuide regularTextFont];
     [_sortButton setImage:_sortArrow forState:UIControlStateNormal];
+    [_sortButton setImage:_sortArrowActive forState:UIControlStateHighlighted];
     _sortButton.imageEdgeInsets = UIEdgeInsetsMake(0, 95, 0, 0);
     _sortButton.titleEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 28);
     _sortButton.frame = CGRectMake(_searchBar.frame.size.width, 0, SortButtonWidth, self.bounds.size.height);
