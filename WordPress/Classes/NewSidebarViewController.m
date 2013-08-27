@@ -24,6 +24,7 @@
 #import "QuickPhotoViewController.h"
 #import "GeneralWalkthroughViewController.h"
 #import "ThemeBrowserViewController.h"
+#import "WPStyleGuide.h"
 
 @interface NewSidebarViewController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIActionSheetDelegate> {
     Blog *_currentlyOpenedBlog;
@@ -65,8 +66,8 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor UIColorFromHex:0x2a2a2a];
-    self.tableView.backgroundColor = [UIColor UIColorFromHex:0x2a2a2a];
+    self.view.backgroundColor = [WPStyleGuide bigEddieGrey];
+    self.tableView.backgroundColor = [WPStyleGuide bigEddieGrey];
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 100)];
     footerView.backgroundColor = [UIColor clearColor];
@@ -231,12 +232,27 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
     headerView.onTap = ^{
         [self toggleSection:[self sectionForBlog:blog]];
     };
+    if ([blog isEqual:_currentlyOpenedBlog]) {
+        headerView.selected = true;
+    }
     return headerView;
 }
 
 - (void)toggleSection:(NSUInteger)section
 {
     [self toggleSection:section forRow:0];
+}
+
+- (void)closeCurrentlyOpenedSection
+{
+    if (_currentlyOpenedBlog == nil)
+        return;
+
+    Blog *oldOpenedBlog = _currentlyOpenedBlog;
+    _currentlyOpenedBlog = nil;
+    [self.tableView beginUpdates];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:[self sectionForBlog:oldOpenedBlog]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView endUpdates];
 }
 
 - (void)toggleSection:(NSUInteger)section forRow:(NSInteger)row
@@ -407,7 +423,7 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
 
 - (void)processRowSelectionAtIndexPath:(NSIndexPath *)indexPath closingSidebar:(BOOL)closingSidebar
 {
-    if ([_currentIndexPath compare:indexPath] == NSOrderedSame) {
+    if ([_currentIndexPath compare:indexPath] == NSOrderedSame && closingSidebar) {
         [self.panelNavigationController closeSidebar];
     }
     
@@ -430,11 +446,13 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
             [WPMobileStats incrementProperty:StatsPropertySidebarClickedReader forEvent:StatsEventAppClosed];
 			ReaderPostsViewController *readerViewController = [[ReaderPostsViewController alloc] init];
             detailViewController = readerViewController;
+            [self closeCurrentlyOpenedSection];
         } else if ([self isRowForNotifications:indexPath]) {
             [WPMobileStats incrementProperty:StatsPropertySidebarClickedNotifications forEvent:StatsEventAppClosed];
             _unseenNotificationCount = 0;
             NotificationsViewController *notificationsViewController = [[NotificationsViewController alloc] init];
             detailViewController = notificationsViewController;
+            [self closeCurrentlyOpenedSection];
         }
     } else {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];

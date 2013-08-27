@@ -64,7 +64,7 @@
     }
 
     // Should just be text and no background if iOS7
-    [self.livePreviewButton setBackgroundColor:[WPStyleGuide baseDarkBlue]];
+    [self.livePreviewButton setBackgroundColor:[WPStyleGuide baseDarkerBlue]];
     
     UILabel *detailsTitle = [[UILabel alloc] initWithFrame:CGRectMake(self.livePreviewButton.frame.origin.x, CGRectGetMaxY(self.themeControlsView.frame) + 10, 0, 0)];
     detailsTitle.text = NSLocalizedString(@"Details", @"Title for theme details");

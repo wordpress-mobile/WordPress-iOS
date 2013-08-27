@@ -91,14 +91,14 @@
 
 #pragma mark - Colors
 
-+ (UIColor *)baseLightBlue
++ (UIColor *)baseLighterBlue
 {
-    return [UIColor colorWithRed:30/255.0f green:140/255.0f blue:190/255.0f alpha:1.0];
+    return [UIColor colorWithRed:30/255.0f green:140/255.0f blue:190/255.0f alpha:1.0f];
 }
 
-+ (UIColor *)baseDarkBlue
++ (UIColor *)baseDarkerBlue
 {
-    return [UIColor colorWithRed:0 green:116/255.0f blue:162/255.0f alpha:1.0f];
+    return [UIColor colorWithRed:0/255.0f green:116/255.0f blue:162/255.0f alpha:1.0f];
 }
 
 + (UIColor *)lightBlue
