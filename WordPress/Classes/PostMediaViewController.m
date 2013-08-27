@@ -19,6 +19,7 @@
 
 
 @interface PostMediaViewController ()
+
 @property (nonatomic, strong) AbstractPost *apost;
 - (void)getMetadataFromAssetForURL:(NSURL *)url;
 - (UITableViewCell *)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
@@ -87,10 +88,26 @@
     [self addNotifications];    
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if (IS_IOS7 && self.postDetailViewController.showAddMediaToUser) {
+       [self tappedAddButton];
+        self.postDetailViewController.showAddMediaToUser = false;
+    }
+}
+
 - (void)customizeForiOS7
 {
-    UIBarButtonItem *addPhoto = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(tappedAddButton)];
-    self.navigationItem.rightBarButtonItem = addPhoto;
+    UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+    [button setImage:image forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(tappedAddButton) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+
+    UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    spacerButton.width = -12.0;
+    self.navigationItem.rightBarButtonItems = @[spacerButton, addButton];
 }
 
 - (void)tappedAddButton
@@ -110,7 +127,7 @@
     
     addMediaActionSheet.tag = TAG_ACTIONSHEET_PHOTO_SELECTION_PROMPT;
     if (IS_IPAD) {
-        [addMediaActionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+        [addMediaActionSheet showFromBarButtonItem:[self.navigationItem.rightBarButtonItems objectAtIndex:1] animated:YES];
     } else {
         [addMediaActionSheet showInView:self.view];
     }
@@ -370,7 +387,7 @@
     actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
     if (IS_IPAD) {
         if (IS_IOS7) {
-            [actionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+            [actionSheet showFromBarButtonItem:[self.navigationItem.rightBarButtonItems objectAtIndex:1] animated:YES];
         } else {
             [actionSheet showFromBarButtonItem:postDetailViewController.movieButton animated:YES];
         }
@@ -827,7 +844,7 @@
 		
         if (IS_IOS7) {
             if (IS_IPAD) {
-                [resizeActionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+                [resizeActionSheet showFromBarButtonItem:[self.navigationItem.rightBarButtonItems objectAtIndex:1] animated:YES];
             } else {
                 [resizeActionSheet showInView:self.view];
             }

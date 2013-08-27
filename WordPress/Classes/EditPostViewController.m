@@ -5,6 +5,7 @@
 #import "NSString+XMLExtensions.h"
 #import "WPPopoverBackgroundView.h"
 #import "WPAddCategoryViewController.h"
+#import "WPStyleGuide.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -83,7 +84,9 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         self.apost = aPost;
         if (self.apost.remoteStatus == AbstractPostRemoteStatusLocal) {
             self.editMode = EditPostViewControllerModeNewPost;
+            self.showAddMediaToUser = YES;
         } else {
+            self.showAddMediaToUser = NO;
             self.editMode = EditPostViewControllerModeEditPost;
 #if USE_AUTOSAVES
             _backupPost = [NSEntityDescription insertNewObjectForEntityForName:[[aPost entity] name] inManagedObjectContext:[aPost managedObjectContext]];
@@ -105,6 +108,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     categoriesLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
     textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
 	textViewPlaceHolderField.textAlignment = NSTextAlignmentCenter;
+    titleTextField.font = [WPStyleGuide postTitleFont];
 
     if (editorToolbar == nil) {
         CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_PORTRAIT);
@@ -167,13 +171,15 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
     [self refreshUIForCurrentPost];
 
-    UIColor *color = [UIColor UIColorFromHex:0x222222];
-    writeButton.tintColor = color;
-    self.settingsButton.tintColor = color;
-    previewButton.tintColor = color;
-    attachmentButton.tintColor = color;
-    self.photoButton.tintColor = color;
-    self.movieButton.tintColor = color;
+    if (!IS_IOS7) {
+        UIColor *color = [UIColor UIColorFromHex:0x222222];
+        writeButton.tintColor = color;
+        self.settingsButton.tintColor = color;
+        previewButton.tintColor = color;
+        attachmentButton.tintColor = color;
+        self.photoButton.tintColor = color;
+        self.movieButton.tintColor = color;        
+    }
 
     if (_autosavingIndicatorView == nil) {
         _autosavingIndicatorView = [[AutosavingIndicatorView alloc] initWithFrame:CGRectZero];
@@ -197,7 +203,10 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 - (void)viewWillAppear:(BOOL)animated {
     WPFLogMethod();
     [super viewWillAppear:animated];
-
+    
+    self.title = [self editorTitle];
+    self.navigationItem.title = [self editorTitle];
+    
 	[self refreshButtons];
 	
     textView.frame = self.normalTextFrame;
@@ -245,15 +254,6 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 - (NSString *)editorTitle {
     NSString *title = @"";
-    if (self.editMode == EditPostViewControllerModeNewPost) {
-        title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
-    } else {
-        if ([self.apost.postTitle length]) {
-            title = self.apost.postTitle;
-        } else {
-            title = NSLocalizedString(@"Edit Post", @"Post Editor screen title.");
-        }
-    }
     self.navigationItem.backBarButtonItem.title = title;
     return title;
 }
@@ -364,6 +364,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     PostSettingsViewController *vc = [[PostSettingsViewController alloc] initWithPost:self.apost];
     vc.statsPrefix = self.statsPrefix;
     vc.postDetailViewController = self;
+    self.navigationItem.title = NSLocalizedString(@"Back", nil);
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -380,6 +381,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 {
     PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.apost];
     vc.postDetailViewController = self;
+    self.navigationItem.title = NSLocalizedString(@"Back", nil);
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -405,6 +407,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedMediaOptions forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     PostMediaViewController *vc = [[PostMediaViewController alloc] initWithPost:self.apost];
     vc.postDetailViewController = self;
+    self.navigationItem.title = NSLocalizedString(@"Back", nil);
     [self.navigationController pushViewController:vc animated:YES];
 }
 

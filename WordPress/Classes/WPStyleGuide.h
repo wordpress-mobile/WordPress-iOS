@@ -12,11 +12,17 @@
 
 // Fonts
 + (UIFont *)largePostTitleFont;
++ (NSDictionary *)largePostTitleAttributes;
 + (UIFont *)postTitleFont;
++ (NSDictionary *)postTitleAttributes;
 + (UIFont *)subtitleFont;
++ (NSDictionary *)subtitleAttributes;
 + (UIFont *)subtitleFontItalic;
++ (NSDictionary *)subtitleItalicAttributes;
 + (UIFont *)labelFont;
++ (NSDictionary *)labelAttributes;
 + (UIFont *)regularTextFont;
++ (NSDictionary *)regularTextAttributes;
 
 // Colors
 + (UIColor *)baseLightBlue;

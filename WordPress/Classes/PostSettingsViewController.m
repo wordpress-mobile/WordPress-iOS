@@ -387,7 +387,13 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (section == 0) {
+    NSUInteger alteredSection = section;
+    if (!self.post && section == 0) {
+        // We only show the status section for Pages
+        alteredSection = 1;
+    }
+
+	if (alteredSection == 0) {
         return NSLocalizedString(@"Post Metadata", nil);
     } else if (section == 0) {
 		return NSLocalizedString(@"Publish", @"The grandiose Publish button in the Post Editor! Should use the same translation as core WP.");

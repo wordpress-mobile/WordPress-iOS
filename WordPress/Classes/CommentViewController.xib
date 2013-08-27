@@ -8,7 +8,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CommentViewController">
             <connections>
                 <outlet property="authorEmailButton" destination="Vjc-BQ-pBt" id="D8Z-Mt-2UF"/>
-                <outlet property="authorEmailVerticalConstraint" destination="ehj-uX-LoF" id="1tC-BS-TQo"/>
                 <outlet property="authorNameLabel" destination="l0a-YO-SIS" id="2at-D9-xHk"/>
                 <outlet property="authorSiteButton" destination="HaO-uK-sxD" id="iZQ-nJ-Dzb"/>
                 <outlet property="commentWebview" destination="F2e-Wc-5aX" id="cRu-3k-GKu"/>
@@ -32,35 +31,6 @@
                         <constraint firstAttribute="height" constant="85" id="dGY-mp-ZbV"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User's Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l0a-YO-SIS">
-                    <rect key="frame" x="117" y="32" width="100" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HaO-uK-sxD">
-                    <rect key="frame" x="117" y="53" width="151" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <state key="normal" title="http://www.wordpress.com">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="viewURL" destination="-1" eventType="touchUpInside" id="Bpu-kf-pZB"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vjc-BQ-pBt">
-                    <rect key="frame" x="117" y="74" width="109" height="27"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <state key="normal" title="user@example.com">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="sendEmail" destination="-1" eventType="touchUpInside" id="Wc0-4u-5O4"/>
-                    </connections>
-                </button>
                 <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="on Site Name Here" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SLV-P9-7gE">
                     <rect key="frame" x="16" y="117" width="106" height="15"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -113,29 +83,73 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </webView>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fd8-NG-8bv" userLabel="Container View">
+                    <rect key="frame" x="117" y="28" width="203" height="61"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User's Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l0a-YO-SIS" userLabel="User Name">
+                            <rect key="frame" x="0.0" y="0.0" width="100" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HaO-uK-sxD" userLabel="Author Website">
+                            <rect key="frame" x="0.0" y="15" width="151" height="27"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                            <state key="normal" title="http://www.wordpress.com"/>
+                            <connections>
+                                <action selector="viewURL" destination="-1" eventType="touchUpInside" id="Bpu-kf-pZB"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vjc-BQ-pBt" userLabel="Author Email">
+                            <rect key="frame" x="0.0" y="34" width="109" height="27"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <state key="normal" title="user@example.com">
+                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="sendEmail" destination="-1" eventType="touchUpInside" id="Wc0-4u-5O4"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="Vjc-BQ-pBt" firstAttribute="leading" secondItem="Fd8-NG-8bv" secondAttribute="leading" id="3Xg-zT-gww"/>
+                        <constraint firstItem="Vjc-BQ-pBt" firstAttribute="top" secondItem="HaO-uK-sxD" secondAttribute="bottom" constant="-8" id="ALq-1V-2KZ"/>
+                        <constraint firstItem="HaO-uK-sxD" firstAttribute="leading" secondItem="Fd8-NG-8bv" secondAttribute="leading" id="Ck0-SY-YhJ"/>
+                        <constraint firstAttribute="bottom" secondItem="Vjc-BQ-pBt" secondAttribute="bottom" id="Eoi-nl-p9l"/>
+                        <constraint firstItem="l0a-YO-SIS" firstAttribute="leading" secondItem="Vjc-BQ-pBt" secondAttribute="leading" id="GfK-Yl-k8q"/>
+                        <constraint firstItem="l0a-YO-SIS" firstAttribute="top" secondItem="Fd8-NG-8bv" secondAttribute="top" id="Vvp-B5-WSo"/>
+                        <constraint firstItem="Vjc-BQ-pBt" firstAttribute="leading" secondItem="HaO-uK-sxD" secondAttribute="leading" id="Wak-qT-H6s"/>
+                        <constraint firstItem="HaO-uK-sxD" firstAttribute="top" secondItem="l0a-YO-SIS" secondAttribute="bottom" constant="-6" id="bJM-QF-gjp"/>
+                        <constraint firstItem="l0a-YO-SIS" firstAttribute="leading" secondItem="Fd8-NG-8bv" secondAttribute="leading" id="oZU-Tw-GpO"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="l0a-YO-SIS" secondAttribute="trailing" constant="16" id="pxb-17-nbr"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HaO-uK-sxD" secondAttribute="trailing" constant="16" id="tAP-oG-o7D"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Vjc-BQ-pBt" secondAttribute="trailing" constant="16" id="wE5-CQ-eYF"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Vjc-BQ-pBt" secondAttribute="trailing" constant="16" id="3vm-t0-t9X"/>
+                <constraint firstItem="Fd8-NG-8bv" firstAttribute="leading" secondItem="zcF-P2-a8K" secondAttribute="trailing" constant="16" id="3xw-ks-IGm"/>
                 <constraint firstItem="zcF-P2-a8K" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="16" id="78S-fa-KIh"/>
                 <constraint firstItem="zcF-P2-a8K" firstAttribute="top" secondItem="1" secondAttribute="top" constant="16" id="9BW-kL-HP4"/>
                 <constraint firstItem="fc4-4L-Onk" firstAttribute="top" secondItem="F2e-Wc-5aX" secondAttribute="bottom" constant="2" id="EMB-aY-Y1u"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="l0a-YO-SIS" secondAttribute="trailing" constant="16" id="FfI-lm-kao"/>
                 <constraint firstItem="SLV-P9-7gE" firstAttribute="leading" secondItem="zcF-P2-a8K" secondAttribute="leading" id="GZf-pV-EGv"/>
                 <constraint firstAttribute="trailing" secondItem="fc4-4L-Onk" secondAttribute="trailing" id="JT9-m1-5Ve"/>
                 <constraint firstItem="j4A-tK-Fni" firstAttribute="top" secondItem="SLV-P9-7gE" secondAttribute="bottom" id="MgU-4A-rGf"/>
-                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HaO-uK-sxD" secondAttribute="trailing" constant="16" id="Oir-48-Ow1"/>
                 <constraint firstItem="F2e-Wc-5aX" firstAttribute="top" secondItem="j4A-tK-Fni" secondAttribute="bottom" constant="16" id="VHH-W0-UWt"/>
                 <constraint firstItem="SLV-P9-7gE" firstAttribute="top" secondItem="zcF-P2-a8K" secondAttribute="bottom" constant="16" id="WZf-QJ-wdQ"/>
                 <constraint firstItem="fc4-4L-Onk" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="aRS-YU-lU5"/>
+                <constraint firstItem="Fd8-NG-8bv" firstAttribute="centerY" secondItem="zcF-P2-a8K" secondAttribute="centerY" id="bJI-r3-et6"/>
                 <constraint firstItem="j4A-tK-Fni" firstAttribute="leading" secondItem="SLV-P9-7gE" secondAttribute="leading" id="d0A-Bi-aup"/>
-                <constraint firstItem="HaO-uK-sxD" firstAttribute="top" secondItem="l0a-YO-SIS" secondAttribute="bottom" id="dcu-rq-Jus"/>
                 <constraint firstAttribute="bottom" secondItem="fc4-4L-Onk" secondAttribute="bottom" id="eXQ-pa-M4Y"/>
-                <constraint firstItem="Vjc-BQ-pBt" firstAttribute="top" secondItem="HaO-uK-sxD" secondAttribute="bottom" constant="-6" id="ehj-uX-LoF"/>
-                <constraint firstItem="l0a-YO-SIS" firstAttribute="top" secondItem="1" secondAttribute="top" constant="32" id="hpn-16-7FK"/>
-                <constraint firstItem="Vjc-BQ-pBt" firstAttribute="leading" secondItem="zcF-P2-a8K" secondAttribute="trailing" constant="16" id="hu6-EF-aQS"/>
-                <constraint firstItem="l0a-YO-SIS" firstAttribute="leading" secondItem="zcF-P2-a8K" secondAttribute="trailing" constant="16" id="mK1-E3-AZC"/>
-                <constraint firstItem="HaO-uK-sxD" firstAttribute="leading" secondItem="zcF-P2-a8K" secondAttribute="trailing" constant="16" id="moO-sc-c1o"/>
+                <constraint firstAttribute="trailing" secondItem="Fd8-NG-8bv" secondAttribute="trailing" id="mCW-aA-iDS"/>
                 <constraint firstItem="F2e-Wc-5aX" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="16" id="okl-zs-fdp"/>
                 <constraint firstAttribute="trailing" secondItem="F2e-Wc-5aX" secondAttribute="trailing" constant="16" id="yWR-fd-qaA"/>
             </constraints>

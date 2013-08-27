@@ -12,7 +12,7 @@
 #import "Blog.h"
 #import "ReplyToCommentViewController.h"
 
-@interface CommentsViewController : WPTableViewController <ReplyToCommentViewControllerDelegate, CommentsTableViewDelegate, DetailViewDelegate> {
+@interface CommentsViewController : WPTableViewController <CommentsTableViewDelegate, DetailViewDelegate> {
 @private
 }
 

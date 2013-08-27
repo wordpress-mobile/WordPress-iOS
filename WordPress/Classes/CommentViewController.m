@@ -21,6 +21,7 @@
     EditCommentViewController *_editCommentViewController;
     BOOL _isShowingActionSheet;
     AMBlockToken *_reachabilityToken;
+    NSLayoutConstraint *_authorSiteHeightConstraint;
 }
 
 @property (nonatomic, strong) IBOutlet UIImageView *gravatarImageView;
@@ -31,7 +32,6 @@
 @property (nonatomic, strong) IBOutlet UILabel *dateLabel;
 @property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, strong) IBOutlet UIWebView *commentWebview;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *authorEmailVerticalConstraint;
 
 @end
 
@@ -63,9 +63,9 @@ CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601
     self.view.backgroundColor = [WPStyleGuide readGrey];
     self.authorNameLabel.font = [WPStyleGuide postTitleFont];
     self.authorSiteButton.titleLabel.font = [WPStyleGuide subtitleFont];
-    self.authorSiteButton.titleLabel.textColor = [WPStyleGuide newKidOnTheBlockBlue];
+    [self.authorSiteButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
     self.authorEmailButton.titleLabel.font = [WPStyleGuide subtitleFont];
-    self.authorEmailButton.titleLabel.textColor = [WPStyleGuide newKidOnTheBlockBlue];
+    [self.authorEmailButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
     self.postTitleLabel.font = [WPStyleGuide subtitleFont];
     self.dateLabel.font = [WPStyleGuide subtitleFont];
     self.commentWebview.backgroundColor = [WPStyleGuide readGrey];
@@ -150,18 +150,10 @@ CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601
 - (void)updateViewConstraints
 {
     [super updateViewConstraints];
-    
-    // If the url of the comment author is empty, adjust the vertical constraint for the email address so there won't be
-    // a huge gap in between the comment author's name and the comment author's email address
-    CGFloat offset = -6;
+    [self.view removeConstraint:_authorSiteHeightConstraint];
     if ([[self.authorSiteButton titleForState:UIControlStateNormal] length] == 0) {
-        [self.view removeConstraint:self.authorEmailVerticalConstraint];
-        self.authorEmailVerticalConstraint = [NSLayoutConstraint constraintWithItem:self.authorEmailButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.authorNameLabel attribute:NSLayoutAttributeBottom multiplier:1.0 constant:offset];
-        [self.view addConstraint:self.authorEmailVerticalConstraint];
-    } else {
-        [self.view removeConstraint:self.authorEmailVerticalConstraint];
-        self.authorEmailVerticalConstraint = [NSLayoutConstraint constraintWithItem:self.authorEmailButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.authorSiteButton attribute:NSLayoutAttributeBottom multiplier:1.0 constant:offset];
-        [self.view addConstraint:self.authorEmailVerticalConstraint];
+        _authorSiteHeightConstraint = [NSLayoutConstraint constraintWithItem:self.authorSiteButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:0.0 constant:8];
+        [self.view addConstraint:_authorSiteHeightConstraint];
     }
 }
 
@@ -184,15 +176,19 @@ CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601
     }
     
     [self.gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
+    
     self.authorNameLabel.text = [[self.comment.author stringByDecodingXMLCharacters] trim];
-    [self.authorSiteButton setTitle:[self.comment.author_url trim] forState:UIControlStateNormal];
-    [self.authorEmailButton setTitle:[self.comment.author_email trim] forState:UIControlStateNormal];
 
+    [self.authorSiteButton setTitle:[self.comment.author_url trim] forState:UIControlStateNormal];
+
+    [self.authorEmailButton setTitle:[self.comment.author_email trim] forState:UIControlStateNormal];
+    UIColor *textColor;
     if (![MFMailComposeViewController canSendMail]) {
-        [self.authorEmailButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        textColor = [UIColor blackColor];
     } else {
-        [self.authorEmailButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
+        textColor = [WPStyleGuide newKidOnTheBlockBlue];
     }
+    [self.authorEmailButton setTitleColor:textColor forState:UIControlStateNormal];
 
     self.postTitleLabel.attributedText = [self postTitleString];
     
@@ -477,6 +473,7 @@ CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_editCommentViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent = NO;
     [self presentViewController:navController animated:animate completion:nil];
 }
 

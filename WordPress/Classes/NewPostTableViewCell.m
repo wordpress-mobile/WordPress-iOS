@@ -9,6 +9,7 @@
 #import "NewPostTableViewCell.h"
 #import "Post.h"
 #import "NSString+XMLExtensions.h"
+#import "WPStyleGuide.h"
 
 @interface NewPostTableViewCell() {
     AbstractPost __weak *_post;
@@ -27,7 +28,7 @@ CGFloat const NewPostTableViewCellStandardOffset = 16.0;
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor colorWithRed:238/255.0f green:238/255.0f blue:238/255.0f alpha:1.0f];
+        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
         
         _statusLabel = [[UILabel alloc] init];
         _statusLabel.backgroundColor = [UIColor clearColor];
@@ -106,11 +107,30 @@ CGFloat const NewPostTableViewCellStandardOffset = 16.0;
     _statusLabel.text = [[self class] statusTextForPost:post];
     _statusLabel.textColor = [[self class] statusColorForPost:post];
     _dateLabel.text = [[self class] dateText:post];
+    
+    if (IS_IOS7) {
+        if (_titleLabel.text != nil) {
+            _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:_titleLabel.text attributes:[[self class] titleAttributes]];
+        }
+        
+        if (_statusLabel.text != nil) {
+            _statusLabel.attributedText = [[NSAttributedString alloc] initWithString:_statusLabel.text attributes:[[self class] statusAttributes]];
+        }
+        
+        if (_dateLabel.text != nil) {
+            _dateLabel.attributedText = [[NSAttributedString alloc] initWithString:_dateLabel.text attributes:[[self class] dateAttributes]];
+        }
+    }
 }
 
 + (UIFont *)statusFont
 {
-    return [UIFont fontWithName:@"OpenSans-Bold" size:10.0];
+    return [WPStyleGuide labelFont];
+}
+
++ (NSDictionary *)statusAttributes
+{
+    return [WPStyleGuide labelAttributes];
 }
 
 + (NSString *)statusTextForPost:(AbstractPost *)post
@@ -154,6 +174,11 @@ CGFloat const NewPostTableViewCellStandardOffset = 16.0;
     return [UIFont fontWithName:@"OpenSans" size:18.0];
 }
 
++ (NSDictionary *)titleAttributes
+{
+    return [WPStyleGuide postTitleAttributes];
+}
+
 + (NSString *)titleText:(AbstractPost *)post
 {
     NSString *title = [[post valueForKey:@"postTitle"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -165,7 +190,12 @@ CGFloat const NewPostTableViewCellStandardOffset = 16.0;
 
 + (UIFont *)dateFont
 {
-    return [UIFont fontWithName:@"OpenSans" size:12.0];
+    return [WPStyleGuide subtitleFont];
+}
+
++ (NSDictionary *)dateAttributes
+{
+    return [WPStyleGuide subtitleAttributes];
 }
 
 + (NSString *)dateText:(AbstractPost *)post
@@ -193,7 +223,12 @@ CGFloat const NewPostTableViewCellStandardOffset = 16.0;
 {
     NSString *statusText = [self statusTextForPost:post];
     if ([statusText length] != 0) {
-       CGSize size = [statusText sizeWithFont:[self statusFont] constrainedToSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+        CGSize size;
+        if (IS_IOS7) {
+            size = [statusText boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] statusAttributes] context:nil].size;
+        } else {
+            size = [statusText sizeWithFont:[self statusFont] constrainedToSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+        }
         return CGRectMake(NewPostTableViewCellStandardOffset, NewPostTableViewCellStandardOffset, size.width, size.height);
     } else {
         return CGRectMake(0, NewPostTableViewCellStandardOffset, 0, 0);
@@ -202,13 +237,24 @@ CGFloat const NewPostTableViewCellStandardOffset = 16.0;
 
 + (CGRect)titleLabelFrameForPost:(AbstractPost *)post previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
 {
-    CGSize size = [[[self class] titleText:post] sizeWithFont:[[self class] titleFont] constrainedToSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size;
+    if (IS_IOS7) {
+        size = [[[self class] titleText:post] boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] titleAttributes] context:nil].size;
+    } else {
+        size = [[[self class] titleText:post] sizeWithFont:[[self class] titleFont] constrainedToSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    }
     return CGRectIntegral(CGRectMake(NewPostTableViewCellStandardOffset, CGRectGetMaxY(previousFrame), size.width, size.height));
 }
 
 + (CGRect)dateLabelFrameForPost:(AbstractPost *)post previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
 {
-    CGSize size = [[[self class] dateText:post] sizeWithFont:[[self class] dateFont] constrainedToSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size;
+    if (IS_IOS7) {
+        size = [[[self class] dateText:post] boundingRectWithSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:[[self class] dateAttributes] context:nil].size;
+
+    } else {
+        size = [[[self class] dateText:post] sizeWithFont:[[self class] dateFont] constrainedToSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    }
     return CGRectIntegral(CGRectMake(NewPostTableViewCellStandardOffset, CGRectGetMaxY(previousFrame), size.width, size.height));
 }
 
