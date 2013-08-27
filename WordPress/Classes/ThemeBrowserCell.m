@@ -16,6 +16,7 @@
 
 @property (nonatomic, weak) UIImageView *screenshot;
 @property (nonatomic, weak) UILabel *title;
+@property (nonatomic, weak) UIImageView *statusIcon;
 
 @end
 
@@ -30,26 +31,30 @@
         self.contentView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
         
         UIImageView *screenshot = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.bounds.size.width, 204.0f)];
-        self.screenshot = screenshot;
-        [self.screenshot setContentMode:UIViewContentModeScaleAspectFit];
-        [self.contentView addSubview:self.screenshot];
+        _screenshot = screenshot;
+        [_screenshot setContentMode:UIViewContentModeScaleAspectFit];
+        [self.contentView addSubview:_screenshot];
+        
+        UIImageView *statusIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        _statusIcon = statusIcon;
         
         UIView *titleContainer = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.screenshot.frame), self.contentView.bounds.size.width, 30.0f)];
         titleContainer.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
         [self.contentView addSubview:titleContainer];
         
         UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(3, 0, titleContainer.frame.size.width-6, titleContainer.frame.size.height)];
-        self.title = title;
-        self.title.backgroundColor = [UIColor clearColor];
-        self.title.textColor = [UIColor whiteColor];
-        self.title.font = [WPStyleGuide regularTextFont];
-        [titleContainer addSubview:title];
+        _title = title;
+        _title.backgroundColor = [UIColor clearColor];
+        _title.textColor = [UIColor whiteColor];
+        _title.font = [WPStyleGuide regularTextFont];
+        [titleContainer addSubview:_title];
     }
     return self;
 }
 
 - (void)prepareForReuse {
     self.screenshot.image = nil;
+    self.statusIcon.image = nil;
 }
 
 - (void)setTheme:(Theme *)theme {
