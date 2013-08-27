@@ -25,6 +25,8 @@
 + (NSDictionary *)regularTextAttributes;
 
 // Colors
++ (UIColor *)baseLighterBlue;
++ (UIColor *)baseDarkerBlue;
 + (UIColor *)lightBlue;
 + (UIColor *)newKidOnTheBlockBlue;
 + (UIColor *)midnightBlue;

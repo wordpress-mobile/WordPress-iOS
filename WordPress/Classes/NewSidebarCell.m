@@ -9,6 +9,7 @@
 #import "NewSidebarCell.h"
 #import "SidebarBadgeView.h"
 #import "UIColor+Helpers.h"
+#import "WPStyleGuide.h"
 
 @interface NewSidebarCell() {
     NSArray *_horizontalConstraints;
@@ -133,20 +134,19 @@
 
 - (void)layoutSubviews
 {
-    self.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:16.0];
+    
+    if (self.cellBackgroundColor == SidebarTableViewCellBackgroundColorLight) {
+        self.content.backgroundColor = [UIColor UIColorFromHex:0x3A3A3A];
+    } else {
+        self.content.backgroundColor = [WPStyleGuide bigEddieGrey];
+    }
     
     if (self.selected) {
-        self.content.backgroundColor = [UIColor UIColorFromHex:0x0074A2];
-        self.badgeView.badgeColor = SidebarBadgeViewBadgeColorBlue;
         self.mainImageView.image = self.selectedImage;
+        self.titleLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:16.0];
     } else {
-        if (self.cellBackgroundColor == SidebarTableViewCellBackgroundColorLight) {
-            self.content.backgroundColor = [UIColor UIColorFromHex:0x3A3A3A];
-        } else {
-            self.content.backgroundColor = [UIColor UIColorFromHex:0x2A2A2A];
-        }
-        self.mainImageView.image = self.mainImage;        
-        _badgeView.badgeColor = SidebarBadgeViewBadgeColorOrange;
+        self.mainImageView.image = self.mainImage;
+        self.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:16.0];
     }
     
     if (self.showsBadge) {

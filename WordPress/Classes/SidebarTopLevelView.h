@@ -13,6 +13,7 @@
 @property (nonatomic, strong) NSString *blogTitle;
 @property (nonatomic, strong) NSString *blavatarUrl;
 @property (nonatomic, assign) BOOL isWPCom;
+@property (nonatomic, assign) BOOL selected;
 
 @property (nonatomic, copy) void(^onTap)(void);
 

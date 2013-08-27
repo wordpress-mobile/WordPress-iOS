@@ -8,12 +8,13 @@
 
 #import "SidebarTopLevelView.h"
 #import "UIImageView+Gravatar.h"
+#import "WPStyleGuide.h"
 
 @interface SidebarTopLevelView()
 
 @property (nonatomic, strong) IBOutlet UIImageView *blavatarImage;
 @property (nonatomic, strong) IBOutlet UILabel *blogTitleLabel;
-@property (nonatomic, strong) IBOutlet UIImageView *chevron;
+@property (nonatomic, strong) IBOutlet UIView *mainView;
 
 @end
 
@@ -62,9 +63,21 @@
     }
 }
 
+- (void)setSelected:(BOOL)selected
+{
+    _selected = selected;
+    [self setNeedsLayout];
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
+    if (self.selected) {
+        self.mainView.backgroundColor = [WPStyleGuide baseDarkerBlue];
+    } else {
+        self.mainView.backgroundColor = [WPStyleGuide bigEddieGrey];
+    }
     
     self.blogTitleLabel.font = [UIFont fontWithName:@"OpenSans" size:16.0];
     
