@@ -11,6 +11,16 @@
 
 @class ThemeBrowserViewController;
 
+@protocol ThemeSearchFilterDelegate <NSObject>
+
+/// Provide an array of nice strings. First is considered the default
+- (NSArray*)themeSortingOptions;
+
+/// Index of themeFilterOptions
+- (void)selectedSortIndex:(NSUInteger)filterIndex;
+
+@end
+
 @interface ThemeSearchFilterHeaderView : UICollectionReusableView
 
 @property (nonatomic, weak) ThemeBrowserViewController *delegate;

@@ -11,7 +11,6 @@
 #import "Theme.h"
 #import "WordPressAppDelegate.h"
 #import "ThemeBrowserCell.h"
-#import "ThemeSearchFilterHeaderView.h"
 #import "ThemeDetailsViewController.h"
 #import "Blog.h"
 
@@ -22,8 +21,8 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
-@property (strong, nonatomic) NSBlockOperation *resultsChanges;
-@property (nonatomic, strong) NSString *currentFilter;
+@property (nonatomic, strong) NSArray *sortingOptions, *resultSortAttributes; // 'nice' sort names and the corresponding model attributes
+@property (nonatomic, strong) NSString *currentResultsSort;
 
 @end
 
@@ -33,7 +32,11 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = NSLocalizedString(@"Themes", @"Title for Themes browser");
-        self.currentFilter = @"themeId";
+        _currentResultsSort = @"themeId";
+        _resultSortAttributes = @[@"themeId",@"trendingRank",@"popularityRank"];
+        _sortingOptions = @[NSLocalizedString(@"Alphabetical", @"Theme filter"),
+                     NSLocalizedString(@"Trending", @"Theme filter"),
+                     NSLocalizedString(@"Popular", @"Theme filter")];
     }
     return self;
 }
@@ -41,7 +44,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
@@ -77,10 +79,9 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         ThemeSearchFilterHeaderView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:SearchFilterCellIdentifier forIndexPath:indexPath];
-        static dispatch_once_t onceToken;
-        dispatch_once(&onceToken, ^{
+        if (!header.delegate) {
             header.delegate = self;
-        });
+        }
         return header;
     }
     return nil;
@@ -109,7 +110,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Theme class])];
     
     // TODO current sort that's applied
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:self.currentFilter ascending:YES]]];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:_currentResultsSort ascending:YES]]];
     [fetchRequest setFetchBatchSize:10];
     
     _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
@@ -127,6 +128,20 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     // The ideal would be to accumulate changes and use performBatchUpdates:
     // but this doesn't work. Related to http://openradar.appspot.com/12954582
     // Since we're loading all themes at once anyways, this doesn't change much.
+    [self.collectionView reloadData];
+}
+
+#pragma mark - ThemeSearchFilterDelegate
+
+- (NSArray *)themeSortingOptions {
+    return _sortingOptions;
+}
+
+- (void)selectedSortIndex:(NSUInteger)sortIndex {
+    _currentResultsSort = _resultSortAttributes[sortIndex];
+    
+    [self.fetchedResultsController.fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:_currentResultsSort ascending:true]]];
+    [self.fetchedResultsController performFetch:nil];
     [self.collectionView reloadData];
 }
 
