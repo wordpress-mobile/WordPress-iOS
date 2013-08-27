@@ -11,14 +11,14 @@
 #import "ThemeBrowserViewController.h"
 #import "WPStyleGuide.h"
 
-CGFloat const SortButtonWidth = 120.0f;
+static CGFloat const SortButtonWidth = 130.0f;
 
 @interface ThemeSearchFilterHeaderView () <UISearchBarDelegate>
 
 @property (nonatomic, weak) UIView *sortOptionsView;
 @property (nonatomic, weak) UISearchBar *searchBar;
 @property (nonatomic, weak) UIButton *sortButton;
-@property (nonatomic, weak) UIImage *sortArrow, *sortArrowActive;
+@property (nonatomic, strong) UIImage *sortArrow, *sortArrowActive;
 
 @end
 
@@ -101,10 +101,8 @@ CGFloat const SortButtonWidth = 120.0f;
 }
 
 - (UIButton *)sortButton {
-    UIImage *arrow = [UIImage imageNamed:@"icon-themes-dropdown-arrow"];
-    _sortArrow = arrow;
-    UIImage *arrowActive = [UIImage imageWithCGImage:arrow.CGImage scale:arrow.scale orientation:UIImageOrientationDown];
-    _sortArrowActive = arrowActive;
+    _sortArrow = [UIImage imageNamed:@"icon-themes-dropdown-arrow"];
+    _sortArrowActive = [UIImage imageWithCGImage:_sortArrow.CGImage scale:_sortArrow.scale orientation:UIImageOrientationDown];
     
     UIButton *sort = [UIButton buttonWithType:UIButtonTypeCustom];
     _sortButton = sort;
@@ -113,7 +111,7 @@ CGFloat const SortButtonWidth = 120.0f;
     _sortButton.titleLabel.font = [WPStyleGuide regularTextFont];
     [_sortButton setImage:_sortArrow forState:UIControlStateNormal];
     [_sortButton setImage:_sortArrowActive forState:UIControlStateHighlighted];
-    _sortButton.imageEdgeInsets = UIEdgeInsetsMake(0, 95, 0, 0);
+    _sortButton.imageEdgeInsets = UIEdgeInsetsMake(0, 108, 0, 0);
     _sortButton.titleEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 28);
     _sortButton.frame = CGRectMake(_searchBar.frame.size.width, 0, SortButtonWidth, self.bounds.size.height);
     [_sortButton addTarget:self action:@selector(sortPressed) forControlEvents:UIControlEventTouchUpInside];
@@ -133,7 +131,7 @@ CGFloat const SortButtonWidth = 120.0f;
 }
 
 - (void)optionPressed:(UIButton*)sender {
-    [self.sortButton setTitle:[_delegate themeSortingOptions][sender.tag] forState:UIControlStateNormal];
+    [_sortButton setTitle:[_delegate themeSortingOptions][sender.tag] forState:UIControlStateNormal];
     
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
         _sortOptionsView.frame = (CGRect) {

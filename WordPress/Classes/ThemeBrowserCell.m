@@ -48,13 +48,14 @@
     return self;
 }
 
+- (void)prepareForReuse {
+    self.screenshot.image = nil;
+}
+
 - (void)setTheme:(Theme *)theme {
     _theme = theme;
     self.title.text = _theme.name;
     
-    self.screenshot.image = nil;
-    
-    // TODO possible to make this cancellable if we've scrolled past or is it worth it (ends up in the cache anyways)
     [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:self.theme.screenshotUrl] withSuccess:^(UIImage *image) {
         self.screenshot.image = image;
     } failure:^(NSError *error) {

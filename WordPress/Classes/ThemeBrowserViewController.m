@@ -13,6 +13,7 @@
 #import "ThemeBrowserCell.h"
 #import "ThemeDetailsViewController.h"
 #import "Blog.h"
+#import "WPStyleGuide.h"
 
 static NSString *const ThemeCellIdentifier = @"theme";
 static NSString *const SearchFilterCellIdentifier = @"search_filter";
@@ -23,6 +24,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 @property (nonatomic, strong) NSArray *sortingOptions, *resultSortAttributes; // 'nice' sort names and the corresponding model attributes
 @property (nonatomic, strong) NSString *currentResultsSort;
 @property (nonatomic, strong) NSArray *allThemes, *filteredThemes;
+@property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
 
 @end
 
@@ -34,7 +36,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         self.title = NSLocalizedString(@"Themes", @"Title for Themes browser");
         _currentResultsSort = @"themeId";
         _resultSortAttributes = @[@"themeId",@"trendingRank",@"popularityRank"];
-        _sortingOptions = @[NSLocalizedString(@"A-Z", @"Theme filter"),
+        _sortingOptions = @[NSLocalizedString(@"Alphabetical", @"Theme filter"),
                      NSLocalizedString(@"Trending", @"Theme filter"),
                      NSLocalizedString(@"Popular", @"Theme filter")];
     }
@@ -51,15 +53,14 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [self.collectionView registerClass:[ThemeSearchFilterHeaderView class]
             forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:SearchFilterCellIdentifier];
     
-    // TODO loading indication
+    UIRefreshControl *refreshHeaderView = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.collectionView.bounds.size.height, self.collectionView.frame.size.width, self.collectionView.bounds.size.height)];
+    _refreshHeaderView = refreshHeaderView;
+    [_refreshHeaderView addTarget:self action:@selector(refreshControlTriggered:) forControlEvents:UIControlEventValueChanged];
+    _refreshHeaderView.tintColor = [WPStyleGuide whisperGrey];
+    [self.collectionView addSubview:_refreshHeaderView];
     
     [self loadThemesFromCache];
-    
-    [Theme fetchAndInsertThemesForBlog:self.blog success:^{
-        [self loadThemesFromCache];
-    } failure:^(NSError *error) {
-        
-    }];
+    [self reloadThemes];
 }
 
 - (void)didReceiveMemoryWarning
@@ -79,6 +80,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     NSArray *allThemes = [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (error) {
         WPFLog(@"Failed to fetch themes with error %@", error);
+        _allThemes = _filteredThemes = nil;
         return;
     }
     _allThemes = _filteredThemes = allThemes;
@@ -118,6 +120,23 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [self.navigationController pushViewController:details animated:true];
 }
 
+- (void)reloadThemes {
+    if (_refreshHeaderView.isRefreshing) {
+        return;
+    }
+    
+    [_refreshHeaderView beginRefreshing];
+    [Theme fetchAndInsertThemesForBlog:self.blog success:^{
+        [self loadThemesFromCache];
+        [_refreshHeaderView endRefreshing];
+    } failure:^(NSError *error) {
+        [_refreshHeaderView endRefreshing];
+        [WPError showAlertWithError:error];
+    }];
+}
+
+#pragma mark - Setters
+
 - (void)setFilteredThemes:(NSArray *)filteredThemes {
     _filteredThemes = filteredThemes;
     
@@ -143,6 +162,14 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
 - (void)clearSearchFilter {
     self.filteredThemes = _allThemes;
+}
+
+#pragma mark - UIRefreshControl
+
+- (void)refreshControlTriggered:(UIRefreshControl*)refreshControl {
+    if (refreshControl.isRefreshing) {
+        [self reloadThemes];
+    }
 }
 
 @end
