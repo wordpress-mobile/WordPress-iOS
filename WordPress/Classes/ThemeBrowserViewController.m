@@ -17,12 +17,12 @@
 static NSString *const ThemeCellIdentifier = @"theme";
 static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
-@interface ThemeBrowserViewController () <UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate>
+@interface ThemeBrowserViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSArray *sortingOptions, *resultSortAttributes; // 'nice' sort names and the corresponding model attributes
 @property (nonatomic, strong) NSString *currentResultsSort;
+@property (nonatomic, strong) NSArray *allThemes, *filteredThemes;
 
 @end
 
@@ -51,8 +51,12 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [self.collectionView registerClass:[ThemeSearchFilterHeaderView class]
             forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:SearchFilterCellIdentifier];
     
+    // TODO loading indication
+    
+    [self loadThemesFromCache];
+    
     [Theme fetchAndInsertThemesForBlog:self.blog success:^{
-        
+        [self loadThemesFromCache];
     } failure:^(NSError *error) {
         
     }];
@@ -62,7 +66,23 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 {
     [super didReceiveMemoryWarning];
     
-    self.fetchedResultsController = nil;
+    self.allThemes = nil;
+    self.filteredThemes = nil;
+}
+
+- (void)loadThemesFromCache {
+    NSError *error;
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Theme class])];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:_currentResultsSort ascending:true]]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
+    fetchRequest.fetchBatchSize = 10;
+    NSArray *allThemes = [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        WPFLog(@"Failed to fetch themes with error %@", error);
+        return;
+    }
+    _allThemes = _filteredThemes = allThemes;
+    [self.collectionView reloadData];
 }
 
 #pragma mark - UICollectionViewDelegate/DataSource
@@ -72,8 +92,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    id<NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-    return [[sectionInfo objects] count];
+    return self.filteredThemes.count;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -89,45 +108,19 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ThemeBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ThemeCellIdentifier forIndexPath:indexPath];
-    cell.theme = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    cell.theme = self.filteredThemes[indexPath.row];
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    Theme *theme = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    Theme *theme = self.filteredThemes[indexPath.row];
     ThemeDetailsViewController *details = [[ThemeDetailsViewController alloc] initWithTheme:theme];
     [self.navigationController pushViewController:details animated:true];
 }
 
-#pragma mark - NSFetchedResultsController
-
-- (NSFetchedResultsController *)fetchedResultsController {
-    if (_fetchedResultsController) {
-        return _fetchedResultsController;
-    }
+- (void)setFilteredThemes:(NSArray *)filteredThemes {
+    _filteredThemes = filteredThemes;
     
-    NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Theme class])];
-    
-    // TODO current sort that's applied
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:_currentResultsSort ascending:YES]]];
-    [fetchRequest setFetchBatchSize:10];
-    
-    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                    managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
-    _fetchedResultsController.delegate = self;
-    NSError *error;
-    if (![_fetchedResultsController performFetch:&error]) {
-        WPFLog(@"%@ couldn't fetch %@: %@", self, NSStringFromClass([Theme class]), [error localizedDescription]);
-        _fetchedResultsController = nil;
-    }
-    return _fetchedResultsController;
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    // The ideal would be to accumulate changes and use performBatchUpdates:
-    // but this doesn't work. Related to http://openradar.appspot.com/12954582
-    // Since we're loading all themes at once anyways, this doesn't change much.
     [self.collectionView reloadData];
 }
 
@@ -140,9 +133,16 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 - (void)selectedSortIndex:(NSUInteger)sortIndex {
     _currentResultsSort = _resultSortAttributes[sortIndex];
     
-    [self.fetchedResultsController.fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:_currentResultsSort ascending:true]]];
-    [self.fetchedResultsController performFetch:nil];
-    [self.collectionView reloadData];
+    NSString *key = [@"self." stringByAppendingString:_currentResultsSort];
+    self.filteredThemes = [_allThemes sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:key ascending:true]]];
+}
+
+- (void)applyFilterWithSearchText:(NSString *)searchText {
+    self.filteredThemes = [_allThemes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId CONTAINS %@", searchText]];
+}
+
+- (void)clearSearchFilter {
+    self.filteredThemes = _allThemes;
 }
 
 @end

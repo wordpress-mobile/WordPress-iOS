@@ -770,6 +770,8 @@
 		C5C272E10E7EC00F0034AA46 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272E00E7EC00F0034AA46 /* check.png */; };
 		C5FC5E1C17CD173700B299E2 /* icon-menu-themes.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FC5E1A17CD173700B299E2 /* icon-menu-themes.png */; };
 		C5FC5E1D17CD173700B299E2 /* icon-menu-themes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FC5E1B17CD173700B299E2 /* icon-menu-themes@2x.png */; };
+		C5FC5E2017CD1BFD00B299E2 /* icon-menu-themes-active.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FC5E1E17CD1BFD00B299E2 /* icon-menu-themes-active.png */; };
+		C5FC5E2117CD1BFD00B299E2 /* icon-menu-themes-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FC5E1F17CD1BFD00B299E2 /* icon-menu-themes-active@2x.png */; };
 		CC0199E9165C17020073A966 /* NotificationsCommentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC0199E8165C17020073A966 /* NotificationsCommentDetailViewController.m */; };
 		CC098B8416A9ECF800450976 /* CameraPlusPickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC098B8316A9ECF800450976 /* CameraPlusPickerManager.m */; };
 		CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CC0E20AD15B87DA100D3468B /* WPWebBridge.m */; };
@@ -1913,6 +1915,8 @@
 		C5C272E00E7EC00F0034AA46 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = check.png; path = Resources/Images/check.png; sourceTree = "<group>"; };
 		C5FC5E1A17CD173700B299E2 /* icon-menu-themes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-menu-themes.png"; path = "Resources/Images/icon-menu-themes.png"; sourceTree = "<group>"; };
 		C5FC5E1B17CD173700B299E2 /* icon-menu-themes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-menu-themes@2x.png"; path = "Resources/Images/icon-menu-themes@2x.png"; sourceTree = "<group>"; };
+		C5FC5E1E17CD1BFD00B299E2 /* icon-menu-themes-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-menu-themes-active.png"; path = "Resources/Images/icon-menu-themes-active.png"; sourceTree = "<group>"; };
+		C5FC5E1F17CD1BFD00B299E2 /* icon-menu-themes-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-menu-themes-active@2x.png"; path = "Resources/Images/icon-menu-themes-active@2x.png"; sourceTree = "<group>"; };
 		CC0199E7165C17020073A966 /* NotificationsCommentDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsCommentDetailViewController.h; sourceTree = "<group>"; };
 		CC0199E8165C17020073A966 /* NotificationsCommentDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsCommentDetailViewController.m; sourceTree = "<group>"; };
 		CC098B8216A9ECF800450976 /* CameraPlusPickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CameraPlusPickerManager.h; path = Vendor/CameraPlus/CameraPlusPickerManager.h; sourceTree = SOURCE_ROOT; };
@@ -3028,6 +3032,8 @@
 		853259E417BAC6CE008E87D1 /* New Sidebar */ = {
 			isa = PBXGroup;
 			children = (
+				C5FC5E1E17CD1BFD00B299E2 /* icon-menu-themes-active.png */,
+				C5FC5E1F17CD1BFD00B299E2 /* icon-menu-themes-active@2x.png */,
 				C5FC5E1A17CD173700B299E2 /* icon-menu-themes.png */,
 				C5FC5E1B17CD173700B299E2 /* icon-menu-themes@2x.png */,
 				853259FD17BB0DF8008E87D1 /* icon-menu-viewsite@2x.png */,
@@ -4292,6 +4298,7 @@
 				AC600C0F0E20B80400D663AA /* preview.png in Resources */,
 				A0E293FE0E21037200C6919C /* WPAddCategoryViewController.xib in Resources */,
 				A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */,
+				C5FC5E2017CD1BFD00B299E2 /* icon-menu-themes-active.png in Resources */,
 				85325A3C17BB0DF8008E87D1 /* icon-menu-posts-quickphoto.png in Resources */,
 				2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */,
 				852F4E8617BDED9C005ED539 /* EditPostViewControlleriOS7~iphone.xib in Resources */,
@@ -4939,6 +4946,7 @@
 				5D7BEAB41774A10D00423E7F /* icon-check.png in Resources */,
 				5D7BEAB51774A10D00423E7F /* icon-check@2x.png in Resources */,
 				5D7BEAB61774A10D00423E7F /* icon-notifications.png in Resources */,
+				C5FC5E2117CD1BFD00B299E2 /* icon-menu-themes-active@2x.png in Resources */,
 				5D7BEAB71774A10D00423E7F /* icon-notifications@2x.png in Resources */,
 				5D7BEAB81774A10D00423E7F /* icon-post.png in Resources */,
 				5D7BEAB91774A10D00423E7F /* icon-post@2x.png in Resources */,

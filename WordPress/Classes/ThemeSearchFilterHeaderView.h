@@ -19,6 +19,10 @@
 /// Index of themeFilterOptions
 - (void)selectedSortIndex:(NSUInteger)filterIndex;
 
+/// Update the filter for search
+- (void)applyFilterWithSearchText:(NSString*)searchText;
+- (void)clearSearchFilter;
+
 @end
 
 @interface ThemeSearchFilterHeaderView : UICollectionReusableView
