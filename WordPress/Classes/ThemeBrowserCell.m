@@ -35,8 +35,10 @@
         [_screenshot setContentMode:UIViewContentModeScaleAspectFit];
         [self.contentView addSubview:_screenshot];
         
-        UIImageView *statusIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        // theme-browse-current/theme-browse-premium 37x37
+        UIImageView *statusIcon = [[UIImageView alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width - 37.0f, 0, 37.0f, 37.0f)];
         _statusIcon = statusIcon;
+        [self.contentView addSubview:_statusIcon];
         
         UIView *titleContainer = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.screenshot.frame), self.contentView.bounds.size.width, 30.0f)];
         titleContainer.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
@@ -61,10 +63,17 @@
     _theme = theme;
     self.title.text = _theme.name;
     
+    if (_theme.isPremium) {
+        _statusIcon.image = [UIImage imageNamed:@"theme-browse-premium"];
+    }
+    if (_theme.isCurrentTheme) {
+        _statusIcon.image = [UIImage imageNamed:@"theme-browse-current"];
+    }
+
     [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:self.theme.screenshotUrl] withSuccess:^(UIImage *image) {
         self.screenshot.image = image;
     } failure:^(NSError *error) {
-        
+        WPFLog(@"Theme screenshot failed to download for theme: %@ error: %@", _theme.themeId, error);
     }];
 }
 
