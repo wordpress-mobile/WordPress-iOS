@@ -34,7 +34,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         self.title = NSLocalizedString(@"Themes", @"Title for Themes browser");
         _currentResultsSort = @"themeId";
         _resultSortAttributes = @[@"themeId",@"trendingRank",@"popularityRank"];
-        _sortingOptions = @[NSLocalizedString(@"Alphabetical", @"Theme filter"),
+        _sortingOptions = @[NSLocalizedString(@"A-Z", @"Theme filter"),
                      NSLocalizedString(@"Trending", @"Theme filter"),
                      NSLocalizedString(@"Popular", @"Theme filter")];
     }

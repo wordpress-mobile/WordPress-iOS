@@ -18,6 +18,7 @@ CGFloat const SortButtonWidth = 120.0f;
 @property (nonatomic, weak) UIView *sortOptionsView;
 @property (nonatomic, weak) UISearchBar *searchBar;
 @property (nonatomic, weak) UIButton *sortButton;
+@property (nonatomic, weak) UIImage *sortArrow, *sortArrowActive;
 
 @end
 
@@ -54,29 +55,20 @@ CGFloat const SortButtonWidth = 120.0f;
 - (void)setDelegate:(ThemeBrowserViewController *)delegate {
     _delegate = delegate;
     
-    UIView *optionsDropdown = [self setupSortOptionsDropdown];
-    self.sortOptionsView = optionsDropdown;
-//    [self addSubview:self.sortOptionsView];
+    UIView *sortOptions = self.sortOptionsView;
     
 #warning make this proper
     id hackView = nil;
     for (id view in _delegate.view.subviews) {
         if ([view isKindOfClass:[UICollectionView class]]) {
             hackView = view;
-            [view addSubview:_sortOptionsView];
+            [view addSubview:sortOptions];
             break;
         }
     }
     
-    UIButton *sort = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.sortButton = sort;
-    [self.sortButton setBackgroundColor:[WPStyleGuide baseLightBlue]];
-    [self.sortButton setTitle:[_delegate themeSortingOptions][0] forState:UIControlStateNormal];
-    self.sortButton.titleLabel.font = [WPStyleGuide regularTextFont];
-    self.sortButton.frame = CGRectMake(_searchBar.frame.size.width, 0, SortButtonWidth, self.bounds.size.height);
-    [self.sortButton addTarget:self action:@selector(sortPressed) forControlEvents:UIControlEventTouchUpInside];
-    self.sortButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-    [hackView addSubview:self.sortButton]; // adding to hackview causes loss of magical rotation layout changes
+    UIButton *sortButton = self.sortButton;
+    [hackView addSubview:sortButton]; // adding to hackview causes loss of magical rotation layout changes
 }
 
 - (UIButton*)sortOptionButtonWithTitle:(NSString*)title {
@@ -88,10 +80,10 @@ CGFloat const SortButtonWidth = 120.0f;
     return button;
 }
 
-- (UIView *)setupSortOptionsDropdown {
+- (UIView *)sortOptionsView {
     UIView *optionsContainer = [[UIView alloc] init];
     _sortOptionsView = optionsContainer;
-    _sortOptionsView.backgroundColor = [WPStyleGuide baseLightBlue];
+    _sortOptionsView.backgroundColor = [WPStyleGuide allTAllShadeGrey];
     _sortOptionsView.alpha = 0;
     _sortOptionsView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     CGFloat yOffset = 0;
@@ -106,6 +98,25 @@ CGFloat const SortButtonWidth = 120.0f;
     return _sortOptionsView;
 }
 
+- (UIButton *)sortButton {
+    UIImage *arrow = [UIImage imageNamed:@"icon-themes-dropdown-arrow"];
+    _sortArrow = arrow;
+    UIImage *arrowActive = [UIImage imageWithCGImage:arrow.CGImage scale:arrow.scale orientation:UIImageOrientationDown];
+    _sortArrowActive = arrowActive;
+    
+    UIButton *sort = [UIButton buttonWithType:UIButtonTypeCustom];
+    _sortButton = sort;
+    [_sortButton setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
+    [_sortButton setTitle:[_delegate themeSortingOptions][0] forState:UIControlStateNormal];
+    _sortButton.titleLabel.font = [WPStyleGuide regularTextFont];
+    [_sortButton setImage:_sortArrow forState:UIControlStateNormal];
+    _sortButton.imageEdgeInsets = UIEdgeInsetsMake(0, 95, 0, 0);
+    _sortButton.titleEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 28);
+    _sortButton.frame = CGRectMake(_searchBar.frame.size.width, 0, SortButtonWidth, self.bounds.size.height);
+    [_sortButton addTarget:self action:@selector(sortPressed) forControlEvents:UIControlEventTouchUpInside];
+    return _sortButton;
+}
+
 - (void)sortPressed {
     CGFloat yOffset = _sortOptionsView.frame.origin.y < 0 ? self.bounds.size.height : -_sortOptionsView.frame.size.height;
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
@@ -114,6 +125,7 @@ CGFloat const SortButtonWidth = 120.0f;
             .origin = CGPointMake(_sortOptionsView.frame.origin.x, yOffset),
             .size = CGSizeMake(SortButtonWidth, _sortOptionsView.bounds.size.height)
         };
+        [_sortButton setImage:(yOffset > 0 ? _sortArrowActive : _sortArrow) forState:UIControlStateNormal];
     } completion:nil];
 }
 
@@ -126,6 +138,7 @@ CGFloat const SortButtonWidth = 120.0f;
             .size = CGSizeMake(SortButtonWidth, _sortOptionsView.bounds.size.height)
         };
         _sortOptionsView.alpha = 0;
+        [_sortButton setImage:_sortArrow forState:UIControlStateNormal];
     } completion:nil];
     
     [_delegate selectedSortIndex:sender.tag];
