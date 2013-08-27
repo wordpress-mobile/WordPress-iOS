@@ -180,7 +180,7 @@ CGFloat const CommentCellAccessoryViewOffset = 25.0;
     return CGRectMake(CGRectGetMaxX(leftFrame) + CommentCellStandardOffset, CommentCellStandardOffset, size.width, size.height);
 }
 
-+ (CGRect )postTitleFrameForComment:(Comment *)comment topFrame:(CGRect)topFrame leftFrame:(CGRect)leftFrame andMaxWidth:(CGFloat)maxWidth
++ (CGRect)postTitleFrameForComment:(Comment *)comment topFrame:(CGRect)topFrame leftFrame:(CGRect)leftFrame andMaxWidth:(CGFloat)maxWidth
 {
     NSAttributedString *postTitle = [[self class] postTitleTextForComment:comment];
     CGSize size = [[postTitle string] sizeWithFont:[self postTitleFont] constrainedToSize:CGSizeMake([self textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
