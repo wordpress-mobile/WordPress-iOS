@@ -473,6 +473,7 @@ CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_editCommentViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent = NO;
     [self presentViewController:navController animated:animate completion:nil];
 }
 
