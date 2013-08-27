@@ -708,6 +708,14 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
           success:success failure:failure];
 }
 
+- (void)fetchCurrentThemeForBlogId:(NSString *)blogId
+                           success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/themes/mine"];
+    [self getPath:path parameters:nil
+          success:success failure:failure];
+}
+
 - (void)activateThemeForBlogId:(NSString *)blogId themeId:(NSString *)themeId
                        success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
 {

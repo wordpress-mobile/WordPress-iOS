@@ -19,7 +19,7 @@ static NSDateFormatter *dateFormatter;
 @dynamic popularityRank;
 @dynamic details;
 @dynamic themeId;
-@dynamic isPremium;
+@dynamic premium;
 @dynamic launchDate;
 @dynamic screenshotUrl;
 @dynamic trendingRank;
@@ -40,7 +40,8 @@ static NSDateFormatter *dateFormatter;
     newTheme.popularityRank = themeInfo[@"popularity_rank"];
     newTheme.screenshotUrl = themeInfo[@"screenshot"];
     newTheme.version = themeInfo[@"version"];
-    newTheme.isPremium = @(NO); // TODO change based on themeInfo[@"cost"][@"number"] > 0
+    
+    newTheme.premium = @([[themeInfo objectForKeyPath:@"cost.number"] integerValue] > 0);
     newTheme.tags = themeInfo[@"tags"];
     newTheme.previewUrl = themeInfo[@"preview_url"];
     
@@ -74,6 +75,10 @@ static NSDateFormatter *dateFormatter;
     return [self.blog.currentThemeId isEqualToString:self.themeId];
 }
 
+- (BOOL)isPremium {
+    return [self.premium isEqualToNumber:@(1)];
+}
+
 @end
 
 @implementation Theme (PublicAPI)
@@ -86,6 +91,32 @@ static NSDateFormatter *dateFormatter;
             theme.blog = blog;
         }
         dateFormatter = nil;
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
++ (void)fetchCurrentThemeForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    [[WordPressComApi sharedApi] fetchCurrentThemeForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        blog.currentThemeId = responseObject[@"id"];
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext save:nil];
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)activateThemeWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+    [[WordPressComApi sharedApi] activateThemeForBlogId:self.blog.blogID.stringValue themeId:self.themeId success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success();
         }

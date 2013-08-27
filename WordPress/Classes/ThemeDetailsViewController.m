@@ -144,25 +144,16 @@
     [self.activateButton setTitle:@"" forState:UIControlStateNormal];
     [self.activateButton addSubview:loading];
     
-    [[WordPressComApi sharedApi] activateThemeForBlogId:self.theme.blog.blogID.stringValue themeId:self.theme.themeId success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.theme activateThemeWithSuccess:^{
         [loading removeFromSuperview];
         
         [UIView animateWithDuration:0.3 delay:0.2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             [self showAsCurrentTheme];
         } completion:nil];
         
-        self.theme.blog.currentThemeId = self.theme.themeId;
-        NSError *error;
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext save:&error];
-        if (error) {
-            WPFLog(@"Error saving current theme to blog %@", error);
-        }
-
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         [loading removeFromSuperview];
         
-        // TODO Message of some sort and revert state
-        WPFLog(@"Theme activation failed for %@ with error %@", self.theme.name, error);
         [WPError showAlertWithError:error];
     }];
 }
