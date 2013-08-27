@@ -53,6 +53,7 @@ CGFloat const FilterBarWidth = 120.0f;
     [self.sortButton setTitle:[_delegate themeSortingOptions][0] forState:UIControlStateNormal];
     self.sortButton.frame = CGRectMake(_searchBar.frame.size.width, 0, FilterBarWidth, self.bounds.size.height);
     [self.sortButton addTarget:self action:@selector(sortPressed) forControlEvents:UIControlEventTouchUpInside];
+    self.sortButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     [self addSubview:self.sortButton];
 }
 
@@ -70,6 +71,7 @@ CGFloat const FilterBarWidth = 120.0f;
     _sortOptionsView.backgroundColor = [WPStyleGuide baseLightBlue];
     _sortOptionsView.hidden = true;
     _sortOptionsView.opaque = true;
+    _sortOptionsView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
     CGFloat yOffset = 0;
     for (NSUInteger i = 0; i < [_delegate themeSortingOptions].count; i++) {
         UIButton *option = [self sortOptionButtonWithTitle:[_delegate themeSortingOptions][i]];
