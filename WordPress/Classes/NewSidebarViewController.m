@@ -201,7 +201,8 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
     else {
         Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:section];
         if ([blog isEqual:_currentlyOpenedBlog]) {
-            return SidebarViewControllerNumberOfRowsForBlog;
+            // Don't show themes for non admin users
+            return [blog.isAdmin isEqualToNumber:@(1)] ? SidebarViewControllerNumberOfRowsForBlog : SidebarViewControllerNumberOfRowsForBlog - 1;
         } else {
             return 0;
         }
@@ -366,7 +367,9 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
                 image = [UIImage imageNamed:@"icon-menu-viewsite"];
                 selectedImage = [UIImage imageNamed:@"icon-menu-viewsite-active"];
                 break;
-            case 5: // TODO Determine if we can switch themes as a user
+                
+            // This is only visible if blog.isAdmin == 1
+            case 5:
                 text = NSLocalizedString(@"Themes", @"Menu item for themes");
                 image = [UIImage imageNamed:@"icon-menu-themes"];
                 selectedImage = [UIImage imageNamed:@"icon-menu-themes-active"];
