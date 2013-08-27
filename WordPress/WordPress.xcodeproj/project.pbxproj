@@ -768,6 +768,8 @@
 		C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C5C272DF0E7EC00A0034AA46 /* uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272DE0E7EC00A0034AA46 /* uncheck.png */; };
 		C5C272E10E7EC00F0034AA46 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272E00E7EC00F0034AA46 /* check.png */; };
+		C5FC5E1C17CD173700B299E2 /* icon-menu-themes.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FC5E1A17CD173700B299E2 /* icon-menu-themes.png */; };
+		C5FC5E1D17CD173700B299E2 /* icon-menu-themes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FC5E1B17CD173700B299E2 /* icon-menu-themes@2x.png */; };
 		CC0199E9165C17020073A966 /* NotificationsCommentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC0199E8165C17020073A966 /* NotificationsCommentDetailViewController.m */; };
 		CC098B8416A9ECF800450976 /* CameraPlusPickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC098B8316A9ECF800450976 /* CameraPlusPickerManager.m */; };
 		CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CC0E20AD15B87DA100D3468B /* WPWebBridge.m */; };
@@ -1909,6 +1911,8 @@
 		C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLExtensions.m"; sourceTree = "<group>"; };
 		C5C272DE0E7EC00A0034AA46 /* uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uncheck.png; path = Resources/Images/uncheck.png; sourceTree = "<group>"; };
 		C5C272E00E7EC00F0034AA46 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = check.png; path = Resources/Images/check.png; sourceTree = "<group>"; };
+		C5FC5E1A17CD173700B299E2 /* icon-menu-themes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-menu-themes.png"; path = "Resources/Images/icon-menu-themes.png"; sourceTree = "<group>"; };
+		C5FC5E1B17CD173700B299E2 /* icon-menu-themes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-menu-themes@2x.png"; path = "Resources/Images/icon-menu-themes@2x.png"; sourceTree = "<group>"; };
 		CC0199E7165C17020073A966 /* NotificationsCommentDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsCommentDetailViewController.h; sourceTree = "<group>"; };
 		CC0199E8165C17020073A966 /* NotificationsCommentDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsCommentDetailViewController.m; sourceTree = "<group>"; };
 		CC098B8216A9ECF800450976 /* CameraPlusPickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CameraPlusPickerManager.h; path = Vendor/CameraPlus/CameraPlusPickerManager.h; sourceTree = SOURCE_ROOT; };
@@ -3024,6 +3028,8 @@
 		853259E417BAC6CE008E87D1 /* New Sidebar */ = {
 			isa = PBXGroup;
 			children = (
+				C5FC5E1A17CD173700B299E2 /* icon-menu-themes.png */,
+				C5FC5E1B17CD173700B299E2 /* icon-menu-themes@2x.png */,
 				853259FD17BB0DF8008E87D1 /* icon-menu-viewsite@2x.png */,
 				853259FE17BB0DF8008E87D1 /* icon-menu-viewsite.png */,
 				853259FF17BB0DF8008E87D1 /* icon-menu-viewsite-active@2x.png */,
@@ -4490,11 +4496,13 @@
 				5D27718215A33A8500F4DCAA /* toolbar_approve@2x.png in Resources */,
 				85325A3A17BB0DF8008E87D1 /* icon-menu-posts.png in Resources */,
 				5D27718915A33A8500F4DCAA /* toolbar_flag.png in Resources */,
+				C5FC5E1C17CD173700B299E2 /* icon-menu-themes.png in Resources */,
 				5D27718A15A33A8500F4DCAA /* toolbar_flag@2x.png in Resources */,
 				5D27718D15A33A8500F4DCAA /* toolbar_unapprove.png in Resources */,
 				5D27718E15A33A8500F4DCAA /* toolbar_unapprove@2x.png in Resources */,
 				5D27719115A3527200F4DCAA /* toolbar_write.png in Resources */,
 				5D27719215A3527200F4DCAA /* toolbar_write@2x.png in Resources */,
+				C5FC5E1D17CD173700B299E2 /* icon-menu-themes@2x.png in Resources */,
 				CC6B3BFD15A35F10005A4523 /* friend_finder_cancel_btn_highlight.png in Resources */,
 				CC6B3BFE15A35F10005A4523 /* friend_finder_cancel_btn_highlight@2x.png in Resources */,
 				CC6B3BFF15A35F10005A4523 /* friend_finder_cancel_btn.png in Resources */,

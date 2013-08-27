@@ -368,8 +368,8 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
                 break;
             case 5: // TODO Determine if we can switch themes as a user
                 text = NSLocalizedString(@"Themes", @"Menu item for themes");
-                image = [UIImage imageNamed:@"icon-menu-stats"]; // TODO Replace with themes icon
-                selectedImage = [UIImage imageNamed:@"icon-menu-stats-active"];
+                image = [UIImage imageNamed:@"icon-menu-themes"];
+                selectedImage = [UIImage imageNamed:@"icon-menu-themes-active"];
                 break;
             default:
                 break;
