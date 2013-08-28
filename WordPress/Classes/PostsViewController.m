@@ -126,6 +126,11 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (UIColor *)backgroundColorForRefreshHeaderView
+{
+    return [WPStyleGuide itsEverywhereGrey];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 
