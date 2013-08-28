@@ -19,8 +19,8 @@
 #define SIDEBAR_WIDTH 320.0f
 
 #define IPAD_WIDE_PANEL_WIDTH (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? IPAD_WIDE_PANEL_WIDTH_PORTRAIT : IPAD_WIDE_PANEL_WIDTH_LANDSCAPE )
-#define IPAD_WIDE_PANEL_WIDTH_PORTRAIT 724.0f
-#define IPAD_WIDE_PANEL_WIDTH_LANDSCAPE 980.0f
+#define IPAD_WIDE_PANEL_WIDTH_PORTRAIT 768.0f
+#define IPAD_WIDE_PANEL_WIDTH_LANDSCAPE 1024.0f
 
 // Maximum x position for detail view
 #define DETAIL_LEDGE_OFFSET (IS_IPAD ? SIDEBAR_WIDTH : (SIDEBAR_WIDTH - DETAIL_LEDGE) - 4)
@@ -37,8 +37,8 @@
 #define IPHONE_DETAIL_HEIGHT self.view.bounds.size.height
 #define IPHONE_DETAIL_WIDTH self.view.bounds.size.width
 
-// On iPad, always show part of the sidebar
-#define IPAD_DETAIL_OFFSET DETAIL_LEDGE
+// On iPad, sidebar can be fully closed
+#define IPAD_DETAIL_OFFSET 0
 #define IPAD_DETAIL_HEIGHT IPHONE_DETAIL_HEIGHT
 
 // Fits two regular size panels with the sidebar collapsed
