@@ -49,6 +49,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
+    self.collectionView.backgroundColor = TABLE_VIEW_BACKGROUND_COLOR;
     [self.collectionView registerClass:[ThemeBrowserCell class] forCellWithReuseIdentifier:ThemeCellIdentifier];
     [self.collectionView registerClass:[ThemeSearchFilterHeaderView class]
             forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:SearchFilterCellIdentifier];
@@ -144,10 +145,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (void)reloadThemes {
-    if (_refreshHeaderView.isRefreshing) {
-        return;
-    }
-    
     [_refreshHeaderView beginRefreshing];
     [Theme fetchAndInsertThemesForBlog:self.blog success:^{
         [self loadThemesFromCache];
