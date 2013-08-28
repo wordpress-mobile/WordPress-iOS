@@ -20,13 +20,16 @@
 @interface ThemeDetailsViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *themeControlsView;
+@property (weak, nonatomic) IBOutlet UIView *themeControlsContainerView;
 @property (weak, nonatomic) IBOutlet UILabel *themeName;
 @property (weak, nonatomic) IBOutlet UIImageView *screenshot;
 @property (weak, nonatomic) IBOutlet UIButton *livePreviewButton;
 @property (weak, nonatomic) IBOutlet UIButton *activateButton;
-
 @property (nonatomic, strong) Theme *theme;
 @property (nonatomic, weak) UILabel *tagCloud;
+@property (nonatomic, weak) UILabel *currentTheme;
+@property (nonatomic, weak) UILabel *premiumTheme;
+@property (weak, nonatomic) UIView *infoView;
 
 @end
 
@@ -46,58 +49,98 @@
     self.title = NSLocalizedString(@"Details", @"Theme details. Final string TBD");
 
     self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    
-    [self.view addSubview:self.themeControlsView];
+    self.themeControlsContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [self.view addSubview:self.themeControlsContainerView];
     
     self.themeName.text = self.theme.name;
     self.themeName.font = [WPStyleGuide largePostTitleFont];
     [self.themeName sizeToFit];
     
-    self.livePreviewButton.titleLabel.font = [WPStyleGuide regularTextFont];
-    self.livePreviewButton.layer.cornerRadius = 4.0f;
-    
     if ([self.theme isCurrentTheme]) {
         [self showAsCurrentTheme];
     } else {
-        self.activateButton.layer.cornerRadius = self.livePreviewButton.layer.cornerRadius;
-        self.activateButton.titleLabel.font = self.livePreviewButton.titleLabel.font;
+        self.activateButton.layer.cornerRadius = 4.0f;
+        self.activateButton.titleLabel.font = [WPStyleGuide regularTextFont];
     }
-
+    
+    if (self.theme.isPremium) {
+        [self showAsPremiumTheme];
+    }
+    
+    self.livePreviewButton.titleLabel.font = [WPStyleGuide regularTextFont];
+    self.livePreviewButton.layer.cornerRadius = 4.0f;
+    
     // Should just be text and no background if iOS7
     [self.livePreviewButton setBackgroundColor:[WPStyleGuide baseDarkerBlue]];
     
-    UILabel *detailsTitle = [[UILabel alloc] initWithFrame:CGRectMake(self.livePreviewButton.frame.origin.x, CGRectGetMaxY(self.themeControlsView.frame) + 10, 0, 0)];
+    [self setupInfoView];
+    
+    ((UIScrollView*)self.view).contentSize = CGSizeMake(self.view.frame.size.width, CGRectGetMaxY(_infoView.frame));
+    
+    [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:self.theme.screenshotUrl] withSuccess:^(UIImage *image) {
+        self.screenshot.image = image;
+    } failure:nil];
+}
+
+- (void)viewDidLayoutSubviews {
+    self.livePreviewButton.frame = (CGRect) {
+        .origin = CGPointMake(_livePreviewButton.frame.origin.x, CGRectGetMaxY(_screenshot.frame) + 7),
+        .size = _livePreviewButton.frame.size
+    };
+    self.activateButton.frame = (CGRect) {
+        .origin = CGPointMake(_activateButton.frame.origin.x, _livePreviewButton.frame.origin.y),
+        .size = _activateButton.frame.size
+    };
+    self.themeControlsContainerView.frame = (CGRect) {
+        .origin = _themeControlsContainerView.frame.origin,
+        .size = CGSizeMake(_themeControlsContainerView.frame.size.width, CGRectGetMaxY(_livePreviewButton.frame) + 10)
+    };
+    self.infoView.frame = (CGRect) {
+        .origin = CGPointMake(_infoView.frame.origin.x, CGRectGetMaxY(_themeControlsContainerView.frame) + 10),
+        .size = _infoView.frame.size
+    };
+    
+    _themeControlsView.center = CGPointMake(self.view.center.x, _themeControlsView.center.y);
+    _infoView.center = CGPointMake(_themeControlsView.center.x, _infoView.center.y);
+    
+    ((UIScrollView*)self.view).contentSize = CGSizeMake(self.view.frame.size.width, CGRectGetMaxY(_infoView.frame));
+}
+
+- (void)setupInfoView {
+    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(IS_IPAD ? 0 : 7, CGRectGetMaxY(_themeControlsView.frame), _themeControlsView.frame.size.width - (IS_IPAD ? 0 : 7), 0)];
+    _infoView = infoView;
+    
+    UILabel *detailsTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, _infoView.frame.size.width, 0)];
     detailsTitle.text = NSLocalizedString(@"Details", @"Title for theme details");
     detailsTitle.font = [WPStyleGuide postTitleFont];
     [detailsTitle sizeToFit];
-    [self.view addSubview:detailsTitle];
+    [_infoView addSubview:detailsTitle];
     
-    UILabel *detailsText = [[UILabel alloc] initWithFrame:CGRectMake(detailsTitle.frame.origin.x, CGRectGetMaxY(detailsTitle.frame), self.view.frame.size.width-detailsTitle.frame.origin.x*2, 0)];
+    UILabel *detailsText = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(detailsTitle.frame), _infoView.frame.size.width, 0)];
     detailsText.text = self.theme.details;
     detailsText.numberOfLines = 0;
     detailsText.font = [WPStyleGuide regularTextFont];
     [detailsText sizeToFit];
-    [self.view addSubview:detailsText];
+    [_infoView addSubview:detailsText];
     
-    UILabel *tagsTitle = [[UILabel alloc] initWithFrame:CGRectMake(detailsTitle.frame.origin.x, CGRectGetMaxY(detailsText.frame) + 20, 0, 0)];
+    UILabel *tagsTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(detailsText.frame) + 20, _infoView.frame.size.width, 0)];
     tagsTitle.text = NSLocalizedString(@"Tags", @"Title for theme tags");
     tagsTitle.font = detailsTitle.font;
     [tagsTitle sizeToFit];
-    [self.view addSubview:tagsTitle];
+    [_infoView addSubview:tagsTitle];
     
-    UILabel *tags = [[UILabel alloc] initWithFrame:CGRectMake(tagsTitle.frame.origin.x, CGRectGetMaxY(tagsTitle.frame), detailsText.frame.size.width, 0)];
+    UILabel *tags = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(tagsTitle.frame), _infoView.frame.size.width, 0)];
     tags.text = [self formattedTags];
     tags.numberOfLines = 0;
     tags.font = [WPStyleGuide subtitleFont];
     [tags sizeToFit];
-    [self.view addSubview:tags];
+    [_infoView addSubview:tags];
     
-    ((UIScrollView*)self.view).contentSize = CGSizeMake(self.view.frame.size.width, CGRectGetMaxY(tags.frame));
-    
-    // TODO replace with real image cacher
-    [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:self.theme.screenshotUrl] withSuccess:^(UIImage *image) {
-        self.screenshot.image = image;
-    } failure:nil];
+    _infoView.frame = (CGRect) {
+        .origin = _infoView.frame.origin,
+        .size = CGSizeMake(_infoView.frame.size.width, CGRectGetMaxY(tags.frame) + 10)
+    };
+    [self.view addSubview:_infoView];
 }
 
 - (NSString *)formattedTags {
@@ -118,13 +161,48 @@
     self.screenshot.image = nil;
 }
 
+- (UILabel*)themeStatusLabelWithText:(NSString*)text {
+    UILabel *label = [[UILabel alloc] init];
+    label.text = text;
+    label.font = [WPStyleGuide regularTextFont];
+    label.textColor = [WPStyleGuide littleEddieGrey];
+    [label sizeToFit];
+    return label;
+}
+
 - (void)showAsCurrentTheme {
+    // Current theme label at the top
+    UILabel *currentTheme = [self themeStatusLabelWithText:NSLocalizedString(@"Current Theme", @"Denote a theme as the current")];
+    _currentTheme = currentTheme;
+    [_currentTheme sizeToFit];
+    _currentTheme.frame = (CGRect) {
+        .origin = CGPointMake(_themeName.frame.origin.x, CGRectGetMaxY(_themeName.frame)),
+        .size = _currentTheme.frame.size
+    };
+    [self.themeControlsView addSubview:_currentTheme];
+    
+    self.screenshot.frame = (CGRect) {
+        .origin = CGPointMake(_screenshot.frame.origin.x, CGRectGetMaxY(_currentTheme.frame) + 7),
+        .size = _screenshot.frame.size
+    };
+    
+    [self.view setNeedsLayout];
+    
     // Remove activate theme button, and live preview becomes the 'View Site' button
     [self.livePreviewButton setTitle:NSLocalizedString(@"View Site", @"") forState:UIControlStateNormal];
     CGRect f = self.livePreviewButton.frame;
     f.size.width = CGRectGetMaxX(self.activateButton.frame) - self.livePreviewButton.frame.origin.x;
     self.livePreviewButton.frame = f;
     self.activateButton.alpha = 0;
+}
+
+- (void)showAsPremiumTheme {
+    UIImageView *premiumIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"theme-browse-premium"]];
+    premiumIcon.frame = (CGRect) {
+        .origin = CGPointMake(_screenshot.frame.size.width - premiumIcon.frame.size.width, 0),
+        .size = premiumIcon.frame.size
+    };
+    [_screenshot addSubview:premiumIcon];
 }
 
 - (IBAction)livePreviewPressed:(id)sender {
