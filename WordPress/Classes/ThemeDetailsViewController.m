@@ -83,13 +83,13 @@
 }
 
 - (void)viewDidLayoutSubviews {
-    self.livePreviewButton.frame = (CGRect) {
-        .origin = CGPointMake(_livePreviewButton.frame.origin.x, CGRectGetMaxY(_screenshot.frame) + 7),
-        .size = _livePreviewButton.frame.size
-    };
     self.activateButton.frame = (CGRect) {
         .origin = CGPointMake(_activateButton.frame.origin.x, _livePreviewButton.frame.origin.y),
         .size = _activateButton.frame.size
+    };
+    self.livePreviewButton.frame = (CGRect) {
+        .origin = CGPointMake(_livePreviewButton.frame.origin.x, CGRectGetMaxY(_screenshot.frame) + 7),
+        .size = _livePreviewButton.frame.size
     };
     self.themeControlsContainerView.frame = (CGRect) {
         .origin = _themeControlsContainerView.frame.origin,
@@ -170,8 +170,16 @@
     return label;
 }
 
+- (void)showViewSite {
+    // Remove activate theme button, and live preview becomes the 'View Site' button
+    [self.livePreviewButton setTitle:NSLocalizedString(@"View Site", @"") forState:UIControlStateNormal];
+    CGRect f = self.livePreviewButton.frame;
+    f.size.width = CGRectGetMaxX(self.activateButton.frame) - self.livePreviewButton.frame.origin.x;
+    self.livePreviewButton.frame = f;
+    self.activateButton.alpha = 0;
+}
+
 - (void)showAsCurrentTheme {
-    // Current theme label at the top
     UILabel *currentTheme = [self themeStatusLabelWithText:NSLocalizedString(@"Current Theme", @"Denote a theme as the current")];
     _currentTheme = currentTheme;
     [_currentTheme sizeToFit];
@@ -186,14 +194,9 @@
         .size = _screenshot.frame.size
     };
     
-    [self.view setNeedsLayout];
+    [self showViewSite];
     
-    // Remove activate theme button, and live preview becomes the 'View Site' button
-    [self.livePreviewButton setTitle:NSLocalizedString(@"View Site", @"") forState:UIControlStateNormal];
-    CGRect f = self.livePreviewButton.frame;
-    f.size.width = CGRectGetMaxX(self.activateButton.frame) - self.livePreviewButton.frame.origin.x;
-    self.livePreviewButton.frame = f;
-    self.activateButton.alpha = 0;
+    [self.view setNeedsLayout];
 }
 
 - (void)showAsPremiumTheme {
@@ -226,7 +229,7 @@
         [loading removeFromSuperview];
         
         [UIView animateWithDuration:0.3 delay:0.2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            [self showAsCurrentTheme];
+            [self showViewSite];
         } completion:nil];
         
     } failure:^(NSError *error) {
