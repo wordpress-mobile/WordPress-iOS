@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CommentViewController">
             <connections>
+                <outlet property="approveButtonPlaceholder" destination="qXx-Dg-pka" id="fjH-bF-sk9"/>
                 <outlet property="authorEmailButton" destination="Vjc-BQ-pBt" id="D8Z-Mt-2UF"/>
                 <outlet property="authorNameLabel" destination="l0a-YO-SIS" id="2at-D9-xHk"/>
                 <outlet property="authorSiteButton" destination="HaO-uK-sxD" id="iZQ-nJ-Dzb"/>
@@ -56,10 +57,17 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="P8w-0p-CZ2"/>
+                        <barButtonItem image="icon-comments-approve.png" id="qXx-Dg-pka" userLabel="Approve Button">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="handleApproveOrUnapproveComment:" destination="-1" id="h0u-f3-LF9"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="q6L-fW-HwV"/>
                         <barButtonItem image="icon-comments-flag.png" id="qWC-ZV-ETT" userLabel="Flag Button">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <action selector="showOptionsForFlaggingComment:" destination="-1" id="Pbz-DN-TCi"/>
+                                <action selector="spamComment" destination="-1" id="zud-lz-Yyu"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Acp-56-0gn"/>
@@ -159,6 +167,7 @@
     </objects>
     <resources>
         <image name="comment-default-gravatar-image.png" width="85" height="85"/>
+        <image name="icon-comments-approve.png" width="30" height="30"/>
         <image name="icon-comments-edit.png" width="30" height="30"/>
         <image name="icon-comments-flag.png" width="30" height="30"/>
         <image name="icon-comments-reply.png" width="30" height="30"/>

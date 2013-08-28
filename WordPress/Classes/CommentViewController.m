@@ -32,15 +32,17 @@
 @property (nonatomic, strong) IBOutlet UILabel *dateLabel;
 @property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, strong) IBOutlet UIWebView *commentWebview;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *approveButtonPlaceholder;
 
 @end
 
 @implementation CommentViewController
 
 CGFloat const CommentViewDeletePromptActionSheetTag = 501;
-CGFloat const CommentViewFlagPromptActionSheetTag = 502;
 CGFloat const CommentViewReplyToCommentViewControllerHasChangesActionSheetTag = 401;
 CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601;
+CGFloat const CommentViewApproveButtonTag = 700;
+CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)dealloc {
     WPFLogMethod();
@@ -208,6 +210,14 @@ CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601
     }
 	self.commentWebview.delegate = self;
 	[self.commentWebview loadHTMLString:htmlString baseURL:nil];
+    
+    if ([self.comment.status isEqualToString:@"approve"]) {
+        self.approveButtonPlaceholder.image = [UIImage imageNamed:@"icon-comments-unapprove"];
+        self.approveButtonPlaceholder.tag = CommentViewUnapproveButtonTag;
+    } else {
+        self.approveButtonPlaceholder.image = [UIImage imageNamed:@"icon-comments-approve"];
+        self.approveButtonPlaceholder.tag = CommentViewApproveButtonTag;
+    }
 }
 
 - (NSAttributedString *)postTitleString
@@ -237,6 +247,16 @@ CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601
 - (IBAction)viewURL{
 	NSURL *url = [NSURL URLWithString: [self.comment.author_url trim]];
     [self openInAppWebView:url];
+}
+
+- (IBAction)handleApproveOrUnapproveComment:(id)sender
+{
+    UIBarButtonItem *barButton = sender;
+    if (barButton.tag == CommentViewApproveButtonTag) {
+        [self approveComment];
+    } else {
+        [self unApproveComment];
+    }
 }
 
 - (IBAction)sendEmail{
@@ -273,29 +293,12 @@ CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601
     }
 }
 
-- (IBAction)showOptionsForFlaggingComment:(id)sender
-{
-    NSString *approveOrUnapproveString;
-    if ([self.comment.status isEqualToString:@"approve"]) {
-        approveOrUnapproveString = NSLocalizedString(@"Unapprove Comment", nil);
-    } else {
-        approveOrUnapproveString = NSLocalizedString(@"Approve Comment", nil);
-    }
-    
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:approveOrUnapproveString, NSLocalizedString(@"Flag as Spam", nil), nil];
-    actionSheet.tag = CommentViewFlagPromptActionSheetTag;
-    [actionSheet showInView:self.view];
-    _isShowingActionSheet = YES;
-}
-
 #pragma mark - UIActionSheet Delegate methods
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if (actionSheet.tag == CommentViewDeletePromptActionSheetTag) {
         [self processDeletePromptActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
-	} else if (actionSheet.tag == CommentViewFlagPromptActionSheetTag) {
-        [self processFlagPromptActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
     } else if (actionSheet.tag == CommentViewReplyToCommentViewControllerHasChangesActionSheetTag) {
         [self processReplyToCommentViewHasChangesActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
     } else if (actionSheet.tag == CommentViewEditCommentViewControllerHasChangesActionSheetTag) {
@@ -309,18 +312,6 @@ CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601
 {
     if (buttonIndex == 0) {
         [self deleteComment];
-    }
-}
-
-- (void)processFlagPromptActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
-    if ([buttonTitle isEqualToString:NSLocalizedString(@"Unapprove Comment", nil)]) {
-        [self unApproveComment];
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Approve Comment", nil)]) {
-        [self approveComment];
-    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Flag as Spam", nil)]) {
-        [self spamComment];
     }
 }
 
@@ -418,7 +409,7 @@ CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601
     [self moderateCommentWithSelector:@selector(unapprove)];
 }
 
-- (void)spamComment {
+- (IBAction)spamComment {
     WPFLogMethodParam(NSStringFromSelector(_cmd));
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
     [self.comment removeObserver:self forKeyPath:@"status"];
