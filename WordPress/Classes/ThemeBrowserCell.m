@@ -12,6 +12,12 @@
 #import "WPImageSource.h"
 #import "WPStyleGuide.h"
 
+@interface WPImageSource (Theme)
+
+- (void)downloadThemeScreenshotForURL:(NSURL*)url themeId:(NSString*)themeId success:(void(^)(UIImage *image, NSString *themeId))success failure:(void (^)(NSError *error))failure;
+
+@end
+
 @interface ThemeBrowserCell ()
 
 @property (nonatomic, weak) UIImageView *screenshot;
@@ -70,15 +76,25 @@
     if (_theme.isCurrentTheme) {
         _statusIcon.image = [UIImage imageNamed:@"theme-browse-current"];
     }
-
-    [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:self.theme.screenshotUrl] withSuccess:^(UIImage *image) {
-        if (!self.screenshot.image) {
-            self.screenshot.image = image;
+    
+    [[WPImageSource sharedSource] downloadThemeScreenshotForURL:[NSURL URLWithString:self.theme.screenshotUrl] themeId:_theme.themeId success:^(UIImage *image, NSString *themeId) {
+        if ([themeId isEqualToString:_theme.themeId]) {
+            _screenshot.image = image;
         }
-        
     } failure:^(NSError *error) {
         WPFLog(@"Theme screenshot failed to download for theme: %@ error: %@", _theme.themeId, error);
     }];
+}
+
+@end
+
+@implementation WPImageSource (Theme)
+
+// Save the themeId to avoid the scenario where the cell has already been reused and the theme is now different
+- (void)downloadThemeScreenshotForURL:(NSURL *)url themeId:(NSString*)themeId success:(void (^)(UIImage *image, NSString *themeId))success failure:(void (^)(NSError *))failure {
+    [self downloadImageForURL:url withSuccess:^(UIImage *image) {
+        success(image, themeId);
+    } failure:failure];
 }
 
 @end
