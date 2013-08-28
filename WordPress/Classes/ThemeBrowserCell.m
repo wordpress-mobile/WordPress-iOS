@@ -26,7 +26,9 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.contentView.layer.borderWidth = 0.5f;
+        
+        BOOL isRetina = [[UIApplication sharedApplication] respondsToSelector:@selector(scale)];
+        self.contentView.layer.borderWidth = isRetina ? 0.5f : 1.0f;
         self.contentView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         self.contentView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
         
