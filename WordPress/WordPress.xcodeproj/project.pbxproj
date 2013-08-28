@@ -602,6 +602,7 @@
 		83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
 		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
 		83FEFC7611FF6C5A0078B462 /* EditSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */; };
+		850DE06117CD4611003A1057 /* NewNotificationsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 850DE06017CD4611003A1057 /* NewNotificationsTableViewCell.m */; };
 		85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */; };
 		85149747171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85149746171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m */; };
 		8516972C169D42F4006C5DED /* WPToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 8516972B169D42F4006C5DED /* WPToast.m */; };
@@ -1691,6 +1692,8 @@
 		83FB4D3E122C38F700DB9506 /* MediaPlayer.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		83FEFC7311FF6C5A0078B462 /* EditSiteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditSiteViewController.h; sourceTree = "<group>"; };
 		83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSiteViewController.m; sourceTree = "<group>"; };
+		850DE05F17CD4611003A1057 /* NewNotificationsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewNotificationsTableViewCell.h; sourceTree = "<group>"; };
+		850DE06017CD4611003A1057 /* NewNotificationsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewNotificationsTableViewCell.m; sourceTree = "<group>"; };
 		8514973F171E13DF00B87F3F /* WPAsyncBlockOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAsyncBlockOperation.h; sourceTree = "<group>"; };
 		85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAsyncBlockOperation.m; sourceTree = "<group>"; };
 		85149745171E671000B87F3F /* SelectWPComBlogVisibilityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectWPComBlogVisibilityViewController.h; sourceTree = "<group>"; };
@@ -3120,6 +3123,8 @@
 				85495F4517C6D9A500871A7A /* CommentViewController.h */,
 				85495F4617C6D9A500871A7A /* CommentViewController.m */,
 				85495F4717C6D9A500871A7A /* CommentViewController.xib */,
+				850DE05F17CD4611003A1057 /* NewNotificationsTableViewCell.h */,
+				850DE06017CD4611003A1057 /* NewNotificationsTableViewCell.m */,
 			);
 			name = "iOS 7";
 			sourceTree = "<group>";
@@ -5177,6 +5182,7 @@
 				E13FA0D7134BE78D007DCDD0 /* QuickPhotoViewController.m in Sources */,
 				E13FA0DE134C6D34007DCDD0 /* BlogSelectorButton.m in Sources */,
 				E13FA0FB134C8DDC007DCDD0 /* BlogSelectorViewController.m in Sources */,
+				850DE06117CD4611003A1057 /* NewNotificationsTableViewCell.m in Sources */,
 				E10A2E9B134E8AD3007643F9 /* PostAnnotation.m in Sources */,
 				E17BE261134F5E4D00165C3D /* QuickPicturePreviewView.m in Sources */,
 				E14B2B761368127900CC3C4F /* UITableViewTextFieldCell.m in Sources */,

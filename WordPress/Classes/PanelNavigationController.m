@@ -996,8 +996,6 @@
 }
 
 - (void)disableDetailView {
-    if (IS_IPAD) return;
-
     if (!self.detailTapper) {
         self.detailTapper = [UIButton buttonWithType:UIButtonTypeCustom];
         self.detailTapper.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -1021,8 +1019,6 @@
 }
 
 - (void)enableDetailView {
-    if (IS_IPAD) return;
-
     if (self.detailTapper) {
         [self.detailTapper removeTarget:self action:@selector(centerTapped) forControlEvents:UIControlEventTouchUpInside];
         [self.detailTapper removeFromSuperview];

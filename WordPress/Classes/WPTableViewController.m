@@ -87,6 +87,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     if (_refreshHeaderView == nil) {
 		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.tableView.frame.size.width, self.tableView.bounds.size.height)];
 		_refreshHeaderView.delegate = self;
+        _refreshHeaderView.backgroundColor = [self backgroundColorForRefreshHeaderView];
 		[self.tableView addSubview:_refreshHeaderView];
     }
 	
@@ -203,6 +204,10 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     
 }
 
+- (UIColor *)backgroundColorForRefreshHeaderView
+{
+    return _refreshHeaderView.backgroundColor;
+}
 
 #pragma mark - Property accessors
 
