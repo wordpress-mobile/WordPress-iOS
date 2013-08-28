@@ -182,6 +182,7 @@
 - (void)showAsCurrentTheme {
     UILabel *currentTheme = [self themeStatusLabelWithText:NSLocalizedString(@"Current Theme", @"Denote a theme as the current")];
     _currentTheme = currentTheme;
+    _currentTheme.backgroundColor = [UIColor clearColor]; // for iOS 6
     [_currentTheme sizeToFit];
     _currentTheme.frame = (CGRect) {
         .origin = CGPointMake(_themeName.frame.origin.x, CGRectGetMaxY(_themeName.frame)),
