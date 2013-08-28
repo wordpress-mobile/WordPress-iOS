@@ -177,6 +177,11 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [self.collectionView reloadData];
 }
 
+- (void)applyCurrentSort {
+    NSString *key = [@"self." stringByAppendingString:_currentResultsSort];
+    self.filteredThemes = [_filteredThemes sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:key ascending:true]]];
+}
+
 #pragma mark - ThemeSearchFilterDelegate
 
 - (NSArray *)themeSortingOptions {
@@ -185,17 +190,17 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
 - (void)selectedSortIndex:(NSUInteger)sortIndex {
     _currentResultsSort = _resultSortAttributes[sortIndex];
-    
-    NSString *key = [@"self." stringByAppendingString:_currentResultsSort];
-    self.filteredThemes = [_filteredThemes sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:key ascending:true]]];
+    [self applyCurrentSort];
 }
 
 - (void)applyFilterWithSearchText:(NSString *)searchText {
     self.filteredThemes = [_allThemes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId CONTAINS %@", searchText]];
+    [self applyCurrentSort];
 }
 
 - (void)clearSearchFilter {
     self.filteredThemes = _allThemes;
+    [self applyCurrentSort];
 }
 
 #pragma mark - UIRefreshControl
