@@ -7,12 +7,13 @@
 #import "PostAnnotation.h"
 #import "UIImageView+AFNetworking.h"
 #import "GrowingImageView.h"
+#import "WPModalViewController.h"
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
 #define kOFFSET_FOR_KEYBOARD                    150.0
 
 @class EditPostViewController;
-@interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, UIActionSheetDelegate> {
+@interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, UIActionSheetDelegate, WPModalViewControllerDelegate> {
     IBOutlet UITableView *tableView;
     IBOutlet UITableViewCell *statusTableViewCell;
     IBOutlet UITableViewCell *visibilityTableViewCell;
@@ -50,6 +51,8 @@
     IBOutlet GrowingImageView *featuredImageView;
     IBOutlet UITableViewCell *featuredImageTableViewCell;
     IBOutlet UIActivityIndicatorView *featuredImageSpinner;
+    
+    WPModalViewController *modalViewController;
 }
 
 @property (nonatomic, strong) NSString *statsPrefix;

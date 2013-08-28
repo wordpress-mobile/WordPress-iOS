@@ -8,10 +8,20 @@
 
 #define kPasswordFooterSectionHeight         68.0f
 #define kResizePhotoSettingSectionHeight     60.0f
-#define TAG_PICKER_STATUS       0
-#define TAG_PICKER_VISIBILITY   1
-#define TAG_PICKER_DATE         2
-#define TAG_PICKER_FORMAT       3
+
+#define kTagPickerStatus            0
+#define kTagPickerVisibility        1
+#define kTagPickerDate              2
+#define kTagPickerFormat            3
+
+#define kStatusSection              0
+#define kFormatsSection             1
+#define kFeaturedImageSection       2
+#define kGeoLocationSection         3
+
+#define kStatusRow                  0
+#define kVisiblityRow               1
+#define kDateRow                    2
 
 @interface PostSettingsViewController () {
     BOOL triedAuthOnce;
@@ -77,10 +87,14 @@
     visibilityTitleLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
     postFormatTitleLabel.text = NSLocalizedString(@"Post Format", @"The post formats available for the post. Should be the same as in core WP.");
     passwordTextField.placeholder = NSLocalizedString(@"Enter a password", @"");
-    NSMutableArray *allStatuses = [NSMutableArray arrayWithArray:[self.apost availableStatuses]];
+    NSMutableArray *allStatuses = [[self.apost availableStatuses] mutableCopy];
     [allStatuses removeObject:NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
     statusList = [NSArray arrayWithArray:allStatuses];
-    visibilityList = [NSArray arrayWithObjects:NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."), NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."), NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP."), nil];
+    visibilityList = @[
+                   NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
+                   NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
+                   NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")
+                   ];
     formatsList = self.post.blog.sortedPostFormatNames;
 
     isShowingKeyboard = NO;
@@ -631,16 +645,16 @@
 
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
-		case 0:
+		case kStatusSection:
 			switch (indexPath.row) {
-				case 0:
+				case kStatusRow:
 				{
 					if ([self.apost.status isEqualToString:@"private"])
 						break;
                     
                     [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedStatus forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
                     
-					pickerView.tag = TAG_PICKER_STATUS;
+					pickerView.tag = kTagPickerStatus;
 					[pickerView reloadAllComponents];
                     NSInteger selectedRowIndex = [statusList indexOfObject:self.apost.statusTitle];
                     if (selectedRowIndex != NSNotFound) {
@@ -649,11 +663,11 @@
 					[self showPicker:pickerView];
 					break;
 				}
-				case 1:
+				case kVisiblityRow:
 				{
                     [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedVisibility forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-
-					pickerView.tag = TAG_PICKER_VISIBILITY;
+                    
+					pickerView.tag = kTagPickerVisibility;
 					[pickerView reloadAllComponents];
                     NSInteger selectedRowIndex = [visibilityList indexOfObject:visibilityLabel.text];
                     if (selectedRowIndex != NSNotFound) {
@@ -662,28 +676,28 @@
 					[self showPicker:pickerView];
 					break;
 				}
-				case 2:
+				case kDateRow:
                     [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedScheduleFor forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-
-					datePickerView.tag = TAG_PICKER_DATE;
+                    
+					datePickerView.tag = kTagPickerDate;
 					if (self.apost.dateCreated)
 						datePickerView.date = self.apost.dateCreated;
 					else
-						datePickerView.date = [NSDate date];            
+						datePickerView.date = [NSDate date];
 					[self showPicker:datePickerView];
 					break;
-
+                    
 				default:
 					break;
 			}
 			break;
-        case 1:
+        case kFormatsSection:
         {
             if( [formatsList count] == 0 ) break;
             
             [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedPostFormat forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-
-            pickerView.tag = TAG_PICKER_FORMAT;
+            
+            pickerView.tag = kTagPickerFormat;
             [pickerView reloadAllComponents];
             if ([formatsList count] != 0 && ([formatsList indexOfObject:self.post.postFormatText] != NSNotFound)) {
                 NSInteger selectedRowIndex = [formatsList indexOfObject:self.post.postFormatText];
@@ -694,7 +708,7 @@
             [self showPicker:pickerView];
             break;
         }
-		case 2:
+		case kFeaturedImageSection:
             if (blogSupportsFeaturedImage) {
                 UITableViewCell *cell = [aTableView cellForRowAtIndexPath:indexPath];
                 switch (indexPath.row) {
@@ -714,7 +728,7 @@
                 [self geolocationCellTapped:indexPath];
             }
             break;
-          case 3:
+        case kGeoLocationSection:
             [self geolocationCellTapped:indexPath];
             break;
 	}
@@ -828,7 +842,6 @@
         [postDetailViewController refreshButtons];
         [tableView reloadData];
     }
-    
 }
 
 #pragma mark -
@@ -839,11 +852,11 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)aPickerView numberOfRowsInComponent:(NSInteger)component {
-    if (aPickerView.tag == TAG_PICKER_STATUS) {
+    if (aPickerView.tag == kTagPickerStatus) {
         return [statusList count];
-    } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
+    } else if (aPickerView.tag == kTagPickerVisibility) {
         return [visibilityList count];
-    } else if (aPickerView.tag == TAG_PICKER_FORMAT) {
+    } else if (aPickerView.tag == kTagPickerFormat) {
         return [formatsList count];
     }
     return 0;
@@ -853,11 +866,11 @@
 #pragma mark UIPickerViewDelegate
 
 - (NSString *)pickerView:(UIPickerView *)aPickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    if (aPickerView.tag == TAG_PICKER_STATUS) {
+    if (aPickerView.tag == kTagPickerStatus) {
         return [statusList objectAtIndex:row];
-    } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
+    } else if (aPickerView.tag == kTagPickerVisibility) {
         return [visibilityList objectAtIndex:row];
-    } else if (aPickerView.tag == TAG_PICKER_FORMAT) {
+    } else if (aPickerView.tag == kTagPickerFormat) {
         return [formatsList objectAtIndex:row];
     }
 
@@ -865,9 +878,9 @@
 }
 
 - (void)pickerView:(UIPickerView *)aPickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    if (aPickerView.tag == TAG_PICKER_STATUS) {
+    if (aPickerView.tag == kTagPickerStatus) {
         self.apost.statusTitle = [statusList objectAtIndex:row];
-    } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
+    } else if (aPickerView.tag == kTagPickerVisibility) {
         NSString *visibility = [visibilityList objectAtIndex:row];
         if ([visibility isEqualToString:NSLocalizedString(@"Private", @"Post privacy status in the Post Editor/Settings area (compare with WP core translations).")]) {
             self.apost.status = @"private";
@@ -882,7 +895,7 @@
                 self.apost.password = nil;
             }
         }
-    } else if (aPickerView.tag == TAG_PICKER_FORMAT) {
+    } else if (aPickerView.tag == kTagPickerFormat) {
         self.post.postFormatText = [formatsList objectAtIndex:row];
     }
 	[postDetailViewController refreshButtons];
@@ -890,16 +903,28 @@
 }
 
 #pragma mark -
+#pragma mark WPModalViewControllerDelegate
+
+- (void)modalViewController:(WPModalViewController *)mvc wasDismissed:(BOOL)animated {
+    [mvc hideModal:animated];
+    
+    if (mvc == modalViewController) {
+        modalViewController = nil;
+    }
+}
+
+#pragma mark -
 #pragma mark Pickers and keyboard animations
 
 - (void)showPicker:(UIView *)picker {
-    if (isShowingKeyboard)
-        [passwordTextField resignFirstResponder];
+    if (isShowingKeyboard) {
+        [self.view endEditing:TRUE];
+    }
 
     if (IS_IPAD) {
         
         UIViewController *fakeController = [[UIViewController alloc] init];
-        if (picker.tag == TAG_PICKER_DATE) {
+        if (picker.tag == kTagPickerDate) {
             fakeController.contentSizeForViewInPopover = CGSizeMake(320.0f, 256.0f);
 
             UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")]];
@@ -925,11 +950,11 @@
         }
         
         CGRect popoverRect;
-        if (picker.tag == TAG_PICKER_STATUS)
+        if (picker.tag == kTagPickerStatus)
             popoverRect = [self.view convertRect:statusLabel.frame fromView:[statusLabel superview]];
-        else if (picker.tag == TAG_PICKER_VISIBILITY)
+        else if (picker.tag == kTagPickerVisibility)
             popoverRect = [self.view convertRect:visibilityLabel.frame fromView:[visibilityLabel superview]];
-        else if (picker.tag == TAG_PICKER_FORMAT)
+        else if (picker.tag == kTagPickerFormat)
             popoverRect = [self.view convertRect:postFormatLabel.frame fromView:[postFormatLabel superview]];
         else 
             popoverRect = [self.view convertRect:publishOnDateLabel.frame fromView:[publishOnDateLabel superview]];
@@ -938,40 +963,25 @@
         [popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         
     } else {
-    
-        CGFloat width = postDetailViewController.view.frame.size.width;
-        CGFloat height = 0.0;
+        WPModalViewController *modalVC = [WPModalViewController modalViewController:self];
         
-        // Refactor this class to not use UIActionSheets for display. See trac #1509.
-        // <rant>Shoehorning a UIPicker inside a UIActionSheet is just madness.</rant>
-        // For now, hardcoding height values for the iPhone so we don't get
-        // a funky gap at the bottom of the screen on the iPhone 5.
-        if(postDetailViewController.view.frame.size.height <= 416.0f) {
-            height = 490.0f;
-        } else {
-            height = 500.0f;
-        }
-        if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation)){
-            height = 460.0f; // Show most of the actionsheet but keep the top of the view visible.
-        }
+        // add subviews to the modal view which just acts as a container that handles rotation and showing/hiding (replaces UIActionSheet)
         
-        UIView *pickerWrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 260.0f)]; // 216 + 44 (height of the picker and the "tooblar")
+        UIView *pickerWrapperView = pickerWrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), CGRectGetHeight(picker.frame) + 44.0f)];
+        
         pickerWrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         [pickerWrapperView addSubview:picker];
-                
+
         CGRect pickerFrame = picker.frame;
-        pickerFrame.size.width = width;
+        pickerFrame.size.width = CGRectGetWidth(pickerWrapperView.frame);
+        
         picker.frame = pickerFrame;
         
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-        [actionSheet setActionSheetStyle:UIActionSheetStyleAutomatic];
-        [actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)];
-        
-        [actionSheet addSubview:pickerWrapperView];
+        picker.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
         UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")]];
         closeButton.momentary = YES;
-        CGFloat x = self.view.frame.size.width - 60.0f;
+        CGFloat x = CGRectGetWidth(self.view.frame) - 60.0f;
         closeButton.frame = CGRectMake(x, 7.0f, 50.0f, 30.0f);
         closeButton.segmentedControlStyle = UISegmentedControlStyleBar;
         if ([closeButton respondsToSelector:@selector(setTintColor:)]) {
@@ -980,9 +990,9 @@
         [closeButton addTarget:self action:@selector(hidePicker) forControlEvents:UIControlEventValueChanged];
         closeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
         [pickerWrapperView addSubview:closeButton];
-        
+
         UISegmentedControl *publishNowButton = nil;
-        if (picker.tag == TAG_PICKER_DATE) {
+        if (picker.tag == kTagPickerDate) {
             publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")]];
             publishNowButton.momentary = YES; 
             publishNowButton.frame = CGRectMake(10.0f, 7.0f, 129.0f, 30.0f);
@@ -1018,14 +1028,34 @@
             }
         }
         
-        [actionSheet showInView:postDetailViewController.view];
-        [actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)]; // Update the bounds again now that its in the view else it won't draw correctly.
+        // dock pickerWrapperView to bottom
+        CGRect wrapperFrame = pickerWrapperView.frame;
+        // origin for y position is total height - wrapper height
+        
+        wrapperFrame.origin.y = CGRectGetHeight(modalVC.view.frame) - CGRectGetHeight(wrapperFrame);
+        pickerWrapperView.frame = wrapperFrame;
+        
+        pickerWrapperView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75];
+        
+        [modalVC.view addSubview:pickerWrapperView];
+        
+        [modalVC showModal:TRUE inView:self.view];
+        modalViewController = modalVC; // ARC should retain this value
+        
+        // due to the autoresizing mask it is necessary to adjust the width of the wrapper
+        // after adding it to the view hierarchy to the correct width
+        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+            if (pickerWrapperView) {
+                CGRect frame = pickerWrapperView.frame;
+                frame.size.width = CGRectGetHeight(modalViewController.view.frame);
+                pickerWrapperView.frame = frame;
+            }
+        }
     }
 }
 
 - (void)hidePicker {
-    [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-     actionSheet = nil;
+    [modalViewController hideModal:TRUE];
 }
 
 - (void)removeDate {
@@ -1036,7 +1066,6 @@
         [popover dismissPopoverAnimated:YES];
     else
         [self hidePicker];
-
 }
 
 - (void)keyboardWillShow:(NSNotification *)keyboardInfo {

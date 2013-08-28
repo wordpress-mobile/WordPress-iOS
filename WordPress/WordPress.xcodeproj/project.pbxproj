@@ -21,6 +21,8 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		2604D0C017BC234F0079F51E /* GrowingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2604D0BF17BC234F0079F51E /* GrowingImageView.m */; };
+		262CB6E917CE5E3E00B574C4 /* WPModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 262CB6E717CE5E3E00B574C4 /* WPModalViewController.m */; };
+		262CB6EA17CE5E3E00B574C4 /* WPModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 262CB6E817CE5E3E00B574C4 /* WPModalViewController.xib */; };
 		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
 		2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
 		2906F813110CDA8900169D56 /* EditCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2906F811110CDA8900169D56 /* EditCommentViewController.xib */; };
@@ -906,6 +908,9 @@
 		1D6058910D05DD3D006BFB54 /* WordPress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordPress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2604D0BE17BC234F0079F51E /* GrowingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowingImageView.h; sourceTree = "<group>"; };
 		2604D0BF17BC234F0079F51E /* GrowingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowingImageView.m; sourceTree = "<group>"; };
+		262CB6E617CE5E3E00B574C4 /* WPModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPModalViewController.h; sourceTree = "<group>"; };
+		262CB6E717CE5E3E00B574C4 /* WPModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPModalViewController.m; sourceTree = "<group>"; };
+		262CB6E817CE5E3E00B574C4 /* WPModalViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPModalViewController.xib; sourceTree = "<group>"; };
 		28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPress_Prefix.pch; sourceTree = "<group>"; };
 		28AD735F0D9D9599002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = "<group>"; };
 		2906F80F110CDA8900169D56 /* EditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCommentViewController.h; sourceTree = "<group>"; };
@@ -3176,6 +3181,9 @@
 				E1921F5917733C3E000F4079 /* WPImageSource.m */,
 				E1E4CE091773C59B00430844 /* WPAvatarSource.h */,
 				E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */,
+				262CB6E617CE5E3E00B574C4 /* WPModalViewController.h */,
+				262CB6E717CE5E3E00B574C4 /* WPModalViewController.m */,
+				262CB6E817CE5E3E00B574C4 /* WPModalViewController.xib */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -4402,6 +4410,7 @@
 				E1F77438178C282000E70764 /* NNGPlusActivity~iphone.png in Resources */,
 				E1D95EBF17A2AB7400A3E9F3 /* video_play.png in Resources */,
 				E1D95EC017A2AB7400A3E9F3 /* video_play@2x.png in Resources */,
+				262CB6EA17CE5E3E00B574C4 /* WPModalViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4683,6 +4692,7 @@
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
 				E1ECF7DF17A7CEE600535A05 /* ViewAdminButton.m in Sources */,
 				2604D0C017BC234F0079F51E /* GrowingImageView.m in Sources */,
+				262CB6E917CE5E3E00B574C4 /* WPModalViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
