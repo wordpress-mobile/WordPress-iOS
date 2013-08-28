@@ -83,13 +83,13 @@
 }
 
 - (void)viewDidLayoutSubviews {
-    self.activateButton.frame = (CGRect) {
-        .origin = CGPointMake(_activateButton.frame.origin.x, _livePreviewButton.frame.origin.y),
-        .size = _activateButton.frame.size
-    };
     self.livePreviewButton.frame = (CGRect) {
         .origin = CGPointMake(_livePreviewButton.frame.origin.x, CGRectGetMaxY(_screenshot.frame) + 7),
         .size = _livePreviewButton.frame.size
+    };
+    self.activateButton.frame = (CGRect) {
+        .origin = CGPointMake(_activateButton.frame.origin.x, _livePreviewButton.frame.origin.y),
+        .size = _activateButton.frame.size
     };
     self.themeControlsContainerView.frame = (CGRect) {
         .origin = _themeControlsContainerView.frame.origin,

@@ -26,7 +26,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
         BOOL isRetina = [[UIApplication sharedApplication] respondsToSelector:@selector(scale)];
         self.contentView.layer.borderWidth = isRetina ? 0.5f : 1.0f;
         self.contentView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
@@ -73,7 +72,10 @@
     }
 
     [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:self.theme.screenshotUrl] withSuccess:^(UIImage *image) {
-        self.screenshot.image = image;
+        if (!self.screenshot.image) {
+            self.screenshot.image = image;
+        }
+        
     } failure:^(NSError *error) {
         WPFLog(@"Theme screenshot failed to download for theme: %@ error: %@", _theme.themeId, error);
     }];
