@@ -34,11 +34,11 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = NSLocalizedString(@"Themes", @"Title for Themes browser");
-        _currentResultsSort = @"themeId";
-        _resultSortAttributes = @[@"themeId",@"trendingRank",@"popularityRank"];
-        _sortingOptions = @[NSLocalizedString(@"Alphabetical", @"Theme filter"),
-                     NSLocalizedString(@"Trending", @"Theme filter"),
-                     NSLocalizedString(@"Popular", @"Theme filter")];
+        _currentResultsSort = @"trendingRank";
+        _resultSortAttributes = @[@"trendingRank", @"launchDate", @"popularityRank"];
+        _sortingOptions = @[NSLocalizedString(@"Trending", @"Theme filter"),
+                            NSLocalizedString(@"Newest", @"Theme filter"),
+                            NSLocalizedString(@"Popular", @"Theme filter")];
     }
     return self;
 }
