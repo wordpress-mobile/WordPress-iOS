@@ -153,7 +153,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     _currentResultsSort = _resultSortAttributes[sortIndex];
     
     NSString *key = [@"self." stringByAppendingString:_currentResultsSort];
-    self.filteredThemes = [_allThemes sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:key ascending:true]]];
+    self.filteredThemes = [_filteredThemes sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:key ascending:true]]];
 }
 
 - (void)applyFilterWithSearchText:(NSString *)searchText {
