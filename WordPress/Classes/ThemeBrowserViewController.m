@@ -194,7 +194,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (void)applyFilterWithSearchText:(NSString *)searchText {
-    self.filteredThemes = [_allThemes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId CONTAINS %@", searchText]];
+    self.filteredThemes = [_allThemes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId CONTAINS[cd] %@", searchText]];
     [self applyCurrentSort];
 }
 

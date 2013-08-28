@@ -35,6 +35,8 @@ static CGFloat const SortButtonWidth = 130.0f;
         _searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         _searchBar.delegate = self;
         [_searchBar setTintColor:[WPStyleGuide readGrey]];
+        _searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
         [self addSubview:_searchBar];
     }
     return self;
