@@ -25,6 +25,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 @property (nonatomic, strong) NSString *currentResultsSort;
 @property (nonatomic, strong) NSArray *allThemes, *filteredThemes;
 @property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
+@property (nonatomic, strong) NSIndexPath *currentTheme, *selectedTheme;
 
 @end
 
@@ -62,6 +63,14 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     
     [self loadThemesFromCache];
     [self reloadThemes];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if (_currentTheme && _selectedTheme && ![self.currentTheme isEqual:self.selectedTheme]) {
+        [self.collectionView reloadItemsAtIndexPaths:@[_currentTheme, _selectedTheme]];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -111,12 +120,17 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ThemeBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ThemeCellIdentifier forIndexPath:indexPath];
-    cell.theme = self.filteredThemes[indexPath.row];
+    Theme *theme = self.filteredThemes[indexPath.row];
+    cell.theme = theme;
+    if ([theme.themeId isEqualToString:self.blog.currentThemeId]) {
+        self.currentTheme = indexPath;
+    }
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     Theme *theme = self.filteredThemes[indexPath.row];
+    self.selectedTheme = indexPath;
     ThemeDetailsViewController *details = [[ThemeDetailsViewController alloc] initWithTheme:theme];
     [self.navigationController pushViewController:details animated:true];
 }
