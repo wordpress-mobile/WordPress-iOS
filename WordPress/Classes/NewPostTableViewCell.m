@@ -47,7 +47,7 @@ CGFloat const NewPostTableViewCellStandardOffset = 16.0;
         _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         _titleLabel.font = [[self class] titleFont];
         _titleLabel.shadowOffset = CGSizeMake(0.0, 0.0);
-        _titleLabel.textColor = [UIColor blackColor];
+        _titleLabel.textColor = [WPStyleGuide littleEddieGrey];
         [self.contentView addSubview:_titleLabel];
         
         _dateLabel = [[UILabel alloc] init];
@@ -57,7 +57,7 @@ CGFloat const NewPostTableViewCellStandardOffset = 16.0;
         _dateLabel.lineBreakMode = NSLineBreakByWordWrapping;
         _dateLabel.font = [[self class] dateFont];
         _dateLabel.shadowOffset = CGSizeMake(0.0, 0.0);
-        _dateLabel.textColor = [UIColor grayColor];
+        _dateLabel.textColor = [WPStyleGuide allTAllShadeGrey];
         [self.contentView addSubview:_dateLabel];
     }
     return self;
@@ -118,7 +118,10 @@ CGFloat const NewPostTableViewCellStandardOffset = 16.0;
         }
         
         if (_dateLabel.text != nil) {
-            _dateLabel.attributedText = [[NSAttributedString alloc] initWithString:_dateLabel.text attributes:[[self class] dateAttributes]];
+            NSRange barRange = [_dateLabel.text rangeOfString:@"|"];
+            NSMutableAttributedString *dateText = [[NSMutableAttributedString alloc] initWithString:_dateLabel.text attributes:[[self class] dateAttributes]];
+            [dateText addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide readGrey] range:barRange];
+            _dateLabel.attributedText = dateText;
         }
     }
 }
