@@ -1472,6 +1472,12 @@
         if (showResizeActionSheet) {
             [self showResizeActionSheet];
         }
+    } else {
+        [self.navigationController dismissViewControllerAnimated:YES completion:^{
+            if (showResizeActionSheet) {
+                [self showResizeActionSheet];
+            }
+        }];
     }
 }
 
