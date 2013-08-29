@@ -51,13 +51,12 @@
     IBOutlet GrowingImageView *featuredImageView;
     IBOutlet UITableViewCell *featuredImageTableViewCell;
     IBOutlet UIActivityIndicatorView *featuredImageSpinner;
-    
-    WPModalViewController *modalViewController;
 }
 
 @property (nonatomic, strong) NSString *statsPrefix;
 @property (nonatomic, weak) EditPostViewController *postDetailViewController;
 @property (nonatomic, strong) IBOutlet UITableViewCell *postFormatTableViewCell;
+@property (nonatomic, strong) WPModalViewController *modalViewController;
 
 - (id)initWithPost:(AbstractPost *)aPost;
 

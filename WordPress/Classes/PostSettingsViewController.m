@@ -38,7 +38,7 @@
 @end
 
 @implementation PostSettingsViewController
-@synthesize postDetailViewController, postFormatTableViewCell;
+@synthesize postDetailViewController, postFormatTableViewCell, modalViewController;
 
 #pragma mark -
 #pragma mark Lifecycle Methods
@@ -910,8 +910,8 @@
 - (void)modalViewController:(WPModalViewController *)mvc wasDismissed:(BOOL)animated {
     [mvc hideModal:animated];
     
-    if (mvc == modalViewController) {
-        modalViewController = nil;
+    if (mvc == self.modalViewController) {
+        self.modalViewController = nil;
     }
 }
 
@@ -1107,22 +1107,23 @@
         [modalVC.view addSubview:pickerWrapperView];
         
         [modalVC showModal:TRUE inView:self.view];
-        modalViewController = modalVC; // ARC should retain this value
         
         // due to the autoresizing mask it is necessary to adjust the width of the wrapper
         // after adding it to the view hierarchy to the correct width
         if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
             if (pickerWrapperView) {
                 CGRect frame = pickerWrapperView.frame;
-                frame.size.width = CGRectGetHeight(modalViewController.view.frame);
+                frame.size.width = CGRectGetHeight(modalVC.view.frame);
                 pickerWrapperView.frame = frame;
             }
         }
+        
+        self.modalViewController = modalVC;
     }
 }
 
 - (void)hidePicker {
-    [modalViewController hideModal:TRUE];
+    [self.modalViewController hideModal:TRUE];
 }
 
 - (void)removeDate {
