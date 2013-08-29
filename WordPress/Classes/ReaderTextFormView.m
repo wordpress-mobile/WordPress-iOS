@@ -101,15 +101,15 @@
 
 	if (!self.window) {
 		self.navigationItem.titleView = self.oldNavigationItem.titleView;
-		self.navigationItem.leftBarButtonItem = self.oldNavigationItem.leftBarButtonItem;
-		self.navigationItem.rightBarButtonItem = self.oldNavigationItem.rightBarButtonItem;
+		self.navigationItem.leftBarButtonItems = self.oldNavigationItem.leftBarButtonItems;
+		self.navigationItem.rightBarButtonItems = self.oldNavigationItem.rightBarButtonItems;
 		self.oldNavigationItem = nil;
 		return;
 	}
 
 	self.navigationItem.titleView = _headerView;
-	[self.navigationItem setLeftBarButtonItem:_cancelButton animated:NO];
-	[self.navigationItem setRightBarButtonItem:_sendButton animated:NO];
+    self.navigationItem.leftBarButtonItems = @[_cancelButton];
+    self.navigationItem.rightBarButtonItems = @[_sendButton];
 }
 
 
@@ -118,12 +118,11 @@
 	if (!_oldNavigationItem) {
 		self.oldNavigationItem = [[UINavigationItem alloc] init];
 		_oldNavigationItem.titleView = self.navigationItem.titleView;
-		_oldNavigationItem.leftBarButtonItem = self.navigationItem.leftBarButtonItem;
-		_oldNavigationItem.rightBarButtonItem = self.navigationItem.rightBarButtonItem;
+		_oldNavigationItem.leftBarButtonItems = self.navigationItem.leftBarButtonItems;
+		_oldNavigationItem.rightBarButtonItems = self.navigationItem.rightBarButtonItems;
 	}
 
 	if (!_headerView) {
-		
 		CGFloat y = UIInterfaceOrientationIsPortrait([[[UIApplication sharedApplication] keyWindow] rootViewController].interfaceOrientation) ? 6.0f : 0.0f;
 		self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, y, 200.0f, 32.0f)];
 		_headerView.backgroundColor = [UIColor clearColor];
@@ -137,6 +136,10 @@
 		_titleLabel.textAlignment = NSTextAlignmentCenter;
 		_titleLabel.backgroundColor = [UIColor clearColor];
 		_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        if (IS_IOS7) {
+            _titleLabel.textColor = [UIColor whiteColor];
+            _titleLabel.shadowOffset = CGSizeZero;
+        }
 		[_headerView addSubview:_titleLabel];
 		
 		
@@ -146,19 +149,31 @@
 		_detailLabel.textAlignment = NSTextAlignmentCenter;
 		_detailLabel.backgroundColor = [UIColor clearColor];
 		_detailLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        if (IS_IOS7) {
+            _detailLabel.textColor = [UIColor whiteColor];
+            _detailLabel.shadowOffset = CGSizeZero;
+        }
 		[_headerView addSubview:_detailLabel];
 	}
 	
 	if (!_sendButton) {
+        UIBarButtonItemStyle style = UIBarButtonItemStyleDone;
+        if (IS_IOS7) {
+            style = UIBarButtonItemStylePlain;
+        }
 		self.sendButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Send", @"")
-														   style:UIBarButtonItemStyleDone
+														   style:style
 														  target:self
 														  action:@selector(handleSendButtonTapped:)];
 	}
 	
 	if (!_cancelButton) {
+        UIBarButtonItemStyle style = UIBarButtonItemStyleBordered;
+        if (IS_IOS7) {
+            style = UIBarButtonItemStylePlain;
+        }
 		self.cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"")
-															 style:UIBarButtonItemStyleBordered
+															 style:style
 															target:self
 															action:@selector(handleCancelButtonTapped:)];
 	}
