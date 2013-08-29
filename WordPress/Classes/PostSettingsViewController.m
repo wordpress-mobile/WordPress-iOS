@@ -1828,6 +1828,7 @@
     picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 	picker.delegate = self;
 	picker.allowsEditing = NO;
+    picker.navigationBar.translucent = NO;
     
     if (IS_IPAD) {
         popover = [[UIPopoverController alloc] initWithContentViewController:picker];
