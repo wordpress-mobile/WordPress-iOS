@@ -585,6 +585,7 @@
 - (UIImagePickerController *)resetImagePicker {
     picker.delegate = nil;
     picker = [[UIImagePickerController alloc] init];
+    picker.navigationBar.translucent = NO;
 	picker.delegate = self;
 	picker.allowsEditing = NO;
     return picker;

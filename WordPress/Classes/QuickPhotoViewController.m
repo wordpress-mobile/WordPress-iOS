@@ -176,6 +176,7 @@
 
 - (void)showPicker {
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.navigationBar.translucent = NO;
     picker.sourceType = self.sourceType;
     picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
     picker.allowsEditing = NO;
