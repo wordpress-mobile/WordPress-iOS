@@ -475,7 +475,8 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
             
             controllerClass =  [StatsWebViewController class];
         } else if ([self isRowForThemes:indexPath]) {
-            // TODO Stats
+            [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedThemes forEvent:StatsEventAppClosed];
+            
             controllerClass = [ThemeBrowserViewController class];
         } else if ([self isRowForViewSite:indexPath]) {
             [self showViewSiteForBlog:blog andClosingSidebar:closingSidebar];
