@@ -25,6 +25,7 @@
 CGFloat const NewPostTableViewCellStandardOffset = 16.0;
 CGFloat const NewPostTableViewCellTitleAndDateVerticalOffset = 6.0;
 CGFloat const NewPostTableViewCellLabelAndTitleHorizontalOffset = -0.5;
+CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -221,7 +222,7 @@ CGFloat const NewPostTableViewCellLabelAndTitleHorizontalOffset = -0.5;
 
 + (CGFloat)textWidth:(CGFloat)maxWidth
 {
-    return maxWidth - 2*NewPostTableViewCellStandardOffset;
+    return maxWidth - NewPostTableViewCellStandardOffset - NewPostTableViewCellAccessoryViewOffset;
 }
 
 + (CGRect)statusLabelFrameForPost:(AbstractPost *)post maxWidth:(CGFloat)maxWidth
