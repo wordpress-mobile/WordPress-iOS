@@ -76,6 +76,7 @@
     self.infiniteScrollEnabled = YES;
     
     self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorColor = [WPStyleGuide readGrey];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -124,6 +125,11 @@
 	[super viewDidUnload];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (UIColor *)backgroundColorForRefreshHeaderView
+{
+    return [WPStyleGuide itsEverywhereGrey];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

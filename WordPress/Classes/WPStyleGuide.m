@@ -156,4 +156,9 @@
 	return [UIColor colorWithRed:238/255.0f green:238/255.0f blue:238/255.0f alpha:1.0f];
 }
 
++ (UIColor *)darkAsNightGrey
+{
+	return [UIColor colorWithRed:16/255.0f green:16/255.0f blue:16/255.0f alpha:1.0f];
+}
+
 @end

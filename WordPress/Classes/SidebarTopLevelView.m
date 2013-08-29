@@ -76,7 +76,7 @@
     if (self.selected) {
         self.mainView.backgroundColor = [WPStyleGuide baseDarkerBlue];
     } else {
-        self.mainView.backgroundColor = [WPStyleGuide bigEddieGrey];
+        self.mainView.backgroundColor = [WPStyleGuide darkAsNightGrey];
     }
     
     self.blogTitleLabel.font = [UIFont fontWithName:@"OpenSans" size:16.0];

@@ -45,6 +45,9 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     
     [super viewDidLoad];
     
+    self.view.backgroundColor = [WPStyleGuide readGrey];
+    self.tableView.backgroundColor = [WPStyleGuide readGrey];
+    
     self.tableView.accessibilityLabel = @"Comments";       // required for UIAutomation for iOS 4
 	if([self.tableView respondsToSelector:@selector(setAccessibilityIdentifier:)]){
 		self.tableView.accessibilityIdentifier = @"Comments";  // required for UIAutomation for iOS 5
@@ -54,6 +57,11 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     
     // Do not show row dividers for empty cells.
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+}
+
+- (UIColor *)backgroundColorForRefreshHeaderView
+{
+    return [WPStyleGuide readGrey];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

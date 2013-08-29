@@ -41,7 +41,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     IBOutlet UILabel *categoriesLabel;
     IBOutlet UIButton *categoriesButton;
 
-    WPKeyboardToolbar *editorToolbar;
+    WPKeyboardToolbarBase *editorToolbar;
     UIView *currentView;
     BOOL isEditing;
     BOOL isShowingKeyboard;
@@ -112,7 +112,11 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
     if (editorToolbar == nil) {
         CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_PORTRAIT);
-        editorToolbar = [[WPKeyboardToolbar alloc] initWithFrame:frame];
+        if (IS_IOS7) {
+            editorToolbar = [[WPKeyboardToolbarWithoutGradient alloc] initWithFrame:frame];
+        } else {
+            editorToolbar = [[WPKeyboardToolbar alloc] initWithFrame:frame];
+        }
         editorToolbar.delegate = self;
     }
     textView.inputAccessoryView = editorToolbar;

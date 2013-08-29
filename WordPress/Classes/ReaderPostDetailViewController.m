@@ -21,6 +21,7 @@
 #import "ReaderPostDetailView.h"
 #import "ReaderCommentFormView.h"
 #import "ReaderReblogFormView.h"
+#import "WPStyleGuide.h"
 
 NSInteger const ReaderCommentsToSync = 100;
 NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -161,12 +162,16 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 
 	self.panelNavigationController.delegate = self;
     [self setFullScreen:NO];
-    self.navigationController.navigationBar.translucent = YES;
-    self.navigationController.toolbar.translucent = YES;
 
 	UIToolbar *toolbar = self.navigationController.toolbar;
-	[toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
-	[toolbar setTintColor:[UIColor colorWithHexString:@"F1F1F1"]];
+    if (IS_IOS7) {
+        toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+        toolbar.tintColor = [UIColor whiteColor];
+        toolbar.translucent = NO;
+    } else {
+        [toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+        [toolbar setTintColor:[UIColor colorWithHexString:@"F1F1F1"]];
+    }
 	
 	if (IS_IPAD)
         [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
@@ -265,7 +270,9 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 
 - (void)buildTopToolbar {
 	// Top Navigation bar and Sharing.
-	if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
+	if (IS_IOS7) {
+        self.shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(handleShareButtonTapped:)];
+	} else {
 		UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
 		
 		[btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
@@ -280,19 +287,16 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		[btn addTarget:self action:@selector(handleShareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
 		self.shareButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
-	} else {
-		self.shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-																		 target:self
-																		 action:@selector(handleShareButtonTapped:)];
 	}
 	
 	self.navigationItem.rightBarButtonItem = _shareButton;
 	
-	if(IS_IPAD) {
+	if(false && IS_IPAD) {
 		
 		self.navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0f)];
 		_navBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		[_navBar pushNavigationItem:self.navigationItem animated:NO];
+        _navBar.translucent = NO;
 		[self.view addSubview:_navBar];
 		
 		CGRect frame = self.tableView.frame;
