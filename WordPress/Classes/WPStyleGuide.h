@@ -38,5 +38,6 @@
 + (UIColor *)allTAllShadeGrey;
 + (UIColor *)readGrey;
 + (UIColor *)itsEverywhereGrey;
++ (UIColor *)darkAsNightGrey;
 
 @end

@@ -134,11 +134,10 @@
 
 - (void)layoutSubviews
 {
-    
     if (self.cellBackgroundColor == SidebarTableViewCellBackgroundColorLight) {
-        self.content.backgroundColor = [UIColor UIColorFromHex:0x3A3A3A];
-    } else {
         self.content.backgroundColor = [WPStyleGuide bigEddieGrey];
+    } else {
+        self.content.backgroundColor = [WPStyleGuide darkAsNightGrey];
     }
     
     if (self.selected) {

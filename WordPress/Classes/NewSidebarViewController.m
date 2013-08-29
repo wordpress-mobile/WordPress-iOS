@@ -65,8 +65,8 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [WPStyleGuide bigEddieGrey];
-    self.tableView.backgroundColor = [WPStyleGuide bigEddieGrey];
+    self.view.backgroundColor = [WPStyleGuide darkAsNightGrey];
+    self.tableView.backgroundColor = [WPStyleGuide darkAsNightGrey];
     
     UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 100)];
     footerView.backgroundColor = [UIColor clearColor];
