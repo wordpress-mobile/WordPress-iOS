@@ -14,6 +14,7 @@
 #import "ThemeDetailsViewController.h"
 #import "Blog.h"
 #import "WPStyleGuide.h"
+#import "WPInfoView.h"
 
 static NSString *const ThemeCellIdentifier = @"theme";
 static NSString *const SearchFilterCellIdentifier = @"search_filter";
@@ -26,6 +27,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 @property (nonatomic, strong) NSArray *allThemes, *filteredThemes;
 @property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
 @property (nonatomic, strong) NSIndexPath *currentTheme, *selectedTheme;
+@property (nonatomic, weak) WPInfoView *noThemesView;
 
 @end
 
@@ -60,14 +62,14 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [_refreshHeaderView addTarget:self action:@selector(refreshControlTriggered:) forControlEvents:UIControlEventValueChanged];
     _refreshHeaderView.tintColor = [WPStyleGuide whisperGrey];
     [self.collectionView addSubview:_refreshHeaderView];
-    
-    [self loadThemesFromCache];
-    [self reloadThemes];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
+    [self loadThemesFromCache];
+    [self reloadThemes];
+
     if (_currentTheme && _selectedTheme && ![self.currentTheme isEqual:self.selectedTheme]) {
         [self.collectionView reloadItemsAtIndexPaths:@[_currentTheme, _selectedTheme]];
     }
@@ -90,11 +92,32 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     NSArray *allThemes = [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (error) {
         WPFLog(@"Failed to fetch themes with error %@", error);
-        _allThemes = _filteredThemes = nil;
+        _allThemes = self.filteredThemes = nil;
         return;
     }
-    _allThemes = _filteredThemes = allThemes;
-    [self.collectionView reloadData];
+    _allThemes = self.filteredThemes = allThemes;
+}
+
+- (void)reloadThemes {
+    [_refreshHeaderView beginRefreshing];
+    [Theme fetchAndInsertThemesForBlog:self.blog success:^{
+        [self loadThemesFromCache];
+        [_refreshHeaderView endRefreshing];
+    } failure:^(NSError *error) {
+        [_refreshHeaderView endRefreshing];
+        [WPError showAlertWithError:error];
+    }];
+}
+
+- (void)toggleNoThemesView:(BOOL)show {
+    if (!show) {
+        [_noThemesView removeFromSuperview];
+        return;
+    }
+    if (!_noThemesView) {
+        _noThemesView = [WPInfoView WPInfoViewWithTitle:@"No themes to display" message:nil cancelButton:nil];
+    }
+    [self.collectionView addSubview:_noThemesView];
 }
 
 #pragma mark - UICollectionViewDelegate/DataSource
@@ -158,21 +181,12 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [self.collectionView performBatchUpdates:nil completion:nil];
 }
 
-- (void)reloadThemes {
-    [_refreshHeaderView beginRefreshing];
-    [Theme fetchAndInsertThemesForBlog:self.blog success:^{
-        [self loadThemesFromCache];
-        [_refreshHeaderView endRefreshing];
-    } failure:^(NSError *error) {
-        [_refreshHeaderView endRefreshing];
-        [WPError showAlertWithError:error];
-    }];
-}
-
 #pragma mark - Setters
 
 - (void)setFilteredThemes:(NSArray *)filteredThemes {
     _filteredThemes = filteredThemes;
+    
+    [self toggleNoThemesView:(_filteredThemes.count == 0)];
     
     [self.collectionView reloadData];
 }
@@ -194,12 +208,12 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (void)applyFilterWithSearchText:(NSString *)searchText {
-    self.filteredThemes = [_allThemes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId CONTAINS[cd] %@", searchText]];
+    _filteredThemes = [_allThemes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId CONTAINS[cd] %@", searchText]];
     [self applyCurrentSort];
 }
 
 - (void)clearSearchFilter {
-    self.filteredThemes = _allThemes;
+    _filteredThemes = _allThemes;
     [self applyCurrentSort];
 }
 
