@@ -23,6 +23,8 @@
 #define kVisiblityRow               1
 #define kDateRow                    2
 
+#define kPickerWrapperViewTag       101
+
 @interface PostSettingsViewController () {
     BOOL triedAuthOnce;
 }
@@ -913,6 +915,69 @@
     }
 }
 
+- (void)modalViewController:(WPModalViewController *)mvc willShow:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    UIView *view = [mvc.view viewWithTag:kPickerWrapperViewTag];
+    if (view) {
+        CGRect hiddenFrame = view.frame;
+        hiddenFrame.origin.y = CGRectGetHeight(mvc.view.frame);
+        view.frame = hiddenFrame;
+    }
+    
+    if (completionBlock) {
+        completionBlock();
+    }
+}
+
+- (void)modalViewController:(WPModalViewController *)mvc didShow:(BOOL)animated {
+    UIView *view = [mvc.view viewWithTag:kPickerWrapperViewTag];
+    if (view) {
+        // first place the view off the bottom of the screen before animating it up
+        
+        CGFloat duration = animated ? 0.25 : 0;
+        
+        UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+        [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
+            CGRect visibleFrame = view.frame;
+            BOOL isLandscape = UIInterfaceOrientationIsLandscape(self.interfaceOrientation);
+            if (isLandscape) {
+                visibleFrame.origin.y = CGRectGetWidth(mvc.view.frame) - CGRectGetHeight(view.frame);
+            }
+            else {
+                visibleFrame.origin.y = CGRectGetHeight(mvc.view.frame) - CGRectGetHeight(view.frame);
+            }
+            view.frame = visibleFrame;
+        } completion:^(BOOL finished) {
+        }];
+    }
+}
+
+- (void)modalViewController:(WPModalViewController *)mvc willHide:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
+    UIView *view = [mvc.view viewWithTag:kPickerWrapperViewTag];
+    if (view) {
+        // first place the view off the bottom of the screen before animating it up
+        
+        CGFloat duration = animated ? 0.25 : 0;
+        
+        UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+        [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
+            CGRect hiddenFrame = view.frame;
+            
+            BOOL isLandscape = UIInterfaceOrientationIsLandscape(self.interfaceOrientation);
+            if (isLandscape) {
+                hiddenFrame.origin.y = CGRectGetWidth(mvc.view.frame);
+            }
+            else {
+                hiddenFrame.origin.y = CGRectGetHeight(mvc.view.frame);
+            }
+            view.frame = hiddenFrame;
+        } completion:^(BOOL finished) {
+            if (completionBlock) {
+                completionBlock();
+            }
+        }];
+    }
+}
+
 #pragma mark -
 #pragma mark Pickers and keyboard animations
 
@@ -964,10 +1029,12 @@
         
     } else {
         WPModalViewController *modalVC = [WPModalViewController modalViewController:self];
+        modalVC.animationDuration = 0.1;
         
         // add subviews to the modal view which just acts as a container that handles rotation and showing/hiding (replaces UIActionSheet)
         
         UIView *pickerWrapperView = pickerWrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), CGRectGetHeight(picker.frame) + 44.0f)];
+        pickerWrapperView.tag = kPickerWrapperViewTag;
         
         pickerWrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         [pickerWrapperView addSubview:picker];

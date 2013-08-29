@@ -8,7 +8,7 @@
 
 #import "WPModalViewController.h"
 
-CGFloat const WPModalAnimationDuration = 0.1;
+CGFloat const WPModalAnimationDuration = 0.45;
 
 @interface WPModalViewController () <UIGestureRecognizerDelegate>
 
@@ -21,30 +21,19 @@ CGFloat const WPModalAnimationDuration = 0.1;
     
     WPModalViewController *mvc = [[WPModalViewController alloc] init];
     mvc.delegate = delegate;
+    mvc.animationDuration = WPModalAnimationDuration;
     return mvc;
 }
 
 - (void)showModal:(BOOL)animated inView:(UIView *)aView {
-    if ([self.delegate respondsToSelector:@selector(modalViewController:willShow:)]) {
-        [self.delegate modalViewController:self willShow:animated];
+    if ([self.delegate respondsToSelector:@selector(modalViewController:willShow:withCompletionBlock:)]) {
+        [self.delegate modalViewController:self willShow:animated withCompletionBlock:^{
+            [self finishShowingModal:animated inView:aView];
+        }];
     }
-    
-    // make modal cover the whole view (self.view.window)
-    self.view.bounds = aView.window.bounds;
-    self.view.alpha = 0.0;
-    [aView.window addSubview:self.view];
-    
-    [self sizeToFitOrientation:TRUE];
-    
-    CGFloat duration = animated ? WPModalAnimationDuration : 0.0;
-    
-    [UIView animateWithDuration:duration animations:^{
-        self.view.alpha = 1.0;
-    } completion:^(BOOL finished) {
-        if ([self.delegate respondsToSelector:@selector(modalViewController:didShow:)]) {
-            [self.delegate modalViewController:self didShow:animated];
-        }
-    }];
+    else {
+        [self finishShowingModal:animated inView:aView];
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(deviceOrientationDidChangeNotification:)
@@ -53,13 +42,50 @@ CGFloat const WPModalAnimationDuration = 0.1;
 }
 
 - (void)hideModal:(BOOL)animated {
-    if ([self.delegate respondsToSelector:@selector(modalViewController:willHide:)]) {
-        [self.delegate modalViewController:self willHide:animated];
+    if ([self.delegate respondsToSelector:@selector(modalViewController:willHide:withCompletionBlock:)]) {
+        [self.delegate modalViewController:self willHide:animated withCompletionBlock:^{
+            [self finishHidingModal:animated];
+        }];
+    }
+    else {
+        [self finishHidingModal:animated];
     }
     
-    CGFloat duration = animated ? WPModalAnimationDuration : 0.0;
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIDeviceOrientationDidChangeNotification
+                                                  object:nil];
+}
+
+#pragma mark -
+#pragma mark Private
+
+- (void)finishShowingModal:(BOOL)animated inView:(UIView *)aView {
     
-    [UIView animateWithDuration:duration animations:^{
+    // make modal cover the whole view (self.view.window)
+    self.view.bounds = aView.window.bounds;
+    [aView.window addSubview:self.view];
+    
+    self.view.alpha = 0.0;
+    
+    [self sizeToFitOrientation:TRUE];
+    
+    CGFloat duration = animated ? self.animationDuration : 0.0;
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
+        self.view.alpha = 1.0;
+    } completion:^(BOOL finished) {
+        if ([self.delegate respondsToSelector:@selector(modalViewController:didShow:)]) {
+            [self.delegate modalViewController:self didShow:animated];
+        }
+    }];
+}
+
+- (void)finishHidingModal:(BOOL)animated {
+    CGFloat duration = animated ? self.animationDuration : 0.0;
+    
+    UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
+    [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
         self.view.alpha = 0.0;
     } completion:^(BOOL finished) {
         if ([self.delegate respondsToSelector:@selector(modalViewController:didHide:)]) {
@@ -67,10 +93,6 @@ CGFloat const WPModalAnimationDuration = 0.1;
         }
         [self.view removeFromSuperview];
     }];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIDeviceOrientationDidChangeNotification
-                                                  object:nil];
 }
 
 #pragma mark -

@@ -16,6 +16,8 @@ extern CGFloat const WPModalAnimationDuration;
 
 @property (assign, nonatomic) id<WPModalViewControllerDelegate> delegate;
 
+@property (assign, nonatomic) CGFloat animationDuration;
+
 + (WPModalViewController *)modalViewController:(id<WPModalViewControllerDelegate>)delegate;
 
 - (void)showModal:(BOOL)animated inView:(UIView *)aView;
@@ -30,9 +32,9 @@ extern CGFloat const WPModalAnimationDuration;
 
 - (void)modalViewController:(WPModalViewController *)mvc wasDismissed:(BOOL)animated;
 
-- (void)modalViewController:(WPModalViewController *)mvc willShow:(BOOL)animated;
+- (void)modalViewController:(WPModalViewController *)mvc willShow:(BOOL)animated withCompletionBlock:(void (^)())completionBlock;
 - (void)modalViewController:(WPModalViewController *)mvc didShow:(BOOL)animated;
-- (void)modalViewController:(WPModalViewController *)mvc willHide:(BOOL)animated;
+- (void)modalViewController:(WPModalViewController *)mvc willHide:(BOOL)animated withCompletionBlock:(void (^)())completionBlock;
 - (void)modalViewController:(WPModalViewController *)mvc didHide:(BOOL)animated;
 
 @end
