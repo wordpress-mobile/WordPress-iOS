@@ -290,26 +290,22 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
         NSString *text;
         UIImage *image;
         UIImage *selectedImage;
-        switch (row) {
-            case 0:
-                text = NSLocalizedString(@"Settings", nil);
-                image = [UIImage imageNamed:@"icon-menu-settings"];
-                selectedImage = [UIImage imageNamed:@"icon-menu-settings-active"];
-                break;
-            case 1:
-                text = NSLocalizedString(@"Reader", nil);
-                image = [UIImage imageNamed:@"icon-menu-reader"];
-                selectedImage = [UIImage imageNamed:@"icon-menu-reader-active"];
-                break;
-            case 2:
-                text = NSLocalizedString(@"Notifications", nil);
-                image = [UIImage imageNamed:@"icon-menu-notifications"];
-                selectedImage = [UIImage imageNamed:@"icon-menu-notifications-active"];
-                if (_unseenNotificationCount > 0) {
-                    cell.showsBadge = YES;
-                    cell.badgeNumber = _unseenNotificationCount;
-                }
-                break;
+        if ([self isRowForReader:indexPath]) {
+            text = NSLocalizedString(@"Reader", nil);
+            image = [UIImage imageNamed:@"icon-menu-reader"];
+            selectedImage = [UIImage imageNamed:@"icon-menu-reader-active"];
+        } else if ([self isRowForNotifications:indexPath]) {
+            text = NSLocalizedString(@"Notifications", nil);
+            image = [UIImage imageNamed:@"icon-menu-notifications"];
+            selectedImage = [UIImage imageNamed:@"icon-menu-notifications-active"];
+            if (_unseenNotificationCount > 0) {
+                cell.showsBadge = YES;
+                cell.badgeNumber = _unseenNotificationCount;
+            }
+        } else if ([self isRowForSettings:indexPath]) {
+            text = NSLocalizedString(@"Settings", nil);
+            image = [UIImage imageNamed:@"icon-menu-settings"];
+            selectedImage = [UIImage imageNamed:@"icon-menu-settings-active"];
         }
         
         cell.cellBackgroundColor = SidebarTableViewCellBackgroundColorDark;
@@ -329,60 +325,48 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
         cell.firstAccessoryViewImage = nil;
         cell.secondAccessoryViewImage = nil;
         
-        NSUInteger row = indexPath.row;
         NSString *text;
         UIImage *image;
         UIImage *selectedImage;
-        switch (row) {
-            case 0: {
-                text = NSLocalizedString(@"Posts", nil);
-                image = [UIImage imageNamed:@"icon-menu-posts"];
-                selectedImage = [UIImage imageNamed:@"icon-menu-posts-active"];
-                cell.firstAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-quickphoto"];
-                __weak UITableViewCell *weakCell = cell;
-                cell.tappedFirstAccessoryView = ^{
-                    [self showQuickPhotoForFrame:weakCell.frame];
-                };
-                cell.secondAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-add"];
-                cell.tappedSecondAccessoryView = ^{
-                    [self quickAddNewPost:indexPath];
-                };
-                break;
+        if ([self isRowForPosts:indexPath]) {
+            text = NSLocalizedString(@"Posts", nil);
+            image = [UIImage imageNamed:@"icon-menu-posts"];
+            selectedImage = [UIImage imageNamed:@"icon-menu-posts-active"];
+            cell.firstAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-quickphoto"];
+            __weak UITableViewCell *weakCell = cell;
+            cell.tappedFirstAccessoryView = ^{
+                [self showQuickPhotoForFrame:weakCell.frame];
+            };
+            cell.secondAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-add"];
+            cell.tappedSecondAccessoryView = ^{
+                [self quickAddNewPost:indexPath];
+            };
+        } else if ([self isRowForPages:indexPath]) {
+            text = NSLocalizedString(@"Pages", nil);
+            image = [UIImage imageNamed:@"icon-menu-pages"];
+            selectedImage = [UIImage imageNamed:@"icon-menu-pages-active"];
+            cell.secondAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-add"];
+            cell.tappedSecondAccessoryView = ^{
+                [self quickAddNewPost:indexPath];
+            };
+        } else if ([self isRowForComments:indexPath]) {
+            text = NSLocalizedString(@"Comments", nil);
+            image = [UIImage imageNamed:@"icon-menu-comments"];
+            selectedImage = [UIImage imageNamed:@"icon-menu-comments-active"];
+            Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:indexPath.section];
+            int numberOfPendingComments = [blog numberOfPendingComments];
+            if (numberOfPendingComments > 0) {
+                cell.showsBadge = true;
+                cell.badgeNumber = numberOfPendingComments;
             }
-            case 1: {
-                text = NSLocalizedString(@"Pages", nil);
-                image = [UIImage imageNamed:@"icon-menu-pages"];
-                selectedImage = [UIImage imageNamed:@"icon-menu-pages-active"];
-                cell.secondAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-add"];
-                cell.tappedSecondAccessoryView = ^{
-                    [self quickAddNewPost:indexPath];
-                };
-                break;
-            }
-            case 2: {
-                text = NSLocalizedString(@"Comments", nil);
-                image = [UIImage imageNamed:@"icon-menu-comments"];
-                selectedImage = [UIImage imageNamed:@"icon-menu-comments-active"];
-                Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:indexPath.section];
-                int numberOfPendingComments = [blog numberOfPendingComments];
-                if (numberOfPendingComments > 0) {
-                    cell.showsBadge = true;
-                    cell.badgeNumber = numberOfPendingComments;
-                }
-                break;
-            }
-            case 3:
-                text = NSLocalizedString(@"Stats", nil);
-                image = [UIImage imageNamed:@"icon-menu-stats"];
-                selectedImage = [UIImage imageNamed:@"icon-menu-stats-active"];
-                break;
-            case 4:
-                text = NSLocalizedString(@"View Site", nil);
-                image = [UIImage imageNamed:@"icon-menu-viewsite"];
-                selectedImage = [UIImage imageNamed:@"icon-menu-viewsite-active"];
-                break;
-            default:
-                break;
+        } else if ([self isRowForStats:indexPath]) {
+            text = NSLocalizedString(@"Stats", nil);
+            image = [UIImage imageNamed:@"icon-menu-stats"];
+            selectedImage = [UIImage imageNamed:@"icon-menu-stats-active"];
+        } else if ([self isRowForViewSite:indexPath]) {
+            text = NSLocalizedString(@"View Site", nil);
+            image = [UIImage imageNamed:@"icon-menu-viewsite"];
+            selectedImage = [UIImage imageNamed:@"icon-menu-viewsite-active"];
         }
         
         cell.cellBackgroundColor = SidebarTableViewCellBackgroundColorLight;
@@ -514,13 +498,13 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
 - (NSIndexPath *)indexPathForNotifications
 {
     NSInteger section = [[self.resultsController fetchedObjects] count];
-    return [NSIndexPath indexPathForRow:2 inSection:section];
+    return [NSIndexPath indexPathForRow:1 inSection:section];
 }
 
 - (NSIndexPath *)indexPathForReader
 {
     NSInteger section = [[self.resultsController fetchedObjects] count];
-    return [NSIndexPath indexPathForRow:1 inSection:section];
+    return [NSIndexPath indexPathForRow:0 inSection:section];
 }
 
 - (BOOL)isIndexPathSectionForReaderAndNotifications:(NSIndexPath *)indexPath
@@ -530,17 +514,17 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
 
 - (BOOL)isRowForSettings:(NSIndexPath *)indexPath
 {
-    return indexPath.row == 0;
+    return indexPath.row == 2;
 }
 
 - (BOOL)isRowForReader:(NSIndexPath *)indexPath
 {
-    return indexPath.row == 1;
+    return indexPath.row == 0;
 }
 
 - (BOOL)isRowForNotifications:(NSIndexPath *)indexPath
 {
-    return indexPath.row == 2;
+    return indexPath.row == 1;
 }
 
 - (BOOL)isRowForPosts:(NSIndexPath *)indexPath
@@ -671,7 +655,7 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
 
 - (BOOL)isIndexPathForSettings:(NSIndexPath *)indexPath
 {
-    return [self isLastSection:indexPath.section] && indexPath.row == 0;
+    return [self isLastSection:indexPath.section] && [self isRowForSettings:indexPath];
 }
 
 - (BOOL)isIndexPathForBlog:(NSIndexPath *)indexPath
@@ -709,6 +693,8 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
     if ([self.tableView numberOfRowsInSection:0] > 0) {
         NSIndexPath *indexPath;
         if ([self isLastSection:0]) {
+            // There should always be a reader here because we can't have a last section without reader/notifications
+            // if the user is in a logged in state.
             indexPath = [self indexPathForReader];
         } else {
             indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
