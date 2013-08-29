@@ -1,14 +1,14 @@
 //
-//  WPKeyboardToolbariOS7.m
+//  WPKeyboardToolbarWithoutGradient.m
 //  WordPress
 //
 //  Created by Sendhil Panchadsaram on 8/28/13.
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
-#import "WPKeyboardToolbariOS7.h"
+#import "WPKeyboardToolbarWithoutGradient.h"
 
-@implementation WPKeyboardToolbariOS7
+@implementation WPKeyboardToolbarWithoutGradient
 
 - (void)setupView
 {

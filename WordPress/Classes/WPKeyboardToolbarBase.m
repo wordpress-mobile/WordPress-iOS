@@ -188,10 +188,18 @@
 	WPFLogMethod();
     [[UIDevice currentDevice] playInputClick];
 	if (!toggleButton.selected == true) {
-		[toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonExtended"] forState:UIControlStateNormal];
+        if (IS_IOS7) {
+            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonExtended-iOS7"] forState:UIControlStateNormal];
+        } else {
+            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonExtended"] forState:UIControlStateNormal];
+        }
 	}
 	else {
-		[toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain"] forState:UIControlStateNormal];
+        if (IS_IOS7) {
+            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain-iOS7"] forState:UIControlStateNormal];
+        } else {
+            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain"] forState:UIControlStateNormal];
+        }
 	}
     
     toggleButton.selected = !toggleButton.selected;
@@ -204,10 +212,15 @@
         toggleButton.frame = CGRectMake(2, 2, 39, 39);
         toggleButton.adjustsImageWhenHighlighted = NO;
         [toggleButton addTarget:self action:@selector(toggleExtendedView) forControlEvents:UIControlEventTouchDown];
-		[toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain"] forState:UIControlStateNormal];
-		//[toggleButton setBackgroundImage:[UIImage imageNamed:@"doneButton"] forState:UIControlStateHighlighted];
-		[toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonExtended"] forState:UIControlStateSelected];
-		[toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain"] forState:UIControlStateSelected || UIControlStateHighlighted];
+        if (IS_IOS7) {
+            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain-iOS7"] forState:UIControlStateNormal];
+            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonExtended-iOS7"] forState:UIControlStateSelected];
+            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain-iOS7"] forState:UIControlStateSelected || UIControlStateHighlighted];
+        } else {
+            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain"] forState:UIControlStateNormal];
+            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonExtended"] forState:UIControlStateSelected];
+            [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonMain"] forState:UIControlStateSelected || UIControlStateHighlighted];
+        }
     }
 }
 
@@ -231,8 +244,13 @@
             doneButton.titleLabel.shadowColor = [UIColor darkGrayColor];
             doneButton.titleLabel.shadowOffset = CGSizeMake(0, -1.0);
             doneButton.contentEdgeInsets = UIEdgeInsetsMake(1, 1, 0, 0); // Needed to make the label align
-            [doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButton"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-            [doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButtonHighlighted"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
+            if (IS_IOS7) {
+                [doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButton-iOS7"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+                [doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButtonHighlighted-iOS7"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
+            } else {
+                [doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButton"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+                [doneButton setBackgroundImage:[[UIImage imageNamed:@"doneButtonHighlighted"] stretchableImageWithLeftCapWidth:6.0f topCapHeight:0.0f] forState:UIControlStateHighlighted];
+            }
         }
         [self addSubview:doneButton];
     }

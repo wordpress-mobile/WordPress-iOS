@@ -113,7 +113,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     if (editorToolbar == nil) {
         CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_PORTRAIT);
         if (IS_IOS7) {
-            editorToolbar = [[WPKeyboardToolbariOS7 alloc] initWithFrame:frame];
+            editorToolbar = [[WPKeyboardToolbarWithoutGradient alloc] initWithFrame:frame];
         } else {
             editorToolbar = [[WPKeyboardToolbar alloc] initWithFrame:frame];
         }

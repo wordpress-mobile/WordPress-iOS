@@ -1,5 +1,5 @@
 //
-//  WPKeyboardToolbariOS7.h
+//  WPKeyboardToolbarWithoutGradient.h
 //  WordPress
 //
 //  Created by Sendhil Panchadsaram on 8/28/13.
@@ -8,6 +8,6 @@
 
 #import "WPKeyboardToolbarBase.h"
 
-@interface WPKeyboardToolbariOS7 : WPKeyboardToolbarBase
+@interface WPKeyboardToolbarWithoutGradient : WPKeyboardToolbarBase
 
 @end
