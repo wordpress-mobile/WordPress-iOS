@@ -394,14 +394,14 @@
     }
 
 	if (alteredSection == 0) {
-        return NSLocalizedString(@"Post Metadata", nil);
-    } else if (section == 0) {
+        return @"";
+    } else if (alteredSection == 1) {
 		return NSLocalizedString(@"Publish", @"The grandiose Publish button in the Post Editor! Should use the same translation as core WP.");
-    } else if (section == 1) {
+    } else if (alteredSection == 2) {
 		return NSLocalizedString(@"Post Format", @"For setting the format of a post.");
-    } else if ((section == 2 && blogSupportsFeaturedImage)) {
+    } else if ((alteredSection == 3 && blogSupportsFeaturedImage)) {
 		return NSLocalizedString(@"Featured Image", @"Label for the Featured Image area in post settings.");
-    } else if ((section == 2 && !blogSupportsFeaturedImage) || section == 3) {
+    } else if ((alteredSection == 3 && !blogSupportsFeaturedImage) || alteredSection == 4) {
 		return NSLocalizedString(@"Geolocation", @"Label for the geolocation feature (tagging posts by their physical location).");
     } else {
 		return nil;
