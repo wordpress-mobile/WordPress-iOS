@@ -287,7 +287,6 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
             cell = [[NewSidebarCell alloc] init];
         }
         
-        NSUInteger row = indexPath.row;
         NSString *text;
         UIImage *image;
         UIImage *selectedImage;
@@ -523,12 +522,12 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
 
 - (BOOL)isRowForSettings:(NSIndexPath *)indexPath
 {
-    return indexPath.row == 2;
+    return indexPath.row == ([WPAccount defaultWordPressComAccount] == nil ? 0 : 2);
 }
 
 - (BOOL)isRowForReader:(NSIndexPath *)indexPath
 {
-    return indexPath.row == 0;
+    return indexPath.row == ([WPAccount defaultWordPressComAccount] == nil ? 2 : 0);
 }
 
 - (BOOL)isRowForNotifications:(NSIndexPath *)indexPath
