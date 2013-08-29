@@ -202,9 +202,7 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
     else {
         Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:section];
         if ([blog isEqual:_currentlyOpenedBlog]) {
-            // Don't show themes for non admin users
-            BOOL showThemes = blog.isWPcom && [blog.isAdmin isEqualToNumber:@(1)];
-            return showThemes ? SidebarViewControllerNumberOfRowsForBlog : SidebarViewControllerNumberOfRowsForBlog - 1;
+            return [self shouldShowThemesOption] ? SidebarViewControllerNumberOfRowsForBlog : SidebarViewControllerNumberOfRowsForBlog - 1;
         } else {
             return 0;
         }
@@ -729,6 +727,16 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         [self.panelNavigationController clearDetailViewController];
     }
+}
+
+- (BOOL)shouldShowThemesOption {
+    if (_currentlyOpenedBlog) {
+        WPAccount *currentAccount = [WPAccount defaultWordPressComAccount];
+        if (_currentlyOpenedBlog.isWPcom) {
+            return [_currentlyOpenedBlog.isAdmin isEqualToNumber:@(1)] && [currentAccount.username isEqualToString:_currentlyOpenedBlog.username];
+        }
+    }
+    return NO;
 }
 
 - (void)showWelcomeScreenIfNeeded {
