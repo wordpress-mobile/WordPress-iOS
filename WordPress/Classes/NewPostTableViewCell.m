@@ -23,6 +23,8 @@
 @implementation NewPostTableViewCell
 
 CGFloat const NewPostTableViewCellStandardOffset = 16.0;
+CGFloat const NewPostTableViewCellTitleAndDateVerticalOffset = 6.0;
+CGFloat const NewPostTableViewCellLabelAndTitleHorizontalOffset = -0.5;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -147,7 +149,7 @@ CGFloat const NewPostTableViewCellStandardOffset = 16.0;
             return @"";
         }
     } else {
-        return [AbstractPost titleForRemoteStatus:@((int)post.remoteStatus)];
+        return [[AbstractPost titleForRemoteStatus:@((int)post.remoteStatus)] uppercaseString];
     }
 }
 
@@ -157,17 +159,17 @@ CGFloat const NewPostTableViewCellStandardOffset = 16.0;
         if ([post.status isEqualToString:@"pending"]) {
             return [UIColor lightGrayColor];
         } else if ([post.status isEqualToString:@"draft"]) {
-            return [UIColor colorWithRed:213/255.0f green:78/255.0f blue:33/255.0f alpha:1.0f];
+            return [WPStyleGuide jazzyOrange];
         } else {
             return [UIColor blackColor];
         }
     } else {
         if (post.remoteStatus == AbstractPostRemoteStatusPushing) {
-            return [UIColor colorWithRed:46/255.0f green:162/255.0f blue:204/255.0f alpha:1.0f];
+            return [WPStyleGuide newKidOnTheBlockBlue];
         } else if (post.remoteStatus == AbstractPostRemoteStatusFailed) {
-            return [UIColor redColor];
+            return [WPStyleGuide fireOrange];
         } else {
-            return [UIColor blackColor];
+            return [WPStyleGuide jazzyOrange];
         }
     }
 }
@@ -232,7 +234,11 @@ CGFloat const NewPostTableViewCellStandardOffset = 16.0;
         } else {
             size = [statusText sizeWithFont:[self statusFont] constrainedToSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
         }
-        return CGRectMake(NewPostTableViewCellStandardOffset, NewPostTableViewCellStandardOffset, size.width, size.height);
+        if (IS_IOS7) {
+            return CGRectMake(NewPostTableViewCellStandardOffset + NewPostTableViewCellLabelAndTitleHorizontalOffset, NewPostTableViewCellStandardOffset, size.width, size.height);
+        } else {
+            return CGRectMake(NewPostTableViewCellStandardOffset, NewPostTableViewCellStandardOffset, size.width, size.height);
+        }
     } else {
         return CGRectMake(0, NewPostTableViewCellStandardOffset, 0, 0);
     }
@@ -246,7 +252,17 @@ CGFloat const NewPostTableViewCellStandardOffset = 16.0;
     } else {
         size = [[[self class] titleText:post] sizeWithFont:[[self class] titleFont] constrainedToSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     }
-    return CGRectIntegral(CGRectMake(NewPostTableViewCellStandardOffset, CGRectGetMaxY(previousFrame), size.width, size.height));
+
+    CGFloat offset;
+    if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {
+        offset = NewPostTableViewCellTitleAndDateVerticalOffset;
+    }
+
+    if (IS_IOS7) {
+        return CGRectMake(NewPostTableViewCellStandardOffset + NewPostTableViewCellLabelAndTitleHorizontalOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height);
+    } else {
+        return CGRectIntegral(CGRectMake(NewPostTableViewCellStandardOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
+    }
 }
 
 + (CGRect)dateLabelFrameForPost:(AbstractPost *)post previousFrame:(CGRect)previousFrame maxWidth:(CGFloat)maxWidth
@@ -258,7 +274,13 @@ CGFloat const NewPostTableViewCellStandardOffset = 16.0;
     } else {
         size = [[[self class] dateText:post] sizeWithFont:[[self class] dateFont] constrainedToSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     }
-    return CGRectIntegral(CGRectMake(NewPostTableViewCellStandardOffset, CGRectGetMaxY(previousFrame), size.width, size.height));
+    
+    CGFloat offset;
+    if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {
+        offset = NewPostTableViewCellTitleAndDateVerticalOffset;
+    }
+
+    return CGRectIntegral(CGRectMake(NewPostTableViewCellStandardOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
 }
 
 
