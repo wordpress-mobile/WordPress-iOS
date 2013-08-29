@@ -39,6 +39,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     NSInteger _rowsSeen;
     BOOL _isScrollingFast;
     CGFloat _lastOffset;
+    UIPopoverController *_popover;
 }
 
 //@property (nonatomic, strong) NSFetchedResultsController *resultsController;
@@ -257,15 +258,21 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 - (void)handleTopicsButtonTapped:(id)sender {
 	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	controller.delegate = self;
-	
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navController.navigationBar.translucent = NO;
     if (IS_IPAD) {
-        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
+        _popover = [[UIPopoverController alloc] initWithContentViewController:controller];
+        UIBarButtonItem *shareButton;
+        if (IS_IOS7) {
+            // For iOS7 there is an added spacing element inserted before the share button to adjust the position of the button.
+            shareButton = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
+        } else {
+            shareButton = self.navigationItem.rightBarButtonItem;
+        }
+        [_popover presentPopoverFromBarButtonItem:shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+        navController.navigationBar.translucent = NO;
+        [self presentViewController:navController animated:YES completion:nil];
     }
-	
-    [self presentViewController:navController animated:YES completion:nil];
 }
 
 
@@ -828,7 +835,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)readerTopicChanged {
 	if (IS_IPAD){
-		[self.panelNavigationController popToRootViewControllerAnimated:YES];
+        [_popover dismissPopoverAnimated:YES];
 	}
 	
 	_loadingMore = NO;
