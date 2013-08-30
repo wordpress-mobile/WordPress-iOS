@@ -254,7 +254,7 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
         size = [[[self class] titleText:post] sizeWithFont:[[self class] titleFont] constrainedToSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     }
 
-    CGFloat offset;
+    CGFloat offset = 0.0;
     if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {
         offset = NewPostTableViewCellTitleAndDateVerticalOffset;
     }
@@ -276,7 +276,7 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
         size = [[[self class] dateText:post] sizeWithFont:[[self class] dateFont] constrainedToSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     }
     
-    CGFloat offset;
+    CGFloat offset = 0.0;
     if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {
         offset = NewPostTableViewCellTitleAndDateVerticalOffset;
     }
