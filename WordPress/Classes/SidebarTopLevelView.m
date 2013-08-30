@@ -82,7 +82,7 @@
     self.blogTitleLabel.font = [UIFont fontWithName:@"OpenSans" size:16.0];
     
     NSURL *blogURL = [NSURL URLWithString:self.blavatarUrl];
-    [self.blavatarImage setImageWithBlavatarUrl:[blogURL host] isWPcom:self.isWPCom];
+    [self.blavatarImage setImageWithBlavatarUrl:[blogURL absoluteString] isWPcom:self.isWPCom];
 }
 
 #pragma mark - Private Methods
