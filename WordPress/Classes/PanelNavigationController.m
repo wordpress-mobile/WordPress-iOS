@@ -676,11 +676,8 @@
                 [button addTarget:self action:@selector(toggleSidebar) forControlEvents:UIControlEventTouchUpInside];
                 
                 sidebarButton = [[UIBarButtonItem alloc] initWithCustomView:button];
-
-                UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-                spacerButton.width = -12.0;
                 
-                _detailViewController.navigationItem.leftBarButtonItems = @[spacerButton, sidebarButton];
+                [WPStyleGuide setLeftBarButtonItemWithCorrectSpacing:sidebarButton forNavigationItem:_detailViewController.navigationItem];
             } else {
                 _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
             }

@@ -178,5 +178,23 @@
         return UIBarButtonItemStyleBordered;
 }
 
++ (void)setLeftBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem
+{
+    navigationItem.leftBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
+}
+
++ (void)setRightBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem
+{
+    navigationItem.rightBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
+}
+
++ (UIBarButtonItem *)spacerForNavigationBarButtonItems
+{
+    UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    spacerButton.width = -16.0;
+    return spacerButton;
+}
+
+
 
 @end

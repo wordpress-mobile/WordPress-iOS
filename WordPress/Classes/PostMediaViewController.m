@@ -105,9 +105,7 @@
     [button addTarget:self action:@selector(tappedAddButton) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithCustomView:button];
 
-    UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    spacerButton.width = -12.0;
-    self.navigationItem.rightBarButtonItems = @[spacerButton, addButton];
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:addButton forNavigationItem:self.navigationItem];
 }
 
 - (void)tappedAddButton

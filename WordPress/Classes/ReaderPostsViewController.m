@@ -138,10 +138,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"")];
     
     if (IS_IOS7) {
-        UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        spacerButton.width = -12.0;
-        
-        self.navigationItem.rightBarButtonItems = @[spacerButton, button];
+        [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:button forNavigationItem:self.navigationItem];
     } else {
         UIColor *color = [UIColor UIColorFromHex:0x464646];
         button.tintColor = color;

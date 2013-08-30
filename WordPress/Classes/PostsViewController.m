@@ -58,9 +58,7 @@
         composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     }
 
-    UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    spacerButton.width = -12.0;
-    self.navigationItem.rightBarButtonItems = @[spacerButton, composeButtonItem];
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
     
     if (IS_IPAD && self.selectedIndexPath && self.postReaderViewController) {
         @try {

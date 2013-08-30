@@ -44,4 +44,8 @@
 + (UIBarButtonItemStyle)barButtonStyleForDone;
 + (UIBarButtonItemStyle)barButtonStyleForBordered;
 
+// Utilities
++ (void)setLeftBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem;
++ (void)setRightBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem;
+
 @end
