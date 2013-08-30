@@ -323,6 +323,9 @@
 #pragma mark UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
     if (popController) {
         [popController dismissPopoverAnimated:YES];
         self.popController = nil;
@@ -354,6 +357,9 @@
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
     picker.delegate = nil;
     [self dismiss];
 }

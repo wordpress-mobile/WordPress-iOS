@@ -1414,6 +1414,9 @@
 #pragma mark - Featured Image Selection related methods
 // TODO: Remove duplication with these methods and PostMediaViewController
 - (void)imagePickerController:(UIImagePickerController *)thePicker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
     UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
 
     if (thePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
@@ -1522,6 +1525,13 @@
             }
         }];
     }
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 /*
@@ -1875,11 +1885,17 @@
     
     if (IS_IPAD) {
         popover = [[UIPopoverController alloc] initWithContentViewController:picker];
+        popover.delegate = self;
         [popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         [[CPopoverManager instance] setCurrentPopoverController:popover];
     } else {
         [self.navigationController presentViewController:picker animated:YES completion:nil];
     }
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController{
+    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 - (void)dismissTagsKeyboardIfAppropriate:(UITapGestureRecognizer *)gestureRecognizer
