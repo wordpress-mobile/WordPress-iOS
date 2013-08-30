@@ -11,6 +11,11 @@
 
 @implementation UIViewController (iOS7StyleChanges)
 
+- (void)alteredSetTitle:(NSString *)title
+{
+    [self alteredSetTitle:title];
+}
+
 - (void)alteredViewWillAppear:(BOOL)animated
 {
     // Since we exchanged implementations, this actually calls UIViewController's viewDidLoad
@@ -32,6 +37,10 @@
 + (void)load {
     Method origMethod = class_getInstanceMethod(self, @selector(viewWillAppear:));
     Method newMethod = class_getInstanceMethod(self, @selector(alteredViewWillAppear:));
+    method_exchangeImplementations(origMethod, newMethod);
+    
+    origMethod = class_getInstanceMethod(self, @selector(setTitle:));
+    newMethod = class_getInstanceMethod(self, @selector(alteredSetTitle:));
     method_exchangeImplementations(origMethod, newMethod);
 }
 
