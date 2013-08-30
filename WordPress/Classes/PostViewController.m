@@ -53,7 +53,7 @@
                                                                                  target:self
                                                                                  action:@selector(showModalEditor)];
     UIBarButtonItem *previewButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.")
-                                                                       style:UIBarButtonItemStyleBordered
+                                                                       style:[WPStyleGuide barButtonStyleForBordered]
                                                                       target:self
                                                                       action:@selector(showModalPreview)];
     

@@ -124,7 +124,7 @@
 	
 	if(IS_IPAD == YES) {
 		topAddSelectedButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add Selected", @"") 
-																				 style:UIBarButtonItemStyleDone 
+																				 style:[WPStyleGuide barButtonStyleForDone]
 																				target:self 
 																				action:@selector(saveSelectedBlogs:)];
 		self.navigationItem.rightBarButtonItem = topAddSelectedButton;

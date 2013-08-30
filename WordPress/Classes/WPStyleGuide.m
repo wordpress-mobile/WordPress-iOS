@@ -162,4 +162,21 @@
 	return [UIColor colorWithRed:16/255.0f green:16/255.0f blue:16/255.0f alpha:1.0f];
 }
 
++ (UIBarButtonItemStyle)barButtonStyleForDone
+{
+    if (IS_IOS7)
+        return UIBarButtonItemStylePlain;
+    else
+        return UIBarButtonItemStyleDone;
+}
+
++ (UIBarButtonItemStyle)barButtonStyleForBordered
+{
+    if (IS_IOS7)
+        return UIBarButtonItemStylePlain;
+    else
+        return UIBarButtonItemStyleBordered;
+}
+
+
 @end

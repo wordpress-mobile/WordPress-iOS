@@ -38,7 +38,8 @@
     UIBarButtonItem *composeButtonItem  = nil;
     
     if ([self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        composeButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]style:UIBarButtonItemStyleBordered 
+        composeButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]
+                                                             style:[WPStyleGuide barButtonStyleForBordered]
                                                              target:self 
                                                              action:@selector(showAddPostView)];
     } else {

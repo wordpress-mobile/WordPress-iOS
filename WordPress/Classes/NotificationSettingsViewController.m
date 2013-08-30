@@ -52,8 +52,9 @@ BOOL hasChanges;
     self.refreshHeaderView.delegate = self;
     [self.tableView addSubview:self.refreshHeaderView];
     
-    if(self.showCloseButton)
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+    if(self.showCloseButton) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -127,8 +128,9 @@ BOOL hasChanges;
     if( toolbarVisible == YES ) {
         
         NSString *buttonLabel = muteAvailable ? NSLocalizedString(@"Mute all blogs", @"") : NSLocalizedString(@"Unmute all blogs", @"");
+
         self.muteUnmuteBarButton = [[UIBarButtonItem alloc] initWithTitle:buttonLabel
-                                                                    style:UIBarButtonItemStyleBordered
+                                                                    style:[WPStyleGuide barButtonStyleForBordered]
                                                                    target:self
                                                                    action:@selector(muteUnmutedButtonClicked:)];
         self.muteUnmuteBarButton.tag = muteAvailable;

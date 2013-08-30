@@ -65,7 +65,7 @@
     self.navigationItem.rightBarButtonItem = cancelButton;
 
 	UIBarButtonItem *friendFinderButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Friends", @"")
-																		   style:UIBarButtonItemStyleBordered
+																		   style:[WPStyleGuide barButtonStyleForBordered]
 																		  target:self
 																		  action:@selector(handleFriendFinderButtonTapped:)];
 	self.navigationItem.leftBarButtonItem = friendFinderButton;

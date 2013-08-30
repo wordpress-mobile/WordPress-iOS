@@ -1917,8 +1917,9 @@
     
     _segmentedTableViewController.title = NSLocalizedString(@"Categories", @"");
     UIBarButtonItem *createCategoryBarButtonItem;
+
     createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]
-                                                                   style:UIBarButtonItemStyleBordered
+                                                                   style:[WPStyleGuide barButtonStyleForBordered]
                                                                   target:self
                                                                   action:@selector(showAddNewCategoryView:)];
     

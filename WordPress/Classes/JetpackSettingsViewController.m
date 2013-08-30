@@ -68,9 +68,10 @@
 
     if ([self useNavigationController]) {
         if (self.canBeSkipped) {
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skip", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(skip:)];
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skip", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(skip:)];
         }
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"") style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
+        
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(save:)];
     }
 
     [self updateMessage];

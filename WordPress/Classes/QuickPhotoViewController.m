@@ -86,17 +86,11 @@
     }
     self.photoImageView.delegate = self;
     self.title = NSLocalizedString(@"Quick Photo", @"");
-    if (IS_IOS7) {
-        self.postButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Publish", @"")
-                                                               style:UIBarButtonItemStylePlain
-                                                              target:self
-                                                              action:@selector(post)];
-    } else {
-        self.postButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Publish", @"")
-                                                               style:UIBarButtonItemStyleDone
-                                                              target:self
-                                                              action:@selector(post)];
-    }
+
+    self.postButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Publish", @"")
+                                                           style:[WPStyleGuide barButtonStyleForDone]
+                                                          target:self
+                                                          action:@selector(post)];
 
     [postButtonItem setEnabled:NO];
     self.navigationItem.rightBarButtonItem = self.postButtonItem;

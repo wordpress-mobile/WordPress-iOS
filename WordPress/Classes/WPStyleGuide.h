@@ -40,4 +40,8 @@
 + (UIColor *)itsEverywhereGrey;
 + (UIColor *)darkAsNightGrey;
 
+// Bar Button Styles
++ (UIBarButtonItemStyle)barButtonStyleForDone;
++ (UIBarButtonItemStyle)barButtonStyleForBordered;
+
 @end
