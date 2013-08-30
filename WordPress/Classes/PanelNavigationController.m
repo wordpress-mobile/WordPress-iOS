@@ -38,6 +38,7 @@
 @property (nonatomic, strong) UIImageView *sidebarBorderView;
 @property (nonatomic, strong) UIButton *notificationButton, *menuButton;
 @property (nonatomic, strong) UIImageView *dividerImageView, *spacerImageView;
+@property (nonatomic, strong) UIImageView *loadingImageView;
 
 - (void)showSidebar;
 - (void)showSidebarAnimated:(BOOL)animated;
@@ -156,7 +157,10 @@
         _navigationController.navigationBar.translucent = NO;
         
         self.detailViewController = detailController;
-        self.masterViewController = masterController;        
+        self.masterViewController = masterController;
+        
+        // Add a loading image to prevent a flicker as the app sets up this controller
+        self.loadingImageView = [[UIImageView alloc] initWithImage:[self loadingImage]];
     }
     return self;
 }
@@ -172,7 +176,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.detailViewContainer = [[UIView alloc] init];
     
     if (IS_IPAD) {
@@ -242,6 +246,9 @@
     if (IS_IPAD) {
         [self showSidebarAnimated:NO];
     }
+    
+    [self.view addSubview:self.loadingImageView];
+    [self.view bringSubviewToFront:self.loadingImageView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotesNotification:)
 												 name:@"WordPressComUnseenNotes" object:nil];
@@ -574,6 +581,8 @@
 
 - (void)setDetailViewController:(UIViewController *)detailViewController closingSidebar:(BOOL)closingSidebar {
     if (_detailViewController == detailViewController) return;
+    
+    [self.loadingImageView removeFromSuperview];
 
     BOOL oldWasWide = [self viewControllerExpectsWidePanel:_detailViewController];
     
@@ -1766,6 +1775,25 @@
     return [NSArray arrayWithArray:viewControllers];
 }
 
+- (UIImage *)loadingImage
+{
+    if (!IS_IPAD) {
+        if ([UIScreen mainScreen].bounds.size.height == 568) {
+            return [UIImage imageNamed:@"Default-568h"];
+        } else {
+            return [UIImage imageNamed:@"Default"];
+        }
+    } else {
+        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        if (UIInterfaceOrientationIsPortrait(orientation)) {
+            return [UIImage imageNamed:@"Default-Portrait"];
+        } else {
+            return [UIImage imageNamed:@"Default-Landscape"];
+        }
+    }
+    
+    return [UIImage imageNamed:@"Default"];
+}
 
 @end
 
