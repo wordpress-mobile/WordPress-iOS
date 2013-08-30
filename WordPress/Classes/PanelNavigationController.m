@@ -582,6 +582,11 @@
 - (void)setDetailViewController:(UIViewController *)detailViewController closingSidebar:(BOOL)closingSidebar {
     if (_detailViewController == detailViewController) return;
     
+    if (_detailViewController == nil) {
+        // Ensure that the sidebar is closed when the app is first initialized
+        closingSidebar = YES;
+    }
+    
     [self.loadingImageView removeFromSuperview];
 
     BOOL oldWasWide = [self viewControllerExpectsWidePanel:_detailViewController];
@@ -723,8 +728,8 @@
     }
     [self addShadowTo:_detailViewContainer];
 
-    if (IS_IPHONE && closingSidebar) {
-        [self closeSidebar];
+    if (closingSidebar) {
+        [self closeSidebarAnimated:NO];
     }
 }
 
