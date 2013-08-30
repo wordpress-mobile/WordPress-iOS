@@ -97,7 +97,11 @@
         self.navigationItem.leftBarButtonItem = barButton;
     }
     
-    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
+    UIBarButtonItemStyle buttonStyle = UIBarButtonItemStyleDone;
+    if (IS_IOS7) {
+        buttonStyle = UIBarButtonItemStylePlain;
+    }
+    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:buttonStyle target:self action:@selector(save:)];
     self.navigationItem.rightBarButtonItem = saveButton;
     
     if (!IS_IPAD) {
