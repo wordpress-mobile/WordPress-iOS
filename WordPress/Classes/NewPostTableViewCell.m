@@ -235,7 +235,7 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
         } else {
             size = [statusText sizeWithFont:[self statusFont] constrainedToSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
         }
-        if (IS_IOS7) {
+        if (IS_IOS7 && IS_RETINA) {
             return CGRectMake(NewPostTableViewCellStandardOffset + NewPostTableViewCellLabelAndTitleHorizontalOffset, NewPostTableViewCellStandardOffset, size.width, size.height);
         } else {
             return CGRectMake(NewPostTableViewCellStandardOffset, NewPostTableViewCellStandardOffset, size.width, size.height);
@@ -259,7 +259,7 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
         offset = NewPostTableViewCellTitleAndDateVerticalOffset;
     }
 
-    if (IS_IOS7) {
+    if (IS_IOS7 && IS_RETINA) {
         return CGRectMake(NewPostTableViewCellStandardOffset + NewPostTableViewCellLabelAndTitleHorizontalOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height);
     } else {
         return CGRectIntegral(CGRectMake(NewPostTableViewCellStandardOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height));

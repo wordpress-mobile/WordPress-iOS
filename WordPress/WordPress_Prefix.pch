@@ -34,5 +34,8 @@
 #ifndef IS_IOS7
 #define IS_IOS7 (NSStringFromClass([UIDynamicAnimator class]) != nil)
 #endif
+#ifndef IS_RETINA
+#define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2)
+#endif
 
 #endif
