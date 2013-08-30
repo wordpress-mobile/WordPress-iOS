@@ -10,6 +10,7 @@
 #import "Post.h"
 #import "NSString+XMLExtensions.h"
 #import "WPStyleGuide.h"
+#import "WPComLanguages.h"
 
 @interface NewPostTableViewCell() {
     AbstractPost __weak *_post;
@@ -150,8 +151,21 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
             return @"";
         }
     } else {
-        return [[AbstractPost titleForRemoteStatus:@((int)post.remoteStatus)] uppercaseString];
+        NSString *statusText = [self addEllipsesIfAppropriate:[AbstractPost titleForRemoteStatus:@((int)post.remoteStatus)]];
+        return [statusText uppercaseString];
     }
+}
+
++ (NSString *)addEllipsesIfAppropriate:(NSString *)statusText
+{
+    if ([statusText isEqualToString:NSLocalizedString(@"Uploading", nil)]) {
+        if ([WPComLanguages isRightToLeft]) {
+            return [NSString stringWithFormat:@"…%@", statusText];
+        } else {
+            return [NSString stringWithFormat:@"%@…", statusText];
+        }
+    }
+    return statusText;
 }
 
 + (UIColor *)statusColorForPost:(AbstractPost *)post
@@ -283,6 +297,5 @@ CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
 
     return CGRectIntegral(CGRectMake(NewPostTableViewCellStandardOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
 }
-
 
 @end
