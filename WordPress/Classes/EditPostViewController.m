@@ -496,9 +496,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         return;
     
     if (self.navigationItem.leftBarButtonItem == nil) {
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                      target:self
-                                                                                      action:@selector(cancelView:)];
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelView:)];
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
 

@@ -22,7 +22,7 @@
 - (id)init {
     self = [super init];
     if(self) {
-        self.title = [NSLocalizedString(@"Posts", @"") uppercaseString];
+        self.title = NSLocalizedString(@"Posts", @"");
     }
     return self;
 }

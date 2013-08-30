@@ -84,7 +84,7 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = [NSLocalizedString(@"Settings", @"App Settings") uppercaseString];
+    self.title = NSLocalizedString(@"Settings", @"App Settings");
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     

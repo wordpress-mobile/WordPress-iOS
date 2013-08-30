@@ -174,6 +174,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	self.panelNavigationController.delegate = self;
 	
 	self.title = [[[ReaderPost currentTopic] objectForKey:@"title"] capitalizedString];
+    if (IS_IOS7) {
+        self.title = [self.title uppercaseString];
+    }
     [self loadImagesForVisibleRows];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
