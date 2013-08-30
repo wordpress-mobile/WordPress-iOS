@@ -83,7 +83,8 @@
     [super viewDidLoad];
     
     self.tableView.backgroundView = nil;
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorColor = [WPStyleGuide readGrey];
 }
 
 
@@ -118,6 +119,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];    
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        [WPStyleGuide configureTableViewCell:cell];
     }
     cell.accessoryType = UITableViewCellAccessoryNone;
     

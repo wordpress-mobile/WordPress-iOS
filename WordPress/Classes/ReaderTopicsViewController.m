@@ -72,7 +72,8 @@
 	self.navigationItem.leftBarButtonItem = friendFinderButton;
 	
     self.tableView.backgroundView = nil;
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorColor = [WPStyleGuide readGrey];
 	
 	[self refreshIfReady];
 }
@@ -207,6 +208,7 @@
 	if(!cell) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 	}
+    [WPStyleGuide configureTableViewCell:cell];
 	
 	NSArray *arr = nil;
 	if (indexPath.section == 0) {

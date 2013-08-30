@@ -42,7 +42,7 @@
     [super viewDidLoad];
     //Set background to clear for iOS 4. Delete this line when we set iOS 5 as the min OS
     tableView.backgroundColor = [UIColor clearColor];
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 }
 
 
@@ -159,7 +159,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:selectionTableRowCell];
         [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
     }
-
+    
     Category *category = [objects objectAtIndex:indexPath.row];
     int indentationLevel = [[categoryIndentationLevelsDict valueForKey:[category.categoryID stringValue]] intValue];
     cell.indentationLevel = indentationLevel;
@@ -179,6 +179,8 @@
     } else {
         cell.textLabel.textColor = [UIColor blackColor];
     }
+
+    [WPStyleGuide configureTableViewCell:cell];
 
     cell.accessoryType = [self accessoryTypeForRowWithIndexPath:indexPath ofTableView:tableView];
     return cell;

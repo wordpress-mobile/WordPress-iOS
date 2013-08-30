@@ -43,7 +43,7 @@ BOOL hasChanges;
     [super viewDidLoad];
     
     self.tableView.backgroundView = nil;
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
+    self.view.backgroundColor =  [WPStyleGuide itsEverywhereGrey];
     self.title = NSLocalizedString(@"Manage Notifications", @"");
     
     CGRect refreshFrame = self.tableView.bounds;
@@ -329,6 +329,7 @@ BOOL hasChanges;
             cell.detailTextLabel.text = NSLocalizedString(@"On", @"");
         }
         cell.textLabel.textColor = [UIColor blackColor];
+        [WPStyleGuide configureTableViewCell:cell];
         return cell;
     }
     

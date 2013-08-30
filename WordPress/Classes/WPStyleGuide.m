@@ -89,6 +89,21 @@
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [self regularTextFont]};
 }
 
++ (UIFont *)tableviewTextFont
+{
+    return [UIFont fontWithName:@"OpenSans" size:18.0];
+}
+
++ (UIFont *)tableviewSubtitleFont
+{
+    return [UIFont fontWithName:@"OpenSans" size:12.0];
+}
+
++ (UIFont *)tableviewSectionHeaderFont
+{
+    return [UIFont fontWithName:@"OpenSans-Bold" size:12.0];
+}
+
 #pragma mark - Colors
 
 + (UIColor *)baseLighterBlue
@@ -139,7 +154,7 @@
 
 + (UIColor *)whisperGrey
 {
-	return [UIColor colorWithRed:51/255.0f green:51/255.0f blue:51/255.0f alpha:1.0f];
+    return  [UIColor colorWithRed:102/255.0f green:102/255.0f blue:102/255.0f alpha:1.0f];
 }
 
 + (UIColor *)allTAllShadeGrey
@@ -160,6 +175,11 @@
 + (UIColor *)darkAsNightGrey
 {
 	return [UIColor colorWithRed:16/255.0f green:16/255.0f blue:16/255.0f alpha:1.0f];
+}
+
++ (UIColor *)tableViewActionColor
+{
+    return [WPStyleGuide baseLighterBlue];
 }
 
 + (UIBarButtonItemStyle)barButtonStyleForDone
@@ -195,6 +215,13 @@
     return spacerButton;
 }
 
++ (void)configureTableViewCell:(UITableViewCell *)cell
+{
+    cell.textLabel.font = [WPStyleGuide tableviewTextFont];
+    cell.detailTextLabel.font = [WPStyleGuide tableviewSubtitleFont];
+    cell.textLabel.textColor = [WPStyleGuide whisperGrey];
+    cell.detailTextLabel.textColor = [WPStyleGuide whisperGrey];
+}
 
 
 @end

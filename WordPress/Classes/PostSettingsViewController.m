@@ -76,7 +76,7 @@
 
 - (void)viewDidLoad {
     self.title = NSLocalizedString(@"Settings", @"Post Settings");
-
+    
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -88,7 +88,9 @@
     
     [tableView setBackgroundView:nil];
     [tableView setBackgroundColor:[UIColor clearColor]]; //Fix for black corners on iOS4. http://stackoverflow.com/questions/1557856/black-corners-on-uitableview-group-style
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    tableView.separatorColor = [WPStyleGuide readGrey];
+    
     
     statusTitleLabel.text = NSLocalizedString(@"Status", @"The status of the post. Should be the same as in core WP.");
     visibilityTitleLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
@@ -423,13 +425,21 @@
     case 0:
             switch (indexPath.row) {
                 case 0:
+                    categoriesTitleLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
+                    categoriesTitleLabel.textColor = [WPStyleGuide whisperGrey];
                     categoriesTitleLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
+                    categoriesLabel.font = [WPStyleGuide tableviewTextFont];
+                    categoriesLabel.textColor = [WPStyleGuide whisperGrey];
                     categoriesLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
                     return categoriesTableViewCell;
                     break;
                 case 1:
+                    tagsTitleLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
+                    tagsTitleLabel.textColor = [WPStyleGuide whisperGrey];
                     tagsTitleLabel.text = NSLocalizedString(@"Tags:", @"Label for the tags field. Should be the same as WP core.");
                     tagsTextField.placeholder = NSLocalizedString(@"Separate tags with commas", @"Placeholder text for the tags field. Should be the same as WP core.");
+                    tagsTextField.font = [WPStyleGuide tableviewTextFont];
+                    tagsTextField.textColor = [WPStyleGuide whisperGrey];
                     tagsTextField.text = self.post.tags;
                     return tagsTableViewCell;
                     break;
@@ -437,6 +447,10 @@
 	case 1:
 		switch (indexPath.row) {
 			case 0:
+                statusTitleLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
+                statusTitleLabel.textColor = [WPStyleGuide whisperGrey];
+                statusLabel.font = [WPStyleGuide tableviewTextFont];
+                statusLabel.textColor = [WPStyleGuide whisperGrey];
 				if (([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)
 					&& ([self.apost.status isEqualToString:@"publish"])) {
 					statusLabel.text = NSLocalizedString(@"Scheduled", @"If a post is scheduled for later, this string is used for the post's status. Should use the same translation as core WP.");
@@ -451,6 +465,10 @@
 				return statusTableViewCell;
 				break;
 			case 1:
+                visibilityTitleLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
+                visibilityTitleLabel.textColor = [WPStyleGuide whisperGrey];
+                visibilityLabel.font = [WPStyleGuide tableviewTextFont];
+                visibilityLabel.textColor = [WPStyleGuide whisperGrey];
 				if (self.apost.password) {
 					passwordTextField.text = self.apost.password;
 					passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -462,6 +480,11 @@
 				break;
 			case 2:
 			{
+                publishOnLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
+                publishOnLabel.textColor = [WPStyleGuide whisperGrey];
+                publishOnDateLabel.font = [WPStyleGuide tableviewTextFont];
+                publishOnDateLabel.textColor = [WPStyleGuide whisperGrey];
+
 				if (self.apost.dateCreated) {
 					if ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending) {
 						publishOnLabel.text = NSLocalizedString(@"Scheduled for", @"Scheduled for [date]");
@@ -495,6 +518,11 @@
 		break;
     case 2: // Post format
         {
+            postFormatTitleLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
+            postFormatTitleLabel.textColor = [WPStyleGuide whisperGrey];
+            postFormatLabel.font = [WPStyleGuide tableviewTextFont];
+            postFormatLabel.textColor = [WPStyleGuide whisperGrey];
+
             if ([formatsList count] != 0) {
                 postFormatLabel.text = self.post.postFormatText;
             }
@@ -515,6 +543,8 @@
                         }
                     }
                 }
+                activityCell.textLabel.font = [WPStyleGuide tableviewTextFont];
+                activityCell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
                 [activityCell.textLabel setText:@"Set Featured Image"];
                 return activityCell;
                 
@@ -576,6 +606,8 @@
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GeolocationDisabledCell"];
                     cell.textLabel.text = NSLocalizedString(@"Enable Geotagging to Edit", @"Prompt the user to enable geolocation tagging on their blog.");
                     cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                    cell.textLabel.font = [WPStyleGuide tableviewTextFont];
+                    cell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
                 }
                 return cell;
                 
@@ -1934,12 +1966,12 @@
     _segmentedTableViewController.title = NSLocalizedString(@"Categories", @"");
     UIBarButtonItem *createCategoryBarButtonItem;
 
-    createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]
+    createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-posts-add"]
                                                                    style:[WPStyleGuide barButtonStyleForBordered]
                                                                   target:self
-                                                                  action:@selector(showAddNewCategoryView:)];
+                                                                  action:@selector(showAddNewCategoryView:)];    
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:createCategoryBarButtonItem forNavigationItem:_segmentedTableViewController.navigationItem];
     
-    _segmentedTableViewController.navigationItem.rightBarButtonItem = createCategoryBarButtonItem;
     
     if (!_isNewCategory) {
         if (IS_IPAD == YES) {

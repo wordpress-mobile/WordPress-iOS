@@ -83,7 +83,7 @@ typedef enum {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.title = NSLocalizedString(@"Settings", @"App Settings");
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
@@ -102,8 +102,11 @@ typedef enum {
     }];
     
     self.tableView.backgroundView = nil;
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorColor = [WPStyleGuide readGrey];
     [self setupMedia];
+    
+    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 }
 
 
@@ -447,7 +450,14 @@ typedef enum {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [self cellForIndexPath:indexPath];
+    [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
+    
+    BOOL isSignOutCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 1;
+    BOOL isAddBlogsCell = indexPath.section == SettingsSectionBlogsAdd;
+    if (isSignOutCell || isAddBlogsCell) {
+        cell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
+    }
     
     return cell;
 }

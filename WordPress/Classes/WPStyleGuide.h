@@ -23,6 +23,9 @@
 + (NSDictionary *)labelAttributes;
 + (UIFont *)regularTextFont;
 + (NSDictionary *)regularTextAttributes;
++ (UIFont *)tableviewTextFont;
++ (UIFont *)tableviewSubtitleFont;
++ (UIFont *)tableviewSectionHeaderFont;
 
 // Colors
 + (UIColor *)baseLighterBlue;
@@ -40,6 +43,8 @@
 + (UIColor *)itsEverywhereGrey;
 + (UIColor *)darkAsNightGrey;
 
++ (UIColor *)tableViewActionColor;
+
 // Bar Button Styles
 + (UIBarButtonItemStyle)barButtonStyleForDone;
 + (UIBarButtonItemStyle)barButtonStyleForBordered;
@@ -47,5 +52,6 @@
 // Utilities
 + (void)setLeftBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem;
 + (void)setRightBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem;
++ (void)configureTableViewCell:(UITableViewCell *)cell;
 
 @end
