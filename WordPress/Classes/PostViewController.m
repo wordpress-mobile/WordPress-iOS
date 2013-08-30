@@ -305,7 +305,7 @@
     //nav.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
     nav.navigationBar.topItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
 
-    UIBarButtonItem *c = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissPreview)];
+    UIBarButtonItem *c = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissPreview)];
     nav.navigationBar.topItem.leftBarButtonItem = c;
     
     [self presentViewController:nav animated:YES completion:nil];
