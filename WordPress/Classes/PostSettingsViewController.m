@@ -1105,18 +1105,9 @@
         pickerWrapperView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75];
         
         [modalVC.view addSubview:pickerWrapperView];
+        [modalVC.view setAutoresizesSubviews:TRUE];
         
         [modalVC showModal:TRUE inView:self.view];
-        
-        // due to the autoresizing mask it is necessary to adjust the width of the wrapper
-        // after adding it to the view hierarchy to the correct width
-        if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-            if (pickerWrapperView) {
-                CGRect frame = pickerWrapperView.frame;
-                frame.size.width = CGRectGetHeight(modalVC.view.frame);
-                pickerWrapperView.frame = frame;
-            }
-        }
         
         self.modalViewController = modalVC;
     }
