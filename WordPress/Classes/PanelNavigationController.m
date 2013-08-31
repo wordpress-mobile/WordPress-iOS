@@ -39,6 +39,7 @@
 @property (nonatomic, strong) UIButton *notificationButton, *menuButton;
 @property (nonatomic, strong) UIImageView *dividerImageView, *spacerImageView;
 @property (nonatomic, strong) UIImageView *loadingImageView;
+@property (nonatomic, strong) UIView *statusBarBackgroundView;
 
 - (void)showSidebar;
 - (void)showSidebarAnimated:(BOOL)animated;
@@ -123,6 +124,8 @@
 @synthesize popPanelsView = _popPanelsView;
 @synthesize sidebarBorderView = _sidebarBorderView;
 @synthesize delegate;
+
+CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 
 - (void)dealloc {
     self.detailViewController.panelNavigationController = nil;
@@ -287,6 +290,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [self addStatusBarBackgroundView];
 
     _isAppeared = YES;
     [self relayAppearanceMethod:^(UIViewController *controller) {
@@ -381,6 +385,19 @@
         CGRect frm = dview.frame;
         [self.detailViewWidths addObject:[NSNumber numberWithFloat:frm.size.width]];
    }
+}
+
+- (void)addStatusBarBackgroundView
+{
+    if (!IS_IOS7)
+        return;
+    
+    self.statusBarBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), PanelNavigationControllerStatusBarViewHeight)];
+    self.statusBarBackgroundView.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+    self.statusBarBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    [self.view addSubview:self.statusBarBackgroundView];
+    [self.view bringSubviewToFront:self.statusBarBackgroundView];
 }
 
 #pragma mark - Memory management
@@ -920,6 +937,10 @@
         [self disableDetailView];
     } completion:^(BOOL finished) {
     }];
+    
+    [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) animations:^{
+        self.statusBarBackgroundView.backgroundColor = [WPStyleGuide bigEddieGrey];
+    }];
 }
 
 - (void)showSidebarWithVelocity:(CGFloat)velocity {
@@ -932,9 +953,6 @@
 
 - (void)closeSidebar {
     [self closeSidebarAnimated:YES];
-    if (IS_IOS7) {
-        [self showStatusBarForiOS7];
-    }
 }
 
 - (void)closeSidebarAnimated:(BOOL)animated {
@@ -943,6 +961,12 @@
     } completion:^(BOOL finished) {
         [self enableDetailView];
     }];
+    
+    [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
+        self.statusBarBackgroundView.backgroundColor = [UIColor UIColorFromHex:0x2EA2CC];
+    } completion:^(BOOL finished) {
+    }];
+
     
     if(IS_IPHONE && !self.presentedViewController) {
         [SoundUtil playSwipeSound];
@@ -959,24 +983,11 @@
 }
 
 - (void)toggleSidebar {
-    if (IS_IOS7) {
-        [self hideStatusBarForiOS7];
-    }
     if (!self.detailTapper) {
         [self showSidebar];
     } else {
         [self closeSidebar];
     }
-}
-
-- (void)hideStatusBarForiOS7
-{
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-}
-
-- (void)showStatusBarForiOS7
-{
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 
 - (void)teaseSidebar {
@@ -1195,6 +1206,33 @@
             }
         }
     }
+    
+    if (IS_IOS7) {
+        CGFloat percentage = _stackOffset/DETAIL_LEDGE_OFFSET;
+        self.statusBarBackgroundView.backgroundColor = [self statusBarTransitionColorForPercentage:percentage];
+    }
+}
+
+- (UIColor *)statusBarTransitionColorForPercentage:(CGFloat)percentage
+{
+    UIColor *colorWhenSidebarClosed = [WPStyleGuide bigEddieGrey];
+    UIColor *colorWhenSidebarFullyOpened = [WPStyleGuide newKidOnTheBlockBlue];
+    
+    if (percentage == 1.0) {
+        return colorWhenSidebarFullyOpened;
+    } else if (percentage == 0.0) {
+        return colorWhenSidebarClosed;
+    }
+    
+    CGFloat startRed, endRed, startBlue, startAlpha, endBlue, startGreen, endGreen, endAlpha;
+    [colorWhenSidebarClosed getRed:&startRed green:&startGreen blue:&startBlue alpha:&startAlpha];
+    [colorWhenSidebarFullyOpened getRed:&endRed green:&endGreen blue:&endBlue alpha:&endAlpha];
+    
+    CGFloat redDifference = endRed-startRed;
+    CGFloat blueDifference = endBlue-startBlue;
+    CGFloat greenDifference = endGreen-startGreen;
+    
+    return [UIColor colorWithRed:redDifference*percentage green:greenDifference*percentage blue:blueDifference*percentage alpha:1.0];
 }
 
 - (void)animatePoppedIcon {

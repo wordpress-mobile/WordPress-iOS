@@ -39,12 +39,14 @@
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) Post *currentQuickPost;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *topLayoutConstraint;
 
 @end
 
 @implementation NewSidebarViewController
 
 CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
+CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -64,6 +66,10 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (IS_IOS7) {
+        self.topLayoutConstraint.constant = SidebarViewControllerStatusBarViewHeight;
+    }
     
     self.view.backgroundColor = [WPStyleGuide darkAsNightGrey];
     self.tableView.backgroundColor = [WPStyleGuide darkAsNightGrey];
