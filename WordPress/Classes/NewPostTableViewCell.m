@@ -9,7 +9,6 @@
 #import "NewPostTableViewCell.h"
 #import "Post.h"
 #import "NSString+XMLExtensions.h"
-#import "WPStyleGuide.h"
 #import "WPComLanguages.h"
 
 @interface NewPostTableViewCell() {

@@ -5,7 +5,6 @@
 #import "NSString+XMLExtensions.h"
 #import "WPPopoverBackgroundView.h"
 #import "WPAddCategoryViewController.h"
-#import "WPStyleGuide.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 

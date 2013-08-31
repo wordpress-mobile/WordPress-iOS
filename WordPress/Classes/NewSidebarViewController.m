@@ -23,7 +23,6 @@
 #import "WPAccount.h"
 #import "QuickPhotoViewController.h"
 #import "GeneralWalkthroughViewController.h"
-#import "WPStyleGuide.h"
 
 @interface NewSidebarViewController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIActionSheetDelegate> {
     Blog *_currentlyOpenedBlog;

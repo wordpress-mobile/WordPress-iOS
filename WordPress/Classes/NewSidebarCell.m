@@ -9,7 +9,6 @@
 #import "NewSidebarCell.h"
 #import "SidebarBadgeView.h"
 #import "UIColor+Helpers.h"
-#import "WPStyleGuide.h"
 
 @interface NewSidebarCell() {
     NSArray *_horizontalConstraints;

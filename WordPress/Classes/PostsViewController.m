@@ -6,7 +6,6 @@
 #import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
-#import "WPStyleGuide.h"
 
 #define TAG_OFFSET 1010
 

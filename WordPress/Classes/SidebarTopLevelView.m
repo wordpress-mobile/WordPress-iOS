@@ -8,7 +8,6 @@
 
 #import "SidebarTopLevelView.h"
 #import "UIImageView+Gravatar.h"
-#import "WPStyleGuide.h"
 
 @interface SidebarTopLevelView()
 

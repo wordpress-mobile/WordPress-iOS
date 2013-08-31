@@ -8,7 +8,6 @@
 
 #import "NewCommentsTableViewCell.h"
 #import "Comment.h"
-#import "WPStyleGuide.h"
 #import "NSString+XMLExtensions.h"
 #import "UIImageView+Gravatar.h"
 

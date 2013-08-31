@@ -15,7 +15,6 @@
 #import "NewNotificationsTableViewCell.h"
 #import "WPTableViewControllerSubclass.h"
 #import "NotificationSettingsViewController.h"
-#import "WPStyleGuide.h"
 
 NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";

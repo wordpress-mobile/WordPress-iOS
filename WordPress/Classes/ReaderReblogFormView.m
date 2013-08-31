@@ -14,7 +14,6 @@
 #import "WordPressAppDelegate.h"
 #import "UIImageView+Gravatar.h"
 #import "NSString+Helpers.h"
-#import "WPStyleGuide.h"
 
 @interface ReaderReblogFormView()<ReaderUsersBlogsDelegate>
 

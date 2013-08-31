@@ -8,7 +8,6 @@
 
 #import "WPInfoView.h"
 #import <QuartzCore/QuartzCore.h>
-#import "WPStyleGuide.h"
 
 @implementation WPInfoView
 

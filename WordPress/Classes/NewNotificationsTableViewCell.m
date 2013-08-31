@@ -9,7 +9,6 @@
 #import "NewNotificationsTableViewCell.h"
 #import "Note.h"
 #import "UIImageView+Gravatar.h"
-#import "WPStyleGuide.h"
 #import "NSString+XMLExtensions.h"
 
 @interface NewNotificationsTableViewCell() {

@@ -14,7 +14,6 @@
 #import "ReplyToCommentViewController.h"
 #import "UIColor+Helpers.h"
 #import "UIBarButtonItem+Styled.h"
-#import "WPStyleGuide.h"
 
 @interface CommentsViewController ()
 
