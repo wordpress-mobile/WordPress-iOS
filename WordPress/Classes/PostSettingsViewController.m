@@ -75,7 +75,7 @@
 }
 
 - (void)viewDidLoad {
-    self.title = NSLocalizedString(@"Settings", @"Post Settings");
+    self.title = NSLocalizedString(@"Properties", nil);
     
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     
