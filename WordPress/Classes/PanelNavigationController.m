@@ -1215,24 +1215,28 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 
 - (UIColor *)statusBarTransitionColorForPercentage:(CGFloat)percentage
 {
-    UIColor *colorWhenSidebarClosed = [WPStyleGuide bigEddieGrey];
-    UIColor *colorWhenSidebarFullyOpened = [WPStyleGuide newKidOnTheBlockBlue];
+    UIColor *colorWhenSidebarOpened = [WPStyleGuide bigEddieGrey];
+    UIColor *colorWhenSidebarClosed = [WPStyleGuide newKidOnTheBlockBlue];
     
     if (percentage == 1.0) {
-        return colorWhenSidebarFullyOpened;
-    } else if (percentage == 0.0) {
         return colorWhenSidebarClosed;
+    } else if (percentage == 0.0) {
+        return colorWhenSidebarOpened;
     }
     
     CGFloat startRed, endRed, startBlue, startAlpha, endBlue, startGreen, endGreen, endAlpha;
     [colorWhenSidebarClosed getRed:&startRed green:&startGreen blue:&startBlue alpha:&startAlpha];
-    [colorWhenSidebarFullyOpened getRed:&endRed green:&endGreen blue:&endBlue alpha:&endAlpha];
+    [colorWhenSidebarOpened getRed:&endRed green:&endGreen blue:&endBlue alpha:&endAlpha];
     
-    CGFloat redDifference = endRed-startRed;
-    CGFloat blueDifference = endBlue-startBlue;
-    CGFloat greenDifference = endGreen-startGreen;
+    CGFloat redDifference = startRed - endRed;
+    CGFloat blueDifference = startBlue - endBlue;
+    CGFloat greenDifference = startGreen - endGreen;
     
-    return [UIColor colorWithRed:redDifference*percentage green:greenDifference*percentage blue:blueDifference*percentage alpha:1.0];
+    CGFloat redColor = startRed - redDifference * (1.0 - percentage);
+    CGFloat blueColor = startBlue - blueDifference * (1.0 - percentage);
+    CGFloat greenColor = startGreen - greenDifference * (1.0 - percentage);
+    
+    return [UIColor colorWithRed:redColor green:greenColor blue:blueColor alpha:1.0];
 }
 
 - (void)animatePoppedIcon {
