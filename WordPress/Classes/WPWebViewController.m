@@ -127,7 +127,11 @@
         }
     }
     
-    if ([forwardButton respondsToSelector:@selector(setTintColor:)]) {
+    if (IS_IOS7) {
+        toolbar.translucent = NO;
+        toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+        toolbar.tintColor = [UIColor whiteColor];        
+    } else {
         UIColor *color = [UIColor UIColorFromHex:0x464646];
         backButton.tintColor = color;
         forwardButton.tintColor = color;
