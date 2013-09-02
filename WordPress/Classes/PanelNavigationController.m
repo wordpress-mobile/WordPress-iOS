@@ -597,6 +597,11 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 
 
 - (void)setDetailViewController:(UIViewController *)detailViewController closingSidebar:(BOOL)closingSidebar {
+    [self setDetailViewController:detailViewController closingSidebar:closingSidebar animated:NO];
+}
+
+- (void)setDetailViewController:(UIViewController *)detailViewController closingSidebar:(BOOL)closingSidebar animated:(BOOL)animated
+{
     if (_detailViewController == detailViewController) return;
     
     if (_detailViewController == nil) {
@@ -605,13 +610,13 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     }
     
     [self.loadingImageView removeFromSuperview];
-
+    
     BOOL oldWasWide = [self viewControllerExpectsWidePanel:_detailViewController];
     
     UIBarButtonItem *sidebarButton = nil;
     
     [self popToRootViewControllerAnimated:NO];
-
+    
     if (_detailViewController) {
         if (self.navigationController) {
             [self.navigationController setToolbarHidden:YES animated:YES];
@@ -624,22 +629,22 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
             [_detailViewController willMoveToParentViewController:nil];
             UIView *view = [self viewOrViewWrapper:_detailViewController.view];
             [view removeFromSuperview];
-
+            
             if (_isAppeared) {
                 [_detailViewController vdc_viewDidDisappear:NO];
             }
             [_detailViewController setPanelNavigationController:nil];
             [_detailViewController removeFromParentViewController];
             [_detailViewController didMoveToParentViewController:nil];
-
+            
         }
     }
-
+    
     _detailViewController = detailViewController;
     
     if (_sidebarBorderView.hidden)
         _sidebarBorderView.hidden = NO;
-
+    
     if (_detailViewController) {
         [_detailViewController setPanelNavigationController:self];
         if (self.navigationController) {
@@ -698,12 +703,12 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
             } else {
                 _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
             }
-
+            
         } else {
             [self addChildViewController:_detailViewController];
-
+            
             UIView *wrappedView = [self createWrapViewForViewController:_detailViewController];
-
+            
             BOOL newIsWide = [self viewControllerExpectsWidePanel:_detailViewController];
             
             if (newIsWide != oldWasWide) {
@@ -741,9 +746,9 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
         }
     }
     [self addShadowTo:_detailViewContainer];
-
+    
     if (closingSidebar) {
-        [self closeSidebarAnimated:NO];
+        [self closeSidebarAnimated:animated];
     }
 }
 

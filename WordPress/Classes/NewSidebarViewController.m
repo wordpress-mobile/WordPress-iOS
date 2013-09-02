@@ -465,14 +465,10 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         //Check if the controller is already on the screen
         if ([self.panelNavigationController.detailViewController isMemberOfClass:controllerClass] && [self.panelNavigationController.detailViewController respondsToSelector:@selector(setBlog:)]) {
             [self.panelNavigationController.detailViewController performSelector:@selector(setBlog:) withObject:blog];
-            if (IS_IPAD) {
-                [self.panelNavigationController showSidebar];
-            } else {
-                if (closingSidebar)
-                    [self.panelNavigationController closeSidebar];
+            if (closingSidebar) {
+                [self.panelNavigationController closeSidebar];
             }
             [self.panelNavigationController popToRootViewControllerAnimated:NO];
-            
             return;
         } else {
             detailViewController = (UIViewController *)[[controllerClass alloc] init];
@@ -483,7 +479,13 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     }
     
     if (detailViewController) {
-        [self.panelNavigationController setDetailViewController:detailViewController closingSidebar:closingSidebar];
+        BOOL animated = YES;
+        if (self.panelNavigationController.detailViewController == nil) {
+            // We want the sidebar to start out closed on app first launch as the animation to close it
+            // when the app first launches is a little jarring.
+            animated = NO;
+        }
+        [self.panelNavigationController setDetailViewController:detailViewController closingSidebar:closingSidebar animated:animated];
     }
 }
 
