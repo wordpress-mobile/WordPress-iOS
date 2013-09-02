@@ -931,13 +931,18 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 
 - (void)showSidebarAnimated:(BOOL)animated {
     [SoundUtil playSwipeSound];
-    
+
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:0 duration:0];
         [self disableDetailView];
     } completion:^(BOOL finished) {
     }];
     
+    // The statusBarBackgroundView starts out as transparent in the closed state so if a view controller
+    // decides to remove the navigation bar there won't be a blue status bar hanging out at the top. We
+    // set the color right before we animate this view so that way the color will animate correctly as the
+    // menu opens.
+    self.statusBarBackgroundView.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) animations:^{
         self.statusBarBackgroundView.backgroundColor = [WPStyleGuide bigEddieGrey];
     }];
@@ -963,8 +968,12 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     }];
     
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
-        self.statusBarBackgroundView.backgroundColor = [UIColor UIColorFromHex:0x2EA2CC];
+        self.statusBarBackgroundView.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
     } completion:^(BOOL finished) {
+        // We set the statusBarBackgroundView to be a clear color because that way when this menu is closed
+        // and some view controller removes the navigation bar to go into a 'fullscreen' mode such as the
+        // posts editor, we won't have a blue bar sitting at the top.
+        self.statusBarBackgroundView.backgroundColor = [UIColor clearColor];
     }];
 
     
@@ -1219,7 +1228,10 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     UIColor *colorWhenSidebarClosed = [WPStyleGuide newKidOnTheBlockBlue];
     
     if (percentage == 1.0) {
-        return colorWhenSidebarClosed;
+        // We return a transparent color when the sidebar is closed because that way if a view
+        // goes fullscreen(such as the posts editor) then the user won't see this blue bar
+        // at the top
+        return [UIColor clearColor];
     } else if (percentage == 0.0) {
         return colorWhenSidebarOpened;
     }
