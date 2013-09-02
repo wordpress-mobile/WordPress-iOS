@@ -984,7 +984,7 @@
 #pragma mark UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)acSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (acSheet.tag == TAG_ACTIONSHEET_PHOTO) {
-        [self processPhotoTypeActionSheet:actionSheet thatDismissedWithButtonIndex:buttonIndex];
+        [self processPhotoTypeActionSheet:acSheet thatDismissedWithButtonIndex:buttonIndex];
     } else if (acSheet.tag == TAG_ACTIONSHEET_RESIZE_PHOTO) {
         [self processPhotoResizeActionSheet:acSheet thatDismissedWithButtonIndex:buttonIndex];
     } else {
@@ -997,9 +997,12 @@
     }
 }
 
-- (void)processPhotoTypeActionSheet:(UIActionSheet *)actionSheet thatDismissedWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
+- (void)processPhotoTypeActionSheet:(UIActionSheet *)acSheet thatDismissedWithButtonIndex:(NSInteger)buttonIndex {
+    NSString *buttonTitle = [acSheet buttonTitleAtIndex:buttonIndex];
+    if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Photo from Library", nil)]) {
         [self pickPhotoFromLibrary:self.view.bounds];
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
+        [self pickPhotoFromCamera:self.view.bounds];
     }
 }
 
@@ -1911,6 +1914,24 @@
 {
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+	picker.delegate = self;
+	picker.allowsEditing = NO;
+    picker.navigationBar.translucent = NO;
+    
+    if (IS_IPAD) {
+        popover = [[UIPopoverController alloc] initWithContentViewController:picker];
+        popover.delegate = self;
+        [popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [[CPopoverManager instance] setCurrentPopoverController:popover];
+    } else {
+        [self.navigationController presentViewController:picker animated:YES completion:nil];
+    }
+}
+
+- (void)pickPhotoFromCamera:(CGRect)frame
+{
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 	picker.delegate = self;
 	picker.allowsEditing = NO;
     picker.navigationBar.translucent = NO;
