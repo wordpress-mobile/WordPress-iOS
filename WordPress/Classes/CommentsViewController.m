@@ -61,7 +61,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (UIColor *)backgroundColorForRefreshHeaderView
 {
-    return [WPStyleGuide readGrey];
+    return [WPStyleGuide itsEverywhereGrey];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
