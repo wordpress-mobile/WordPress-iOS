@@ -44,8 +44,9 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     
     [super viewDidLoad];
     
-    self.view.backgroundColor = [WPStyleGuide readGrey];
-    self.tableView.backgroundColor = [WPStyleGuide readGrey];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorColor = [WPStyleGuide readGrey];
     
     self.tableView.accessibilityLabel = @"Comments";       // required for UIAutomation for iOS 4
 	if([self.tableView respondsToSelector:@selector(setAccessibilityIdentifier:)]){

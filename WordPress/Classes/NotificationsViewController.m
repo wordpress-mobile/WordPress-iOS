@@ -51,8 +51,9 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     WPFLogMethod();
     [super viewDidLoad];
     
-    self.view.backgroundColor = [WPStyleGuide readGrey];
-    self.tableView.backgroundColor = [WPStyleGuide readGrey];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorColor = [WPStyleGuide readGrey];
     
     self.panelNavigationController.delegate = self;
     self.infiniteScrollEnabled = YES;
