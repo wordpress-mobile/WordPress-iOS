@@ -88,7 +88,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (UIColor *)backgroundColorForRefreshHeaderView
 {
-    return [WPStyleGuide readGrey];
+    return [WPStyleGuide itsEverywhereGrey];
 }
 
 #pragma mark - Custom methods
