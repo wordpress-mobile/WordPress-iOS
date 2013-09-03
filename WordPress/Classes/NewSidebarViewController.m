@@ -818,6 +818,13 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 - (void)registerForWordPressDotComAccountChangingNotification
 {
     void (^wpcomNotificationBlock)(NSNotification *) = ^(NSNotification *note) {
+        
+        // If we're on themes, switch to the first available for the open blog.
+        // Themes are WP.com only, so if there is no WP.com account, users are denied access
+        if ([self isRowForThemes:_currentIndexPath]) {
+            [self processRowSelectionAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:_currentIndexPath.section]];
+        }
+        
         NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
         [self.tableView reloadData];
         if (selectedIndexPath == nil || ([WPAccount defaultWordPressComAccount] == nil && [self isLastSection:selectedIndexPath.section])) {
