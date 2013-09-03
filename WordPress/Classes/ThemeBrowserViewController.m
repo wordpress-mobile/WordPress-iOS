@@ -233,7 +233,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 - (void)setFilteredThemes:(NSArray *)filteredThemes {
     _filteredThemes = filteredThemes;
     
-    [self toggleNoThemesView:(_filteredThemes.count == 0)];
+    [self toggleNoThemesView:(_filteredThemes.count == 0 && !_currentTheme)];
     
     [self.collectionView reloadData];
 }
