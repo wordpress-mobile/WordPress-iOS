@@ -26,8 +26,9 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 @property (nonatomic, strong) NSString *currentResultsSort;
 @property (nonatomic, strong) NSArray *allThemes, *filteredThemes;
 @property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
-@property (nonatomic, strong) NSIndexPath *currentTheme, *selectedTheme;
 @property (nonatomic, weak) WPInfoView *noThemesView;
+@property (nonatomic, weak) ThemeSearchFilterHeaderView *header;
+@property (nonatomic, strong) Theme *currentTheme;
 
 @end
 
@@ -62,16 +63,17 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [_refreshHeaderView addTarget:self action:@selector(refreshControlTriggered:) forControlEvents:UIControlEventValueChanged];
     _refreshHeaderView.tintColor = [WPStyleGuide whisperGrey];
     [self.collectionView addSubview:_refreshHeaderView];
+    
+    [self loadThemesFromCache];
+    [self reloadThemes];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-    [self loadThemesFromCache];
-    [self reloadThemes];
-
-    if (_currentTheme && _selectedTheme && ![self.currentTheme isEqual:self.selectedTheme]) {
-        [self.collectionView reloadItemsAtIndexPaths:@[_currentTheme, _selectedTheme]];
+    if (![_currentTheme.themeId isEqualToString:self.blog.currentThemeId]) {
+        [self currentThemeForBlog];
+        [self.collectionView reloadData];
     }
 }
 
@@ -95,17 +97,51 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         _allThemes = self.filteredThemes = nil;
         return;
     }
-    _allThemes = self.filteredThemes = allThemes;
+    
+    _allThemes = allThemes;
+    [self currentThemeForBlog];
+    self.filteredThemes = _allThemes;
+}
+
+- (void)currentThemeForBlog {
+    NSArray *currentThemeResults = [_allThemes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId == %@", self.blog.currentThemeId]];
+    if (currentThemeResults.count) {
+        _currentTheme = currentThemeResults[0];
+    } else {
+        _currentTheme = nil;
+    }
 }
 
 - (void)reloadThemes {
     [_refreshHeaderView beginRefreshing];
     [Theme fetchAndInsertThemesForBlog:self.blog success:^{
+        [self refreshCurrentTheme];
         [self loadThemesFromCache];
-        [_refreshHeaderView endRefreshing];
+        [_header resetSearch];
     } failure:^(NSError *error) {
-        [_refreshHeaderView endRefreshing];
         [WPError showAlertWithError:error];
+        [_refreshHeaderView endRefreshing];
+    }];
+}
+
+- (void)refreshCurrentTheme {
+    [Theme fetchCurrentThemeForBlog:self.blog success:^{
+        [_refreshHeaderView endRefreshing];
+        
+        // Find the blog's theme from the current list of themes
+        for (NSUInteger i = 0; i < [self.collectionView numberOfItemsInSection:0]; i++) {
+            Theme *theme = _filteredThemes[i];
+            if ([theme.themeId isEqualToString:self.blog.currentThemeId]) {
+                _currentTheme = theme;
+                break;
+            }
+        }
+        
+        [self.collectionView reloadData];
+        
+    } failure:^(NSError *error) {
+        [WPError showAlertWithError:error];
+        [_refreshHeaderView endRefreshing];
     }];
 }
 
@@ -127,7 +163,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.filteredThemes.count;
+    return _filteredThemes.count + 1;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -136,31 +172,42 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         if (!header.delegate) {
             header.delegate = self;
         }
+        _header = header;
         return header;
     }
     return nil;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    ThemeBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ThemeCellIdentifier forIndexPath:indexPath];
-    Theme *theme = self.filteredThemes[indexPath.row];
-    cell.theme = theme;
-    if ([theme.themeId isEqualToString:self.blog.currentThemeId]) {
-        self.currentTheme = indexPath;
+    if (indexPath.item == 0) {
+        ThemeBrowserCell *current = [collectionView dequeueReusableCellWithReuseIdentifier:ThemeCellIdentifier forIndexPath:indexPath];
+        if (_currentTheme) {
+            current.theme = _currentTheme;
+        }
+        return current;
     }
+    
+    ThemeBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ThemeCellIdentifier forIndexPath:indexPath];
+    Theme *theme = self.filteredThemes[indexPath.item-1];
+    cell.theme = theme;
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    Theme *theme = self.filteredThemes[indexPath.row];
-    self.selectedTheme = indexPath;
+    Theme *theme;
+    if (indexPath.item == 0) {
+        theme = _currentTheme;
+    } else {
+        theme = self.filteredThemes[indexPath.item-1];
+    }
+    
     ThemeDetailsViewController *details = [[ThemeDetailsViewController alloc] initWithTheme:theme];
     [self.navigationController pushViewController:details animated:true];
 }
 
 #pragma mark - Collection view flow layout
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath { 
     return IS_IPAD ? CGSizeMake(300, 255) : CGSizeMake(272, 234);
 }
 

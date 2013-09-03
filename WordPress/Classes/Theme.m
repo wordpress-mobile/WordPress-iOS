@@ -90,6 +90,7 @@ static NSDateFormatter *dateFormatter;
             Theme *theme = [self themeFromDictionary:t];
             theme.blog = blog;
         }
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext save:nil];
         dateFormatter = nil;
         
         if (success) {

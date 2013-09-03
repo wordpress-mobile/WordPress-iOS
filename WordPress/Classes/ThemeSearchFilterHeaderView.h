@@ -29,4 +29,6 @@
 
 @property (nonatomic, weak) ThemeBrowserViewController *delegate;
 
+- (void)resetSearch;
+
 @end

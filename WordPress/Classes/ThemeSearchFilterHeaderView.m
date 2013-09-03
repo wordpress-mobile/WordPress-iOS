@@ -149,6 +149,10 @@ static CGFloat const SortButtonWidth = 130.0f;
 
 #pragma mark - UISearchBarDelegate
 
+- (void)resetSearch {
+    [self searchBarCancelButtonClicked:_searchBar];
+}
+
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     searchBar.showsCancelButton = true;
 }
