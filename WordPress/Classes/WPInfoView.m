@@ -21,6 +21,9 @@
 + (WPInfoView *)WPInfoViewWithTitle:(NSString *)titleText message:(NSString *)messageText cancelButton:(NSString *)cancelText {
     NSArray *arr = [[NSBundle mainBundle] loadNibNamed:@"WPInfoView" owner:nil options:nil];
     WPInfoView *view = [arr objectAtIndex:0];
+    if (IS_IOS7) {
+        [self configureForIOS7:view];
+    }
     [view setTitle:titleText message:messageText cancelButton:cancelText];
     
     return view;
@@ -29,6 +32,13 @@
 
 - (void)didMoveToSuperview {
     [self centerInSuperview];
+}
+
++ (void)configureForIOS7:(WPInfoView *)infoView
+{
+    infoView.titleLabel.shadowOffset = CGSizeMake(0.0, 0.0);
+    infoView.titleLabel.font = [WPStyleGuide postTitleFont];
+    infoView.titleLabel.textColor = [WPStyleGuide bigEddieGrey];
 }
 
 
@@ -92,8 +102,8 @@
 - (void)centerInSuperview {
     // Center in parent.
     CGRect frame = [self superview].frame;
-    CGFloat x = (frame.size.width / 2.0f) - (self.frame.size.width / 2.0f);
-    CGFloat y = 75.0f;//(frame.size.height / 2.0f) - (self.frame.size.height / 2.0f);
+    CGFloat x = (CGRectGetWidth(frame) - CGRectGetWidth(self.frame))/2.0;
+    CGFloat y = ((CGRectGetHeight(frame)) - CGRectGetHeight(self.frame))/2.0;
     
     frame = self.frame;
     frame.origin.x = x;

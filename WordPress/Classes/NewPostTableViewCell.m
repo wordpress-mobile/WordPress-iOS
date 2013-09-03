@@ -9,7 +9,7 @@
 #import "NewPostTableViewCell.h"
 #import "Post.h"
 #import "NSString+XMLExtensions.h"
-#import "WPStyleGuide.h"
+#import "WPComLanguages.h"
 
 @interface NewPostTableViewCell() {
     AbstractPost __weak *_post;
@@ -25,6 +25,7 @@
 CGFloat const NewPostTableViewCellStandardOffset = 16.0;
 CGFloat const NewPostTableViewCellTitleAndDateVerticalOffset = 6.0;
 CGFloat const NewPostTableViewCellLabelAndTitleHorizontalOffset = -0.5;
+CGFloat const NewPostTableViewCellAccessoryViewOffset = 25.0;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -149,8 +150,21 @@ CGFloat const NewPostTableViewCellLabelAndTitleHorizontalOffset = -0.5;
             return @"";
         }
     } else {
-        return [[AbstractPost titleForRemoteStatus:@((int)post.remoteStatus)] uppercaseString];
+        NSString *statusText = [self addEllipsesIfAppropriate:[AbstractPost titleForRemoteStatus:@((int)post.remoteStatus)]];
+        return [statusText uppercaseString];
     }
+}
+
++ (NSString *)addEllipsesIfAppropriate:(NSString *)statusText
+{
+    if ([statusText isEqualToString:NSLocalizedString(@"Uploading", nil)]) {
+        if ([WPComLanguages isRightToLeft]) {
+            return [NSString stringWithFormat:@"…%@", statusText];
+        } else {
+            return [NSString stringWithFormat:@"%@…", statusText];
+        }
+    }
+    return statusText;
 }
 
 + (UIColor *)statusColorForPost:(AbstractPost *)post
@@ -221,7 +235,7 @@ CGFloat const NewPostTableViewCellLabelAndTitleHorizontalOffset = -0.5;
 
 + (CGFloat)textWidth:(CGFloat)maxWidth
 {
-    return maxWidth - 2*NewPostTableViewCellStandardOffset;
+    return maxWidth - NewPostTableViewCellStandardOffset - NewPostTableViewCellAccessoryViewOffset;
 }
 
 + (CGRect)statusLabelFrameForPost:(AbstractPost *)post maxWidth:(CGFloat)maxWidth
@@ -234,7 +248,7 @@ CGFloat const NewPostTableViewCellLabelAndTitleHorizontalOffset = -0.5;
         } else {
             size = [statusText sizeWithFont:[self statusFont] constrainedToSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
         }
-        if (IS_IOS7) {
+        if (IS_IOS7 && IS_RETINA) {
             return CGRectMake(NewPostTableViewCellStandardOffset + NewPostTableViewCellLabelAndTitleHorizontalOffset, NewPostTableViewCellStandardOffset, size.width, size.height);
         } else {
             return CGRectMake(NewPostTableViewCellStandardOffset, NewPostTableViewCellStandardOffset, size.width, size.height);
@@ -253,12 +267,12 @@ CGFloat const NewPostTableViewCellLabelAndTitleHorizontalOffset = -0.5;
         size = [[[self class] titleText:post] sizeWithFont:[[self class] titleFont] constrainedToSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     }
 
-    CGFloat offset;
+    CGFloat offset = 0.0;
     if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {
         offset = NewPostTableViewCellTitleAndDateVerticalOffset;
     }
 
-    if (IS_IOS7) {
+    if (IS_IOS7 && IS_RETINA) {
         return CGRectMake(NewPostTableViewCellStandardOffset + NewPostTableViewCellLabelAndTitleHorizontalOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height);
     } else {
         return CGRectIntegral(CGRectMake(NewPostTableViewCellStandardOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
@@ -275,13 +289,12 @@ CGFloat const NewPostTableViewCellLabelAndTitleHorizontalOffset = -0.5;
         size = [[[self class] dateText:post] sizeWithFont:[[self class] dateFont] constrainedToSize:CGSizeMake([[self class] textWidth:maxWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     }
     
-    CGFloat offset;
+    CGFloat offset = 0.0;
     if (!CGSizeEqualToSize(previousFrame.size, CGSizeZero)) {
         offset = NewPostTableViewCellTitleAndDateVerticalOffset;
     }
 
     return CGRectIntegral(CGRectMake(NewPostTableViewCellStandardOffset, CGRectGetMaxY(previousFrame) + offset, size.width, size.height));
 }
-
 
 @end

@@ -20,7 +20,6 @@
 #import "NSString+Helpers.h"
 #import "NSURL+Util.h"
 #import "WPToast.h"
-#import "WPStyleGuide.h"
 
 #define APPROVE_BUTTON_TAG 1
 #define UNAPPROVE_BUTTON_TAG 2

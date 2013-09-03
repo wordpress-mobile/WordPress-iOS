@@ -127,7 +127,11 @@
         }
     }
     
-    if ([forwardButton respondsToSelector:@selector(setTintColor:)]) {
+    if (IS_IOS7) {
+        toolbar.translucent = NO;
+        toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+        toolbar.tintColor = [UIColor whiteColor];        
+    } else {
         UIColor *color = [UIColor UIColorFromHex:0x464646];
         backButton.tintColor = color;
         forwardButton.tintColor = color;
@@ -702,14 +706,10 @@
 }
 
 - (void)showCloseButton {
-    if ( IS_IPAD ) {
+    if (IS_IPAD) {
         if(self.navigationController.navigationBarHidden) {
             UINavigationItem *topItem = self.iPadNavBar.topItem;
-            if (IS_IOS7) {
-                topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
-            } else {
-                topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
-            }
+            topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
         }
     }
 }

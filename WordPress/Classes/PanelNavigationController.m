@@ -38,6 +38,8 @@
 @property (nonatomic, strong) UIImageView *sidebarBorderView;
 @property (nonatomic, strong) UIButton *notificationButton, *menuButton;
 @property (nonatomic, strong) UIImageView *dividerImageView, *spacerImageView;
+@property (nonatomic, strong) UIImageView *loadingImageView;
+@property (nonatomic, strong) UIView *statusBarBackgroundView;
 
 - (void)showSidebar;
 - (void)showSidebarAnimated:(BOOL)animated;
@@ -123,6 +125,8 @@
 @synthesize sidebarBorderView = _sidebarBorderView;
 @synthesize delegate;
 
+CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
+
 - (void)dealloc {
     self.detailViewController.panelNavigationController = nil;
     self.detailViewController = nil;
@@ -156,7 +160,10 @@
         _navigationController.navigationBar.translucent = NO;
         
         self.detailViewController = detailController;
-        self.masterViewController = masterController;        
+        self.masterViewController = masterController;
+        
+        // Add a loading image to prevent a flicker as the app sets up this controller
+        self.loadingImageView = [[UIImageView alloc] initWithImage:[self loadingImage]];
     }
     return self;
 }
@@ -172,7 +179,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.detailViewContainer = [[UIView alloc] init];
     
     if (IS_IPAD) {
@@ -243,6 +250,9 @@
         [self showSidebarAnimated:NO];
     }
     
+    [self.view addSubview:self.loadingImageView];
+    [self.view bringSubviewToFront:self.loadingImageView];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotesNotification:)
 												 name:@"WordPressComUnseenNotes" object:nil];
 }
@@ -280,6 +290,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [self addStatusBarBackgroundView];
 
     _isAppeared = YES;
     [self relayAppearanceMethod:^(UIViewController *controller) {
@@ -374,6 +385,19 @@
         CGRect frm = dview.frame;
         [self.detailViewWidths addObject:[NSNumber numberWithFloat:frm.size.width]];
    }
+}
+
+- (void)addStatusBarBackgroundView
+{
+    if (!IS_IOS7)
+        return;
+    
+    self.statusBarBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), PanelNavigationControllerStatusBarViewHeight)];
+    self.statusBarBackgroundView.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+    self.statusBarBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    [self.view addSubview:self.statusBarBackgroundView];
+    [self.view bringSubviewToFront:self.statusBarBackgroundView];
 }
 
 #pragma mark - Memory management
@@ -573,14 +597,26 @@
 
 
 - (void)setDetailViewController:(UIViewController *)detailViewController closingSidebar:(BOOL)closingSidebar {
-    if (_detailViewController == detailViewController) return;
+    [self setDetailViewController:detailViewController closingSidebar:closingSidebar animated:NO];
+}
 
+- (void)setDetailViewController:(UIViewController *)detailViewController closingSidebar:(BOOL)closingSidebar animated:(BOOL)animated
+{
+    if (_detailViewController == detailViewController) return;
+    
+    if (_detailViewController == nil) {
+        // Ensure that the sidebar is closed when the app is first initialized
+        closingSidebar = YES;
+    }
+    
+    [self.loadingImageView removeFromSuperview];
+    
     BOOL oldWasWide = [self viewControllerExpectsWidePanel:_detailViewController];
     
     UIBarButtonItem *sidebarButton = nil;
     
     [self popToRootViewControllerAnimated:NO];
-
+    
     if (_detailViewController) {
         if (self.navigationController) {
             [self.navigationController setToolbarHidden:YES animated:YES];
@@ -593,28 +629,28 @@
             [_detailViewController willMoveToParentViewController:nil];
             UIView *view = [self viewOrViewWrapper:_detailViewController.view];
             [view removeFromSuperview];
-
+            
             if (_isAppeared) {
                 [_detailViewController vdc_viewDidDisappear:NO];
             }
             [_detailViewController setPanelNavigationController:nil];
             [_detailViewController removeFromParentViewController];
             [_detailViewController didMoveToParentViewController:nil];
-
+            
         }
     }
-
+    
     _detailViewController = detailViewController;
     
     if (_sidebarBorderView.hidden)
         _sidebarBorderView.hidden = NO;
-
+    
     if (_detailViewController) {
         [_detailViewController setPanelNavigationController:self];
         if (self.navigationController) {
             [self.navigationController setViewControllers:[NSArray arrayWithObject:_detailViewController] animated:NO];
             if (sidebarButton == nil) {
-                sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)];
+                sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle"] style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(toggleSidebar)];
             }
             sidebarButton.accessibilityLabel = NSLocalizedString(@"Toggle", @"Sidebar toggle button");
             
@@ -662,20 +698,17 @@
                 [button addTarget:self action:@selector(toggleSidebar) forControlEvents:UIControlEventTouchUpInside];
                 
                 sidebarButton = [[UIBarButtonItem alloc] initWithCustomView:button];
-
-                UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-                spacerButton.width = -12.0;
                 
-                _detailViewController.navigationItem.leftBarButtonItems = @[spacerButton, sidebarButton];
+                [WPStyleGuide setLeftBarButtonItemWithCorrectSpacing:sidebarButton forNavigationItem:_detailViewController.navigationItem];
             } else {
                 _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
             }
-
+            
         } else {
             [self addChildViewController:_detailViewController];
-
+            
             UIView *wrappedView = [self createWrapViewForViewController:_detailViewController];
-
+            
             BOOL newIsWide = [self viewControllerExpectsWidePanel:_detailViewController];
             
             if (newIsWide != oldWasWide) {
@@ -713,9 +746,9 @@
         }
     }
     [self addShadowTo:_detailViewContainer];
-
-    if (IS_IPHONE && closingSidebar) {
-        [self closeSidebar];
+    
+    if (closingSidebar) {
+        [self closeSidebarAnimated:animated];
     }
 }
 
@@ -903,11 +936,20 @@
 
 - (void)showSidebarAnimated:(BOOL)animated {
     [SoundUtil playSwipeSound];
-    
+
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:0 duration:0];
         [self disableDetailView];
     } completion:^(BOOL finished) {
+    }];
+    
+    // The statusBarBackgroundView starts out as transparent in the closed state so if a view controller
+    // decides to remove the navigation bar there won't be a blue status bar hanging out at the top. We
+    // set the color right before we animate this view so that way the color will animate correctly as the
+    // menu opens.
+    self.statusBarBackgroundView.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+    [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) animations:^{
+        self.statusBarBackgroundView.backgroundColor = [WPStyleGuide bigEddieGrey];
     }];
 }
 
@@ -921,9 +963,6 @@
 
 - (void)closeSidebar {
     [self closeSidebarAnimated:YES];
-    if (IS_IOS7) {
-        [self showStatusBarForiOS7];
-    }
 }
 
 - (void)closeSidebarAnimated:(BOOL)animated {
@@ -932,6 +971,16 @@
     } completion:^(BOOL finished) {
         [self enableDetailView];
     }];
+    
+    [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
+        self.statusBarBackgroundView.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+    } completion:^(BOOL finished) {
+        // We set the statusBarBackgroundView to be a clear color because that way when this menu is closed
+        // and some view controller removes the navigation bar to go into a 'fullscreen' mode such as the
+        // posts editor, we won't have a blue bar sitting at the top.
+        self.statusBarBackgroundView.backgroundColor = [UIColor clearColor];
+    }];
+
     
     if(IS_IPHONE && !self.presentedViewController) {
         [SoundUtil playSwipeSound];
@@ -948,24 +997,11 @@
 }
 
 - (void)toggleSidebar {
-    if (IS_IOS7) {
-        [self hideStatusBarForiOS7];
-    }
     if (!self.detailTapper) {
         [self showSidebar];
     } else {
         [self closeSidebar];
     }
-}
-
-- (void)hideStatusBarForiOS7
-{
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-}
-
-- (void)showStatusBarForiOS7
-{
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 
 - (void)teaseSidebar {
@@ -1184,6 +1220,40 @@
             }
         }
     }
+    
+    if (IS_IOS7) {
+        CGFloat percentage = _stackOffset/DETAIL_LEDGE_OFFSET;
+        self.statusBarBackgroundView.backgroundColor = [self statusBarTransitionColorForPercentage:percentage];
+    }
+}
+
+- (UIColor *)statusBarTransitionColorForPercentage:(CGFloat)percentage
+{
+    UIColor *colorWhenSidebarOpened = [WPStyleGuide bigEddieGrey];
+    UIColor *colorWhenSidebarClosed = [WPStyleGuide newKidOnTheBlockBlue];
+    
+    if (percentage == 1.0) {
+        // We return a transparent color when the sidebar is closed because that way if a view
+        // goes fullscreen(such as the posts editor) then the user won't see this blue bar
+        // at the top
+        return [UIColor clearColor];
+    } else if (percentage == 0.0) {
+        return colorWhenSidebarOpened;
+    }
+    
+    CGFloat startRed, endRed, startBlue, startAlpha, endBlue, startGreen, endGreen, endAlpha;
+    [colorWhenSidebarClosed getRed:&startRed green:&startGreen blue:&startBlue alpha:&startAlpha];
+    [colorWhenSidebarOpened getRed:&endRed green:&endGreen blue:&endBlue alpha:&endAlpha];
+    
+    CGFloat redDifference = startRed - endRed;
+    CGFloat blueDifference = startBlue - endBlue;
+    CGFloat greenDifference = startGreen - endGreen;
+    
+    CGFloat redColor = startRed - redDifference * (1.0 - percentage);
+    CGFloat blueColor = startBlue - blueDifference * (1.0 - percentage);
+    CGFloat greenColor = startGreen - greenDifference * (1.0 - percentage);
+    
+    return [UIColor colorWithRed:redColor green:greenColor blue:blueColor alpha:1.0];
 }
 
 - (void)animatePoppedIcon {
@@ -1766,6 +1836,25 @@
     return [NSArray arrayWithArray:viewControllers];
 }
 
+- (UIImage *)loadingImage
+{
+    if (!IS_IPAD) {
+        if ([UIScreen mainScreen].bounds.size.height == 568) {
+            return [UIImage imageNamed:@"Default-568h"];
+        } else {
+            return [UIImage imageNamed:@"Default"];
+        }
+    } else {
+        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        if (UIInterfaceOrientationIsPortrait(orientation)) {
+            return [UIImage imageNamed:@"Default-Portrait"];
+        } else {
+            return [UIImage imageNamed:@"Default-Landscape"];
+        }
+    }
+    
+    return [UIImage imageNamed:@"Default"];
+}
 
 @end
 

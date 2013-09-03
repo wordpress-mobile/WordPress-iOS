@@ -40,12 +40,14 @@
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) Post *currentQuickPost;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *topLayoutConstraint;
 
 @end
 
 @implementation NewSidebarViewController
 
 CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
+CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -65,6 +67,10 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if (IS_IOS7) {
+        self.topLayoutConstraint.constant = SidebarViewControllerStatusBarViewHeight;
+    }
     
     self.view.backgroundColor = [WPStyleGuide darkAsNightGrey];
     self.tableView.backgroundColor = [WPStyleGuide darkAsNightGrey];
@@ -469,14 +475,10 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
         //Check if the controller is already on the screen
         if ([self.panelNavigationController.detailViewController isMemberOfClass:controllerClass] && [self.panelNavigationController.detailViewController respondsToSelector:@selector(setBlog:)]) {
             [self.panelNavigationController.detailViewController performSelector:@selector(setBlog:) withObject:blog];
-            if (IS_IPAD) {
-                [self.panelNavigationController showSidebar];
-            } else {
-                if (closingSidebar)
-                    [self.panelNavigationController closeSidebar];
+            if (closingSidebar) {
+                [self.panelNavigationController closeSidebar];
             }
             [self.panelNavigationController popToRootViewControllerAnimated:NO];
-            
             return;
         } else {
             detailViewController = (UIViewController *)[[controllerClass alloc] init];
@@ -487,7 +489,13 @@ CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
     }
     
     if (detailViewController) {
-        [self.panelNavigationController setDetailViewController:detailViewController closingSidebar:closingSidebar];
+        BOOL animated = YES;
+        if (self.panelNavigationController.detailViewController == nil) {
+            // We want the sidebar to start out closed on app first launch as the animation to close it
+            // when the app first launches is a little jarring.
+            animated = NO;
+        }
+        [self.panelNavigationController setDetailViewController:detailViewController closingSidebar:closingSidebar animated:animated];
     }
 }
 

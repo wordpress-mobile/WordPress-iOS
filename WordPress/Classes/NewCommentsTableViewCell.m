@@ -8,7 +8,6 @@
 
 #import "NewCommentsTableViewCell.h"
 #import "Comment.h"
-#import "WPStyleGuide.h"
 #import "NSString+XMLExtensions.h"
 #import "UIImageView+Gravatar.h"
 
@@ -34,7 +33,7 @@ CGFloat const CommentCellAccessoryViewOffset = 25.0;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     
     if (self) {
-        self.backgroundColor = [WPStyleGuide readGrey];
+        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
         _gravatarImageView = [[UIImageView alloc] init];
@@ -47,7 +46,7 @@ CGFloat const CommentCellAccessoryViewOffset = 25.0;
         _authorNameLabel.lineBreakMode = NSLineBreakByWordWrapping;
         _authorNameLabel.font = [[self class] authorNameFont];
         _authorNameLabel.shadowOffset = CGSizeMake(0.0, 0.0);
-        _authorNameLabel.textColor = [UIColor blackColor];
+        _authorNameLabel.textColor = [WPStyleGuide littleEddieGrey];
         [self.contentView addSubview:_authorNameLabel];
         
         _postTitleLabel = [[UILabel alloc] init];
@@ -67,7 +66,7 @@ CGFloat const CommentCellAccessoryViewOffset = 25.0;
         _commentTextLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         _commentTextLabel.font = [[self class] commentTextFont];
         _commentTextLabel.shadowOffset = CGSizeMake(0.0, 0.0);
-        _commentTextLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+        _commentTextLabel.textColor = [WPStyleGuide littleEddieGrey];
         [self.contentView addSubview:_commentTextLabel];
     }
     
@@ -87,7 +86,7 @@ CGFloat const CommentCellAccessoryViewOffset = 25.0;
     _postTitleLabel.attributedText = [[self class] postTitleTextForComment:comment];
     _commentTextLabel.text = [[self class] commentTextForComment:comment];
     
-    [_gravatarImageView setImageWithGravatarEmail:comment.author_email];
+    [_gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
 }
 
 - (void)layoutSubviews

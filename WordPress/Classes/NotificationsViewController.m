@@ -15,7 +15,6 @@
 #import "NewNotificationsTableViewCell.h"
 #import "WPTableViewControllerSubclass.h"
 #import "NotificationSettingsViewController.h"
-#import "WPStyleGuide.h"
 
 NSString * const NotificationsTableViewNoteCellIdentifier = @"NotificationsTableViewCell";
 NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
@@ -52,8 +51,9 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     WPFLogMethod();
     [super viewDidLoad];
     
-    self.view.backgroundColor = [WPStyleGuide readGrey];
-    self.tableView.backgroundColor = [WPStyleGuide readGrey];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorColor = [WPStyleGuide readGrey];
     
     self.panelNavigationController.delegate = self;
     self.infiniteScrollEnabled = YES;
@@ -88,7 +88,7 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (UIColor *)backgroundColorForRefreshHeaderView
 {
-    return [WPStyleGuide readGrey];
+    return [WPStyleGuide itsEverywhereGrey];
 }
 
 #pragma mark - Custom methods

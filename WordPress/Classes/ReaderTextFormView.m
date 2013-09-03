@@ -157,23 +157,15 @@
 	}
 	
 	if (!_sendButton) {
-        UIBarButtonItemStyle style = UIBarButtonItemStyleDone;
-        if (IS_IOS7) {
-            style = UIBarButtonItemStylePlain;
-        }
 		self.sendButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Send", @"")
-														   style:style
+														   style:[WPStyleGuide barButtonStyleForDone]
 														  target:self
 														  action:@selector(handleSendButtonTapped:)];
 	}
 	
 	if (!_cancelButton) {
-        UIBarButtonItemStyle style = UIBarButtonItemStyleBordered;
-        if (IS_IOS7) {
-            style = UIBarButtonItemStylePlain;
-        }
 		self.cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"")
-															 style:style
+															 style:[WPStyleGuide barButtonStyleForBordered]
 															target:self
 															action:@selector(handleCancelButtonTapped:)];
 	}

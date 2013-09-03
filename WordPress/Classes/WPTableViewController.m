@@ -531,7 +531,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 		case 0: {
             HelpViewController *helpViewController = [[HelpViewController alloc] init];
             helpViewController.isBlogSetup = YES;
-            helpViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModal:)];
+            helpViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
             // Probably should be modal
             UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
             navController.navigationBar.translucent = NO;
@@ -566,7 +566,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                 }
                 
                 WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-                webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModal:)];
+                webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
                 [webViewController setUrl:[NSURL URLWithString:path]];
                 [webViewController setUsername:self.blog.username];
                 [webViewController setPassword:self.blog.password];

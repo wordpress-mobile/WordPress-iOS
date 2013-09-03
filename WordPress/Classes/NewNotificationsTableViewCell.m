@@ -9,7 +9,6 @@
 #import "NewNotificationsTableViewCell.h"
 #import "Note.h"
 #import "UIImageView+Gravatar.h"
-#import "WPStyleGuide.h"
 #import "NSString+XMLExtensions.h"
 
 @interface NewNotificationsTableViewCell() {
@@ -35,7 +34,7 @@ CGFloat const NotificationCellDetailTextNumberOfLines = 2;
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [WPStyleGuide readGrey];
+        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
         _gravatarImageView = [[UIImageView alloc] init];

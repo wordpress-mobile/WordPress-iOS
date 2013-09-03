@@ -59,19 +59,21 @@
     [super viewDidLoad];
 	
 	self.title = NSLocalizedString(@"Topics", @"Title of the Reader Topics screen");
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                  target:self
-                                                                                  action:@selector(handleCancelButtonTapped:)];
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                                     style:UIBarButtonItemStylePlain
+                                                                    target:self
+                                                                    action:@selector(handleCancelButtonTapped:)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
 	UIBarButtonItem *friendFinderButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Friends", @"")
-																		   style:UIBarButtonItemStyleBordered
+																		   style:[WPStyleGuide barButtonStyleForBordered]
 																		  target:self
 																		  action:@selector(handleFriendFinderButtonTapped:)];
 	self.navigationItem.leftBarButtonItem = friendFinderButton;
 	
     self.tableView.backgroundView = nil;
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorColor = [WPStyleGuide readGrey];
 	
 	[self refreshIfReady];
 }
@@ -206,6 +208,7 @@
 	if(!cell) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 	}
+    [WPStyleGuide configureTableViewCell:cell];
 	
 	NSArray *arr = nil;
 	if (indexPath.section == 0) {

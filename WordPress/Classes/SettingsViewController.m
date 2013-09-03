@@ -83,10 +83,11 @@ typedef enum {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    self.title = [NSLocalizedString(@"Settings", @"App Settings") uppercaseString];
+    
+    self.title = NSLocalizedString(@"Settings", @"App Settings");
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
+    
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
         [sections addIndex:SettingsSectionWpcom];
@@ -101,8 +102,11 @@ typedef enum {
     }];
     
     self.tableView.backgroundView = nil;
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorColor = [WPStyleGuide readGrey];
     [self setupMedia];
+    
+    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 }
 
 
@@ -215,6 +219,11 @@ typedef enum {
 }
 
 - (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner {
+    if (IS_IOS7) {
+        // We don't want this effect in iOS7
+        return;
+    }
+    
     CGRect frame = CGRectMake(0.0, 0.0, 43.0, 43.0);
     UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:frame
                                                byRoundingCorners:corner cornerRadii:CGSizeMake(7.0f, 7.0f)];
@@ -446,7 +455,14 @@ typedef enum {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [self cellForIndexPath:indexPath];
+    [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
+    
+    BOOL isSignOutCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 1;
+    BOOL isAddBlogsCell = indexPath.section == SettingsSectionBlogsAdd;
+    if (isSignOutCell || isAddBlogsCell) {
+        cell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
+    }
     
     return cell;
 }

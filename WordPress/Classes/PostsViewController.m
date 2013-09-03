@@ -6,7 +6,6 @@
 #import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
-#import "WPStyleGuide.h"
 
 #define TAG_OFFSET 1010
 
@@ -22,7 +21,7 @@
 - (id)init {
     self = [super init];
     if(self) {
-        self.title = [NSLocalizedString(@"Posts", @"") uppercaseString];
+        self.title = NSLocalizedString(@"Posts", @"");
     }
     return self;
 }
@@ -38,7 +37,8 @@
     UIBarButtonItem *composeButtonItem  = nil;
     
     if ([self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        composeButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]style:UIBarButtonItemStyleBordered 
+        composeButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]
+                                                             style:[WPStyleGuide barButtonStyleForBordered]
                                                              target:self 
                                                              action:@selector(showAddPostView)];
     } else {
@@ -57,9 +57,7 @@
         composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     }
 
-    UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    spacerButton.width = -12.0;
-    self.navigationItem.rightBarButtonItems = @[spacerButton, composeButtonItem];
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
     
     if (IS_IPAD && self.selectedIndexPath && self.postReaderViewController) {
         @try {

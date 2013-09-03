@@ -722,6 +722,8 @@
 		85C9172917CECAA6001ECEC3 /* icon-reader-topics@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85C9172517CECAA6001ECEC3 /* icon-reader-topics@2x.png */; };
 		85D08A5E17332C4A00E2BBCA /* NewAddUsersBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D08A5D17332C4A00E2BBCA /* NewAddUsersBlogViewController.m */; };
 		85D08A7117342ECE00E2BBCA /* AddUsersBlogCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D08A7017342ECE00E2BBCA /* AddUsersBlogCell.m */; };
+		85D2415817D0701A00AF090E /* UIViewController+iOS7StyleChanges.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D2415717D0701A00AF090E /* UIViewController+iOS7StyleChanges.m */; };
+		85D2415B17D0792D00AF090E /* UIBarButtonItem+CapitalizedTitles.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D2415A17D0792D00AF090E /* UIBarButtonItem+CapitalizedTitles.m */; };
 		85D805521715F4EA0075EEAC /* CreateWPComBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D805511715F4EA0075EEAC /* CreateWPComBlogViewController.m */; };
 		85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85D80557171630B30075EEAC /* DotCom-Languages.plist */; };
 		85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D8055C171631F10075EEAC /* SelectWPComLanguageViewController.m */; };
@@ -1864,6 +1866,10 @@
 		85D08A5D17332C4A00E2BBCA /* NewAddUsersBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewAddUsersBlogViewController.m; sourceTree = "<group>"; };
 		85D08A6F17342ECE00E2BBCA /* AddUsersBlogCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddUsersBlogCell.h; sourceTree = "<group>"; };
 		85D08A7017342ECE00E2BBCA /* AddUsersBlogCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddUsersBlogCell.m; sourceTree = "<group>"; };
+		85D2415617D0701A00AF090E /* UIViewController+iOS7StyleChanges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+iOS7StyleChanges.h"; sourceTree = "<group>"; };
+		85D2415717D0701A00AF090E /* UIViewController+iOS7StyleChanges.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+iOS7StyleChanges.m"; sourceTree = "<group>"; };
+		85D2415917D0792D00AF090E /* UIBarButtonItem+CapitalizedTitles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+CapitalizedTitles.h"; sourceTree = "<group>"; };
+		85D2415A17D0792D00AF090E /* UIBarButtonItem+CapitalizedTitles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+CapitalizedTitles.m"; sourceTree = "<group>"; };
 		85D805501715F4EA0075EEAC /* CreateWPComBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateWPComBlogViewController.h; sourceTree = "<group>"; };
 		85D805511715F4EA0075EEAC /* CreateWPComBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateWPComBlogViewController.m; sourceTree = "<group>"; };
 		85D80557171630B30075EEAC /* DotCom-Languages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DotCom-Languages.plist"; sourceTree = "<group>"; };
@@ -3192,6 +3198,10 @@
 				850DE06017CD4611003A1057 /* NewNotificationsTableViewCell.m */,
 				857F55B617CEA2B200E154E1 /* WPKeyboardToolbarWithoutGradient.h */,
 				857F55B717CEA2B200E154E1 /* WPKeyboardToolbarWithoutGradient.m */,
+				85D2415617D0701A00AF090E /* UIViewController+iOS7StyleChanges.h */,
+				85D2415717D0701A00AF090E /* UIViewController+iOS7StyleChanges.m */,
+				85D2415917D0792D00AF090E /* UIBarButtonItem+CapitalizedTitles.h */,
+				85D2415A17D0792D00AF090E /* UIBarButtonItem+CapitalizedTitles.m */,
 			);
 			name = "iOS 7";
 			sourceTree = "<group>";
@@ -5283,6 +5293,7 @@
 				FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */,
 				E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */,
 				3768BE87130404FF00E7C9A9 /* BetaUIWindow.m in Sources */,
+				85D2415817D0701A00AF090E /* UIViewController+iOS7StyleChanges.m in Sources */,
 				3768BEF113041E7900E7C9A9 /* BetaFeedbackViewController.m in Sources */,
 				85468F3A17C483F1008AB9C1 /* NewCommentsTableViewCell.m in Sources */,
 				E1D458691309589C00BF0235 /* Coordinate.m in Sources */,
@@ -5401,6 +5412,7 @@
 				E183BD7417621D87000B0822 /* WPCookie.m in Sources */,
 				85F2C4D417BA0ED400A303E0 /* NewSidebarViewController.m in Sources */,
 				E10DB0081771926D00B7A0A3 /* GooglePlusActivity.m in Sources */,
+				85D2415B17D0792D00AF090E /* UIBarButtonItem+CapitalizedTitles.m in Sources */,
 				5D42A3DE175E7452005CFF05 /* AbstractComment.m in Sources */,
 				85F2C4BF17B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.m in Sources */,
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,

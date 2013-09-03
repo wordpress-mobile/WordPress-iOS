@@ -28,21 +28,15 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
 
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                          target:self
-                                                                                          action:@selector(cancelView:)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:self
+                                                                            action:@selector(cancelView:)];
     
-    if (IS_IOS7) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).")
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self
-                                                                                 action:@selector(initiateSaveCommentReply:)];
-    } else {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).")
-                                                                                  style:UIBarButtonItemStyleDone
-                                                                                 target:self
-                                                                                 action:@selector(initiateSaveCommentReply:)];
-    }
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).")
+                                                                              style:[WPStyleGuide barButtonStyleForDone]
+                                                                             target:self
+                                                                             action:@selector(initiateSaveCommentReply:)];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleKeyboardDidShow:)
@@ -127,17 +121,10 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
 	if (IS_IPAD == NO) {
-        if (IS_IOS7) {
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"")
-                                                                                     style:UIBarButtonItemStylePlain
-                                                                                    target:self
-                                                                                    action:@selector(endTextEnteringButtonAction:)];
-        } else {
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"")
-                                                                                     style:UIBarButtonItemStyleDone
-                                                                                    target:self
-                                                                                    action:@selector(endTextEnteringButtonAction:)];
-        }
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"")
+                                                                                 style:[WPStyleGuide barButtonStyleForDone]
+                                                                                target:self
+                                                                                action:@selector(endTextEnteringButtonAction:)];
 	}
 	self.isEditing = YES;
 }
@@ -149,7 +136,7 @@
 	self.isEditing = NO;
 	if (IS_IPAD == NO) {
 		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"")
-                                                                                 style:UIBarButtonItemStyleBordered
+                                                                                 style:[WPStyleGuide barButtonStyleForBordered]
                                                                                 target:self
                                                                                 action:@selector(cancelView:)];
 	}

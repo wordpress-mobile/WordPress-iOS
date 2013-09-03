@@ -103,6 +103,7 @@ CGFloat const GeneralWalkthroughTextFieldWidth = 289.0;
 CGFloat const GeneralWalkthroughTextFieldHeight = 40.0;
 CGFloat const GeneralWalkthroughSignInButtonWidth = 160.0;
 CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
+CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 
 - (void)dealloc
 {
@@ -591,11 +592,14 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)layoutPage1Controls
 {
-    UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
-    _page1InfoButton.frame = CGRectMake(0, 0, infoButtonImage.size.width, infoButtonImage.size.height);
-
     CGFloat x,y;
-    
+
+    UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
+    y = 0;
+    if (IS_IOS7) {
+        y = GeneralWalkthroughiOS7StatusBarOffset;
+    }
+    _page1InfoButton.frame = CGRectMake(0, y, infoButtonImage.size.width, infoButtonImage.size.height);
     // Layout Icon
     x = (_viewWidth - CGRectGetWidth(_page1Icon.frame))/2.0;
     x = [self adjustX:x forPage:1];

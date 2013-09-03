@@ -811,15 +811,15 @@
 
 - (void)customizeForiOS7
 {
-    self.window.tintColor = [UIColor UIColorFromHex:0x2EA2CC];
+    self.window.tintColor = [WPStyleGuide newKidOnTheBlockBlue];
 
-    [[UINavigationBar appearance] setBarTintColor:[UIColor UIColorFromHex:0x2EA2CC]];
+    [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeFont : [UIFont fontWithName:@"OpenSans-Bold" size:17.0]} ];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeFont : [UIFont fontWithName:@"OpenSans-Bold" size:16.0]} ];
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"transparent-point"] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"transparent-point"]];
-    [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [UIFont fontWithName:@"OpenSans" size:17.0], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
-    [[UIToolbar appearance] setBarTintColor:[UIColor UIColorFromHex:0x2EA2CC]];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [UIFont fontWithName:@"OpenSans" size:12.0], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
+    [[UIToolbar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 

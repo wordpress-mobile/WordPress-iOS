@@ -10,7 +10,6 @@
 #import "UIImageView+Gravatar.h"
 #import "NSString+XMLExtensions.h"
 #import "Comment.h"
-#import "WPStyleGuide.h"
 #import "CommentsViewController.h"
 #import "ReplyToCommentViewController.h"
 #import "EditCommentViewController.h"

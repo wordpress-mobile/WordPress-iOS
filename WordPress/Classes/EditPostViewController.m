@@ -5,7 +5,6 @@
 #import "NSString+XMLExtensions.h"
 #import "WPPopoverBackgroundView.h"
 #import "WPAddCategoryViewController.h"
-#import "WPStyleGuide.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -496,9 +495,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
         return;
     
     if (self.navigationItem.leftBarButtonItem == nil) {
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                      target:self
-                                                                                      action:@selector(cancelView:)];
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelView:)];
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
 
@@ -516,12 +513,8 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     }
 
     if (self.navigationItem.rightBarButtonItem == nil) {
-        UIBarButtonItem *saveButton;
-        if (IS_IOS7) {
-            saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStylePlain target:self action:@selector(saveAction:)];
-        } else {
-            saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleDone target:self action:@selector(saveAction:)];
-        }
+        UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(saveAction:)];
+        
         self.navigationItem.rightBarButtonItem = saveButton;
     } else {
         self.navigationItem.rightBarButtonItem.title = buttonTitle;
@@ -579,7 +572,8 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 	
     segmentedTableViewController.title = NSLocalizedString(@"Categories", @"");
     if ([createCategoryBarButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]style:UIBarButtonItemStyleBordered 
+        createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]
+                                                                       style:[WPStyleGuide barButtonStyleForBordered]
                                                                       target:self 
                                                                       action:@selector(showAddNewCategoryView:)];
     } 

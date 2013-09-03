@@ -138,10 +138,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"")];
     
     if (IS_IOS7) {
-        UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        spacerButton.width = -12.0;
-        
-        self.navigationItem.rightBarButtonItems = @[spacerButton, button];
+        [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:button forNavigationItem:self.navigationItem];
     } else {
         UIColor *color = [UIColor UIColorFromHex:0x464646];
         button.tintColor = color;
@@ -177,6 +174,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	self.panelNavigationController.delegate = self;
 	
 	self.title = [[[ReaderPost currentTopic] objectForKey:@"title"] capitalizedString];
+    if (IS_IOS7) {
+        self.title = [self.title uppercaseString];
+    }
     [self loadImagesForVisibleRows];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];

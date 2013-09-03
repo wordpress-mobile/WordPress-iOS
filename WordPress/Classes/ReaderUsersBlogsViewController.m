@@ -67,7 +67,7 @@
 	
 	if (self.navigationItem.leftBarButtonItem == nil) {
 		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"")
-																		style:UIBarButtonItemStyleBordered
+																		style:[WPStyleGuide barButtonStyleForBordered]
 																	   target:self
 																	   action:@selector(handleCloseButtonTapped:)];
 	}

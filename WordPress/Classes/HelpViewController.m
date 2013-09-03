@@ -37,18 +37,10 @@
     self.navigationItem.title = NSLocalizedString(@"Help", @"");
     
     if (!isBlogSetup) {
-        UIBarButtonItem *doneButton;
-        if (IS_IOS7) {
-            doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                          style:UIBarButtonItemStylePlain
-                                                         target:self
-                                                         action:@selector(cancel:)];
-        } else {
-            doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                          style:UIBarButtonItemStyleDone
-                                                         target:self
-                                                         action:@selector(cancel:)];
-        }
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                      style:[WPStyleGuide barButtonStyleForDone]
+                                                     target:self
+                                                     action:@selector(cancel:)];
 
         self.navigationItem.leftBarButtonItem = doneButton;
     }
