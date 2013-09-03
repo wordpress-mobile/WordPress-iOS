@@ -39,6 +39,12 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     IBOutlet UILabel *tagsLabel;
     IBOutlet UILabel *categoriesLabel;
     IBOutlet UIButton *categoriesButton;
+    
+    // iOS 7
+    IBOutlet UIView *separatorView;
+    IBOutlet UIBarButtonItem *leftPreviewSpacer;
+    IBOutlet UIBarButtonItem *rightPreviewSpacer;
+    IBOutlet UIBarButtonItem *rightMediaSpacer;
 
     WPKeyboardToolbarBase *editorToolbar;
     UIView *currentView;
@@ -67,6 +73,9 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
 #pragma mark -
 #pragma mark LifeCycle Methods
+
+CGFloat const EditPostViewControllerStandardOffset = 15.0;
+CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 - (void)dealloc {
     _failedMediaAlertView.delegate = nil;
@@ -107,8 +116,29 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     categoriesLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
     textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
 	textViewPlaceHolderField.textAlignment = NSTextAlignmentCenter;
-    titleTextField.font = [WPStyleGuide postTitleFont];
 
+    if (IS_IOS7) {
+        // Setup Line Height
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.minimumLineHeight = 24;
+        style.maximumLineHeight = 24;
+        textView.typingAttributes = @{ NSParagraphStyleAttributeName: style };
+        
+        // Set title frame
+        CGRect titleFrame = titleTextField.frame;
+        titleFrame.origin.x = EditPostViewControllerStandardOffset;
+        titleFrame.size.width = CGRectGetWidth(self.view.bounds) - 2*EditPostViewControllerStandardOffset;
+        titleTextField.frame = titleFrame;
+        
+        // Set separator frame
+        CGRect separatorFrame = separatorView.frame;
+        separatorFrame.origin.y = CGRectGetMaxY(titleFrame);
+        separatorFrame.origin.x = EditPostViewControllerStandardOffset;
+        separatorFrame.size.width = CGRectGetWidth(self.view.bounds) - EditPostViewControllerStandardOffset;
+        separatorView.frame = separatorFrame;
+        separatorView.backgroundColor = [WPStyleGuide readGrey];
+    }
+    
     if (editorToolbar == nil) {
         CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, WPKT_HEIGHT_PORTRAIT);
         if (IS_IOS7) {
@@ -174,16 +204,6 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
     [self refreshUIForCurrentPost];
 
-    if (!IS_IOS7) {
-        UIColor *color = [UIColor UIColorFromHex:0x222222];
-        writeButton.tintColor = color;
-        self.settingsButton.tintColor = color;
-        previewButton.tintColor = color;
-        attachmentButton.tintColor = color;
-        self.photoButton.tintColor = color;
-        self.movieButton.tintColor = color;        
-    }
-
     if (_autosavingIndicatorView == nil) {
         _autosavingIndicatorView = [[AutosavingIndicatorView alloc] initWithFrame:CGRectZero];
         _autosavingIndicatorView.hidden = YES;
@@ -194,10 +214,27 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     }
     
     if (IS_IOS7) {
+        titleTextField.font = [WPStyleGuide postTitleFont];
+        textView.font = [WPStyleGuide regularTextFont];
+        self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
         self.toolbar.translucent = NO;
         self.toolbar.barStyle = UIBarStyleDefault;
         titleTextField.placeholder = NSLocalizedString(@"Title:", @"Label for the title of the post field. Should be the same as WP core.");
+        titleTextField.textColor = [WPStyleGuide littleEddieGrey];
+        textView.textColor = [WPStyleGuide littleEddieGrey];
+        self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
         self.navigationController.navigationBar.translucent = NO;
+        leftPreviewSpacer.width = -6.5;
+        rightPreviewSpacer.width = 5.0;
+        rightMediaSpacer.width = -5.0;
+    } else {
+        UIColor *color = [UIColor UIColorFromHex:0x222222];
+        writeButton.tintColor = color;
+        self.settingsButton.tintColor = color;
+        previewButton.tintColor = color;
+        attachmentButton.tintColor = color;
+        self.photoButton.tintColor = color;
+        self.movieButton.tintColor = color;
     }
     
     [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailOpenedEditor]];
@@ -215,6 +252,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     textView.frame = self.normalTextFrame;
     textViewPlaceHolderField.frame = [self textviewPlaceholderFrame];
 	textViewPlaceHolderField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    [textView setContentOffset:CGPointMake(0, 0)];
 
 	CABasicAnimation *animateWiggleIt;
 	animateWiggleIt = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
@@ -422,29 +460,32 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 }
 
 - (CGRect)normalTextFrame {
+    CGFloat x = 0.0, y = 0.0;
     if (IS_IPAD) {
-        CGFloat y = 143;
+        y = 143;
         if (IS_IOS7) {
-            y = CGRectGetMaxY(titleTextField.frame);
+            x = EditPostViewControllerTextViewOffset;
+            y = CGRectGetMaxY(separatorView.frame);
         }
         CGFloat height = self.toolbar.frame.origin.y - y;
         if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
             || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-            return CGRectMake(0, y, self.view.bounds.size.width, height);
+            return CGRectMake(x, y, self.view.bounds.size.width - 2*x, height);
         else // Portrait
-            return CGRectMake(0, y, self.view.bounds.size.width, height);
+            return CGRectMake(x, y, self.view.bounds.size.width - 2*x, height);
     } else {
-        CGFloat y = 136.f;
+        y = 136.f;
         if (IS_IOS7) {
             // On IOS7 we get rid of the Tags and Categories fields, so place the textview right under the title
-            y = CGRectGetMaxY(titleTextField.frame);
+            x = EditPostViewControllerTextViewOffset;
+            y = CGRectGetMaxY(separatorView.frame);
         }
         CGFloat height = self.toolbar.frame.origin.y - y;
         if ((self.interfaceOrientation == UIDeviceOrientationLandscapeLeft)
             || (self.interfaceOrientation == UIDeviceOrientationLandscapeRight)) // Landscape
-			return CGRectMake(0, y, self.view.bounds.size.width, height);
+			return CGRectMake(x, y, self.view.bounds.size.width - 2*x, height);
 		else // Portrait
-			return CGRectMake(0, y, self.view.bounds.size.width, height);
+			return CGRectMake(x, y, self.view.bounds.size.width - 2*x, height);
     }
 }
 
@@ -545,9 +586,6 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 		else
 			textView.text = self.apost.content;
     }
-    
-	// workaround for odd text view behavior on iPad
-	[textView setContentOffset:CGPointZero animated:NO];
 
     [self refreshButtons];
 }
