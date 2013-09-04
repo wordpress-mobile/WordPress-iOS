@@ -74,7 +74,11 @@
     if( IS_IPHONE ) {
         
         if (IS_IOS7) {
-            self.optionsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-posts-share"] style:UIBarButtonItemStylePlain target:self action:@selector(showLinkOptions)];
+            UIImage *image = [UIImage imageNamed:@"icon-posts-share"];
+            UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+            [button setImage:image forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
+            self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:button];
         } else {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
             
