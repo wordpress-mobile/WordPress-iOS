@@ -342,10 +342,12 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             cell.firstAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-quickphoto"];
             __weak UITableViewCell *weakCell = cell;
             cell.tappedFirstAccessoryView = ^{
+                [self.panelNavigationController closeSidebar];
                 [self showQuickPhotoForFrame:weakCell.frame];
             };
             cell.secondAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-add"];
             cell.tappedSecondAccessoryView = ^{
+                [self.panelNavigationController closeSidebar];
                 [self quickAddNewPost:indexPath];
             };
         } else if ([self isRowForPages:indexPath]) {
@@ -354,6 +356,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             selectedImage = [UIImage imageNamed:@"icon-menu-pages-active"];
             cell.secondAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-add"];
             cell.tappedSecondAccessoryView = ^{
+                [self.panelNavigationController closeSidebar];
                 [self quickAddNewPost:indexPath];
             };
         } else if ([self isRowForComments:indexPath]) {
