@@ -25,6 +25,7 @@
 #import "GeneralWalkthroughViewController.h"
 #import "ThemeBrowserViewController.h"
 #import "WPStyleGuide.h"
+#import "MediaBrowserViewController.h"
 
 @interface NewSidebarViewController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIActionSheetDelegate> {
     Blog *_currentlyOpenedBlog;
@@ -46,7 +47,7 @@
 
 @implementation NewSidebarViewController
 
-CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
+CGFloat const SidebarViewControllerNumberOfRowsForBlog = 7;
 CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -377,6 +378,8 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             text = NSLocalizedString(@"Themes", @"Menu item for themes");
             image = [UIImage imageNamed:@"icon-menu-themes"];
             selectedImage = [UIImage imageNamed:@"icon-menu-themes-active"];
+        } else if ([self isRowForMedia:indexPath]) {
+            text = @"Media";
         }
         
         cell.cellBackgroundColor = SidebarTableViewCellBackgroundColorLight;
@@ -462,6 +465,10 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedThemes forEvent:StatsEventAppClosed];
             
             controllerClass = [ThemeBrowserViewController class];
+        } else if ([self isRowForMedia:indexPath]) {
+            [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedMediaLibrary forEvent:StatsEventAppClosed];
+            
+            controllerClass = [MediaBrowserViewController class];
         } else if ([self isRowForViewSite:indexPath]) {
             [self showViewSiteForBlog:blog andClosingSidebar:closingSidebar];
         } else {
@@ -576,6 +583,11 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 - (BOOL)isRowForThemes:(NSIndexPath *)indexPath
 {
     return indexPath.row == 5;
+}
+
+- (BOOL)isRowForMedia:(NSIndexPath *)indexPath
+{
+    return indexPath.row == 6;
 }
 
 - (void)showSettings
