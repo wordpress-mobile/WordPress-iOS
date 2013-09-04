@@ -1081,6 +1081,8 @@
         CGRect wrapperFrame = pickerWrapperView.frame;
         wrapperFrame.origin.y = CGRectGetHeight(parentView.frame) - CGRectGetHeight(pickerWrapperView.frame);
         pickerWrapperView.frame = wrapperFrame;
+
+#warning The view does not show when added to the view of the rootViewController
         
         [parentVC.view addSubview:parentView];
         [parentVC.view bringSubviewToFront:parentView];
@@ -1093,7 +1095,6 @@
         DebugLog(@"parentView: %@", NSStringFromClass([parentView.superview class]));
         
 //        DebugLog(@"recursive: %@", [parentVC.view recursiveDescription]);
-        
         
         pickerWrapperView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75];
         [parentView addSubview:pickerWrapperView];
