@@ -74,9 +74,7 @@
     if( IS_IPHONE ) {
         
         if (IS_IOS7) {
-            self.optionsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                                                               target:self
-                                                                               action:@selector(showLinkOptions)];
+            self.optionsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-posts-share"] style:UIBarButtonItemStylePlain target:self action:@selector(showLinkOptions)];
         } else {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
             
@@ -97,7 +95,7 @@
         }
         
         if (!self.hidesLinkOptions) {
-            self.navigationItem.rightBarButtonItem = optionsButton;
+            [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:optionsButton forNavigationItem:self.navigationItem];
         }
         
     } else {

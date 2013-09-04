@@ -270,7 +270,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 - (void)buildTopToolbar {
 	// Top Navigation bar and Sharing.
 	if (IS_IOS7) {
-        self.shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(handleShareButtonTapped:)];
+        self.shareButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-posts-share"] style:UIBarButtonItemStylePlain target:self action:@selector(handleShareButtonTapped:)];
 	} else {
 		UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
 		
@@ -288,7 +288,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		self.shareButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
 	}
 	
-	self.navigationItem.rightBarButtonItem = _shareButton;
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
 	
 	if(false && IS_IPAD) {
 		
