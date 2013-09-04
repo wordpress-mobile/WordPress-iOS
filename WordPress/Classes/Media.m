@@ -48,6 +48,21 @@
     return media;
 }
 
++ (void)insertNewMediaFromJSON:(NSDictionary*)json forBlog:(Blog *)blog {
+    Media *media = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:blog.managedObjectContext];
+
+    media.remoteURL = json[@"link"];
+    media.title = json[@"title"];
+    media.width = [json objectForKeyPath:@"metadata.width"];
+    media.height = [json objectForKeyPath:@"metadata.height"];
+    media.mediaID = [json[@"attachment_id"] numericValue];
+//    media.mediaType = NSString json[@"link"]
+    media.length = [json objectForKeyPath:@"metadata.focal_length"];
+    media.filename = [[json objectForKeyPath:@"metadata.file"] lastPathComponent];
+//    media.creationDate = js
+    media.blog = blog;
+}
+
 - (void)awakeFromFetch {
     if ((self.remoteStatus == MediaRemoteStatusPushing && _uploadOperation == nil) || (self.remoteStatus == MediaRemoteStatusProcessing)) {
         self.remoteStatus = MediaRemoteStatusFailed;
@@ -109,6 +124,10 @@
         WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
         exit(-1);
     }
+}
+
+- (BOOL)isUnattached {
+    return self.posts.count == 0;
 }
 
 - (void)cancelUpload {

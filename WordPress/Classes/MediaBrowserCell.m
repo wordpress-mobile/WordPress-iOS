@@ -9,6 +9,13 @@
 
 #import "MediaBrowserCell.h"
 #import "Media.h"
+#import "WPImageSource.h"
+
+@interface WPImageSource (Media)
+
+- (void)downloadThumbnailForMedia:(Media*)media success:(void (^)(NSNumber *mediaId))success failure:(void (^)(NSError *error))failure;
+
+@end
 
 @interface MediaBrowserCell ()
 
@@ -60,7 +67,29 @@
     _media = media;
     self.title.text = _media.title;
     
-    _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
+    if (_media.thumbnail.length > 0) {
+        _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
+    } else {
+        [[WPImageSource sharedSource] downloadThumbnailForMedia:_media success:^(NSNumber *mediaId){
+            if ([mediaId isEqualToNumber:_media.mediaID]) {
+                _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
+            }
+        } failure:^(NSError *error) {
+            WPFLog(@"Failed to download thumbnail for media %@: %@", _media.remoteURL, error);
+        }];
+    }
+}
+
+@end
+
+@implementation WPImageSource (Media)
+
+- (void)downloadThumbnailForMedia:(Media*)media success:(void (^)(NSNumber *mediaId))success failure:(void (^)(NSError *))failure {
+    NSURL *thumbnailUrl = [NSURL URLWithString:[media.remoteURL stringByAppendingString:@"?w=145"]];
+    [self downloadImageForURL:thumbnailUrl withSuccess:^(UIImage *image) {
+        media.thumbnail = UIImageJPEGRepresentation(image, 0.90);
+        success(media.mediaID);
+    } failure:failure];
 }
 
 @end

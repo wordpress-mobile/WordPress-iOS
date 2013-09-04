@@ -47,6 +47,19 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     [self.collectionView registerClass:[MediaBrowserCell class] forCellWithReuseIdentifier:MediaCellIdentifier];
     
     _filterHeaderView.delegate = self;
+    
+    [self.blog syncMediaLibraryWithSuccess:^{
+        [self.collectionView reloadData];
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    
+    // Save context for all thumbnails downloaded
+    [self.blog.managedObjectContext save:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,12 +73,12 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 10;
+    return self.blog.media.allObjects.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     MediaBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:MediaCellIdentifier forIndexPath:indexPath];
-//    cell.media = self.blog.media.allObjects[indexPath.item];
+    cell.media = self.blog.media.allObjects[indexPath.item];
     return cell;
 }
 

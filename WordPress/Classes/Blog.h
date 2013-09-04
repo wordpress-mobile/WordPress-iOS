@@ -26,6 +26,7 @@
 @property (nonatomic, strong) NSSet *categories;
 @property (nonatomic, strong) NSSet *comments;
 @property (nonatomic, strong) NSSet *themes;
+@property (nonatomic, strong) NSSet *media;
 @property (nonatomic, strong) NSString *currentThemeId;
 @property (nonatomic, assign) BOOL isSyncingPosts;
 @property (nonatomic, assign) BOOL isSyncingPages;
@@ -91,6 +92,7 @@
 - (void)syncCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncOptionsWithWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncCommentsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)syncMediaLibraryWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)syncBlogWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 // Called when manually refreshing PostsViewController

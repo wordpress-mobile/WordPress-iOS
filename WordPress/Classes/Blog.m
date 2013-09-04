@@ -24,6 +24,7 @@
 - (WPXMLRPCRequestOperation *)operationForCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (WPXMLRPCRequestOperation *)operationForPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
 - (WPXMLRPCRequestOperation *)operationForPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
+- (WPXMLRPCRequestOperation *)operationForMediaLibraryWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 - (void)mergeCategories:(NSArray *)newCategories;
 - (void)mergeComments:(NSArray *)newComments;
@@ -43,7 +44,7 @@
 
 @dynamic blogID, blogName, url, xmlrpc, apiKey;
 @dynamic isAdmin, hasOlderPosts, hasOlderPages;
-@dynamic posts, categories, comments, themes;
+@dynamic posts, categories, comments, themes, media;
 @dynamic currentThemeId;
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync, lastUpdateWarning;
 @synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
@@ -425,6 +426,11 @@
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
+- (void)syncMediaLibraryWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    WPXMLRPCRequestOperation *operation = [self operationForMediaLibraryWithSuccess:success failure:failure];
+    [self.api enqueueXMLRPCRequestOperation:operation];
+}
+
 - (void)syncPostFormatsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPXMLRPCRequestOperation *operation = [self operationForPostFormatsWithSuccess:success failure:failure];
     [self.api enqueueXMLRPCRequestOperation:operation];
@@ -776,6 +782,31 @@
         }
     }];
 
+    return operation;
+}
+
+- (WPXMLRPCRequestOperation *)operationForMediaLibraryWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    WPXMLRPCRequest *mediaLibraryRequest = [self.api XMLRPCRequestWithMethod:@"wp.getMediaLibrary" parameters:[self getXMLRPCArgsWithExtra:nil]];
+    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:mediaLibraryRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        for (NSDictionary *item in responseObject) {
+            [Media insertNewMediaFromJSON:item forBlog:self];
+        }
+        NSError *error;
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext save:&error];
+        if (error) {
+            WPFLog(@"Failed to save new media: %@", error);
+        }
+        
+        if (success) {
+            success();
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        WPFLog(@"Error syncing media library: %@", [error localizedDescription]);
+        if (failure) {
+            failure(error);
+        }
+    }];
     return operation;
 }
 
