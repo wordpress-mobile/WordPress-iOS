@@ -103,7 +103,8 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		self.post = apost;
 		self.comments = [NSMutableArray array];
         self.wantsFullScreenLayout = YES;
-		self.canUseFullScreen = YES;
+        // Disable full screen until it's more polished and iOS7 crashes are fixed
+		self.canUseFullScreen = NO;
 	}
 	return self;
 }
@@ -529,7 +530,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	}
     BOOL hideBars = !self.navigationController.toolbarHidden;
     if (!hideBars || self.tableView.contentOffset.y > 60) {
-        [self.navigationController setToolbarHidden:hideBars animated:YES];
         [self setFullScreen:hideBars];
     }
 }
