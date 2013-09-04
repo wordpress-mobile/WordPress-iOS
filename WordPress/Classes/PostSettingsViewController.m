@@ -6,6 +6,31 @@
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
 
+
+#warning Remove these macros before committing
+
+// Disables log messages when debugging is turned off
+#ifndef NDEBUG
+
+#define DebugLog(message, ...) NSLog(@"%s: " message, __PRETTY_FUNCTION__, ##__VA_ARGS__)
+
+#else
+
+#define DebugLog(message, ...)
+
+#endif
+
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
+#define LOG_FRAME(label, frame) DebugLog(@"%@: %f, %f, %f, %f", label, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height)
+#define LOG_SIZE(label, size) DebugLog(@"%f, %f, %f", label, size.width, size.height)
+#define LOG_POINT(label, point) DebugLog(@"%@: %f, %f", label, point.x, point.y)
+#define LOG_OFFSET(label, offset) DebugLog(@"%@: %f, %f", label, offset.x, offset.y)
+#define LOG_INSET(label, inset) DebugLog(@"%@: %f, %f, %f, %f", label, inset.top, inset.left, inset.bottom, inset.right)
+
+/////////////////
+
+
 #define kPasswordFooterSectionHeight         68.0f
 #define kResizePhotoSettingSectionHeight     60.0f
 
@@ -29,6 +54,8 @@
     BOOL triedAuthOnce;
 }
 
+@property (strong, nonatomic) UIView *pickerWrapperView;
+
 @property (nonatomic, strong) AbstractPost *apost;
 - (void)showPicker:(UIView *)picker;
 - (void)geocodeCoordinate:(CLLocationCoordinate2D)c;
@@ -38,7 +65,7 @@
 @end
 
 @implementation PostSettingsViewController
-@synthesize postDetailViewController, postFormatTableViewCell, modalViewController;
+@synthesize postDetailViewController, postFormatTableViewCell;
 
 #pragma mark -
 #pragma mark Lifecycle Methods
@@ -204,6 +231,10 @@
     [self reloadData];
 	[statusTableViewCell becomeFirstResponder];
     [featuredImageView shrinkFullImageView:FALSE];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -905,80 +936,6 @@
 }
 
 #pragma mark -
-#pragma mark WPModalViewControllerDelegate
-
-- (void)modalViewController:(WPModalViewController *)mvc wasDismissed:(BOOL)animated {
-    [mvc hideModal:animated];
-    
-    if (mvc == self.modalViewController) {
-        self.modalViewController = nil;
-    }
-}
-
-- (void)modalViewController:(WPModalViewController *)mvc willShow:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    UIView *view = [mvc.view viewWithTag:kPickerWrapperViewTag];
-    if (view) {
-        CGRect hiddenFrame = view.frame;
-        hiddenFrame.origin.y = CGRectGetHeight(mvc.view.frame);
-        view.frame = hiddenFrame;
-    }
-    
-    if (completionBlock) {
-        completionBlock();
-    }
-}
-
-- (void)modalViewController:(WPModalViewController *)mvc didShow:(BOOL)animated {
-    UIView *view = [mvc.view viewWithTag:kPickerWrapperViewTag];
-    if (view) {
-        // first place the view off the bottom of the screen before animating it up
-        
-        CGFloat duration = animated ? 0.25 : 0;
-        
-        UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-        [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
-            CGRect visibleFrame = view.frame;
-            BOOL isLandscape = UIInterfaceOrientationIsLandscape(self.interfaceOrientation);
-            if (isLandscape) {
-                visibleFrame.origin.y = CGRectGetWidth(mvc.view.frame) - CGRectGetHeight(view.frame);
-            }
-            else {
-                visibleFrame.origin.y = CGRectGetHeight(mvc.view.frame) - CGRectGetHeight(view.frame);
-            }
-            view.frame = visibleFrame;
-        } completion:^(BOOL finished) {
-        }];
-    }
-}
-
-- (void)modalViewController:(WPModalViewController *)mvc willHide:(BOOL)animated withCompletionBlock:(void (^)())completionBlock {
-    UIView *view = [mvc.view viewWithTag:kPickerWrapperViewTag];
-    if (view) {
-        // first place the view off the bottom of the screen before animating it up
-        
-        CGFloat duration = animated ? 0.25 : 0;
-        
-        UIViewAnimationOptions options = UIViewAnimationOptionBeginFromCurrentState;
-        [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
-            CGRect hiddenFrame = view.frame;
-            
-            BOOL isLandscape = UIInterfaceOrientationIsLandscape(self.interfaceOrientation);
-            if (isLandscape) {
-                hiddenFrame.origin.y = CGRectGetWidth(mvc.view.frame);
-            }
-            else {
-                hiddenFrame.origin.y = CGRectGetHeight(mvc.view.frame);
-            }
-            view.frame = hiddenFrame;
-        } completion:^(BOOL finished) {
-            if (completionBlock) {
-                completionBlock();
-            }
-        }];
-    }
-}
-
-#pragma mark -
 #pragma mark Pickers and keyboard animations
 
 - (void)showPicker:(UIView *)picker {
@@ -1028,13 +985,8 @@
         [popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         
     } else {
-        WPModalViewController *modalVC = [WPModalViewController modalViewController:self];
-        modalVC.animationDuration = 0.1;
-        
-        // add subviews to the modal view which just acts as a container that handles rotation and showing/hiding (replaces UIActionSheet)
-        
         UIView *pickerWrapperView = pickerWrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), CGRectGetHeight(picker.frame) + 44.0f)];
-        pickerWrapperView.tag = kPickerWrapperViewTag;
+        self.pickerWrapperView = pickerWrapperView;
         
         pickerWrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         [pickerWrapperView addSubview:picker];
@@ -1044,7 +996,7 @@
         
         picker.frame = pickerFrame;
         
-        picker.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        picker.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 
         UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")]];
         closeButton.momentary = YES;
@@ -1095,26 +1047,64 @@
             }
         }
         
+//        UIViewController *parentVC = self.parentViewController;
+//        while (TRUE) {
+//            if (parentVC == nil) {
+//                parentVC = self.parentViewController;
+//            }
+//            
+//            if ([parentVC isKindOfClass:[UINavigationController class]] || parentVC.parentViewController == nil) {
+//                break;
+//            }
+//            
+//            parentVC = parentVC.parentViewController;
+//         }
+        
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        UIViewController *parentVC = window.rootViewController;
+        
+        NSAssert(window.rootViewController, @"Root View Controller must be defined");
+        NSAssert([window.rootViewController shouldAutorotate], @"Root VC should autorotate");
+//        NSAssert(window.rootViewController.view, @"View must be defined");
+//        DebugLog(@"window.rootViewController: %@", NSStringFromClass([window.rootViewController class]));
+//        DebugLog(@"window.rootViewController.view: %@", NSStringFromClass([window.rootViewController.view class]));
+
+        DebugLog(@"parentVC: %@", NSStringFromClass([parentVC class]));
+        DebugLog(@"parentVC.view: %@", NSStringFromClass([parentVC.view class]));
+        
+        UIView *parentView = [[UIView alloc] initWithFrame:parentVC.view.frame];
+        parentView.autoresizesSubviews = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        parentView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.75];
+//        [window.rootViewController.view addSubview:parentView];
+        
         // dock pickerWrapperView to bottom
         CGRect wrapperFrame = pickerWrapperView.frame;
-        // origin for y position is total height - wrapper height
-        
-        wrapperFrame.origin.y = CGRectGetHeight(modalVC.view.frame) - CGRectGetHeight(wrapperFrame);
+        wrapperFrame.origin.y = CGRectGetHeight(parentView.frame) - CGRectGetHeight(pickerWrapperView.frame);
         pickerWrapperView.frame = wrapperFrame;
         
+        [parentVC.view addSubview:parentView];
+        [parentVC.view bringSubviewToFront:parentView];
+        parentView.hidden = FALSE;
+        parentView.alpha = 1.0;
+        
+        LOG_FRAME(@"parentView", parentView.frame);
+        LOG_FRAME(@"parentView.superview", parentView.superview.frame);
+        DebugLog(@"parentView: %@", parentView.superview);
+        DebugLog(@"parentView: %@", NSStringFromClass([parentView.superview class]));
+        
+//        DebugLog(@"recursive: %@", [parentVC.view recursiveDescription]);
+        
+        
         pickerWrapperView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75];
-        
-        [modalVC.view addSubview:pickerWrapperView];
-        [modalVC.view setAutoresizesSubviews:TRUE];
-        
-        [modalVC showModal:TRUE inView:self.view];
-        
-        self.modalViewController = modalVC;
+        [parentView addSubview:pickerWrapperView];
+        pickerWrapperView.hidden = FALSE;
     }
 }
 
 - (void)hidePicker {
-    [self.modalViewController hideModal:TRUE];
+    [self.pickerWrapperView.superview removeFromSuperview];
+//    [self.pickerWrapperView removeFromSuperview];
+    self.pickerWrapperView = nil;
 }
 
 - (void)removeDate {
