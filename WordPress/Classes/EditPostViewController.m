@@ -1310,6 +1310,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         // If we show/hide the navigation bar, the view frame changes so the converted keyboardFrame is not valid anymore
         keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
         // Assing this again since changing the visibility status of navigation bar changes the view frame (#1386)
+        
         newFrame = self.normalTextFrame;
 
         if (isShowing) {
@@ -1615,20 +1616,22 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)keyboardWillShow:(NSNotification *)notification {
     WPFLogMethod();
 	isShowingKeyboard = YES;
+    if ([textView isFirstResponder]) {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    }
     if (isEditing) {
         [self positionTextView:notification];
         editorToolbar.doneButton.hidden = IS_IPAD && ! isExternalKeyboard;
     }
     [self positionAutosaveView:notification];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
     WPFLogMethod();
 	isShowingKeyboard = NO;
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     [self positionTextView:notification];
     [self positionAutosaveView:notification];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 }
 
 #pragma mark -
