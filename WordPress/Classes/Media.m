@@ -48,19 +48,29 @@
     return media;
 }
 
-+ (void)insertNewMediaFromJSON:(NSDictionary*)json forBlog:(Blog *)blog {
++ (Media *)createOrReplaceMediaFromJSON:(NSDictionary *)json forBlog:(Blog *)blog {
+    NSSet *existing = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID == %@", json[@"attachment_id"]]];
+    if (existing.count > 0) {
+        [existing.allObjects[0] updateFromDictionary:json];
+        return existing.allObjects[0];
+    }
+    
     Media *media = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:blog.managedObjectContext];
-
-    media.remoteURL = json[@"link"];
-    media.title = json[@"title"];
-    media.width = [json objectForKeyPath:@"metadata.width"];
-    media.height = [json objectForKeyPath:@"metadata.height"];
-    media.mediaID = [json[@"attachment_id"] numericValue];
-//    media.mediaType = NSString json[@"link"]
-    media.length = [json objectForKeyPath:@"metadata.focal_length"];
-    media.filename = [[json objectForKeyPath:@"metadata.file"] lastPathComponent];
-//    media.creationDate = js
+    [media updateFromDictionary:json];
     media.blog = blog;
+    return media;
+}
+
+- (void)updateFromDictionary:(NSDictionary*)json {
+    self.remoteURL = json[@"link"];
+    self.title = json[@"title"];
+    self.width = [json objectForKeyPath:@"metadata.width"];
+    self.height = [json objectForKeyPath:@"metadata.height"];
+    self.mediaID = [json[@"attachment_id"] numericValue];
+    //    media.mediaType = NSString json[@"link"]
+    self.length = [json objectForKeyPath:@"metadata.focal_length"];
+    self.filename = [[json objectForKeyPath:@"metadata.file"] lastPathComponent];
+    //    media.creationDate = js
 }
 
 - (void)awakeFromFetch {

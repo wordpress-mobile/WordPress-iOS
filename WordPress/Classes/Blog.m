@@ -788,15 +788,7 @@
 - (WPXMLRPCRequestOperation *)operationForMediaLibraryWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
     WPXMLRPCRequest *mediaLibraryRequest = [self.api XMLRPCRequestWithMethod:@"wp.getMediaLibrary" parameters:[self getXMLRPCArgsWithExtra:nil]];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:mediaLibraryRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        for (NSDictionary *item in responseObject) {
-            [Media insertNewMediaFromJSON:item forBlog:self];
-        }
-        NSError *error;
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext save:&error];
-        if (error) {
-            WPFLog(@"Failed to save new media: %@", error);
-        }
-        
+        [self mergeMedia:responseObject];
         if (success) {
             success();
         }
@@ -964,6 +956,26 @@
 		}
     }
 
+    [self dataSave];
+}
+
+- (void)mergeMedia:(NSArray *)newMedia {
+    if ([self isDeleted] || self.managedObjectContext == nil)
+        return;
+
+    NSMutableArray *mediaToKeep = [NSMutableArray array];
+    for (NSDictionary *item in newMedia) {
+        Media *media = [Media createOrReplaceMediaFromJSON:item forBlog:self];
+        [mediaToKeep addObject:media];
+    }
+    
+    for (Media *m in self.media) {
+        if (![mediaToKeep containsObject:m] && m.mediaID != nil) {
+            WPLog(@"Deleting media %@", m);
+            [self.managedObjectContext deleteObject:m];
+        }
+    }
+    
     [self dataSave];
 }
 
