@@ -29,6 +29,11 @@
     return [UIFont fontWithName:@"OpenSans" size:18.0];
 }
 
++ (UIFont *)postTitleFontBold
+{
+    return [UIFont fontWithName:@"OpenSans-Bold" size:18.0];    
+}
+
 + (NSDictionary *)postTitleAttributes
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -79,6 +84,11 @@
 + (UIFont *)regularTextFont
 {
     return [UIFont fontWithName:@"OpenSans" size:16.0];
+}
+
++ (UIFont *)regularTextFontBold
+{
+    return [UIFont fontWithName:@"OpenSans-Bold" size:16.0];    
 }
 
 + (NSDictionary *)regularTextAttributes

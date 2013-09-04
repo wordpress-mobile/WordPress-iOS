@@ -21,6 +21,7 @@ typedef NS_ENUM(NSUInteger, SidebarTableViewCellBackgroundColor) {
 @property (nonatomic, strong) UIImage *secondAccessoryViewImage;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, assign) BOOL showsBadge;
+@property (nonatomic, assign) BOOL largerFont;
 @property (nonatomic, assign) NSUInteger badgeNumber;
 @property (nonatomic, assign) SidebarTableViewCellBackgroundColor cellBackgroundColor;
 

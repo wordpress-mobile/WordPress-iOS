@@ -295,10 +295,12 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         UIImage *image;
         UIImage *selectedImage;
         if ([self isRowForReader:indexPath]) {
+            cell.largerFont = YES;
             text = NSLocalizedString(@"Reader", nil);
             image = [UIImage imageNamed:@"icon-menu-reader"];
             selectedImage = [UIImage imageNamed:@"icon-menu-reader-active"];
         } else if ([self isRowForNotifications:indexPath]) {
+            cell.largerFont = YES;
             text = NSLocalizedString(@"Notifications", nil);
             image = [UIImage imageNamed:@"icon-menu-notifications"];
             selectedImage = [UIImage imageNamed:@"icon-menu-notifications-active"];
@@ -307,6 +309,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
                 cell.badgeNumber = _unseenNotificationCount;
             }
         } else if ([self isRowForSettings:indexPath]) {
+            cell.largerFont = YES;
             text = NSLocalizedString(@"Settings", nil);
             image = [UIImage imageNamed:@"icon-menu-settings"];
             selectedImage = [UIImage imageNamed:@"icon-menu-settings-active"];
