@@ -13,6 +13,7 @@
 
 @implementation WPWebAppViewController {
     BOOL _pullToRefreshEnabled;
+    NSString *urlToLoad;
 }
 
 @synthesize webView, loading, lastWebViewRefreshDate, webBridge;
@@ -71,6 +72,10 @@
                               [NSNumber numberWithFloat:1.f], @"blue",
                               [NSNumber numberWithFloat:1.f], @"alpha",
                               nil]];
+    
+    if (urlToLoad != nil) {
+        [self loadURL:urlToLoad];
+    }
 }
 
 
@@ -148,6 +153,10 @@
 
 - (void)loadURL:(NSString *)url
 {
+    if (self.webView == nil) {
+        urlToLoad = url;
+        return;
+    }
     
     NSHTTPCookieStorage *cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -156,7 +165,6 @@
     [request setValue:appDelegate.applicationUserAgent forHTTPHeaderField:@"User-Agent"];
     [request setValue:[cookieHeader valueForKey:@"Cookie"] forHTTPHeaderField:@"Cookie"];
     [self.webView loadRequest:[self.webBridge authorizeHybridRequest:request]];
-
 }
 
 // Just a Hello World for testing integration
