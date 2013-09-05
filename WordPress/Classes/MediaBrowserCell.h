@@ -15,5 +15,8 @@
 @interface MediaBrowserCell : UICollectionViewCell
 
 @property (nonatomic, strong) Media *media;
+@property (nonatomic, assign) BOOL *isSelected;
+
+- (void)updateForSelection;
 
 @end

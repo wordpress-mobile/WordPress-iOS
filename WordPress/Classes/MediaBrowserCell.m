@@ -36,7 +36,7 @@
         self.contentView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
         self.contentView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1.0];
         
-        UIImageView *thumbnail = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.bounds.size.width, 145)];
+        UIImageView *thumbnail = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.bounds.size.width, IS_IPAD ? 200 : 145)];
         _thumbnail = thumbnail;
         [_thumbnail setContentMode:UIViewContentModeScaleAspectFit];
         [self.contentView addSubview:_thumbnail];
@@ -51,12 +51,24 @@
         
         UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(3, 0, titleContainer.frame.size.width-6, titleContainer.frame.size.height)];
         _title = title;
-        _title.backgroundColor = [UIColor clearColor];
+        _title.backgroundColor = [UIColor clearColor]; 
         _title.textColor = [UIColor whiteColor];
         _title.font = [WPStyleGuide regularTextFont];
         [titleContainer addSubview:_title];
     }
     return self;
+}
+
+- (void)updateForSelection
+{
+    [self bringSubviewToFront:_checkboxView];
+    if (_isSelected) {
+        [_checkboxView setBackgroundColor:[UIColor redColor]];
+//        _checkboxView setImage:<#(UIImage *)#>
+    } else {
+        [_checkboxView setBackgroundColor:[UIColor clearColor]];
+//    _checkboxView setImage:<#(UIImage *)#>
+    }
 }
 
 - (void)prepareForReuse {

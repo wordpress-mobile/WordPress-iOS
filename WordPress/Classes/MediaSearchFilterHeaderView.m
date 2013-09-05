@@ -107,7 +107,7 @@
     sort.titleLabel.font = [WPStyleGuide regularTextFont];
     [sort setImage:_sortArrow forState:UIControlStateNormal];
     [sort setImage:_sortArrowActive forState:UIControlStateHighlighted];
-    sort.imageEdgeInsets = UIEdgeInsetsMake(0, 120, 0, 0);
+    sort.imageEdgeInsets = UIEdgeInsetsMake(0, IS_IPAD ? 240:120, 0, 0);
     sort.titleEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 28);
     return sort;
 }

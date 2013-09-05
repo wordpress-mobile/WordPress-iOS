@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="collectionView" destination="c0v-gh-0YF" id="50q-gy-wNm"/>
                 <outlet property="filterHeaderView" destination="lVI-zX-k6C" id="Wzt-aa-VpJ"/>
+                <outlet property="multiselectToolbar" destination="aza-XB-bxb" id="S18-EA-aFR"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -39,5 +40,36 @@
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
+        <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="black" translucent="NO" id="aza-XB-bxb">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+            <color key="backgroundColor" red="0.20939047029702973" green="0.20939047029702973" blue="0.20939047029702973" alpha="1" colorSpace="calibratedRGB"/>
+            <items>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="3Ln-In-cOD"/>
+                <barButtonItem tag="1" title="View" id="xsy-AJ-cwg">
+                    <connections>
+                        <action selector="multiselectViewPressed:" destination="-1" id="bCz-bo-DXz"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem tag="2" title="Edit" id="G8n-kJ-DvP">
+                    <connections>
+                        <action selector="multiselectEditPressed:" destination="-1" id="gYn-Eb-frP"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem tag="3" title="Delete" id="FTn-r8-icg">
+                    <connections>
+                        <action selector="multiselectDeletePressed:" destination="-1" id="fWb-Pl-ymX"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem tag="4" title="Create Gallery" id="wHz-NM-CXR">
+                    <connections>
+                        <action selector="multiselectCreateGalleryPressed:" destination="-1" id="BHB-rO-Pt8"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="DPP-hB-cSx"/>
+            </items>
+            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="barTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+        </toolbar>
     </objects>
 </document>

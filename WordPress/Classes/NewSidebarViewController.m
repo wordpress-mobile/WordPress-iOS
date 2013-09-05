@@ -344,7 +344,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             image = [UIImage imageNamed:@"icon-menu-posts"];
             selectedImage = [UIImage imageNamed:@"icon-menu-posts-active"];
             cell.firstAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-quickphoto"];
-            __weak UITableViewCell *weakCell = cell;
+            __weak NewSidebarCell *weakCell = cell;
             cell.tappedFirstAccessoryView = ^{
                 if (IS_IPHONE) {
                     [self.panelNavigationController closeSidebar];
