@@ -67,8 +67,9 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
 {
     [super viewDidLoad];
     
-    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern"]];
-    self.tableView.backgroundView = nil;
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorColor = [WPStyleGuide readGrey];
     
 	_footerText = @" ";
 	_buttonText = NSLocalizedString(@"Create WordPress.com Blog", @"");
@@ -144,6 +145,8 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
         
+        activityCell.textLabel.font = [WPStyleGuide tableviewTextFont];
+        activityCell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
 		cell = activityCell;
 	} else {
         if (indexPath.row == 0) {
@@ -157,6 +160,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             _blogUrlTextField.placeholder = NSLocalizedString(@"myblog.wordpress.com", @"");
             _blogUrlTextField.keyboardType = UIKeyboardTypeURL;
             _blogUrlTextField.delegate = self;
+            [self styleTextFieldCell:_blogUrlCell];
             cell = _blogUrlCell;
         } else if (indexPath.row == 1) {
             if (_blogTitleCell == nil) {
@@ -167,24 +171,27 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             _blogTitleTextField = _blogTitleCell.textField;
             _blogTitleTextField.placeholder = NSLocalizedString(@"My Blog", nil);
             _blogTitleTextField.delegate = self;
+            [self styleTextFieldCell:_blogTitleCell];
             cell = _blogTitleCell;
         } else if (indexPath.row == 2) {
             if (_localeCell == nil) {
-                _localeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                _localeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                      reuseIdentifier:@"LocaleCell"];
             }
             _localeCell.textLabel.text = @"Language";
             _localeCell.detailTextLabel.text = [_currentLanguage objectForKey:@"name"];
             _localeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [WPStyleGuide configureTableViewCell:_localeCell];
             cell = _localeCell;
         } else if (indexPath.row == 3) {
             if (_blogVisibilityCell == nil) {
-                _blogVisibilityCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                _blogVisibilityCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                              reuseIdentifier:@"VisibilityCell"];
             }
             _blogVisibilityCell.textLabel.text = @"Blog Visibility";
             _blogVisibilityCell.detailTextLabel.text = [self textForCurrentBlogVisibility];
             _blogVisibilityCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [WPStyleGuide configureTableViewCell:_blogVisibilityCell];
             cell = _blogVisibilityCell;
         } else if (indexPath.row == 4) {
             if(_geolocationEnabledCell == nil) {
@@ -202,6 +209,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             _geolocationEnabledCell.selectionStyle = UITableViewCellSelectionStyleNone;
             _geolocationEnabledCell.cellSwitch.on = _geolocationEnabled;
             [_geolocationEnabledCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
+            [WPStyleGuide configureTableViewCell:_geolocationEnabledCell];
             cell = _geolocationEnabledCell;
         }
     }
@@ -365,6 +373,12 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     } else {
         return NSLocalizedString(@"Hidden", nil);
     }
+}
+
+- (void)styleTextFieldCell:(UITableViewTextFieldCell *)cell
+{
+    [WPStyleGuide configureTableViewCell:cell];
+    cell.textField.font = [WPStyleGuide tableviewTextFont];
 }
 
 @end

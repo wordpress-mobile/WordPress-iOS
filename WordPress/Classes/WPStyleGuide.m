@@ -106,7 +106,7 @@
 
 + (UIFont *)tableviewSubtitleFont
 {
-    return [UIFont fontWithName:@"OpenSans" size:12.0];
+    return [UIFont fontWithName:@"OpenSans-Light" size:18.0];
 }
 
 + (UIFont *)tableviewSectionHeaderFont
