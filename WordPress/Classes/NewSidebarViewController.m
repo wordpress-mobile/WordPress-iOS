@@ -231,6 +231,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:section];
     headerView.blogTitle = blog.blogName;
     headerView.blavatarUrl = blog.blavatarUrl;
+    headerView.isWPCom = blog.isWPcom;
     headerView.onTap = ^{
         [self toggleSection:[self sectionForBlog:blog]];
     };
