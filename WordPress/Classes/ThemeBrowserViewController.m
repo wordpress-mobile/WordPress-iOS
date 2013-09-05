@@ -166,7 +166,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _filteredThemes.count + 1;
+    return _filteredThemes.count + (_currentTheme ? 1 : 0);
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -182,26 +182,26 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.item == 0) {
+    if (indexPath.item == 0 && _currentTheme) {
         ThemeBrowserCell *current = [collectionView dequeueReusableCellWithReuseIdentifier:ThemeCellIdentifier forIndexPath:indexPath];
-        if (_currentTheme) {
-            current.theme = _currentTheme;
-        }
+        current.theme = _currentTheme;
         return current;
     }
     
     ThemeBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ThemeCellIdentifier forIndexPath:indexPath];
-    Theme *theme = self.filteredThemes[indexPath.item-1];
+    NSUInteger index = _currentTheme ? indexPath.item - 1 : indexPath.item;
+    Theme *theme = self.filteredThemes[index];
     cell.theme = theme;
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     Theme *theme;
-    if (indexPath.item == 0) {
+    if (indexPath.item == 0 && _currentTheme) {
         theme = _currentTheme;
     } else {
-        theme = self.filteredThemes[indexPath.item-1];
+        NSUInteger index = _currentTheme ? indexPath.item - 1 : indexPath.item;
+        theme = self.filteredThemes[index];
     }
     
     ThemeDetailsViewController *details = [[ThemeDetailsViewController alloc] initWithTheme:theme];
