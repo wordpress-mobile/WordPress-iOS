@@ -186,11 +186,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger extraSection = 1;
-    if ([self noBlogsAndNoWordPressDotComAccount]) {
-        extraSection = 0;
-    }
-    return [[self.resultsController fetchedObjects] count] + extraSection;
+    return [[self.resultsController fetchedObjects] count] + 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -1059,9 +1055,6 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
                 _changingContentForSelectedSection = YES;
             }
 
-            if ([self noBlogsAndNoWordPressDotComAccount]) {
-                [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.row + 1] withRowAnimation:UITableViewRowAnimationNone];
-            }
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.row] withRowAnimation:UITableViewRowAnimationNone];
             _wantedSection = 0;
             break;
