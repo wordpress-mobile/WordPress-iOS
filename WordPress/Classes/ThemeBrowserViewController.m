@@ -73,7 +73,8 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
     if (![_currentTheme.themeId isEqualToString:self.blog.currentThemeId]) {
         [self currentThemeForBlog];
-        [self.collectionView reloadData];
+        self.filteredThemes = _allThemes;
+        [self applyCurrentSort];
     }
 }
 
@@ -129,15 +130,16 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         [_refreshHeaderView endRefreshing];
         
         // Find the blog's theme from the current list of themes
-        for (NSUInteger i = 0; i < [self.collectionView numberOfItemsInSection:0]; i++) {
+        for (NSUInteger i = 0; i < _filteredThemes.count; i++) {
             Theme *theme = _filteredThemes[i];
             if ([theme.themeId isEqualToString:self.blog.currentThemeId]) {
                 _currentTheme = theme;
                 break;
             }
         }
-        
-        [self.collectionView reloadData];
+        self.filteredThemes = _allThemes;
+        [self removeCurrentThemeFromList];
+        [self applyCurrentSort];
         
     } failure:^(NSError *error) {
         [WPError showAlertWithError:error];
@@ -154,6 +156,10 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         _noThemesView = [WPInfoView WPInfoViewWithTitle:@"No themes to display" message:nil cancelButton:nil];
     }
     [self.collectionView addSubview:_noThemesView];
+}
+
+- (void)removeCurrentThemeFromList {
+    _filteredThemes = [_filteredThemes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self != %@", _currentTheme]];
 }
 
 #pragma mark - UICollectionViewDelegate/DataSource
@@ -235,6 +241,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     
     [self toggleNoThemesView:(_filteredThemes.count == 0 && !_currentTheme)];
     
+    [self removeCurrentThemeFromList];
     [self.collectionView reloadData];
 }
 
