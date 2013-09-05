@@ -19,8 +19,8 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet MediaSearchFilterHeaderView *filterHeaderView;
-@property (nonatomic, strong) NSArray *mediaSortingOptions, *dateSortingOptions;
 @property (nonatomic, strong) NSArray *filteredMedia;
+@property (nonatomic, strong) NSArray *mediaTypeFilterOptions, *dateFilteringOptions;
 
 @end
 
@@ -32,8 +32,13 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     if (self) {
         self.title = NSLocalizedString(@"Media Library", @"");
         
-        _mediaSortingOptions = @[NSLocalizedString(@"All", @""), NSLocalizedString(@"Images", @""), NSLocalizedString(@"Unattached", @"")];
-        _dateSortingOptions = @[NSLocalizedString(@"Sept 2013", @""),NSLocalizedString(@"Aug 2013", @""),NSLocalizedString(@"Jul 2013", @"")];
+        _mediaTypeFilterOptions = @[NSLocalizedString(@"All", @""),
+                                    NSLocalizedString(@"Images", @""),
+                                    NSLocalizedString(@"Unattached", @"")];
+        _dateFilteringOptions = @[NSLocalizedString(@"Show All Dates", @""),
+                                  NSLocalizedString(@"Sept 2013", @""),
+                                  NSLocalizedString(@"Aug 2013", @""),
+                                  NSLocalizedString(@"Jul 2013", @"")];
     }
     return self;
 }
@@ -96,12 +101,12 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 
 #pragma mark - MediaSearchFilterDelegate
 
-- (NSArray *)mediaSortingOptions {
-    return _mediaSortingOptions;
+- (NSArray *)mediaTypeFilterOptions {
+    return _mediaTypeFilterOptions;
 }
 
-- (NSArray *)dateSortingOptions {
-    return _dateSortingOptions;
+- (NSArray *)dateFilteringOptions {
+    return _dateFilteringOptions;
 }
 
 - (void)selectedDateSortIndex:(NSUInteger)filterIndex {

@@ -70,7 +70,7 @@
     //    media.mediaType = NSString json[@"link"]
     self.length = [json objectForKeyPath:@"metadata.focal_length"];
     self.filename = [[json objectForKeyPath:@"metadata.file"] lastPathComponent];
-    //    media.creationDate = js
+    self.creationDate = json[@"date_created_gmt"];
 }
 
 - (void)awakeFromFetch {

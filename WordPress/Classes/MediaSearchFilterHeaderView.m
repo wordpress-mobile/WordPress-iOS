@@ -45,7 +45,7 @@
 }
 
 - (UIView *)sortMediaView {
-    OptionSelectView *sortMediaView = [[OptionSelectView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width/2, 0) options:[_delegate mediaSortingOptions]];
+    OptionSelectView *sortMediaView = [[OptionSelectView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width/2, 0) options:[_delegate mediaTypeFilterOptions]];
     _sortMediaView = sortMediaView;
     _sortMediaView.frame = (CGRect) {
         .origin = CGPointMake(_sortMediaView.frame.origin.x, -_sortMediaView.frame.size.height),
@@ -57,7 +57,7 @@
 }
 
 - (UIView *)sortDatesView {
-    OptionSelectView *sortDatesView = [[OptionSelectView alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.frame), 0, self.frame.size.width/2, 0) options:[_delegate dateSortingOptions]];
+    OptionSelectView *sortDatesView = [[OptionSelectView alloc] initWithFrame:CGRectMake(CGRectGetMidX(self.frame), 0, self.frame.size.width/2, 0) options:[_delegate dateFilteringOptions]];
     _sortDatesView = sortDatesView;
     _sortDatesView.frame = (CGRect) {
         .origin = CGPointMake(_sortDatesView.frame.origin.x, -_sortDatesView.frame.size.height),
@@ -72,7 +72,7 @@
     _sortArrow = [UIImage imageNamed:@"icon-themes-dropdown-arrow"];
     _sortArrowActive = [UIImage imageWithCGImage:_sortArrow.CGImage scale:_sortArrow.scale orientation:UIImageOrientationDown];
     
-    UIButton *sort = [self dropdownButtonWithTitle:[_delegate mediaSortingOptions][0]];
+    UIButton *sort = [self dropdownButtonWithTitle:[_delegate mediaTypeFilterOptions][0]];
     sort.frame = CGRectMake(0, 0, self.bounds.size.width/2, 44.0f);
     [sort addTarget:self action:@selector(sortMediaPressed) forControlEvents:UIControlEventTouchUpInside];
     _sortMediaButton = sort;
@@ -80,7 +80,7 @@
 }
 
 - (UIButton *)sortDatesButton {
-    UIButton *sort = [self dropdownButtonWithTitle:[_delegate dateSortingOptions][0]];
+    UIButton *sort = [self dropdownButtonWithTitle:[_delegate dateFilteringOptions][0]];
     _sortDatesButton = sort;
     _sortDatesButton.frame = CGRectMake(self.frame.size.width/2, 0, self.frame.size.width/2, 44.0f);
     [_sortDatesButton addTarget:self action:@selector(sortDatesPressed) forControlEvents:UIControlEventTouchUpInside];
@@ -137,13 +137,13 @@
 }
 
 - (void)sortMediaOptionSelected:(NSNumber*)option {
-    [_sortMediaButton setTitle:[_delegate mediaSortingOptions][option.integerValue] forState:UIControlStateNormal];
+    [_sortMediaButton setTitle:[_delegate mediaTypeFilterOptions][option.integerValue] forState:UIControlStateNormal];
     [_delegate selectedMediaSortIndex:option.integerValue];
     [self sortMediaPressed];
 }
 
 - (void)sortDateOptionSelected:(NSNumber*)option {
-    [_sortDatesButton setTitle:[_delegate dateSortingOptions][option.integerValue] forState:UIControlStateNormal];
+    [_sortDatesButton setTitle:[_delegate dateFilteringOptions][option.integerValue] forState:UIControlStateNormal];
     [_delegate selectedDateSortIndex:option.integerValue];
     [self sortDatesPressed];
 }

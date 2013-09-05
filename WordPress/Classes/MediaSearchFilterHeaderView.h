@@ -14,8 +14,8 @@
 @protocol MediaSearchFilterDelegate <NSObject>
 
 /// Provide an array of nice strings. First is considered the default
-- (NSArray*)mediaSortingOptions;
-- (NSArray*)dateSortingOptions;
+- (NSArray*)mediaTypeFilterOptions;
+- (NSArray*)dateFilteringOptions;
 
 /// Index of mediaSortingOptions
 - (void)selectedMediaSortIndex:(NSUInteger)filterIndex;
