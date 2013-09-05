@@ -234,6 +234,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:section];
     headerView.blogTitle = blog.blogName;
     headerView.blavatarUrl = blog.blavatarUrl;
+    headerView.isWPCom = blog.isWPcom;
     headerView.onTap = ^{
         [self toggleSection:[self sectionForBlog:blog]];
     };
@@ -298,10 +299,12 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         UIImage *image;
         UIImage *selectedImage;
         if ([self isRowForReader:indexPath]) {
+            cell.largerFont = YES;
             text = NSLocalizedString(@"Reader", nil);
             image = [UIImage imageNamed:@"icon-menu-reader"];
             selectedImage = [UIImage imageNamed:@"icon-menu-reader-active"];
         } else if ([self isRowForNotifications:indexPath]) {
+            cell.largerFont = YES;
             text = NSLocalizedString(@"Notifications", nil);
             image = [UIImage imageNamed:@"icon-menu-notifications"];
             selectedImage = [UIImage imageNamed:@"icon-menu-notifications-active"];
@@ -310,6 +313,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
                 cell.badgeNumber = _unseenNotificationCount;
             }
         } else if ([self isRowForSettings:indexPath]) {
+            cell.largerFont = YES;
             text = NSLocalizedString(@"Settings", nil);
             image = [UIImage imageNamed:@"icon-menu-settings"];
             selectedImage = [UIImage imageNamed:@"icon-menu-settings-active"];
@@ -342,10 +346,14 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             cell.firstAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-quickphoto"];
             __weak UITableViewCell *weakCell = cell;
             cell.tappedFirstAccessoryView = ^{
-                [self showQuickPhotoForFrame:weakCell.frame];
+                if (IS_IPHONE) {
+                    [self.panelNavigationController closeSidebar];
+                }
+                [self showQuickPhotoForCell:weakCell];
             };
             cell.secondAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-add"];
             cell.tappedSecondAccessoryView = ^{
+                [self.panelNavigationController closeSidebar];
                 [self quickAddNewPost:indexPath];
             };
         } else if ([self isRowForPages:indexPath]) {
@@ -354,6 +362,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             selectedImage = [UIImage imageNamed:@"icon-menu-pages-active"];
             cell.secondAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-add"];
             cell.tappedSecondAccessoryView = ^{
+                [self.panelNavigationController closeSidebar];
                 [self quickAddNewPost:indexPath];
             };
         } else if ([self isRowForComments:indexPath]) {
@@ -634,7 +643,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             [webViewController setPassword:blog.password];
             [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginUrl]];
         }
-        [self.panelNavigationController setDetailViewController:webViewController closingSidebar:closingSidebar];
+        [self.panelNavigationController setDetailViewController:webViewController closingSidebar:closingSidebar animated:YES];
     }
     if (IS_IPAD) {
         [SoundUtil playSwipeSound];
@@ -906,7 +915,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 
 #pragma mark - Quick Photo Related
 
-- (void)showQuickPhotoForFrame:(CGRect)frame {
+- (void)showQuickPhotoForCell:(NewSidebarCell *)cell {
     if (_quickPhotoActionSheet) {
         // Dismiss the previous action sheet without invoking a button click.
         [_quickPhotoActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
@@ -921,7 +930,11 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         
         actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
         if (IS_IPAD) {
-            [actionSheet showFromRect:frame inView:self.view animated:YES];
+            if (cell) {
+                [actionSheet showFromRect:cell.firstAccessoryView.frame inView:cell animated:YES];
+            } else {
+                [actionSheet showInView:self.view];
+            }
         } else {
             [actionSheet showInView:self.panelNavigationController.view];
         }

@@ -22,15 +22,16 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorColor = [WPStyleGuide readGrey];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    
     UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg"]];
     logoImage.frame = CGRectMake(0.0f, 0.0f, AddSiteLogoSize.width, AddSiteLogoSize.height);
     logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     logoImage.contentMode = UIViewContentModeCenter;
     tableView.tableHeaderView = logoImage;
     
-    self.tableView.backgroundView = nil;
-	self.tableView.backgroundColor = [UIColor clearColor];
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
     self.navigationItem.title = NSLocalizedString(@"Add Blog", @"");
 }
 

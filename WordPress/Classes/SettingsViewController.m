@@ -43,6 +43,7 @@
 #import "Blog+Jetpack.h"
 #import "GeneralWalkthroughViewController.h"
 #import "WPAccount.h"
+#import "WelcomeViewController.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,
@@ -317,7 +318,6 @@ typedef enum {
     if (indexPath.section == SettingsSectionBlogs) {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
         cell.textLabel.text = blog.blogName;
-        cell.detailTextLabel.text = blog.hostURL;
         [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
         
         if (indexPath.row == 0) {
@@ -329,7 +329,7 @@ typedef enum {
         }
         
     } else if (indexPath.section == SettingsSectionBlogsAdd) {
-        cell.textLabel.text = NSLocalizedString(@"Add a Blog", @"");
+        cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -507,12 +507,10 @@ typedef enum {
 
     } else if (indexPath.section == SettingsSectionBlogsAdd) {
         [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAddBlog];
-
-        WelcomeViewController *welcomeViewController;
-        welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil]; 
-        welcomeViewController.title = NSLocalizedString(@"Add a Blog", @"");
-        [self.navigationController pushViewController:welcomeViewController animated:YES];
         
+        WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        welcomeViewController.title = NSLocalizedString(@"Add a Site", nil);
+        [self.navigationController pushViewController:welcomeViewController animated:YES];
     } else if (indexPath.section == SettingsSectionWpcom) {
         if ([[WordPressComApi sharedApi] hasCredentials]) {
             if (indexPath.row == 1) {

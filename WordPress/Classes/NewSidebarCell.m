@@ -129,6 +129,35 @@
     self.tappedFirstAccessoryView = nil;
     self.tappedSecondAccessoryView = nil;
     self.selected = NO;
+    self.largerFont = NO;
+}
+
+- (UIFont *)titleViewFont
+{
+    if (self.selected) {
+        if (self.largerFont)
+            return [WPStyleGuide postTitleFontBold];
+        else
+            return [WPStyleGuide regularTextFontBold];
+    } else {
+        if (self.largerFont)
+            return [WPStyleGuide postTitleFont];
+        else
+            return [WPStyleGuide regularTextFont];
+    }
+}
+
+- (UIImage *)mainViewImage
+{
+    if (self.selected)
+        return self.selectedImage;
+    else
+        return self.mainImage;
+}
+
+- (UIView *)firstAccessoryView
+{
+    return self.accessoryViewFirstImageView;
 }
 
 - (void)layoutSubviews
@@ -139,13 +168,8 @@
         self.content.backgroundColor = [WPStyleGuide darkAsNightGrey];
     }
     
-    if (self.selected) {
-        self.mainImageView.image = self.selectedImage;
-        self.titleLabel.font = [UIFont fontWithName:@"OpenSans-Bold" size:16.0];
-    } else {
-        self.mainImageView.image = self.mainImage;
-        self.titleLabel.font = [UIFont fontWithName:@"OpenSans" size:16.0];
-    }
+    self.mainImageView.image = [self mainViewImage];
+    self.titleLabel.font = [self titleViewFont];
     
     if (self.showsBadge) {
         self.badgeView.hidden = NO;

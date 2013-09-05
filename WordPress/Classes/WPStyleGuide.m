@@ -29,6 +29,11 @@
     return [UIFont fontWithName:@"OpenSans" size:18.0];
 }
 
++ (UIFont *)postTitleFontBold
+{
+    return [UIFont fontWithName:@"OpenSans-Bold" size:18.0];    
+}
+
 + (NSDictionary *)postTitleAttributes
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -81,6 +86,11 @@
     return [UIFont fontWithName:@"OpenSans" size:16.0];
 }
 
++ (UIFont *)regularTextFontBold
+{
+    return [UIFont fontWithName:@"OpenSans-Bold" size:16.0];    
+}
+
 + (NSDictionary *)regularTextAttributes
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -96,7 +106,7 @@
 
 + (UIFont *)tableviewSubtitleFont
 {
-    return [UIFont fontWithName:@"OpenSans" size:12.0];
+    return [UIFont fontWithName:@"OpenSans-Light" size:18.0];
 }
 
 + (UIFont *)tableviewSectionHeaderFont

@@ -78,7 +78,7 @@
         self.mainView.backgroundColor = [WPStyleGuide darkAsNightGrey];
     }
     
-    self.blogTitleLabel.font = [UIFont fontWithName:@"OpenSans" size:16.0];
+    self.blogTitleLabel.font = [WPStyleGuide postTitleFont];
     
     NSURL *blogURL = [NSURL URLWithString:self.blavatarUrl];
     [self.blavatarImage setImageWithBlavatarUrl:[blogURL absoluteString] isWPcom:self.isWPCom];

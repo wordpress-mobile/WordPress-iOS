@@ -67,7 +67,7 @@ CGFloat const NotificationCellDetailTextNumberOfLines = 2;
         _unreadTextLabel.lineBreakMode = NSLineBreakByWordWrapping;
         _unreadTextLabel.font = [[self class] unreadFont];
         _unreadTextLabel.shadowOffset = CGSizeMake(0.0, 0.0);
-        _unreadTextLabel.textColor = [WPStyleGuide baseDarkerBlue];
+        _unreadTextLabel.textColor = [WPStyleGuide jazzyOrange];
         _unreadTextLabel.text = @"•";
         [self.contentView addSubview:_unreadTextLabel];
     }
