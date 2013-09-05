@@ -198,11 +198,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         if ([self areReaderAndNotificationsEnabled]) {
             return 3;
         } else {
-            if ([self noBlogs]) {
-                return 0;
-            } else {
-                return 1; // Settings
-            }
+            return 1; // Settings
         }
     }
     else {
