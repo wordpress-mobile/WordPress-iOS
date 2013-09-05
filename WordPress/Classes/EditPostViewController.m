@@ -1314,6 +1314,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         newFrame = self.normalTextFrame;
 
         if (isShowing) {
+
             if (wantsFullScreen) {
                 // Make the text view expand covering other fields
                 newFrame.origin.x = 0;
@@ -1324,9 +1325,11 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
             [self.toolbar setHidden:YES];
             [tabPointer setHidden:YES];
+            separatorView.hidden = YES;
         } else {
             [self.toolbar setHidden:NO];
             [tabPointer setHidden:NO];
+            separatorView.hidden = NO;
         }
 	}
 
