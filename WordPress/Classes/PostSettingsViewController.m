@@ -617,6 +617,8 @@
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"locationServicesCell"];
                     cell.textLabel.text = NSLocalizedString(@"Please Enable Location Services", @"Prompt the user to enable location services on their device.");
                     cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                    cell.textLabel.font = [WPStyleGuide tableviewTextFont];
+                    cell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
                 }
                 return cell;
                 
@@ -657,10 +659,12 @@
             annotation = [[PostAnnotation alloc] initWithCoordinate:self.post.geolocation.coordinate];
             [mapView addAnnotation:annotation];
             
-            if (addressLabel == nil)
+            if (addressLabel == nil) {
                 addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 130, 280, 30)];
-            if (coordinateLabel == nil)
+            }
+            if (coordinateLabel == nil) {
                 coordinateLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 162, 280, 20)];
+            }
             
             // Set center of map and show a region of around 200x100 meters
             MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.post.geolocation.coordinate, 200, 100);
@@ -671,8 +675,8 @@
                 addressLabel.text = NSLocalizedString(@"Finding address...", @"Used for Geo-tagging posts.");
                 [self geocodeCoordinate:self.post.geolocation.coordinate];
             }
-            addressLabel.font = [UIFont boldSystemFontOfSize:16];
-            addressLabel.textColor = [UIColor darkGrayColor];
+            addressLabel.font = [WPStyleGuide regularTextFont];
+            addressLabel.textColor = [WPStyleGuide allTAllShadeGrey];
             CLLocationDegrees latitude = self.post.geolocation.latitude;
             CLLocationDegrees longitude = self.post.geolocation.longitude;
             int latD = trunc(fabs(latitude));
@@ -690,8 +694,8 @@
             //				coordinateLabel.text = [NSString stringWithFormat:@"%.6f, %.6f",
             //										self.post.geolocation.latitude,
             //										self.post.geolocation.longitude];
-            coordinateLabel.font = [UIFont italicSystemFontOfSize:13];
-            coordinateLabel.textColor = [UIColor darkGrayColor];
+            coordinateLabel.font = [WPStyleGuide regularTextFont];
+            coordinateLabel.textColor = [WPStyleGuide allTAllShadeGrey];
             
             [mapGeotagTableViewCell addSubview:mapView];
             [mapGeotagTableViewCell addSubview:addressLabel];
@@ -706,6 +710,8 @@
                 removeGeotagTableViewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RemoveGeotag"];
             removeGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Remove Location", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
             removeGeotagTableViewCell.textLabel.textAlignment = NSTextAlignmentCenter;
+            removeGeotagTableViewCell.textLabel.font = [WPStyleGuide tableviewTextFont];
+            removeGeotagTableViewCell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
             return removeGeotagTableViewCell;
             break;
         }
