@@ -103,7 +103,8 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		self.post = apost;
 		self.comments = [NSMutableArray array];
         self.wantsFullScreenLayout = YES;
-		self.canUseFullScreen = YES;
+        // Disable full screen until it's more polished and iOS7 crashes are fixed
+		self.canUseFullScreen = NO;
 	}
 	return self;
 }
@@ -270,7 +271,11 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 - (void)buildTopToolbar {
 	// Top Navigation bar and Sharing.
 	if (IS_IOS7) {
-        self.shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(handleShareButtonTapped:)];
+        UIImage *image = [UIImage imageNamed:@"icon-posts-share"];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+        [button setImage:image forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(handleShareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        self.shareButton = [[UIBarButtonItem alloc] initWithCustomView:button];
 	} else {
 		UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
 		
@@ -288,7 +293,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		self.shareButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
 	}
 	
-	self.navigationItem.rightBarButtonItem = _shareButton;
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
 	
 	if(false && IS_IPAD) {
 		
@@ -529,7 +534,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	}
     BOOL hideBars = !self.navigationController.toolbarHidden;
     if (!hideBars || self.tableView.contentOffset.y > 60) {
-        [self.navigationController setToolbarHidden:hideBars animated:YES];
         [self setFullScreen:hideBars];
     }
 }

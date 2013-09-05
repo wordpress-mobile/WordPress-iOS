@@ -59,12 +59,9 @@
     
     if (blog) {
         self.navigationItem.title = NSLocalizedString(@"Edit Blog", @"");
-		self.tableView.backgroundColor = [UIColor clearColor];
-		if (IS_IPAD){
-			self.tableView.backgroundView = nil;
-			self.tableView.backgroundColor = [UIColor clearColor];
-		}
-        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
+
+        self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
         
         self.url = blog.url;
         self.username = blog.username;
@@ -192,6 +189,7 @@
                 [urlTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:urlTextField asPassword:NO];
                 urlTextField.keyboardType = UIKeyboardTypeURL;
+                [WPStyleGuide configureTableViewCell:self.urlCell];
 				if (blog.url != nil) {
 					urlTextField.text = blog.url;
                 } else {
@@ -229,6 +227,7 @@
                     usernameTextField.enabled = NO;
                     usernameTextField.textColor = [UIColor darkGrayColor];
                 }
+                [WPStyleGuide configureTableViewCell:self.usernameCell];
 			}
             
             return self.usernameCell;
@@ -247,6 +246,7 @@
                 } else {
                     passwordTextField.text = @"";
                 }
+                [WPStyleGuide configureTableViewCell:self.passwordCell];
 			}
             return self.passwordCell;
         }				        
@@ -267,6 +267,7 @@
             switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
             switchCell.cellSwitch.on = self.geolocationEnabled;
             [switchCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
+            [WPStyleGuide configureTableViewCell:switchCell];
             return switchCell;
         } else if(indexPath.row == 1) {
             if(switchCellPushNotifications == nil) {

@@ -10,6 +10,7 @@
                 <outlet property="buttonAddSelected" destination="11" id="13"/>
                 <outlet property="buttonSelectAll" destination="16" id="18"/>
                 <outlet property="tableView" destination="4" id="9"/>
+                <outlet property="toolbar" destination="10" id="WWl-2t-qrH"/>
                 <outlet property="view" destination="8" id="15"/>
             </connections>
         </placeholder>
@@ -32,13 +33,13 @@
                     <rect key="frame" x="0.0" y="436" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem title="Select All" id="16">
+                        <barButtonItem title="Select All" style="plain" id="16">
                             <connections>
                                 <action selector="selectAllBlogs:" destination="-1" id="17"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="12"/>
-                        <barButtonItem title="Add Selected" style="done" id="11">
+                        <barButtonItem title="Add Selected" style="plain" id="11">
                             <connections>
                                 <action selector="saveSelectedBlogs:" destination="-1" id="14"/>
                             </connections>

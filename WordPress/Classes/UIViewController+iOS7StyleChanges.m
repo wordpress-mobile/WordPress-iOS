@@ -28,10 +28,10 @@
     self.navigationItem.title = [self.navigationItem.title uppercaseString];
     
     [self.navigationItem.leftBarButtonItem setTitlePositionAdjustment:UIOffsetMake(-1, 0) forBarMetrics:UIBarMetricsDefault];
-    [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{UITextAttributeFont: [UIFont fontWithName:@"OpenSans" size:12.0], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
+    [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
 
     [self.navigationItem.rightBarButtonItem setTitlePositionAdjustment:UIOffsetMake(1, 0) forBarMetrics:UIBarMetricsDefault];
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{UITextAttributeFont: [UIFont fontWithName:@"OpenSans" size:12.0], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
 }
 
 + (void)load {

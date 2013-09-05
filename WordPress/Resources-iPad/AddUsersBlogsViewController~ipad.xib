@@ -10,6 +10,7 @@
                 <outlet property="buttonAddSelected" destination="11" id="14"/>
                 <outlet property="buttonSelectAll" destination="9" id="13"/>
                 <outlet property="tableView" destination="3" id="7"/>
+                <outlet property="toolbar" destination="8" id="pKM-VS-fnd"/>
                 <outlet property="view" destination="1" id="6"/>
             </connections>
         </placeholder>

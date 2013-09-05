@@ -617,6 +617,8 @@
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"locationServicesCell"];
                     cell.textLabel.text = NSLocalizedString(@"Please Enable Location Services", @"Prompt the user to enable location services on their device.");
                     cell.textLabel.textAlignment = NSTextAlignmentCenter;
+                    cell.textLabel.font = [WPStyleGuide tableviewTextFont];
+                    cell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
                 }
                 return cell;
                 
@@ -657,10 +659,12 @@
             annotation = [[PostAnnotation alloc] initWithCoordinate:self.post.geolocation.coordinate];
             [mapView addAnnotation:annotation];
             
-            if (addressLabel == nil)
+            if (addressLabel == nil) {
                 addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 130, 280, 30)];
-            if (coordinateLabel == nil)
+            }
+            if (coordinateLabel == nil) {
                 coordinateLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 162, 280, 20)];
+            }
             
             // Set center of map and show a region of around 200x100 meters
             MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.post.geolocation.coordinate, 200, 100);
@@ -671,8 +675,8 @@
                 addressLabel.text = NSLocalizedString(@"Finding address...", @"Used for Geo-tagging posts.");
                 [self geocodeCoordinate:self.post.geolocation.coordinate];
             }
-            addressLabel.font = [UIFont boldSystemFontOfSize:16];
-            addressLabel.textColor = [UIColor darkGrayColor];
+            addressLabel.font = [WPStyleGuide regularTextFont];
+            addressLabel.textColor = [WPStyleGuide allTAllShadeGrey];
             CLLocationDegrees latitude = self.post.geolocation.latitude;
             CLLocationDegrees longitude = self.post.geolocation.longitude;
             int latD = trunc(fabs(latitude));
@@ -690,8 +694,8 @@
             //				coordinateLabel.text = [NSString stringWithFormat:@"%.6f, %.6f",
             //										self.post.geolocation.latitude,
             //										self.post.geolocation.longitude];
-            coordinateLabel.font = [UIFont italicSystemFontOfSize:13];
-            coordinateLabel.textColor = [UIColor darkGrayColor];
+            coordinateLabel.font = [WPStyleGuide regularTextFont];
+            coordinateLabel.textColor = [WPStyleGuide allTAllShadeGrey];
             
             [mapGeotagTableViewCell addSubview:mapView];
             [mapGeotagTableViewCell addSubview:addressLabel];
@@ -706,6 +710,8 @@
                 removeGeotagTableViewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RemoveGeotag"];
             removeGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Remove Location", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
             removeGeotagTableViewCell.textLabel.textAlignment = NSTextAlignmentCenter;
+            removeGeotagTableViewCell.textLabel.font = [WPStyleGuide tableviewTextFont];
+            removeGeotagTableViewCell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
             return removeGeotagTableViewCell;
             break;
         }
@@ -783,7 +789,7 @@
                                         ];
                     NSDictionary *visiblityDict = @{
                                                     @"DefaultValue": NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
-                                                    @"Title" : NSLocalizedString(@"Visiblity", nil),
+                                                    @"Title" : NSLocalizedString(@"Visibility", nil),
                                                     @"Titles" : titles,
                                                     @"Values" : titles,
                                                     @"CurrentValue" : [self titleForVisibility]};
@@ -1189,8 +1195,8 @@
             if (IS_IOS7) {
                 UIButton *button = [[UIButton alloc] init];
                 [button addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventTouchUpInside];
-                [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-iOS7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-                [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-iOS7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+                [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+                [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
                 [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")] forState:UIControlStateNormal];            [button sizeToFit];
                 CGPoint buttonCenter = button.center;
                 buttonCenter.x = CGRectGetMidX(picker.frame);
@@ -1271,8 +1277,8 @@
         if (IS_IOS7) {
             UIButton *button = [[UIButton alloc] init];
             [button addTarget:self action:@selector(hidePicker) forControlEvents:UIControlEventTouchUpInside];
-            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-iOS7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-iOS7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
             [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")] forState:UIControlStateNormal];
             [button sizeToFit];
             CGRect frame = button.frame;
@@ -1297,9 +1303,10 @@
         UISegmentedControl *publishNowButton = nil;
         if (IS_IOS7) {
             UIButton *button = [[UIButton alloc] init];
+            [button setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
             [button addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventTouchUpInside];
-            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-iOS7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
-            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-iOS7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButton-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
+            [button setBackgroundImage:[[UIImage imageNamed:@"keyboardButtonHighlighted-ios7"] stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f] forState:UIControlStateNormal];
             [button setTitle:[NSString stringWithFormat:@" %@ ", NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")] forState:UIControlStateNormal];
             [button sizeToFit];
             CGRect frame = button.frame;

@@ -18,6 +18,7 @@
 @interface AddUsersBlogsViewController() <CreateWPComBlogViewControllerDelegate>
 
 @property (nonatomic, strong) UIView *noblogsView;
+@property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
 
 - (void)showNoBlogsView;
 - (void)hideNoBlogsView;
@@ -60,48 +61,36 @@
 	self.selectedBlogs = [NSMutableArray array];
     
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	
-	// Setup WP logo table header
-	NSString *logoFile = @"logo_wporg";
-	if(isWPcom == YES) {
-        logoFile = @"logo_wpcom@2x.png";
-	}
-    
-    UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
-    logoImage.frame = CGRectMake(0.0f, 0.0f, 320.0f, 70.0f);
-    logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    logoImage.contentMode = UIViewContentModeCenter;
-    tableView.tableHeaderView = logoImage;
-    
-    if (isWPcom) {
-        logoImage.contentScaleFactor = 2.0f;
-    }
-	
-//    // Setup WPcom table header
-//	CGRect headerFrame = CGRectMake(0.0f, 0.0f, 320.0f, 70.0f);
-//	CGRect logoFrame = CGRectMake(40.0f, 20.0f, 229.0f, 43.0f);
-//	if(IS_IPAD == YES) {
-//		logoFrame = CGRectMake(150.0f, 20.0f, 229.0f, 43.0f);
-//	}
-//	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
-//	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
-//	logo.frame = logoFrame;
-//	[headerView addSubview:logo];
-//	[logo release];
-//	self.tableView.tableHeaderView = headerView;
-    
-	if(IS_IPAD)
-		self.tableView.backgroundView = nil;
-	
-    self.tableView.backgroundColor = [UIColor clearColor];
-	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
+		
+    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorColor = [WPStyleGuide readGrey];
+    self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+    [buttonSelectAll setTitleTextAttributes:@{
+                                              UITextAttributeFont: [WPStyleGuide regularTextFont],
+                                              UITextAttributeTextColor : [UIColor whiteColor],
+                                              UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetMake(0, 0)]}
+                                   forState:UIControlStateNormal];
+
+    [buttonAddSelected setTitleTextAttributes:@{
+                                              UITextAttributeFont: [WPStyleGuide regularTextFont],
+                                              UITextAttributeTextColor : [UIColor whiteColor],
+                                              UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetMake(0, 0)]}
+                                   forState:UIControlStateNormal];
+    [buttonAddSelected setTitleTextAttributes:@{
+                                                UITextAttributeFont: [WPStyleGuide regularTextFont],
+                                                UITextAttributeTextColor : [UIColor grayColor],
+                                                UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetMake(0, 0)]}
+                                     forState:UIControlStateDisabled];
+
     
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelAddWPcomBlogs) 
 												 name:@"didCancelWPcomLogin" object:nil];
     
-    if ([[UIBarButtonItem class] respondsToSelector:@selector(appearance)]) {
+    if (!IS_IOS7) {
         [UIBarButtonItem styleButtonAsPrimary:buttonAddSelected];
-    }    
+    }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -280,7 +269,7 @@
             } else {
                 cell.imageView.layer.mask = NULL;
             }
-            
+            [WPStyleGuide configureTableViewCell:cell];
 			break;
         }
         case 1:

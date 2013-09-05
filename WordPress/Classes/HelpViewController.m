@@ -45,11 +45,19 @@
         self.navigationItem.leftBarButtonItem = doneButton;
     }
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
     self.helpText.text = NSLocalizedString(@"Please visit the FAQ to get answers to common questions. If you're still having trouble, please post in the forums.", @"");
+    self.helpText.font = [WPStyleGuide regularTextFont];
+    self.helpText.textColor = [WPStyleGuide littleEddieGrey];
+    
     [self.faqButton setTitle:NSLocalizedString(@"Visit the FAQ", @"") forState:UIControlStateNormal];
+    self.faqButton.titleLabel.font = [WPStyleGuide postTitleFont];
+    self.faqButton.titleLabel.textColor = [WPStyleGuide littleEddieGrey];
+    
     [self.forumButton setTitle:NSLocalizedString(@"Visit the Forums", @"") forState:UIControlStateNormal];
+    self.forumButton.titleLabel.font = [WPStyleGuide postTitleFont];
+    self.forumButton.titleLabel.textColor = [WPStyleGuide littleEddieGrey];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

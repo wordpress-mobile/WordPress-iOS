@@ -14,6 +14,7 @@
 + (UIFont *)largePostTitleFont;
 + (NSDictionary *)largePostTitleAttributes;
 + (UIFont *)postTitleFont;
++ (UIFont *)postTitleFontBold;
 + (NSDictionary *)postTitleAttributes;
 + (UIFont *)subtitleFont;
 + (NSDictionary *)subtitleAttributes;
@@ -22,6 +23,7 @@
 + (UIFont *)labelFont;
 + (NSDictionary *)labelAttributes;
 + (UIFont *)regularTextFont;
++ (UIFont *)regularTextFontBold;
 + (NSDictionary *)regularTextAttributes;
 + (UIFont *)tableviewTextFont;
 + (UIFont *)tableviewSubtitleFont;

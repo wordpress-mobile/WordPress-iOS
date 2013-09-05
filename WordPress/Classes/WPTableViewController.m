@@ -372,7 +372,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 #pragma mark Fetched results controller
 
 - (UITableViewRowAnimation)tableViewRowAnimation {
-	return UITableViewRowAnimationAutomatic;
+	return UITableViewRowAnimationFade;
 }
 
 - (NSString *)resultsControllerCacheName {
