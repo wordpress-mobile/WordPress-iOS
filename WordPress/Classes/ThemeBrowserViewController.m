@@ -74,7 +74,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     if (![_currentTheme.themeId isEqualToString:self.blog.currentThemeId]) {
         [self currentThemeForBlog];
         self.filteredThemes = _allThemes;
-        [self applyCurrentSort];
     }
 }
 
@@ -138,8 +137,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
             }
         }
         self.filteredThemes = _allThemes;
-        [self removeCurrentThemeFromList];
-        [self applyCurrentSort];
         
     } failure:^(NSError *error) {
         [WPError showAlertWithError:error];
@@ -242,12 +239,14 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [self toggleNoThemesView:(_filteredThemes.count == 0 && !_currentTheme)];
     
     [self removeCurrentThemeFromList];
-    [self.collectionView reloadData];
+    [self applyCurrentSort];
 }
 
 - (void)applyCurrentSort {
     NSString *key = [@"self." stringByAppendingString:_currentResultsSort];
-    self.filteredThemes = [_filteredThemes sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:key ascending:true]]];
+    BOOL ascending = [_currentResultsSort isEqualToString:_resultSortAttributes[1]] ? false : true;
+    _filteredThemes = [_filteredThemes sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:key ascending:ascending]]];
+    [self.collectionView reloadData];
 }
 
 #pragma mark - ThemeSearchFilterDelegate
@@ -262,13 +261,11 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (void)applyFilterWithSearchText:(NSString *)searchText {
-    _filteredThemes = [_allThemes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId CONTAINS[cd] %@", searchText]];
-    [self applyCurrentSort];
+    self.filteredThemes = [_allThemes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId CONTAINS[cd] %@", searchText]];
 }
 
 - (void)clearSearchFilter {
-    _filteredThemes = _allThemes;
-    [self applyCurrentSort];
+    self.filteredThemes = _allThemes;
 }
 
 #pragma mark - UIRefreshControl
