@@ -155,6 +155,11 @@
         return self.mainImage;
 }
 
+- (UIView *)firstAccessoryView
+{
+    return self.accessoryViewFirstImageView;
+}
+
 - (void)layoutSubviews
 {
     if (self.cellBackgroundColor == SidebarTableViewCellBackgroundColorLight) {

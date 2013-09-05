@@ -343,8 +343,10 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             cell.firstAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-quickphoto"];
             __weak UITableViewCell *weakCell = cell;
             cell.tappedFirstAccessoryView = ^{
-                [self.panelNavigationController closeSidebar];
-                [self showQuickPhotoForFrame:weakCell.frame];
+                if (IS_IPHONE) {
+                    [self.panelNavigationController closeSidebar];
+                }
+                [self showQuickPhotoForCell:weakCell];
             };
             cell.secondAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-add"];
             cell.tappedSecondAccessoryView = ^{
@@ -869,7 +871,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 
 #pragma mark - Quick Photo Related
 
-- (void)showQuickPhotoForFrame:(CGRect)frame {
+- (void)showQuickPhotoForCell:(NewSidebarCell *)cell {
     if (_quickPhotoActionSheet) {
         // Dismiss the previous action sheet without invoking a button click.
         [_quickPhotoActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
@@ -884,7 +886,11 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         
         actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
         if (IS_IPAD) {
-            [actionSheet showFromRect:frame inView:self.view animated:YES];
+            if (cell) {
+                [actionSheet showFromRect:cell.firstAccessoryView.frame inView:cell animated:YES];
+            } else {
+                [actionSheet showInView:self.view];
+            }
         } else {
             [actionSheet showInView:self.panelNavigationController.view];
         }
