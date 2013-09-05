@@ -614,7 +614,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             [webViewController setPassword:blog.password];
             [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginUrl]];
         }
-        [self.panelNavigationController setDetailViewController:webViewController closingSidebar:closingSidebar];
+        [self.panelNavigationController setDetailViewController:webViewController closingSidebar:closingSidebar animated:YES];
     }
     if (IS_IPAD) {
         [SoundUtil playSwipeSound];
