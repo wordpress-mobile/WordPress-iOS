@@ -949,7 +949,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     // menu opens.
     self.statusBarBackgroundView.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) animations:^{
-        self.statusBarBackgroundView.backgroundColor = [WPStyleGuide bigEddieGrey];
+        self.statusBarBackgroundView.backgroundColor = [WPStyleGuide darkAsNightGrey];
     }];
 }
 
@@ -1209,7 +1209,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 
 - (UIColor *)statusBarTransitionColorForPercentage:(CGFloat)percentage
 {
-    UIColor *colorWhenSidebarOpened = [WPStyleGuide bigEddieGrey];
+    UIColor *colorWhenSidebarOpened = [WPStyleGuide darkAsNightGrey];
     UIColor *colorWhenSidebarClosed = [WPStyleGuide newKidOnTheBlockBlue];
     
     if (percentage == 1.0) {
@@ -1348,7 +1348,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
         if (offset == 0) {
             self.statusBarBackgroundView.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
         } else {
-            self.statusBarBackgroundView.backgroundColor = [WPStyleGuide bigEddieGrey];
+            self.statusBarBackgroundView.backgroundColor = [WPStyleGuide darkAsNightGrey];
         }
     } completion:^(BOOL finished){
         // We set the statusBarBackgroundView to be a clear color because that way when this menu is closed
