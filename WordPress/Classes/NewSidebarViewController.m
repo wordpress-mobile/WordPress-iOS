@@ -186,7 +186,11 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[self.resultsController fetchedObjects] count] + 1;
+    NSInteger extraSection = 1;
+    if ([self noBlogsAndNoWordPressDotComAccount]) {
+        extraSection = 0;
+    }
+    return [[self.resultsController fetchedObjects] count] + extraSection;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -196,11 +200,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         if ([self areReaderAndNotificationsEnabled]) {
             return 3;
         } else {
-            if ([self noBlogs]) {
-                return 0;
-            } else {
-                return 1; // Settings
-            }
+            return 1; // Settings
         }
     }
     else {
@@ -1059,6 +1059,9 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
                 _changingContentForSelectedSection = YES;
             }
 
+            if ([self noBlogsAndNoWordPressDotComAccount]) {
+                [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.row + 1] withRowAnimation:UITableViewRowAnimationNone];
+            }
             [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.row] withRowAnimation:UITableViewRowAnimationNone];
             _wantedSection = 0;
             break;
