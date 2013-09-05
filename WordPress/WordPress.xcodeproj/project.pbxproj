@@ -573,7 +573,6 @@
 		8362C54612027BC300599347 /* AddUsersBlogsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8362C54512027BC300599347 /* AddUsersBlogsViewController~ipad.xib */; };
 		8369FF9111F4F3BF003106C7 /* AddUsersBlogsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8369FF8F11F4F3BF003106C7 /* AddUsersBlogsViewController.m */; };
 		8369FF9211F4F3BF003106C7 /* AddUsersBlogsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8369FF9011F4F3BF003106C7 /* AddUsersBlogsViewController.xib */; };
-		836FECEC12715E2A000309D8 /* CrashReportView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836FECEA12715E2A000309D8 /* CrashReportView.xib */; };
 		8370D10A11FA499A009D650F /* UITableViewActivityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8370D10911FA499A009D650F /* UITableViewActivityCell.m */; };
 		8370D10C11FA4A1B009D650F /* UITableViewActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8370D10B11FA4A1B009D650F /* UITableViewActivityCell.xib */; };
 		8370D11811FA4CCF009D650F /* welcome_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 8370D11611FA4CCF009D650F /* welcome_bg.png */; };
@@ -1675,7 +1674,6 @@
 		8369FF8E11F4F3BF003106C7 /* AddUsersBlogsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddUsersBlogsViewController.h; sourceTree = "<group>"; };
 		8369FF8F11F4F3BF003106C7 /* AddUsersBlogsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddUsersBlogsViewController.m; sourceTree = "<group>"; };
 		8369FF9011F4F3BF003106C7 /* AddUsersBlogsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AddUsersBlogsViewController.xib; path = Resources/AddUsersBlogsViewController.xib; sourceTree = "<group>"; };
-		836FECEA12715E2A000309D8 /* CrashReportView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CrashReportView.xib; path = Resources/CrashReportView.xib; sourceTree = "<group>"; };
 		8370D10811FA499A009D650F /* UITableViewActivityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableViewActivityCell.h; sourceTree = "<group>"; };
 		8370D10911FA499A009D650F /* UITableViewActivityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableViewActivityCell.m; sourceTree = "<group>"; };
 		8370D10B11FA4A1B009D650F /* UITableViewActivityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = UITableViewActivityCell.xib; path = Resources/UITableViewActivityCell.xib; sourceTree = "<group>"; };
@@ -4196,7 +4194,6 @@
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
 				30AF6CF413C2289600A29C00 /* AboutViewController.xib */,
 				3744A0DD130ABB0800CE7BE1 /* HelpViewController.xib */,
-				836FECEA12715E2A000309D8 /* CrashReportView.xib */,
 				A0E293FD0E21037200C6919C /* WPAddCategoryViewController.xib */,
 				ACAC7B690E1F8C0700AC7074 /* WPSelectionTableViewController.xib */,
 				3768BEF013041E7900E7C9A9 /* BetaFeedbackViewController.xib */,
@@ -4449,7 +4446,6 @@
 				857F55D017CEC5E100E154E1 /* keyboardButton-ios7@2x.png in Resources */,
 				83CAD4211235F9F4003DFA20 /* MediaObjectView.xib in Resources */,
 				83F1F9A21236FBF600069F99 /* PostMediaViewController-iPad.xib in Resources */,
-				836FECEC12715E2A000309D8 /* CrashReportView.xib in Resources */,
 				E1497BC012CCA92F0022BCD9 /* PostViewController-iPad.xib in Resources */,
 				E1EE23E512E62864000B2BE6 /* movie.png in Resources */,
 				E1EE23E612E62864000B2BE6 /* movie@2x.png in Resources */,
