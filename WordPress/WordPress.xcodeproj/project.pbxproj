@@ -699,6 +699,7 @@
 		857F55D117CEC5E100E154E1 /* doneButtonHighlighted-ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 857F55C917CEC5E100E154E1 /* doneButtonHighlighted-ios7@2x.png */; };
 		857F55D217CEC5E100E154E1 /* doneButton-ios7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 857F55CA17CEC5E100E154E1 /* doneButton-ios7@2x.png */; };
 		857F961517D950AB0071D9D1 /* WPTableViewSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 857F961417D950AB0071D9D1 /* WPTableViewSectionHeaderView.m */; };
+		857F961817D95F530071D9D1 /* WPTableViewSectionFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 857F961717D95F530071D9D1 /* WPTableViewSectionFooterView.m */; };
 		858DE40F1730384F000AC628 /* GeneralWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 858DE40E1730384F000AC628 /* GeneralWalkthroughViewController.m */; };
 		858DE41217303BB4000AC628 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 858DE41017303BB4000AC628 /* OpenSans-Light.ttf */; };
 		858DE41317303BB4000AC628 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 858DE41117303BB4000AC628 /* OpenSans-Regular.ttf */; };
@@ -1829,6 +1830,8 @@
 		857F55CA17CEC5E100E154E1 /* doneButton-ios7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "doneButton-ios7@2x.png"; sourceTree = "<group>"; };
 		857F961317D950AB0071D9D1 /* WPTableViewSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewSectionHeaderView.h; sourceTree = "<group>"; };
 		857F961417D950AB0071D9D1 /* WPTableViewSectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewSectionHeaderView.m; sourceTree = "<group>"; };
+		857F961617D95F530071D9D1 /* WPTableViewSectionFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewSectionFooterView.h; sourceTree = "<group>"; };
+		857F961717D95F530071D9D1 /* WPTableViewSectionFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewSectionFooterView.m; sourceTree = "<group>"; };
 		858DE40D1730384F000AC628 /* GeneralWalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralWalkthroughViewController.h; sourceTree = "<group>"; };
 		858DE40E1730384F000AC628 /* GeneralWalkthroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralWalkthroughViewController.m; sourceTree = "<group>"; };
 		858DE41017303BB4000AC628 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
@@ -3183,6 +3186,8 @@
 				85D2415717D0701A00AF090E /* UIViewController+iOS7StyleChanges.m */,
 				857F961317D950AB0071D9D1 /* WPTableViewSectionHeaderView.h */,
 				857F961417D950AB0071D9D1 /* WPTableViewSectionHeaderView.m */,
+				857F961617D95F530071D9D1 /* WPTableViewSectionFooterView.h */,
+				857F961717D95F530071D9D1 /* WPTableViewSectionFooterView.m */,
 			);
 			name = "iOS 7";
 			sourceTree = "<group>";
@@ -5384,6 +5389,7 @@
 				5D477099175F73CA0086C6A3 /* ReaderCommentFormView.m in Sources */,
 				85F2C4BC17B9F6E600A303E0 /* CreateAccountAndBlogPage3ViewController.m in Sources */,
 				5D5A953B1760DDE0000F7A1E /* ReaderReblogFormView.m in Sources */,
+				857F961817D95F530071D9D1 /* WPTableViewSectionFooterView.m in Sources */,
 				5D8572BA17611B36004CC20D /* ReaderUsersBlogsViewController.m in Sources */,
 				E174F6E6172A73960004F23A /* WPAccount.m in Sources */,
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
