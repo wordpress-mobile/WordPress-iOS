@@ -384,7 +384,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             selectedImage = [UIImage imageNamed:@"icon-menu-viewsite-active"];
         } else if ([self isRowForViewAdmin:indexPath]) {
             text = NSLocalizedString(@"View Admin", nil);
-            image = [UIImage imageNamed:@"icon-menu-viewsite"];
+            image = [UIImage imageNamed:@"icon-menu-viewadmin"];
             selectedImage = [UIImage imageNamed:@"icon-menu-viewsite-active"];
         }
         

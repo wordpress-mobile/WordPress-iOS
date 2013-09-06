@@ -715,6 +715,10 @@
 		859743AB17D6F06E009DCDCA /* icon-posts-share-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 859743A717D6F06E009DCDCA /* icon-posts-share-active@2x.png */; };
 		859743AC17D6F06E009DCDCA /* icon-posts-share.png in Resources */ = {isa = PBXBuildFile; fileRef = 859743A817D6F06E009DCDCA /* icon-posts-share.png */; };
 		859743AD17D6F06E009DCDCA /* icon-posts-share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 859743A917D6F06E009DCDCA /* icon-posts-share@2x.png */; };
+		8599658417DA903B005F84EB /* icon-menu-viewadmin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8599658017DA903B005F84EB /* icon-menu-viewadmin@2x.png */; };
+		8599658517DA903B005F84EB /* icon-menu-viewadmin.png in Resources */ = {isa = PBXBuildFile; fileRef = 8599658117DA903B005F84EB /* icon-menu-viewadmin.png */; };
+		8599658617DA903B005F84EB /* icon-menu-viewadmin-active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8599658217DA903B005F84EB /* icon-menu-viewadmin-active@2x.png */; };
+		8599658717DA903B005F84EB /* icon-menu-viewadmin-active.png in Resources */ = {isa = PBXBuildFile; fileRef = 8599658317DA903B005F84EB /* icon-menu-viewadmin-active.png */; };
 		85A1B6751742E7EF00BA5E35 /* WPMobileStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A1B6741742E7EF00BA5E35 /* WPMobileStats.m */; };
 		85A69D0217C530FE0061E254 /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85A69CFF17C530FE0061E254 /* OpenSans-BoldItalic.ttf */; };
 		85A69D0317C530FE0061E254 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85A69D0017C530FE0061E254 /* OpenSans-Italic.ttf */; };
@@ -1848,6 +1852,10 @@
 		859743A717D6F06E009DCDCA /* icon-posts-share-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-posts-share-active@2x.png"; sourceTree = "<group>"; };
 		859743A817D6F06E009DCDCA /* icon-posts-share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-posts-share.png"; sourceTree = "<group>"; };
 		859743A917D6F06E009DCDCA /* icon-posts-share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-posts-share@2x.png"; sourceTree = "<group>"; };
+		8599658017DA903B005F84EB /* icon-menu-viewadmin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-menu-viewadmin@2x.png"; sourceTree = "<group>"; };
+		8599658117DA903B005F84EB /* icon-menu-viewadmin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-menu-viewadmin.png"; sourceTree = "<group>"; };
+		8599658217DA903B005F84EB /* icon-menu-viewadmin-active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-menu-viewadmin-active@2x.png"; sourceTree = "<group>"; };
+		8599658317DA903B005F84EB /* icon-menu-viewadmin-active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-menu-viewadmin-active.png"; sourceTree = "<group>"; };
 		85A1B6731742E7EF00BA5E35 /* WPMobileStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMobileStats.h; sourceTree = "<group>"; };
 		85A1B6741742E7EF00BA5E35 /* WPMobileStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMobileStats.m; sourceTree = "<group>"; };
 		85A69CFF17C530FE0061E254 /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
@@ -3131,6 +3139,10 @@
 				85325A2217BB0DF8008E87D1 /* icon-menu-comments.png */,
 				85325A2317BB0DF8008E87D1 /* icon-menu-comments-active@2x.png */,
 				85325A2417BB0DF8008E87D1 /* icon-menu-comments-active.png */,
+				8599658017DA903B005F84EB /* icon-menu-viewadmin@2x.png */,
+				8599658117DA903B005F84EB /* icon-menu-viewadmin.png */,
+				8599658217DA903B005F84EB /* icon-menu-viewadmin-active@2x.png */,
+				8599658317DA903B005F84EB /* icon-menu-viewadmin-active.png */,
 			);
 			name = "New Sidebar";
 			sourceTree = "<group>";
@@ -4447,6 +4459,7 @@
 				8370D1BE11FA6295009D650F /* AddSiteViewController.xib in Resources */,
 				8320B5D911FCA50400607422 /* UITableViewSwitchCell.xib in Resources */,
 				8333FE0E11FF6EF200A495C1 /* EditSiteViewController.xib in Resources */,
+				8599658517DA903B005F84EB /* icon-menu-viewadmin.png in Resources */,
 				8362C1041201E7CE00599347 /* WebSignupViewController-iPad.xib in Resources */,
 				8362C54612027BC300599347 /* AddUsersBlogsViewController~ipad.xib in Resources */,
 				83D3DCFC1215CF8400600B4B /* autosave.png in Resources */,
@@ -4557,6 +4570,7 @@
 				85325A3E17BB0DF8008E87D1 /* icon-menu-posts-add.png in Resources */,
 				859743A417D6D956009DCDCA /* doneButtonHighlighted-ios7.png in Resources */,
 				30E5DD5D140E7747003FA092 /* toolbarUl.png in Resources */,
+				8599658417DA903B005F84EB /* icon-menu-viewadmin@2x.png in Resources */,
 				30E5DD78140E7B7F003FA092 /* toolbarMore@2x.png in Resources */,
 				30E5DD79140E7B7F003FA092 /* toolbarCode.png in Resources */,
 				857F55CC17CEC5E100E154E1 /* toggleButtonExtended-ios7@2x.png in Resources */,
@@ -4772,6 +4786,7 @@
 				5D15F4AF15B8C407001B14EA /* toolbarItalicHighlighted.png in Resources */,
 				5D15F4B015B8C407001B14EA /* toolbarItalicHighlighted@2x.png in Resources */,
 				5D15F4B115B8C407001B14EA /* toolbarItaliciPad.png in Resources */,
+				8599658717DA903B005F84EB /* icon-menu-viewadmin-active.png in Resources */,
 				5D15F4B215B8C407001B14EA /* toolbarItaliciPad@2x.png in Resources */,
 				5D15F4B315B8C407001B14EA /* toolbarLiHighlighted.png in Resources */,
 				5D15F4B415B8C407001B14EA /* toolbarLiHighlighted@2x.png in Resources */,
@@ -5069,6 +5084,7 @@
 				5D7BEAB91774A10D00423E7F /* icon-post@2x.png in Resources */,
 				5D7BEABA1774A10D00423E7F /* icon-reader.png in Resources */,
 				5D7BEABB1774A10D00423E7F /* icon-reader@2x.png in Resources */,
+				8599658617DA903B005F84EB /* icon-menu-viewadmin-active@2x.png in Resources */,
 				5D7BEABC1774A10D00423E7F /* icon-stats.png in Resources */,
 				5D7BEABD1774A10D00423E7F /* icon-stats@2x.png in Resources */,
 				5D7BEABE1774A10D00423E7F /* icon-wp.png in Resources */,
