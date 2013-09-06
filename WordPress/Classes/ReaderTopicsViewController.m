@@ -10,6 +10,7 @@
 #import "WordPressComApi.h"
 #import "ReaderPost.h"
 #import "WPFriendFinderViewController.h"
+#import "WPTableViewSectionTitleView.h"
 
 @interface ReaderTopicsViewController ()
 
@@ -173,8 +174,20 @@
 
 #pragma mark - TableView methods
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	switch (section) {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    WPTableViewSectionTitleView *header = [[WPTableViewSectionTitleView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionTitleView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section {
+    switch (section) {
 		case 0:
 			return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
 			break;

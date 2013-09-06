@@ -44,6 +44,7 @@
 #import "GeneralWalkthroughViewController.h"
 #import "WPAccount.h"
 #import "WelcomeViewController.h"
+#import "WPTableViewSectionTitleView.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,
@@ -281,7 +282,20 @@ typedef enum {
 }
 
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    WPTableViewSectionTitleView *header = [[WPTableViewSectionTitleView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionTitleView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
     if (section == SettingsSectionBlogs) {
         return NSLocalizedString(@"Blogs", @"Title label for the user blogs in the app settings");
         
@@ -299,7 +313,7 @@ typedef enum {
             return NSLocalizedString(@"Notifications", @"");
         else
             return nil;
-    
+        
     } else if (section == SettingsSectionSounds) {
         return NSLocalizedString(@"Sounds", @"Title label for the sounds section in the app settings.");
         

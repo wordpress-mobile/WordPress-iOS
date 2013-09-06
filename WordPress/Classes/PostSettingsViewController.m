@@ -9,6 +9,7 @@
 #import <ImageIO/ImageIO.h>
 #import "WPSegmentedSelectionTableViewController.h"
 #import "WPAddCategoryViewController.h"
+#import "WPTableViewSectionTitleView.h"
 #import "Post.h"
 
 #define kPasswordFooterSectionHeight         68.0f
@@ -388,13 +389,14 @@
     return 0;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
     NSUInteger alteredSection = section;
     if (!self.post && section == 0) {
         // We only show the status section for Pages
         alteredSection = 1;
     }
-
+    
 	if (alteredSection == 0) {
         return @"";
     } else if (alteredSection == 1) {
@@ -411,7 +413,15 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return nil;
+    WPTableViewSectionTitleView *header = [[WPTableViewSectionTitleView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionTitleView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
