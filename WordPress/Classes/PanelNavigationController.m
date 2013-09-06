@@ -221,31 +221,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     } else {
         _stackOffset = 0;
     }
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
-//    if (IS_IPAD) {
-//        CGFloat height = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? self.view.bounds.size.height: self.view.bounds.size.width;
-//        //The iOS simulator would pull in the wrong values
-//        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && height > self.view.bounds.size.width)
-//            height = self.view.bounds.size.width;
-//        _popPanelsView = [[UIView alloc] initWithFrame:CGRectMake(SIDEBAR_WIDTH + 10.0f, (height / 2) - 82.0f, 200.0f, 82.0f)];
-//        [_popPanelsView setBackgroundColor:[UIColor clearColor]];
-//        
-//        [_popPanelsView addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]]];
-//        
-//        UIImageView *popperImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]];
-//        CGRect frame = popperImageView.frame;
-//        frame.origin.x += 10.0f;
-//        popperImageView.frame = frame;
-//        UIImageView *trashIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UIButtonBarTrash"]];
-//        trashIcon.center = CGPointMake(popperImageView.bounds.size.width/2,popperImageView.bounds.size.height/2);
-//        trashIcon.alpha = 0.0f;
-//        [popperImageView addSubview:trashIcon];
-//        [_popPanelsView addSubview:popperImageView];
-//        [_popPanelsView setAlpha:0.0f];
-//        
-//        [self.view addSubview:_popPanelsView];
-//        [self.view sendSubviewToBack:_popPanelsView];
-//    }
+    
     if (IS_IPAD) {
         [self showSidebarAnimated:NO];
     }
