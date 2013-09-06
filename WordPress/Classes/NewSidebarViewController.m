@@ -921,6 +921,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
     quickPhotoViewController.sidebarViewController = self;
     quickPhotoViewController.photo = image;
+    quickPhotoViewController.startingBlog = _currentlyOpenedBlog;
     if (!image) {
         quickPhotoViewController.sourceType = sourceType;
     }
