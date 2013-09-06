@@ -21,7 +21,8 @@
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *bottomSeparator;
 @property (nonatomic, weak) IBOutlet UILabel *bottomLabel;
-@property (nonatomic, weak) IBOutlet UITextField *textField;
+@property (nonatomic, weak) IBOutlet UITextField *firstTextField;
+@property (nonatomic, weak) IBOutlet UITextField *secondTextField;
 @property (nonatomic, weak) IBOutlet WPNUXSecondaryButton *leftButton;
 @property (nonatomic, weak) IBOutlet WPNUXPrimaryButton *rightButton;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalCenteringConstraint;
@@ -48,6 +49,7 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
         [self configureView];
         [self configureBackgroundColor];
         [self configureButtonVisibility];
+        [self configureTextFieldVisibility];
         [self addGestureRecognizer];
     }
     return self;
@@ -59,6 +61,7 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
         _overlayMode = overlayMode;
         [self adjustOverlayDismissal];
         [self configureButtonVisibility];
+        [self configureTextFieldVisibility];
         [self setNeedsUpdateConstraints];
     }
 }
@@ -75,9 +78,12 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
 - (void)setOverlayDescription:(NSString *)overlayDescription
 {
     if (_overlayDescription != overlayDescription) {
+        self.descriptionLabel.hidden = NO;
         _overlayDescription = overlayDescription;
         self.descriptionLabel.text = _overlayDescription;
         [self setNeedsUpdateConstraints];
+    } else if (overlayDescription == nil) {
+        self.descriptionLabel.hidden = YES;
     }
 }
 
@@ -93,9 +99,8 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
 - (void)setFirstTextFieldPlaceholder:(NSString *)firstTextFieldPlaceholder
 {
     if (![_firstTextFieldPlaceholder isEqualToString:firstTextFieldPlaceholder]) {
-        self.textField.hidden = NO;
         _firstTextFieldPlaceholder = firstTextFieldPlaceholder;
-        self.textField.placeholder = _firstTextFieldPlaceholder;
+        self.firstTextField.placeholder = _firstTextFieldPlaceholder;
         [self setNeedsUpdateConstraints];
     }
 }
@@ -103,9 +108,8 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
 - (void)setFirstTextFieldValue:(NSString *)firstTextFieldValue
 {
     if (![_firstTextFieldValue isEqualToString:firstTextFieldValue]) {
-        self.textField.hidden = NO;
         _firstTextFieldValue = firstTextFieldValue;
-        self.textField.text = _firstTextFieldValue;
+        self.firstTextField.text = _firstTextFieldValue;
         [self setNeedsUpdateConstraints];
     }
 }
@@ -113,9 +117,8 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
 - (void)setSecondTextFieldPlaceholder:(NSString *)secondTextFieldPlaceholder
 {
     if (![_secondTextFieldPlaceholder isEqualToString:secondTextFieldPlaceholder]) {
-        self.textField.hidden = NO;
         _secondTextFieldPlaceholder = secondTextFieldPlaceholder;
-        self.textField.text = _secondTextFieldPlaceholder;
+        self.secondTextField.placeholder = _secondTextFieldPlaceholder;
         [self setNeedsUpdateConstraints];
     }
 }
@@ -123,9 +126,8 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
 - (void)setSecondTextFieldValue:(NSString *)secondTextFieldValue
 {
     if (![_secondTextFieldValue isEqualToString:secondTextFieldValue]) {
-        self.textField.hidden = NO;
         _secondTextFieldValue = secondTextFieldValue;
-        self.textField.text = _secondTextFieldValue;
+        self.secondTextField.text = _secondTextFieldValue;
         [self setNeedsUpdateConstraints];
     }
 }
@@ -168,7 +170,7 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
 
     [self removeConstraints:_verticalConstraints];
     [self removeConstraints:_horizontalConstraints];
-    
+
     UIView *backgroundView = self.backgroundView;
     NSDictionary *views = NSDictionaryOfVariableBindings(backgroundView);
     _horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[backgroundView]|" options:0 metrics:0 views:views];
@@ -177,9 +179,9 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     [self addConstraints:_verticalConstraints];
     
     // Center Views
-    CGFloat heightOfMiddleControls = CGRectGetMaxY(self.bottomSeparator.frame);// - CGRectGetMinY(self.logo.frame);
-    CGFloat verticalOffset = (CGRectGetMaxY(self.bottomLabel.frame) - heightOfMiddleControls)/2.0;
-    self.verticalCenteringConstraint.constant = verticalOffset;
+//    CGFloat heightOfMiddleControls = CGRectGetMaxY(self.bottomSeparator.frame);// - CGRectGetMinY(self.logo.frame);
+//    CGFloat verticalOffset = (CGRectGetMaxY(self.bottomLabel.frame) - heightOfMiddleControls)/2.0;
+//    self.verticalCenteringConstraint.constant = verticalOffset;
 }
 
 
@@ -227,12 +229,30 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
 
 - (void)configureButtonVisibility
 {
-    if (self.overlayMode == WPAlertViewOverlayModeTwoButtonMode) {
+    if (self.overlayMode == WPAlertViewOverlayModeTwoButtonMode ||
+        self.overlayMode == WPAlertViewOverlayModeOneTextFieldTwoButtonMode ||
+        self.overlayMode == WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode) {
         _leftButton.hidden = NO;
         _rightButton.hidden = NO;
     } else {
         _leftButton.hidden = YES;
         _rightButton.hidden = YES;
+    }
+}
+
+- (void)configureTextFieldVisibility
+{
+    if (self.overlayMode == WPAlertViewOverlayModeOneTextFieldTwoButtonMode) {
+        _firstTextField.hidden = NO;
+        [_firstTextField becomeFirstResponder];
+        _secondTextField.hidden = YES;
+    } else if (self.overlayMode == WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode) {
+        _firstTextField.hidden = NO;
+        [_firstTextField becomeFirstResponder];
+        _secondTextField.hidden = NO;
+    } else {
+        _firstTextField.hidden = YES;
+        _secondTextField.hidden = YES;
     }
 }
 
