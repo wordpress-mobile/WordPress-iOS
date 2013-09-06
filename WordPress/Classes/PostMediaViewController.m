@@ -265,10 +265,13 @@
     }
 
 	[cell.imageView setBounds:CGRectMake(0.0f, 0.0f, 75.0f, 75.0f)];
-	[cell.imageView setClipsToBounds:NO];
+	[cell.imageView setClipsToBounds:YES];
 	[cell.imageView setFrame:CGRectMake(0.0f, 0.0f, 75.0f, 75.0f)];
 	[cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
+    
 	filesizeString = nil;
+    
+    [WPStyleGuide configureTableViewCell:cell];
     
     return cell;
 }
