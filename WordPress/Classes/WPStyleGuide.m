@@ -193,6 +193,11 @@
     return [WPStyleGuide baseLighterBlue];
 }
 
++ (UIColor *)buttonActionColor
+{
+    return [WPStyleGuide baseLighterBlue];
+}
+
 + (UIBarButtonItemStyle)barButtonStyleForDone
 {
     if (IS_IOS7)
