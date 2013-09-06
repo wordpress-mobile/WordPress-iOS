@@ -8,9 +8,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostSettingsViewController">
             <connections>
                 <outlet property="addressLabel" destination="240" id="243"/>
-                <outlet property="categoriesLabel" destination="bdF-Vd-Iai" id="klM-XJ-jgd"/>
-                <outlet property="categoriesTableViewCell" destination="RBg-JU-kE7" id="w8h-HT-01a"/>
-                <outlet property="categoriesTitleLabel" destination="Vpb-kc-TJC" id="Imx-KR-oV1"/>
                 <outlet property="coordinateLabel" destination="241" id="244"/>
                 <outlet property="featuredImageLabel" destination="264" id="271"/>
                 <outlet property="featuredImageSpinner" destination="265" id="272"/>
@@ -19,19 +16,7 @@
                 <outlet property="mapGeotagTableViewCell" destination="238" id="242"/>
                 <outlet property="mapView" destination="239" id="245"/>
                 <outlet property="passwordTextField" destination="225" id="228"/>
-                <outlet property="postFormatLabel" destination="249" id="251"/>
-                <outlet property="postFormatTableViewCell" destination="248" id="252"/>
-                <outlet property="postFormatTitleLabel" destination="250" id="253"/>
-                <outlet property="publishOnDateLabel" destination="221" id="236"/>
-                <outlet property="publishOnLabel" destination="129" id="235"/>
-                <outlet property="publishOnTableViewCell" destination="78" id="83"/>
-                <outlet property="statusLabel" destination="227" id="229"/>
-                <outlet property="statusTableViewCell" destination="223" id="230"/>
-                <outlet property="statusTitleLabel" destination="226" id="247"/>
                 <outlet property="tableView" destination="6" id="254"/>
-                <outlet property="tagsTableViewCell" destination="h2p-g5-RWd" id="I02-P0-qDP"/>
-                <outlet property="tagsTextField" destination="EiJ-8U-p4G" id="YmM-45-FTO"/>
-                <outlet property="tagsTitleLabel" destination="7Pa-qk-MRg" id="8ym-g5-agW"/>
                 <outlet property="view" destination="2" id="128"/>
                 <outlet property="visibilityLabel" destination="222" id="231"/>
                 <outlet property="visibilityTableViewCell" destination="24" id="232"/>
@@ -66,22 +51,22 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Visibility" lineBreakMode="tailTruncation" minimumFontSize="10" id="99">
-                        <rect key="frame" x="8" y="11" width="58" height="21"/>
+                        <rect key="frame" x="15" y="11" width="84" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="12"/>
+                        <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="18"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Public" lineBreakMode="tailTruncation" minimumFontSize="10" id="222">
-                        <rect key="frame" x="74" y="11" width="206" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Public" textAlignment="right" lineBreakMode="tailTruncation" minimumFontSize="10" id="222">
+                        <rect key="frame" x="99" y="11" width="206" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter a password" minimumFontSize="17" id="225">
-                        <rect key="frame" x="94" y="47" width="206" height="31"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <rect key="frame" x="15" y="40" width="206" height="31"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                     </textField>
