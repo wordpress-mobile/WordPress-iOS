@@ -28,6 +28,8 @@
 @implementation PostMediaViewController {
     CGRect actionSheetRect;
     UIAlertView *currentAlert;
+    BOOL _dismissOnCancel;
+    BOOL _hasPromptedToAddPhotos;
 }
 @synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, addPopover, picker, customSizeAlert;
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner;
@@ -91,10 +93,15 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if (IS_IOS7 && self.postDetailViewController.showAddMediaToUser) {
-       [self tappedAddButton];
-        self.postDetailViewController.showAddMediaToUser = false;
+    if (IS_IOS7 && !_hasPromptedToAddPhotos) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = nil;
+        sectionInfo = [[self.resultsController sections] objectAtIndex:0];
+        if ([sectionInfo numberOfObjects] == 0) {
+            _dismissOnCancel = true;;
+            [self tappedAddButton];
+        }
     }
+    _hasPromptedToAddPhotos = YES;
 }
 
 - (void)customizeForiOS7
@@ -559,9 +566,16 @@
 }
 
 - (void)processPhotoPickerActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    
     UIActionSheet *savedCurrentActionSheet = currentActionSheet;
     currentActionSheet = nil;
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+    if (IS_IOS7 && [buttonTitle isEqualToString:NSLocalizedString(@"Cancel", nil)] && _dismissOnCancel) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Photo From Library", nil)]) {
         [self pickPhotoFromPhotoLibrary:nil];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
@@ -575,6 +589,7 @@
         //
         currentActionSheet = savedCurrentActionSheet;
     }
+    _dismissOnCancel = false;
 }
 
 #pragma mark -
