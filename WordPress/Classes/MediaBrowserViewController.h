@@ -16,5 +16,6 @@
 @interface MediaBrowserViewController : UIViewController <MediaSearchFilterDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) Blog *blog;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @end

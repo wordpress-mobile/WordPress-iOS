@@ -17,12 +17,12 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 
 @interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet MediaSearchFilterHeaderView *filterHeaderView;
 @property (nonatomic, strong) NSArray *filteredMedia;
 @property (nonatomic, strong) NSArray *mediaTypeFilterOptions, *dateFilteringOptions;
 @property (nonatomic, strong) NSMutableArray *selectedMedia;
 @property (nonatomic, strong) NSArray *multiselectToolbarItems;
+@property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *multiselectToolbar;
 
@@ -55,7 +55,14 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     self.collectionView.delegate = self;
     [self.collectionView registerClass:[MediaBrowserCell class] forCellWithReuseIdentifier:MediaCellIdentifier];
     
+    [self.collectionView addSubview:_filterHeaderView];
     _filterHeaderView.delegate = self;
+    
+    UIRefreshControl *refreshHeaderView = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.collectionView.bounds.size.height, self.collectionView.frame.size.width, self.collectionView.bounds.size.height)];
+    _refreshHeaderView = refreshHeaderView;
+    [_refreshHeaderView addTarget:self action:@selector(refreshControlTriggered:) forControlEvents:UIControlEventValueChanged];
+    _refreshHeaderView.tintColor = [WPStyleGuide whisperGrey];
+    [self.collectionView addSubview:_refreshHeaderView];
     
     [self.view addSubview:self.multiselectToolbar];
     _multiselectToolbarItems = [NSArray arrayWithArray:_multiselectToolbar.items];
@@ -70,11 +77,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
         .size = self.multiselectToolbar.frame.size
     };
     
-    [self.blog syncMediaLibraryWithSuccess:^{
-        [self.collectionView reloadData];
-    } failure:^(NSError *error) {
-        
-    }];
+    [self refresh];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -88,6 +91,18 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)refresh {
+    [_refreshHeaderView beginRefreshing];
+    [self.blog syncMediaLibraryWithSuccess:^{
+        [self.collectionView reloadData];
+        [_refreshHeaderView endRefreshing];
+    } failure:^(NSError *error) {
+        WPFLog(@"Failed to refresh media library");
+        [WPError showAlertWithError:error];
+        [_refreshHeaderView endRefreshing];
+    }];
 }
 
 #pragma mark - Setters
@@ -237,6 +252,14 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 
 - (NSArray*)buttonsForMultipleItems {
     return @[_multiselectToolbarItems[0], _multiselectToolbarItems[3], _multiselectToolbarItems[4], _multiselectToolbarItems[5]];
+}
+
+#pragma mark - Refresh
+
+- (void)refreshControlTriggered:(UIRefreshControl*)refreshControl {
+    if (refreshControl.isRefreshing) {
+        [self refresh];
+    }
 }
 
 @end

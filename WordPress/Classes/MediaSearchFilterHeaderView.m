@@ -35,10 +35,10 @@
     _delegate = delegate;
     
     [self addSubview:self.searchBar];
-    [_delegate.view addSubview:self.sortMediaView];
-    [_delegate.view addSubview:self.sortDatesView];
-    [_delegate.view addSubview:self.sortMediaButton];
-    [_delegate.view addSubview:self.sortDatesButton];
+    [_delegate.collectionView addSubview:self.sortMediaView];
+    [_delegate.collectionView addSubview:self.sortDatesView];
+    [_delegate.collectionView addSubview:self.sortMediaButton];
+    [_delegate.collectionView addSubview:self.sortDatesButton];
     
     _sortMediaView.autoresizingMask = _sortMediaButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
     _sortDatesView.autoresizingMask = _sortDatesButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
@@ -51,6 +51,7 @@
         .origin = CGPointMake(_sortMediaView.frame.origin.x, -_sortMediaView.frame.size.height),
         .size = _sortMediaView.frame.size
     };
+    _sortMediaView.alpha = 0;
     _sortMediaView.backgroundColor = [WPStyleGuide allTAllShadeGrey];
     [_sortMediaView addTargetForOptionSelected:self selector:@selector(sortMediaOptionSelected:)];
     return _sortMediaView;
@@ -63,6 +64,7 @@
         .origin = CGPointMake(_sortDatesView.frame.origin.x, -_sortDatesView.frame.size.height),
         .size = _sortDatesView.frame.size
     };
+    _sortDatesView.alpha = 0;
     _sortDatesView.backgroundColor = [WPStyleGuide allTAllShadeGrey];
     [_sortDatesView addTargetForOptionSelected:self selector:@selector(sortDateOptionSelected:)];
     return _sortDatesView;
