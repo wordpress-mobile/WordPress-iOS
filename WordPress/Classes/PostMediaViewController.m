@@ -28,6 +28,8 @@
 @implementation PostMediaViewController {
     CGRect actionSheetRect;
     UIAlertView *currentAlert;
+    BOOL _dismissOnCancel;
+    BOOL _hasPromptedToAddPhotos;
 }
 @synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, addPopover, picker, customSizeAlert;
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner;
@@ -91,10 +93,15 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if (IS_IOS7 && self.postDetailViewController.showAddMediaToUser) {
-       [self tappedAddButton];
-        self.postDetailViewController.showAddMediaToUser = false;
+    if (IS_IOS7 && !_hasPromptedToAddPhotos) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = nil;
+        sectionInfo = [[self.resultsController sections] objectAtIndex:0];
+        if ([sectionInfo numberOfObjects] == 0) {
+            _dismissOnCancel = true;;
+            [self tappedAddButton];
+        }
     }
+    _hasPromptedToAddPhotos = YES;
 }
 
 - (void)customizeForiOS7
@@ -258,10 +265,13 @@
     }
 
 	[cell.imageView setBounds:CGRectMake(0.0f, 0.0f, 75.0f, 75.0f)];
-	[cell.imageView setClipsToBounds:NO];
+	[cell.imageView setClipsToBounds:YES];
 	[cell.imageView setFrame:CGRectMake(0.0f, 0.0f, 75.0f, 75.0f)];
 	[cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
+    
 	filesizeString = nil;
+    
+    [WPStyleGuide configureTableViewCell:cell];
     
     return cell;
 }
@@ -516,39 +526,41 @@
 		self.isShowingChangeOrientationActionSheet = NO;
 	}
 	else if(isShowingResizeActionSheet == YES) {
-		switch (buttonIndex) {
-			case 0:
-				if (actionSheet.numberOfButtons == 2)
-					[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
-				else 
-					[self useImage:[self resizeImage:currentImage toSize:kResizeSmall]];
-				break;
-			case 1:
-				if (actionSheet.numberOfButtons == 2)
-					[self showCustomSizeAlert];
-				else if (actionSheet.numberOfButtons == 3)
-					[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
-				else
-					[self useImage:[self resizeImage:currentImage toSize:kResizeMedium]];
-				break;
-			case 2:
-				if (actionSheet.numberOfButtons == 3)
-					[self showCustomSizeAlert];
-				else if (actionSheet.numberOfButtons == 4)
-					[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
-				else
-					[self useImage:[self resizeImage:currentImage toSize:kResizeLarge]];
-				break;
-			case 3:
-				if (actionSheet.numberOfButtons == 4)
-					[self showCustomSizeAlert];
-				else
-					[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
-				break;
-			case 4: 
-				[self showCustomSizeAlert]; 
-				break;
-		}
+        if (actionSheet.cancelButtonIndex != buttonIndex) {
+            switch (buttonIndex) {
+                case 0:
+                    if (actionSheet.numberOfButtons == 2)
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
+                    else
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeSmall]];
+                    break;
+                case 1:
+                    if (actionSheet.numberOfButtons == 2)
+                        [self showCustomSizeAlert];
+                    else if (actionSheet.numberOfButtons == 3)
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
+                    else
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeMedium]];
+                    break;
+                case 2:
+                    if (actionSheet.numberOfButtons == 3)
+                        [self showCustomSizeAlert];
+                    else if (actionSheet.numberOfButtons == 4)
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
+                    else
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeLarge]];
+                    break;
+                case 3:
+                    if (actionSheet.numberOfButtons == 4)
+                        [self showCustomSizeAlert];
+                    else
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
+                    break;
+                case 4: 
+                    [self showCustomSizeAlert]; 
+                    break;
+            }
+        }
 		self.isShowingResizeActionSheet = NO;
 	}
     
@@ -559,9 +571,16 @@
 }
 
 - (void)processPhotoPickerActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    
     UIActionSheet *savedCurrentActionSheet = currentActionSheet;
     currentActionSheet = nil;
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+    if (IS_IOS7 && [buttonTitle isEqualToString:NSLocalizedString(@"Cancel", nil)] && _dismissOnCancel) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Photo From Library", nil)]) {
         [self pickPhotoFromPhotoLibrary:nil];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
@@ -575,6 +594,7 @@
         //
         currentActionSheet = savedCurrentActionSheet;
     }
+    _dismissOnCancel = false;
 }
 
 #pragma mark -
@@ -815,28 +835,27 @@
 		if(currentImage.size.width > largeSize.width  && currentImage.size.height > largeSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
 															delegate:self 
-												   cancelButtonTitle:nil 
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil 
 												   otherButtonTitles:resizeSmallStr, resizeMediumStr, resizeLargeStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 			
 		} else if(currentImage.size.width > mediumSize.width  && currentImage.size.height > mediumSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
 															delegate:self 
-												   cancelButtonTitle:nil 
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil 
 												   otherButtonTitles:resizeSmallStr, resizeMediumStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 			
 		} else if(currentImage.size.width > smallSize.width  && currentImage.size.height > smallSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
 															delegate:self 
-												   cancelButtonTitle:nil 
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil 
 												   otherButtonTitles:resizeSmallStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
-			
 		} else {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
 															delegate:self 
-												   cancelButtonTitle:nil 
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil 
 												   otherButtonTitles: originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 		}

@@ -221,31 +221,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     } else {
         _stackOffset = 0;
     }
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
-//    if (IS_IPAD) {
-//        CGFloat height = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? self.view.bounds.size.height: self.view.bounds.size.width;
-//        //The iOS simulator would pull in the wrong values
-//        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && height > self.view.bounds.size.width)
-//            height = self.view.bounds.size.width;
-//        _popPanelsView = [[UIView alloc] initWithFrame:CGRectMake(SIDEBAR_WIDTH + 10.0f, (height / 2) - 82.0f, 200.0f, 82.0f)];
-//        [_popPanelsView setBackgroundColor:[UIColor clearColor]];
-//        
-//        [_popPanelsView addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]]];
-//        
-//        UIImageView *popperImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]];
-//        CGRect frame = popperImageView.frame;
-//        frame.origin.x += 10.0f;
-//        popperImageView.frame = frame;
-//        UIImageView *trashIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UIButtonBarTrash"]];
-//        trashIcon.center = CGPointMake(popperImageView.bounds.size.width/2,popperImageView.bounds.size.height/2);
-//        trashIcon.alpha = 0.0f;
-//        [popperImageView addSubview:trashIcon];
-//        [_popPanelsView addSubview:popperImageView];
-//        [_popPanelsView setAlpha:0.0f];
-//        
-//        [self.view addSubview:_popPanelsView];
-//        [self.view sendSubviewToBack:_popPanelsView];
-//    }
+    
     if (IS_IPAD) {
         [self showSidebarAnimated:NO];
     }
@@ -949,7 +925,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     // menu opens.
     self.statusBarBackgroundView.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) animations:^{
-        self.statusBarBackgroundView.backgroundColor = [WPStyleGuide bigEddieGrey];
+        self.statusBarBackgroundView.backgroundColor = [WPStyleGuide darkAsNightGrey];
     }];
 }
 
@@ -1193,32 +1169,12 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
      */
     if (sender.state == UIGestureRecognizerStateEnded) {
         CGFloat velocity = [sender velocityInView:self.view].x;
-        if (IS_IPAD) {
-            CGFloat nearestOffset = [self nearestValidOffsetWithVelocity:-velocity];
-            //[self setStackOffset:nearestOffset duration:DURATION_FAST];
-            [self setStackOffset:nearestOffset withVelocity:velocity];
-            //pop all extra view controllers if user dragged stack to the right
-            if (offset < 0 && offset <= -120.0f && [self.detailViews count] > 1) {
-                [self animatePoppedIcon];
-                _isShowingPoppedIcon = NO;
-                [self popToRootViewControllerAnimated:YES];
-                [SoundUtil playDiscardSound];
-                [self.delegate resetView];
-            }
+        if (velocity > 0) {
+            [self showSidebarWithVelocity:velocity];
         } else {
-            if (ABS(velocity) < 300) {
-                if (offset < DETAIL_LEDGE_OFFSET / 3) {
-                    [self showSidebarWithVelocity:velocity];
-                } else {
-                    [self closeSidebar];
-                }
-            } else if (velocity > 0) {
-                // Going right
-                [self showSidebarWithVelocity:velocity];
-            } else {
-                [self closeSidebarWithVelocity:velocity];
-            }
+            [self closeSidebarWithVelocity:velocity];
         }
+        return;
     }
     
     if (IS_IOS7) {
@@ -1229,7 +1185,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 
 - (UIColor *)statusBarTransitionColorForPercentage:(CGFloat)percentage
 {
-    UIColor *colorWhenSidebarOpened = [WPStyleGuide bigEddieGrey];
+    UIColor *colorWhenSidebarOpened = [WPStyleGuide darkAsNightGrey];
     UIColor *colorWhenSidebarClosed = [WPStyleGuide newKidOnTheBlockBlue];
     
     if (percentage == 1.0) {
@@ -1359,51 +1315,25 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 
 - (void)animateView:(UIView *)view toOffset:(CGFloat)offset withVelocity:(CGFloat)velocity {
     view = [self viewOrViewWrapper:view];
-    CALayer *viewLayer = view.layer;
-    [viewLayer removeAllAnimations];
-    float viewOffset = MAX(0, MIN(offset, self.view.bounds.size.width));
-    
-    CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"position.x"];
-    
-    CGPoint startPosition = viewLayer.position;
-    CGPoint endPosition = CGPointMake(viewOffset+(viewLayer.frame.size.width * 0.5f), startPosition.y);
-    CGFloat distance = ABS(startPosition.x - endPosition.x);
-    NSMutableArray *values = [NSMutableArray arrayWithCapacity:4];
-    NSMutableArray *timingFunctions = [NSMutableArray arrayWithCapacity:3];
-    NSMutableArray *keyTimes = [NSMutableArray arrayWithCapacity:4];
-    [keyTimes addObject:[NSNumber numberWithFloat:0.f]];
-    [values addObject:[NSNumber numberWithFloat:startPosition.x]];
-    CGFloat overShot = 0, duration = ABS(distance/velocity);
-    CAMediaTimingFunction *easeInOut = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    [timingFunctions addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
-    
-    if(ABS(velocity) > PANEL_MINIMUM_OVERSHOT_VELOCITY && (!IS_IPAD || distance > 10.f)){
-        [timingFunctions addObject:easeInOut];
-        velocity *= 0.25f;
-
-        overShot = 22.f * (velocity * PANEL_OVERSHOT_FRICTION);
-//        distance += ABS(overShot); // added but never used?
-        CGFloat overShotDuration = ABS(overShot/(velocity * (1-PANEL_OVERSHOT_FRICTION))) * 1.25;
-        [keyTimes addObject:[NSNumber numberWithFloat:(duration/(duration+overShotDuration))]];
-        duration += overShotDuration;
-        [values addObject:[NSNumber numberWithFloat:endPosition.x + overShot]];
-    } else {
-        // nothing special, just slide
-        duration = 0.2f;
-        
-    }
-    [keyTimes addObject:[NSNumber numberWithFloat:1.f]];
-    
-    [values addObject:[NSNumber numberWithFloat:endPosition.x]];
-    
-    animation.values = values;
-    animation.timingFunctions = timingFunctions;
-    animation.keyTimes = keyTimes;
-    animation.duration = duration;
-        
-    [viewLayer addAnimation:animation forKey:@"position"];
-    viewLayer.position = endPosition;
-    
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = view.frame;
+        frame.origin.x = offset;
+        view.frame = frame;
+    }];
+    [UIView animateWithDuration:0.3 animations:^{
+        if (offset == 0) {
+            self.statusBarBackgroundView.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+        } else {
+            self.statusBarBackgroundView.backgroundColor = [WPStyleGuide darkAsNightGrey];
+        }
+    } completion:^(BOOL finished){
+        // We set the statusBarBackgroundView to be a clear color because that way when this menu is closed
+        // and some view controller removes the navigation bar to go into a 'fullscreen' mode such as the
+        // posts editor, we won't have a blue bar sitting at the top.
+        if (offset == 0) {
+            self.statusBarBackgroundView.backgroundColor = [UIColor clearColor];
+        }
+    }];
 }
 
 - (void)setStackOffset:(CGFloat)offset withVelocity:(CGFloat)velocity{
@@ -1449,13 +1379,10 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     // If we're working with wide panels we need to adjust the offset for the wide panel
     // This makes sure the lefthand side of the panel is correctly positioned over the sidebar.
     if ([self viewControllerExpectsWidePanel:_detailViewController]) {
-        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            if (velocity < 0) {
-                return offset;
-            } else {
-                offset = DETAIL_LEDGE_OFFSET - (self.view.bounds.size.width - IPAD_WIDE_PANEL_WIDTH);
-                
-            }
+        if (velocity < 0) {
+            return offset;
+        } else {
+            offset = DETAIL_LEDGE_OFFSET - (self.view.bounds.size.width - IPAD_WIDE_PANEL_WIDTH);
         }
     }
     // if we have a single panel, transition back to its starting offset.
@@ -1517,26 +1444,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 }
 
 - (CGFloat)maxOffsetSoft {
-    CGFloat maxSoft;
-    NSUInteger viewCount = [self.detailViewWidths count];
-    if (IS_IPHONE) {
-        maxSoft = DETAIL_LEDGE_OFFSET;
-    } else if (viewCount <= 1) {
-        maxSoft = 0.0f;
-        if ([self viewControllerExpectsWidePanel:_detailViewController] && UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            maxSoft = DETAIL_LEDGE_OFFSET - (self.view.bounds.size.width - IPAD_WIDE_PANEL_WIDTH);
-        }
-    } else {
-        maxSoft = DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
-        maxSoft+= DETAIL_LEDGE;
-        maxSoft+= [[self.detailViewWidths objectAtIndex:(viewCount - 1)] floatValue];
-        maxSoft+= [[self.detailViewWidths objectAtIndex:(viewCount - 2)] floatValue];
-        maxSoft-= self.view.bounds.size.width;
-        for (int i = viewCount - 3; i >= 0; i--) {
-            maxSoft += [[self.detailViewWidths objectAtIndex:i] floatValue];
-        }
-    }
-    return maxSoft;
+    return DETAIL_LEDGE_OFFSET;
 }
 
 - (CGFloat)maxOffsetHard {
@@ -1560,7 +1468,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 }
 
 - (CGFloat)minOffsetHard {
-    return DETAIL_LEDGE_OFFSET - self.view.bounds.size.width;
+    return 0.0f;
 }
 
 - (NSInteger)indexForView:(UIView *)view {

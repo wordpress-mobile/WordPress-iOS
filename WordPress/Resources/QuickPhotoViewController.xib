@@ -26,10 +26,11 @@
                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textField>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="table_sep.png" id="26" userLabel="separator">
-                    <rect key="frame" x="0.0" y="39" width="190" height="1"/>
+                <view contentMode="scaleToFill" id="tqi-7C-LDS" userLabel="Separator View">
+                    <rect key="frame" x="0.0" y="39.5" width="190" height="1"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                </imageView>
+                    <color key="backgroundColor" red="0.86666666670000003" green="0.86666666670000003" blue="0.86666666670000003" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
                 <textView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="9">
                     <rect key="frame" x="0.0" y="40" width="190" height="372"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -45,11 +46,7 @@
                         <outlet property="delegate" destination="-1" id="28"/>
                     </connections>
                 </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="table_sep.png" id="27" userLabel="separator">
-                    <rect key="frame" x="0.0" y="419" width="320" height="1"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                </imageView>
-                <view contentMode="scaleToFill" id="19" customClass="BlogSelectorButton">
+                <view hidden="YES" contentMode="scaleToFill" id="19" customClass="BlogSelectorButton">
                     <rect key="frame" x="0.0" y="425" width="320" height="50"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -60,8 +57,4 @@
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
         </view>
     </objects>
-    <resources>
-        <image name="table_sep.png" width="320" height="1"/>
-        <image name="table_sep.png" width="320" height="1"/>
-    </resources>
 </document>

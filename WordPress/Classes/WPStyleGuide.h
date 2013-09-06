@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class UITableViewTextFieldCell;
 @interface WPStyleGuide : NSObject
 
 // Fonts
@@ -54,6 +55,8 @@
 // Utilities
 + (void)setLeftBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem;
 + (void)setRightBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem;
++ (void)configureTableViewActionCell:(UITableViewCell *)cell;
 + (void)configureTableViewCell:(UITableViewCell *)cell;
++ (void)configureTableViewTextCell:(UITableViewTextFieldCell *)cell;
 
 @end

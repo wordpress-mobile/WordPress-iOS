@@ -189,21 +189,23 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [[self.resultsController fetchedObjects] count] + 1;
+    return [[self.resultsController fetchedObjects] count] + 2; // (Reader, Notifications) + (Blogs) + (Settings)
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if ([self isLastSection:section]) {
-        if ([self areReaderAndNotificationsEnabled]) {
-            return 3;
-        } else {
-            return 1; // Settings
-        }
+    if ([self isSettingsSection:section]) {
+        return 1;
+    }
+    else if ([self isReaderAndNotificationsSection:section]) {
+        if ([WPAccount defaultWordPressComAccount] == nil)
+            return 0;
+        else
+            return 2;
     }
     else {
-        Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:section];
+        Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:(section - 1)];
         if ([blog isEqual:_currentlyOpenedBlog]) {
             return [self shouldShowThemesOption] ? SidebarViewControllerNumberOfRowsForBlog : SidebarViewControllerNumberOfRowsForBlog - 1;
         } else {
@@ -214,20 +216,20 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if ([self isLastSection:section])
-        return 0.0;
-    else
+    if ([self isBlogSection:section])
         return 44.0;
+    else
+        return 0.0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if ([self isLastSection:section]) {
+    if (![self isBlogSection:section]) {
         return nil;
     }
     
     SidebarTopLevelView *headerView = [[SidebarTopLevelView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), 44)];
-    Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:section];
+    Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:(section - 1)];
     headerView.blogTitle = blog.blogName;
     headerView.blavatarUrl = blog.blavatarUrl;
     headerView.isWPCom = blog.isWPcom;
@@ -260,7 +262,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 - (void)toggleSection:(NSUInteger)section forRow:(NSInteger)row
 {
     Blog *oldOpenedBlog = _currentlyOpenedBlog;
-    Blog *blogForSection = [[self.resultsController fetchedObjects] objectAtIndex:section];
+    Blog *blogForSection = [[self.resultsController fetchedObjects] objectAtIndex:(section - 1)];
     if ([blogForSection isEqual:oldOpenedBlog]) {
         // Collapse Currently Opened Section
         _currentlyOpenedBlog = nil;
@@ -284,7 +286,8 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self isLastSection:indexPath.section]) {
+    NSInteger section = indexPath.section;
+    if ([self isSettingsSection:section] || [self isReaderAndNotificationsSection:section]) {
         static NSString *CellIdentifier = @"OtherCell";
         NewSidebarCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
@@ -294,25 +297,28 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         NSString *text;
         UIImage *image;
         UIImage *selectedImage;
-        if ([self isRowForReader:indexPath]) {
-            cell.largerFont = YES;
-            text = NSLocalizedString(@"Reader", nil);
-            image = [UIImage imageNamed:@"icon-menu-reader"];
-            selectedImage = [UIImage imageNamed:@"icon-menu-reader-active"];
-        } else if ([self isRowForNotifications:indexPath]) {
-            cell.largerFont = YES;
-            text = NSLocalizedString(@"Notifications", nil);
-            image = [UIImage imageNamed:@"icon-menu-notifications"];
-            selectedImage = [UIImage imageNamed:@"icon-menu-notifications-active"];
-            if (_unseenNotificationCount > 0) {
-                cell.showsBadge = YES;
-                cell.badgeNumber = _unseenNotificationCount;
-            }
-        } else if ([self isRowForSettings:indexPath]) {
+        
+        if ([self isSettingsSection:section]) {
             cell.largerFont = YES;
             text = NSLocalizedString(@"Settings", nil);
             image = [UIImage imageNamed:@"icon-menu-settings"];
             selectedImage = [UIImage imageNamed:@"icon-menu-settings-active"];
+        } else {
+            if ([self isRowForReader:indexPath]) {
+                cell.largerFont = YES;
+                text = NSLocalizedString(@"Reader", nil);
+                image = [UIImage imageNamed:@"icon-menu-reader"];
+                selectedImage = [UIImage imageNamed:@"icon-menu-reader-active"];
+            } else if ([self isRowForNotifications:indexPath]) {
+                cell.largerFont = YES;
+                text = NSLocalizedString(@"Notifications", nil);
+                image = [UIImage imageNamed:@"icon-menu-notifications"];
+                selectedImage = [UIImage imageNamed:@"icon-menu-notifications-active"];
+                if (_unseenNotificationCount > 0) {
+                    cell.showsBadge = YES;
+                    cell.badgeNumber = _unseenNotificationCount;
+                }
+            }
         }
         
         cell.cellBackgroundColor = SidebarTableViewCellBackgroundColorDark;
@@ -345,7 +351,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
                 if (IS_IPHONE) {
                     [self.panelNavigationController closeSidebar];
                 }
-                [self showQuickPhotoForCell:weakCell];
+                [self showQuickPhotoForCell:(NewSidebarCell *)weakCell];
             };
             cell.secondAccessoryViewImage = [UIImage imageNamed:@"icon-menu-posts-add"];
             cell.tappedSecondAccessoryView = ^{
@@ -365,7 +371,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             text = NSLocalizedString(@"Comments", nil);
             image = [UIImage imageNamed:@"icon-menu-comments"];
             selectedImage = [UIImage imageNamed:@"icon-menu-comments-active"];
-            Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:indexPath.section];
+            Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:(indexPath.section - 1)];
             int numberOfPendingComments = [blog numberOfPendingComments];
             if (numberOfPendingComments > 0) {
                 cell.showsBadge = true;
@@ -403,10 +409,6 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     [self processRowSelectionAtIndexPath:indexPath];
 }
 
-- (BOOL)isLastSection:(NSUInteger)section
-{
-    return (section == [[self.resultsController fetchedObjects] count]);
-}
 
 # pragma mark - Private Methods
 
@@ -428,17 +430,17 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     [self saveCurrentlySelectedItemForRestoration:indexPath];
     
     UIViewController *detailViewController;
-    if ([self isIndexPathSectionForReaderAndNotifications:indexPath]) {
-        if ([self isRowForSettings:indexPath]) {
-            [self.panelNavigationController closeSidebar];
-            [self showSettings];
-            if (_currentIndexPath != nil) {
-                [self.tableView selectRowAtIndexPath:_currentIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-            }
-            return;
-        } else if ([self isRowForReader:indexPath]) {
+    if ([self isIndexPathForSettings:indexPath]) {
+        [self.panelNavigationController closeSidebar];
+        [self showSettings];
+        if (_currentIndexPath != nil) {
+            [self.tableView selectRowAtIndexPath:_currentIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        return;
+    } else if ([self isIndexPathSectionForReaderAndNotifications:indexPath]) {
+        if ([self isRowForReader:indexPath]) {
             [WPMobileStats incrementProperty:StatsPropertySidebarClickedReader forEvent:StatsEventAppClosed];
-			ReaderPostsViewController *readerViewController = [[ReaderPostsViewController alloc] init];
+            ReaderPostsViewController *readerViewController = [[ReaderPostsViewController alloc] init];
             detailViewController = readerViewController;
             [self closeCurrentlyOpenedSection];
         } else if ([self isRowForNotifications:indexPath]) {
@@ -449,7 +451,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             [self closeCurrentlyOpenedSection];
         }
     } else {
-        Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.section inSection:0]];
+        Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
         
         Class controllerClass = nil;
         if ([self isRowForPosts:indexPath]) {
@@ -525,36 +527,50 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     return [WPAccount defaultWordPressComAccount] != nil;
 }
 
+- (BOOL)isReaderAndNotificationsSection:(NSUInteger)section
+{
+    return section == 0;
+}
+
+- (BOOL)isSettingsSection:(NSUInteger)section
+{
+    return (section == ([[self.resultsController fetchedObjects] count] + 1));
+}
+
+- (BOOL)isBlogSection:(NSUInteger)section
+{
+    return [self isIndexPathForBlog:[NSIndexPath indexPathForRow:0 inSection:section]];
+}
+
+- (BOOL)isIndexPathForBlog:(NSIndexPath *)indexPath
+{
+    BOOL atLeastOneBlog = [[self.resultsController fetchedObjects] count] > 0;
+    return atLeastOneBlog && ![self isSettingsSection:indexPath.section] && ![self isReaderAndNotificationsSection:indexPath.section];
+}
+
 - (NSIndexPath *)indexPathForNotifications
 {
-    NSInteger section = [[self.resultsController fetchedObjects] count];
-    return [NSIndexPath indexPathForRow:1 inSection:section];
+    return [NSIndexPath indexPathForRow:1 inSection:0];
 }
 
 - (NSIndexPath *)indexPathForReader
 {
-    NSInteger section = [[self.resultsController fetchedObjects] count];
-    return [NSIndexPath indexPathForRow:0 inSection:section];
+    return [NSIndexPath indexPathForRow:0 inSection:0];
 }
 
 - (BOOL)isIndexPathSectionForReaderAndNotifications:(NSIndexPath *)indexPath
 {
-    return [self isLastSection:indexPath.section];
-}
-
-- (BOOL)isRowForSettings:(NSIndexPath *)indexPath
-{
-    return indexPath.row == ([WPAccount defaultWordPressComAccount] == nil ? 0 : 2);
+    return [self isReaderAndNotificationsSection:indexPath.section];
 }
 
 - (BOOL)isRowForReader:(NSIndexPath *)indexPath
 {
-    return indexPath.row == ([WPAccount defaultWordPressComAccount] == nil ? 2 : 0);
+    return indexPath.row == ([WPAccount defaultWordPressComAccount] == nil ? NSIntegerMax : 0);
 }
 
 - (BOOL)isRowForNotifications:(NSIndexPath *)indexPath
 {
-    return indexPath.row == 1;
+    return indexPath.row == ([WPAccount defaultWordPressComAccount] == nil ? NSIntegerMax : 1);
 }
 
 - (BOOL)isRowForPosts:(NSIndexPath *)indexPath
@@ -695,19 +711,18 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 
 - (BOOL)isIndexPathForSettings:(NSIndexPath *)indexPath
 {
-    return [self isLastSection:indexPath.section] && [self isRowForSettings:indexPath];
-}
-
-- (BOOL)isIndexPathForBlog:(NSIndexPath *)indexPath
-{
-    BOOL atLeastOneBlog = [[self.resultsController fetchedObjects] count] > 0;
-    return atLeastOneBlog && ![self isLastSection:indexPath.section];
+    return [self isSettingsSection:indexPath.section];
 }
 
 - (NSUInteger)sectionForBlog:(Blog *)blog
 {
     NSParameterAssert(blog != nil);
-    return [[self.resultsController fetchedObjects] indexOfObject:blog];
+    return [[self.resultsController fetchedObjects] indexOfObject:blog] + 1;
+}
+
+- (BOOL)areBlogsAvailable
+{
+    return ![self noBlogs];
 }
 
 - (BOOL)noBlogs
@@ -731,14 +746,8 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     }
     
     if ([self.tableView numberOfRowsInSection:0] > 0) {
-        NSIndexPath *indexPath;
-        if ([self isLastSection:0]) {
-            // There should always be a reader here because we can't have a last section without reader/notifications
-            // if the user is in a logged in state.
-            indexPath = [self indexPathForReader];
-        } else {
-            indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        }
+        // We have a reader and notifications so select the reader
+        NSIndexPath *indexPath = [self indexPathForReader];
         [self processRowSelectionAtIndexPath:indexPath];
         [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     } else {
@@ -790,20 +799,18 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 {
     NSAssert([self areReaderAndNotificationsEnabled] == true, nil);
     
-    NSInteger section = [[self.resultsController fetchedObjects] count];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:section];
-    [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    [self.tableView selectRowAtIndexPath:[self indexPathForReader] animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (void)selectFirstAvailableBlog {
-    if ([[self.resultsController fetchedObjects] count] > 0) {
-        [self selectBlogWithSection:0];
+    if ([self areBlogsAvailable]) {
+        [self selectBlogWithSection:1];
     }
 }
 
-- (void)selectBlogWithSection:(NSUInteger)index {
-    [self toggleSection:index];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:index];
+- (void)selectBlogWithSection:(NSUInteger)section {
+    [self toggleSection:section];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
     [self processRowSelectionAtIndexPath:indexPath closingSidebar:NO];
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
@@ -823,13 +830,14 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     
     if (blogFound) {
         Blog *foundBlog = [[self.resultsController fetchedObjects] objectAtIndex:blogIndex];
+        NSUInteger blogSection = blogIndex + 1;
         if ([_currentlyOpenedBlog isEqual:foundBlog]) {
             // Don't toggle the section again
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:blogIndex];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:blogSection];
             [self processRowSelectionAtIndexPath:indexPath];
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         } else {
-            [self selectBlogWithSection:blogIndex];
+            [self selectBlogWithSection:blogSection];
         }
     }
 }
@@ -846,7 +854,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         
         NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
         [self.tableView reloadData];
-        if (selectedIndexPath == nil || ([WPAccount defaultWordPressComAccount] == nil && [self isLastSection:selectedIndexPath.section])) {
+        if (selectedIndexPath == nil || ([WPAccount defaultWordPressComAccount] == nil && [self isSettingsSection:selectedIndexPath.section])) {
             [self selectFirstAvailableItem];
         }
         [self checkNothingToShow];
@@ -894,14 +902,14 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             ||
             ( [curBlog getOptionValue:@"jetpack_client_id"] != nil && [[[curBlog getOptionValue:@"jetpack_client_id"] numericValue]  isEqualToNumber:blogId] ) ) {
             blogFound = YES;
-            sectionNumber = idx;
+            sectionNumber = idx + 1;
             curBlog = blog;
             *stop = YES;
         }
     }];
     
     
-    if (blogFound && [self isLastSection:sectionNumber]) {
+    if (blogFound && [self isBlogSection:sectionNumber]) {
         if (![blog isEqual:_currentlyOpenedBlog]) {
             [self toggleSection:sectionNumber forRow:2];
         }
@@ -959,6 +967,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     QuickPhotoViewController *quickPhotoViewController = [[QuickPhotoViewController alloc] init];
     quickPhotoViewController.sidebarViewController = self;
     quickPhotoViewController.photo = image;
+    quickPhotoViewController.startingBlog = _currentlyOpenedBlog;
     if (!image) {
         quickPhotoViewController.sourceType = sourceType;
     }
@@ -1048,8 +1057,8 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     if (indexPath != nil) {
         if (indexPath.section != _wantedSection || _changingContentForSelectedSection) {
             NSUInteger sec = _wantedSection;
-            
-            if (![self isLastSection:sec] && [self isIndexPathValid:[NSIndexPath indexPathForRow:0 inSection:sec]]) {
+
+            if (![self isReaderAndNotificationsSection:sec] && ![self isSettingsSection:sec] && [self isIndexPathValid:[NSIndexPath indexPathForRow:0 inSection:sec]]) {
                 // Section is a blog
                 [self selectBlogWithSection:sec];
             } else {
@@ -1080,12 +1089,12 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         {
             NSLog(@"Inserting row %d: %@", newIndexPath.row, anObject);
             NSIndexPath *openIndexPath = [self.tableView indexPathForSelectedRow];
-            if (openIndexPath.section == newIndexPath.row) {
+            if (openIndexPath.section == (newIndexPath.row + 1)) {
                 // We're swapping the content for the currently selected section and need to update accordingly.
                 _changingContentForSelectedSection = YES;
             }
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:newIndexPath.row] withRowAnimation:UITableViewRowAnimationAutomatic];
-            _wantedSection = newIndexPath.row;
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:(newIndexPath.row + 1)] withRowAnimation:UITableViewRowAnimationAutomatic];
+            _wantedSection = newIndexPath.row + 1;
             break;
         }
         case NSFetchedResultsChangeDelete:
@@ -1096,12 +1105,12 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
                 _currentlyOpenedBlog = nil;
             }
             NSIndexPath *openIndexPath = [self.tableView indexPathForSelectedRow];
-            if (openIndexPath.section == newIndexPath.row) {
+            if (openIndexPath.section == (newIndexPath.row + 1)) {
                 // We're swapping the content for the currently selected section and need to update accordingly.
                 _changingContentForSelectedSection = YES;
             }
 
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.row] withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:(indexPath.row + 1)] withRowAnimation:UITableViewRowAnimationNone];
             _wantedSection = 0;
             break;
         }

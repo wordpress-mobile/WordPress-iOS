@@ -44,6 +44,7 @@
 #import "GeneralWalkthroughViewController.h"
 #import "WPAccount.h"
 #import "WelcomeViewController.h"
+#import "WPTableViewSectionHeaderView.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,
@@ -281,7 +282,20 @@ typedef enum {
 }
 
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
     if (section == SettingsSectionBlogs) {
         return NSLocalizedString(@"Blogs", @"Title label for the user blogs in the app settings");
         
@@ -299,7 +313,7 @@ typedef enum {
             return NSLocalizedString(@"Notifications", @"");
         else
             return nil;
-    
+        
     } else if (section == SettingsSectionSounds) {
         return NSLocalizedString(@"Sounds", @"Title label for the sounds section in the app settings.");
         
@@ -458,10 +472,15 @@ typedef enum {
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
     
+    BOOL isSignInCell = false;
+    if (![[WordPressComApi sharedApi] hasCredentials]) {
+        isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
+    }
+    
     BOOL isSignOutCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 1;
     BOOL isAddBlogsCell = indexPath.section == SettingsSectionBlogsAdd;
-    if (isSignOutCell || isAddBlogsCell) {
-        cell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
+    if (isSignOutCell || isAddBlogsCell || isSignInCell) {
+        [WPStyleGuide configureTableViewActionCell:cell];
     }
     
     return cell;

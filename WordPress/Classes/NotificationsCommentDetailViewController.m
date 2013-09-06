@@ -97,8 +97,11 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
                                target:nil
                                action:nil];
     self.toolbar.items = @[self.approveBarButton, spacer, self.trashBarButton, spacer, self.spamBarButton, spacer, self.replyBarButton];
-    [self.toolbar setBarTintColor:[WPStyleGuide littleEddieGrey]];
-    self.toolbar.translucent = NO;
+
+    if (IS_IOS7) {
+        [self.toolbar setBarTintColor:[WPStyleGuide littleEddieGrey]];
+        self.toolbar.translucent = NO;
+    }
 
 
     if ([self.tableView respondsToSelector:@selector(registerClass:forCellReuseIdentifier:)]) {

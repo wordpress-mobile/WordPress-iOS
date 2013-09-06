@@ -9,7 +9,9 @@
 #import <ImageIO/ImageIO.h>
 #import "WPSegmentedSelectionTableViewController.h"
 #import "WPAddCategoryViewController.h"
+#import "WPTableViewSectionHeaderView.h"
 #import "Post.h"
+#import "UITableViewTextFieldCell.h"
 
 #define kPasswordFooterSectionHeight         68.0f
 #define kResizePhotoSettingSectionHeight     60.0f
@@ -91,10 +93,7 @@
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     tableView.separatorColor = [WPStyleGuide readGrey];
     
-    
-    statusTitleLabel.text = NSLocalizedString(@"Status", @"The status of the post. Should be the same as in core WP.");
     visibilityTitleLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
-    postFormatTitleLabel.text = NSLocalizedString(@"Post Format", @"The post formats available for the post. Should be the same as in core WP.");
     passwordTextField.placeholder = NSLocalizedString(@"Enter a password", @"");
     NSMutableArray *allStatuses = [NSMutableArray arrayWithArray:[self.apost availableStatuses]];
     [allStatuses removeObject:NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
@@ -142,6 +141,10 @@
     featuredImageView.layer.shadowColor = [[UIColor blackColor] CGColor];
     featuredImageView.layer.shadowOpacity = 0.5f;
     featuredImageView.layer.shadowRadius = 1.0f;
+    
+    featuredImageLabel.font = [WPStyleGuide tableviewTextFont];
+    featuredImageLabel.textColor = [WPStyleGuide whisperGrey];
+
     
     // Check if blog supports featured images
     id supportsFeaturedImages = [self.post.blog getOptionValue:@"post_thumbnail"];
@@ -194,9 +197,7 @@
     [reverseGeocoder cancelGeocode];
     reverseGeocoder = nil;
     
-    statusTitleLabel = nil;
     visibilityTitleLabel = nil;
-    postFormatTitleLabel = nil;
     passwordTextField = nil;
     featuredImageView = nil;
     featuredImageTableViewCell = nil;
@@ -209,7 +210,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self reloadData];
-	[statusTableViewCell becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -388,13 +388,14 @@
     return 0;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
     NSUInteger alteredSection = section;
     if (!self.post && section == 0) {
         // We only show the status section for Pages
         alteredSection = 1;
     }
-
+    
 	if (alteredSection == 0) {
         return @"";
     } else if (alteredSection == 1) {
@@ -411,7 +412,15 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return nil;
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -424,55 +433,69 @@
 	switch (section) {
     case 0:
             switch (indexPath.row) {
-                case 0:
-                    categoriesTitleLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
-                    categoriesTitleLabel.textColor = [WPStyleGuide whisperGrey];
-                    categoriesTitleLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
-                    categoriesLabel.font = [WPStyleGuide tableviewTextFont];
-                    categoriesLabel.textColor = [WPStyleGuide whisperGrey];
-                    categoriesLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
-                    return categoriesTableViewCell;
+                case 0: {
+                    static NSString *CategoriesCellIdentifier = @"CategoriesCell";
+                    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CategoriesCellIdentifier];
+                    if (cell == nil) {
+                        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CategoriesCellIdentifier];
+                    }
+                    cell.textLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
+                    cell.detailTextLabel.text = [NSString decodeXMLCharactersIn:[self.post categoriesText]];
+                    [WPStyleGuide configureTableViewCell:cell];
+                    return cell;
+                }
                     break;
-                case 1:
-                    tagsTitleLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
-                    tagsTitleLabel.textColor = [WPStyleGuide whisperGrey];
-                    tagsTitleLabel.text = NSLocalizedString(@"Tags:", @"Label for the tags field. Should be the same as WP core.");
-                    tagsTextField.placeholder = NSLocalizedString(@"Separate tags with commas", @"Placeholder text for the tags field. Should be the same as WP core.");
-                    tagsTextField.font = [WPStyleGuide tableviewTextFont];
-                    tagsTextField.textColor = [WPStyleGuide whisperGrey];
-                    tagsTextField.text = self.post.tags;
-                    return tagsTableViewCell;
-                    break;
+                case 1: {
+                    static NSString *TagsCellIdentifier = @"TagsCell";
+                    UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TagsCellIdentifier];
+                    if (cell == nil) {
+                        cell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:TagsCellIdentifier];
+                    }
+                    cell.textLabel.text = NSLocalizedString(@"Tags:", @"Label for the tags field. Should be the same as WP core.");
+                    cell.textField.text = self.post.tags;
+                    cell.textField.placeholder = NSLocalizedString(@"Separate tags with commas", @"Placeholder text for the tags field. Should be the same as WP core.");
+                    cell.textField.delegate = self;
+                    tagsTextField = cell.textField;
+                    [WPStyleGuide configureTableViewTextCell:cell];
+                    return cell;
+                }
             }
 	case 1:
 		switch (indexPath.row) {
-			case 0:
-                statusTitleLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
-                statusTitleLabel.textColor = [WPStyleGuide whisperGrey];
-                statusLabel.font = [WPStyleGuide tableviewTextFont];
-                statusLabel.textColor = [WPStyleGuide whisperGrey];
+			case 0: {
+                static NSString *StatusCellIdentifier = @"StatusCell";
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:StatusCellIdentifier];
+                if (cell == nil) {
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:StatusCellIdentifier];
+                }
+                cell.textLabel.text = NSLocalizedString(@"Status", @"The status of the post. Should be the same as in core WP.");
+                statusLabel = cell.detailTextLabel;
 				if (([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)
 					&& ([self.apost.status isEqualToString:@"publish"])) {
-					statusLabel.text = NSLocalizedString(@"Scheduled", @"If a post is scheduled for later, this string is used for the post's status. Should use the same translation as core WP.");
+					cell.detailTextLabel.text = NSLocalizedString(@"Scheduled", @"If a post is scheduled for later, this string is used for the post's status. Should use the same translation as core WP.");
 				} else {
-					statusLabel.text = self.apost.statusTitle;
+					cell.detailTextLabel.text = self.apost.statusTitle;
 				}
-				if ([self.apost.status isEqualToString:@"private"])
-					statusTableViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
-				else
-					statusTableViewCell.selectionStyle = UITableViewCellSelectionStyleBlue;
-				
-				return statusTableViewCell;
+				if ([self.apost.status isEqualToString:@"private"]) {
+					cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                } else {
+					cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+                }
+				[WPStyleGuide configureTableViewCell:cell];
+				return cell;
 				break;
+            }
 			case 1:
-                visibilityTitleLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
+                visibilityTitleLabel.font = [WPStyleGuide tableviewTextFont];
                 visibilityTitleLabel.textColor = [WPStyleGuide whisperGrey];
-                visibilityLabel.font = [WPStyleGuide tableviewTextFont];
+                visibilityLabel.font = [WPStyleGuide tableviewSubtitleFont];
                 visibilityLabel.textColor = [WPStyleGuide whisperGrey];
 				if (self.apost.password) {
 					passwordTextField.text = self.apost.password;
 					passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 				}
+                passwordTextField.font = [WPStyleGuide tableviewTextFont];
+                passwordTextField.textColor = [WPStyleGuide whisperGrey];
             
                 visibilityLabel.text = [self titleForVisibility];
 				
@@ -480,37 +503,29 @@
 				break;
 			case 2:
 			{
-                publishOnLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
-                publishOnLabel.textColor = [WPStyleGuide whisperGrey];
-                publishOnDateLabel.font = [WPStyleGuide tableviewTextFont];
-                publishOnDateLabel.textColor = [WPStyleGuide whisperGrey];
-
+                static NSString *PublishedOnCellIdentifier = @"PublishedOnCell";
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PublishedOnCellIdentifier];
+                if (cell == nil) {
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:PublishedOnCellIdentifier];
+                }
+                publishOnDateLabel = cell.detailTextLabel;
 				if (self.apost.dateCreated) {
 					if ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending) {
-						publishOnLabel.text = NSLocalizedString(@"Scheduled for", @"Scheduled for [date]");
+						cell.textLabel.text = NSLocalizedString(@"Scheduled for", @"Scheduled for [date]");
 					} else {
-						publishOnLabel.text = NSLocalizedString(@"Published on", @"Published on [date]");
+						cell.textLabel.text = NSLocalizedString(@"Published on", @"Published on [date]");
 					}
 					
 					NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 					[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 					[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-					publishOnDateLabel.text = [dateFormatter stringFromDate:self.apost.dateCreated];
+					cell.detailTextLabel.text = [dateFormatter stringFromDate:self.apost.dateCreated];
 				} else {
-					publishOnLabel.text = NSLocalizedString(@"Publish   ", @""); //dorky spacing fix
-					publishOnDateLabel.text = NSLocalizedString(@"Immediately", @"");
+					cell.textLabel.text = NSLocalizedString(@"Publish   ", @""); //dorky spacing fix
+					cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");
 				}
-				// Resize labels properly
-				CGRect frame = publishOnLabel.frame;
-				CGSize size = [publishOnLabel.text sizeWithFont:publishOnLabel.font];
-				frame.size.width = size.width;
-				publishOnLabel.frame = frame;
-				frame = publishOnDateLabel.frame;
-				frame.origin.x = publishOnLabel.frame.origin.x + publishOnLabel.frame.size.width + 8;
-				frame.size.width = publishOnTableViewCell.frame.size.width - frame.origin.x - 8;
-				publishOnDateLabel.frame = frame;
-				
-				return publishOnTableViewCell;
+                [WPStyleGuide configureTableViewCell:cell];
+                return cell;
 			}
 			default:
 				break;
@@ -518,15 +533,20 @@
 		break;
     case 2: // Post format
         {
-            postFormatTitleLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
-            postFormatTitleLabel.textColor = [WPStyleGuide whisperGrey];
-            postFormatLabel.font = [WPStyleGuide tableviewTextFont];
-            postFormatLabel.textColor = [WPStyleGuide whisperGrey];
+            static NSString *PostFormatCellIdentifier = @"PostFormatCell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PostFormatCellIdentifier];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:PostFormatCellIdentifier];
+            }
+
+            cell.textLabel.text = NSLocalizedString(@"Post Format", @"The post formats available for the post. Should be the same as in core WP.");
+            postFormatLabel = cell.detailTextLabel;
 
             if ([formatsList count] != 0) {
-                postFormatLabel.text = self.post.postFormatText;
+                cell.detailTextLabel.text = self.post.postFormatText;
             }
-            return postFormatTableViewCell;
+            [WPStyleGuide configureTableViewCell:cell];
+            return cell;
         }
 	case 3:
         if (blogSupportsFeaturedImage) {
@@ -543,12 +563,9 @@
                         }
                     }
                 }
-                activityCell.textLabel.font = [WPStyleGuide tableviewTextFont];
-                activityCell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
+                [WPStyleGuide configureTableViewActionCell:activityCell];
                 [activityCell.textLabel setText:@"Set Featured Image"];
                 return activityCell;
-                
-                
             } else {
                 switch (indexPath.row) {
                     case 0:
@@ -577,6 +594,7 @@
                             }
                         }
                         [activityCell.textLabel setText: NSLocalizedString(@"Remove Featured Image", "Remove featured image from post")];
+                        [WPStyleGuide configureTableViewActionCell:activityCell];
                         return activityCell;
                         break;
                     }
@@ -584,18 +602,18 @@
                 }
             }
         } else {
-            return [self getGeolactionCellWithIndexPath: indexPath];
+            return [self getGeolocationCellWithIndexPath:indexPath];
         }
         break;
     case 4:
-        return [self getGeolactionCellWithIndexPath: indexPath];
+        return [self getGeolocationCellWithIndexPath:indexPath];
         break;
 	}
     
     return nil;
 }
 
-- (UITableViewCell*) getGeolactionCellWithIndexPath: (NSIndexPath*)indexPath {
+- (UITableViewCell*)getGeolocationCellWithIndexPath:(NSIndexPath*)indexPath {
     switch (indexPath.row) {
         case 0: // Add/update location
         {
@@ -606,8 +624,7 @@
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"GeolocationDisabledCell"];
                     cell.textLabel.text = NSLocalizedString(@"Enable Geotagging to Edit", @"Prompt the user to enable geolocation tagging on their blog.");
                     cell.textLabel.textAlignment = NSTextAlignmentCenter;
-                    cell.textLabel.font = [WPStyleGuide tableviewTextFont];
-                    cell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
+                    [WPStyleGuide configureTableViewActionCell:cell];
                 }
                 return cell;
                 
@@ -617,8 +634,7 @@
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"locationServicesCell"];
                     cell.textLabel.text = NSLocalizedString(@"Please Enable Location Services", @"Prompt the user to enable location services on their device.");
                     cell.textLabel.textAlignment = NSTextAlignmentCenter;
-                    cell.textLabel.font = [WPStyleGuide tableviewTextFont];
-                    cell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
+                    [WPStyleGuide configureTableViewActionCell:cell];
                 }
                 return cell;
                 
@@ -651,10 +667,12 @@
         case 1:
         {
             NSLog(@"Reloading map");
-            if (mapGeotagTableViewCell == nil)
+            if (mapGeotagTableViewCell == nil) {
                 mapGeotagTableViewCell = [[UITableViewCell alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 188)];
-            if (mapView == nil)
+            }
+            if (mapView == nil) {
                 mapView = [[MKMapView alloc] initWithFrame:CGRectMake(10, 0, 300, 130)];
+            }
             [mapView removeAnnotation:annotation];
             annotation = [[PostAnnotation alloc] initWithCoordinate:self.post.geolocation.coordinate];
             [mapView addAnnotation:annotation];
@@ -706,12 +724,12 @@
         }
         case 2:
         {
-            if (removeGeotagTableViewCell == nil)
+            if (removeGeotagTableViewCell == nil) {
                 removeGeotagTableViewCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RemoveGeotag"];
+            }
             removeGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Remove Location", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
             removeGeotagTableViewCell.textLabel.textAlignment = NSTextAlignmentCenter;
-            removeGeotagTableViewCell.textLabel.font = [WPStyleGuide tableviewTextFont];
-            removeGeotagTableViewCell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
+            [WPStyleGuide configureTableViewActionCell:removeGeotagTableViewCell];
             return removeGeotagTableViewCell;
             break;
         }
@@ -1183,8 +1201,9 @@
 #pragma mark Pickers and keyboard animations
 
 - (void)showPicker:(UIView *)picker {
-    if (isShowingKeyboard)
+    if (isShowingKeyboard) {
         [passwordTextField resignFirstResponder];
+    }
 
     if (IS_IPAD) {
         UIViewController *fakeController = [[UIViewController alloc] init];

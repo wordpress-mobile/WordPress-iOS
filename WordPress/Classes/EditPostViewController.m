@@ -92,9 +92,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         self.apost = aPost;
         if (self.apost.remoteStatus == AbstractPostRemoteStatusLocal) {
             self.editMode = EditPostViewControllerModeNewPost;
-            self.showAddMediaToUser = YES;
         } else {
-            self.showAddMediaToUser = NO;
             self.editMode = EditPostViewControllerModeEditPost;
 #if USE_AUTOSAVES
             _backupPost = [NSEntityDescription insertNewObjectForEntityForName:[[aPost entity] name] inManagedObjectContext:[aPost managedObjectContext]];
