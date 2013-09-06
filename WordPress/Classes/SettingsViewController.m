@@ -472,10 +472,15 @@ typedef enum {
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
     
+    BOOL isSignInCell = false;
+    if (![[WordPressComApi sharedApi] hasCredentials]) {
+        isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
+    }
+    
     BOOL isSignOutCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 1;
     BOOL isAddBlogsCell = indexPath.section == SettingsSectionBlogsAdd;
-    if (isSignOutCell || isAddBlogsCell) {
-        cell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
+    if (isSignOutCell || isAddBlogsCell || isSignInCell) {
+        [WPStyleGuide configureTableViewActionCell:cell];
     }
     
     return cell;
