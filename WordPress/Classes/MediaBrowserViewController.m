@@ -125,6 +125,9 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 }
 
 - (void)clearSearchFilter {
+    
+}
+
 #pragma mark - CollectionViewDelegate/DataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {

@@ -10,14 +10,12 @@
 
 @implementation WPKeyboardToolbarWithoutGradient
 
-- (void)setupView
-{
+- (void)setupBackground {
     if (IS_IPAD) {
         self.backgroundColor = [UIColor UIColorFromHex:0xcfd2d6];
     } else {
-        self.backgroundColor = [UIColor UIColorFromHex:0xd9dbdf];        
+        self.backgroundColor = [UIColor UIColorFromHex:0xd9dbdf];
     }
-    [super setupView];
 }
 
 @end

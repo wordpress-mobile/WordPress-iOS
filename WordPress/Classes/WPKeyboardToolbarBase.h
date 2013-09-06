@@ -31,6 +31,9 @@
 @property (nonatomic, weak) id<WPKeyboardToolbarDelegate> delegate;
 @property (nonatomic, strong) WPKeyboardToolbarButtonItem *doneButton;
 
-- (void)setupView;
+/// Init a plain bar with a done button only
+- (id)initDoneWithFrame:(CGRect)frame;
+
+- (void)setupBackground;
 
 @end

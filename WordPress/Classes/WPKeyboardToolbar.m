@@ -73,7 +73,7 @@
     [self drawTopBorder];
 }
 
-- (void)setupView {
+- (void)setupBackground {
     _gradient = [CAGradientLayer layer];
     _gradient.frame = [self gradientFrame];
     self.backgroundColor = UIColorFromRGB(0xb0b7c1);
@@ -84,7 +84,6 @@
     }
     [self.layer insertSublayer:_gradient atIndex:0];
     self.backgroundColor = UIColorFromRGB(0xb0b7c1);
-    [super setupView];
 }
 
 - (void)layoutSubviews {

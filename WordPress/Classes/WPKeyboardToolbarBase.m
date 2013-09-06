@@ -256,7 +256,8 @@
     }
 }
 
-- (void)setupView {    
+- (void)setupView {
+    [self setupBackground];
     [self buildMainView];
     [self buildExtendedView];
     [self buildToggleButton];
@@ -382,6 +383,15 @@
     self = [super initWithCoder:coder];
     if (self) {
         [self setupView];
+    }
+    return self;
+}
+
+- (id)initDoneWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setupBackground];
+        [self setupDoneButton];
     }
     return self;
 }

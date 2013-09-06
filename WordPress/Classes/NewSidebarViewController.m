@@ -385,6 +385,8 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             selectedImage = [UIImage imageNamed:@"icon-menu-themes-active"];
         } else if ([self isRowForMedia:indexPath]) {
             text = @"Media";
+            image = [UIImage imageNamed:@"icon-menu-pages"];
+            selectedImage = [UIImage imageNamed:@"icon-menu-pages-active"];
         }
         
         cell.cellBackgroundColor = SidebarTableViewCellBackgroundColorLight;
@@ -585,12 +587,12 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     return indexPath.row == 4;
 }
 
-- (BOOL)isRowForThemes:(NSIndexPath *)indexPath
+- (BOOL)isRowForMedia:(NSIndexPath *)indexPath
 {
     return indexPath.row == 5;
 }
 
-- (BOOL)isRowForMedia:(NSIndexPath *)indexPath
+- (BOOL)isRowForThemes:(NSIndexPath *)indexPath
 {
     return indexPath.row == 6;
 }
