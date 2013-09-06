@@ -280,9 +280,9 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     if (!_isShowingActionSheet) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this comment?", @"")
                                                                  delegate:self
-                                                        cancelButtonTitle:nil
+                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                                    destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
-                                                        otherButtonTitles:NSLocalizedString(@"Cancel", @""), nil];
+                                                        otherButtonTitles:nil];
         actionSheet.tag = CommentViewDeletePromptActionSheetTag;
         actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
         [actionSheet showInView:self.view];
