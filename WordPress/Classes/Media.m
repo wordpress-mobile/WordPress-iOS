@@ -36,6 +36,10 @@
 @dynamic blog;
 @dynamic posts;
 @dynamic remoteStatusNumber;
+@dynamic caption;
+@dynamic desc;
+
+@synthesize isUnattached;
 
 + (Media *)newMediaForPost:(AbstractPost *)post {
     Media *media = [[Media alloc] initWithEntity:[NSEntityDescription entityForName:@"Media"
@@ -71,6 +75,8 @@
     self.length = [json objectForKeyPath:@"metadata.focal_length"];
     self.filename = [[json objectForKeyPath:@"metadata.file"] lastPathComponent];
     self.creationDate = json[@"date_created_gmt"];
+    self.caption = json[@"caption"];
+    self.desc = json[@"description"];
 }
 
 - (void)awakeFromFetch {

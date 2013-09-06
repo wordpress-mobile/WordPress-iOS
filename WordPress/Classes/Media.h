@@ -41,6 +41,8 @@ typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
 @property (nonatomic, strong) NSNumber * remoteStatusNumber;
 @property (nonatomic) MediaRemoteStatus remoteStatus;
 @property (nonatomic) float progress;
+@property (nonatomic, strong) NSString * caption;
+@property (nonatomic, strong) NSString * desc;
 
 @property (nonatomic, strong) Blog * blog;
 @property (nonatomic, strong) NSMutableSet * posts;

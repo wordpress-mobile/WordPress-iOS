@@ -1989,6 +1989,7 @@
 		C535C7AA17D776FC007EF244 /* MediaBrowserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaBrowserCell.m; sourceTree = "<group>"; };
 		C535C7AC17D782FD007EF244 /* MediaSearchFilterHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaSearchFilterHeaderView.h; sourceTree = "<group>"; };
 		C535C7AD17D782FD007EF244 /* MediaSearchFilterHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaSearchFilterHeaderView.m; sourceTree = "<group>"; };
+		C535C7B517DA13CD007EF244 /* WordPress 14.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WordPress 14.xcdatamodel"; sourceTree = "<group>"; };
 		C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPSegmentedSelectionTableViewController.h; sourceTree = "<group>"; };
 		C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPSegmentedSelectionTableViewController.m; sourceTree = "<group>"; };
 		C57B7C8B17C558C600A64A3C /* ThemeBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeBrowserViewController.h; sourceTree = "<group>"; };
@@ -5979,6 +5980,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				C535C7B517DA13CD007EF244 /* WordPress 14.xcdatamodel */,
 				C57B7C9A17C5654E00A64A3C /* WordPress 13.xcdatamodel */,
 				5D42A3BB175E686F005CFF05 /* WordPress 12.xcdatamodel */,
 				E17B98E7171FFB450073E30D /* WordPress 11.xcdatamodel */,
@@ -5993,7 +5995,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = C57B7C9A17C5654E00A64A3C /* WordPress 13.xcdatamodel */;
+			currentVersion = C535C7B517DA13CD007EF244 /* WordPress 14.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
