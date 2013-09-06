@@ -24,9 +24,6 @@
     if (!IS_IOS7)
         return;
     
-    self.title = [self.title uppercaseString];
-    self.navigationItem.title = [self.navigationItem.title uppercaseString];
-    
     [self.navigationItem.leftBarButtonItem setTitlePositionAdjustment:UIOffsetMake(-1, 0) forBarMetrics:UIBarMetricsDefault];
     [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
 
