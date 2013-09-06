@@ -966,6 +966,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 - (void)uploadQuickPhoto:(Post *)post
 {
     if (post != nil) {
+        post.remoteStatus = MediaRemoteStatusPushing;
         self.currentQuickPost = post;
         
         if (IS_IPHONE) {
