@@ -38,7 +38,7 @@
 {
     infoView.titleLabel.shadowOffset = CGSizeMake(0.0, 0.0);
     infoView.titleLabel.font = [WPStyleGuide postTitleFont];
-    infoView.titleLabel.textColor = [WPStyleGuide bigEddieGrey];
+    infoView.titleLabel.textColor = [WPStyleGuide whisperGrey];
 }
 
 
