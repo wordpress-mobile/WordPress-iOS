@@ -94,8 +94,11 @@
         _hasFooter = YES;
     }
     
-    [_tableView setDelegate: self];
-
+    [_tableView setDelegate:self];
+    
+    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorColor = [WPStyleGuide readGrey];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
