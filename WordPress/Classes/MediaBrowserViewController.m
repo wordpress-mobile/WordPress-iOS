@@ -13,6 +13,7 @@
 #import "Media.h"
 #import "MediaSearchFilterHeaderView.h"
 #import "EditMediaViewController.h"
+#import "PostMediaViewController.h"
 
 static NSString *const MediaCellIdentifier = @"media_cell";
 
@@ -79,6 +80,12 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     };
     
     [self refresh];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addMediaButtonPressed:)];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -263,6 +270,29 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 - (void)refreshControlTriggered:(UIRefreshControl*)refreshControl {
     if (refreshControl.isRefreshing) {
         [self refresh];
+    }
+}
+
+#pragma mark - Add Media
+
+- (IBAction)addMediaButtonPressed:(id)sender {
+    UIActionSheet *chooseMedia = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Take a Photo", @""), NSLocalizedString(@"Capture a Video", @""), NSLocalizedString(@"Choose from Library", @""), nil];
+    [chooseMedia showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0:
+            // Camera
+            break;
+        case 1:
+            // Take video
+            break;
+        case 2:
+            // Choose from lib
+            break;
+        default:;
+            // Cancelled
     }
 }
 
