@@ -44,7 +44,7 @@
 
 @implementation NewSidebarViewController
 
-CGFloat const SidebarViewControllerNumberOfRowsForBlog = 5;
+CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
 CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -382,6 +382,10 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             text = NSLocalizedString(@"View Site", nil);
             image = [UIImage imageNamed:@"icon-menu-viewsite"];
             selectedImage = [UIImage imageNamed:@"icon-menu-viewsite-active"];
+        } else if ([self isRowForViewAdmin:indexPath]) {
+            text = NSLocalizedString(@"View Admin", nil);
+            image = [UIImage imageNamed:@"icon-menu-viewsite"];
+            selectedImage = [UIImage imageNamed:@"icon-menu-viewsite-active"];
         }
         
         cell.cellBackgroundColor = SidebarTableViewCellBackgroundColorLight;
@@ -412,7 +416,9 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         [self.panelNavigationController closeSidebar];
     }
     
-    if (![self isIndexPathForSettings:indexPath]) {
+    BOOL notSettings  = ![self isIndexPathForSettings:indexPath];
+    BOOL notViewAdmin = [self isIndexPathForBlog:indexPath] && ![self isRowForViewAdmin:indexPath];
+    if (notSettings && notViewAdmin) {
         _currentIndexPath = indexPath;
     }
     
@@ -461,6 +467,12 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             controllerClass =  [StatsWebViewController class];
         } else if ([self isRowForViewSite:indexPath]) {
             [self showViewSiteForBlog:blog andClosingSidebar:closingSidebar];
+        } else if ([self isRowForViewAdmin:indexPath]) {
+            [self showViewAdminForBlog:blog];
+            // As this opens up safari externally, lets make sure to close the sidebar.
+            if (closingSidebar) {
+                [self.panelNavigationController closeSidebar];
+            }
         } else {
             controllerClass = [PostsViewController class];
         }
@@ -584,6 +596,11 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     return indexPath.row == 4;
 }
 
+- (BOOL)isRowForViewAdmin:(NSIndexPath *)indexPath
+{
+    return indexPath.row == 5;
+}
+
 - (void)showSettings
 {
     [WPMobileStats incrementProperty:StatsPropertySidebarClickedSettings forEvent:StatsEventAppClosed];
@@ -636,6 +653,14 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     return;
 }
 
+- (void)showViewAdminForBlog:(Blog *)blog
+{
+    [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedViewAdmin forEvent:StatsEventAppClosed];
+    
+    NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
+}
+
 - (void)restorePreservedSelection
 {
     NSDictionary *dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"kSelectedSidebarIndexDictionary"];
@@ -676,8 +701,9 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     
     BOOL sectionOutOfBounds = indexPath.section >= numSections;
     BOOL rowOutOfBounds = indexPath.row >= numRows;
+    BOOL isViewAdmin = [self isIndexPathForBlog:indexPath] && [self isRowForViewAdmin:indexPath];
     
-    return sectionOutOfBounds || rowOutOfBounds || [self isIndexPathForSettings:indexPath];
+    return sectionOutOfBounds || rowOutOfBounds || [self isIndexPathForSettings:indexPath] || isViewAdmin;
 }
 
 - (BOOL)isIndexPathForSettings:(NSIndexPath *)indexPath
