@@ -650,8 +650,8 @@ typedef enum {
         [WPMobileStats trackEventForWPCom:StatsEventSettingsSignedOutOfDotCom];
         
         // Sign out
+        [[WordPressComApi sharedApi] signOut]; //Signout first, then remove the account
 		[WPAccount removeDefaultWordPressComAccount];
-        [[WordPressComApi sharedApi] signOut];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
         [self checkCloseButton];
     }
