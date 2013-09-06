@@ -53,7 +53,7 @@
 }
 
 + (Media *)createOrReplaceMediaFromJSON:(NSDictionary *)json forBlog:(Blog *)blog {
-    NSSet *existing = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID == %@", json[@"attachment_id"]]];
+    NSSet *existing = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID == %@", [json[@"attachment_id"] numericValue]]];
     if (existing.count > 0) {
         [existing.allObjects[0] updateFromDictionary:json];
         return existing.allObjects[0];
