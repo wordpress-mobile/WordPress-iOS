@@ -396,6 +396,8 @@
     return self;
 }
 
+- (void)setupBackground {}
+
 #pragma mark - UIInputViewAudioFeedback
 
 - (BOOL) enableInputClicksWhenVisible {

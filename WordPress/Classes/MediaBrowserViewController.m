@@ -12,6 +12,7 @@
 #import "MediaBrowserCell.h"
 #import "Media.h"
 #import "MediaSearchFilterHeaderView.h"
+#import "EditMediaViewController.h"
 
 static NSString *const MediaCellIdentifier = @"media_cell";
 
@@ -204,12 +205,15 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 
 - (IBAction)multiselectViewPressed:(id)sender {
     // Open View vc for _selectedMedia[0]
-    // [[ViewMediaViewController alloc] initWithMedia:_selectedMedia[0]];
+    EditMediaViewController *vc = [[EditMediaViewController alloc] initWithMedia:_selectedMedia[0] showEditMode:NO];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (IBAction)multiselectEditPressed:(id)sender {
     // Open View viewcontroller with edit mode on, for _selectedMedia[0]
     // [[ViewMediaViewController alloc] initWithMedia:_selectedMedia[0] showEditMode:true];
+    EditMediaViewController *vc = [[EditMediaViewController alloc] initWithMedia:_selectedMedia[0] showEditMode:YES];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (IBAction)multiselectDeletePressed:(id)sender {

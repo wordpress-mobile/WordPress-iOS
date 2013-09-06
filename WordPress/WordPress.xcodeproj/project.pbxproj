@@ -797,6 +797,8 @@
 		C535C7A817D77603007EF244 /* MediaBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C535C7A617D77603007EF244 /* MediaBrowserViewController.xib */; };
 		C535C7AB17D776FC007EF244 /* MediaBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C535C7AA17D776FC007EF244 /* MediaBrowserCell.m */; };
 		C535C7AE17D782FD007EF244 /* MediaSearchFilterHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C535C7AD17D782FD007EF244 /* MediaSearchFilterHeaderView.m */; };
+		C535C7B217D90B5C007EF244 /* EditMediaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C535C7B017D90B5C007EF244 /* EditMediaViewController.m */; };
+		C535C7B317D90B5C007EF244 /* EditMediaViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C535C7B117D90B5C007EF244 /* EditMediaViewController.xib */; };
 		C55A90D90E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */; };
 		C57B7C8E17C558C600A64A3C /* ThemeBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C57B7C8C17C558C600A64A3C /* ThemeBrowserViewController.m */; };
 		C57B7CA617C586E600A64A3C /* ThemeBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C57B7CA517C586E600A64A3C /* ThemeBrowserCell.m */; };
@@ -1989,6 +1991,9 @@
 		C535C7AA17D776FC007EF244 /* MediaBrowserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaBrowserCell.m; sourceTree = "<group>"; };
 		C535C7AC17D782FD007EF244 /* MediaSearchFilterHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaSearchFilterHeaderView.h; sourceTree = "<group>"; };
 		C535C7AD17D782FD007EF244 /* MediaSearchFilterHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaSearchFilterHeaderView.m; sourceTree = "<group>"; };
+		C535C7AF17D90B5C007EF244 /* EditMediaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditMediaViewController.h; sourceTree = "<group>"; };
+		C535C7B017D90B5C007EF244 /* EditMediaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditMediaViewController.m; sourceTree = "<group>"; };
+		C535C7B117D90B5C007EF244 /* EditMediaViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditMediaViewController.xib; sourceTree = "<group>"; };
 		C535C7B517DA13CD007EF244 /* WordPress 14.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "WordPress 14.xcdatamodel"; sourceTree = "<group>"; };
 		C55A90D70E8026C500E1C9B5 /* WPSegmentedSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPSegmentedSelectionTableViewController.h; sourceTree = "<group>"; };
 		C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPSegmentedSelectionTableViewController.m; sourceTree = "<group>"; };
@@ -3081,6 +3086,9 @@
 				C535C7A617D77603007EF244 /* MediaBrowserViewController.xib */,
 				C535C7AC17D782FD007EF244 /* MediaSearchFilterHeaderView.h */,
 				C535C7AD17D782FD007EF244 /* MediaSearchFilterHeaderView.m */,
+				C535C7AF17D90B5C007EF244 /* EditMediaViewController.h */,
+				C535C7B017D90B5C007EF244 /* EditMediaViewController.m */,
+				C535C7B117D90B5C007EF244 /* EditMediaViewController.xib */,
 			);
 			name = Media;
 			sourceTree = "<group>";
@@ -4642,6 +4650,7 @@
 				30FB8CB1140D56D7003BBEC5 /* toggleButtonMain@2x.png in Resources */,
 				30FB8D6F140D9F49003BBEC5 /* toggleButtonExtended@2x.png in Resources */,
 				30FB8D70140D9F49003BBEC5 /* toggleButtonExtended.png in Resources */,
+				C535C7B317D90B5C007EF244 /* EditMediaViewController.xib in Resources */,
 				30E5DD58140E7747003FA092 /* toolbarUl@2x.png in Resources */,
 				85325A2D17BB0DF8008E87D1 /* icon-menu-stats@2x.png in Resources */,
 				30E5DD59140E7747003FA092 /* toolbarLi@2x.png in Resources */,
@@ -5369,6 +5378,7 @@
 				E13FA0DE134C6D34007DCDD0 /* BlogSelectorButton.m in Sources */,
 				E13FA0FB134C8DDC007DCDD0 /* BlogSelectorViewController.m in Sources */,
 				850DE06117CD4611003A1057 /* NewNotificationsTableViewCell.m in Sources */,
+				C535C7B217D90B5C007EF244 /* EditMediaViewController.m in Sources */,
 				E10A2E9B134E8AD3007643F9 /* PostAnnotation.m in Sources */,
 				E17BE261134F5E4D00165C3D /* QuickPicturePreviewView.m in Sources */,
 				E14B2B761368127900CC3C4F /* UITableViewTextFieldCell.m in Sources */,
