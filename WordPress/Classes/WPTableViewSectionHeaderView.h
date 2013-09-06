@@ -1,5 +1,5 @@
 //
-//  WPTableViewSectionTitleView.h
+//  WPTableViewSectionHeaderView.h
 //  WordPress
 //
 //  Created by Sendhil Panchadsaram on 9/5/13.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WPTableViewSectionTitleView : UIView
+@interface WPTableViewSectionHeaderView : UIView
 
 @property (nonatomic, strong) NSString *title;
 

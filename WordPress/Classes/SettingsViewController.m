@@ -44,7 +44,7 @@
 #import "GeneralWalkthroughViewController.h"
 #import "WPAccount.h"
 #import "WelcomeViewController.h"
-#import "WPTableViewSectionTitleView.h"
+#import "WPTableViewSectionHeaderView.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,
@@ -283,7 +283,7 @@ typedef enum {
 
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    WPTableViewSectionTitleView *header = [[WPTableViewSectionTitleView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForHeaderInSection:section];
     return header;
 }
@@ -291,7 +291,7 @@ typedef enum {
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionTitleView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section

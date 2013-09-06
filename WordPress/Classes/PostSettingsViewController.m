@@ -9,7 +9,7 @@
 #import <ImageIO/ImageIO.h>
 #import "WPSegmentedSelectionTableViewController.h"
 #import "WPAddCategoryViewController.h"
-#import "WPTableViewSectionTitleView.h"
+#import "WPTableViewSectionHeaderView.h"
 #import "Post.h"
 
 #define kPasswordFooterSectionHeight         68.0f
@@ -413,7 +413,7 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    WPTableViewSectionTitleView *header = [[WPTableViewSectionTitleView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
     header.title = [self titleForHeaderInSection:section];
     return header;
 }
@@ -421,7 +421,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionTitleView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

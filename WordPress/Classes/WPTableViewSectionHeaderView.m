@@ -1,24 +1,24 @@
 //
-//  WPTableViewSectionTitleView.m
+//  WPTableViewSectionHeaderView.m
 //  WordPress
 //
 //  Created by Sendhil Panchadsaram on 9/5/13.
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
-#import "WPTableViewSectionTitleView.h"
+#import "WPTableViewSectionHeaderView.h"
 
-@interface WPTableViewSectionTitleView() {
+@interface WPTableViewSectionHeaderView() {
     UILabel *_titleLabel;
 }
 
 @end
 
-@implementation WPTableViewSectionTitleView
+@implementation WPTableViewSectionHeaderView
 
-CGFloat const WPTableViewSectionTitleViewStandardOffset = 16.0;
-CGFloat const WPTableViewSectionTitleViewTopVerticalPadding = 21.0;
-CGFloat const WPTableViewSectionTitleViewBottomVerticalPadding = 8.0;
+CGFloat const WPTableViewSectionHeaderViewStandardOffset = 16.0;
+CGFloat const WPTableViewSectionHeaderViewTopVerticalPadding = 21.0;
+CGFloat const WPTableViewSectionHeaderViewBottomVerticalPadding = 8.0;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -49,7 +49,7 @@ CGFloat const WPTableViewSectionTitleViewBottomVerticalPadding = 8.0;
     [super layoutSubviews];
     
     CGSize titleSize = [[self class] sizeForTitle:_titleLabel.text andWidth:CGRectGetWidth(self.bounds)];
-    _titleLabel.frame = CGRectMake(WPTableViewSectionTitleViewStandardOffset, WPTableViewSectionTitleViewTopVerticalPadding, titleSize.width, titleSize.height);
+    _titleLabel.frame = CGRectMake(WPTableViewSectionHeaderViewStandardOffset, WPTableViewSectionHeaderViewTopVerticalPadding, titleSize.width, titleSize.height);
 }
 
 + (CGFloat)heightForTitle:(NSString *)title andWidth:(CGFloat)width
@@ -57,14 +57,14 @@ CGFloat const WPTableViewSectionTitleViewBottomVerticalPadding = 8.0;
     if ([title length] == 0)
         return 0.0;
     
-    return [self sizeForTitle:title andWidth:width].height + WPTableViewSectionTitleViewTopVerticalPadding + WPTableViewSectionTitleViewBottomVerticalPadding;
+    return [self sizeForTitle:title andWidth:width].height + WPTableViewSectionHeaderViewTopVerticalPadding + WPTableViewSectionHeaderViewBottomVerticalPadding;
 }
 
 #pragma mark - Private Methods
 
 + (CGSize)sizeForTitle:(NSString *)title andWidth:(CGFloat)width
 {
-    return [title sizeWithFont:[WPStyleGuide tableviewSectionHeaderFont] constrainedToSize:CGSizeMake(width - 2 * WPTableViewSectionTitleViewStandardOffset, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    return [title sizeWithFont:[WPStyleGuide tableviewSectionHeaderFont] constrainedToSize:CGSizeMake(width - 2 * WPTableViewSectionHeaderViewStandardOffset, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
 }
 
 
