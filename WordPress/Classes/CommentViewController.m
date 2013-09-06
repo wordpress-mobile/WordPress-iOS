@@ -71,8 +71,10 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.dateLabel.font = [WPStyleGuide subtitleFont];
     self.commentWebview.backgroundColor = [WPStyleGuide readGrey];
     
-    [self.toolbar setBarTintColor:[WPStyleGuide littleEddieGrey]];
-    self.toolbar.translucent = NO;
+    if (IS_IOS7) {
+        [self.toolbar setBarTintColor:[WPStyleGuide littleEddieGrey]];
+        self.toolbar.translucent = NO;        
+    }
     
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedPostTitle)];
     gestureRecognizer.numberOfTapsRequired = 1;

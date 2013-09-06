@@ -65,7 +65,9 @@
     self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     self.tableView.separatorColor = [WPStyleGuide readGrey];
-    self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+    if (IS_IOS7) {
+        self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];        
+    }
     [buttonSelectAll setTitleTextAttributes:@{
                                               UITextAttributeFont: [WPStyleGuide regularTextFont],
                                               UITextAttributeTextColor : [UIColor whiteColor],
