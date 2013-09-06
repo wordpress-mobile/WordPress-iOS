@@ -1017,8 +1017,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     
     
     _linkHelperAlertView.overlayMode = WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode;
-    _linkHelperAlertView.overlayTitle = NSLocalizedString(@"Make a Link", @"Title of the Link Helper popup to aid in creating a Link in the Post Editor. DON'T REMOVE the line breaks!");
-    _linkHelperAlertView.overlayDescription = @"Test";
+    _linkHelperAlertView.overlayTitle = NSLocalizedString(@"Make a Link", @"Title of the Link Helper popup to aid in creating a Link in the Post Editor.");
+    _linkHelperAlertView.overlayDescription = NSLocalizedString(@"Enter the URL and link text below.", @"Alert view description for creating a link in the post editor.");
     _linkHelperAlertView.footerDescription = [NSLocalizedString(@"tap to dismiss", nil) uppercaseString];
     _linkHelperAlertView.firstTextFieldPlaceholder = NSLocalizedString(@"Text to be linked", @"Popup to aid in creating a Link in the Post Editor.");
     _linkHelperAlertView.secondTextFieldPlaceholder = NSLocalizedString(@"Link URL", @"Popup to aid in creating a Link in the Post Editor, URL field (where you can type or paste a URL that the text should link.");
