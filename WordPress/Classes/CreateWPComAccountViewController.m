@@ -74,8 +74,9 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 {
     [super viewDidLoad];
     
-    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern"]];
-    self.tableView.backgroundView = nil;
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+
     
 	_footerText = @" ";
 	_buttonText = NSLocalizedString(@"Create WordPress.com Blog", @"");
@@ -158,6 +159,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
             activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
         
+        [WPStyleGuide configureTableViewActionCell:activityCell];
 		cell = activityCell;
 	} else {
         if (indexPath.row == 0) {
@@ -172,6 +174,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
             _emailTextField.keyboardType = UIKeyboardTypeEmailAddress;
             _emailTextField.returnKeyType = UIReturnKeyNext;
             _emailTextField.delegate = self;
+            [WPStyleGuide configureTableViewTextCell:_emailCell];
             cell = _emailCell;
         }
         else if (indexPath.row == 1) {
@@ -186,6 +189,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
             _usernameTextField.keyboardType = UIKeyboardTypeEmailAddress;
             _usernameTextField.returnKeyType = UIReturnKeyNext;
             _usernameTextField.delegate = self;
+            [WPStyleGuide configureTableViewTextCell:_usernameCell];
             cell = _usernameCell;
         } else if (indexPath.row == 2) {
             if (_passwordCell == nil) {
@@ -200,6 +204,8 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
             _passwordTextField.returnKeyType = UIReturnKeyNext;
             _passwordTextField.secureTextEntry = YES;
             _passwordTextField.delegate = self;
+            [WPStyleGuide configureTableViewTextCell:_passwordCell];
+            
             cell = _passwordCell;
         } else if (indexPath.row == 3) {
             if (_blogUrlCell == nil) {
@@ -212,15 +218,17 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
             _blogUrlTextField.placeholder = NSLocalizedString(@"myblog.wordpress.com", nil);
             _blogUrlTextField.keyboardType = UIKeyboardTypeURL;
             _blogUrlTextField.delegate = self;
+            [WPStyleGuide configureTableViewTextCell:_blogUrlCell];
             cell = _blogUrlCell;
         } else if (indexPath.row == 4) {
             if (_localeCell == nil) {
-                _localeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                _localeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                      reuseIdentifier:@"LocaleCell"];
             }
             _localeCell.textLabel.text = @"Language";
             _localeCell.detailTextLabel.text = [_currentLanguage objectForKey:@"name"];
             _localeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [WPStyleGuide configureTableViewCell:_localeCell];
             cell = _localeCell;
         }
     }
