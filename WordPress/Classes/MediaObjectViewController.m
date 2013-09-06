@@ -66,8 +66,8 @@
         self.toolbar.tintColor = [UIColor whiteColor];
         self.deleteButton.tintColor = [UIColor whiteColor];
         self.insertButton.tintColor = [UIColor whiteColor];
-        self.leftSpacer.width = -6.5;
-        self.rightSpacer.width = -5.0;
+        self.leftSpacer.width = 1.0;
+        self.rightSpacer.width = -8.0;
     }
 }
 
