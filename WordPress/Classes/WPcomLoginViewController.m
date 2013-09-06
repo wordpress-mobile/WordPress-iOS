@@ -14,6 +14,7 @@
 #import "WPAccount.h"
 #import "WordPressComApi.h"
 #import "ReachabilityUtils.h"
+#import "WPTableViewSectionFooterView.h"
 
 @interface WPcomLoginViewController () <UITextFieldDelegate> {
     UITableViewTextFieldCell *loginCell, *passwordCell;
@@ -52,8 +53,8 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
 
-    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern"]];
-    self.tableView.backgroundView = nil;
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
     self.wpComApi = [WordPressComApi sharedApi];
 	self.footerText = @" ";
@@ -167,6 +168,7 @@
         } else {
             activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
+        [WPStyleGuide configureTableViewActionCell:activityCell];
 		cell = activityCell;
 	} else {
         if ([indexPath row] == 0) {
@@ -185,6 +187,7 @@
                 loginCell.textField.text = self.predefinedUsername;
             if(isSigningIn)
                 [loginCell.textField resignFirstResponder];
+            [WPStyleGuide configureTableViewTextCell:loginCell];
             cell = loginCell;
         }
         else {
@@ -200,6 +203,7 @@
             passwordCell.textField.delegate = self;
             if(isSigningIn)
                 [passwordCell.textField resignFirstResponder];
+            [WPStyleGuide configureTableViewTextCell:passwordCell];
             cell = passwordCell;
         }
     }
