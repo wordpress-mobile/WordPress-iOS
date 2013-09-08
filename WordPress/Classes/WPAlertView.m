@@ -21,8 +21,6 @@
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
 @property (nonatomic, weak) IBOutlet UIImageView *bottomSeparator;
 @property (nonatomic, weak) IBOutlet UILabel *bottomLabel;
-@property (nonatomic, weak) IBOutlet UITextField *firstTextField;
-@property (nonatomic, weak) IBOutlet UITextField *secondTextField;
 @property (nonatomic, weak) IBOutlet WPNUXSecondaryButton *leftButton;
 @property (nonatomic, weak) IBOutlet WPNUXPrimaryButton *rightButton;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *verticalCenteringConstraint;

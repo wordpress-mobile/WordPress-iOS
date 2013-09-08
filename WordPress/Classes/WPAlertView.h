@@ -30,6 +30,10 @@ typedef NS_ENUM(NSUInteger, WPAlertViewOverlayMode) {
 @property (nonatomic, strong) NSString *rightButtonText;
 @property (nonatomic, assign) BOOL hideBackgroundView;
 
+// Provided for convenience to alter keyboard behavior
+@property (nonatomic, weak) IBOutlet UITextField *firstTextField;
+@property (nonatomic, weak) IBOutlet UITextField *secondTextField;
+
 @property (nonatomic, copy) void (^singleTapCompletionBlock)(WPAlertView *);
 @property (nonatomic, copy) void (^doubleTapCompletionBlock)(WPAlertView *);
 @property (nonatomic, copy) void (^button1CompletionBlock)(WPAlertView *);
