@@ -16,6 +16,7 @@
     NSArray *_verticalConstraints;
 }
 
+@property (nonatomic, weak) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, weak) IBOutlet UIView *backgroundView;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
@@ -36,15 +37,22 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     self = [super initWithFrame:frame];
     if (self)
     {
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         
         _overlayMode = WPAlertViewOverlayModeTapToDismiss;
         _verticalConstraints = [NSArray array];
         _horizontalConstraints = [NSArray array];
         
-        UIView *overlayView = [[NSBundle mainBundle] loadNibNamed:@"WPAlertView" owner:self options:nil][0];
-        overlayView.translatesAutoresizingMaskIntoConstraints = NO;
-        [self addSubview:overlayView];
+        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:frame];
+        scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        _scrollView = scrollView;
+        [self addSubview:scrollView];
+        
+        UIView *backgroundView = [[NSBundle mainBundle] loadNibNamed:@"WPAlertView" owner:self options:nil][0];
+        backgroundView.frame = scrollView.frame;
+        backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        [scrollView addSubview:backgroundView];
         
         [self configureView];
         [self configureBackgroundColor];
@@ -163,27 +171,6 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
 {
     [super layoutSubviews];
 }
-
-- (void)updateConstraints
-{
-    [super updateConstraints];
-
-    [self removeConstraints:_verticalConstraints];
-    [self removeConstraints:_horizontalConstraints];
-
-    UIView *backgroundView = self.backgroundView;
-    NSDictionary *views = NSDictionaryOfVariableBindings(backgroundView);
-    _horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[backgroundView]|" options:0 metrics:0 views:views];
-    _verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[backgroundView]|" options:0 metrics:0 views:views];
-    [self addConstraints:_horizontalConstraints];
-    [self addConstraints:_verticalConstraints];
-    
-    // Center Views
-//    CGFloat heightOfMiddleControls = CGRectGetMaxY(self.bottomSeparator.frame);// - CGRectGetMinY(self.logo.frame);
-//    CGFloat verticalOffset = (CGRectGetMaxY(self.bottomLabel.frame) - heightOfMiddleControls)/2.0;
-//    self.verticalCenteringConstraint.constant = verticalOffset;
-}
-
 
 #pragma mark - IBAction Methods
 
