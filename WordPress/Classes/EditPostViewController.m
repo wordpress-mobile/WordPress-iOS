@@ -22,6 +22,10 @@ NSString *const EditPostViewControllerDidAutosaveNotification = @"EditPostViewCo
 NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostViewControllerAutosaveDidFailNotification";
 
 @interface EditPostViewController ()
+
+@property (nonatomic, strong) WPAlertView *linkHelperAlertView;
+@property (nonatomic, assign) BOOL hasChangesToAutosave;
+
 @end
 
 @implementation EditPostViewController {
@@ -58,10 +62,8 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     UIActionSheet *currentActionSheet;
 
     UIAlertView *_failedMediaAlertView;
-    WPAlertView *_linkHelperAlertView;
     BOOL _isAutosaved;
     BOOL _isAutosaving;
-    BOOL _hasChangesToAutosave;
     AutosavingIndicatorView *_autosavingIndicatorView;
     NSUInteger _charactersChanged;
     AbstractPost *_backupPost;
@@ -1044,7 +1046,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [delegate setAlertRunning:NO];
         [editorTextView touchesBegan:nil withEvent:nil];
-        _linkHelperAlertView = nil;
+        
+        [fles setLinkHelperAlertView:nil];
     };
     _linkHelperAlertView.button2CompletionBlock = ^(WPAlertView *overlayView){
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -1082,13 +1085,13 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         [[editorTextView.undoManager prepareWithInvocationTarget:fles] restoreText:oldText withRange:oldRange];
         [editorTextView.undoManager setActionName:@"link"];
         
-        _hasChangesToAutosave = YES;
-        [self autosaveContent];
-        [self incrementCharactersChangedForAutosaveBy:MAX(oldRange.length, aTagText.length)];
+        [fles setHasChangesToAutosave:YES];
+        [fles autosaveContent];
+        [fles incrementCharactersChangedForAutosaveBy:MAX(oldRange.length, aTagText.length)];
         
         [delegate setAlertRunning:NO];
-        [textView touchesBegan:nil withEvent:nil];
-        _linkHelperAlertView = nil;
+        [editorTextView touchesBegan:nil withEvent:nil];
+        [fles setLinkHelperAlertView:nil];
     };
     
     [self.view addSubview:_linkHelperAlertView];
