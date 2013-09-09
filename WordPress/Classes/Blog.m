@@ -290,9 +290,13 @@
 
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra {
     NSMutableArray *result = [NSMutableArray array];
+    NSString *password = self.password;
+    if (!password) {
+        password = @"";
+    }
     [result addObject:self.blogID];
     [result addObject:self.username];
-    [result addObject:self.password];
+    [result addObject:password];
     
     if ([extra isKindOfClass:[NSArray class]]) {
         [result addObjectsFromArray:extra];
@@ -335,11 +339,11 @@
 }
 
 - (NSString *)username {
-    return self.account.username;
+    return self.account.username ?: @"";
 }
 
 - (NSString *)password {
-    return self.account.password;
+    return self.account.password ?: @"";
 }
 
 #pragma mark -

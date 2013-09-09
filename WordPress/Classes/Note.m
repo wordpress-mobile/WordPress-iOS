@@ -174,6 +174,8 @@ const NSUInteger NoteKeepCount = 20;
 }
 
 - (void)updateAttributes:(NSDictionary *)noteData {
+    self.payload = [noteData JSONData];
+    self.noteData = [self.payload mutableObjectFromJSONData];
     if ([noteData objectForKey:@"type"]) {
         self.type = [noteData objectForKey:@"type"];
     }
