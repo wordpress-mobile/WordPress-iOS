@@ -17,7 +17,7 @@
 
 static NSString *const MediaCellIdentifier = @"media_cell";
 
-@interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MediaBrowserCellMultiSelectDelegate>
 
 @property (weak, nonatomic) IBOutlet MediaSearchFilterHeaderView *filterHeaderView;
 @property (nonatomic, strong) NSArray *filteredMedia;
@@ -56,6 +56,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     [self.collectionView registerClass:[MediaBrowserCell class] forCellWithReuseIdentifier:MediaCellIdentifier];
+    [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
     
     [self.collectionView addSubview:_filterHeaderView];
     _filterHeaderView.delegate = self;
@@ -161,28 +162,28 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     return self.blog.media.allObjects.count;
 }
 
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+        return [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"header" forIndexPath:indexPath];
+    }
+    return nil;
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     MediaBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:MediaCellIdentifier forIndexPath:indexPath];
     cell.media = self.blog.media.allObjects[indexPath.item];
+    cell.delegate = self;
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
     if (!_selectedMedia) {
         _selectedMedia = [NSMutableArray array];
     }
     
     MediaBrowserCell *cell = (MediaBrowserCell*)[collectionView cellForItemAtIndexPath:indexPath];
-    cell.isSelected = !cell.isSelected;
-    if ([_selectedMedia containsObject:cell.media]) {
-        [_selectedMedia removeObject:cell.media];
-    } else {
-        [_selectedMedia addObject:cell.media];
-    }
-    [cell updateForSelection];
-    
-    [self showMultiselectOptions];
+    EditMediaViewController *viewMedia = [[EditMediaViewController alloc] initWithMedia:cell.media showEditMode:NO];
+    [self.navigationController pushViewController:viewMedia animated:YES];
 }
 
 #pragma mark - Collection view layout
@@ -206,6 +207,20 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self.collectionView performBatchUpdates:nil completion:nil];
+}
+
+#pragma mark - MediaCellSelectionDelegate
+
+- (void)mediaCellSelected:(Media *)media {
+    if (![_selectedMedia containsObject:media]) {
+        [_selectedMedia addObject:media];
+    }
+    [self showMultiselectOptions];
+}
+
+- (void)mediaCellDeselected:(Media *)media {
+    [_selectedMedia removeObject:media];
+    [self showMultiselectOptions];
 }
 
 #pragma mark - Multiselect options

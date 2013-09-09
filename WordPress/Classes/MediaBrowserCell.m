@@ -21,7 +21,7 @@
 
 @property (nonatomic, weak) UIImageView *thumbnail;
 @property (nonatomic, weak) UILabel *title;
-@property (nonatomic, weak) UIImageView *checkboxView;
+@property (nonatomic, weak) UIButton *checkbox;
 
 @end
 
@@ -41,9 +41,11 @@
         [_thumbnail setContentMode:UIViewContentModeScaleAspectFit];
         [self.contentView addSubview:_thumbnail];
         
-        UIImageView *checkboxView = [[UIImageView alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width - 37.0f, 0, 37.0f, 37.0f)];
-        _checkboxView = checkboxView;
-        [self.contentView addSubview:_checkboxView];
+        UIButton *checkbox = [[UIButton alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width - 37.0f, 0, 37.0f, 37.0f)];
+        _checkbox = checkbox;
+        [_checkbox addTarget:self action:@selector(checkboxPressed) forControlEvents:UIControlEventTouchUpInside];
+        _checkbox.backgroundColor = [UIColor yellowColor];
+        [self.contentView addSubview:_checkbox];
         
         UIView *titleContainer = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.thumbnail.frame), self.contentView.bounds.size.width, 20.0f)];
         titleContainer.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
@@ -61,14 +63,24 @@
 
 - (void)updateForSelection
 {
-    [self bringSubviewToFront:_checkboxView];
+    [self bringSubviewToFront:_checkbox];
     if (_isSelected) {
-        [_checkboxView setBackgroundColor:[UIColor redColor]];
+        [_checkbox setBackgroundColor:[UIColor redColor]];
 //        _checkboxView setImage:<#(UIImage *)#>
     } else {
-        [_checkboxView setBackgroundColor:[UIColor clearColor]];
+        [_checkbox setBackgroundColor:[UIColor yellowColor]];
 //    _checkboxView setImage:<#(UIImage *)#>
     }
+}
+
+- (void)checkboxPressed {
+    _isSelected = !_isSelected;
+    if (_isSelected) {
+        [_delegate mediaCellSelected:self.media];
+    } else {
+        [_delegate mediaCellDeselected:self.media];
+    }
+    [self updateForSelection];
 }
 
 - (void)prepareForReuse {
