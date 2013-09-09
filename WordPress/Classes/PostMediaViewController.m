@@ -114,6 +114,14 @@
     }
 }
 
+- (NSString *)statsPrefix
+{
+    if (_statsPrefix == nil)
+        return @"Post Detail";
+    else
+        return _statsPrefix;
+}
+
 - (void)customizeForiOS7
 {
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
@@ -593,13 +601,17 @@
     }
 
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Photo From Library", nil)]) {
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddPhoto forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self pickPhotoFromPhotoLibrary:nil];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddPhoto forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self pickPhotoFromCamera:nil];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Video from Library", nil)]) {
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddVideo forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         actionSheet.tag = TAG_ACTIONSHEET_VIDEO;
         [self pickPhotoFromPhotoLibrary:actionSheet];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Record Video", nil)]) {
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddVideo forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self pickVideoFromCamera:actionSheet];
     } else {
         //
@@ -1753,5 +1765,9 @@
     return videoPath;
 }
 
+- (NSString *)formattedStatEventString:(NSString *)event
+{
+    return [NSString stringWithFormat:@"%@ - %@", self.statsPrefix, event];
+}
 
 @end

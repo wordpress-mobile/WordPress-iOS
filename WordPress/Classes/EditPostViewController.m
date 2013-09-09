@@ -399,6 +399,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 // IOS 7 Version which pushes a view controller instead of "swapping" it
 - (IBAction)showSettings:(id)sender
 {
+    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedSettings forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     PostSettingsViewController *vc = [[PostSettingsViewController alloc] initWithPost:self.apost];
     vc.statsPrefix = self.statsPrefix;
     vc.postDetailViewController = self;
@@ -417,6 +418,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 // IOS 7 Version which pushes a view controller instead of "swapping" it
 - (IBAction)showPreview:(id)sender
 {
+    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedPreview forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+
     PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.apost];
     vc.postDetailViewController = self;
     self.navigationItem.title = NSLocalizedString(@"Back", nil);

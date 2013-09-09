@@ -124,11 +124,6 @@ NSString *const StatsPropertyPagedOpened = @"pages_opened";
 NSString *const StatsEventPagesClickedNewPage = @"Pages - Clicked New Page";
 
 // Comments
-NSString *const StatsEventCommentsApproved = @"Comments - Approved Comments";
-NSString *const StatsEventCommentsUnapproved = @"Comments - Unapproved Comments";
-NSString *const StatsEventCommentsFlagAsSpam = @"Comments - Flagged Comments as Spam";
-NSString *const StatsEventCommentsDeleted = @"Comments - Deleted Comments";
-NSString *const StatsEventCommentsReplied = @"Comments - Clicked Reply to Comment";
 NSString *const StatsEventCommentsViewCommentDetails = @"Comments - View Comment Details";
 
 // Comment Detail

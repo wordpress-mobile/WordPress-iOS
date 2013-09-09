@@ -1986,6 +1986,7 @@
 
 - (void)showCategoriesSelectionView:(CGRect)cellFrame
 {
+    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedShowCategories forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     [self populateSelectionsControllerWithCategories:cellFrame];
 }
 
