@@ -12,7 +12,10 @@
 #import "AFHTTPRequestOperation.h"
 
 @interface Media (PrivateMethods)
-- (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure ;
+
+- (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)xmlrpcDeleteWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
 @end
 
 @implementation Media {
@@ -77,6 +80,29 @@
     self.creationDate = json[@"date_created_gmt"];
     self.caption = json[@"caption"];
     self.desc = json[@"description"];
+}
+
++ (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)(NSArray *successes))success failure:(void (^)(NSError *error, NSArray *failures))failure {
+    __block NSMutableArray *successfulDeletes = [NSMutableArray array];
+    __block NSMutableArray *failedDeletes = [NSMutableArray array];
+    for (NSUInteger i = 0; i < media.count; i++) {
+        Media *m = media[i];
+        [m xmlrpcDeleteWithSuccess:^{
+            [successfulDeletes addObject:m];
+            if (i == media.count-1) {
+                if (success) {
+                    success(successfulDeletes);
+                }
+            }
+        } failure:^(NSError *error) {
+            [failedDeletes addObject:m];
+            if (i == media.count-1) {
+                if (failure) {
+                    failure(error, failedDeletes);
+                }
+            }
+        }];
+    }
 }
 
 - (void)awakeFromFetch {
@@ -246,6 +272,22 @@
             }
         });
     });
+}
+
+- (void)xmlrpcDeleteWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    WPXMLRPCRequest *deleteRequest = [self.blog.api XMLRPCRequestWithMethod:@"wp.deletePost" parameters:[self.blog getXMLRPCArgsWithExtra:self.mediaID]];
+    WPXMLRPCRequestOperation *deleteOperation = [self.blog.api XMLRPCRequestOperationWithRequest:deleteRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self.managedObjectContext deleteObject:self];
+        if (success) {
+            success();
+        }
+        [self.managedObjectContext save:nil];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+    [self.blog.api enqueueXMLRPCRequestOperation:deleteOperation];
 }
 
 - (NSString *)html {

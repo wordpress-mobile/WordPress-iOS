@@ -50,6 +50,8 @@ typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
 
 + (Media *)newMediaForPost:(AbstractPost *)post;
 + (Media *)createOrReplaceMediaFromJSON:(NSDictionary*)json forBlog:(Blog *)blog;
++ (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)(NSArray *successes))success failure:(void (^)(NSError *error, NSArray *failures))failure;
+
 - (void)cancelUpload;
 - (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)remove;

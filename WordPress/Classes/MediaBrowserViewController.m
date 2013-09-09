@@ -17,7 +17,7 @@
 
 static NSString *const MediaCellIdentifier = @"media_cell";
 
-@interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MediaBrowserCellMultiSelectDelegate>
+@interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MediaBrowserCellMultiSelectDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet MediaSearchFilterHeaderView *filterHeaderView;
 @property (nonatomic, strong) NSArray *filteredMedia;
@@ -177,10 +177,6 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (!_selectedMedia) {
-        _selectedMedia = [NSMutableArray array];
-    }
-    
     MediaBrowserCell *cell = (MediaBrowserCell*)[collectionView cellForItemAtIndexPath:indexPath];
     EditMediaViewController *viewMedia = [[EditMediaViewController alloc] initWithMedia:cell.media showEditMode:NO];
     [self.navigationController pushViewController:viewMedia animated:YES];
@@ -212,6 +208,10 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 #pragma mark - MediaCellSelectionDelegate
 
 - (void)mediaCellSelected:(Media *)media {
+    if (!_selectedMedia) {
+        _selectedMedia = [NSMutableArray array];
+    }
+    
     if (![_selectedMedia containsObject:media]) {
         [_selectedMedia addObject:media];
     }
@@ -239,7 +239,19 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 }
 
 - (IBAction)multiselectDeletePressed:(id)sender {
-    // [Media deleteRemoteMedia:_selectedMedia];
+    UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete Media", @"") message:NSLocalizedString(@"Are you sure you wish to delete the selected items?", @"") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:NSLocalizedString(@"Delete", @""), nil];
+    [confirmation show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        [Media bulkDeleteMedia:_selectedMedia withSuccess:^(NSArray *successes) {
+            NSLog(@"Successfully deleted %@", successes);
+            [self.collectionView reloadData];
+        } failure:^(NSError *error, NSArray *failures) {
+            WPFLog(@"Failed to delete media %@ with error %@", failures, error);
+        }];
+    }
 }
 
 - (IBAction)multiselectCreateGalleryPressed:(id)sender {
