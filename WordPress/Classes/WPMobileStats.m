@@ -268,7 +268,7 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
     }
     
     NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_user_id"];
-    [[QuantcastMeasurement sharedInstance] beginMeasurementSessionWithAPIKey:[WordPressComApiCredentials quantcastAPIKey] userIdentifier:userId labels:nil];
+    [[QuantcastMeasurement sharedInstance] beginMeasurementSessionWithAPIKey:[WordPressComApiCredentials quantcastAPIKey] userIdentifier:[userId md5] labels:nil];
 }
 
 + (void)updateUserIDForStats:(NSString *)userID
