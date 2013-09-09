@@ -103,12 +103,8 @@ typedef enum {
         [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
     }];
     
-    self.tableView.backgroundView = nil;
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    self.tableView.separatorColor = [WPStyleGuide readGrey];
-    [self setupMedia];
-    
-    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    [self setupMedia];    
 }
 
 

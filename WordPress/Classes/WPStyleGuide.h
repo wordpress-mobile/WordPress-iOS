@@ -59,5 +59,6 @@
 + (void)configureTableViewActionCell:(UITableViewCell *)cell;
 + (void)configureTableViewCell:(UITableViewCell *)cell;
 + (void)configureTableViewTextCell:(UITableViewTextFieldCell *)cell;
++ (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView;
 
 @end

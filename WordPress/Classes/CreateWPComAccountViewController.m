@@ -74,10 +74,8 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
-    
 	_footerText = @" ";
 	_buttonText = NSLocalizedString(@"Create WordPress.com Blog", @"");
 	self.navigationItem.title = NSLocalizedString(@"Create Account", @"");

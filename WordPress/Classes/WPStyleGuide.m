@@ -251,5 +251,11 @@
     cell.textField.font = [self tableviewTextFont];
 }
 
++ (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView
+{
+    view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    tableView.separatorColor = [WPStyleGuide readGrey];
+}
 
 @end

@@ -61,8 +61,7 @@
     if (blog) {
         self.navigationItem.title = NSLocalizedString(@"Edit Blog", @"");
 
-        self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-        self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
         
         self.url = blog.url;
         self.username = blog.username;
