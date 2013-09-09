@@ -533,8 +533,24 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         return;
     
     if (self.navigationItem.leftBarButtonItem == nil) {
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelView:)];
-        self.navigationItem.leftBarButtonItem = cancelButton;
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        [backButton setTitle:NSLocalizedString(@"Cancel", nil)
+                    forState:UIControlStateNormal];
+        [backButton setImage:[[UIImage imageNamed:@"icon-chevron"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                    forState:UIControlStateNormal];
+        backButton.titleLabel.font = [WPStyleGuide regularTextFont];
+        backButton.titleEdgeInsets = UIEdgeInsetsMake(0, -17, 0, 0);
+        [backButton sizeToFit];
+        backButton.autoresizingMask =  UIViewAutoresizingFlexibleHeight;
+        [backButton addTarget:self
+                       action:@selector(cancelView:)
+             forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+        UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+        spacerButton.width = -24.0;
+        
+        self.navigationItem.leftBarButtonItems = @[spacerButton, button];
     }
 
     NSString *buttonTitle;
