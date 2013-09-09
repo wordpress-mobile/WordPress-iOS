@@ -773,7 +773,6 @@
 		85F2C4C817B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4B517B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.m */; };
 		85F2C4C917B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4B717B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m */; };
 		85F2C4CA17B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85F2C4B817B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib */; };
-		85F2C4CB17B9F6E600A303E0 /* NotificationsTableViewDatasource.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4BA17B9F6E600A303E0 /* NotificationsTableViewDatasource.m */; };
 		85F2C4CC17B9F6E600A303E0 /* NUX.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85F2C4BB17B9F6E600A303E0 /* NUX.storyboard */; };
 		85F2C4CF17B9F81A00A303E0 /* BaseNUXViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4CE17B9F81A00A303E0 /* BaseNUXViewController.m */; };
 		85F2C4D417BA0ED400A303E0 /* MP6SidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4D217BA0ED400A303E0 /* MP6SidebarViewController.m */; };
@@ -1938,8 +1937,6 @@
 		85F2C4B617B9F6E600A303E0 /* NewWPWalkthroughOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewWPWalkthroughOverlayView.h; sourceTree = "<group>"; };
 		85F2C4B717B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewWPWalkthroughOverlayView.m; sourceTree = "<group>"; };
 		85F2C4B817B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewWPWalkthroughOverlayView.xib; sourceTree = "<group>"; };
-		85F2C4B917B9F6E600A303E0 /* NotificationsTableViewDatasource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsTableViewDatasource.h; sourceTree = "<group>"; };
-		85F2C4BA17B9F6E600A303E0 /* NotificationsTableViewDatasource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTableViewDatasource.m; sourceTree = "<group>"; };
 		85F2C4BB17B9F6E600A303E0 /* NUX.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NUX.storyboard; sourceTree = "<group>"; };
 		85F2C4CD17B9F81A00A303E0 /* BaseNUXViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNUXViewController.h; sourceTree = "<group>"; };
 		85F2C4CE17B9F81A00A303E0 /* BaseNUXViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNUXViewController.m; sourceTree = "<group>"; };
@@ -3407,8 +3404,6 @@
 				85F2C4B617B9F6E600A303E0 /* NewWPWalkthroughOverlayView.h */,
 				85F2C4B717B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m */,
 				85F2C4B817B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib */,
-				85F2C4B917B9F6E600A303E0 /* NotificationsTableViewDatasource.h */,
-				85F2C4BA17B9F6E600A303E0 /* NotificationsTableViewDatasource.m */,
 				85F2C4BB17B9F6E600A303E0 /* NUX.storyboard */,
 			);
 			name = "New NUX";
@@ -5219,7 +5214,6 @@
 				03CF21ED0FE9F0C3008AD538 /* NSString+Util.m in Sources */,
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
 				031663070FFB151A0045D052 /* PostTableViewCell.m in Sources */,
-				85F2C4CB17B9F6E600A303E0 /* NotificationsTableViewDatasource.m in Sources */,
 				031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */,
 				03958062100D6CFC00850742 /* WPLabel.m in Sources */,
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
