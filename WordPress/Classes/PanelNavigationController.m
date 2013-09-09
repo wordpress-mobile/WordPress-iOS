@@ -161,11 +161,24 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
         
         self.detailViewController = detailController;
         self.masterViewController = masterController;
-        
-        // Add a loading image to prevent a flicker as the app sets up this controller
-        self.loadingImageView = [[UIImageView alloc] initWithImage:[self loadingImage]];
     }
     return self;
+}
+
+- (void)displayLoadingImageView
+{
+    [self.loadingImageView removeFromSuperview];
+    
+    // Add a loading image to prevent a flicker as the app sets up this controller
+    self.loadingImageView = [[UIImageView alloc] initWithImage:[self loadingImage]];
+    self.loadingImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:self.loadingImageView];
+    [self.view bringSubviewToFront:self.loadingImageView];
+}
+
+- (void)hideLoadingImageView
+{
+    [self.loadingImageView removeFromSuperview];
 }
 
 - (void)loadView {
@@ -226,8 +239,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
         [self showSidebarAnimated:NO];
     }
     
-    [self.view addSubview:self.loadingImageView];
-    [self.view bringSubviewToFront:self.loadingImageView];
+    [self displayLoadingImageView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotesNotification:)
 												 name:@"WordPressComUnseenNotes" object:nil];
@@ -585,7 +597,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
         closingSidebar = YES;
     }
     
-    [self.loadingImageView removeFromSuperview];
+    [self hideLoadingImageView];
     
     BOOL oldWasWide = [self viewControllerExpectsWidePanel:_detailViewController];
     

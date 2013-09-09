@@ -191,6 +191,12 @@ typedef enum {
 
 - (void)checkCloseButton {
     if ([[self.resultsController fetchedObjects] count] == 0 && ![[WordPressComApi sharedApi] hasCredentials]) {
+        if (IS_IPAD) {
+            // On the iPad the NUX is displayed as a UIFormSheet which still shows all the sidebar stuff in the background.
+            // As this looks pretty ugly, we'll hide it by putting the loading image view on top of it.
+            PanelNavigationController *panelNavController = (PanelNavigationController *)self.presentingViewController;
+            [panelNavController displayLoadingImageView];
+        }
         GeneralWalkthroughViewController *walkthroughViewController = [[GeneralWalkthroughViewController alloc] init];
         self.navigationController.navigationBar.hidden = YES;
         [self.navigationController pushViewController:walkthroughViewController animated:YES];
