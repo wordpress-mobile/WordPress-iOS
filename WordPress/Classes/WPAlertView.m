@@ -36,6 +36,8 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     self = [super initWithFrame:frame];
     if (self)
     {
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
         _overlayMode = WPAlertViewOverlayModeTapToDismiss;
         _verticalConstraints = [NSArray array];
         _horizontalConstraints = [NSArray array];
@@ -297,7 +299,16 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
 
 - (void)dismiss
 {
-    [self removeFromSuperview];
+    [UIView animateWithDuration:0.2
+                     animations:^{
+                         self.alpha = 0.0;
+                     }
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             [self removeFromSuperview];
+                         }
+                     }
+     ];
 }
 
 @end

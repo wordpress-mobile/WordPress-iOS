@@ -1009,8 +1009,10 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 }
 
 - (void)showLinkView {
-    if (_linkHelperAlertView)
-        return;
+    if (_linkHelperAlertView) {
+        [_linkHelperAlertView dismiss];
+        _linkHelperAlertView = nil;
+    }
     
     NSRange range = textView.selectedRange;
     NSString *infoText = nil;
@@ -1094,7 +1096,14 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         [fles setLinkHelperAlertView:nil];
     };
     
+    _linkHelperAlertView.alpha = 0.0;
     [self.view addSubview:_linkHelperAlertView];
+    
+    isEditing = YES;
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        _linkHelperAlertView.alpha = 1.0;
+    }];
 }
 
 - (BOOL)hasChanges {
@@ -1608,7 +1617,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)keyboardWillShow:(NSNotification *)notification {
     WPFLogMethod();
 	isShowingKeyboard = YES;
-    if ([textView isFirstResponder]) {
+    if ([textView isFirstResponder] || self.linkHelperAlertView.firstTextField.isFirstResponder || self.linkHelperAlertView.secondTextField.isFirstResponder) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     }
     if (isEditing) {
