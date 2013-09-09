@@ -637,7 +637,9 @@
 				addPopover.delegate = self;
 			}
             if (IS_IOS7) {
-                barButton = self.navigationItem.rightBarButtonItem;
+                // We insert a spacer into the barButtonItems so we need to grab the actual
+                // bar button item otherwise there is a crash.
+                barButton = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
             }
             if (!CGRectIsEmpty(actionSheetRect)) {
                 [addPopover presentPopoverFromRect:actionSheetRect inView:self.postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -680,8 +682,10 @@
 		}
 	}
 	
-	if(IS_IPAD == YES) {
-		UIBarButtonItem *barButton = IS_IOS7 ? self.navigationItem.rightBarButtonItem : postDetailViewController.movieButton;
+	if(IS_IPAD) {
+        // We insert a spacer into the barButtonItems so we need to grab the actual
+        // bar button item otherwise there is a crash.
+		UIBarButtonItem *barButton = IS_IOS7 ? [self.navigationItem.rightBarButtonItems objectAtIndex:1] : postDetailViewController.movieButton;
 		if (addPopover == nil) {
 			addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
             if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
@@ -753,7 +757,9 @@
                 addPopover.delegate = self;
             }
             if (IS_IOS7) {
-                barButton = self.navigationItem.rightBarButtonItem;
+                // We insert a spacer into the barButtonItems so we need to grab the actual
+                // bar button item otherwise there is a crash.
+                barButton = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
             }
             if (!CGRectIsEmpty(actionSheetRect)) {
                 [addPopover presentPopoverFromRect:actionSheetRect inView:self.postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
