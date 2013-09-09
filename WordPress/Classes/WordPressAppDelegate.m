@@ -14,7 +14,7 @@
 #import "Media.h"
 #import "CameraPlusPickerManager.h"
 #import "PanelNavigationController.h"
-#import "NewSidebarViewController.h"
+#import "MP6SidebarViewController.h"
 #import "UIDevice+WordPressIdentifier.h"
 #import "WordPressComApi.h"
 #import "PostsViewController.h"
@@ -275,7 +275,7 @@
     [self setupPocket];
     [self setupSingleSignOn];
 
-    NewSidebarViewController *sidebarViewController = [[NewSidebarViewController alloc] init];
+    MP6SidebarViewController *sidebarViewController = [[MP6SidebarViewController alloc] init];
     
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [window setFrame:bounds];
@@ -1165,7 +1165,7 @@
         
     } else if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
         WPFLog(@"Received notification: %@", remoteNotif);
-        NewSidebarViewController *sidebar = (NewSidebarViewController *)self.panelNavigationController.masterViewController;
+        MP6SidebarViewController *sidebar = (MP6SidebarViewController *)self.panelNavigationController.masterViewController;
         [sidebar showCommentWithId:[[remoteNotif objectForKey:@"comment_id"] numericValue] blogId:[[remoteNotif objectForKey:@"blog_id"] numericValue]];
     } else {
         WPFLog(@"Got unsupported notification: %@", remoteNotif);

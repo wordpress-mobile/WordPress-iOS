@@ -1,12 +1,12 @@
 //
-//  NewSidebarMenuViewController.m
+//  MP6SidebarViewController.m
 //  WordPress
 //
 //  Created by Sendhil Panchadsaram on 8/12/13.
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
-#import "NewSidebarViewController.h"
+#import "MP6SidebarViewController.h"
 #import "SidebarTopLevelView.h"
 #import "NewSidebarCell.h"
 #import "PostsViewController.h"
@@ -24,7 +24,7 @@
 #import "QuickPhotoViewController.h"
 #import "GeneralWalkthroughViewController.h"
 
-@interface NewSidebarViewController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIActionSheetDelegate> {
+@interface MP6SidebarViewController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIActionSheetDelegate> {
     Blog *_currentlyOpenedBlog;
     NSIndexPath *_currentIndexPath;
     NSUInteger _unseenNotificationCount;
@@ -42,7 +42,7 @@
 
 @end
 
-@implementation NewSidebarViewController
+@implementation MP6SidebarViewController
 
 CGFloat const SidebarViewControllerNumberOfRowsForBlog = 6;
 CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
