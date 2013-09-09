@@ -1047,7 +1047,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [delegate setAlertRunning:NO];
-        [editorTextView touchesBegan:nil withEvent:nil];
+        [editorTextView becomeFirstResponder];
         
         [fles setLinkHelperAlertView:nil];
     };
@@ -1057,6 +1057,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         // Insert
         [overlayView dismiss];
         
+        [editorTextView becomeFirstResponder];
+
         UITextField *infoText = overlayView.firstTextField;
         UITextField *urlField = overlayView.secondTextField;
 
@@ -1092,7 +1094,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         [fles incrementCharactersChangedForAutosaveBy:MAX(oldRange.length, aTagText.length)];
         
         [delegate setAlertRunning:NO];
-        [editorTextView touchesBegan:nil withEvent:nil];
         [fles setLinkHelperAlertView:nil];
     };
     
