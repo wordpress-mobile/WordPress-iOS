@@ -19,5 +19,6 @@
 - (IBAction)handleCancelButtonTapped:(id)sender;
 - (void)setTitle:(NSString *)titleText message:(NSString *)messageText cancelButton:(NSString *)cancelText;
 - (void)showInView:(UIView *)view;
+- (void)centerInSuperview;
 
 @end

@@ -229,6 +229,11 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self.collectionView performBatchUpdates:nil completion:nil];
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+}
+
+- (void)viewDidLayoutSubviews {
+    [_noThemesView centerInSuperview];
 }
 
 #pragma mark - Setters
