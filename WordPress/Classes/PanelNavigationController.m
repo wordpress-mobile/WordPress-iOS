@@ -381,7 +381,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
         return;
     
     self.statusBarBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), PanelNavigationControllerStatusBarViewHeight)];
-    self.statusBarBackgroundView.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+    self.statusBarBackgroundView.backgroundColor = [UIColor clearColor];
     self.statusBarBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     
     [self.view addSubview:self.statusBarBackgroundView];
