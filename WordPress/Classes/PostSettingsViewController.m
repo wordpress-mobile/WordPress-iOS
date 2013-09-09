@@ -859,7 +859,7 @@
             NSArray *titles = self.post.blog.sortedPostFormatNames;
             NSDictionary *postFormatsDict = @{
                                             @"DefaultValue": NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
-                                            @"Title" : NSLocalizedString(@"Visiblity", nil),
+                                            @"Title" : NSLocalizedString(@"Visibility", nil),
                                             @"Titles" : titles,
                                             @"Values" : titles,
                                             @"CurrentValue" : self.post.postFormatText

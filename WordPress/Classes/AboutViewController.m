@@ -53,14 +53,26 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
     
     self.viewWebsiteButton.titleLabel.font = [WPStyleGuide subtitleFont];
     self.viewWebsiteButton.titleLabel.textColor = [WPStyleGuide whisperGrey];
-
-    [self.tosButton setTitle:NSLocalizedString(@"Terms of Service", nil) forState:UIControlStateNormal];
-    self.tosButton.titleLabel.font = [WPStyleGuide postTitleFont];
-    self.tosButton.titleLabel.textColor = [WPStyleGuide whisperGrey];
     
+    if (IS_IOS7) {
+        [self.tosButton setBackgroundImage:nil forState:UIControlStateNormal];
+        [self.tosButton setBackgroundImage:nil forState:UIControlStateHighlighted];
+        [self.tosButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
+    } else {
+        self.tosButton.titleLabel.textColor = [WPStyleGuide whisperGrey];
+    }
+    self.tosButton.titleLabel.font = [WPStyleGuide postTitleFont];
+    [self.tosButton setTitle:NSLocalizedString(@"Terms of Service", nil) forState:UIControlStateNormal];
+    
+    if (IS_IOS7) {
+        [self.privacyPolicyButton setBackgroundImage:nil forState:UIControlStateNormal];
+        [self.privacyPolicyButton setBackgroundImage:nil forState:UIControlStateHighlighted];
+        [self.privacyPolicyButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
+    } else  {
+        self.privacyPolicyButton.titleLabel.textColor = [WPStyleGuide whisperGrey];
+    }
     [self.privacyPolicyButton setTitle:NSLocalizedString(@"Privacy Policy", nil) forState:UIControlStateNormal];
     self.privacyPolicyButton.titleLabel.font = [WPStyleGuide postTitleFont];
-    self.privacyPolicyButton.titleLabel.textColor = [WPStyleGuide whisperGrey];
     
     if([self.navigationController.viewControllers count] == 1) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];

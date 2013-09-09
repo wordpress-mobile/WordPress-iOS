@@ -36,7 +36,6 @@
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                             <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
-                            <size key="titleShadowOffset" width="0.0" height="1"/>
                             <state key="normal" title="Visit the FAQ" backgroundImage="welcome_button_bg_full.png">
                                 <color key="titleColor" red="0.1294117719" green="0.1294117719" blue="0.1294117719" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -54,7 +53,6 @@
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                             <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
-                            <size key="titleShadowOffset" width="0.0" height="1"/>
                             <state key="normal" title="Visit the Forums" backgroundImage="welcome_button_bg_full.png">
                                 <color key="titleColor" red="0.1294117719" green="0.1294117719" blue="0.1294117719" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="titleShadowColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

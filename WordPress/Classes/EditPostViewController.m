@@ -5,6 +5,7 @@
 #import "NSString+XMLExtensions.h"
 #import "WPPopoverBackgroundView.h"
 #import "WPAddCategoryViewController.h"
+#import "WPAlertView.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -52,15 +53,12 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     BOOL isShowingKeyboard;
     BOOL isExternalKeyboard;
     BOOL isNewCategory;
-    BOOL isShowingLinkAlert;
     UITextField *__weak currentEditingTextField;
     WPSegmentedSelectionTableViewController *segmentedTableViewController;
     UIActionSheet *currentActionSheet;
-    UITextField *infoText;
-    UITextField *urlField;
 
     UIAlertView *_failedMediaAlertView;
-    UIAlertView *_linkHelperAlertView;
+    WPAlertView *_linkHelperAlertView;
     BOOL _isAutosaved;
     BOOL _isAutosaving;
     BOOL _hasChangesToAutosave;
@@ -79,7 +77,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 - (void)dealloc {
     _failedMediaAlertView.delegate = nil;
-    _linkHelperAlertView.delegate = nil;
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
@@ -1012,46 +1009,89 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)showLinkView {
     if (_linkHelperAlertView)
         return;
-
-    _linkHelperAlertView = [[UIAlertView alloc] init];
-	if (IS_IPAD || [[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait) {
-		infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 46.0, 260.0, 31.0)];
-		urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 82.0, 260.0, 31.0)];
-	}
-	else {
-		infoText = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 33.0, 260.0, 28.0)];
-		urlField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 65.0, 260.0, 28.0)];
-	}
-
-    infoText.placeholder = NSLocalizedString(@"Text to be linked", @"Popup to aid in creating a Link in the Post Editor.");
-    urlField.placeholder = NSLocalizedString(@"Link URL", @"Popup to aid in creating a Link in the Post Editor, URL field (where you can type or paste a URL that the text should link.");
-	infoText.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-	urlField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     
     NSRange range = textView.selectedRange;
+    NSString *infoText = nil;
     
     if (range.length > 0)
-        infoText.text = [textView.text substringWithRange:range];
+        infoText = [textView.text substringWithRange:range];
+
+    _linkHelperAlertView = [[WPAlertView alloc] initWithFrame:self.view.bounds];
     
-    infoText.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    urlField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    infoText.borderStyle = UITextBorderStyleRoundedRect;
-    urlField.borderStyle = UITextBorderStyleRoundedRect;
-    infoText.keyboardAppearance = UIKeyboardAppearanceAlert;
-    urlField.keyboardAppearance = UIKeyboardAppearanceAlert;
-	infoText.keyboardType = UIKeyboardTypeDefault;
-	urlField.keyboardType = UIKeyboardTypeURL;
-    [_linkHelperAlertView addButtonWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")];
-    [_linkHelperAlertView addButtonWithTitle:NSLocalizedString(@"Insert", @"Insert content (link, media) button")];
-    _linkHelperAlertView.title = NSLocalizedString(@"Make a Link\n\n\n\n", @"Title of the Link Helper popup to aid in creating a Link in the Post Editor. DON'T REMOVE the line breaks!");
-    _linkHelperAlertView.delegate = self;
-    [_linkHelperAlertView addSubview:infoText];
-    [_linkHelperAlertView addSubview:urlField];
-    [infoText becomeFirstResponder];
-	
-    isShowingLinkAlert = YES;
-    _linkHelperAlertView.tag = EditPostViewControllerAlertTagLinkHelper;
-    [_linkHelperAlertView show];
+    _linkHelperAlertView.overlayMode = WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode;
+    _linkHelperAlertView.overlayTitle = NSLocalizedString(@"Make a Link", @"Title of the Link Helper popup to aid in creating a Link in the Post Editor.");
+    _linkHelperAlertView.overlayDescription = NSLocalizedString(@"Enter the URL and link text below.", @"Alert view description for creating a link in the post editor.");
+    _linkHelperAlertView.footerDescription = [NSLocalizedString(@"tap to dismiss", nil) uppercaseString];
+    _linkHelperAlertView.firstTextFieldPlaceholder = NSLocalizedString(@"Text to be linked", @"Popup to aid in creating a Link in the Post Editor.");
+    _linkHelperAlertView.firstTextFieldValue = infoText;
+    _linkHelperAlertView.secondTextFieldPlaceholder = NSLocalizedString(@"Link URL", @"Popup to aid in creating a Link in the Post Editor, URL field (where you can type or paste a URL that the text should link.");
+    _linkHelperAlertView.leftButtonText = NSLocalizedString(@"Cancel", @"Cancel button");
+    _linkHelperAlertView.rightButtonText = NSLocalizedString(@"Insert", @"Insert content (link, media) button");
+    
+    _linkHelperAlertView.firstTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    _linkHelperAlertView.secondTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    _linkHelperAlertView.firstTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
+    _linkHelperAlertView.secondTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
+    _linkHelperAlertView.firstTextField.keyboardType = UIKeyboardTypeDefault;
+    _linkHelperAlertView.secondTextField.keyboardType = UIKeyboardTypeURL;
+
+    __block UITextView *editorTextView = textView;
+    __block id fles = self;
+    _linkHelperAlertView.button1CompletionBlock = ^(WPAlertView *overlayView){
+        // Cancel
+        [overlayView dismiss];
+        
+        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+        [delegate setAlertRunning:NO];
+        [editorTextView touchesBegan:nil withEvent:nil];
+        _linkHelperAlertView = nil;
+    };
+    _linkHelperAlertView.button2CompletionBlock = ^(WPAlertView *overlayView){
+        WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
+
+        // Insert
+        [overlayView dismiss];
+        
+        UITextField *infoText = overlayView.firstTextField;
+        UITextField *urlField = overlayView.secondTextField;
+
+        if ((urlField.text == nil) || ([urlField.text isEqualToString:@""])) {
+            [delegate setAlertRunning:NO];
+            return;
+        }
+        
+        if ((infoText.text == nil) || ([infoText.text isEqualToString:@""]))
+            infoText.text = urlField.text;
+        
+        NSString *urlString = [fles validateNewLinkInfo:[urlField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+        NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];
+        
+        NSRange range = editorTextView.selectedRange;
+        
+        NSString *oldText = editorTextView.text;
+        NSRange oldRange = editorTextView.selectedRange;
+        editorTextView.text = [editorTextView.text stringByReplacingCharactersInRange:range withString:aTagText];
+        
+        //reset selection back to nothing
+        range.length = 0;
+        
+        if (range.length == 0) {                // If nothing was selected
+            range.location += [aTagText length]; // Place selection between tags
+            editorTextView.selectedRange = range;
+        }
+        [[editorTextView.undoManager prepareWithInvocationTarget:fles] restoreText:oldText withRange:oldRange];
+        [editorTextView.undoManager setActionName:@"link"];
+        
+        _hasChangesToAutosave = YES;
+        [self autosaveContent];
+        [self incrementCharactersChangedForAutosaveBy:MAX(oldRange.length, aTagText.length)];
+        
+        [delegate setAlertRunning:NO];
+        [textView touchesBegan:nil withEvent:nil];
+        _linkHelperAlertView = nil;
+    };
+    
+    [self.view addSubview:_linkHelperAlertView];
 }
 
 - (BOOL)hasChanges {
@@ -1062,47 +1102,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 #pragma mark AlertView Delegate Methods
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-	
-    if (alertView.tag == EditPostViewControllerAlertTagLinkHelper) {
-        isShowingLinkAlert = NO;
-        if (buttonIndex == 1) {
-            if ((urlField.text == nil) || ([urlField.text isEqualToString:@""])) {
-                [delegate setAlertRunning:NO];
-                return;
-            }
-			
-            if ((infoText.text == nil) || ([infoText.text isEqualToString:@""]))
-                infoText.text = urlField.text;
-			
-            NSString *urlString = [self validateNewLinkInfo:[urlField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
-            NSString *aTagText = [NSString stringWithFormat:@"<a href=\"%@\">%@</a>", urlString, infoText.text];
-            
-            NSRange range = textView.selectedRange;
-            
-            NSString *oldText = textView.text;
-            NSRange oldRange = textView.selectedRange;
-            textView.text = [textView.text stringByReplacingCharactersInRange:range withString:aTagText];
-            
-            //reset selection back to nothing
-            range.length = 0;
-            
-            if (range.length == 0) {                // If nothing was selected
-                range.location += [aTagText length]; // Place selection between tags
-                textView.selectedRange = range;
-            }
-            [[textView.undoManager prepareWithInvocationTarget:self] restoreText:oldText withRange:oldRange];
-            [textView.undoManager setActionName:@"link"];            
-            
-            _hasChangesToAutosave = YES;
-            [self autosaveContent];
-            [self incrementCharactersChangedForAutosaveBy:MAX(oldRange.length, aTagText.length)];
-        }
-		
-        [delegate setAlertRunning:NO];
-        [textView touchesBegan:nil withEvent:nil];
-        _linkHelperAlertView = nil;
-    } else if (alertView.tag == EditPostViewControllerAlertTagFailedMedia) {
+    if (alertView.tag == EditPostViewControllerAlertTagFailedMedia) {
         if (buttonIndex == 1) {
             WPFLog(@"Saving post even after some media failed to upload");
             [self savePost:YES];
@@ -1389,18 +1389,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         pointerFrame.origin.x = [self pointerPositionForAttachmentsTab];
         tabPointer.frame = pointerFrame;
     }
-	
-	// This reinforces text field constraints set above, for when the Link Helper is already showing when the device is rotated.
-	if (isShowingLinkAlert) {
-		if ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait) {
-			infoText.frame = CGRectMake(12.0, 46.0, 260.0, 31.0);
-			urlField.frame = CGRectMake(12.0, 82.0, 260.0, 31.0);
-		}
-		else {
-			infoText.frame = CGRectMake(12.0, 33.0, 260.0, 28.0);
-			urlField.frame = CGRectMake(12.0, 65.0, 260.0, 28.0);
-		}
-	}
 }
 
 #pragma mark - Media management

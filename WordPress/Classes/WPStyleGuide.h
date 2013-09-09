@@ -47,6 +47,7 @@
 + (UIColor *)darkAsNightGrey;
 
 + (UIColor *)tableViewActionColor;
++ (UIColor *)buttonActionColor;
 
 // Bar Button Styles
 + (UIBarButtonItemStyle)barButtonStyleForDone;
