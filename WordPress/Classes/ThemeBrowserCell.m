@@ -51,7 +51,7 @@
         titleContainer.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
         [self.contentView addSubview:titleContainer];
         
-        UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(3, 0, titleContainer.frame.size.width-6, titleContainer.frame.size.height)];
+        UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(6, 0, titleContainer.frame.size.width-12, titleContainer.frame.size.height)];
         _title = title;
         _title.backgroundColor = [UIColor clearColor];
         _title.textColor = [UIColor whiteColor];

@@ -29,46 +29,37 @@ static NSDateFormatter *dateFormatter;
 @dynamic previewUrl;
 @dynamic blog;
 
-+ (Theme *)themeFromDictionary:(NSDictionary *)themeInfo {
++ (Theme *)createOrUpdateThemeFromDictionary:(NSDictionary *)themeInfo withBlog:(Blog*)blog {
     NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
-    Theme *newTheme = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self)
-                                                    inManagedObjectContext:context];
-    newTheme.themeId = themeInfo[@"id"];
-    newTheme.name = themeInfo[@"name"];
-    newTheme.details = themeInfo[@"description"];
-    newTheme.trendingRank = themeInfo[@"trending_rank"];
-    newTheme.popularityRank = themeInfo[@"popularity_rank"];
-    newTheme.screenshotUrl = themeInfo[@"screenshot"];
-    newTheme.version = themeInfo[@"version"];
     
-    newTheme.premium = @([[themeInfo objectForKeyPath:@"cost.number"] integerValue] > 0);
-    newTheme.tags = themeInfo[@"tags"];
-    newTheme.previewUrl = themeInfo[@"preview_url"];
+    Theme *theme;
+    NSSet *result = [blog.themes filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId == %@", themeInfo[@"id"]]];
+    if (result.count > 1) {
+        theme = result.allObjects[0];
+    } else {
+        theme = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self)
+                                              inManagedObjectContext:context];
+        theme.themeId = themeInfo[@"id"];
+        theme.blog = blog;
+    }
+
+    theme.name = themeInfo[@"name"];
+    theme.details = themeInfo[@"description"];
+    theme.trendingRank = themeInfo[@"trending_rank"];
+    theme.popularityRank = themeInfo[@"popularity_rank"];
+    theme.screenshotUrl = themeInfo[@"screenshot"];
+    theme.version = themeInfo[@"version"];
+    theme.premium = @([[themeInfo objectForKeyPath:@"cost.number"] integerValue] > 0);
+    theme.tags = themeInfo[@"tags"];
+    theme.previewUrl = themeInfo[@"preview_url"];
     
     if (!dateFormatter) {
         dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.dateFormat = @"YYYY-MM-dd";
     }
-    newTheme.launchDate = [dateFormatter dateFromString:themeInfo[@"launch_date"]];
+    theme.launchDate = [dateFormatter dateFromString:themeInfo[@"launch_date"]];
     
-    return newTheme;
-}
-
-+ (void)removeAllThemesWithContext:(NSManagedObjectContext*)context {
-    NSError *error;
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass(self)];
-    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
-    if (error) {
-        WPLog(@"Error executing fetch request for removal of all themes: %@", error);
-        return;
-    }
-    for (Theme *theme in results) {
-        [context deleteObject:theme];
-    }
-    [context save:&error];
-    if (error) {
-        WPLog(@"Error saving context after deletion of all themes: %@", error);
-    }
+    return theme;
 }
 
 - (BOOL)isCurrentTheme {
@@ -85,11 +76,18 @@ static NSDateFormatter *dateFormatter;
 
 + (void)fetchAndInsertThemesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure {
     [[WordPressComApi sharedApi] fetchThemesForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self removeAllThemesWithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext];
+        NSMutableArray *themesToKeep = [NSMutableArray array];
         for (NSDictionary *t in responseObject[@"themes"]) {
-            Theme *theme = [self themeFromDictionary:t];
-            theme.blog = blog;
+            Theme *theme = [Theme createOrUpdateThemeFromDictionary:t withBlog:blog];
+            [themesToKeep addObject:theme];
         }
+        
+        for (Theme *t in blog.themes) {
+            if (![themesToKeep containsObject:t]) {
+                [t.managedObjectContext deleteObject:t];
+            }
+        }
+
         [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext save:nil];
         dateFormatter = nil;
         
