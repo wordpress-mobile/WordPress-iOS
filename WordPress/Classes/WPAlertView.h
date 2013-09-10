@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSUInteger, WPAlertViewOverlayMode) {
-    WPAlertViewOverlayModeTapToDismiss,
-    WPAlertViewOverlayModeDoubleTapToDismiss,
-    WPAlertViewOverlayModeTwoButtonMode,
-    WPAlertViewOverlayModeOneTextFieldTwoButtonMode,
+    WPAlertViewOverlayModeTapToDismiss,                 // Not implemented
+    WPAlertViewOverlayModeDoubleTapToDismiss,           // Not implemented
+    WPAlertViewOverlayModeTwoButtonMode,                // Not implemented
+    WPAlertViewOverlayModeOneTextFieldTwoButtonMode,    // Not implemented
     WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode
 };
 
