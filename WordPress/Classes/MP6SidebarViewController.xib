@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3734.1"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewSidebarViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MP6SidebarViewController">
             <connections>
                 <outlet property="tableView" destination="4Ha-16-Jg3" id="BWq-kg-prG"/>
                 <outlet property="topLayoutConstraint" destination="gkQ-4n-rzk" id="hfq-7B-Z4A"/>

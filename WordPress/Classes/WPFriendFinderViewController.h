@@ -7,12 +7,8 @@
 //
 
 #import "WPWebAppViewController.h"
-#import "FBRequest.h"
 
-@interface WPFriendFinderViewController : WPWebAppViewController <FBRequestDelegate>
-
-- (void)authorizeSource:(NSString *)source;
-- (void)configureFriendFinder:(id)config;
+@interface WPFriendFinderViewController : WPWebAppViewController
 
 @end
 

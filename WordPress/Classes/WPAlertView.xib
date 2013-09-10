@@ -40,7 +40,7 @@
                         <constraint firstAttribute="height" constant="2" id="D7i-R5-Sas"/>
                     </constraints>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="2" image="ui-line-dark.png" translatesAutoresizingMaskIntoConstraints="NO" id="9vu-dl-a2n" userLabel="Bottom Line Divider">
+                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="2" image="ui-line-dark.png" translatesAutoresizingMaskIntoConstraints="NO" id="9vu-dl-a2n" userLabel="Bottom Line Divider">
                     <rect key="frame" x="16" y="121" width="288" height="2"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
@@ -92,18 +92,20 @@
                         <constraint firstAttribute="height" constant="45" id="kGJ-EV-cJL"/>
                     </constraints>
                 </view>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="This field has placeholder text" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QOp-w7-qQW">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="This field has placeholder text" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QOp-w7-qQW">
                     <rect key="frame" x="16" y="131" width="288" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="Cei-sw-LrY"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="This field has placeholder text" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fqb-fm-JFc">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="This field has placeholder text" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fqb-fm-JFc">
                     <rect key="frame" x="16" y="169" width="288" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="QpL-iE-kfT"/>
                     </constraints>

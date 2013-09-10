@@ -363,6 +363,7 @@ BOOL hasChanges;
         cell.textLabel.text = [blogName stringByDecodingXMLCharacters];
         cellSwitch.on = ![[muteBlogSetting objectForKey:@"value"] boolValue];
     }
+    [WPStyleGuide configureTableViewCell:cell];
     return cell;
 }
 

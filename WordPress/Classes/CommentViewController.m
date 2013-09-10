@@ -391,6 +391,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)deleteComment {
     WPFLogMethod();
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailDelete];
     [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(remove)];
     if (IS_IPAD) {

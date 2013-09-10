@@ -46,8 +46,9 @@
 
     _appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-    self.tableView.separatorColor = [WPStyleGuide readGrey];
 }
 
 #pragma mark - Table view data source

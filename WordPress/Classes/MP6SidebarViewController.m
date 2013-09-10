@@ -1,12 +1,12 @@
 //
-//  NewSidebarMenuViewController.m
+//  MP6SidebarViewController.m
 //  WordPress
 //
 //  Created by Sendhil Panchadsaram on 8/12/13.
 //  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
-#import "NewSidebarViewController.h"
+#import "MP6SidebarViewController.h"
 #import "SidebarTopLevelView.h"
 #import "NewSidebarCell.h"
 #import "PostsViewController.h"
@@ -27,7 +27,7 @@
 #import "WPStyleGuide.h"
 #import "MediaBrowserViewController.h"
 
-@interface NewSidebarViewController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIActionSheetDelegate> {
+@interface MP6SidebarViewController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIActionSheetDelegate> {
     Blog *_currentlyOpenedBlog;
     NSIndexPath *_currentIndexPath;
     NSUInteger _unseenNotificationCount;
@@ -45,7 +45,7 @@
 
 @end
 
-@implementation NewSidebarViewController
+@implementation MP6SidebarViewController
 
 CGFloat const SidebarViewControllerNumberOfRowsForBlog = 8;
 CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
@@ -390,7 +390,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             image = [UIImage imageNamed:@"icon-menu-themes"];
             selectedImage = [UIImage imageNamed:@"icon-menu-themes-active"];
         } else if ([self isRowForMedia:indexPath]) {
-            text = @"Media";
+            text = NSLocalizedString(@"Media", @"Menu item for media library");
             image = [UIImage imageNamed:@"icon-menu-pages"];
             selectedImage = [UIImage imageNamed:@"icon-menu-pages-active"];
         } else if ([self isRowForViewAdmin:indexPath]) {
@@ -615,8 +615,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     return indexPath.row == 4;
 }
 
-- (BOOL)isRowForMedia:(NSIndexPath *)indexPath
-{
+- (BOOL)isRowForMedia:(NSIndexPath *)indexPath {
     return indexPath.row == 5;
 }
 

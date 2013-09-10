@@ -22,6 +22,10 @@ NSString *const EditPostViewControllerDidAutosaveNotification = @"EditPostViewCo
 NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostViewControllerAutosaveDidFailNotification";
 
 @interface EditPostViewController ()
+
+@property (nonatomic, strong) WPAlertView *linkHelperAlertView;
+@property (nonatomic, assign) BOOL hasChangesToAutosave;
+
 @end
 
 @implementation EditPostViewController {
@@ -58,10 +62,8 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     UIActionSheet *currentActionSheet;
 
     UIAlertView *_failedMediaAlertView;
-    WPAlertView *_linkHelperAlertView;
     BOOL _isAutosaved;
     BOOL _isAutosaving;
-    BOOL _hasChangesToAutosave;
     AutosavingIndicatorView *_autosavingIndicatorView;
     NSUInteger _charactersChanged;
     AbstractPost *_backupPost;
@@ -397,6 +399,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 // IOS 7 Version which pushes a view controller instead of "swapping" it
 - (IBAction)showSettings:(id)sender
 {
+    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedSettings forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     PostSettingsViewController *vc = [[PostSettingsViewController alloc] initWithPost:self.apost];
     vc.statsPrefix = self.statsPrefix;
     vc.postDetailViewController = self;
@@ -415,6 +418,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 // IOS 7 Version which pushes a view controller instead of "swapping" it
 - (IBAction)showPreview:(id)sender
 {
+    [WPMobileStats flagProperty:StatsPropertyPostDetailClickedPreview forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+
     PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.apost];
     vc.postDetailViewController = self;
     self.navigationItem.title = NSLocalizedString(@"Back", nil);
@@ -531,8 +536,29 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         return;
     
     if (self.navigationItem.leftBarButtonItem == nil) {
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelView:)];
-        self.navigationItem.leftBarButtonItem = cancelButton;
+        if (IS_IOS7) {
+            UIButton *backButton = [UIButton buttonWithType:UIButtonTypeSystem];
+            [backButton setTitle:NSLocalizedString(@"Cancel", nil)
+                        forState:UIControlStateNormal];
+            [backButton setImage:[[UIImage imageNamed:@"icon-chevron"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+                        forState:UIControlStateNormal];
+            backButton.titleLabel.font = [WPStyleGuide regularTextFont];
+            backButton.titleEdgeInsets = UIEdgeInsetsMake(0, -17, 0, 0);
+            [backButton sizeToFit];
+            backButton.autoresizingMask =  UIViewAutoresizingFlexibleHeight;
+            [backButton addTarget:self
+                           action:@selector(cancelView:)
+                 forControlEvents:UIControlEventTouchUpInside];
+            
+            UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+            UIBarButtonItem *spacerButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+            spacerButton.width = -24.0;
+            
+            self.navigationItem.leftBarButtonItems = @[spacerButton, button];            
+        } else {
+            UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancelView:)];
+            self.navigationItem.leftBarButtonItem = cancelButton;
+        }
     }
 
     NSString *buttonTitle;
@@ -1007,8 +1033,10 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 }
 
 - (void)showLinkView {
-    if (_linkHelperAlertView)
-        return;
+    if (_linkHelperAlertView) {
+        [_linkHelperAlertView dismiss];
+        _linkHelperAlertView = nil;
+    }
     
     NSRange range = textView.selectedRange;
     NSString *infoText = nil;
@@ -1043,8 +1071,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [delegate setAlertRunning:NO];
-        [editorTextView touchesBegan:nil withEvent:nil];
-        _linkHelperAlertView = nil;
+        [editorTextView becomeFirstResponder];
+        
+        [fles setLinkHelperAlertView:nil];
     };
     _linkHelperAlertView.button2CompletionBlock = ^(WPAlertView *overlayView){
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -1052,6 +1081,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         // Insert
         [overlayView dismiss];
         
+        [editorTextView becomeFirstResponder];
+
         UITextField *infoText = overlayView.firstTextField;
         UITextField *urlField = overlayView.secondTextField;
 
@@ -1082,16 +1113,22 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         [[editorTextView.undoManager prepareWithInvocationTarget:fles] restoreText:oldText withRange:oldRange];
         [editorTextView.undoManager setActionName:@"link"];
         
-        _hasChangesToAutosave = YES;
-        [self autosaveContent];
-        [self incrementCharactersChangedForAutosaveBy:MAX(oldRange.length, aTagText.length)];
+        [fles setHasChangesToAutosave:YES];
+        [fles autosaveContent];
+        [fles incrementCharactersChangedForAutosaveBy:MAX(oldRange.length, aTagText.length)];
         
         [delegate setAlertRunning:NO];
-        [textView touchesBegan:nil withEvent:nil];
-        _linkHelperAlertView = nil;
+        [fles setLinkHelperAlertView:nil];
     };
     
+    _linkHelperAlertView.alpha = 0.0;
     [self.view addSubview:_linkHelperAlertView];
+    
+    isEditing = YES;
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        _linkHelperAlertView.alpha = 1.0;
+    }];
 }
 
 - (BOOL)hasChanges {
@@ -1605,7 +1642,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)keyboardWillShow:(NSNotification *)notification {
     WPFLogMethod();
 	isShowingKeyboard = YES;
-    if ([textView isFirstResponder]) {
+    if ([textView isFirstResponder] || self.linkHelperAlertView.firstTextField.isFirstResponder || self.linkHelperAlertView.secondTextField.isFirstResponder) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     }
     if (isEditing) {

@@ -10,6 +10,7 @@
 #import "Blog.h"
 #import "NSString+XMLExtensions.h"
 #import "WordPressAppDelegate.h"
+#import "WordPressComApi.h"
 
 #import <SFHFKeychainUtils/SFHFKeychainUtils.h>
 
@@ -76,6 +77,7 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 + (void)removeDefaultWordPressComAccount {
+    [[WordPressComApi sharedApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
     
     // Remove all WPcom blogs on sign out

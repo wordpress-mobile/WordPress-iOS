@@ -73,6 +73,7 @@ static inline double radians(double degrees) {
 @property (weak, readonly) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIAlertView *customSizeAlert;
 @property (nonatomic, strong) UIActionSheet *currentActionSheet;
+@property (nonatomic, strong) NSString *statsPrefix;
 
 - (id)initWithPost:(AbstractPost *)aPost;
 

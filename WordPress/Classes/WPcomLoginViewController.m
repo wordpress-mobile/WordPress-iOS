@@ -53,8 +53,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
 
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.wpComApi = [WordPressComApi sharedApi];
 	self.footerText = @" ";

@@ -122,11 +122,6 @@ extern NSString *const StatsPropertyPagedOpened;
 extern NSString *const StatsEventPagesClickedNewPage;
 
 // Comments
-extern NSString *const StatsEventCommentsApproved;
-extern NSString *const StatsEventCommentsUnapproved;
-extern NSString *const StatsEventCommentsFlagAsSpam;
-extern NSString *const StatsEventCommentsDeleted;
-extern NSString *const StatsEventCommentsReplied;
 extern NSString *const StatsEventCommentsViewCommentDetails;
 
 // Comment Detail
@@ -180,7 +175,6 @@ extern NSString *const StatsEventQuickPhotoPosted;
 extern NSString *const StatsEventWelcomeViewControllerClickedAddSelfHostedBlog;
 extern NSString *const StatsEventWelcomeViewControllerClickedAddWordpressDotComBlog;
 extern NSString *const StatsEventWelcomeViewControllerClickedCreateWordpressDotComBlog;
-
 
 // NUX Related
 extern NSString *const StatsEventNUXFirstWalkthroughOpened;

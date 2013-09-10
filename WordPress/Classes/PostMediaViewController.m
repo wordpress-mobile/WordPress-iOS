@@ -21,6 +21,8 @@
 @interface PostMediaViewController ()
 
 @property (nonatomic, strong) AbstractPost *apost;
+@property (nonatomic, weak) UIActionSheet *addMediaActionSheet;
+
 - (void)getMetadataFromAssetForURL:(NSURL *)url;
 - (UITableViewCell *)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
@@ -104,6 +106,22 @@
     _hasPromptedToAddPhotos = YES;
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if (_addMediaActionSheet) {
+        [_addMediaActionSheet dismissWithClickedButtonIndex:_addMediaActionSheet.cancelButtonIndex animated:true];
+    }
+}
+
+- (NSString *)statsPrefix
+{
+    if (_statsPrefix == nil)
+        return @"Post Detail";
+    else
+        return _statsPrefix;
+}
+
 - (void)customizeForiOS7
 {
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
@@ -122,19 +140,22 @@
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         if ([self isDeviceSupportVideoAndVideoPressEnabled]) {
             addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), NSLocalizedString(@"Take Photo", nil), NSLocalizedString(@"Add Video from Library", @""), NSLocalizedString(@"Record Video", @""),nil];
+            _addMediaActionSheet = addMediaActionSheet;
             
         } else {
             addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), NSLocalizedString(@"Take Photo", nil), nil];
+            _addMediaActionSheet = addMediaActionSheet;
         }
     } else {
         addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), nil];
+        _addMediaActionSheet = addMediaActionSheet;
     }
     
-    addMediaActionSheet.tag = TAG_ACTIONSHEET_PHOTO_SELECTION_PROMPT;
+    _addMediaActionSheet.tag = TAG_ACTIONSHEET_PHOTO_SELECTION_PROMPT;
     if (IS_IPAD) {
-        [addMediaActionSheet showFromBarButtonItem:[self.navigationItem.rightBarButtonItems objectAtIndex:1] animated:YES];
+        [_addMediaActionSheet showFromBarButtonItem:[self.navigationItem.rightBarButtonItems objectAtIndex:1] animated:YES];
     } else {
-        [addMediaActionSheet showInView:self.view];
+        [_addMediaActionSheet showInView:self.view];
     }
 }
 
@@ -153,10 +174,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
 }
 
 - (void)viewDidUnload {
@@ -476,6 +493,8 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
 
+    _addMediaActionSheet = nil;
+    
     if (actionSheet.tag == TAG_ACTIONSHEET_PHOTO_SELECTION_PROMPT) {
         [self processPhotoPickerActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
         return;
@@ -582,13 +601,17 @@
     }
 
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Photo From Library", nil)]) {
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddPhoto forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self pickPhotoFromPhotoLibrary:nil];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddPhoto forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self pickPhotoFromCamera:nil];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Video from Library", nil)]) {
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddVideo forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         actionSheet.tag = TAG_ACTIONSHEET_VIDEO;
         [self pickPhotoFromPhotoLibrary:actionSheet];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Record Video", nil)]) {
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddVideo forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self pickVideoFromCamera:actionSheet];
     } else {
         //
@@ -626,7 +649,9 @@
 				addPopover.delegate = self;
 			}
             if (IS_IOS7) {
-                barButton = self.navigationItem.rightBarButtonItem;
+                // We insert a spacer into the barButtonItems so we need to grab the actual
+                // bar button item otherwise there is a crash.
+                barButton = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
             }
             if (!CGRectIsEmpty(actionSheetRect)) {
                 [addPopover presentPopoverFromRect:actionSheetRect inView:self.postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -669,8 +694,10 @@
 		}
 	}
 	
-	if(IS_IPAD == YES) {
-		UIBarButtonItem *barButton = IS_IOS7 ? self.navigationItem.rightBarButtonItem : postDetailViewController.movieButton;
+	if(IS_IPAD) {
+        // We insert a spacer into the barButtonItems so we need to grab the actual
+        // bar button item otherwise there is a crash.
+		UIBarButtonItem *barButton = IS_IOS7 ? [self.navigationItem.rightBarButtonItems objectAtIndex:1] : postDetailViewController.movieButton;
 		if (addPopover == nil) {
 			addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
             if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
@@ -742,7 +769,9 @@
                 addPopover.delegate = self;
             }
             if (IS_IOS7) {
-                barButton = self.navigationItem.rightBarButtonItem;
+                // We insert a spacer into the barButtonItems so we need to grab the actual
+                // bar button item otherwise there is a crash.
+                barButton = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
             }
             if (!CGRectIsEmpty(actionSheetRect)) {
                 [addPopover presentPopoverFromRect:actionSheetRect inView:self.postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -1736,5 +1765,9 @@
     return videoPath;
 }
 
+- (NSString *)formattedStatEventString:(NSString *)event
+{
+    return [NSString stringWithFormat:@"%@ - %@", self.statsPrefix, event];
+}
 
 @end

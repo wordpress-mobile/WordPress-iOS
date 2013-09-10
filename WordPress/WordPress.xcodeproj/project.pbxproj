@@ -183,7 +183,6 @@
 		37363A4915AB262500D3A6B4 /* navbar_button_bg_landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37363A4715AB262500D3A6B4 /* navbar_button_bg_landscape@2x.png */; };
 		37363A4C15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37363A4A15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active@2x.png */; };
 		37363A4D15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 37363A4B15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active.png */; };
-		373C5184156D0523007C2977 /* SidebarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 373C5183156D0523007C2977 /* SidebarViewController.xib */; };
 		37417FAF15BEFA9C0067DFEA /* sidebar_border_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 37417FAD15BEFA9C0067DFEA /* sidebar_border_bg.png */; };
 		37417FB015BEFA9C0067DFEA /* sidebar_border_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37417FAE15BEFA9C0067DFEA /* sidebar_border_bg@2x.png */; };
 		3744A0DE130ABB0800CE7BE1 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3744A0DC130ABB0800CE7BE1 /* HelpViewController.m */; };
@@ -610,6 +609,8 @@
 		85149747171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85149746171E671000B87F3F /* SelectWPComBlogVisibilityViewController.m */; };
 		8516972C169D42F4006C5DED /* WPToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 8516972B169D42F4006C5DED /* WPToast.m */; };
 		851734431798C64700A30E27 /* NSURL+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 851734421798C64700A30E27 /* NSURL+Util.m */; };
+		8524551717DE4DBE00D22F98 /* icon-chevron.png in Resources */ = {isa = PBXBuildFile; fileRef = 8524551517DE4DBE00D22F98 /* icon-chevron.png */; };
+		8524551817DE4DBE00D22F98 /* icon-chevron@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8524551617DE4DBE00D22F98 /* icon-chevron@2x.png */; };
 		8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */ = {isa = PBXBuildFile; fileRef = 8525398A171761D9003F6B32 /* WPComLanguages.m */; };
 		852F4E8617BDED9C005ED539 /* EditPostViewControlleriOS7~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 852F4E8517BDED9C005ED539 /* EditPostViewControlleriOS7~iphone.xib */; };
 		852F4E8C17BED193005ED539 /* PostSettingsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 852F4E8B17BED193005ED539 /* PostSettingsSelectionViewController.m */; };
@@ -772,11 +773,10 @@
 		85F2C4C817B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4B517B9F6E600A303E0 /* NewLoginCompletedWalkthroughViewController.m */; };
 		85F2C4C917B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4B717B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m */; };
 		85F2C4CA17B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85F2C4B817B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib */; };
-		85F2C4CB17B9F6E600A303E0 /* NotificationsTableViewDatasource.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4BA17B9F6E600A303E0 /* NotificationsTableViewDatasource.m */; };
 		85F2C4CC17B9F6E600A303E0 /* NUX.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85F2C4BB17B9F6E600A303E0 /* NUX.storyboard */; };
 		85F2C4CF17B9F81A00A303E0 /* BaseNUXViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4CE17B9F81A00A303E0 /* BaseNUXViewController.m */; };
-		85F2C4D417BA0ED400A303E0 /* NewSidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4D217BA0ED400A303E0 /* NewSidebarViewController.m */; };
-		85F2C4D517BA0ED400A303E0 /* NewSidebarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85F2C4D317BA0ED400A303E0 /* NewSidebarViewController.xib */; };
+		85F2C4D417BA0ED400A303E0 /* MP6SidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4D217BA0ED400A303E0 /* MP6SidebarViewController.m */; };
+		85F2C4D517BA0ED400A303E0 /* MP6SidebarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85F2C4D317BA0ED400A303E0 /* MP6SidebarViewController.xib */; };
 		93740DC917D8F85600C41B2F /* WPAlertView.h in Resources */ = {isa = PBXBuildFile; fileRef = 93740DC817D8F85600C41B2F /* WPAlertView.h */; };
 		93740DCB17D8F86700C41B2F /* WPAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93740DCA17D8F86700C41B2F /* WPAlertView.m */; };
 		93740DCD17D8F87B00C41B2F /* WPAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93740DCC17D8F87B00C41B2F /* WPAlertView.xib */; };
@@ -922,7 +922,6 @@
 		E156190116DBABDE006532C4 /* xmlrpc-response-getpost.xml in Resources */ = {isa = PBXBuildFile; fileRef = E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */; };
 		E159D1051309AB0D00F498E2 /* MigrateBlogsFromFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = E159D1041309AB0D00F498E2 /* MigrateBlogsFromFiles.m */; };
 		E15D46CA156A511D00227392 /* PanelNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = E15D46C9156A511D00227392 /* PanelNavigationController.m */; };
-		E15D46D1156AABD900227392 /* SidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E15D46D0156AABD900227392 /* SidebarViewController.m */; };
 		E16A0C3212E769A10049EA80 /* table_sep.png in Resources */ = {isa = PBXBuildFile; fileRef = E16A0C3012E769A10049EA80 /* table_sep.png */; };
 		E16A0C3312E769A10049EA80 /* table_sep@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E16A0C3112E769A10049EA80 /* table_sep@2x.png */; };
 		E16AB92C14D978240047A2E5 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E16AB92B14D978240047A2E5 /* SenTestingKit.framework */; };
@@ -1252,7 +1251,6 @@
 		37363A4715AB262500D3A6B4 /* navbar_button_bg_landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navbar_button_bg_landscape@2x.png"; path = "Resources/Images/navbar_button_bg_landscape@2x.png"; sourceTree = "<group>"; };
 		37363A4A15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navbar_button_bg_landscape_active@2x.png"; path = "Resources/Images/navbar_button_bg_landscape_active@2x.png"; sourceTree = "<group>"; };
 		37363A4B15AB26CD00D3A6B4 /* navbar_button_bg_landscape_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navbar_button_bg_landscape_active.png; path = Resources/Images/navbar_button_bg_landscape_active.png; sourceTree = "<group>"; };
-		373C5183156D0523007C2977 /* SidebarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SidebarViewController.xib; path = Resources/SidebarViewController.xib; sourceTree = "<group>"; };
 		37417FAD15BEFA9C0067DFEA /* sidebar_border_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = sidebar_border_bg.png; path = Resources/Images/sidebar_border_bg.png; sourceTree = "<group>"; };
 		37417FAE15BEFA9C0067DFEA /* sidebar_border_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "sidebar_border_bg@2x.png"; path = "Resources/Images/sidebar_border_bg@2x.png"; sourceTree = "<group>"; };
 		3744A0DB130ABB0800CE7BE1 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
@@ -1754,6 +1752,8 @@
 		8516972B169D42F4006C5DED /* WPToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPToast.m; sourceTree = "<group>"; };
 		851734411798C64700A30E27 /* NSURL+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Util.h"; sourceTree = "<group>"; };
 		851734421798C64700A30E27 /* NSURL+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+Util.m"; sourceTree = "<group>"; };
+		8524551517DE4DBE00D22F98 /* icon-chevron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-chevron.png"; sourceTree = "<group>"; };
+		8524551617DE4DBE00D22F98 /* icon-chevron@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-chevron@2x.png"; sourceTree = "<group>"; };
 		85253989171761D9003F6B32 /* WPComLanguages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPComLanguages.h; sourceTree = "<group>"; };
 		8525398A171761D9003F6B32 /* WPComLanguages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPComLanguages.m; sourceTree = "<group>"; };
 		8527B15717CE98C5001CBA2E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -1961,14 +1961,12 @@
 		85F2C4B617B9F6E600A303E0 /* NewWPWalkthroughOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewWPWalkthroughOverlayView.h; sourceTree = "<group>"; };
 		85F2C4B717B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewWPWalkthroughOverlayView.m; sourceTree = "<group>"; };
 		85F2C4B817B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewWPWalkthroughOverlayView.xib; sourceTree = "<group>"; };
-		85F2C4B917B9F6E600A303E0 /* NotificationsTableViewDatasource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsTableViewDatasource.h; sourceTree = "<group>"; };
-		85F2C4BA17B9F6E600A303E0 /* NotificationsTableViewDatasource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTableViewDatasource.m; sourceTree = "<group>"; };
 		85F2C4BB17B9F6E600A303E0 /* NUX.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NUX.storyboard; sourceTree = "<group>"; };
 		85F2C4CD17B9F81A00A303E0 /* BaseNUXViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNUXViewController.h; sourceTree = "<group>"; };
 		85F2C4CE17B9F81A00A303E0 /* BaseNUXViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNUXViewController.m; sourceTree = "<group>"; };
-		85F2C4D117BA0ED400A303E0 /* NewSidebarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewSidebarViewController.h; sourceTree = "<group>"; };
-		85F2C4D217BA0ED400A303E0 /* NewSidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewSidebarViewController.m; sourceTree = "<group>"; };
-		85F2C4D317BA0ED400A303E0 /* NewSidebarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewSidebarViewController.xib; sourceTree = "<group>"; };
+		85F2C4D117BA0ED400A303E0 /* MP6SidebarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MP6SidebarViewController.h; sourceTree = "<group>"; };
+		85F2C4D217BA0ED400A303E0 /* MP6SidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MP6SidebarViewController.m; sourceTree = "<group>"; };
+		85F2C4D317BA0ED400A303E0 /* MP6SidebarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MP6SidebarViewController.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93740DC817D8F85600C41B2F /* WPAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAlertView.h; sourceTree = "<group>"; };
 		93740DCA17D8F86700C41B2F /* WPAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAlertView.m; sourceTree = "<group>"; };
@@ -2201,8 +2199,6 @@
 		E159D1041309AB0D00F498E2 /* MigrateBlogsFromFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MigrateBlogsFromFiles.m; sourceTree = "<group>"; };
 		E15D46C8156A511D00227392 /* PanelNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PanelNavigationController.h; sourceTree = "<group>"; };
 		E15D46C9156A511D00227392 /* PanelNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PanelNavigationController.m; sourceTree = "<group>"; };
-		E15D46CF156AABD900227392 /* SidebarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SidebarViewController.h; sourceTree = "<group>"; };
-		E15D46D0156AABD900227392 /* SidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SidebarViewController.m; sourceTree = "<group>"; };
 		E167745A1377F24300EE44DD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E167745B1377F25500EE44DD /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E167745C1377F26400EE44DD /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2725,14 +2721,6 @@
 				5D9832F515A790A400A5E783 /* navbar_shadow@2x.png */,
 			);
 			name = "Navigation Bar";
-			sourceTree = "<group>";
-		};
-		373C5181156D0504007C2977 /* Panels */ = {
-			isa = PBXGroup;
-			children = (
-				373C5183156D0523007C2977 /* SidebarViewController.xib */,
-			);
-			name = Panels;
 			sourceTree = "<group>";
 		};
 		3744A0DA130ABAFA00CE7BE1 /* Help */ = {
@@ -3261,6 +3249,8 @@
 				8599658917DA9438005F84EB /* icon-info-message@2x.png */,
 				852F4E8517BDED9C005ED539 /* EditPostViewControlleriOS7~iphone.xib */,
 				853FAC4D17CF1F35008A2F74 /* transparent-point.png */,
+				8524551517DE4DBE00D22F98 /* icon-chevron.png */,
+				8524551617DE4DBE00D22F98 /* icon-chevron@2x.png */,
 			);
 			name = "iOS 7";
 			sourceTree = "<group>";
@@ -3501,8 +3491,6 @@
 				85F2C4B617B9F6E600A303E0 /* NewWPWalkthroughOverlayView.h */,
 				85F2C4B717B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m */,
 				85F2C4B817B9F6E600A303E0 /* NewWPWalkthroughOverlayView.xib */,
-				85F2C4B917B9F6E600A303E0 /* NotificationsTableViewDatasource.h */,
-				85F2C4BA17B9F6E600A303E0 /* NotificationsTableViewDatasource.m */,
 				85F2C4BB17B9F6E600A303E0 /* NUX.storyboard */,
 			);
 			name = "New NUX";
@@ -3511,9 +3499,9 @@
 		85F2C4D017BA0EB300A303E0 /* New Menu */ = {
 			isa = PBXGroup;
 			children = (
-				85F2C4D117BA0ED400A303E0 /* NewSidebarViewController.h */,
-				85F2C4D217BA0ED400A303E0 /* NewSidebarViewController.m */,
-				85F2C4D317BA0ED400A303E0 /* NewSidebarViewController.xib */,
+				85F2C4D117BA0ED400A303E0 /* MP6SidebarViewController.h */,
+				85F2C4D217BA0ED400A303E0 /* MP6SidebarViewController.m */,
+				85F2C4D317BA0ED400A303E0 /* MP6SidebarViewController.xib */,
 				853259DF17BABC4A008E87D1 /* SidebarTopLevelView.h */,
 				853259E017BABC4A008E87D1 /* SidebarTopLevelView.m */,
 				853259E217BABC5E008E87D1 /* SidebarTopLevelView.xib */,
@@ -4263,8 +4251,6 @@
 				E15D46C9156A511D00227392 /* PanelNavigationController.m */,
 				A25EBD85156E330600530E3D /* WPTableViewController.h */,
 				A25EBD86156E330600530E3D /* WPTableViewController.m */,
-				E15D46CF156AABD900227392 /* SidebarViewController.h */,
-				E15D46D0156AABD900227392 /* SidebarViewController.m */,
 				FDC528AA157E551000A3FD91 /* SidebarTableViewCell.h */,
 				FDC528AB157E551000A3FD91 /* SidebarTableViewCell.m */,
 				FD141F8E157F93F400BCDC1F /* PanelNavigationConstants.h */,
@@ -4330,7 +4316,6 @@
 			children = (
 				C57B7CA717C591BA00A64A3C /* Themes */,
 				37195B7F166A5DDC005F2292 /* Notifications */,
-				373C5181156D0504007C2977 /* Panels */,
 				ACFF1DC00E231EF600EC6BF5 /* Blog */,
 				C50E78130E71648100991509 /* Comments */,
 				83290399120CF517000A965A /* Media */,
@@ -4735,7 +4720,6 @@
 				30811743151057880028A15E /* Default-Portrait@2x.png in Resources */,
 				30811744151057880028A15E /* Default-Landscape@2x.png in Resources */,
 				30811747151057940028A15E /* Icon-72@2x.png in Resources */,
-				373C5184156D0523007C2977 /* SidebarViewController.xib in Resources */,
 				85495F6717C6FACF00871A7A /* icon-comments-edit.png in Resources */,
 				5DB767411588F64D00EBE36C /* postPreview.html in Resources */,
 				CCDCBC201590BF2A0040B3B1 /* FBDialog.bundle in Resources */,
@@ -4769,7 +4753,7 @@
 				CC313AD115A4360800F7B7C6 /* friend_follow_service_icons.png in Resources */,
 				85495F5B17C6FACF00871A7A /* icon-comments-trash.png in Resources */,
 				CC313AD215A4360800F7B7C6 /* friend_follow_service_icons@2x.png in Resources */,
-				85F2C4D517BA0ED400A303E0 /* NewSidebarViewController.xib in Resources */,
+				85F2C4D517BA0ED400A303E0 /* MP6SidebarViewController.xib in Resources */,
 				5D7C22B615A4FCFE00FCE1C2 /* down_dim.png in Resources */,
 				85495F6817C6FACF00871A7A /* icon-comments-edit-active@2x.png in Resources */,
 				5D7C22B715A4FCFE00FCE1C2 /* down_dim@2x.png in Resources */,
@@ -4917,6 +4901,7 @@
 				302D88CC15B715E5002CC618 /* toolbar_edit.png in Resources */,
 				302D88CD15B715E5002CC618 /* toolbar_edit@2x.png in Resources */,
 				374CB15515B85CF300DD0EBC /* settings.png in Resources */,
+				8524551817DE4DBE00D22F98 /* icon-chevron@2x.png in Resources */,
 				374CB15615B85CF300DD0EBC /* settings@2x.png in Resources */,
 				5D15F4AF15B8C407001B14EA /* toolbarItalicHighlighted.png in Resources */,
 				5D15F4B015B8C407001B14EA /* toolbarItalicHighlighted@2x.png in Resources */,
@@ -5085,6 +5070,7 @@
 				857F55D117CEC5E100E154E1 /* doneButtonHighlighted-ios7@2x.png in Resources */,
 				37A76E5F16A4B435001DBF52 /* sidebar_notifications_highlighted.png in Resources */,
 				37A76E6016A4B435001DBF52 /* sidebar_notifications_highlighted@2x.png in Resources */,
+				8524551717DE4DBE00D22F98 /* icon-chevron.png in Resources */,
 				85325A2A17BB0DF8008E87D1 /* icon-menu-toggle.png in Resources */,
 				37A76E6116A4B435001DBF52 /* sidebar_notifications.png in Resources */,
 				37A76E6216A4B435001DBF52 /* sidebar_notifications@2x.png in Resources */,
@@ -5369,7 +5355,6 @@
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
 				C57B7C8E17C558C600A64A3C /* ThemeBrowserViewController.m in Sources */,
 				031663070FFB151A0045D052 /* PostTableViewCell.m in Sources */,
-				85F2C4CB17B9F6E600A303E0 /* NotificationsTableViewDatasource.m in Sources */,
 				031666AE0FFC3E130045D052 /* CommentTableViewCell.m in Sources */,
 				03958062100D6CFC00850742 /* WPLabel.m in Sources */,
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
@@ -5434,7 +5419,6 @@
 				C57B7CA617C586E600A64A3C /* ThemeBrowserCell.m in Sources */,
 				E12F95B9155820A40067A653 /* NSObject+BlockObservation.m in Sources */,
 				E15D46CA156A511D00227392 /* PanelNavigationController.m in Sources */,
-				E15D46D1156AABD900227392 /* SidebarViewController.m in Sources */,
 				A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */,
 				5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */,
 				5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */,
@@ -5524,7 +5508,7 @@
 				85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */,
 				85A1B6751742E7EF00BA5E35 /* WPMobileStats.m in Sources */,
 				E183BD7417621D87000B0822 /* WPCookie.m in Sources */,
-				85F2C4D417BA0ED400A303E0 /* NewSidebarViewController.m in Sources */,
+				85F2C4D417BA0ED400A303E0 /* MP6SidebarViewController.m in Sources */,
 				E10DB0081771926D00B7A0A3 /* GooglePlusActivity.m in Sources */,
 				5D42A3DE175E7452005CFF05 /* AbstractComment.m in Sources */,
 				85F2C4BF17B9F6E600A303E0 /* GeneralWalkthroughPage2ViewController.m in Sources */,

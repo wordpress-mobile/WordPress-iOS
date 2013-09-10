@@ -73,8 +73,7 @@
     
     self.infiniteScrollEnabled = YES;
     
-    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    self.tableView.separatorColor = [WPStyleGuide readGrey];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
 - (void)viewDidAppear:(BOOL)animated

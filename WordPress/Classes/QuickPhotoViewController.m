@@ -13,7 +13,7 @@
 #import "Media.h"
 #import "CameraPlusPickerManager.h"
 #import "WPPopoverBackgroundView.h"
-#import "NewSidebarViewController.h"
+#import "MP6SidebarViewController.h"
 
 @interface QuickPhotoViewController () {
     UIPopoverController *popController;

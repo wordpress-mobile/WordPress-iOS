@@ -62,9 +62,8 @@
     
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 		
-    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    self.tableView.separatorColor = [WPStyleGuide readGrey];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
     if (IS_IOS7) {
         self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];        
     }

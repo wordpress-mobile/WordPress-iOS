@@ -68,9 +68,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    self.tableView.separatorColor = [WPStyleGuide readGrey];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
 	_footerText = @" ";
 	_buttonText = NSLocalizedString(@"Create WordPress.com Blog", @"");

@@ -97,7 +97,7 @@ static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
         [userInfo setValue:accountLookup forKey:@"accounts"];
     }
     NSString *lookupKey = [NSString stringWithFormat:@"%@@%@", username, xmlrpc];
-    NSManagedObject *dest = [accountLookup valueForKey:lookupKey];
+    NSManagedObject *dest = [accountLookup objectForKey:lookupKey];
     if (!dest) {
         dest = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:destMOC];
         [dest setValue:xmlrpc forKey:@"xmlrpc"];
