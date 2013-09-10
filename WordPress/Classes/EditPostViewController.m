@@ -1009,7 +1009,11 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     actionSheet.tag = 201;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     if (IS_IPAD) {
-        [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
+        UIBarButtonItem *barButton = self.navigationItem.leftBarButtonItem;
+        if (IS_IOS7) {
+            barButton = [self.navigationItem.leftBarButtonItems objectAtIndex:1];
+        }
+        [actionSheet showFromBarButtonItem:barButton animated:YES];
     } else {
         [actionSheet showInView:self.view];
     }
