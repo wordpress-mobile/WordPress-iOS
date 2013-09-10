@@ -41,10 +41,12 @@
         [_thumbnail setContentMode:UIViewContentModeScaleAspectFit];
         [self.contentView addSubview:_thumbnail];
         
+        // With enlarged touch area
         UIButton *checkbox = [[UIButton alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width - 37.0f, 0, 37.0f, 37.0f)];
         _checkbox = checkbox;
         [_checkbox addTarget:self action:@selector(checkboxPressed) forControlEvents:UIControlEventTouchUpInside];
-        _checkbox.backgroundColor = [UIColor yellowColor];
+        [_checkbox setImage:[UIImage imageNamed:@"media_checkbox_empty"] forState:UIControlStateNormal];
+        [_checkbox setImage:[UIImage imageNamed:@"media_checkbox_filled"] forState:UIControlStateHighlighted];
         [self.contentView addSubview:_checkbox];
         
         UIView *titleContainer = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.thumbnail.frame), self.contentView.bounds.size.width, 20.0f)];
@@ -65,11 +67,9 @@
 {
     [self bringSubviewToFront:_checkbox];
     if (_isSelected) {
-        [_checkbox setBackgroundColor:[UIColor redColor]];
-//        _checkboxView setImage:<#(UIImage *)#>
+        [_checkbox setImage:[UIImage imageNamed:@"media_checkbox_filled"] forState:UIControlStateNormal];
     } else {
-        [_checkbox setBackgroundColor:[UIColor yellowColor]];
-//    _checkboxView setImage:<#(UIImage *)#>
+        [_checkbox setImage:[UIImage imageNamed:@"media_checkbox_empty"] forState:UIControlStateNormal];
     }
 }
 
