@@ -170,6 +170,30 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
+    
+    if (IS_IPAD)
+        return;
+ 
+    // Make the scroll view scrollable when in landscape on the iPhone - the keyboard
+    // covers up half of the view otherwise
+    CGSize size = self.backgroundView.bounds.size;
+    
+    if (size.width > size.height) {
+        size.height = size.height * 1.35;
+    }
+    
+    self.scrollView.contentSize = size;
+    
+    CGRect rect = CGRectZero;
+    if ([self.firstTextField isFirstResponder]) {
+        rect = self.firstTextField.frame;
+        rect = [self.scrollView convertRect:rect fromView:self.firstTextField];
+    } else if([self.secondTextField isFirstResponder]) {
+        rect = self.secondTextField.frame;
+        rect = [self.scrollView convertRect:rect fromView:self.secondTextField];
+    }
+    
+    [self.scrollView scrollRectToVisible:rect animated:YES];
 }
 
 #pragma mark - IBAction Methods
@@ -196,7 +220,8 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     if (self.hideBackgroundView) {
         alpha = 1.0;
     }
-    self.backgroundView.backgroundColor = [UIColor colorWithRed:17.0/255.0 green:17.0/255.0 blue:17.0/255.0 alpha:alpha];
+    self.backgroundColor = [UIColor colorWithRed:17.0/255.0 green:17.0/255.0 blue:17.0/255.0 alpha:alpha];
+    self.backgroundView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)addGestureRecognizer
