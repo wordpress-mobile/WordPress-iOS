@@ -2011,10 +2011,20 @@
     _segmentedTableViewController.title = NSLocalizedString(@"Categories", @"");
     UIBarButtonItem *createCategoryBarButtonItem;
 
-    createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-posts-add"]
-                                                                   style:[WPStyleGuide barButtonStyleForBordered]
-                                                                  target:self
-                                                                  action:@selector(showAddNewCategoryView:)];    
+    if (IS_IOS7) {
+        UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+        [button setImage:image forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(showAddNewCategoryView:) forControlEvents:UIControlEventTouchUpInside];
+        createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    } else {
+        createCategoryBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]
+                                                                       style:[WPStyleGuide barButtonStyleForBordered]
+                                                                      target:self
+                                                                      action:@selector(showAddNewCategoryView:)];
+    }
+
+
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:createCategoryBarButtonItem forNavigationItem:_segmentedTableViewController.navigationItem];
     
     

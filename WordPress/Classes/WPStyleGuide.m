@@ -216,12 +216,20 @@
 
 + (void)setLeftBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem
 {
-    navigationItem.leftBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
+    if (IS_IOS7) {
+        navigationItem.leftBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
+    } else {
+        navigationItem.leftBarButtonItem = barButtonItem;
+    }
 }
 
 + (void)setRightBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem
 {
-    navigationItem.rightBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
+    if (IS_IOS7) {
+        navigationItem.rightBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
+    } else {
+        navigationItem.rightBarButtonItem = barButtonItem;
+    }
 }
 
 + (UIBarButtonItem *)spacerForNavigationBarButtonItems

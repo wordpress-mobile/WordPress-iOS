@@ -395,7 +395,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         [WPMobileStats flagProperty:StatsPropertyPostDetailClickedSettings forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self switchToView:self.postSettingsViewController.view];
     }
-	self.navigationItem.title = NSLocalizedString(@"Settings", @"Post Editor / Settings screen title.");
+	self.navigationItem.title = NSLocalizedString(@"Properties", nil);
 }
 
 // IOS 7 Version which pushes a view controller instead of "swapping" it
