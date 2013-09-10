@@ -136,7 +136,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     } else {
         [_selectedBlogs addObject:blogId];
     }
-    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    [tableView reloadData];
     [self toggleButtons];
 }
 

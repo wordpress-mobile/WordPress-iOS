@@ -46,7 +46,6 @@
                             <rect key="frame" x="19" y="174" width="282" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                             <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
-                            <size key="titleShadowOffset" width="0.0" height="1"/>
                             <state key="normal" title="Privacy Policy" backgroundImage="welcome_button_bg_full.png">
                                 <color key="titleColor" red="0.1294117719" green="0.1294117719" blue="0.1294117719" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="titleShadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -63,7 +62,6 @@
                             <rect key="frame" x="19" y="113" width="282" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                             <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
-                            <size key="titleShadowOffset" width="0.0" height="1"/>
                             <state key="normal" title="Terms of Service" backgroundImage="welcome_button_bg_full.png">
                                 <color key="titleColor" red="0.1294117719" green="0.1294117719" blue="0.1294117719" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="titleShadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>

@@ -62,10 +62,11 @@
     
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 		
-    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    self.tableView.separatorColor = [WPStyleGuide readGrey];
-    self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
+    if (IS_IOS7) {
+        self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];        
+    }
     [buttonSelectAll setTitleTextAttributes:@{
                                               UITextAttributeFont: [WPStyleGuide regularTextFont],
                                               UITextAttributeTextColor : [UIColor whiteColor],
@@ -594,13 +595,29 @@
 	//disable the 'Add Selected' button if they have selected 0 blogs, trac #521
 	if (selectedBlogs.count == 0) {
 		buttonAddSelected.enabled = FALSE;
-		if (IS_IPAD)
+		if (IS_IPAD) {
 			topAddSelectedButton.enabled = FALSE;
+        }
+        // iOS 7 Beta 6 doesn't seem to be respecting the title text attributes for UIControlStateDisabled
+        // so we have to engage in this hack until apple fixes it.
+        [buttonAddSelected setTitleTextAttributes:@{
+                                                    UITextAttributeFont: [WPStyleGuide regularTextFont],
+                                                    UITextAttributeTextColor : [WPStyleGuide whisperGrey    ],
+                                                    UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetMake(0, 0)]}
+                                         forState:UIControlStateNormal];
 	}
 	else {
 		buttonAddSelected.enabled = TRUE;
-		if (IS_IPAD)
+		if (IS_IPAD) {
 			topAddSelectedButton.enabled = TRUE;
+        }
+        // iOS 7 Beta 6 doesn't seem to be respecting the title text attributes for UIControlStateDisabled
+        // so we have to engage in this hack until apple fixes it.
+        [buttonAddSelected setTitleTextAttributes:@{
+                                                    UITextAttributeFont: [WPStyleGuide regularTextFont],
+                                                    UITextAttributeTextColor : [UIColor whiteColor],
+                                                    UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetMake(0, 0)]}
+                                         forState:UIControlStateNormal];
 	}
 	
 }

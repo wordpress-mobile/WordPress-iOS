@@ -73,8 +73,7 @@
     
     self.infiniteScrollEnabled = YES;
     
-    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    self.tableView.separatorColor = [WPStyleGuide readGrey];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -223,11 +222,7 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (IS_IPAD) {
-        return NO;
-    } else {
-        return YES;
-    }
+    return YES;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {

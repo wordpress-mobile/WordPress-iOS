@@ -44,6 +44,7 @@
 #import "GeneralWalkthroughViewController.h"
 #import "WPAccount.h"
 #import "WelcomeViewController.h"
+#import "WPTableViewSectionHeaderView.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,
@@ -102,12 +103,8 @@ typedef enum {
         [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
     }];
     
-    self.tableView.backgroundView = nil;
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    self.tableView.separatorColor = [WPStyleGuide readGrey];
-    [self setupMedia];
-    
-    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    [self setupMedia];    
 }
 
 
@@ -190,6 +187,12 @@ typedef enum {
 
 - (void)checkCloseButton {
     if ([[self.resultsController fetchedObjects] count] == 0 && ![[WordPressComApi sharedApi] hasCredentials]) {
+        if (IS_IPAD) {
+            // On the iPad the NUX is displayed as a UIFormSheet which still shows all the sidebar stuff in the background.
+            // As this looks pretty ugly, we'll hide it by putting the loading image view on top of it.
+            PanelNavigationController *panelNavController = (PanelNavigationController *)self.presentingViewController;
+            [panelNavController displayLoadingImageView];
+        }
         GeneralWalkthroughViewController *walkthroughViewController = [[GeneralWalkthroughViewController alloc] init];
         self.navigationController.navigationBar.hidden = YES;
         [self.navigationController pushViewController:walkthroughViewController animated:YES];
@@ -281,7 +284,20 @@ typedef enum {
 }
 
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
     if (section == SettingsSectionBlogs) {
         return NSLocalizedString(@"Blogs", @"Title label for the user blogs in the app settings");
         
@@ -299,7 +315,7 @@ typedef enum {
             return NSLocalizedString(@"Notifications", @"");
         else
             return nil;
-    
+        
     } else if (section == SettingsSectionSounds) {
         return NSLocalizedString(@"Sounds", @"Title label for the sounds section in the app settings.");
         
@@ -458,10 +474,15 @@ typedef enum {
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
     
+    BOOL isSignInCell = false;
+    if (![[WordPressComApi sharedApi] hasCredentials]) {
+        isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
+    }
+    
     BOOL isSignOutCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 1;
     BOOL isAddBlogsCell = indexPath.section == SettingsSectionBlogsAdd;
-    if (isSignOutCell || isAddBlogsCell) {
-        cell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
+    if (isSignOutCell || isAddBlogsCell || isSignInCell) {
+        [WPStyleGuide configureTableViewActionCell:cell];
     }
     
     return cell;

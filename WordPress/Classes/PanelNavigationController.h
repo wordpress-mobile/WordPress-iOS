@@ -54,6 +54,8 @@
 - (void)setToolbarHidden:(BOOL)hidden forViewController:(UIViewController *)controller animated:(BOOL)animated;
 - (void)viewControllerWantsToBeFullyVisible:(UIViewController *)controller;
 
+- (void)displayLoadingImageView;
+
 #pragma mark - Controllers
 @property(nonatomic,strong) UIViewController *detailViewController; // The first detail controller
 - (void)setDetailViewController:(UIViewController *)detailViewController closingSidebar:(BOOL)closingSidebar;

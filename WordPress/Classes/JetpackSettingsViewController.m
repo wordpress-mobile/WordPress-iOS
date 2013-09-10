@@ -301,8 +301,14 @@
     } else {
         _messageView.text = NSLocalizedString(@"Jetpack 1.8.2 or later is required for stats. Do you want to install Jetpack?", @"");
     }
-
     [_messageView sizeToFit];
+    
+    // Center Message
+    CGFloat centeredX = (CGRectGetWidth(self.view.bounds) - CGRectGetWidth(_messageView.frame))/2.0;
+    CGRect messageViewFrame = _messageView.frame;
+    messageViewFrame.origin.x = centeredX;
+    _messageView.frame = messageViewFrame;
+    
     CGRect headerFrame = _headerView.frame;
     headerFrame.size.height = CGRectGetMaxY(_messageView.frame) + 10;
     _headerView.frame = headerFrame;

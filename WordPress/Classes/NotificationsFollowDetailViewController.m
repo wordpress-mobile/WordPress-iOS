@@ -94,8 +94,9 @@
         _hasFooter = YES;
     }
     
-    [_tableView setDelegate: self];
-
+    [_tableView setDelegate:self];
+    
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

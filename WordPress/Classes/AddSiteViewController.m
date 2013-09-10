@@ -22,9 +22,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    self.tableView.separatorColor = [WPStyleGuide readGrey];
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg"]];
     logoImage.frame = CGRectMake(0.0f, 0.0f, AddSiteLogoSize.width, AddSiteLogoSize.height);

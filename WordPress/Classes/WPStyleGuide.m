@@ -7,6 +7,7 @@
 //
 
 #import "WPStyleGuide.h"
+#import "UITableViewTextFieldCell.h"
 
 @implementation WPStyleGuide
 
@@ -191,6 +192,11 @@
     return [WPStyleGuide baseLighterBlue];
 }
 
++ (UIColor *)buttonActionColor
+{
+    return [WPStyleGuide baseLighterBlue];
+}
+
 + (UIBarButtonItemStyle)barButtonStyleForDone
 {
     if (IS_IOS7)
@@ -224,13 +230,31 @@
     return spacerButton;
 }
 
-+ (void)configureTableViewCell:(UITableViewCell *)cell
++ (void)configureTableViewActionCell:(UITableViewCell *)cell
 {
-    cell.textLabel.font = [WPStyleGuide tableviewTextFont];
-    cell.detailTextLabel.font = [WPStyleGuide tableviewSubtitleFont];
-    cell.textLabel.textColor = [WPStyleGuide whisperGrey];
-    cell.detailTextLabel.textColor = [WPStyleGuide whisperGrey];
+    cell.textLabel.font = [self tableviewTextFont];
+    cell.textLabel.textColor = [self tableViewActionColor];
 }
 
++ (void)configureTableViewCell:(UITableViewCell *)cell
+{
+    cell.textLabel.font = [self tableviewTextFont];
+    cell.detailTextLabel.font = [self tableviewSubtitleFont];
+    cell.textLabel.textColor = [self whisperGrey];
+    cell.detailTextLabel.textColor = [self whisperGrey];
+}
+
++ (void)configureTableViewTextCell:(UITableViewTextFieldCell *)cell
+{
+    [self configureTableViewCell:cell];
+    cell.textField.font = [self tableviewTextFont];
+}
+
++ (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView
+{
+    view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    tableView.separatorColor = [WPStyleGuide readGrey];
+}
 
 @end

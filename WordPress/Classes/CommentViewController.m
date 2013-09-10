@@ -71,8 +71,10 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.dateLabel.font = [WPStyleGuide subtitleFont];
     self.commentWebview.backgroundColor = [WPStyleGuide readGrey];
     
-    [self.toolbar setBarTintColor:[WPStyleGuide littleEddieGrey]];
-    self.toolbar.translucent = NO;
+    if (IS_IOS7) {
+        [self.toolbar setBarTintColor:[WPStyleGuide littleEddieGrey]];
+        self.toolbar.translucent = NO;        
+    }
     
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedPostTitle)];
     gestureRecognizer.numberOfTapsRequired = 1;
@@ -278,9 +280,9 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     if (!_isShowingActionSheet) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this comment?", @"")
                                                                  delegate:self
-                                                        cancelButtonTitle:nil
+                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                                    destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
-                                                        otherButtonTitles:NSLocalizedString(@"Cancel", @""), nil];
+                                                        otherButtonTitles:nil];
         actionSheet.tag = CommentViewDeletePromptActionSheetTag;
         actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
         [actionSheet showInView:self.view];
@@ -389,6 +391,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)deleteComment {
     WPFLogMethod();
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailDelete];
     [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(remove)];
     if (IS_IPAD) {

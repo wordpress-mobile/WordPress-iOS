@@ -380,6 +380,17 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 - (void)clickedBackground:(UITapGestureRecognizer *)tapGestureRecognizer
 {
     [self.view endEditing:YES];
+
+    // The info button is a little hard to hit so this adds a little buffer around it
+    if (_currentPage == 0) {
+        CGPoint touchPoint = [tapGestureRecognizer locationInView:self.view];
+        CGFloat x = CGRectGetMaxX(_page1InfoButton.frame) + 10;
+        CGFloat y = CGRectGetMaxY(_page1InfoButton.frame) + 10;
+        CGRect infoButtonRect = CGRectMake(0, 0, x, y);
+        if (CGRectContainsPoint(infoButtonRect, touchPoint)) {
+            [self clickedInfoButton:nil];
+        }
+    }
 }
 
 - (void)clickedBottomPanel:(UIGestureRecognizer *)gestureRecognizer

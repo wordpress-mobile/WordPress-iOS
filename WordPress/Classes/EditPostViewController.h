@@ -16,7 +16,6 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
 @interface EditPostViewController : UIViewController <UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate,WPKeyboardToolbarDelegate>
 
 @property(nonatomic, strong) NSString *statsPrefix;
-@property(nonatomic, assign) BOOL showAddMediaToUser;
 
 - (id)initWithPost:(AbstractPost *)aPost;
 @end

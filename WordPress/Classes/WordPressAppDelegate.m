@@ -14,7 +14,7 @@
 #import "Media.h"
 #import "CameraPlusPickerManager.h"
 #import "PanelNavigationController.h"
-#import "NewSidebarViewController.h"
+#import "MP6SidebarViewController.h"
 #import "UIDevice+WordPressIdentifier.h"
 #import "WordPressComApi.h"
 #import "PostsViewController.h"
@@ -275,7 +275,7 @@
     [self setupPocket];
     [self setupSingleSignOn];
 
-    NewSidebarViewController *sidebarViewController = [[NewSidebarViewController alloc] init];
+    MP6SidebarViewController *sidebarViewController = [[MP6SidebarViewController alloc] init];
     
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [window setFrame:bounds];
@@ -330,12 +330,36 @@
     return YES;
 }
 
--(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    if ([facebook handleOpenURL:url]){
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    if ([[GPPShare sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
         return YES;
     }
 
     if ([[PocketAPI sharedAPI] handleOpenURL:url]) {
+        return YES;
+    }
+
+    if ([facebook handleOpenURL:url]){
+        return YES;
+    }
+
+    if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
+        /* Note that your application has been in the background and may have been terminated.
+         * The only CameraPlusPickerManager state that is restored is the pickerMode, which is
+         * restored to indicate the mode used to pick images.
+         */
+
+        /* Handle the callback and notify the delegate. */
+        [[CameraPlusPickerManager sharedManager] handleCameraPlusPickerCallback:url usingBlock:^(CameraPlusPickedImages *images) {
+            NSLog(@"Camera+ returned %@", [images images]);
+            UIImage *image = [images image];
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:image forKey:@"image"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kCameraPlusImagesNotification object:nil userInfo:userInfo];
+        } cancelBlock:^(void) {
+            NSLog(@"Camera+ picker canceled");
+        }];
         return YES;
     }
 
@@ -348,38 +372,12 @@
         NSLog(@"Application launched with URL: %@", URLString);
         if ([[url absoluteString] hasPrefix:@"wordpress://wpcom_signup_completed"]) {
             NSDictionary *params = [[url query] dictionaryFromQueryString];
-           // WPFLog(@"%@", params);
+            // WPFLog(@"%@", params);
             [[NSNotificationCenter defaultCenter] postNotificationName:@"wpcomSignupNotification" object:nil userInfo:params];
-        }
-        else if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
-            /* Note that your application has been in the background and may have been terminated.
-             * The only CameraPlusPickerManager state that is restored is the pickerMode, which is
-             * restored to indicate the mode used to pick images.
-             */
-            
-            /* Handle the callback and notify the delegate. */
-            [[CameraPlusPickerManager sharedManager] handleCameraPlusPickerCallback:url usingBlock:^(CameraPlusPickedImages *images) {
-                NSLog(@"Camera+ returned %@", [images images]);
-                UIImage *image = [images image];
-                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-                NSDictionary *userInfo = [NSDictionary dictionaryWithObject:image forKey:@"image"];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kCameraPlusImagesNotification object:nil userInfo:userInfo];
-            } cancelBlock:^(void) {
-                NSLog(@"Camera+ picker canceled");
-            }];
             return YES;
         }
     }
-    return NO;
-}
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
-    if ([[GPPShare sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
-        return YES;
-    } else if ([[PocketAPI sharedAPI] handleOpenURL:url]) {
-        return YES;
-    }
     return NO;
 }
 
@@ -1165,7 +1163,7 @@
         
     } else if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
         WPFLog(@"Received notification: %@", remoteNotif);
-        NewSidebarViewController *sidebar = (NewSidebarViewController *)self.panelNavigationController.masterViewController;
+        MP6SidebarViewController *sidebar = (MP6SidebarViewController *)self.panelNavigationController.masterViewController;
         [sidebar showCommentWithId:[[remoteNotif objectForKey:@"comment_id"] numericValue] blogId:[[remoteNotif objectForKey:@"blog_id"] numericValue]];
     } else {
         WPFLog(@"Got unsupported notification: %@", remoteNotif);

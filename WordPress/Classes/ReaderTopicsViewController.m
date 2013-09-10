@@ -10,6 +10,7 @@
 #import "WordPressComApi.h"
 #import "ReaderPost.h"
 #import "WPFriendFinderViewController.h"
+#import "WPTableViewSectionHeaderView.h"
 
 @interface ReaderTopicsViewController ()
 
@@ -71,9 +72,7 @@
 																		  action:@selector(handleFriendFinderButtonTapped:)];
 	self.navigationItem.leftBarButtonItem = friendFinderButton;
 	
-    self.tableView.backgroundView = nil;
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    self.tableView.separatorColor = [WPStyleGuide readGrey];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 	
 	[self refreshIfReady];
 }
@@ -173,8 +172,20 @@
 
 #pragma mark - TableView methods
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	switch (section) {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section {
+    switch (section) {
 		case 0:
 			return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
 			break;

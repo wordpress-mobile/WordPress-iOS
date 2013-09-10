@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+@class UITableViewTextFieldCell;
 @interface WPStyleGuide : NSObject
 
 // Fonts
@@ -46,6 +47,7 @@
 + (UIColor *)darkAsNightGrey;
 
 + (UIColor *)tableViewActionColor;
++ (UIColor *)buttonActionColor;
 
 // Bar Button Styles
 + (UIBarButtonItemStyle)barButtonStyleForDone;
@@ -54,6 +56,9 @@
 // Utilities
 + (void)setLeftBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem;
 + (void)setRightBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem;
++ (void)configureTableViewActionCell:(UITableViewCell *)cell;
 + (void)configureTableViewCell:(UITableViewCell *)cell;
++ (void)configureTableViewTextCell:(UITableViewTextFieldCell *)cell;
++ (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView;
 
 @end
