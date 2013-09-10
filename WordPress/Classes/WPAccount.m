@@ -77,6 +77,14 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 + (void)removeDefaultWordPressComAccount {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
+    
+    // Remove all WPcom blogs on sign out
+    [__defaultDotcomAccount.blogs enumerateObjectsUsingBlock:^(Blog *obj, BOOL *stop) {
+        if (obj.isWPcom) {
+            [obj remove];
+        }
+    }];
+    
     __defaultDotcomAccount = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
