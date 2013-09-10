@@ -13,12 +13,12 @@ typedef NS_ENUM(NSUInteger, WPAlertViewOverlayMode) {
     WPAlertViewOverlayModeDoubleTapToDismiss,           // Not implemented
     WPAlertViewOverlayModeTwoButtonMode,                // Not implemented
     WPAlertViewOverlayModeOneTextFieldTwoButtonMode,    // Not implemented
-    WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode
+    WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode,
+    WPAlertViewOverlayModeTwoTextFieldsSideBySideTwoButtonMode
 };
 
 @interface WPAlertView : UIView
 
-@property (nonatomic, assign) WPAlertViewOverlayMode overlayMode;
 @property (nonatomic, strong) NSString *overlayTitle;
 @property (nonatomic, strong) NSString *overlayDescription;
 @property (nonatomic, strong) NSString *footerDescription;
@@ -39,6 +39,7 @@ typedef NS_ENUM(NSUInteger, WPAlertViewOverlayMode) {
 @property (nonatomic, copy) void (^button1CompletionBlock)(WPAlertView *);
 @property (nonatomic, copy) void (^button2CompletionBlock)(WPAlertView *);
 
+- (id)initWithFrame:(CGRect)frame andOverlayMode:(WPAlertViewOverlayMode)overlayMode;
 - (void)dismiss;
 
 @end

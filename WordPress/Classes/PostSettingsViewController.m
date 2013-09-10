@@ -12,6 +12,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import "Post.h"
 #import "UITableViewTextFieldCell.h"
+#import "WPAlertView.h"
 
 #define kPasswordFooterSectionHeight         68.0f
 #define kResizePhotoSettingSectionHeight     60.0f
@@ -29,11 +30,12 @@
     BOOL _isShowingResizeActionSheet;
     BOOL _isShowingCustomSizeAlert;
     UIImage *_currentImage;
-    UIAlertView *_customSizeAlert;
     WPSegmentedSelectionTableViewController *_segmentedTableViewController;
 }
 
 @property (nonatomic, strong) AbstractPost *apost;
+@property (nonatomic, strong) WPAlertView *customSizeAlert;
+
 - (void)showPicker:(UIView *)picker;
 - (void)geocodeCoordinate:(CLLocationCoordinate2D)c;
 - (void)geolocationCellTapped:(NSIndexPath *)indexPath;
@@ -1067,71 +1069,82 @@
 
 
 - (void)showCustomSizeAlert {
-	if(_isShowingCustomSizeAlert || _customSizeAlert != nil)
-        return;
+    if (self.customSizeAlert) {
+        [self.customSizeAlert dismiss];
+        self.customSizeAlert = nil;
+    }
     
     _isShowingCustomSizeAlert = YES;
     
-    UITextField *textWidth, *textHeight;
-    UILabel *labelWidth, *labelHeight;
-    
-    NSString *lineBreaks;
-    
-    if (IS_IPAD)
-        lineBreaks = @"\n\n\n\n";
-    else
-        lineBreaks = @"\n\n\n";
-    
-    
-    _customSizeAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Custom Size", @"")
-                                                 message:lineBreaks // IMPORTANT
-                                                delegate:self
-                                       cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                       otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-    
-    labelWidth = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 50.0, 125.0, 25.0)];
-    labelWidth.backgroundColor = [UIColor clearColor];
-    labelWidth.textColor = [UIColor whiteColor];
-    labelWidth.text = NSLocalizedString(@"Width", @"");
-    [_customSizeAlert addSubview:labelWidth];
-    
-    textWidth = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 80.0, 125.0, 25.0)];
-    [textWidth setBackgroundColor:[UIColor whiteColor]];
-    [textWidth setPlaceholder:NSLocalizedString(@"Width", @"")];
-    [textWidth setKeyboardType:UIKeyboardTypeNumberPad];
-    [textWidth setDelegate:self];
-    [textWidth setTag:123];
-    
     // Check for previous width setting
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil)
-        [textWidth setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"]];
-    else
-        [textWidth setText:[NSString stringWithFormat:@"%d", (int)_currentImage.size.width]];
+    NSString *widthText = nil;
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil) {
+        widthText = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"];
+    } else {
+        widthText = [NSString stringWithFormat:@"%d", (int)_currentImage.size.width];
+    }
     
-    [_customSizeAlert addSubview:textWidth];
+    NSString *heightText = nil;
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil) {
+        heightText = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"];
+    } else {
+        heightText = [NSString stringWithFormat:@"%d", (int)_currentImage.size.height];
+    }
     
-    labelHeight = [[UILabel alloc] initWithFrame:CGRectMake(145.0, 650.0, 125.0, 25.0)];
-    labelHeight.backgroundColor = [UIColor clearColor];
-    labelHeight.textColor = [UIColor whiteColor];
-    labelHeight.text = NSLocalizedString(@"Height", @"");
-    [_customSizeAlert addSubview:labelHeight];
+    WPAlertView *alertView = [[WPAlertView alloc] initWithFrame:self.view.bounds andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsSideBySideTwoButtonMode];
     
-    textHeight = [[UITextField alloc] initWithFrame:CGRectMake(145.0, 80.0, 125.0, 25.0)];
-    [textHeight setBackgroundColor:[UIColor whiteColor]];
-    [textHeight setPlaceholder:NSLocalizedString(@"Height", @"")];
-    [textHeight setDelegate:self];
-    [textHeight setKeyboardType:UIKeyboardTypeNumberPad];
-    [textHeight setTag:456];
+    alertView.overlayTitle = NSLocalizedString(@"Custom Size", @"");
+    alertView.overlayDescription = NSLocalizedString(@"Provide a custom width and height for the image.", @"Alert view description for resizing an image with custom size.");
+    alertView.footerDescription = nil;
+    alertView.firstTextFieldPlaceholder = NSLocalizedString(@"Width", @"");
+    alertView.firstTextFieldValue = widthText;
+    alertView.secondTextFieldPlaceholder = NSLocalizedString(@"Height", @"");
+    alertView.secondTextFieldValue = heightText;
+    alertView.leftButtonText = NSLocalizedString(@"Cancel", @"Cancel button");
+    alertView.rightButtonText = NSLocalizedString(@"OK", @"");
     
-    // Check for previous height setting
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil)
-        [textHeight setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"]];
-    else
-        [textHeight setText:[NSString stringWithFormat:@"%d", (int)_currentImage.size.height]];
+    alertView.firstTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    alertView.secondTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    alertView.firstTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
+    alertView.secondTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
+    alertView.firstTextField.keyboardType = UIKeyboardTypeNumberPad;
+    alertView.secondTextField.keyboardType = UIKeyboardTypeNumberPad;
     
-    [_customSizeAlert addSubview:textHeight];
-    [_customSizeAlert show];
-    [textWidth becomeFirstResponder];
+    alertView.button1CompletionBlock = ^(WPAlertView *overlayView){
+        // Cancel
+        [overlayView dismiss];
+        _isShowingCustomSizeAlert = NO;
+        
+    };
+    alertView.button2CompletionBlock = ^(WPAlertView *overlayView){
+        [overlayView dismiss];
+        _isShowingCustomSizeAlert = NO;
+        
+		NSNumber *width = [NSNumber numberWithInt:[overlayView.firstTextField.text intValue]];
+		NSNumber *height = [NSNumber numberWithInt:[overlayView.secondTextField.text intValue]];
+		
+		if([width intValue] < 10)
+			width = [NSNumber numberWithInt:10];
+		if([height intValue] < 10)
+			height = [NSNumber numberWithInt:10];
+		
+		overlayView.firstTextField.text = [NSString stringWithFormat:@"%@", width];
+		overlayView.secondTextField.text = [NSString stringWithFormat:@"%@", height];
+		
+		[[NSUserDefaults standardUserDefaults] setObject:overlayView.firstTextField.text forKey:@"prefCustomImageWidth"];
+		[[NSUserDefaults standardUserDefaults] setObject:overlayView.secondTextField.text forKey:@"prefCustomImageHeight"];
+		
+		[self useImage:[self resizeImage:_currentImage width:[width floatValue] height:[height floatValue]]];
+    };
+    
+    alertView.alpha = 0.0;
+    [self.view addSubview:alertView];
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        alertView.alpha = 1.0;
+    }];
+    
+    self.customSizeAlert = alertView;
 }
 
 
@@ -1712,6 +1725,25 @@
     
 	return resizedImage;
 }
+
+/* Used in Custom Dimensions Resize */
+- (UIImage *)resizeImage:(UIImage *)original width:(CGFloat)width height:(CGFloat)height {
+	UIImage *resizedImage = original;
+	if(_currentImage.size.width > width || _currentImage.size.height > height) {
+		// Resize the image using the selected dimensions
+		resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
+													  bounds:CGSizeMake(width, height)
+										interpolationQuality:kCGInterpolationHigh];
+	} else {
+		//use the original dimension
+		resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
+													  bounds:CGSizeMake(_currentImage.size.width, _currentImage.size.height)
+										interpolationQuality:kCGInterpolationHigh];
+	}
+	
+	return resizedImage;
+}
+
 
 - (void)useImage:(UIImage *)theImage {
 	Media *imageMedia = [Media newMediaForPost:self.apost];
