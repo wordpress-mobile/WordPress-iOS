@@ -1091,9 +1091,8 @@
         heightText = [NSString stringWithFormat:@"%d", (int)_currentImage.size.height];
     }
     
-    WPAlertView *alertView = [[WPAlertView alloc] initWithFrame:self.view.bounds];
+    WPAlertView *alertView = [[WPAlertView alloc] initWithFrame:self.view.bounds andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsSideBySideTwoButtonMode];
     
-    alertView.overlayMode = WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode;
     alertView.overlayTitle = NSLocalizedString(@"Custom Size", @"");
     alertView.overlayDescription = NSLocalizedString(@"Provide a custom width and height for the image.", @"Alert view description for resizing an image with custom size.");
     alertView.footerDescription = nil;
