@@ -154,24 +154,44 @@ static CGFloat const SortButtonWidth = 130.0f;
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-    searchBar.showsCancelButton = true;
+    [searchBar setShowsCancelButton:YES animated:YES];
+    
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
     if (!searchBar.text || [searchBar.text isEqualToString:@""]) {
-        searchBar.showsCancelButton = false;
+        [searchBar setShowsCancelButton:NO animated:YES];
         [_delegate clearSearchFilter];
     }
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [_delegate applyFilterWithSearchText:searchBar.text];
+    [self reenableCancelButton:searchBar];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    if ([searchText isEqualToString: @""]) {
+        [self searchBarCancelButtonClicked:searchBar];
+    }
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [_delegate clearSearchFilter];
     searchBar.text = @"";
-    searchBar.showsCancelButton = false;
+    [searchBar setShowsCancelButton:NO animated:YES];
+}
+
+- (void)reenableCancelButton:(UISearchBar *)searchBar {
+    for (UIView *v in searchBar.subviews) {
+        for (id subview in v.subviews) {
+            if ([subview isKindOfClass:[UIButton class]]) {
+                [subview setEnabled:YES];
+                return;
+            }
+        }
+    }
+
 }
 
 @end
