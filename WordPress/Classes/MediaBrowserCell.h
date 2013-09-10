@@ -25,6 +25,4 @@
 @property (nonatomic, assign) BOOL *isSelected;
 @property (nonatomic, weak) id<MediaBrowserCellMultiSelectDelegate> delegate;
 
-- (void)updateForSelection;
-
 @end

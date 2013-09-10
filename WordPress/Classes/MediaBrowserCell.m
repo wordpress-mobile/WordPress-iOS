@@ -63,9 +63,9 @@
     return self;
 }
 
-- (void)updateForSelection
-{
-    [self bringSubviewToFront:_checkbox];
+- (void)setIsSelected:(BOOL *)isSelected {
+    _isSelected = isSelected;
+    
     if (_isSelected) {
         [_checkbox setImage:[UIImage imageNamed:@"media_checkbox_filled"] forState:UIControlStateNormal];
     } else {
@@ -74,17 +74,17 @@
 }
 
 - (void)checkboxPressed {
-    _isSelected = !_isSelected;
+    self.isSelected = !_isSelected;
     if (_isSelected) {
         [_delegate mediaCellSelected:self.media];
     } else {
         [_delegate mediaCellDeselected:self.media];
     }
-    [self updateForSelection];
 }
 
 - (void)prepareForReuse {
     self.thumbnail.image = nil;
+    self.isSelected = false;
 }
 
 - (void)setMedia:(Media *)media {

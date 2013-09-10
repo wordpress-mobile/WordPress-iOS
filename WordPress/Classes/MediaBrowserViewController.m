@@ -22,9 +22,10 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 @property (weak, nonatomic) IBOutlet MediaSearchFilterHeaderView *filterHeaderView;
 @property (nonatomic, strong) NSArray *filteredMedia;
 @property (nonatomic, strong) NSArray *mediaTypeFilterOptions, *dateFilteringOptions;
-@property (nonatomic, strong) NSMutableArray *selectedMedia;
+@property (nonatomic, strong) NSMutableDictionary *selectedMedia;
 @property (nonatomic, strong) NSArray *multiselectToolbarItems;
 @property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
+@property (nonatomic, weak) UIActionSheet *currentActionSheet;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *multiselectToolbar;
 
@@ -83,6 +84,13 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     [self refresh];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if (_currentActionSheet) {
+        [_currentActionSheet dismissWithClickedButtonIndex:_currentActionSheet.cancelButtonIndex animated:YES];
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
@@ -99,7 +107,8 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
+    _selectedMedia = nil;
 }
 
 - (void)refresh {
@@ -122,8 +131,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 }
 
 - (void)applyCurrentSort {
-//    NSString *key = [@"self." stringByAppendingString:_currentResultsSort];
-//    self.filteredThemes = [_filteredMedia sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:key ascending:true]]];
+
 }
 
 #pragma mark - MediaSearchFilterDelegate
@@ -172,6 +180,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     MediaBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:MediaCellIdentifier forIndexPath:indexPath];
     cell.media = self.blog.media.allObjects[indexPath.item];
+    cell.isSelected = ([_selectedMedia objectForKey:cell.media.mediaID] != nil);
     cell.delegate = self;
     return cell;
 }
@@ -209,32 +218,29 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 
 - (void)mediaCellSelected:(Media *)media {
     if (!_selectedMedia) {
-        _selectedMedia = [NSMutableArray array];
+        _selectedMedia = [NSMutableDictionary dictionary];
     }
     
-    if (![_selectedMedia containsObject:media]) {
-        [_selectedMedia addObject:media];
+    if (!_selectedMedia[media.mediaID]) {
+        [_selectedMedia setObject:media forKey:media.mediaID];
     }
     [self showMultiselectOptions];
 }
 
 - (void)mediaCellDeselected:(Media *)media {
-    [_selectedMedia removeObject:media];
+    [_selectedMedia removeObjectForKey:media.mediaID];
     [self showMultiselectOptions];
 }
 
 #pragma mark - Multiselect options
 
 - (IBAction)multiselectViewPressed:(id)sender {
-    // Open View vc for _selectedMedia[0]
-    EditMediaViewController *vc = [[EditMediaViewController alloc] initWithMedia:_selectedMedia[0] showEditMode:NO];
+    EditMediaViewController *vc = [[EditMediaViewController alloc] initWithMedia:[_selectedMedia allValues][0] showEditMode:NO];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (IBAction)multiselectEditPressed:(id)sender {
-    // Open View viewcontroller with edit mode on, for _selectedMedia[0]
-    // [[ViewMediaViewController alloc] initWithMedia:_selectedMedia[0] showEditMode:true];
-    EditMediaViewController *vc = [[EditMediaViewController alloc] initWithMedia:_selectedMedia[0] showEditMode:YES];
+    EditMediaViewController *vc = [[EditMediaViewController alloc] initWithMedia:[_selectedMedia allValues][0] showEditMode:YES];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -245,16 +251,21 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
-        [Media bulkDeleteMedia:_selectedMedia withSuccess:^(NSArray *successes) {
+        [Media bulkDeleteMedia:[_selectedMedia allValues] withSuccess:^(NSArray *successes) {
             NSLog(@"Successfully deleted %@", successes);
+            
             [self.collectionView reloadData];
         } failure:^(NSError *error, NSArray *failures) {
             WPFLog(@"Failed to delete media %@ with error %@", failures, error);
         }];
+        
+        [_selectedMedia removeAllObjects];
+        [self showMultiselectOptions];
     }
 }
 
 - (IBAction)multiselectCreateGalleryPressed:(id)sender {
+    // TODO
     // [[CreateGalleryViewController alloc] initWithMedia:_selectedMedia];
 }
 
@@ -295,6 +306,8 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 #pragma mark - Refresh
 
 - (void)refreshControlTriggered:(UIRefreshControl*)refreshControl {
+    [_selectedMedia removeAllObjects];
+    [self showMultiselectOptions];
     if (refreshControl.isRefreshing) {
         [self refresh];
     }
@@ -303,8 +316,18 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 #pragma mark - Add Media
 
 - (IBAction)addMediaButtonPressed:(id)sender {
+    
+    if (_currentActionSheet) {
+        return;
+    }
     UIActionSheet *chooseMedia = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Take a Photo", @""), NSLocalizedString(@"Capture a Video", @""), NSLocalizedString(@"Choose from Library", @""), nil];
-    [chooseMedia showInView:self.view];
+    _currentActionSheet = chooseMedia;
+    
+    if (IS_IPAD) {
+        [_currentActionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+    } else {
+        [_currentActionSheet showInView:self.view];
+    }
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
