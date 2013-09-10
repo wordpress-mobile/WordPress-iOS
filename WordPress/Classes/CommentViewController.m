@@ -61,7 +61,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [WPStyleGuide readGrey];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     self.authorNameLabel.font = [WPStyleGuide postTitleFont];
     self.authorSiteButton.titleLabel.font = [WPStyleGuide subtitleFont];
     [self.authorSiteButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
@@ -69,7 +69,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     [self.authorEmailButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
     self.postTitleLabel.font = [WPStyleGuide subtitleFont];
     self.dateLabel.font = [WPStyleGuide subtitleFont];
-    self.commentWebview.backgroundColor = [WPStyleGuide readGrey];
+    self.commentWebview.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
     if (IS_IOS7) {
         [self.toolbar setBarTintColor:[WPStyleGuide littleEddieGrey]];
@@ -207,7 +207,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 		htmlString = [NSString stringWithFormat:@"<html><head></head><body><p>%@</p></body></html>", @"<br />"];
     }
 	else {
-		htmlString = [NSString stringWithFormat:@"<html><head><meta name=\"viewport\" content=\"initial-scale=1, maximum-scale=1\"><style type='text/css'>* { margin:0; padding:0 5px 0 0; } p { color:black; font-family:OpenSans; font-size:16px; line-height: 1.4} b { font-family:OpenSans-Bold } i { font-family:OpenSans-Italic } a { color:#21759b; text-decoration:none; } body { background-color: #dddddd }</style></head><body><p>%@</p></body></html>", [[self.comment.content trim] stringByReplacingOccurrencesOfString:@"\n" withString:@"<br />"]];
+		htmlString = [NSString stringWithFormat:@"<html><head><meta name=\"viewport\" content=\"initial-scale=1, maximum-scale=1\"><style type='text/css'>* { margin:0; padding:0 5px 0 0; } p { color:black; font-family:OpenSans; font-size:16px; line-height: 1.4} b { font-family:OpenSans-Bold } i { font-family:OpenSans-Italic } a { color:#21759b; text-decoration:none; } body { background-color: #eeeeee }</style></head><body><p>%@</p></body></html>", [[self.comment.content trim] stringByReplacingOccurrencesOfString:@"\n" withString:@"<br />"]];
     }
 	self.commentWebview.delegate = self;
 	[self.commentWebview loadHTMLString:htmlString baseURL:nil];
