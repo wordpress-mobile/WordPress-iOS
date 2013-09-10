@@ -30,10 +30,11 @@
 @implementation PostMediaViewController {
     CGRect actionSheetRect;
     UIAlertView *currentAlert;
+    
     BOOL _dismissOnCancel;
     BOOL _hasPromptedToAddPhotos;
 }
-@synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, addPopover, picker, customSizeAlert;
+@synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, addPopover, picker;
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner;
 @synthesize currentImage, currentImageMetadata, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
 @synthesize postDetailViewController, postID, blogURL, bottomToolbar;
@@ -548,29 +549,29 @@
         if (actionSheet.cancelButtonIndex != buttonIndex) {
             switch (buttonIndex) {
                 case 0:
-                    if (actionSheet.numberOfButtons == 2)
+                    if (actionSheet.numberOfButtons == 3)
                         [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
                     else
                         [self useImage:[self resizeImage:currentImage toSize:kResizeSmall]];
                     break;
                 case 1:
-                    if (actionSheet.numberOfButtons == 2)
-                        [self showCustomSizeAlert];
-                    else if (actionSheet.numberOfButtons == 3)
-                        [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
-                    else
-                        [self useImage:[self resizeImage:currentImage toSize:kResizeMedium]];
-                    break;
-                case 2:
                     if (actionSheet.numberOfButtons == 3)
                         [self showCustomSizeAlert];
                     else if (actionSheet.numberOfButtons == 4)
                         [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
                     else
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeMedium]];
+                    break;
+                case 2:
+                    if (actionSheet.numberOfButtons == 4)
+                        [self showCustomSizeAlert];
+                    else if (actionSheet.numberOfButtons == 5)
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
+                    else
                         [self useImage:[self resizeImage:currentImage toSize:kResizeLarge]];
                     break;
                 case 3:
-                    if (actionSheet.numberOfButtons == 4)
+                    if (actionSheet.numberOfButtons == 5)
                         [self showCustomSizeAlert];
                     else
                         [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
@@ -925,80 +926,83 @@
 }
 
 - (void)showCustomSizeAlert {
-	if(self.isShowingCustomSizeAlert || currentAlert != nil)
-        return;
-
-    isShowingCustomSizeAlert = YES;
-
-    UITextField *textWidth, *textHeight;
-    UILabel *labelWidth, *labelHeight;
-
-    NSString *lineBreaks;
-
-    if (IS_IPAD)
-        lineBreaks = @"\n\n\n\n";
-    else
-        lineBreaks = @"\n\n\n";
-
-
-    customSizeAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Custom Size", @"")
-                                                 message:lineBreaks // IMPORTANT
-                                                delegate:self
-                                       cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                       otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-    labelWidth = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 50.0, 125.0, 25.0)];
-    labelWidth.backgroundColor = [UIColor clearColor];
-    labelWidth.textColor = [UIColor whiteColor];
-    labelWidth.text = NSLocalizedString(@"Width", @"");
-    [customSizeAlert addSubview:labelWidth];
-
-    textWidth = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 80.0, 125.0, 25.0)];
-    [textWidth setBackgroundColor:[UIColor whiteColor]];
-    [textWidth setPlaceholder:NSLocalizedString(@"Width", @"")];
-    [textWidth setKeyboardType:UIKeyboardTypeNumberPad];
-    [textWidth setDelegate:self];
-    [textWidth setTag:123];
-    
-    // Check for previous width setting
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil)
-        [textWidth setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"]];
-    else
-        [textWidth setText:[NSString stringWithFormat:@"%d", (int)currentImage.size.width]];
-
-    [customSizeAlert addSubview:textWidth];
-
-    labelHeight = [[UILabel alloc] initWithFrame:CGRectMake(145.0, 50.0, 125.0, 25.0)];
-    labelHeight.backgroundColor = [UIColor clearColor];
-    labelHeight.textColor = [UIColor whiteColor];
-    labelHeight.text = NSLocalizedString(@"Height", @"");
-    [customSizeAlert addSubview:labelHeight];
-
-    textHeight = [[UITextField alloc] initWithFrame:CGRectMake(145.0, 80.0, 125.0, 25.0)];
-    [textHeight setBackgroundColor:[UIColor whiteColor]];
-    [textHeight setPlaceholder:NSLocalizedString(@"Height", @"")];
-    [textHeight setDelegate:self];
-    [textHeight setKeyboardType:UIKeyboardTypeNumberPad];
-    [textHeight setTag:456];
-
-    // Check for previous height setting
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil)
-        [textHeight setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"]];
-    else
-        [textHeight setText:[NSString stringWithFormat:@"%d", (int)currentImage.size.height]];
-
-    [customSizeAlert addSubview:textHeight];
-
-    //fix the dialog position for older devices on iOS 3
-    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
-    if (version <= 3.1)
-    {
-        customSizeAlert.transform = CGAffineTransformTranslate(customSizeAlert.transform, 0.0, 100.0);
+    if (self.customSizeAlert) {
+        [self.customSizeAlert dismiss];
+        self.customSizeAlert = nil;
     }
 
-    [customSizeAlert show];
-    currentAlert = customSizeAlert;
+    isShowingCustomSizeAlert = YES;
+    
+    // Check for previous width setting
+    NSString *widthText = nil;
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil) {
+        widthText = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"];
+    } else {
+        widthText = [NSString stringWithFormat:@"%d", (int)currentImage.size.width];
+    }
+    
+    NSString *heightText = nil;
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil) {
+        heightText = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"];
+    } else {
+        heightText = [NSString stringWithFormat:@"%d", (int)currentImage.size.height];
+    }
 
-    [textWidth becomeFirstResponder];
+    WPAlertView *alertView = [[WPAlertView alloc] initWithFrame:self.view.bounds];
+    
+    alertView.overlayMode = WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode;
+    alertView.overlayTitle = NSLocalizedString(@"Custom Size", @"");
+    alertView.overlayDescription = NSLocalizedString(@"Provide a custom width and height for the image.", @"Alert view description for resizing an image with custom size.");
+    alertView.footerDescription = nil;
+    alertView.firstTextFieldPlaceholder = NSLocalizedString(@"Width", @"");
+    alertView.firstTextFieldValue = widthText;
+    alertView.secondTextFieldPlaceholder = NSLocalizedString(@"Height", @"");
+    alertView.secondTextFieldValue = heightText;
+    alertView.leftButtonText = NSLocalizedString(@"Cancel", @"Cancel button");
+    alertView.rightButtonText = NSLocalizedString(@"OK", @"");
+    
+    alertView.firstTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    alertView.secondTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    alertView.firstTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
+    alertView.secondTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
+    alertView.firstTextField.keyboardType = UIKeyboardTypeNumberPad;
+    alertView.secondTextField.keyboardType = UIKeyboardTypeNumberPad;
+    
+    alertView.button1CompletionBlock = ^(WPAlertView *overlayView){
+        // Cancel
+        [overlayView dismiss];
+        isShowingCustomSizeAlert = NO;
+        
+    };
+    alertView.button2CompletionBlock = ^(WPAlertView *overlayView){
+        [overlayView dismiss];
+        isShowingCustomSizeAlert = NO;
+        
+		NSNumber *width = [NSNumber numberWithInt:[overlayView.firstTextField.text intValue]];
+		NSNumber *height = [NSNumber numberWithInt:[overlayView.secondTextField.text intValue]];
+		
+		if([width intValue] < 10)
+			width = [NSNumber numberWithInt:10];
+		if([height intValue] < 10)
+			height = [NSNumber numberWithInt:10];
+		
+		overlayView.firstTextField.text = [NSString stringWithFormat:@"%@", width];
+		overlayView.secondTextField.text = [NSString stringWithFormat:@"%@", height];
+		
+		[[NSUserDefaults standardUserDefaults] setObject:overlayView.firstTextField.text forKey:@"prefCustomImageWidth"];
+		[[NSUserDefaults standardUserDefaults] setObject:overlayView.secondTextField.text forKey:@"prefCustomImageHeight"];
+		
+		[self useImage:[self resizeImage:currentImage width:[width floatValue] height:[height floatValue]]];
+    };
+    
+    alertView.alpha = 0.0;
+    [self.view addSubview:alertView];
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        alertView.alpha = 1.0;
+    }];
+
+    self.customSizeAlert = alertView;
 }
 
 
@@ -1024,16 +1028,6 @@
     }
 }
 
-- (void)dismissAlertViewKeyboard: (NSNotification*)notification {
-	if(isShowingCustomSizeAlert) {
-		UITextField *textWidth = (UITextField *)[self.customSizeAlert viewWithTag:123];
-		UITextField *textHeight = (UITextField *)[self.customSizeAlert viewWithTag:456];
-		[textWidth resignFirstResponder];
-		[textHeight resignFirstResponder];
-	}
-}
-
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (currentAlert == alertView) {
         currentAlert = nil;
@@ -1043,31 +1037,6 @@
 	
 		return;
 	}
-	
-	if(buttonIndex == 1) {
-		UITextField *textWidth = (UITextField *)[alertView viewWithTag:123];
-		UITextField *textHeight = (UITextField *)[alertView viewWithTag:456];
-		
-		NSNumber *width = [NSNumber numberWithInt:[textWidth.text intValue]];
-		NSNumber *height = [NSNumber numberWithInt:[textHeight.text intValue]];
-		
-		if([width intValue] < 10)
-			width = [NSNumber numberWithInt:10];
-		if([height intValue] < 10)
-			height = [NSNumber numberWithInt:10];
-		
-		textWidth.text = [NSString stringWithFormat:@"%@", width];
-		textHeight.text = [NSString stringWithFormat:@"%@", height];
-		
-		//NSLog(@"textWidth.text: %@ textHeight.text: %@", textWidth.text, textHeight.text);
-		
-		[[NSUserDefaults standardUserDefaults] setObject:textWidth.text forKey:@"prefCustomImageWidth"];
-		[[NSUserDefaults standardUserDefaults] setObject:textHeight.text forKey:@"prefCustomImageHeight"];
-		
-		[self useImage:[self resizeImage:currentImage width:[width floatValue] height:[height floatValue]]];
-	}
-	
-	isShowingCustomSizeAlert = NO;
 }
 
 - (void)imagePickerController:(UIImagePickerController *)thePicker didFinishPickingMediaWithInfo:(NSDictionary *)info {
