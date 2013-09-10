@@ -240,10 +240,12 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)viewWillAppear:(BOOL)animated {
     WPFLogMethod();
     [super viewWillAppear:animated];
-    
-    self.title = [self editorTitle];
-    self.navigationItem.title = [self editorTitle];
-    
+
+    if (IS_IOS7) {
+        self.title = [self editorTitle];
+        self.navigationItem.title = [self editorTitle];
+    }
+
 	[self refreshButtons];
 	
     textView.frame = self.normalTextFrame;
