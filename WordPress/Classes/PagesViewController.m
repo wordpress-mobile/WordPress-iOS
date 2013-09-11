@@ -34,8 +34,8 @@
 // For iPhone
 - (void)editPost:(AbstractPost *)apost {
     EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[apost createRevision]];
-    [self.navigationController pushViewController:editPostViewController animated:YES];
-    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
 }
 
 // For iPad

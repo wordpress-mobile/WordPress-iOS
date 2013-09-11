@@ -1113,11 +1113,18 @@
             }
 		}
 		
-        [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:^{
-            if (showResizeActionSheet) {
-                [self showResizeActionSheet];
-            }
-        }];
+        if (addPopover != nil) {
+            [addPopover dismissPopoverAnimated:YES];
+            [[CPopoverManager instance] setCurrentPopoverController:NULL];
+            addPopover = nil;
+            [self showResizeActionSheet];
+        } else {
+            [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:^{
+                if (showResizeActionSheet) {
+                    [self showResizeActionSheet];
+                }
+            }];
+        }
 	}
 
 	if(IS_IPAD){
