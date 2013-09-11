@@ -50,35 +50,35 @@
                     <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <items>
-                        <barButtonItem image="icon-comments-trash.png" id="efE-Bu-YZO" userLabel="Trash Button">
+                        <barButtonItem image="icon-comments-trash.png" style="plain" id="efE-Bu-YZO" userLabel="Trash Button">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="launchDeleteCommentActionSheet" destination="-1" id="PXr-1m-6Ry"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="P8w-0p-CZ2"/>
-                        <barButtonItem image="icon-comments-approve.png" id="qXx-Dg-pka" userLabel="Approve Button">
+                        <barButtonItem image="icon-comments-approve.png" style="plain" id="qXx-Dg-pka" userLabel="Approve Button">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="handleApproveOrUnapproveComment:" destination="-1" id="h0u-f3-LF9"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="q6L-fW-HwV"/>
-                        <barButtonItem image="icon-comments-flag.png" id="qWC-ZV-ETT" userLabel="Flag Button">
+                        <barButtonItem image="icon-comments-flag.png" style="plain" id="qWC-ZV-ETT" userLabel="Flag Button">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="spamComment" destination="-1" id="zud-lz-Yyu"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Acp-56-0gn"/>
-                        <barButtonItem image="icon-comments-edit.png" id="H11-4y-LK6" userLabel="Edit Button">
+                        <barButtonItem image="icon-comments-edit.png" style="plain" id="H11-4y-LK6" userLabel="Edit Button">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="launchEditComment" destination="-1" id="Xc5-hc-eJi"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="dMn-Zl-Hb5"/>
-                        <barButtonItem image="icon-comments-reply.png" id="J9s-A0-jd6" userLabel="Reply Button">
+                        <barButtonItem image="icon-comments-reply.png" style="plain" id="J9s-A0-jd6" userLabel="Reply Button">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="launchReplyToComments" destination="-1" id="KB8-GY-tBZ"/>
