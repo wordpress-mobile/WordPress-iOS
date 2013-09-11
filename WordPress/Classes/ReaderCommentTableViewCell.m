@@ -107,6 +107,7 @@
 		
 		UIColor *color = [UIColor colorWithHexString:@"EFEFEF"];
 		CGFloat width = self.frame.size.width;
+        self.backgroundColor = color;
 		
 		[self.cellImageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
 		self.cellImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
