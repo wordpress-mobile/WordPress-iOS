@@ -721,29 +721,7 @@
         }
 		isLibraryMedia = YES;
 		
-		if(IS_IPAD == YES) {
-            if (addPopover == nil) {
-                addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
-                if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)] && !IS_IOS7) {
-                    addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
-                }
-                addPopover.delegate = self;
-            }
-            if (IS_IOS7) {
-                // We insert a spacer into the barButtonItems so we need to grab the actual
-                // bar button item otherwise there is a crash.
-                barButton = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
-            }
-            if (!CGRectIsEmpty(actionSheetRect)) {
-                [addPopover presentPopoverFromRect:actionSheetRect inView:self.postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            } else {
-                [addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            }
-            [[CPopoverManager instance] setCurrentPopoverController:addPopover];
-		}
-		else {
-            [postDetailViewController.navigationController presentViewController:picker animated:YES completion:nil];
-		}
+        [postDetailViewController.navigationController presentViewController:picker animated:YES completion:nil];
     }
 }
 
