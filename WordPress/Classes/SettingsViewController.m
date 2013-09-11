@@ -193,6 +193,9 @@ typedef enum {
             PanelNavigationController *panelNavController = (PanelNavigationController *)self.presentingViewController;
             [panelNavController displayLoadingImageView];
         }
+
+        [WordPressAppDelegate wipeAllKeychainItems];
+
         GeneralWalkthroughViewController *walkthroughViewController = [[GeneralWalkthroughViewController alloc] init];
         self.navigationController.navigationBar.hidden = YES;
         [self.navigationController pushViewController:walkthroughViewController animated:YES];
