@@ -378,14 +378,6 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setAppBadge];
     [WPMobileStats endSession];
-	
-	if (IS_IPAD) {
-//		UIViewController *topVC = self.masterNavigationController.topViewController;
-//        
-//		if (topVC && [topVC isKindOfClass:[BlogViewController class]]) {
-//			[(BlogViewController *)topVC saveState];
-//		}
-	}
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -433,11 +425,11 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];    
   
-    if (passwordAlertRunning && passwordTextField != nil)
+    if (passwordAlertRunning && passwordTextField != nil) {
         [passwordTextField resignFirstResponder];
-    else
+    } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"DismissAlertViewKeyboard" object:nil];
-    
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -810,6 +802,7 @@
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"transparent-point"] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"transparent-point"]];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor lightGrayColor]} forState:UIControlStateDisabled];
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];

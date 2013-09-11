@@ -1021,11 +1021,15 @@
 }
 
 - (void)processPhotoTypeActionSheet:(UIActionSheet *)acSheet thatDismissedWithButtonIndex:(NSInteger)buttonIndex {
+    CGRect frame = self.view.bounds;
+    if (IS_IPAD) {
+        frame = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]].frame;
+    }
     NSString *buttonTitle = [acSheet buttonTitleAtIndex:buttonIndex];
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Photo from Library", nil)]) {
-        [self pickPhotoFromLibrary:self.view.bounds];
+        [self pickPhotoFromLibrary:frame];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
-        [self pickPhotoFromCamera:self.view.bounds];
+        [self pickPhotoFromCamera:frame];
     }
 }
 
