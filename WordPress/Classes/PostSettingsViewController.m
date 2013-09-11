@@ -1094,7 +1094,8 @@
     WPAlertView *alertView = [[WPAlertView alloc] initWithFrame:self.view.bounds andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsSideBySideTwoButtonMode];
     
     alertView.overlayTitle = NSLocalizedString(@"Custom Size", @"");
-    alertView.overlayDescription = NSLocalizedString(@"Provide a custom width and height for the image.", @"Alert view description for resizing an image with custom size.");
+//    alertView.overlayDescription = NS Localized String(@"Provide a custom width and height for the image.", @"Alert view description for resizing an image with custom size.");
+    alertView.overlayDescription = @"";
     alertView.footerDescription = nil;
     alertView.firstTextFieldPlaceholder = NSLocalizedString(@"Width", @"");
     alertView.firstTextFieldValue = widthText;
