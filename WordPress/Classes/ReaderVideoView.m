@@ -86,7 +86,12 @@
 			  failure:(void (^)(id videoView, NSError *error))failure {
 	
 	self.contentType = type;
-	self.contentURL = url;
+    // Workaround for urls relative schemas (e.g. //youtube.com/embed/XXXXXXX)
+    if ([url.absoluteString hasPrefix:@"//"]) {
+        self.contentURL = [NSURL URLWithString:[NSString stringWithFormat:@"http:%@", url]];
+    } else {
+        self.contentURL = url;
+    }
 
 	NSString *path = [self.contentURL path];
 	NSRange rng = [path rangeOfString:@"/" options:NSBackwardsSearch];
