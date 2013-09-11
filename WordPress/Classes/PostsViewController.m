@@ -176,23 +176,12 @@
 #pragma mark TableView delegate
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (IS_IOS7) {
-        return nil;
-    }
-    
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-    NSString *sectionName = [sectionInfo name];
-    
-    return [Post titleForRemoteStatus:[sectionName numericValue]];
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (IS_IOS7) {
-        return 0.0;
-    } else {
-        return [super tableView:tableView heightForHeaderInSection:section];
-    }
+    return 0.0;
 }
 
 - (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
