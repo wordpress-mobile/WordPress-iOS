@@ -659,6 +659,7 @@
                         addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Add Location", @"Geolocation feature to add location.");
                     }
                 }
+                [WPStyleGuide configureTableViewActionCell:addGeotagTableViewCell];
                 return addGeotagTableViewCell;
             }
             break;
