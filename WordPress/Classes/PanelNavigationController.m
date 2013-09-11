@@ -139,18 +139,6 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     self = [super init];
     if (self) {
         _isAppeared = NO;
-//        if (IS_IPHONE) {
-//            if (detailController) {
-//                _navigationController = [[UINavigationController alloc] initWithRootViewController:detailController];
-//            } else {
-//                _navigationController = [[UINavigationController alloc] init];
-//            }
-//            _navigationController.navigationBar.translucent = NO;
-//        } else {
-//            _detailViewControllers = [[NSMutableArray alloc] init];
-//            _detailViews = [[NSMutableArray alloc] init];
-//            _detailViewWidths = [[NSMutableArray alloc] init];
-//        }
 
         if (detailController) {
             _navigationController = [[UINavigationController alloc] initWithRootViewController:detailController];
