@@ -52,7 +52,6 @@
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
 @synthesize isUploadingPost;
 @synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
-@synthesize facebook;
 @synthesize panelNavigationController;
 
 #pragma mark -
@@ -80,21 +79,6 @@
                            ];
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: appUA, @"UserAgent", defaultUA, @"DefaultUserAgent", appUA, @"AppUserAgent", nil];
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-}
-
-- (void)setupFacebook {
-	//BETA FEEDBACK BAR, COMMENT THIS OUT BEFORE RELEASE
-	//BetaUIWindow *betaWindow = [[BetaUIWindow alloc] initWithFrame:CGRectZero];
-	//betaWindow.hidden = NO;
-	//BETA FEEDBACK BAR
-
-    facebook = [[Facebook alloc] initWithAppId:kFacebookAppID andDelegate:self];
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults objectForKey:kFacebookAccessTokenKey]
-        && [defaults objectForKey:kFacebookExpirationDateKey]) {
-        facebook.accessToken = [defaults objectForKey:kFacebookAccessTokenKey];
-        facebook.expirationDate = [defaults objectForKey:kFacebookExpirationDateKey];
-    }
 }
 
 - (void)setupCoreData {
@@ -271,7 +255,6 @@
 
     [self customizeAppearance];
     
-    [self setupFacebook];
     [self setupPocket];
     [self setupSingleSignOn];
 
@@ -337,10 +320,6 @@
     }
 
     if ([[PocketAPI sharedAPI] handleOpenURL:url]) {
-        return YES;
-    }
-
-    if ([facebook handleOpenURL:url]){
         return YES;
     }
 
@@ -1267,56 +1246,6 @@
 		}
 		
 	}
-}
-
-#pragma mark - Facebook Delegate Methods
-
-- (void)fbDidLogin {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[facebook accessToken] forKey:kFacebookAccessTokenKey];
-    [defaults setObject:[facebook expirationDate] forKey:kFacebookExpirationDateKey];
-    [defaults synchronize];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kFacebookLoginNotificationName object:self];
-    
-}
-
-/**
- * Called when the user dismissed the dialog without logging in.
- */
-- (void)fbDidNotLogin:(BOOL)cancelled
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kFacebookNoLoginNotificationName object:self];
-}
-
-/**
- * Called after the access token was extended. If your application has any
- * references to the previous access token (for example, if your application
- * stores the previous access token in persistent storage), your application
- * should overwrite the old access token with the new one in this method.
- * See extendAccessToken for more details.
- */
-- (void)fbDidExtendToken:(NSString*)accessToken
-               expiresAt:(NSDate*)expiresAt
-{
-    
-}
-
-/**
- * Called when the user logged out.
- */
-- (void)fbDidLogout
-{
-}
-
-/**
- * Called when the current session has expired. This might happen when:
- *  - the access token expired
- *  - the app has been disabled
- *  - the user revoked the app's permissions
- *  - the user changed his or her password
- */
-- (void)fbSessionInvalidated
-{
 }
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
