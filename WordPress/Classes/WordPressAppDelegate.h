@@ -65,6 +65,7 @@
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
 
++ (void)wipeAllKeychainItems;
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
 - (void)showNotificationErrorAlert:(NSNotification *)notification;
 - (BOOL)isWPcomAuthenticated;
