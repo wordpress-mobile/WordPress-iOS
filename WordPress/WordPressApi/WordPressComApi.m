@@ -207,7 +207,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 
 - (void)signOut {
     NSError *error = nil;
-    // Until we have accounts, don't delete the password or any blog with that username will stop working
+
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:kWPcomXMLRPCUrl error:&error];
     
