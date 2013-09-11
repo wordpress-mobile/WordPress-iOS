@@ -1261,9 +1261,7 @@
         
         [fakeController.view addSubview:picker];
         popover = [[UIPopoverController alloc] initWithContentViewController:fakeController];
-        if ([popover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
-            popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
-        }
+        popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
         
         CGRect popoverRect;
         if (picker.tag == TAG_PICKER_STATUS)
@@ -1990,6 +1988,7 @@
     
     if (IS_IPAD) {
         popover = [[UIPopoverController alloc] initWithContentViewController:picker];
+        popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
         popover.delegate = self;
         [popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         [[CPopoverManager instance] setCurrentPopoverController:popover];
@@ -2078,9 +2077,7 @@
             }
             navController.navigationBar.translucent = NO;
             UIPopoverController *categoriesPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
-            if ([categoriesPopover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
-                categoriesPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
-            }
+            categoriesPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
             categoriesPopover.delegate = self;
             CGRect popoverRect = cellFrame;
             categoriesPopover.popoverContentSize = CGSizeMake(320.0f, 460.0f);

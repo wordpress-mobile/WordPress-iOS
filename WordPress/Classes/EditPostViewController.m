@@ -631,9 +631,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
             }
             navController.navigationBar.translucent = NO;
  			UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:navController];
-            if ([popover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
-                popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
-            }
+            popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
             popover.delegate = self;
 			CGRect popoverRect = [self.view convertRect:[categoriesButton frame] fromView:[categoriesButton superview]];
 			popoverRect.size.width = MIN(popoverRect.size.width, 100.0f); // the text field is actually really big

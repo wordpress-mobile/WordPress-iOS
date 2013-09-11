@@ -730,9 +730,7 @@
 		if(IS_IPAD == YES) {
             if (addPopover == nil) {
                 addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
-                if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)] && !IS_IOS7) {
-                    addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
-                }
+                addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
                 addPopover.delegate = self;
             }
             if (IS_IOS7) {
