@@ -159,6 +159,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     
     // Add a loading image to prevent a flicker as the app sets up this controller
     self.loadingImageView = [[UIImageView alloc] initWithImage:[self loadingImage]];
+    self.loadingImageView.frame = self.view.bounds;
     self.loadingImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.loadingImageView];
     [self.view bringSubviewToFront:self.loadingImageView];
