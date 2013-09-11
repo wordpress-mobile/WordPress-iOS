@@ -566,6 +566,13 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
     BOOL updateEnabled = self.hasChanges || self.apost.remoteStatus == AbstractPostRemoteStatusFailed;
     [self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
+
+    // Seems to be a bug with UIBarButtonItem respecting the UIControlStateDisabled text color
+    if (updateEnabled) {
+        [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
+    } else {
+        [self.navigationItem.rightBarButtonItem setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor lightGrayColor]}  forState:UIControlStateNormal];
+    }
 }
 
 - (void)refreshUIForCurrentPost {
