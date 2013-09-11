@@ -995,7 +995,7 @@
     
     alertView.alpha = 0.0;
     
-    if (IS_IOS7 || IS_IPAD) {
+    if (IS_IOS7) {
         [self.view addSubview:alertView];
     } else {
         alertView.hideBackgroundView = YES;
