@@ -166,7 +166,6 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:VideoUploadFailed object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissAlertViewKeyboard:) name:@"DismissAlertViewKeyboard" object:nil];
 }
 
 - (void)removeNotifications{
@@ -995,7 +994,15 @@
     };
     
     alertView.alpha = 0.0;
-    [self.view addSubview:alertView];
+    
+    if (IS_IOS7 || IS_IPAD) {
+        [self.view addSubview:alertView];
+    } else {
+        alertView.hideBackgroundView = YES;
+        alertView.firstTextField.keyboardAppearance = UIKeyboardAppearanceDefault;
+        alertView.secondTextField.keyboardAppearance = UIKeyboardAppearanceDefault;
+        [self.postDetailViewController.view addSubview:alertView];
+    }
     
     [UIView animateWithDuration:0.2 animations:^{
         alertView.alpha = 1.0;
