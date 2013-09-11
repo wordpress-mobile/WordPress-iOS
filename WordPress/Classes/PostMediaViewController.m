@@ -671,24 +671,8 @@
 		}
 	}
 	
-	if(IS_IPAD) {
-        // We insert a spacer into the barButtonItems so we need to grab the actual
-        // bar button item otherwise there is a crash.
-		UIBarButtonItem *barButton = IS_IOS7 ? [self.navigationItem.rightBarButtonItems objectAtIndex:1] : postDetailViewController.movieButton;
-		if (addPopover == nil) {
-			addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
-            if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
-                addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
-            }
-			addPopover.delegate = self;
-		}
-		[addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		[[CPopoverManager instance] setCurrentPopoverController:addPopover];
-	}
-	else {
-        [postDetailViewController.navigationController presentViewController:picker animated:YES completion:nil];
-	}
-	
+    [postDetailViewController.navigationController presentViewController:picker animated:YES completion:nil];
+
 	/*[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(deviceDidRotate:)
 												 name:@"UIDeviceOrientationDidChangeNotification" object:nil];*/
@@ -1207,12 +1191,8 @@
 }
 
 - (void)processRecordedVideo {
-	if(IS_IPAD == YES)
-		[addPopover dismissPopoverAnimated:YES];
-	else {
-        [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
-	}
-	
+    [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
+
 	[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];
 	NSString *tempVideoPath = [(NSURL *)[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
     tempVideoPath = [self videoPathFromVideoUrl:tempVideoPath];
