@@ -659,6 +659,7 @@
                         addGeotagTableViewCell.textLabel.text = NSLocalizedString(@"Add Location", @"Geolocation feature to add location.");
                     }
                 }
+                [WPStyleGuide configureTableViewActionCell:addGeotagTableViewCell];
                 return addGeotagTableViewCell;
             }
             break;
@@ -1588,8 +1589,17 @@
             break;
         }
     }
+
+    BOOL isPopoverDisplayed = false;
+    if (IS_IPAD) {
+        if (thePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+            isPopoverDisplayed = false;
+        } else {
+            isPopoverDisplayed = true;
+        }
+    }
     
-    if(IS_IPAD) {
+    if (isPopoverDisplayed) {
         [popover dismissPopoverAnimated:YES];
         if (showResizeActionSheet) {
             [self showResizeActionSheet];
@@ -1996,14 +2006,7 @@
 	picker.allowsEditing = NO;
     picker.navigationBar.translucent = NO;
     
-    if (IS_IPAD) {
-        popover = [[UIPopoverController alloc] initWithContentViewController:picker];
-        popover.delegate = self;
-        [popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        [[CPopoverManager instance] setCurrentPopoverController:popover];
-    } else {
-        [self.navigationController presentViewController:picker animated:YES completion:nil];
-    }
+    [self.navigationController presentViewController:picker animated:YES completion:nil];
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController{
