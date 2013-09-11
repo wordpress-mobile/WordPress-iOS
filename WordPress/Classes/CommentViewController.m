@@ -70,10 +70,12 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.postTitleLabel.font = [WPStyleGuide subtitleFont];
     self.dateLabel.font = [WPStyleGuide subtitleFont];
     self.commentWebview.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    
+
     if (IS_IOS7) {
         [self.toolbar setBarTintColor:[WPStyleGuide littleEddieGrey]];
         self.toolbar.translucent = NO;        
+    } else {
+        [self hideWebviewShadowForiOS6];
     }
     
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedPostTitle)];
@@ -240,6 +242,22 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 - (void)discard {
     _replyToCommentViewController.navigationItem.rightBarButtonItem = nil;
 	[self dismissEditViewController];
+}
+
+- (void)hideWebviewShadowForiOS6
+{
+    // From http://stackoverflow.com/a/4167060
+    for (UIView* subView in [self.commentWebview subviews])
+    {
+        if ([subView isKindOfClass:[UIScrollView class]]) {
+            for (UIView* shadowView in [subView subviews])
+            {
+                if ([shadowView isKindOfClass:[UIImageView class]]) {
+                    [shadowView setHidden:YES];
+                }
+            }
+        }
+    }
 }
 
 
