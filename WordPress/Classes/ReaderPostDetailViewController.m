@@ -135,7 +135,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	self.title = self.post.postTitle;
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.contentInset = UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height, 0, self.navigationController.toolbar.frame.size.height, 0);
 	
 	[self buildHeader];
 	[self buildTopToolbar];
@@ -293,22 +292,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		self.shareButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
 	}
 	
-    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
-	
-	if(false && IS_IPAD) {
-		
-		self.navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0f)];
-		_navBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		[_navBar pushNavigationItem:self.navigationItem animated:NO];
-        _navBar.translucent = NO;
-		[self.view addSubview:_navBar];
-		
-		CGRect frame = self.tableView.frame;
-		frame.origin.y = 44.0f;
-		frame.size.height -= 44.0f;
-		self.tableView.frame = frame;
-	}
-
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];	
 }
 
 
