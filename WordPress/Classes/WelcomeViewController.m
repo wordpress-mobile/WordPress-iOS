@@ -21,9 +21,9 @@
     WPcomLoginViewControllerDelegate,
     CreateWPComAccountViewControllerDelegate,
     CreateWPComBlogViewControllerDelegate> {
-    NSArray *_buttonTitles;
-    NSArray *_sectionHeaderTitles;
-    WordPressAppDelegate *__weak _appDelegate;
+        NSArray *_buttonTitles;
+        NSArray *_sectionHeaderTitles;
+        WordPressAppDelegate *__weak _appDelegate;
 }
 
 @end

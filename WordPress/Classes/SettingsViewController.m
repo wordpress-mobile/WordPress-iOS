@@ -43,7 +43,6 @@
 #import "Blog+Jetpack.h"
 #import "GeneralWalkthroughViewController.h"
 #import "WPAccount.h"
-#import "WelcomeViewController.h"
 #import "WPTableViewSectionHeaderView.h"
 
 typedef enum {
