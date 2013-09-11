@@ -184,21 +184,11 @@
 		_textContentView.shouldDrawLinks = NO;
 		[self addSubview:_textContentView];
 		
-		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
-															  DTDefaultFontFamily:@"Open Sans",
-													DTDefaultLineHeightMultiplier:@1.5,
-																DTDefaultFontSize:@16,
-															   DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
-															   DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
-													  DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
-														  DTDefaultLinkDecoration:@NO
-									 }];
-
 		// There seems to be a bug with DTCoreText causing images on the first line to have a negative y origin.
 		// As a work around, let the first line always be empty. We shift the text view's origin to compensate.
 		NSString *str = [NSString stringWithFormat:@"<p> </p>%@", self.post.content];
 		[self updateAttributedString: [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
-																		   options:dict
+																		   options:[WPStyleGuide defaultDTCoreTextOptions]
 																documentAttributes:NULL]];
 		[self sendSubviewToBack:_textContentView];
     }

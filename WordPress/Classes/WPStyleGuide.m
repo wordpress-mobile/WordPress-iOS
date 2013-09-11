@@ -8,6 +8,7 @@
 
 #import "WPStyleGuide.h"
 #import "UITableViewTextFieldCell.h"
+#import <DTCoreText/DTCoreText.h>
 
 @implementation WPStyleGuide
 
@@ -113,6 +114,19 @@
 + (UIFont *)tableviewSectionHeaderFont
 {
     return [UIFont fontWithName:@"OpenSans-Bold" size:12.0];
+}
+
++ (NSDictionary *)defaultDTCoreTextOptions
+{
+    return @{
+             DTDefaultFontFamily:@"Open Sans",
+             DTDefaultLineHeightMultiplier:@1.5,
+             DTDefaultFontSize:@16,
+             DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
+             DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
+             DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
+             DTDefaultLinkDecoration:@NO
+             };
 }
 
 #pragma mark - Colors
