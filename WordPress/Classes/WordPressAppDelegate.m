@@ -741,7 +741,7 @@
     // If UIAppearance is supported, configure global styles.
     //Configure navigation bar style if >= iOS 5
     if ([[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
-        [[UIToolbar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar_bg"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+        [[UIToolbar appearance] setTintColor:[WPStyleGuide littleEddieGrey]];
         
         [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
         [[UINavigationBar appearance] setTitleTextAttributes:

@@ -232,6 +232,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         attachmentButton.tintColor = color;
         self.photoButton.tintColor = color;
         self.movieButton.tintColor = color;
+        [self.toolbar setBackgroundImage:[UIImage imageNamed:@"toolbar_bg"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
     }
     
     [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailOpenedEditor]];
