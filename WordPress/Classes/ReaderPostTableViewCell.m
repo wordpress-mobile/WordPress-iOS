@@ -133,7 +133,7 @@
                          _bottomBorderView.hidden = highlighted;
                          self.alpha = highlighted ? .7f : 1.f;
                          if (highlighted) {
-                             CGFloat perspective = -0.0001;
+                             CGFloat perspective = IS_IPAD ? -0.00005 : -0.0001;
                              CATransform3D transform = CATransform3DIdentity;
                              transform.m24 = perspective;
                              transform = CATransform3DScale(transform, .98f, .98f, 1);
