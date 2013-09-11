@@ -136,6 +136,12 @@
 
 - (void)tappedAddButton
 {
+    if (addPopover != nil) {
+        [addPopover dismissPopoverAnimated:YES];
+        [[CPopoverManager instance] setCurrentPopoverController:NULL];
+        addPopover = nil;
+    }
+    
     UIActionSheet *addMediaActionSheet;
     
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
