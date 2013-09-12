@@ -176,7 +176,7 @@
     picker.allowsEditing = NO;
     picker.delegate = self;
     
-    if (IS_IPAD) {
+    if (IS_IPAD && self.sourceType != UIImagePickerControllerSourceTypeCamera) {
         self.popController = [[UIPopoverController alloc] initWithContentViewController:picker];
         popController.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
         popController.delegate = self;
