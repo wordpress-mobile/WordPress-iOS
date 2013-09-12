@@ -644,6 +644,7 @@
         [self resetImagePicker];
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 		picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+        picker.modalPresentationStyle = UIModalPresentationCurrentContext;
 		
         [postDetailViewController.navigationController presentViewController:picker animated:YES completion:nil];
     }
@@ -655,6 +656,7 @@
 	picker.sourceType =  UIImagePickerControllerSourceTypeCamera;
 	picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
 	picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+    picker.modalPresentationStyle = UIModalPresentationCurrentContext;
 	
 	if([[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"] != nil) {
 		NSString *quality = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"];
@@ -697,6 +699,7 @@
 			barButton = postDetailViewController.movieButton;
             picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
 			picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+            picker.modalPresentationStyle = UIModalPresentationCurrentContext;
 			
 			if([[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"] != nil) {
 				NSString *quality = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"];
