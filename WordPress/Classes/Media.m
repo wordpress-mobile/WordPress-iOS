@@ -15,6 +15,7 @@
 
 - (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)xmlrpcDeleteWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)xmlrpcUpdateWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end
 
@@ -74,12 +75,33 @@
     self.width = [json objectForKeyPath:@"metadata.width"];
     self.height = [json objectForKeyPath:@"metadata.height"];
     self.mediaID = [json[@"attachment_id"] numericValue];
-    //    media.mediaType = NSString json[@"link"]
-    self.length = [json objectForKeyPath:@"metadata.focal_length"];
     self.filename = [[json objectForKeyPath:@"metadata.file"] lastPathComponent];
     self.creationDate = json[@"date_created_gmt"];
     self.caption = json[@"caption"];
     self.desc = json[@"description"];
+    
+    [self getMediaTypeFromLink:[json[@"link"] pathExtension]];
+}
+
+- (NSDictionary*)XMLRPCDictionaryForUpdate {
+    return @{@"post_title": self.title ? self.title : @"",
+             @"post_content": self.desc ? self.desc : @"",
+             @"post_excerpt": self.caption ? self.caption : @""};
+}
+
+- (void)getMediaTypeFromLink:(NSString *)ext {
+    CFStringRef fileExt = (__bridge CFStringRef)ext;
+    CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExt, nil);
+    if (UTTypeConformsTo(fileUTI, kUTTypeImage)) {
+        self.mediaType = @"image";
+    } else if (UTTypeConformsTo(fileUTI, kUTTypeVideo)) {
+        self.mediaType = @"video";
+    } else if (UTTypeConformsTo(fileUTI, kUTTypeMovie)) {
+        self.mediaType = @"video";
+    } else {
+        self.mediaType = @"unknown";
+    }
+    
 }
 
 + (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)(NSArray *successes))success failure:(void (^)(NSError *error, NSArray *failures))failure {
@@ -187,6 +209,11 @@
     [self xmlrpcUploadWithSuccess:success failure:failure];
 }
 
+- (void)remoteUpdateWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    [self save];
+    [self xmlrpcUpdateWithSuccess:success failure:failure];
+}
+
 - (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     NSString *mimeType = ([self.mediaType isEqualToString:@"video"]) ? @"video/mp4" : @"image/jpeg";
     NSDictionary *object = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -288,6 +315,21 @@
         }
     }];
     [self.blog.api enqueueXMLRPCRequestOperation:deleteOperation];
+}
+
+- (void)xmlrpcUpdateWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    NSArray *params = [self.blog getXMLRPCArgsWithExtra:@[self.mediaID, [self XMLRPCDictionaryForUpdate]]];
+    WPXMLRPCRequest *updateRequest = [self.blog.api XMLRPCRequestWithMethod:@"wp.editPost" parameters:params];
+    WPXMLRPCRequestOperation *update = [self.blog.api XMLRPCRequestOperationWithRequest:updateRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+    [self.blog.api enqueueXMLRPCRequestOperation:update];
 }
 
 - (NSString *)html {
