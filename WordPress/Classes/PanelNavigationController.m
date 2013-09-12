@@ -366,7 +366,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 
 - (void)addStatusBarBackgroundView
 {
-    if (!IS_IOS7)
+    if (!IS_IOS7 || self.statusBarBackgroundView)
         return;
     
     self.statusBarBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), PanelNavigationControllerStatusBarViewHeight)];
