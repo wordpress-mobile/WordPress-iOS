@@ -29,6 +29,7 @@
 + (UIFont *)tableviewTextFont;
 + (UIFont *)tableviewSubtitleFont;
 + (UIFont *)tableviewSectionHeaderFont;
++ (NSDictionary *)defaultDTCoreTextOptions;
 
 // Colors
 + (UIColor *)baseLighterBlue;

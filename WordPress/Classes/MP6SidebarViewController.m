@@ -788,6 +788,8 @@ shouldShowThemesOption]) {
 
 - (void)showWelcomeScreenIfNeeded {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
+        [WordPressAppDelegate wipeAllKeychainItems];
+        
         _showingWelcomeScreen = YES;
         
         GeneralWalkthroughViewController *welcomeViewController = [[GeneralWalkthroughViewController alloc] init];

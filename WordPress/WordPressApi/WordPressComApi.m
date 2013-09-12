@@ -93,7 +93,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
         if (username) {
             NSError *error = nil;
             password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                  andServiceName:@"WordPress.com"
+                                                  andServiceName:kWPcomXMLRPCUrl
                                                            error:&error];
             authToken = [SFHFKeychainUtils getPasswordForUsername:username
                                                    andServiceName:WordPressComApiOauthServiceName
@@ -153,7 +153,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
         }
         self.authToken = accessToken;
         NSError *error = nil;
-        [SFHFKeychainUtils storeUsername:self.username andPassword:self.password forServiceName:@"WordPress.com" updateExisting:YES error:&error];
+        [SFHFKeychainUtils storeUsername:self.username andPassword:self.password forServiceName:kWPcomXMLRPCUrl updateExisting:YES error:&error];
         if (error) {
             if (failure) {
                 failure(error);
@@ -207,10 +207,10 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 
 - (void)signOut {
     NSError *error = nil;
-#if FALSE
-    // Until we have accounts, don't delete the password or any blog with that username will stop working
+
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
-#endif
+    [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:kWPcomXMLRPCUrl error:&error];
+    
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] unregisterApnsToken];
     [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey]; //Remove the token from Preferences, otherwise the token is never sent to the server on the next login
@@ -380,7 +380,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     self.username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
     NSError *error = nil;
     self.password = [SFHFKeychainUtils getPasswordForUsername:self.username
-                                          andServiceName:@"WordPress.com"
+                                          andServiceName:kWPcomXMLRPCUrl
                                                    error:&error];
     [self clearWpcomCookies];
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLogoutNotification object:nil];

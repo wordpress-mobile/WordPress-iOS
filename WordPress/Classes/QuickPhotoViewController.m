@@ -178,9 +178,7 @@
     
     if (IS_IPAD) {
         self.popController = [[UIPopoverController alloc] initWithContentViewController:picker];
-        if ([popController respondsToSelector:@selector(popoverBackgroundViewClass)]) {
-            popController.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
-        }
+        popController.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
         popController.delegate = self;
         CGRect rect = CGRectMake((self.view.frame.size.width/2), 1.0f, 1.0f, 1.0f); // puts the arrow in the middle of the screen
         [popController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];            

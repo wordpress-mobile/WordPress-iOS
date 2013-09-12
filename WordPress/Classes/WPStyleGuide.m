@@ -8,6 +8,7 @@
 
 #import "WPStyleGuide.h"
 #import "UITableViewTextFieldCell.h"
+#import <DTCoreText/DTCoreText.h>
 
 @implementation WPStyleGuide
 
@@ -115,6 +116,19 @@
     return [UIFont fontWithName:@"OpenSans-Bold" size:12.0];
 }
 
++ (NSDictionary *)defaultDTCoreTextOptions
+{
+    return @{
+             DTDefaultFontFamily:@"Open Sans",
+             DTDefaultLineHeightMultiplier:@1.5,
+             DTDefaultFontSize:@16,
+             DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
+             DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
+             DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
+             DTDefaultLinkDecoration:@NO
+             };
+}
+
 #pragma mark - Colors
 
 + (UIColor *)baseLighterBlue
@@ -215,12 +229,20 @@
 
 + (void)setLeftBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem
 {
-    navigationItem.leftBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
+    if (IS_IOS7) {
+        navigationItem.leftBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
+    } else {
+        navigationItem.leftBarButtonItem = barButtonItem;
+    }
 }
 
 + (void)setRightBarButtonItemWithCorrectSpacing:(UIBarButtonItem *)barButtonItem forNavigationItem:(UINavigationItem *)navigationItem
 {
-    navigationItem.rightBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
+    if (IS_IOS7) {
+        navigationItem.rightBarButtonItems = @[[self spacerForNavigationBarButtonItems], barButtonItem];
+    } else {
+        navigationItem.rightBarButtonItem = barButtonItem;
+    }
 }
 
 + (UIBarButtonItem *)spacerForNavigationBarButtonItems

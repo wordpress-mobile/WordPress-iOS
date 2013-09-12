@@ -133,7 +133,7 @@
                          _bottomBorderView.hidden = highlighted;
                          self.alpha = highlighted ? .7f : 1.f;
                          if (highlighted) {
-                             CGFloat perspective = -0.0001;
+                             CGFloat perspective = IS_IPAD ? -0.00005 : -0.0001;
                              CATransform3D transform = CATransform3DIdentity;
                              transform.m24 = perspective;
                              transform = CATransform3DScale(transform, .98f, .98f, 1);
@@ -246,7 +246,7 @@
 	[_likeButton.titleLabel setFont:[UIFont fontWithName:@"OpenSans-Bold" size:10.0f]];
 	[_likeButton setTitleColor:[UIColor colorWithRed:84.0f/255.0f green:173.0f/255.0f blue:211.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
 	[_likeButton setTitleColor:[UIColor colorWithRed:221.0f/255.0f green:118.0f/255.0f blue:43.0f/255.0f alpha:1.0f] forState:UIControlStateSelected];
-	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like"] forState:UIControlStateNormal];
+	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-blue"] forState:UIControlStateNormal];
 	[_likeButton setImage:[UIImage imageNamed:@"reader-postaction-like-active"] forState:UIControlStateSelected];
 	[_likeButton addTarget:self action:@selector(handleLikeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	[_metaView addSubview:_likeButton];
@@ -255,8 +255,7 @@
 	_reblogButton.frame = CGRectMake(w + 1.0f, 53.0f, width - w - 1.f, 48.0f);
 	_reblogButton.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
 	_reblogButton.backgroundColor = [UIColor whiteColor];
-	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog"] forState:UIControlStateNormal];
-	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-active"] forState:UIControlStateHighlighted];
+	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] forState:UIControlStateNormal];
 	[_reblogButton setImage:[UIImage imageNamed:@"reader-postaction-reblog-done"] forState:UIControlStateSelected];
 	[_metaView addSubview:_reblogButton];
 	

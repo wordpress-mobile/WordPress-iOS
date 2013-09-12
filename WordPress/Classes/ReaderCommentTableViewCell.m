@@ -80,17 +80,8 @@
 + (NSAttributedString *)convertHTMLToAttributedString:(NSString *)html withOptions:(NSDictionary *)options {
     NSAssert(html != nil, @"Can't convert nil to AttributedString");
 	
-	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
-														  DTDefaultFontFamily:@"Open Sans",
-												DTDefaultLineHeightMultiplier:@0.9,
-															DTDefaultFontSize:@13,
-										   NSTextSizeMultiplierDocumentOption:@1.1,
-														   DTDefaultTextColor:[UIColor colorWithHexString:@"404040"],
-														   DTDefaultLinkColor:[UIColor colorWithHexString:@"278dbc"],
-												  DTDefaultLinkHighlightColor:[UIColor colorWithHexString:@"005684"],
-													  DTDefaultLinkDecoration:@NO
-								 }];
-	
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[WPStyleGuide defaultDTCoreTextOptions]];
+
 	if(options) {
 		[dict addEntriesFromDictionary:options];
 	}
@@ -107,6 +98,7 @@
 		
 		UIColor *color = [UIColor colorWithHexString:@"EFEFEF"];
 		CGFloat width = self.frame.size.width;
+        self.backgroundColor = color;
 		
 		[self.cellImageView setFrame:CGRectMake(10.0f, 10.0f, 20.0f, 20.0f)];
 		self.cellImageView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
@@ -121,16 +113,16 @@
 		[self.contentView addSubview:_textContentView];
 		
 		self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(width - (10.0f + 30.0f), 10.0f, 30.0f, 20.0f)];
-		[_dateLabel setFont:[UIFont fontWithName:@"OpenSans" size:14.0f]];//[UIFont systemFontOfSize:14.0f]];
-		_dateLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0f];//[UIColor grayColor];
+		[_dateLabel setFont:[WPStyleGuide subtitleFont]];
+		_dateLabel.textColor = [WPStyleGuide littleEddieGrey];
 		_dateLabel.textAlignment = NSTextAlignmentRight;
 		_dateLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
 		_dateLabel.backgroundColor = color;
 		[self.contentView addSubview:_dateLabel];
 		
 		self.authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(40.0f, 10.0f, (_dateLabel.frame.origin.x - 50.0f), 20.0f)];
-		[_authorLabel setFont:[UIFont fontWithName:@"OpenSans" size:14.0f]];
-		_authorLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0f];
+		[_authorLabel setFont:[WPStyleGuide subtitleFont]];
+		_authorLabel.textColor = [WPStyleGuide littleEddieGrey];
 		_authorLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_authorLabel.backgroundColor = color;
 		[self.contentView addSubview:_authorLabel];

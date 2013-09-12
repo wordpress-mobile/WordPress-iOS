@@ -10,5 +10,8 @@
 
 @interface WPFriendFinderViewController : WPWebAppViewController
 
+- (void)authorizeSource:(NSString *)source;
+- (void)configureFriendFinder:(id)config;
+
 @end
 
