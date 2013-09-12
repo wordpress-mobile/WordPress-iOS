@@ -77,18 +77,17 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 }
 
 + (void)removeDefaultWordPressComAccount {
-    [[WordPressComApi sharedApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
     WPAccount *defaultAccount = __defaultDotcomAccount;
-    __defaultDotcomAccount = nil;
     [defaultAccount.managedObjectContext deleteObject:defaultAccount];
-    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
 - (void)prepareForDeletion {
     // Invoked automatically by the Core Data framework when the receiver is about to be deleted.
     if (__defaultDotcomAccount == self) {
-        [WPAccount removeDefaultWordPressComAccount];
+        [[WordPressComApi sharedApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
+        __defaultDotcomAccount = nil;
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
+        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     }
 }
 
