@@ -23,7 +23,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray *sortingOptions, *resultSortAttributes; // 'nice' sort names and the corresponding model attributes
-@property (nonatomic, strong) NSString *currentResultsSort;
+@property (nonatomic, strong) NSString *currentResultsSort, *currentSearchText;
 @property (nonatomic, strong) NSArray *allThemes, *filteredThemes;
 @property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
 @property (nonatomic, weak) WPInfoView *noThemesView;
@@ -74,6 +74,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     if (![_currentTheme.themeId isEqualToString:self.blog.currentThemeId]) {
         [self currentThemeForBlog];
         self.filteredThemes = _allThemes;
+        [self applyFilterWithSearchText:_currentSearchText];
     }
 }
 
@@ -267,6 +268,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
 - (void)applyFilterWithSearchText:(NSString *)searchText {
     self.filteredThemes = [_allThemes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId CONTAINS[cd] %@", searchText]];
+    _currentSearchText = searchText;
 }
 
 - (void)clearSearchFilter {
