@@ -136,7 +136,7 @@
 
 - (void)tappedAddButton
 {
-    if (_addMediaActionSheet != nil)
+    if (_addMediaActionSheet != nil || self.isShowingResizeActionSheet == YES)
         return;
 
     if (addPopover != nil) {
