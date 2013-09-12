@@ -267,12 +267,17 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (void)applyFilterWithSearchText:(NSString *)searchText {
+    if (!searchText) {
+        [self clearSearchFilter];
+        return;
+    }
     self.filteredThemes = [_allThemes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId CONTAINS[cd] %@", searchText]];
     _currentSearchText = searchText;
 }
 
 - (void)clearSearchFilter {
     self.filteredThemes = _allThemes;
+    _currentSearchText = nil;
 }
 
 #pragma mark - UIRefreshControl
