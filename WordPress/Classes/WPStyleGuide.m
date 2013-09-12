@@ -275,6 +275,7 @@
 
 + (void)configureColorsForView:(UIView *)view andTableView:(UITableView *)tableView
 {
+    tableView.backgroundView = nil;
     view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     tableView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     tableView.separatorColor = [WPStyleGuide readGrey];
