@@ -21,7 +21,7 @@
 #import "UIImageView+Gravatar.h"
 #import "UILabel+SuggestSize.h"
 
-#define ContentTextViewYOffset -20
+#define ContentTextViewYOffset -32
 
 @interface ReaderPostDetailView()<DTAttributedTextContentViewDelegate> {
 	BOOL _relayoutTextFlag;
@@ -159,11 +159,15 @@
 			self.titleLabel = [[UILabel alloc] initWithFrame:titleFrame];
 			_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 			_titleLabel.backgroundColor = [UIColor whiteColor];
-			_titleLabel.font = [UIFont fontWithName:@"OpenSans-Light" size:20.0f];
-			_titleLabel.textColor = [UIColor colorWithRed:64.0f/255.0f green:64.0f/255.0f blue:64.0f/255.0f alpha:1.0f];
-			_titleLabel.lineBreakMode = UILineBreakModeWordWrap;
+			_titleLabel.font = [WPStyleGuide largePostTitleFont];
+			_titleLabel.textColor = [WPStyleGuide littleEddieGrey];
+			_titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
 			_titleLabel.numberOfLines = 0;
-			_titleLabel.text = self.post.postTitle;
+            if (IS_IOS7) {
+                _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:self.post.postTitle attributes:[WPStyleGuide largePostTitleAttributes]];
+            } else {
+                _titleLabel.text = self.post.postTitle;
+            }
 			[self addSubview:_titleLabel];
 			titleFrame.size.height = [_titleLabel suggestedSizeForWidth:_titleLabel.frame.size.width].height;
 			_titleLabel.frame = titleFrame;
@@ -180,22 +184,11 @@
 		_textContentView.shouldDrawLinks = NO;
 		[self addSubview:_textContentView];
 		
-		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{
-															  DTDefaultFontFamily:@"Open Sans",
-													DTDefaultLineHeightMultiplier:@0.9,
-																DTDefaultFontSize:@13,
-															   DTDefaultTextColor:[UIColor colorWithHexString:@"404040"],
-															   DTDefaultLinkColor:[UIColor colorWithHexString:@"278dbc"],
-													  DTDefaultLinkHighlightColor:[UIColor colorWithHexString:@"005684"],
-														  DTDefaultLinkDecoration:@NO,
-											   NSTextSizeMultiplierDocumentOption:@1.1
-									 }];
-
 		// There seems to be a bug with DTCoreText causing images on the first line to have a negative y origin.
 		// As a work around, let the first line always be empty. We shift the text view's origin to compensate.
 		NSString *str = [NSString stringWithFormat:@"<p> </p>%@", self.post.content];
 		[self updateAttributedString: [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
-																		   options:dict
+																		   options:[WPStyleGuide defaultDTCoreTextOptions]
 																documentAttributes:NULL]];
 		[self sendSubviewToBack:_textContentView];
     }
@@ -421,7 +414,7 @@
         
 		controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		controller.modalPresentationStyle = UIModalPresentationFormSheet;
-        [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentModalViewController:controller animated:YES];
+        [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentViewController:controller animated:YES completion:nil];
 		
 	} else {
 		// Should either be an iframe, or an object embed. In either case a src attribute should have been parsed for the contentURL.
@@ -460,7 +453,7 @@
                                                       object:moviePlayer];
         
         // Dismiss the view controller
-        [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] dismissModalViewControllerAnimated:YES];
+        [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

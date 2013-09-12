@@ -10,6 +10,7 @@
 #import "WordPressComApi.h"
 #import "ReaderPost.h"
 #import "WPFriendFinderViewController.h"
+#import "WPTableViewSectionHeaderView.h"
 
 @interface ReaderTopicsViewController ()
 
@@ -59,19 +60,19 @@
     [super viewDidLoad];
 	
 	self.title = NSLocalizedString(@"Topics", @"Title of the Reader Topics screen");
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                  target:self
-                                                                                  action:@selector(handleCancelButtonTapped:)];
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                                     style:UIBarButtonItemStylePlain
+                                                                    target:self
+                                                                    action:@selector(handleCancelButtonTapped:)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 
 	UIBarButtonItem *friendFinderButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Friends", @"")
-																		   style:UIBarButtonItemStyleBordered
+																		   style:[WPStyleGuide barButtonStyleForBordered]
 																		  target:self
 																		  action:@selector(handleFriendFinderButtonTapped:)];
 	self.navigationItem.leftBarButtonItem = friendFinderButton;
 	
-    self.tableView.backgroundView = nil;
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 	
 	[self refreshIfReady];
 }
@@ -97,7 +98,7 @@
 
 
 - (void)handleCancelButtonTapped:(id)sender {
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -171,8 +172,20 @@
 
 #pragma mark - TableView methods
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	switch (section) {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section {
+    switch (section) {
 		case 0:
 			return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
 			break;
@@ -206,6 +219,7 @@
 	if(!cell) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 	}
+    [WPStyleGuide configureTableViewCell:cell];
 	
 	NSArray *arr = nil;
 	if (indexPath.section == 0) {
@@ -247,7 +261,7 @@
 		}
 	}
 	
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

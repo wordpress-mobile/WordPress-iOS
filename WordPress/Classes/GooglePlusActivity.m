@@ -7,8 +7,7 @@
 //
 
 #import <SVProgressHUD/SVProgressHUD.h>
-#import <google-plus-ios-sdk/GPPShare.h>
-#import <google-plus-ios-sdk/GPPSignIn.h>
+#import <GooglePlus/GooglePlus.h>
 
 #import "GooglePlusActivity.h"
 

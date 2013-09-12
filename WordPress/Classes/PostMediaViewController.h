@@ -15,6 +15,8 @@
 #import "UIImage+Resize.h"
 #import "WordPressAppDelegate.h"
 #import "MediaObjectViewController.h"
+#import "WPAlertView.h"
+
 
 typedef void (^ALAssetsLibraryAssetForURLResultBlock)(ALAsset *asset);
 typedef void (^ALAssetsLibraryAccessFailureBlock)(NSError *error);
@@ -49,7 +51,6 @@ static inline double radians(double degrees) {
     NSFetchedResultsController *resultsController;
 	
 	//used in customResizeField
-	UIAlertView *customSizeAlert;
     UIActionSheet *currentActionSheet;
 }
 
@@ -71,8 +72,9 @@ static inline double radians(double degrees) {
 @property (nonatomic, strong) NSMutableDictionary *currentVideo;
 @property (nonatomic, strong) UIImagePickerController *picker;
 @property (weak, readonly) NSFetchedResultsController *resultsController;
-@property (nonatomic, strong) UIAlertView *customSizeAlert;
+@property (nonatomic, strong) WPAlertView *customSizeAlert;
 @property (nonatomic, strong) UIActionSheet *currentActionSheet;
+@property (nonatomic, strong) NSString *statsPrefix;
 
 - (id)initWithPost:(AbstractPost *)aPost;
 

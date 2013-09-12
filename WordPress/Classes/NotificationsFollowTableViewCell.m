@@ -21,27 +21,26 @@
         [actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
         [actionButton setFrame:CGRectMake(100.0f, 20.0f, 80.0f, 30.0f)];
         [actionButton setImageEdgeInsets:UIEdgeInsetsMake(0.0f, 6.0f, 0.0f, 0.0f)];
-        [actionButton.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0f]];
+        [actionButton.titleLabel setFont:[WPStyleGuide tableviewSectionHeaderFont]];
         [actionButton setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, 9.0f, 0.0f, 2.0f)];
         [actionButton.imageView setContentMode:UIViewContentModeLeft];
         [actionButton.titleLabel setTextAlignment:NSTextAlignmentLeft];
-        [actionButton.titleLabel setLineBreakMode:UILineBreakModeTailTruncation];
+        [actionButton.titleLabel setLineBreakMode:NSLineBreakByTruncatingTail];
         [actionButton.titleLabel setShadowOffset:CGSizeMake(0.0f, 1.0f)];
         [self addSubview:actionButton];
         
-        [self.textLabel setTextColor:[UIColor UIColorFromHex:0x030303]];
         [self.textLabel setBackgroundColor:[UIColor clearColor]];
-        [self.textLabel setFont:[UIFont boldSystemFontOfSize:16.0f]];
+        [self.textLabel setTextColor:[WPStyleGuide littleEddieGrey]];
+        [self.textLabel setFont:[WPStyleGuide postTitleFont]];
         
-        [self.detailTextLabel setFont:[UIFont systemFontOfSize:14.0f]];
+        [self.detailTextLabel setFont:[WPStyleGuide subtitleFont]];
         [self.detailTextLabel setTextColor:WP_LINK_COLOR];
         [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
         [self.detailTextLabel setNumberOfLines:1];
         [self.detailTextLabel setAdjustsFontSizeToFitWidth:NO];
-        [self.detailTextLabel setLineBreakMode:UILineBreakModeTailTruncation];
+        [self.detailTextLabel setLineBreakMode:NSLineBreakByTruncatingTail];
         
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
-        [self setBackgroundView:imageView];
+        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     }
     return self;
 }

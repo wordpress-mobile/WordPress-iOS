@@ -1,8 +1,7 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <WordPressApi/WordPressApi.h>
 #import <Crashlytics/Crashlytics.h>
-#import <GPPSignIn.h>
-#import <GPPShare.h>
+#import <GooglePlus/GooglePlus.h>
 
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
@@ -15,7 +14,7 @@
 #import "Media.h"
 #import "CameraPlusPickerManager.h"
 #import "PanelNavigationController.h"
-#import "SidebarViewController.h"
+#import "MP6SidebarViewController.h"
 #import "UIDevice+WordPressIdentifier.h"
 #import "WordPressComApi.h"
 #import "PostsViewController.h"
@@ -27,6 +26,9 @@
 #import "WPMobileStats.h"
 #import "WPComLanguages.h"
 #import "WPAccount.h"
+#import "Note.h"
+#import "UIColor+Helpers.h"
+#import <Security/Security.h>
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 - (void)setAppBadge;
@@ -51,7 +53,6 @@
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
 @synthesize isUploadingPost;
 @synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
-@synthesize facebook;
 @synthesize panelNavigationController;
 
 #pragma mark -
@@ -59,6 +60,19 @@
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate {
     return (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+}
+
++ (void)wipeAllKeychainItems
+{
+    NSArray *secItemClasses = @[(__bridge id)kSecClassGenericPassword,
+                                (__bridge id)kSecClassInternetPassword,
+                                (__bridge id)kSecClassCertificate,
+                                (__bridge id)kSecClassKey,
+                                (__bridge id)kSecClassIdentity];
+    for (id secItemClass in secItemClasses) {
+        NSDictionary *spec = @{(__bridge id)kSecClass : secItemClass};
+        SecItemDelete((__bridge CFDictionaryRef)spec);
+    }
 }
 
 #pragma mark -
@@ -79,21 +93,6 @@
                            ];
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: appUA, @"UserAgent", defaultUA, @"DefaultUserAgent", appUA, @"AppUserAgent", nil];
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-}
-
-- (void)setupFacebook {
-	//BETA FEEDBACK BAR, COMMENT THIS OUT BEFORE RELEASE
-	//BetaUIWindow *betaWindow = [[BetaUIWindow alloc] initWithFrame:CGRectZero];
-	//betaWindow.hidden = NO;
-	//BETA FEEDBACK BAR
-
-    facebook = [[Facebook alloc] initWithAppId:kFacebookAppID andDelegate:self];
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults objectForKey:kFacebookAccessTokenKey]
-        && [defaults objectForKey:kFacebookExpirationDateKey]) {
-        facebook.accessToken = [defaults objectForKey:kFacebookAccessTokenKey];
-        facebook.expirationDate = [defaults objectForKey:kFacebookExpirationDateKey];
-    }
 }
 
 - (void)setupCoreData {
@@ -270,12 +269,10 @@
 
     [self customizeAppearance];
     
-    [self setupFacebook];
     [self setupPocket];
     [self setupSingleSignOn];
 
-
-    SidebarViewController *sidebarViewController = [[SidebarViewController alloc] init];
+    MP6SidebarViewController *sidebarViewController = [[MP6SidebarViewController alloc] init];
     
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [window setFrame:bounds];
@@ -326,7 +323,7 @@
         }];
     }];
 #endif
-
+    
     return YES;
 }
 
@@ -337,10 +334,6 @@
     }
 
     if ([[PocketAPI sharedAPI] handleOpenURL:url]) {
-        return YES;
-    }
-
-    if ([facebook handleOpenURL:url]){
         return YES;
     }
 
@@ -385,14 +378,6 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setAppBadge];
     [WPMobileStats endSession];
-	
-	if (IS_IPAD) {
-//		UIViewController *topVC = self.masterNavigationController.topViewController;
-//        
-//		if (topVC && [topVC isKindOfClass:[BlogViewController class]]) {
-//			[(BlogViewController *)topVC saveState];
-//		}
-	}
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -440,11 +425,11 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];    
   
-    if (passwordAlertRunning && passwordTextField != nil)
+    if (passwordAlertRunning && passwordTextField != nil) {
         [passwordTextField resignFirstResponder];
-    else
+    } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"DismissAlertViewKeyboard" object:nil];
-    
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -729,73 +714,98 @@
 #pragma mark Private Methods
 
 - (void)customizeAppearance {
+    if (IS_IOS7) {
+        [self customizeForiOS7];
+    } else {
+        [self customizeForiOS6];
+    }
+}
+
+- (void)customizeForiOS6
+{
     // If UIAppearance is supported, configure global styles.
     //Configure navigation bar style if >= iOS 5
     if ([[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
-        [[UIToolbar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar_bg"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
-
+        [[UIToolbar appearance] setTintColor:[WPStyleGuide littleEddieGrey]];
+        
         [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
         [[UINavigationBar appearance] setTitleTextAttributes:
          [NSDictionary dictionaryWithObjectsAndKeys:
-          [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0], 
-          UITextAttributeTextColor, 
-          [UIColor whiteColor], 
-          UITextAttributeTextShadowColor, 
-          [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+          [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0],
+          UITextAttributeTextColor,
+          [UIColor whiteColor],
+          UITextAttributeTextShadowColor,
+          [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
           UITextAttributeTextShadowOffset,
           nil]];
         
-        [[UIBarButtonItem appearance] setTintColor:[UIColor colorWithRed:229.0/255.0 green:229.0/255.0 blue:229.0/255.0 alpha:1.0]];
-
+        //        [[UIBarButtonItem appearance] setTintColor:[UIColor colorWithRed:229.0/255.0 green:229.0/255.0 blue:229.0/255.0 alpha:1.0]];
+        
         [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
         [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_active"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
         [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_landscape"] forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
         [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_button_bg_landscape_active"] forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
-
+        
         [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"navbar_back_button_bg"] stretchableImageWithLeftCapWidth:14.f topCapHeight:0] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
         [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"navbar_back_button_bg_active"] stretchableImageWithLeftCapWidth:14.f topCapHeight:0] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
         [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"navbar_back_button_bg_landscape"] stretchableImageWithLeftCapWidth:14.f topCapHeight:0] forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
         [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[[UIImage imageNamed:@"navbar_back_button_bg_landscape_active"] stretchableImageWithLeftCapWidth:14.f topCapHeight:0] forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
-
+        
         NSDictionary *titleTextAttributesForStateNormal = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                           [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0], 
-                                                           UITextAttributeTextColor, 
+                                                           [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0],
+                                                           UITextAttributeTextColor,
                                                            [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0],
-                                                           UITextAttributeTextShadowColor,  
-                                                           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+                                                           UITextAttributeTextShadowColor,
+                                                           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
                                                            UITextAttributeTextShadowOffset,
                                                            nil];
         
         
         NSDictionary *titleTextAttributesForStateDisabled = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                             [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0], 
-                                                             UITextAttributeTextColor, 
-                                                             //          [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0], 
+                                                             [UIColor colorWithRed:150.0/255.0 green:150.0/255.0 blue:150.0/255.0 alpha:1.0],
+                                                             UITextAttributeTextColor,
+                                                             //          [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0],
                                                              [UIColor UIColorFromHex:0xeeeeee],
-                                                             UITextAttributeTextShadowColor,  
-                                                             [NSValue valueWithUIOffset:UIOffsetMake(0, 1)], 
+                                                             UITextAttributeTextShadowColor,
+                                                             [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
                                                              UITextAttributeTextShadowOffset,
                                                              nil];
         
         NSDictionary *titleTextAttributesForStateHighlighted = [NSDictionary dictionaryWithObjectsAndKeys:
-                                                             [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0],
-                                                             UITextAttributeTextColor,
-                                                             [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0],
-                                                             UITextAttributeTextShadowColor,
-                                                             [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
-                                                             UITextAttributeTextShadowOffset,
-                                                             nil]; 
+                                                                [UIColor colorWithRed:34.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:1.0],
+                                                                UITextAttributeTextColor,
+                                                                [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0],
+                                                                UITextAttributeTextShadowColor,
+                                                                [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
+                                                                UITextAttributeTextShadowOffset,
+                                                                nil];
         
         
         [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateNormal];
         [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateDisabled forState:UIControlStateDisabled];
         [[UIBarButtonItem appearance] setTitleTextAttributes:titleTextAttributesForStateHighlighted forState:UIControlStateHighlighted];
         
-        [[UISegmentedControl appearance] setTintColor:[UIColor UIColorFromHex:0xeeeeee]];
+        //        [[UISegmentedControl appearance] setTintColor:[UIColor UIColorFromHex:0xeeeeee]];
         [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateNormal forState:UIControlStateNormal];
         [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateDisabled forState:UIControlStateDisabled];
         [[UISegmentedControl appearance] setTitleTextAttributes:titleTextAttributesForStateHighlighted forState:UIControlStateHighlighted];
     }
+}
+
+- (void)customizeForiOS7
+{
+    self.window.tintColor = [WPStyleGuide newKidOnTheBlockBlue];
+
+    [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{UITextAttributeTextColor: [UIColor whiteColor], UITextAttributeFont : [UIFont fontWithName:@"OpenSans-Bold" size:16.0]} ];
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"transparent-point"] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"transparent-point"]];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor lightGrayColor]} forState:UIControlStateDisabled];
+    [[UIToolbar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    [[UISwitch appearance] setOnTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 - (void)setAppBadge {
@@ -1078,6 +1088,22 @@
     }
 }
 
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    WPFLogMethod();
+
+    [Note getNewNotificationswithContext:self.managedObjectContext success:^(BOOL hasNewNotes) {
+        WPFLog(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
+        if (hasNewNotes) {
+            completionHandler(UIBackgroundFetchResultNewData);
+        } else {
+            completionHandler(UIBackgroundFetchResultNewData);
+        }
+    } failure:^(NSError *error) {
+        WPFLog(@"notification fetch completion handler failed with error: %@", error);
+        completionHandler(UIBackgroundFetchResultFailed);
+    }];
+}
+
 - (void)registerForPushNotifications {
     if (isWPcomAuthenticated) {
         [[UIApplication sharedApplication]
@@ -1123,7 +1149,7 @@
         
     } else if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
         WPFLog(@"Received notification: %@", remoteNotif);
-        SidebarViewController *sidebar = (SidebarViewController *)self.panelNavigationController.masterViewController;
+        MP6SidebarViewController *sidebar = (MP6SidebarViewController *)self.panelNavigationController.masterViewController;
         [sidebar showCommentWithId:[[remoteNotif objectForKey:@"comment_id"] numericValue] blogId:[[remoteNotif objectForKey:@"blog_id"] numericValue]];
     } else {
         WPFLog(@"Got unsupported notification: %@", remoteNotif);
@@ -1205,16 +1231,17 @@
 			case 0: {
 				HelpViewController *helpViewController = [[HelpViewController alloc] init];
                 UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
+                aNavigationController.navigationBar.translucent = NO;
                 if (IS_IPAD) {
                     aNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                     aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
                 }
-
+                
                 UIViewController *presenter = self.panelNavigationController;
-                if (presenter.modalViewController) {
-                    presenter = presenter.modalViewController;
+                if (presenter.presentedViewController) {
+                    presenter = presenter.presentedViewController;
                 }
-                [presenter presentModalViewController:aNavigationController animated:YES];
+                [presenter presentViewController:aNavigationController animated:YES completion:nil];
 
 				break;
 			}
@@ -1226,56 +1253,6 @@
 		}
 		
 	}
-}
-
-#pragma mark - Facebook Delegate Methods
-
-- (void)fbDidLogin {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[facebook accessToken] forKey:kFacebookAccessTokenKey];
-    [defaults setObject:[facebook expirationDate] forKey:kFacebookExpirationDateKey];
-    [defaults synchronize];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kFacebookLoginNotificationName object:self];
-    
-}
-
-/**
- * Called when the user dismissed the dialog without logging in.
- */
-- (void)fbDidNotLogin:(BOOL)cancelled
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kFacebookNoLoginNotificationName object:self];
-}
-
-/**
- * Called after the access token was extended. If your application has any
- * references to the previous access token (for example, if your application
- * stores the previous access token in persistent storage), your application
- * should overwrite the old access token with the new one in this method.
- * See extendAccessToken for more details.
- */
-- (void)fbDidExtendToken:(NSString*)accessToken
-               expiresAt:(NSDate*)expiresAt
-{
-    
-}
-
-/**
- * Called when the user logged out.
- */
-- (void)fbDidLogout
-{
-}
-
-/**
- * Called when the current session has expired. This might happen when:
- *  - the access token expired
- *  - the app has been disabled
- *  - the user revoked the app's permissions
- *  - the user changed his or her password
- */
-- (void)fbSessionInvalidated
-{
 }
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash

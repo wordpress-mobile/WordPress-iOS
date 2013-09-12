@@ -18,5 +18,6 @@
 @property (nonatomic) BOOL incrementalLoadingSupported;
 
 - (void)promptForPassword;
+- (UIColor *)backgroundColorForRefreshHeaderView;
 
 @end

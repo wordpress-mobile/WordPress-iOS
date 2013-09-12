@@ -24,6 +24,7 @@
     self = [super init];
     if (self) {
         self.apost = aPost;
+        self.navigationItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
     }
     return self;
 }

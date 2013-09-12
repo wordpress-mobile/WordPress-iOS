@@ -73,7 +73,13 @@
 
     if( IS_IPHONE ) {
         
-        if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
+        if (IS_IOS7) {
+            UIImage *image = [UIImage imageNamed:@"icon-posts-share"];
+            UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+            [button setImage:image forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
+            self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+        } else {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
             
             [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
@@ -90,14 +96,10 @@
             [btn addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
             
             self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
-        } else {
-            self.optionsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                                                               target:self
-                                                                               action:@selector(showLinkOptions)];
         }
         
         if (!self.hidesLinkOptions) {
-            self.navigationItem.rightBarButtonItem = optionsButton;
+            [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:optionsButton forNavigationItem:self.navigationItem];
         }
         
     } else {
@@ -127,7 +129,11 @@
         }
     }
     
-    if ([forwardButton respondsToSelector:@selector(setTintColor:)]) {
+    if (IS_IOS7) {
+        toolbar.translucent = NO;
+        toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+        toolbar.tintColor = [UIColor whiteColor];        
+    } else {
         UIColor *color = [UIColor UIColorFromHex:0x464646];
         backButton.tintColor = color;
         forwardButton.tintColor = color;
@@ -657,8 +663,9 @@
         NSString *body = [permaLink trim];
         [controller setMessageBody:body isHTML:NO];
         
-        if (controller) 
-            [self.panelNavigationController presentModalViewController:controller animated:YES];        
+        if (controller) {
+            [self.panelNavigationController presentViewController:controller animated:YES completion:nil];
+        }
         [self setMFMailFieldAsFirstResponder:controller.view mfMailField:@"MFRecipientTextField"];
     } else if ( buttonIndex == 2 ) {
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
@@ -670,7 +677,7 @@
 #pragma mark - MFMailComposeViewControllerDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - custom methods
@@ -701,10 +708,10 @@
 }
 
 - (void)showCloseButton {
-    if ( IS_IPAD ) {
+    if (IS_IPAD) {
         if(self.navigationController.navigationBarHidden) {
             UINavigationItem *topItem = self.iPadNavBar.topItem;
-            topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+            topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
         }
     }
 }

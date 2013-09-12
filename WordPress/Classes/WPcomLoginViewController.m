@@ -14,6 +14,7 @@
 #import "WPAccount.h"
 #import "WordPressComApi.h"
 #import "ReachabilityUtils.h"
+#import "WPTableViewSectionFooterView.h"
 
 @interface WPcomLoginViewController () <UITextFieldDelegate> {
     UITableViewTextFieldCell *loginCell, *passwordCell;
@@ -39,6 +40,7 @@
     loginViewController.isCancellable = YES;
     loginViewController.dismissWhenFinished = YES;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    navController.navigationBar.translucent = NO;
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [rootViewController presentViewController:navController animated:YES completion:nil];
@@ -51,8 +53,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
 
-    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern"]];
-    self.tableView.backgroundView = nil;
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.wpComApi = [WordPressComApi sharedApi];
 	self.footerText = @" ";
@@ -60,7 +61,10 @@
 	self.navigationItem.title = NSLocalizedString(@"Sign In", @"");
     
     if (isCancellable) {
-        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(cancel:)];
         self.navigationItem.leftBarButtonItem = barButton;
     }
     
@@ -112,11 +116,24 @@
 }
 
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+- (NSString *)titleForFooterInSection:(NSInteger)section {
     if(section == 0)
 		return footerText;
     else
 		return @"";
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForFooterInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    NSString *title = [self titleForFooterInSection:section];
+    return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
 
@@ -150,6 +167,7 @@
         } else {
             activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
+        [WPStyleGuide configureTableViewActionCell:activityCell];
 		cell = activityCell;
 	} else {
         if ([indexPath row] == 0) {
@@ -168,6 +186,7 @@
                 loginCell.textField.text = self.predefinedUsername;
             if(isSigningIn)
                 [loginCell.textField resignFirstResponder];
+            [WPStyleGuide configureTableViewTextCell:loginCell];
             cell = loginCell;
         }
         else {
@@ -183,6 +202,7 @@
             passwordCell.textField.delegate = self;
             if(isSigningIn)
                 [passwordCell.textField resignFirstResponder];
+            [WPStyleGuide configureTableViewTextCell:passwordCell];
             cell = passwordCell;
         }
     }

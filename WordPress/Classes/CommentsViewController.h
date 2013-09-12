@@ -12,31 +12,11 @@
 #import "Blog.h"
 #import "ReplyToCommentViewController.h"
 
-@class CommentViewController;
-
-@interface CommentsViewController : WPTableViewController <ReplyToCommentViewControllerDelegate, UIAccelerometerDelegate, CommentsTableViewDelegate, DetailViewDelegate> {
+@interface CommentsViewController : WPTableViewController <CommentsTableViewDelegate, DetailViewDelegate> {
 @private
-    IBOutlet UIBarButtonItem *approveButton;
-    IBOutlet UIBarButtonItem *unapproveButton;
-    IBOutlet UIBarButtonItem *spamButton;
-    IBOutlet UIBarButtonItem *deleteButton;
 }
 
 @property (nonatomic, strong) NSNumber *wantedCommentId;
 @property (nonatomic, strong) NSNumber *lastSelectedCommentID;
-
-- (IBAction)deleteSelectedComments:(id)sender;
-- (IBAction)approveSelectedComments:(id)sender;
-- (IBAction)unapproveSelectedComments:(id)sender;
-- (IBAction)spamSelectedComments:(id)sender;
-- (IBAction)replyToSelectedComment:(id)sender;
-
-#pragma mark -
-#pragma mark Comment navigation
-
-- (BOOL)hasPreviousComment;
-- (BOOL)hasNextComment;
-- (void)showPreviousComment;
-- (void)showNextComment;
 
 @end

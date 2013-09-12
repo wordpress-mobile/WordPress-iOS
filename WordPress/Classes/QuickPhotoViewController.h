@@ -11,19 +11,18 @@
 #import "Post.h"
 #import "QuickPicturePreviewView.h"
 #import "WordPressAppDelegate.h"
-#import "SidebarViewController.h"
 
 #define QPVCBlogForQuickPhoto @"blogForQuickPhoto"
 
 @class Blog;
-
+@class MP6SidebarViewController;
 @interface QuickPhotoViewController : UIViewController <UIPopoverControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, BlogSelectorButtonDelegate, QuickPicturePreviewViewDelegate> {
 	WordPressAppDelegate *appDelegate;
     Post *post;
     CGRect startingFrame;
     CGRect keyboardFrame;
     
-    SidebarViewController *sidebarViewController;
+    MP6SidebarViewController *sidebarViewController;
     Blog *startingBlog;
 }
 
@@ -35,7 +34,7 @@
 @property (nonatomic, strong) UIImage *photo;
 @property (nonatomic, assign) UIImagePickerControllerSourceType sourceType;
 @property (nonatomic, assign) BOOL isCameraPlus;
-@property (nonatomic, strong) SidebarViewController *sidebarViewController;
+@property (nonatomic, strong) MP6SidebarViewController *sidebarViewController;
 @property (nonatomic, strong) Blog *startingBlog;
 
 - (void)post;

@@ -15,6 +15,7 @@
 #import "JetpackSettingsViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
+#import "WPTableViewSectionHeaderView.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 
@@ -59,12 +60,8 @@
     
     if (blog) {
         self.navigationItem.title = NSLocalizedString(@"Edit Blog", @"");
-		self.tableView.backgroundColor = [UIColor clearColor];
-		if (IS_IPAD){
-			self.tableView.backgroundView = nil;
-			self.tableView.backgroundColor = [UIColor clearColor];
-		}
-        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
+
+        [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
         
         self.url = blog.url;
         self.username = blog.username;
@@ -93,11 +90,14 @@
     }
     
     if (isCancellable) {
-        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(cancel:)];
         self.navigationItem.leftBarButtonItem = barButton;
     }
     
-    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
+    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(save:)];
     self.navigationItem.rightBarButtonItem = saveButton;
     
     if (!IS_IPAD) {
@@ -159,7 +159,21 @@
 }
 
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
 	NSString *result = nil;
 	switch (section) {
 		case 0:
@@ -173,7 +187,6 @@
 	}
 	return result;
 }
-
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath {    
@@ -189,6 +202,7 @@
                 [urlTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:urlTextField asPassword:NO];
                 urlTextField.keyboardType = UIKeyboardTypeURL;
+                [WPStyleGuide configureTableViewCell:self.urlCell];
 				if (blog.url != nil) {
 					urlTextField.text = blog.url;
                 } else {
@@ -226,6 +240,7 @@
                     usernameTextField.enabled = NO;
                     usernameTextField.textColor = [UIColor darkGrayColor];
                 }
+                [WPStyleGuide configureTableViewCell:self.usernameCell];
 			}
             
             return self.usernameCell;
@@ -244,6 +259,7 @@
                 } else {
                     passwordTextField.text = @"";
                 }
+                [WPStyleGuide configureTableViewCell:self.passwordCell];
 			}
             return self.passwordCell;
         }				        
@@ -264,6 +280,7 @@
             switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
             switchCell.cellSwitch.on = self.geolocationEnabled;
             [switchCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
+            [WPStyleGuide configureTableViewCell:switchCell];
             return switchCell;
         } else if(indexPath.row == 1) {
             if(switchCellPushNotifications == nil) {
@@ -344,27 +361,24 @@
 
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField.returnKeyType == UIReturnKeyNext) {
-        UITableViewCell *cell = (UITableViewCell *)[textField superview];
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:(indexPath.row + 1) inSection:indexPath.section];
-        UITableViewCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
-        if (nextCell) {
-            for (UIView *subview in [nextCell subviews]) {
-                if ([subview isKindOfClass:[UITextField class]]) {
-                    [subview becomeFirstResponder];
-                    break;
-                }
-            }
-        }
+    if (textField == usernameTextField) {
+        [passwordTextField becomeFirstResponder];
+    } else if (textField == urlTextField) {
+        [usernameTextField becomeFirstResponder];
+    } else if (textField == passwordTextField) {
+        [textField resignFirstResponder];
     }
-	[textField resignFirstResponder];
 	return NO;
 }
 
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     UITableViewCell *cell = (UITableViewCell *)[textField superview];
+    
+    if (NSClassFromString(@"UITableViewCellScrollView")) {
+        // iOS7 introduced a private class in between the normal UITableViewCell and the cell views.
+        cell = (UITableViewCell*)[cell superview];
+    }
     NSMutableString *result = [NSMutableString stringWithString:textField.text];
     [result replaceCharactersInRange:range withString:string];
 
@@ -439,6 +453,7 @@
     textField.delegate = self;   
     if (asPassword) {
         textField.secureTextEntry = YES;
+        textField.returnKeyType = UIReturnKeyDone;
     } else {
         textField.returnKeyType = UIReturnKeyNext;
     }
@@ -707,7 +722,7 @@
 
 - (IBAction)cancel:(id)sender {
     if (isCancellable) {
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     } else {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }

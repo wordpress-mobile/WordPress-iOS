@@ -81,6 +81,7 @@ extern NSString *const StatsPropertyPostDetailClickedEdit;
 extern NSString *const StatsPropertyPostDetailClickedSettings;
 extern NSString *const StatsPropertyPostDetailClickedMedia;
 extern NSString *const StatsPropertyPostDetailClickedPreview;
+extern NSString *const StatsPropertyPostDetailClickedMediaOptions;
 extern NSString *const StatsPropertyPostDetailClickedAddVideo;
 extern NSString *const StatsPropertyPostDetailClickedAddPhoto;
 extern NSString *const StatsPropertyPostDetailClickedShowCategories;
@@ -119,11 +120,6 @@ extern NSString *const StatsPropertyPagedOpened;
 extern NSString *const StatsEventPagesClickedNewPage;
 
 // Comments
-extern NSString *const StatsEventCommentsApproved;
-extern NSString *const StatsEventCommentsUnapproved;
-extern NSString *const StatsEventCommentsFlagAsSpam;
-extern NSString *const StatsEventCommentsDeleted;
-extern NSString *const StatsEventCommentsReplied;
 extern NSString *const StatsEventCommentsViewCommentDetails;
 
 // Comment Detail
@@ -134,8 +130,6 @@ extern NSString *const StatsEventCommentDetailFlagAsSpam;
 extern NSString *const StatsEventCommentDetailEditComment;
 extern NSString *const StatsEventCommentDetailClickedReplyToComment;
 extern NSString *const StatsEventCommentDetailRepliedToComment;
-extern NSString *const StatsPropertyCommentDetailShowPreviousComment;
-extern NSString *const StatsPropertyCommentDetailShowNextComment;
 
 
 // Settings
@@ -179,7 +173,6 @@ extern NSString *const StatsEventQuickPhotoPosted;
 extern NSString *const StatsEventWelcomeViewControllerClickedAddSelfHostedBlog;
 extern NSString *const StatsEventWelcomeViewControllerClickedAddWordpressDotComBlog;
 extern NSString *const StatsEventWelcomeViewControllerClickedCreateWordpressDotComBlog;
-
 
 // NUX Related
 extern NSString *const StatsEventNUXFirstWalkthroughOpened;

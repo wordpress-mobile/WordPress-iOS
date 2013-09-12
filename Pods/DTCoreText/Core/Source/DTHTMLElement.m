@@ -22,18 +22,20 @@
 @property (nonatomic, strong) NSMutableDictionary *fontCache;
 @property (nonatomic, strong) NSString *linkGUID;
 
-- (DTCSSListStyle *)calculatedListStyle;
-
 // internal initializer
 - (id)initWithName:(NSString *)name attributes:(NSDictionary *)attributes options:(NSDictionary *)options;
 
 @end
 
+// global variables
 BOOL ___shouldUseiOS6Attributes = NO;
-
 NSDictionary *_classesForNames = nil;
 
+
 @implementation DTHTMLElement
+{
+	NSSet *_CSSClassNamesToIgnoreForCustomAttributes;
+}
 
 + (void)initialize
 {
@@ -59,7 +61,7 @@ NSDictionary *_classesForNames = nil;
 	_classesForNames = [tmpDict copy];
 }
 
-+ (DTHTMLElement *)elementWithName:(NSString *)name attributes:(NSDictionary *)attributes options:(NSDictionary *)options
++ (instancetype)elementWithName:(NSString *)name attributes:(NSDictionary *)attributes options:(NSDictionary *)options
 {
 	// look for specialized class
 	Class class = [_classesForNames objectForKey:name];
@@ -85,7 +87,7 @@ NSDictionary *_classesForNames = nil;
 	return element;
 }
 
-- (id)initWithName:(NSString *)name attributes:(NSDictionary *)attributes options:(NSDictionary *)options
+- (instancetype)initWithName:(NSString *)name attributes:(NSDictionary *)attributes options:(NSDictionary *)options
 {
 	// node does not need the options, but it needs the name and attributes
 	self = [super initWithName:name attributes:attributes];
@@ -96,15 +98,11 @@ NSDictionary *_classesForNames = nil;
 	return self;
 }
 
-- (NSDictionary *)attributesDictionary
+#pragma mark - Creating Attributed Strings
+
+- (NSDictionary *)attributesForAttributedStringRepresentation
 {
 	NSMutableDictionary *tmpDict = [NSMutableDictionary dictionary];
-	
-	// copy additional attributes
-	if (_additionalAttributes)
-	{
-		[tmpDict setDictionary:_additionalAttributes];
-	}
 	
 	// add text attachment
 	if (_textAttachment)
@@ -280,6 +278,7 @@ NSDictionary *_classesForNames = nil;
 	{
 		[tmpDict setObject:_paragraphStyle.textBlocks forKey:DTTextBlocksAttribute];
 	}
+		
 	return tmpDict;
 }
 
@@ -324,6 +323,56 @@ NSDictionary *_classesForNames = nil;
 	return YES;
 }
 
+// adds the attributes that have not been "dealt with" to the DTCustomAttributesAttribute
+- (void)_addCustomHTMLAttributesToAttributedString:(NSMutableAttributedString *)attributedString
+{
+	NSSet *attributesToIgnore = [[self class] attributesToIgnoreForCustomAttributesAttribute];
+	NSRange entireString = NSMakeRange(0, [attributedString length]);
+	
+	[_attributes enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
+		
+		if ([attributesToIgnore containsObject:key]) return;
+
+		if (_CSSClassNamesToIgnoreForCustomAttributes && [key isEqualToString:@"class"])
+		{
+			NSMutableArray *classNamesToKeep = [NSMutableArray array];
+			
+			NSArray *components = nil;
+			
+			if ([value isKindOfClass:[NSString class]])
+			{
+				// split the class string
+				components = [value componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+			}
+			else if ([value isKindOfClass:[NSArray class]])
+			{
+				// already an array
+				components = value;
+			}
+			
+			for (NSString *oneClassName in components)
+			{
+				if (![_CSSClassNamesToIgnoreForCustomAttributes containsObject:oneClassName])
+				{
+					[classNamesToKeep addObject:oneClassName];
+				}
+			}
+			
+			if ([classNamesToKeep count])
+			{
+				value = [classNamesToKeep componentsJoinedByString:@" "];
+			}
+			else
+			{
+				return; // continue enumeration, class attribute would be empty
+			}
+		}
+		
+		// we preserve existing because they are from children
+		[attributedString addHTMLAttribute:key value:value range:entireString replaceExisting:NO];
+	}];
+}
+
 - (NSAttributedString *)attributedString
 {
 	@synchronized(self)
@@ -333,7 +382,7 @@ NSDictionary *_classesForNames = nil;
 			return nil;
 		}
 		
-		NSDictionary *attributes = [self attributesDictionary];
+		NSDictionary *attributes = [self attributesForAttributedStringRepresentation];
 		
 		NSMutableAttributedString *tmpString;
 		
@@ -409,8 +458,18 @@ NSDictionary *_classesForNames = nil;
 			{
 				if (![[tmpString string] hasSuffix:@"\n"])
 				{
-					NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@"\n" attributes:[self attributesDictionary]];
-					[tmpString appendAttributedString:attributedString];
+					if ([tmpString length])
+					{
+						// extend font and paragraph style with the \n
+						[tmpString appendEndOfParagraph];
+					}
+					else
+					{
+						// string is empty, need a new attributed string so that we have the attributes
+						NSDictionary *attributes = [self attributesForAttributedStringRepresentation];
+						NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:@"\n" attributes:attributes];
+						[tmpString appendAttributedString:attributedString];
+					}
 				}
 			}
 		}
@@ -439,8 +498,13 @@ NSDictionary *_classesForNames = nil;
 						// make new paragraph style
 						NSParagraphStyle *newParaStyle = [paragraphStyle NSParagraphStyle];
 						
-						// remove old (works around iOS 4.3 leak)
-						[tmpString removeAttribute:NSParagraphStyleAttributeName range:paragraphRange];
+#if DTCORETEXT_NEEDS_ATTRIBUTE_REPLACEMENT_LEAK_FIX
+						if (NSFoundationVersionNumber <=  NSFoundationVersionNumber10_6_8)  // less than OS X 10.7 and less than iOS 5
+						{
+							// remove old (works around iOS 4.3 leak)
+							[tmpString removeAttribute:NSParagraphStyleAttributeName range:paragraphRange];
+						}
+#endif
 						
 						// set new
 						[tmpString addAttribute:NSParagraphStyleAttributeName value:newParaStyle range:paragraphRange];
@@ -459,9 +523,14 @@ NSDictionary *_classesForNames = nil;
 						
 						// make new paragraph style
 						CTParagraphStyleRef newParaStyle = [paragraphStyle createCTParagraphStyle];
-						
-						// remove old (works around iOS 4.3 leak)
-						[tmpString removeAttribute:(id)kCTParagraphStyleAttributeName range:paragraphRange];
+
+#if DTCORETEXT_NEEDS_ATTRIBUTE_REPLACEMENT_LEAK_FIX
+						if (NSFoundationVersionNumber <=  NSFoundationVersionNumber10_6_8)  // less than OS X 10.7 and less than iOS 5
+						{
+							// remove old (works around iOS 4.3 leak)
+							[tmpString removeAttribute:(id)kCTParagraphStyleAttributeName range:paragraphRange];
+						}
+#endif
 						
 						// set new
 						[tmpString addAttribute:(id)kCTParagraphStyleAttributeName value:(__bridge_transfer id)newParaStyle range:paragraphRange];
@@ -470,15 +539,17 @@ NSDictionary *_classesForNames = nil;
 			}
 		}
 		
+		// add the custom attributes
+		if (_shouldProcessCustomHTMLAttributes)
+		{
+			[self _addCustomHTMLAttributesToAttributedString:tmpString];
+		}
+		
 		return tmpString;
 	}
 }
 
-- (DTHTMLElement *)parentElement
-{
-	return (DTHTMLElement *)self.parentNode;
-}
-
+#pragma mark - Working with CSS Styles
 
 // decodes the edgeInsets for padding or margin
 - (BOOL)_parseEdgeInsetsFromStyleDictionary:(NSDictionary *)styles forAttributesWithPrefix:(NSString *)prefix writingDirection:(CTWritingDirection)writingDirection intoEdgeInsets:(DTEdgeInsets *)intoEdgeInsets
@@ -706,57 +777,99 @@ NSDictionary *_classesForNames = nil;
 		}
 	}
 	
-	NSString *fontFamily = [[styles objectForKey:@"font-family"] stringByTrimmingCharactersInSet:[NSCharacterSet quoteCharacterSet]];
+	id fontFamily = [styles objectForKey:@"font-family"];
 	
 	if (fontFamily)
 	{
-		NSString *lowercaseFontFamily = [fontFamily lowercaseString];
+		NSArray *fontFamilies;
 		
-		if ([lowercaseFontFamily rangeOfString:@"geneva"].length)
+		if ([fontFamily isKindOfClass:[NSString class]])
 		{
-			_fontDescriptor.fontFamily = @"Helvetica";
+			fontFamilies = [NSArray arrayWithObject:fontFamily];
 		}
-		else if ([lowercaseFontFamily rangeOfString:@"cursive"].length)
+		else if ([fontFamily isKindOfClass:[NSArray class]])
 		{
-			_fontDescriptor.stylisticClass = kCTFontScriptsClass;
-			_fontDescriptor.fontFamily = nil;
+			fontFamilies = fontFamily;
 		}
-		else if ([lowercaseFontFamily rangeOfString:@"sans-serif"].length)
+				
+		BOOL foundFontFamily = NO;
+		
+		for (NSString *fontFamily in fontFamilies)
 		{
-			// too many matches (24)
-			// fontDescriptor.stylisticClass = kCTFontSansSerifClass;
-			_fontDescriptor.fontFamily = @"Helvetica";
+			_fontDescriptor.fontFamily = fontFamily;
+			
+			// check if this is a known font family
+			CTFontRef font = [_fontDescriptor newMatchingFont];
+			NSString *foundFamily = CFBridgingRelease(CTFontCopyFamilyName(font));
+			
+			if ([foundFamily isEqualToString:fontFamily])
+			{
+				foundFontFamily = YES;
+				break;
+			}
+			
+			NSString *lowercaseFontFamily = [fontFamily lowercaseString];
+			
+			if ([lowercaseFontFamily rangeOfString:@"geneva"].length)
+			{
+				_fontDescriptor.fontFamily = @"Helvetica";
+				foundFontFamily = YES;
+			}
+			else if ([lowercaseFontFamily rangeOfString:@"cursive"].length)
+			{
+				_fontDescriptor.stylisticClass = kCTFontScriptsClass;
+				_fontDescriptor.fontFamily = nil;
+				foundFontFamily = YES;
+			}
+			else if ([lowercaseFontFamily rangeOfString:@"sans-serif"].length)
+			{
+				// too many matches (24)
+				// fontDescriptor.stylisticClass = kCTFontSansSerifClass;
+				_fontDescriptor.fontFamily = @"Helvetica";
+				foundFontFamily = YES;
+			}
+			else if ([lowercaseFontFamily rangeOfString:@"serif"].length)
+			{
+				// kCTFontTransitionalSerifsClass = Baskerville
+				// kCTFontClarendonSerifsClass = American Typewriter
+				// kCTFontSlabSerifsClass = Courier New
+				//
+				// strangely none of the classes yields Times
+				_fontDescriptor.fontFamily = @"Times New Roman";
+				foundFontFamily = YES;
+			}
+			else if ([lowercaseFontFamily rangeOfString:@"fantasy"].length)
+			{
+				_fontDescriptor.fontFamily = @"Papyrus"; // only available on iPad
+				foundFontFamily = YES;
+			}
+			else if ([lowercaseFontFamily rangeOfString:@"monospace"].length)
+			{
+				_fontDescriptor.monospaceTrait = YES;
+				_fontDescriptor.fontFamily = @"Courier";
+				foundFontFamily = YES;
+			}
+			else if ([lowercaseFontFamily rangeOfString:@"times"].length)
+			{
+				_fontDescriptor.fontFamily = @"Times New Roman";
+				foundFontFamily = YES;
+			}
+			else if ([lowercaseFontFamily isEqualToString:@"inherit"])
+			{
+				_fontDescriptor.fontFamily = self.parentElement.fontDescriptor.fontFamily;
+				foundFontFamily = YES;
+			}
+			
+			if (foundFontFamily)
+			{
+				break;
+			}
 		}
-		else if ([lowercaseFontFamily rangeOfString:@"serif"].length)
-		{
-			// kCTFontTransitionalSerifsClass = Baskerville
-			// kCTFontClarendonSerifsClass = American Typewriter
-			// kCTFontSlabSerifsClass = Courier New
-			//
-			// strangely none of the classes yields Times
-			_fontDescriptor.fontFamily = @"Times New Roman";
-		}
-		else if ([lowercaseFontFamily rangeOfString:@"fantasy"].length)
-		{
-			_fontDescriptor.fontFamily = @"Papyrus"; // only available on iPad
-		}
-		else if ([lowercaseFontFamily rangeOfString:@"monospace"].length)
-		{
-			_fontDescriptor.monospaceTrait = YES;
-			_fontDescriptor.fontFamily = @"Courier";
-		}
-		else if ([lowercaseFontFamily rangeOfString:@"times"].length)
-		{
-			_fontDescriptor.fontFamily = @"Times New Roman";
-		}
-		else if ([lowercaseFontFamily isEqualToString:@"inherit"])
-		{
-			_fontDescriptor.fontFamily = self.parentElement.fontDescriptor.fontFamily;
-		}
-		else
+		
+		if (!foundFontFamily)
 		{
 			// probably custom font registered in info.plist
-			_fontDescriptor.fontFamily = fontFamily;
+			_fontDescriptor.fontFamily = [fontFamilies objectAtIndex:0];
 		}
 	}
 	
@@ -833,11 +946,11 @@ NSDictionary *_classesForNames = nil;
 		}
 		else if ([decoration isEqualToString:@"overline"])
 		{
-			//TODO: add support for overline decoration
+			NSLog(@"Note: 'overline' text decoration not supported");
 		}
 		else if ([decoration isEqualToString:@"blink"])
 		{
-			//TODO: add support for blink decoration
+			NSLog(@"Note: 'blink' text decoration not supported");
 		}
 		else if ([decoration isEqualToString:@"inherit"])
 		{
@@ -910,9 +1023,10 @@ NSDictionary *_classesForNames = nil;
 	// if there is a text attachment we transfer the aligment we got
 	_textAttachment.verticalAlignment = _textAttachmentAlignment;
 	
-	NSString *shadow = [styles objectForKey:@"text-shadow"];
+	id shadow = [styles objectForKey:@"text-shadow"];
 	if (shadow)
 	{
+		
 		self.shadows = [shadow arrayOfCSSShadowsWithCurrentTextSize:_fontDescriptor.pointSize currentColor:_textColor];
 	}
 	
@@ -1042,7 +1156,6 @@ NSDictionary *_classesForNames = nil;
 	
 	if (hasPadding)
 	{
-		// FIXME: this is a workaround because having a text block padding in addition to list ident messes up indenting of the list
 		if ([self.name isEqualToString:@"ul"] || [self.name isEqualToString:@"ol"])
 		{
 			_listIndent = _padding.left;
@@ -1064,7 +1177,6 @@ NSDictionary *_classesForNames = nil;
 			self.paragraphStyle.paragraphSpacing = _margins.bottom;
 			
 			// we increase the inherited values for the time being
-			// TODO: it would be preferred to calculate these from the margins values of the parent elements
 			self.paragraphStyle.headIndent += _margins.left;
 			self.paragraphStyle.firstLineHeadIndent = self.paragraphStyle.headIndent;
 			
@@ -1083,20 +1195,23 @@ NSDictionary *_classesForNames = nil;
 			newBlock.backgroundColor = _backgroundColor;
 			_backgroundColor = nil;
 			
-			NSMutableArray *blocks = [self.paragraphStyle.textBlocks mutableCopy];
-			
-			if (blocks)
+			if (self.paragraphStyle.textBlocks)
 			{
+				// make mutable version
+				NSMutableArray *mutableBlocks = [self.paragraphStyle.textBlocks mutableCopy];
+				
 				// add new block to the array
-				[blocks addObject:newBlock];
+				[mutableBlocks addObject:newBlock];
+				
+				// set non-mutable version
+				self.paragraphStyle.textBlocks = [mutableBlocks copy];
 			}
 			else
 			{
 				// didn't have any blocks before, start new array
-				blocks = [NSArray arrayWithObject:newBlock];
+				NSArray *blocks = [NSArray arrayWithObject:newBlock];
+				self.paragraphStyle.textBlocks = blocks;
 			}
-			
-			self.paragraphStyle.textBlocks = blocks;
 		}
 	}
 	else if (_displayStyle == DTHTMLElementDisplayStyleListItem)
@@ -1120,22 +1235,7 @@ NSDictionary *_classesForNames = nil;
 	return style;
 }
 
-- (void)addAdditionalAttribute:(id)attribute forKey:(id)key
-{
-	if (!_additionalAttributes)
-	{
-		_additionalAttributes = [[NSMutableDictionary alloc] init];
-	}
-	
-	[_additionalAttributes setObject:attribute forKey:key];
-}
-
-- (NSString *)attributeForKey:(NSString *)key
-{
-	return [_attributes objectForKey:key];
-}
-
-#pragma mark Calulcating Properties
+#pragma mark - Calulcating Properties
 
 - (id)valueForKeyPathWithInheritance:(NSString *)keyPath
 {
@@ -1173,23 +1273,17 @@ NSDictionary *_classesForNames = nil;
 	return value;
 }
 
+#pragma mark - Working with HTML Attributes
 
-- (DTCSSListStyle *)calculatedListStyle
++ (NSSet *)attributesToIgnoreForCustomAttributesAttribute
 {
-	DTCSSListStyle *style = [[DTCSSListStyle alloc] init];
-	
-	id calcType = [self valueForKeyPathWithInheritance:@"listStyle.type"];
-	id calcPos = [self valueForKeyPathWithInheritance:@"listStyle.position"];
-	id calcImage = [self valueForKeyPathWithInheritance:@"listStyle.imageName"];
-	
-	style.type = (DTCSSListStyleType)[calcType integerValue];
-	style.position = (DTCSSListStylePosition)[calcPos integerValue];
-	style.imageName = calcImage;
-	
-	return style;
+	return [NSSet setWithObjects:@"style", @"dir", @"align", @"src", @"href", @"color", @"face", @"size", @"name", @"height", @"width", nil];
 }
 
-#pragma mark - Inheriting Attributes
+- (NSString *)attributeForKey:(NSString *)key
+{
+	return [_attributes objectForKey:key];
+}
 
 - (void)inheritAttributesFromElement:(DTHTMLElement *)element
 {
@@ -1290,7 +1384,7 @@ NSDictionary *_classesForNames = nil;
 	}
 }
 
-#pragma mark Properties
+#pragma mark - Properties
 
 - (void)setTextColor:(DTColor *)textColor
 {
@@ -1364,6 +1458,11 @@ NSDictionary *_classesForNames = nil;
 	}
 }
 
+- (DTHTMLElement *)parentElement
+{
+	return (DTHTMLElement *)self.parentNode;
+}
+
 @synthesize fontDescriptor = _fontDescriptor;
 @synthesize paragraphStyle = _paragraphStyle;
 @synthesize textColor = _textColor;
@@ -1388,6 +1487,8 @@ NSDictionary *_classesForNames = nil;
 @synthesize padding = _padding;
 @synthesize linkGUID = _linkGUID;
 @synthesize containsAppleConvertedSpace = _containsAppleConvertedSpace;
+@synthesize CSSClassNamesToIgnoreForCustomAttributes = _CSSClassNamesToIgnoreForCustomAttributes;
+@synthesize shouldProcessCustomHTMLAttributes = _shouldProcessCustomHTMLAttributes;
 
 @end
 

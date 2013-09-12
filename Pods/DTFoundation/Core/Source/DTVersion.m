@@ -86,7 +86,6 @@
 			default:
 				break;
 		}
-		//NSLog(@"value for %d: %d", i, value);
 	}
 
 	if (major >= 0 &&
@@ -115,12 +114,13 @@
 	
 	dispatch_once(&onceToken, ^{
 #if TARGET_OS_IPHONE
-			NSString *versionStr = [[UIDevice currentDevice] systemVersion];
-			version = [DTVersion versionWithString:versionStr];
+		NSString *versionStr = [[UIDevice currentDevice] systemVersion];
+		version = [DTVersion versionWithString:versionStr];
 #else
-			NSString *versionStr = [[NSProcessInfo processInfo] operatingSystemVersionString];
-			versionStr = [versionStr stringByReplacingOccurrencesOfString:@"Version" withString:@""];
-			versionStr = [versionStr stringByReplacingOccurrencesOfString:@"Build" withString:@""];
+		NSString *versionStr = [[NSProcessInfo processInfo] operatingSystemVersionString];
+		versionStr = [versionStr stringByReplacingOccurrencesOfString:@"Version" withString:@""];
+		versionStr = [versionStr stringByReplacingOccurrencesOfString:@"Build" withString:@""];
+		versionStr = [versionStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		version = [DTVersion versionWithString:versionStr];
 #endif
 	});

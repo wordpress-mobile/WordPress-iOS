@@ -43,6 +43,8 @@
 #import "Blog+Jetpack.h"
 #import "GeneralWalkthroughViewController.h"
 #import "WPAccount.h"
+#import "WPTableViewSectionHeaderView.h"
+#import "AddUsersBlogsViewController.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,
@@ -83,10 +85,11 @@ typedef enum {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.title = NSLocalizedString(@"Settings", @"App Settings");
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
+    
     [[NSNotificationCenter defaultCenter] addObserverForName:WordPressComApiDidLoginNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
         [sections addIndex:SettingsSectionWpcom];
@@ -100,9 +103,8 @@ typedef enum {
         [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
     }];
     
-    self.tableView.backgroundView = nil;
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
-    [self setupMedia];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    [self setupMedia];    
 }
 
 
@@ -179,12 +181,21 @@ typedef enum {
 
 
 - (void)dismiss {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
 - (void)checkCloseButton {
     if ([[self.resultsController fetchedObjects] count] == 0 && ![[WordPressComApi sharedApi] hasCredentials]) {
+        if (IS_IPAD) {
+            // On the iPad the NUX is displayed as a UIFormSheet which still shows all the sidebar stuff in the background.
+            // As this looks pretty ugly, we'll hide it by putting the loading image view on top of it.
+            PanelNavigationController *panelNavController = (PanelNavigationController *)self.presentingViewController;
+            [panelNavController displayLoadingImageView];
+        }
+
+        [WordPressAppDelegate wipeAllKeychainItems];
+
         GeneralWalkthroughViewController *walkthroughViewController = [[GeneralWalkthroughViewController alloc] init];
         self.navigationController.navigationBar.hidden = YES;
         [self.navigationController pushViewController:walkthroughViewController animated:YES];
@@ -215,6 +226,11 @@ typedef enum {
 }
 
 - (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner {
+    if (IS_IOS7) {
+        // We don't want this effect in iOS7
+        return;
+    }
+    
     CGRect frame = CGRectMake(0.0, 0.0, 43.0, 43.0);
     UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:frame
                                                byRoundingCorners:corner cornerRadii:CGSizeMake(7.0f, 7.0f)];
@@ -271,7 +287,20 @@ typedef enum {
 }
 
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
     if (section == SettingsSectionBlogs) {
         return NSLocalizedString(@"Blogs", @"Title label for the user blogs in the app settings");
         
@@ -289,7 +318,7 @@ typedef enum {
             return NSLocalizedString(@"Notifications", @"");
         else
             return nil;
-    
+        
     } else if (section == SettingsSectionSounds) {
         return NSLocalizedString(@"Sounds", @"Title label for the sounds section in the app settings.");
         
@@ -302,13 +331,12 @@ typedef enum {
 
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
-    cell.textLabel.textAlignment = UITextAlignmentLeft;
+    cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.accessoryView = nil;
     if (indexPath.section == SettingsSectionBlogs) {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
         cell.textLabel.text = blog.blogName;
-        cell.detailTextLabel.text = blog.hostURL;
         [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
         
         if (indexPath.row == 0) {
@@ -320,8 +348,8 @@ typedef enum {
         }
         
     } else if (indexPath.section == SettingsSectionBlogsAdd) {
-        cell.textLabel.text = NSLocalizedString(@"Add a Blog", @"");
-        cell.textLabel.textAlignment = UITextAlignmentCenter;
+        cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
@@ -333,11 +361,11 @@ typedef enum {
                 cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             } else {
-                cell.textLabel.textAlignment = UITextAlignmentCenter;
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
                 cell.textLabel.text = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
             }
         } else {
-            cell.textLabel.textAlignment = UITextAlignmentCenter;
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.text = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
@@ -446,7 +474,19 @@ typedef enum {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [self cellForIndexPath:indexPath];
+    [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
+    
+    BOOL isSignInCell = false;
+    if (![[WordPressComApi sharedApi] hasCredentials]) {
+        isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
+    }
+    
+    BOOL isSignOutCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 1;
+    BOOL isAddBlogsCell = indexPath.section == SettingsSectionBlogsAdd;
+    if (isSignOutCell || isAddBlogsCell || isSignInCell) {
+        [WPStyleGuide configureTableViewActionCell:cell];
+    }
     
     return cell;
 }
@@ -491,12 +531,10 @@ typedef enum {
 
     } else if (indexPath.section == SettingsSectionBlogsAdd) {
         [WPMobileStats trackEventForWPCom:StatsEventSettingsClickedAddBlog];
-
-        WelcomeViewController *welcomeViewController;
-        welcomeViewController = [[WelcomeViewController alloc] initWithNibName:@"WelcomeViewController" bundle:nil]; 
-        welcomeViewController.title = NSLocalizedString(@"Add a Blog", @"");
-        [self.navigationController pushViewController:welcomeViewController animated:YES];
         
+        WelcomeViewController *welcomeViewController = [[WelcomeViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        welcomeViewController.title = NSLocalizedString(@"Add a Site", nil);
+        [self.navigationController pushViewController:welcomeViewController animated:YES];
     } else if (indexPath.section == SettingsSectionWpcom) {
         if ([[WordPressComApi sharedApi] hasCredentials]) {
             if (indexPath.row == 1) {
@@ -632,7 +670,10 @@ typedef enum {
 
 - (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithAccount:(WPAccount *)account {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithAccount:[WPAccount defaultWordPressComAccount]];
+    addUsersBlogsView.isWPcom = YES;
+    [self.navigationController pushViewController:addUsersBlogsView animated:YES];
+
     [self checkCloseButton];
 }
 

@@ -14,6 +14,7 @@
 #import "WPComLanguages.h"
 #import "SelectWPComLanguageViewController.h"
 #import "WPAsyncBlockOperation.h"
+#import "WPTableViewSectionFooterView.h"
 
 @interface CreateWPComAccountViewController () <
     UITextFieldDelegate> {
@@ -73,9 +74,8 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 {
     [super viewDidLoad];
     
-    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern"]];
-    self.tableView.backgroundView = nil;
-    
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+
 	_footerText = @" ";
 	_buttonText = NSLocalizedString(@"Create WordPress.com Blog", @"");
 	self.navigationItem.title = NSLocalizedString(@"Create Account", @"");
@@ -106,11 +106,24 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
         return 1;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+- (NSString *)titleForFooterInSection:(NSInteger)section {
     if(section == 0)
 		return _footerText;
     else
 		return @"";
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForFooterInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    NSString *title = [self titleForFooterInSection:section];
+    return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -144,6 +157,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
             activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
         
+        [WPStyleGuide configureTableViewActionCell:activityCell];
 		cell = activityCell;
 	} else {
         if (indexPath.row == 0) {
@@ -158,6 +172,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
             _emailTextField.keyboardType = UIKeyboardTypeEmailAddress;
             _emailTextField.returnKeyType = UIReturnKeyNext;
             _emailTextField.delegate = self;
+            [WPStyleGuide configureTableViewTextCell:_emailCell];
             cell = _emailCell;
         }
         else if (indexPath.row == 1) {
@@ -172,6 +187,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
             _usernameTextField.keyboardType = UIKeyboardTypeEmailAddress;
             _usernameTextField.returnKeyType = UIReturnKeyNext;
             _usernameTextField.delegate = self;
+            [WPStyleGuide configureTableViewTextCell:_usernameCell];
             cell = _usernameCell;
         } else if (indexPath.row == 2) {
             if (_passwordCell == nil) {
@@ -186,6 +202,8 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
             _passwordTextField.returnKeyType = UIReturnKeyNext;
             _passwordTextField.secureTextEntry = YES;
             _passwordTextField.delegate = self;
+            [WPStyleGuide configureTableViewTextCell:_passwordCell];
+            
             cell = _passwordCell;
         } else if (indexPath.row == 3) {
             if (_blogUrlCell == nil) {
@@ -198,15 +216,17 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
             _blogUrlTextField.placeholder = NSLocalizedString(@"myblog.wordpress.com", nil);
             _blogUrlTextField.keyboardType = UIKeyboardTypeURL;
             _blogUrlTextField.delegate = self;
+            [WPStyleGuide configureTableViewTextCell:_blogUrlCell];
             cell = _blogUrlCell;
         } else if (indexPath.row == 4) {
             if (_localeCell == nil) {
-                _localeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                _localeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                      reuseIdentifier:@"LocaleCell"];
             }
             _localeCell.textLabel.text = @"Language";
             _localeCell.detailTextLabel.text = [_currentLanguage objectForKey:@"name"];
             _localeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [WPStyleGuide configureTableViewCell:_localeCell];
             cell = _localeCell;
         }
     }

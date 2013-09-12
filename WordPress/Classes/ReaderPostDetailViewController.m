@@ -103,7 +103,8 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		self.post = apost;
 		self.comments = [NSMutableArray array];
         self.wantsFullScreenLayout = YES;
-		self.canUseFullScreen = YES;
+        // Disable full screen until it's more polished and iOS7 crashes are fixed
+		self.canUseFullScreen = NO;
 	}
 	return self;
 }
@@ -134,7 +135,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	self.title = self.post.postTitle;
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.contentInset = UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height, 0, self.navigationController.toolbar.frame.size.height, 0);
 	
 	[self buildHeader];
 	[self buildTopToolbar];
@@ -161,12 +161,16 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 
 	self.panelNavigationController.delegate = self;
     [self setFullScreen:NO];
-    self.navigationController.navigationBar.translucent = YES;
-    self.navigationController.toolbar.translucent = YES;
 
 	UIToolbar *toolbar = self.navigationController.toolbar;
-	[toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
-	[toolbar setTintColor:[UIColor colorWithHexString:@"F1F1F1"]];
+    if (IS_IOS7) {
+        toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+        toolbar.tintColor = [UIColor whiteColor];
+        toolbar.translucent = NO;
+    } else {
+        [toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+        [toolbar setTintColor:[UIColor colorWithHexString:@"F1F1F1"]];
+    }
 	
 	if (IS_IPAD)
         [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
@@ -265,7 +269,13 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 
 - (void)buildTopToolbar {
 	// Top Navigation bar and Sharing.
-	if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
+	if (IS_IOS7) {
+        UIImage *image = [UIImage imageNamed:@"icon-posts-share"];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+        [button setImage:image forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(handleShareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        self.shareButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+	} else {
 		UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
 		
 		[btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
@@ -280,35 +290,21 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		[btn addTarget:self action:@selector(handleShareButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 		
 		self.shareButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
-	} else {
-		self.shareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-																		 target:self
-																		 action:@selector(handleShareButtonTapped:)];
 	}
 	
-	self.navigationItem.rightBarButtonItem = _shareButton;
-	
-	if(IS_IPAD) {
-		
-		self.navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0f)];
-		_navBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		[_navBar pushNavigationItem:self.navigationItem animated:NO];
-		[self.view addSubview:_navBar];
-		
-		CGRect frame = self.tableView.frame;
-		frame.origin.y = 44.0f;
-		frame.size.height -= 44.0f;
-		self.tableView.frame = frame;
-	}
-
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];	
 }
 
 
 - (void)buildBottomToolbar {
 	
 	UIButton *commentBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-	[commentBtn setImage:[UIImage imageNamed:@"reader-postaction-comment"] forState:UIControlStateNormal];
-    [commentBtn setImage:[UIImage imageNamed:@"reader-postaction-comment-active"] forState:UIControlStateHighlighted];
+    if (IS_IOS7) {
+        [commentBtn setImage:[UIImage imageNamed:@"reader-postaction-comment"] forState:UIControlStateNormal];
+        [commentBtn setImage:[UIImage imageNamed:@"reader-postaction-comment-active"] forState:UIControlStateHighlighted];
+    } else {
+        [commentBtn setImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] forState:UIControlStateNormal];
+    }
 	commentBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
 	[commentBtn addTarget:self action:@selector(handleCommentButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
 	self.commentButton = [[UIBarButtonItem alloc] initWithCustomView:commentBtn];
@@ -318,7 +314,11 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	[likeBtn setTitleEdgeInsets:UIEdgeInsetsMake(0.0f, -5.0f, 0.0f, 0.0f)];
 	[likeBtn setTitleColor:[UIColor colorWithRed:84.0f/255.0f green:173.0f/255.0f blue:211.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
 	[likeBtn setTitleColor:[UIColor colorWithRed:221.0f/255.0f green:118.0f/255.0f blue:43.0f/255.0f alpha:1.0f] forState:UIControlStateSelected];
-	[likeBtn setImage:[UIImage imageNamed:@"reader-postaction-like"] forState:UIControlStateNormal];
+    if (IS_IOS7) {
+        [likeBtn setImage:[UIImage imageNamed:@"reader-postaction-like"] forState:UIControlStateNormal];
+    } else {
+        [likeBtn setImage:[UIImage imageNamed:@"reader-postaction-like-blue"] forState:UIControlStateNormal];
+    }
     [likeBtn setImage:[UIImage imageNamed:@"reader-postaction-like-active"] forState:UIControlStateSelected];
 	likeBtn.frame = CGRectMake(0.0f, 0.0f, 60.0f, 40.0f);
 	likeBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -326,8 +326,12 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	self.likeButton = [[UIBarButtonItem alloc] initWithCustomView:likeBtn];
 	
 	UIButton *reblogBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-	[reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog"] forState:UIControlStateNormal];
-	[reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog-active"] forState:UIControlStateHighlighted];
+    if (IS_IOS7) {
+        [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog"] forState:UIControlStateNormal];
+        [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog-active"] forState:UIControlStateHighlighted];
+    } else {
+        [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] forState:UIControlStateNormal];
+    }
     [reblogBtn setImage:[UIImage imageNamed:@"reader-postaction-reblog-done"] forState:UIControlStateSelected];
 	reblogBtn.frame = CGRectMake(0.0f, 0.0f, 40.0f, 40.0f);
 	reblogBtn.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
@@ -526,7 +530,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	}
     BOOL hideBars = !self.navigationController.toolbarHidden;
     if (!hideBars || self.tableView.contentOffset.y > 60) {
-        [self.navigationController setToolbarHidden:hideBars animated:YES];
         [self setFullScreen:hideBars];
     }
 }
@@ -1169,7 +1172,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
         [controller setMessageBody:body isHTML:NO];
         
         if (controller)
-            [self.panelNavigationController presentModalViewController:controller animated:YES];
+            [self.panelNavigationController presentViewController:controller animated:YES completion:nil];
 		
         [self setMFMailFieldAsFirstResponder:controller.view mfMailField:@"MFRecipientTextField"];
 		
@@ -1183,7 +1186,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 #pragma mark - MFMailComposeViewControllerDelegate
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 //Returns true if the ToAddress field was found any of the sub views and made first responder

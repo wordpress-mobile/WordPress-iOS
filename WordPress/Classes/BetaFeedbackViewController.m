@@ -81,7 +81,7 @@
 		cancelButton.title = @"Cancel";
 	}
 	else
-		[self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void) sendFeedback: (id)sender {
@@ -101,7 +101,7 @@
         [api callMethod:@"wp.newComment"
              parameters:args
                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    [self dismissModalViewControllerAnimated:YES];
+                    [self dismissViewControllerAnimated:YES completion:nil];
                 } failure:nil];
 	}
 	else {

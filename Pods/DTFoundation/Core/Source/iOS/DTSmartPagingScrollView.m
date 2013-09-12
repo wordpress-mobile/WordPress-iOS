@@ -122,7 +122,7 @@
 	return NSMakeRange(firstVisibleIndex, lastVisibleIndex - firstVisibleIndex + 1);
 }
 
-- (UIView *)_cachedViewForIndex:(NSUInteger)index
+- (UIView *)viewForIndex:(NSUInteger)index
 {
 	NSNumber *cacheKey = [NSNumber numberWithUnsignedInteger:index];
 	
@@ -145,47 +145,47 @@
 
 - (void)_setupVisiblePageViews
 {
-	NSRange visibleRange = [self rangeOfVisiblePages];
-	
-	[CATransaction begin];
-	[CATransaction setDisableActions:NO];
-	
-	NSMutableSet *newVisiblePageViews = [NSMutableSet set];
-	
-	for (NSInteger idx = visibleRange.location; idx<NSMaxRange(visibleRange); idx++)
-	{
-		UIView *view = [self _cachedViewForIndex:idx];
-		
-		CGRect viewFrame = [self frameForPageViewAtIndex:idx];
-		view.tag = (1000 + idx);
-		
-		if (view.superview!=self)
-		{
-			[self insertSubview:view atIndex:0];
-		}
-		
-		if (!CGRectEqualToRect(view.frame, viewFrame))
-		{
-			view.frame = viewFrame;
-		}
-		
-		[newVisiblePageViews addObject:view];
-	}
-	
-	// remove pages that are no longer visible
-	
-	NSMutableSet *toBeRemoved = _visiblePageViews;
-	[toBeRemoved minusSet:newVisiblePageViews];
-	_visiblePageViews = newVisiblePageViews;
-	
-	for (UIView *view in toBeRemoved)
-	{
-		[view removeFromSuperview];
-		
-		NSNumber *cacheKey = [NSNumber numberWithUnsignedInteger:(view.tag - 1000)];
-		[_viewsByPage removeObjectForKey:cacheKey];
-	}
-	[CATransaction commit];
+    NSRange visibleRange = [self rangeOfVisiblePages];
+    
+    [CATransaction begin];
+    [CATransaction setDisableActions:NO];
+    
+    NSMutableSet *newVisiblePageViews = [NSMutableSet set];
+    
+    for (NSInteger idx = visibleRange.location; idx<NSMaxRange(visibleRange); idx++)
+    {
+        UIView *view = [self viewForIndex:idx];
+        
+        CGRect viewFrame = [self frameForPageViewAtIndex:idx];
+        view.tag = (1000 + idx);
+        
+        if (view.superview!=self)
+        {
+            [self insertSubview:view atIndex:0];
+        }
+        
+        if (!CGRectEqualToRect(view.frame, viewFrame))
+        {
+            view.frame = viewFrame;
+        }
+        
+        [newVisiblePageViews addObject:view];
+    }
+    
+    // remove pages that are no longer visible
+    
+    NSMutableSet *toBeRemoved = _visiblePageViews;
+    [toBeRemoved minusSet:newVisiblePageViews];
+    _visiblePageViews = newVisiblePageViews;
+    
+    for (UIView *view in toBeRemoved)
+    {
+        [view removeFromSuperview];
+        
+        NSNumber *cacheKey = [NSNumber numberWithUnsignedInteger:(view.tag - 1000)];
+        [_viewsByPage removeObjectForKey:cacheKey];
+    }
+    [CATransaction commit];
 }
 
 - (CGRect)frameForPageViewAtIndex:(NSUInteger)index

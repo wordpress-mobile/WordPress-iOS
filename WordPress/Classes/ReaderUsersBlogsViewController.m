@@ -30,12 +30,13 @@
 	controller.title = NSLocalizedString(@"My Blogs", @"Title of the list of the user's blogs as shown in the reader.");
 	
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.navigationBar.translucent = NO;
 	navController.modalPresentationStyle = UIModalPresentationFormSheet;
     if (!IS_IPAD) {
         // Avoid a weird issue on the iPad with cross dissolves when the keyboard is visible. 
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     }
-	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentModalViewController:navController animated:YES];
+    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentViewController:navController animated:YES completion:nil];
 
 	return controller;
 }
@@ -66,7 +67,7 @@
 	
 	if (self.navigationItem.leftBarButtonItem == nil) {
 		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"")
-																		style:UIBarButtonItemStyleBordered
+																		style:[WPStyleGuide barButtonStyleForBordered]
 																	   target:self
 																	   action:@selector(handleCloseButtonTapped:)];
 	}
@@ -93,7 +94,7 @@
 
 
 - (void)handleCloseButtonTapped:(id)sender {
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -140,7 +141,7 @@
     NSDictionary *dict = [_blogs objectAtIndex:indexPath.row];
 	[self.delegate userDidSelectBlog:dict];
 	
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
