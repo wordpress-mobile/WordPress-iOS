@@ -57,7 +57,8 @@
         _title = title;
         _title.backgroundColor = [UIColor clearColor]; 
         _title.textColor = [UIColor whiteColor];
-        _title.font = [WPStyleGuide regularTextFont];
+        _title.lineBreakMode = NSLineBreakByTruncatingTail;
+        _title.font = [WPStyleGuide subtitleFont];
         [titleContainer addSubview:_title];
     }
     return self;

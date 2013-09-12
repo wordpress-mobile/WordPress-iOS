@@ -207,8 +207,12 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    CGFloat iPadInset = UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]) ? 35.0f : 60.0f;
-    return IS_IPAD ? UIEdgeInsetsMake(30, iPadInset, 30, iPadInset) : UIEdgeInsetsMake(7, 7, 7, 7);
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]);
+    CGFloat iPadInset = isLandscape ? 35.0f : 60.0f;
+    if (IS_IPAD) {
+        return UIEdgeInsetsMake(30, iPadInset, 30, iPadInset);
+    }
+    return isLandscape ? UIEdgeInsetsMake(30, 35, 30, 35) : UIEdgeInsetsMake(7, 10, 7, 10);
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
