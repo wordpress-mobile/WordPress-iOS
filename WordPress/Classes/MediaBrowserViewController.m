@@ -26,6 +26,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 @property (nonatomic, strong) NSArray *multiselectToolbarItems;
 @property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
 @property (nonatomic, weak) UIActionSheet *currentActionSheet;
+@property (nonatomic, strong) NSString *currentSearchText;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *multiselectToolbar;
 
@@ -89,6 +90,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"media_navbar_add_new"] style:UIBarButtonItemStylePlain target:self action:@selector(addMediaButtonPressed:)];
     
     [self loadFromCache];
+    [self applyFilterWithSearchText:_currentSearchText];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -140,25 +142,28 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     [self.collectionView reloadData];
 }
 
-- (void)applyCurrentSort {
-
-}
-
 #pragma mark - MediaSearchFilterDelegate
 
 - (void)applyDateFilterForStartDate:(NSDate *)start andEndDate:(NSDate *)end {
-    self.filteredMedia = [[self.blog.media allObjects] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.date <= %@ AND self.date >= %@", end, start]];
+    self.filteredMedia = [_allMedia filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.date <= %@ AND self.date >= %@", end, start]];
 }
 
 - (void)applyFilterWithSearchText:(NSString *)searchText {
+    if (!searchText) {
+        [self clearSearchFilter];
+        return;
+    }
     
-    NSArray* mediaToFilter = _isFilteringByDate ? self.filteredMedia : [self.blog.media allObjects];
+    NSArray *mediaToFilter = _isFilteringByDate ? self.filteredMedia : self.allMedia;
     
     self.filteredMedia = [mediaToFilter filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.title CONTAINS[cd] %@ OR self.caption CONTAINS[cd] %@ OR self.desc CONTAINS[cd] %@", searchText, searchText, searchText]];
+    
+    _currentSearchText = searchText;
 }
 
 - (void)clearSearchFilter {
-    self.filteredMedia = [self.blog.media allObjects];
+    self.filteredMedia = _allMedia;
+    _currentSearchText = nil;
 }
 
 #pragma mark - CollectionViewDelegate/DataSource
