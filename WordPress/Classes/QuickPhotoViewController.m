@@ -389,6 +389,8 @@
 #pragma mark - UIPopoverViewController Delegate methods
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [self dismiss];
 }
 
