@@ -79,7 +79,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 + (void)removeDefaultWordPressComAccount {
     [[WordPressComApi sharedApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
+    WPAccount *defaultAccount = __defaultDotcomAccount;
     __defaultDotcomAccount = nil;
+    [defaultAccount.managedObjectContext deleteObject:defaultAccount];
     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 

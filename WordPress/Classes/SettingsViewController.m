@@ -44,6 +44,7 @@
 #import "GeneralWalkthroughViewController.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "AddUsersBlogsViewController.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,
@@ -669,7 +670,10 @@ typedef enum {
 
 - (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithAccount:(WPAccount *)account {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithAccount:[WPAccount defaultWordPressComAccount]];
+    addUsersBlogsView.isWPcom = YES;
+    [self.navigationController pushViewController:addUsersBlogsView animated:YES];
+
     [self checkCloseButton];
 }
 
