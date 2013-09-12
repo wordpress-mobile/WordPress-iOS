@@ -43,8 +43,8 @@
 #import "Blog+Jetpack.h"
 #import "GeneralWalkthroughViewController.h"
 #import "WPAccount.h"
-#import "WelcomeViewController.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "AddUsersBlogsViewController.h"
 
 typedef enum {
     SettingsSectionBlogs = 0,
@@ -193,6 +193,9 @@ typedef enum {
             PanelNavigationController *panelNavController = (PanelNavigationController *)self.presentingViewController;
             [panelNavController displayLoadingImageView];
         }
+
+        [WordPressAppDelegate wipeAllKeychainItems];
+
         GeneralWalkthroughViewController *walkthroughViewController = [[GeneralWalkthroughViewController alloc] init];
         self.navigationController.navigationBar.hidden = YES;
         [self.navigationController pushViewController:walkthroughViewController animated:YES];
@@ -667,7 +670,10 @@ typedef enum {
 
 - (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithAccount:(WPAccount *)account {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithAccount:[WPAccount defaultWordPressComAccount]];
+    addUsersBlogsView.isWPcom = YES;
+    [self.navigationController pushViewController:addUsersBlogsView animated:YES];
+
     [self checkCloseButton];
 }
 
@@ -685,8 +691,8 @@ typedef enum {
         [WPMobileStats trackEventForWPCom:StatsEventSettingsSignedOutOfDotCom];
         
         // Sign out
+        [[WordPressComApi sharedApi] signOut]; //Signout first, then remove the account
 		[WPAccount removeDefaultWordPressComAccount];
-        [[WordPressComApi sharedApi] signOut];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
         [self checkCloseButton];
     }

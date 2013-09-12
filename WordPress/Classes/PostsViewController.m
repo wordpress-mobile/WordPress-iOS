@@ -176,23 +176,12 @@
 #pragma mark TableView delegate
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (IS_IOS7) {
-        return nil;
-    }
-    
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-    NSString *sectionName = [sectionInfo name];
-    
-    return [Post titleForRemoteStatus:[sectionName numericValue]];
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (IS_IOS7) {
-        return 0.0;
-    } else {
-        return [super tableView:tableView heightForHeaderInSection:section];
-    }
+    return 0.0;
 }
 
 - (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
@@ -279,14 +268,14 @@
         [self resetView];
     
     Post *post = [Post newDraftForBlog:self.blog];
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[post createRevision]];
-    [self.navigationController pushViewController:editPostViewController animated:YES];
+    [self editPost:post];
 }
 
-// For iPhone
 - (void)editPost:(AbstractPost *)apost {
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[apost createRevision]];
-    [self.navigationController pushViewController:editPostViewController animated:YES];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    [self.panelNavigationController.detailViewController presentViewController:navController animated:YES completion:nil];
 }
 
 // For iPad

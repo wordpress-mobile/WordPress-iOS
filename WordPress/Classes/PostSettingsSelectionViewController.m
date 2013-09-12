@@ -90,6 +90,8 @@
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
     
+    [WPStyleGuide configureTableViewCell:cell];
+    
     return cell;
 }
 

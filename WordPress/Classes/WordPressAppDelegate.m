@@ -28,6 +28,7 @@
 #import "WPAccount.h"
 #import "Note.h"
 #import "UIColor+Helpers.h"
+#import <Security/Security.h>
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
 - (void)setAppBadge;
@@ -52,7 +53,6 @@
 @synthesize navigationController, alertRunning, isWPcomAuthenticated;
 @synthesize isUploadingPost;
 @synthesize connectionAvailable, wpcomAvailable, currentBlogAvailable, wpcomReachability, internetReachability, currentBlogReachability;
-@synthesize facebook;
 @synthesize panelNavigationController;
 
 #pragma mark -
@@ -60,6 +60,19 @@
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate {
     return (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+}
+
++ (void)wipeAllKeychainItems
+{
+    NSArray *secItemClasses = @[(__bridge id)kSecClassGenericPassword,
+                                (__bridge id)kSecClassInternetPassword,
+                                (__bridge id)kSecClassCertificate,
+                                (__bridge id)kSecClassKey,
+                                (__bridge id)kSecClassIdentity];
+    for (id secItemClass in secItemClasses) {
+        NSDictionary *spec = @{(__bridge id)kSecClass : secItemClass};
+        SecItemDelete((__bridge CFDictionaryRef)spec);
+    }
 }
 
 #pragma mark -
@@ -80,21 +93,6 @@
                            ];
     NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: appUA, @"UserAgent", defaultUA, @"DefaultUserAgent", appUA, @"AppUserAgent", nil];
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-}
-
-- (void)setupFacebook {
-	//BETA FEEDBACK BAR, COMMENT THIS OUT BEFORE RELEASE
-	//BetaUIWindow *betaWindow = [[BetaUIWindow alloc] initWithFrame:CGRectZero];
-	//betaWindow.hidden = NO;
-	//BETA FEEDBACK BAR
-
-    facebook = [[Facebook alloc] initWithAppId:kFacebookAppID andDelegate:self];
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults objectForKey:kFacebookAccessTokenKey]
-        && [defaults objectForKey:kFacebookExpirationDateKey]) {
-        facebook.accessToken = [defaults objectForKey:kFacebookAccessTokenKey];
-        facebook.expirationDate = [defaults objectForKey:kFacebookExpirationDateKey];
-    }
 }
 
 - (void)setupCoreData {
@@ -271,7 +269,6 @@
 
     [self customizeAppearance];
     
-    [self setupFacebook];
     [self setupPocket];
     [self setupSingleSignOn];
 
@@ -340,10 +337,6 @@
         return YES;
     }
 
-    if ([facebook handleOpenURL:url]){
-        return YES;
-    }
-
     if ([[CameraPlusPickerManager sharedManager] shouldHandleURLAsCameraPlusPickerCallback:url]) {
         /* Note that your application has been in the background and may have been terminated.
          * The only CameraPlusPickerManager state that is restored is the pickerMode, which is
@@ -385,14 +378,6 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self setAppBadge];
     [WPMobileStats endSession];
-	
-	if (IS_IPAD) {
-//		UIViewController *topVC = self.masterNavigationController.topViewController;
-//        
-//		if (topVC && [topVC isKindOfClass:[BlogViewController class]]) {
-//			[(BlogViewController *)topVC saveState];
-//		}
-	}
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -440,11 +425,11 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];    
   
-    if (passwordAlertRunning && passwordTextField != nil)
+    if (passwordAlertRunning && passwordTextField != nil) {
         [passwordTextField resignFirstResponder];
-    else
+    } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"DismissAlertViewKeyboard" object:nil];
-    
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -741,7 +726,7 @@
     // If UIAppearance is supported, configure global styles.
     //Configure navigation bar style if >= iOS 5
     if ([[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
-        [[UIToolbar appearance] setBackgroundImage:[UIImage imageNamed:@"toolbar_bg"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+        [[UIToolbar appearance] setTintColor:[WPStyleGuide littleEddieGrey]];
         
         [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navbar_bg"] forBarMetrics:UIBarMetricsDefault];
         [[UINavigationBar appearance] setTitleTextAttributes:
@@ -817,6 +802,7 @@
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"transparent-point"] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:[UIImage imageNamed:@"transparent-point"]];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor whiteColor]} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{UITextAttributeFont: [WPStyleGuide regularTextFont], UITextAttributeTextColor : [UIColor lightGrayColor]} forState:UIControlStateDisabled];
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
@@ -1267,56 +1253,6 @@
 		}
 		
 	}
-}
-
-#pragma mark - Facebook Delegate Methods
-
-- (void)fbDidLogin {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[facebook accessToken] forKey:kFacebookAccessTokenKey];
-    [defaults setObject:[facebook expirationDate] forKey:kFacebookExpirationDateKey];
-    [defaults synchronize];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kFacebookLoginNotificationName object:self];
-    
-}
-
-/**
- * Called when the user dismissed the dialog without logging in.
- */
-- (void)fbDidNotLogin:(BOOL)cancelled
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kFacebookNoLoginNotificationName object:self];
-}
-
-/**
- * Called after the access token was extended. If your application has any
- * references to the previous access token (for example, if your application
- * stores the previous access token in persistent storage), your application
- * should overwrite the old access token with the new one in this method.
- * See extendAccessToken for more details.
- */
-- (void)fbDidExtendToken:(NSString*)accessToken
-               expiresAt:(NSDate*)expiresAt
-{
-    
-}
-
-/**
- * Called when the user logged out.
- */
-- (void)fbDidLogout
-{
-}
-
-/**
- * Called when the current session has expired. This might happen when:
- *  - the access token expired
- *  - the app has been disabled
- *  - the user revoked the app's permissions
- *  - the user changed his or her password
- */
-- (void)fbSessionInvalidated
-{
 }
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash

@@ -361,21 +361,13 @@
 
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField.returnKeyType == UIReturnKeyNext) {
-        UITableViewCell *cell = (UITableViewCell *)[textField superview];
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:(indexPath.row + 1) inSection:indexPath.section];
-        UITableViewCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
-        if (nextCell) {
-            for (UIView *subview in [nextCell subviews]) {
-                if ([subview isKindOfClass:[UITextField class]]) {
-                    [subview becomeFirstResponder];
-                    break;
-                }
-            }
-        }
+    if (textField == usernameTextField) {
+        [passwordTextField becomeFirstResponder];
+    } else if (textField == urlTextField) {
+        [usernameTextField becomeFirstResponder];
+    } else if (textField == passwordTextField) {
+        [textField resignFirstResponder];
     }
-	[textField resignFirstResponder];
 	return NO;
 }
 
@@ -461,6 +453,7 @@
     textField.delegate = self;   
     if (asPassword) {
         textField.secureTextEntry = YES;
+        textField.returnKeyType = UIReturnKeyDone;
     } else {
         textField.returnKeyType = UIReturnKeyNext;
     }

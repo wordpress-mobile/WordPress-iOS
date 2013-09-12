@@ -27,6 +27,7 @@
 #import "WPInfoView.h"
 #import "WPCookie.h"
 #import "NSString+Helpers.h"
+#import "WPPopoverBackgroundView.h"
 
 static CGFloat const ScrollingFastVelocityThreshold = 30.f;
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
@@ -257,6 +258,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	controller.delegate = self;
     if (IS_IPAD) {
         _popover = [[UIPopoverController alloc] initWithContentViewController:controller];
+        _popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
+
         UIBarButtonItem *shareButton;
         if (IS_IOS7) {
             // For iOS7 there is an added spacing element inserted before the share button to adjust the position of the button.

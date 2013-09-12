@@ -105,15 +105,15 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void)viewTermsOfService:(id)sender {
+-(IBAction)viewTermsOfService:(id)sender {
 	[self openURLWithString:@"http://wordpress.com/tos/"];
 }
 
--(void)viewPrivacyPolicy:(id)sender {
+-(IBAction)viewPrivacyPolicy:(id)sender {
 	[self openURLWithString:@"http://automattic.com/privacy/"];
 }
 
--(void)viewWebsite:(id)sender {
+-(IBAction)viewWebsite:(id)sender {
     [self openURLWithString:@"http://automattic.com/"];
 }
 
