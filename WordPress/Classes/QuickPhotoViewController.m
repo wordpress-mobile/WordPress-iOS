@@ -175,7 +175,6 @@
     picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
     picker.allowsEditing = NO;
     picker.delegate = self;
-    picker.modalPresentationStyle = UIModalPresentationPageSheet;
     
     if (IS_IPAD && self.sourceType != UIImagePickerControllerSourceTypeCamera) {
         self.popController = [[UIPopoverController alloc] initWithContentViewController:picker];
