@@ -136,6 +136,9 @@
 
 - (void)tappedAddButton
 {
+    if (_addMediaActionSheet != nil)
+        return;
+
     if (addPopover != nil) {
         [addPopover dismissPopoverAnimated:YES];
         [[CPopoverManager instance] setCurrentPopoverController:NULL];
