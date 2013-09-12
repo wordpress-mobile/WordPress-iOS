@@ -13,14 +13,14 @@
 #import "Media.h"
 #import "MediaSearchFilterHeaderView.h"
 #import "EditMediaViewController.h"
-#import "PostMediaViewController.h"
+#import "WordPressAppDelegate.h"
 
 static NSString *const MediaCellIdentifier = @"media_cell";
 
 @interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MediaBrowserCellMultiSelectDelegate, UIAlertViewDelegate>
 
 @property (weak, nonatomic) IBOutlet MediaSearchFilterHeaderView *filterHeaderView;
-@property (nonatomic, strong) NSArray *filteredMedia;
+@property (nonatomic, strong) NSArray *filteredMedia, *allMedia;
 @property (nonatomic, strong) NSArray *mediaTypeFilterOptions, *dateFilteringOptions;
 @property (nonatomic, strong) NSMutableDictionary *selectedMedia;
 @property (nonatomic, strong) NSArray *multiselectToolbarItems;
@@ -38,14 +38,6 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = NSLocalizedString(@"Media Library", @"");
-        
-        _mediaTypeFilterOptions = @[NSLocalizedString(@"All", @""),
-                                    NSLocalizedString(@"Images", @""),
-                                    NSLocalizedString(@"Unattached", @"")];
-        _dateFilteringOptions = @[NSLocalizedString(@"Show All Dates", @""),
-                                  NSLocalizedString(@"Sept 2013", @""),
-                                  NSLocalizedString(@"Aug 2013", @""),
-                                  NSLocalizedString(@"Jul 2013", @"")];
     }
     return self;
 }
@@ -94,7 +86,9 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addMediaButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"media_navbar_add_new"] style:UIBarButtonItemStylePlain target:self action:@selector(addMediaButtonPressed:)];
+    
+    [self loadFromCache];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -114,13 +108,29 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 - (void)refresh {
     [_refreshHeaderView beginRefreshing];
     [self.blog syncMediaLibraryWithSuccess:^{
-        [self.collectionView reloadData];
+        [self loadFromCache];
         [_refreshHeaderView endRefreshing];
     } failure:^(NSError *error) {
         WPFLog(@"Failed to refresh media library");
         [WPError showAlertWithError:error];
         [_refreshHeaderView endRefreshing];
     }];
+}
+
+- (void)loadFromCache {
+    NSError *error;
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Media class])];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:true]]];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
+    fetchRequest.fetchBatchSize = 10;
+    NSArray *allMedia = [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        WPFLog(@"Failed to fetch themes with error %@", error);
+        _allMedia = self.filteredMedia = nil;
+        return;
+    }
+    _allMedia = self.filteredMedia = allMedia;
+    [self.collectionView reloadData];
 }
 
 #pragma mark - Setters
@@ -136,28 +146,19 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 
 #pragma mark - MediaSearchFilterDelegate
 
-- (NSArray *)mediaTypeFilterOptions {
-    return _mediaTypeFilterOptions;
-}
-
-- (NSArray *)dateFilteringOptions {
-    return _dateFilteringOptions;
-}
-
-- (void)selectedDateSortIndex:(NSUInteger)filterIndex {
-    
-}
-
-- (void)selectedMediaSortIndex:(NSUInteger)filterIndex {
-    
+- (void)applyDateFilterForStartDate:(NSDate *)start andEndDate:(NSDate *)end {
+    self.filteredMedia = [[self.blog.media allObjects] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.date <= %@ AND self.date >= %@", end, start]];
 }
 
 - (void)applyFilterWithSearchText:(NSString *)searchText {
     
+    NSArray* mediaToFilter = _isFilteringByDate ? self.filteredMedia : [self.blog.media allObjects];
+    
+    self.filteredMedia = [mediaToFilter filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.title CONTAINS[cd] %@ OR self.caption CONTAINS[cd] %@ OR self.desc CONTAINS[cd] %@", searchText, searchText, searchText]];
 }
 
 - (void)clearSearchFilter {
-    
+    self.filteredMedia = [self.blog.media allObjects];
 }
 
 #pragma mark - CollectionViewDelegate/DataSource
@@ -167,7 +168,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.blog.media.allObjects.count;
+    return self.filteredMedia.count;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
@@ -179,7 +180,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     MediaBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:MediaCellIdentifier forIndexPath:indexPath];
-    cell.media = self.blog.media.allObjects[indexPath.item];
+    cell.media = self.filteredMedia[indexPath.item];
     cell.isSelected = ([_selectedMedia objectForKey:cell.media.mediaID] != nil);
     cell.delegate = self;
     return cell;
@@ -254,7 +255,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
         [Media bulkDeleteMedia:[_selectedMedia allValues] withSuccess:^(NSArray *successes) {
             NSLog(@"Successfully deleted %@", successes);
             
-            [self.collectionView reloadData];
+            [self loadFromCache];
         } failure:^(NSError *error, NSArray *failures) {
             WPFLog(@"Failed to delete media %@ with error %@", failures, error);
         }];

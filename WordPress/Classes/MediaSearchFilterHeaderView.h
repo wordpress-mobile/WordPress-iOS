@@ -13,18 +13,10 @@
 
 @protocol MediaSearchFilterDelegate <NSObject>
 
-/// Provide an array of nice strings. First is considered the default
-- (NSArray*)mediaTypeFilterOptions;
-- (NSArray*)dateFilteringOptions;
-
-/// Index of mediaSortingOptions
-- (void)selectedMediaSortIndex:(NSUInteger)filterIndex;
-
-/// Index of dateSortingOptions
-- (void)selectedDateSortIndex:(NSUInteger)filterIndex;
 
 /// Update the filter for search
 - (void)applyFilterWithSearchText:(NSString*)searchText;
+- (void)applyDateFilterForStartDate:(NSDate *)start andEndDate:(NSDate *)end;
 - (void)clearSearchFilter;
 
 @end
