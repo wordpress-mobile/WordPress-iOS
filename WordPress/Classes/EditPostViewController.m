@@ -53,7 +53,6 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 
     WPKeyboardToolbarBase *editorToolbar;
     UIView *currentView;
-    BOOL isEditing;
     BOOL isShowingKeyboard;
     BOOL isExternalKeyboard;
     BOOL isNewCategory;
@@ -1114,9 +1113,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     
     _linkHelperAlertView.alpha = 0.0;
     [self.view addSubview:_linkHelperAlertView];
-    
-    isEditing = YES;
-    
+
     [UIView animateWithDuration:0.2 animations:^{
         _linkHelperAlertView.alpha = 1.0;
     }];
@@ -1189,19 +1186,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 #pragma mark - TextView delegate
 
-/*
- This needs to be defined so we can set isEditing before keyboardWillShow is called, or the textView doesn't get positioned
- The calling order is:
- * textViewShouldBeginEditing:
- * keyboardWillShow:
- * textViewDidBeginEditing:
- */
-- (BOOL)textViewShouldBeginEditing:(UITextView *)aTextView {
-    WPFLogMethod();
-    isEditing = YES;
-    return YES;
-}
-
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
     WPFLogMethod();
     [textViewPlaceHolderField removeFromSuperview];
@@ -1226,7 +1210,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         [editView addSubview:textViewPlaceHolderField];
 	}
 	
-    isEditing = NO;
     _hasChangesToAutosave = YES;
     [self autosaveContent];
     [self autosaveRemote];
@@ -1636,7 +1619,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     if ([textView isFirstResponder] || self.linkHelperAlertView.firstTextField.isFirstResponder || self.linkHelperAlertView.secondTextField.isFirstResponder) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     }
-    if (isEditing) {
+    if ([textView isFirstResponder]) {
         [self positionTextView:notification];
         editorToolbar.doneButton.hidden = IS_IPAD && ! isExternalKeyboard;
     }
