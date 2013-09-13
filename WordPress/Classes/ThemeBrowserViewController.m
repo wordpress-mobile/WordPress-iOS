@@ -28,7 +28,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 @property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
 @property (nonatomic, weak) WPInfoView *noThemesView;
 @property (nonatomic, weak) ThemeSearchFilterHeaderView *header;
-@property (nonatomic, strong) Theme *currentTheme;
+@property (nonatomic, weak) Theme *currentTheme;
 
 @end
 
@@ -106,7 +106,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
 - (void)currentThemeForBlog {
     NSArray *currentThemeResults = [_allThemes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId == %@", self.blog.currentThemeId]];
-    if (currentThemeResults.count) {
+    if (currentThemeResults.count == 1) {
         _currentTheme = currentThemeResults[0];
     } else {
         _currentTheme = nil;
