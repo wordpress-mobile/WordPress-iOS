@@ -721,7 +721,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     NSInteger numSections = [self numberOfSectionsInTableView:self.tableView];
     NSInteger numRows;
     if ([self isIndexPathForBlog:indexPath]) {
-        numRows = SidebarViewControllerNumberOfRowsForBlog;
+        numRows = [self shouldShowThemesOption] ? SidebarViewControllerNumberOfRowsForBlog : SidebarViewControllerNumberOfRowsForBlog - 1;
     } else {
         numRows = [self.tableView numberOfRowsInSection:indexPath.section];
     }
@@ -789,13 +789,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 }
 
 - (BOOL)shouldShowThemesOption {
-    if (_currentlyOpenedBlog) {
-        WPAccount *currentAccount = [WPAccount defaultWordPressComAccount];
-        if (_currentlyOpenedBlog.isWPcom) {
-            return [_currentlyOpenedBlog.isAdmin isEqualToNumber:@(1)] && [currentAccount.username isEqualToString:_currentlyOpenedBlog.username];
-        }
-    }
-    return NO;
+    return _currentlyOpenedBlog &&  _currentlyOpenedBlog.isWPcom && [_currentlyOpenedBlog.isAdmin isEqualToNumber:@(1)];
 }
 
 - (void)showWelcomeScreenIfNeeded {
@@ -871,13 +865,6 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 - (void)registerForWordPressDotComAccountChangingNotification
 {
     void (^wpcomNotificationBlock)(NSNotification *) = ^(NSNotification *note) {
-        
-        // If we're on themes, switch to the first available for the open blog.
-        // Themes are WP.com only, so if there is no WP.com account, users are denied access
-        if ([self isRowForThemes:_currentIndexPath]) {
-            [self processRowSelectionAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:_currentIndexPath.section]];
-        }
-        
         NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
         [self.tableView reloadData];
         if (selectedIndexPath == nil || ([WPAccount defaultWordPressComAccount] == nil && [self isSettingsSection:selectedIndexPath.section])) {

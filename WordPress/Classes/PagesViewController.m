@@ -66,8 +66,7 @@
         [self resetView];
     
     Page *post = [Page newDraftForBlog:self.blog];
-    EditPageViewController *editPostViewController = [[EditPageViewController alloc] initWithPost:[post createRevision]];
-    [self.navigationController pushViewController:editPostViewController animated:YES];
+    [self editPost:post];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
