@@ -268,6 +268,10 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     WPFLogMethod();
     [super viewWillDisappear:animated];
     
+    if (currentActionSheet) {
+        [currentActionSheet dismissWithClickedButtonIndex:currentActionSheet.cancelButtonIndex animated:YES];
+    }
+    
 	[titleTextField resignFirstResponder];
 	[textView resignFirstResponder];
 }
