@@ -1985,6 +1985,7 @@
 	picker.delegate = self;
 	picker.allowsEditing = NO;
     picker.navigationBar.translucent = NO;
+    picker.modalPresentationStyle = UIModalPresentationCurrentContext;
     
     if (IS_IPAD) {
         popover = [[UIPopoverController alloc] initWithContentViewController:picker];
@@ -2004,6 +2005,7 @@
 	picker.delegate = self;
 	picker.allowsEditing = NO;
     picker.navigationBar.translucent = NO;
+    picker.modalPresentationStyle = UIModalPresentationCurrentContext;
     
     [self.navigationController presentViewController:picker animated:YES completion:nil];
 }
