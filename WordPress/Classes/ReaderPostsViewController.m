@@ -254,6 +254,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 
 - (void)handleTopicsButtonTapped:(id)sender {
+    if (_popover) {
+        [_popover dismissPopoverAnimated:NO];
+    }
 	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	controller.delegate = self;
     if (IS_IPAD) {

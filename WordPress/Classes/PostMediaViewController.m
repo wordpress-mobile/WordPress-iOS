@@ -107,14 +107,6 @@
     _hasPromptedToAddPhotos = YES;
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    
-    if (_addMediaActionSheet) {
-        [_addMediaActionSheet dismissWithClickedButtonIndex:_addMediaActionSheet.cancelButtonIndex animated:true];
-    }
-}
-
 - (NSString *)statsPrefix
 {
     if (_statsPrefix == nil)
@@ -136,7 +128,7 @@
 
 - (void)tappedAddButton
 {
-    if (_addMediaActionSheet != nil || self.isShowingResizeActionSheet == YES)
+    if (_addMediaActionSheet != nil || self.isShowingResizeActionSheet)
         return;
 
     if (addPopover != nil) {
@@ -145,6 +137,10 @@
         addPopover = nil;
     }
     
+    if (currentActionSheet) {
+        return;
+    }
+
     UIActionSheet *addMediaActionSheet;
     
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
@@ -167,6 +163,8 @@
     } else {
         [_addMediaActionSheet showInView:self.view];
     }
+    
+    currentActionSheet = addMediaActionSheet;
 }
 
 
@@ -183,6 +181,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+    
+    [currentActionSheet dismissWithClickedButtonIndex:currentActionSheet.cancelButtonIndex animated:YES];
 }
 
 - (void)viewDidUnload {
@@ -335,7 +339,7 @@
         MediaObjectViewController *mediaView = [[MediaObjectViewController alloc] initWithNibName:@"MediaObjectView" bundle:nil];
         [mediaView setMedia:media];
 
-        if(IS_IPAD == YES) {
+        if(IS_IPAD) {
 			mediaView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 			mediaView.modalPresentationStyle = UIModalPresentationFormSheet;
 			
@@ -509,7 +513,7 @@
         return;
     }
     
-	if(isShowingMediaPickerActionSheet == YES) {
+	if(isShowingMediaPickerActionSheet) {
 		switch (actionSheet.numberOfButtons) {
 			case 2:
 				if(buttonIndex == 0)
@@ -538,7 +542,7 @@
 		}
 		isShowingMediaPickerActionSheet = NO;
 	}
-	else if(isShowingChangeOrientationActionSheet == YES) {
+	else if(isShowingChangeOrientationActionSheet) {
 		switch (buttonIndex) {
 			case 0:
 				self.currentOrientation = kPortrait;
@@ -553,7 +557,7 @@
 		[self processRecordedVideo];
 		self.isShowingChangeOrientationActionSheet = NO;
 	}
-	else if(isShowingResizeActionSheet == YES) {
+	else if(isShowingResizeActionSheet) {
         if (actionSheet.cancelButtonIndex != buttonIndex) {
             switch (buttonIndex) {
                 case 0:
@@ -733,7 +737,7 @@
         }
 		isLibraryMedia = YES;
 		
-		if(IS_IPAD == YES) {
+		if(IS_IPAD) {
             if (addPopover == nil) {
                 addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
                 addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
@@ -801,7 +805,7 @@
 }
 
 - (void)showResizeActionSheet {
-	if(self.isShowingResizeActionSheet == NO) {
+	if(!self.isShowingResizeActionSheet) {
 		isShowingResizeActionSheet = YES;
         
         Blog *currentBlog = self.apost.blog;
@@ -879,7 +883,7 @@
 	//check the inserted characters: the user can use cut-and-paste instead of using the keyboard, and can insert letters and spaces
 	NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:NUMBERS] invertedSet];
     NSString *filtered = [[string componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
-    if( [string isEqualToString:filtered] == NO ) return NO; 
+    if( ![string isEqualToString:filtered]) return NO;
 	
     NSString *newString = [textField.text stringByReplacingCharactersInRange:range withString:string];
 	
@@ -1007,6 +1011,15 @@
     }
 }
 
+- (void)dismissAlertViewKeyboard: (NSNotification*)notification {
+	if(_customSizeAlert) {
+		UITextField *textWidth = (UITextField *)[self.customSizeAlert viewWithTag:123];
+		UITextField *textHeight = (UITextField *)[self.customSizeAlert viewWithTag:456];
+		[textWidth resignFirstResponder];
+		[textHeight resignFirstResponder];
+	}
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (currentAlert == alertView) {
         currentAlert = nil;
@@ -1024,9 +1037,9 @@
 
 	if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
 		self.currentVideo = [info mutableCopy];
-		if(self.didChangeOrientationDuringRecord == YES)
+		if(self.didChangeOrientationDuringRecord)
 			[self showOrientationChangedActionSheet];
-		else if(self.isLibraryMedia == NO)
+		else if(!self.isLibraryMedia)
 			[self processRecordedVideo];
 		else
 			[self performSelectorOnMainThread:@selector(processLibraryVideo) withObject:nil waitUntilDone:NO];
@@ -1123,7 +1136,7 @@
             }
 		}
 		
-        if (addPopover != nil) {
+        if (addPopover) {
             [addPopover dismissPopoverAnimated:YES];
             [[CPopoverManager instance] setCurrentPopoverController:NULL];
             addPopover = nil;
@@ -1224,7 +1237,7 @@
 		videoURL = [currentVideo valueForKey:UIImagePickerControllerReferenceURL];
 	
 	if(videoURL != nil) {
-		if(IS_IPAD == YES)
+		if(IS_IPAD)
 			[addPopover dismissPopoverAnimated:YES];
 		else {
             [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -1525,12 +1538,12 @@
 		// Copy the video from temp to blog directory
 		NSError *error = nil;
 		if ((attributes = [fileManager attributesOfItemAtPath:videoURL error:nil]) != nil) {
-			if([fileManager isReadableFileAtPath:videoURL] == YES)
+			if([fileManager isReadableFileAtPath:videoURL])
 				copySuccess = [fileManager copyItemAtPath:videoURL toPath:filepath error:&error];
 		}
 	}
 	
-	if(copySuccess == YES) {
+	if(copySuccess) {
 		videoMedia = [Media newMediaForPost:self.apost];
 		
 		if(currentOrientation == kLandscape)
@@ -1582,18 +1595,12 @@
 }
 
 - (BOOL)isDeviceSupportVideo {
-	if(([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] == YES) && 
-	   ([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]))
-		return YES;
-	else
-		return NO;
+	return (([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) &&
+            ([[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera] containsObject:(NSString *)kUTTypeMovie]));
 }
 
 - (BOOL)isDeviceSupportVideoAndVideoPressEnabled{
-	if([self isDeviceSupportVideo] && (self.videoEnabled == YES))
-		return YES;
-	else
-		return NO;
+	return ([self isDeviceSupportVideo] && self.videoEnabled);
 }
 
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
@@ -1612,7 +1619,7 @@
 }
 
 - (void)deviceDidRotate:(NSNotification *)notification {
-	if(isAddingMedia == YES) {
+	if(isAddingMedia) {
 		if(self.currentOrientation != [self interpretOrientation:[[UIDevice currentDevice] orientation]]) {		
 			self.currentOrientation = [self interpretOrientation:[[UIDevice currentDevice] orientation]];
 			didChangeOrientationDuringRecord = YES;
