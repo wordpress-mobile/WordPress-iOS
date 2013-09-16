@@ -26,6 +26,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 @property (nonatomic, strong) NSArray *multiselectToolbarItems;
 @property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
 @property (nonatomic, weak) UIActionSheet *currentActionSheet;
+@property (nonatomic, assign) BOOL isFilteringByDate;
 @property (nonatomic, strong) NSString *currentSearchText;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *multiselectToolbar;
