@@ -13,6 +13,7 @@
 #import "Media.h"
 #import "CameraPlusPickerManager.h"
 #import "WPPopoverBackgroundView.h"
+#import "MP6SidebarViewController.h"
 
 @interface QuickPhotoViewController () {
     UIPopoverController *popController;
@@ -85,14 +86,15 @@
     }
     self.photoImageView.delegate = self;
     self.title = NSLocalizedString(@"Quick Photo", @"");
-    self.postButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Publish", @"") 
-                                                            style:UIBarButtonItemStyleDone 
-                                                           target:self 
-                                                           action:@selector(post)];
+
+    self.postButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Publish", @"")
+                                                           style:[WPStyleGuide barButtonStyleForDone]
+                                                          target:self
+                                                          action:@selector(post)];
 
     [postButtonItem setEnabled:NO];
     self.navigationItem.rightBarButtonItem = self.postButtonItem;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -168,23 +170,22 @@
 
 - (void)showPicker {
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.navigationBar.translucent = NO;
     picker.sourceType = self.sourceType;
     picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
     picker.allowsEditing = NO;
     picker.delegate = self;
     
-    if (IS_IPAD) {
+    if (IS_IPAD && self.sourceType != UIImagePickerControllerSourceTypeCamera) {
         self.popController = [[UIPopoverController alloc] initWithContentViewController:picker];
-        if ([popController respondsToSelector:@selector(popoverBackgroundViewClass)]) {
-            popController.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
-        }
+        popController.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
         popController.delegate = self;
         CGRect rect = CGRectMake((self.view.frame.size.width/2), 1.0f, 1.0f, 1.0f); // puts the arrow in the middle of the screen
         [popController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];            
         
     } else {
         picker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self presentModalViewController:picker animated:YES];
+        [self presentViewController:picker animated:YES completion:nil];
     }
 }
 
@@ -260,7 +261,7 @@
 }
 
 - (void)dismiss {
-    [[self sidebarViewController] dismissModalViewControllerAnimated:YES];
+    [[self sidebarViewController] dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)cancel {
@@ -320,6 +321,9 @@
 #pragma mark UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
     if (popController) {
         [popController dismissPopoverAnimated:YES];
         self.popController = nil;
@@ -344,13 +348,16 @@
         }
     }
     
-    [picker dismissModalViewControllerAnimated:NO];
+    [picker dismissViewControllerAnimated:YES completion:nil];
     [self saveImage];
     
     [self.titleTextField performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.f];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
     picker.delegate = nil;
     [self dismiss];
 }
@@ -382,6 +389,8 @@
 #pragma mark - UIPopoverViewController Delegate methods
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [self dismiss];
 }
 

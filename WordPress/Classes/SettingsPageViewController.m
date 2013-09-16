@@ -7,6 +7,7 @@
 //
 
 #import "SettingsPageViewController.h"
+#import "WPTableViewSectionFooterView.h"
 
 @interface SettingsPageViewController ()
 
@@ -82,8 +83,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.tableView.backgroundView = nil;
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
 
@@ -106,11 +106,23 @@
     return [titles count];
 }
 
-
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    return self.info;
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForFooterInSection:section];
+    return header;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    NSString *title = [self titleForFooterInSection:section];
+    return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (NSString *)titleForFooterInSection:(NSInteger)section
+{
+    return self.info;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
@@ -118,6 +130,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];    
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        [WPStyleGuide configureTableViewCell:cell];
     }
     cell.accessoryType = UITableViewCellAccessoryNone;
     

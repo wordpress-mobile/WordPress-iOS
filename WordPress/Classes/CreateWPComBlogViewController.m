@@ -17,6 +17,7 @@
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
+#import "WPTableViewSectionFooterView.h"
 
 @interface CreateWPComBlogViewController () <
     SelectWPComBlogVisibilityViewControllerDelegate,
@@ -67,8 +68,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
 {
     [super viewDidLoad];
     
-    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern"]];
-    self.tableView.backgroundView = nil;
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
 	_footerText = @" ";
 	_buttonText = NSLocalizedString(@"Create WordPress.com Blog", @"");
@@ -106,11 +106,24 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
         return 1;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+- (NSString *)titleForFooterInSection:(NSInteger)section {
     if(section == 0)
 		return _footerText;
     else
 		return @"";
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForFooterInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    NSString *title = [self titleForFooterInSection:section];
+    return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -144,6 +157,8 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
         
+        activityCell.textLabel.font = [WPStyleGuide tableviewTextFont];
+        activityCell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
 		cell = activityCell;
 	} else {
         if (indexPath.row == 0) {
@@ -157,6 +172,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             _blogUrlTextField.placeholder = NSLocalizedString(@"myblog.wordpress.com", @"");
             _blogUrlTextField.keyboardType = UIKeyboardTypeURL;
             _blogUrlTextField.delegate = self;
+            [self styleTextFieldCell:_blogUrlCell];
             cell = _blogUrlCell;
         } else if (indexPath.row == 1) {
             if (_blogTitleCell == nil) {
@@ -167,24 +183,27 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             _blogTitleTextField = _blogTitleCell.textField;
             _blogTitleTextField.placeholder = NSLocalizedString(@"My Blog", nil);
             _blogTitleTextField.delegate = self;
+            [self styleTextFieldCell:_blogTitleCell];
             cell = _blogTitleCell;
         } else if (indexPath.row == 2) {
             if (_localeCell == nil) {
-                _localeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                _localeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                      reuseIdentifier:@"LocaleCell"];
             }
             _localeCell.textLabel.text = @"Language";
             _localeCell.detailTextLabel.text = [_currentLanguage objectForKey:@"name"];
             _localeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [WPStyleGuide configureTableViewCell:_localeCell];
             cell = _localeCell;
         } else if (indexPath.row == 3) {
             if (_blogVisibilityCell == nil) {
-                _blogVisibilityCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                _blogVisibilityCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                              reuseIdentifier:@"VisibilityCell"];
             }
             _blogVisibilityCell.textLabel.text = @"Blog Visibility";
             _blogVisibilityCell.detailTextLabel.text = [self textForCurrentBlogVisibility];
             _blogVisibilityCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [WPStyleGuide configureTableViewCell:_blogVisibilityCell];
             cell = _blogVisibilityCell;
         } else if (indexPath.row == 4) {
             if(_geolocationEnabledCell == nil) {
@@ -202,6 +221,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
             _geolocationEnabledCell.selectionStyle = UITableViewCellSelectionStyleNone;
             _geolocationEnabledCell.cellSwitch.on = _geolocationEnabled;
             [_geolocationEnabledCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
+            [WPStyleGuide configureTableViewCell:_geolocationEnabledCell];
             cell = _geolocationEnabledCell;
         }
     }
@@ -365,6 +385,12 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     } else {
         return NSLocalizedString(@"Hidden", nil);
     }
+}
+
+- (void)styleTextFieldCell:(UITableViewTextFieldCell *)cell
+{
+    [WPStyleGuide configureTableViewCell:cell];
+    cell.textField.font = [WPStyleGuide tableviewTextFont];
 }
 
 @end

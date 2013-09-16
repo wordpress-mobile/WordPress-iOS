@@ -26,9 +26,11 @@
 + (id)presentAsModalWithURL:(NSURL *)url {
 	UIViewController *controller = [[self alloc] initWithURL:url];
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.navigationBar.translucent = NO;
 	navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	navController.modalPresentationStyle = UIModalPresentationFullScreen;
-	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentModalViewController:navController animated:YES];
+
+    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentViewController:navController animated:YES completion:nil];
 	return controller;
 }
 
@@ -38,7 +40,7 @@
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 	navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	navController.modalPresentationStyle = UIModalPresentationFullScreen;
-	[[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentModalViewController:navController animated:YES];
+    [[[WordPressAppDelegate sharedWordPressApplicationDelegate] panelNavigationController] presentViewController:navController animated:YES completion:nil];
 	return controller;
 }
 
@@ -78,27 +80,37 @@
 	titleView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
 	
 	self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 18.0f)];
-	_titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-	_titleLabel.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
-	_titleLabel.shadowColor = [UIColor whiteColor];
-	_titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-	_titleLabel.textAlignment = UITextAlignmentCenter;
+    if (IS_IOS7) {
+        _titleLabel.font = [WPStyleGuide regularTextFontBold];
+        _titleLabel.textColor = [UIColor whiteColor];
+    } else {
+        _titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+        _titleLabel.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
+        _titleLabel.shadowColor = [UIColor whiteColor];
+        _titleLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+    }
+	_titleLabel.textAlignment = NSTextAlignmentCenter;
 	_titleLabel.text = self.title;
 	_titleLabel.backgroundColor = [UIColor clearColor];
 	_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	[titleView addSubview:_titleLabel];
 	
 	UILabel *urlLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 18.0f, 200.0f, 14.0f)];
-	urlLabel.font = [UIFont systemFontOfSize:12.0f];
-	urlLabel.textColor = [UIColor grayColor];
-	urlLabel.textAlignment = UITextAlignmentCenter;
+    if (IS_IOS7) {
+        urlLabel.font = [WPStyleGuide subtitleFont];
+        urlLabel.textColor = [UIColor whiteColor];
+    } else {
+        urlLabel.font = [UIFont systemFontOfSize:12.0f];
+        urlLabel.textColor = [UIColor grayColor];
+    }
+	urlLabel.textAlignment = NSTextAlignmentCenter;
 	urlLabel.text = [self.url absoluteString];
 	urlLabel.backgroundColor = [UIColor clearColor];
 	urlLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	[titleView addSubview:urlLabel];
 	
 	self.navigationItem.titleView = titleView;
-		
+
 	self.webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
 	_webView.delegate = self;
 	_webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -137,14 +149,14 @@
 }
 
 - (void)handleCloseTapped:(id)sender {
-	[self.navigationController dismissModalViewControllerAnimated:YES];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 
 #pragma mark - UIWebView Delegate Methods
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-	WPLog(@"Error: %@, %@", _cmd, [error description]);
+    WPFLogMethodParam(error);
 	// TODO: Show a nice content can't be displayed message if there is a problem loading or the content is bogus.
 }
 

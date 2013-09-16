@@ -22,7 +22,6 @@ typedef NS_ENUM(NSUInteger, WPWalkthroughOverlayViewIcon) {
 @interface WPWalkthroughOverlayView : UIView
 
 @property (nonatomic, assign) WPWalkthroughOverlayViewOverlayMode overlayMode;
-
 @property (nonatomic, assign) WPWalkthroughOverlayViewIcon icon;
 @property (nonatomic, strong) NSString *overlayTitle;
 @property (nonatomic, strong) NSString *overlayDescription;

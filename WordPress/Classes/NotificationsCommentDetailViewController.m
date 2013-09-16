@@ -80,16 +80,16 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     
     [super viewDidLoad];
     
-    self.approveBarButton = [self barButtonItemWithImageNamed:@"toolbar_approve"
+    self.approveBarButton = [self barButtonItemWithImageNamed:@"icon-comments-approve"
                                                           andAction:@selector(moderateComment:)];
-    self.unapproveBarButton = [self barButtonItemWithImageNamed:@"toolbar_unapprove"
+    self.unapproveBarButton = [self barButtonItemWithImageNamed:@"icon-comments-unapprove"
                                                     andAction:@selector(moderateComment:)];
 
-    self.trashBarButton = [self barButtonItemWithImageNamed:@"toolbar_delete"
+    self.trashBarButton = [self barButtonItemWithImageNamed:@"icon-comments-trash"
                                                    andAction:@selector(moderateComment:)];
-    self.spamBarButton = [self barButtonItemWithImageNamed:@"toolbar_flag"
+    self.spamBarButton = [self barButtonItemWithImageNamed:@"icon-comments-flag"
                                                  andAction:@selector(moderateComment:)];
-    self.replyBarButton = [self barButtonItemWithImageNamed:@"toolbar_reply"
+    self.replyBarButton = [self barButtonItemWithImageNamed:@"icon-comments-reply"
                                                   andAction:@selector(startReply:)];
 
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc]
@@ -97,6 +97,11 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
                                target:nil
                                action:nil];
     self.toolbar.items = @[self.approveBarButton, spacer, self.trashBarButton, spacer, self.spamBarButton, spacer, self.replyBarButton];
+
+    if (IS_IOS7) {
+        [self.toolbar setBarTintColor:[WPStyleGuide littleEddieGrey]];
+        self.toolbar.translucent = NO;
+    }
 
 
     if ([self.tableView respondsToSelector:@selector(registerClass:forCellReuseIdentifier:)]) {
@@ -133,6 +138,14 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     
     // start fetching the thread
     [self updateCommentThread];
+    
+    if (IS_IOS7) {
+        // TODO : Redo this to use auto layout
+        // Need some extra space for status bar
+        CGRect replyBarFrame = self.replyNavigationBar.frame;
+        replyBarFrame.size.height += 20;
+        self.replyNavigationBar.frame = replyBarFrame;
+    }
     
 }
 

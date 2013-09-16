@@ -47,11 +47,12 @@
 	if (IS_IPAD) {
 		betaFeedbackViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		betaFeedbackViewController.modalPresentationStyle = UIModalPresentationFormSheet;
-        [appDelegate.panelNavigationController presentModalViewController:betaFeedbackViewController animated:YES];
+        [appDelegate.panelNavigationController presentViewController:betaFeedbackViewController animated:YES completion:nil];
 //		[appDelegate.splitViewController presentModalViewController:betaFeedbackViewController animated:YES];
 	}
-	else
-		[appDelegate.navigationController presentModalViewController:betaFeedbackViewController animated:YES];
+	else {
+        [appDelegate.navigationController presentViewController:betaFeedbackViewController animated:YES completion:nil];
+    }
 	
 }
 

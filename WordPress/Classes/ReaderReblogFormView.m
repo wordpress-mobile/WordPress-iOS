@@ -50,6 +50,9 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        if (IS_IOS7) {
+            self.backgroundColor = [WPStyleGuide littleEddieGrey];
+        }
 		self.requireText = NO;
 		self.promptLabel.text = NSLocalizedString(@"Add your thoughts here... (optional)", @"Placeholder text prompting the user to add a note to the post they are reblogging.");
 		

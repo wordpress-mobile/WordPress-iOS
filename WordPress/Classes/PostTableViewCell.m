@@ -187,7 +187,7 @@ static const float statusLabelMaxWidthPortrait = 100.f;
     statusLabel.textColor = [UIColor blackColor];
     statusLabel.backgroundColor = [UIColor clearColor];
     statusLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin;
-    statusLabel.textAlignment = UITextAlignmentRight;
+    statusLabel.textAlignment = NSTextAlignmentRight;
 //	statusLabel.layer.cornerRadius = DATE_LABEL_HEIGHT / 2;
 	
     [self.contentView addSubview:statusLabel];

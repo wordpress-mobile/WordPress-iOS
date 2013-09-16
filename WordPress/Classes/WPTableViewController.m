@@ -87,6 +87,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     if (_refreshHeaderView == nil) {
 		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.tableView.frame.size.width, self.tableView.bounds.size.height)];
 		_refreshHeaderView.delegate = self;
+        _refreshHeaderView.backgroundColor = [self backgroundColorForRefreshHeaderView];
 		[self.tableView addSubview:_refreshHeaderView];
     }
 	
@@ -203,6 +204,10 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     
 }
 
+- (UIColor *)backgroundColorForRefreshHeaderView
+{
+    return _refreshHeaderView.backgroundColor;
+}
 
 #pragma mark - Property accessors
 
@@ -217,6 +222,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if ( appDelegate.connectionAvailable == YES && [self.resultsController.fetchedObjects count] == 0 && ![self isSyncing] ) {
         [self simulatePullToRefresh];
+    } else {
+        [self configureNoResultsView];
     }
 }
 
@@ -365,7 +372,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 #pragma mark Fetched results controller
 
 - (UITableViewRowAnimation)tableViewRowAnimation {
-	return UITableViewRowAnimationAutomatic;
+	return UITableViewRowAnimationFade;
 }
 
 - (NSString *)resultsControllerCacheName {
@@ -524,14 +531,15 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 		case 0: {
             HelpViewController *helpViewController = [[HelpViewController alloc] init];
             helpViewController.isBlogSetup = YES;
-            helpViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModal:)];
+            helpViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
             // Probably should be modal
             UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
+            navController.navigationBar.translucent = NO;
             if (IS_IPAD) {
                 navController.modalPresentationStyle = UIModalPresentationFormSheet;
                 navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             }
-            [self.panelNavigationController presentModalViewController:navController animated:YES];
+            [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
 
 			break;
 		}
@@ -558,7 +566,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                 }
                 
                 WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-                webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModal:)];
+                webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
                 [webViewController setUrl:[NSURL URLWithString:path]];
                 [webViewController setUsername:self.blog.username];
                 [webViewController setPassword:self.blog.password];
@@ -566,11 +574,12 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                 webViewController.shouldScrollToBottom = YES;
                 // Probably should be modal.
                 UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+                navController.navigationBar.translucent = NO;
                 if (IS_IPAD) {
                     navController.modalPresentationStyle = UIModalPresentationFormSheet;
                     navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 }
-                [self.panelNavigationController presentModalViewController:navController animated:YES];
+                [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
             }
 			break;
 		default:
@@ -626,7 +635,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)dismissModal:(id)sender {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)simulatePullToRefresh {
@@ -703,13 +712,14 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 	editSiteViewController.isCancellable = YES;
 	editSiteViewController.delegate = self;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
+    navController.navigationBar.translucent = NO;
 	
 	if(IS_IPAD == YES) {
 		navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 	}
 	
-	[self.panelNavigationController presentModalViewController:navController animated:YES];
+    [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - Swipe gestures

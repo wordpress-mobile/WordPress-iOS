@@ -14,6 +14,7 @@
 #import "WordPressComApi.h"
 #import "NSString+XMLExtensions.h"
 #import "DateUtils.h"
+#import "WPTableViewSectionHeaderView.h"
 
 @interface NotificationSettingsViewController () <EGORefreshTableHeaderDelegate, UIActionSheetDelegate>
 
@@ -43,7 +44,7 @@ BOOL hasChanges;
     [super viewDidLoad];
     
     self.tableView.backgroundView = nil;
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
+    self.view.backgroundColor =  [WPStyleGuide itsEverywhereGrey];
     self.title = NSLocalizedString(@"Manage Notifications", @"");
     
     CGRect refreshFrame = self.tableView.bounds;
@@ -52,8 +53,9 @@ BOOL hasChanges;
     self.refreshHeaderView.delegate = self;
     [self.tableView addSubview:self.refreshHeaderView];
     
-    if(self.showCloseButton)
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+    if(self.showCloseButton) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -127,8 +129,9 @@ BOOL hasChanges;
     if( toolbarVisible == YES ) {
         
         NSString *buttonLabel = muteAvailable ? NSLocalizedString(@"Mute all blogs", @"") : NSLocalizedString(@"Unmute all blogs", @"");
+
         self.muteUnmuteBarButton = [[UIBarButtonItem alloc] initWithTitle:buttonLabel
-                                                                    style:UIBarButtonItemStyleBordered
+                                                                    style:[WPStyleGuide barButtonStyleForBordered]
                                                                    target:self
                                                                    action:@selector(muteUnmutedButtonClicked:)];
         self.muteUnmuteBarButton.tag = muteAvailable;
@@ -243,7 +246,7 @@ BOOL hasChanges;
 }
 
 - (void)dismiss {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -327,6 +330,7 @@ BOOL hasChanges;
             cell.detailTextLabel.text = NSLocalizedString(@"On", @"");
         }
         cell.textLabel.textColor = [UIColor blackColor];
+        [WPStyleGuide configureTableViewCell:cell];
         return cell;
     }
     
@@ -359,10 +363,24 @@ BOOL hasChanges;
         cell.textLabel.text = [blogName stringByDecodingXMLCharacters];
         cellSwitch.on = ![[muteBlogSetting objectForKey:@"value"] boolValue];
     }
+    [WPStyleGuide configureTableViewCell:cell];
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
     if (section == 0)
         return @"";
     else if (section == 1)

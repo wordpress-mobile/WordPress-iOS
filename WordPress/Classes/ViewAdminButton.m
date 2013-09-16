@@ -20,7 +20,7 @@
         [self setBackgroundImage:[[UIImage imageNamed:@"sidebar_cell_bg_selected"] stretchableImageWithLeftCapWidth:0 topCapHeight:1] forState:UIControlStateHighlighted];
         [self setTitleColor:[UIColor colorWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
 
-        self.titleLabel.textAlignment = UITextAlignmentLeft;
+        self.titleLabel.textAlignment = NSTextAlignmentLeft;
         self.titleLabel.shadowOffset = CGSizeMake(0, 1.1f);
         self.titleLabel.shadowColor = [UIColor blackColor];
         self.titleLabel.font = [UIFont systemFontOfSize:17.0];

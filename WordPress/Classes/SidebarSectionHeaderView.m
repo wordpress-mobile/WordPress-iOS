@@ -101,7 +101,7 @@ CGFloat const BadgeHeight = 24.f;
         CGRect commentsTextRect = [self badgeItemFrame:badgeTextSize.height];
         UILabel *commentsLbl = [[UILabel alloc]initWithFrame:commentsTextRect];
         commentsLbl.backgroundColor = [UIColor clearColor];
-        commentsLbl.textAlignment = UITextAlignmentCenter;
+        commentsLbl.textAlignment = NSTextAlignmentCenter;
         if (numberOfPendingComments > 0) {
             commentsLbl.text = badgeText;
         } else {

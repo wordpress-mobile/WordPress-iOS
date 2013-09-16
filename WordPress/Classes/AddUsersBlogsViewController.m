@@ -18,6 +18,7 @@
 @interface AddUsersBlogsViewController() <CreateWPComBlogViewControllerDelegate>
 
 @property (nonatomic, strong) UIView *noblogsView;
+@property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
 
 - (void)showNoBlogsView;
 - (void)hideNoBlogsView;
@@ -60,48 +61,37 @@
 	self.selectedBlogs = [NSMutableArray array];
     
 	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-	
-	// Setup WP logo table header
-	NSString *logoFile = @"logo_wporg";
-	if(isWPcom == YES) {
-        logoFile = @"logo_wpcom@2x.png";
-	}
+		
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
-    logoImage.frame = CGRectMake(0.0f, 0.0f, 320.0f, 70.0f);
-    logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    logoImage.contentMode = UIViewContentModeCenter;
-    tableView.tableHeaderView = logoImage;
-    
-    if (isWPcom) {
-        logoImage.contentScaleFactor = 2.0f;
+    if (IS_IOS7) {
+        self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];        
     }
-	
-//    // Setup WPcom table header
-//	CGRect headerFrame = CGRectMake(0.0f, 0.0f, 320.0f, 70.0f);
-//	CGRect logoFrame = CGRectMake(40.0f, 20.0f, 229.0f, 43.0f);
-//	if(IS_IPAD == YES) {
-//		logoFrame = CGRectMake(150.0f, 20.0f, 229.0f, 43.0f);
-//	}
-//	UIView *headerView = [[[UIView alloc] initWithFrame:headerFrame] autorelease];
-//	UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:logoFile]];
-//	logo.frame = logoFrame;
-//	[headerView addSubview:logo];
-//	[logo release];
-//	self.tableView.tableHeaderView = headerView;
-    
-	if(IS_IPAD)
-		self.tableView.backgroundView = nil;
-	
-    self.tableView.backgroundColor = [UIColor clearColor];
-	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
+    [buttonSelectAll setTitleTextAttributes:@{
+                                              UITextAttributeFont: [WPStyleGuide regularTextFont],
+                                              UITextAttributeTextColor : [UIColor whiteColor],
+                                              UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetMake(0, 0)]}
+                                   forState:UIControlStateNormal];
+
+    [buttonAddSelected setTitleTextAttributes:@{
+                                              UITextAttributeFont: [WPStyleGuide regularTextFont],
+                                              UITextAttributeTextColor : [UIColor whiteColor],
+                                              UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetMake(0, 0)]}
+                                   forState:UIControlStateNormal];
+    [buttonAddSelected setTitleTextAttributes:@{
+                                                UITextAttributeFont: [WPStyleGuide regularTextFont],
+                                                UITextAttributeTextColor : [UIColor grayColor],
+                                                UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetMake(0, 0)]}
+                                     forState:UIControlStateDisabled];
+
     
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelAddWPcomBlogs) 
 												 name:@"didCancelWPcomLogin" object:nil];
     
-    if ([[UIBarButtonItem class] respondsToSelector:@selector(appearance)]) {
+    if (!IS_IOS7) {
         [UIBarButtonItem styleButtonAsPrimary:buttonAddSelected];
-    }    
+    }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -119,12 +109,12 @@
 
 	if((isWPcom) && (!appDelegate.isWPcomAuthenticated)) {
         WPcomLoginViewController *wpComLogin = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        [self.navigationController presentModalViewController:wpComLogin animated:YES];
+        [self.navigationController presentViewController:wpComLogin animated:YES completion:nil];
 	}
 	
 	if(IS_IPAD == YES) {
 		topAddSelectedButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add Selected", @"") 
-																				 style:UIBarButtonItemStyleDone 
+																				 style:[WPStyleGuide barButtonStyleForDone]
 																				target:self 
 																				action:@selector(saveSelectedBlogs:)];
 		self.navigationItem.rightBarButtonItem = topAddSelectedButton;
@@ -214,7 +204,7 @@
 			
 			UILabel *footerText = [[UILabel alloc] initWithFrame:footerTextFrame];
             footerText.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
-            footerText.textAlignment = UITextAlignmentCenter;
+            footerText.textAlignment = NSTextAlignmentCenter;
 			footerText.backgroundColor = [UIColor clearColor];
 			footerText.textColor = [UIColor darkGrayColor];
 			footerText.text = NSLocalizedString(@"Loading blogs...", @"");
@@ -253,11 +243,13 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    
+    cell.backgroundColor = [UIColor clearColor];
 	
 	switch (indexPath.section) {
 		case 0:
         {
-			cell.textLabel.textAlignment = UITextAlignmentLeft;
+			cell.textLabel.textAlignment = NSTextAlignmentLeft;
 			
 			NSDictionary *blog = [usersBlogs objectAtIndex:indexPath.row];
 			if([selectedBlogs containsObject:[blog valueForKey:@"blogid"]])
@@ -278,12 +270,12 @@
             } else {
                 cell.imageView.layer.mask = NULL;
             }
-            
+            [WPStyleGuide configureTableViewCell:cell];
 			break;
         }
         case 1:
         {
-            cell.textLabel.textAlignment = UITextAlignmentCenter;
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.accessoryType = UITableViewCellAccessoryNone; 
             cell.textLabel.text = NSLocalizedString(@"Sign Out", @"");
             cell.imageView.image = nil;
@@ -476,12 +468,12 @@
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
         label.backgroundColor = [UIColor clearColor];
         label.numberOfLines = 0;
-        label.lineBreakMode = UILineBreakModeWordWrap;
+        label.lineBreakMode = NSLineBreakByWordWrapping;
         label.font = [UIFont fontWithName:@"Georgia" size:16.0f];
         label.shadowOffset = CGSizeMake(0.0f, 1.0f);
         label.textColor = textColor;
         label.shadowColor = [UIColor whiteColor];
-        label.textAlignment = UITextAlignmentCenter;
+        label.textAlignment = NSTextAlignmentCenter;
 
         if ([WordPressComApi sharedApi].username) {
             label.text = NSLocalizedString(@"You do not seem to have any blogs. Would you like to create one now?", @"");
@@ -556,7 +548,7 @@
             [self.navigationController pushViewController:helpViewController animated:YES];
         }
         else
-            [appDelegate.navigationController presentModalViewController:helpViewController animated:YES];
+            [appDelegate.navigationController presentViewController:helpViewController animated:YES completion:nil];
     }
 
     if (failureAlertView == alertView) {
@@ -603,13 +595,29 @@
 	//disable the 'Add Selected' button if they have selected 0 blogs, trac #521
 	if (selectedBlogs.count == 0) {
 		buttonAddSelected.enabled = FALSE;
-		if (IS_IPAD)
+		if (IS_IPAD) {
 			topAddSelectedButton.enabled = FALSE;
+        }
+        // iOS 7 Beta 6 doesn't seem to be respecting the title text attributes for UIControlStateDisabled
+        // so we have to engage in this hack until apple fixes it.
+        [buttonAddSelected setTitleTextAttributes:@{
+                                                    UITextAttributeFont: [WPStyleGuide regularTextFont],
+                                                    UITextAttributeTextColor : [WPStyleGuide whisperGrey    ],
+                                                    UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetMake(0, 0)]}
+                                         forState:UIControlStateNormal];
 	}
 	else {
 		buttonAddSelected.enabled = TRUE;
-		if (IS_IPAD)
+		if (IS_IPAD) {
 			topAddSelectedButton.enabled = TRUE;
+        }
+        // iOS 7 Beta 6 doesn't seem to be respecting the title text attributes for UIControlStateDisabled
+        // so we have to engage in this hack until apple fixes it.
+        [buttonAddSelected setTitleTextAttributes:@{
+                                                    UITextAttributeFont: [WPStyleGuide regularTextFont],
+                                                    UITextAttributeTextColor : [UIColor whiteColor],
+                                                    UITextAttributeTextShadowOffset : [NSValue valueWithUIOffset:UIOffsetMake(0, 0)]}
+                                         forState:UIControlStateNormal];
 	}
 	
 }

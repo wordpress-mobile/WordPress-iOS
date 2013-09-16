@@ -189,9 +189,8 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     NSArray *array = [context executeFetchRequest:request error:&error];
 
     if ([array count]) {
-		NSLog(@"Deleting %i ReaderPosts synced earlier than: %@ ", [array count], syncedDate);
+		WPFLog(@"Deleting %i ReaderPosts synced earlier than: %@ ", [array count], syncedDate);
         for (ReaderPost *post in array) {
-			NSLog(@"Post: %@", post);
             [context deleteObject:post];
         }
     }

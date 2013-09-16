@@ -44,5 +44,6 @@
  */
 + (void)pruneOldNotesBefore:(NSNumber *)timestamp withContext:(NSManagedObjectContext *)context;
 + (void)removeAllNotesWithContext:(NSManagedObjectContext *)context;
++ (void)getNewNotificationswithContext:(NSManagedObjectContext *)context success:(void (^)(BOOL hasNewNotes))success failure:(void (^)(NSError *error))failure;
 
 @end

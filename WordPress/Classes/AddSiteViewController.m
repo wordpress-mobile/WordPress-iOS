@@ -22,15 +22,14 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
     UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg"]];
     logoImage.frame = CGRectMake(0.0f, 0.0f, AddSiteLogoSize.width, AddSiteLogoSize.height);
     logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     logoImage.contentMode = UIViewContentModeCenter;
     tableView.tableHeaderView = logoImage;
     
-    self.tableView.backgroundView = nil;
-	self.tableView.backgroundColor = [UIColor clearColor];
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
     self.navigationItem.title = NSLocalizedString(@"Add Blog", @"");
 }
 
@@ -140,7 +139,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 - (void)dismiss {
     [SVProgressHUD dismiss];
     if (IS_IPAD) {
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
     else {
         [self.navigationController popToRootViewControllerAnimated:YES];
@@ -153,7 +152,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
     JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
-        [self.presentingViewController dismissModalViewControllerAnimated:YES];
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }];
     [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
 }

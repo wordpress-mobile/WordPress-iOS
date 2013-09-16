@@ -38,6 +38,8 @@
 @property (nonatomic, strong) UIImageView *sidebarBorderView;
 @property (nonatomic, strong) UIButton *notificationButton, *menuButton;
 @property (nonatomic, strong) UIImageView *dividerImageView, *spacerImageView;
+@property (nonatomic, strong) UIImageView *loadingImageView;
+@property (nonatomic, strong) UIView *statusBarBackgroundView;
 
 - (void)showSidebar;
 - (void)showSidebarAnimated:(BOOL)animated;
@@ -123,6 +125,8 @@
 @synthesize sidebarBorderView = _sidebarBorderView;
 @synthesize delegate;
 
+CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
+
 - (void)dealloc {
     self.detailViewController.panelNavigationController = nil;
     self.detailViewController = nil;
@@ -135,21 +139,35 @@
     self = [super init];
     if (self) {
         _isAppeared = NO;
-        if (IS_IPHONE) {
-            if (detailController) {
-                _navigationController = [[UINavigationController alloc] initWithRootViewController:detailController];
-            } else {
-                _navigationController = [[UINavigationController alloc] init];
-            }
+
+        if (detailController) {
+            _navigationController = [[UINavigationController alloc] initWithRootViewController:detailController];
         } else {
-            _detailViewControllers = [[NSMutableArray alloc] init];
-            _detailViews = [[NSMutableArray alloc] init];
-            _detailViewWidths = [[NSMutableArray alloc] init];
+            _navigationController = [[UINavigationController alloc] init];
         }
+        _navigationController.navigationBar.translucent = NO;
+        
         self.detailViewController = detailController;
-        self.masterViewController = masterController;        
+        self.masterViewController = masterController;
     }
     return self;
+}
+
+- (void)displayLoadingImageView
+{
+    [self.loadingImageView removeFromSuperview];
+    
+    // Add a loading image to prevent a flicker as the app sets up this controller
+    self.loadingImageView = [[UIImageView alloc] initWithImage:[self loadingImage]];
+    self.loadingImageView.frame = self.view.bounds;
+    self.loadingImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:self.loadingImageView];
+    [self.view bringSubviewToFront:self.loadingImageView];
+}
+
+- (void)hideLoadingImageView
+{
+    [self.loadingImageView removeFromSuperview];
 }
 
 - (void)loadView {
@@ -163,7 +181,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.detailViewContainer = [[UIView alloc] init];
     
     if (IS_IPAD) {
@@ -183,9 +201,10 @@
         UIView *wrappedView = [self createWrapViewForViewController:self.detailViewController];
         [self.detailViewContainer addSubview:wrappedView];
     }
-    self.detailViewContainer.frame = CGRectMake(0, 0, DETAIL_WIDTH, DETAIL_HEIGHT);
+    self.detailViewContainer.frame = CGRectMake(0, 0, DETAIL_WIDE_WIDTH, DETAIL_HEIGHT);
+
     [self.detailViews addObject:self.detailViewContainer];
-    [self.detailViewWidths addObject:[NSNumber numberWithFloat:DETAIL_WIDTH]];
+    [self.detailViewWidths addObject:[NSNumber numberWithFloat:DETAIL_WIDE_WIDTH]];
     self.masterView.frame = CGRectMake(0, 0, DETAIL_LEDGE_OFFSET, self.view.frame.size.height);
     self.masterView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     [self.view insertSubview:self.masterViewController.view belowSubview:self.detailViewContainer];
@@ -204,34 +223,12 @@
     } else {
         _stackOffset = 0;
     }
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background"]];
-    if (IS_IPAD) {
-        CGFloat height = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? self.view.bounds.size.height: self.view.bounds.size.width;
-        //The iOS simulator would pull in the wrong values
-        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) && height > self.view.bounds.size.width)
-            height = self.view.bounds.size.width;
-        _popPanelsView = [[UIView alloc] initWithFrame:CGRectMake(SIDEBAR_WIDTH + 10.0f, (height / 2) - 82.0f, 200.0f, 82.0f)];
-        [_popPanelsView setBackgroundColor:[UIColor clearColor]];
-        
-        [_popPanelsView addSubview:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]]];
-        
-        UIImageView *popperImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"panel_icon"]];
-        CGRect frame = popperImageView.frame;
-        frame.origin.x += 10.0f;
-        popperImageView.frame = frame;
-        UIImageView *trashIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UIButtonBarTrash"]];
-        trashIcon.center = CGPointMake(popperImageView.bounds.size.width/2,popperImageView.bounds.size.height/2);
-        trashIcon.alpha = 0.0f;
-        [popperImageView addSubview:trashIcon];
-        [_popPanelsView addSubview:popperImageView];
-        [_popPanelsView setAlpha:0.0f];
-        
-        [self.view addSubview:_popPanelsView];
-        [self.view sendSubviewToBack:_popPanelsView];
-    }
+    
     if (IS_IPAD) {
         [self showSidebarAnimated:NO];
     }
+    
+    [self displayLoadingImageView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveNotesNotification:)
 												 name:@"WordPressComUnseenNotes" object:nil];
@@ -270,6 +267,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [self addStatusBarBackgroundView];
 
     _isAppeared = YES;
     [self relayAppearanceMethod:^(UIViewController *controller) {
@@ -305,8 +303,8 @@
 
     [self adjustFramesForRotation];
     
-    if (IS_IPAD)
-        [self setStackOffset:[self nearestValidOffsetWithVelocity:0] duration:duration];
+//    if (IS_IPAD)
+//        [self setStackOffset:[self nearestValidOffsetWithVelocity:0] duration:duration];
     
     [self relayAppearanceMethod:^(UIViewController *controller) {
         [controller willAnimateRotationToInterfaceOrientation:interfaceOrientation duration:duration];
@@ -328,13 +326,13 @@
         [controller didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     }];
     
-    // Redraw shadows. This fixes an issue where the 1..n-1 detail view's shadow can be
-    // incorrect when there are more than two detail views on the stack.
-    if (self.detailViewController) {
-        for (UIView *view in self.detailViews) {
-            [self addShadowTo:view];
-        }
-    }
+//    // Redraw shadows. This fixes an issue where the 1..n-1 detail view's shadow can be
+//    // incorrect when there are more than two detail views on the stack.
+//    if (self.detailViewController) {
+//        for (UIView *view in self.detailViews) {
+//            [self addShadowTo:view];
+//        }
+//    }
 }
 
 - (void)adjustFramesForRotation {
@@ -364,6 +362,19 @@
         CGRect frm = dview.frame;
         [self.detailViewWidths addObject:[NSNumber numberWithFloat:frm.size.width]];
    }
+}
+
+- (void)addStatusBarBackgroundView
+{
+    if (!IS_IOS7 || self.statusBarBackgroundView)
+        return;
+    
+    self.statusBarBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), PanelNavigationControllerStatusBarViewHeight)];
+    self.statusBarBackgroundView.backgroundColor = [UIColor clearColor];
+    self.statusBarBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    [self.view addSubview:self.statusBarBackgroundView];
+    [self.view bringSubviewToFront:self.statusBarBackgroundView];
 }
 
 #pragma mark - Memory management
@@ -520,8 +531,8 @@
 }
 
 - (UIViewController *)visibleViewController {
-    if (self.modalViewController) {
-        return self.modalViewController;
+    if (self.presentedViewController) {
+        return self.presentedViewController;
     } else if (self.navigationController) {
         return self.navigationController.visibleViewController;
     } else {
@@ -553,22 +564,36 @@
 
 
 - (BOOL)viewControllerExpectsWidePanel:(UIViewController *)controller {
-    if ([controller respondsToSelector:@selector(expectsWidePanel)]) {
-        return (BOOL)[controller performSelector:@selector(expectsWidePanel)];
-    }
-    return NO;
+    return YES;
+    
+//    if ([controller respondsToSelector:@selector(expectsWidePanel)]) {
+//        return (BOOL)[controller performSelector:@selector(expectsWidePanel)];
+//    }
+//    return NO;
 }
 
 
 - (void)setDetailViewController:(UIViewController *)detailViewController closingSidebar:(BOOL)closingSidebar {
-    if (_detailViewController == detailViewController) return;
+    [self setDetailViewController:detailViewController closingSidebar:closingSidebar animated:NO];
+}
 
+- (void)setDetailViewController:(UIViewController *)detailViewController closingSidebar:(BOOL)closingSidebar animated:(BOOL)animated
+{
+    if (_detailViewController == detailViewController) return;
+    
+    if (_detailViewController == nil) {
+        // Ensure that the sidebar is closed when the app is first initialized
+        closingSidebar = YES;
+    }
+    
+    [self hideLoadingImageView];
+    
     BOOL oldWasWide = [self viewControllerExpectsWidePanel:_detailViewController];
     
     UIBarButtonItem *sidebarButton = nil;
     
     [self popToRootViewControllerAnimated:NO];
-
+    
     if (_detailViewController) {
         if (self.navigationController) {
             [self.navigationController setToolbarHidden:YES animated:YES];
@@ -581,28 +606,28 @@
             [_detailViewController willMoveToParentViewController:nil];
             UIView *view = [self viewOrViewWrapper:_detailViewController.view];
             [view removeFromSuperview];
-
+            
             if (_isAppeared) {
                 [_detailViewController vdc_viewDidDisappear:NO];
             }
             [_detailViewController setPanelNavigationController:nil];
             [_detailViewController removeFromParentViewController];
             [_detailViewController didMoveToParentViewController:nil];
-
+            
         }
     }
-
+    
     _detailViewController = detailViewController;
     
     if (_sidebarBorderView.hidden)
         _sidebarBorderView.hidden = NO;
-
+    
     if (_detailViewController) {
         [_detailViewController setPanelNavigationController:self];
         if (self.navigationController) {
             [self.navigationController setViewControllers:[NSArray arrayWithObject:_detailViewController] animated:NO];
             if (sidebarButton == nil) {
-                sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle"] style:UIBarButtonItemStyleBordered target:self action:@selector(toggleSidebar)];
+                sidebarButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_toggle"] style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(toggleSidebar)];
             }
             sidebarButton.accessibilityLabel = NSLocalizedString(@"Toggle", @"Sidebar toggle button");
             
@@ -643,15 +668,24 @@
             [_menuView addSubview:_dividerImageView];
             [_menuView addSubview:_spacerImageView];
             
-            sidebarButton = [[UIBarButtonItem alloc] initWithCustomView:_menuView];
-            _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
-
+            if (IS_IOS7) {
+                UIImage *image = [UIImage imageNamed:@"icon-drawermenu"];
+                UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+                [button setImage:image forState:UIControlStateNormal];
+                [button addTarget:self action:@selector(toggleSidebar) forControlEvents:UIControlEventTouchUpInside];
+                
+                sidebarButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+                
+                [WPStyleGuide setLeftBarButtonItemWithCorrectSpacing:sidebarButton forNavigationItem:_detailViewController.navigationItem];
+            } else {
+                _detailViewController.navigationItem.leftBarButtonItem = sidebarButton;
+            }
+            
         } else {
             [self addChildViewController:_detailViewController];
-
+            
             UIView *wrappedView = [self createWrapViewForViewController:_detailViewController];
-
-
+            
             BOOL newIsWide = [self viewControllerExpectsWidePanel:_detailViewController];
             
             if (newIsWide != oldWasWide) {
@@ -689,9 +723,9 @@
         }
     }
     [self addShadowTo:_detailViewContainer];
-
-    if (IS_IPHONE && closingSidebar) {
-        [self closeSidebar];
+    
+    if (closingSidebar) {
+        [self closeSidebarAnimated:animated];
     }
 }
 
@@ -879,11 +913,20 @@
 
 - (void)showSidebarAnimated:(BOOL)animated {
     [SoundUtil playSwipeSound];
-    
+
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:0 duration:0];
         [self disableDetailView];
     } completion:^(BOOL finished) {
+    }];
+    
+    // The statusBarBackgroundView starts out as transparent in the closed state so if a view controller
+    // decides to remove the navigation bar there won't be a blue status bar hanging out at the top. We
+    // set the color right before we animate this view so that way the color will animate correctly as the
+    // menu opens.
+    self.statusBarBackgroundView.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+    [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) animations:^{
+        self.statusBarBackgroundView.backgroundColor = [WPStyleGuide darkAsNightGrey];
     }];
 }
 
@@ -906,7 +949,17 @@
         [self enableDetailView];
     }];
     
-    if(IS_IPHONE && !self.modalViewController) {
+    [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
+        self.statusBarBackgroundView.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+    } completion:^(BOOL finished) {
+        // We set the statusBarBackgroundView to be a clear color because that way when this menu is closed
+        // and some view controller removes the navigation bar to go into a 'fullscreen' mode such as the
+        // posts editor, we won't have a blue bar sitting at the top.
+        self.statusBarBackgroundView.backgroundColor = [UIColor clearColor];
+    }];
+
+    
+    if(IS_IPHONE && !self.presentedViewController) {
         [SoundUtil playSwipeSound];
     }
 }
@@ -956,8 +1009,6 @@
 }
 
 - (void)disableDetailView {
-    if (IS_IPAD) return;
-
     if (!self.detailTapper) {
         self.detailTapper = [UIButton buttonWithType:UIButtonTypeCustom];
         self.detailTapper.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -981,8 +1032,6 @@
 }
 
 - (void)enableDetailView {
-    if (IS_IPAD) return;
-
     if (self.detailTapper) {
         [self.detailTapper removeTarget:self action:@selector(centerTapped) forControlEvents:UIControlEventTouchUpInside];
         [self.detailTapper removeFromSuperview];
@@ -1002,18 +1051,19 @@
         newPanelWidth = IPAD_WIDE_PANEL_WIDTH;
     }
     CGFloat originX = view.frame.origin.x;
-    if (controller == _detailViewController)
+    if (controller == _detailViewController) {
         originX = 0.0f;
+    }
     view.frame = CGRectMake(originX, 0.0f, newPanelWidth, DETAIL_HEIGHT);
 }
 
 - (void)addShadowTo:(UIView *)view {
-    view.layer.masksToBounds = NO;
-    view.layer.shadowRadius = 6.0f;
-    view.layer.shadowOpacity = 0.8f;
-    view.layer.shadowColor = [[UIColor blackColor] CGColor];
-    view.layer.shadowOffset = CGSizeZero;
-    view.layer.shadowPath = [[UIBezierPath bezierPathWithRect:view.bounds] CGPath];
+//    view.layer.masksToBounds = NO;
+//    view.layer.shadowRadius = 6.0f;
+//    view.layer.shadowOpacity = 0.8f;
+//    view.layer.shadowColor = [[UIColor blackColor] CGColor];
+//    view.layer.shadowOffset = CGSizeZero;
+//    view.layer.shadowPath = [[UIBezierPath bezierPathWithRect:view.bounds] CGPath];
 }
 
 - (void)removeShadowFrom:(UIView *)view {
@@ -1120,33 +1170,47 @@
      */
     if (sender.state == UIGestureRecognizerStateEnded) {
         CGFloat velocity = [sender velocityInView:self.view].x;
-        if (IS_IPAD) {
-            CGFloat nearestOffset = [self nearestValidOffsetWithVelocity:-velocity];
-            //[self setStackOffset:nearestOffset duration:DURATION_FAST];
-            [self setStackOffset:nearestOffset withVelocity:velocity];
-            //pop all extra view controllers if user dragged stack to the right
-            if (offset < 0 && offset <= -120.0f && [self.detailViews count] > 1) {
-                [self animatePoppedIcon];
-                _isShowingPoppedIcon = NO;
-                [self popToRootViewControllerAnimated:YES];
-                [SoundUtil playDiscardSound];
-                [self.delegate resetView];
-            }
+        if (velocity > 0) {
+            [self showSidebarWithVelocity:velocity];
         } else {
-            if (ABS(velocity) < 300) {
-                if (offset < DETAIL_LEDGE_OFFSET / 3) {
-                    [self showSidebarWithVelocity:velocity];
-                } else {
-                    [self closeSidebar];
-                }
-            } else if (velocity > 0) {
-                // Going right
-                [self showSidebarWithVelocity:velocity];
-            } else {
-                [self closeSidebarWithVelocity:velocity];
-            }
+            [self closeSidebarWithVelocity:velocity];
         }
+        return;
     }
+    
+    if (IS_IOS7) {
+        CGFloat percentage = _stackOffset/DETAIL_LEDGE_OFFSET;
+        self.statusBarBackgroundView.backgroundColor = [self statusBarTransitionColorForPercentage:percentage];
+    }
+}
+
+- (UIColor *)statusBarTransitionColorForPercentage:(CGFloat)percentage
+{
+    UIColor *colorWhenSidebarOpened = [WPStyleGuide darkAsNightGrey];
+    UIColor *colorWhenSidebarClosed = [WPStyleGuide newKidOnTheBlockBlue];
+    
+    if (percentage == 1.0) {
+        // We return a transparent color when the sidebar is closed because that way if a view
+        // goes fullscreen(such as the posts editor) then the user won't see this blue bar
+        // at the top
+        return [UIColor clearColor];
+    } else if (percentage == 0.0) {
+        return colorWhenSidebarOpened;
+    }
+    
+    CGFloat startRed, endRed, startBlue, startAlpha, endBlue, startGreen, endGreen, endAlpha;
+    [colorWhenSidebarClosed getRed:&startRed green:&startGreen blue:&startBlue alpha:&startAlpha];
+    [colorWhenSidebarOpened getRed:&endRed green:&endGreen blue:&endBlue alpha:&endAlpha];
+    
+    CGFloat redDifference = startRed - endRed;
+    CGFloat blueDifference = startBlue - endBlue;
+    CGFloat greenDifference = startGreen - endGreen;
+    
+    CGFloat redColor = startRed - redDifference * (1.0 - percentage);
+    CGFloat blueColor = startBlue - blueDifference * (1.0 - percentage);
+    CGFloat greenColor = startGreen - greenDifference * (1.0 - percentage);
+    
+    return [UIColor colorWithRed:redColor green:greenColor blue:blueColor alpha:1.0];
 }
 
 - (void)animatePoppedIcon {
@@ -1252,51 +1316,25 @@
 
 - (void)animateView:(UIView *)view toOffset:(CGFloat)offset withVelocity:(CGFloat)velocity {
     view = [self viewOrViewWrapper:view];
-    CALayer *viewLayer = view.layer;
-    [viewLayer removeAllAnimations];
-    float viewOffset = MAX(0, MIN(offset, self.view.bounds.size.width));
-    
-    CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"position.x"];
-    
-    CGPoint startPosition = viewLayer.position;
-    CGPoint endPosition = CGPointMake(viewOffset+(viewLayer.frame.size.width * 0.5f), startPosition.y);
-    CGFloat distance = ABS(startPosition.x - endPosition.x);
-    NSMutableArray *values = [NSMutableArray arrayWithCapacity:4];
-    NSMutableArray *timingFunctions = [NSMutableArray arrayWithCapacity:3];
-    NSMutableArray *keyTimes = [NSMutableArray arrayWithCapacity:4];
-    [keyTimes addObject:[NSNumber numberWithFloat:0.f]];
-    [values addObject:[NSNumber numberWithFloat:startPosition.x]];
-    CGFloat overShot = 0, duration = ABS(distance/velocity);
-    CAMediaTimingFunction *easeInOut = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    [timingFunctions addObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
-    
-    if(ABS(velocity) > PANEL_MINIMUM_OVERSHOT_VELOCITY && (!IS_IPAD || distance > 10.f)){
-        [timingFunctions addObject:easeInOut];
-        velocity *= 0.25f;
-
-        overShot = 22.f * (velocity * PANEL_OVERSHOT_FRICTION);
-//        distance += ABS(overShot); // added but never used?
-        CGFloat overShotDuration = ABS(overShot/(velocity * (1-PANEL_OVERSHOT_FRICTION))) * 1.25;
-        [keyTimes addObject:[NSNumber numberWithFloat:(duration/(duration+overShotDuration))]];
-        duration += overShotDuration;
-        [values addObject:[NSNumber numberWithFloat:endPosition.x + overShot]];
-    } else {
-        // nothing special, just slide
-        duration = 0.2f;
-        
-    }
-    [keyTimes addObject:[NSNumber numberWithFloat:1.f]];
-    
-    [values addObject:[NSNumber numberWithFloat:endPosition.x]];
-    
-    animation.values = values;
-    animation.timingFunctions = timingFunctions;
-    animation.keyTimes = keyTimes;
-    animation.duration = duration;
-        
-    [viewLayer addAnimation:animation forKey:@"position"];
-    viewLayer.position = endPosition;
-    
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = view.frame;
+        frame.origin.x = offset;
+        view.frame = frame;
+    }];
+    [UIView animateWithDuration:0.3 animations:^{
+        if (offset == 0) {
+            self.statusBarBackgroundView.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+        } else {
+            self.statusBarBackgroundView.backgroundColor = [WPStyleGuide darkAsNightGrey];
+        }
+    } completion:^(BOOL finished){
+        // We set the statusBarBackgroundView to be a clear color because that way when this menu is closed
+        // and some view controller removes the navigation bar to go into a 'fullscreen' mode such as the
+        // posts editor, we won't have a blue bar sitting at the top.
+        if (offset == 0) {
+            self.statusBarBackgroundView.backgroundColor = [UIColor clearColor];
+        }
+    }];
 }
 
 - (void)setStackOffset:(CGFloat)offset withVelocity:(CGFloat)velocity{
@@ -1342,13 +1380,10 @@
     // If we're working with wide panels we need to adjust the offset for the wide panel
     // This makes sure the lefthand side of the panel is correctly positioned over the sidebar.
     if ([self viewControllerExpectsWidePanel:_detailViewController]) {
-        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            if (velocity < 0) {
-                return offset;
-            } else {
-                offset = DETAIL_LEDGE_OFFSET - (self.view.bounds.size.width - IPAD_WIDE_PANEL_WIDTH);
-                
-            }
+        if (velocity < 0) {
+            return offset;
+        } else {
+            offset = DETAIL_LEDGE_OFFSET - (self.view.bounds.size.width - IPAD_WIDE_PANEL_WIDTH);
         }
     }
     // if we have a single panel, transition back to its starting offset.
@@ -1410,26 +1445,7 @@
 }
 
 - (CGFloat)maxOffsetSoft {
-    CGFloat maxSoft;
-    NSUInteger viewCount = [self.detailViewWidths count];
-    if (IS_IPHONE) {
-        maxSoft = DETAIL_LEDGE_OFFSET;
-    } else if (viewCount <= 1) {
-        maxSoft = 0.0f;
-        if ([self viewControllerExpectsWidePanel:_detailViewController] && UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            maxSoft = DETAIL_LEDGE_OFFSET - (self.view.bounds.size.width - IPAD_WIDE_PANEL_WIDTH);
-        }
-    } else {
-        maxSoft = DETAIL_LEDGE_OFFSET - DETAIL_OFFSET;
-        maxSoft+= DETAIL_LEDGE;
-        maxSoft+= [[self.detailViewWidths objectAtIndex:(viewCount - 1)] floatValue];
-        maxSoft+= [[self.detailViewWidths objectAtIndex:(viewCount - 2)] floatValue];
-        maxSoft-= self.view.bounds.size.width;
-        for (int i = viewCount - 3; i >= 0; i--) {
-            maxSoft += [[self.detailViewWidths objectAtIndex:i] floatValue];
-        }
-    }
-    return maxSoft;
+    return DETAIL_LEDGE_OFFSET;
 }
 
 - (CGFloat)maxOffsetHard {
@@ -1453,7 +1469,7 @@
 }
 
 - (CGFloat)minOffsetHard {
-    return DETAIL_LEDGE_OFFSET - self.view.bounds.size.width;
+    return 0.0f;
 }
 
 - (NSInteger)indexForView:(UIView *)view {
@@ -1729,6 +1745,25 @@
     return [NSArray arrayWithArray:viewControllers];
 }
 
+- (UIImage *)loadingImage
+{
+    if (!IS_IPAD) {
+        if ([UIScreen mainScreen].bounds.size.height == 568) {
+            return [UIImage imageNamed:@"Default-568h"];
+        } else {
+            return [UIImage imageNamed:@"Default"];
+        }
+    } else {
+        UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        if (UIInterfaceOrientationIsPortrait(orientation)) {
+            return [UIImage imageNamed:@"Default-Portrait"];
+        } else {
+            return [UIImage imageNamed:@"Default-Landscape"];
+        }
+    }
+    
+    return [UIImage imageNamed:@"Default"];
+}
 
 @end
 

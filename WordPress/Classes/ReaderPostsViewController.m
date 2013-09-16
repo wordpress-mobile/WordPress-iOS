@@ -27,6 +27,7 @@
 #import "WPInfoView.h"
 #import "WPCookie.h"
 #import "NSString+Helpers.h"
+#import "WPPopoverBackgroundView.h"
 
 static CGFloat const ScrollingFastVelocityThreshold = 30.f;
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
@@ -39,6 +40,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     NSInteger _rowsSeen;
     BOOL _isScrollingFast;
     CGFloat _lastOffset;
+    UIPopoverController *_popover;
 }
 
 //@property (nonatomic, strong) NSFetchedResultsController *resultsController;
@@ -108,8 +110,17 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	// Topics button
 	UIBarButtonItem *button = nil;
-    if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
+    if (IS_IOS7) {
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btn setImage:[UIImage imageNamed:@"icon-reader-topics"] forState:UIControlStateNormal];
+        [btn setImage:[UIImage imageNamed:@"icon-reader-topics-active"] forState:UIControlStateHighlighted];
+
+        CGSize imageSize = [UIImage imageNamed:@"icon-reader-topics"].size;
+        btn.frame = CGRectMake(0.0, 0.0, imageSize.width, imageSize.height);
 		
+        [btn addTarget:self action:@selector(handleTopicsButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        button = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    } else {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [btn setImage:[UIImage imageNamed:@"navbar_read"] forState:UIControlStateNormal];
         
@@ -123,34 +134,18 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		
         [btn addTarget:self action:@selector(handleTopicsButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         button = [[UIBarButtonItem alloc] initWithCustomView:btn];
-		
-    } else {
-        button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks
-                                                               target:self
-                                                               action:@selector(handleTopicsButtonTapped:)];
     }
 	
     [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"")];
     
-    if ([button respondsToSelector:@selector(setTintColor:)]) {
+    if (IS_IOS7) {
+        [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:button forNavigationItem:self.navigationItem];
+    } else {
         UIColor *color = [UIColor UIColorFromHex:0x464646];
         button.tintColor = color;
+        [self.navigationItem setRightBarButtonItem:button animated:YES];
     }
     
-	[self.navigationItem setRightBarButtonItem:button animated:YES];
-    if (IS_IPAD) {
-
-		self.navBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 44.0f)];
-		_navBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		[_navBar pushNavigationItem:self.navigationItem animated:NO];
-		[self.view addSubview:_navBar];
-
-		CGRect frame = self.tableView.frame;
-		frame.origin.y = 44.0f;
-		frame.size.height -= 44.0f;
-		self.tableView.frame = frame;
-    }
-	
 	CGRect frame = CGRectMake(0.0f, self.view.bounds.size.height, self.view.bounds.size.width, [ReaderReblogFormView desiredHeight]);
 	self.readerReblogFormView = [[ReaderReblogFormView alloc] initWithFrame:frame];
 	_readerReblogFormView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
@@ -209,7 +204,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.readerReblogFormView = nil;
 	self.friendFinderNudgeView = nil;
-	self.navBar = nil;
 }
 
 
@@ -262,14 +256,23 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 - (void)handleTopicsButtonTapped:(id)sender {
 	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	controller.delegate = self;
-	
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     if (IS_IPAD) {
-        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-		navController.modalPresentationStyle = UIModalPresentationFormSheet;
+        _popover = [[UIPopoverController alloc] initWithContentViewController:controller];
+        _popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
+
+        UIBarButtonItem *shareButton;
+        if (IS_IOS7) {
+            // For iOS7 there is an added spacing element inserted before the share button to adjust the position of the button.
+            shareButton = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
+        } else {
+            shareButton = self.navigationItem.rightBarButtonItem;
+        }
+        [_popover presentPopoverFromBarButtonItem:shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+        navController.navigationBar.translucent = NO;
+        [self presentViewController:navController animated:YES completion:nil];
     }
-	
-    [self presentModalViewController:navController animated:YES];
 }
 
 
@@ -432,6 +435,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 #pragma mark - UIScrollView Delegate Methods
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [super scrollViewDidScroll:scrollView];
+
     CGFloat offset = self.tableView.contentOffset.y;
     // We just take a diff from the last known offset, as the approximation is good enough
     CGFloat velocity = fabsf(offset - _lastOffset);
@@ -780,7 +785,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	ReaderPost *post = [self.resultsController.fetchedObjects objectAtIndex:indexPath.row];
 	
 	ReaderPostDetailViewController *controller = [[ReaderPostDetailViewController alloc] initWithPost:post];
-	[self.panelNavigationController pushViewController:controller fromViewController:self animated:YES];
+    [self.panelNavigationController pushViewController:controller animated:YES];
     
     [WPMobileStats trackEventForWPCom:StatsEventReaderOpenedArticleDetails];
     [WPMobileStats pingWPComStatsEndpoint:@"details_page"];
@@ -832,7 +837,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)readerTopicChanged {
 	if (IS_IPAD){
-		[self.panelNavigationController popToRootViewControllerAnimated:YES];
+        [_popover dismissPopoverAnimated:YES];
 	}
 	
 	_loadingMore = NO;
@@ -1018,12 +1023,13 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     WPFriendFinderViewController *controller = [[WPFriendFinderViewController alloc] initWithNibName:@"WPWebViewController" bundle:nil];
 	
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.navigationBar.translucent = NO;
     if (IS_IPAD) {
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
     }
 	
-    [self presentModalViewController:navController animated:YES];
+    [self presentViewController:navController animated:YES completion:nil];
     
     [controller loadURL:kMobileReaderFFURL];
 }

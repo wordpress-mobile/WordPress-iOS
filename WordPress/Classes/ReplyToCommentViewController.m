@@ -13,11 +13,11 @@
 @synthesize delegate;
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    WPFLogMethod();
 	[super viewDidLoad];
     
     // Replace the text of the existing save button with "Reply"
-    self.navigationItem.rightBarButtonItem.title = @"Reply";
+    self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Reply", nil);
 	self.isEditing = YES;
  }
 
@@ -76,7 +76,7 @@
 	if (delegate) {
 		[delegate cancelReplyToCommentViewController:self];
 	} else {
-		[self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
 	}
 }
 
