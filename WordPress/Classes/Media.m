@@ -72,9 +72,9 @@
 - (void)updateFromDictionary:(NSDictionary*)json {
     self.remoteURL = json[@"link"];
     self.title = json[@"title"];
-    self.width = [json objectForKeyPath:@"metadata.width"];
-    self.height = [json objectForKeyPath:@"metadata.height"];
-    self.mediaID = [json[@"attachment_id"] numericValue];
+    self.width = [json numberForKeyPath:@"metadata.width"];
+    self.height = [json numberForKeyPath:@"metadata.height"];
+    self.mediaID = [json numberForKey:@"attachment_id"];
     self.filename = [[json objectForKeyPath:@"metadata.file"] lastPathComponent];
     self.creationDate = json[@"date_created_gmt"];
     self.caption = json[@"caption"];
