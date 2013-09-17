@@ -1093,7 +1093,7 @@ NSDictionary *_classesForNames = nil;
 			else
 			{
 				// didn't have any blocks before, start new array
-				blocks = [NSArray arrayWithObject:newBlock];
+				blocks = [[NSArray arrayWithObject:newBlock] mutableCopy];
 			}
 			
 			self.paragraphStyle.textBlocks = blocks;

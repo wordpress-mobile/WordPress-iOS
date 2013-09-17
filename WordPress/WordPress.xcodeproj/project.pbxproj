@@ -20,6 +20,9 @@
 		1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* WordPressAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		2604D0C017BC234F0079F51E /* GrowingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2604D0BF17BC234F0079F51E /* GrowingImageView.m */; };
+		262CB6E917CE5E3E00B574C4 /* WPModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 262CB6E717CE5E3E00B574C4 /* WPModalViewController.m */; };
+		262CB6EA17CE5E3E00B574C4 /* WPModalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 262CB6E817CE5E3E00B574C4 /* WPModalViewController.xib */; };
 		28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD735F0D9D9599002E5188 /* MainWindow.xib */; };
 		2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2906F810110CDA8900169D56 /* EditCommentViewController.m */; };
 		2906F813110CDA8900169D56 /* EditCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2906F811110CDA8900169D56 /* EditCommentViewController.xib */; };
@@ -903,6 +906,11 @@
 		1D3623240D0F684500981E51 /* WordPressAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* WordPressAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WordPressAppDelegate.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		1D6058910D05DD3D006BFB54 /* WordPress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordPress.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2604D0BE17BC234F0079F51E /* GrowingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowingImageView.h; sourceTree = "<group>"; };
+		2604D0BF17BC234F0079F51E /* GrowingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowingImageView.m; sourceTree = "<group>"; };
+		262CB6E617CE5E3E00B574C4 /* WPModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPModalViewController.h; sourceTree = "<group>"; };
+		262CB6E717CE5E3E00B574C4 /* WPModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPModalViewController.m; sourceTree = "<group>"; };
+		262CB6E817CE5E3E00B574C4 /* WPModalViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPModalViewController.xib; sourceTree = "<group>"; };
 		28A0AAE50D9B0CCF005BE974 /* WordPress_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPress_Prefix.pch; sourceTree = "<group>"; };
 		28AD735F0D9D9599002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = "<group>"; };
 		2906F80F110CDA8900169D56 /* EditCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCommentViewController.h; sourceTree = "<group>"; };
@@ -2079,6 +2087,8 @@
 				E183EC9916B16CCF00C2EB11 /* AutosavingIndicatorView.m */,
 				E1ECF7DD17A7CEE600535A05 /* ViewAdminButton.h */,
 				E1ECF7DE17A7CEE600535A05 /* ViewAdminButton.m */,
+				2604D0BE17BC234F0079F51E /* GrowingImageView.h */,
+				2604D0BF17BC234F0079F51E /* GrowingImageView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -3171,6 +3181,9 @@
 				E1921F5917733C3E000F4079 /* WPImageSource.m */,
 				E1E4CE091773C59B00430844 /* WPAvatarSource.h */,
 				E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */,
+				262CB6E617CE5E3E00B574C4 /* WPModalViewController.h */,
+				262CB6E717CE5E3E00B574C4 /* WPModalViewController.m */,
+				262CB6E817CE5E3E00B574C4 /* WPModalViewController.xib */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -3754,7 +3767,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = WordPress;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "WordPress" */;
@@ -4397,6 +4410,7 @@
 				E1F77438178C282000E70764 /* NNGPlusActivity~iphone.png in Resources */,
 				E1D95EBF17A2AB7400A3E9F3 /* video_play.png in Resources */,
 				E1D95EC017A2AB7400A3E9F3 /* video_play@2x.png in Resources */,
+				262CB6EA17CE5E3E00B574C4 /* WPModalViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4486,7 +4500,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "[ -f ~/.wpcom_app_credentials ] && source ~/.wpcom_app_credentials\n\n if [ \"x$CRASHLYTICS_API_KEY\" != \"x\" ]; then\n ./Crashlytics.framework/run $CRASHLYTICS_API_KEY\n else\n echo \"warning: Crashytics API Key not found\"\n fi";
+			shellScript = "[ -f ~/.wpcom_app_credentials ] && source ~/.wpcom_app_credentials\n\n if [ \"x$CRASHLYTICS_API_KEY\" != \"x\" ]; then\n ./Crashlytics.framework/run $CRASHLYTICS_API_KEY\n else\n echo \"warning: Crashlytics API Key not found\"\n fi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -4677,6 +4691,8 @@
 				851734431798C64700A30E27 /* NSURL+Util.m in Sources */,
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
 				E1ECF7DF17A7CEE600535A05 /* ViewAdminButton.m in Sources */,
+				2604D0C017BC234F0079F51E /* GrowingImageView.m in Sources */,
+				262CB6E917CE5E3E00B574C4 /* WPModalViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4773,7 +4789,31 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/CTidy\"",
+					"\"${PODS_ROOT}/Headers/DTCoreText\"",
+					"\"${PODS_ROOT}/Headers/DTFoundation\"",
+					"\"${PODS_ROOT}/Headers/JSONKit\"",
+					"\"${PODS_ROOT}/Headers/MGImageUtilities\"",
+					"\"${PODS_ROOT}/Headers/Mixpanel\"",
+					"\"${PODS_ROOT}/Headers/NSObject-SafeExpectations\"",
+					"\"${PODS_ROOT}/Headers/NSURL+IDN\"",
+					"\"${PODS_ROOT}/Headers/OHHTTPStubs\"",
+					"\"${PODS_ROOT}/Headers/Quantcast-Measure\"",
+					"\"${PODS_ROOT}/Headers/Reachability\"",
+					"\"${PODS_ROOT}/Headers/SFHFKeychainUtils\"",
+					"\"${PODS_ROOT}/Headers/SSKeychain\"",
+					"\"${PODS_ROOT}/Headers/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/UIDeviceIdentifier\"",
+					"\"${PODS_ROOT}/Headers/WordPressApi\"",
+					"\"${PODS_ROOT}/Headers/google-plus-ios-sdk\"",
+					"\"${PODS_ROOT}/Headers/wpxmlrpc\"",
+					"\"$(SDKROOT)/usr/include/libxml2\"",
+				);
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Vendor/facebook-ios-sdk\"",
@@ -4795,7 +4835,7 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4808,7 +4848,31 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/CTidy\"",
+					"\"${PODS_ROOT}/Headers/DTCoreText\"",
+					"\"${PODS_ROOT}/Headers/DTFoundation\"",
+					"\"${PODS_ROOT}/Headers/JSONKit\"",
+					"\"${PODS_ROOT}/Headers/MGImageUtilities\"",
+					"\"${PODS_ROOT}/Headers/Mixpanel\"",
+					"\"${PODS_ROOT}/Headers/NSObject-SafeExpectations\"",
+					"\"${PODS_ROOT}/Headers/NSURL+IDN\"",
+					"\"${PODS_ROOT}/Headers/OHHTTPStubs\"",
+					"\"${PODS_ROOT}/Headers/Quantcast-Measure\"",
+					"\"${PODS_ROOT}/Headers/Reachability\"",
+					"\"${PODS_ROOT}/Headers/SFHFKeychainUtils\"",
+					"\"${PODS_ROOT}/Headers/SSKeychain\"",
+					"\"${PODS_ROOT}/Headers/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/UIDeviceIdentifier\"",
+					"\"${PODS_ROOT}/Headers/WordPressApi\"",
+					"\"${PODS_ROOT}/Headers/google-plus-ios-sdk\"",
+					"\"${PODS_ROOT}/Headers/wpxmlrpc\"",
+					"\"$(SDKROOT)/usr/include/libxml2\"",
+				);
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Vendor/facebook-ios-sdk\"",
@@ -4853,6 +4917,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4864,7 +4929,31 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/CTidy\"",
+					"\"${PODS_ROOT}/Headers/DTCoreText\"",
+					"\"${PODS_ROOT}/Headers/DTFoundation\"",
+					"\"${PODS_ROOT}/Headers/JSONKit\"",
+					"\"${PODS_ROOT}/Headers/MGImageUtilities\"",
+					"\"${PODS_ROOT}/Headers/Mixpanel\"",
+					"\"${PODS_ROOT}/Headers/NSObject-SafeExpectations\"",
+					"\"${PODS_ROOT}/Headers/NSURL+IDN\"",
+					"\"${PODS_ROOT}/Headers/OHHTTPStubs\"",
+					"\"${PODS_ROOT}/Headers/Quantcast-Measure\"",
+					"\"${PODS_ROOT}/Headers/Reachability\"",
+					"\"${PODS_ROOT}/Headers/SFHFKeychainUtils\"",
+					"\"${PODS_ROOT}/Headers/SSKeychain\"",
+					"\"${PODS_ROOT}/Headers/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/UIDeviceIdentifier\"",
+					"\"${PODS_ROOT}/Headers/WordPressApi\"",
+					"\"${PODS_ROOT}/Headers/google-plus-ios-sdk\"",
+					"\"${PODS_ROOT}/Headers/wpxmlrpc\"",
+					"\"$(SDKROOT)/usr/include/libxml2\"",
+				);
 				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Vendor/facebook-ios-sdk\"",
@@ -4874,6 +4963,7 @@
 					"-Wno-format-security",
 				);
 				PRODUCT_NAME = WordPress;
+				PROVISIONING_PROFILE = "";
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4908,6 +4998,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4919,12 +5010,37 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/CTidy\"",
+					"\"${PODS_ROOT}/Headers/DTCoreText\"",
+					"\"${PODS_ROOT}/Headers/DTFoundation\"",
+					"\"${PODS_ROOT}/Headers/JSONKit\"",
+					"\"${PODS_ROOT}/Headers/MGImageUtilities\"",
+					"\"${PODS_ROOT}/Headers/Mixpanel\"",
+					"\"${PODS_ROOT}/Headers/NSObject-SafeExpectations\"",
+					"\"${PODS_ROOT}/Headers/NSURL+IDN\"",
+					"\"${PODS_ROOT}/Headers/OHHTTPStubs\"",
+					"\"${PODS_ROOT}/Headers/Quantcast-Measure\"",
+					"\"${PODS_ROOT}/Headers/Reachability\"",
+					"\"${PODS_ROOT}/Headers/SFHFKeychainUtils\"",
+					"\"${PODS_ROOT}/Headers/SSKeychain\"",
+					"\"${PODS_ROOT}/Headers/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/UIDeviceIdentifier\"",
+					"\"${PODS_ROOT}/Headers/WordPressApi\"",
+					"\"${PODS_ROOT}/Headers/google-plus-ios-sdk\"",
+					"\"${PODS_ROOT}/Headers/wpxmlrpc\"",
+					"\"$(SDKROOT)/usr/include/libxml2\"",
+				);
 				INFOPLIST_FILE = "Info-beta.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Vendor/facebook-ios-sdk\"",
 				);
 				PRODUCT_NAME = WordPress;
+				PROVISIONING_PROFILE = "";
 				STRIP_INSTALLED_PRODUCT = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -4943,6 +5059,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-DDEBUG",
@@ -4983,7 +5100,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
@@ -5017,7 +5133,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
@@ -5044,7 +5159,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
@@ -5071,7 +5185,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;

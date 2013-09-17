@@ -6,16 +6,49 @@
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
 
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
+BOOL isUIKitFlatMode(void) {
+    static BOOL isUIKitFlatMode = NO;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7")) {
+            // If your app is running in legacy mode, tintColor will be nil - else it must be set to some color.
+            if (UIApplication.sharedApplication.keyWindow) {
+                isUIKitFlatMode = [UIApplication.sharedApplication.delegate.window performSelector:@selector(tintColor)] != nil;
+            } else {
+                // Possible that we're called early on (e.g. when used in a Storyboard). Adapt and use a temporary window.
+                isUIKitFlatMode = [[UIWindow new] performSelector:@selector(tintColor)] != nil;
+            }
+        }
+    });
+    return isUIKitFlatMode;
+}
+
 #define kPasswordFooterSectionHeight         68.0f
 #define kResizePhotoSettingSectionHeight     60.0f
-#define TAG_PICKER_STATUS       0
-#define TAG_PICKER_VISIBILITY   1
-#define TAG_PICKER_DATE         2
-#define TAG_PICKER_FORMAT       3
 
-@interface PostSettingsViewController () {
+#define kTagPickerStatus            0
+#define kTagPickerVisibility        1
+#define kTagPickerDate              2
+#define kTagPickerFormat            3
+
+#define kStatusSection              0
+#define kFormatsSection             1
+#define kFeaturedImageSection       2
+#define kGeoLocationSection         3
+
+#define kStatusRow                  0
+#define kVisiblityRow               1
+#define kDateRow                    2
+
+@interface PostSettingsViewController () <UIGestureRecognizerDelegate> {
     BOOL triedAuthOnce;
 }
+
+@property (strong, nonatomic) UIView *pickerParentView;
+
+@property (strong, nonatomic) UITapGestureRecognizer *pickerTapGestureRecognizer;
 
 @property (nonatomic, strong) AbstractPost *apost;
 - (void)showPicker:(UIView *)picker;
@@ -77,10 +110,14 @@
     visibilityTitleLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
     postFormatTitleLabel.text = NSLocalizedString(@"Post Format", @"The post formats available for the post. Should be the same as in core WP.");
     passwordTextField.placeholder = NSLocalizedString(@"Enter a password", @"");
-    NSMutableArray *allStatuses = [NSMutableArray arrayWithArray:[self.apost availableStatuses]];
+    NSMutableArray *allStatuses = [[self.apost availableStatuses] mutableCopy];
     [allStatuses removeObject:NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
     statusList = [NSArray arrayWithArray:allStatuses];
-    visibilityList = [NSArray arrayWithObjects:NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."), NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."), NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP."), nil];
+    visibilityList = @[
+                   NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
+                   NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
+                   NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")
+                   ];
     formatsList = self.post.blog.sortedPostFormatNames;
 
     isShowingKeyboard = NO;
@@ -123,6 +160,7 @@
     featuredImageView.layer.shadowColor = [[UIColor blackColor] CGColor];
     featuredImageView.layer.shadowOpacity = 0.5f;
     featuredImageView.layer.shadowRadius = 1.0f;
+    featuredImageView.fullView = self.view;
     
     // Check if blog supports featured images
     id supportsFeaturedImages = [self.post.blog getOptionValue:@"post_thumbnail"];
@@ -186,6 +224,22 @@
     [super viewWillAppear:animated];
     [self reloadData];
 	[statusTableViewCell becomeFirstResponder];
+    [featuredImageView shrinkFullImageView:FALSE];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+    if (self.pickerParentView) {
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        self.pickerParentView.transform = [self transformForOrientation:toInterfaceOrientation];
+        CGRect frame = CGRectMake(0, 0, CGRectGetWidth(window.bounds), CGRectGetHeight(window.bounds));
+        self.pickerParentView.frame = frame;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -196,15 +250,13 @@
 #pragma mark -
 #pragma mark Rotation Methods
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self reloadData];
 }
-
 
 #pragma mark -
 #pragma mark Instance Methods
@@ -276,7 +328,6 @@
     [operation start];
 }
 
-
 - (void)endEditingAction:(id)sender {
 	if (passwordTextField != nil){
         [passwordTextField resignFirstResponder];
@@ -300,6 +351,21 @@
 }
 
 #pragma mark -
+#pragma mark Private Methods
+
+- (CGAffineTransform)transformForOrientation:(UIInterfaceOrientation)orientation {
+	if (orientation == UIInterfaceOrientationLandscapeLeft) {
+		return CGAffineTransformMakeRotation(M_PI*1.5);
+	} else if (orientation == UIInterfaceOrientationLandscapeRight) {
+		return CGAffineTransformMakeRotation(M_PI/2);
+	} else if (orientation == UIInterfaceOrientationPortraitUpsideDown) {
+		return CGAffineTransformMakeRotation(-M_PI);
+	} else {
+		return CGAffineTransformIdentity;
+	}
+}
+
+#pragma mark -
 #pragma mark TextField Delegate Methods
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -311,7 +377,6 @@
     [textField resignFirstResponder];
     return YES;
 }
-
 
 #pragma mark -
 #pragma mark TableView Methods
@@ -452,7 +517,7 @@
                         }
                     }
                 }
-                [activityCell.textLabel setText:@"Set Featured Image"];
+                [activityCell.textLabel setText:NSLocalizedString(@"Set Featured Image", @"Set Featured Image")];
                 return activityCell;
                 
                 
@@ -631,19 +696,18 @@
         return 44.0f;
 }
 
-
 - (void)tableView:(UITableView *)aTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
-		case 0:
+		case kStatusSection:
 			switch (indexPath.row) {
-				case 0:
+				case kStatusRow:
 				{
 					if ([self.apost.status isEqualToString:@"private"])
 						break;
                     
                     [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedStatus forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
                     
-					pickerView.tag = TAG_PICKER_STATUS;
+					pickerView.tag = kTagPickerStatus;
 					[pickerView reloadAllComponents];
                     NSInteger selectedRowIndex = [statusList indexOfObject:self.apost.statusTitle];
                     if (selectedRowIndex != NSNotFound) {
@@ -652,11 +716,11 @@
 					[self showPicker:pickerView];
 					break;
 				}
-				case 1:
+				case kVisiblityRow:
 				{
                     [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedVisibility forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-
-					pickerView.tag = TAG_PICKER_VISIBILITY;
+                    
+					pickerView.tag = kTagPickerVisibility;
 					[pickerView reloadAllComponents];
                     NSInteger selectedRowIndex = [visibilityList indexOfObject:visibilityLabel.text];
                     if (selectedRowIndex != NSNotFound) {
@@ -665,28 +729,28 @@
 					[self showPicker:pickerView];
 					break;
 				}
-				case 2:
+				case kDateRow:
                     [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedScheduleFor forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-
-					datePickerView.tag = TAG_PICKER_DATE;
+                    
+					datePickerView.tag = kTagPickerDate;
 					if (self.apost.dateCreated)
 						datePickerView.date = self.apost.dateCreated;
 					else
-						datePickerView.date = [NSDate date];            
+						datePickerView.date = [NSDate date];
 					[self showPicker:datePickerView];
 					break;
-
+                    
 				default:
 					break;
 			}
 			break;
-        case 1:
+        case kFormatsSection:
         {
             if( [formatsList count] == 0 ) break;
             
             [WPMobileStats flagProperty:StatsPropertyPostDetailSettingsClickedPostFormat forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-
-            pickerView.tag = TAG_PICKER_FORMAT;
+            
+            pickerView.tag = kTagPickerFormat;
             [pickerView reloadAllComponents];
             if ([formatsList count] != 0 && ([formatsList indexOfObject:self.post.postFormatText] != NSNotFound)) {
                 NSInteger selectedRowIndex = [formatsList indexOfObject:self.post.postFormatText];
@@ -697,7 +761,7 @@
             [self showPicker:pickerView];
             break;
         }
-		case 2:
+		case kFeaturedImageSection:
             if (blogSupportsFeaturedImage) {
                 UITableViewCell *cell = [aTableView cellForRowAtIndexPath:indexPath];
                 switch (indexPath.row) {
@@ -717,7 +781,7 @@
                 [self geolocationCellTapped:indexPath];
             }
             break;
-          case 3:
+        case kGeoLocationSection:
             [self geolocationCellTapped:indexPath];
             break;
 	}
@@ -817,13 +881,13 @@
     [tableView reloadData];
 }
 
-- (NSString *)formattedStatEventString:(NSString *)event
-{
+- (NSString *)formattedStatEventString:(NSString *)event {
     return [NSString stringWithFormat:@"%@ - %@", self.statsPrefix, event];
 }
 
 #pragma mark -
 #pragma mark UIActionSheetDelegate
+
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0) {
         [featuredImageTableViewCell setSelectionStyle:UITableViewCellSelectionStyleBlue];
@@ -831,7 +895,6 @@
         [postDetailViewController refreshButtons];
         [tableView reloadData];
     }
-    
 }
 
 #pragma mark -
@@ -842,11 +905,11 @@
 }
 
 - (NSInteger)pickerView:(UIPickerView *)aPickerView numberOfRowsInComponent:(NSInteger)component {
-    if (aPickerView.tag == TAG_PICKER_STATUS) {
+    if (aPickerView.tag == kTagPickerStatus) {
         return [statusList count];
-    } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
+    } else if (aPickerView.tag == kTagPickerVisibility) {
         return [visibilityList count];
-    } else if (aPickerView.tag == TAG_PICKER_FORMAT) {
+    } else if (aPickerView.tag == kTagPickerFormat) {
         return [formatsList count];
     }
     return 0;
@@ -856,11 +919,11 @@
 #pragma mark UIPickerViewDelegate
 
 - (NSString *)pickerView:(UIPickerView *)aPickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    if (aPickerView.tag == TAG_PICKER_STATUS) {
+    if (aPickerView.tag == kTagPickerStatus) {
         return [statusList objectAtIndex:row];
-    } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
+    } else if (aPickerView.tag == kTagPickerVisibility) {
         return [visibilityList objectAtIndex:row];
-    } else if (aPickerView.tag == TAG_PICKER_FORMAT) {
+    } else if (aPickerView.tag == kTagPickerFormat) {
         return [formatsList objectAtIndex:row];
     }
 
@@ -868,9 +931,9 @@
 }
 
 - (void)pickerView:(UIPickerView *)aPickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    if (aPickerView.tag == TAG_PICKER_STATUS) {
+    if (aPickerView.tag == kTagPickerStatus) {
         self.apost.statusTitle = [statusList objectAtIndex:row];
-    } else if (aPickerView.tag == TAG_PICKER_VISIBILITY) {
+    } else if (aPickerView.tag == kTagPickerVisibility) {
         NSString *visibility = [visibilityList objectAtIndex:row];
         if ([visibility isEqualToString:NSLocalizedString(@"Private", @"Post privacy status in the Post Editor/Settings area (compare with WP core translations).")]) {
             self.apost.status = @"private";
@@ -885,25 +948,25 @@
                 self.apost.password = nil;
             }
         }
-    } else if (aPickerView.tag == TAG_PICKER_FORMAT) {
+    } else if (aPickerView.tag == kTagPickerFormat) {
         self.post.postFormatText = [formatsList objectAtIndex:row];
     }
 	[postDetailViewController refreshButtons];
     [tableView reloadData];
 }
 
-
 #pragma mark -
 #pragma mark Pickers and keyboard animations
 
 - (void)showPicker:(UIView *)picker {
-    if (isShowingKeyboard)
-        [passwordTextField resignFirstResponder];
+    if (isShowingKeyboard) {
+        [self.view endEditing:TRUE];
+    }
 
     if (IS_IPAD) {
         
         UIViewController *fakeController = [[UIViewController alloc] init];
-        if (picker.tag == TAG_PICKER_DATE) {
+        if (picker.tag == kTagPickerDate) {
             fakeController.contentSizeForViewInPopover = CGSizeMake(320.0f, 256.0f);
 
             UISegmentedControl *publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")]];
@@ -929,11 +992,11 @@
         }
         
         CGRect popoverRect;
-        if (picker.tag == TAG_PICKER_STATUS)
+        if (picker.tag == kTagPickerStatus)
             popoverRect = [self.view convertRect:statusLabel.frame fromView:[statusLabel superview]];
-        else if (picker.tag == TAG_PICKER_VISIBILITY)
+        else if (picker.tag == kTagPickerVisibility)
             popoverRect = [self.view convertRect:visibilityLabel.frame fromView:[visibilityLabel superview]];
-        else if (picker.tag == TAG_PICKER_FORMAT)
+        else if (picker.tag == kTagPickerFormat)
             popoverRect = [self.view convertRect:postFormatLabel.frame fromView:[postFormatLabel superview]];
         else 
             popoverRect = [self.view convertRect:publishOnDateLabel.frame fromView:[publishOnDateLabel superview]];
@@ -942,40 +1005,23 @@
         [popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         
     } else {
-    
-        CGFloat width = postDetailViewController.view.frame.size.width;
-        CGFloat height = 0.0;
+        UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), CGRectGetHeight(picker.frame) + 44.0f)];
+        bottomView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         
-        // Refactor this class to not use UIActionSheets for display. See trac #1509.
-        // <rant>Shoehorning a UIPicker inside a UIActionSheet is just madness.</rant>
-        // For now, hardcoding height values for the iPhone so we don't get
-        // a funky gap at the bottom of the screen on the iPhone 5.
-        if(postDetailViewController.view.frame.size.height <= 416.0f) {
-            height = 490.0f;
-        } else {
-            height = 500.0f;
-        }
-        if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation)){
-            height = 460.0f; // Show most of the actionsheet but keep the top of the view visible.
-        }
-        
-        UIView *pickerWrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 260.0f)]; // 216 + 44 (height of the picker and the "tooblar")
-        pickerWrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-        [pickerWrapperView addSubview:picker];
-                
+        UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(bottomView.frame), 1)];
+        topLineView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        topLineView.backgroundColor = isUIKitFlatMode() ? [UIColor lightGrayColor] : [UIColor blackColor];
+        [bottomView addSubview:topLineView];
+
         CGRect pickerFrame = picker.frame;
-        pickerFrame.size.width = width;
+        pickerFrame.size.width = CGRectGetWidth(bottomView.frame);
         picker.frame = pickerFrame;
-        
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:nil cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-        [actionSheet setActionSheetStyle:UIActionSheetStyleAutomatic];
-        [actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)];
-        
-        [actionSheet addSubview:pickerWrapperView];
+        picker.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        [bottomView addSubview:picker];
 
         UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")]];
         closeButton.momentary = YES;
-        CGFloat x = self.view.frame.size.width - 60.0f;
+        CGFloat x = CGRectGetWidth(self.view.frame) - 60.0f;
         closeButton.frame = CGRectMake(x, 7.0f, 50.0f, 30.0f);
         closeButton.segmentedControlStyle = UISegmentedControlStyleBar;
         if ([closeButton respondsToSelector:@selector(setTintColor:)]) {
@@ -983,10 +1029,10 @@
         }
         [closeButton addTarget:self action:@selector(hidePicker) forControlEvents:UIControlEventValueChanged];
         closeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-        [pickerWrapperView addSubview:closeButton];
-        
+        [bottomView addSubview:closeButton];
+
         UISegmentedControl *publishNowButton = nil;
-        if (picker.tag == TAG_PICKER_DATE) {
+        if (picker.tag == kTagPickerDate) {
             publishNowButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Publish Immediately", @"Post publishing status in the Post Editor/Settings area (compare with WP core translations).")]];
             publishNowButton.momentary = YES; 
             publishNowButton.frame = CGRectMake(10.0f, 7.0f, 129.0f, 30.0f);
@@ -995,7 +1041,7 @@
                 publishNowButton.tintColor = [UIColor blackColor];
             }
             [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
-            [pickerWrapperView addSubview:publishNowButton];
+            [bottomView addSubview:publishNowButton];
         }
         
         if ([[UISegmentedControl class] respondsToSelector:@selector(appearance)]) {
@@ -1022,14 +1068,66 @@
             }
         }
         
-        [actionSheet showInView:postDetailViewController.view];
-        [actionSheet setBounds:CGRectMake(0.0f, 0.0f, width, height)]; // Update the bounds again now that its in the view else it won't draw correctly.
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        CGRect parentFrame = window.bounds;
+        
+        UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            parentFrame = CGRectMake(0, 0, CGRectGetHeight(window.bounds), CGRectGetWidth(window.bounds));
+        }
+        
+        UIView *pickerParentView = [[UIView alloc] initWithFrame:parentFrame];
+        self.pickerParentView = pickerParentView;
+        pickerParentView.autoresizesSubviews = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        pickerParentView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
+        
+        // dock bottom view
+        CGRect bottomFrame = bottomView.frame;
+        bottomFrame.origin.y = CGRectGetHeight(pickerParentView.frame) - CGRectGetHeight(bottomView.frame);
+        bottomView.frame = bottomFrame;
+        
+        bottomView.backgroundColor = isUIKitFlatMode() ? [[UIColor darkGrayColor] colorWithAlphaComponent:0.9] : [UIColor colorWithPatternImage:[self pickerBackgroundImage]];
+        [pickerParentView addSubview:bottomView];
+        
+        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hidePicker)];
+        tapGestureRecognizer.delegate = self;
+        pickerParentView.gestureRecognizers = @[tapGestureRecognizer];
+        self.pickerTapGestureRecognizer = tapGestureRecognizer;
+        
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            pickerParentView.transform = [self transformForOrientation:orientation];
+            pickerParentView.frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(pickerParentView.frame), CGRectGetHeight(pickerParentView.frame));
+        }
+        
+        // hide the bottom view below the parent view to animate it into view
+        CGRect shownFrame = bottomView.frame;
+        CGRect hiddenFrame = bottomView.frame;
+        hiddenFrame.origin.y += CGRectGetHeight(bottomView.frame);
+        bottomView.frame = hiddenFrame;
+        
+        // add to window (does not get rotation messages but does appear on top)
+        [window addSubview:pickerParentView];
+
+        // animate the bottom view into the shown position
+        [UIView animateWithDuration:0.25 animations:^{
+            bottomView.frame = shownFrame;
+        } completion:^(BOOL finished) {
+        }];
     }
 }
 
 - (void)hidePicker {
-    [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-     actionSheet = nil;
+    UIView *bottomView = self.pickerParentView.subviews[0];
+    CGRect hiddenFrame = bottomView.frame;
+    hiddenFrame.origin.y += CGRectGetHeight(bottomView.frame);
+    
+    // animate the bottom view down and out of view
+    [UIView animateWithDuration:0.25 animations:^{
+        bottomView.frame = hiddenFrame;
+    } completion:^(BOOL finished) {
+        [self.pickerParentView removeFromSuperview];
+        self.pickerParentView = nil;
+    }];
 }
 
 - (void)removeDate {
@@ -1040,7 +1138,6 @@
         [popover dismissPopoverAnimated:YES];
     else
         [self hidePicker];
-
 }
 
 - (void)keyboardWillShow:(NSNotification *)keyboardInfo {
@@ -1049,6 +1146,50 @@
 
 - (void)keyboardWillHide:(NSNotification *)keyboardInfo {
     isShowingKeyboard = NO;
+}
+
+- (UIImage *)pickerBackgroundImage {
+    static UIImage *image = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(320, 266), NO, 0.0f);
+        
+        //// General Declarations
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        
+        //// Color Declarations
+        UIColor* topColor = [UIColor colorWithRed: 0.269 green: 0.269 blue: 0.269 alpha: 1];
+        UIColor* bottomColor = [UIColor blackColor];
+        
+        //// Gradient Declarations
+        NSArray* gradientColors = [NSArray arrayWithObjects:
+                                   (id)topColor.CGColor,
+                                   (id)[UIColor colorWithRed: 0.23 green: 0.23 blue: 0.23 alpha: 1].CGColor,
+                                   (id)bottomColor.CGColor, nil];
+        CGFloat gradientLocations[] = {0, 0.1, 1};
+        CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)gradientColors, gradientLocations);
+        
+        //// Rectangle Drawing
+        UIBezierPath* rectanglePath = [UIBezierPath bezierPathWithRect: CGRectMake(0, 0, 320, 266)];
+        CGContextSaveGState(context);
+        [rectanglePath addClip];
+        CGContextDrawLinearGradient(context, gradient, CGPointMake(160, 0), CGPointMake(160, 266), 0);
+        CGContextRestoreGState(context);
+        [[UIColor blackColor] setStroke];
+        rectanglePath.lineWidth = 1;
+        [rectanglePath stroke];
+        
+        
+        //// Cleanup
+        CGGradientRelease(gradient);
+        CGColorSpaceRelease(colorSpace);
+        
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+    });
+    return image;
 }
 
 #pragma mark -
@@ -1092,7 +1233,8 @@
     // else skip the event and process the next one.
 }
 
-#pragma mark - CLGecocoder wrapper
+#pragma mark - 
+#pragma mark CLGecocoder wrapper
 
 - (void)geocodeCoordinate:(CLLocationCoordinate2D)c {
 	if (reverseGeocoder) {
@@ -1121,4 +1263,16 @@
     }];
 }
 
+#pragma mark -
+#pragma mark UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    // only respond tapping the main view, not any subview which may use the touch events
+    if (self.pickerTapGestureRecognizer == gestureRecognizer) {
+        return touch.view == self.pickerParentView;
+    }
+    else {
+        return TRUE;
+    }
+}
 @end
