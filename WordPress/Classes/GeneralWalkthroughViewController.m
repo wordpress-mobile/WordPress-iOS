@@ -549,6 +549,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     if (_pageControl == nil) {
         // The page control adds a bunch of extra space for padding that messes with our calculations.
         _pageControl = [[UIPageControl alloc] init];
+        [_pageControl addTarget:self action:@selector(pageNumberChanged:) forControlEvents:UIControlEventValueChanged];
         _pageControl.numberOfPages = 3;
         [_pageControl sizeToFit];
         [WPNUXUtility configurePageControlTintColors:_pageControl];
@@ -948,6 +949,15 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         _viewedPage3 = true;
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughViewedPage3];
     }
+}
+
+- (void)pageNumberChanged:(UIPageControl *)pageControl
+{
+    NSInteger pageNumber = pageControl.currentPage;
+    
+    [_scrollView setContentOffset:CGPointMake(_viewWidth * pageNumber, 0) animated:YES];
+    
+    _currentPage = pageNumber;
 }
 
 - (void)showCompletionWalkthrough
