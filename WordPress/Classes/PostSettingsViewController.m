@@ -121,7 +121,7 @@ BOOL isUIKitFlatMode(void) {
     formatsList = self.post.blog.sortedPostFormatNames;
 
     isShowingKeyboard = NO;
-        
+    
     CGRect pickerFrame;
 	if (IS_IPAD)
 		pickerFrame = CGRectMake(0.0f, 0.0f, 320.0f, 216.0f);
@@ -1068,7 +1068,6 @@ BOOL isUIKitFlatMode(void) {
             }
         }
         
-        
         UIWindow *window = [[UIApplication sharedApplication] keyWindow];
         CGRect parentFrame = window.bounds;
         
@@ -1100,16 +1099,16 @@ BOOL isUIKitFlatMode(void) {
             pickerParentView.frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(pickerParentView.frame), CGRectGetHeight(pickerParentView.frame));
         }
         
-        // now hide the bottom view below the parent view
-        
+        // hide the bottom view below the parent view to animate it into view
         CGRect shownFrame = bottomView.frame;
         CGRect hiddenFrame = bottomView.frame;
         hiddenFrame.origin.y += CGRectGetHeight(bottomView.frame);
         bottomView.frame = hiddenFrame;
         
-        // add to window instead (but lose rotation messages)
+        // add to window (does not get rotation messages but does appear on top)
         [window addSubview:pickerParentView];
-        
+
+        // animate the bottom view into the shown position
         [UIView animateWithDuration:0.25 animations:^{
             bottomView.frame = shownFrame;
         } completion:^(BOOL finished) {
@@ -1122,6 +1121,7 @@ BOOL isUIKitFlatMode(void) {
     CGRect hiddenFrame = bottomView.frame;
     hiddenFrame.origin.y += CGRectGetHeight(bottomView.frame);
     
+    // animate the bottom view down and out of view
     [UIView animateWithDuration:0.25 animations:^{
         bottomView.frame = hiddenFrame;
     } completion:^(BOOL finished) {
