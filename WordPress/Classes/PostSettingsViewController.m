@@ -6,8 +6,6 @@
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
 
-#import "PanelNavigationController.h"
-
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
 BOOL isUIKitFlatMode(void) {
@@ -123,7 +121,7 @@ BOOL isUIKitFlatMode(void) {
     formatsList = self.post.blog.sortedPostFormatNames;
 
     isShowingKeyboard = NO;
-    
+        
     CGRect pickerFrame;
 	if (IS_IPAD)
 		pickerFrame = CGRectMake(0.0f, 0.0f, 320.0f, 216.0f);
