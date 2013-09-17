@@ -6,30 +6,26 @@
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
 
-
-#warning Remove these macros before committing
-
-// Disables log messages when debugging is turned off
-#ifndef NDEBUG
-
-#define DebugLog(message, ...) NSLog(@"%s: " message, __PRETTY_FUNCTION__, ##__VA_ARGS__)
-
-#else
-
-#define DebugLog(message, ...)
-
-#endif
+#import "PanelNavigationController.h"
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
-#define LOG_FRAME(label, frame) DebugLog(@"%@: %f, %f, %f, %f", label, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height)
-#define LOG_SIZE(label, size) DebugLog(@"%f, %f, %f", label, size.width, size.height)
-#define LOG_POINT(label, point) DebugLog(@"%@: %f, %f", label, point.x, point.y)
-#define LOG_OFFSET(label, offset) DebugLog(@"%@: %f, %f", label, offset.x, offset.y)
-#define LOG_INSET(label, inset) DebugLog(@"%@: %f, %f, %f, %f", label, inset.top, inset.left, inset.bottom, inset.right)
-
-/////////////////
-
+BOOL isUIKitFlatMode(void) {
+    static BOOL isUIKitFlatMode = NO;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7")) {
+            // If your app is running in legacy mode, tintColor will be nil - else it must be set to some color.
+            if (UIApplication.sharedApplication.keyWindow) {
+                isUIKitFlatMode = [UIApplication.sharedApplication.delegate.window performSelector:@selector(tintColor)] != nil;
+            } else {
+                // Possible that we're called early on (e.g. when used in a Storyboard). Adapt and use a temporary window.
+                isUIKitFlatMode = [[UIWindow new] performSelector:@selector(tintColor)] != nil;
+            }
+        }
+    });
+    return isUIKitFlatMode;
+}
 
 #define kPasswordFooterSectionHeight         68.0f
 #define kResizePhotoSettingSectionHeight     60.0f
@@ -48,13 +44,13 @@
 #define kVisiblityRow               1
 #define kDateRow                    2
 
-#define kPickerWrapperViewTag       101
-
-@interface PostSettingsViewController () {
+@interface PostSettingsViewController () <UIGestureRecognizerDelegate> {
     BOOL triedAuthOnce;
 }
 
-@property (strong, nonatomic) UIView *pickerWrapperView;
+@property (strong, nonatomic) UIView *pickerParentView;
+
+@property (strong, nonatomic) UITapGestureRecognizer *pickerTapGestureRecognizer;
 
 @property (nonatomic, strong) AbstractPost *apost;
 - (void)showPicker:(UIView *)picker;
@@ -237,6 +233,17 @@
     [super viewDidAppear:animated];
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+    if (self.pickerParentView) {
+        UIWindow *window = [[UIApplication sharedApplication] keyWindow];
+        self.pickerParentView.transform = [self transformForOrientation:toInterfaceOrientation];
+        CGRect frame = CGRectMake(0, 0, CGRectGetWidth(window.bounds), CGRectGetHeight(window.bounds));
+        self.pickerParentView.frame = frame;
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     WPLog(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
@@ -343,6 +350,21 @@
     self.apost.dateCreated = datePickerView.date;
 	[postDetailViewController refreshButtons];
     [tableView reloadData];
+}
+
+#pragma mark -
+#pragma mark Private Methods
+
+- (CGAffineTransform)transformForOrientation:(UIInterfaceOrientation)orientation {
+	if (orientation == UIInterfaceOrientationLandscapeLeft) {
+		return CGAffineTransformMakeRotation(M_PI*1.5);
+	} else if (orientation == UIInterfaceOrientationLandscapeRight) {
+		return CGAffineTransformMakeRotation(M_PI/2);
+	} else if (orientation == UIInterfaceOrientationPortraitUpsideDown) {
+		return CGAffineTransformMakeRotation(-M_PI);
+	} else {
+		return CGAffineTransformIdentity;
+	}
 }
 
 #pragma mark -
@@ -985,18 +1007,19 @@
         [popover presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         
     } else {
-        UIView *pickerWrapperView = pickerWrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), CGRectGetHeight(picker.frame) + 44.0f)];
-        self.pickerWrapperView = pickerWrapperView;
+        UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.frame), CGRectGetHeight(picker.frame) + 44.0f)];
+        bottomView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
         
-        pickerWrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-        [pickerWrapperView addSubview:picker];
+        UIView *topLineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(bottomView.frame), 1)];
+        topLineView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        topLineView.backgroundColor = isUIKitFlatMode() ? [UIColor lightGrayColor] : [UIColor blackColor];
+        [bottomView addSubview:topLineView];
 
         CGRect pickerFrame = picker.frame;
-        pickerFrame.size.width = CGRectGetWidth(pickerWrapperView.frame);
-        
+        pickerFrame.size.width = CGRectGetWidth(bottomView.frame);
         picker.frame = pickerFrame;
-        
         picker.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+        [bottomView addSubview:picker];
 
         UISegmentedControl *closeButton = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObject:NSLocalizedString(@"Done", @"Default main action button for closing/finishing a work flow in the app (used in Comments>Edit, Comment edits and replies, post editor body text, etc, to dismiss keyboard).")]];
         closeButton.momentary = YES;
@@ -1008,7 +1031,7 @@
         }
         [closeButton addTarget:self action:@selector(hidePicker) forControlEvents:UIControlEventValueChanged];
         closeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-        [pickerWrapperView addSubview:closeButton];
+        [bottomView addSubview:closeButton];
 
         UISegmentedControl *publishNowButton = nil;
         if (picker.tag == kTagPickerDate) {
@@ -1020,7 +1043,7 @@
                 publishNowButton.tintColor = [UIColor blackColor];
             }
             [publishNowButton addTarget:self action:@selector(removeDate) forControlEvents:UIControlEventValueChanged];
-            [pickerWrapperView addSubview:publishNowButton];
+            [bottomView addSubview:publishNowButton];
         }
         
         if ([[UISegmentedControl class] respondsToSelector:@selector(appearance)]) {
@@ -1047,65 +1070,66 @@
             }
         }
         
-//        UIViewController *parentVC = self.parentViewController;
-//        while (TRUE) {
-//            if (parentVC == nil) {
-//                parentVC = self.parentViewController;
-//            }
-//            
-//            if ([parentVC isKindOfClass:[UINavigationController class]] || parentVC.parentViewController == nil) {
-//                break;
-//            }
-//            
-//            parentVC = parentVC.parentViewController;
-//         }
         
         UIWindow *window = [[UIApplication sharedApplication] keyWindow];
-        UIViewController *parentVC = window.rootViewController;
+        CGRect parentFrame = window.bounds;
         
-        NSAssert(window.rootViewController, @"Root View Controller must be defined");
-        NSAssert([window.rootViewController shouldAutorotate], @"Root VC should autorotate");
-//        NSAssert(window.rootViewController.view, @"View must be defined");
-//        DebugLog(@"window.rootViewController: %@", NSStringFromClass([window.rootViewController class]));
-//        DebugLog(@"window.rootViewController.view: %@", NSStringFromClass([window.rootViewController.view class]));
-
-        DebugLog(@"parentVC: %@", NSStringFromClass([parentVC class]));
-        DebugLog(@"parentVC.view: %@", NSStringFromClass([parentVC.view class]));
+        UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            parentFrame = CGRectMake(0, 0, CGRectGetHeight(window.bounds), CGRectGetWidth(window.bounds));
+        }
         
-        UIView *parentView = [[UIView alloc] initWithFrame:parentVC.view.frame];
-        parentView.autoresizesSubviews = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        parentView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.75];
-//        [window.rootViewController.view addSubview:parentView];
+        UIView *pickerParentView = [[UIView alloc] initWithFrame:parentFrame];
+        self.pickerParentView = pickerParentView;
+        pickerParentView.autoresizesSubviews = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        pickerParentView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
         
-        // dock pickerWrapperView to bottom
-        CGRect wrapperFrame = pickerWrapperView.frame;
-        wrapperFrame.origin.y = CGRectGetHeight(parentView.frame) - CGRectGetHeight(pickerWrapperView.frame);
-        pickerWrapperView.frame = wrapperFrame;
-
-#warning The view does not show when added to the view of the rootViewController
+        // dock bottom view
+        CGRect bottomFrame = bottomView.frame;
+        bottomFrame.origin.y = CGRectGetHeight(pickerParentView.frame) - CGRectGetHeight(bottomView.frame);
+        bottomView.frame = bottomFrame;
         
-        [parentVC.view addSubview:parentView];
-        [parentVC.view bringSubviewToFront:parentView];
-        parentView.hidden = FALSE;
-        parentView.alpha = 1.0;
+        bottomView.backgroundColor = isUIKitFlatMode() ? [[UIColor darkGrayColor] colorWithAlphaComponent:0.9] : [UIColor colorWithPatternImage:[self pickerBackgroundImage]];
+        [pickerParentView addSubview:bottomView];
         
-        LOG_FRAME(@"parentView", parentView.frame);
-        LOG_FRAME(@"parentView.superview", parentView.superview.frame);
-        DebugLog(@"parentView: %@", parentView.superview);
-        DebugLog(@"parentView: %@", NSStringFromClass([parentView.superview class]));
+        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hidePicker)];
+        tapGestureRecognizer.delegate = self;
+        pickerParentView.gestureRecognizers = @[tapGestureRecognizer];
+        self.pickerTapGestureRecognizer = tapGestureRecognizer;
         
-//        DebugLog(@"recursive: %@", [parentVC.view recursiveDescription]);
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            pickerParentView.transform = [self transformForOrientation:orientation];
+            pickerParentView.frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(pickerParentView.frame), CGRectGetHeight(pickerParentView.frame));
+        }
         
-        pickerWrapperView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75];
-        [parentView addSubview:pickerWrapperView];
-        pickerWrapperView.hidden = FALSE;
+        // now hide the bottom view below the parent view
+        
+        CGRect shownFrame = bottomView.frame;
+        CGRect hiddenFrame = bottomView.frame;
+        hiddenFrame.origin.y += CGRectGetHeight(bottomView.frame);
+        bottomView.frame = hiddenFrame;
+        
+        // add to window instead (but lose rotation messages)
+        [window addSubview:pickerParentView];
+        
+        [UIView animateWithDuration:0.25 animations:^{
+            bottomView.frame = shownFrame;
+        } completion:^(BOOL finished) {
+        }];
     }
 }
 
 - (void)hidePicker {
-    [self.pickerWrapperView.superview removeFromSuperview];
-//    [self.pickerWrapperView removeFromSuperview];
-    self.pickerWrapperView = nil;
+    UIView *bottomView = self.pickerParentView.subviews[0];
+    CGRect hiddenFrame = bottomView.frame;
+    hiddenFrame.origin.y += CGRectGetHeight(bottomView.frame);
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        bottomView.frame = hiddenFrame;
+    } completion:^(BOOL finished) {
+        [self.pickerParentView removeFromSuperview];
+        self.pickerParentView = nil;
+    }];
 }
 
 - (void)removeDate {
@@ -1124,6 +1148,50 @@
 
 - (void)keyboardWillHide:(NSNotification *)keyboardInfo {
     isShowingKeyboard = NO;
+}
+
+- (UIImage *)pickerBackgroundImage {
+    static UIImage *image = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(320, 266), NO, 0.0f);
+        
+        //// General Declarations
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        
+        //// Color Declarations
+        UIColor* topColor = [UIColor colorWithRed: 0.269 green: 0.269 blue: 0.269 alpha: 1];
+        UIColor* bottomColor = [UIColor blackColor];
+        
+        //// Gradient Declarations
+        NSArray* gradientColors = [NSArray arrayWithObjects:
+                                   (id)topColor.CGColor,
+                                   (id)[UIColor colorWithRed: 0.23 green: 0.23 blue: 0.23 alpha: 1].CGColor,
+                                   (id)bottomColor.CGColor, nil];
+        CGFloat gradientLocations[] = {0, 0.1, 1};
+        CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)gradientColors, gradientLocations);
+        
+        //// Rectangle Drawing
+        UIBezierPath* rectanglePath = [UIBezierPath bezierPathWithRect: CGRectMake(0, 0, 320, 266)];
+        CGContextSaveGState(context);
+        [rectanglePath addClip];
+        CGContextDrawLinearGradient(context, gradient, CGPointMake(160, 0), CGPointMake(160, 266), 0);
+        CGContextRestoreGState(context);
+        [[UIColor blackColor] setStroke];
+        rectanglePath.lineWidth = 1;
+        [rectanglePath stroke];
+        
+        
+        //// Cleanup
+        CGGradientRelease(gradient);
+        CGColorSpaceRelease(colorSpace);
+        
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+    });
+    return image;
 }
 
 #pragma mark -
@@ -1197,4 +1265,16 @@
     }];
 }
 
+#pragma mark -
+#pragma mark UIGestureRecognizerDelegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    // only respond tapping the main view, not any subview which may use the touch events
+    if (self.pickerTapGestureRecognizer == gestureRecognizer) {
+        return touch.view == self.pickerParentView;
+    }
+    else {
+        return TRUE;
+    }
+}
 @end

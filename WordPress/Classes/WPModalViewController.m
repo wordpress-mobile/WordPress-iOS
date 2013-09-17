@@ -139,8 +139,7 @@ CGFloat const WPModalAnimationDuration = 0.45;
 	} else if (orientation == UIInterfaceOrientationLandscapeRight) {
 		return CGAffineTransformMakeRotation(M_PI/2);
 	} else if (orientation == UIInterfaceOrientationPortraitUpsideDown) {
-//		return CGAffineTransformMakeRotation(-M_PI);
-        return CGAffineTransformIdentity;
+		return CGAffineTransformMakeRotation(-M_PI);
 	} else {
 		return CGAffineTransformIdentity;
 	}

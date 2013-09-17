@@ -3767,7 +3767,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = WordPress;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "WordPress" */;
@@ -4789,6 +4789,29 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/CTidy\"",
+					"\"${PODS_ROOT}/Headers/DTCoreText\"",
+					"\"${PODS_ROOT}/Headers/DTFoundation\"",
+					"\"${PODS_ROOT}/Headers/JSONKit\"",
+					"\"${PODS_ROOT}/Headers/MGImageUtilities\"",
+					"\"${PODS_ROOT}/Headers/Mixpanel\"",
+					"\"${PODS_ROOT}/Headers/NSObject-SafeExpectations\"",
+					"\"${PODS_ROOT}/Headers/NSURL+IDN\"",
+					"\"${PODS_ROOT}/Headers/OHHTTPStubs\"",
+					"\"${PODS_ROOT}/Headers/Quantcast-Measure\"",
+					"\"${PODS_ROOT}/Headers/Reachability\"",
+					"\"${PODS_ROOT}/Headers/SFHFKeychainUtils\"",
+					"\"${PODS_ROOT}/Headers/SSKeychain\"",
+					"\"${PODS_ROOT}/Headers/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/UIDeviceIdentifier\"",
+					"\"${PODS_ROOT}/Headers/WordPressApi\"",
+					"\"${PODS_ROOT}/Headers/google-plus-ios-sdk\"",
+					"\"${PODS_ROOT}/Headers/wpxmlrpc\"",
+					"\"$(SDKROOT)/usr/include/libxml2\"",
+				);
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -4825,6 +4848,29 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/CTidy\"",
+					"\"${PODS_ROOT}/Headers/DTCoreText\"",
+					"\"${PODS_ROOT}/Headers/DTFoundation\"",
+					"\"${PODS_ROOT}/Headers/JSONKit\"",
+					"\"${PODS_ROOT}/Headers/MGImageUtilities\"",
+					"\"${PODS_ROOT}/Headers/Mixpanel\"",
+					"\"${PODS_ROOT}/Headers/NSObject-SafeExpectations\"",
+					"\"${PODS_ROOT}/Headers/NSURL+IDN\"",
+					"\"${PODS_ROOT}/Headers/OHHTTPStubs\"",
+					"\"${PODS_ROOT}/Headers/Quantcast-Measure\"",
+					"\"${PODS_ROOT}/Headers/Reachability\"",
+					"\"${PODS_ROOT}/Headers/SFHFKeychainUtils\"",
+					"\"${PODS_ROOT}/Headers/SSKeychain\"",
+					"\"${PODS_ROOT}/Headers/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/UIDeviceIdentifier\"",
+					"\"${PODS_ROOT}/Headers/WordPressApi\"",
+					"\"${PODS_ROOT}/Headers/google-plus-ios-sdk\"",
+					"\"${PODS_ROOT}/Headers/wpxmlrpc\"",
+					"\"$(SDKROOT)/usr/include/libxml2\"",
+				);
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -4883,6 +4929,29 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/CTidy\"",
+					"\"${PODS_ROOT}/Headers/DTCoreText\"",
+					"\"${PODS_ROOT}/Headers/DTFoundation\"",
+					"\"${PODS_ROOT}/Headers/JSONKit\"",
+					"\"${PODS_ROOT}/Headers/MGImageUtilities\"",
+					"\"${PODS_ROOT}/Headers/Mixpanel\"",
+					"\"${PODS_ROOT}/Headers/NSObject-SafeExpectations\"",
+					"\"${PODS_ROOT}/Headers/NSURL+IDN\"",
+					"\"${PODS_ROOT}/Headers/OHHTTPStubs\"",
+					"\"${PODS_ROOT}/Headers/Quantcast-Measure\"",
+					"\"${PODS_ROOT}/Headers/Reachability\"",
+					"\"${PODS_ROOT}/Headers/SFHFKeychainUtils\"",
+					"\"${PODS_ROOT}/Headers/SSKeychain\"",
+					"\"${PODS_ROOT}/Headers/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/UIDeviceIdentifier\"",
+					"\"${PODS_ROOT}/Headers/WordPressApi\"",
+					"\"${PODS_ROOT}/Headers/google-plus-ios-sdk\"",
+					"\"${PODS_ROOT}/Headers/wpxmlrpc\"",
+					"\"$(SDKROOT)/usr/include/libxml2\"",
+				);
 				INFOPLIST_FILE = Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -4941,6 +5010,29 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers\"",
+					"\"${PODS_ROOT}/Headers/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/CTidy\"",
+					"\"${PODS_ROOT}/Headers/DTCoreText\"",
+					"\"${PODS_ROOT}/Headers/DTFoundation\"",
+					"\"${PODS_ROOT}/Headers/JSONKit\"",
+					"\"${PODS_ROOT}/Headers/MGImageUtilities\"",
+					"\"${PODS_ROOT}/Headers/Mixpanel\"",
+					"\"${PODS_ROOT}/Headers/NSObject-SafeExpectations\"",
+					"\"${PODS_ROOT}/Headers/NSURL+IDN\"",
+					"\"${PODS_ROOT}/Headers/OHHTTPStubs\"",
+					"\"${PODS_ROOT}/Headers/Quantcast-Measure\"",
+					"\"${PODS_ROOT}/Headers/Reachability\"",
+					"\"${PODS_ROOT}/Headers/SFHFKeychainUtils\"",
+					"\"${PODS_ROOT}/Headers/SSKeychain\"",
+					"\"${PODS_ROOT}/Headers/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/UIDeviceIdentifier\"",
+					"\"${PODS_ROOT}/Headers/WordPressApi\"",
+					"\"${PODS_ROOT}/Headers/google-plus-ios-sdk\"",
+					"\"${PODS_ROOT}/Headers/wpxmlrpc\"",
+					"\"$(SDKROOT)/usr/include/libxml2\"",
+				);
 				INFOPLIST_FILE = "Info-beta.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -4967,6 +5059,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Wno-format-security",
 					"-DDEBUG",
@@ -5007,7 +5100,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
@@ -5041,7 +5133,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EBC24772E5CD4036B5AFD803 /* Pods.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
@@ -5068,7 +5159,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
@@ -5095,7 +5185,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
