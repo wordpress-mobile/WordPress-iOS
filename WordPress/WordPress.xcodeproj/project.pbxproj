@@ -809,6 +809,12 @@
 		ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */; };
 		ACC156BB0E10D73100D6E1A0 /* EditPostViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = ACC156BA0E10D73100D6E1A0 /* EditPostViewController~iphone.xib */; };
 		ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */; };
+		C50E11E817DF5BE1004CD04C /* media_checkbox_empty.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11E417DF5BE1004CD04C /* media_checkbox_empty.png */; };
+		C50E11E917DF5BE1004CD04C /* media_checkbox_empty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11E517DF5BE1004CD04C /* media_checkbox_empty@2x.png */; };
+		C50E11EA17DF5BE1004CD04C /* media_checkbox_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11E617DF5BE1004CD04C /* media_checkbox_filled.png */; };
+		C50E11EB17DF5BE1004CD04C /* media_checkbox_filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11E717DF5BE1004CD04C /* media_checkbox_filled@2x.png */; };
+		C50E11F017DFAC4C004CD04C /* media_navbar_add_new.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11EE17DFAC4C004CD04C /* media_navbar_add_new.png */; };
+		C50E11F117DFAC4C004CD04C /* media_navbar_add_new@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11EF17DFAC4C004CD04C /* media_navbar_add_new@2x.png */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C535C7A717D77603007EF244 /* MediaBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C535C7A517D77603007EF244 /* MediaBrowserViewController.m */; };
 		C535C7A817D77603007EF244 /* MediaBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C535C7A617D77603007EF244 /* MediaBrowserViewController.xib */; };
@@ -2020,6 +2026,12 @@
 		ACC156CA0E10E67600D6E1A0 /* EditPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditPostViewController.h; sourceTree = "<group>"; };
 		ACC156CB0E10E67600D6E1A0 /* EditPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditPostViewController.m; sourceTree = "<group>"; };
 		BB0E95DCE0724D3696D9F222 /* Pods-WordPressTest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.xcconfig"; path = "../Pods/Pods-WordPressTest.xcconfig"; sourceTree = SOURCE_ROOT; };
+		C50E11E417DF5BE1004CD04C /* media_checkbox_empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = media_checkbox_empty.png; path = Resources/Images/media_checkbox_empty.png; sourceTree = "<group>"; };
+		C50E11E517DF5BE1004CD04C /* media_checkbox_empty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media_checkbox_empty@2x.png"; path = "Resources/Images/media_checkbox_empty@2x.png"; sourceTree = "<group>"; };
+		C50E11E617DF5BE1004CD04C /* media_checkbox_filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = media_checkbox_filled.png; path = Resources/Images/media_checkbox_filled.png; sourceTree = "<group>"; };
+		C50E11E717DF5BE1004CD04C /* media_checkbox_filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media_checkbox_filled@2x.png"; path = "Resources/Images/media_checkbox_filled@2x.png"; sourceTree = "<group>"; };
+		C50E11EE17DFAC4C004CD04C /* media_navbar_add_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = media_navbar_add_new.png; path = Resources/media_navbar_add_new.png; sourceTree = "<group>"; };
+		C50E11EF17DFAC4C004CD04C /* media_navbar_add_new@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media_navbar_add_new@2x.png"; path = "Resources/media_navbar_add_new@2x.png"; sourceTree = "<group>"; };
 		C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
 		C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsViewController.m; sourceTree = "<group>"; };
 		C535C7A417D77603007EF244 /* MediaBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaBrowserViewController.h; sourceTree = "<group>"; };
@@ -3097,6 +3109,8 @@
 		83290399120CF517000A965A /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				C50E11EE17DFAC4C004CD04C /* media_navbar_add_new.png */,
+				C50E11EF17DFAC4C004CD04C /* media_navbar_add_new@2x.png */,
 				83CAD4201235F9F4003DFA20 /* MediaObjectView.xib */,
 				8383178712270E980047B476 /* PostMediaViewController.xib */,
 			);
@@ -3617,6 +3631,7 @@
 		AC512F790E20D25E00B7DA32 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C50E11E317DF5BCC004CD04C /* Media Library */,
 				C5FC5E2D17CD52AE00B299E2 /* Themes */,
 				E14D65C117E08617007E3EA4 /* reader-postaction-comment-blue.png */,
 				E14D65C217E08617007E3EA4 /* reader-postaction-comment-blue@2x.png */,
@@ -3913,6 +3928,17 @@
 				E13FA0CB134BDCBB007DCDD0 /* QuickPhotoViewController.xib */,
 			);
 			name = Post;
+			sourceTree = "<group>";
+		};
+		C50E11E317DF5BCC004CD04C /* Media Library */ = {
+			isa = PBXGroup;
+			children = (
+				C50E11E417DF5BE1004CD04C /* media_checkbox_empty.png */,
+				C50E11E517DF5BE1004CD04C /* media_checkbox_empty@2x.png */,
+				C50E11E617DF5BE1004CD04C /* media_checkbox_filled.png */,
+				C50E11E717DF5BE1004CD04C /* media_checkbox_filled@2x.png */,
+			);
+			name = "Media Library";
 			sourceTree = "<group>";
 		};
 		C50E78130E71648100991509 /* Comments */ = {
@@ -4760,6 +4786,7 @@
 				85F2C4D517BA0ED400A303E0 /* MP6SidebarViewController.xib in Resources */,
 				5D7C22B615A4FCFE00FCE1C2 /* down_dim.png in Resources */,
 				85495F6817C6FACF00871A7A /* icon-comments-edit-active@2x.png in Resources */,
+				C50E11F017DFAC4C004CD04C /* media_navbar_add_new.png in Resources */,
 				5D7C22B715A4FCFE00FCE1C2 /* down_dim@2x.png in Resources */,
 				5D7C22B815A4FCFE00FCE1C2 /* up_dim.png in Resources */,
 				5D7C22B915A4FCFE00FCE1C2 /* up_dim@2x.png in Resources */,
@@ -4941,6 +4968,7 @@
 				5D15F4C015B8C407001B14EA /* toolbarOlHighlighted@2x.png in Resources */,
 				5D15F4C115B8C407001B14EA /* toolbarOliPad.png in Resources */,
 				5D15F4C215B8C407001B14EA /* toolbarOliPad@2x.png in Resources */,
+				C50E11E817DF5BE1004CD04C /* media_checkbox_empty.png in Resources */,
 				5D15F4C315B8C407001B14EA /* toolbarUlHighlighted.png in Resources */,
 				C535C7A817D77603007EF244 /* MediaBrowserViewController.xib in Resources */,
 				5D15F4C415B8C407001B14EA /* toolbarUlHighlighted@2x.png in Resources */,
@@ -5002,6 +5030,7 @@
 				37158C8F1669408200732B2D /* menu_notification_spacer@2x.png in Resources */,
 				37158C901669408200732B2D /* menu_notification_spacer_down@2x.png in Resources */,
 				37158C911669408200732B2D /* menu_notification_spacer_down.png in Resources */,
+				C50E11E917DF5BE1004CD04C /* media_checkbox_empty@2x.png in Resources */,
 				37195B82166A5DDC005F2292 /* NotificationsCommentDetailViewController.xib in Resources */,
 				85325A3217BB0DF8008E87D1 /* icon-menu-settings.png in Resources */,
 				379DA04E166E6EFE001A43CC /* NotificationsFollowDetailViewController.xib in Resources */,
@@ -5153,6 +5182,7 @@
 				5D7BEA3317749FFD00423E7F /* wp_vid_placeholder@2x.png in Resources */,
 				5D7BEA3417749FFD00423E7F /* wpcom_blavatar.png in Resources */,
 				5D7BEA3517749FFD00423E7F /* wpcom_blavatar@2x.png in Resources */,
+				C50E11EA17DF5BE1004CD04C /* media_checkbox_filled.png in Resources */,
 				5D7BEA3617749FFD00423E7F /* wporg_blavatar.png in Resources */,
 				5D7BEA3717749FFD00423E7F /* wporg_blavatar@2x.png in Resources */,
 				5D7BEA3A1774A02400423E7F /* cell-separator.png in Resources */,
@@ -5194,6 +5224,7 @@
 				5D7BEA801774A0C500423E7F /* btn-help.png in Resources */,
 				5D7BEA811774A0C500423E7F /* btn-help@2x.png in Resources */,
 				5D7BEA821774A0C500423E7F /* btn-main-inactive.png in Resources */,
+				C50E11EB17DF5BE1004CD04C /* media_checkbox_filled@2x.png in Resources */,
 				5D7BEA831774A0C500423E7F /* btn-main-inactive@2x.png in Resources */,
 				5D7BEA841774A0C500423E7F /* btn-main-tap.png in Resources */,
 				5D7BEA851774A0C500423E7F /* btn-main-tap@2x.png in Resources */,
@@ -5229,6 +5260,7 @@
 				5D7BEABA1774A10D00423E7F /* icon-reader.png in Resources */,
 				5D7BEABB1774A10D00423E7F /* icon-reader@2x.png in Resources */,
 				8599658617DA903B005F84EB /* icon-menu-viewadmin-active@2x.png in Resources */,
+				C50E11F117DFAC4C004CD04C /* media_navbar_add_new@2x.png in Resources */,
 				5D7BEABC1774A10D00423E7F /* icon-stats.png in Resources */,
 				5D7BEABD1774A10D00423E7F /* icon-stats@2x.png in Resources */,
 				5D7BEABE1774A10D00423E7F /* icon-wp.png in Resources */,
