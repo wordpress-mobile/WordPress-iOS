@@ -38,7 +38,7 @@
         
         UIImageView *thumbnail = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.contentView.bounds.size.width, IS_IPAD ? 200 : 145)];
         _thumbnail = thumbnail;
-        [_thumbnail setContentMode:UIViewContentModeScaleAspectFit];
+        [_thumbnail setContentMode:UIViewContentModeCenter];
         [self.contentView addSubview:_thumbnail];
         
         // With enlarged touch area
@@ -95,18 +95,15 @@
     if (_media.thumbnail.length > 0) {
         _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
     } else {
-        if (_media.remoteURL) {
+        if (_media.remoteURL && [_media.mediaType isEqualToString:@"image"]) {
+            [_thumbnail setImage:[UIImage imageNamed:@"media_image_placeholder"]];
             [[WPImageSource sharedSource] downloadThumbnailForMedia:_media success:^(NSNumber *mediaId){
                 if ([mediaId isEqualToNumber:_media.mediaID]) {
+                    _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
                     _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
                 }
             } failure:^(NSError *error) {
                 WPFLog(@"Failed to download thumbnail for media %@: %@", _media.remoteURL, error);
-                if ([_media.mediaType isEqualToString:@"movie"]) {
-                    [_thumbnail setImage:[UIImage imageNamed:@"media_movieclip"]];
-                } else {
-                    [_thumbnail setImage:[UIImage imageNamed:@"media_image_placeholder"]];
-                }
             }];
         } else {
             if ([_media.mediaType isEqualToString:@"movie"]) {
@@ -115,7 +112,6 @@
                 [_thumbnail setImage:[UIImage imageNamed:@"media_image_placeholder"]];
             }
         }
-
     }
 }
 
