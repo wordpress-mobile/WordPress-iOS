@@ -913,6 +913,8 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 
 - (void)showSidebarAnimated:(BOOL)animated {
     [SoundUtil playSwipeSound];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SidebarOpenedNotification object:nil];
 
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:0 duration:0];
@@ -931,6 +933,8 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 }
 
 - (void)showSidebarWithVelocity:(CGFloat)velocity {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SidebarOpenedNotification object:nil];
+    
     [SoundUtil playSwipeSound];
 
     [self disableDetailView];
@@ -943,6 +947,8 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 }
 
 - (void)closeSidebarAnimated:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SidebarClosedNotification object:nil];
+    
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) duration:0];
     } completion:^(BOOL finished) {
@@ -965,6 +971,8 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 }
 
 - (void)closeSidebarWithVelocity:(CGFloat)velocity {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SidebarClosedNotification object:nil];
+    
     [self enableDetailView];
     [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) withVelocity:velocity];
     

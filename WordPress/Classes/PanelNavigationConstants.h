@@ -54,3 +54,6 @@
 
 #define PANEL_MINIMUM_OVERSHOT_VELOCITY 800.f
 #define PANEL_OVERSHOT_FRICTION 0.005f //(IS_IPAD ? 0.00125f : 0.00125f )
+
+static NSString *const SidebarClosedNotification = @"SidebarClosedNotification";
+static NSString *const SidebarOpenedNotification = @"SidebarOpenedNotification";

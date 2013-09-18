@@ -191,7 +191,18 @@ static CGFloat const SortButtonWidth = 130.0f;
             }
         }
     }
+}
 
+- (BOOL)isFirstResponder {
+    return _searchBar.isFirstResponder;
+}
+
+- (BOOL)becomeFirstResponder {
+    return [_searchBar becomeFirstResponder];
+}
+
+- (BOOL)resignFirstResponder {
+    return [_searchBar resignFirstResponder];
 }
 
 @end
