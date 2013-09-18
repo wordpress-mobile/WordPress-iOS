@@ -95,13 +95,27 @@
     if (_media.thumbnail.length > 0) {
         _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
     } else {
-        [[WPImageSource sharedSource] downloadThumbnailForMedia:_media success:^(NSNumber *mediaId){
-            if ([mediaId isEqualToNumber:_media.mediaID]) {
-                _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
+        if (_media.remoteURL) {
+            [[WPImageSource sharedSource] downloadThumbnailForMedia:_media success:^(NSNumber *mediaId){
+                if ([mediaId isEqualToNumber:_media.mediaID]) {
+                    _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
+                }
+            } failure:^(NSError *error) {
+                WPFLog(@"Failed to download thumbnail for media %@: %@", _media.remoteURL, error);
+                if ([_media.mediaType isEqualToString:@"movie"]) {
+                    [_thumbnail setImage:[UIImage imageNamed:@"media_movieclip"]];
+                } else {
+                    [_thumbnail setImage:[UIImage imageNamed:@"media_image_placeholder"]];
+                }
+            }];
+        } else {
+            if ([_media.mediaType isEqualToString:@"movie"]) {
+                [_thumbnail setImage:[UIImage imageNamed:@"media_movieclip"]];
+            } else {
+                [_thumbnail setImage:[UIImage imageNamed:@"media_image_placeholder"]];
             }
-        } failure:^(NSError *error) {
-            WPFLog(@"Failed to download thumbnail for media %@: %@", _media.remoteURL, error);
-        }];
+        }
+
     }
 }
 
