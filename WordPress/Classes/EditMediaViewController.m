@@ -12,6 +12,7 @@
 #import "WPKeyboardToolbar.h"
 #import "WPKeyboardToolbarWithoutGradient.h"
 #import "WPStyleGuide.h"
+#import "WPLoadingView.h"
 #import <objc/runtime.h>
 
 @interface UITextView (Placeholder) <UITextViewDelegate>
@@ -22,11 +23,12 @@
 
 @end
 
-@interface EditMediaViewController () <WPKeyboardToolbarDelegate>
+@interface EditMediaViewController () <WPKeyboardToolbarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) Media *media;
 @property (nonatomic, assign) BOOL isEditing;
-@property (nonatomic, weak) UIView *loadingView;
+@property (nonatomic, weak) WPLoadingView *loadingView;
+@property (strong, nonatomic) UITapGestureRecognizer *tapImageRecognizer;
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
@@ -34,6 +36,8 @@
 @property (weak, nonatomic) IBOutlet UITextView *titleTextview;
 @property (weak, nonatomic) IBOutlet UITextView *captionTextview;
 @property (weak, nonatomic) IBOutlet UITextView *descriptionTextview;
+@property (weak, nonatomic) IBOutlet UILabel *createdDateLabel;
+
 
 @end
 
@@ -61,7 +65,13 @@
 {
     [super viewDidLoad];
     
+    self.tapImageRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
+    _tapImageRecognizer.delegate = self;
+    [_mediaImageview addGestureRecognizer:_tapImageRecognizer];
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(editPressed)];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"") style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonPressed)];
     
     [self.view addSubview:_contentView];
     ((UIScrollView*)self.view).contentSize = CGSizeMake(self.view.frame.size.width, _contentView.frame.size.height);
@@ -69,10 +79,14 @@
     self.titleTextview.font = [WPStyleGuide regularTextFont];
     self.captionTextview.font = self.titleTextview.font;
     self.descriptionTextview.font = self.titleTextview.font;
+    self.createdDateLabel.font = self.titleTextview.font;
     
     self.titleTextview.textColor = [WPStyleGuide allTAllShadeGrey];
     self.captionTextview.textColor = self.titleTextview.textColor;
     self.descriptionTextview.textColor = self.titleTextview.textColor;
+    self.createdDateLabel.textColor = [WPStyleGuide whisperGrey];
+    
+    _containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
     
     [self applyLayoutForMedia];
     if (_isEditing) {
@@ -94,6 +108,10 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
+- (void)imageTapped:(id)sender {
+    
+}
+
 - (void)applyLayoutForMedia
 {
     [self.titleTextview setText:_media.title];
@@ -105,12 +123,45 @@
     [self.descriptionTextview setText:_media.desc];
     [self.descriptionTextview setPlaceholder:NSLocalizedString(@"Description", @"")];
     
-    // TODO Show a friendly 'no image' placeholder while loading (perhaps with an indicator) and for failure
-    [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:_media.remoteURL] withSuccess:^(UIImage *image) {
-        _mediaImageview.image = image;
-    } failure:^(NSError *error) {
-        WPFLog(@"Failed to download image for %@: %@", _media, error);
-    }];
+    NSLog(@"Creation Date: %@", _media.creationDate);
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *stringFromDate = [dateFormatter stringFromDate:_media.creationDate];
+    [self.createdDateLabel setText: [NSString stringWithFormat:@"Created Date: %@", stringFromDate]];
+    
+    [self loadMediaImage];
+}
+
+- (void)loadMediaImage {
+    UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    loading.center = CGPointMake(_mediaImageview.bounds.size.width/2, _mediaImageview.bounds.size.height/2);
+    loading.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
+    | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    loading.tag = 1337;
+    [_mediaImageview addSubview:loading];
+    [loading startAnimating];
+    
+    if (_media.remoteURL) {
+        [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:_media.remoteURL] withSuccess:^(UIImage *image) {
+            _mediaImageview.image = image;
+            [[_mediaImageview viewWithTag:1337] removeFromSuperview];
+        } failure:^(NSError *error) {
+            WPFLog(@"Failed to download image for %@: %@", _media, error);
+            [[_mediaImageview viewWithTag:1337] removeFromSuperview];
+            if ([_media.mediaType isEqualToString:@"movie"]) {
+                [_mediaImageview setImage:[UIImage imageNamed:@"media_movieclip"]];
+            } else {
+                [_mediaImageview setImage:[UIImage imageNamed:@"media_image_placeholder"]];
+            }
+        }];
+    } else {
+        [[_mediaImageview viewWithTag:1337] removeFromSuperview];
+        if ([_media.mediaType isEqualToString:@"movie"]) {
+            [_mediaImageview setImage:[UIImage imageNamed:@"media_movieclip"]];
+        } else {
+            [_mediaImageview setImage:[UIImage imageNamed:@"media_image_placeholder"]];
+        }
+    }
 }
 
 - (void)applyLayoutForEditingState
@@ -185,43 +236,37 @@
     self.media.desc = [self.descriptionTextview enteredText];
     
     [self.view addSubview:self.loadingView];
+    [self.loadingView show];
     
     // Block the user from escaping before it's done
     [self.media remoteUpdateWithSuccess:^{
         [self.navigationController popViewControllerAnimated:YES];
+        [self.loadingView hide];
         [self.loadingView removeFromSuperview];
     } failure:^(NSError *error) {
         [WPError showAlertWithError:error];
+        [self.loadingView hide];
         [self.loadingView removeFromSuperview];
     }];
 }
 
 - (UIView *)loadingView {
     CGFloat side = 100.0f;
-    UIView *loadingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, side, side)];
-    loadingView.layer.cornerRadius = 10.0f;
+    WPLoadingView *loadingView = [[WPLoadingView alloc] initWithSide:side];
     loadingView.center = CGPointMake(self.view.center.x, self.view.center.y - side);
-    loadingView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.8f];
-    loadingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
-    UIViewAutoresizingFlexibleBottomMargin |
-    UIViewAutoresizingFlexibleTopMargin |
-    UIViewAutoresizingFlexibleRightMargin;
-    
-    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    activityView.hidesWhenStopped = NO;
-    activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin |
-    UIViewAutoresizingFlexibleBottomMargin |
-    UIViewAutoresizingFlexibleTopMargin |
-    UIViewAutoresizingFlexibleRightMargin;
-    [activityView startAnimating];
-    
-    CGRect frm = activityView.frame;
-    frm.origin.x = (side / 2.0f) - (frm.size.width / 2.0f);
-    frm.origin.y = (side / 2.0f) - (frm.size.height / 2.0f);
-    activityView.frame = frm;
-    [loadingView addSubview:activityView];
     _loadingView = loadingView;
     return _loadingView;
+}
+
+- (void)cancelButtonPressed {
+    UIAlertView *discardAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Discard Changes", @"") message:NSLocalizedString(@"Are you sure you would like to discard your changes?", @"") delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Discard", nil];
+    [discardAlert show];
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 @end

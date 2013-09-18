@@ -95,9 +95,13 @@
     if (UTTypeConformsTo(fileUTI, kUTTypeImage)) {
         self.mediaType = @"image";
     } else if (UTTypeConformsTo(fileUTI, kUTTypeVideo)) {
-        self.mediaType = @"video";
+        self.mediaType = @"movie";
     } else if (UTTypeConformsTo(fileUTI, kUTTypeMovie)) {
-        self.mediaType = @"video";
+        self.mediaType = @"movie";
+    } else if (UTTypeConformsTo(fileUTI, kUTTypeMPEG4)){
+        self.mediaType = @"movie";
+    } else if (UTTypeConformsTo(fileUTI, kUTTypeText))  {
+        self.mediaType = @"document";
     } else {
         self.mediaType = @"unknown";
     }
