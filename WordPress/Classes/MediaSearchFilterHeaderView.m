@@ -10,13 +10,17 @@
 #import "MediaSearchFilterHeaderView.h"
 #import "MediaBrowserViewController.h"
 #import "WPStyleGuide.h"
+#import "DateRangePickerView.h"
 
-static CGFloat const DateButtonWidth = 130.0f;
+
+static CGFloat const DateButtonWidth = 44.0f;
 
 @interface MediaSearchFilterHeaderView () <UISearchBarDelegate>
 
 @property (nonatomic, weak) UISearchBar *searchBar;
 @property (nonatomic, weak) UIButton *filterDatesButton;
+@property (nonatomic, weak) DateRangePickerView *dateRangePickerView;
+@property (nonatomic, assign) BOOL isDisplayingDatePicker;
 
 @end
 
@@ -27,15 +31,15 @@ static CGFloat const DateButtonWidth = 130.0f;
     
     [_delegate.collectionView addSubview:self.searchBar];
     [_delegate.collectionView addSubview:self.filterDatesButton];
+    [_delegate.collectionView addSubview:self.dateRangePickerView];
     
 }
 
 - (UIButton *)filterDatesButton {
     UIButton *sort = [UIButton buttonWithType:UIButtonTypeCustom];
     [sort setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
-    [sort setTitle:NSLocalizedString(@"All Dates", @"") forState:UIControlStateNormal];
-    sort.titleLabel.font = [WPStyleGuide regularTextFont];
-
+    [sort setImage:[UIImage imageNamed:@"icon-menu-themes"] forState:UIControlStateNormal];
+    
     _filterDatesButton = sort;
     _filterDatesButton.frame = CGRectMake(_searchBar.frame.size.width, 0, DateButtonWidth, 44.0f);
     [_filterDatesButton addTarget:self action:@selector(filterDatesPressed) forControlEvents:UIControlEventTouchUpInside];
@@ -56,20 +60,43 @@ static CGFloat const DateButtonWidth = 130.0f;
     return _searchBar;
 }
 
-//- (UIDatePicker *)datePicker {
-//    UIDatePicker *datePicker = [[UIDatePicker alloc] init];
-//    _datePicker = datePicker;
-//    [_datePicker setDatePickerMode:UIDatePickerModeDate];
-//    [_datePicker setDate:[NSDate date]];
-//    [_datePicker setCalendar:nil];
-//    
-//    
-//    return _datePicker;
-//}
+- (DateRangePickerView *)dateRangePickerView {
+    DateRangePickerView *dateRangePickerView = [[DateRangePickerView alloc] initWithFrame:CGRectMake(0, 44.0f, self.bounds.size.width, 44.0f)];
+    [dateRangePickerView setAlpha:0];
+    dateRangePickerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    [dateRangePickerView setDateRangeMin:[_delegate mediaDateRangeStart] andMax:[_delegate mediaDateRangeEnd]];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    dateRangePickerView.startDate.text = [formatter stringFromDate:[_delegate mediaDateRangeStart]];
+    dateRangePickerView.endDate.text = [formatter stringFromDate:[_delegate mediaDateRangeEnd]];
+    _dateRangePickerView = dateRangePickerView;
+    return _dateRangePickerView;
+}
 
 - (void)filterDatesPressed {
-    //Bring up some custom date picker view
-    
+    if (!_isDisplayingDatePicker) {
+        [UIView animateWithDuration:0.3f animations:^{
+            [_filterDatesButton setImage:[UIImage imageNamed:@"icon-check-small-white"] forState:UIControlStateNormal];
+            _dateRangePickerView.alpha = 1;
+        } completion:^(BOOL finished) {
+            _isDisplayingDatePicker = YES;
+        }];
+    }
+    else {
+        [UIView animateWithDuration:0.3f animations:^{
+            _dateRangePickerView.alpha = 0;
+            [_filterDatesButton setImage:[UIImage imageNamed:@"icon-menu-themes"] forState:UIControlStateNormal];
+            [_dateRangePickerView.startDate resignFirstResponder];
+            [_dateRangePickerView.endDate resignFirstResponder];
+        } completion:^(BOOL finished) {
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            formatter.dateFormat = @"yyyy-MM-dd";
+            [_delegate applyDateFilterForStartDate: [formatter dateFromString:_dateRangePickerView.startDate.text]  andEndDate:[formatter dateFromString:_dateRangePickerView.endDate.text]];
+            _isDisplayingDatePicker = NO;
+        }];
+    }
 }
 
 #pragma mark - UISearchBarDelegate

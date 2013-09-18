@@ -832,6 +832,7 @@
 		C583AF7D17C7C6D700BE86A9 /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = C583AF7C17C7C6D700BE86A9 /* Theme.m */; };
 		C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C5BAD46317E74BFA007E69A6 /* WPLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BAD46217E74BFA007E69A6 /* WPLoadingView.m */; };
+		C5BAD46617E75369007E69A6 /* DateRangePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BAD46517E75369007E69A6 /* DateRangePickerView.m */; };
 		C5BAD46D17E9E8F1007E69A6 /* media_image_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = C5BAD46817E9E8F1007E69A6 /* media_image_placeholder.png */; };
 		C5BAD46E17E9E8F1007E69A6 /* media_movieclip.png in Resources */ = {isa = PBXBuildFile; fileRef = C5BAD46917E9E8F1007E69A6 /* media_movieclip.png */; };
 		C5BAD47617EA21EB007E69A6 /* media_document@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5BAD47117EA21EB007E69A6 /* media_document@2x.png */; };
@@ -2075,6 +2076,8 @@
 		C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLExtensions.m"; sourceTree = "<group>"; };
 		C5BAD46117E74BFA007E69A6 /* WPLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLoadingView.h; sourceTree = "<group>"; };
 		C5BAD46217E74BFA007E69A6 /* WPLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLoadingView.m; sourceTree = "<group>"; };
+		C5BAD46417E75369007E69A6 /* DateRangePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateRangePickerView.h; sourceTree = "<group>"; };
+		C5BAD46517E75369007E69A6 /* DateRangePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateRangePickerView.m; sourceTree = "<group>"; };
 		C5BAD46817E9E8F1007E69A6 /* media_image_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = media_image_placeholder.png; path = Resources/Images/media_image_placeholder.png; sourceTree = "<group>"; };
 		C5BAD46917E9E8F1007E69A6 /* media_movieclip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = media_movieclip.png; path = Resources/Images/media_movieclip.png; sourceTree = "<group>"; };
 		C5BAD47117EA21EB007E69A6 /* media_document@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media_document@2x.png"; path = "Resources/Images/media_document@2x.png"; sourceTree = "<group>"; };
@@ -2531,6 +2534,8 @@
 				857F55B417CEA01A00E154E1 /* WPKeyboardToolbarBase.m */,
 				C5BAD46117E74BFA007E69A6 /* WPLoadingView.h */,
 				C5BAD46217E74BFA007E69A6 /* WPLoadingView.m */,
+				C5BAD46417E75369007E69A6 /* DateRangePickerView.h */,
+				C5BAD46517E75369007E69A6 /* DateRangePickerView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -5614,6 +5619,7 @@
 				5D42A3E1175E7452005CFF05 /* ReaderComment.m in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				5D42A3F7175E75EE005CFF05 /* ReaderCommentTableViewCell.m in Sources */,
+				C5BAD46617E75369007E69A6 /* DateRangePickerView.m in Sources */,
 				5D42A3F8175E75EE005CFF05 /* ReaderImageView.m in Sources */,
 				85F2C4C517B9F6E600A303E0 /* NewCreateAccountAndBlogViewController.m in Sources */,
 				E1D062D4177C685C00644185 /* ReaderButton.m in Sources */,

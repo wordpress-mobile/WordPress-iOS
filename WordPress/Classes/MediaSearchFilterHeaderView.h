@@ -13,11 +13,12 @@
 
 @protocol MediaSearchFilterDelegate <NSObject>
 
-
 /// Update the filter for search
 - (void)applyFilterWithSearchText:(NSString*)searchText;
 - (void)applyDateFilterForStartDate:(NSDate *)start andEndDate:(NSDate *)end;
 - (void)clearSearchFilter;
+- (NSDate *)mediaDateRangeStart;
+- (NSDate *)mediaDateRangeEnd;
 
 @end
 
