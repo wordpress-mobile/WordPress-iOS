@@ -15,6 +15,8 @@
 #import "WPLoadingView.h"
 #import <objc/runtime.h>
 
+static NSUInteger const AlertDiscardChanges = 500;
+
 @interface UITextView (Placeholder) <UITextViewDelegate>
 
 @property (nonatomic, weak) NSString *placeholder;
@@ -132,7 +134,32 @@
     [self loadMediaImage];
 }
 
+- (NSString *)saveFullsizeImageToDisk:(UIImage*)image imageName:(NSString *)imageName {
+    NSString *docsDirectory = (NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true))[0];
+    NSString *mediaDirectoryPath = [docsDirectory stringByAppendingPathComponent:@"Media"];
+    BOOL directory;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:mediaDirectoryPath isDirectory:&directory] && !directory) {
+        NSError *error;
+        [[NSFileManager defaultManager] createDirectoryAtPath:mediaDirectoryPath withIntermediateDirectories:false attributes:nil error:&error];
+        if (error) {
+            WPFLog(@"Unable to create directory for fullsize media images %@",error);
+        }
+    }
+    NSData *imageData = UIImageJPEGRepresentation(image, 1);
+    NSString *path = [mediaDirectoryPath stringByAppendingPathComponent:imageName];
+    BOOL success = [[NSFileManager defaultManager] createFileAtPath:path contents:imageData attributes:nil];
+    if (success) {
+        return path;
+    }
+    return nil;
+}
+
 - (void)loadMediaImage {
+    if (_media.localURL) {
+        _mediaImageview.image = [[UIImage alloc] initWithContentsOfFile:_media.localURL];
+        return;
+    }
+    
     UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     loading.center = CGPointMake(_mediaImageview.bounds.size.width/2, _mediaImageview.bounds.size.height/2);
     loading.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
@@ -144,6 +171,8 @@
     if (_media.remoteURL) {
         [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:_media.remoteURL] withSuccess:^(UIImage *image) {
             _mediaImageview.image = image;
+            NSString *localPath = [self saveFullsizeImageToDisk:image imageName:_media.mediaID.stringValue];
+            _media.localURL = localPath;
             [[_mediaImageview viewWithTag:1337] removeFromSuperview];
         } failure:^(NSError *error) {
             WPFLog(@"Failed to download image for %@: %@", _media, error);
@@ -245,7 +274,13 @@
     };
     
     __block void (^failure)(NSError*) = ^(NSError *error) {
-        [WPError showAlertWithError:error];
+        if (error.code == 404) {
+            // Server-side deleted
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Failed to Save" message:NSLocalizedString(@"This image/video has been deleted on the blog, do you want to re-upload it or discard it?", @"") delegate:self cancelButtonTitle:nil otherButtonTitles:@"Discard", @"Upload", nil];
+            [alert show];
+        } else {
+            [WPError showAlertWithError:error];
+        }
         [self.loadingView hide];
         [self.loadingView removeFromSuperview];
     };
@@ -273,12 +308,42 @@
 
 - (void)cancelButtonPressed {
     UIAlertView *discardAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Discard Changes", @"") message:NSLocalizedString(@"Are you sure you would like to discard your changes?", @"") delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Discard", nil];
+    discardAlert.tag = AlertDiscardChanges;
     [discardAlert show];
 }
 
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 1) {
-        [self.navigationController popViewControllerAnimated:YES];
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == AlertDiscardChanges) {
+        if (buttonIndex == 1) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    } else {
+        NSManagedObjectContext *context = _media.managedObjectContext;
+        if (buttonIndex == 0) {
+            [context deleteObject:_media];
+            [self.navigationController popViewControllerAnimated:YES];
+        
+        } else if (buttonIndex == 1) {
+            if (_media.localURL) {
+                [self.view addSubview:self.loadingView];
+                [self.loadingView show];
+                [self.media uploadWithSuccess:^{
+                    [self.navigationController popViewControllerAnimated:YES];
+                    [self.loadingView hide];
+                    [self.loadingView removeFromSuperview];
+                }failure:^(NSError *error) {
+                    [WPError showAlertWithError:error];
+                    [self.loadingView hide];
+                    [self.loadingView removeFromSuperview];
+                }];
+            } else {
+                // No localUrl implies that the image could not be downloaded
+                // Upload will fail
+                // TODO Tell user about this?
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        }
+        [context save:nil];
     }
 }
 
