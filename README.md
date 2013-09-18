@@ -5,6 +5,7 @@ WordPress for iOS
 ### Developer blog & Handbook
 
 Blog: http://make.wordpress.org/mobile
+
 Handbook: http://make.wordpress.org/mobile/handbook/
 
 ### Style guide
