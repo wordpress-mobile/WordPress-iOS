@@ -15,6 +15,7 @@
 #import "Blog.h"
 #import "WPStyleGuide.h"
 #import "WPInfoView.h"
+#import "PanelNavigationConstants.h"
 
 static NSString *const ThemeCellIdentifier = @"theme";
 static NSString *const SearchFilterCellIdentifier = @"search_filter";
@@ -29,6 +30,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 @property (nonatomic, weak) WPInfoView *noThemesView;
 @property (nonatomic, weak) ThemeSearchFilterHeaderView *header;
 @property (nonatomic, weak) Theme *currentTheme;
+@property (nonatomic, assign) BOOL isSearching;
 
 @end
 
@@ -66,6 +68,9 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     
     [self loadThemesFromCache];
     [self reloadThemes];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarClosed) name:SidebarClosedNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -84,6 +89,20 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     
     self.allThemes = nil;
     self.filteredThemes = nil;
+}
+
+- (void)sidebarOpened {
+    _isSearching = false;
+    if (_header.isFirstResponder) {
+        [_header resignFirstResponder];
+        _isSearching = true;
+    }
+}
+
+- (void)sidebarClosed {
+    if (_isSearching) {
+        [_header becomeFirstResponder];
+    }
 }
 
 - (void)loadThemesFromCache {
