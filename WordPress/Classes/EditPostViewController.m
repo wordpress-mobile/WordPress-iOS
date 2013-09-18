@@ -450,7 +450,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedMediaOptions forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
     PostMediaViewController *vc = [[PostMediaViewController alloc] initWithPost:self.apost];
     vc.postDetailViewController = self;
-    self.navigationItem.title = NSLocalizedString(@"Back", nil);
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"") style:UIBarButtonItemStyleBordered target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+    
     [self.navigationController pushViewController:vc animated:YES];
 }
 
