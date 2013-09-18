@@ -28,6 +28,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 @property (nonatomic, weak) UIActionSheet *currentActionSheet;
 @property (nonatomic, assign) BOOL isFilteringByDate;
 @property (nonatomic, strong) NSString *currentSearchText;
+@property (nonatomic, weak) UIView *firstResponderOnSidebarOpened;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *multiselectToolbar;
 
@@ -76,6 +77,9 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     };
     
     [self refresh];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarClosed) name:SidebarClosedNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -106,6 +110,22 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     [super didReceiveMemoryWarning];
     
     _selectedMedia = nil;
+}
+
+- (void)sidebarOpened {
+    for (id subview in self.collectionView.subviews) {
+        if ([subview isFirstResponder]) {
+            [subview resignFirstResponder];
+            _firstResponderOnSidebarOpened = subview;
+            return;
+        }
+    }
+}
+
+- (void)sidebarClosed {
+    if (_firstResponderOnSidebarOpened) {
+        [_firstResponderOnSidebarOpened becomeFirstResponder];
+    }
 }
 
 - (void)refresh {

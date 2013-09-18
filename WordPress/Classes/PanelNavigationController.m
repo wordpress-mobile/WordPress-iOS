@@ -914,10 +914,13 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 - (void)showSidebarAnimated:(BOOL)animated {
     [SoundUtil playSwipeSound];
 
+    [[NSNotificationCenter defaultCenter] postNotificationName:SidebarOpenedNotification object:nil];
+    
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:0 duration:0];
         [self disableDetailView];
     } completion:^(BOOL finished) {
+        
     }];
     
     // The statusBarBackgroundView starts out as transparent in the closed state so if a view controller
@@ -932,6 +935,8 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 
 - (void)showSidebarWithVelocity:(CGFloat)velocity {
     [SoundUtil playSwipeSound];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SidebarOpenedNotification object:nil];
 
     [self disableDetailView];
     [self setStackOffset:0.f withVelocity:velocity];
@@ -943,6 +948,8 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 }
 
 - (void)closeSidebarAnimated:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SidebarClosedNotification object:nil];
+    
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) duration:0];
     } completion:^(BOOL finished) {
@@ -965,6 +972,8 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 }
 
 - (void)closeSidebarWithVelocity:(CGFloat)velocity {
+    [[NSNotificationCenter defaultCenter] postNotificationName:SidebarClosedNotification object:nil];
+    
     [self enableDetailView];
     [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) withVelocity:velocity];
     
