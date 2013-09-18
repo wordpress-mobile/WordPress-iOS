@@ -13,7 +13,7 @@
 
 @class Blog;
 
-@interface MediaBrowserViewController : UIViewController <MediaSearchFilterDelegate, UISearchBarDelegate, UIActionSheetDelegate>
+@interface MediaBrowserViewController : UIViewController <MediaSearchFilterDelegate, UISearchBarDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic, strong) Blog *blog;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;

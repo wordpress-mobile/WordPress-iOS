@@ -27,7 +27,7 @@
 
 @property (nonatomic, strong) Media *media;
 @property (nonatomic, assign) BOOL isEditing;
-@property (nonatomic, weak) WPLoadingView *loadingView;
+@property (nonatomic, strong) WPLoadingView *loadingView;
 @property (strong, nonatomic) UITapGestureRecognizer *tapImageRecognizer;
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
@@ -238,23 +238,36 @@
     [self.view addSubview:self.loadingView];
     [self.loadingView show];
     
-    // Block the user from escaping before it's done
-    [self.media remoteUpdateWithSuccess:^{
+    dispatch_block_t success = ^{
         [self.navigationController popViewControllerAnimated:YES];
         [self.loadingView hide];
         [self.loadingView removeFromSuperview];
-    } failure:^(NSError *error) {
+    };
+    
+    __block void (^failure)(NSError*) = ^(NSError *error) {
         [WPError showAlertWithError:error];
         [self.loadingView hide];
         [self.loadingView removeFromSuperview];
-    }];
+    };
+    
+    // Media upload may have failed at some point, so we need to upload here
+    if (!_media.mediaID) {
+        [_media.managedObjectContext save:nil];
+        [self.media uploadWithSuccess:success failure:failure];
+        return;
+    }
+    
+    // Block the user from escaping before it's done
+    [self.media remoteUpdateWithSuccess:success failure:failure];
 }
 
 - (UIView *)loadingView {
-    CGFloat side = 100.0f;
-    WPLoadingView *loadingView = [[WPLoadingView alloc] initWithSide:side];
-    loadingView.center = CGPointMake(self.view.center.x, self.view.center.y - side);
-    _loadingView = loadingView;
+    if (!_loadingView) {
+        CGFloat side = 100.0f;
+        WPLoadingView *loadingView = [[WPLoadingView alloc] initWithSide:side];
+        loadingView.center = CGPointMake(self.view.center.x, self.view.center.y - side);
+        _loadingView = loadingView;
+    }
     return _loadingView;
 }
 

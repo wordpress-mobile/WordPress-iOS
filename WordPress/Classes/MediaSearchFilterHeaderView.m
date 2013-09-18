@@ -17,7 +17,6 @@ static CGFloat const DateButtonWidth = 130.0f;
 
 @property (nonatomic, weak) UISearchBar *searchBar;
 @property (nonatomic, weak) UIButton *filterDatesButton;
-//@property (nonatomic, weak) UIDatePicker *datePicker;
 
 @end
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4488.2" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3715.3"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MediaBrowserViewController">
@@ -41,16 +41,6 @@
             <color key="backgroundColor" red="0.20939047029702973" green="0.20939047029702973" blue="0.20939047029702973" alpha="1" colorSpace="calibratedRGB"/>
             <items>
                 <barButtonItem style="plain" systemItem="flexibleSpace" id="3Ln-In-cOD"/>
-                <barButtonItem tag="1" title="View" id="xsy-AJ-cwg">
-                    <connections>
-                        <action selector="multiselectViewPressed:" destination="-1" id="bCz-bo-DXz"/>
-                    </connections>
-                </barButtonItem>
-                <barButtonItem tag="2" title="Edit" id="G8n-kJ-DvP">
-                    <connections>
-                        <action selector="multiselectEditPressed:" destination="-1" id="gYn-Eb-frP"/>
-                    </connections>
-                </barButtonItem>
                 <barButtonItem tag="3" title="Delete" id="FTn-r8-icg">
                     <connections>
                         <action selector="multiselectDeletePressed:" destination="-1" id="fWb-Pl-ymX"/>
