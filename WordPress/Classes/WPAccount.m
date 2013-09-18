@@ -84,12 +84,6 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 - (void)prepareForDeletion {
     // Invoked automatically by the Core Data framework when the receiver is about to be deleted.
     if (__defaultDotcomAccount == self) {
-        // Remove all WPcom blogs on sign out
-        [__defaultDotcomAccount.blogs enumerateObjectsUsingBlock:^(Blog *obj, BOOL *stop) {
-            if (obj.isWPcom) {
-                [obj remove];
-            }
-        }];
         [[WordPressComApi sharedApi] cancelAllHTTPOperationsWithMethod:nil path:nil];
         __defaultDotcomAccount = nil;
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountDefaultsKey];
