@@ -10,6 +10,7 @@
 #import "MediaBrowserCell.h"
 #import "Media.h"
 #import "WPImageSource.h"
+#import "UIImage+Resize.h"
 
 @interface WPImageSource (Media)
 
@@ -122,8 +123,18 @@
 - (void)downloadThumbnailForMedia:(Media*)media success:(void (^)(NSNumber *mediaId))success failure:(void (^)(NSError *))failure {
     NSURL *thumbnailUrl = [NSURL URLWithString:[media.remoteURL stringByAppendingString:@"?w=145"]];
     [self downloadImageForURL:thumbnailUrl withSuccess:^(UIImage *image) {
-        media.thumbnail = UIImageJPEGRepresentation(image, 0.90);
-        success(media.mediaID);
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            UIImage *thumbnail = image;
+            if (thumbnail.size.width > 145 || thumbnail.size.height > 145) {
+                thumbnail = [image thumbnailImage:145 transparentBorder:0 cornerRadius:0 interpolationQuality:0.9];
+            }
+            __block NSData *thumbnailData = UIImageJPEGRepresentation(thumbnail, 0.90);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                media.thumbnail = thumbnailData;
+                success(media.mediaID);
+            });
+        });
+        
     } failure:failure];
 }
 
