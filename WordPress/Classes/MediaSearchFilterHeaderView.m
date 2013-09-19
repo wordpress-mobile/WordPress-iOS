@@ -76,6 +76,7 @@ static CGFloat const DateButtonWidth = 44.0f;
 }
 
 - (void)filterDatesPressed {
+    [_dateRangePickerView setDateRangeMin:[_delegate mediaDateRangeStart] andMax:[_delegate mediaDateRangeEnd]];
     if (!_isDisplayingDatePicker) {
         [UIView animateWithDuration:0.3f animations:^{
             [_filterDatesButton setImage:[UIImage imageNamed:@"icon-check-small-white"] forState:UIControlStateNormal];

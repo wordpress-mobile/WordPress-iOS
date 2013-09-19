@@ -191,6 +191,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 
 - (void)applyDateFilterForStartDate:(NSDate *)start andEndDate:(NSDate *)end {
     [self setDateFilters:start andEndDate:end];
+    end = [end dateByAddingTimeInterval:(24*3600)-1]; // 'end' at 11:59:59 
     if (start && end) {
         self.filteredMedia = [_allMedia filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"(self.creationDate <= %@) AND (self.creationDate >= %@)", end, start]];
         _isFilteringByDate = YES;
@@ -223,15 +224,19 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 }
 
 - (NSDate *)mediaDateRangeStart {
-    if (_filteredMedia) {
-        return ((Media*)_filteredMedia[0]).creationDate;
+    if (_allMedia.count > 0) {
+        return [[_allMedia lastObject] creationDate];
     }
     return nil;
 }
 
 - (NSDate *)mediaDateRangeEnd {
-    if (_filteredMedia) {
-        return [[_filteredMedia lastObject] creationDate];
+    if (_filteredMedia.count > 0) {
+        NSDate *d = ((Media*)_filteredMedia[0]).creationDate;
+        NSCalendar *c = [NSCalendar currentCalendar];
+        c.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+        NSDateComponents *components = [c components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:d];
+        return [c dateFromComponents:components];
     }
     return nil;
 }

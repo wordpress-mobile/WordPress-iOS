@@ -44,10 +44,12 @@
 
     //Create Date Pickers
     self.startDatePicker = [[UIDatePicker alloc] init];
+    self.startDatePicker.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
     [self.startDatePicker setDatePickerMode:UIDatePickerModeDate];
     self.startDatePicker.frame = CGRectMake(0,0,0,100);
     
     self.endDatePicker = [[UIDatePicker alloc] init];
+    self.endDatePicker.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
     [self.endDatePicker setDatePickerMode:UIDatePickerModeDate];
     self.endDatePicker.frame = CGRectMake(0, 0, 0, 100);
 
@@ -94,18 +96,19 @@
 - (void)setDateRangeMin:(NSDate*)min andMax:(NSDate*)max {
     if (min && max) {
         self.startDatePicker.minimumDate = min;
-        self.endDatePicker.maximumDate = max;
-    }
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"yyyy-MM-dd";
-    
-    if (textField.tag == 100) {
-        _startDate.text = [formatter stringFromDate:_startDatePicker.date];
-    } else {
-        _endDate.text = [formatter stringFromDate:_endDatePicker.date];
+        self.endDatePicker.maximumDate = [NSDate date];
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        formatter.dateFormat = @"yyyy-MM-dd";
+        formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+        if ([self.startDate.text isEqualToString:@""]) {
+            _startDate.text = [formatter stringFromDate:_startDatePicker.minimumDate];
+            self.startDatePicker.date = min;
+        }
+        if ([self.endDate.text isEqualToString:@""]) {
+            _endDate.text = [formatter stringFromDate:_endDatePicker.maximumDate];
+            self.endDatePicker.date = max;
+        }
     }
 }
 
@@ -115,6 +118,7 @@
     [self.startDatePicker setMaximumDate:self.endDatePicker.date];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
     formatter.dateFormat = @"yyyy-MM-dd";
     
     if (textField.tag == 100) {
