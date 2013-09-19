@@ -625,7 +625,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 }
 
 - (BOOL)isRowForViewAdmin:(NSIndexPath *)indexPath {
-    return indexPath.row == [self shouldShowThemesOption] ? 7 : 6;
+    return indexPath.row == ([self shouldShowThemesOption] ? 7 : 6);
 }
 
 - (void)showSettings
