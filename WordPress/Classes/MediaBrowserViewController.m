@@ -18,10 +18,11 @@
 #import "WordPressAppDelegate.h"
 #import "WPLoadingView.h"
 #import "PanelNavigationConstants.h"
+#import "WPInfoView.h"
 
 static NSString *const MediaCellIdentifier = @"media_cell";
 
-@interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MediaBrowserCellMultiSelectDelegate, UIAlertViewDelegate>
+@interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MediaBrowserCellMultiSelectDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet MediaSearchFilterHeaderView *filterHeaderView;
 @property (nonatomic, strong) NSArray *filteredMedia, *allMedia;
@@ -36,6 +37,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 @property (nonatomic, strong) WPLoadingView *loadingView;
 @property (nonatomic, strong) NSDate *startDate, *endDate;
 @property (nonatomic, weak) UIView *firstResponderOnSidebarOpened;
+@property (nonatomic, weak) WPInfoView *noMediaView;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *multiselectToolbar;
 
@@ -174,10 +176,27 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     return _loadingView;
 }
 
+- (void)toggleNoMediaView:(BOOL)show {
+    if (!show) {
+        [_noMediaView removeFromSuperview];
+        return;
+    }
+    if (!_noMediaView) {
+        _noMediaView = [WPInfoView WPInfoViewWithTitle:@"No media to display" message:nil cancelButton:nil];
+    }
+    [self.collectionView addSubview:_noMediaView];
+}
+
+- (void)viewDidLayoutSubviews {
+    [_noMediaView centerInSuperview];
+}
+
 #pragma mark - Setters
 
 - (void)setFilteredMedia:(NSArray *)filteredMedia {
     _filteredMedia = filteredMedia;
+    
+    [self toggleNoMediaView:(_filteredMedia.count == 0)];
     [self.collectionView reloadData];
 }
 
