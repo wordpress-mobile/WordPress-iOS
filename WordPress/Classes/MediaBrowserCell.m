@@ -96,12 +96,13 @@
     _media = media;
     self.title.text = _media.title;
     
-    if (_media.thumbnail.length > 0) {
-        _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
-        _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
-    } else {
-        if (_media.remoteURL && [_media.mediaType isEqualToString:@"image"]) {
-            [_thumbnail setImage:[UIImage imageNamed:@"media_image_placeholder"]];
+    _thumbnail.image = [UIImage imageNamed:[@"media_" stringByAppendingString:_media.mediaType]];
+    
+    if ([_media.mediaType isEqualToString:@"image"]) {
+        if (_media.thumbnail.length > 0) {
+            _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
+            _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
+        } else if (_media.remoteURL) {
             [[WPImageSource sharedSource] downloadThumbnailForMedia:_media success:^(NSNumber *mediaId){
                 if ([mediaId isEqualToNumber:_media.mediaID]) {
                     _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
@@ -110,13 +111,6 @@
             } failure:^(NSError *error) {
                 WPFLog(@"Failed to download thumbnail for media %@: %@", _media.remoteURL, error);
             }];
-        } else {
-            _thumbnail.contentMode = UIViewContentModeCenter;
-            if ([_media.mediaType isEqualToString:@"movie"]) {
-                [_thumbnail setImage:[UIImage imageNamed:@"media_movieclip"]];
-            } else {
-                [_thumbnail setImage:[UIImage imageNamed:@"media_image_placeholder"]];
-            }
         }
     }
 }

@@ -80,7 +80,7 @@
     self.caption = json[@"caption"];
     self.desc = json[@"description"];
     
-    [self getMediaTypeFromLink:[json[@"link"] pathExtension]];
+    [self mediaTypeFromLink:[json[@"link"] pathExtension]];
 }
 
 - (NSDictionary*)XMLRPCDictionaryForUpdate {
@@ -89,9 +89,11 @@
              @"post_excerpt": self.caption ? self.caption : @""};
 }
 
-- (void)getMediaTypeFromLink:(NSString *)ext {
+- (void)mediaTypeFromLink:(NSString *)ext {
     CFStringRef fileExt = (__bridge CFStringRef)ext;
     CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExt, nil);
+    CFStringRef ppt = (__bridge CFStringRef)@"public.presentation";
+    
     if (UTTypeConformsTo(fileUTI, kUTTypeImage)) {
         self.mediaType = @"image";
     } else if (UTTypeConformsTo(fileUTI, kUTTypeVideo)) {
@@ -100,12 +102,11 @@
         self.mediaType = @"movie";
     } else if (UTTypeConformsTo(fileUTI, kUTTypeMPEG4)){
         self.mediaType = @"movie";
-    } else if (UTTypeConformsTo(fileUTI, kUTTypeText))  {
-        self.mediaType = @"document";
+    } else if (UTTypeConformsTo(fileUTI, ppt)) {
+        self.mediaType = @"powerpoint";
     } else {
-        self.mediaType = @"unknown";
+        self.mediaType = @"document";
     }
-    
 }
 
 + (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)(NSArray *successes))success failure:(void (^)(NSError *error, NSArray *failures))failure {

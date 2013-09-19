@@ -131,7 +131,11 @@ static NSUInteger const AlertDiscardChanges = 500;
     NSString *stringFromDate = [dateFormatter stringFromDate:_media.creationDate];
     [self.createdDateLabel setText: [NSString stringWithFormat:@"Created Date: %@", stringFromDate]];
     
-    [self loadMediaImage];
+    _mediaImageview.image = [UIImage imageNamed:[@"media_" stringByAppendingString:_media.mediaType]];
+    
+    if ([_media.mediaType isEqualToString:@"image"]) {
+        [self loadMediaImage];
+    }
 }
 
 - (NSString *)saveFullsizeImageToDisk:(UIImage*)image imageName:(NSString *)imageName {
@@ -156,6 +160,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 - (void)loadMediaImage {
     if (_media.localURL) {
+        _mediaImageview.contentMode = UIViewContentModeScaleAspectFit;
         _mediaImageview.image = [[UIImage alloc] initWithContentsOfFile:_media.localURL];
         return;
     }
@@ -170,6 +175,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     
     if (_media.remoteURL) {
         [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:_media.remoteURL] withSuccess:^(UIImage *image) {
+            _mediaImageview.contentMode = UIViewContentModeScaleAspectFit;
             _mediaImageview.image = image;
             NSString *localPath = [self saveFullsizeImageToDisk:image imageName:_media.mediaID.stringValue];
             _media.localURL = localPath;
@@ -177,19 +183,7 @@ static NSUInteger const AlertDiscardChanges = 500;
         } failure:^(NSError *error) {
             WPFLog(@"Failed to download image for %@: %@", _media, error);
             [[_mediaImageview viewWithTag:1337] removeFromSuperview];
-            if ([_media.mediaType isEqualToString:@"movie"]) {
-                [_mediaImageview setImage:[UIImage imageNamed:@"media_movieclip"]];
-            } else {
-                [_mediaImageview setImage:[UIImage imageNamed:@"media_image_placeholder"]];
-            }
         }];
-    } else {
-        [[_mediaImageview viewWithTag:1337] removeFromSuperview];
-        if ([_media.mediaType isEqualToString:@"movie"]) {
-            [_mediaImageview setImage:[UIImage imageNamed:@"media_movieclip"]];
-        } else {
-            [_mediaImageview setImage:[UIImage imageNamed:@"media_image_placeholder"]];
-        }
     }
 }
 
