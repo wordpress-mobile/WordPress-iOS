@@ -87,6 +87,9 @@
 - (void)prepareForReuse {
     self.thumbnail.image = nil;
     self.isSelected = false;
+    if (!_thumbnail.image) {
+        _thumbnail.contentMode = UIViewContentModeCenter;
+    }
 }
 
 - (void)setMedia:(Media *)media {
@@ -95,6 +98,7 @@
     
     if (_media.thumbnail.length > 0) {
         _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
+        _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
     } else {
         if (_media.remoteURL && [_media.mediaType isEqualToString:@"image"]) {
             [_thumbnail setImage:[UIImage imageNamed:@"media_image_placeholder"]];
@@ -107,6 +111,7 @@
                 WPFLog(@"Failed to download thumbnail for media %@: %@", _media.remoteURL, error);
             }];
         } else {
+            _thumbnail.contentMode = UIViewContentModeCenter;
             if ([_media.mediaType isEqualToString:@"movie"]) {
                 [_thumbnail setImage:[UIImage imageNamed:@"media_movieclip"]];
             } else {
