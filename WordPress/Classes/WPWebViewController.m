@@ -134,7 +134,7 @@
         toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
         toolbar.tintColor = [UIColor whiteColor];        
     } else {
-        UIColor *color = [UIColor UIColorFromHex:0x464646];
+        UIColor *color = [UIColor whiteColor];
         backButton.tintColor = color;
         forwardButton.tintColor = color;
         refreshButton.tintColor = color;
