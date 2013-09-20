@@ -257,6 +257,12 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	ReaderTopicsViewController *controller = [[ReaderTopicsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	controller.delegate = self;
     if (IS_IPAD) {
+        if (_popover) {
+            [_popover dismissPopoverAnimated:YES];
+            _popover = nil;
+            return;
+        }
+        
         _popover = [[UIPopoverController alloc] initWithContentViewController:controller];
         _popover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
 
