@@ -88,6 +88,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
     if (self) {
         self.apost = aPost;
+        self.apost.status = @"publish";
         if (self.apost.remoteStatus == AbstractPostRemoteStatusLocal) {
             self.editMode = EditPostViewControllerModeNewPost;
         } else {
