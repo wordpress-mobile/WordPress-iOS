@@ -790,7 +790,7 @@
                     __weak PostSettingsSelectionViewController *weakVc = vc;
                     vc.onItemSelected = ^(NSString *status) {
                         [weakVc dismiss];
-                        self.apost.status = status;
+                        [self.apost setStatusTitle:status];
                         [tableView reloadData];
                     };
                     [self.navigationController pushViewController:vc animated:YES];
