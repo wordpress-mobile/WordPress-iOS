@@ -543,6 +543,10 @@
 - (WPXMLRPCClient *)api {
     if (_api == nil) {
         _api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc]];
+        // Enable compression for wp.com only, as some self hosted have connection issues
+        if (self.isWPcom) {
+            [_api setDefaultHeader:@"gzip, deflate" value:@"Accept-Encoding"];
+        }
     }
     return _api;
 }
