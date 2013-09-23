@@ -357,7 +357,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     MediaBrowserCell *cell = (MediaBrowserCell*)[collectionView cellForItemAtIndexPath:indexPath];
-    EditMediaViewController *viewMedia = [[EditMediaViewController alloc] initWithMedia:cell.media showEditMode:YES];
+    EditMediaViewController *viewMedia = [[EditMediaViewController alloc] initWithMedia:cell.media];
     [self.navigationController pushViewController:viewMedia animated:YES];
 }
 

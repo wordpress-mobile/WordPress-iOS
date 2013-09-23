@@ -12,6 +12,6 @@
 
 @interface EditMediaViewController : UIViewController
 
-- (id)initWithMedia:(Media*)media showEditMode:(BOOL)editMode;
+- (id)initWithMedia:(Media*)media;
 
 @end

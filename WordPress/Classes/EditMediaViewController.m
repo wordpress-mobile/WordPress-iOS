@@ -25,7 +25,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 @end
 
-@interface EditMediaViewController () <WPKeyboardToolbarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate>
+@interface EditMediaViewController () <WPKeyboardToolbarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) Media *media;
 @property (nonatomic, assign) BOOL isEditing;
@@ -54,11 +54,10 @@ static NSUInteger const AlertDiscardChanges = 500;
     return self;
 }
 
-- (id)initWithMedia:(Media*)media showEditMode:(BOOL)isEditing {
+- (id)initWithMedia:(Media*)media {
     self = [super init];
     if (self) {
         _media = media;
-        _isEditing = isEditing;
     }
     return self;
 }
@@ -71,7 +70,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     _tapImageRecognizer.delegate = self;
     [_mediaImageview addGestureRecognizer:_tapImageRecognizer];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(editPressed)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(savePressed)];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"") style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonPressed)];
     
@@ -88,12 +87,14 @@ static NSUInteger const AlertDiscardChanges = 500;
     self.descriptionTextview.textColor = self.titleTextview.textColor;
     self.createdDateLabel.textColor = [WPStyleGuide whisperGrey];
     
+    self.titleTextview.delegate = self;
+    self.captionTextview.delegate = self;
+    self.descriptionTextview.delegate = self;
+    
     _containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
     
     [self applyLayoutForMedia];
-    if (_isEditing) {
-        [self applyLayoutForEditingState];
-    }
+    [self applyLayout];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -125,7 +126,6 @@ static NSUInteger const AlertDiscardChanges = 500;
     [self.descriptionTextview setText:_media.desc];
     [self.descriptionTextview setPlaceholder:NSLocalizedString(@"Description", @"")];
     
-    NSLog(@"Creation Date: %@", _media.creationDate);
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *stringFromDate = [dateFormatter stringFromDate:_media.creationDate];
@@ -187,10 +187,8 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
-- (void)applyLayoutForEditingState
+- (void)applyLayout
 {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(savePressed)];
-    
     self.titleTextview.editable = YES;
     self.captionTextview.editable = YES;
     self.descriptionTextview.editable = YES;
@@ -249,14 +247,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     return nil;
 }
 
-- (void)editPressed {
-    [self applyLayoutForEditingState];
-}
-
 - (void)savePressed {
-    self.media.title = [self.titleTextview enteredText];
-    self.media.caption = [self.captionTextview enteredText];
-    self.media.desc = [self.descriptionTextview enteredText];
     
     [self.view addSubview:self.loadingView];
     [self.loadingView show];
@@ -301,14 +292,19 @@ static NSUInteger const AlertDiscardChanges = 500;
 }
 
 - (void)cancelButtonPressed {
-    UIAlertView *discardAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Discard Changes", @"") message:NSLocalizedString(@"Are you sure you would like to discard your changes?", @"") delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Discard", nil];
-    discardAlert.tag = AlertDiscardChanges;
-    [discardAlert show];
+    if ([_media.managedObjectContext hasChanges]) {
+        UIAlertView *discardAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Discard Changes", @"") message:NSLocalizedString(@"Are you sure you would like to discard your changes?", @"") delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Discard", nil];
+        discardAlert.tag = AlertDiscardChanges;
+        [discardAlert show];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (alertView.tag == AlertDiscardChanges) {
         if (buttonIndex == 1) {
+            [_media.managedObjectContext rollback];
             [self.navigationController popViewControllerAnimated:YES];
         }
     } else {
@@ -341,6 +337,21 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    [textView textViewDidBeginEditing:textView];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    [textView textViewDidEndEditing:textView];
+    if (textView == _titleTextview) {
+        _media.title = textView.enteredText;
+    } else if (textView == _captionTextview) {
+        _media.caption = textView.enteredText;
+    } else if (textView == _descriptionTextview) {
+        _media.desc = textView.enteredText;
+    }
+}
+
 @end
 
 @implementation UITextView (Placeholder)
@@ -358,7 +369,6 @@ static NSUInteger const AlertDiscardChanges = 500;
 }
 
 - (void)setPlaceholder:(NSString *)placeholder {
-    self.delegate = self;
     objc_setAssociatedObject(self, "placeholder", placeholder, OBJC_ASSOCIATION_RETAIN);
     if (!self.text || [self.text isEqualToString:@""]) {
         self.text = placeholder;
