@@ -76,8 +76,8 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
         [self addGestureRecognizer];
         
         NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        [notificationCenter addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
-        [notificationCenter addObserver:self selector:@selector(keyboardWasHidden:) name:UIKeyboardDidHideNotification object:nil];
+        [notificationCenter addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+        [notificationCenter addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     }
     return self;
 }
@@ -186,7 +186,7 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     }
 }
 
-- (void)keyboardWasShown:(NSNotification *)notification
+- (void)keyboardDidShow:(NSNotification *)notification
 {
     CGRect keyboardRect = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardRect = [self convertRect:keyboardRect fromView:nil];
@@ -194,7 +194,7 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     [self recalculateScrollViewContentSizeWithKeyboardSize:keyboardSize];
 }
 
-- (void)keyboardWasHidden:(NSNotification *)notification
+- (void)keyboardDidHide:(NSNotification *)notification
 {
     [self recalculateScrollViewContentSizeWithKeyboardSize:CGSizeZero];
 }
