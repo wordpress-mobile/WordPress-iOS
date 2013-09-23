@@ -57,6 +57,7 @@
 // alias of displayURL
 // kept for compatibilty, used as a key to store passwords
 @property (weak, readonly) NSString *hostURL;
+@property (weak, readonly) NSString *homeURL;
 // http://wp.koke.me/sub
 @property (nonatomic, strong) NSString *url;
 // Used for reachability checks (IDN encoded)
