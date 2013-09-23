@@ -6,6 +6,7 @@
 #import "WPPopoverBackgroundView.h"
 #import "WPAddCategoryViewController.h"
 #import "WPAlertView.h"
+#import "MediaBrowserViewController.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -452,10 +453,12 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 - (IBAction)showMediaOptions:(id)sender {
     [WPMobileStats flagProperty:StatsPropertyPostDetailClickedMediaOptions forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
-    PostMediaViewController *vc = [[PostMediaViewController alloc] initWithPost:self.apost];
-    vc.postDetailViewController = self;
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"") style:UIBarButtonItemStyleBordered target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
+//    PostMediaViewController *vc = [[PostMediaViewController alloc] initWithPost:self.apost];
+//    vc.postDetailViewController = self;
+//    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"") style:UIBarButtonItemStyleBordered target:nil action:nil];
+//    self.navigationItem.backBarButtonItem = backButton;
+    
+    MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.apost];
     
     [self.navigationController pushViewController:vc animated:YES];
 }

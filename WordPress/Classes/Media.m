@@ -56,6 +56,12 @@
     return media;
 }
 
++ (Media *)newMediaForBlog:(Blog *)blog {
+    Media *media = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:blog.managedObjectContext];
+    media.blog = blog;
+    return media;
+}
+
 + (Media *)createOrReplaceMediaFromJSON:(NSDictionary *)json forBlog:(Blog *)blog {
     NSSet *existing = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID == %@", [json[@"attachment_id"] numericValue]]];
     if (existing.count > 0) {
@@ -135,6 +141,8 @@
 - (void)awakeFromFetch {
     if ((self.remoteStatus == MediaRemoteStatusPushing && _uploadOperation == nil) || (self.remoteStatus == MediaRemoteStatusProcessing)) {
         self.remoteStatus = MediaRemoteStatusFailed;
+    } else {
+        self.remoteStatus = MediaRemoteStatusSync;
     }
 }
 

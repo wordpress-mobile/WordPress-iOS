@@ -11,11 +11,13 @@
 #import <UIKit/UIKit.h>
 #import "MediaSearchFilterHeaderView.h"
 
-@class Blog;
+@class Blog, AbstractPost;
 
 @interface MediaBrowserViewController : UIViewController <MediaSearchFilterDelegate, UISearchBarDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic, strong) Blog *blog;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+
+- (id)initWithPost:(AbstractPost *)aPost;
 
 @end

@@ -11,10 +11,10 @@
 #import "AbstractPost.h"
 
 typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
-    MediaRemoteStatusPushing,    // Uploading post
+    MediaRemoteStatusSync,    // Post synced
     MediaRemoteStatusFailed,      // Upload failed
     MediaRemoteStatusLocal,       // Only local version
-    MediaRemoteStatusSync,       // Post uploaded
+    MediaRemoteStatusPushing,       // Uploading post
     MediaRemoteStatusProcessing, // Intermediate status before uploading
 };
 
@@ -49,6 +49,7 @@ typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
 @property (nonatomic, assign) BOOL isUnattached;
 
 + (Media *)newMediaForPost:(AbstractPost *)post;
++ (Media *)newMediaForBlog:(Blog *)blog;
 + (Media *)createOrReplaceMediaFromJSON:(NSDictionary*)json forBlog:(Blog *)blog;
 + (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)(NSArray *successes))success failure:(void (^)(NSError *error, NSArray *failures))failure;
 
