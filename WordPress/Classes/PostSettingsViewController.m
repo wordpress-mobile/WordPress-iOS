@@ -567,7 +567,7 @@
                     }
                 }
                 [WPStyleGuide configureTableViewActionCell:activityCell];
-                [activityCell.textLabel setText:@"Set Featured Image"];
+                [activityCell.textLabel setText:NSLocalizedString(@"Set Featured Image", @"")];
                 return activityCell;
             } else {
                 switch (indexPath.row) {
