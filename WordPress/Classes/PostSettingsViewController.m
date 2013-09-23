@@ -326,7 +326,11 @@
 #pragma mark TextField Delegate Methods
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-	self.apost.password = textField.text;
+    if (textField == passwordTextField) {
+        self.apost.password = textField.text;
+    } else if (textField == tagsTextField) {
+        self.post.tags = tagsTextField.text;
+    }
     [postDetailViewController refreshButtons];
 }
 
