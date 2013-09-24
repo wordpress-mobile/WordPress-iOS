@@ -170,12 +170,6 @@ static CGFloat const SortButtonWidth = 130.0f;
     [self reenableCancelButton:searchBar];
 }
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    if ([searchText isEqualToString: @""]) {
-        [self searchBarCancelButtonClicked:searchBar];
-    }
-}
-
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
     [_delegate clearSearchFilter];
     searchBar.text = @"";
