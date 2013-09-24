@@ -90,6 +90,21 @@
     if (!_thumbnail.image) {
         _thumbnail.contentMode = UIViewContentModeCenter;
     }
+    
+    [self removeUploadStatusObservers];
+}
+
+- (void)removeUploadStatusObservers {
+    if ([_media observationInfo]) {
+        @synchronized (_media) {
+            [_media removeObserver:self forKeyPath:@"progress"];
+            [_media removeObserver:self forKeyPath:@"remoteStatus"];
+        }
+    }
+}
+
+- (void)dealloc {
+    [self removeUploadStatusObservers];
 }
 
 - (void)setMedia:(Media *)media {
@@ -116,68 +131,68 @@
     }
     
     if (_media.remoteStatus != MediaRemoteStatusLocal && _media.remoteStatus != MediaRemoteStatusSync) {
-        [_media addObserver:self forKeyPath:@"progress" options:NSKeyValueObservingOptionNew context:0];
-        [_media addObserver:self forKeyPath:@"remoteStatus" options:NSKeyValueObservingOptionNew context:0];
-        [self showProgressBarForUpload];
+        @synchronized (_media) {
+            [_media addObserver:self forKeyPath:@"progress" options:NSKeyValueObservingOptionNew context:0];
+            [_media addObserver:self forKeyPath:@"remoteStatus" options:NSKeyValueObservingOptionNew context:0];
+        }
     }
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    [self showProgressBarForUpload];
+    _title.text = [self titleForMedia];
 }
 
 - (NSString *)titleForMedia {
-    if (_media.title) {
-        return _media.title;
-    }
+    if (_media.remoteStatus == MediaRemoteStatusPushing) {
+        return [NSString stringWithFormat:NSLocalizedString(@"Uploading: %.1f%%.", @""), _media.progress * 100.0];
+    
+    } else if (_media.remoteStatus == MediaRemoteStatusProcessing) {
+        return NSLocalizedString(@"Preparing for upload...", @"");
+    
+    } else if (_media.remoteStatus == MediaRemoteStatusFailed) {
+        return NSLocalizedString(@"Upload failed.", @"");
+    
+    } else {
+        if (_media.title) {
+            return _media.title;
+        }
 
-    NSString *filesizeString = nil;
-    if([_media.filesize floatValue] > 1024)
-        filesizeString = [NSString stringWithFormat:@"%.2f MB", ([_media.filesize floatValue]/1024)];
-    else
-        filesizeString = [NSString stringWithFormat:@"%.2f KB", [_media.filesize floatValue]];
-        
-    if ([_media.mediaType isEqualToString:@"image"]) {
-        return [NSString stringWithFormat:@"%dx%d %@",
-                       [_media.width intValue], [_media.height intValue], filesizeString];
-    } else if ([_media.mediaType isEqualToString:@"video"]) {
-        NSNumber *valueForDisplay = [NSNumber numberWithDouble:[_media.length doubleValue]];
-        NSNumber *days = [NSNumber numberWithDouble:
-                          ([valueForDisplay doubleValue] / 86400)];
-        NSNumber *hours = [NSNumber numberWithDouble:
-                           (([valueForDisplay doubleValue] / 3600) -
-                            ([days intValue] * 24))];
-        NSNumber *minutes = [NSNumber numberWithDouble:
-                             (([valueForDisplay doubleValue] / 60) -
-                              ([days intValue] * 24 * 60) -
-                              ([hours intValue] * 60))];
-        NSNumber *seconds = [NSNumber numberWithInt:([valueForDisplay intValue] % 60)];
-        
+        NSString *filesizeString = nil;
         if([_media.filesize floatValue] > 1024)
             filesizeString = [NSString stringWithFormat:@"%.2f MB", ([_media.filesize floatValue]/1024)];
         else
             filesizeString = [NSString stringWithFormat:@"%.2f KB", [_media.filesize floatValue]];
-        
-        return [NSString stringWithFormat:
-                       @"%02d:%02d:%02d %@",
-                       [hours intValue],
-                       [minutes intValue],
-                       [seconds intValue],
-                       filesizeString];
-    } else {
-        return NSLocalizedString(@"Untitled", @"");
-    }
-}
-
-- (void)showProgressBarForUpload {
-    if (_media.remoteStatus == MediaRemoteStatusPushing) {
-        _title.text = [NSString stringWithFormat:NSLocalizedString(@"Uploading: %.1f%%.", @""), _media.progress * 100.0];
-    } else if (_media.remoteStatus == MediaRemoteStatusProcessing) {
-        _title.text = NSLocalizedString(@"Preparing for upload...", @"");
-    } else if (_media.remoteStatus == MediaRemoteStatusFailed) {
-        _title.text = NSLocalizedString(@"Upload failed.", @"");
-    } else {
-        _title.text = [self titleForMedia];
+            
+        if ([_media.mediaType isEqualToString:@"image"]) {
+            return [NSString stringWithFormat:@"%dx%d %@",
+                           [_media.width intValue], [_media.height intValue], filesizeString];
+        } else if ([_media.mediaType isEqualToString:@"video"]) {
+            NSNumber *valueForDisplay = [NSNumber numberWithDouble:[_media.length doubleValue]];
+            NSNumber *days = [NSNumber numberWithDouble:
+                              ([valueForDisplay doubleValue] / 86400)];
+            NSNumber *hours = [NSNumber numberWithDouble:
+                               (([valueForDisplay doubleValue] / 3600) -
+                                ([days intValue] * 24))];
+            NSNumber *minutes = [NSNumber numberWithDouble:
+                                 (([valueForDisplay doubleValue] / 60) -
+                                  ([days intValue] * 24 * 60) -
+                                  ([hours intValue] * 60))];
+            NSNumber *seconds = [NSNumber numberWithInt:([valueForDisplay intValue] % 60)];
+            
+            if([_media.filesize floatValue] > 1024)
+                filesizeString = [NSString stringWithFormat:@"%.2f MB", ([_media.filesize floatValue]/1024)];
+            else
+                filesizeString = [NSString stringWithFormat:@"%.2f KB", [_media.filesize floatValue]];
+            
+            return [NSString stringWithFormat:
+                           @"%02d:%02d:%02d %@",
+                           [hours intValue],
+                           [minutes intValue],
+                           [seconds intValue],
+                           filesizeString];
+        } else {
+            return NSLocalizedString(@"Untitled", @"");
+        }
     }
 }
 

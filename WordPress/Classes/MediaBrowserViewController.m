@@ -191,16 +191,23 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     [self.blog syncMediaLibraryWithSuccess:^{
         [self loadFromCache];
         [_refreshHeaderView endRefreshing];
-        
-        self.navigationItem.rightBarButtonItem.enabled = true;
+        [self setUploadButtonEnabled:true];
     } failure:^(NSError *error) {
         WPFLog(@"Failed to refresh media library %@", error);
         [WPError showAlertWithError:error];
         if (error.code == 401) {
-            self.navigationItem.rightBarButtonItem.enabled = false;
+            [self setUploadButtonEnabled:false];
         }
         [_refreshHeaderView endRefreshing];
     }];
+}
+
+- (void)setUploadButtonEnabled:(BOOL)enabled {
+    if (IS_IOS7) {
+        ((UIButton*)[self.navigationItem.rightBarButtonItems[1] customView]).enabled = enabled;
+    } else {
+        self.navigationItem.rightBarButtonItem.enabled = enabled;
+    }
 }
 
 - (void)loadFromCache {
@@ -478,9 +485,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
         [self.view addSubview:self.loadingView];
         [self.loadingView show];
         
-        [Media bulkDeleteMedia:[_selectedMedia allValues] withSuccess:^(NSArray *successes) {
-            NSLog(@"Successfully deleted %@", successes);
-            
+        [Media bulkDeleteMedia:[_selectedMedia allValues] withSuccess:^() {
             [self loadFromCache];
             [self.loadingView hide];
             [self.loadingView removeFromSuperview];
@@ -493,6 +498,13 @@ static NSString *const MediaCellIdentifier = @"media_cell";
             
         } failure:^(NSError *error, NSArray *failures) {
             WPFLog(@"Failed to delete media %@ with error %@", failures, error);
+            
+            for (id subview in self.view.subviews) {
+                if ([subview respondsToSelector:@selector(setUserInteractionEnabled:)]) {
+                    [subview setUserInteractionEnabled:YES];
+                }
+            }
+            
             [self.loadingView hide];
             [self.loadingView removeFromSuperview];
         }];
@@ -500,11 +512,6 @@ static NSString *const MediaCellIdentifier = @"media_cell";
         [_selectedMedia removeAllObjects];
         [self showMultiselectOptions];
     }
-}
-
-- (IBAction)multiselectCreateGalleryPressed:(id)sender {
-    // TODO
-    // [[CreateGalleryViewController alloc] initWithMedia:_selectedMedia];
 }
 
 - (void)showMultiselectOptions {
