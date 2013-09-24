@@ -106,12 +106,6 @@ static CGFloat const DateButtonWidth = 44.0f;
     [self searchBarCancelButtonClicked:_searchBar];
 }
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    if ([searchText isEqualToString:@""]) {
-        [self searchBarCancelButtonClicked:searchBar];
-    }
-}
-
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
     [searchBar setShowsCancelButton:YES animated:YES];
 }
