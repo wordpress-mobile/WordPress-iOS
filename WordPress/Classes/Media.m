@@ -52,13 +52,15 @@
     
     media.blog = post.blog;
     media.posts = [NSMutableSet setWithObject:post];
-    
+    media.remoteStatus = MediaRemoteStatusLocal;
     return media;
 }
 
 + (Media *)newMediaForBlog:(Blog *)blog {
     Media *media = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:blog.managedObjectContext];
     media.blog = blog;
+    media.mediaID = @([[NSDate date] timeIntervalSince1970]);
+    media.remoteStatus = MediaRemoteStatusLocal;
     return media;
 }
 
@@ -115,16 +117,26 @@
     }
 }
 
-+ (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)(NSArray *successes))success failure:(void (^)(NSError *error, NSArray *failures))failure {
-    __block NSMutableArray *successfulDeletes = [NSMutableArray array];
++ (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)())success failure:(void (^)(NSError *error, NSArray *failures))failure {
     __block NSMutableArray *failedDeletes = [NSMutableArray array];
     for (NSUInteger i = 0; i < media.count; i++) {
         Media *m = media[i];
-        [m xmlrpcDeleteWithSuccess:^{
-            [successfulDeletes addObject:m];
+        // Delete locally if it was never uploaded
+        if (!m.remoteURL) {
+            [m.managedObjectContext deleteObject:m];
             if (i == media.count-1) {
                 if (success) {
-                    success(successfulDeletes);
+                    success();
+                }
+                return;
+            }
+            continue;
+        }
+        
+        [m xmlrpcDeleteWithSuccess:^{
+            if (i == media.count-1) {
+                if (success) {
+                    success();
                 }
             }
         } failure:^(NSError *error) {
@@ -139,7 +151,7 @@
 }
 
 - (void)awakeFromFetch {
-    if ((self.remoteStatus == MediaRemoteStatusPushing && _uploadOperation == nil) || (self.remoteStatus == MediaRemoteStatusProcessing)) {
+    if ((self.remoteStatus == MediaRemoteStatusPushing && _uploadOperation == nil) || (self.remoteStatus == MediaRemoteStatusProcessing) || self.remoteStatus == MediaRemoteStatusFailed) {
         self.remoteStatus = MediaRemoteStatusFailed;
     } else {
         self.remoteStatus = MediaRemoteStatusSync;

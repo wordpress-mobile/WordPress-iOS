@@ -987,7 +987,7 @@
     }
     
     for (Media *m in self.media) {
-        if (![mediaToKeep containsObject:m] && m.mediaID != nil) {
+        if (![mediaToKeep containsObject:m] && m.remoteURL != nil) {
             WPLog(@"Deleting media %@", m);
             [self.managedObjectContext deleteObject:m];
         }
