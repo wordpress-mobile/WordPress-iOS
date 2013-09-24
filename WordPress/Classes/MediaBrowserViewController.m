@@ -80,6 +80,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
+    self.collectionView.alwaysBounceVertical = true;
     [self.collectionView registerClass:[MediaBrowserCell class] forCellWithReuseIdentifier:MediaCellIdentifier];
     [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
     
