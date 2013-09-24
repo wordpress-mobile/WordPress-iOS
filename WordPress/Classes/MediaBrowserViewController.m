@@ -108,6 +108,8 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarClosed) name:SidebarClosedNotification object:nil];
+    
+    [self checkVideoPressEnabled];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -521,7 +523,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     //        return;
     
     //    self.isCheckingVideoCapability = YES;
-    [self.apost.blog checkVideoPressEnabledWithSuccess:^(BOOL enabled) {
+    [self.blog checkVideoPressEnabledWithSuccess:^(BOOL enabled) {
         self.videoPressEnabled = enabled;
         //        self.isCheckingVideoCapability = NO;
     } failure:^(NSError *error) {
