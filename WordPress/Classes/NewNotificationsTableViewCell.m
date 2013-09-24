@@ -85,7 +85,7 @@ CGFloat const NotificationCellDetailTextNumberOfLines = 2;
     
     NSString *iconURL = self.note.icon;
     if (iconURL) {
-        iconURL = [iconURL stringByReplacingOccurrencesOfString:@"s=256" withString:[NSString stringWithFormat:@"s=%d", NotificationCellImageWidth]];
+        iconURL = [iconURL stringByReplacingOccurrencesOfString:@"s=256" withString:[NSString stringWithFormat:@"s=%f", NotificationCellImageWidth]];
         [_gravatarImageView setImageWithURL:[NSURL URLWithString:iconURL] placeholderImage:[UIImage imageNamed:@"gravatar.jpg"]];
     } else {
         [_gravatarImageView setImage:[UIImage imageNamed:@"gravatar.jpg"]];
