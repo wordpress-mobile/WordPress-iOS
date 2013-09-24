@@ -130,8 +130,9 @@ CGFloat const NotificationCellDetailTextNumberOfLines = 2;
     CGRect gravatarImageFrame =  [[self class] gravatarImageFrame];
     CGRect subjectFrame = [[self class] subjectFrameForNotification:note leftFrame:gravatarImageFrame andMaxWidth:maxWidth];
     CGRect detailFrame = [[self class] detailFrameForNotification:note leftFrame:gravatarImageFrame topFrame:subjectFrame andMaxWidth:maxWidth];
-    
-    return CGRectGetMaxY(detailFrame) + NotificationCellStandardOffset;
+
+    CGFloat bottom = MAX(CGRectGetMaxY(gravatarImageFrame), CGRectGetMaxY(detailFrame));
+    return bottom + NotificationCellStandardOffset;
 }
 
 - (void)prepareForReuse {

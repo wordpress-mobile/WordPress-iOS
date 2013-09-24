@@ -175,6 +175,8 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	if (IS_IPAD)
         [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
 
+    [self.post addObserver:self forKeyPath:@"isReblogged" options:NSKeyValueObservingOptionNew context:@"reblogging"];
+
 	[_headerView updateLayout];
 	[self showStoredComment];
 }
@@ -190,8 +192,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > ReaderPostDetailViewControllerRefreshTimeout) {
 		[self syncWithUserInteraction:NO];
     }
-	
-	[self.post addObserver:self forKeyPath:@"isReblogged" options:NSKeyValueObservingOptionNew context:@"reblogging"];
 }
 
 

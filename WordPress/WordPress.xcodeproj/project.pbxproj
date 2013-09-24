@@ -5705,6 +5705,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Distribution;
 		};
@@ -5761,6 +5762,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Beta;
 		};
@@ -5817,6 +5819,7 @@
 				);
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -5841,6 +5844,7 @@
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};

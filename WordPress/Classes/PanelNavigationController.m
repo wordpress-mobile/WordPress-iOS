@@ -34,6 +34,7 @@
 @property (nonatomic, strong) NSMutableArray *detailViewWidths;
 @property (nonatomic, strong) UIButton *detailTapper;
 @property (nonatomic, strong) UIPanGestureRecognizer *panner;
+@property (nonatomic, strong) UIScreenEdgePanGestureRecognizer *edgePanner;
 @property (nonatomic, strong) UIView *popPanelsView, *menuView;
 @property (nonatomic, strong) UIImageView *sidebarBorderView;
 @property (nonatomic, strong) UIButton *notificationButton, *menuButton;
@@ -112,17 +113,6 @@
     BOOL _pushing;
 }
 
-@synthesize detailViewController = _detailViewController;
-@synthesize masterViewController = _masterViewController;
-@synthesize navigationController = _navigationController;
-@synthesize detailViewContainer = _detailViewContainer;
-@synthesize detailViewControllers = _detailViewControllers;
-@synthesize detailViews = _detailViews;
-@synthesize detailViewWidths = _detailViewWidths;
-@synthesize detailTapper = _detailTapper;
-@synthesize panner = _panner;
-@synthesize popPanelsView = _popPanelsView;
-@synthesize sidebarBorderView = _sidebarBorderView;
 @synthesize delegate;
 
 CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
@@ -963,7 +953,6 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
         // posts editor, we won't have a blue bar sitting at the top.
         self.statusBarBackgroundView.backgroundColor = [UIColor clearColor];
     }];
-
     
     if(IS_IPHONE && !self.presentedViewController) {
         [SoundUtil playSwipeSound];
@@ -973,6 +962,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 - (void)closeSidebarWithVelocity:(CGFloat)velocity {
     [[NSNotificationCenter defaultCenter] postNotificationName:SidebarClosedNotification object:nil];
     
+    _panned = NO;
     [self enableDetailView];
     [self setStackOffset:(DETAIL_LEDGE_OFFSET - DETAIL_OFFSET) withVelocity:velocity];
     
@@ -1046,6 +1036,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     }
 
     self.detailTapper = nil;
+    _panned = NO;
 
     // Restore scroll to top behavior to detail view
     [self setScrollsToTop:NO forView:self.masterView];
@@ -1099,11 +1090,25 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    // ARD - I'm not sure this is the right spot for the panned = NO reset
     if (gestureRecognizer == self.panner || gestureRecognizer.view == self.detailTapper) {
         _panOrigin = _stackOffset;
         _panned = NO;
     }
+    
+    if (gestureRecognizer == self.edgePanner && [touch.view isDescendantOfView:self.detailViewController.view] == NO) {
+        return NO;
+    }
+    
     return YES;
+}
+
+- (void)edgePanned:(UIScreenEdgePanGestureRecognizer *)sender
+{
+    if (sender.state == UIGestureRecognizerStateEnded) {
+        [self showSidebar];
+        _panned = YES;
+    }
 }
 
 - (void)panned:(UIPanGestureRecognizer *)sender {
@@ -1246,13 +1251,28 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     } else {
         [self.view addGestureRecognizer:panner];
     }
+    
+    if (IS_IOS7) {
+        UIScreenEdgePanGestureRecognizer *edgePanner = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(edgePanned:)];
+        edgePanner.edges = UIRectEdgeLeft;
+        edgePanner.cancelsTouchesInView = YES;
+        edgePanner.delegate = self;
+        self.edgePanner = edgePanner;
+        [self.view addGestureRecognizer:edgePanner];
+    }
 }
 
 - (void)removePanner {
     if (self.panner) {
         [self.panner.view removeGestureRecognizer:self.panner];
     }
+    
+    if (self.edgePanner) {
+        [self.edgePanner.view removeGestureRecognizer:self.panner];
+    }
+    
     self.panner = nil;
+    self.edgePanner = nil;
 }
 
 - (void)setFrameForViewController:(UIViewController *)viewController {
@@ -1605,6 +1625,8 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     WPFLogMethod();
     // Set the panelNavigation before any of the view methods are relayed for iOS4.
     [viewController setPanelNavigationController:self];
+    
+    _panned = NO;
     
     if (self.navigationController) {
         [self.navigationController pushViewController:viewController animated:animated];
