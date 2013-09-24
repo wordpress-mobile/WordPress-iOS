@@ -292,7 +292,16 @@ static NSUInteger const AlertDiscardChanges = 500;
 }
 
 - (void)cancelButtonPressed {
+    __block BOOL hasDataChanges = false;
     if ([_media.managedObjectContext hasChanges]) {
+        [[_media changedValues] enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
+            if ([key isEqualToString:@"title"] || [key isEqualToString:@"caption"] || [key isEqualToString:@"desc"]) {
+                hasDataChanges = true;
+            }
+        }];
+    }
+
+    if (hasDataChanges) {
         UIAlertView *discardAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Discard Changes", @"") message:NSLocalizedString(@"Are you sure you would like to discard your changes?", @"") delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Discard", nil];
         discardAlert.tag = AlertDiscardChanges;
         [discardAlert show];
