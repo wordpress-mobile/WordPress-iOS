@@ -7,6 +7,7 @@
 //
 
 #import "DateRangePickerView.h"
+#import "InputViewButton.h"
 
 @interface DateRangePickerView ()
 
@@ -47,25 +48,27 @@
     self.startDatePicker.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
     [self.startDatePicker setDatePickerMode:UIDatePickerModeDate];
     self.startDatePicker.frame = CGRectMake(0,0,0,100);
-    
+    [self.startDatePicker addTarget:self action:@selector(startDatePicked) forControlEvents:UIControlEventValueChanged];
+
     self.endDatePicker = [[UIDatePicker alloc] init];
     self.endDatePicker.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
     [self.endDatePicker setDatePickerMode:UIDatePickerModeDate];
     self.endDatePicker.frame = CGRectMake(0, 0, 0, 100);
+    [self.endDatePicker addTarget:self action:@selector(endDatePicked) forControlEvents:UIControlEventValueChanged];
 
     
     //Create Date Textfields
-    self.startDate = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(fromLabel.frame), 0, self.bounds.size.width/2 - fromLabel.frame.size.width, 44.0f)];
-    self.startDate.delegate = self;
-    [self.startDate setTextColor:[UIColor whiteColor]];
-    [self.startDate setFont:[WPStyleGuide subtitleFont]];
+    self.startDate = [[InputViewButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(fromLabel.frame), 0, self.bounds.size.width/2 - fromLabel.frame.size.width, 44.0f)];
+
+    [self.startDate.titleLabel setTextColor:[UIColor whiteColor]];
+    [self.startDate.titleLabel setFont:[WPStyleGuide subtitleFont]];
     [self.startDate setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
-    [self.startDate setTag:100];
-    self.startDate.adjustsFontSizeToFitWidth = YES;
-    self.startDate.clearButtonMode = UITextFieldViewModeAlways;
+    [self.startDate addTarget:self action:@selector(showStartDatePicker) forControlEvents:UIControlEventTouchUpInside];
+    self.startDate.titleLabel.adjustsFontSizeToFitWidth = YES;
     self.startDate.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
+    self.startDate.titleLabel.textAlignment = NSTextAlignmentCenter;
     self.startDate.inputView = self.startDatePicker;
-    self.startDate.textAlignment = NSTextAlignmentCenter;
+    
     
     UILabel *toLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_startDate.frame), fromLabel.frame.origin.y, 0, self.frame.size.height)];
     toLabel.text = NSLocalizedString(@"TO:", @"");
@@ -76,21 +79,18 @@
     toLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleLeftMargin;
     [self addSubview:toLabel];
     
-    self.endDate = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(toLabel.frame), 0, self.frame.size.width - CGRectGetMaxX(toLabel.frame), 44.0f)];
-    self.endDate.delegate = self;
-    [self.endDate setTextColor:[UIColor whiteColor]];
-    [self.endDate setFont:[WPStyleGuide subtitleFont]];
+    self.endDate = [[InputViewButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(toLabel.frame), 0, self.frame.size.width - CGRectGetMaxX(toLabel.frame), 44.0f)];
+    [self.endDate.titleLabel setTextColor:[UIColor whiteColor]];
+    [self.endDate.titleLabel setFont:[WPStyleGuide subtitleFont]];
     [self.endDate setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
-    [self.endDate setTag:101];
-    self.endDate.adjustsFontSizeToFitWidth = YES;
-    self.endDate.clearButtonMode = UITextFieldViewModeAlways;
+    [self.endDate addTarget:self action:@selector(showEndDatePicker) forControlEvents:UIControlEventTouchUpInside];
+    self.endDate.titleLabel.adjustsFontSizeToFitWidth = YES;
     self.endDate.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth;
+    self.endDate.titleLabel.textAlignment = NSTextAlignmentCenter;
     self.endDate.inputView = self.endDatePicker;
-    self.endDate.textAlignment = NSTextAlignmentCenter;
     
     [self addSubview:self.startDate];
     [self addSubview:self.endDate];
-    
 }
 
 - (void)setDateRangeMin:(NSDate*)min andMax:(NSDate*)max {
@@ -101,39 +101,42 @@
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateFormat = @"yyyy-MM-dd";
         formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
-        if ([self.startDate.text isEqualToString:@""]) {
-            _startDate.text = [formatter stringFromDate:_startDatePicker.minimumDate];
+        if (!self.startDate.titleLabel.text) {
+            [_startDate setTitle:[formatter stringFromDate:_startDatePicker.minimumDate] forState:UIControlStateNormal];
             self.startDatePicker.date = min;
         }
-        if ([self.endDate.text isEqualToString:@""]) {
-            _endDate.text = [formatter stringFromDate:_endDatePicker.maximumDate];
-            self.endDatePicker.date = max;
+        if (!self.endDate.titleLabel.text) {
+            [_endDate setTitle:[formatter stringFromDate:_endDatePicker.maximumDate] forState:UIControlStateNormal];
         }
     }
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    
+- (void)showStartDatePicker {
+    [self.startDate becomeFirstResponder];
+}
+
+- (void)showEndDatePicker {
+    [self.endDate becomeFirstResponder];
+}
+
+- (void)startDatePicked {
     [self.endDatePicker setMinimumDate:self.startDatePicker.date];
     [self.startDatePicker setMaximumDate:self.endDatePicker.date];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
     formatter.dateFormat = @"yyyy-MM-dd";
+    [_startDate setTitle:[formatter stringFromDate:_startDatePicker.date] forState:UIControlStateNormal];
+}
+
+- (void)endDatePicked {
+    [self.endDatePicker setMinimumDate:self.startDatePicker.date];
+    [self.startDatePicker setMaximumDate:self.endDatePicker.date];
     
-    if (textField.tag == 100) {
-        if ([_startDate.text isEqualToString:@""]) {
-            _startDate.text = [formatter stringFromDate:_startDatePicker.minimumDate];
-        } else {
-            _startDate.text = [formatter stringFromDate:_startDatePicker.date];
-        }
-    } else {
-        if ([_endDate.text isEqualToString:@""]) {
-            _endDate.text = [formatter stringFromDate:_endDatePicker.maximumDate];
-        } else {
-            _endDate.text = [formatter stringFromDate:_endDatePicker.date];
-        }
-    }
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.timeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+    formatter.dateFormat = @"yyyy-MM-dd";
+    [_endDate setTitle:[formatter stringFromDate:_endDatePicker.date] forState:UIControlStateNormal];
 }
 
 - (BOOL)isFirstResponder {

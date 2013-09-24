@@ -11,6 +11,7 @@
 #import "MediaBrowserViewController.h"
 #import "WPStyleGuide.h"
 #import "DateRangePickerView.h"
+#import "InputViewButton.h"
 
 
 static CGFloat const DateButtonWidth = 44.0f;
@@ -64,13 +65,7 @@ static CGFloat const DateButtonWidth = 44.0f;
     DateRangePickerView *dateRangePickerView = [[DateRangePickerView alloc] initWithFrame:CGRectMake(0, 44.0f, self.bounds.size.width, 44.0f)];
     [dateRangePickerView setAlpha:0];
     dateRangePickerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    
     [dateRangePickerView setDateRangeMin:[_delegate mediaDateRangeStart] andMax:[_delegate mediaDateRangeEnd]];
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd"];
-    dateRangePickerView.startDate.text = [formatter stringFromDate:[_delegate mediaDateRangeStart]];
-    dateRangePickerView.endDate.text = [formatter stringFromDate:[_delegate mediaDateRangeEnd]];
     _dateRangePickerView = dateRangePickerView;
     return _dateRangePickerView;
 }
@@ -94,7 +89,7 @@ static CGFloat const DateButtonWidth = 44.0f;
         } completion:^(BOOL finished) {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             formatter.dateFormat = @"yyyy-MM-dd";
-            [_delegate applyDateFilterForStartDate: [formatter dateFromString:_dateRangePickerView.startDate.text]  andEndDate:[formatter dateFromString:_dateRangePickerView.endDate.text]];
+            [_delegate applyDateFilterForStartDate: [formatter dateFromString:_dateRangePickerView.startDate.titleLabel.text]  andEndDate:[formatter dateFromString:_dateRangePickerView.endDate.titleLabel.text]];
             _isDisplayingDatePicker = NO;
         }];
     }

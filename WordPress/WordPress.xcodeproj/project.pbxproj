@@ -815,6 +815,7 @@
 		C50E11EB17DF5BE1004CD04C /* media_checkbox_filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11E717DF5BE1004CD04C /* media_checkbox_filled@2x.png */; };
 		C50E11F017DFAC4C004CD04C /* media_navbar_add_new.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11EE17DFAC4C004CD04C /* media_navbar_add_new.png */; };
 		C50E11F117DFAC4C004CD04C /* media_navbar_add_new@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11EF17DFAC4C004CD04C /* media_navbar_add_new@2x.png */; };
+		C515D06617F2157600EE3316 /* InputViewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C515D06517F2157600EE3316 /* InputViewButton.m */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C535C7A717D77603007EF244 /* MediaBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C535C7A517D77603007EF244 /* MediaBrowserViewController.m */; };
 		C535C7A817D77603007EF244 /* MediaBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C535C7A617D77603007EF244 /* MediaBrowserViewController.xib */; };
@@ -2044,6 +2045,8 @@
 		C50E11E717DF5BE1004CD04C /* media_checkbox_filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media_checkbox_filled@2x.png"; path = "Resources/Images/media_checkbox_filled@2x.png"; sourceTree = "<group>"; };
 		C50E11EE17DFAC4C004CD04C /* media_navbar_add_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = media_navbar_add_new.png; path = Resources/media_navbar_add_new.png; sourceTree = "<group>"; };
 		C50E11EF17DFAC4C004CD04C /* media_navbar_add_new@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media_navbar_add_new@2x.png"; path = "Resources/media_navbar_add_new@2x.png"; sourceTree = "<group>"; };
+		C515D06417F2157600EE3316 /* InputViewButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputViewButton.h; sourceTree = "<group>"; };
+		C515D06517F2157600EE3316 /* InputViewButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputViewButton.m; sourceTree = "<group>"; };
 		C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
 		C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsViewController.m; sourceTree = "<group>"; };
 		C535C7A417D77603007EF244 /* MediaBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaBrowserViewController.h; sourceTree = "<group>"; };
@@ -2536,6 +2539,8 @@
 				C5BAD46217E74BFA007E69A6 /* WPLoadingView.m */,
 				C5BAD46417E75369007E69A6 /* DateRangePickerView.h */,
 				C5BAD46517E75369007E69A6 /* DateRangePickerView.m */,
+				C515D06417F2157600EE3316 /* InputViewButton.h */,
+				C515D06517F2157600EE3316 /* InputViewButton.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -5648,6 +5653,7 @@
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
 				5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */,
+				C515D06617F2157600EE3316 /* InputViewButton.m in Sources */,
 				5DF59C0B1770AE3A00171208 /* UILabel+SuggestSize.m in Sources */,
 				E1F5A1BC1771C90A00E0495F /* WPTableImageSource.m in Sources */,
 				E1921F5A17733C3E000F4079 /* WPImageSource.m in Sources */,

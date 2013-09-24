@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class InputViewButton;
+
 @interface DateRangePickerView : UIView <UITextFieldDelegate>
 
-@property (nonatomic, strong) UITextField *startDate;
-@property (nonatomic, strong) UITextField *endDate;
+@property (nonatomic, strong) InputViewButton *startDate;
+@property (nonatomic, strong) InputViewButton *endDate;
 
 - (void)setDateRangeMin:(NSDate*)min andMax:(NSDate*)max;
 
