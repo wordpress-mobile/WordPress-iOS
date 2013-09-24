@@ -398,6 +398,8 @@ static NSString *const MediaCellIdentifier = @"media_cell";
         } failure:^(NSError *error) {
             [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
         }];
+    } else if (cell.media.remoteStatus == MediaRemoteStatusProcessing || cell.media.remoteStatus == MediaRemoteStatusPushing) {
+        [cell.media cancelUpload];
     } else if (cell.media.remoteStatus == MediaRemoteStatusLocal || cell.media.remoteStatus == MediaRemoteStatusSync) {
         EditMediaViewController *viewMedia = [[EditMediaViewController alloc] initWithMedia:cell.media];
         [self.navigationController pushViewController:viewMedia animated:YES];
