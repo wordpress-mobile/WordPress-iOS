@@ -140,17 +140,8 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 - (NSString *)saveFullsizeImageToDisk:(UIImage*)image imageName:(NSString *)imageName {
     NSString *docsDirectory = (NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true))[0];
-    NSString *mediaDirectoryPath = [docsDirectory stringByAppendingPathComponent:@"Media"];
-    BOOL directory;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:mediaDirectoryPath isDirectory:&directory] && !directory) {
-        NSError *error;
-        [[NSFileManager defaultManager] createDirectoryAtPath:mediaDirectoryPath withIntermediateDirectories:false attributes:nil error:&error];
-        if (error) {
-            WPFLog(@"Unable to create directory for fullsize media images %@",error);
-        }
-    }
     NSData *imageData = UIImageJPEGRepresentation(image, 1);
-    NSString *path = [mediaDirectoryPath stringByAppendingPathComponent:imageName];
+    NSString *path = [docsDirectory stringByAppendingPathComponent:imageName];
     BOOL success = [[NSFileManager defaultManager] createFileAtPath:path contents:imageData attributes:nil];
     if (success) {
         return path;
@@ -159,7 +150,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 }
 
 - (void)loadMediaImage {
-    if (_media.localURL) {
+    if (_media.localURL && [[NSFileManager defaultManager] fileExistsAtPath:_media.localURL isDirectory:0]) {
         _mediaImageview.contentMode = UIViewContentModeScaleAspectFit;
         _mediaImageview.image = [[UIImage alloc] initWithContentsOfFile:_media.localURL];
         return;
@@ -177,7 +168,7 @@ static NSUInteger const AlertDiscardChanges = 500;
         [[WPImageSource sharedSource] downloadImageForURL:[NSURL URLWithString:_media.remoteURL] withSuccess:^(UIImage *image) {
             _mediaImageview.contentMode = UIViewContentModeScaleAspectFit;
             _mediaImageview.image = image;
-            NSString *localPath = [self saveFullsizeImageToDisk:image imageName:_media.mediaID.stringValue];
+            NSString *localPath = [self saveFullsizeImageToDisk:image imageName:_media.filename];
             _media.localURL = localPath;
             [[_mediaImageview viewWithTag:1337] removeFromSuperview];
         } failure:^(NSError *error) {
