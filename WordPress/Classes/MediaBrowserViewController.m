@@ -170,9 +170,14 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     [self.blog syncMediaLibraryWithSuccess:^{
         [self loadFromCache];
         [_refreshHeaderView endRefreshing];
+        
+        self.navigationItem.rightBarButtonItem.enabled = true;
     } failure:^(NSError *error) {
-        WPFLog(@"Failed to refresh media library");
+        WPFLog(@"Failed to refresh media library %@", error);
         [WPError showAlertWithError:error];
+        if (error.code == 401) {
+            self.navigationItem.rightBarButtonItem.enabled = false;
+        }
         [_refreshHeaderView endRefreshing];
     }];
 }
