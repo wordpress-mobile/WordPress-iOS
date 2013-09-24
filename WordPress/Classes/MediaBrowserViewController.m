@@ -390,8 +390,18 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     MediaBrowserCell *cell = (MediaBrowserCell*)[collectionView cellForItemAtIndexPath:indexPath];
-    EditMediaViewController *viewMedia = [[EditMediaViewController alloc] initWithMedia:cell.media];
-    [self.navigationController pushViewController:viewMedia animated:YES];
+    if (cell.media.remoteStatus == MediaRemoteStatusFailed) {
+        cell.media.remoteStatus = MediaRemoteStatusPushing;
+        [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
+        [cell.media uploadWithSuccess:^{
+            
+        } failure:^(NSError *error) {
+            [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+        }];
+    } else if (cell.media.remoteStatus == MediaRemoteStatusLocal || cell.media.remoteStatus == MediaRemoteStatusSync) {
+        EditMediaViewController *viewMedia = [[EditMediaViewController alloc] initWithMedia:cell.media];
+        [self.navigationController pushViewController:viewMedia animated:YES];
+    }
 }
 
 #pragma mark - Collection view layout

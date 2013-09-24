@@ -150,7 +150,7 @@
         return NSLocalizedString(@"Preparing for upload...", @"");
     
     } else if (_media.remoteStatus == MediaRemoteStatusFailed) {
-        return NSLocalizedString(@"Upload failed.", @"");
+        return NSLocalizedString(@"Upload failed. Tap to retry.", @"");
     
     } else {
         if (_media.title) {
