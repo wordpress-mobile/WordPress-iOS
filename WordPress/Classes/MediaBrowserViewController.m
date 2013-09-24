@@ -21,9 +21,10 @@
 #import "WPInfoView.h"
 #import "Post.h"
 #import "CPopoverManager.h"
+#import "WPAlertView.h"
 #import <ImageIO/ImageIO.h>
 #import <AssetsLibrary/AssetsLibrary.h>
-
+#import <AVFoundation/AVFoundation.h>
 
 #define TAG_ACTIONSHEET_PHOTO 1
 #define TAG_ACTIONSHEET_VIDEO 2
@@ -52,6 +53,8 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 @property (nonatomic, strong) NSMutableDictionary *currentVideo;
 @property (nonatomic, strong) UIImage *currentImage;
 @property (nonatomic, strong) NSDictionary *currentImageMetadata;
+@property (nonatomic, assign) MediaOrientation currentOrientation;
+@property (nonatomic, strong) WPAlertView *customSizeAlert;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *multiselectToolbar;
 
@@ -570,7 +573,6 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
     if (_resizeActionSheet) {
         [self processResizeSelection:buttonIndex actionSheet:actionSheet];
         _resizeActionSheet = nil;
@@ -582,18 +584,20 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Photo From Library", nil)]) {
         [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddPhoto forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
         [self pickMediaFromLibrary:actionSheet];
-    } /*else if ([buttonTitle isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
+    
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddPhoto forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
        [self pickPhotoFromCamera:nil];
-       } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Video from Library", nil)]) {
+    
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Video from Library", nil)]) {
        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddVideo forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
        actionSheet.tag = TAG_ACTIONSHEET_VIDEO;
-       [self pickPhotoFromPhotoLibrary:actionSheet];
-       } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Record Video", nil)]) {
+       [self pickMediaFromLibrary:actionSheet];
+    
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Record Video", nil)]) {
        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddVideo forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
        [self pickVideoFromCamera:actionSheet];
-       }*/
-    
+    }
 }
 
 - (void)processResizeSelection:(NSUInteger)buttonIndex actionSheet:(UIActionSheet*)actionSheet {
@@ -607,7 +611,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
                 break;
             case 1:
                 if (actionSheet.numberOfButtons == 3) {
-//                    [self showCustomSizeAlert];
+                    [self showCustomSizeAlert];
                 } else if (actionSheet.numberOfButtons == 4)
                     [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
                 else
@@ -615,7 +619,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
                 break;
             case 2:
                 if (actionSheet.numberOfButtons == 4) {
-//                    [self showCustomSizeAlert];
+                    [self showCustomSizeAlert];
                 } else if (actionSheet.numberOfButtons == 5)
                     [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
                 else
@@ -623,15 +627,100 @@ static NSString *const MediaCellIdentifier = @"media_cell";
                 break;
             case 3:
                 if (actionSheet.numberOfButtons == 5) {
-//                    [self showCustomSizeAlert];
+                    [self showCustomSizeAlert];
                 } else
                     [self useImage:[self resizeImage:_currentImage toSize:kResizeOriginal]];
                 break;
             case 4:
-//                [self showCustomSizeAlert];
+                [self showCustomSizeAlert];
                 break;
         }
     }}
+
+- (void)showCustomSizeAlert {
+    if (self.customSizeAlert) {
+        [self.customSizeAlert dismiss];
+        self.customSizeAlert = nil;
+    }
+    
+    // Check for previous width setting
+    NSString *widthText = nil;
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil) {
+        widthText = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"];
+    } else {
+        widthText = [NSString stringWithFormat:@"%d", (int)_currentImage.size.width];
+    }
+    
+    NSString *heightText = nil;
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil) {
+        heightText = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"];
+    } else {
+        heightText = [NSString stringWithFormat:@"%d", (int)_currentImage.size.height];
+    }
+    
+    CGRect frame = IS_IOS7 ? self.view.bounds : self.view.bounds;
+    WPAlertView *alertView = [[WPAlertView alloc] initWithFrame:frame andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsSideBySideTwoButtonMode];
+    
+    alertView.overlayTitle = NSLocalizedString(@"Custom Size", @"");
+    //    alertView.overlayDescription = NS Localized String(@"Provide a custom width and height for the image.", @"Alert view description for resizing an image with custom size.");
+    alertView.overlayDescription = @"";
+    alertView.footerDescription = nil;
+    alertView.firstTextFieldPlaceholder = NSLocalizedString(@"Width", @"");
+    alertView.firstTextFieldValue = widthText;
+    alertView.secondTextFieldPlaceholder = NSLocalizedString(@"Height", @"");
+    alertView.secondTextFieldValue = heightText;
+    alertView.leftButtonText = NSLocalizedString(@"Cancel", @"Cancel button");
+    alertView.rightButtonText = NSLocalizedString(@"OK", @"");
+    
+    alertView.firstTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    alertView.secondTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    alertView.firstTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
+    alertView.secondTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
+    alertView.firstTextField.keyboardType = UIKeyboardTypeNumberPad;
+    alertView.secondTextField.keyboardType = UIKeyboardTypeNumberPad;
+    
+    alertView.button1CompletionBlock = ^(WPAlertView *overlayView){
+        // Cancel
+        [overlayView dismiss];
+        
+    };
+    alertView.button2CompletionBlock = ^(WPAlertView *overlayView){
+        [overlayView dismiss];
+        
+		NSNumber *width = [NSNumber numberWithInt:[overlayView.firstTextField.text intValue]];
+		NSNumber *height = [NSNumber numberWithInt:[overlayView.secondTextField.text intValue]];
+		
+		if([width intValue] < 10)
+			width = [NSNumber numberWithInt:10];
+		if([height intValue] < 10)
+			height = [NSNumber numberWithInt:10];
+		
+		overlayView.firstTextField.text = [NSString stringWithFormat:@"%@", width];
+		overlayView.secondTextField.text = [NSString stringWithFormat:@"%@", height];
+		
+		[[NSUserDefaults standardUserDefaults] setObject:overlayView.firstTextField.text forKey:@"prefCustomImageWidth"];
+		[[NSUserDefaults standardUserDefaults] setObject:overlayView.secondTextField.text forKey:@"prefCustomImageHeight"];
+		
+		[self useImage:[self resizeImage:_currentImage width:[width floatValue] height:[height floatValue]]];
+    };
+    
+    alertView.alpha = 0.0;
+    
+    if (IS_IOS7) {
+        [self.view addSubview:alertView];
+    } else {
+        alertView.hideBackgroundView = YES;
+        alertView.firstTextField.keyboardAppearance = UIKeyboardAppearanceDefault;
+        alertView.secondTextField.keyboardAppearance = UIKeyboardAppearanceDefault;
+        [self.view addSubview:alertView];
+    }
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        alertView.alpha = 1.0;
+    }];
+    
+    self.customSizeAlert = alertView;
+}
 
 - (void)showResizeActionSheet {
 	if(!_resizeActionSheet) {
@@ -768,7 +857,10 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         [self resetImagePicker];
         _picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        _picker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeMovie, (NSString *)kUTTypeImage, nil];
+        if (self.videoPressEnabled || ![self.blog isWPcom])
+            _picker.mediaTypes = [NSArray arrayWithObjects: (NSString *)kUTTypeMovie, (NSString *)kUTTypeImage, nil];
+        else
+            _picker.mediaTypes = [NSArray arrayWithObjects:(NSString *)kUTTypeImage, nil];
         _picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
         _isLibraryMedia = YES;
         
@@ -823,17 +915,67 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     }
 }
 
+- (void)pickPhotoFromCamera:(id)sender {
+	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        [self resetImagePicker];
+        _picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+		_picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+        _picker.modalPresentationStyle = UIModalPresentationCurrentContext;
+		
+        [self.navigationController presentViewController:_picker animated:YES completion:nil];
+    }
+}
+
+- (void)pickVideoFromCamera:(id)sender {
+	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
+    [self resetImagePicker];
+	_picker.sourceType =  UIImagePickerControllerSourceTypeCamera;
+	_picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
+	_picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+    _picker.modalPresentationStyle = UIModalPresentationCurrentContext;
+	
+	if([[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"] != nil) {
+		NSString *quality = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"];
+		switch ([quality intValue]) {
+			case 0:
+				_picker.videoQuality = UIImagePickerControllerQualityTypeHigh;
+				break;
+			case 1:
+				_picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+				break;
+			case 2:
+				_picker.videoQuality = UIImagePickerControllerQualityTypeLow;
+				break;
+			case 3:
+				_picker.videoQuality = UIImagePickerControllerQualityType640x480;
+				break;
+			default:
+				_picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+				break;
+		}
+	}
+	
+    [self.navigationController presentViewController:_picker animated:YES completion:nil];
+}
+
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
 	if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
 		self.currentVideo = [info mutableCopy];
-        //		if(self.didChangeOrientationDuringRecord)
-        //			[self showOrientationChangedActionSheet];
-        //		else if(!self.isLibraryMedia)
-        //			[self processRecordedVideo];
-        //		else
+		if(!self.isLibraryMedia)
+			[self processRecordedVideo];
+		else
         [self performSelectorOnMainThread:@selector(processLibraryVideo) withObject:nil waitUntilDone:NO];
 	}
 	else if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.image"]) {
@@ -951,6 +1093,37 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     }
 }
 
+- (void)processLibraryVideo {
+	NSURL *videoURL = [_currentVideo valueForKey:UIImagePickerControllerMediaURL];
+	if(videoURL == nil)
+		videoURL = [_currentVideo valueForKey:UIImagePickerControllerReferenceURL];
+	
+	if(videoURL != nil) {
+		if(IS_IPAD)
+			[_addPopover dismissPopoverAnimated:YES];
+		else {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+		}
+		
+		[self.currentVideo setValue:[NSNumber numberWithInt:_currentOrientation] forKey:@"orientation"];
+		
+		[self useVideo:[self videoPathFromVideoUrl:[videoURL absoluteString]]];
+		self.currentVideo = nil;
+		self.isLibraryMedia = NO;
+	}
+}
+
+- (void)processRecordedVideo {
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    
+	[self.currentVideo setValue:[NSNumber numberWithInt:_currentOrientation] forKey:@"orientation"];
+	NSString *tempVideoPath = [(NSURL *)[_currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
+    tempVideoPath = [self videoPathFromVideoUrl:tempVideoPath];
+	if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(tempVideoPath)) {
+		UISaveVideoAtPathToSavedPhotosAlbum(tempVideoPath, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
+	}
+}
+
 - (void)useImage:(UIImage *)theImage {
     Media *imageMedia;
     if (_apost) {
@@ -1014,10 +1187,10 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 		[fileManager createFileAtPath:filepath contents:imageData attributes:nil];
 	}
     
-//	if(currentOrientation == kLandscape)
-//		imageMedia.orientation = @"landscape";
-//	else
-//		imageMedia.orientation = @"portrait";
+	if(self.currentOrientation == kLandscape)
+		imageMedia.orientation = @"landscape";
+	else
+		imageMedia.orientation = @"portrait";
 	imageMedia.creationDate = [NSDate date];
 	imageMedia.filename = filename;
 	imageMedia.localURL = filepath;
@@ -1064,6 +1237,101 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     [self loadFromCache];
 }
 
+
+- (void)useVideo:(NSString *)videoURL {
+	BOOL copySuccess = NO;
+	Media *videoMedia;
+	NSDictionary *attributes;
+    UIImage *thumbnail = nil;
+	NSTimeInterval duration = 0.0;
+    NSURL *contentURL = [NSURL fileURLWithPath:videoURL];
+    
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:contentURL
+                                                options:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                         [NSNumber numberWithBool:YES], AVURLAssetPreferPreciseDurationAndTimingKey,
+                                                         nil]];
+    if (asset) {
+        duration = CMTimeGetSeconds(asset.duration);
+        AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+        imageGenerator.appliesPreferredTrackTransform = YES;
+        
+        CMTime midpoint = CMTimeMakeWithSeconds(duration/2.0, 600);
+        NSError *error = nil;
+        CMTime actualTime;
+        CGImageRef halfWayImage = [imageGenerator copyCGImageAtTime:midpoint actualTime:&actualTime error:&error];
+        
+        if (halfWayImage != NULL) {
+            thumbnail = [UIImage imageWithCGImage:halfWayImage];
+            // Do something interesting with the image.
+            CGImageRelease(halfWayImage);
+        }
+    }
+    
+	UIImage *videoThumbnail = [self generateThumbnailFromImage:thumbnail andSize:CGSizeMake(75, 75)];
+	
+	// Save to local file
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setDateFormat:@"yyyyMMdd-HHmmss"];	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+	NSString *filename = [NSString stringWithFormat:@"%@.mov", [formatter stringFromDate:[NSDate date]]];
+	NSString *filepath = [documentsDirectory stringByAppendingPathComponent:filename];
+	
+	if(videoURL != nil) {
+		// Copy the video from temp to blog directory
+		NSError *error = nil;
+		if ((attributes = [fileManager attributesOfItemAtPath:videoURL error:nil]) != nil) {
+			if([fileManager isReadableFileAtPath:videoURL])
+				copySuccess = [fileManager copyItemAtPath:videoURL toPath:filepath error:&error];
+		}
+	}
+	
+	if(copySuccess) {
+		videoMedia = [Media newMediaForBlog:self.blog];
+		
+		if(_currentOrientation == kLandscape)
+			videoMedia.orientation = @"landscape";
+		else
+			videoMedia.orientation = @"portrait";
+		videoMedia.creationDate = [NSDate date];
+		[videoMedia setFilename:filename];
+		[videoMedia setLocalURL:filepath];
+		
+		videoMedia.filesize = [NSNumber numberWithInt:([[attributes objectForKey: NSFileSize] intValue]/1024)];
+		videoMedia.mediaType = @"video";
+		videoMedia.thumbnail = UIImageJPEGRepresentation(videoThumbnail, 1.0);
+		videoMedia.length = [NSNumber numberWithFloat:duration];
+		CGImageRef cgVideoThumbnail = thumbnail.CGImage;
+		NSUInteger videoWidth = CGImageGetWidth(cgVideoThumbnail);
+		NSUInteger videoHeight = CGImageGetHeight(cgVideoThumbnail);
+		videoMedia.width = [NSNumber numberWithInt:videoWidth];
+		videoMedia.height = [NSNumber numberWithInt:videoHeight];
+        
+		[videoMedia uploadWithSuccess:^{
+            if ([videoMedia isDeleted]) {
+                NSLog(@"Media deleted while uploading (%@)", videoMedia);
+                return;
+            }
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:videoMedia];
+            [videoMedia save];
+        } failure:^(NSError *error) {
+            [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
+        }];
+//		isAddingMedia = NO;
+		
+	}
+	else {
+//        if (currentAlert == nil) {
+            UIAlertView *videoAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Copying Video", @"")
+                                                                 message:NSLocalizedString(@"There was an error copying the video for upload. Please try again.", @"")
+                                                                delegate:self
+                                                       cancelButtonTitle:NSLocalizedString(@"OK", @"")
+                                                       otherButtonTitles:nil];
+            [videoAlert show];
+//            currentAlert = videoAlert;
+//        }
+	}
+}
 
 
 /*
@@ -1119,6 +1387,55 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 					  WPLog(@"can't get asset %@: %@", url, err);
 					  self.currentImageMetadata = nil;
 				  }];
+}
+
+- (MediaOrientation)interpretOrientation:(UIDeviceOrientation)theOrientation {
+	MediaOrientation result = kPortrait;
+	switch (theOrientation) {
+		case UIDeviceOrientationPortrait:
+			result = kPortrait;
+			break;
+		case UIDeviceOrientationPortraitUpsideDown:
+			result = kPortrait;
+			break;
+		case UIDeviceOrientationLandscapeLeft:
+			result = kLandscape;
+			break;
+		case UIDeviceOrientationLandscapeRight:
+			result = kLandscape;
+			break;
+		case UIDeviceOrientationFaceUp:
+			result = kPortrait;
+			break;
+		case UIDeviceOrientationFaceDown:
+			result = kPortrait;
+			break;
+		case UIDeviceOrientationUnknown:
+			result = kPortrait;
+			break;
+	}
+	
+	return result;
+}
+
+- (NSString *)videoPathFromVideoUrl:(NSString *)videoUrl
+{
+    // Determine the video's library path.
+    // In iOS 6 this returns as file://localhost/private/var/mobile/Applications/73DCDAD0-397C-404D-9456-4C5A360ABE0D/tmp//trim.lmhYmN.MOV
+    // In iOS 7 this returns as file:///private/var/mobile/Applications/9946F4C5-5B16-4EA5-850C-DDA701A47E61/tmp/trim.4F72621B-04AE-47F2-A551-068F62E8D16F.MOV
+    
+    NSError *error;
+    NSRegularExpression *regEx = [NSRegularExpression regularExpressionWithPattern:@"(/var.*$)" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSString *videoPath = videoUrl;
+    NSArray *matches = [regEx matchesInString:videoUrl options:0 range:NSMakeRange(0, [videoUrl length])];
+    for (NSTextCheckingResult *result in matches) {
+        if ([result numberOfRanges] < 2)
+            continue;
+        NSRange videoUrlRange = [result rangeAtIndex:1];
+        videoPath = [videoUrl substringWithRange:videoUrlRange];
+    }
+    
+    return videoPath;
 }
 
 #pragma mark - Image Methods
@@ -1190,6 +1507,25 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 	
 	return resizedImage;
 }
+
+/* Used in Custom Dimensions Resize */
+- (UIImage *)resizeImage:(UIImage *)original width:(CGFloat)width height:(CGFloat)height {
+	UIImage *resizedImage = original;
+	if(_currentImage.size.width > width || _currentImage.size.height > height) {
+		// Resize the image using the selected dimensions
+		resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
+													  bounds:CGSizeMake(width, height)
+										interpolationQuality:kCGInterpolationHigh];
+	} else {
+		//use the original dimension
+		resizedImage = [original resizedImageWithContentMode:UIViewContentModeScaleAspectFit
+													  bounds:CGSizeMake(_currentImage.size.width, _currentImage.size.height)
+										interpolationQuality:kCGInterpolationHigh];
+	}
+	
+	return resizedImage;
+}
+
 
 @end
 
