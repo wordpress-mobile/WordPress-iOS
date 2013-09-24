@@ -48,7 +48,8 @@ static NSUInteger const WPXMLRPCClientDefaultMaxConcurrentOperationCount = 4;
     self.defaultHeaders = [NSMutableDictionary dictionary];
 
 	// Accept-Encoding HTTP Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.3
-	[self setDefaultHeader:@"Accept-Encoding" value:@"gzip"];
+    // Disable compression by default, since it causes connection problems with some hosts
+	[self setDefaultHeader:@"Accept-Encoding" value:@"identity"];
     [self setDefaultHeader:@"Content-Type" value:@"text/xml"];
 
     NSString *applicationUserAgent = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"];
