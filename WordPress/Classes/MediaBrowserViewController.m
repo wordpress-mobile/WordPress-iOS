@@ -126,7 +126,22 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"media_navbar_add_new"] style:UIBarButtonItemStylePlain target:self action:@selector(addMediaButtonPressed:)];
+    UIBarButtonItem *addMediaButton;
+    if (IS_IOS7) {
+        UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+        [button setImage:image forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(addMediaButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        addMediaButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    } else {
+        addMediaButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]
+                                                                                  style:[WPStyleGuide barButtonStyleForBordered]
+                                                                                 target:self
+                                                                                 action:@selector(addMediaButtonPressed:)];
+        addMediaButton.tintColor = [UIColor UIColorFromHex:0x333333];
+    }
+    
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:addMediaButton forNavigationItem:self.navigationItem];
     
     [self loadFromCache];
     [self applyDateFilterForStartDate:_startDate andEndDate:_endDate];

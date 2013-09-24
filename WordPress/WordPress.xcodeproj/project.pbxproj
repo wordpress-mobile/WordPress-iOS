@@ -813,8 +813,6 @@
 		C50E11E917DF5BE1004CD04C /* media_checkbox_empty@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11E517DF5BE1004CD04C /* media_checkbox_empty@2x.png */; };
 		C50E11EA17DF5BE1004CD04C /* media_checkbox_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11E617DF5BE1004CD04C /* media_checkbox_filled.png */; };
 		C50E11EB17DF5BE1004CD04C /* media_checkbox_filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11E717DF5BE1004CD04C /* media_checkbox_filled@2x.png */; };
-		C50E11F017DFAC4C004CD04C /* media_navbar_add_new.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11EE17DFAC4C004CD04C /* media_navbar_add_new.png */; };
-		C50E11F117DFAC4C004CD04C /* media_navbar_add_new@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11EF17DFAC4C004CD04C /* media_navbar_add_new@2x.png */; };
 		C515D06617F2157600EE3316 /* InputViewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C515D06517F2157600EE3316 /* InputViewButton.m */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C535C7A717D77603007EF244 /* MediaBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C535C7A517D77603007EF244 /* MediaBrowserViewController.m */; };
@@ -2043,8 +2041,6 @@
 		C50E11E517DF5BE1004CD04C /* media_checkbox_empty@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media_checkbox_empty@2x.png"; path = "Resources/Images/media_checkbox_empty@2x.png"; sourceTree = "<group>"; };
 		C50E11E617DF5BE1004CD04C /* media_checkbox_filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = media_checkbox_filled.png; path = Resources/Images/media_checkbox_filled.png; sourceTree = "<group>"; };
 		C50E11E717DF5BE1004CD04C /* media_checkbox_filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media_checkbox_filled@2x.png"; path = "Resources/Images/media_checkbox_filled@2x.png"; sourceTree = "<group>"; };
-		C50E11EE17DFAC4C004CD04C /* media_navbar_add_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = media_navbar_add_new.png; path = Resources/media_navbar_add_new.png; sourceTree = "<group>"; };
-		C50E11EF17DFAC4C004CD04C /* media_navbar_add_new@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media_navbar_add_new@2x.png"; path = "Resources/media_navbar_add_new@2x.png"; sourceTree = "<group>"; };
 		C515D06417F2157600EE3316 /* InputViewButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputViewButton.h; sourceTree = "<group>"; };
 		C515D06517F2157600EE3316 /* InputViewButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputViewButton.m; sourceTree = "<group>"; };
 		C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
@@ -3144,8 +3140,6 @@
 		83290399120CF517000A965A /* Media */ = {
 			isa = PBXGroup;
 			children = (
-				C50E11EE17DFAC4C004CD04C /* media_navbar_add_new.png */,
-				C50E11EF17DFAC4C004CD04C /* media_navbar_add_new@2x.png */,
 				83CAD4201235F9F4003DFA20 /* MediaObjectView.xib */,
 				8383178712270E980047B476 /* PostMediaViewController.xib */,
 			);
@@ -4836,7 +4830,6 @@
 				85F2C4D517BA0ED400A303E0 /* MP6SidebarViewController.xib in Resources */,
 				5D7C22B615A4FCFE00FCE1C2 /* down_dim.png in Resources */,
 				85495F6817C6FACF00871A7A /* icon-comments-edit-active@2x.png in Resources */,
-				C50E11F017DFAC4C004CD04C /* media_navbar_add_new.png in Resources */,
 				5D7C22B715A4FCFE00FCE1C2 /* down_dim@2x.png in Resources */,
 				5D7C22B815A4FCFE00FCE1C2 /* up_dim.png in Resources */,
 				5D7C22B915A4FCFE00FCE1C2 /* up_dim@2x.png in Resources */,
@@ -5315,7 +5308,6 @@
 				5D7BEABA1774A10D00423E7F /* icon-reader.png in Resources */,
 				5D7BEABB1774A10D00423E7F /* icon-reader@2x.png in Resources */,
 				8599658617DA903B005F84EB /* icon-menu-viewadmin-active@2x.png in Resources */,
-				C50E11F117DFAC4C004CD04C /* media_navbar_add_new@2x.png in Resources */,
 				5D7BEABC1774A10D00423E7F /* icon-stats.png in Resources */,
 				5D7BEABD1774A10D00423E7F /* icon-stats@2x.png in Resources */,
 				5D7BEABE1774A10D00423E7F /* icon-wp.png in Resources */,
