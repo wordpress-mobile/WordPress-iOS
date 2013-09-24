@@ -41,14 +41,10 @@
             <color key="backgroundColor" red="0.20939047029702973" green="0.20939047029702973" blue="0.20939047029702973" alpha="1" colorSpace="calibratedRGB"/>
             <items>
                 <barButtonItem style="plain" systemItem="flexibleSpace" id="3Ln-In-cOD"/>
-                <barButtonItem tag="3" title="Delete" id="FTn-r8-icg">
+                <barButtonItem tag="3" style="plain" systemItem="trash" id="FTn-r8-icg">
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <action selector="multiselectDeletePressed:" destination="-1" id="fWb-Pl-ymX"/>
-                    </connections>
-                </barButtonItem>
-                <barButtonItem tag="4" title="Create Gallery" id="wHz-NM-CXR">
-                    <connections>
-                        <action selector="multiselectCreateGalleryPressed:" destination="-1" id="BHB-rO-Pt8"/>
                     </connections>
                 </barButtonItem>
                 <barButtonItem style="plain" systemItem="flexibleSpace" id="DPP-hB-cSx"/>
