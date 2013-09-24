@@ -183,7 +183,6 @@ const NSUInteger NoteKeepCount = 20;
                                                      inManagedObjectContext:context];
         
         note.noteID = [noteData objectForKey:@"id"];
-        note.account = [WPAccount defaultWordPressComAccount];
     }
     
     [note syncAttributes:noteData];
