@@ -41,14 +41,16 @@
             <color key="backgroundColor" red="0.20939047029702973" green="0.20939047029702973" blue="0.20939047029702973" alpha="1" colorSpace="calibratedRGB"/>
             <items>
                 <barButtonItem style="plain" systemItem="flexibleSpace" id="3Ln-In-cOD"/>
-                <barButtonItem tag="3" style="plain" systemItem="trash" id="FTn-r8-icg">
+                <barButtonItem tag="1" style="plain" systemItem="trash" id="FTn-r8-icg">
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <action selector="multiselectDeletePressed:" destination="-1" id="fWb-Pl-ymX"/>
                     </connections>
                 </barButtonItem>
-                <barButtonItem style="plain" systemItem="flexibleSpace" id="f6Q-9o-wIU"/>
-                <barButtonItem title="Deselect All" id="1Zv-qo-nws">
+                <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="Ack-5y-nyc"/>
+                <barButtonItem tag="2" style="plain" systemItem="add" id="4Xz-PG-CJ5"/>
+                <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="80s-pc-nVY"/>
+                <barButtonItem tag="3" style="plain" systemItem="stop" id="1Zv-qo-nws">
                     <connections>
                         <action selector="multiselectDeselectAllPressed:" destination="-1" id="lDh-7o-J4m"/>
                     </connections>
