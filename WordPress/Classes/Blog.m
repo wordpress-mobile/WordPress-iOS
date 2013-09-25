@@ -132,6 +132,15 @@
     return [self displayURL];
 }
 
+- (NSString *)homeURL
+{
+    NSString *homeURL = [self getOptionValue:@"home_url"];
+    if (!homeURL) {
+        homeURL = self.url;
+    }
+    return homeURL;
+}
+
 - (NSString *)hostname {
     NSString *hostname = [[NSURL URLWithString:self.xmlrpc] host];
     if (hostname == nil) {

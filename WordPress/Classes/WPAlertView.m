@@ -74,6 +74,10 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
         [self configureButtonVisibility];
         [self configureTextFieldVisibility];
         [self addGestureRecognizer];
+        
+        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+        [notificationCenter addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     }
     return self;
 }
@@ -182,22 +186,37 @@ CGFloat const WPAlertViewStandardOffset = 16.0;
     }
 }
 
-- (void)layoutSubviews
+- (void)keyboardDidShow:(NSNotification *)notification
 {
-    [super layoutSubviews];
-    
-    if (IS_IPAD)
+    CGRect keyboardRect = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    keyboardRect = [self convertRect:keyboardRect fromView:nil];
+    CGSize keyboardSize = keyboardRect.size;
+    [self recalculateScrollViewContentSizeWithKeyboardSize:keyboardSize];
+}
+
+- (void)keyboardDidHide:(NSNotification *)notification
+{
+    [self recalculateScrollViewContentSizeWithKeyboardSize:CGSizeZero];
+}
+
+- (void)recalculateScrollViewContentSizeWithKeyboardSize:(CGSize)keyboardSize
+{
+    if (CGSizeEqualToSize(keyboardSize, CGSizeZero)) {
+        self.scrollView.contentSize = self.backgroundView.bounds.size;
         return;
- 
-    // Make the scroll view scrollable when in landscape on the iPhone - the keyboard
-    // covers up half of the view otherwise
-    CGSize size = self.backgroundView.bounds.size;
-    
-    if (size.width > size.height) {
-        size.height = size.height * 1.35;
     }
     
-    self.scrollView.contentSize = size;
+    // Make the scroll view scrollable when in landscape on the iPhone - the keyboard
+    // covers up half of the view otherwise
+    CGSize viewSize = self.backgroundView.bounds.size;
+    CGRect buttonRect = [self convertRect:self.leftButton.frame fromView:self.leftButton];
+    CGFloat buttonBottomY = buttonRect.origin.y + self.leftButton.frame.size.height;
+    
+    if (buttonBottomY > viewSize.height - keyboardSize.height) {
+        viewSize.height += buttonBottomY - (viewSize.height - keyboardSize.height);
+    }
+    
+    self.scrollView.contentSize = viewSize;
     
     CGRect rect = CGRectZero;
     if ([self.firstTextField isFirstResponder]) {

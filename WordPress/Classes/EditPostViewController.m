@@ -1323,7 +1323,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         keyboardFrame = [self.view convertRect:[self.view.window convertRect:originalKeyboardFrame fromWindow:nil] fromView:nil];
         // Assing this again since changing the visibility status of navigation bar changes the view frame (#1386)
         
-        newFrame = self.normalTextFrame;
+        newFrame = [self normalTextFrame];
 
         if (isShowing) {
 
@@ -1331,6 +1331,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
                 // Make the text view expand covering other fields
                 newFrame.origin.x = 0;
                 newFrame.origin.y = 0;
+                newFrame.size.width = self.view.frame.size.width;
             }
             // Adjust height for keyboard (or format bar on external keyboard)
             newFrame.size.height = keyboardFrame.origin.y - newFrame.origin.y;

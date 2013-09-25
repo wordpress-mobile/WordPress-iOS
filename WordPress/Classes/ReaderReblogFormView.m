@@ -117,12 +117,16 @@
 			self.activityView.frame = frame;
 
 			NSNumber *primaryBlogId = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_users_prefered_blog_id"];
-			[blogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-				if ([[obj numberForKey:@"blogid"] isEqualToNumber:primaryBlogId]) {
-					[self setDestinationBlog:obj];
-					stop = YES;
-				}
-			}];
+            if (primaryBlogId) {
+                [blogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                    if ([[obj numberForKey:@"blogid"] isEqualToNumber:primaryBlogId]) {
+                        [self setDestinationBlog:obj];
+                        stop = YES;
+                    }
+                }];
+            } else {
+                [self setDestinationBlog:[blogs objectAtIndex:0]];
+            }
 		} else if ([blogs count]) {
 			[self setDestinationBlog:[blogs objectAtIndex:0]];
 		}
