@@ -157,7 +157,9 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     [super viewDidDisappear:animated];
     
     // Save context for all thumbnails downloaded
-    [self.blog.managedObjectContext save:nil];
+    if ([self.blog.managedObjectContext hasChanges]) {
+        [self.blog.managedObjectContext save:nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -165,6 +167,10 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     [super didReceiveMemoryWarning];
     
     _selectedMedia = nil;
+}
+
+- (BOOL)showAttachedMedia {
+    return _apost && !_isPickingFeaturedImage;
 }
 
 - (Post *)post {
@@ -217,32 +223,44 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 
 - (void)loadFromCache {
     NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
-    NSError *error;
     NSFetchRequest *allMediaRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Media class])];
     [allMediaRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:false]]];
     [allMediaRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
     allMediaRequest.fetchBatchSize = 10;
-    NSArray *allMedia = [context executeFetchRequest:allMediaRequest error:&error];
-    if (error) {
-        WPFLog(@"Failed to fetch all media with error %@", error);
-        _allMedia = self.filteredMedia = nil;
-        return;
-    }
     
-    if (self.apost) {
-        NSFetchRequest *postMedia = [NSFetchRequest fetchRequestWithEntityName:@"Media"];
-        [postMedia setPredicate:[NSPredicate predicateWithFormat:@"%@ IN posts AND mediaType != 'featured'", self.apost]];
+    __block NSArray *allMedia, *postMediaResults;
+    __block NSError *error;
+    
+    if ([self showAttachedMedia]) {
+        NSFetchRequest *postMedia = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Media class])];
+        [postMedia setPredicate:[NSPredicate predicateWithFormat:@"%@ IN posts", self.apost]];
         postMedia.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-        NSArray *postMediaResults = [context executeFetchRequest:postMedia error:&error];
-        if (error) {
-            WPFLog(@"Failed to fetch post's media with error %@", error);
-            _postMedia = nil;
-            return;
-        }
-        _postMedia = postMediaResults;
-    }
+        postMedia.fetchBatchSize = allMediaRequest.fetchBatchSize;
+        
+        [context performBlock:^{
+            allMedia = [context executeFetchRequest:allMediaRequest error:&error];
+            postMediaResults = [context executeFetchRequest:postMedia error:&error];
+            if (error) {
+                WPFLog(@"Failed to fetch media with error %@", error);
+                _postMedia = nil;
+                _allMedia = self.filteredMedia = nil;
+                return;
+            }
+            _postMedia = postMediaResults;
+            _allMedia = self.filteredMedia = allMedia;
+        }];
     
-    _allMedia = self.filteredMedia = allMedia;
+    } else {
+        [context performBlock:^{
+            allMedia = [context executeFetchRequest:allMediaRequest error:&error];
+            if (error) {
+                WPFLog(@"Failed to fetch all media with error %@", error);
+                _allMedia = self.filteredMedia = nil;
+                return;
+            }
+            _allMedia = self.filteredMedia = allMedia;
+        }];
+    }
 }
 
 - (UIView *)loadingView {
@@ -342,28 +360,28 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 #pragma mark - CollectionViewDelegate/DataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    if (self.apost) {
+    if ([self showAttachedMedia]) {
         return 2;
     }
     return 1;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if (self.apost && section == 0) {
+    if ([self showAttachedMedia] && section == 0) {
         return _postMedia.count;
     }
     return _filteredMedia.count;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return section == 0 && self.apost ? CGSizeMake(collectionView.frame.size.width, 88.0f) : CGSizeMake(collectionView.frame.size.width, 44.0f);
+    return section == 0 && [self showAttachedMedia] ? CGSizeMake(collectionView.frame.size.width, 88.0f) : CGSizeMake(collectionView.frame.size.width, 44.0f);
 }
 
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"header" forIndexPath:indexPath];
-        if (self.apost) {
+        if ([self showAttachedMedia]) {
             if (indexPath.section == 0) {
                 [header.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
                 UILabel *attached = [[UILabel alloc] initWithFrame:CGRectMake(0, 44.0f, collectionView.bounds.size.width, 44.0f)];
@@ -383,7 +401,8 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     MediaBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:MediaCellIdentifier forIndexPath:indexPath];
-    if (self.apost && indexPath.section == 0) {
+    cell.hideCheckbox = _isPickingFeaturedImage;
+    if ([self showAttachedMedia] && indexPath.section == 0) {
         cell.media = _postMedia[indexPath.item];
     } else {
         cell.media = self.filteredMedia[indexPath.item];
@@ -456,7 +475,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
         }
     }
     
-    if (self.apost) {
+    if ([self showAttachedMedia]) {
         [self toggleCellSelection:true forMedia:media];
     }
     
@@ -467,7 +486,7 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     if (media.mediaID) {
         [_selectedMedia removeObjectForKey:media.mediaID];
         
-        if (self.apost) {
+        if ([self showAttachedMedia]) {
             [self toggleCellSelection:false forMedia:media];
         }
     }

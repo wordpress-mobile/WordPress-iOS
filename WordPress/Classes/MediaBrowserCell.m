@@ -65,7 +65,11 @@
     return self;
 }
 
-- (void)setIsSelected:(BOOL *)isSelected {
+- (void)setHideCheckbox:(BOOL)hideCheckbox {
+    _checkbox.hidden = hideCheckbox;
+}
+
+- (void)setIsSelected:(BOOL)isSelected {
     _isSelected = isSelected;
     
     if (_isSelected) {

@@ -22,7 +22,8 @@
 @interface MediaBrowserCell : UICollectionViewCell
 
 @property (nonatomic, strong) Media *media;
-@property (nonatomic, assign) BOOL *isSelected;
+@property (nonatomic, assign) BOOL isSelected;
+@property (nonatomic, assign) BOOL hideCheckbox;
 @property (nonatomic, weak) id<MediaBrowserCellMultiSelectDelegate> delegate;
 
 @end
