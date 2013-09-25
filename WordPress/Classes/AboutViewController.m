@@ -47,7 +47,7 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
     self.versionLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
     self.versionLabel.font = [WPStyleGuide postTitleFont];
     self.versionLabel.textColor = [WPStyleGuide whisperGrey];
-    
+
     self.publisherLabel.font = [WPStyleGuide regularTextFont];
     self.publisherLabel.textColor = [WPStyleGuide whisperGrey];
     

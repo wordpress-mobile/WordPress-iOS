@@ -386,7 +386,7 @@ BOOL hasChanges;
     else if (section == 1)
         return NSLocalizedString(@"Push Notifications", @"");
     else
-        return NSLocalizedString(@"Blogs", @"");
+        return NSLocalizedString(@"Sites", @"");
 }
 
 #pragma mark - Table view delegate

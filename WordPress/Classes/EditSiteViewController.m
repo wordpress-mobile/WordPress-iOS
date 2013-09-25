@@ -97,7 +97,7 @@
         self.navigationItem.leftBarButtonItem = barButton;
     }
     
-    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(save:)];
+    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add", @"Add button to add a site from Settings.") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(save:)];
     self.navigationItem.rightBarButtonItem = saveButton;
     
     if (!IS_IPAD) {
@@ -197,7 +197,7 @@
                 self.urlCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UrlCell"];
 				self.urlCell.textLabel.text = NSLocalizedString(@"URL", @"");
 				urlTextField = self.urlCell.textField;
-				urlTextField.placeholder = NSLocalizedString(@"http://example.com", @"");
+				urlTextField.placeholder = NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field");
                 urlTextField.keyboardType = UIKeyboardTypeURL;
                 [urlTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:urlTextField asPassword:NO];
@@ -223,9 +223,9 @@
             self.usernameCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"UsernameCell"];
             if (self.usernameCell == nil) {
                 self.usernameCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"];
-				self.usernameCell.textLabel.text = NSLocalizedString(@"Username", @"");
+				self.usernameCell.textLabel.text = NSLocalizedString(@"Username", @"Label for entering username in the username field");
 				usernameTextField = self.usernameCell.textField;
-				usernameTextField.placeholder = NSLocalizedString(@"WordPress username", @"");
+				usernameTextField.placeholder = NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username");
                 [usernameTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:usernameTextField asPassword:NO];
 				if (blog.username != nil) {
@@ -249,9 +249,9 @@
             self.passwordCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"PasswordCell"];
             if (self.passwordCell == nil) {
                 self.passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PasswordCell"];
-				self.passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
+				self.passwordCell.textLabel.text = NSLocalizedString(@"Password", @"Label for entering password in password field");
 				passwordTextField = self.passwordCell.textField;
-				passwordTextField.placeholder = NSLocalizedString(@"WordPress password", @"");
+				passwordTextField.placeholder = NSLocalizedString(@"Enter password", @"(placeholder) Help user enter password in password field");
                 [passwordTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:passwordTextField asPassword:YES];
 				if (password != nil) {

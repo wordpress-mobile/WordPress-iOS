@@ -148,7 +148,7 @@ typedef enum {
     // Our settings bundle stored numeric values as strings so we use strings here for backward compatibility.
     NSDictionary *imageResizeDict = [NSDictionary dictionaryWithObjectsAndKeys:@"0", @"DefaultValue", 
                                      @"media_resize_preference", @"Key", 
-                                     NSLocalizedString(@"Image Resize", @""), @"Title", 
+                                     NSLocalizedString(@"Image Quality", @""), @"Title",
                                      [NSArray arrayWithObjects:NSLocalizedString(@"Always Ask", @"Image resize preference"), 
                                       NSLocalizedString(@"Small", @"Image resize preference"),
                                       NSLocalizedString(@"Medium", @"Image resize preference"),
@@ -162,7 +162,7 @@ typedef enum {
                                       @"video_quality_preference", @"Key", 
                                       NSLocalizedString(@"Video Quality", @""), @"Title", 
                                       [NSArray arrayWithObjects:NSLocalizedString(@"High", @"Video quality"),
-                                      @"640x480", 
+                                      NSLocalizedString(@"640x480", @"Video quality - 3:4 format in pixel values"),
                                       NSLocalizedString(@"Medium", @"Video quality"),
                                       NSLocalizedString(@"Low", @"Video quality"), nil], @"Titles", 
                                       [NSArray arrayWithObjects:@"0", @"3", @"1", @"2", nil], @"Values",
@@ -302,7 +302,7 @@ typedef enum {
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
     if (section == SettingsSectionBlogs) {
-        return NSLocalizedString(@"Blogs", @"Title label for the user blogs in the app settings");
+        return NSLocalizedString(@"Sites", @"Title label for the user sites in the app settings");
         
     } else if (section == SettingsSectionWpcom) {
         return NSLocalizedString(@"WordPress.com", @"");
