@@ -184,15 +184,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	writeButton.enabled = NO;
     attachmentButton.enabled = [self shouldEnableMediaTab];
 	
-	if (![self.postMediaViewController isDeviceSupportVideo] && !IS_IOS7){
-		// No video icon for older devices.
-        // Don't remove anything for IOS7 as we re-configured the icons in the XIB file.
-		NSMutableArray *toolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
-		
-		[toolbarItems removeObjectAtIndex:5];
-		[self.toolbar setItems:toolbarItems];
-	}
-	
 	if (self.post && self.post.geolocation != nil && self.post.blog.geolocationEnabled) {
 		self.hasLocation.enabled = YES;
 	} else {
@@ -298,7 +289,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 }
 
 - (NSString *)editorTitle {
-    NSString *title = @"";
+    NSString *title = NSLocalizedString(@"Edit Post", @"");
     self.navigationItem.backBarButtonItem.title = title;
     return title;
 }
