@@ -485,6 +485,12 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     [confirmation show];
 }
 
+- (IBAction)multiselectDeselectAllPressed:(id)sender {
+    [_selectedMedia removeAllObjects];
+    [self showMultiselectOptions];
+    [self.collectionView reloadData];
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
         // Disable interaction with other views/buttons
@@ -547,8 +553,6 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 #pragma mark - Refresh
 
 - (void)refreshControlTriggered:(UIRefreshControl*)refreshControl {
-    [_selectedMedia removeAllObjects];
-    [self showMultiselectOptions];
     if (refreshControl.isRefreshing) {
         [self refresh];
     }
