@@ -35,7 +35,9 @@ static NSUInteger const MultiselectToolbarDeleteTag = 1;
 static NSUInteger const MultiselectToolbarGalleryTag = 2;
 static NSUInteger const MultiselectToolbarDeselectTag = 3;
 
-@interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MediaBrowserCellMultiSelectDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegateFlowLayout>
+static CGFloat const ScrollingVelocityThreshold = 30.0f;
+
+@interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MediaBrowserCellMultiSelectDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
 
@@ -59,6 +61,8 @@ static NSUInteger const MultiselectToolbarDeselectTag = 3;
 @property (nonatomic, strong) NSDictionary *currentImageMetadata;
 @property (nonatomic, assign) MediaOrientation currentOrientation;
 @property (nonatomic, strong) WPAlertView *customSizeAlert;
+@property (nonatomic, assign) CGFloat lastScrollOffset;
+@property (nonatomic, assign) BOOL isScrollingFast;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *multiselectToolbar;
 
@@ -422,6 +426,11 @@ static NSUInteger const MultiselectToolbarDeselectTag = 3;
     }
     cell.isSelected = ([_selectedMedia objectForKey:cell.media.mediaID] != nil);
     cell.delegate = self;
+    
+    if (!_isScrollingFast) {
+        [cell loadThumbnail];
+    }
+    
     return cell;
 }
 
@@ -598,6 +607,20 @@ static NSUInteger const MultiselectToolbarDeselectTag = 3;
     if (refreshControl.isRefreshing) {
         [self refresh];
     }
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    _isScrollingFast = false;
+    [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(MediaBrowserCell *obj, NSUInteger idx, BOOL *stop) {
+        [obj loadThumbnail];
+    }];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    _isScrollingFast = fabsf(self.collectionView.contentOffset.y - _lastScrollOffset) > ScrollingVelocityThreshold;
+    _lastScrollOffset = self.collectionView.contentOffset.y;
 }
 
 #pragma mark - Add Media

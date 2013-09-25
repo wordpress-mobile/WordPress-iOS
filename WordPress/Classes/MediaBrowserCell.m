@@ -122,15 +122,6 @@
         if (_media.thumbnail.length > 0) {
             _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
             _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
-        } else if (_media.remoteURL) {
-            [[WPImageSource sharedSource] downloadThumbnailForMedia:_media success:^(NSNumber *mediaId){
-                if ([mediaId isEqualToNumber:_media.mediaID]) {
-                    _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
-                    _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
-                }
-            } failure:^(NSError *error) {
-                WPFLog(@"Failed to download thumbnail for media %@: %@", _media.remoteURL, error);
-            }];
         }
     }
     
@@ -139,6 +130,19 @@
             [_media addObserver:self forKeyPath:@"progress" options:NSKeyValueObservingOptionNew context:0];
             [_media addObserver:self forKeyPath:@"remoteStatus" options:NSKeyValueObservingOptionNew context:0];
         }
+    }
+}
+
+- (void)loadThumbnail {
+    if (_media.remoteURL) {
+        [[WPImageSource sharedSource] downloadThumbnailForMedia:_media success:^(NSNumber *mediaId){
+            if ([mediaId isEqualToNumber:_media.mediaID]) {
+                _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
+                _thumbnail.image = [UIImage imageWithData:_media.thumbnail];
+            }
+        } failure:^(NSError *error) {
+            WPFLog(@"Failed to download thumbnail for media %@: %@", _media.remoteURL, error);
+        }];
     }
 }
 

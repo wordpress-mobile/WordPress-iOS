@@ -26,4 +26,6 @@
 @property (nonatomic, assign) BOOL hideCheckbox;
 @property (nonatomic, weak) id<MediaBrowserCellMultiSelectDelegate> delegate;
 
+- (void)loadThumbnail;
+
 @end
