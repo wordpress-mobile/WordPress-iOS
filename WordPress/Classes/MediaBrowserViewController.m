@@ -63,10 +63,15 @@ static NSString *const MediaCellIdentifier = @"media_cell";
 @implementation MediaBrowserViewController
 
 - (id)initWithPost:(AbstractPost *)aPost {
+    return [self initWithPost:aPost settingFeaturedImage:false];
+}
+
+- (id)initWithPost:(AbstractPost *)aPost settingFeaturedImage:(BOOL)isSettingFeaturedImage {
     self = [super init];
     if (self) {
         self.apost = aPost;
         self.blog = aPost.blog;
+        _isPickingFeaturedImage = isSettingFeaturedImage;
     }
     return self;
 }
@@ -401,8 +406,13 @@ static NSString *const MediaCellIdentifier = @"media_cell";
     } else if (cell.media.remoteStatus == MediaRemoteStatusProcessing || cell.media.remoteStatus == MediaRemoteStatusPushing) {
         [cell.media cancelUpload];
     } else if (cell.media.remoteStatus == MediaRemoteStatusLocal || cell.media.remoteStatus == MediaRemoteStatusSync) {
-        EditMediaViewController *viewMedia = [[EditMediaViewController alloc] initWithMedia:cell.media];
-        [self.navigationController pushViewController:viewMedia animated:YES];
+        if (_isPickingFeaturedImage) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageSelected object:cell.media];
+            [self.navigationController popViewControllerAnimated:YES];
+        } else {
+            EditMediaViewController *viewMedia = [[EditMediaViewController alloc] initWithMedia:cell.media];
+            [self.navigationController pushViewController:viewMedia animated:YES];
+        }
     }
 }
 

@@ -19,5 +19,6 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 - (id)initWithPost:(AbstractPost *)aPost;
+- (id)initWithPost:(AbstractPost *)aPost settingFeaturedImage:(BOOL)isSettingFeaturedImage;
 
 @end

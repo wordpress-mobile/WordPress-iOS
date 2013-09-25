@@ -41,7 +41,7 @@
 	IBOutlet UILabel *coordinateLabel;
 	PostAnnotation *annotation;
 	NSString *address;
-	BOOL isUpdatingLocation, isUploadingFeaturedImage;
+	BOOL isUpdatingLocation;
     IBOutlet UILabel *visibilityTitleLabel, *featuredImageLabel;
     IBOutlet UIImageView *featuredImageView;
     IBOutlet UITableViewCell *featuredImageTableViewCell;
@@ -56,7 +56,5 @@
 
 - (void)reloadData;
 - (void)endEditingAction:(id)sender;
-- (void)featuredImageUploadFailed: (NSNotification *)notificationInfo;
-- (void)featuredImageUploadSucceeded: (NSNotification *)notificationInfo;
-- (void)showFeaturedImageUploader: (NSNotification *)notificationInfo;
+
 @end
