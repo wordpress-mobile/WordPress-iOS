@@ -814,6 +814,18 @@
 		C50E11EA17DF5BE1004CD04C /* media_checkbox_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11E617DF5BE1004CD04C /* media_checkbox_filled.png */; };
 		C50E11EB17DF5BE1004CD04C /* media_checkbox_filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11E717DF5BE1004CD04C /* media_checkbox_filled@2x.png */; };
 		C515D06617F2157600EE3316 /* InputViewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C515D06517F2157600EE3316 /* InputViewButton.m */; };
+		C515D07B17F5FC8D00EE3316 /* create_gallery_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D06F17F5FC8D00EE3316 /* create_gallery_icon.png */; };
+		C515D07C17F5FC8D00EE3316 /* create_gallery_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D07017F5FC8D00EE3316 /* create_gallery_icon@2x.png */; };
+		C515D07D17F5FC8D00EE3316 /* date_picker_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D07117F5FC8D00EE3316 /* date_picker_selected.png */; };
+		C515D07E17F5FC8D00EE3316 /* date_picker_selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D07217F5FC8D00EE3316 /* date_picker_selected@2x.png */; };
+		C515D07F17F5FC8D00EE3316 /* date_picker_unselected.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D07317F5FC8D00EE3316 /* date_picker_unselected.png */; };
+		C515D08017F5FC8D00EE3316 /* date_picker_unselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D07417F5FC8D00EE3316 /* date_picker_unselected@2x.png */; };
+		C515D08317F5FC8D00EE3316 /* uploading_spin_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D07717F5FC8D00EE3316 /* uploading_spin_blue.png */; };
+		C515D08417F5FC8D00EE3316 /* uploading_spin_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D07817F5FC8D00EE3316 /* uploading_spin_blue@2x.png */; };
+		C515D08517F5FC8D00EE3316 /* uploading_spin_red.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D07917F5FC8D00EE3316 /* uploading_spin_red.png */; };
+		C515D08617F5FC8D00EE3316 /* uploading_spin_red@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D07A17F5FC8D00EE3316 /* uploading_spin_red@2x.png */; };
+		C515D08917F60D5F00EE3316 /* media_multiselect_deselect.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D08717F60D5F00EE3316 /* media_multiselect_deselect.png */; };
+		C515D08A17F60D5F00EE3316 /* media_multiselect_deselect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D08817F60D5F00EE3316 /* media_multiselect_deselect@2x.png */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C535C7A717D77603007EF244 /* MediaBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C535C7A517D77603007EF244 /* MediaBrowserViewController.m */; };
 		C535C7A817D77603007EF244 /* MediaBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C535C7A617D77603007EF244 /* MediaBrowserViewController.xib */; };
@@ -2043,6 +2055,18 @@
 		C50E11E717DF5BE1004CD04C /* media_checkbox_filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media_checkbox_filled@2x.png"; path = "Resources/Images/media_checkbox_filled@2x.png"; sourceTree = "<group>"; };
 		C515D06417F2157600EE3316 /* InputViewButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputViewButton.h; sourceTree = "<group>"; };
 		C515D06517F2157600EE3316 /* InputViewButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputViewButton.m; sourceTree = "<group>"; };
+		C515D06F17F5FC8D00EE3316 /* create_gallery_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = create_gallery_icon.png; path = Resources/Images/create_gallery_icon.png; sourceTree = "<group>"; };
+		C515D07017F5FC8D00EE3316 /* create_gallery_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "create_gallery_icon@2x.png"; path = "Resources/Images/create_gallery_icon@2x.png"; sourceTree = "<group>"; };
+		C515D07117F5FC8D00EE3316 /* date_picker_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = date_picker_selected.png; path = Resources/Images/date_picker_selected.png; sourceTree = "<group>"; };
+		C515D07217F5FC8D00EE3316 /* date_picker_selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "date_picker_selected@2x.png"; path = "Resources/Images/date_picker_selected@2x.png"; sourceTree = "<group>"; };
+		C515D07317F5FC8D00EE3316 /* date_picker_unselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = date_picker_unselected.png; path = Resources/Images/date_picker_unselected.png; sourceTree = "<group>"; };
+		C515D07417F5FC8D00EE3316 /* date_picker_unselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "date_picker_unselected@2x.png"; path = "Resources/Images/date_picker_unselected@2x.png"; sourceTree = "<group>"; };
+		C515D07717F5FC8D00EE3316 /* uploading_spin_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uploading_spin_blue.png; path = Resources/Images/uploading_spin_blue.png; sourceTree = "<group>"; };
+		C515D07817F5FC8D00EE3316 /* uploading_spin_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "uploading_spin_blue@2x.png"; path = "Resources/Images/uploading_spin_blue@2x.png"; sourceTree = "<group>"; };
+		C515D07917F5FC8D00EE3316 /* uploading_spin_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uploading_spin_red.png; path = Resources/Images/uploading_spin_red.png; sourceTree = "<group>"; };
+		C515D07A17F5FC8D00EE3316 /* uploading_spin_red@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "uploading_spin_red@2x.png"; path = "Resources/Images/uploading_spin_red@2x.png"; sourceTree = "<group>"; };
+		C515D08717F60D5F00EE3316 /* media_multiselect_deselect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = media_multiselect_deselect.png; path = Resources/Images/media_multiselect_deselect.png; sourceTree = "<group>"; };
+		C515D08817F60D5F00EE3316 /* media_multiselect_deselect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media_multiselect_deselect@2x.png"; path = "Resources/Images/media_multiselect_deselect@2x.png"; sourceTree = "<group>"; };
 		C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
 		C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsViewController.m; sourceTree = "<group>"; };
 		C535C7A417D77603007EF244 /* MediaBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaBrowserViewController.h; sourceTree = "<group>"; };
@@ -3962,6 +3986,18 @@
 		C50E11E317DF5BCC004CD04C /* Media Library */ = {
 			isa = PBXGroup;
 			children = (
+				C515D08717F60D5F00EE3316 /* media_multiselect_deselect.png */,
+				C515D08817F60D5F00EE3316 /* media_multiselect_deselect@2x.png */,
+				C515D06F17F5FC8D00EE3316 /* create_gallery_icon.png */,
+				C515D07017F5FC8D00EE3316 /* create_gallery_icon@2x.png */,
+				C515D07117F5FC8D00EE3316 /* date_picker_selected.png */,
+				C515D07217F5FC8D00EE3316 /* date_picker_selected@2x.png */,
+				C515D07317F5FC8D00EE3316 /* date_picker_unselected.png */,
+				C515D07417F5FC8D00EE3316 /* date_picker_unselected@2x.png */,
+				C515D07717F5FC8D00EE3316 /* uploading_spin_blue.png */,
+				C515D07817F5FC8D00EE3316 /* uploading_spin_blue@2x.png */,
+				C515D07917F5FC8D00EE3316 /* uploading_spin_red.png */,
+				C515D07A17F5FC8D00EE3316 /* uploading_spin_red@2x.png */,
 				C5BAD47B17EA22A4007E69A6 /* media_document.png */,
 				C5BAD47C17EA22A4007E69A6 /* media_powerpoint.png */,
 				C5BAD47D17EA22A4007E69A6 /* media_spreadsheet.png */,
@@ -4573,6 +4609,7 @@
 				28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */,
 				ACC156BB0E10D73100D6E1A0 /* EditPostViewController~iphone.xib in Resources */,
 				ACBAB6090E121CF700F38795 /* PostSettingsViewController.xib in Resources */,
+				C515D08917F60D5F00EE3316 /* media_multiselect_deselect.png in Resources */,
 				ACBAB67D0E1247CC00F38795 /* PostPreviewViewController.xib in Resources */,
 				85ED98A517DFA9C800090D0B /* AppIcon60x60@2x.png in Resources */,
 				ACAC7B6A0E1F8C0700AC7074 /* WPSelectionTableViewController.xib in Resources */,
@@ -4625,6 +4662,7 @@
 				859743A017D6D956009DCDCA /* keyboardButtoniPadHighlighted-ios7.png in Resources */,
 				85495F5E17C6FACF00871A7A /* icon-comments-reply@2x.png in Resources */,
 				83BC943C11F94AA00041141A /* whitebg.png in Resources */,
+				C515D08517F5FC8D00EE3316 /* uploading_spin_red.png in Resources */,
 				8370D10C11FA4A1B009D650F /* UITableViewActivityCell.xib in Resources */,
 				8370D11811FA4CCF009D650F /* welcome_bg.png in Resources */,
 				8370D11911FA4CCF009D650F /* welcome_bg@2x.png in Resources */,
@@ -4744,6 +4782,7 @@
 				30FB8D6F140D9F49003BBEC5 /* toggleButtonExtended@2x.png in Resources */,
 				30FB8D70140D9F49003BBEC5 /* toggleButtonExtended.png in Resources */,
 				C535C7B317D90B5C007EF244 /* EditMediaViewController.xib in Resources */,
+				C515D07D17F5FC8D00EE3316 /* date_picker_selected.png in Resources */,
 				30E5DD58140E7747003FA092 /* toolbarUl@2x.png in Resources */,
 				85325A2D17BB0DF8008E87D1 /* icon-menu-stats@2x.png in Resources */,
 				30E5DD59140E7747003FA092 /* toolbarLi@2x.png in Resources */,
@@ -4792,6 +4831,7 @@
 				E128566515103A3600406BC9 /* keyboardButtoniPadHighlighted@2x.png in Resources */,
 				30811743151057880028A15E /* Default-Portrait@2x.png in Resources */,
 				30811744151057880028A15E /* Default-Landscape@2x.png in Resources */,
+				C515D07F17F5FC8D00EE3316 /* date_picker_unselected.png in Resources */,
 				85495F6717C6FACF00871A7A /* icon-comments-edit.png in Resources */,
 				5DB767411588F64D00EBE36C /* postPreview.html in Resources */,
 				5D27718115A33A8500F4DCAA /* toolbar_approve.png in Resources */,
@@ -4850,8 +4890,10 @@
 				374F18BE15A5897500524ED0 /* sidebar_footer_bg.png in Resources */,
 				374F18BF15A5897500524ED0 /* sidebar_footer_bg@2x.png in Resources */,
 				85325A2517BB0DF8008E87D1 /* icon-menu-viewsite@2x.png in Resources */,
+				C515D08A17F60D5F00EE3316 /* media_multiselect_deselect@2x.png in Resources */,
 				374F18C015A5897500524ED0 /* sidebar_pages.png in Resources */,
 				374F18C115A5897500524ED0 /* sidebar_pages@2x.png in Resources */,
+				C515D08617F5FC8D00EE3316 /* uploading_spin_red@2x.png in Resources */,
 				374F18C215A5897500524ED0 /* sidebar_posts.png in Resources */,
 				374F18C315A5897500524ED0 /* sidebar_posts@2x.png in Resources */,
 				374F18C415A5897500524ED0 /* sidebar_read.png in Resources */,
@@ -4889,6 +4931,7 @@
 				5DD8A70815A63F4700A673A4 /* welcome_button_bg_full@2x.png in Resources */,
 				5DD8A70915A63F4700A673A4 /* welcome_button_bg.png in Resources */,
 				85325A4017BB0DF8008E87D1 /* icon-menu-posts-active.png in Resources */,
+				C515D07B17F5FC8D00EE3316 /* create_gallery_icon.png in Resources */,
 				5DD8A70A15A63F4700A673A4 /* welcome_button_bg@2x.png in Resources */,
 				859743A517D6D956009DCDCA /* doneButton-ios7.png in Resources */,
 				5DD8A70B15A63F4700A673A4 /* wp_logo.png in Resources */,
@@ -4983,6 +5026,7 @@
 				37E3024515B6B57B00183F34 /* toolbar_reply.png in Resources */,
 				37E3024615B6B57B00183F34 /* toolbar_reply@2x.png in Resources */,
 				302D88CC15B715E5002CC618 /* toolbar_edit.png in Resources */,
+				C515D07C17F5FC8D00EE3316 /* create_gallery_icon@2x.png in Resources */,
 				302D88CD15B715E5002CC618 /* toolbar_edit@2x.png in Resources */,
 				374CB15515B85CF300DD0EBC /* settings.png in Resources */,
 				8524551817DE4DBE00D22F98 /* icon-chevron@2x.png in Resources */,
@@ -5005,6 +5049,7 @@
 				85495F5F17C6FACF00871A7A /* icon-comments-reply.png in Resources */,
 				5D15F4BB15B8C407001B14EA /* toolbarMoreHighlighted.png in Resources */,
 				5D15F4BC15B8C407001B14EA /* toolbarMoreHighlighted@2x.png in Resources */,
+				C515D07E17F5FC8D00EE3316 /* date_picker_selected@2x.png in Resources */,
 				5D15F4BD15B8C407001B14EA /* toolbarMoreiPad.png in Resources */,
 				5D15F4BE15B8C407001B14EA /* toolbarMoreiPad@2x.png in Resources */,
 				85AC70F217C7227600985E3B /* comment-default-gravatar-image@2x.png in Resources */,
@@ -5105,6 +5150,7 @@
 				85ED54F617CC1A01006564AE /* icon-posts-editor-media.png in Resources */,
 				3716E40A16729B960035F8C4 /* action_icon_replied.png in Resources */,
 				3716E40B16729B960035F8C4 /* action_icon_replied@2x.png in Resources */,
+				C515D08017F5FC8D00EE3316 /* date_picker_unselected@2x.png in Resources */,
 				93740DCD17D8F87B00C41B2F /* WPAlertView.xib in Resources */,
 				85325A4617BB0DF8008E87D1 /* icon-menu-notifications.png in Resources */,
 				3716E40C16729B960035F8C4 /* action_icon_unfollowed.png in Resources */,
@@ -5131,6 +5177,7 @@
 				37F66E11167F6C900043E8CA /* note_navbar_icon_reblog.png in Resources */,
 				37F66E12167F6C900043E8CA /* note_navbar_icon_reblog@2x.png in Resources */,
 				37F66E13167F6C900043E8CA /* note_navbar_icon_stats.png in Resources */,
+				C515D08417F5FC8D00EE3316 /* uploading_spin_blue@2x.png in Resources */,
 				37F66E14167F6C900043E8CA /* note_navbar_icon_stats@2x.png in Resources */,
 				37F66E28167FB5D50043E8CA /* navbar_toggle@2x.png in Resources */,
 				37F66E29167FB5D50043E8CA /* navbar_toggle.png in Resources */,
@@ -5194,6 +5241,7 @@
 				3032EA841757EE6700F1F861 /* toolbar_follow_active@2x.png in Resources */,
 				859743AA17D6F06E009DCDCA /* icon-posts-share-active.png in Resources */,
 				85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */,
+				C515D08317F5FC8D00EE3316 /* uploading_spin_blue.png in Resources */,
 				858DE41217303BB4000AC628 /* OpenSans-Light.ttf in Resources */,
 				858DE41317303BB4000AC628 /* OpenSans-Regular.ttf in Resources */,
 				853FAC4E17CF1F35008A2F74 /* transparent-point.png in Resources */,

@@ -542,6 +542,10 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     [self.collectionView reloadData];
 }
 
+- (IBAction)multiselectCreateGalleryPressed:(id)sender {
+    [[[UIAlertView alloc] initWithTitle:@"Coming Soon" message:@"Look forward to creating a gallery in a week or two :)" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
         // Disable interaction with other views/buttons

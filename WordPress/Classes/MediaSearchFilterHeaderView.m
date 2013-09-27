@@ -39,7 +39,7 @@ static CGFloat const DateButtonWidth = 44.0f;
 - (UIButton *)filterDatesButton {
     UIButton *sort = [UIButton buttonWithType:UIButtonTypeCustom];
     [sort setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
-    [sort setImage:[UIImage imageNamed:@"icon-menu-themes"] forState:UIControlStateNormal];
+    [sort setImage:[UIImage imageNamed:@"date_picker_unselected"] forState:UIControlStateNormal];
     
     _filterDatesButton = sort;
     _filterDatesButton.frame = CGRectMake(_searchBar.frame.size.width, 0, DateButtonWidth, 44.0f);
@@ -74,7 +74,7 @@ static CGFloat const DateButtonWidth = 44.0f;
     [_dateRangePickerView setDateRangeMin:[_delegate mediaDateRangeStart] andMax:[_delegate mediaDateRangeEnd]];
     if (!_isDisplayingDatePicker) {
         [UIView animateWithDuration:0.3f animations:^{
-            [_filterDatesButton setImage:[UIImage imageNamed:@"icon-check-small-white"] forState:UIControlStateNormal];
+            [_filterDatesButton setImage:[UIImage imageNamed:@"date_picker_selected"] forState:UIControlStateNormal];
             _dateRangePickerView.alpha = 1;
         } completion:^(BOOL finished) {
             _isDisplayingDatePicker = YES;
@@ -83,7 +83,7 @@ static CGFloat const DateButtonWidth = 44.0f;
     else {
         [UIView animateWithDuration:0.3f animations:^{
             _dateRangePickerView.alpha = 0;
-            [_filterDatesButton setImage:[UIImage imageNamed:@"icon-menu-themes"] forState:UIControlStateNormal];
+            [_filterDatesButton setImage:[UIImage imageNamed:@"date_picker_unselected"] forState:UIControlStateNormal];
             [_dateRangePickerView.startDate resignFirstResponder];
             [_dateRangePickerView.endDate resignFirstResponder];
         } completion:^(BOOL finished) {

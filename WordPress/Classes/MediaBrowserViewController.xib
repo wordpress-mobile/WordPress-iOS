@@ -48,9 +48,13 @@
                     </connections>
                 </barButtonItem>
                 <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="Ack-5y-nyc"/>
-                <barButtonItem tag="2" style="plain" systemItem="add" id="4Xz-PG-CJ5"/>
+                <barButtonItem tag="2" image="create_gallery_icon.png" style="plain" id="4Xz-PG-CJ5">
+                    <connections>
+                        <action selector="multiselectCreateGalleryPressed:" destination="-1" id="zsc-Ua-IBW"/>
+                    </connections>
+                </barButtonItem>
                 <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="80s-pc-nVY"/>
-                <barButtonItem tag="3" style="plain" systemItem="stop" id="1Zv-qo-nws">
+                <barButtonItem tag="3" image="media_multiselect_deselect.png" style="plain" id="1Zv-qo-nws">
                     <connections>
                         <action selector="multiselectDeselectAllPressed:" destination="-1" id="lDh-7o-J4m"/>
                     </connections>
@@ -66,4 +70,8 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
         </view>
     </objects>
+    <resources>
+        <image name="create_gallery_icon.png" width="25" height="25"/>
+        <image name="media_multiselect_deselect.png" width="23" height="23"/>
+    </resources>
 </document>
