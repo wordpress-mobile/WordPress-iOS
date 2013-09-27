@@ -814,6 +814,10 @@
 		C50E11EA17DF5BE1004CD04C /* media_checkbox_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11E617DF5BE1004CD04C /* media_checkbox_filled.png */; };
 		C50E11EB17DF5BE1004CD04C /* media_checkbox_filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C50E11E717DF5BE1004CD04C /* media_checkbox_filled@2x.png */; };
 		C515D06617F2157600EE3316 /* InputViewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C515D06517F2157600EE3316 /* InputViewButton.m */; };
+		C515D06917F4A7BA00EE3316 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = C515D06817F4A7BA00EE3316 /* UIImage+ImageEffects.m */; };
+		C515D06A17F4A98800EE3316 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8527B15717CE98C5001CBA2E /* Accelerate.framework */; };
+		C515D06D17F5D5DB00EE3316 /* icon_white_arrow_up.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D06B17F5D5DB00EE3316 /* icon_white_arrow_up.png */; };
+		C515D06E17F5D5DB00EE3316 /* icon_white_arrow_up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D06C17F5D5DB00EE3316 /* icon_white_arrow_up@2x.png */; };
 		C515D07B17F5FC8D00EE3316 /* create_gallery_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D06F17F5FC8D00EE3316 /* create_gallery_icon.png */; };
 		C515D07C17F5FC8D00EE3316 /* create_gallery_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D07017F5FC8D00EE3316 /* create_gallery_icon@2x.png */; };
 		C515D07D17F5FC8D00EE3316 /* date_picker_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = C515D07117F5FC8D00EE3316 /* date_picker_selected.png */; };
@@ -2055,6 +2059,10 @@
 		C50E11E717DF5BE1004CD04C /* media_checkbox_filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media_checkbox_filled@2x.png"; path = "Resources/Images/media_checkbox_filled@2x.png"; sourceTree = "<group>"; };
 		C515D06417F2157600EE3316 /* InputViewButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputViewButton.h; sourceTree = "<group>"; };
 		C515D06517F2157600EE3316 /* InputViewButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputViewButton.m; sourceTree = "<group>"; };
+		C515D06717F4A7B900EE3316 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		C515D06817F4A7BA00EE3316 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		C515D06B17F5D5DB00EE3316 /* icon_white_arrow_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_white_arrow_up.png; path = ../../../Downloads/iOS/icon_white_arrow_up.png; sourceTree = "<group>"; };
+		C515D06C17F5D5DB00EE3316 /* icon_white_arrow_up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon_white_arrow_up@2x.png"; path = "../../../Downloads/iOS/icon_white_arrow_up@2x.png"; sourceTree = "<group>"; };
 		C515D06F17F5FC8D00EE3316 /* create_gallery_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = create_gallery_icon.png; path = Resources/Images/create_gallery_icon.png; sourceTree = "<group>"; };
 		C515D07017F5FC8D00EE3316 /* create_gallery_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "create_gallery_icon@2x.png"; path = "Resources/Images/create_gallery_icon@2x.png"; sourceTree = "<group>"; };
 		C515D07117F5FC8D00EE3316 /* date_picker_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = date_picker_selected.png; path = Resources/Images/date_picker_selected.png; sourceTree = "<group>"; };
@@ -2440,6 +2448,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C515D06A17F4A98800EE3316 /* Accelerate.framework in Frameworks */,
 				E14D65C817E09664007E3EA4 /* Social.framework in Frameworks */,
 				8355D67E11D13EAD00A61362 /* MobileCoreServices.framework in Frameworks */,
 				A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */,
@@ -2628,6 +2637,8 @@
 			isa = PBXGroup;
 			children = (
 				85ED988717DFA00000090D0B /* Images.xcassets */,
+				C515D06B17F5D5DB00EE3316 /* icon_white_arrow_up.png */,
+				C515D06C17F5D5DB00EE3316 /* icon_white_arrow_up@2x.png */,
 				85325A4D17BB22F4008E87D1 /* iOS 7 */,
 				853259E417BAC6CE008E87D1 /* New Sidebar */,
 				858DE3FF172F9991000AC628 /* Fonts */,
@@ -4104,6 +4115,8 @@
 				5DF59C0A1770AE3A00171208 /* UILabel+SuggestSize.m */,
 				851734411798C64700A30E27 /* NSURL+Util.h */,
 				851734421798C64700A30E27 /* NSURL+Util.m */,
+				C515D06717F4A7B900EE3316 /* UIImage+ImageEffects.h */,
+				C515D06817F4A7BA00EE3316 /* UIImage+ImageEffects.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -5091,6 +5104,7 @@
 				30BC6CB015C191B300A1F4D1 /* welcome_button_bg_full_highlighted.png in Resources */,
 				30BC6CB315C191F000A1F4D1 /* welcome_button_bg_full.png in Resources */,
 				30BC6CB515C1924200A1F4D1 /* welcome_button_bg_full_highlighted@2x.png in Resources */,
+				C515D06E17F5D5DB00EE3316 /* icon_white_arrow_up@2x.png in Resources */,
 				30BC6CB815C1980500A1F4D1 /* welcome_button_add.png in Resources */,
 				30BC6CB915C1980500A1F4D1 /* welcome_button_add@2x.png in Resources */,
 				85ED54FD17CC1A01006564AE /* icon-posts-editor-inspector-active@2x.png in Resources */,
@@ -5186,6 +5200,7 @@
 				3772E3401680D0DE0018D2AB /* note_icon_comment_highlighted.png in Resources */,
 				C5FC5E3C17CE639300B299E2 /* theme-browse-current.png in Resources */,
 				85325A2B17BB0DF8008E87D1 /* icon-menu-toggle-active@2x.png in Resources */,
+				C515D06D17F5D5DB00EE3316 /* icon_white_arrow_up.png in Resources */,
 				3772E3411680D0DE0018D2AB /* note_icon_comment_highlighted@2x.png in Resources */,
 				3772E3421680D0DE0018D2AB /* note_icon_follow_highlighted.png in Resources */,
 				3772E3431680D0DE0018D2AB /* note_icon_follow_highlighted@2x.png in Resources */,
@@ -5584,6 +5599,7 @@
 				5D9832F015A78AB400A5E783 /* UINavigationBar+Styled.m in Sources */,
 				85F2C4C917B9F6E600A303E0 /* NewWPWalkthroughOverlayView.m in Sources */,
 				5D9832F315A78CCB00A5E783 /* UIToolbar+Styled.m in Sources */,
+				C515D06917F4A7BA00EE3316 /* UIImage+ImageEffects.m in Sources */,
 				E1745A9A15AF49C000A3F7C5 /* UIViewController+Styled.m in Sources */,
 				E1745AA715AF4E5900A3F7C5 /* UIBarButtonItem+Styled.m in Sources */,
 				FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */,

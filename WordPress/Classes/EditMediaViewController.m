@@ -14,6 +14,8 @@
 #import "WPStyleGuide.h"
 #import "WPLoadingView.h"
 #import <objc/runtime.h>
+#import "UIImage+ImageEffects.h"
+#import "UIImage+Resize.h"
 
 static NSUInteger const AlertDiscardChanges = 500;
 
@@ -25,21 +27,23 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 @end
 
-@interface EditMediaViewController () <WPKeyboardToolbarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, UITextViewDelegate>
+@interface EditMediaViewController () <WPKeyboardToolbarDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, UITextViewDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) Media *media;
-@property (nonatomic, assign) BOOL isEditing;
+@property (nonatomic, assign) BOOL isShowingEditFields;
 @property (nonatomic, strong) WPLoadingView *loadingView;
-@property (strong, nonatomic) UITapGestureRecognizer *tapImageRecognizer;
+@property (nonatomic, strong) UITapGestureRecognizer *tapImageRecognizer;
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UIImageView *mediaImageview;
-@property (weak, nonatomic) IBOutlet UITextView *titleTextview;
-@property (weak, nonatomic) IBOutlet UITextView *captionTextview;
+@property (weak, nonatomic) IBOutlet UITextField *titleTextfield;
+@property (weak, nonatomic) IBOutlet UITextField *captionTextfield;
 @property (weak, nonatomic) IBOutlet UITextView *descriptionTextview;
 @property (weak, nonatomic) IBOutlet UILabel *createdDateLabel;
-
+@property (weak, nonatomic) IBOutlet UILabel *dimensionsLabel;
+@property (weak, nonatomic) IBOutlet UIButton *editingBar;
+@property (weak, nonatomic) IBOutlet UIImageView *blurringImageView;
 
 @end
 
@@ -66,30 +70,40 @@ static NSUInteger const AlertDiscardChanges = 500;
 {
     [super viewDidLoad];
     
+    _isShowingEditFields = NO;
+    
+    self.title = @"Edit Media";
+    
     self.tapImageRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
     _tapImageRecognizer.delegate = self;
     [_mediaImageview addGestureRecognizer:_tapImageRecognizer];
     
+    UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_white_arrow_up"]];
+    arrow.center = self.editingBar.center;
+    [self.editingBar addSubview:arrow];
+    [_editingBar addTarget:self action:@selector(barTapped:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(savePressed)];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"") style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonPressed)];
     
     [self.view addSubview:_contentView];
-    ((UIScrollView*)self.view).contentSize = CGSizeMake(self.view.frame.size.width, _contentView.frame.size.height);
     
-    self.titleTextview.font = [WPStyleGuide regularTextFont];
-    self.captionTextview.font = self.titleTextview.font;
-    self.descriptionTextview.font = self.titleTextview.font;
-    self.createdDateLabel.font = self.titleTextview.font;
+    self.titleTextfield.font = [WPStyleGuide regularTextFont];
+    self.captionTextfield.font = self.titleTextfield.font;
+    self.descriptionTextview.font = self.titleTextfield.font;
+    self.createdDateLabel.font = self.titleTextfield.font;
+    self.dimensionsLabel.font = self.titleTextfield.font;
     
-    self.titleTextview.textColor = [WPStyleGuide allTAllShadeGrey];
-    self.captionTextview.textColor = self.titleTextview.textColor;
-    self.descriptionTextview.textColor = self.titleTextview.textColor;
-    self.createdDateLabel.textColor = [WPStyleGuide whisperGrey];
-    
-    self.titleTextview.delegate = self;
-    self.captionTextview.delegate = self;
+    self.titleTextfield.delegate = self;
+    self.captionTextfield.delegate = self;
     self.descriptionTextview.delegate = self;
+    
+    UIColor *color = [UIColor colorWithWhite:1.0f alpha:0.5f];
+    _titleTextfield.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Title" attributes:@{NSForegroundColorAttributeName: color}];
+    _captionTextfield.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Caption" attributes:@{NSForegroundColorAttributeName: color}];
+    
+    //Align the textview text with all the textfields
+    _descriptionTextview.contentInset = UIEdgeInsetsMake(0, -4, 0, 0);
     
     _containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
     
@@ -112,16 +126,62 @@ static NSUInteger const AlertDiscardChanges = 500;
 }
 
 - (void)imageTapped:(id)sender {
+    if (_isShowingEditFields) {
+        [self toggleEditBar];
+    }
+}
+
+- (void)barTapped:(id)sender {
+    [self toggleEditBar];
+}
+- (UIImage*)imageToBlur {
+    CGRect rect = _mediaImageview.frame;
     
+    UIGraphicsBeginImageContextWithOptions(rect.size, YES, 0.0f);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [_mediaImageview.layer renderInContext:context];
+    UIImage *capturedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    
+    rect = CGRectMake(0, CGRectGetMinY(_containerView.frame)*scale, _containerView.frame.size.width*scale, _containerView.frame.size.height*scale);
+    
+    return [capturedImage croppedImage:rect];
+}
+
+
+- (void)toggleEditBar {
+    if (_isShowingEditFields) {
+        [UIView animateWithDuration:0.3f animations:^{
+            _containerView.frame = (CGRect) {
+                .origin = CGPointMake(0, CGRectGetMaxY(_contentView.frame) -CGRectGetHeight(_editingBar.frame)) ,
+                .size = CGSizeMake(CGRectGetWidth(_containerView.frame), CGRectGetHeight(_containerView.frame))
+            };
+        } completion:^(BOOL finished) {
+            _isShowingEditFields = NO;
+            _blurringImageView.image = [[self imageToBlur] applyDarkEffect];
+        }];
+    } else {
+        [UIView animateWithDuration:0.3f animations:^{
+            _containerView.frame = (CGRect) {
+                .origin = CGPointMake(0, CGRectGetMaxY(_contentView.frame) - CGRectGetHeight(_containerView.frame)),
+                .size = CGSizeMake(CGRectGetWidth(_containerView.frame), CGRectGetHeight(_containerView.frame))
+            };
+        } completion:^(BOOL finished) {
+            _blurringImageView.image = [[self imageToBlur] applyDarkEffect];
+            _isShowingEditFields = YES;
+        }];
+    }
 }
 
 - (void)applyLayoutForMedia
 {
-    [self.titleTextview setText:_media.title];
-    [self.titleTextview setPlaceholder:NSLocalizedString(@"Title", @"")];
+    [self.titleTextfield setText:_media.title];
+    [self.titleTextfield setPlaceholder:NSLocalizedString(@"Title", @"")];
     
-    [self.captionTextview setText:_media.caption];
-    [self.captionTextview setPlaceholder:NSLocalizedString(@"Caption", @"")];
+    [self.captionTextfield setText:_media.caption];
+    [self.captionTextfield setPlaceholder:NSLocalizedString(@"Caption", @"")];
     
     [self.descriptionTextview setText:_media.desc];
     [self.descriptionTextview setPlaceholder:NSLocalizedString(@"Description", @"")];
@@ -129,7 +189,9 @@ static NSUInteger const AlertDiscardChanges = 500;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSString *stringFromDate = [dateFormatter stringFromDate:_media.creationDate];
-    [self.createdDateLabel setText: [NSString stringWithFormat:@"Created Date: %@", stringFromDate]];
+    [self.createdDateLabel setText: [NSString stringWithFormat:@"Created %@", stringFromDate]];
+    
+    [self.dimensionsLabel setText:[NSString stringWithFormat:@"%@x%@ px", _media.width, _media.height]];
     
     _mediaImageview.image = [UIImage imageNamed:[@"media_" stringByAppendingString:_media.mediaType]];
     
@@ -153,6 +215,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     if (_media.localURL && [[NSFileManager defaultManager] fileExistsAtPath:_media.localURL isDirectory:0]) {
         _mediaImageview.contentMode = UIViewContentModeScaleAspectFit;
         _mediaImageview.image = [[UIImage alloc] initWithContentsOfFile:_media.localURL];
+        _blurringImageView.image = [[self imageToBlur] applyDarkEffect];
         return;
     }
     
@@ -171,6 +234,7 @@ static NSUInteger const AlertDiscardChanges = 500;
             NSString *localPath = [self saveFullsizeImageToDisk:image imageName:_media.filename];
             _media.localURL = localPath;
             [[_mediaImageview viewWithTag:1337] removeFromSuperview];
+            _blurringImageView.image = [[self imageToBlur] applyDarkEffect];
         } failure:^(NSError *error) {
             WPFLog(@"Failed to download image for %@: %@", _media, error);
             [[_mediaImageview viewWithTag:1337] removeFromSuperview];
@@ -180,8 +244,6 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 - (void)applyLayout
 {
-    self.titleTextview.editable = YES;
-    self.captionTextview.editable = YES;
     self.descriptionTextview.editable = YES;
     
     // Add toolbar for editing
@@ -191,10 +253,14 @@ static NSUInteger const AlertDiscardChanges = 500;
         editorToolbar = [[WPKeyboardToolbarWithoutGradient alloc] initDoneWithFrame:frame];
     } else {
         editorToolbar = [[WPKeyboardToolbar alloc] initDoneWithFrame:frame];
+        _containerView.frame = (CGRect) {
+            .origin = CGPointMake(_containerView.frame.origin.x, _containerView.frame.origin.y - 90.0f),
+            .size = _containerView.frame.size
+        };
     }
     editorToolbar.delegate = self;
-    self.titleTextview.inputAccessoryView = editorToolbar;
-    self.captionTextview.inputAccessoryView = editorToolbar;
+    self.titleTextfield.inputAccessoryView = editorToolbar;
+    self.captionTextfield.inputAccessoryView = editorToolbar;
     self.descriptionTextview.inputAccessoryView = editorToolbar;
 }
 
@@ -337,17 +403,21 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
+-(void)textFieldDidEndEditing:(UITextField *)textField {
+    if (textField == _titleTextfield) {
+        _media.title = textField.text;
+    } else if (textField == _captionTextfield) {
+        _media.caption = textField.text;
+    }
+}
+
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     [textView textViewDidBeginEditing:textView];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
     [textView textViewDidEndEditing:textView];
-    if (textView == _titleTextview) {
-        _media.title = textView.enteredText;
-    } else if (textView == _captionTextview) {
-        _media.caption = textView.enteredText;
-    } else if (textView == _descriptionTextview) {
+    if (textView == _descriptionTextview) {
         _media.desc = textView.enteredText;
     }
 }
@@ -365,6 +435,9 @@ static NSUInteger const AlertDiscardChanges = 500;
 - (void)textViewDidEndEditing:(UITextView *)textView {
     if (!self.text || [self.text isEqualToString:@""]) {
         self.text = self.placeholder;
+        self.alpha = 0.5f;
+    } else {
+        self.alpha = 1.0f;
     }
 }
 
@@ -372,6 +445,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     objc_setAssociatedObject(self, "placeholder", placeholder, OBJC_ASSOCIATION_RETAIN);
     if (!self.text || [self.text isEqualToString:@""]) {
         self.text = placeholder;
+        self.alpha = 0.5f;
     }
 }
 
