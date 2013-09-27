@@ -26,9 +26,6 @@
 
 #import "EGORefreshTableHeaderView.h"
 
-
-#define TEXT_COLOR	 [UIColor colorWithRed:154.0/255.0 green:154.0/255.0 blue:154.0/255.0 alpha:1.0]
-#define TEXT_COLOR_ACTIVE	 [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0]
 #define FLIP_ANIMATION_DURATION 0.18f
 
 
@@ -44,14 +41,12 @@
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        self.backgroundColor = [UIColor colorWithWhite:0.9453125f alpha:1.f];
+        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
         
 		UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, frame.size.height - 30.0f, self.frame.size.width, 20.0f)];
 		label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		label.font = [UIFont systemFontOfSize:12.0f];
-		label.textColor = TEXT_COLOR;
-		label.shadowColor = [UIColor colorWithWhite:1.0f alpha:1.0f];
-		label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+		label.font = [WPStyleGuide regularTextFont];
+		label.textColor = [WPStyleGuide whisperGrey];
 		label.backgroundColor = [UIColor clearColor];
 		label.textAlignment = NSTextAlignmentCenter;
 		[self addSubview:label];
@@ -59,10 +54,8 @@
 		
 		label = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, frame.size.height - 40.0f, self.frame.size.width, 20.0f)];
 		label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		label.font = [UIFont boldSystemFontOfSize:13.0f];
-		label.textColor = TEXT_COLOR;
-		label.shadowColor = [UIColor colorWithWhite:1.0f alpha:1.0f];
-		label.shadowOffset = CGSizeMake(0.0f, 1.0f);
+		label.font = [WPStyleGuide regularTextFont];
+		label.textColor = [WPStyleGuide whisperGrey];
 		label.backgroundColor = [UIColor clearColor];
 		label.textAlignment = NSTextAlignmentCenter;
 		[self addSubview:label];
@@ -132,7 +125,7 @@
 	
 	switch (aState) {
 		case EGOOPullRefreshPulling:
-            _statusLabel.textColor = TEXT_COLOR_ACTIVE;
+            _statusLabel.textColor = [WPStyleGuide newKidOnTheBlockBlue];
 			_statusLabel.text = NSLocalizedString(@"Release to refresh...", @"Release to refresh status");
 			[CATransaction begin];
 			[CATransaction setAnimationDuration:FLIP_ANIMATION_DURATION];
@@ -149,7 +142,7 @@
 				_arrowImage.transform = CATransform3DIdentity;
 				[CATransaction commit];
 			}
-            _statusLabel.textColor = TEXT_COLOR;
+            _statusLabel.textColor = [WPStyleGuide whisperGrey];
 			_statusLabel.text = NSLocalizedString(@"Pull down to refresh...", @"Pull down to refresh status");
 			[_activityView stopAnimating];
 			[CATransaction begin];
