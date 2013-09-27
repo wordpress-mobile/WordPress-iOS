@@ -310,6 +310,8 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 - (void)setFilteredMedia:(NSArray *)filteredMedia {
     _filteredMedia = filteredMedia;
     
+    [self applyFilterForSelectedMedia];
+    
     [self toggleNoMediaView:(_filteredMedia.count == 0)];
     [self.collectionView reloadData];
 }
@@ -334,6 +336,16 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     }
     if (_currentSearchText) {
         [self applyFilterWithSearchText:_currentSearchText];
+    }
+}
+
+- (void)applyFilterForSelectedMedia {
+    if (_selectedMedia.count > 0) {
+        NSMutableArray *mediaToRemove = [NSMutableArray arrayWithArray:_allMedia];
+        [mediaToRemove removeObjectsInArray:_filteredMedia];
+        [mediaToRemove filterUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID IN %@", [_selectedMedia allKeys]]];
+        [_selectedMedia removeObjectsForKeys:[mediaToRemove valueForKey:@"mediaID"]];
+        [self showMultiselectOptions];
     }
 }
 
