@@ -98,7 +98,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.backgroundColor = [UIColor colorWithWhite:0.9453125f alpha:1.f];
-        self.contentView.backgroundColor = [UIColor colorWithWhite:0.9453125f alpha:1.f];
+        self.contentView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 		CGRect frame = CGRectMake(10.0f, 0.0f, self.contentView.frame.size.width - 20.0f, self.contentView.frame.size.height - 10.0f);
 
         _sideBorderView = [[UIView alloc] initWithFrame:CGRectMake(9.f, 0.f, self.contentView.frame.size.width - 18.f, frame.size.height + 3.f)];
