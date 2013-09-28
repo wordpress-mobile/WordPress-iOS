@@ -87,7 +87,7 @@ typedef NS_ENUM(NSInteger, WordPressXMLRPCApiError) {
 
 /**
  Authenticates and returns a dictionary of the blog's options.
- 
+
  @param success A block object to execute when the login is successful. This block has no return value and takes one argument: a dictionary with the blog options.
  @param failure A block object to execute when the login failed. This block has no return value and takes one argument: a NSError object with details on the error.
  */

@@ -619,7 +619,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 {
     [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedViewSite forEvent:StatsEventAppClosed];
     
-    NSString *blogURL = blog.url;
+    NSString *blogURL = blog.homeURL;
     if (![blogURL hasPrefix:@"http"]) {
         blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
     } else if ([blog isWPcom] && [blog.url rangeOfString:@"wordpress.com"].location == NSNotFound) {

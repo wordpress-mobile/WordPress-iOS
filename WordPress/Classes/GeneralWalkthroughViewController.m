@@ -1237,6 +1237,10 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 
 - (void)displayRemoteError:(NSError *)error {
     NSString *message = [error localizedDescription];
+    if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain]) {
+        [self displayGenericErrorMessage:message];
+        return;
+    }
     if ([error code] == 403) {
         message = NSLocalizedString(@"Please update your credentials and try again.", nil);
     }

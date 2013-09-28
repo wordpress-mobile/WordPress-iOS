@@ -81,4 +81,4 @@ SPEC CHECKSUMS:
   WordPressApi: 76f9d7752b090197c172e2c5e6fccbffbaf7c336
   wpxmlrpc: 0b27d4c3734db9470f0dccc3c8d4a6f8e491fd0b
 
-COCOAPODS: 0.23.0
+COCOAPODS: 0.24.0

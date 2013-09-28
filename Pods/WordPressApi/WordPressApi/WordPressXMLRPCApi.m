@@ -113,7 +113,7 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
                         if (failure) {
                             failure(error);
                         }
-                    }];    
+                    }];
 }
 
 #pragma mark - Publishing a post

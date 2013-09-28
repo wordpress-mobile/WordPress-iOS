@@ -326,7 +326,11 @@
 #pragma mark TextField Delegate Methods
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-	self.apost.password = textField.text;
+    if (textField == passwordTextField) {
+        self.apost.password = textField.text;
+    } else if (textField == tagsTextField) {
+        self.post.tags = tagsTextField.text;
+    }
     [postDetailViewController refreshButtons];
 }
 
@@ -563,7 +567,7 @@
                     }
                 }
                 [WPStyleGuide configureTableViewActionCell:activityCell];
-                [activityCell.textLabel setText:@"Set Featured Image"];
+                [activityCell.textLabel setText:NSLocalizedString(@"Set Featured Image", @"")];
                 return activityCell;
             } else {
                 switch (indexPath.row) {
@@ -790,7 +794,7 @@
                     __weak PostSettingsSelectionViewController *weakVc = vc;
                     vc.onItemSelected = ^(NSString *status) {
                         [weakVc dismiss];
-                        self.apost.status = status;
+                        [self.apost setStatusTitle:status];
                         [tableView reloadData];
                     };
                     [self.navigationController pushViewController:vc animated:YES];
@@ -858,8 +862,8 @@
             
             NSArray *titles = self.post.blog.sortedPostFormatNames;
             NSDictionary *postFormatsDict = @{
-                                            @"DefaultValue": NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
-                                            @"Title" : NSLocalizedString(@"Visibility", nil),
+                                            @"DefaultValue": titles[0],
+                                            @"Title" : NSLocalizedString(@"Post Format", nil),
                                             @"Titles" : titles,
                                             @"Values" : titles,
                                             @"CurrentValue" : self.post.postFormatText
