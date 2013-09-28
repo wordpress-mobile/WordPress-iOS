@@ -78,6 +78,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 - (void)dealloc {
     _failedMediaAlertView.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
