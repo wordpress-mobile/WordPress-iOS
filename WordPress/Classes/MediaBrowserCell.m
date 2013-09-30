@@ -23,6 +23,7 @@
 @property (nonatomic, weak) UIImageView *thumbnail;
 @property (nonatomic, weak) UILabel *title;
 @property (nonatomic, weak) UIButton *checkbox;
+@property (nonatomic, weak) UIView *uploadStatusOverlay;
 
 @end
 
@@ -50,11 +51,11 @@
         [_checkbox setImage:[UIImage imageNamed:@"media_checkbox_filled"] forState:UIControlStateHighlighted];
         [self.contentView addSubview:_checkbox];
         
-        UIView *titleContainer = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.thumbnail.frame), self.contentView.bounds.size.width, 20.0f)];
+        UIView *titleContainer = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.thumbnail.frame), self.contentView.bounds.size.width, 25.0f)];
         titleContainer.backgroundColor = [UIColor colorWithWhite:0.2 alpha:1.0];
         [self.contentView addSubview:titleContainer];
         
-        UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(3, 0, titleContainer.frame.size.width-6, titleContainer.frame.size.height)];
+        UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, titleContainer.frame.size.width-10, titleContainer.frame.size.height)];
         _title = title;
         _title.backgroundColor = [UIColor clearColor]; 
         _title.textColor = [UIColor whiteColor];
@@ -126,6 +127,8 @@
     }
     
     if (_media.remoteStatus != MediaRemoteStatusLocal && _media.remoteStatus != MediaRemoteStatusSync) {
+        [self updateUploadStatusOverlay];
+        
         @synchronized (_media) {
             [_media addObserver:self forKeyPath:@"progress" options:NSKeyValueObservingOptionNew context:0];
             [_media addObserver:self forKeyPath:@"remoteStatus" options:NSKeyValueObservingOptionNew context:0];
@@ -134,7 +137,7 @@
 }
 
 - (void)loadThumbnail {
-    if (_media.remoteURL) {
+    if (_media.remoteURL && _media.thumbnail.length == 0) {
         [[WPImageSource sharedSource] downloadThumbnailForMedia:_media success:^(NSNumber *mediaId){
             if ([mediaId isEqualToNumber:_media.mediaID]) {
                 _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
@@ -148,6 +151,45 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     _title.text = [self titleForMedia];
+    
+    if ([keyPath isEqualToString:@"remoteStatus"]) {
+        [self updateUploadStatusOverlay];
+    }
+}
+
+- (void)updateUploadStatusOverlay {
+    [_uploadStatusOverlay removeFromSuperview];
+    
+    if (_media.remoteStatus == MediaRemoteStatusPushing || _media.remoteStatus == MediaRemoteStatusFailed) {
+        UIView *statusOverlay = [[UIView alloc] initWithFrame:_thumbnail.bounds];
+        _uploadStatusOverlay = statusOverlay;
+        _uploadStatusOverlay.backgroundColor = [UIColor colorWithHue:0 saturation:0 brightness:0 alpha:0.6];
+        [_thumbnail addSubview:_uploadStatusOverlay];
+        
+        UIImageView *arrows = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"uploading_spin_blue"]];
+        arrows.center = CGPointMake(_uploadStatusOverlay.center.x, _uploadStatusOverlay.center.y);
+        [_uploadStatusOverlay addSubview:arrows];
+        
+        UILabel *instruction = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(arrows.frame), _uploadStatusOverlay.frame.size.width, 30)];
+        instruction.backgroundColor = [UIColor clearColor];
+        instruction.font = [WPStyleGuide subtitleFont];
+        instruction.textColor = [UIColor whiteColor];
+        instruction.textAlignment = NSTextAlignmentCenter;
+        [_uploadStatusOverlay addSubview:instruction];
+    
+        if (_media.remoteStatus == MediaRemoteStatusFailed) {
+            arrows.image = [UIImage imageNamed:@"uploading_spin_red"];
+            instruction.text = @"TAP TO RETRY";
+        } else {
+            CABasicAnimation *spin = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
+            spin.toValue = [NSNumber numberWithFloat:(M_PI * 2)];
+            spin.duration = 1.5f;
+            spin.cumulative = true;
+            spin.repeatCount = MAXFLOAT;
+            [arrows.layer addAnimation:spin forKey:@"spin"];
+            instruction.text = @"TAP TO CANCEL";
+        }
+    }
 }
 
 - (NSString *)titleForMedia {
@@ -158,7 +200,7 @@
         return NSLocalizedString(@"Preparing for upload...", @"");
     
     } else if (_media.remoteStatus == MediaRemoteStatusFailed) {
-        return NSLocalizedString(@"Upload failed. Tap to retry.", @"");
+        return NSLocalizedString(@"Upload failed.", @"");
     
     } else {
         if (_media.title) {
