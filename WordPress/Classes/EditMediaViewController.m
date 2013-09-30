@@ -34,8 +34,10 @@ static NSUInteger const AlertDiscardChanges = 500;
 @property (nonatomic, strong) WPLoadingView *loadingView;
 @property (nonatomic, strong) UITapGestureRecognizer *tapImageRecognizer;
 
-@property (weak, nonatomic) IBOutlet UIView *contentView;
-@property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (weak, nonatomic) IBOutlet UIView *editFieldsContainer;
+@property (weak, nonatomic) IBOutlet UIScrollView *editFieldsScrollView;
+@property (weak, nonatomic) IBOutlet UIScrollView *imageScrollView;
+@property (weak, nonatomic) IBOutlet UIView *editContainerView;
 @property (weak, nonatomic) IBOutlet UIImageView *mediaImageview;
 @property (weak, nonatomic) IBOutlet UITextField *titleTextfield;
 @property (weak, nonatomic) IBOutlet UITextField *captionTextfield;
@@ -74,6 +76,9 @@ static NSUInteger const AlertDiscardChanges = 500;
     
     self.title = @"Edit Media";
     
+    _editFieldsScrollView.contentSize = CGSizeMake(_editFieldsScrollView.frame.size.width, CGRectGetMaxY(_editFieldsContainer.frame));
+    [_editFieldsScrollView addSubview:_editFieldsContainer];
+    
     self.tapImageRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
     _tapImageRecognizer.delegate = self;
     [_mediaImageview addGestureRecognizer:_tapImageRecognizer];
@@ -85,8 +90,6 @@ static NSUInteger const AlertDiscardChanges = 500;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(savePressed)];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"") style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonPressed)];
-    
-    [self.view addSubview:_contentView];
     
     self.titleTextfield.font = [WPStyleGuide regularTextFont];
     self.captionTextfield.font = self.titleTextfield.font;
@@ -104,8 +107,6 @@ static NSUInteger const AlertDiscardChanges = 500;
     
     //Align the textview text with all the textfields
     _descriptionTextview.contentInset = UIEdgeInsetsMake(0, -4, 0, 0);
-    
-    _containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
     
     [self applyLayoutForMedia];
     [self applyLayout];
@@ -145,7 +146,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     
     CGFloat scale = [[UIScreen mainScreen] scale];
     
-    rect = CGRectMake(0, CGRectGetMinY(_containerView.frame)*scale, _containerView.frame.size.width*scale, _containerView.frame.size.height*scale);
+    rect = CGRectMake(0, CGRectGetMinY(_editContainerView.frame)*scale, _editContainerView.frame.size.width*scale, _editContainerView.frame.size.height*scale);
     
     return [capturedImage croppedImage:rect];
 }
@@ -154,9 +155,9 @@ static NSUInteger const AlertDiscardChanges = 500;
 - (void)toggleEditBar {
     if (_isShowingEditFields) {
         [UIView animateWithDuration:0.3f animations:^{
-            _containerView.frame = (CGRect) {
-                .origin = CGPointMake(0, CGRectGetMaxY(_contentView.frame) -CGRectGetHeight(_editingBar.frame)) ,
-                .size = CGSizeMake(CGRectGetWidth(_containerView.frame), CGRectGetHeight(_containerView.frame))
+            _editContainerView.frame = (CGRect) {
+                .origin = CGPointMake(0, self.view.bounds.size.height - _editingBar.frame.size.height),
+                .size = _editContainerView.frame.size
             };
         } completion:^(BOOL finished) {
             _isShowingEditFields = NO;
@@ -164,9 +165,9 @@ static NSUInteger const AlertDiscardChanges = 500;
         }];
     } else {
         [UIView animateWithDuration:0.3f animations:^{
-            _containerView.frame = (CGRect) {
-                .origin = CGPointMake(0, CGRectGetMaxY(_contentView.frame) - CGRectGetHeight(_containerView.frame)),
-                .size = CGSizeMake(CGRectGetWidth(_containerView.frame), CGRectGetHeight(_containerView.frame))
+            _editContainerView.frame = (CGRect) {
+                .origin = CGPointMake(0, self.view.bounds.size.height - _editContainerView.frame.size.height),
+                .size = _editContainerView.frame.size
             };
         } completion:^(BOOL finished) {
             _blurringImageView.image = [[self imageToBlur] applyDarkEffect];
@@ -253,9 +254,9 @@ static NSUInteger const AlertDiscardChanges = 500;
         editorToolbar = [[WPKeyboardToolbarWithoutGradient alloc] initDoneWithFrame:frame];
     } else {
         editorToolbar = [[WPKeyboardToolbar alloc] initDoneWithFrame:frame];
-        _containerView.frame = (CGRect) {
-            .origin = CGPointMake(_containerView.frame.origin.x, _containerView.frame.origin.y - 90.0f),
-            .size = _containerView.frame.size
+        _editContainerView.frame = (CGRect) {
+            .origin = CGPointMake(_editContainerView.frame.origin.x, _editContainerView.frame.origin.y - 90.0f),
+            .size = _editContainerView.frame.size
         };
     }
     editorToolbar.delegate = self;
@@ -268,24 +269,37 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 - (void)keyboardWillShow:(NSNotification*)sender {
     NSValue *keyboardFrame = [sender userInfo][UIKeyboardFrameEndUserInfoKey];
-    CGFloat height = [keyboardFrame CGRectValue].size.height;
     CGFloat animationDuration = [[sender userInfo][UIKeyboardAnimationDurationUserInfoKey] floatValue];
     UIViewAnimationCurve curve = [[sender userInfo][UIKeyboardAnimationCurveUserInfoKey] integerValue];
-    UIView *firstResponder = [self currentFirstResponder];
     
-    CGFloat y = _containerView.frame.origin.y + firstResponder.frame.origin.y;
+    CGFloat height = CGRectGetMaxY(_editContainerView.frame) - CGRectGetMinY([keyboardFrame CGRectValue]);
     
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState|curve animations:^{
-        ((UIScrollView*)self.view).contentInset = UIEdgeInsetsMake(0, 0, height, 0);
-        ((UIScrollView*)self.view).contentOffset = CGPointMake(0, MAX(0, y - 50));
+        _editContainerView.frame = (CGRect) {
+            .origin = CGPointMake(_editContainerView.frame.origin.x, 0),
+            .size = _editContainerView.frame.size
+        };
+        _editFieldsScrollView.frame = (CGRect) {
+            .origin = _editFieldsScrollView.frame.origin,
+            .size = CGSizeMake(_editFieldsScrollView.frame.size.width, height)
+        };
     } completion:nil];
 }
 
 - (void)keyboardWillHide:(NSNotification*)sender {
-    CGFloat animationDuration = [[sender userInfo][UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    CGFloat animationDuration = [[sender userInfo]
+                                 [UIKeyboardAnimationDurationUserInfoKey] floatValue];
     UIViewAnimationCurve curve = [[sender userInfo][UIKeyboardAnimationCurveUserInfoKey] integerValue];
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState|curve animations:^{
-        ((UIScrollView*)self.view).contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        _editFieldsScrollView.frame = (CGRect) {
+            .origin = _editFieldsScrollView.frame.origin,
+            .size = CGSizeMake(_editFieldsScrollView.frame.size.width, _editContainerView.frame.size.height - _editingBar.frame.size.height)
+        };
+        _editContainerView.frame = (CGRect) {
+            .origin = CGPointMake(_editContainerView.frame.origin.x, self.view.bounds.size.height - (_editFieldsScrollView.frame.size.height + _editingBar.frame.size.height)),
+            .size = _editContainerView.frame.size
+        };
+
     } completion:nil];
 }
 
@@ -296,7 +310,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 }
 
 - (UIView *)currentFirstResponder {
-    for (UIView *v in self.containerView.subviews) {
+    for (UIView *v in _editFieldsContainer.subviews) {
         if (v.isFirstResponder) {
             return v;
         }
