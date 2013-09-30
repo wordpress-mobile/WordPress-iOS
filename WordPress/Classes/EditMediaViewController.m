@@ -17,6 +17,10 @@
 #import "UIImage+ImageEffects.h"
 #import "UIImage+Resize.h"
 
+@interface BlurView : UIView
+@property (nonatomic, strong) UIToolbar *toolbar;
+@end
+
 static NSUInteger const AlertDiscardChanges = 500;
 
 @interface UITextView (Placeholder) <UITextViewDelegate>
@@ -45,7 +49,6 @@ static NSUInteger const AlertDiscardChanges = 500;
 @property (weak, nonatomic) IBOutlet UILabel *createdDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dimensionsLabel;
 @property (weak, nonatomic) IBOutlet UIButton *editingBar;
-@property (weak, nonatomic) IBOutlet UIImageView *blurringImageView;
 
 @end
 
@@ -113,6 +116,9 @@ static NSUInteger const AlertDiscardChanges = 500;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    BlurView *blur = [[BlurView alloc] initWithFrame:_editContainerView.bounds];
+    [_editContainerView insertSubview:blur atIndex:0];
 }
 
 - (void)didReceiveMemoryWarning
@@ -135,21 +141,6 @@ static NSUInteger const AlertDiscardChanges = 500;
 - (void)barTapped:(id)sender {
     [self toggleEditBar];
 }
-- (UIImage*)imageToBlur {
-    CGRect rect = _mediaImageview.frame;
-    
-    UIGraphicsBeginImageContextWithOptions(rect.size, YES, 0.0f);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    [_mediaImageview.layer renderInContext:context];
-    UIImage *capturedImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    CGFloat scale = [[UIScreen mainScreen] scale];
-    
-    rect = CGRectMake(0, CGRectGetMinY(_editContainerView.frame)*scale, _editContainerView.frame.size.width*scale, _editContainerView.frame.size.height*scale);
-    
-    return [capturedImage croppedImage:rect];
-}
 
 
 - (void)toggleEditBar {
@@ -161,7 +152,6 @@ static NSUInteger const AlertDiscardChanges = 500;
             };
         } completion:^(BOOL finished) {
             _isShowingEditFields = NO;
-            _blurringImageView.image = [[self imageToBlur] applyDarkEffect];
         }];
     } else {
         [UIView animateWithDuration:0.3f animations:^{
@@ -170,7 +160,6 @@ static NSUInteger const AlertDiscardChanges = 500;
                 .size = _editContainerView.frame.size
             };
         } completion:^(BOOL finished) {
-            _blurringImageView.image = [[self imageToBlur] applyDarkEffect];
             _isShowingEditFields = YES;
         }];
     }
@@ -216,7 +205,6 @@ static NSUInteger const AlertDiscardChanges = 500;
     if (_media.localURL && [[NSFileManager defaultManager] fileExistsAtPath:_media.localURL isDirectory:0]) {
         _mediaImageview.contentMode = UIViewContentModeScaleAspectFit;
         _mediaImageview.image = [[UIImage alloc] initWithContentsOfFile:_media.localURL];
-        _blurringImageView.image = [[self imageToBlur] applyDarkEffect];
         return;
     }
     
@@ -235,7 +223,6 @@ static NSUInteger const AlertDiscardChanges = 500;
             NSString *localPath = [self saveFullsizeImageToDisk:image imageName:_media.filename];
             _media.localURL = localPath;
             [[_mediaImageview viewWithTag:1337] removeFromSuperview];
-            _blurringImageView.image = [[self imageToBlur] applyDarkEffect];
         } failure:^(NSError *error) {
             WPFLog(@"Failed to download image for %@: %@", _media, error);
             [[_mediaImageview viewWithTag:1337] removeFromSuperview];
@@ -469,6 +456,35 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 - (NSString *)placeholder {
     return objc_getAssociatedObject(self, "placeholder");
+}
+
+@end
+
+@implementation BlurView
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.clipsToBounds = YES;
+        
+        if (IS_IOS7) {
+            if (!_toolbar) {
+                _toolbar = [[UIToolbar alloc] initWithFrame:[self bounds]];
+                _toolbar.barTintColor = [UIColor blackColor];
+                [self.layer insertSublayer:_toolbar.layer atIndex:0];
+            }
+        } else {
+            self.backgroundColor = [UIColor blackColor];
+            self.alpha = 0.8;
+        }
+
+    }
+    return self;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    _toolbar.frame = self.bounds;
 }
 
 @end

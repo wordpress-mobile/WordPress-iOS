@@ -7,7 +7,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditMediaViewController">
             <connections>
-                <outlet property="blurringImageView" destination="LVh-1Q-heP" id="pWj-uC-5Uh"/>
                 <outlet property="captionTextfield" destination="pER-7s-n8J" id="hPg-R5-YBU"/>
                 <outlet property="createdDateLabel" destination="rmG-H9-q1g" id="7SM-eW-VYS"/>
                 <outlet property="descriptionTextview" destination="g6K-R6-9Wt" id="iUc-GJ-LnC"/>
@@ -40,14 +39,10 @@
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                 </scrollView>
-                <view contentMode="scaleToFill" id="Uzg-6b-VZH" userLabel="ContainerView">
+                <view clipsSubviews="YES" contentMode="scaleToFill" id="Uzg-6b-VZH" userLabel="ContainerView">
                     <rect key="frame" x="0.0" y="524" width="320" height="370"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="LVh-1Q-heP">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="370"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        </imageView>
                         <view contentMode="scaleToFill" id="Tq1-vM-i5N" userLabel="Editing Bar" customClass="UIButton">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -61,6 +56,7 @@
                         </scrollView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <inset key="insetFor6xAndEarlier" minX="0.0" minY="-95" maxX="0.0" maxY="95"/>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
