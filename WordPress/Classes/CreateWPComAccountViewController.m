@@ -77,8 +77,8 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
 	_footerText = @" ";
-	_buttonText = NSLocalizedString(@"Create WordPress.com Blog", @"");
-	self.navigationItem.title = NSLocalizedString(@"Create Account", @"");
+	_buttonText = NSLocalizedString(@"Create WordPress.com Site", @"Button to complete creating a new WordPress.com site");
+	self.navigationItem.title = NSLocalizedString(@"Create Account", @"Label to create a new WordPress.com account.");
 
     UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wpcom"]];
     logoImage.frame = CGRectMake(0.0f, 0.0f, CreateAccountHeaderSize.width, CreateAccountHeaderSize.height);
@@ -180,10 +180,10 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
                 _usernameCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                                 reuseIdentifier:@"TextCell"];
             }
-            _usernameCell.textLabel.text = NSLocalizedString(@"Username", @"");
+            _usernameCell.textLabel.text = NSLocalizedString(@"Username", @"Label for username field");
             _usernameTextField = _usernameCell.textField;
             _usernameTextField.tag = CreateAccountUserNameTextFieldTag;
-            _usernameTextField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
+            _usernameTextField.placeholder = NSLocalizedString(@"Enter username", @"Help user enter username for log in");
             _usernameTextField.keyboardType = UIKeyboardTypeEmailAddress;
             _usernameTextField.returnKeyType = UIReturnKeyNext;
             _usernameTextField.delegate = self;
@@ -194,10 +194,10 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
                 _passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                                 reuseIdentifier:@"TextCell"];
             }
-            _passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
+            _passwordCell.textLabel.text = NSLocalizedString(@"Password", @"Label for password field");
             _passwordTextField = _passwordCell.textField;
             _passwordTextField.tag = CreateAccountPasswordTextFieldTag;
-            _passwordTextField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
+            _passwordTextField.placeholder = NSLocalizedString(@"Enter password", @"Help user enter password for log in");
             _passwordTextField.keyboardType = UIKeyboardTypeDefault;
             _passwordTextField.returnKeyType = UIReturnKeyNext;
             _passwordTextField.secureTextEntry = YES;
@@ -210,10 +210,10 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
                 _blogUrlCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                                 reuseIdentifier:@"TextCell"];
             }
-            _blogUrlCell.textLabel.text = NSLocalizedString(@"Blog URL", nil);
+            _blogUrlCell.textLabel.text = NSLocalizedString(@"Site URL", @"Label for Site URL field in the Create a site window");
             _blogUrlTextField = _blogUrlCell.textField;
             _blogUrlTextField.tag = CreateAccountBlogUrlTextFieldTag;
-            _blogUrlTextField.placeholder = NSLocalizedString(@"myblog.wordpress.com", nil);
+            _blogUrlTextField.placeholder = NSLocalizedString(@"http://(choose-address).wordpress.com", @"Help user enter a URL for their new site");
             _blogUrlTextField.keyboardType = UIKeyboardTypeURL;
             _blogUrlTextField.delegate = self;
             [WPStyleGuide configureTableViewTextCell:_blogUrlCell];

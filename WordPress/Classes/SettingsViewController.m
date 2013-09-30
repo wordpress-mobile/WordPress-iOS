@@ -148,23 +148,23 @@ typedef enum {
     // Our settings bundle stored numeric values as strings so we use strings here for backward compatibility.
     NSDictionary *imageResizeDict = [NSDictionary dictionaryWithObjectsAndKeys:@"0", @"DefaultValue", 
                                      @"media_resize_preference", @"Key", 
-                                     NSLocalizedString(@"Image Resize", @""), @"Title", 
-                                     [NSArray arrayWithObjects:NSLocalizedString(@"Always Ask", @"Image resize preference"), 
-                                      NSLocalizedString(@"Small", @"Image resize preference"),
-                                      NSLocalizedString(@"Medium", @"Image resize preference"),
-                                      NSLocalizedString(@"Large", @"Image resize preference"),
-                                      NSLocalizedString(@"Disabled", @"Image resize preference"), nil], @"Titles",
+                                     NSLocalizedString(@"Image Quality", @""), @"Title",
+                                     [NSArray arrayWithObjects:NSLocalizedString(@"Always Ask", @"Always Ask (ask for size on every upload) - Image Quality setting"),
+                                      NSLocalizedString(@"Small", @"Small - Image Quality setting"),
+                                      NSLocalizedString(@"Medium", @"Medium - Image Quality setting"),
+                                      NSLocalizedString(@"Large", @"Large - Image Quality setting"),
+                                      NSLocalizedString(@"Original Size", @"Original (uncompressed)  - Image Quality setting"), nil], @"Titles",
                                      [NSArray arrayWithObjects:@"0",@"1",@"2",@"3",@"4", nil], @"Values",
-                                     NSLocalizedString(@"Set default size images should be uploaded.", @""), @"Info",
+                                     NSLocalizedString(@"Set which size images should be uploaded in.", @""), @"Info",
                                      nil];
         
     NSDictionary *videoQualityDict = [NSDictionary dictionaryWithObjectsAndKeys:@"1", @"DefaultValue", 
                                       @"video_quality_preference", @"Key", 
                                       NSLocalizedString(@"Video Quality", @""), @"Title", 
-                                      [NSArray arrayWithObjects:NSLocalizedString(@"High", @"Video quality"),
-                                      @"640x480", 
-                                      NSLocalizedString(@"Medium", @"Video quality"),
-                                      NSLocalizedString(@"Low", @"Video quality"), nil], @"Titles", 
+                                      [NSArray arrayWithObjects:NSLocalizedString(@"Original Size", @"Video quality - uncompressed original size for the device"),
+                                      NSLocalizedString(@"Medium (480p)", @"Video quality - medium quality, 480p"),
+                                      NSLocalizedString(@"Default (360p)", @"Video quality - default size, 360p"),
+                                      NSLocalizedString(@"Low (144p)", @"Video quality - low quality, 144p"), nil], @"Titles",
                                       [NSArray arrayWithObjects:@"0", @"3", @"1", @"2", nil], @"Values",
                                       NSLocalizedString(@"Choose the quality at which video should be uploaded when inserting into posts.", @""), @"Info",                                      
                                       nil];
@@ -302,7 +302,7 @@ typedef enum {
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
     if (section == SettingsSectionBlogs) {
-        return NSLocalizedString(@"Blogs", @"Title label for the user blogs in the app settings");
+        return NSLocalizedString(@"Sites", @"Title label for the user sites in the app settings");
         
     } else if (section == SettingsSectionWpcom) {
         return NSLocalizedString(@"WordPress.com", @"");
