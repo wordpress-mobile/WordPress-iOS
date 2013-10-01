@@ -778,8 +778,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         heightText = [NSString stringWithFormat:@"%d", (int)_currentImage.size.height];
     }
     
-    CGRect frame = IS_IOS7 ? self.view.bounds : self.view.bounds;
-    WPAlertView *alertView = [[WPAlertView alloc] initWithFrame:frame andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsSideBySideTwoButtonMode];
+    WPAlertView *alertView = [[WPAlertView alloc] initWithFrame:self.view.bounds andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsSideBySideTwoButtonMode];
     
     alertView.overlayTitle = NSLocalizedString(@"Custom Size", @"");
     //    alertView.overlayDescription = NS Localized String(@"Provide a custom width and height for the image.", @"Alert view description for resizing an image with custom size.");
@@ -802,7 +801,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     alertView.button1CompletionBlock = ^(WPAlertView *overlayView){
         // Cancel
         [overlayView dismiss];
-        
+        overlayView = nil;
     };
     alertView.button2CompletionBlock = ^(WPAlertView *overlayView){
         [overlayView dismiss];
