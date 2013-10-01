@@ -685,7 +685,8 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     _currentActionSheet = addMediaActionSheet;
     
     if (IS_IPAD) {
-        [_currentActionSheet showFromBarButtonItem:self.navigationItem.rightBarButtonItem animated:YES];
+        UIBarButtonItem *barButtonItem = IS_IOS7 ? self.navigationItem.rightBarButtonItems[1] : self.navigationItem.rightBarButtonItem;
+        [_currentActionSheet showFromBarButtonItem:barButtonItem animated:YES];
     } else {
         [_currentActionSheet showInView:self.view];
     }
