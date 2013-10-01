@@ -1251,6 +1251,11 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 	}
 }
 
+- (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(NSString *)contextInfo {
+    _currentVideo = nil;
+	[self useVideo:videoPath];
+}
+
 - (void)useImage:(UIImage *)theImage {
     Media *imageMedia;
     if (_apost) {
