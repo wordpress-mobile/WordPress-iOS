@@ -498,7 +498,10 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [self.collectionView performBatchUpdates:nil completion:nil];
+    // iOS6-only fix: crash on rotate due to internal collectionview indices
+    if (_filteredMedia.count) {
+        [self.collectionView performBatchUpdates:nil completion:nil];
+    }
 }
 
 #pragma mark - MediaCellSelectionDelegate
