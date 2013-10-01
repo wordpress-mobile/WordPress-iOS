@@ -88,6 +88,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     
     UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_white_arrow_up"]];
     arrow.center = self.editingBar.center;
+    arrow.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     [self.editingBar addSubview:arrow];
     [_editingBar addTarget:self action:@selector(barTapped:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(savePressed)];
@@ -118,7 +119,29 @@ static NSUInteger const AlertDiscardChanges = 500;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     BlurView *blur = [[BlurView alloc] initWithFrame:_editContainerView.bounds];
+    blur.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [_editContainerView insertSubview:blur atIndex:0];
+}
+
+- (void)viewDidLayoutSubviews {
+    [self layoutEditOverlay];
+}
+
+- (void)layoutEditOverlay {
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+    CGFloat closedYOffset = self.view.bounds.size.height - _editingBar.frame.size.height;
+    CGFloat openedYOffset = isLandscape ? 0 : self.view.bounds.size.height - _editContainerView.frame.size.height;
+    CGFloat currentYOffset = _isShowingEditFields ? openedYOffset : closedYOffset;
+    CGFloat scrollViewHeight = isLandscape ? self.view.bounds.size.height - _editingBar.frame.size.height : _editContainerView.frame.size.height - _editingBar.frame.size.height;
+    
+    _editContainerView.frame = (CGRect) {
+        .origin = CGPointMake(0, currentYOffset),
+        .size = _editContainerView.frame.size
+    };
+    _editFieldsScrollView.frame = (CGRect) {
+        .origin = _editFieldsScrollView.frame.origin,
+        .size = CGSizeMake(_editContainerView.frame.size.width, scrollViewHeight)
+    };
 }
 
 - (void)didReceiveMemoryWarning
@@ -144,25 +167,11 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 
 - (void)toggleEditBar {
-    if (_isShowingEditFields) {
-        [UIView animateWithDuration:0.3f animations:^{
-            _editContainerView.frame = (CGRect) {
-                .origin = CGPointMake(0, self.view.bounds.size.height - _editingBar.frame.size.height),
-                .size = _editContainerView.frame.size
-            };
-        } completion:^(BOOL finished) {
-            _isShowingEditFields = NO;
-        }];
-    } else {
-        [UIView animateWithDuration:0.3f animations:^{
-            _editContainerView.frame = (CGRect) {
-                .origin = CGPointMake(0, self.view.bounds.size.height - _editContainerView.frame.size.height),
-                .size = _editContainerView.frame.size
-            };
-        } completion:^(BOOL finished) {
-            _isShowingEditFields = YES;
-        }];
-    }
+    _isShowingEditFields = !_isShowingEditFields;
+    
+    [UIView animateWithDuration:0.3f animations:^{
+        [self layoutEditOverlay];
+    } completion:nil];
 }
 
 - (void)applyLayoutForMedia
@@ -259,7 +268,11 @@ static NSUInteger const AlertDiscardChanges = 500;
     CGFloat animationDuration = [[sender userInfo][UIKeyboardAnimationDurationUserInfoKey] floatValue];
     UIViewAnimationCurve curve = [[sender userInfo][UIKeyboardAnimationCurveUserInfoKey] integerValue];
     
-    CGFloat height = CGRectGetMaxY(_editContainerView.frame) - CGRectGetMinY([keyboardFrame CGRectValue]);
+    CGFloat height = CGRectGetMaxY(_editFieldsScrollView.frame) - CGRectGetMinY([keyboardFrame CGRectValue]);
+    
+    if (UIDeviceOrientationIsLandscape([[UIDevice currentDevice] orientation])) {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+    }
     
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState|curve animations:^{
         _editContainerView.frame = (CGRect) {
@@ -286,6 +299,10 @@ static NSUInteger const AlertDiscardChanges = 500;
             .origin = CGPointMake(_editContainerView.frame.origin.x, self.view.bounds.size.height - (_editFieldsScrollView.frame.size.height + _editingBar.frame.size.height)),
             .size = _editContainerView.frame.size
         };
+        
+        if (self.navigationController.navigationBarHidden) {
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+        }
 
     } completion:nil];
 }
@@ -404,6 +421,10 @@ static NSUInteger const AlertDiscardChanges = 500;
     }
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    _editFieldsScrollView.contentOffset = CGPointMake(0, CGRectGetMinY(textField.frame));
+}
+
 -(void)textFieldDidEndEditing:(UITextField *)textField {
     if (textField == _titleTextfield) {
         _media.title = textField.text;
@@ -414,6 +435,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     [textView textViewDidBeginEditing:textView];
+    _editFieldsScrollView.contentOffset = CGPointMake(0, CGRectGetMinY(textView.frame));
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
