@@ -145,6 +145,12 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self loadFromCache];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
@@ -164,8 +170,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     }
     
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:addMediaButton forNavigationItem:self.navigationItem];
-    
-    [self loadFromCache];
+
     [self applyDateFilterForStartDate:_startDate andEndDate:_endDate];
     [self applyFilterWithSearchText:_currentSearchText];
 }
