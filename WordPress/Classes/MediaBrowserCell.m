@@ -95,7 +95,7 @@
     if (!_thumbnail.image) {
         _thumbnail.contentMode = UIViewContentModeCenter;
     }
-    
+    [_uploadStatusOverlay removeFromSuperview];
     [self removeUploadStatusObservers];
 }
 
