@@ -37,6 +37,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 @property (nonatomic, assign) BOOL isShowingEditFields;
 @property (nonatomic, strong) WPLoadingView *loadingView;
 @property (nonatomic, strong) UITapGestureRecognizer *tapImageRecognizer;
+@property (nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
 
 @property (weak, nonatomic) IBOutlet UIView *editFieldsContainer;
 @property (weak, nonatomic) IBOutlet UIScrollView *editFieldsScrollView;
@@ -49,6 +50,10 @@ static NSUInteger const AlertDiscardChanges = 500;
 @property (weak, nonatomic) IBOutlet UILabel *createdDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dimensionsLabel;
 @property (weak, nonatomic) IBOutlet UIButton *editingBar;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *captionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+
 
 @end
 
@@ -86,6 +91,10 @@ static NSUInteger const AlertDiscardChanges = 500;
     _tapImageRecognizer.delegate = self;
     [_mediaImageview addGestureRecognizer:_tapImageRecognizer];
     
+    self.panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(editingBarPanned:)];
+    _panGestureRecognizer.delegate = self;
+    [_editingBar addGestureRecognizer:_panGestureRecognizer];
+    
     UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_white_arrow_up"]];
     arrow.center = self.editingBar.center;
     arrow.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -94,6 +103,10 @@ static NSUInteger const AlertDiscardChanges = 500;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(savePressed)];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"") style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonPressed)];
+    
+    self.titleLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
+    self.captionLabel.font = self.titleLabel.font;
+    self.descriptionLabel.font = self.titleLabel.font;
     
     self.titleTextfield.font = [WPStyleGuide regularTextFont];
     self.captionTextfield.font = self.titleTextfield.font;
@@ -158,6 +171,46 @@ static NSUInteger const AlertDiscardChanges = 500;
 - (void)imageTapped:(id)sender {
     if (_isShowingEditFields) {
         [self toggleEditBar];
+    }
+}
+
+- (void)editingBarPanned:(UIPanGestureRecognizer*)sender {
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+    CGFloat yTranslation = [sender translationInView:self.view].y;
+    CGFloat maxY = self.view.frame.size.height - _editingBar.frame.size.height;
+    CGFloat minY = isLandscape ? 0 : self.view.bounds.size.height - _editContainerView.frame.size.height;
+    static CGFloat threshold = 50.0f;
+    static CGFloat currentOrigin;
+
+    switch (sender.state) {
+        case UIGestureRecognizerStateBegan:
+            currentOrigin = _editContainerView.frame.origin.y;
+            break;
+        case UIGestureRecognizerStateChanged:
+            if ((currentOrigin + yTranslation) >= minY &&
+                (currentOrigin + yTranslation) <= maxY) {
+                _editContainerView.frame = (CGRect) {
+                    .origin = CGPointMake(0, currentOrigin + yTranslation),
+                    .size = _editContainerView.frame.size
+                };
+            }
+            break;
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
+            // Toggle editing when within threshold
+            if ((currentOrigin + yTranslation) <= (minY + threshold) ||
+                (currentOrigin + yTranslation) >= (maxY - threshold)) {
+                _isShowingEditFields = !((currentOrigin + yTranslation) <= (minY + threshold));
+
+            // Toggle if we're moving fast enough
+            } else {
+                CGFloat velocity = [sender velocityInView:self.view].y;
+                _isShowingEditFields = velocity > 10.0f;
+            }
+            
+            [self toggleEditBar];
+            
+        default:;
     }
 }
 
@@ -270,7 +323,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     
     CGFloat height = CGRectGetMaxY(_editFieldsScrollView.frame) - CGRectGetMinY([keyboardFrame CGRectValue]);
     
-    if (UIDeviceOrientationIsLandscape([[UIDevice currentDevice] orientation])) {
+    if (UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
         [self.navigationController setNavigationBarHidden:YES animated:YES];
     }
     
@@ -281,7 +334,7 @@ static NSUInteger const AlertDiscardChanges = 500;
         };
         _editFieldsScrollView.frame = (CGRect) {
             .origin = _editFieldsScrollView.frame.origin,
-            .size = CGSizeMake(_editFieldsScrollView.frame.size.width, height)
+            .size = CGSizeMake(_editFieldsScrollView.frame.size.width, _editFieldsContainer.frame.size.height - height)
         };
     } completion:nil];
 }
