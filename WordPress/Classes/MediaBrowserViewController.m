@@ -477,7 +477,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 #pragma mark - Collection view layout
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return IS_IPAD ? CGSizeMake(200, 220) : CGSizeMake(145, 170);
+    return IS_IPAD ? CGSizeMake(200, 225) : CGSizeMake(145, 170);
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
