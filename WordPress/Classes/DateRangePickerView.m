@@ -31,10 +31,10 @@
 - (void)initSubviews {
     self.backgroundColor = [WPStyleGuide allTAllShadeGrey];
     
-    UILabel *fromLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, self.frame.size.height)];
-    fromLabel.text = NSLocalizedString(@"FROM:", @"");
-    fromLabel.font = [WPStyleGuide subtitleFont];
-    fromLabel.textColor = [UIColor whiteColor];
+    UILabel *fromLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, 0, self.frame.size.height)];
+    fromLabel.text = NSLocalizedString(@"FROM", @"");
+    fromLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
+    fromLabel.textColor = [WPStyleGuide whisperGrey];
     fromLabel.backgroundColor = [UIColor clearColor];
     [fromLabel sizeToFit];
     fromLabel.frame = (CGRect) {
@@ -58,11 +58,11 @@
 
     
     //Create Date Textfields
-    self.startDate = [[InputViewButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(fromLabel.frame), 0, self.bounds.size.width/2 - fromLabel.frame.size.width, 44.0f)];
-
-    [self.startDate.titleLabel setTextColor:[UIColor whiteColor]];
-    [self.startDate.titleLabel setFont:[WPStyleGuide subtitleFont]];
-    [self.startDate setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
+    self.startDate = [[InputViewButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(fromLabel.frame) + 10, 10, self.bounds.size.width/2 - fromLabel.frame.size.width - 20, 24.0f)];
+    [self.startDate.layer setCornerRadius:4.0f];
+    [self.startDate.titleLabel setTextColor:[WPStyleGuide itsEverywhereGrey]];
+    [self.startDate.titleLabel setFont:[WPStyleGuide tableviewSectionHeaderFont]];
+    [self.startDate setBackgroundColor:[WPStyleGuide whisperGrey]];
     [self.startDate addTarget:self action:@selector(showStartDatePicker) forControlEvents:UIControlEventTouchUpInside];
     self.startDate.titleLabel.adjustsFontSizeToFitWidth = YES;
     self.startDate.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth;
@@ -70,19 +70,20 @@
     self.startDate.inputView = self.startDatePicker;
     
     
-    UILabel *toLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_startDate.frame), fromLabel.frame.origin.y, 0, self.frame.size.height)];
-    toLabel.text = NSLocalizedString(@"TO:", @"");
-    toLabel.textColor = fromLabel.textColor;
+    UILabel *toLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_startDate.frame) + 10, fromLabel.frame.origin.y, 0, self.frame.size.height)];
+    toLabel.text = NSLocalizedString(@"TO", @"");
+    toLabel.textColor = [WPStyleGuide whisperGrey];
     toLabel.font = fromLabel.font;
     toLabel.backgroundColor = fromLabel.backgroundColor;
     [toLabel sizeToFit];
     toLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleLeftMargin;
     [self addSubview:toLabel];
     
-    self.endDate = [[InputViewButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(toLabel.frame), 0, self.frame.size.width - CGRectGetMaxX(toLabel.frame), 44.0f)];
-    [self.endDate.titleLabel setTextColor:[UIColor whiteColor]];
-    [self.endDate.titleLabel setFont:[WPStyleGuide subtitleFont]];
-    [self.endDate setBackgroundColor:[WPStyleGuide allTAllShadeGrey]];
+    self.endDate = [[InputViewButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(toLabel.frame) + 10, 10, self.frame.size.width - CGRectGetMaxX(toLabel.frame) - 20, 24.0f)];
+    [self.endDate.titleLabel setTextColor:[WPStyleGuide itsEverywhereGrey]];
+    [self.endDate.layer setCornerRadius:4.0f];
+    [self.endDate.titleLabel setFont:[WPStyleGuide tableviewSectionHeaderFont]];
+    [self.endDate setBackgroundColor:[WPStyleGuide whisperGrey]];
     [self.endDate addTarget:self action:@selector(showEndDatePicker) forControlEvents:UIControlEventTouchUpInside];
     self.endDate.titleLabel.adjustsFontSizeToFitWidth = YES;
     self.endDate.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth;
