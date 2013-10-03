@@ -39,6 +39,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 @property (nonatomic, strong) UITapGestureRecognizer *tapImageRecognizer;
 @property (nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
 @property (nonatomic, weak) UIImageView *arrow;
+@property (nonatomic, assign) CGFloat currentKeyboardHeight;
 
 @property (weak, nonatomic) IBOutlet UIView *editFieldsContainer;
 @property (weak, nonatomic) IBOutlet UIScrollView *editFieldsScrollView;
@@ -149,10 +150,10 @@ static NSUInteger const AlertDiscardChanges = 500;
 
     // Editing slides out from the right
     if (IS_IPAD && isLandscape) {
+        _editingBar.frame = CGRectMake(0, 0, 44, self.view.bounds.size.height);
         CGFloat closedXoffset = self.view.bounds.size.width - _editingBar.frame.size.width;
         CGFloat openedXoffset = self.view.bounds.size.width - _editContainerView.frame.size.width;
         CGFloat currentXoffset = _isShowingEditFields ? openedXoffset : closedXoffset;
-        _editingBar.frame = CGRectMake(0, 0, 44, self.view.bounds.size.height);
         containerSize = CGSizeMake(320 + _editingBar.frame.size.width, self.view.bounds.size.height);
         containerOrigin = CGPointMake(currentXoffset, 0);
         scrollViewSize = CGSizeMake(320 + 10, self.view.bounds.size.height);
@@ -162,15 +163,19 @@ static NSUInteger const AlertDiscardChanges = 500;
         
     } else {
         // Editing slides from the bottom
+        _editingBar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
         CGFloat closedYOffset = self.view.bounds.size.height - _editingBar.frame.size.height;
         CGFloat openedYOffset = isLandscape ? 0 : self.view.bounds.size.height - _editContainerView.frame.size.height;
         CGFloat currentYOffset = _isShowingEditFields ? openedYOffset : closedYOffset;
         CGFloat scrollViewHeight = isLandscape ? self.view.bounds.size.height - _editingBar.frame.size.height : _editContainerView.frame.size.height - _editingBar.frame.size.height;
+        // In iOS 6 viewDidLayoutSubviews is called after the keyboardWillShowNotification
+        if (!IS_IOS7) {
+            scrollViewHeight -= _currentKeyboardHeight;
+        }
         containerSize = CGSizeMake(self.view.bounds.size.width, 370);
         containerOrigin = CGPointMake(0, currentYOffset);
         scrollViewSize = CGSizeMake(containerSize.width, scrollViewHeight);
         scrollViewOrigin = CGPointMake(0, _editingBar.frame.size.height);
-        _editingBar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
         _arrow.transform = CGAffineTransformMakeRotation(0);
     }
     
@@ -364,17 +369,18 @@ static NSUInteger const AlertDiscardChanges = 500;
     CGFloat animationDuration = [[sender userInfo][UIKeyboardAnimationDurationUserInfoKey] floatValue];
     UIViewAnimationCurve curve = [[sender userInfo][UIKeyboardAnimationCurveUserInfoKey] integerValue];
     CGFloat keyboardHeight = isLandscape ? [keyboardFrame CGRectValue].size.width : [keyboardFrame CGRectValue].size.height;
-    
-    CGFloat visibleHeight = self.view.bounds.size.height - keyboardHeight;
-    if (isLandscape && !IS_IPAD) {
-        visibleHeight -= _editingBar.frame.size.height;
-    }
-    CGFloat yOffset = (IS_IPAD && !isLandscape) ? (_editContainerView.frame.origin.y - keyboardHeight) : 0;
-    CGFloat scrollViewHeight = (IS_IPAD && !isLandscape) ? _editFieldsScrollView.frame.size.height : visibleHeight;
+    _currentKeyboardHeight = keyboardHeight;
     
     if (UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) && !IS_IPAD) {
         [self.navigationController setNavigationBarHidden:YES animated:YES];
     }
+    
+    CGFloat visibleHeight = self.view.bounds.size.height - keyboardHeight;
+    if (isLandscape && !IS_IPAD) {
+        visibleHeight += _editingBar.frame.size.height;
+    }
+    CGFloat yOffset = (IS_IPAD && !isLandscape) ? (_editContainerView.frame.origin.y - keyboardHeight) : 0;
+    CGFloat scrollViewHeight = (IS_IPAD && !isLandscape) ? _editFieldsScrollView.frame.size.height : visibleHeight;
     
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState|curve animations:^{
         _editContainerView.frame = (CGRect) {
@@ -390,6 +396,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 - (void)keyboardWillHide:(NSNotification*)sender {
     BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+    _currentKeyboardHeight = 0;
     CGFloat animationDuration = [[sender userInfo]
                                  [UIKeyboardAnimationDurationUserInfoKey] floatValue];
     UIViewAnimationCurve curve = [[sender userInfo][UIKeyboardAnimationCurveUserInfoKey] integerValue];
