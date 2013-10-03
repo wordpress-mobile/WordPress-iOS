@@ -36,8 +36,6 @@ static NSUInteger const AlertDiscardChanges = 500;
 @property (nonatomic, strong) Media *media;
 @property (nonatomic, assign) BOOL isShowingEditFields;
 @property (nonatomic, strong) WPLoadingView *loadingView;
-@property (nonatomic, strong) UITapGestureRecognizer *tapImageRecognizer;
-@property (nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
 @property (nonatomic, weak) UIImageView *arrow;
 @property (nonatomic, assign) CGFloat currentKeyboardHeight;
 
@@ -89,13 +87,20 @@ static NSUInteger const AlertDiscardChanges = 500;
     _editFieldsScrollView.contentSize = CGSizeMake(_editFieldsScrollView.frame.size.width, CGRectGetMaxY(_editFieldsContainer.frame));
     [_editFieldsScrollView addSubview:_editFieldsContainer];
     
-    self.tapImageRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
-    _tapImageRecognizer.delegate = self;
-    [_mediaImageview addGestureRecognizer:_tapImageRecognizer];
+    UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageDoubleTapped:)];
+    doubleTap.delegate = self;
+    doubleTap.numberOfTapsRequired = 2;
+    [_mediaImageview addGestureRecognizer:doubleTap];
     
-    self.panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(editingBarPanned:)];
-    _panGestureRecognizer.delegate = self;
-    [_editingBar addGestureRecognizer:_panGestureRecognizer];
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
+    singleTap.delegate = self;
+    singleTap.numberOfTapsRequired = 1;
+    [singleTap requireGestureRecognizerToFail:doubleTap];
+    [_mediaImageview addGestureRecognizer:singleTap];
+    
+    UIPanGestureRecognizer *panRecogniser = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(editingBarPanned:)];
+    panRecogniser.delegate = self;
+    [_editingBar addGestureRecognizer:panRecogniser];
     
     UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_white_arrow_up"]];
     _arrow = arrow;
@@ -121,6 +126,10 @@ static NSUInteger const AlertDiscardChanges = 500;
     self.captionTextfield.delegate = self;
     self.descriptionTextview.delegate = self;
     
+    self.imageScrollView.minimumZoomScale = 0.5f;
+    self.imageScrollView.maximumZoomScale = 6.0f;
+    self.imageScrollView.delegate = self;
+    
     UIColor *color = [UIColor colorWithWhite:1.0f alpha:0.5f];
     _titleTextfield.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Title" attributes:@{NSForegroundColorAttributeName: color}];
     _captionTextfield.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Caption" attributes:@{NSForegroundColorAttributeName: color}];
@@ -137,6 +146,8 @@ static NSUInteger const AlertDiscardChanges = 500;
     BlurView *blur = [[BlurView alloc] initWithFrame:_editContainerView.bounds];
     blur.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [_editContainerView insertSubview:blur atIndex:0];
+    
+    _mediaImageview.userInteractionEnabled = false;
 }
 
 - (void)viewDidLayoutSubviews {
@@ -203,9 +214,21 @@ static NSUInteger const AlertDiscardChanges = 500;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
 }
 
-- (void)imageTapped:(id)sender {
+- (void)imageTapped:(UIGestureRecognizer*)sender {
     if (_isShowingEditFields) {
         [self toggleEditBar];
+    }
+}
+
+- (void)imageDoubleTapped:(UIGestureRecognizer*)sender {
+    if (_imageScrollView.zoomScale != 1) {
+        [UIView animateWithDuration:0.3 animations:^{
+            [_imageScrollView setZoomScale:1];
+        }];
+    } else {
+        [UIView animateWithDuration:0.3 animations:^{
+            [_imageScrollView setZoomScale:2.0f];
+        }];
     }
 }
 
@@ -314,6 +337,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     if (_media.localURL && [[NSFileManager defaultManager] fileExistsAtPath:_media.localURL isDirectory:0]) {
         _mediaImageview.contentMode = UIViewContentModeScaleAspectFit;
         _mediaImageview.image = [[UIImage alloc] initWithContentsOfFile:_media.localURL];
+        _mediaImageview.userInteractionEnabled = true;
         return;
     }
     
@@ -331,6 +355,7 @@ static NSUInteger const AlertDiscardChanges = 500;
             _mediaImageview.image = image;
             NSString *localPath = [self saveFullsizeImageToDisk:image imageName:_media.filename];
             _media.localURL = localPath;
+            _mediaImageview.userInteractionEnabled = true;
             [[_mediaImageview viewWithTag:1337] removeFromSuperview];
         } failure:^(NSError *error) {
             WPFLog(@"Failed to download image for %@: %@", _media, error);
@@ -555,6 +580,39 @@ static NSUInteger const AlertDiscardChanges = 500;
     if (textView == _descriptionTextview) {
         _media.desc = textView.enteredText;
     }
+}
+
+#pragma mark UIScrollView delegate
+
+-(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+    return _mediaImageview;
+}
+
+- (void)scrollViewDidZoom:(UIScrollView *)pScrollView {
+	CGRect innerFrame = _mediaImageview.frame;
+	CGRect scrollerBounds = pScrollView.bounds;
+	
+	if ((innerFrame.size.width < scrollerBounds.size.width) || (innerFrame.size.height < scrollerBounds.size.height))
+	{
+		CGFloat tempx = _mediaImageview.center.x - ( scrollerBounds.size.width / 2 );
+		CGFloat tempy = _mediaImageview.center.y - ( scrollerBounds.size.height / 2 );
+		CGPoint myScrollViewOffset = CGPointMake( tempx, tempy);
+		
+		pScrollView.contentOffset = myScrollViewOffset;
+	}
+	
+	UIEdgeInsets anEdgeInset = { 0, 0, 0, 0};
+	if(scrollerBounds.size.width > innerFrame.size.width)
+	{
+		anEdgeInset.left = (scrollerBounds.size.width - innerFrame.size.width) / 2;
+		anEdgeInset.right = -anEdgeInset.left;
+	}
+	if(scrollerBounds.size.height > innerFrame.size.height)
+	{
+		anEdgeInset.top = (scrollerBounds.size.height - innerFrame.size.height) / 2;
+		anEdgeInset.bottom = -anEdgeInset.top;
+	}
+	pScrollView.contentInset = anEdgeInset;
 }
 
 @end
