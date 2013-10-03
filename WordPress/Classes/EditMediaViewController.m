@@ -150,6 +150,13 @@ static NSUInteger const AlertDiscardChanges = 500;
     _mediaImageview.userInteractionEnabled = false;
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if ([_media.mediaType isEqualToString:@"image"]) {
+        [self loadMediaImage];
+    }
+}
 - (void)viewDidLayoutSubviews {
     [self layoutEditOverlay];
 }
@@ -317,9 +324,6 @@ static NSUInteger const AlertDiscardChanges = 500;
     
     _mediaImageview.image = [UIImage imageNamed:[@"media_" stringByAppendingString:_media.mediaType]];
     
-    if ([_media.mediaType isEqualToString:@"image"]) {
-        [self loadMediaImage];
-    }
 }
 
 - (NSString *)saveFullsizeImageToDisk:(UIImage*)image imageName:(NSString *)imageName {
@@ -341,8 +345,8 @@ static NSUInteger const AlertDiscardChanges = 500;
         return;
     }
     
-    UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    loading.center = CGPointMake(_mediaImageview.bounds.size.width/2, _mediaImageview.bounds.size.height/2);
+    UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    loading.center = self.view.center;
     loading.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
     | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     loading.tag = 1337;
