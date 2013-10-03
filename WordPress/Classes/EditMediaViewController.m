@@ -38,6 +38,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 @property (nonatomic, strong) WPLoadingView *loadingView;
 @property (nonatomic, strong) UITapGestureRecognizer *tapImageRecognizer;
 @property (nonatomic, strong) UIPanGestureRecognizer *panGestureRecognizer;
+@property (nonatomic, weak) UIImageView *arrow;
 
 @property (weak, nonatomic) IBOutlet UIView *editFieldsContainer;
 @property (weak, nonatomic) IBOutlet UIScrollView *editFieldsScrollView;
@@ -96,9 +97,10 @@ static NSUInteger const AlertDiscardChanges = 500;
     [_editingBar addGestureRecognizer:_panGestureRecognizer];
     
     UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_white_arrow_up"]];
-    arrow.center = self.editingBar.center;
-    arrow.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    [self.editingBar addSubview:arrow];
+    _arrow = arrow;
+    _arrow.center = self.editingBar.center;
+    _arrow.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    [self.editingBar addSubview:_arrow];
     [_editingBar addTarget:self action:@selector(barTapped:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(savePressed)];
     
@@ -132,7 +134,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     BlurView *blur = [[BlurView alloc] initWithFrame:_editContainerView.bounds];
-    blur.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    blur.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [_editContainerView insertSubview:blur atIndex:0];
 }
 
@@ -142,19 +144,47 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 - (void)layoutEditOverlay {
     BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
-    CGFloat closedYOffset = self.view.bounds.size.height - _editingBar.frame.size.height;
-    CGFloat openedYOffset = isLandscape ? 0 : self.view.bounds.size.height - _editContainerView.frame.size.height;
-    CGFloat currentYOffset = _isShowingEditFields ? openedYOffset : closedYOffset;
-    CGFloat scrollViewHeight = isLandscape ? self.view.bounds.size.height - _editingBar.frame.size.height : _editContainerView.frame.size.height - _editingBar.frame.size.height;
+    CGPoint containerOrigin, scrollViewOrigin;
+    CGSize containerSize, scrollViewSize;
+
+    // Editing slides out from the right
+    if (IS_IPAD && isLandscape) {
+        CGFloat closedXoffset = self.view.bounds.size.width - _editingBar.frame.size.width;
+        CGFloat openedXoffset = self.view.bounds.size.width - _editContainerView.frame.size.width;
+        CGFloat currentXoffset = _isShowingEditFields ? openedXoffset : closedXoffset;
+        _editingBar.frame = CGRectMake(0, 0, 44, self.view.bounds.size.height);
+        containerSize = CGSizeMake(320 + _editingBar.frame.size.width, self.view.bounds.size.height);
+        containerOrigin = CGPointMake(currentXoffset, 0);
+        scrollViewSize = CGSizeMake(320 + 10, self.view.bounds.size.height);
+        scrollViewOrigin = CGPointMake(_editingBar.frame.size.width - 10, _editingBar.frame.size.width);
+    
+        _arrow.transform = CGAffineTransformMakeRotation(3*M_PI/2);
+        
+    } else {
+        // Editing slides from the bottom
+        CGFloat closedYOffset = self.view.bounds.size.height - _editingBar.frame.size.height;
+        CGFloat openedYOffset = isLandscape ? 0 : self.view.bounds.size.height - _editContainerView.frame.size.height;
+        CGFloat currentYOffset = _isShowingEditFields ? openedYOffset : closedYOffset;
+        CGFloat scrollViewHeight = isLandscape ? self.view.bounds.size.height - _editingBar.frame.size.height : _editContainerView.frame.size.height - _editingBar.frame.size.height;
+        containerSize = CGSizeMake(self.view.bounds.size.width, 370);
+        containerOrigin = CGPointMake(0, currentYOffset);
+        scrollViewSize = CGSizeMake(containerSize.width, scrollViewHeight);
+        scrollViewOrigin = CGPointMake(0, _editingBar.frame.size.height);
+        _editingBar.frame = CGRectMake(0, 0, self.view.bounds.size.width, 44);
+        _arrow.transform = CGAffineTransformMakeRotation(0);
+    }
     
     _editContainerView.frame = (CGRect) {
-        .origin = CGPointMake(0, currentYOffset),
-        .size = _editContainerView.frame.size
+        .origin = containerOrigin,
+        .size = containerSize
     };
     _editFieldsScrollView.frame = (CGRect) {
-        .origin = _editFieldsScrollView.frame.origin,
-        .size = CGSizeMake(_editContainerView.frame.size.width, scrollViewHeight)
+        .origin = scrollViewOrigin,
+        .size = scrollViewSize
     };
+    
+    _arrow.center = _editingBar.center;
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -176,21 +206,28 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 - (void)editingBarPanned:(UIPanGestureRecognizer*)sender {
     BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
-    CGFloat yTranslation = [sender translationInView:self.view].y;
-    CGFloat maxY = self.view.frame.size.height - _editingBar.frame.size.height;
-    CGFloat minY = isLandscape ? 0 : self.view.bounds.size.height - _editContainerView.frame.size.height;
+    CGFloat translation = (IS_IPAD && isLandscape) ? [sender translationInView:self.view].x : [sender translationInView:self.view].y;
+    CGFloat maxOffset = (IS_IPAD && isLandscape) ? self.view.frame.size.width - _editingBar.frame.size.width : self.view.frame.size.height - _editingBar.frame.size.height;
+    CGFloat minOffset = isLandscape ? 0 : self.view.bounds.size.height - _editContainerView.frame.size.height;
+    minOffset = (IS_IPAD && isLandscape) ? self.view.bounds.size.width - _editContainerView.frame.size.width : minOffset;
     static CGFloat threshold = 50.0f;
     static CGFloat currentOrigin;
 
     switch (sender.state) {
         case UIGestureRecognizerStateBegan:
-            currentOrigin = _editContainerView.frame.origin.y;
+            currentOrigin = IS_IPAD && isLandscape ? _editContainerView.frame.origin.x: _editContainerView.frame.origin.y;
             break;
         case UIGestureRecognizerStateChanged:
-            if ((currentOrigin + yTranslation) >= minY &&
-                (currentOrigin + yTranslation) <= maxY) {
+            if ((currentOrigin + translation) >= minOffset &&
+                (currentOrigin + translation) <= maxOffset) {
+                CGPoint originChange;
+                if (IS_IPAD && isLandscape) {
+                    originChange = CGPointMake(currentOrigin + translation, 0);
+                } else {
+                    originChange = CGPointMake(0, currentOrigin + translation);
+                }
                 _editContainerView.frame = (CGRect) {
-                    .origin = CGPointMake(0, currentOrigin + yTranslation),
+                    .origin = originChange,
                     .size = _editContainerView.frame.size
                 };
             }
@@ -198,13 +235,13 @@ static NSUInteger const AlertDiscardChanges = 500;
         case UIGestureRecognizerStateEnded:
         case UIGestureRecognizerStateCancelled:
             // Toggle editing when within threshold
-            if ((currentOrigin + yTranslation) <= (minY + threshold) ||
-                (currentOrigin + yTranslation) >= (maxY - threshold)) {
-                _isShowingEditFields = !((currentOrigin + yTranslation) <= (minY + threshold));
+            if ((currentOrigin + translation) <= (minOffset + threshold) ||
+                (currentOrigin + translation) >= (maxOffset - threshold)) {
+                _isShowingEditFields = !((currentOrigin + translation) <= (minOffset + threshold));
 
             // Toggle if we're moving fast enough
             } else {
-                CGFloat velocity = [sender velocityInView:self.view].y;
+                CGFloat velocity = (IS_IPAD && isLandscape) ? [sender velocityInView:self.view].x : [sender velocityInView:self.view].y;
                 _isShowingEditFields = velocity > 10.0f;
             }
             
@@ -222,6 +259,10 @@ static NSUInteger const AlertDiscardChanges = 500;
 - (void)toggleEditBar {
     _isShowingEditFields = !_isShowingEditFields;
     
+    if (!_isShowingEditFields) {
+        [[self currentFirstResponder] resignFirstResponder];
+    }
+    
     [UIView animateWithDuration:0.3f animations:^{
         [self layoutEditOverlay];
     } completion:nil];
@@ -229,6 +270,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 - (void)applyLayoutForMedia
 {
+    
     [self.titleTextfield setText:_media.title];
     [self.titleTextfield setPlaceholder:NSLocalizedString(@"Title", @"")];
     
@@ -317,39 +359,47 @@ static NSUInteger const AlertDiscardChanges = 500;
 #pragma mark - Keyboard Management
 
 - (void)keyboardWillShow:(NSNotification*)sender {
-    NSValue *keyboardFrame = [sender userInfo][UIKeyboardFrameEndUserInfoKey];
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+    NSValue *keyboardFrame = [sender userInfo][UIKeyboardFrameBeginUserInfoKey];
     CGFloat animationDuration = [[sender userInfo][UIKeyboardAnimationDurationUserInfoKey] floatValue];
     UIViewAnimationCurve curve = [[sender userInfo][UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    CGFloat keyboardHeight = isLandscape ? [keyboardFrame CGRectValue].size.width : [keyboardFrame CGRectValue].size.height;
     
-    CGFloat height = CGRectGetMaxY(_editFieldsScrollView.frame) - CGRectGetMinY([keyboardFrame CGRectValue]);
+    CGFloat visibleHeight = self.view.bounds.size.height - keyboardHeight;
+    if (isLandscape && !IS_IPAD) {
+        visibleHeight -= _editingBar.frame.size.height;
+    }
+    CGFloat yOffset = (IS_IPAD && !isLandscape) ? (_editContainerView.frame.origin.y - keyboardHeight) : 0;
+    CGFloat scrollViewHeight = (IS_IPAD && !isLandscape) ? _editFieldsScrollView.frame.size.height : visibleHeight;
     
-    if (UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) {
+    if (UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) && !IS_IPAD) {
         [self.navigationController setNavigationBarHidden:YES animated:YES];
     }
     
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState|curve animations:^{
         _editContainerView.frame = (CGRect) {
-            .origin = CGPointMake(_editContainerView.frame.origin.x, 0),
+            .origin = CGPointMake(_editContainerView.frame.origin.x, yOffset),
             .size = _editContainerView.frame.size
         };
         _editFieldsScrollView.frame = (CGRect) {
             .origin = _editFieldsScrollView.frame.origin,
-            .size = CGSizeMake(_editFieldsScrollView.frame.size.width, _editFieldsContainer.frame.size.height - height)
+            .size = CGSizeMake(_editFieldsScrollView.frame.size.width, scrollViewHeight)
         };
     } completion:nil];
 }
 
 - (void)keyboardWillHide:(NSNotification*)sender {
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
     CGFloat animationDuration = [[sender userInfo]
                                  [UIKeyboardAnimationDurationUserInfoKey] floatValue];
     UIViewAnimationCurve curve = [[sender userInfo][UIKeyboardAnimationCurveUserInfoKey] integerValue];
     [UIView animateWithDuration:animationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState|curve animations:^{
         _editFieldsScrollView.frame = (CGRect) {
             .origin = _editFieldsScrollView.frame.origin,
-            .size = CGSizeMake(_editFieldsScrollView.frame.size.width, _editContainerView.frame.size.height - _editingBar.frame.size.height)
+            .size = CGSizeMake(_editFieldsScrollView.frame.size.width, _editContainerView.frame.size.height - ((IS_IPAD && isLandscape) ? _editingBar.frame.size.width : _editingBar.frame.size.height))
         };
         _editContainerView.frame = (CGRect) {
-            .origin = CGPointMake(_editContainerView.frame.origin.x, self.view.bounds.size.height - (_editFieldsScrollView.frame.size.height + _editingBar.frame.size.height)),
+            .origin = CGPointMake(_editContainerView.frame.origin.x, self.view.bounds.size.height - (_editFieldsScrollView.frame.size.height + ((IS_IPAD && isLandscape) ? _editingBar.frame.size.width : _editingBar.frame.size.height))),
             .size = _editContainerView.frame.size
         };
         
@@ -475,7 +525,8 @@ static NSUInteger const AlertDiscardChanges = 500;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    _editFieldsScrollView.contentOffset = CGPointMake(0, CGRectGetMinY(textField.frame));
+    if (!IS_IPAD)
+        _editFieldsScrollView.contentOffset = CGPointMake(0, CGRectGetMinY(textField.frame));
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField {
@@ -488,7 +539,8 @@ static NSUInteger const AlertDiscardChanges = 500;
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     [textView textViewDidBeginEditing:textView];
-    _editFieldsScrollView.contentOffset = CGPointMake(0, CGRectGetMinY(textView.frame));
+    if (!IS_IPAD)
+        _editFieldsScrollView.contentOffset = CGPointMake(0, CGRectGetMinY(textView.frame));
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
