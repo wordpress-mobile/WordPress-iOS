@@ -97,7 +97,7 @@
         self.navigationItem.leftBarButtonItem = barButton;
     }
     
-    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add", @"Add button to add a site from Settings.") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(save:)];
+    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(save:)];
     self.navigationItem.rightBarButtonItem = saveButton;
     
     if (!IS_IPAD) {
