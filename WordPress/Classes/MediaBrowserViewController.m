@@ -1033,8 +1033,8 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
                     _addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
                 }
             }
-            
-            [_addPopover presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            UIBarButtonItem *barButtonItem = IS_IOS7 ? self.navigationItem.rightBarButtonItems[1] : self.navigationItem.rightBarButtonItem;
+            [_addPopover presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         }
         else {
             [self.navigationController presentViewController:_picker animated:YES completion:nil];
