@@ -436,6 +436,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
             [self.navigationController popViewControllerAnimated:YES];
         } else if (_isSelectingMediaForPost) {
             [_apost.media addObject:cell.media];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaAbove" object:cell.media];
             [self.navigationController popViewControllerAnimated:true];
         } else {
             EditMediaViewController *viewMedia = [[EditMediaViewController alloc] initWithMedia:cell.media];
@@ -528,6 +529,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         // Remove items from post only, in attached media state
         if ([self showAttachedMedia]) {
             [_selectedMedia enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:obj];
                 [_apost.media removeObject:obj];
             }];
             [self loadFromCache];
