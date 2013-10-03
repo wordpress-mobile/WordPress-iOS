@@ -42,7 +42,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 @property (nonatomic, strong) AbstractPost *apost;
 
 @property (weak, nonatomic) IBOutlet MediaSearchFilterHeaderView *filterHeaderView;
-@property (nonatomic, strong) NSArray *filteredMedia, *allMedia, *postMedia;
+@property (nonatomic, strong) NSArray *filteredMedia, *allMedia;
 @property (nonatomic, strong) NSArray *mediaTypeFilterOptions, *dateFilteringOptions;
 @property (nonatomic, strong) NSMutableDictionary *selectedMedia;
 @property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
@@ -55,7 +55,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 @property (nonatomic, strong) NSDate *startDate, *endDate;
 @property (nonatomic, weak) UIView *firstResponderOnSidebarOpened;
 @property (nonatomic, weak) WPInfoView *noMediaView;
-@property (nonatomic, assign) BOOL videoPressEnabled, isPickingFeaturedImage, isLibraryMedia;
+@property (nonatomic, assign) BOOL videoPressEnabled, isPickingFeaturedImage, isLibraryMedia, isSelectingMediaForPost;
 @property (nonatomic, strong) NSMutableDictionary *currentVideo;
 @property (nonatomic, strong) UIImage *currentImage;
 @property (nonatomic, strong) NSDictionary *currentImageMetadata;
@@ -72,6 +72,14 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 
 - (id)initWithPost:(AbstractPost *)aPost {
     return [self initWithPost:aPost settingFeaturedImage:false];
+}
+
+- (id)initWithPost:(AbstractPost *)aPost selectingMediaForPost:(BOOL)isSelectingMediaForPost {
+    self = [self initWithPost:aPost];
+    if (self) {
+        _isSelectingMediaForPost = isSelectingMediaForPost;
+    }
+    return self;
 }
 
 - (id)initWithPost:(AbstractPost *)aPost settingFeaturedImage:(BOOL)isSettingFeaturedImage {
@@ -192,7 +200,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 }
 
 - (BOOL)showAttachedMedia {
-    return _apost && !_isPickingFeaturedImage;
+    return _apost && !_isPickingFeaturedImage && !_isSelectingMediaForPost;
 }
 
 - (Post *)post {
@@ -244,45 +252,27 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 }
 
 - (void)loadFromCache {
-    NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+    if ([self showAttachedMedia]) {
+        _allMedia = _apost.media.allObjects;
+        self.filteredMedia = _allMedia;
+        return;
+    }
+    __block NSArray *allMedia;
+    __block NSError *error;
+    NSManagedObjectContext *context = self.blog.managedObjectContext;
     NSFetchRequest *allMediaRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Media class])];
     [allMediaRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:false]]];
     [allMediaRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
     allMediaRequest.fetchBatchSize = 10;
-    
-    __block NSArray *allMedia, *postMediaResults;
-    __block NSError *error;
-    
-    if ([self showAttachedMedia]) {
-        NSFetchRequest *postMedia = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Media class])];
-        [postMedia setPredicate:[NSPredicate predicateWithFormat:@"%@ IN posts", self.apost]];
-        postMedia.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
-        postMedia.fetchBatchSize = allMediaRequest.fetchBatchSize;
-        
-        [context performBlock:^{
-            allMedia = [context executeFetchRequest:allMediaRequest error:&error];
-            postMediaResults = [context executeFetchRequest:postMedia error:&error];
-            if (error) {
-                WPFLog(@"Failed to fetch media with error %@", error);
-                _postMedia = nil;
-                _allMedia = self.filteredMedia = nil;
-                return;
-            }
-            _postMedia = postMediaResults;
-            _allMedia = self.filteredMedia = allMedia;
-        }];
-    
-    } else {
-        [context performBlock:^{
-            allMedia = [context executeFetchRequest:allMediaRequest error:&error];
-            if (error) {
-                WPFLog(@"Failed to fetch all media with error %@", error);
-                _allMedia = self.filteredMedia = nil;
-                return;
-            }
-            _allMedia = self.filteredMedia = allMedia;
-        }];
-    }
+    [context performBlock:^{
+        allMedia = [context executeFetchRequest:allMediaRequest error:&error];
+        if (error) {
+            WPFLog(@"Failed to fetch all media with error %@", error);
+            _allMedia = self.filteredMedia = nil;
+            return;
+        }
+        _allMedia = self.filteredMedia = allMedia;
+    }];
 }
 
 - (UIView *)loadingView {
@@ -394,40 +384,21 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 #pragma mark - CollectionViewDelegate/DataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    if ([self showAttachedMedia]) {
-        return 2;
-    }
     return 1;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    if ([self showAttachedMedia] && section == 0) {
-        return _postMedia.count;
-    }
     return _filteredMedia.count;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return section == 0 && [self showAttachedMedia] ? CGSizeMake(collectionView.frame.size.width, 88.0f) : CGSizeMake(collectionView.frame.size.width, 44.0f);
+    return CGSizeMake(collectionView.frame.size.width, 44.0f);
 }
 
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"header" forIndexPath:indexPath];
-        if ([self showAttachedMedia]) {
-            if (indexPath.section == 0) {
-                [header.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-                UILabel *attached = [[UILabel alloc] initWithFrame:CGRectMake(0, 44.0f, collectionView.bounds.size.width, 44.0f)];
-                attached.text = @"Attached";
-                [header addSubview:attached];
-            } else {
-                [header.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-                UILabel *library = [[UILabel alloc] initWithFrame:header.bounds];
-                library.text = @"Library";
-                [header addSubview:library];
-            }
-        }
         return header;
     }
     return nil;
@@ -436,11 +407,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     MediaBrowserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:MediaCellIdentifier forIndexPath:indexPath];
     cell.hideCheckbox = _isPickingFeaturedImage;
-    if ([self showAttachedMedia] && indexPath.section == 0) {
-        cell.media = _postMedia[indexPath.item];
-    } else {
-        cell.media = self.filteredMedia[indexPath.item];
-    }
+    cell.media = self.filteredMedia[indexPath.item];
     cell.isSelected = ([_selectedMedia objectForKey:cell.media.mediaID] != nil);
     cell.delegate = self;
     
@@ -467,6 +434,9 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         if (_isPickingFeaturedImage) {
             [[NSNotificationCenter defaultCenter] postNotificationName:FeaturedImageSelected object:cell.media];
             [self.navigationController popViewControllerAnimated:YES];
+        } else if (_isSelectingMediaForPost) {
+            [_apost.media addObject:cell.media];
+            [self.navigationController popViewControllerAnimated:true];
         } else {
             EditMediaViewController *viewMedia = [[EditMediaViewController alloc] initWithMedia:cell.media];
             [self.navigationController pushViewController:viewMedia animated:YES];
@@ -517,42 +487,28 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         }
     }
     
-    if ([self showAttachedMedia]) {
-        [self toggleCellSelection:true forMedia:media];
-    }
-    
     [self showMultiselectOptions];
 }
 
 - (void)mediaCellDeselected:(Media *)media {
     if (media.mediaID) {
         [_selectedMedia removeObjectForKey:media.mediaID];
-        
-        if ([self showAttachedMedia]) {
-            [self toggleCellSelection:false forMedia:media];
-        }
     }
     [self showMultiselectOptions];
-}
-
-- (void)toggleCellSelection:(BOOL)selected forMedia:(Media*)media {
-    // Select/Deselect both post's media and library cells
-    NSUInteger pMediaIndex = [_postMedia indexOfObjectPassingTest:^BOOL(Media *obj, NSUInteger idx, BOOL *stop) {
-        return [obj.mediaID isEqualToNumber:media.mediaID];
-    }];
-    NSUInteger filteredMediaIndex = [_filteredMedia indexOfObjectPassingTest:^BOOL(Media *obj, NSUInteger idx, BOOL *stop) {
-        return [obj.mediaID isEqualToNumber:media.mediaID];
-    }];
-    MediaBrowserCell *pMediaCell = (MediaBrowserCell*)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:pMediaIndex inSection:0]];
-    MediaBrowserCell *fMediaCell = (MediaBrowserCell*)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:filteredMediaIndex inSection:1]];
-    pMediaCell.isSelected = selected;
-    fMediaCell.isSelected = selected;
 }
 
 #pragma mark - Multiselect options
 
 - (IBAction)multiselectDeletePressed:(id)sender {
-    UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete Media", @"") message:NSLocalizedString(@"Are you sure you wish to delete the selected items?", @"") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:NSLocalizedString(@"Delete", @""), nil];
+    NSString *message, *destructiveButtonTitle;
+    if ([self showAttachedMedia]) {
+        message = NSLocalizedString(@"Are you sure you wish to remove these items from the post?", @"");
+        destructiveButtonTitle = NSLocalizedString(@"Remove", @"");
+    } else {
+        message = NSLocalizedString(@"Are you sure you wish to delete the selected items?", @"");
+        destructiveButtonTitle = NSLocalizedString(@"Delete", @"");
+    }
+    UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete Media", @"") message:message delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") otherButtonTitles:destructiveButtonTitle, nil];
     [confirmation show];
 }
 
@@ -568,6 +524,17 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 1) {
+        
+        // Remove items from post only, in attached media state
+        if ([self showAttachedMedia]) {
+            [_selectedMedia enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+                [_apost.media removeObject:obj];
+            }];
+            [self loadFromCache];
+            [self toggleNoMediaView:(_apost.media.count == 0)];
+            return;
+        }
+        
         // Disable interaction with other views/buttons
         for (id v in self.view.subviews) {
             if ([v respondsToSelector:@selector(setUserInteractionEnabled:)]) {
@@ -674,29 +641,34 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 }
 
 - (IBAction)addMediaButtonPressed:(id)sender {
-    if (_currentActionSheet) {
-        return;
-    }
-    
-    UIActionSheet *addMediaActionSheet;
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        if ([self isDeviceSupportVideoAndVideoPressEnabled]) {
-            addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), NSLocalizedString(@"Take Photo", nil), NSLocalizedString(@"Add Video from Library", @""), NSLocalizedString(@"Record Video", @""),nil];
-            
-        } else {
-            addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), NSLocalizedString(@"Take Photo", nil), nil];
+    if ([self showAttachedMedia]) {
+        MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:_apost selectingMediaForPost:true];
+        [self.navigationController pushViewController:vc animated:true];
+    } else {
+        if (_currentActionSheet) {
+            return;
         }
-    } else {
-        addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), nil];
-    }
-    
-    _currentActionSheet = addMediaActionSheet;
-    
-    if (IS_IPAD) {
-        UIBarButtonItem *barButtonItem = IS_IOS7 ? self.navigationItem.rightBarButtonItems[1] : self.navigationItem.rightBarButtonItem;
-        [_currentActionSheet showFromBarButtonItem:barButtonItem animated:YES];
-    } else {
-        [_currentActionSheet showInView:self.view];
+        
+        UIActionSheet *addMediaActionSheet;
+        if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+            if ([self isDeviceSupportVideoAndVideoPressEnabled]) {
+                addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), NSLocalizedString(@"Take Photo", nil), NSLocalizedString(@"Add Video from Library", @""), NSLocalizedString(@"Record Video", @""),nil];
+                
+            } else {
+                addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), NSLocalizedString(@"Take Photo", nil), nil];
+            }
+        } else {
+            addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), nil];
+        }
+        
+        _currentActionSheet = addMediaActionSheet;
+        
+        if (IS_IPAD) {
+            UIBarButtonItem *barButtonItem = IS_IOS7 ? self.navigationItem.rightBarButtonItems[1] : self.navigationItem.rightBarButtonItem;
+            [_currentActionSheet showFromBarButtonItem:barButtonItem animated:YES];
+        } else {
+            [_currentActionSheet showInView:self.view];
+        }
     }
 }
 
