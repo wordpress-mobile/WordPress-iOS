@@ -137,7 +137,9 @@
 }
 
 - (void)loadThumbnail {
-    if (_media.remoteURL && _media.thumbnail.length == 0) {
+    // TODO: Video thumbnails are not available atm. Download them when they are.
+    // ATM the API sends the full video, not a thumbnail.
+    if ([_media.mediaType isEqualToString:@"image"] && _media.remoteURL && _media.thumbnail.length == 0) {
         [[WPImageSource sharedSource] downloadThumbnailForMedia:_media success:^(NSNumber *mediaId){
             if ([mediaId isEqualToNumber:_media.mediaID]) {
                 _thumbnail.contentMode = UIViewContentModeScaleAspectFit;
