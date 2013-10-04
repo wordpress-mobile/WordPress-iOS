@@ -333,8 +333,10 @@ static NSUInteger const AlertDiscardChanges = 500;
     NSString *stringFromDate = [dateFormatter stringFromDate:_media.creationDate];
     [self.createdDateLabel setText: [NSString stringWithFormat:@"Created %@", stringFromDate]];
     
-    [self.dimensionsLabel setText:[NSString stringWithFormat:@"%@x%@ px", _media.width, _media.height]];
-    
+    if (_media.width > 0 && _media.height > 0) {
+        [self.dimensionsLabel setText:[NSString stringWithFormat:@"%@x%@ px", _media.width, _media.height]];
+    }
+
     _mediaImageview.image = [UIImage imageNamed:[@"media_" stringByAppendingString:_media.mediaType]];
     
     if ([_media.mediaType isEqualToString:@"movie"]) {
