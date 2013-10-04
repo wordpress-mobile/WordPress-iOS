@@ -16,6 +16,7 @@
 #import <objc/runtime.h>
 #import "UIImage+ImageEffects.h"
 #import "UIImage+Resize.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface BlurView : UIView
 @property (nonatomic, strong) UIToolbar *toolbar;
@@ -38,6 +39,7 @@ static NSUInteger const AlertDiscardChanges = 500;
 @property (nonatomic, strong) WPLoadingView *loadingView;
 @property (nonatomic, weak) UIImageView *arrow;
 @property (nonatomic, assign) CGFloat currentKeyboardHeight;
+@property (nonatomic, strong) MPMoviePlayerController *videoPlayer;
 
 @property (weak, nonatomic) IBOutlet UIView *editFieldsContainer;
 @property (weak, nonatomic) IBOutlet UIScrollView *editFieldsScrollView;
@@ -150,13 +152,24 @@ static NSUInteger const AlertDiscardChanges = 500;
     _mediaImageview.userInteractionEnabled = false;
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if (_videoPlayer && !_videoPlayer.fullscreen) {
+        [_videoPlayer stop];
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     if ([_media.mediaType isEqualToString:@"image"]) {
         [self loadMediaImage];
+    } else {
+        [self setupVideoPlayer];
     }
 }
+
 - (void)viewDidLayoutSubviews {
     [self layoutEditOverlay];
 }
@@ -324,6 +337,27 @@ static NSUInteger const AlertDiscardChanges = 500;
     
     _mediaImageview.image = [UIImage imageNamed:[@"media_" stringByAppendingString:_media.mediaType]];
     
+    if ([_media.mediaType isEqualToString:@"movie"]) {
+        self.title = NSLocalizedString(@"Video", @"");
+    }
+}
+
+- (void)setupVideoPlayer {
+    NSURL *videoPath;
+    if (_media.localURL) {
+        videoPath = [NSURL fileURLWithPath:_media.localURL];
+    } else {
+        videoPath = [NSURL URLWithString:_media.remoteURL];
+    }
+    
+    MPMoviePlayerController *videoPlayer = [[MPMoviePlayerController alloc] initWithContentURL:videoPath];
+    _videoPlayer = videoPlayer;
+    _videoPlayer.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height - _editingBar.frame.size.height);
+    _videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view insertSubview:videoPlayer.view belowSubview:_editContainerView];
+    _videoPlayer.movieSourceType = MPMovieSourceTypeFile;
+    _videoPlayer.shouldAutoplay = false;
+    [_videoPlayer prepareToPlay];
 }
 
 - (NSString *)saveFullsizeImageToDisk:(UIImage*)image imageName:(NSString *)imageName {
