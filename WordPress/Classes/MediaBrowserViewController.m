@@ -96,7 +96,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 {
     [super viewDidLoad];
     
-    if (_apost) {
+    if ([self showAttachedMedia]) {
         self.title = NSLocalizedString(@"Post Media", @"");
     } else {
         self.title = NSLocalizedString(@"Media Library", @"");
