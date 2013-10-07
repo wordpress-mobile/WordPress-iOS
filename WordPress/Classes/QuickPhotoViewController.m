@@ -14,6 +14,7 @@
 #import "CameraPlusPickerManager.h"
 #import "WPPopoverBackgroundView.h"
 #import "MP6SidebarViewController.h"
+#import "iOS7CorrectedTextView.h"
 
 @interface QuickPhotoViewController () {
     UIPopoverController *popController;
