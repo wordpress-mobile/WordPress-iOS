@@ -814,6 +814,7 @@
 		C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C5C272DF0E7EC00A0034AA46 /* uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272DE0E7EC00A0034AA46 /* uncheck.png */; };
 		C5C272E10E7EC00F0034AA46 /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272E00E7EC00F0034AA46 /* check.png */; };
+		C5D3FD7618032B2E007969B6 /* iOS7CorrectedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5D3FD7518032B2E007969B6 /* iOS7CorrectedTextView.m */; };
 		CC0199E9165C17020073A966 /* NotificationsCommentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC0199E8165C17020073A966 /* NotificationsCommentDetailViewController.m */; };
 		CC098B8416A9ECF800450976 /* CameraPlusPickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC098B8316A9ECF800450976 /* CameraPlusPickerManager.m */; };
 		CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CC0E20AD15B87DA100D3468B /* WPWebBridge.m */; };
@@ -2004,6 +2005,8 @@
 		C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLExtensions.m"; sourceTree = "<group>"; };
 		C5C272DE0E7EC00A0034AA46 /* uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uncheck.png; path = Resources/Images/uncheck.png; sourceTree = "<group>"; };
 		C5C272E00E7EC00F0034AA46 /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = check.png; path = Resources/Images/check.png; sourceTree = "<group>"; };
+		C5D3FD7418032B2E007969B6 /* iOS7CorrectedTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iOS7CorrectedTextView.h; sourceTree = "<group>"; };
+		C5D3FD7518032B2E007969B6 /* iOS7CorrectedTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iOS7CorrectedTextView.m; sourceTree = "<group>"; };
 		CC0199E7165C17020073A966 /* NotificationsCommentDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsCommentDetailViewController.h; sourceTree = "<group>"; };
 		CC0199E8165C17020073A966 /* NotificationsCommentDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsCommentDetailViewController.m; sourceTree = "<group>"; };
 		CC098B8216A9ECF800450976 /* CameraPlusPickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CameraPlusPickerManager.h; path = Vendor/CameraPlus/CameraPlusPickerManager.h; sourceTree = SOURCE_ROOT; };
@@ -2425,6 +2428,8 @@
 				5DEB6EF415B471B3004E81F3 /* WPPopoverBackgroundView.m */,
 				5DEB61B2156FCD3400242C35 /* WPWebView.h */,
 				5DEB61B3156FCD3400242C35 /* WPWebView.m */,
+				C5D3FD7418032B2E007969B6 /* iOS7CorrectedTextView.h */,
+				C5D3FD7518032B2E007969B6 /* iOS7CorrectedTextView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -5370,6 +5375,7 @@
 				85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */,
 				85E105861731A597001071A3 /* WPWalkthroughOverlayView.m in Sources */,
 				85E105911731D066001071A3 /* LoginCompletedWalkthroughViewController.m in Sources */,
+				C5D3FD7618032B2E007969B6 /* iOS7CorrectedTextView.m in Sources */,
 				85D08A5E17332C4A00E2BBCA /* NewAddUsersBlogViewController.m in Sources */,
 				85D08A7117342ECE00E2BBCA /* AddUsersBlogCell.m in Sources */,
 				85EC44D11738C24500686604 /* UIView+FormSheetHelpers.m in Sources */,

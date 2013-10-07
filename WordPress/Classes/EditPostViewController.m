@@ -6,6 +6,7 @@
 #import "WPPopoverBackgroundView.h"
 #import "WPAddCategoryViewController.h"
 #import "WPAlertView.h"
+#import "iOS7CorrectedTextView.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -29,7 +30,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 @end
 
 @implementation EditPostViewController {
-    IBOutlet UITextView *textView;
+    IBOutlet iOS7CorrectedTextView *textView;
     IBOutlet UITextField *titleTextField;
     IBOutlet UITextField *tagsTextField;
     IBOutlet UILabel *titleLabel;
