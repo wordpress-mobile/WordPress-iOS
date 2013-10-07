@@ -34,7 +34,6 @@
 @property (nonatomic, strong) NSMutableArray *detailViewWidths;
 @property (nonatomic, strong) UIButton *detailTapper;
 @property (nonatomic, strong) UIPanGestureRecognizer *panner;
-@property (nonatomic, strong) UIScreenEdgePanGestureRecognizer *edgePanner;
 @property (nonatomic, strong) UIView *popPanelsView, *menuView;
 @property (nonatomic, strong) UIImageView *sidebarBorderView;
 @property (nonatomic, strong) UIButton *notificationButton, *menuButton;
@@ -1058,9 +1057,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    if (gestureRecognizer == self.panner ||
-        gestureRecognizer == self.edgePanner ||
-        gestureRecognizer.view == self.detailTapper) {
+    if (gestureRecognizer == self.panner || gestureRecognizer.view == self.detailTapper) {
         _panOrigin = _stackOffset;
         _panned = NO;
     }
@@ -1203,7 +1200,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
         UIScreenEdgePanGestureRecognizer *edgePanner = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)];
         edgePanner.edges = UIRectEdgeLeft;
         edgePanner.delegate = self;
-        self.edgePanner = edgePanner;
+        self.panner = edgePanner;
         [self.view addGestureRecognizer:edgePanner];
     } else {
         UIPanGestureRecognizer *panner = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)];
@@ -1223,12 +1220,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
         [self.panner.view removeGestureRecognizer:self.panner];
     }
     
-    if (self.edgePanner) {
-        [self.edgePanner.view removeGestureRecognizer:self.panner];
-    }
-    
     self.panner = nil;
-    self.edgePanner = nil;
 }
 
 - (void)setFrameForViewController:(UIViewController *)viewController {
