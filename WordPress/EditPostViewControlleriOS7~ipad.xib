@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4504" systemVersion="12E55" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
     <dependencies>
         <deployment version="1280" defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3734.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditPostViewController">
@@ -15,8 +15,8 @@
                 <outlet property="rightPreviewSpacer" destination="XWP-Ca-CC1" id="j6u-KY-OZB"/>
                 <outlet property="separatorView" destination="cLU-rh-RiT" id="Jdl-eN-bBE"/>
                 <outlet property="settingsButton" destination="195" id="199"/>
-                <outlet property="textView" destination="158" id="175"/>
                 <outlet property="textViewPlaceHolderField" destination="168" id="174"/>
+                <outlet property="textView" destination="158" id="sep-dp-2gQ"/>
                 <outlet property="titleTextField" destination="163" id="173"/>
                 <outlet property="toolbar" destination="108" id="128"/>
                 <outlet property="view" destination="84" id="134"/>
@@ -40,7 +40,7 @@
                         <outlet property="delegate" destination="-1" id="202"/>
                     </connections>
                 </textField>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="6" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" id="158">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="6" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" id="158" customClass="iOS7CorrectedTextView">
                     <rect key="frame" x="0.0" y="67" width="768" height="913"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
