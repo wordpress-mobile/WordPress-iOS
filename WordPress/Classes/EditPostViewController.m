@@ -34,7 +34,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
     IBOutlet UITextField *titleTextField;
     IBOutlet UITextField *tagsTextField;
     IBOutlet UILabel *titleLabel;
-    IBOutlet UITextField *textViewPlaceHolderField;
+    IBOutlet UILabel *tapToStartWritingLabel;
 	IBOutlet UIView *contentView;
 	IBOutlet UIView *editView;
 	IBOutlet UIBarButtonItem *writeButton;
@@ -112,8 +112,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     tagsLabel.text = NSLocalizedString(@"Tags:", @"Label for the tags field. Should be the same as WP core.");
     tagsTextField.placeholder = NSLocalizedString(@"Separate tags with commas", @"Placeholder text for the tags field. Should be the same as WP core.");
     categoriesLabel.text = NSLocalizedString(@"Categories:", @"Label for the categories field. Should be the same as WP core.");
-    textViewPlaceHolderField.placeholder = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
-	textViewPlaceHolderField.textAlignment = NSTextAlignmentCenter;
+    tapToStartWritingLabel.text = NSLocalizedString(@"Tap here to begin writing", @"Placeholder for the main body text. Should hint at tapping to enter text (not specifying body text).");
+	tapToStartWritingLabel.textAlignment = NSTextAlignmentCenter;
 
     if (IS_IOS7) {
         // Setup Line Height
@@ -147,7 +147,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         editorToolbar.delegate = self;
     }
     textView.inputAccessoryView = editorToolbar;
-    textViewPlaceHolderField.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
     if (!self.postSettingsViewController) {
         self.postSettingsViewController = [[PostSettingsViewController alloc] initWithPost:self.apost];
@@ -251,8 +250,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	[self refreshButtons];
 	
     textView.frame = self.normalTextFrame;
-    textViewPlaceHolderField.frame = [self textviewPlaceholderFrame];
-	textViewPlaceHolderField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    tapToStartWritingLabel.frame = [self textviewPlaceholderFrame];
     [textView setContentOffset:CGPointMake(0, 0)];
 
 	CABasicAnimation *animateWiggleIt;
@@ -262,7 +260,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	animateWiggleIt.autoreverses = NO;
     animateWiggleIt.fromValue = @0.75f;
     animateWiggleIt.toValue = @1.f;
-	[textViewPlaceHolderField.layer addAnimation:animateWiggleIt forKey:@"placeholderWiggle"];
+	[tapToStartWritingLabel.layer addAnimation:animateWiggleIt forKey:@"placeholderWiggle"];
 
 }
 
@@ -589,11 +587,11 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
     
     if(self.apost.content == nil || [self.apost.content isEmpty]) {
-        textViewPlaceHolderField.hidden = NO;
+        tapToStartWritingLabel.hidden = NO;
         textView.text = @"";
     }
     else {
-        textViewPlaceHolderField.hidden = YES;
+        tapToStartWritingLabel.hidden = YES;
         if ((self.apost.mt_text_more != nil) && ([self.apost.mt_text_more length] > 0))
 			textView.text = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.apost.content, self.apost.mt_text_more];
 		else
@@ -1193,7 +1191,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 - (void)textViewDidBeginEditing:(UITextView *)aTextView {
     WPFLogMethod();
-    [textViewPlaceHolderField removeFromSuperview];
+    [tapToStartWritingLabel removeFromSuperview];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
@@ -1212,7 +1210,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     WPFLogMethod();
 	
 	if([textView.text isEqualToString:@""]) {
-        [editView addSubview:textViewPlaceHolderField];
+        [editView addSubview:tapToStartWritingLabel];
 	}
 	
     _hasChangesToAutosave = YES;
@@ -1224,29 +1222,12 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 #pragma mark - TextField delegate
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    if (textField == textViewPlaceHolderField) {
-        return NO;
-    }
-	return YES;
-}
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-	return YES;
-}
-
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     currentEditingTextField = textField;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     currentEditingTextField = nil;
-#ifdef DEBUG
-	if ([textField.text isEqualToString:@"#%#"]) {
-		[NSException raise:@"FakeCrash" format:@"Nothing to worry about, textField == #%#"];
-	}
-#endif
-	    
     _hasChangesToAutosave = YES;
     [self autosaveContent];
     [self autosaveRemote];
@@ -1349,7 +1330,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	}
 
     [textView setFrame:newFrame];
-    textViewPlaceHolderField.frame = [self textviewPlaceholderFrame];
 	
 	[UIView commitAnimations];
 }

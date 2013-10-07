@@ -15,7 +15,7 @@
                 <outlet property="rightPreviewSpacer" destination="XWP-Ca-CC1" id="j6u-KY-OZB"/>
                 <outlet property="separatorView" destination="cLU-rh-RiT" id="Jdl-eN-bBE"/>
                 <outlet property="settingsButton" destination="195" id="199"/>
-                <outlet property="textViewPlaceHolderField" destination="168" id="174"/>
+                <outlet property="tapToStartWritingLabel" destination="aOV-tV-MIg" id="u1D-pC-I7H"/>
                 <outlet property="textView" destination="158" id="sep-dp-2gQ"/>
                 <outlet property="titleTextField" destination="163" id="173"/>
                 <outlet property="toolbar" destination="108" id="128"/>
@@ -51,17 +51,6 @@
                         <outlet property="delegate" destination="-1" id="203"/>
                     </connections>
                 </textView>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="top" placeholder="Tap here to begin writing." minimumFontSize="17" id="168" userLabel="placeholderTextField">
-                    <rect key="frame" x="229" y="508" width="310" height="31"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
-                    <textInputTraits key="textInputTraits"/>
-                    <connections>
-                        <action selector="touchTextView:" destination="-1" eventType="touchUpInside" id="223"/>
-                        <outlet property="delegate" destination="-1" id="204"/>
-                    </connections>
-                </textField>
                 <view contentMode="scaleToFill" id="cLU-rh-RiT" userLabel="separator">
                     <rect key="frame" x="15" y="52" width="768" height="1"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -93,6 +82,13 @@
                     </items>
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </toolbar>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aOV-tV-MIg">
+                    <rect key="frame" x="196" y="501" width="403" height="21"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
+                    <color key="textColor" white="0.71835594846491224" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>

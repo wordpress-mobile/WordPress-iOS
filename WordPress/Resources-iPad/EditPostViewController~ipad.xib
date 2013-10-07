@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4504" systemVersion="12E55" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
     <dependencies>
         <deployment version="1280" defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3734.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditPostViewController">
@@ -21,8 +21,8 @@
                 <outlet property="tabPointer" destination="164" id="216"/>
                 <outlet property="tagsLabel" destination="185" id="188"/>
                 <outlet property="tagsTextField" destination="186" id="189"/>
+                <outlet property="tapToStartWritingLabel" destination="bSb-7j-tKZ" id="RNp-sq-ThC"/>
                 <outlet property="textView" destination="158" id="175"/>
-                <outlet property="textViewPlaceHolderField" destination="168" id="174"/>
                 <outlet property="titleLabel" destination="162" id="172"/>
                 <outlet property="titleTextField" destination="163" id="173"/>
                 <outlet property="toolbar" destination="108" id="128"/>
@@ -64,7 +64,7 @@
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="213">
                                     <rect key="frame" x="719" y="12" width="29" height="29"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
                                     <state key="normal" image="hasLocation.png">
                                         <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -80,7 +80,7 @@
                                 </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="table_sep.png" id="167" userLabel="separator">
                                     <rect key="frame" x="0.0" y="49" width="768" height="1"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </imageView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Categories:" lineBreakMode="tailTruncation" minimumFontSize="10" id="182">
                                     <rect key="frame" x="10" y="108" width="77" height="21"/>
@@ -91,7 +91,7 @@
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="220">
                                     <rect key="frame" x="95" y="104" width="653" height="31"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="14"/>
                                     <state key="normal">
@@ -110,7 +110,7 @@
                                 </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="table_sep.png" id="184" userLabel="separator">
                                     <rect key="frame" x="0.0" y="95" width="768" height="1"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </imageView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Tags:" lineBreakMode="tailTruncation" minimumFontSize="10" id="185">
                                     <rect key="frame" x="10" y="62" width="38" height="21"/>
@@ -130,7 +130,7 @@
                                 </textField>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="table_sep.png" id="187" userLabel="separator">
                                     <rect key="frame" x="0.0" y="141" width="768" height="1"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </imageView>
                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="6" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" bouncesZoom="NO" id="158">
                                     <rect key="frame" x="0.0" y="143" width="768" height="837"/>
@@ -143,16 +143,13 @@
                                         <outlet property="delegate" destination="-1" id="203"/>
                                     </connections>
                                 </textView>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="top" placeholder="Tap here to begin writing." minimumFontSize="17" id="168" userLabel="placeholderTextField">
-                                    <rect key="frame" x="10" y="150" width="310" height="31"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bSb-7j-tKZ">
+                                    <rect key="frame" x="15" y="162" width="338" height="29"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                    <connections>
-                                        <action selector="touchTextView:" destination="-1" eventType="touchUpInside" id="223"/>
-                                        <outlet property="delegate" destination="-1" id="204"/>
-                                    </connections>
-                                </textField>
+                                    <color key="textColor" white="0.71571751640000003" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         </view>
