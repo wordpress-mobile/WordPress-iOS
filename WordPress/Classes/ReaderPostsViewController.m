@@ -28,6 +28,7 @@
 #import "WPCookie.h"
 #import "NSString+Helpers.h"
 #import "WPPopoverBackgroundView.h"
+#import "iOS7CorrectedTextView.h"
 
 static CGFloat const ScrollingFastVelocityThreshold = 30.f;
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
