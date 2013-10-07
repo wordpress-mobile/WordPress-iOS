@@ -1082,25 +1082,14 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    // ARD - I'm not sure this is the right spot for the panned = NO reset
-    if (gestureRecognizer == self.panner || gestureRecognizer.view == self.detailTapper) {
+    if (gestureRecognizer == self.panner ||
+        gestureRecognizer == self.edgePanner ||
+        gestureRecognizer.view == self.detailTapper) {
         _panOrigin = _stackOffset;
         _panned = NO;
     }
     
-    if (gestureRecognizer == self.edgePanner && [touch.view isDescendantOfView:self.detailViewController.view] == NO) {
-        return NO;
-    }
-    
     return YES;
-}
-
-- (void)edgePanned:(UIScreenEdgePanGestureRecognizer *)sender
-{
-    if (sender.state == UIGestureRecognizerStateEnded) {
-        [self showSidebar];
-        _panned = YES;
-    }
 }
 
 - (void)panned:(UIPanGestureRecognizer *)sender {
@@ -1234,23 +1223,22 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 - (void)addPanner {
     [self removePanner];
     
-    UIPanGestureRecognizer *panner = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)];
-    panner.cancelsTouchesInView = YES;
-    panner.delegate = self;
-    self.panner = panner;
-    if (self.navigationController) {
-        [self.navigationController.navigationBar addGestureRecognizer:panner];
-    } else {
-        [self.view addGestureRecognizer:panner];
-    }
-    
     if (IS_IOS7) {
-        UIScreenEdgePanGestureRecognizer *edgePanner = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(edgePanned:)];
+        UIScreenEdgePanGestureRecognizer *edgePanner = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)];
         edgePanner.edges = UIRectEdgeLeft;
-        edgePanner.cancelsTouchesInView = YES;
         edgePanner.delegate = self;
         self.edgePanner = edgePanner;
         [self.view addGestureRecognizer:edgePanner];
+    } else {
+        UIPanGestureRecognizer *panner = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)];
+        panner.cancelsTouchesInView = YES;
+        panner.delegate = self;
+        self.panner = panner;
+        if (self.navigationController) {
+            [self.navigationController.navigationBar addGestureRecognizer:panner];
+        } else {
+            [self.view addGestureRecognizer:panner];
+        }
     }
 }
 
