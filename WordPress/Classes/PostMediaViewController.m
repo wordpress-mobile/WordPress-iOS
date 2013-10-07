@@ -47,6 +47,7 @@
 - (void)dealloc {
     picker.delegate = nil;
     addPopover.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
