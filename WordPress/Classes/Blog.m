@@ -269,17 +269,21 @@
 }
 
 - (void)dataSave {
+    [self dataSaveWithContext:self.managedObjectContext];
+}
+
+- (void)dataSaveWithContext:(NSManagedObjectContext*)context {
     __block NSError *error = nil;
-    [self.managedObjectContext performBlock:^{
-        if (![self.managedObjectContext save:&error]) {
+    [context performBlock:^{
+        if (![context save:&error]) {
             WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
             #if DEBUG
             exit(-1);
             #endif
         }
-        if (self.managedObjectContext.parentContext) {
-            [self.managedObjectContext.parentContext performBlock:^{
-                if (![self.managedObjectContext.parentContext save:&error]) {
+        if (context.parentContext) {
+            [context.parentContext performBlock:^{
+                if (![context.parentContext save:&error]) {
                     WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
                     #if DEBUG
                     exit(-1);
@@ -886,7 +890,7 @@
             }
         }
         
-        [self dataSave];
+        [self dataSaveWithContext:backgroundMOC];
     }];
 }
 
@@ -938,7 +942,7 @@
             }
         }
 
-        [self dataSave];
+        [self dataSaveWithContext:backgroundMOC];
     }];
 }
 
