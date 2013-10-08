@@ -365,21 +365,17 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
     NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     backgroundMOC.parentContext = context;
-
+  
     [backgroundMOC performBlock:^{
         for (NSDictionary *blog in _usersBlogs) {
             if([_selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
                 [self createBlog:blog withAccount:self.account withContext:backgroundMOC];
             }
         }
-        [backgroundMOC save:nil];
-        [context performBlock:^{
-            NSError *error;
-            [context save:&error];
-            if (error != nil) {
-                NSLog(@"Error adding blogs: %@", [error localizedDescription]);
-            }
-        }];
+        NSError *error;
+        if (![backgroundMOC save:&error]) {
+            WPFLog(@"Error saving context on new blogs added %@", error);
+        }
     }];
 
     if (self.blogAdditionCompleted) {
