@@ -356,7 +356,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
 
     WPAccount *account = [WPAccount defaultWordPressComAccount];
     
-    Blog *blog = [account findOrCreateBlogFromDictionary:newBlog];
+    Blog *blog = [account findOrCreateBlogFromDictionary:newBlog withContext:account.managedObjectContext];
     blog.geolocationEnabled = _geolocationEnabled;
 	[blog dataSave];
     [blog syncBlogWithSuccess:^{
