@@ -267,10 +267,6 @@
 
 - (void)awakeFromFetch {
     [self reachability];
-    
-    if (self.isWPcom && [self.isAdmin isEqualToNumber:@(1)]) {
-        [Theme fetchCurrentThemeForBlog:self success:nil failure:nil];
-    }
 }
 
 - (void)dataSave {
