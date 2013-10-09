@@ -34,7 +34,6 @@
 @property (nonatomic, strong) NSMutableArray *detailViewWidths;
 @property (nonatomic, strong) UIButton *detailTapper;
 @property (nonatomic, strong) UIPanGestureRecognizer *panner;
-@property (nonatomic, strong) UIScreenEdgePanGestureRecognizer *edgePanner;
 @property (nonatomic, strong) UIView *popPanelsView, *menuView;
 @property (nonatomic, strong) UIImageView *sidebarBorderView;
 @property (nonatomic, strong) UIButton *notificationButton, *menuButton;
@@ -51,7 +50,6 @@
 - (void)disableDetailView;
 - (void)enableDetailView;
 - (void)prepareDetailView:(UIView *)view forController:(UIViewController *)controller;
-- (void)addShadowTo:(UIView *)view;
 - (void)removeShadowFrom:(UIView *)view;
 - (void)setScrollsToTop:(BOOL)scrollsToTop forView:(UIView *)view;
 - (void)addPanner;
@@ -315,14 +313,6 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     [self relayAppearanceMethod:^(UIViewController *controller) {
         [controller didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     }];
-    
-//    // Redraw shadows. This fixes an issue where the 1..n-1 detail view's shadow can be
-//    // incorrect when there are more than two detail views on the stack.
-//    if (self.detailViewController) {
-//        for (UIView *view in self.detailViews) {
-//            [self addShadowTo:view];
-//        }
-//    }
 }
 
 - (void)adjustFramesForRotation {
@@ -555,11 +545,6 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 
 - (BOOL)viewControllerExpectsWidePanel:(UIViewController *)controller {
     return YES;
-    
-//    if ([controller respondsToSelector:@selector(expectsWidePanel)]) {
-//        return (BOOL)[controller performSelector:@selector(expectsWidePanel)];
-//    }
-//    return NO;
 }
 
 
@@ -712,7 +697,6 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
             [_detailViewController didMoveToParentViewController:self];
         }
     }
-    [self addShadowTo:_detailViewContainer];
     
     if (closingSidebar) {
         [self closeSidebarAnimated:animated];
@@ -1057,15 +1041,6 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     view.frame = CGRectMake(originX, 0.0f, newPanelWidth, DETAIL_HEIGHT);
 }
 
-- (void)addShadowTo:(UIView *)view {
-//    view.layer.masksToBounds = NO;
-//    view.layer.shadowRadius = 6.0f;
-//    view.layer.shadowOpacity = 0.8f;
-//    view.layer.shadowColor = [[UIColor blackColor] CGColor];
-//    view.layer.shadowOffset = CGSizeZero;
-//    view.layer.shadowPath = [[UIBezierPath bezierPathWithRect:view.bounds] CGPath];
-}
-
 - (void)removeShadowFrom:(UIView *)view {
     view.layer.shadowOpacity = 0.0f;
 }
@@ -1091,25 +1066,12 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    // ARD - I'm not sure this is the right spot for the panned = NO reset
     if (gestureRecognizer == self.panner || gestureRecognizer.view == self.detailTapper) {
         _panOrigin = _stackOffset;
         _panned = NO;
     }
     
-    if (gestureRecognizer == self.edgePanner && [touch.view isDescendantOfView:self.detailViewController.view] == NO) {
-        return NO;
-    }
-    
     return YES;
-}
-
-- (void)edgePanned:(UIScreenEdgePanGestureRecognizer *)sender
-{
-    if (sender.state == UIGestureRecognizerStateEnded) {
-        [self showSidebar];
-        _panned = YES;
-    }
 }
 
 - (void)panned:(UIPanGestureRecognizer *)sender {
@@ -1243,23 +1205,22 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
 - (void)addPanner {
     [self removePanner];
     
-    UIPanGestureRecognizer *panner = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)];
-    panner.cancelsTouchesInView = YES;
-    panner.delegate = self;
-    self.panner = panner;
-    if (self.navigationController) {
-        [self.navigationController.navigationBar addGestureRecognizer:panner];
-    } else {
-        [self.view addGestureRecognizer:panner];
-    }
-    
     if (IS_IOS7) {
-        UIScreenEdgePanGestureRecognizer *edgePanner = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(edgePanned:)];
+        UIScreenEdgePanGestureRecognizer *edgePanner = [[UIScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)];
         edgePanner.edges = UIRectEdgeLeft;
-        edgePanner.cancelsTouchesInView = YES;
         edgePanner.delegate = self;
-        self.edgePanner = edgePanner;
+        self.panner = edgePanner;
         [self.view addGestureRecognizer:edgePanner];
+    } else {
+        UIPanGestureRecognizer *panner = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panned:)];
+        panner.cancelsTouchesInView = YES;
+        panner.delegate = self;
+        self.panner = panner;
+        if (self.navigationController) {
+            [self.navigationController.navigationBar addGestureRecognizer:panner];
+        } else {
+            [self.view addGestureRecognizer:panner];
+        }
     }
 }
 
@@ -1268,12 +1229,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
         [self.panner.view removeGestureRecognizer:self.panner];
     }
     
-    if (self.edgePanner) {
-        [self.edgePanner.view removeGestureRecognizer:self.panner];
-    }
-    
     self.panner = nil;
-    self.edgePanner = nil;
 }
 
 - (void)setFrameForViewController:(UIViewController *)viewController {
@@ -1669,8 +1625,6 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
             [viewController vdc_viewDidAppear:animated];
         }
 
-        [self addShadowTo:wrappedView];
-        
         [UIView animateWithDuration:CLOSE_SLIDE_DURATION(animated) animations:^{
             topView.frame = topViewFrame;
         }];
@@ -1765,8 +1719,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
             PanelViewWrapper *overlayView = [_detailViewContainer.subviews objectAtIndex:0];
             overlayView.overlay.alpha = 0.0f;
         }
-        if (self.detailViewController)
-            [self addShadowTo: _detailViewContainer];
+
         [UIView animateWithDuration:0.5f
                          animations:^{
                              [_popPanelsView setAlpha:0.0f];

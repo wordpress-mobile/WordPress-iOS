@@ -14,6 +14,7 @@
 #import "CameraPlusPickerManager.h"
 #import "WPPopoverBackgroundView.h"
 #import "MP6SidebarViewController.h"
+#import "iOS7CorrectedTextView.h"
 
 @interface QuickPhotoViewController () {
     UIPopoverController *popController;
@@ -48,17 +49,6 @@
     self.photoImageView.delegate = nil;
     self.popController.delegate = nil;
 }
-
-#if !__has_feature(objc_arc)
-//stackoverflow.com/questions/945082/uiwebview-in-multithread-viewcontroller
-- (oneway void)release {
-    if (![NSThread isMainThread]) {
-        [self performSelectorOnMainThread:@selector(release) withObject:nil waitUntilDone:NO];
-    } else {
-        [super release];
-    }
-}
-#endif
 
 - (void)didReceiveMemoryWarning {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
@@ -144,26 +134,6 @@
     else 
         return NO;
 }
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
-    if (self.popController) {
-        showPickerAfterRotation = YES;
-        [popController dismissPopoverAnimated:NO];
-        self.popController = nil;
-    }
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    
-    if (showPickerAfterRotation) {
-        showPickerAfterRotation = NO;
-        [self showPicker];
-    }
-}
-
 
 #pragma mark -
 #pragma mark Custom methods
@@ -358,6 +328,11 @@
     // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
+    if (popController) {
+        [popController dismissPopoverAnimated:YES];
+        self.popController = nil;
+    }
+    
     picker.delegate = nil;
     [self dismiss];
 }

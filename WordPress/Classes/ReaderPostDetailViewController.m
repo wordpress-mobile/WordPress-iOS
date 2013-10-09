@@ -21,6 +21,7 @@
 #import "ReaderPostDetailView.h"
 #import "ReaderCommentFormView.h"
 #import "ReaderReblogFormView.h"
+#import "iOS7CorrectedTextView.h"
 
 NSInteger const ReaderCommentsToSync = 100;
 NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
