@@ -114,6 +114,8 @@
     if (_addMediaActionSheet) {
         [_addMediaActionSheet dismissWithClickedButtonIndex:_addMediaActionSheet.cancelButtonIndex animated:true];
     }
+    
+    [[[CPopoverManager instance] currentPopoverController] dismissPopoverAnimated:YES];
 }
 
 - (NSString *)statsPrefix
