@@ -1235,7 +1235,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     if (_apost) {
         imageMedia = [Media newMediaForPost:_apost];
     } else {
-        imageMedia = [Media newMediaForBlog:self.blog];
+        imageMedia = [Media newMediaForBlog:self.blog withContext:self.blog.managedObjectContext];
     }
 	NSData *imageData = UIImageJPEGRepresentation(theImage, 0.90);
 	UIImage *imageThumbnail = [self generateThumbnailFromImage:theImage andSize:CGSizeMake(75, 75)];
@@ -1393,7 +1393,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 	}
 	
 	if(copySuccess) {
-		videoMedia = [Media newMediaForBlog:self.blog];
+		videoMedia = [Media newMediaForBlog:self.blog withContext:self.blog.managedObjectContext];
 		
 		if(_currentOrientation == kLandscape)
 			videoMedia.orientation = @"landscape";

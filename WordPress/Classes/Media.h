@@ -49,8 +49,8 @@ typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
 @property (nonatomic, assign) BOOL isUnattached;
 
 + (Media *)newMediaForPost:(AbstractPost *)post;
-+ (Media *)newMediaForBlog:(Blog *)blog;
-+ (Media *)createOrReplaceMediaFromJSON:(NSDictionary*)json forBlog:(Blog *)blog;
++ (Media *)newMediaForBlog:(Blog *)blog withContext:(NSManagedObjectContext *)context;
++ (Media *)createOrReplaceMediaFromJSON:(NSDictionary*)json forBlog:(Blog *)blog withContext:(NSManagedObjectContext *)context;
 + (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)())success failure:(void (^)(NSError *error, NSArray *failures))failure;
 
 - (void)cancelUpload;

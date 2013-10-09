@@ -56,24 +56,33 @@
     return media;
 }
 
-+ (Media *)newMediaForBlog:(Blog *)blog {
-    Media *media = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:blog.managedObjectContext];
-    media.blog = blog;
++ (Media *)newMediaForBlog:(Blog *)blog withContext:(NSManagedObjectContext *)context {
+    Blog *contextBlog = blog;
+    if (blog.managedObjectContext != context) {
+        contextBlog = (Blog *)[context objectWithID:blog.objectID];
+    }
+    
+    Media *media = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:context];
+    media.blog = contextBlog;
     media.mediaID = @([[NSDate date] timeIntervalSince1970]);
     media.remoteStatus = MediaRemoteStatusLocal;
     return media;
 }
 
-+ (Media *)createOrReplaceMediaFromJSON:(NSDictionary *)json forBlog:(Blog *)blog {
-    NSSet *existing = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID == %@", [json[@"attachment_id"] numericValue]]];
++ (Media *)createOrReplaceMediaFromJSON:(NSDictionary *)json forBlog:(Blog *)blog withContext:(NSManagedObjectContext *)context {
+    Blog *contextBlog = blog;
+    if (blog.managedObjectContext != context) {
+        contextBlog = (Blog *)[context objectWithID:blog.objectID];
+    }
+    NSSet *existing = [contextBlog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID == %@", [json[@"attachment_id"] numericValue]]];
     if (existing.count > 0) {
         [existing.allObjects[0] updateFromDictionary:json];
         return existing.allObjects[0];
     }
     
-    Media *media = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:blog.managedObjectContext];
+    Media *media = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:context];
     [media updateFromDictionary:json];
-    media.blog = blog;
+    media.blog = contextBlog;
     return media;
 }
 

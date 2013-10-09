@@ -269,10 +269,6 @@
 
 - (void)awakeFromFetch {
     [self reachability];
-    
-    if (self.isWPcom && [self.isAdmin isEqualToNumber:@(1)]) {
-        [Theme fetchCurrentThemeForBlog:self success:nil failure:nil];
-    }
 }
 
 - (void)dataSave {
@@ -1013,20 +1009,26 @@
     if ([self isDeleted] || self.managedObjectContext == nil)
         return;
 
-    NSMutableArray *mediaToKeep = [NSMutableArray array];
-    for (NSDictionary *item in newMedia) {
-        Media *media = [Media createOrReplaceMediaFromJSON:item forBlog:self];
-        [mediaToKeep addObject:media];
-    }
+    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
     
-    for (Media *m in self.media) {
-        if (![mediaToKeep containsObject:m] && m.remoteURL != nil) {
-            WPLog(@"Deleting media %@", m);
-            [self.managedObjectContext deleteObject:m];
+    [backgroundMOC performBlock:^{
+        NSMutableArray *mediaToKeep = [NSMutableArray array];
+        for (NSDictionary *item in newMedia) {
+            Media *media = [Media createOrReplaceMediaFromJSON:item forBlog:self withContext:backgroundMOC];
+            [mediaToKeep addObject:media];
         }
-    }
-    
-    [self dataSave];
+        NSSet *syncedMedia = ((Blog *)[backgroundMOC objectWithID:self.objectID]).media;
+        if (syncedMedia && (syncedMedia.count > 0)) {
+            for (Media *m in syncedMedia) {
+                if (![mediaToKeep containsObject:m] && m.remoteURL != nil) {
+                    WPLog(@"Deleting media %@", m);
+                    [backgroundMOC deleteObject:m];
+                }
+            }
+        }
+        [self dataSaveWithContext:backgroundMOC];
+    }];
 }
 
 @end
