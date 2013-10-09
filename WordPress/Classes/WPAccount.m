@@ -122,22 +122,21 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 
 #pragma mark - Blog creation
 
-- (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo {
+- (Blog *)findOrCreateBlogFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext*)context {
+    WPAccount *contextAccount = (WPAccount *)[context objectWithID:self.objectID];
+    
     NSString *blogUrl = [[blogInfo objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
 	if([blogUrl hasSuffix:@"/"])
 		blogUrl = [blogUrl substringToIndex:blogUrl.length-1];
 	blogUrl= [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 
-    NSSet *foundBlogs = [self.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"url like %@", blogUrl]];
+    NSSet *foundBlogs = [contextAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"url like %@", blogUrl]];
     if ([foundBlogs count]) {
         return [foundBlogs anyObject];
     }
 
-    Blog *blog = [[Blog alloc] initWithEntity:[NSEntityDescription entityForName:@"Blog"
-                                                          inManagedObjectContext:self.managedObjectContext]
-               insertIntoManagedObjectContext:self.managedObjectContext];
-    blog.account = self;
-
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class]) inManagedObjectContext:context];
+    blog.account = contextAccount;
     blog.url = blogUrl;
     blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
     blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];

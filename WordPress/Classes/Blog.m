@@ -276,12 +276,38 @@
 }
 
 - (void)dataSave {
-    NSError *error = nil;
-    if (![[self managedObjectContext] save:&error]) {
-        WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-        exit(-1);
-    }
-	[[NSNotificationCenter defaultCenter] postNotificationName:BlogChangedNotification object:nil];
+    [self dataSaveWithContext:self.managedObjectContext];
+}
+
+- (void)dataSaveWithContext:(NSManagedObjectContext*)context {
+    __block NSError *error = nil;
+    [context performBlock:^{
+        if (![context save:&error]) {
+            WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+            #if DEBUG
+            exit(-1);
+            #endif
+        }
+        if (context.parentContext) {
+            [context.parentContext performBlock:^{
+                if (![context.parentContext save:&error]) {
+                    WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+                    #if DEBUG
+                    exit(-1);
+                    #endif
+                }
+            }];
+        }
+        // Is this needed?
+//        dispatch_block_t notify = ^{
+//            [[NSNotificationCenter defaultCenter] postNotificationName:BlogChangedNotification object:nil];
+//        };
+//        if (![NSThread isMainThread]) {
+//            dispatch_async(dispatch_get_main_queue(), notify);
+//        } else {
+//            notify();
+//        }
+    }];
 }
 
 - (void)remove {
@@ -365,9 +391,9 @@
 #pragma mark -
 #pragma mark Synchronization
 
-- (NSArray *)syncedPostsWithEntityName:(NSString *)entityName {
+- (NSArray *)syncedPostsWithEntityName:(NSString *)entityName withContext:(NSManagedObjectContext*)context {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:[self managedObjectContext]]];
+    [request setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:context]];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog = %@)",
 							  [NSNumber numberWithInt:AbstractPostRemoteStatusSync], self]; 
     [request setPredicate:predicate];
@@ -375,15 +401,11 @@
     [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     
     NSError *error = nil;
-    NSArray *array = [[self managedObjectContext] executeFetchRequest:request error:&error];
+    NSArray *array = [context executeFetchRequest:request error:&error];
     if (array == nil) {
         array = [NSArray array];
     }
     return array;
-}
-
-- (NSArray *)syncedPosts {
-    return [self syncedPostsWithEntityName:@"Post"];
 }
 
 - (void)syncPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
@@ -395,10 +417,6 @@
 
     WPXMLRPCRequestOperation *operation = [self operationForPostsWithSuccess:success failure:failure loadMore:more];
     [self.api enqueueXMLRPCRequestOperation:operation];
-}
-
-- (NSArray *)syncedPages {
-    return [self syncedPostsWithEntityName:@"Page"];
 }
 
 - (void)syncPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
@@ -752,7 +770,7 @@
 - (WPXMLRPCRequestOperation *)operationForPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
     int num;
 	
-    int syncCount = [[self syncedPages] count];
+    int syncCount = [[self syncedPostsWithEntityName:@"Page" withContext:self.managedObjectContext] count];
     // Don't load more than 20 pages if we aren't at the end of the table,
     // even if they were previously donwloaded
     // 
@@ -853,98 +871,108 @@
     // Don't even bother if blog has been deleted while fetching posts
     if ([self isDeleted] || self.managedObjectContext == nil)
         return;
-
-    NSMutableArray *postsToKeep = [NSMutableArray array];
-    for (NSDictionary *postInfo in newPosts) {
-        NSNumber *postID = [[postInfo objectForKey:@"postid"] numericValue];
-        Post *newPost = [Post findOrCreateWithBlog:self andPostID:postID];
-        if (newPost.remoteStatus == AbstractPostRemoteStatusSync) {
-            [newPost updateFromDictionary:postInfo];
+    
+    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+    
+    [backgroundMOC performBlock:^{
+        NSMutableArray *postsToKeep = [NSMutableArray array];
+        for (NSDictionary *postInfo in newPosts) {
+            NSNumber *postID = [[postInfo objectForKey:@"postid"] numericValue];
+            Post *newPost = [Post findOrCreateWithBlog:self andPostID:postID withContext:backgroundMOC];
+            if (newPost.remoteStatus == AbstractPostRemoteStatusSync) {
+                [newPost updateFromDictionary:postInfo];
+            }
+            [postsToKeep addObject:newPost.objectID];
         }
-        [postsToKeep addObject:newPost];
-    }
-
-    NSArray *syncedPosts = [self syncedPosts];
-    for (Post *post in syncedPosts) {
-
-        if (![postsToKeep containsObject:post]) {  /*&& post.blog.blogID == self.blogID*/
-			//the current stored post is not contained "as-is" on the server response
-
-            if (post.revision) { //edited post before the refresh is finished
-				//We should check if this post is already available on the blog
-				BOOL presence = NO;
-
-				for (Post *currentPostToKeep in postsToKeep) {
-					if([currentPostToKeep.postID isEqualToNumber:post.postID]) {
-						presence = YES;
-						break;
-					}
-				}
-				if( presence == YES ) {
-					//post is on the server (most cases), kept it unchanged
-				} else {
-					//post is deleted on the server, make it local, otherwise you can't upload it anymore
-					post.remoteStatus = AbstractPostRemoteStatusLocal;
-					post.postID = nil;
-					post.permaLink = nil;
-				}
-			} else {
-				//post is not on the server anymore. delete it.
-                WPLog(@"Deleting post: %@", post.postTitle);
-                WPLog(@"%d posts left", [self.posts count]);
-                [[self managedObjectContext] deleteObject:post];
+        
+        NSArray *syncedPosts = [self syncedPostsWithEntityName:@"Post" withContext:backgroundMOC];
+        for (Post *post in syncedPosts) {
+            
+            if (![postsToKeep containsObject:post.objectID]) {  /*&& post.blog.blogID == self.blogID*/
+                //the current stored post is not contained "as-is" on the server response
+                
+                if (post.revision) { //edited post before the refresh is finished
+                    //We should check if this post is already available on the blog
+                    BOOL presence = NO;
+                    
+                    for (Post *currentPostToKeep in postsToKeep) {
+                        if([currentPostToKeep.postID isEqualToNumber:post.postID]) {
+                            presence = YES;
+                            break;
+                        }
+                    }
+                    if( presence == YES ) {
+                        //post is on the server (most cases), kept it unchanged
+                    } else {
+                        //post is deleted on the server, make it local, otherwise you can't upload it anymore
+                        post.remoteStatus = AbstractPostRemoteStatusLocal;
+                        post.postID = nil;
+                        post.permaLink = nil;
+                    }
+                } else {
+                    //post is not on the server anymore. delete it.
+                    WPLog(@"Deleting post: %@", post.postTitle);
+                    WPLog(@"%d posts left", [self.posts count]);
+                    [backgroundMOC deleteObject:post];
+                }
             }
         }
-    }
-
-    [self dataSave];
+        
+        [self dataSaveWithContext:backgroundMOC];
+    }];
 }
 
 - (void)mergePages:(NSArray *)newPages {
     if ([self isDeleted] || self.managedObjectContext == nil)
         return;
+    
+    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
 
-    NSMutableArray *pagesToKeep = [NSMutableArray array];
-    for (NSDictionary *pageInfo in newPages) {
-        NSNumber *pageID = [[pageInfo objectForKey:@"page_id"] numericValue];
-        Page *newPage = [Page findOrCreateWithBlog:self andPageID:pageID];
-        if (newPage.remoteStatus == AbstractPostRemoteStatusSync) {
-            [newPage updateFromDictionary:pageInfo];
+    [backgroundMOC performBlock:^{
+        NSMutableArray *pagesToKeep = [NSMutableArray array];
+        for (NSDictionary *pageInfo in newPages) {
+            NSNumber *pageID = [[pageInfo objectForKey:@"page_id"] numericValue];
+            Page *newPage = [Page findOrCreateWithBlog:self andPageID:pageID withContext:backgroundMOC];
+            if (newPage.remoteStatus == AbstractPostRemoteStatusSync) {
+                [newPage updateFromDictionary:pageInfo];
+            }
+            [pagesToKeep addObject:newPage.objectID];
         }
-        [pagesToKeep addObject:newPage];
-    }
 
-    NSArray *syncedPages = [self syncedPages];
-    for (Page *page in syncedPages) {
-		if (![pagesToKeep containsObject:page]) { /*&& page.blog.blogID == self.blogID*/
+        NSArray *syncedPages = [self syncedPostsWithEntityName:@"Page" withContext:backgroundMOC];
+        for (Page *page in syncedPages) {
+            if (![pagesToKeep containsObject:page.objectID]) { /*&& page.blog.blogID == self.blogID*/
 
-			if (page.revision) { //edited page before the refresh is finished
-				//We should check if this page is already available on the blog
-				BOOL presence = NO;
+                if (page.revision) { //edited page before the refresh is finished
+                    //We should check if this page is already available on the blog
+                    BOOL presence = NO;
 
-				for (Page *currentPageToKeep in pagesToKeep) {
-					if([currentPageToKeep.postID isEqualToNumber:page.postID]) {
-						presence = YES;
-						break;
-					}
-				}
-				if( presence == YES ) {
-					//page is on the server (most cases), kept it unchanged
-				} else {
-					//page is deleted on the server, make it local, otherwise you can't upload it anymore
-					page.remoteStatus = AbstractPostRemoteStatusLocal;
-					page.postID = nil;
-					page.permaLink = nil;
-				}
-			} else {
-				//page is not on the server anymore. delete it.
-                WPLog(@"Deleting page: %@", page);
-                [[self managedObjectContext] deleteObject:page];
+                    for (Page *currentPageToKeep in pagesToKeep) {
+                        if([currentPageToKeep.postID isEqualToNumber:page.postID]) {
+                            presence = YES;
+                            break;
+                        }
+                    }
+                    if( presence == YES ) {
+                        //page is on the server (most cases), kept it unchanged
+                    } else {
+                        //page is deleted on the server, make it local, otherwise you can't upload it anymore
+                        page.remoteStatus = AbstractPostRemoteStatusLocal;
+                        page.postID = nil;
+                        page.permaLink = nil;
+                    }
+                } else {
+                    //page is not on the server anymore. delete it.
+                    WPLog(@"Deleting page: %@", page);
+                    [backgroundMOC deleteObject:page];
+                }
             }
         }
-    }
 
-    [self dataSave];
+        [self dataSaveWithContext:backgroundMOC];
+    }];
 }
 
 - (void)mergeComments:(NSArray *)newComments {

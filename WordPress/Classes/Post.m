@@ -34,14 +34,6 @@
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 @end
 
-
-@interface Post(PrivateMethods)
-+ (Post *)newPostForBlog:(Blog *)blog;
-- (void)uploadInBackground;
-- (void)didUploadInBackground;
-- (void)failedUploadInBackground;
-@end
-
 #pragma mark -
 
 @implementation Post 
@@ -50,18 +42,15 @@
 @dynamic categories;
 @synthesize specialType, featuredImageURL;
 
-+ (Post *)newPostForBlog:(Blog *)blog {
-    Post *post = [[Post alloc] initWithEntity:[NSEntityDescription entityForName:@"Post"
-                                                          inManagedObjectContext:[blog managedObjectContext]]
-               insertIntoManagedObjectContext:[blog managedObjectContext]];
-
-    post.blog = blog;
-    
++ (Post *)newPostForBlog:(Blog *)blog withContext:(NSManagedObjectContext*)context {
+    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
+    Post *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:context];
+    post.blog = contextBlog;
     return post;
 }
 
 + (Post *)newDraftForBlog:(Blog *)blog {
-    Post *post = [self newPostForBlog:blog];
+    Post *post = [self newPostForBlog:blog withContext:blog.managedObjectContext];
     post.remoteStatus = AbstractPostRemoteStatusLocal;
     post.status = @"publish";
     [post save];
@@ -69,8 +58,9 @@
     return post;
 }
 
-+ (Post *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID {
-    NSSet *results = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@ AND original == NULL",postID]];
++ (Post *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID withContext:(NSManagedObjectContext*)context {
+    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
+    NSSet *results = [contextBlog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@ AND original == NULL",postID]];
     
     if (results && (results.count > 0)) {
         return [[results allObjects] objectAtIndex:0];
@@ -78,11 +68,11 @@
     return nil;
 }
 
-+ (Post *)findOrCreateWithBlog:(Blog *)blog andPostID:(NSNumber *)postID {
-    Post *post = [self findWithBlog:blog andPostID:postID];
++ (Post *)findOrCreateWithBlog:(Blog *)blog andPostID:(NSNumber *)postID withContext:(NSManagedObjectContext*)context {
+    Post *post = [self findWithBlog:blog andPostID:postID withContext:context];
     
     if (post == nil) {
-        post = [Post newPostForBlog:blog];
+        post = [Post newPostForBlog:blog withContext:context];
         post.postID = postID;
         post.remoteStatus = AbstractPostRemoteStatusSync;
     }
@@ -99,7 +89,7 @@
 }
 
 
-- (void )updateFromDictionary:(NSDictionary *)postInfo {
+- (void)updateFromDictionary:(NSDictionary *)postInfo {
     self.postTitle      = [postInfo objectForKey:@"title"];
 	//keep attention: getPosts and getPost returning IDs in different types
 	if ([[postInfo objectForKey:@"postid"] isKindOfClass:[NSString class]]) {
@@ -183,7 +173,6 @@
 			self.publicID = geo_public_id;
 		}
 	}
-	return;   
 }
 
 - (NSString *)categoriesText {

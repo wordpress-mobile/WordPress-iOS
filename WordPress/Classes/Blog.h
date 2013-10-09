@@ -87,7 +87,6 @@
 
 #pragma mark -
 #pragma mark Synchronization
-- (NSArray *)syncedPosts;
 - (void)syncPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
 - (void)syncPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
 - (void)syncCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
