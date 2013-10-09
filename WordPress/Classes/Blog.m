@@ -53,7 +53,6 @@
 #pragma mark Dealloc
 
 - (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     _blavatarUrl = nil;
     _api = nil;
     [_reachability stopNotifier];
