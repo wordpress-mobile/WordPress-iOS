@@ -234,7 +234,7 @@
 - (void)createBlog:(NSDictionary *)blogInfo withAccount:(WPAccount *)account
 {
     WPLog(@"creating blog: %@", blogInfo);
-    Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo];
+    Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo withContext:account.managedObjectContext];
 	blog.geolocationEnabled = true;
 	[blog dataSave];
     [blog syncBlogWithSuccess:^{

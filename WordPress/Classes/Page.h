@@ -25,14 +25,14 @@
 
  @returns the specified page. Returns nil if there is no page with that id on the blog
  */
-+ (Page *)findWithBlog:(Blog *)blog andPageID:(NSNumber *)pageID;
++ (Page *)findWithBlog:(Blog *)blog andPageID:(NSNumber *)pageID withContext:(NSManagedObjectContext*)context;
 
 /**
  Retrieves the page with the specified `pageID` for a given blog. If the specified page doesn't exist, a new empty one is created
 
  @returns the specified page.
  */
-+ (Page *)findOrCreateWithBlog:(Blog *)blog andPageID:(NSNumber *)pageID;
++ (Page *)findOrCreateWithBlog:(Blog *)blog andPageID:(NSNumber *)pageID withContext:(NSManagedObjectContext*)context;
 
 /**
  Updates the page properties with the results of a XML-RPC call
