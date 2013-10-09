@@ -37,7 +37,7 @@ static NSUInteger const MultiselectToolbarDeselectTag = 3;
 
 static CGFloat const ScrollingVelocityThreshold = 30.0f;
 
-@interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MediaBrowserCellMultiSelectDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
+@interface MediaBrowserViewController () <UICollectionViewDataSource, UICollectionViewDelegate, MediaBrowserCellMultiSelectDelegate, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
 
@@ -63,6 +63,8 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 @property (nonatomic, strong) WPAlertView *customSizeAlert;
 @property (nonatomic, assign) CGFloat lastScrollOffset;
 @property (nonatomic, assign) BOOL isScrollingFast;
+@property (nonatomic, strong) NSFetchedResultsController *resultsController;
+@property (nonatomic, assign) BOOL shouldUpdateFromContextChange;
 
 @property (weak, nonatomic) IBOutlet UIToolbar *multiselectToolbar;
 
@@ -138,6 +140,12 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         self.multiselectToolbar.items = [NSArray arrayWithArray:toolbarItems];
     }
     
+    if (![self showAttachedMedia]) {
+        self.resultsController.delegate = self;
+        [self.resultsController performFetch:nil];
+        self.filteredMedia = _allMedia = _resultsController.fetchedObjects;
+    }
+    
     [self refresh];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
@@ -156,7 +164,10 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self loadFromCache];
+    if ([self showAttachedMedia]) {
+        _allMedia = _apost.media.allObjects;
+        self.filteredMedia = _allMedia;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -230,7 +241,6 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 - (void)refresh {
     [_refreshHeaderView beginRefreshing];
     [self.blog syncMediaLibraryWithSuccess:^{
-        [self loadFromCache];
         [_refreshHeaderView endRefreshing];
         [self setUploadButtonEnabled:true];
     } failure:^(NSError *error) {
@@ -251,28 +261,16 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     }
 }
 
-- (void)loadFromCache {
-    if ([self showAttachedMedia]) {
-        _allMedia = _apost.media.allObjects;
-        self.filteredMedia = _allMedia;
-        return;
+- (NSFetchedResultsController *)resultsController {
+    if (!_resultsController) {
+        NSManagedObjectContext *context = self.blog.managedObjectContext;
+        NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Media class])];
+        fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:false]];
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"blog == %@", self.blog];
+        fetchRequest.fetchBatchSize = 10;
+        _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
     }
-    __block NSArray *allMedia;
-    __block NSError *error;
-    NSManagedObjectContext *context = self.blog.managedObjectContext;
-    NSFetchRequest *allMediaRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Media class])];
-    [allMediaRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:false]]];
-    [allMediaRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
-    allMediaRequest.fetchBatchSize = 10;
-    [context performBlock:^{
-        allMedia = [context executeFetchRequest:allMediaRequest error:&error];
-        if (error) {
-            WPFLog(@"Failed to fetch all media with error %@", error);
-            _allMedia = self.filteredMedia = nil;
-            return;
-        }
-        _allMedia = self.filteredMedia = allMedia;
-    }];
+    return _resultsController;
 }
 
 - (UIView *)loadingView {
@@ -384,7 +382,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 #pragma mark - CollectionViewDelegate/DataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
+    return [self showAttachedMedia] ? 1 : [self.resultsController sections].count;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -532,7 +530,8 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:obj];
                 [_apost.media removeObject:obj];
             }];
-            [self loadFromCache];
+            _allMedia = _apost.media.allObjects;
+            self.filteredMedia = _allMedia;
             [self toggleNoMediaView:(_apost.media.count == 0)];
             return;
         }
@@ -548,7 +547,6 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         [self.loadingView show];
         
         [Media bulkDeleteMedia:[_selectedMedia allValues] withSuccess:^() {
-            [self loadFromCache];
             [self.loadingView hide];
             [self.loadingView removeFromSuperview];
             
@@ -614,6 +612,18 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     _isScrollingFast = fabsf(self.collectionView.contentOffset.y - _lastScrollOffset) > ScrollingVelocityThreshold;
     _lastScrollOffset = self.collectionView.contentOffset.y;
+}
+
+#pragma mark - FetchedResultsController
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+    _shouldUpdateFromContextChange = (type == NSFetchedResultsChangeDelete || type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeMove);
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    if (_shouldUpdateFromContextChange) {
+        _allMedia = self.filteredMedia = controller.fetchedObjects;
+    }
 }
 
 #pragma mark - Add Media
@@ -1339,8 +1349,6 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 //        else
 //            [postDetailViewController switchToMedia];
 //    }
-    
-    [self loadFromCache];
 }
 
 
