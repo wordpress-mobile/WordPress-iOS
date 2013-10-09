@@ -979,29 +979,34 @@
     // Don't even bother if blog has been deleted while fetching comments
     if ([self isDeleted] || self.managedObjectContext == nil)
         return;
-
-	NSMutableArray *commentsToKeep = [NSMutableArray array];
-    for (NSDictionary *commentInfo in newComments) {
-        Comment *newComment = [Comment createOrReplaceFromDictionary:commentInfo forBlog:self];
-        if (newComment != nil) {
-            [commentsToKeep addObject:newComment];
-        } else {
-            WPFLog(@"-[Comment createOrReplaceFromDictionary:forBlog:] returned a nil comment: %@", commentInfo);
+    
+    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+    
+    [backgroundMOC performBlock:^{
+        NSMutableArray *commentsToKeep = [NSMutableArray array];
+        for (NSDictionary *commentInfo in newComments) {
+            Comment *newComment = [Comment createOrReplaceFromDictionary:commentInfo forBlog:self withContext:backgroundMOC];
+            if (newComment != nil) {
+                [commentsToKeep addObject:newComment];
+            } else {
+                WPFLog(@"-[Comment createOrReplaceFromDictionary:forBlog:] returned a nil comment: %@", commentInfo);
+            }
         }
-    }
-
-	NSSet *syncedComments = self.comments;
-    if (syncedComments && (syncedComments.count > 0)) {
-		for (Comment *comment in syncedComments) {
-			// Don't delete unpublished comments
-			if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
-				WPLog(@"Deleting Comment: %@", comment);
-				[[self managedObjectContext] deleteObject:comment];
-			}
-		}
-    }
-
-    [self dataSave];
+        
+        NSSet *syncedComments = ((Blog *)[backgroundMOC objectWithID:self.objectID]).comments;
+        if (syncedComments && (syncedComments.count > 0)) {
+            for (Comment *comment in syncedComments) {
+                // Don't delete unpublished comments
+                if(![commentsToKeep containsObject:comment] && comment.commentID != nil) {
+                    WPLog(@"Deleting Comment: %@", comment);
+                    [backgroundMOC deleteObject:comment];
+                }
+            }
+        }
+        
+        [self dataSaveWithContext:backgroundMOC];
+    }];
 }
 
 - (void)mergeMedia:(NSArray *)newMedia {
