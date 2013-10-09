@@ -135,26 +135,6 @@
         return NO;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
-    if (self.popController) {
-        showPickerAfterRotation = YES;
-        [popController dismissPopoverAnimated:NO];
-        self.popController = nil;
-    }
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    
-    if (showPickerAfterRotation) {
-        showPickerAfterRotation = NO;
-        [self showPicker];
-    }
-}
-
-
 #pragma mark -
 #pragma mark Custom methods
 
