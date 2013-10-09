@@ -8,13 +8,6 @@
 
 #import "Comment.h"
 
-@interface Comment (PrivateMethods)
-+ (Comment *)newCommentForBlog:(Blog *)blog;
-- (void)moderate;
-- (void)findPost;
-- (void)save;
-@end
-
 @interface Comment (WordPressApi)
 - (NSDictionary *)XMLRPCDictionary;
 - (void)updateFromDictionary:(NSDictionary *)commentInfo;
@@ -32,8 +25,9 @@
 
 #pragma mark - Creating and finding comment objects
 
-+ (Comment *)findWithBlog:(Blog *)blog andCommentID:(NSNumber *)commentID {
-    NSSet *results = [blog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"commentID == %@",commentID]];
++ (Comment *)findWithBlog:(Blog *)blog andCommentID:(NSNumber *)commentID withContext:(NSManagedObjectContext *)context {
+    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
+    NSSet *results = [contextBlog.comments filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"commentID == %@",commentID]];
     
     if (results && (results.count > 0)) {
         return [[results allObjects] objectAtIndex:0];
@@ -41,20 +35,21 @@
     return nil;    
 }
 
-+ (Comment *)createOrReplaceFromDictionary:(NSDictionary *)commentInfo forBlog:(Blog *)blog {
++ (Comment *)createOrReplaceFromDictionary:(NSDictionary *)commentInfo forBlog:(Blog *)blog withContext:(NSManagedObjectContext *)context {
+    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
     if ([commentInfo objectForKey:@"comment_id"] == nil) {
         return nil;
     }
     
-    Comment *comment = [self findWithBlog:blog andCommentID:[[commentInfo objectForKey:@"comment_id"] numericValue]];
+    Comment *comment = [self findWithBlog:contextBlog andCommentID:[[commentInfo objectForKey:@"comment_id"] numericValue] withContext:context];
     
     if (comment == nil) {
-        comment = [Comment newCommentForBlog:blog];
+        comment = [Comment newCommentForBlog:contextBlog];
         comment.isNew = YES;
     }
     
     [comment updateFromDictionary:commentInfo];
-    [comment findPost];
+    [comment findPostWithContext:context];
     
     return comment;
 }
@@ -194,25 +189,27 @@
 #pragma mark - Private Methods
 
 + (Comment *)newCommentForBlog:(Blog *)blog {
-    Comment *comment = [[Comment alloc] initWithEntity:[NSEntityDescription entityForName:@"Comment"
-                                                                   inManagedObjectContext:[blog managedObjectContext]]
-                        insertIntoManagedObjectContext:[blog managedObjectContext]];
-    
+    Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:blog.managedObjectContext];
     comment.blog = blog;
-    
     return comment;
 }
 
-- (void)findPost {
-    if (self.post && self.postID && [self.post.postID isEqual:self.postID]) {
+- (void)findPostWithContext:(NSManagedObjectContext *)context {
+    Post *contextPost;
+    if (self.post) {
+        contextPost = (Post*)[context objectWithID:self.post.objectID];
+    }
+    Blog *contextBlog = (Blog*)[context objectWithID:self.blog.objectID];
+    
+    if (contextPost && self.postID && [contextPost.postID isEqual:self.postID]) {
         return;
     }
 	
 	if(self.postID) {
-        NSSet *posts = [self.blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@", self.postID]];
+        NSSet *posts = [contextBlog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@", self.postID]];
         
         if (posts && [posts count] > 0) {
-            self.post = [posts anyObject];
+            contextPost = [posts anyObject];
         }
         
 	}
