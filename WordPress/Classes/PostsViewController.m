@@ -339,7 +339,7 @@
 - (BOOL)refreshRequired {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	if ([defaults boolForKey:@"refreshPostsRequired"]) { 
-		[defaults setBool:false forKey:@"refreshPostsRequired"];
+		[defaults setBool:NO forKey:@"refreshPostsRequired"];
 		return YES;
 	}
 	

@@ -629,7 +629,7 @@
         //
         currentActionSheet = savedCurrentActionSheet;
     }
-    _dismissOnCancel = false;
+    _dismissOnCancel = NO;
 }
 
 #pragma mark -
@@ -1486,7 +1486,7 @@
 }
 
 - (void)useVideo:(NSString *)videoURL {
-	BOOL copySuccess = FALSE;
+	BOOL copySuccess = NO;
 	Media *videoMedia;
 	NSDictionary *attributes;
     UIImage *thumbnail = nil;

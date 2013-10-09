@@ -271,13 +271,13 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     _retrievingNotifications = YES;
     
     [self.user getNotificationsBefore:lastNote.timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        _retrievingNotifications = false;
+        _retrievingNotifications = NO;
                 
         if (success) {
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        _retrievingNotifications = false;
+        _retrievingNotifications = NO;
         
         if (failure) {
             failure(error);

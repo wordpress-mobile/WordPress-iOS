@@ -153,7 +153,7 @@
 			
 			[self refreshLastUpdatedDate];
 			_arrowImage.hidden = YES;
-            _statusLabel.hidden = FALSE;
+            _statusLabel.hidden = NO;
             _lastUpdatedLabel.hidden = YES;
 			break;
 		case EGOOPullRefreshLoading:

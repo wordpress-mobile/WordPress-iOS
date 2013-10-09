@@ -309,7 +309,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
         // This strips out any leading http:// or https:// making for an easier string match.
         NSString *desiredBlogUrl = [[NSURL URLWithString:self.siteUrl] absoluteString];
         
-        __block BOOL blogFound = false;
+        __block BOOL blogFound = NO;
         __block NSUInteger indexOfBlog;
         [_usersBlogs enumerateObjectsUsingBlock:^(id blogInfo, NSUInteger index, BOOL *stop){
             NSString *blogUrl = [blogInfo objectForKey:@"url"];

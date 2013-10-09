@@ -499,7 +499,7 @@
             _blogId = [options stringForKeyPath:@"blog_id.value"];
             [self loginForSiteWithXmlRpcUrl:[NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"]];
         } else {
-            _isSiteDotCom = false;
+            _isSiteDotCom = NO;
             [self loginForSiteWithXmlRpcUrl:xmlRpcURL];
         }
     } failure:^(NSError *failure){

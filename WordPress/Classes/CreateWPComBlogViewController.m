@@ -312,7 +312,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
         [self.delegate createdBlogWithDetails:blogDetails];
     } failure:^(NSError *error){
         if (!_userPressedBackButton) {
-            _isCreatingBlog = false;
+            _isCreatingBlog = NO;
             [self.tableView reloadData];
             [self displayCreationError:error];
         }

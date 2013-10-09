@@ -104,7 +104,7 @@
     }
 
 	if (usersBlogs.count == 0) {
-		buttonSelectAll.enabled = FALSE;
+		buttonSelectAll.enabled = NO;
 	}
 
 	if((isWPcom) && (!appDelegate.isWPcomAuthenticated)) {
@@ -118,12 +118,12 @@
 																				target:self 
 																				action:@selector(saveSelectedBlogs:)];
 		self.navigationItem.rightBarButtonItem = topAddSelectedButton;
-		topAddSelectedButton.enabled = FALSE;
+		topAddSelectedButton.enabled = NO;
 	}
 	
     buttonAddSelected.title = NSLocalizedString(@"Add Selected", @"");
     buttonSelectAll.title = NSLocalizedString(@"Select All", @"");
-	buttonAddSelected.enabled = FALSE;
+	buttonAddSelected.enabled = NO;
 	
 	[self checkAddSelectedButtonStatus];
 }

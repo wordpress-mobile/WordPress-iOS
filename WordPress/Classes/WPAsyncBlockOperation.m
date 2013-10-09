@@ -120,7 +120,7 @@ typedef void (^ExecutionBlock)(WPAsyncBlockOperation *);
         }
     }
     
-    return false;
+    return NO;
 }
 
 @end

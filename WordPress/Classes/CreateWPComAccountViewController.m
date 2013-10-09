@@ -480,7 +480,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 - (void)processErrorDuringRemoteConnection:(NSError *)error
 {
     if (!_userPressedBackButton) {
-        _isCreatingAccount = false;
+        _isCreatingAccount = NO;
         [self enableTextFields];
         [self.tableView reloadData];
         [self displayCreationErrorMessage:error];
@@ -491,7 +491,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 {
     NSArray *textFields = @[_usernameTextField, _emailTextField, _passwordTextField, _blogUrlTextField];
     for (UITextField *textField in textFields) {
-        textField.enabled = false;
+        textField.enabled = NO;
     }
 }
 

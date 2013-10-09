@@ -1595,7 +1595,7 @@
     BOOL isPopoverDisplayed = NO;
     if (IS_IPAD) {
         if (thePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-            isPopoverDisplayed = false;
+            isPopoverDisplayed = NO;
         } else {
             isPopoverDisplayed = YES;
         }

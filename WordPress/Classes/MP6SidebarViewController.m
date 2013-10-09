@@ -331,7 +331,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             cell = [[NewSidebarCell alloc] init];
         }
         
-        cell.showsBadge = false;
+        cell.showsBadge = NO;
         cell.firstAccessoryViewImage = nil;
         cell.secondAccessoryViewImage = nil;
         

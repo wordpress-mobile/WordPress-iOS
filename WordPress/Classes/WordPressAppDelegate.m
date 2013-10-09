@@ -1269,7 +1269,7 @@
 - (void)resetStatRelatedVariables
 {
     [WPMobileStats clearPropertiesForAllEvents];
-    _hasRecordedApplicationOpenedEvent = false;
+    _hasRecordedApplicationOpenedEvent = NO;
 }
 
 @end

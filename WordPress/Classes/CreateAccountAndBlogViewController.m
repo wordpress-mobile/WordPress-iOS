@@ -202,10 +202,10 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     [updatedString replaceCharactersInRange:range withString:string];
 
     if ([page1Fields containsObject:textField]) {
-        _page1FieldsValid = false;
+        _page1FieldsValid = NO;
         [self updatePage1ButtonEnabledStatusFor:textField andUpdatedString:updatedString];
     } else if ([page2Fields containsObject:textField]) {
-        _page2FieldsValid = false;
+        _page2FieldsValid = NO;
         [self updatePage2ButtonEnabledStatusFor:textField andUpdatedString:updatedString];
     }
     
@@ -405,7 +405,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     if (_page1NextButton == nil) {
         _page1NextButton = [[WPNUXPrimaryButton alloc] init];
         [_page1NextButton setTitle:NSLocalizedString(@"Next", nil) forState:UIControlStateNormal];
-        _page1NextButton.enabled = false;
+        _page1NextButton.enabled = NO;
         [_page1NextButton addTarget:self action:@selector(clickedPage1NextButton) forControlEvents:UIControlEventTouchUpInside];
         [_page1NextButton sizeToFit];
         [_scrollView addSubview:_page1NextButton];
@@ -1159,7 +1159,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)keyboardDidHide
 {
-    _keyboardVisible = false;
+    _keyboardVisible = NO;
 }
 
 - (NSArray *)controlsToMoveDuringKeyboardTransition:(NSUInteger)page
@@ -1199,7 +1199,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 {
     _currentLanguage = language;
     _page2SiteLanguageText.text = [_currentLanguage objectForKey:@"name"];
-    _page2FieldsValid = false;
+    _page2FieldsValid = NO;
 }
 
 - (void)displayRemoteError:(NSError *)error
