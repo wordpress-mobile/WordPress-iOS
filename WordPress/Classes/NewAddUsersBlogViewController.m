@@ -388,13 +388,15 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     WPLog(@"creating blog: %@", blogInfo);
     Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo withContext:context];
 	blog.geolocationEnabled = true;
-//	[blog dataSave];
-    [blog syncBlogWithSuccess:^{
-        if( ! [blog isWPcom] )
-            [[WordPressComApi sharedApi] syncPushNotificationInfo];
-    }
-                      failure:nil];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [blog syncBlogWithSuccess:^{
+            if( ! [blog isWPcom] )
+                [[WordPressComApi sharedApi] syncPushNotificationInfo];
+        }
+                          failure:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
+    });
 }
 
 - (void)toggleButtons
