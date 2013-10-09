@@ -14,6 +14,7 @@
 #import "WordPressAppDelegate.h"
 #import "UIImageView+Gravatar.h"
 #import "NSString+Helpers.h"
+#import "iOS7CorrectedTextView.h"
 
 @interface ReaderReblogFormView()<ReaderUsersBlogsDelegate>
 

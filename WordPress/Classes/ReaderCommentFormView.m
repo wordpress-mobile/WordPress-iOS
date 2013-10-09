@@ -10,6 +10,7 @@
 #import "WordPressComApi.h"
 #import "WordPressAppDelegate.h"
 #import "WPToast.h"
+#import "iOS7CorrectedTextView.h"
 
 @implementation ReaderCommentFormView
 

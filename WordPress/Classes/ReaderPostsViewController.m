@@ -28,6 +28,7 @@
 #import "WPCookie.h"
 #import "NSString+Helpers.h"
 #import "WPPopoverBackgroundView.h"
+#import "iOS7CorrectedTextView.h"
 
 static CGFloat const ScrollingFastVelocityThreshold = 30.f;
 NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
@@ -247,7 +248,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 10.0f)];
 	paddingView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	paddingView.backgroundColor = [UIColor colorWithWhite:0.9453125f alpha:1.f];
+	paddingView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 ;
 	self.tableView.tableHeaderView = paddingView;
 }

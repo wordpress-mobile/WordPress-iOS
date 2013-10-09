@@ -18,7 +18,7 @@
     if (self) {
 
 		self.cellImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 44.0f, 44.0f)]; // arbitrary size.
-		_cellImageView.backgroundColor = [UIColor colorWithRed:192.0f/255.0f green:192.0f/255.0f blue:192.0f/255.0f alpha:1.0f];
+		_cellImageView.backgroundColor = [WPStyleGuide readGrey];
 		_cellImageView.contentMode = UIViewContentModeScaleAspectFill;
 		_cellImageView.clipsToBounds = YES;
 		[self.contentView addSubview:_cellImageView];

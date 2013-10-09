@@ -14,10 +14,12 @@
 
 @protocol ReaderTextFormDelegate;
 
+@class iOS7CorrectedTextView;
+
 @interface ReaderTextFormView : UIView <UITextViewDelegate>
 
 @property (nonatomic, weak) id<ReaderTextFormDelegate> delegate;
-@property (nonatomic, strong) UITextView *textView;
+@property (nonatomic, strong) iOS7CorrectedTextView *textView;
 @property (nonatomic, strong) UILabel *promptLabel;
 @property (nonatomic, strong) UIImageView *borderImageView;
 @property (nonatomic, strong) UINavigationItem *navigationItem;

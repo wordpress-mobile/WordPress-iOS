@@ -33,6 +33,11 @@
 
 CGFloat const WPAlertViewStandardOffset = 16.0;
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [self initWithFrame:frame andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsTwoButtonMode];
