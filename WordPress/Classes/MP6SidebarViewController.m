@@ -234,7 +234,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         [self toggleSection:[self sectionForBlog:blog]];
     };
     if ([blog isEqual:_currentlyOpenedBlog]) {
-        headerView.selected = true;
+        headerView.selected = YES;
     }
     return headerView;
 }
@@ -371,7 +371,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:(indexPath.section - 1)];
             int numberOfPendingComments = [blog numberOfPendingComments];
             if (numberOfPendingComments > 0) {
-                cell.showsBadge = true;
+                cell.showsBadge = YES;
                 cell.badgeNumber = numberOfPendingComments;
             }
         } else if ([self isRowForStats:indexPath]) {

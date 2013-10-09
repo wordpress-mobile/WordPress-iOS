@@ -344,7 +344,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
         }
 
         _footerText = @"";
-        _isCreatingAccount = true;
+        _isCreatingAccount = YES;
         [self.tableView reloadData];
         
         [self disableTextFields];
@@ -360,7 +360,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     // or encounters strange behavior as a result of a failed or successful attempt to create an account.
     if (parent == nil) {
         self.delegate = nil;
-        _userPressedBackButton = true;
+        _userPressedBackButton = YES;
         [_operationQueue cancelAllOperations];
     }
 }
@@ -499,7 +499,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 {
     NSArray *textFields = @[_usernameTextField, _emailTextField, _passwordTextField, _blogUrlTextField];
     for (UITextField *textField in textFields) {
-        textField.enabled = true;
+        textField.enabled = YES;
     }
 }
 

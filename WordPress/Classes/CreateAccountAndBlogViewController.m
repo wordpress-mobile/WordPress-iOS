@@ -161,7 +161,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         [self moveStickyControlsForContentOffset:CGPointMake(_scrollView.contentOffset.x, 0)];
     }
     
-    _hasViewAppeared = true;
+    _hasViewAppeared = YES;
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -278,7 +278,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     _scrollView.scrollEnabled = NO;
     _scrollView.frame = self.view.bounds;
     _scrollView.contentSize = scrollViewSize;
-    _scrollView.pagingEnabled = true;
+    _scrollView.pagingEnabled = YES;
     _scrollView.showsHorizontalScrollIndicator = NO;
     _scrollView.pagingEnabled = YES;
     [self.view addSubview:_scrollView];
@@ -346,7 +346,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1EmailText.backgroundColor = [UIColor whiteColor];
         _page1EmailText.placeholder = NSLocalizedString(@"Email Address", @"NUX Create Account Page 1 Email Placeholder");
         _page1EmailText.font = [WPNUXUtility textFieldFont];
-        _page1EmailText.adjustsFontSizeToFitWidth = true;
+        _page1EmailText.adjustsFontSizeToFitWidth = YES;
         _page1EmailText.delegate = self;
         _page1EmailText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page1EmailText.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -360,7 +360,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page1UsernameText.backgroundColor = [UIColor whiteColor];
         _page1UsernameText.placeholder = NSLocalizedString(@"Username", nil);
         _page1UsernameText.font = [WPNUXUtility textFieldFont];
-        _page1UsernameText.adjustsFontSizeToFitWidth = true;
+        _page1UsernameText.adjustsFontSizeToFitWidth = YES;
         _page1UsernameText.delegate = self;
         _page1UsernameText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page1UsernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -370,11 +370,11 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     // Add Password
     if (_page1PasswordText == nil) {
         _page1PasswordText = [[WPWalkthroughTextField alloc] init];
-        _page1PasswordText.secureTextEntry = true;
+        _page1PasswordText.secureTextEntry = YES;
         _page1PasswordText.backgroundColor = [UIColor whiteColor];
         _page1PasswordText.placeholder = NSLocalizedString(@"Password", nil);
         _page1PasswordText.font = [WPNUXUtility textFieldFont];
-        _page1PasswordText.adjustsFontSizeToFitWidth = true;
+        _page1PasswordText.adjustsFontSizeToFitWidth = YES;
         _page1PasswordText.delegate = self;
         _page1PasswordText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page1PasswordText.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -515,7 +515,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page2SiteTitleText.backgroundColor = [UIColor whiteColor];
         _page2SiteTitleText.placeholder = NSLocalizedString(@"Site Title", @"NUX Create Account Page 2 Site Title Placeholder");
         _page2SiteTitleText.font = [WPNUXUtility textFieldFont];
-        _page2SiteTitleText.adjustsFontSizeToFitWidth = true;
+        _page2SiteTitleText.adjustsFontSizeToFitWidth = YES;
         _page2SiteTitleText.delegate = self;
         _page2SiteTitleText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page2SiteTitleText.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -528,7 +528,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page2SiteAddressText.backgroundColor = [UIColor whiteColor];
         _page2SiteAddressText.placeholder = NSLocalizedString(@"Site Address (URL)", nil);
         _page2SiteAddressText.font = [WPNUXUtility textFieldFont];
-        _page2SiteAddressText.adjustsFontSizeToFitWidth = true;
+        _page2SiteAddressText.adjustsFontSizeToFitWidth = YES;
         _page2SiteAddressText.delegate = self;
         _page2SiteAddressText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page2SiteAddressText.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -541,7 +541,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
         _page2SiteLanguageText.backgroundColor = [UIColor whiteColor];
         _page2SiteLanguageText.placeholder = NSLocalizedString(@"Site Language", @"NUX Create Account Page 2 Site Language Placeholder");
         _page2SiteLanguageText.font = [WPNUXUtility textFieldFont];
-        _page2SiteLanguageText.adjustsFontSizeToFitWidth = true;
+        _page2SiteLanguageText.adjustsFontSizeToFitWidth = YES;
         _page2SiteLanguageText.delegate = self;
         _page2SiteLanguageText.autocorrectionType = UITextAutocorrectionTypeNo;
         _page2SiteLanguageText.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -1080,7 +1080,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 - (void)savePositionsOfStickyControls
 {
     if (!_savedOriginalPositionsOfStickyControls) {
-        _savedOriginalPositionsOfStickyControls = true;
+        _savedOriginalPositionsOfStickyControls = YES;
         _infoButtonOriginalX = CGRectGetMinX(_helpButton.frame);
         _cancelButtonOriginalX = CGRectGetMinX(_cancelButton.frame);
     }
@@ -1154,7 +1154,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
 
 - (void)keyboardDidShow
 {
-    _keyboardVisible = true;
+    _keyboardVisible = YES;
 }
 
 - (void)keyboardDidHide
@@ -1257,7 +1257,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     void (^userValidationSuccess)(id) = ^(id responseObject) {
         _page1NextButton.enabled = YES;
         [SVProgressHUD dismiss];
-        _page1FieldsValid = true;
+        _page1FieldsValid = YES;
         if ([[_page2SiteAddressText.text trim] length] == 0) {
             _page2SiteAddressText.text = _defaultSiteUrl = [NSString stringWithFormat:@"%@.wordpress.com", _page1UsernameText.text];
         }
@@ -1324,7 +1324,7 @@ CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
     void (^blogValidationSuccess)(id) = ^(id responseObject) {
         _page2NextButton.enabled = YES;
         [SVProgressHUD dismiss];
-        _page2FieldsValid = true;
+        _page2FieldsValid = YES;
         [self updatePage3Labels];
         [self moveToPage:3];
     };

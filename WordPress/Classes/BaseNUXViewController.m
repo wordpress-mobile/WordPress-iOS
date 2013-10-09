@@ -34,7 +34,7 @@
     // happens before our customized constraint will work correctly as otherwise the values will look like they belong to an
     // iPhone 5 and the logo -> bottom divider controls won't be centered.
     if (!_correctedCenteringLayout) {
-        _correctedCenteringLayout = true;
+        _correctedCenteringLayout = YES;
         [self.view setNeedsUpdateConstraints];
     }
 }

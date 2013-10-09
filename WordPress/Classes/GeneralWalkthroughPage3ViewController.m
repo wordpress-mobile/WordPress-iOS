@@ -462,7 +462,7 @@
     
     void (^loginSuccessBlock)(void) = ^{
         [SVProgressHUD dismiss];
-        _userIsDotCom = true;
+        _userIsDotCom = YES;
         [self showAddUsersBlogsForWPCom];
     };
     
@@ -663,7 +663,7 @@
     createAccountViewController.onCreatedUser = ^(NSString *username, NSString *password) {
         self.usernameText.text = username;
         self.passwordText.text = password;
-        _userIsDotCom = true;
+        _userIsDotCom = YES;
         [self.navigationController popViewControllerAnimated:NO];
         [self showAddUsersBlogsForWPCom];
     };

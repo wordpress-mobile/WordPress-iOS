@@ -162,7 +162,7 @@ BOOL hasChanges;
         }
         
         [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
-        hasChanges = true;
+        hasChanges = YES;
         [self reloadNotificationSettings];
     }
 }

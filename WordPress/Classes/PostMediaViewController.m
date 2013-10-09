@@ -101,7 +101,7 @@
         id <NSFetchedResultsSectionInfo> sectionInfo = nil;
         sectionInfo = [[self.resultsController sections] objectAtIndex:0];
         if ([sectionInfo numberOfObjects] == 0) {
-            _dismissOnCancel = true;;
+            _dismissOnCancel = YES;;
             [self tappedAddButton];
         }
     }
@@ -112,7 +112,7 @@
     [super viewWillDisappear:animated];
     
     if (_addMediaActionSheet) {
-        [_addMediaActionSheet dismissWithClickedButtonIndex:_addMediaActionSheet.cancelButtonIndex animated:true];
+        [_addMediaActionSheet dismissWithClickedButtonIndex:_addMediaActionSheet.cancelButtonIndex animated:YES];
     }
     
     [[[CPopoverManager instance] currentPopoverController] dismissPopoverAnimated:YES];

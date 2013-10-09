@@ -418,7 +418,7 @@ NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add
 
 - (void)flagProperty:(NSString *)property forEvent:(NSString *)event
 {
-    [self saveProperty:property withValue:@(true) forEvent:event];
+    [self saveProperty:property withValue:@(YES) forEvent:event];
 }
 
 - (id)property:(NSString *)property forEvent:(NSString *)event

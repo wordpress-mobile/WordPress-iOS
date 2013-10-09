@@ -495,7 +495,7 @@
 
     [api getBlogOptionsWithSuccess:^(id options){
         if ([options objectForKey:@"wordpress.com"] != nil) {
-            _isSiteDotCom = true;
+            _isSiteDotCom = YES;
             _blogId = [options stringForKeyPath:@"blog_id.value"];
             [self loginForSiteWithXmlRpcUrl:[NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"]];
         } else {
@@ -741,9 +741,9 @@
          [usernameTextField.text isEqualToString:@""] ||
          [passwordTextField.text isEqualToString:@""] )
     {
-        hasContent = FALSE;
+        hasContent = NO;
     } else {
-        hasContent = TRUE;
+        hasContent = YES;
     }
     
     self.navigationItem.rightBarButtonItem.enabled = hasContent;

@@ -1561,7 +1561,7 @@
         {
             // Dispatch async to detal with a rare bug presenting the actionsheet after a memory warning when the
             // view has been recreated.
-            showResizeActionSheet = true;
+            showResizeActionSheet = YES;
             break;
         }
         case 1:
@@ -1587,17 +1587,17 @@
         }
         default:
         {
-            showResizeActionSheet = true;
+            showResizeActionSheet = YES;
             break;
         }
     }
 
-    BOOL isPopoverDisplayed = false;
+    BOOL isPopoverDisplayed = NO;
     if (IS_IPAD) {
         if (thePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
             isPopoverDisplayed = false;
         } else {
-            isPopoverDisplayed = true;
+            isPopoverDisplayed = YES;
         }
     }
     

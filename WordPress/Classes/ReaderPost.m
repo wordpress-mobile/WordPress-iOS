@@ -601,12 +601,12 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 
 - (BOOL)isFreshlyPressed {
-	return ([self.endpoint rangeOfString:@"freshly-pressed"].location != NSNotFound)? true : false;
+	return ([self.endpoint rangeOfString:@"freshly-pressed"].location != NSNotFound)? YES : NO;
 }
 
 
 - (BOOL)isBlogsIFollow {
-	return ([self.endpoint rangeOfString:@"reader/following"].location != NSNotFound)? true : false;
+	return ([self.endpoint rangeOfString:@"reader/following"].location != NSNotFound)? YES : NO;
 }
 
 
