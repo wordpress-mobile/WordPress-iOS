@@ -112,7 +112,7 @@
         [self.navigationController presentViewController:wpComLogin animated:YES completion:nil];
 	}
 	
-	if(IS_IPAD == YES) {
+	if(IS_IPAD) {
 		topAddSelectedButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add Selected", @"") 
 																				 style:[WPStyleGuide barButtonStyleForDone]
 																				target:self 
@@ -268,7 +268,7 @@
             } else if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] -1)) {
                 [self maskImageView:cell.imageView corner:UIRectCornerBottomLeft];
             } else {
-                cell.imageView.layer.mask = NULL;
+                cell.imageView.layer.mask = nil;
             }
             [WPStyleGuide configureTableViewCell:cell];
 			break;

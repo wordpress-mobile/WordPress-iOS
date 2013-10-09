@@ -629,8 +629,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     
     segmentedTableViewController.navigationItem.rightBarButtonItem = createCategoryBarButtonItem;
 	
-    if (isNewCategory != YES) {
-		if (IS_IPAD == YES) {
+    if (!isNewCategory) {
+		if (IS_IPAD) {
             UINavigationController *navController;
             if (segmentedTableViewController.navigationController) {
                 navController = segmentedTableViewController.navigationController;
@@ -688,7 +688,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     WPFLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
     addCategoryViewController.blog = self.post.blog;
-	if (IS_IPAD == YES) {
+	if (IS_IPAD) {
         [segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
  	} else {
 		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];

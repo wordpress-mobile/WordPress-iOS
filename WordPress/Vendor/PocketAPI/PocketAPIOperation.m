@@ -347,7 +347,7 @@ NSString *PocketAPINameForHTTPMethod(PocketAPIHTTPMethod method){
 {
 	NSString *result = (NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
                                                                            (CFStringRef)urlStr,
-                                                                           NULL,
+                                                                           nil,
 																		   CFSTR("!*'();:@&=+$,/?%#[]"),
                                                                            kCFStringEncodingUTF8);
 	return [result autorelease];

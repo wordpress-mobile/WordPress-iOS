@@ -786,7 +786,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 
 - (void)showReader
 {
-    NSAssert([self areReaderAndNotificationsEnabled] == true, nil);
+    NSAssert([self areReaderAndNotificationsEnabled] != NO, nil);
     
     [self.tableView selectRowAtIndexPath:[self indexPathForReader] animated:NO scrollPosition:UITableViewScrollPositionNone];
 }

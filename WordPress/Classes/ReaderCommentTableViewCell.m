@@ -86,7 +86,7 @@
 		[dict addEntriesFromDictionary:options];
 	}
 	
-    return [[NSAttributedString alloc] initWithHTMLData:[html dataUsingEncoding:NSUTF8StringEncoding] options:dict documentAttributes:NULL];
+    return [[NSAttributedString alloc] initWithHTMLData:[html dataUsingEncoding:NSUTF8StringEncoding] options:dict documentAttributes:nil];
 }
 
 
@@ -220,7 +220,7 @@
 #pragma mark - DTAttributedTextContentView Delegate Methods
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
-	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
+	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
 	
 	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
 	NSString *identifier = [attributes objectForKey:DTGUIDAttribute];

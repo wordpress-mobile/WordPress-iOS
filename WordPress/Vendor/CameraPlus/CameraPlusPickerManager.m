@@ -250,7 +250,7 @@ NSString *CameraPlusExportPhotoMetadataType = @"com.taptaptap.CameraPlus.photoMe
             [UIPasteboard removePasteboardWithName:pasteboardName];
         } else {
 #if NS_BLOCKS_AVAILABLE
-            if (cancelBlock != NULL) {
+            if (cancelBlock) {
                 cancelBlock();
             }
 #else

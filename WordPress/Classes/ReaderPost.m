@@ -806,7 +806,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 					   success:^(AFHTTPRequestOperation *operation, id responseObject) {
 						   NSArray *postsArr = [responseObject arrayForKey:@"posts"];
 						   if(completionHandler){
-							   completionHandler([postsArr count], NULL);
+							   completionHandler([postsArr count], nil);
 						   }
 					   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 						   completionHandler(0, error);

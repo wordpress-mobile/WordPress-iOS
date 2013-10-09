@@ -1506,14 +1506,14 @@
     
     //UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
     NSURL *assetURL = nil;
-    if (&UIImagePickerControllerReferenceURL != NULL) {
+    if (&UIImagePickerControllerReferenceURL != nil) {
         assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
     }
     if (assetURL) {
         [self getMetadataFromAssetForURL:assetURL];
     } else {
         NSDictionary *metadata = nil;
-        if (&UIImagePickerControllerMediaMetadata != NULL) {
+        if (&UIImagePickerControllerMediaMetadata != nil) {
             metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
         }
         if (metadata) {
@@ -1652,9 +1652,9 @@
 														  freeWhenDone:YES];  // YES means free malloc'ed buf that backs this when deallocated
 					   
 					   CGImageSourceRef  source ;
-					   source = CGImageSourceCreateWithData((__bridge CFDataRef)imageJPEG, NULL);
+					   source = CGImageSourceCreateWithData((__bridge CFDataRef)imageJPEG, nil);
 					   
-                       NSDictionary *metadata = (NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,NULL));
+                       NSDictionary *metadata = (NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,nil));
                        
                        //make the metadata dictionary mutable so we can remove properties to it
                        NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
@@ -1776,16 +1776,16 @@
     
 	if (_currentImageMetadata != nil) {
 		// Write the EXIF data with the image data to disk
-		CGImageSourceRef  source = NULL;
-        CGImageDestinationRef destination = NULL;
+		CGImageSourceRef  source = nil;
+        CGImageDestinationRef destination = nil;
 		BOOL success = NO;
         //this will be the data CGImageDestinationRef will write into
         NSMutableData *dest_data = [NSMutableData data];
         
-		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
+		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, nil);
         if (source) {
             CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
-            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,NULL);
+            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,nil);
             
             if(destination) {
                 //add the image contained in the image source to the destination, copying the old metadata
@@ -2074,7 +2074,7 @@
     
     
     if (!_isNewCategory) {
-        if (IS_IPAD == YES) {
+        if (IS_IPAD) {
             UINavigationController *navController;
             if (_segmentedTableViewController.navigationController) {
                 navController = _segmentedTableViewController.navigationController;
@@ -2103,7 +2103,7 @@
     WPFLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
     addCategoryViewController.blog = self.post.blog;
-	if (IS_IPAD == YES) {
+	if (IS_IPAD) {
         [_segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
  	} else {
 		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];

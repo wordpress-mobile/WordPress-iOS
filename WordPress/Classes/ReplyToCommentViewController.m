@@ -29,8 +29,8 @@
 	//we should call endTextEnteringButtonAction here, bc if you click on reply without clicking on the 'done' btn
 	//within the keyboard, the textViewDidEndEditing is never called
 	[self endTextEnteringButtonAction:sender];
-	if(self.hasChanges == NO) {
-		if (IS_IPAD == YES) {
+	if(!self.hasChanges) {
+		if (IS_IPAD) {
 			[self.textView becomeFirstResponder];
 		}
 		UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"The Reply is Empty", @"")

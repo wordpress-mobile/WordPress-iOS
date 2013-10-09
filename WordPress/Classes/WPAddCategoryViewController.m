@@ -89,7 +89,7 @@
 }
 - (void)dismiss {
     WPFLogMethod();
-    if (IS_IPAD == YES) {
+    if (IS_IPAD) {
         [(WPSelectionTableViewController *)self.parentViewController popViewControllerAnimated:YES];
     } else {
         [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
