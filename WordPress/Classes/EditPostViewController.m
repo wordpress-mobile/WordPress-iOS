@@ -235,6 +235,12 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         [self.toolbar setBackgroundImage:[UIImage imageNamed:@"toolbar_bg"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
     }
     
+    for (UIView *item in self.toolbar.subviews) {
+        if ([item respondsToSelector:@selector(setExclusiveTouch:)]) {
+            [item setExclusiveTouch:YES];
+        }
+    }
+    
     [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailOpenedEditor]];
 }
 
