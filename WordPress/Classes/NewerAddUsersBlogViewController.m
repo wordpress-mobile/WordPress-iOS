@@ -235,7 +235,7 @@
 {
     WPLog(@"creating blog: %@", blogInfo);
     Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo withContext:account.managedObjectContext];
-	blog.geolocationEnabled = true;
+	blog.geolocationEnabled = YES;
 	[blog dataSave];
     [blog syncBlogWithSuccess:^{
         if( ! [blog isWPcom] )

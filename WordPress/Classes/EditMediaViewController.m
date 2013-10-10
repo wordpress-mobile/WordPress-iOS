@@ -149,7 +149,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     blur.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [_editContainerView insertSubview:blur atIndex:0];
     
-    _mediaImageview.userInteractionEnabled = false;
+    _mediaImageview.userInteractionEnabled = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -358,12 +358,12 @@ static NSUInteger const AlertDiscardChanges = 500;
     _videoPlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view insertSubview:videoPlayer.view belowSubview:_editContainerView];
     _videoPlayer.movieSourceType = MPMovieSourceTypeFile;
-    _videoPlayer.shouldAutoplay = false;
+    _videoPlayer.shouldAutoplay = NO;
     [_videoPlayer prepareToPlay];
 }
 
 - (NSString *)saveFullsizeImageToDisk:(UIImage*)image imageName:(NSString *)imageName {
-    NSString *docsDirectory = (NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, true))[0];
+    NSString *docsDirectory = (NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES))[0];
     NSData *imageData = UIImageJPEGRepresentation(image, 1);
     NSString *path = [docsDirectory stringByAppendingPathComponent:imageName];
     BOOL success = [[NSFileManager defaultManager] createFileAtPath:path contents:imageData attributes:nil];
@@ -377,7 +377,7 @@ static NSUInteger const AlertDiscardChanges = 500;
     if (_media.localURL && [[NSFileManager defaultManager] fileExistsAtPath:_media.localURL isDirectory:0]) {
         _mediaImageview.contentMode = UIViewContentModeScaleAspectFit;
         _mediaImageview.image = [[UIImage alloc] initWithContentsOfFile:_media.localURL];
-        _mediaImageview.userInteractionEnabled = true;
+        _mediaImageview.userInteractionEnabled = YES;
         return;
     }
     
@@ -395,7 +395,7 @@ static NSUInteger const AlertDiscardChanges = 500;
             _mediaImageview.image = image;
             NSString *localPath = [self saveFullsizeImageToDisk:image imageName:_media.filename];
             _media.localURL = localPath;
-            _mediaImageview.userInteractionEnabled = true;
+            _mediaImageview.userInteractionEnabled = YES;
             [[_mediaImageview viewWithTag:1337] removeFromSuperview];
         } failure:^(NSError *error) {
             WPFLog(@"Failed to download image for %@: %@", _media, error);
@@ -542,11 +542,11 @@ static NSUInteger const AlertDiscardChanges = 500;
 }
 
 - (void)cancelButtonPressed {
-    __block BOOL hasDataChanges = false;
+    __block BOOL hasDataChanges = NO;
     if ([_media.managedObjectContext hasChanges]) {
         [[_media changedValues] enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
             if ([key isEqualToString:@"title"] || [key isEqualToString:@"caption"] || [key isEqualToString:@"desc"]) {
-                hasDataChanges = true;
+                hasDataChanges = YES;
             }
         }];
     }

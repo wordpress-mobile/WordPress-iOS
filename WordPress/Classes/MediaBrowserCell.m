@@ -91,7 +91,7 @@
 
 - (void)prepareForReuse {
     self.thumbnail.image = nil;
-    self.isSelected = false;
+    self.isSelected = NO;
     if (!_thumbnail.image) {
         _thumbnail.contentMode = UIViewContentModeCenter;
     }
@@ -186,7 +186,7 @@
             CABasicAnimation *spin = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
             spin.toValue = [NSNumber numberWithFloat:(M_PI * 2)];
             spin.duration = 1.5f;
-            spin.cumulative = true;
+            spin.cumulative = YES;
             spin.repeatCount = MAXFLOAT;
             [arrows.layer addAnimation:spin forKey:@"spin"];
             instruction.text = @"TAP TO CANCEL";

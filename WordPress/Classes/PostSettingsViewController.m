@@ -846,8 +846,8 @@
                         if (!self.post.post_thumbnail) {
                             [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailSettingsClickedSetFeaturedImage]];
                             
-                                MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.apost settingFeaturedImage:true];
-                                [self.navigationController pushViewController:vc animated:true];
+                                MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.apost settingFeaturedImage:YES];
+                                [self.navigationController pushViewController:vc animated:YES];
                         }
                         break;
                     case 1:

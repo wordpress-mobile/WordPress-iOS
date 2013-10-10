@@ -78,7 +78,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
-    return [self initWithPost:aPost settingFeaturedImage:false];
+    return [self initWithPost:aPost settingFeaturedImage:NO];
 }
 
 - (id)initWithPost:(AbstractPost *)aPost selectingMediaForPost:(BOOL)isSelectingMediaForPost {
@@ -111,7 +111,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
-    self.collectionView.alwaysBounceVertical = true;
+    self.collectionView.alwaysBounceVertical = YES;
     [self.collectionView registerClass:[MediaBrowserCell class] forCellWithReuseIdentifier:MediaCellIdentifier];
     [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"header"];
     
@@ -129,7 +129,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     if (IS_IOS7) {
         self.multiselectToolbar.barTintColor = [WPStyleGuide littleEddieGrey];
     }
-    self.multiselectToolbar.translucent = false;
+    self.multiselectToolbar.translucent = NO;
     
     self.multiselectToolbar.frame = (CGRect) {
         .origin = CGPointMake(self.multiselectToolbar.frame.origin.x, CGRectGetMaxY(self.collectionView.frame)),
@@ -247,12 +247,12 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     [_refreshHeaderView beginRefreshing];
     [self.blog syncMediaLibraryWithSuccess:^{
         [_refreshHeaderView endRefreshing];
-        [self setUploadButtonEnabled:true];
+        [self setUploadButtonEnabled:YES];
     } failure:^(NSError *error) {
         WPFLog(@"Failed to refresh media library %@", error);
         [WPError showAlertWithError:error];
         if (error.code == 401) {
-            [self setUploadButtonEnabled:false];
+            [self setUploadButtonEnabled:NO];
         }
         [_refreshHeaderView endRefreshing];
     }];
@@ -270,7 +270,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
     if (!_resultsController) {
         NSManagedObjectContext *context = self.blog.managedObjectContext;
         NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Media class])];
-        fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:false]];
+        fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
         fetchRequest.predicate = [NSPredicate predicateWithFormat:@"blog == %@", self.blog];
         fetchRequest.fetchBatchSize = 10;
         _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
@@ -440,7 +440,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
         } else if (_isSelectingMediaForPost) {
             [_apost.media addObject:cell.media];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaAbove" object:cell.media];
-            [self.navigationController popViewControllerAnimated:true];
+            [self.navigationController popViewControllerAnimated:YES];
         } else {
             EditMediaViewController *viewMedia = [[EditMediaViewController alloc] initWithMedia:cell.media];
             [self.navigationController pushViewController:viewMedia animated:YES];
@@ -608,7 +608,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    _isScrollingFast = false;
+    _isScrollingFast = NO;
     [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(MediaBrowserCell *obj, NSUInteger idx, BOOL *stop) {
         [obj loadThumbnail];
     }];
@@ -659,8 +659,8 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 
 - (IBAction)addMediaButtonPressed:(id)sender {
     if ([self showAttachedMedia]) {
-        MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:_apost selectingMediaForPost:true];
-        [self.navigationController pushViewController:vc animated:true];
+        MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:_apost selectingMediaForPost:YES];
+        [self.navigationController pushViewController:vc animated:YES];
     } else {
         if (_currentActionSheet) {
             return;
@@ -1155,7 +1155,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 		switch ([resizePreference intValue]) {
 			case 0:
             {
-                showResizeActionSheet = true;
+                showResizeActionSheet = YES;
 				break;
             }
 			case 1:
@@ -1181,7 +1181,7 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
             }
 			default:
             {
-                showResizeActionSheet = true;
+                showResizeActionSheet = YES;
 				break;
             }
 		}

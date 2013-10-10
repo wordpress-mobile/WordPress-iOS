@@ -387,7 +387,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 {
     WPLog(@"creating blog: %@", blogInfo);
     Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo withContext:context];
-	blog.geolocationEnabled = true;
+	blog.geolocationEnabled = YES;
 
     dispatch_async(dispatch_get_main_queue(), ^{
         [blog syncBlogWithSuccess:^{
