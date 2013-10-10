@@ -8,7 +8,7 @@
 
 #import "EditCommentViewController.h"
 #import "CommentViewController.h"
-#import "iOS7CorrectedTextView.h"
+#import "IOS7CorrectedTextView.h"
 
 @interface EditCommentViewController() {
     CGRect _keyboardFrame;

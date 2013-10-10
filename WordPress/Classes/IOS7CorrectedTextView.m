@@ -1,5 +1,5 @@
 /*
- * iOS7CorrectedTextView.m
+ * IOS7CorrectedTextView.m
  *
  * Copyright (c) 2013 WordPress. All rights reserved.
  *
@@ -10,9 +10,9 @@
 // Original Gist https://gist.github.com/agiletortoise/a24ccbf2d33aafb2abc1
 // Discussion: https://devforums.apple.com/message/889840
 
-#import "iOS7CorrectedTextView.h"
+#import "IOS7CorrectedTextView.h"
 
-@implementation iOS7CorrectedTextView
+@implementation IOS7CorrectedTextView
 
 - (CGRect)firstRectForRange:(UITextRange *)range
 {

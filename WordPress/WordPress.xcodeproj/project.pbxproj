@@ -817,7 +817,6 @@
 		C57B7CAC17C66C0B00A64A3C /* ThemeSearchFilterHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C57B7CAB17C66C0B00A64A3C /* ThemeSearchFilterHeaderView.m */; };
 		C57B7CB017C6ACD400A64A3C /* ThemeDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C57B7CAF17C6ACD400A64A3C /* ThemeDetailsViewController.xib */; };
 		C57B7CB117C6AD2100A64A3C /* ThemeDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C57B7CAE17C6ACC100A64A3C /* ThemeDetailsViewController.m */; };
-		C58349C21805FBC200B64089 /* iOS7CorrectedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58349C11805FBC200B64089 /* iOS7CorrectedTextView.m */; };
 		C583AF7D17C7C6D700BE86A9 /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = C583AF7C17C7C6D700BE86A9 /* Theme.m */; };
 		C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		C5C272DF0E7EC00A0034AA46 /* uncheck.png in Resources */ = {isa = PBXBuildFile; fileRef = C5C272DE0E7EC00A0034AA46 /* uncheck.png */; };
@@ -833,6 +832,7 @@
 		C5FC5E3D17CE639300B299E2 /* theme-browse-current@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FC5E3917CE639300B299E2 /* theme-browse-current@2x.png */; };
 		C5FC5E3E17CE639300B299E2 /* theme-browse-premium.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FC5E3A17CE639300B299E2 /* theme-browse-premium.png */; };
 		C5FC5E3F17CE639300B299E2 /* theme-browse-premium@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5FC5E3B17CE639300B299E2 /* theme-browse-premium@2x.png */; };
+		C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */; };
 		CC0199E9165C17020073A966 /* NotificationsCommentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC0199E8165C17020073A966 /* NotificationsCommentDetailViewController.m */; };
 		CC098B8416A9ECF800450976 /* CameraPlusPickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC098B8316A9ECF800450976 /* CameraPlusPickerManager.m */; };
 		CC0E20AE15B87DA100D3468B /* WPWebBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CC0E20AD15B87DA100D3468B /* WPWebBridge.m */; };
@@ -2030,10 +2030,10 @@
 		C57B7CAD17C6ACC100A64A3C /* ThemeDetailsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThemeDetailsViewController.h; sourceTree = "<group>"; };
 		C57B7CAE17C6ACC100A64A3C /* ThemeDetailsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThemeDetailsViewController.m; sourceTree = "<group>"; };
 		C57B7CAF17C6ACD400A64A3C /* ThemeDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ThemeDetailsViewController.xib; path = Resources/ThemeDetailsViewController.xib; sourceTree = "<group>"; };
-		C58349C01805FBC200B64089 /* iOS7CorrectedTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iOS7CorrectedTextView.h; sourceTree = "<group>"; };
-		C58349C11805FBC200B64089 /* iOS7CorrectedTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iOS7CorrectedTextView.m; sourceTree = "<group>"; };
 		C583AF7B17C7C6D700BE86A9 /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
 		C583AF7C17C7C6D700BE86A9 /* Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Theme.m; sourceTree = "<group>"; };
+		C58349C31806F95100B64089 /* IOS7CorrectedTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOS7CorrectedTextView.h; sourceTree = "<group>"; };
+		C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IOS7CorrectedTextView.m; sourceTree = "<group>"; };
 		C59D3D490E6410D300AA591D /* NSString+XMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+XMLExtensions.h"; sourceTree = "<group>"; };
 		C59D3D4A0E6410D300AA591D /* NSString+XMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+XMLExtensions.m"; sourceTree = "<group>"; };
 		C5C272DE0E7EC00A0034AA46 /* uncheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = uncheck.png; path = Resources/Images/uncheck.png; sourceTree = "<group>"; };
@@ -2434,8 +2434,8 @@
 		031662E60FFB14C60045D052 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C58349C01805FBC200B64089 /* iOS7CorrectedTextView.h */,
-				C58349C11805FBC200B64089 /* iOS7CorrectedTextView.m */,
+				C58349C31806F95100B64089 /* IOS7CorrectedTextView.h */,
+				C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */,
 				E183EC9816B16CCF00C2EB11 /* AutosavingIndicatorView.h */,
 				E183EC9916B16CCF00C2EB11 /* AutosavingIndicatorView.m */,
 				E13FA0DC134C6D33007DCDD0 /* BlogSelectorButton.h */,
@@ -5339,6 +5339,7 @@
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
 				85F2C4BE17B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.m in Sources */,
 				ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */,
+				C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */,
 				ACAC79C60E1F50EB00AC7074 /* WPSelectionTableViewController.m in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */,
 				C59D3D4B0E6410D300AA591D /* NSString+XMLExtensions.m in Sources */,

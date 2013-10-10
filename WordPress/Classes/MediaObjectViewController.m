@@ -40,13 +40,7 @@
             [imageView setImageWithURL:[NSURL URLWithString:media.remoteURL]];
 		}
 	}
-	
-    if ([deleteButton respondsToSelector:@selector(setTintColor:)]) {
-        UIColor *color = [UIColor UIColorFromHex:0x464646];
-        deleteButton.tintColor = color;
-        cancelButton.tintColor = color;
-        insertButton.tintColor = color;
-    }    
+	 
 	if (IS_IPAD) {
         CGRect rect = self.scrollView.frame;
         rect.origin.y = 44.0f;
@@ -64,11 +58,12 @@
         self.toolbar.translucent = NO;
         self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
         self.toolbar.tintColor = [UIColor whiteColor];
-        self.deleteButton.tintColor = [UIColor whiteColor];
-        self.insertButton.tintColor = [UIColor whiteColor];
         self.leftSpacer.width = 1.0;
         self.rightSpacer.width = -8.0;
     }
+    deleteButton.tintColor = [UIColor whiteColor];
+    cancelButton.tintColor = deleteButton.tintColor;
+    insertButton.tintColor = deleteButton.tintColor;
 }
 
 - (void)viewDidUnload {
