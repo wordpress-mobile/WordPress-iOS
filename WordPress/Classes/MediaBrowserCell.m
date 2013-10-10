@@ -66,6 +66,10 @@
     return self;
 }
 
+- (void)dealloc {
+    [self removeUploadStatusObservers];
+}
+
 - (void)setHideCheckbox:(BOOL)hideCheckbox {
     _checkbox.hidden = hideCheckbox;
 }
@@ -96,23 +100,36 @@
         _thumbnail.contentMode = UIViewContentModeCenter;
     }
     [_uploadStatusOverlay removeFromSuperview];
-    [self removeUploadStatusObservers];
+}
+
+#pragma mark - KVO
+
+- (void)addUploadStatusObservers {
+    if (_media.remoteStatus != MediaRemoteStatusLocal && _media.remoteStatus != MediaRemoteStatusSync) {
+        [self updateUploadStatusOverlay];
+        [_media addObserver:self forKeyPath:@"progress" options:NSKeyValueObservingOptionNew context:0];
+        [_media addObserver:self forKeyPath:@"remoteStatus" options:NSKeyValueObservingOptionNew context:0];
+    }
 }
 
 - (void)removeUploadStatusObservers {
     if ([_media observationInfo]) {
-        @synchronized (_media) {
-            [_media removeObserver:self forKeyPath:@"progress"];
-            [_media removeObserver:self forKeyPath:@"remoteStatus"];
-        }
+        [_media removeObserver:self forKeyPath:@"progress"];
+        [_media removeObserver:self forKeyPath:@"remoteStatus"];
     }
 }
 
-- (void)dealloc {
-    [self removeUploadStatusObservers];
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    _title.text = [self titleForMedia];
+    
+    if ([keyPath isEqualToString:@"remoteStatus"]) {
+        [self updateUploadStatusOverlay];
+    }
 }
 
 - (void)setMedia:(Media *)media {
+    [self removeUploadStatusObservers];
+    
     _media = media;
     
     _title.text = [self titleForMedia];
@@ -126,14 +143,7 @@
         }
     }
     
-    if (_media.remoteStatus != MediaRemoteStatusLocal && _media.remoteStatus != MediaRemoteStatusSync) {
-        [self updateUploadStatusOverlay];
-        
-        @synchronized (_media) {
-            [_media addObserver:self forKeyPath:@"progress" options:NSKeyValueObservingOptionNew context:0];
-            [_media addObserver:self forKeyPath:@"remoteStatus" options:NSKeyValueObservingOptionNew context:0];
-        }
-    }
+    [self addUploadStatusObservers];
 }
 
 - (void)loadThumbnail {
@@ -148,14 +158,6 @@
         } failure:^(NSError *error) {
             WPFLog(@"Failed to download thumbnail for media %@: %@", _media.remoteURL, error);
         }];
-    }
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    _title.text = [self titleForMedia];
-    
-    if ([keyPath isEqualToString:@"remoteStatus"]) {
-        [self updateUploadStatusOverlay];
     }
 }
 
