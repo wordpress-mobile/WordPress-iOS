@@ -7,7 +7,7 @@
 //
 
 #import "ReplyToCommentViewController.h"
-#import "iOS7CorrectedTextView.h"
+#import "IOS7CorrectedTextView.h"
 
 @implementation ReplyToCommentViewController
 
