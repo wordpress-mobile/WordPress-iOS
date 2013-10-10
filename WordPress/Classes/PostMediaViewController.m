@@ -101,7 +101,7 @@
         id <NSFetchedResultsSectionInfo> sectionInfo = nil;
         sectionInfo = [[self.resultsController sections] objectAtIndex:0];
         if ([sectionInfo numberOfObjects] == 0) {
-            _dismissOnCancel = true;;
+            _dismissOnCancel = YES;
             [self tappedAddButton];
         }
     }
@@ -142,7 +142,7 @@
 
     if (addPopover != nil) {
         [addPopover dismissPopoverAnimated:YES];
-        [[CPopoverManager instance] setCurrentPopoverController:NULL];
+        [[CPopoverManager instance] setCurrentPopoverController:nil];
         addPopover = nil;
     }
     
@@ -633,7 +633,7 @@
         //
         currentActionSheet = savedCurrentActionSheet;
     }
-    _dismissOnCancel = false;
+    _dismissOnCancel = NO;
 }
 
 #pragma mark -
@@ -1055,14 +1055,14 @@
 		
 		//UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
         NSURL *assetURL = nil;
-        if (&UIImagePickerControllerReferenceURL != NULL) {
+        if (&UIImagePickerControllerReferenceURL != nil) {
             assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
         }
         if (assetURL) {
             [self getMetadataFromAssetForURL:assetURL];
         } else {
             NSDictionary *metadata = nil;
-            if (&UIImagePickerControllerMediaMetadata != NULL) {
+            if (&UIImagePickerControllerMediaMetadata != nil) {
                 metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
             }
             if (metadata) {
@@ -1141,7 +1141,7 @@
 		
         if (addPopover) {
             [addPopover dismissPopoverAnimated:YES];
-            [[CPopoverManager instance] setCurrentPopoverController:NULL];
+            [[CPopoverManager instance] setCurrentPopoverController:nil];
             addPopover = nil;
             [self showResizeActionSheet];
         } else {
@@ -1155,7 +1155,7 @@
 
 	if(IS_IPAD){
 		[addPopover dismissPopoverAnimated:YES];
-		[[CPopoverManager instance] setCurrentPopoverController:NULL];
+		[[CPopoverManager instance] setCurrentPopoverController:nil];
 		addPopover = nil;
 	}
 }
@@ -1191,9 +1191,9 @@
 														  freeWhenDone:YES];  // YES means free malloc'ed buf that backs this when deallocated
 					   
 					   CGImageSourceRef  source ;
-					   source = CGImageSourceCreateWithData((__bridge CFDataRef)imageJPEG, NULL);
+					   source = CGImageSourceCreateWithData((__bridge CFDataRef)imageJPEG, nil);
 					   
-                       NSDictionary *metadata = (NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,NULL));
+                       NSDictionary *metadata = (NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,nil));
                        
                        //make the metadata dictionary mutable so we can remove properties to it
                        NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
@@ -1269,7 +1269,7 @@
 	
     CGImageRef imageRef = [img CGImage];
     CGContextRef bitmap = CGBitmapContextCreate(
-												NULL,
+												nil,
 												size.width,
 												size.height,
 												CGImageGetBitsPerComponent(imageRef),
@@ -1406,16 +1406,16 @@
 
 	if (self.currentImageMetadata != nil) {
 		// Write the EXIF data with the image data to disk
-		CGImageSourceRef  source = NULL;
-        CGImageDestinationRef destination = NULL;
+		CGImageSourceRef  source = nil;
+        CGImageDestinationRef destination = nil;
 		BOOL success = NO;
         //this will be the data CGImageDestinationRef will write into
         NSMutableData *dest_data = [NSMutableData data];
 
-		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
+		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, nil);
         if (source) {
             CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
-            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,NULL);
+            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,nil);
             
             if(destination) {                
                 //add the image contained in the image source to the destination, copying the old metadata
@@ -1499,7 +1499,7 @@
 }
 
 - (void)useVideo:(NSString *)videoURL {
-	BOOL copySuccess = FALSE;
+	BOOL copySuccess = NO;
 	Media *videoMedia;
 	NSDictionary *attributes;
     UIImage *thumbnail = nil;
@@ -1520,7 +1520,7 @@
         CMTime actualTime;
         CGImageRef halfWayImage = [imageGenerator copyCGImageAtTime:midpoint actualTime:&actualTime error:&error];
 
-        if (halfWayImage != NULL) {
+        if (halfWayImage != nil) {
             thumbnail = [UIImage imageWithCGImage:halfWayImage];
             // Do something interesting with the image.
             CGImageRelease(halfWayImage);

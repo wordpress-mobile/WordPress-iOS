@@ -410,7 +410,7 @@
 		case 1:
             if (alertView.tag == 30){
                 NSString *path = nil;
-                NSError *error = NULL;
+                NSError *error = nil;
                 NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
                 NSString *msg = [alertView message];
                 NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
@@ -476,7 +476,7 @@
     if(![urlToValidate hasPrefix:@"http"])
         urlToValidate = [NSString stringWithFormat:@"http://%@", url];
 	
-    NSError *error = NULL;
+    NSError *error = nil;
     
     NSRegularExpression *wplogin = [NSRegularExpression regularExpressionWithPattern:@"/wp-login.php$" options:NSRegularExpressionCaseInsensitive error:&error];
     NSRegularExpression *wpadmin = [NSRegularExpression regularExpressionWithPattern:@"/wp-admin/?$" options:NSRegularExpressionCaseInsensitive error:&error];
@@ -495,11 +495,11 @@
 
     [api getBlogOptionsWithSuccess:^(id options){
         if ([options objectForKey:@"wordpress.com"] != nil) {
-            _isSiteDotCom = true;
+            _isSiteDotCom = YES;
             _blogId = [options stringForKeyPath:@"blog_id.value"];
             [self loginForSiteWithXmlRpcUrl:[NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"]];
         } else {
-            _isSiteDotCom = false;
+            _isSiteDotCom = NO;
             [self loginForSiteWithXmlRpcUrl:xmlRpcURL];
         }
     } failure:^(NSError *failure){
@@ -741,9 +741,9 @@
          [usernameTextField.text isEqualToString:@""] ||
          [passwordTextField.text isEqualToString:@""] )
     {
-        hasContent = FALSE;
+        hasContent = NO;
     } else {
-        hasContent = TRUE;
+        hasContent = YES;
     }
     
     self.navigationItem.rightBarButtonItem.enabled = hasContent;

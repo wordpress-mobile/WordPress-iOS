@@ -29,18 +29,18 @@ static NSDateFormatter *dateFormatter;
 @dynamic previewUrl;
 @dynamic blog;
 
-+ (Theme *)createOrUpdateThemeFromDictionary:(NSDictionary *)themeInfo withBlog:(Blog*)blog {
-    NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
++ (Theme *)createOrUpdateThemeFromDictionary:(NSDictionary *)themeInfo withBlog:(Blog*)blog withContext:(NSManagedObjectContext *)context {
+    Blog *contextBlog = (Blog*)[context objectWithID:blog.objectID];
     
     Theme *theme;
-    NSSet *result = [blog.themes filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId == %@", themeInfo[@"id"]]];
+    NSSet *result = [contextBlog.themes filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId == %@", themeInfo[@"id"]]];
     if (result.count > 1) {
         theme = result.allObjects[0];
     } else {
         theme = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self)
                                               inManagedObjectContext:context];
         theme.themeId = themeInfo[@"id"];
-        theme.blog = blog;
+        theme.blog = contextBlog;
     }
 
     theme.name = themeInfo[@"name"];
@@ -75,25 +75,40 @@ static NSDateFormatter *dateFormatter;
 @implementation Theme (PublicAPI)
 
 + (void)fetchAndInsertThemesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure {
+    
     [[WordPressComApi sharedApi] fetchThemesForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSMutableArray *themesToKeep = [NSMutableArray array];
-        for (NSDictionary *t in responseObject[@"themes"]) {
-            Theme *theme = [Theme createOrUpdateThemeFromDictionary:t withBlog:blog];
-            [themesToKeep addObject:theme];
-        }
         
-        for (Theme *t in blog.themes) {
-            if (![themesToKeep containsObject:t]) {
-                [t.managedObjectContext deleteObject:t];
+        NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+        
+        [backgroundMOC performBlock:^{
+            NSMutableArray *themesToKeep = [NSMutableArray array];
+            for (NSDictionary *t in responseObject[@"themes"]) {
+                Theme *theme = [Theme createOrUpdateThemeFromDictionary:t withBlog:blog withContext:backgroundMOC];
+                [themesToKeep addObject:theme];
             }
-        }
-
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext save:nil];
-        dateFormatter = nil;
+            
+            NSSet *existingThemes = ((Blog*)[backgroundMOC objectWithID:blog.objectID]).themes;
+            for (Theme *t in existingThemes) {
+                if (![themesToKeep containsObject:t]) {
+                    [backgroundMOC deleteObject:t];
+                }
+            }
+            NSError *error;
+            if (![backgroundMOC save:&error]) {
+                WPFLog(@"Unresolved core data save in themes %@", error);
+                #if DEBUG
+                exit(-1);
+                #endif
+            }
+            
+            dateFormatter = nil;
+        }];
         
         if (success) {
             success();
         }
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             failure(error);

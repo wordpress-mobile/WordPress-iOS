@@ -187,7 +187,7 @@
 - (void)toggleExtendedView {
 	WPFLogMethod();
     [[UIDevice currentDevice] playInputClick];
-	if (!toggleButton.selected == true) {
+	if (!toggleButton.selected) {
         if (IS_IOS7) {
             [toggleButton setBackgroundImage:[UIImage imageNamed:@"toggleButtonExtended-ios7"] forState:UIControlStateNormal];
         } else {

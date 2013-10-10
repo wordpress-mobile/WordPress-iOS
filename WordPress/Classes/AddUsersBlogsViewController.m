@@ -104,7 +104,7 @@
     }
 
 	if (usersBlogs.count == 0) {
-		buttonSelectAll.enabled = FALSE;
+		buttonSelectAll.enabled = NO;
 	}
 
 	if((isWPcom) && (!appDelegate.isWPcomAuthenticated)) {
@@ -112,18 +112,18 @@
         [self.navigationController presentViewController:wpComLogin animated:YES completion:nil];
 	}
 	
-	if(IS_IPAD == YES) {
+	if(IS_IPAD) {
 		topAddSelectedButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add Selected", @"") 
 																				 style:[WPStyleGuide barButtonStyleForDone]
 																				target:self 
 																				action:@selector(saveSelectedBlogs:)];
 		self.navigationItem.rightBarButtonItem = topAddSelectedButton;
-		topAddSelectedButton.enabled = FALSE;
+		topAddSelectedButton.enabled = NO;
 	}
 	
     buttonAddSelected.title = NSLocalizedString(@"Add Selected", @"");
     buttonSelectAll.title = NSLocalizedString(@"Select All", @"");
-	buttonAddSelected.enabled = FALSE;
+	buttonAddSelected.enabled = NO;
 	
 	[self checkAddSelectedButtonStatus];
 }
@@ -268,7 +268,7 @@
             } else if (indexPath.row == ([self.tableView numberOfRowsInSection:indexPath.section] -1)) {
                 [self maskImageView:cell.imageView corner:UIRectCornerBottomLeft];
             } else {
-                cell.imageView.layer.mask = NULL;
+                cell.imageView.layer.mask = nil;
             }
             [WPStyleGuide configureTableViewCell:cell];
 			break;
@@ -408,7 +408,7 @@
                 usersBlogs = responseObject;
                 hasCompletedGetUsersBlogs = YES;
                 if(usersBlogs.count > 0) {
-                    buttonSelectAll.enabled = TRUE;
+                    buttonSelectAll.enabled = YES;
                     [usersBlogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                         NSString *title = [obj valueForKey:@"blogName"];
                         title = [title stringByDecodingXMLCharacters];
@@ -561,7 +561,7 @@
 }
 
 - (void)saveSelectedBlogs {
-    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"refreshCommentsRequired"];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"refreshCommentsRequired"];
 	
     for (NSDictionary *blog in usersBlogs) {
 		if([selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
@@ -594,9 +594,9 @@
 -(void)checkAddSelectedButtonStatus {
 	//disable the 'Add Selected' button if they have selected 0 blogs, trac #521
 	if (selectedBlogs.count == 0) {
-		buttonAddSelected.enabled = FALSE;
+		buttonAddSelected.enabled = NO;
 		if (IS_IPAD) {
-			topAddSelectedButton.enabled = FALSE;
+			topAddSelectedButton.enabled = NO;
         }
         // iOS 7 Beta 6 doesn't seem to be respecting the title text attributes for UIControlStateDisabled
         // so we have to engage in this hack until apple fixes it.
@@ -607,9 +607,9 @@
                                          forState:UIControlStateNormal];
 	}
 	else {
-		buttonAddSelected.enabled = TRUE;
+		buttonAddSelected.enabled = YES;
 		if (IS_IPAD) {
-			topAddSelectedButton.enabled = TRUE;
+			topAddSelectedButton.enabled = YES;
         }
         // iOS 7 Beta 6 doesn't seem to be respecting the title text attributes for UIControlStateDisabled
         // so we have to engage in this hack until apple fixes it.

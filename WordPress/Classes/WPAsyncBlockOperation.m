@@ -43,7 +43,7 @@ typedef void (^ExecutionBlock)(WPAsyncBlockOperation *);
 
 - (BOOL)isConcurrent
 {
-    return true;
+    return YES;
 }
 
 - (BOOL)isExecuting
@@ -91,7 +91,7 @@ typedef void (^ExecutionBlock)(WPAsyncBlockOperation *);
 - (void)didFail
 {
     [self willChangeValueForKey:@"failed"];
-    _failed = true;
+    _failed = YES;
     [self didChangeValueForKey:@"failed"];
     [self completeOperation];
 }
@@ -103,8 +103,8 @@ typedef void (^ExecutionBlock)(WPAsyncBlockOperation *);
     [self willChangeValueForKey:@"isFinished"];
     [self willChangeValueForKey:@"isExecuting"];
     
-    _executing = false;
-    _finished = true;
+    _executing = NO;
+    _finished = YES;
     
     [self didChangeValueForKey:@"isFinished"];
     [self didChangeValueForKey:@"isExecuting"];
@@ -116,11 +116,11 @@ typedef void (^ExecutionBlock)(WPAsyncBlockOperation *);
         if ([operation isKindOfClass:[WPAsyncBlockOperation class]]) {
             WPAsyncBlockOperation *asyncBlockOperation = (WPAsyncBlockOperation *)operation;
             if (asyncBlockOperation.failed)
-                return true;
+                return YES;
         }
     }
     
-    return false;
+    return NO;
 }
 
 @end

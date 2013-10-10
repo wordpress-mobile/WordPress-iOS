@@ -189,7 +189,7 @@
 		NSString *str = [NSString stringWithFormat:@"<p> </p>%@", self.post.content];
 		[self updateAttributedString: [[NSAttributedString alloc] initWithHTMLData:[str dataUsingEncoding:NSUTF8StringEncoding]
 																		   options:[WPStyleGuide defaultDTCoreTextOptions]
-																documentAttributes:NULL]];
+																documentAttributes:nil]];
 		[self sendSubviewToBack:_textContentView];
     }
     return self;
@@ -461,7 +461,7 @@
 #pragma mark - DTCoreAttributedTextContentView Delegate Methods
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame {
-	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:NULL];
+	NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
 	
 	NSURL *URL = [attributes objectForKey:DTLinkAttribute];
 	NSString *identifier = [attributes objectForKey:DTGUIDAttribute];

@@ -20,7 +20,7 @@
 static NSString *const ThemeCellIdentifier = @"theme";
 static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
-@interface ThemeBrowserViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface ThemeBrowserViewController () <UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (nonatomic, strong) NSArray *sortingOptions, *resultSortAttributes; // 'nice' sort names and the corresponding model attributes
@@ -31,6 +31,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 @property (nonatomic, weak) ThemeSearchFilterHeaderView *header;
 @property (nonatomic, weak) Theme *currentTheme;
 @property (nonatomic, assign) BOOL isSearching;
+@property (nonatomic, strong) NSFetchedResultsController *resultsController;
 
 @end
 
@@ -66,7 +67,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     _refreshHeaderView.tintColor = [WPStyleGuide whisperGrey];
     [self.collectionView addSubview:_refreshHeaderView];
     
-    [self loadThemesFromCache];
     [self reloadThemes];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
@@ -105,22 +105,20 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     }
 }
 
-- (void)loadThemesFromCache {
-    NSError *error;
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Theme class])];
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:_currentResultsSort ascending:true]]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
-    fetchRequest.fetchBatchSize = 10;
-    NSArray *allThemes = [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    if (error) {
-        WPFLog(@"Failed to fetch themes with error %@", error);
-        _allThemes = self.filteredThemes = nil;
-        return;
+- (NSFetchedResultsController *)resultsController {
+    if (!_resultsController) {
+        NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+        NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Theme class])];
+        fetchRequest.predicate = [NSPredicate predicateWithFormat:@"blog == %@", self.blog];
+        fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:_currentResultsSort ascending:true]];
+        fetchRequest.fetchBatchSize = 10;
+        _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
+        _resultsController.delegate = self;
+        [_resultsController performFetch:nil];
+        _allThemes = self.filteredThemes = _resultsController.fetchedObjects;
     }
     
-    _allThemes = allThemes;
-    [self currentThemeForBlog];
-    self.filteredThemes = _allThemes;
+    return _resultsController;
 }
 
 - (void)currentThemeForBlog {
@@ -136,7 +134,6 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     [_refreshHeaderView beginRefreshing];
     [Theme fetchAndInsertThemesForBlog:self.blog success:^{
         [self refreshCurrentTheme];
-        [self loadThemesFromCache];
         [_header resetSearch];
     } failure:^(NSError *error) {
         [WPError showAlertWithError:error];
@@ -182,7 +179,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 #pragma mark - UICollectionViewDelegate/DataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
+    return [self.resultsController sections].count;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -254,6 +251,13 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
 - (void)viewDidLayoutSubviews {
     [_noThemesView centerInSuperview];
+}
+
+#pragma mark - FetchedResultsController
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    _allThemes = self.filteredThemes = controller.fetchedObjects;
+    [self currentThemeForBlog];
 }
 
 #pragma mark - Setters

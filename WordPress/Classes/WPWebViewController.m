@@ -283,13 +283,13 @@
      
     NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_article_title();"];
     
-    if( title != nil && [[title trim] isEqualToString:@""] == false ) {
+    if( title != nil && [[title trim] isEqualToString:@""] == NO) {
         return [title trim];
     } else {
         //load the title from the document
         title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"]; 
         
-        if ( title != nil && [[title trim] isEqualToString:@""] == false)
+        if ( title != nil && [[title trim] isEqualToString:@""] == NO)
             return title;
         else {
              NSString* permaLink = [self getDocumentPermalink];

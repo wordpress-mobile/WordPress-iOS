@@ -120,7 +120,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 			[_replyToCommentViewController.comment remove]; //delete the empty comment
 			_replyToCommentViewController.comment = nil;
 			
-			if (IS_IPAD == YES) { //an half-patch for #790: sometimes the modal view is not disposed when click on cancel.
+			if (IS_IPAD) { //an half-patch for #790: sometimes the modal view is not disposed when click on cancel.
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
 			

@@ -138,12 +138,12 @@
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if(isDeleting == YES) {
+    if(isDeleting) {
 		switch (buttonIndex) {
 			case 0:
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:media];
                 [media remove];
-				if(IS_IPAD == YES)
+				if(IS_IPAD)
                     [self dismissViewControllerAnimated:YES completion:nil];
 				else
 					[self.navigationController popViewControllerAnimated:YES];
@@ -152,18 +152,18 @@
 				break;
 		}
 	}
-	else if(isInserting == YES) {
+	else if(isInserting) {
 		switch (buttonIndex) {
 			case 0:
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaAbove" object:media];
-				if(IS_IPAD == YES)
+				if(IS_IPAD)
                     [self dismissViewControllerAnimated:YES completion:nil];
 				else
 					[self.navigationController popViewControllerAnimated:YES];
 				break;
 			case 1:
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
-				if(IS_IPAD == YES)
+				if(IS_IPAD)
                     [self dismissViewControllerAnimated:YES completion:nil];
 				else
 					[self.navigationController popViewControllerAnimated:YES];

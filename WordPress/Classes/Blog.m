@@ -120,7 +120,7 @@
         WPFLog(@"displayURL: decoded url is nil: %@", self.url);
         return self.url;
     }
-    NSError *error = NULL;
+    NSError *error = nil;
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
     NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""]];
     
@@ -146,7 +146,7 @@
 - (NSString *)hostname {
     NSString *hostname = [[NSURL URLWithString:self.xmlrpc] host];
     if (hostname == nil) {
-        NSError *error = NULL;
+        NSError *error = nil;
         NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"^.*://" options:NSRegularExpressionCaseInsensitive error:&error];
         hostname = [protocol stringByReplacingMatchesInString:self.url options:0 range:NSMakeRange(0, [self.url length]) withTemplate:@""];
     }
@@ -171,7 +171,7 @@
 }
 
 - (NSString *)urlWithPath:(NSString *)path {
-    NSError *error = NULL;
+    NSError *error = nil;
     NSRegularExpression *xmlrpc = [NSRegularExpression regularExpressionWithPattern:@"xmlrpc.php$" options:NSRegularExpressionCaseInsensitive error:&error];
     return [xmlrpc stringByReplacingMatchesInString:self.xmlrpc options:0 range:NSMakeRange(0, [self.xmlrpc length]) withTemplate:path];
 }

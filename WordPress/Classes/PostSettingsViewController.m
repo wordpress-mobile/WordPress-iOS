@@ -1356,7 +1356,7 @@
     
     
     if (!_isNewCategory) {
-        if (IS_IPAD == YES) {
+        if (IS_IPAD) {
             UINavigationController *navController;
             if (_segmentedTableViewController.navigationController) {
                 navController = _segmentedTableViewController.navigationController;
@@ -1385,7 +1385,7 @@
     WPFLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
     addCategoryViewController.blog = self.post.blog;
-	if (IS_IPAD == YES) {
+	if (IS_IPAD) {
         [_segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
  	} else {
 		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];

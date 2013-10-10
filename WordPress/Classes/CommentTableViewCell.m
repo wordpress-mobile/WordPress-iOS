@@ -137,7 +137,7 @@
     } else {
         checkButton.alpha = 0;
         checkButton.enabled = NO;
-        if (IS_IPAD == YES) {
+        if (IS_IPAD) {
             self.accessoryType = UITableViewCellAccessoryNone;
         } else {
             self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

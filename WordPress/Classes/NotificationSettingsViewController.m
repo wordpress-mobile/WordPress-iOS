@@ -162,7 +162,7 @@ BOOL hasChanges;
         }
         
         [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
-        hasChanges = true;
+        hasChanges = YES;
         [self reloadNotificationSettings];
     }
 }
@@ -346,7 +346,7 @@ BOOL hasChanges;
     
     UISwitch *cellSwitch = (UISwitch *)cell.accessoryView;
     cellSwitch.tag = indexPath.row;
-    [cellSwitch removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [cellSwitch removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
     
     if (indexPath.section == 1) {
         [cellSwitch addTarget:self action:@selector(notificationSettingChanged:) forControlEvents:UIControlEventValueChanged];
