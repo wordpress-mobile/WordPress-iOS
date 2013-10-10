@@ -72,6 +72,11 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
 
 @implementation MediaBrowserViewController
 
+- (void)dealloc
+{
+    self.collectionView.delegate = nil;
+}
+
 - (id)initWithPost:(AbstractPost *)aPost {
     return [self initWithPost:aPost settingFeaturedImage:false];
 }
