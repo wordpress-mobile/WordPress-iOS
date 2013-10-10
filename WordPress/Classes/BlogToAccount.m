@@ -163,7 +163,7 @@ static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
 
 - (NSString *)hostUrlForBlog:(NSManagedObject *)blog {
     NSString *url = [blog valueForKey:@"url"];
-    NSError *error = NULL;
+    NSError *error = nil;
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
     NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:[NSURL IDNDecodedHostname:url] options:0 range:NSMakeRange(0, [[NSURL IDNDecodedHostname:url] length]) withTemplate:@""]];
 

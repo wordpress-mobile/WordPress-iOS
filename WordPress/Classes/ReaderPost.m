@@ -601,12 +601,12 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 
 - (BOOL)isFreshlyPressed {
-	return ([self.endpoint rangeOfString:@"freshly-pressed"].location != NSNotFound)? true : false;
+	return ([self.endpoint rangeOfString:@"freshly-pressed"].location != NSNotFound)? YES : NO;
 }
 
 
 - (BOOL)isBlogsIFollow {
-	return ([self.endpoint rangeOfString:@"reader/following"].location != NSNotFound)? true : false;
+	return ([self.endpoint rangeOfString:@"reader/following"].location != NSNotFound)? YES : NO;
 }
 
 
@@ -806,7 +806,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 					   success:^(AFHTTPRequestOperation *operation, id responseObject) {
 						   NSArray *postsArr = [responseObject arrayForKey:@"posts"];
 						   if(completionHandler){
-							   completionHandler([postsArr count], NULL);
+							   completionHandler([postsArr count], nil);
 						   }
 					   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 						   completionHandler(0, error);

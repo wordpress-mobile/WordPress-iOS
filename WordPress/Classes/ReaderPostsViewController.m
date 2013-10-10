@@ -336,7 +336,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		// When this happens the view is set to the dimensions of its wrapper view, hiding content that should be visible
 		// above the keyboard.
 		// For now use a fallback animation.
-		if (CGRectEqualToRect(self.view.frame, frame) == false) {
+		if (!CGRectEqualToRect(self.view.frame, frame)) {
 			[UIView animateWithDuration:0.3 animations:^{
 				self.view.frame = frame;
 			}];

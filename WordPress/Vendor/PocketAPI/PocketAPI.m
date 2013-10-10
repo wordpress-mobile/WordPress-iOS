@@ -90,7 +90,7 @@ static PocketAPI *sSharedAPI = nil;
 +(PocketAPI *)sharedAPI{
 	@synchronized(self)
     {
-        if (sSharedAPI == NULL){
+        if (sSharedAPI == nil){
             sSharedAPI = [self alloc];
 			[sSharedAPI init];
 		}

@@ -477,7 +477,7 @@ typedef enum {
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
     
-    BOOL isSignInCell = false;
+    BOOL isSignInCell = NO;
     if (![[WordPressComApi sharedApi] hasCredentials]) {
         isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
     }

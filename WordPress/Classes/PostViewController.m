@@ -239,7 +239,7 @@
 }
 
 - (NSString *)formatString:(NSString *)str {
-    NSError *error = NULL;
+    NSError *error = nil;
     NSRegularExpression *linesBetweenTags = [NSRegularExpression regularExpressionWithPattern:@">\\n+<" options:NSRegularExpressionCaseInsensitive error:&error];
     NSRegularExpression *extraLines = [NSRegularExpression regularExpressionWithPattern:@"\\n{3,}" options:NSRegularExpressionCaseInsensitive error:&error];
     

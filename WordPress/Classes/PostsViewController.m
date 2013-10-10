@@ -91,13 +91,13 @@
     
     self.panelNavigationController.delegate = self;
 
-	if (IS_IPAD == NO) {
+	if (!IS_IPAD) {
 		// iPhone table views should not appear selected
 		if ([self.tableView indexPathForSelectedRow]) {
 			[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 		}
-	} else if (IS_IPAD == YES) {
+	} else if (IS_IPAD) {
 		// sometimes, iPad table views should
 		if (self.selectedIndexPath) {
             [self showSelectedPost];
@@ -255,7 +255,7 @@
 }
 
 - (void)reselect {
-	if (self.selectedIndexPath != NULL) {
+	if (self.selectedIndexPath) {
 		[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		[self tableView:self.tableView didSelectRowAtIndexPath:self.selectedIndexPath];
 	}
@@ -339,7 +339,7 @@
 - (BOOL)refreshRequired {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	if ([defaults boolForKey:@"refreshPostsRequired"]) { 
-		[defaults setBool:false forKey:@"refreshPostsRequired"];
+		[defaults setBool:NO forKey:@"refreshPostsRequired"];
 		return YES;
 	}
 	
