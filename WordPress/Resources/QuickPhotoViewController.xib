@@ -10,6 +10,7 @@
                 <outlet property="blogSelector" destination="19" id="20"/>
                 <outlet property="contentTextView" destination="9" id="14"/>
                 <outlet property="photoImageView" destination="23" id="24"/>
+                <outlet property="tapToBeginWritingLabel" destination="0cy-UR-8sd" id="ZwG-Mz-iXW"/>
                 <outlet property="titleTextField" destination="22" id="25"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
@@ -38,6 +39,14 @@
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.25" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0cy-UR-8sd">
+                    <rect key="frame" x="10" y="49" width="279" height="21"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <view contentMode="scaleToFill" id="23" customClass="QuickPicturePreviewView">
                     <rect key="frame" x="190" y="0.0" width="130" height="411"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" heightSizable="YES"/>

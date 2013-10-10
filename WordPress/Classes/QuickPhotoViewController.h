@@ -16,7 +16,7 @@
 
 @class Blog, IOS7CorrectedTextView;
 @class MP6SidebarViewController;
-@interface QuickPhotoViewController : UIViewController <UIPopoverControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, BlogSelectorButtonDelegate, QuickPicturePreviewViewDelegate> {
+@interface QuickPhotoViewController : UIViewController <UIPopoverControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, BlogSelectorButtonDelegate, QuickPicturePreviewViewDelegate, UITextViewDelegate> {
 	WordPressAppDelegate *appDelegate;
     Post *post;
     CGRect startingFrame;
