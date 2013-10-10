@@ -538,6 +538,8 @@ static CGFloat const ScrollingVelocityThreshold = 30.0f;
             _allMedia = _apost.media.allObjects;
             self.filteredMedia = _allMedia;
             [self toggleNoMediaView:(_apost.media.count == 0)];
+            [_selectedMedia removeAllObjects];
+            [self showMultiselectOptions];
             return;
         }
         
