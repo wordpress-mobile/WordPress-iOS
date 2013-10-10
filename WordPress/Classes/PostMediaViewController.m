@@ -111,8 +111,8 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    if (_addMediaActionSheet) {
-        [_addMediaActionSheet dismissWithClickedButtonIndex:_addMediaActionSheet.cancelButtonIndex animated:YES];
+    if (currentActionSheet) {
+        [currentActionSheet dismissWithClickedButtonIndex:currentActionSheet.cancelButtonIndex animated:YES];
     }
     
     [[[CPopoverManager instance] currentPopoverController] dismissPopoverAnimated:YES];
