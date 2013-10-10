@@ -216,7 +216,7 @@
     livePreviewController.password = [WPAccount defaultWordPressComAccount].password;
     [livePreviewController setWpLoginURL:[NSURL URLWithString:self.theme.blog.loginUrl]];
     livePreviewController.url = [NSURL URLWithString:self.theme.previewUrl];
-    [self.navigationController pushViewController:livePreviewController animated:true];
+    [self.navigationController pushViewController:livePreviewController animated:YES];
 }
 
 - (IBAction)activatePressed:(id)sender {
