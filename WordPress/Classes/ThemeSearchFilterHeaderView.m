@@ -79,7 +79,7 @@ static CGFloat const SortButtonWidth = 130.0f;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:title forState:UIControlStateNormal];
     [button addTarget:self action:@selector(optionPressed:) forControlEvents:UIControlEventTouchUpInside];
-    button.exclusiveTouch = true;
+    button.exclusiveTouch = YES;
     button.titleLabel.font = [WPStyleGuide regularTextFont];
     return button;
 }

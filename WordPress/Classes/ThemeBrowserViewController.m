@@ -92,10 +92,10 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 }
 
 - (void)sidebarOpened {
-    _isSearching = false;
+    _isSearching = NO;
     if (_header.isFirstResponder) {
         [_header resignFirstResponder];
-        _isSearching = true;
+        _isSearching = YES;
     }
 }
 
@@ -110,7 +110,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
         NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
         NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Theme class])];
         fetchRequest.predicate = [NSPredicate predicateWithFormat:@"blog == %@", self.blog];
-        fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:_currentResultsSort ascending:true]];
+        fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:_currentResultsSort ascending:YES]];
         fetchRequest.fetchBatchSize = 10;
         _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
         _resultsController.delegate = self;
@@ -222,7 +222,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
     }
     
     ThemeDetailsViewController *details = [[ThemeDetailsViewController alloc] initWithTheme:theme];
-    [self.navigationController pushViewController:details animated:true];
+    [self.navigationController pushViewController:details animated:YES];
 }
 
 #pragma mark - Collection view flow layout
@@ -273,7 +273,7 @@ static NSString *const SearchFilterCellIdentifier = @"search_filter";
 
 - (void)applyCurrentSort {
     NSString *key = [@"self." stringByAppendingString:_currentResultsSort];
-    BOOL ascending = [_currentResultsSort isEqualToString:_resultSortAttributes[1]] ? false : true;
+    BOOL ascending = ![_currentResultsSort isEqualToString:_resultSortAttributes[1]];
     _filteredThemes = [_filteredThemes sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:key ascending:ascending]]];
     [self.collectionView reloadData];
 }
