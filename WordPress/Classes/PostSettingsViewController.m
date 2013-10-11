@@ -794,8 +794,8 @@
                     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:statusDict];
                     __weak PostSettingsSelectionViewController *weakVc = vc;
                     vc.onItemSelected = ^(NSString *status) {
-                        [weakVc dismiss];
                         [self.apost setStatusTitle:status];
+                        [weakVc dismiss];
                         [tableView reloadData];
                     };
                     [self.navigationController pushViewController:vc animated:YES];
@@ -873,8 +873,8 @@
             PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
             __weak PostSettingsSelectionViewController *weakVc = vc;
             vc.onItemSelected = ^(NSString *status) {
-                [weakVc dismiss];
                 self.post.postFormatText = status;
+                [weakVc dismiss];
                 [tableView reloadData];
             };
             [self.navigationController pushViewController:vc animated:YES];
