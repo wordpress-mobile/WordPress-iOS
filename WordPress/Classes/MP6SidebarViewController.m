@@ -889,11 +889,10 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             ( [curBlog getOptionValue:@"jetpack_client_id"] != nil && [[[curBlog getOptionValue:@"jetpack_client_id"] numericValue]  isEqualToNumber:blogId] ) ) {
             blogFound = YES;
             sectionNumber = idx + 1;
-            curBlog = blog;
+            blog = curBlog;
             *stop = YES;
         }
     }];
-    
     
     if (blogFound && [self isBlogSection:sectionNumber]) {
         if (![blog isEqual:_currentlyOpenedBlog]) {
