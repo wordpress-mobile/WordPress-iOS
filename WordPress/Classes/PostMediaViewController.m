@@ -1042,10 +1042,7 @@
 		currentImage = image;
 		
 		//UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
-        NSURL *assetURL = nil;
-        if (&UIImagePickerControllerReferenceURL != nil) {
-            assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
-        }
+        NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
         if (assetURL) {
             [self getMetadataFromAssetForURL:assetURL];
         } else {
