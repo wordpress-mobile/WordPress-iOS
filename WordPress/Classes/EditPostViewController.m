@@ -538,6 +538,10 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)refreshTags
+{
+    tagsTextField.text = self.post.tags;
+}
 
 - (void)refreshButtons {
     
