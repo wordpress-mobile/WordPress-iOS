@@ -234,7 +234,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         [self toggleSection:[self sectionForBlog:blog]];
     };
     if ([blog isEqual:_currentlyOpenedBlog]) {
-        headerView.selected = true;
+        headerView.selected = YES;
     }
     return headerView;
 }
@@ -331,7 +331,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             cell = [[NewSidebarCell alloc] init];
         }
         
-        cell.showsBadge = false;
+        cell.showsBadge = NO;
         cell.firstAccessoryViewImage = nil;
         cell.secondAccessoryViewImage = nil;
         
@@ -371,7 +371,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:(indexPath.section - 1)];
             int numberOfPendingComments = [blog numberOfPendingComments];
             if (numberOfPendingComments > 0) {
-                cell.showsBadge = true;
+                cell.showsBadge = YES;
                 cell.badgeNumber = numberOfPendingComments;
             }
         } else if ([self isRowForStats:indexPath]) {
@@ -786,7 +786,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
 
 - (void)showReader
 {
-    NSAssert([self areReaderAndNotificationsEnabled] == true, nil);
+    NSAssert([self areReaderAndNotificationsEnabled] != NO, nil);
     
     [self.tableView selectRowAtIndexPath:[self indexPathForReader] animated:NO scrollPosition:UITableViewScrollPositionNone];
 }

@@ -85,8 +85,8 @@ const NSString *PocketAPILoginFailedNotification = @"PocketAPILoginFailedNotific
 		operationQueue = [[NSOperationQueue alloc] init];
 		API = [[PocketAPI sharedAPI] retain];
 		
-		CFUUIDRef uuidRef = CFUUIDCreate(NULL);
-		uuid = (NSString *)CFUUIDCreateString(NULL, uuidRef);
+		CFUUIDRef uuidRef = CFUUIDCreate(nil);
+		uuid = (NSString *)CFUUIDCreateString(nil, uuidRef);
 		CFRelease(uuidRef);
 	}
 	return self;

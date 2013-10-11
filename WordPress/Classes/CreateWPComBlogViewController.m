@@ -58,7 +58,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     if (self) {
         _currentLanguage = [WPComLanguages currentLanguage];
         _blogVisibility = WordPressComApiBlogVisibilityPublic;
-        _geolocationEnabled = true;
+        _geolocationEnabled = YES;
     }
     
     return self;
@@ -87,7 +87,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     // or encounters strange behavior as a result of a failed or successful attempt to create an account.
     if (parent == nil) {
         self.delegate = nil;
-        _userPressedBackButton = true;
+        _userPressedBackButton = YES;
     }
 }
 
@@ -304,7 +304,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
         return;
     }
 
-    _isCreatingBlog = true;
+    _isCreatingBlog = YES;
     [self.tableView reloadData];
     [[WordPressComApi sharedApi] createWPComBlogWithUrl:_blogUrlTextField.text andBlogTitle:_blogTitleTextField.text andLanguageId:[_currentLanguage objectForKey:@"lang_id"] andBlogVisibility:_blogVisibility success:^(id responseObject){
         NSDictionary *blogDetails = [responseObject dictionaryForKey:@"blog_details"];
@@ -312,7 +312,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
         [self.delegate createdBlogWithDetails:blogDetails];
     } failure:^(NSError *error){
         if (!_userPressedBackButton) {
-            _isCreatingBlog = false;
+            _isCreatingBlog = NO;
             [self.tableView reloadData];
             [self displayCreationError:error];
         }
@@ -352,7 +352,7 @@ NSUInteger const CreateBlogBlogUrlFieldTag = 1;
     [newBlog setObject:[blogInfo objectForKey:@"blogid"] forKey:@"blogid"];
     [newBlog setObject:[blogInfo objectForKey:@"url"] forKey:@"url"];
     [newBlog setObject:[blogInfo objectForKey:@"xmlrpc"] forKey:@"xmlrpc"];
-    [newBlog setObject:@(true) forKey:@"isAdmin"];
+    [newBlog setObject:@(YES) forKey:@"isAdmin"];
 
     WPAccount *account = [WPAccount defaultWordPressComAccount];
     

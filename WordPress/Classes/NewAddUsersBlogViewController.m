@@ -51,7 +51,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     self = [super init];
     if (self) {
         _selectedBlogs = [[NSMutableArray alloc] init];
-        _autoAddSingleBlog = true;
+        _autoAddSingleBlog = YES;
     }
     return self;
 }
@@ -309,15 +309,15 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
         // This strips out any leading http:// or https:// making for an easier string match.
         NSString *desiredBlogUrl = [[NSURL URLWithString:self.siteUrl] absoluteString];
         
-        __block BOOL blogFound = false;
+        __block BOOL blogFound = NO;
         __block NSUInteger indexOfBlog;
         [_usersBlogs enumerateObjectsUsingBlock:^(id blogInfo, NSUInteger index, BOOL *stop){
             NSString *blogUrl = [blogInfo objectForKey:@"url"];
             if ([blogUrl rangeOfString:desiredBlogUrl options:NSCaseInsensitiveSearch].location != NSNotFound) {
-                blogFound = true;
+                blogFound = YES;
                 [_selectedBlogs addObject:[blogInfo objectForKey:@"blogid"]];
                 indexOfBlog = index;
-                stop = true;
+                *stop = YES;
             }
         }];
         
@@ -387,7 +387,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 {
     WPLog(@"creating blog: %@", blogInfo);
     Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo withContext:context];
-	blog.geolocationEnabled = true;
+    blog.geolocationEnabled = YES;
 
     dispatch_async(dispatch_get_main_queue(), ^{
         [blog syncBlogWithSuccess:^{

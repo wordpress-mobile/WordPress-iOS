@@ -210,7 +210,7 @@
 - (void)dismiss
 {
     if (!_isDismissing) {
-        _isDismissing = true;
+        _isDismissing = YES;
         self.parentViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
         [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
         [[WordPressAppDelegate sharedWordPressApplicationDelegate].panelNavigationController teaseSidebar];

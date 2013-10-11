@@ -28,7 +28,6 @@
 	NSMutableData *statsData;
 	NSString *postID;
     UITextField *passwordTextField;
-    NSString *oauthCallback;
 	    
 	// Core Data
     NSManagedObjectContext *managedObjectContext_;

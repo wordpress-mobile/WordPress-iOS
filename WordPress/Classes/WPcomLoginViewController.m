@@ -72,7 +72,7 @@
 	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
 	CGRect logoFrame = CGRectMake(40, 20, 229, 43);
 	NSString *logoFile = @"logo_wpcom.png";
-	if(IS_IPAD == YES) {
+	if(IS_IPAD) {
 		logoFile = @"logo_wpcom@2x.png";
 		logoFrame = CGRectMake(150, 20, 229, 43);
 	}

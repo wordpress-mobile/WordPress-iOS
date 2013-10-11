@@ -300,7 +300,7 @@
     NSDictionary *remoteNotif = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
 
     if (remoteNotif) {
-        _hasRecordedApplicationOpenedEvent = true;
+        _hasRecordedApplicationOpenedEvent = YES;
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
 
         NSLog(@"Launched with a remote notification as parameter:  %@", remoteNotif);
@@ -1070,14 +1070,14 @@
             [SoundUtil playNotificationSound];
             break;
         case UIApplicationStateInactive:
-            _hasRecordedApplicationOpenedEvent = true;
+            _hasRecordedApplicationOpenedEvent = YES;
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
             
             NSLog(@"app state UIApplicationStateInactive"); //application is in bg and the user tapped the view button
              [self openNotificationScreenWithOptions:userInfo];
             break;
         case UIApplicationStateBackground:
-            _hasRecordedApplicationOpenedEvent = true;
+            _hasRecordedApplicationOpenedEvent = YES;
             [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
 
             NSLog(@" app state UIApplicationStateBackground"); //application is in bg and the user tapped the view button
@@ -1269,7 +1269,7 @@
 - (void)resetStatRelatedVariables
 {
     [WPMobileStats clearPropertiesForAllEvents];
-    _hasRecordedApplicationOpenedEvent = false;
+    _hasRecordedApplicationOpenedEvent = NO;
 }
 
 @end

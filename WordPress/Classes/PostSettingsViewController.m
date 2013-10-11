@@ -330,6 +330,7 @@
         self.apost.password = textField.text;
     } else if (textField == tagsTextField) {
         self.post.tags = tagsTextField.text;
+        [postDetailViewController refreshTags];
     }
     [postDetailViewController refreshButtons];
 }
@@ -1505,17 +1506,11 @@
     _currentImage = image;
     
     //UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
-    NSURL *assetURL = nil;
-    if (&UIImagePickerControllerReferenceURL != NULL) {
-        assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
-    }
+    NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
     if (assetURL) {
         [self getMetadataFromAssetForURL:assetURL];
     } else {
-        NSDictionary *metadata = nil;
-        if (&UIImagePickerControllerMediaMetadata != NULL) {
-            metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
-        }
+        NSDictionary *metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
         if (metadata) {
             NSMutableDictionary *mutableMetadata = [metadata mutableCopy];
             NSDictionary *gpsData = [mutableMetadata objectForKey:@"{GPS}"];
@@ -1555,13 +1550,13 @@
     NSNumber *resizePreference = [NSNumber numberWithInt:-1];
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
         resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
-    BOOL showResizeActionSheet;
+    BOOL showResizeActionSheet = NO;
     switch ([resizePreference intValue]) {
         case 0:
         {
             // Dispatch async to detal with a rare bug presenting the actionsheet after a memory warning when the
             // view has been recreated.
-            showResizeActionSheet = true;
+            showResizeActionSheet = YES;
             break;
         }
         case 1:
@@ -1587,17 +1582,17 @@
         }
         default:
         {
-            showResizeActionSheet = true;
+            showResizeActionSheet = YES;
             break;
         }
     }
 
-    BOOL isPopoverDisplayed = false;
+    BOOL isPopoverDisplayed = NO;
     if (IS_IPAD) {
         if (thePicker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-            isPopoverDisplayed = false;
+            isPopoverDisplayed = NO;
         } else {
-            isPopoverDisplayed = true;
+            isPopoverDisplayed = YES;
         }
     }
     
@@ -1652,9 +1647,9 @@
 														  freeWhenDone:YES];  // YES means free malloc'ed buf that backs this when deallocated
 					   
 					   CGImageSourceRef  source ;
-					   source = CGImageSourceCreateWithData((__bridge CFDataRef)imageJPEG, NULL);
+					   source = CGImageSourceCreateWithData((__bridge CFDataRef)imageJPEG, nil);
 					   
-                       NSDictionary *metadata = (NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,NULL));
+                       NSDictionary *metadata = (NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,nil));
                        
                        //make the metadata dictionary mutable so we can remove properties to it
                        NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
@@ -1776,16 +1771,16 @@
     
 	if (_currentImageMetadata != nil) {
 		// Write the EXIF data with the image data to disk
-		CGImageSourceRef  source = NULL;
-        CGImageDestinationRef destination = NULL;
+		CGImageSourceRef  source = nil;
+        CGImageDestinationRef destination = nil;
 		BOOL success = NO;
         //this will be the data CGImageDestinationRef will write into
         NSMutableData *dest_data = [NSMutableData data];
         
-		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
+		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, nil);
         if (source) {
             CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
-            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,NULL);
+            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,nil);
             
             if(destination) {
                 //add the image contained in the image source to the destination, copying the old metadata
@@ -1917,34 +1912,40 @@
 		if(_currentImage.size.width > largeSize.width  && _currentImage.size.height > largeSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
 															delegate:self
-												   cancelButtonTitle:nil
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil
 												   otherButtonTitles:resizeSmallStr, resizeMediumStr, resizeLargeStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 			
 		} else if(_currentImage.size.width > mediumSize.width  && _currentImage.size.height > mediumSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
 															delegate:self
-												   cancelButtonTitle:nil
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil
 												   otherButtonTitles:resizeSmallStr, resizeMediumStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 			
 		} else if(_currentImage.size.width > smallSize.width  && _currentImage.size.height > smallSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
 															delegate:self
-												   cancelButtonTitle:nil
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil
 												   otherButtonTitles:resizeSmallStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 			
 		} else {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"")
 															delegate:self
-												   cancelButtonTitle:nil
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil
 												   otherButtonTitles: originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 		}
 		
         resizeActionSheet.tag = TAG_ACTIONSHEET_RESIZE_PHOTO;
-        [resizeActionSheet showInView:self.view];
+        
+        UITableViewCell *featuredImageCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+        if (featuredImageCell != nil) {
+            [resizeActionSheet showFromRect:featuredImageCell.frame inView:self.view animated:YES];
+        } else {
+            [resizeActionSheet showInView:self.view];
+        }
 	}
 }
 
@@ -2074,7 +2075,7 @@
     
     
     if (!_isNewCategory) {
-        if (IS_IPAD == YES) {
+        if (IS_IPAD) {
             UINavigationController *navController;
             if (_segmentedTableViewController.navigationController) {
                 navController = _segmentedTableViewController.navigationController;
@@ -2103,7 +2104,7 @@
     WPFLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
     addCategoryViewController.blog = self.post.blog;
-	if (IS_IPAD == YES) {
+	if (IS_IPAD) {
         [_segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
  	} else {
 		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];

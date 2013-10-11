@@ -14,7 +14,7 @@
 #import "CameraPlusPickerManager.h"
 #import "WPPopoverBackgroundView.h"
 #import "MP6SidebarViewController.h"
-#import "iOS7CorrectedTextView.h"
+#import "IOS7CorrectedTextView.h"
 
 @interface QuickPhotoViewController () {
     UIPopoverController *popController;
@@ -22,6 +22,7 @@
 }
 
 @property (nonatomic, strong) UIPopoverController *popController;
+@property (nonatomic, weak) IBOutlet UILabel *tapToBeginWritingLabel;
 
 - (void)showPicker;
 - (void)handleKeyboardWillShow:(NSNotification *)notification;
@@ -64,6 +65,9 @@
     appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     
     self.titleTextField.placeholder = NSLocalizedString(@"Title (optional)", @"Quick Photo title");
+    self.tapToBeginWritingLabel.text = NSLocalizedString(@"Tap here to begin writing", @"");
+    self.contentTextView.delegate = self;
+    
     [self.blogSelector loadBlogsForType:BlogSelectorButtonTypeQuickPhoto];
     self.blogSelector.delegate = self;
     if (self.startingBlog != nil) {
@@ -134,26 +138,6 @@
     else 
         return NO;
 }
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
-    if (self.popController) {
-        showPickerAfterRotation = YES;
-        [popController dismissPopoverAnimated:NO];
-        self.popController = nil;
-    }
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    
-    if (showPickerAfterRotation) {
-        showPickerAfterRotation = NO;
-        [self showPicker];
-    }
-}
-
 
 #pragma mark -
 #pragma mark Custom methods
@@ -387,6 +371,16 @@
     // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [self dismiss];
+}
+
+#pragma mark - UITextViewDelegate Methods
+
+-(void)textViewDidBeginEditing:(UITextView *)textView {
+    self.tapToBeginWritingLabel.hidden = YES;
+}
+
+-(void)textViewDidEndEditing:(UITextView *)textView {
+    self.tapToBeginWritingLabel.hidden = (textView.text.length > 0);
 }
 
 @end

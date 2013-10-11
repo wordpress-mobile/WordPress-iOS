@@ -21,7 +21,7 @@
 #import "ReaderPostDetailView.h"
 #import "ReaderCommentFormView.h"
 #import "ReaderReblogFormView.h"
-#import "iOS7CorrectedTextView.h"
+#import "IOS7CorrectedTextView.h"
 
 NSInteger const ReaderCommentsToSync = 100;
 NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 minutes
@@ -722,7 +722,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		// When this happens the view is set to the dimensions of its wrapper view, hiding content that should be visible
 		// above the keyboard.
 		// For now use a fallback animation.
-		if (CGRectEqualToRect(self.view.frame, frame) == false) {
+		if (!CGRectEqualToRect(self.view.frame, frame)) {
 			[UIView animateWithDuration:0.3 animations:^{
 				self.view.frame = frame;
 			}];
@@ -957,7 +957,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (IS_IPAD == YES) {
+	if (IS_IPAD) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	}
 	

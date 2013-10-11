@@ -6,7 +6,7 @@
 #import "WPPopoverBackgroundView.h"
 #import "WPAddCategoryViewController.h"
 #import "WPAlertView.h"
-#import "iOS7CorrectedTextView.h"
+#import "IOS7CorrectedTextView.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -30,7 +30,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 @end
 
 @implementation EditPostViewController {
-    IBOutlet iOS7CorrectedTextView *textView;
+    IBOutlet IOS7CorrectedTextView *textView;
     IBOutlet UITextField *titleTextField;
     IBOutlet UITextField *tagsTextField;
     IBOutlet UILabel *titleLabel;
@@ -233,6 +233,12 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         self.photoButton.tintColor = color;
         self.movieButton.tintColor = color;
         [self.toolbar setBackgroundImage:[UIImage imageNamed:@"toolbar_bg"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+    }
+    
+    for (UIView *item in self.toolbar.subviews) {
+        if ([item respondsToSelector:@selector(setExclusiveTouch:)]) {
+            [item setExclusiveTouch:YES];
+        }
     }
     
     [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailOpenedEditor]];
@@ -532,6 +538,10 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)refreshTags
+{
+    tagsTextField.text = self.post.tags;
+}
 
 - (void)refreshButtons {
     
@@ -629,8 +639,8 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     
     segmentedTableViewController.navigationItem.rightBarButtonItem = createCategoryBarButtonItem;
 	
-    if (isNewCategory != YES) {
-		if (IS_IPAD == YES) {
+    if (!isNewCategory) {
+		if (IS_IPAD) {
             UINavigationController *navController;
             if (segmentedTableViewController.navigationController) {
                 navController = segmentedTableViewController.navigationController;
@@ -664,16 +674,11 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
 
     if (selContext == kSelectionsCategoriesContext) {
-        NSLog(@"selected categories: %@", selectedObjects);
-        NSLog(@"post: %@", self.post);
-        NSMutableSet *categories = [self.post mutableSetValueForKey:@"categories"];
-        [categories removeAllObjects];
-        [categories addObjectsFromArray:selectedObjects];
         [categoriesButton setTitle:[NSString decodeXMLCharactersIn:[self.post categoriesText]] forState:UIControlStateNormal];
     }
 
     _hasChangesToAutosave = YES;
-    [self autosaveContent];
+    [self.apost autosave];
 
 	[self refreshButtons];
 }
@@ -693,7 +698,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     WPFLogMethod();
     WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithNibName:@"WPAddCategoryViewController" bundle:nil];
     addCategoryViewController.blog = self.post.blog;
-	if (IS_IPAD == YES) {
+	if (IS_IPAD) {
         [segmentedTableViewController pushViewController:addCategoryViewController animated:YES];
  	} else {
 		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:addCategoryViewController];
