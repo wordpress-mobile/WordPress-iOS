@@ -31,11 +31,11 @@
 @property (nonatomic, strong) IBOutlet UILabel *dateLabel;
 @property (nonatomic, strong) IBOutlet UIWebView *commentWebview;
 
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *trashButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *approveButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *spamButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *editButton;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *replyButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *trashButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *approveButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *spamButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *editButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *replyButton;
 
 @end
 
