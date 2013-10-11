@@ -1077,6 +1077,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 
         // Insert
+        
+        //Disable scrolling temporarily otherwise inserting text will scroll to the bottom in iOS6 and below.
+        editorTextView.scrollEnabled = NO;
         [overlayView dismiss];
         
         [editorTextView becomeFirstResponder];
@@ -1100,6 +1103,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         NSString *oldText = editorTextView.text;
         NSRange oldRange = editorTextView.selectedRange;
         editorTextView.text = [editorTextView.text stringByReplacingCharactersInRange:range withString:aTagText];
+        
+        //Re-enable scrolling after insertion is complete
+        editorTextView.scrollEnabled = YES;
         
         //reset selection back to nothing
         range.length = 0;
