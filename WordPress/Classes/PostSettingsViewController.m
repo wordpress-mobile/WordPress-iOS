@@ -1938,7 +1938,13 @@
 		}
 		
         resizeActionSheet.tag = TAG_ACTIONSHEET_RESIZE_PHOTO;
-        [resizeActionSheet showInView:self.view];
+        
+        UITableViewCell *featuredImageCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
+        if (featuredImageCell != nil) {
+            [resizeActionSheet showFromRect:featuredImageCell.frame inView:self.view animated:YES];
+        } else {
+            [resizeActionSheet showInView:self.view];
+        }
 	}
 }
 
