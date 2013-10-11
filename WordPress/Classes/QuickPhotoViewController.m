@@ -139,6 +139,13 @@
         return NO;
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    if (IS_IPAD && self.popController.isPopoverVisible) {
+        CGRect rect = CGRectMake((self.view.bounds.size.width/2), 1.0f, 1.0f, 1.0f);
+        [self.popController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+}
+
 #pragma mark -
 #pragma mark Custom methods
 
