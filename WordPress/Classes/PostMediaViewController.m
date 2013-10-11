@@ -1046,10 +1046,7 @@
         if (assetURL) {
             [self getMetadataFromAssetForURL:assetURL];
         } else {
-            NSDictionary *metadata = nil;
-            if (&UIImagePickerControllerMediaMetadata != nil) {
-                metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
-            }
+            NSDictionary *metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
             if (metadata) {
                 NSMutableDictionary *mutableMetadata = [metadata mutableCopy];
                 NSDictionary *gpsData = [mutableMetadata objectForKey:@"{GPS}"];
