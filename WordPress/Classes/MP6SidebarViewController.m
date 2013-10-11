@@ -227,7 +227,11 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     
     SidebarTopLevelView *headerView = [[SidebarTopLevelView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), 44)];
     Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:(section - 1)];
-    headerView.blogTitle = blog.blogName;
+    if ([blog.blogName length] != 0) {
+        headerView.blogTitle = blog.blogName;
+    } else {
+        headerView.blogTitle = blog.url;
+    }
     headerView.blavatarUrl = blog.blavatarUrl;
     headerView.isWPCom = blog.isWPcom;
     headerView.onTap = ^{

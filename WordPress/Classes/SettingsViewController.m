@@ -336,7 +336,12 @@ typedef enum {
     cell.accessoryView = nil;
     if (indexPath.section == SettingsSectionBlogs) {
         Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
-        cell.textLabel.text = blog.blogName;
+        if ([blog.blogName length] != 0) {
+            cell.textLabel.text = blog.blogName;
+        } else {
+            cell.textLabel.text = blog.url;
+        }
+        
         [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
         
         if (indexPath.row == 0) {
