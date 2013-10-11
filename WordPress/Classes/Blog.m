@@ -878,13 +878,14 @@
             if (newPost.remoteStatus == AbstractPostRemoteStatusSync) {
                 [newPost updateFromDictionary:postInfo];
             }
-            [postsToKeep addObject:newPost.objectID];
+            [postsToKeep addObject:newPost];
         }
         
         NSArray *syncedPosts = [self syncedPostsWithEntityName:@"Post" withContext:backgroundMOC];
+        NSArray *postsToKeepObjectIDs = [postsToKeep valueForKey:@"objectID"];
         for (Post *post in syncedPosts) {
             
-            if (![postsToKeep containsObject:post.objectID]) {  /*&& post.blog.blogID == self.blogID*/
+            if (![postsToKeepObjectIDs containsObject:post.objectID]) {
                 //the current stored post is not contained "as-is" on the server response
                 
                 if (post.revision) { //edited post before the refresh is finished
@@ -933,12 +934,13 @@
             if (newPage.remoteStatus == AbstractPostRemoteStatusSync) {
                 [newPage updateFromDictionary:pageInfo];
             }
-            [pagesToKeep addObject:newPage.objectID];
+            [pagesToKeep addObject:newPage];
         }
 
         NSArray *syncedPages = [self syncedPostsWithEntityName:@"Page" withContext:backgroundMOC];
+        NSArray *pagesToKeepObjectIDs = [pagesToKeep valueForKey:@"objectID"];
         for (Page *page in syncedPages) {
-            if (![pagesToKeep containsObject:page.objectID]) { /*&& page.blog.blogID == self.blogID*/
+            if (![pagesToKeepObjectIDs containsObject:page.objectID]) {
 
                 if (page.revision) { //edited page before the refresh is finished
                     //We should check if this page is already available on the blog

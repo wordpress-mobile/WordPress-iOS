@@ -7,7 +7,7 @@
 #import "WPAddCategoryViewController.h"
 #import "WPAlertView.h"
 #import "MediaBrowserViewController.h"
-#import "iOS7CorrectedTextView.h"
+#import "IOS7CorrectedTextView.h"
 
 NSTimeInterval kAnimationDuration = 0.3f;
 
@@ -31,7 +31,7 @@ NSString *const EditPostViewControllerAutosaveDidFailNotification = @"EditPostVi
 @end
 
 @implementation EditPostViewController {
-    IBOutlet iOS7CorrectedTextView *textView;
+    IBOutlet IOS7CorrectedTextView *textView;
     IBOutlet UITextField *titleTextField;
     IBOutlet UITextField *tagsTextField;
     IBOutlet UILabel *titleLabel;
@@ -225,6 +225,12 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         self.photoButton.tintColor = color;
         self.movieButton.tintColor = color;
         [self.toolbar setBackgroundImage:[UIImage imageNamed:@"toolbar_bg"] forToolbarPosition:UIToolbarPositionBottom barMetrics:UIBarMetricsDefault];
+    }
+    
+    for (UIView *item in self.toolbar.subviews) {
+        if ([item respondsToSelector:@selector(setExclusiveTouch:)]) {
+            [item setExclusiveTouch:YES];
+        }
     }
     
     [WPMobileStats trackEventForWPCom:[self formattedStatEventString:StatsEventPostDetailOpenedEditor]];
@@ -530,6 +536,10 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)refreshTags
+{
+    tagsTextField.text = self.post.tags;
+}
 
 - (void)refreshButtons {
     

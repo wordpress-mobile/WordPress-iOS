@@ -29,9 +29,13 @@
 @property (nonatomic, strong) IBOutlet UIButton *authorEmailButton;
 @property (nonatomic, strong) IBOutlet UILabel *postTitleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *dateLabel;
-@property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, strong) IBOutlet UIWebView *commentWebview;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *approveButtonPlaceholder;
+
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *trashButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *approveButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *spamButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *editButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *replyButton;
 
 @end
 
@@ -71,13 +75,16 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     self.dateLabel.font = [WPStyleGuide subtitleFont];
     self.commentWebview.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
+    self.navigationController.toolbar.translucent = NO;
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [self setToolbarItems:@[_trashButton, flexibleSpace, _approveButton, flexibleSpace, _spamButton, flexibleSpace, _editButton, flexibleSpace, _replyButton] animated:NO];
+    
     if (IS_IOS7) {
-        [self.toolbar setBarTintColor:[WPStyleGuide littleEddieGrey]];
-        self.toolbar.translucent = NO;        
+        self.navigationController.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
     } else {
         [self hideWebviewShadowForiOS6];
     }
-    
+
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedPostTitle)];
     gestureRecognizer.numberOfTapsRequired = 1;
     [self.postTitleLabel addGestureRecognizer:gestureRecognizer];
@@ -88,6 +95,17 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setToolbarHidden:NO animated:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [self.navigationController setToolbarHidden:YES animated:YES];
+}
 
 - (void)setComment:(Comment *)comment {
     if ([_comment isEqual:comment]) {
@@ -215,11 +233,11 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 	[self.commentWebview loadHTMLString:htmlString baseURL:nil];
     
     if ([self.comment.status isEqualToString:@"approve"]) {
-        self.approveButtonPlaceholder.image = [UIImage imageNamed:@"icon-comments-unapprove"];
-        self.approveButtonPlaceholder.tag = CommentViewUnapproveButtonTag;
+        self.approveButton.image = [UIImage imageNamed:@"icon-comments-unapprove"];
+        self.approveButton.tag = CommentViewUnapproveButtonTag;
     } else {
-        self.approveButtonPlaceholder.image = [UIImage imageNamed:@"icon-comments-approve"];
-        self.approveButtonPlaceholder.tag = CommentViewApproveButtonTag;
+        self.approveButton.image = [UIImage imageNamed:@"icon-comments-approve"];
+        self.approveButton.tag = CommentViewApproveButtonTag;
     }
 }
 
@@ -303,7 +321,7 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
                                                         otherButtonTitles:nil];
         actionSheet.tag = CommentViewDeletePromptActionSheetTag;
         actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-        [actionSheet showInView:self.view];
+        [actionSheet showFromToolbar:self.navigationController.toolbar];
         
         _isShowingActionSheet = YES;
         
@@ -364,9 +382,9 @@ CGFloat const CommentViewUnapproveButtonTag = 701;
 #pragma mark - Reachability
 
 - (void)reachabilityChanged:(BOOL)reachable {
-    for (int i=0; i < [[self.toolbar items] count]; i++) {
-        if ([[[self.toolbar items] objectAtIndex:i] isKindOfClass:[UIBarButtonItem class]]) {
-            UIBarButtonItem *button = [[self.toolbar items] objectAtIndex:i];
+    for (int i=0; i < [self.navigationController.toolbar.items count]; i++) {
+        if ([self.navigationController.toolbar.items[i] isKindOfClass:[UIBarButtonItem class]]) {
+            UIBarButtonItem *button = self.navigationController.toolbar.items[i];
             button.enabled = reachable;
         }
     }

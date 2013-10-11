@@ -1,5 +1,5 @@
 /*
- * iOS7CorrectedTextView.h
+ * IOS7CorrectedTextView.h
  *
  * Copyright (c) 2013 WordPress. All rights reserved.
  *
@@ -9,6 +9,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface iOS7CorrectedTextView : UITextView
+@interface IOS7CorrectedTextView : UITextView
 
 @end

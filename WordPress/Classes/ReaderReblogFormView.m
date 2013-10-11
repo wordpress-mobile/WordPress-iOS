@@ -14,7 +14,7 @@
 #import "WordPressAppDelegate.h"
 #import "UIImageView+Gravatar.h"
 #import "NSString+Helpers.h"
-#import "iOS7CorrectedTextView.h"
+#import "IOS7CorrectedTextView.h"
 
 @interface ReaderReblogFormView()<ReaderUsersBlogsDelegate>
 
@@ -123,7 +123,7 @@
                 [blogs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                     if ([[obj numberForKey:@"blogid"] isEqualToNumber:primaryBlogId]) {
                         [self setDestinationBlog:obj];
-                        stop = YES;
+                        *stop = YES;
                     }
                 }];
             } else {

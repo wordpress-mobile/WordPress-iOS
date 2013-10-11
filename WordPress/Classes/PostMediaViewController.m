@@ -111,7 +111,9 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
-    [currentActionSheet dismissWithClickedButtonIndex:currentActionSheet.cancelButtonIndex animated:YES];
+    if (currentActionSheet) {
+        [currentActionSheet dismissWithClickedButtonIndex:currentActionSheet.cancelButtonIndex animated:YES];
+    }
     
     [[[CPopoverManager instance] currentPopoverController] dismissPopoverAnimated:YES];
 }
@@ -349,6 +351,7 @@
             [self presentViewController:mediaView animated:YES completion:nil];
 		}
         else {
+            self.postDetailViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"") style:UIBarButtonItemStyleBordered target:nil action:nil];
             [self.postDetailViewController.navigationController pushViewController:mediaView animated:YES];
         }
     }
@@ -1054,17 +1057,11 @@
 		currentImage = image;
 		
 		//UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
-        NSURL *assetURL = nil;
-        if (&UIImagePickerControllerReferenceURL != nil) {
-            assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
-        }
+        NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
         if (assetURL) {
             [self getMetadataFromAssetForURL:assetURL];
         } else {
-            NSDictionary *metadata = nil;
-            if (&UIImagePickerControllerMediaMetadata != nil) {
-                metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
-            }
+            NSDictionary *metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
             if (metadata) {
                 NSMutableDictionary *mutableMetadata = [metadata mutableCopy];
                 NSDictionary *gpsData = [mutableMetadata objectForKey:@"{GPS}"];

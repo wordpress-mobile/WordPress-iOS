@@ -262,7 +262,7 @@
                 blogFound = YES;
                 [_selectedBlogs addObject:[blogInfo objectForKey:@"blogid"]];
                 indexOfBlog = index;
-                stop = YES;
+                *stop = YES;
             }
         }];
         

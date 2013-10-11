@@ -289,6 +289,7 @@
         self.apost.password = textField.text;
     } else if (textField == tagsTextField) {
         self.post.tags = tagsTextField.text;
+        [postDetailViewController refreshTags];
     }
     [postDetailViewController refreshButtons];
 }
@@ -1282,6 +1283,7 @@
         }
     }];
 }
+
 
 #pragma mark - Private Methods
 
