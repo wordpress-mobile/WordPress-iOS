@@ -580,7 +580,7 @@
 
 - (void)createBlog:(NSDictionary *)blogInfo {
     WPLog(@"creating blog: %@", blogInfo);
-    Blog *blog = [_account findOrCreateBlogFromDictionary:blogInfo];
+    Blog *blog = [_account findOrCreateBlogFromDictionary:blogInfo withContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext];
 	blog.geolocationEnabled = self.geolocationEnabled;
 	[blog dataSave];
     [blog syncBlogWithSuccess:^{
