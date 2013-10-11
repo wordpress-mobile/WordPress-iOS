@@ -63,14 +63,14 @@
  
  @returns the specified post. Returns nil if there is no post with that id on the blog
  */
-+ (Post *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID;
++ (Post *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID withContext:(NSManagedObjectContext*)context;
 
 /**
  Retrieves the post with the specified `postID` for a given blog. If the specified post doesn't exist, a new empty one is created
 
  @returns the specified post.
  */
-+ (Post *)findOrCreateWithBlog:(Blog *)blog andPostID:(NSNumber *)postID;
++ (Post *)findOrCreateWithBlog:(Blog *)blog andPostID:(NSNumber *)postID withContext:(NSManagedObjectContext*)context;
 
 /**
  Updates the post properties with the results of a XML-RPC call

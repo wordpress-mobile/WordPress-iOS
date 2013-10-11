@@ -616,7 +616,7 @@
     NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
     [newBlog setObject:xmlRPCUrl forKey:@"xmlrpc"];
     
-    _blog = [account findOrCreateBlogFromDictionary:newBlog];
+    _blog = [account findOrCreateBlogFromDictionary:newBlog withContext:account.managedObjectContext];
     [_blog dataSave];
     
 }

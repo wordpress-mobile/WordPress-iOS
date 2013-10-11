@@ -361,36 +361,42 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAddBlogsClickedAddSelected properties:properties];
 
     _addSelectedButton.enabled = NO;
-
-    for (NSDictionary *blog in _usersBlogs) {
-		if([_selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
-			[self createBlog:blog withAccount:self.account];
-		}
-	}
     
-    NSError *error;
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext save:&error];
-    if (error != nil) {
-        NSLog(@"Error adding blogs: %@", [error localizedDescription]);
-    }
+    NSManagedObjectContext *context = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    backgroundMOC.parentContext = context;
+  
+    [backgroundMOC performBlock:^{
+        for (NSDictionary *blog in _usersBlogs) {
+            if([_selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
+                [self createBlog:blog withAccount:self.account withContext:backgroundMOC];
+            }
+        }
+        NSError *error;
+        if (![backgroundMOC save:&error]) {
+            WPFLog(@"Error saving context on new blogs added %@", error);
+        }
+    }];
 
     if (self.blogAdditionCompleted) {
         self.blogAdditionCompleted(self);
     }
 }
 
-- (void)createBlog:(NSDictionary *)blogInfo withAccount:(WPAccount *)account
+- (void)createBlog:(NSDictionary *)blogInfo withAccount:(WPAccount *)account withContext:(NSManagedObjectContext*)context
 {
     WPLog(@"creating blog: %@", blogInfo);
-    Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo];
-	blog.geolocationEnabled = YES;
-	[blog dataSave];
-    [blog syncBlogWithSuccess:^{
-        if( ! [blog isWPcom] )
-            [[WordPressComApi sharedApi] syncPushNotificationInfo];
-    }
-                      failure:nil];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
+    Blog *blog = [account findOrCreateBlogFromDictionary:blogInfo withContext:context];
+    blog.geolocationEnabled = YES;
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [blog syncBlogWithSuccess:^{
+            if( ! [blog isWPcom] )
+                [[WordPressComApi sharedApi] syncPushNotificationInfo];
+        }
+                          failure:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
+    });
 }
 
 - (void)toggleButtons
