@@ -22,6 +22,15 @@
 
 - (NSString *)editorTitle {
     NSString *title = @"";
+    if (self.editMode == EditPostViewControllerModeNewPost) {
+        title = NSLocalizedString(@"New Page", @"New Page Editor screen title.");
+    } else {
+        if ([self.apost.postTitle length] > 0) {
+            title = self.apost.postTitle;
+        } else {
+            title = NSLocalizedString(@"Edit Page", @"Page Editor screen title.");
+        }
+    }
     self.navigationItem.backBarButtonItem.title = title;
     return title;
 }

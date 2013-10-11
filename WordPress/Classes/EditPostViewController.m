@@ -300,6 +300,15 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 
 - (NSString *)editorTitle {
     NSString *title = @"";
+    if (self.editMode == EditPostViewControllerModeNewPost) {
+        title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
+    } else {
+        if ([self.apost.postTitle length]) {
+            title = self.apost.postTitle;
+        } else {
+            title = NSLocalizedString(@"Edit Post", @"Post Editor screen title.");
+        }
+    }
     self.navigationItem.backBarButtonItem.title = title;
     return title;
 }
