@@ -667,7 +667,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 			[[CPopoverManager instance] setCurrentPopoverController:popover];
 		
         } else {
-            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"") style:UIBarButtonItemStyleBordered target:nil action:nil];
 			self.editMode = EditPostViewControllerModeEditPost;
 			[self.navigationController pushViewController:segmentedTableViewController animated:YES];
 		}

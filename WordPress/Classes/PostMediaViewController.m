@@ -345,7 +345,6 @@
             [self presentViewController:mediaView animated:YES completion:nil];
 		}
         else {
-            self.postDetailViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"") style:UIBarButtonItemStyleBordered target:nil action:nil];
             [self.postDetailViewController.navigationController pushViewController:mediaView animated:YES];
         }
     }
