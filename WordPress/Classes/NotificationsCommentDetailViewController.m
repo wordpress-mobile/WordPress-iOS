@@ -714,7 +714,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     NoteComment *comment = [self.commentThread objectAtIndex:indexPath.section];
     BOOL mainComment = [self.commentThread lastObject] == comment;
-    CGFloat height = 0;
+    CGFloat height = 0.0;
     switch (indexPath.row) {
         case NotificationCommentCellTypeHeader:
             height = (comment.isLoaded || mainComment) ? (comment.isParentComment) ? NoteCommentCellHeight - 36.0f : NoteCommentCellHeight : NoteCommentLoadingCellHeight;
