@@ -414,6 +414,11 @@
                         title = [title stringByDecodingXMLCharacters];
                         [obj setValue:title forKey:@"blogName"];
                     }];
+                    usersBlogs = [usersBlogs sortedArrayUsingComparator:^(id obj1, id obj2){
+                        NSString *title1 = [obj1 valueForKey:@"blogName"];
+                        NSString *title2 = [obj2 valueForKey:@"blogName"];
+                        return [title1 localizedCaseInsensitiveCompare:title2];
+                    }];
                     
                     if(usersBlogs.count > 1) {
                         [self hideNoBlogsView];

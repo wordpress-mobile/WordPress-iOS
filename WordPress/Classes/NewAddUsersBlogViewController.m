@@ -352,6 +352,11 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
         NSString *title = [obj valueForKey:@"blogName"];
         title = [title stringByDecodingXMLCharacters];
         [obj setValue:title forKey:@"blogName"];
+    }];    
+    _usersBlogs = [_usersBlogs sortedArrayUsingComparator:^(id obj1, id obj2){
+        NSString *title1 = [obj1 valueForKey:@"blogName"];
+        NSString *title2 = [obj2 valueForKey:@"blogName"];
+        return [title1 localizedCaseInsensitiveCompare:title2];
     }];
 }
 
