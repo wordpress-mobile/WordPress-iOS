@@ -39,6 +39,8 @@
 +(NSString*)hashDeviceID:(NSString*)inDeviceID withSalt:(NSString*)inSalt;
 +(NSString*)connectionTypeForNetworkStatus:(QuantcastNetworkStatus)inNetworkStatus;
 
+-(void)addTimeZoneParameterEnforcingPolicy:(QuantcastPolicy*)inPolicy;
+
 @end
 #pragma mark - QuantcastEvent
 @implementation QuantcastEvent
@@ -114,6 +116,17 @@
         
         }
     }
+}
+
+-(void)addTimeZoneParameterEnforcingPolicy:(QuantcastPolicy*)inPolicy {
+    
+    NSTimeZone* tz = [NSTimeZone localTimeZone];
+    
+    [self putParameter:QCPARAMETER_DST withValue:[NSNumber numberWithBool:[tz isDaylightSavingTimeForDate:self.timestamp]] enforcingPolicy:inPolicy];
+    
+    NSInteger tzMinuteOffset = [tz secondsFromGMTForDate:self.timestamp]/60;
+    
+    [self putParameter:QCPARAMETER_TZO withValue:[NSNumber numberWithInteger:tzMinuteOffset] enforcingPolicy:inPolicy];
 }
 
 #pragma mark - JSON conversion
@@ -216,10 +229,15 @@
 
 
 +(QuantcastEvent*)eventWithSessionID:(NSString*)inSessionID 
+                applicationInstallID:(NSString*)inAppInstallID
                      enforcingPolicy:(QuantcastPolicy*)inPolicy
 {
     QuantcastEvent* e = [[[QuantcastEvent alloc] initWithSessionID:inSessionID] autorelease];
     
+    if ( nil != inAppInstallID )
+    {
+        [e putParameter:QCPARAMETER_AID withValue:inAppInstallID enforcingPolicy:inPolicy];
+    }
 
     return e;
 }
@@ -236,7 +254,7 @@
                                              carrier:(CTCarrier*)carrier
 {
     
-    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID enforcingPolicy:inPolicy];
+    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID applicationInstallID:inAppInstallID enforcingPolicy:inPolicy];
 
     [e putParameter:QCPARAMETER_EVENT withValue:QCMEASUREMENT_EVENT_LOAD enforcingPolicy:inPolicy];
 
@@ -251,10 +269,6 @@
        
     }
 
-    if ( nil != inAppInstallID )
-    {
-        [e putParameter:QCPARAMETER_AID withValue:inAppInstallID enforcingPolicy:inPolicy];
-    }
     
     NSString* appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleNameKey];
     if ( nil != appName) {
@@ -291,14 +305,7 @@
     
     // time zone
     
-    NSTimeZone* tz = [NSTimeZone localTimeZone];
-    
-    [e putParameter:QCPARAMETER_DST withValue:[NSNumber numberWithBool:[tz isDaylightSavingTimeForDate:e.timestamp]] enforcingPolicy:inPolicy];
-    
-    NSInteger tzMinuteOffset = [tz secondsFromGMTForDate:e.timestamp]/60;
-    
-    [e putParameter:QCPARAMETER_TZO withValue:[NSNumber numberWithInteger:tzMinuteOffset] enforcingPolicy:inPolicy];
-    
+    [e addTimeZoneParameterEnforcingPolicy:inPolicy];
     
     // Cheack carrier and fill in data
     if ( nil != carrier ) {
@@ -328,6 +335,23 @@
         }
         
     }
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    if ([paths count] > 0) {
+        NSString* base = [paths objectAtIndex:0];
+        NSError* error = nil;
+        NSDictionary* attrib = [[NSFileManager defaultManager] attributesOfItemAtPath:base error:&error];
+        if (nil != error && e.enableLogging) {
+            NSLog(@"QC Measurement: Error creating user agent regular expression = %@ ", error );
+        }
+        else {
+            NSDate* created = [attrib objectForKey:NSFileCreationDate];
+            if (nil != created) {
+                [e putParameter:QCPARAMETER_INSTALL withValue:[NSString stringWithFormat:@"%lu",(unsigned long)[created timeIntervalSince1970]*1000] enforcingPolicy:inPolicy];
+            }
+        }
+    }
+    
     struct utsname systemInfo;
     uname(&systemInfo);
     
@@ -345,10 +369,11 @@
 }
 
 +(QuantcastEvent*)closeSessionEventWithSessionID:(NSString*)inSessionID 
+                            applicationInstallID:(NSString*)inAppInstallID
                                  enforcingPolicy:(QuantcastPolicy*)inPolicy
                                      eventLabels:(id<NSObject>)inEventLabelsOrNil
 {
-    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID enforcingPolicy:inPolicy];
+    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID applicationInstallID:inAppInstallID enforcingPolicy:inPolicy];
     
     [e putParameter:QCPARAMETER_EVENT withValue:QCMEASUREMENT_EVENT_FINISHED enforcingPolicy:inPolicy];
     [e putLabels:inEventLabelsOrNil enforcingPolicy:inPolicy];
@@ -357,10 +382,11 @@
 }
 
 +(QuantcastEvent*)pauseSessionEventWithSessionID:(NSString*)inSessionID 
+                            applicationInstallID:(NSString*)inAppInstallID
                                  enforcingPolicy:(QuantcastPolicy*)inPolicy
                                      eventLabels:(id<NSObject>)inEventLabelsOrNil
 {
-    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID enforcingPolicy:inPolicy];
+    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID applicationInstallID:inAppInstallID enforcingPolicy:inPolicy];
     
     [e putParameter:QCPARAMETER_EVENT withValue:QCMEASUREMENT_EVENT_PAUSE enforcingPolicy:inPolicy];
     [e putLabels:inEventLabelsOrNil enforcingPolicy:inPolicy];
@@ -369,10 +395,11 @@
 }
 
 +(QuantcastEvent*)resumeSessionEventWithSessionID:(NSString*)inSessionID 
+                             applicationInstallID:(NSString*)inAppInstallID
                                   enforcingPolicy:(QuantcastPolicy*)inPolicy
                                       eventLabels:(id<NSObject>)inEventLabelsOrNil
 {
-    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID enforcingPolicy:inPolicy];
+    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID applicationInstallID:inAppInstallID enforcingPolicy:inPolicy];
     
     [e putParameter:QCPARAMETER_EVENT withValue:QCMEASUREMENT_EVENT_RESUME enforcingPolicy:inPolicy];    
     [e putLabels:inEventLabelsOrNil enforcingPolicy:inPolicy];
@@ -381,11 +408,12 @@
 }
 
 +(QuantcastEvent*)logEventEventWithEventName:(NSString*)inEventName
-                                 eventLabels:(id<NSObject>)inEventLabelsOrNil   
+                                 eventLabels:(id<NSObject>)inEventLabelsOrNil
                                    sessionID:(NSString*)inSessionID 
+                        applicationInstallID:(NSString*)inAppInstallID
                              enforcingPolicy:(QuantcastPolicy*)inPolicy
 {
-    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID enforcingPolicy:inPolicy];
+    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID applicationInstallID:inAppInstallID enforcingPolicy:inPolicy];
    
     [e putParameter:QCPARAMETER_EVENT withValue:QCMEASUREMENT_EVENT_APPEVENT enforcingPolicy:inPolicy];
     [e putParameter:QCPARAMETER_APPEVENT withValue:inEventName enforcingPolicy:inPolicy];
@@ -398,21 +426,14 @@
 +(QuantcastEvent*)logUploadLatency:(NSUInteger)inLatencyMilliseconds
                        forUploadId:(NSString*)inUploadID
                      withSessionID:(NSString*)inSessionID 
+              applicationInstallID:(NSString*)inAppInstallID
                    enforcingPolicy:(QuantcastPolicy*)inPolicy
 {
-    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID enforcingPolicy:inPolicy];
+    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID applicationInstallID:inAppInstallID enforcingPolicy:inPolicy];
 
     [e putParameter:QCPARAMETER_EVENT withValue:QCMEASUREMENT_EVENT_LATENCY enforcingPolicy:inPolicy];
-
-    if ([inPolicy isBlacklistedParameter:QCPARAMETER_LATENCY_UPLID] || [inPolicy isBlacklistedParameter:QCPARAMETER_LATENCY_VALUE]) {
-        return e;
-    }
-    
-    unsigned long latencyValue = inLatencyMilliseconds;
-    
-    NSString* latencyJSONStr = [NSString stringWithFormat:@"{\"%@\":\"%@\",\"%@\":\"%lu\"}",QCPARAMETER_LATENCY_UPLID,inUploadID,QCPARAMETER_LATENCY_VALUE,latencyValue];
-    
-    [e putParameter:QCPARAMETER_LATENCY withValue:latencyJSONStr enforcingPolicy:inPolicy];
+    [e putParameter:QCPARAMETER_LATENCY_UPLID withValue:inUploadID enforcingPolicy:inPolicy];
+    [e putParameter:QCPARAMETER_LATENCY_VALUE withValue:[NSString stringWithFormat:@"%lu",(unsigned long)inLatencyMilliseconds] enforcingPolicy:inPolicy];
     
     return e;
 }
@@ -420,24 +441,32 @@
 +(QuantcastEvent*)geolocationEventWithCountry:(NSString*)inCountry
                                      province:(NSString*)inProvince
                                          city:(NSString*)inCity
-                                withSessionID:(NSString*)inSessionID 
-                              enforcingPolicy:(QuantcastPolicy*)inPolicy 
+                               eventTimestamp:(NSDate*)inTimestamp
+                            appIsInBackground:(BOOL)inIsAppInBackground
+                                withSessionID:(NSString*)inSessionID
+                         applicationInstallID:(NSString*)inAppInstallID
+                              enforcingPolicy:(QuantcastPolicy*)inPolicy
 {
-    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID enforcingPolicy:inPolicy];
+    QuantcastEvent* e = [[[QuantcastEvent alloc] initWithSessionID:inSessionID timeStamp:inTimestamp] autorelease];
     
-    [e putParameter:QCPARAMETER_EVENT withValue:QCMEASUREMENT_EVENT_LOCATION enforcingPolicy:inPolicy];   
+    [e putParameter:QCPARAMETER_AID withValue:inAppInstallID enforcingPolicy:inPolicy];
+    [e putParameter:QCPARAMETER_EVENT withValue:QCMEASUREMENT_EVENT_LOCATION enforcingPolicy:inPolicy];
     [e putParameter:QCPARAMETER_COUNTRY withValue:inCountry enforcingPolicy:inPolicy];
     [e putParameter:QCPARAMETER_STATE withValue:inProvince enforcingPolicy:inPolicy];
     [e putParameter:QCPARAMETER_LOCALITY withValue:inCity enforcingPolicy:inPolicy];
-     
+    if (inIsAppInBackground) {
+        [e putParameter:QCPARAMETER_INBACKGROUND withValue:[[NSNumber numberWithBool:inIsAppInBackground] stringValue] enforcingPolicy:inPolicy];
+    }
+    [e addTimeZoneParameterEnforcingPolicy:inPolicy];
     return e;
 }
 
 +(QuantcastEvent*)networkReachabilityEventWithNetworkStatus:(QuantcastNetworkStatus)inNetworkStatus
                                               withSessionID:(NSString*)inSessionID
+                                       applicationInstallID:(NSString*)inAppInstallID
                                             enforcingPolicy:(QuantcastPolicy*)inPolicy
 {
-    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID enforcingPolicy:inPolicy];
+    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID applicationInstallID:inAppInstallID enforcingPolicy:inPolicy];
 
     [e putParameter:QCPARAMETER_EVENT withValue:QCMEASUREMENT_EVENT_NETINFO enforcingPolicy:inPolicy];
     [e putParameter:QCPARAMETER_CT withValue:[QuantcastEvent connectionTypeForNetworkStatus:inNetworkStatus] enforcingPolicy:inPolicy];
@@ -450,9 +479,10 @@
               withErrorObject:(NSError*)inErrorObjectOrNil
                errorParameter:(NSString*)inErrorParameterOrNil
                 withSessionID:(NSString*)inSessionID
+         applicationInstallID:(NSString*)inAppInstallID
               enforcingPolicy:(QuantcastPolicy*)inPolicy
 {
-    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID enforcingPolicy:inPolicy];
+    QuantcastEvent* e = [QuantcastEvent eventWithSessionID:inSessionID applicationInstallID:inAppInstallID enforcingPolicy:inPolicy];
  
     [e putParameter:QCPARAMETER_EVENT withValue:QCMEASUREMENT_EVENT_SDKERROR enforcingPolicy:inPolicy];
     [e putParameter:QCPARAMETER_ERRORTYPE withValue:inSDKErrorType enforcingPolicy:inPolicy];
