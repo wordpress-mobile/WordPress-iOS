@@ -140,7 +140,7 @@
         return;
     }
 	NSManagedObjectContext *moc = [[CoreDataTestHelper sharedHelper] managedObjectContext];
-	[ReaderPost syncPostsFromEndpoint:path withArray:postsArr withContext:moc];
+	[ReaderPost syncPostsFromEndpoint:path withArray:postsArr withContext:moc success:nil];
 
 	NSArray *posts = [ReaderPost fetchPostsForEndpoint:path withContext:moc];
 	
@@ -157,7 +157,7 @@
 	
 	ATHStart();
 	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:0] objectForKey:@"endpoint"];
-	[ReaderPost getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[ReaderPost getPostsFromEndpoint:path withParameters:nil loadingMore:NO success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
 		[self checkResultForPath:path andResponseObject:responseObject];
 		ATHNotify();
@@ -176,7 +176,7 @@
 	
 	ATHStart();
 	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:2] objectForKey:@"endpoint"];
-	[ReaderPost getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[ReaderPost getPostsFromEndpoint:path withParameters:nil loadingMore:NO success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		
 		[self checkResultForPath:path andResponseObject:responseObject];
 		ATHNotify();
@@ -194,7 +194,7 @@
 	
 	ATHStart();
 	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:1] objectForKey:@"endpoint"];
-	[ReaderPost getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[ReaderPost getPostsFromEndpoint:path withParameters:nil loadingMore:NO success:^(AFHTTPRequestOperation *operation, id responseObject) {
 		
 		[self checkResultForPath:path andResponseObject:responseObject];
 		ATHNotify();
@@ -213,7 +213,7 @@
 	ATHStart();
 	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:3] objectForKey:@"endpoint"];
 	path = [NSString stringWithFormat:path, @"1"];
-	[ReaderPost getPostsFromEndpoint:path withParameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	[ReaderPost getPostsFromEndpoint:path withParameters:nil loadingMore:NO success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
 		[self checkResultForPath:path andResponseObject:responseObject];
 		ATHNotify();

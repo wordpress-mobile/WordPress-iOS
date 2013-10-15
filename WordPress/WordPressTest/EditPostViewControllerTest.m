@@ -34,7 +34,7 @@
                                @"isAdmin": @YES
                                };
     _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:blogDict[@"xmlrpc"] username:@"test" andPassword:@"test"];
-    _blog = [_account findOrCreateBlogFromDictionary:blogDict];
+    _blog = [_account findOrCreateBlogFromDictionary:blogDict withContext:[[CoreDataTestHelper sharedHelper] managedObjectContext]];
     _post = [Post newDraftForBlog:_blog];
     STAssertNoThrow(_controller = [[EditPostViewController alloc] initWithPost:[_post createRevision]], nil);
     UIViewController *rvc = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
