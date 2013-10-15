@@ -33,8 +33,9 @@
                                @"blogName": @"A test blog",
                                @"isAdmin": @YES
                                };
+    [[CoreDataTestHelper sharedHelper] registerDefaultContext];
     _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:blogDict[@"xmlrpc"] username:@"test" andPassword:@"test"];
-    _blog = [_account findOrCreateBlogFromDictionary:blogDict withContext:[[CoreDataTestHelper sharedHelper] managedObjectContext]];
+    _blog = [_account findOrCreateBlogFromDictionary:blogDict withContext:[_account managedObjectContext]];
     _post = [Post newDraftForBlog:_blog];
     STAssertNoThrow(_controller = [[EditPostViewController alloc] initWithPost:[_post createRevision]], nil);
     UIViewController *rvc = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
@@ -119,7 +120,15 @@
 #pragma mark - Helpers
 
 - (UITextField *)titleTextField {
-    NSArray *views = [[[[[_controller.view subviews] objectAtIndex:0] subviews] objectAtIndex:0] subviews];
+    // For iOS7
+    NSArray *views = [_controller.view subviews];
+    for (UIView *view in views) {
+        if ([view isKindOfClass:[UITextField class]] && [[view accessibilityIdentifier] isEqualToString:@"EditorTitleField"]) {
+            return (UITextField *)view;
+        }
+    }
+    // For iOS6
+    views = [[[[[_controller.view subviews] objectAtIndex:0] subviews] objectAtIndex:0] subviews];
     for (UIView *view in views) {
         if ([view isKindOfClass:[UITextField class]] && [[view accessibilityIdentifier] isEqualToString:@"EditorTitleField"]) {
             return (UITextField *)view;
