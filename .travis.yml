@@ -1,6 +1,6 @@
 language: objective-c
 install: true
-before_script: before_test.sh
-script: test.sh
+before_script: ./before_test.sh
+script: ./test.sh
 workspace: WordPress.xcworkspace
 scheme: WordPress
