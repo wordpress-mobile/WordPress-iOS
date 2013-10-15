@@ -1,2 +1,4 @@
 language: objective-c
 install: true
+workspace: WordPress.xcworkspace
+scheme: WordPress
