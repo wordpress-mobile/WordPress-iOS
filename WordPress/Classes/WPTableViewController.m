@@ -209,6 +209,13 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     return _refreshHeaderView.backgroundColor;
 }
 
+- (NSString *)noResultsText
+{
+    NSString *ttl = NSLocalizedString(@"No %@ yet", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
+	ttl = [NSString stringWithFormat:ttl, [self.title lowercaseString]];
+    return ttl;
+}
+
 #pragma mark - Property accessors
 
 - (void)setBlog:(Blog *)blog {
@@ -615,15 +622,12 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (UIView *)createNoResultsView {
-	NSString *ttl = NSLocalizedString(@"No %@ yet", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
-	ttl = [NSString stringWithFormat:ttl, [self.title lowercaseString]];
-	
 	NSString *msg = @"";
 	if ([self userCanCreateEntity]) {
 		msg = NSLocalizedString(@"Why not create one?", @"A call to action to create a post or page.");
 	}
 	
-	return [WPInfoView WPInfoViewWithTitle:ttl message:msg cancelButton:nil];
+	return [WPInfoView WPInfoViewWithTitle:[self noResultsText] message:msg cancelButton:nil];
 }
 
 - (void)hideRefreshHeader {

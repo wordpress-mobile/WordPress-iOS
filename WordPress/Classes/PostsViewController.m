@@ -26,6 +26,11 @@
     return self;
 }
 
+- (NSString *)noResultsText
+{
+    return NSLocalizedString(@"No posts yet", @"Displayed when the user pulls up the posts view and they have no posts");
+}
+
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];

@@ -27,6 +27,12 @@
     return self;
 }
 
+- (NSString *)noResultsText
+{
+    return NSLocalizedString(@"No pages yet", @"Displayed when the user pulls up the pages view and they have no pages");
+}
+
+
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure {
     [self.blog syncPagesWithSuccess:success failure:failure loadMore: NO];
 }
