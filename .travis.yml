@@ -1,1 +1,2 @@
 language: objective-c
+install: make
