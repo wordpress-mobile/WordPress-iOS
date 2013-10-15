@@ -21,6 +21,18 @@
 
 @implementation ReaderTest
 
+- (void)setUp
+{
+    [super setUp];
+    [[CoreDataTestHelper sharedHelper] registerDefaultContext];
+}
+
+- (void)tearDown
+{
+    [super tearDown];
+    [[CoreDataTestHelper sharedHelper] reset];
+}
+
 /*
  Data
  */
@@ -156,7 +168,7 @@
 
 }
 
-- (void)testEndpointWithPath:(NSString *)path {
+- (void)endpointTestWithPath:(NSString *)path {
 	ATHStart();
     __block id response = nil;
 	[ReaderPost getPostsFromEndpoint:path withParameters:nil loadingMore:NO success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -173,28 +185,28 @@
 
 - (void)testGetPostsFreshlyPressed {
 	
-	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:0] objectForKey:@"endpoint"];
-    [self testEndpointWithPath:path];
+	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:1] objectForKey:@"endpoint"];
+    [self endpointTestWithPath:path];
 }
 
 
 - (void)testGetPostsFollowing {
 	
-	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:2] objectForKey:@"endpoint"];
-    [self testEndpointWithPath:path];
+	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:0] objectForKey:@"endpoint"];
+    [self endpointTestWithPath:path];
 }
 
 
 - (void)testGetPostsLikes {
-	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:1] objectForKey:@"endpoint"];
-    [self testEndpointWithPath:path];
+	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:2] objectForKey:@"endpoint"];
+    [self endpointTestWithPath:path];
 }
 
 
 - (void)testGetPostsForTopic {
 	NSString *path = [[[ReaderPost readerEndpoints] objectAtIndex:3] objectForKey:@"endpoint"];
 	path = [NSString stringWithFormat:path, @"1"];
-    [self testEndpointWithPath:path];
+    [self endpointTestWithPath:path];
 }
 
 
