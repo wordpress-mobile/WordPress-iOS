@@ -110,7 +110,7 @@
 	UITapGestureRecognizer *tgr1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageTapped:)];
 	[tgr1 setNumberOfTapsRequired:1];
 	[tgr1 requireGestureRecognizerToFail:tgr2];
-	[_imageView addGestureRecognizer:tgr1];
+    [_scrollView addGestureRecognizer:tgr1];
 	
 	if(self.image != nil) {
 		_imageView.image = self.image;
