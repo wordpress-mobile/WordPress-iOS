@@ -50,6 +50,7 @@
 {
     [super viewDidLoad];
 
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self loadLogFiles];
 }
 
@@ -93,10 +94,12 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.textLabel.text = indexPath.row == 0 ? NSLocalizedString(@"Current", @"") : [dateFormatter stringFromDate:logFileInfo.creationDate];
         cell.textLabel.textAlignment = NSTextAlignmentLeft;
+        [WPStyleGuide configureTableViewCell:cell];
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.textLabel.text = NSLocalizedString(@"Clear Old Activity Logs", @"");
+        [WPStyleGuide configureTableViewActionCell:cell];
     }
 
 
