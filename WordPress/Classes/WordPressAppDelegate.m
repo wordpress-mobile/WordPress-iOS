@@ -45,6 +45,8 @@
 
 @end
 
+int ddLogLevel = LOG_LEVEL_INFO;
+
 @implementation WordPressAppDelegate {
     BOOL _listeningForBlogChanges;
 
@@ -224,7 +226,11 @@
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
     NSString *currentLanguage = [languages objectAtIndex:0];
 
-    NSString *extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
+    BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
+    if (extraDebug) {
+        [FileLogger setLoggingLevel:LOG_LEVEL_VERBOSE];
+    }
+    
     WPFLog(@"===========================================================================");
 	WPFLog(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
     WPFLog(@"Crash count:       %d", crashCount);
@@ -233,7 +239,7 @@
 #else
     WPFLog(@"Debug mode:  Production");
 #endif
-    WPFLog(@"Extra debug: %@", extraDebug);
+    WPFLog(@"Extra debug: %@", extraDebug ? @"YES" : @"NO");
     WPFLog(@"Device model: %@ (%@)", [UIDeviceHardware platformString], [UIDeviceHardware platform]);
     WPFLog(@"OS:        %@ %@", [device systemName], [device systemVersion]);
     WPFLog(@"Language:  %@", currentLanguage);
@@ -1003,7 +1009,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:BlogChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:WordPressComApiDidLogoutNotification object:nil];
     }
-
+    
 	int num_blogs = [Blog countWithContext:[self managedObjectContext]];
 	BOOL authed = [[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] boolValue];
 	if (num_blogs == 0 && !authed) {
@@ -1016,6 +1022,7 @@
 		NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
 		[[NSUserDefaults standardUserDefaults] setObject:origExtraDebug forKey:@"orig_extra_debug"];
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"extra_debug"];
+        [FileLogger setLoggingLevel:LOG_LEVEL_VERBOSE];
 		[NSUserDefaults resetStandardUserDefaults];
 	} else {
 		NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] stringForKey:@"orig_extra_debug"];
@@ -1027,6 +1034,10 @@
 		[[NSUserDefaults standardUserDefaults] setBool:[origExtraDebug boolValue] forKey:@"extra_debug"];
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"orig_extra_debug"];
 		[NSUserDefaults resetStandardUserDefaults];
+        
+        if ([origExtraDebug boolValue]) {
+            [FileLogger setLoggingLevel:LOG_LEVEL_VERBOSE];
+        }
 	}
 }
 

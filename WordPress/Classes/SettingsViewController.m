@@ -69,7 +69,6 @@ typedef enum {
 - (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath;
 - (void)checkCloseButton;
 - (void)setupMedia;
-- (void)handleExtraDebugChanged:(id)sender;
 - (void)handleMuteSoundsChanged:(id)sender;
 - (void)maskImageView:(UIImageView *)imageView corner:(UIRectCorner)corner;
 
@@ -204,13 +203,6 @@ typedef enum {
     } else {
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
-}
-
-
-- (void)handleExtraDebugChanged:(id)sender {
-    UISwitch *aSwitch = (UISwitch *)sender;
-    [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:@"extra_debug"];
-    [NSUserDefaults resetStandardUserDefaults];
 }
 
 

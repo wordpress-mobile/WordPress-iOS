@@ -27,7 +27,7 @@ NSString *FileLoggerPath() {
 
 - (void)flush {
     // This method is no longer appropriate
-
+    
 }
 
 - (void)log:(NSString *)message {
@@ -38,7 +38,7 @@ NSString *FileLoggerPath() {
 - (void)reset {
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     DDFileLogger *logger = appDelegate.fileLogger;
-
+    
     [logger rollLogFile];
 }
 
@@ -58,5 +58,16 @@ NSString *FileLoggerPath() {
 	if (instance == nil) instance = [[FileLogger alloc] init];
 	return instance;
 }
+
++ (void)setLoggingLevel:(int)logLevel
+{
+    ddLogLevel = logLevel;
+}
+
++ (int)loggingLevel
+{
+    return ddLogLevel;
+}
+
 
 @end
