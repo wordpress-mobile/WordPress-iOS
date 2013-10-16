@@ -80,7 +80,7 @@
         UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.logText]
                                                                                              applicationActivities:nil];
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            if (self.popover) {
+            if (self.popover && self.popover.isPopoverVisible) {
                 [self.popover dismissPopoverAnimated:YES];
                 self.popover = nil;
             } else {
