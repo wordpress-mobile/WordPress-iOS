@@ -15,6 +15,10 @@ NSString *FileLoggerPath();
 	NSFileHandle *logFile;
 }
 + (FileLogger *)sharedInstance;
+
++ (void)setLoggingLevel:(int)logLevel;
++ (int)loggingLevel;
+
 - (void)log:(NSString *)message;
 + (void)log:(NSString *)format, ...;
 - (void)flush;

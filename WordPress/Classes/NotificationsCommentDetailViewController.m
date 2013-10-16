@@ -189,14 +189,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             self.postBanner.userInteractionEnabled = YES;
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
-#ifndef DEBUG
-            NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
-            if ([extra_debug boolValue]) extra_debug_on = YES;
-#endif
-            if ( extra_debug_on == YES ) {
-                WPFLog(@"[Rest API] ! %@", [error localizedDescription]);
-            }
+            DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
         }];
     }
 
@@ -392,14 +385,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         button.enabled = YES;
-        BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
-#ifndef DEBUG
-        NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
-        if ([extra_debug boolValue]) extra_debug_on = YES;
-#endif
-        if ( extra_debug_on == YES ) {
-            WPFLog(@"[Rest API] ! %@", [error localizedDescription]);
-        }
+        DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
     }];
   
     /*
@@ -464,14 +450,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             self.replyTextView.editable = YES;
             self.replyActivityView.hidden = YES;
             
-            BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
-#ifndef DEBUG
-            NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
-            if ([extra_debug boolValue]) extra_debug_on = YES;
-#endif
-            if ( extra_debug_on == YES ) {
-                WPFLog(@"[Rest API] ! %@", [error localizedDescription]);
-            }
+            DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
         }];
     }
 
@@ -564,14 +543,8 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             
             [self.tableView reloadData];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error){
-            BOOL extra_debug_on = getenv("WPDebugXMLRPC") ? YES : NO;
-#ifndef DEBUG
-            NSNumber *extra_debug = [[NSUserDefaults standardUserDefaults] objectForKey:@"extra_debug"];
-            if ([extra_debug boolValue]) extra_debug_on = YES;
-#endif
-            if ( extra_debug_on == YES ) {
-                WPFLog(@"[Rest API] ! %@", [error localizedDescription]);
-            }
+            DDLogVerbose(@"[Rest API] ! %@", [error localizedDescription]);
+
             [self.tableView reloadData];
         }];
         

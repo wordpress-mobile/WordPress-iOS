@@ -39,4 +39,7 @@
 #define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2)
 #endif
 
+// CocoaLumberjack Default Logging Level
+extern int ddLogLevel;
+
 #endif
