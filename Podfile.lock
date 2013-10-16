@@ -1,5 +1,6 @@
 PODS:
   - AFNetworking (1.2.0)
+  - CocoaLumberjack (1.6.2)
   - CTidy (0.3.0)
   - DTCoreText (1.6.5):
     - DTFoundation/Core (~> 1.5.1)
@@ -14,6 +15,10 @@ PODS:
   - JSONKit (1.5pre)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.0.0)
+  - NSLogger (1.1)
+  - NSLogger-CocoaLumberjack-connector (1.3):
+    - CocoaLumberjack
+    - NSLogger
   - NSObject-SafeExpectations (0.0.1)
   - NSURL+IDN (0.1)
   - OHHTTPStubs (1.1.1)
@@ -32,12 +37,14 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (= 1.2)
+  - CocoaLumberjack (~> 1.6.2)
   - CTidy (from `git://github.com/wordpress-mobile/CTidy.git`)
   - DTCoreText (~> 1.6)
   - google-plus-ios-sdk (~> 1.3.0)
   - JSONKit (~> 1.4)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`)
   - Mixpanel
+  - NSLogger-CocoaLumberjack-connector (~> 1.3)
   - NSObject-SafeExpectations (from `https://raw.github.com/koke/NSObject-SafeExpectations/master/NSObject-SafeExpectations.podspec`)
   - NSURL+IDN (from `https://raw.github.com/koke/NSURL-IDN/master/Podfile`)
   - OHHTTPStubs (~> 1.1)
@@ -64,6 +71,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 3cbae45f61a9f995cdbd56bd571223910d7f4e44
+  CocoaLumberjack: d73e1e317ced14ab930797dda6c17156ff17aaa1
   CTidy: 6a35875a96dd441822e620732c1113be19769067
   DTCoreText: 8798221d6da3bc079be24e808f152910c6f5e264
   DTFoundation: 86e59f373c7a9b9f859f8a9c1debf072979eebec
@@ -71,6 +79,8 @@ SPEC CHECKSUMS:
   JSONKit: 409734ab3407fce90ef7eaa95d7168f38d9a6601
   MGImageUtilities: ab3580f2161b10f8a41331baea87aaafbd688950
   Mixpanel: e4af97adb60a10541b7869929a83d734025058a6
+  NSLogger: 4567fef08d0db18a89cce91b2053823fc0950738
+  NSLogger-CocoaLumberjack-connector: da77800fec7415c1d378dfd93465031a58c5a9a8
   NSObject-SafeExpectations: 241ab1289cbc33a00307cd025d22883646f2e1f0
   NSURL+IDN: 22633c0149b86d6391f32f23776bc0e6ecc532e2
   OHHTTPStubs: cb1cef742f2fba18b192fb92ede52a69cf3a04d5

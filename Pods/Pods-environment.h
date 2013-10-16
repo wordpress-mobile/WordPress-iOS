@@ -18,6 +18,12 @@
 #define COCOAPODS_VERSION_MINOR_CTidy 3
 #define COCOAPODS_VERSION_PATCH_CTidy 0
 
+// CocoaLumberjack
+#define COCOAPODS_POD_AVAILABLE_CocoaLumberjack
+#define COCOAPODS_VERSION_MAJOR_CocoaLumberjack 1
+#define COCOAPODS_VERSION_MINOR_CocoaLumberjack 6
+#define COCOAPODS_VERSION_PATCH_CocoaLumberjack 2
+
 // DTCoreText
 #define COCOAPODS_POD_AVAILABLE_DTCoreText
 #define COCOAPODS_VERSION_MAJOR_DTCoreText 1
@@ -60,6 +66,18 @@
 #define COCOAPODS_VERSION_MAJOR_Mixpanel 2
 #define COCOAPODS_VERSION_MINOR_Mixpanel 0
 #define COCOAPODS_VERSION_PATCH_Mixpanel 0
+
+// NSLogger
+#define COCOAPODS_POD_AVAILABLE_NSLogger
+#define COCOAPODS_VERSION_MAJOR_NSLogger 1
+#define COCOAPODS_VERSION_MINOR_NSLogger 1
+#define COCOAPODS_VERSION_PATCH_NSLogger 0
+
+// NSLogger-CocoaLumberjack-connector
+#define COCOAPODS_POD_AVAILABLE_NSLogger_CocoaLumberjack_connector
+#define COCOAPODS_VERSION_MAJOR_NSLogger_CocoaLumberjack_connector 1
+#define COCOAPODS_VERSION_MINOR_NSLogger_CocoaLumberjack_connector 3
+#define COCOAPODS_VERSION_PATCH_NSLogger_CocoaLumberjack_connector 0
 
 // NSObject-SafeExpectations
 #define COCOAPODS_POD_AVAILABLE_NSObject_SafeExpectations

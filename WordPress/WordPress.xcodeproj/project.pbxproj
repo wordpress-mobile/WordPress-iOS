@@ -785,6 +785,13 @@
 		85F2C4CF17B9F81A00A303E0 /* BaseNUXViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4CE17B9F81A00A303E0 /* BaseNUXViewController.m */; };
 		85F2C4D417BA0ED400A303E0 /* MP6SidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85F2C4D217BA0ED400A303E0 /* MP6SidebarViewController.m */; };
 		85F2C4D517BA0ED400A303E0 /* MP6SidebarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85F2C4D317BA0ED400A303E0 /* MP6SidebarViewController.xib */; };
+		93027BB81758332300483FFD /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93027BB71758332300483FFD /* SupportViewController.m */; };
+		93069F56176237A4000C966D /* ActivityLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F55176237A4000C966D /* ActivityLogViewController.m */; };
+		93069F591762410B000C966D /* ActivityLogDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F581762410B000C966D /* ActivityLogDetailViewController.m */; };
+		93069F5E17625C29000C966D /* UIButtonBarActionBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 93069F5A17625C28000C966D /* UIButtonBarActionBlack.png */; };
+		93069F5F17625C29000C966D /* UIButtonBarActionBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 93069F5B17625C28000C966D /* UIButtonBarActionBlack@2x.png */; };
+		93069F6017625C29000C966D /* UIButtonBarActionSmallBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 93069F5C17625C28000C966D /* UIButtonBarActionSmallBlack.png */; };
+		93069F6117625C29000C966D /* UIButtonBarActionSmallBlack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 93069F5D17625C28000C966D /* UIButtonBarActionSmallBlack@2x.png */; };
 		93740DC917D8F85600C41B2F /* WPAlertView.h in Resources */ = {isa = PBXBuildFile; fileRef = 93740DC817D8F85600C41B2F /* WPAlertView.h */; };
 		93740DCB17D8F86700C41B2F /* WPAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93740DCA17D8F86700C41B2F /* WPAlertView.m */; };
 		93740DCD17D8F87B00C41B2F /* WPAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93740DCC17D8F87B00C41B2F /* WPAlertView.xib */; };
@@ -1965,6 +1972,16 @@
 		85F2C4D217BA0ED400A303E0 /* MP6SidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MP6SidebarViewController.m; sourceTree = "<group>"; };
 		85F2C4D317BA0ED400A303E0 /* MP6SidebarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MP6SidebarViewController.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		93027BB61758332300483FFD /* SupportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportViewController.h; sourceTree = "<group>"; };
+		93027BB71758332300483FFD /* SupportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportViewController.m; sourceTree = "<group>"; };
+		93069F54176237A4000C966D /* ActivityLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityLogViewController.h; sourceTree = "<group>"; };
+		93069F55176237A4000C966D /* ActivityLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityLogViewController.m; sourceTree = "<group>"; };
+		93069F571762410B000C966D /* ActivityLogDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityLogDetailViewController.h; sourceTree = "<group>"; };
+		93069F581762410B000C966D /* ActivityLogDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityLogDetailViewController.m; sourceTree = "<group>"; };
+		93069F5A17625C28000C966D /* UIButtonBarActionBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIButtonBarActionBlack.png; sourceTree = "<group>"; };
+		93069F5B17625C28000C966D /* UIButtonBarActionBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIButtonBarActionBlack@2x.png"; sourceTree = "<group>"; };
+		93069F5C17625C28000C966D /* UIButtonBarActionSmallBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIButtonBarActionSmallBlack.png; sourceTree = "<group>"; };
+		93069F5D17625C28000C966D /* UIButtonBarActionSmallBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIButtonBarActionSmallBlack@2x.png"; sourceTree = "<group>"; };
 		93740DC817D8F85600C41B2F /* WPAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAlertView.h; sourceTree = "<group>"; };
 		93740DCA17D8F86700C41B2F /* WPAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAlertView.m; sourceTree = "<group>"; };
 		93740DCC17D8F87B00C41B2F /* WPAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPAlertView.xib; sourceTree = "<group>"; };
@@ -2894,12 +2911,18 @@
 		5D87E10D15F512380012C595 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				E1AB07AB1578D34300D6AD64 /* SettingsViewController.h */,
-				E1AB07AC1578D34300D6AD64 /* SettingsViewController.m */,
-				5D87E10915F5120C0012C595 /* SettingsPageViewController.h */,
-				5D87E10A15F5120C0012C595 /* SettingsPageViewController.m */,
+				93069F571762410B000C966D /* ActivityLogDetailViewController.h */,
+				93069F581762410B000C966D /* ActivityLogDetailViewController.m */,
+				93069F54176237A4000C966D /* ActivityLogViewController.h */,
+				93069F55176237A4000C966D /* ActivityLogViewController.m */,
 				37B7924B16768FCB0021B3A4 /* NotificationSettingsViewController.h */,
 				37B7924C16768FCB0021B3A4 /* NotificationSettingsViewController.m */,
+				5D87E10915F5120C0012C595 /* SettingsPageViewController.h */,
+				5D87E10A15F5120C0012C595 /* SettingsPageViewController.m */,
+				E1AB07AB1578D34300D6AD64 /* SettingsViewController.h */,
+				E1AB07AC1578D34300D6AD64 /* SettingsViewController.m */,
+				93027BB61758332300483FFD /* SupportViewController.h */,
+				93027BB71758332300483FFD /* SupportViewController.m */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -3634,6 +3657,8 @@
 				37363A3C15AB105200D3A6B4 /* cell_gradient_bg@2x.png */,
 				C5C272E00E7EC00F0034AA46 /* check.png */,
 				6E461BAD11C0C06100B07942 /* check@2x.png */,
+				E12A08E116C9706200E3DDF6 /* clouds_header.png */,
+				E12A08E216C9706200E3DDF6 /* clouds_header@2x.png */,
 				E1895ECB1607272B007E6DD5 /* Default-568h@2x.png */,
 				3704ACFA13128C9800120911 /* Default.png */,
 				3704ACFB13128C9800120911 /* Default@2x.png */,
@@ -3664,7 +3689,11 @@
 				E151045C14E27F9300CE282B /* list.png */,
 				E151045D14E27F9300CE282B /* list@2x.png */,
 				2A8FF7D80E8A32F7001A9A40 /* lock.png */,
+				E15051CC16CA8E4900D3DDDC /* logo_jetpack.png */,
+				E15051CD16CA8E4900D3DDDC /* logo_jetpack@2x.png */,
 				83610B1311F4B42D00421116 /* logos */,
+				FD22C2B516CD2B20002BA030 /* navbar_settings.png */,
+				FD22C2B616CD2B20002BA030 /* navbar_settings@2x.png */,
 				371C161C15A3A3AD00BC653C /* Navigation Bar */,
 				30410681144E17AE00E98F07 /* next.png */,
 				30410682144E17AE00E98F07 /* next@2x.png */,
@@ -3714,6 +3743,10 @@
 				5D9832EB15A77EEF00A5E783 /* toolbar_bg@2x.png */,
 				5D9832F615A790BA00A5E783 /* toolbar_shadow.png */,
 				5D9832F715A790E500A5E783 /* toolbar_shadow@2x.png */,
+				93069F5A17625C28000C966D /* UIButtonBarActionBlack.png */,
+				93069F5B17625C28000C966D /* UIButtonBarActionBlack@2x.png */,
+				93069F5C17625C28000C966D /* UIButtonBarActionSmallBlack.png */,
+				93069F5D17625C28000C966D /* UIButtonBarActionSmallBlack@2x.png */,
 				7F3E104F13498200008CF73D /* UISegmentBarBlackButton.png */,
 				7F3E105013498200008CF73D /* UISegmentBarBlackButton@2x.png */,
 				7F3E105113498200008CF73D /* UISegmentBarBlackButtonHighlighted.png */,
@@ -4987,6 +5020,10 @@
 				85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */,
 				858DE41217303BB4000AC628 /* OpenSans-Light.ttf in Resources */,
 				858DE41317303BB4000AC628 /* OpenSans-Regular.ttf in Resources */,
+				93069F5E17625C29000C966D /* UIButtonBarActionBlack.png in Resources */,
+				93069F5F17625C29000C966D /* UIButtonBarActionBlack@2x.png in Resources */,
+				93069F6017625C29000C966D /* UIButtonBarActionSmallBlack.png in Resources */,
+				93069F6117625C29000C966D /* UIButtonBarActionSmallBlack@2x.png in Resources */,
 				853FAC4E17CF1F35008A2F74 /* transparent-point.png in Resources */,
 				E14D65BB17E084BC007E3EA4 /* reader-postaction-like-blue.png in Resources */,
 				5D358D6517723DB500739AA4 /* OpenSans-Bold.ttf in Resources */,
@@ -5384,6 +5421,9 @@
 				85B6F74F1742DA1E00CE7F3A /* WPNUXMainButton.m in Sources */,
 				85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */,
 				85A1B6751742E7EF00BA5E35 /* WPMobileStats.m in Sources */,
+				93027BB81758332300483FFD /* SupportViewController.m in Sources */,
+				93069F56176237A4000C966D /* ActivityLogViewController.m in Sources */,
+				93069F591762410B000C966D /* ActivityLogDetailViewController.m in Sources */,
 				E183BD7417621D87000B0822 /* WPCookie.m in Sources */,
 				85F2C4D417BA0ED400A303E0 /* MP6SidebarViewController.m in Sources */,
 				E10DB0081771926D00B7A0A3 /* GooglePlusActivity.m in Sources */,
