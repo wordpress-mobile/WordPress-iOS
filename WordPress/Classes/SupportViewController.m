@@ -38,7 +38,8 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -86,6 +87,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    [WPStyleGuide configureTableViewCell:cell];
 
     if (indexPath.section == SettingsSectionFAQ) {
         cell.textLabel.text = NSLocalizedString(@"Visit the FAQ", @"");
@@ -93,9 +95,11 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     } else if (indexPath.section == SettingsSectionForums) {
         cell.textLabel.text = NSLocalizedString(@"Visit the Forums", @"");
         cell.accessoryType = UITableViewCellAccessoryNone;
+        [WPStyleGuide configureTableViewActionCell:cell];
     } else if (indexPath.section == SettingsSectionFeedback) {
         cell.textLabel.text = NSLocalizedString(@"Send Us Feedback", @"");
         cell.accessoryType = UITableViewCellAccessoryNone;
+        [WPStyleGuide configureTableViewActionCell:cell];
     } else if (indexPath.section == SettingsSectionActivityLog) {
         cell.textLabel.textAlignment = NSTextAlignmentLeft;
 
