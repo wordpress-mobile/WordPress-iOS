@@ -1109,7 +1109,6 @@
             }
 			case 4:
             {
-				//[self useImage:currentImage];
                 [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
 				break;
             }
@@ -1124,7 +1123,9 @@
             [addPopover dismissPopoverAnimated:YES];
             [[CPopoverManager instance] setCurrentPopoverController:nil];
             addPopover = nil;
-            [self showResizeActionSheet];
+            if (showResizeActionSheet) {
+                [self showResizeActionSheet];
+            }
         } else {
             [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:^{
                 if (showResizeActionSheet) {
