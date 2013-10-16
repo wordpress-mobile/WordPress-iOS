@@ -568,35 +568,47 @@
 - (void)saveSelectedBlogs {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"refreshCommentsRequired"];
 	
-    for (NSDictionary *blog in usersBlogs) {
-		if([selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
-			[self createBlog:blog];
-		}
-	}
+    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
     
-    [self didSaveSelectedBlogsInBackground];
-    
-}
-
-- (void)didSaveSelectedBlogsInBackground {
-    [self.navigationController popToRootViewControllerAnimated:YES];
-    [[WordPressComApi sharedApi] syncPushNotificationInfo];
-}
-
-- (void)createBlog:(NSDictionary *)blogInfo {
-    WPLog(@"creating blog: %@", blogInfo);
-    Blog *blog = [_account findOrCreateBlogFromDictionary:blogInfo withContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext];
-	blog.geolocationEnabled = self.geolocationEnabled;
-	[blog dataSave];
-    [blog syncBlogWithSuccess:^{
-        if( ! [blog isWPcom] )
-            [[WordPressComApi sharedApi] syncPushNotificationInfo];
+    [backgroundMOC performBlock:^{
+        for (NSDictionary *blog in usersBlogs) {
+            if([selectedBlogs containsObject:[blog valueForKey:@"blogid"]]) {
+                [self createBlog:blog withContext:backgroundMOC];
+            }
         }
-                      failure:nil];
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
+        
+        NSError *error;
+        if(![backgroundMOC save:&error]) {
+            WPFLog(@"Core data context save error on adding blogs: %@", error);
+            #if DEBUG
+            exit(-1);
+            #endif
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.navigationController popToRootViewControllerAnimated:YES];
+            [[WordPressComApi sharedApi] syncPushNotificationInfo];
+        });
+    }];
 }
 
--(void)checkAddSelectedButtonStatus {
+- (void)createBlog:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext *)context {
+    WPLog(@"creating blog: %@", blogInfo);
+    
+    Blog *blog = [_account findOrCreateBlogFromDictionary:blogInfo withContext:context];
+    blog.geolocationEnabled = self.geolocationEnabled;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [blog syncBlogWithSuccess:^{
+            if( ![blog isWPcom] )
+                [[WordPressComApi sharedApi] syncPushNotificationInfo];
+        }
+                          failure:nil];
+    });
+}
+
+- (void)checkAddSelectedButtonStatus {
 	//disable the 'Add Selected' button if they have selected 0 blogs, trac #521
 	if (selectedBlogs.count == 0) {
 		buttonAddSelected.enabled = NO;
