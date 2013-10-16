@@ -259,8 +259,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	controller.delegate = self;
     if (IS_IPAD) {
         if (_popover) {
-            [_popover dismissPopoverAnimated:YES];
-            _popover = nil;
+            [self dismissPopover];
             return;
         }
         
@@ -282,6 +281,12 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     }
 }
 
+- (void)dismissPopover {
+    if (_popover) {
+        [_popover dismissPopoverAnimated:YES];
+        _popover = nil;
+    }
+}
 
 - (void)handleReblogButtonTapped:(id)sender {
 	// Locate the cell this originated from. 
@@ -844,7 +849,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)readerTopicChanged {
 	if (IS_IPAD){
-        [_popover dismissPopoverAnimated:YES];
+        [self dismissPopover];
 	}
 	
 	_loadingMore = NO;
