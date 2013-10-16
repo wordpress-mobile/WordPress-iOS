@@ -189,6 +189,10 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [mailComposeViewController setMessageBody:messageBody isHTML:NO];
     [mailComposeViewController setSubject:@"WordPress for iOS Help Request"];
     [mailComposeViewController setToRecipients:@[@"support@wordpress.com"]];
+    
+    if (IS_IOS7) {
+        mailComposeViewController.modalPresentationCapturesStatusBarAppearance = NO;
+    }
 
     return mailComposeViewController;
 }
