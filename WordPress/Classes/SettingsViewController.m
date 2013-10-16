@@ -700,6 +700,11 @@ typedef enum {
 		[WPAccount removeDefaultWordPressComAccount];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
         [self checkCloseButton];
+        
+        // Remove defaults
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_blogs"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_user_id"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_prefered_blog_id"];
     }
 }
 
