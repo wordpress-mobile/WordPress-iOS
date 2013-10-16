@@ -35,8 +35,6 @@
 {
     [super viewDidLoad];
 
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
-
     self.textView = [[UITextView alloc] initWithFrame:self.view.bounds];
     self.textView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.textView.editable = NO;
@@ -49,6 +47,15 @@
                                                                    target:self
                                                                    action:@selector(showShareOptions:)];
     self.navigationItem.rightBarButtonItem = shareButton;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if (self.popover) {
+        [self.popover dismissPopoverAnimated:animated];
+        self.popover = nil;
+    }
 }
 
 - (void)didReceiveMemoryWarning
