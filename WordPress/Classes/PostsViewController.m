@@ -6,6 +6,7 @@
 #import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
+#import "PanelNavigationConstants.h"
 
 #define TAG_OFFSET 1010
 
@@ -79,6 +80,8 @@
     self.infiniteScrollEnabled = YES;
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -122,10 +125,7 @@
     self.panelNavigationController.delegate = nil;
 }
 
-- (void)viewDidUnload {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	[super viewDidUnload];
-    
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -146,6 +146,10 @@
 - (NSString *)statsPropertyForViewOpening
 {
     return StatsPropertyPostsOpened;
+}
+
+- (void)sidebarOpened {
+    self.tableView.editing = NO;
 }
 
 #pragma mark -
