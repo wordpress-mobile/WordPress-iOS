@@ -1,6 +1,6 @@
 //
 //  NSString+HTML.h
-//  CoreTextExtensions
+//  DTCoreText
 //
 //  Created by Oliver Drobnik on 1/9/11.
 //  Copyright 2011 Drobnik.com. All rights reserved.
@@ -24,6 +24,11 @@
  */
 - (BOOL)isNumeric;
 
+/**
+ Test whether the entire receiver consists of only whitespace characters.
+ @returns `YES` if the receiver only has whitespace and newline characters
+ */
+- (BOOL)isIgnorableWhitespace;
 
 /** 
  Read through this string and store the numbers included, then divide them by 100 giving a percentage.
@@ -69,10 +74,9 @@
 - (NSString *)stringByReplacingHTMLEntities;
 
 
-/** 
- Create a globally unique identifier to uniquely identify something. Used to create a GUID, store it in a dictionary or other data structure and retrieve it to uniquely identifiy something. In DTLinkButton multiple parts of the same hyperlink synchronize their looks through the GUID.
- @returns GUID assigned to this string to easily and uniquely identify it.. 
+/**
+ Replaces occurences of more two or more spaces with a range of alternating non-breaking space and regular space. It also encloses these parts with a span of class 'Apple-converted-space'
  */
-+ (NSString *)guid;
+- (NSString *)stringByAddingAppleConvertedSpace;
 
 @end

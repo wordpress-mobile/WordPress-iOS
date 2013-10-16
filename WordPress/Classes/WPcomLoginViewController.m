@@ -5,23 +5,25 @@
 //  Created by Chris Boyd on 7/19/10.
 //
 
+#import "WPcomLoginViewController.h"
+
 #import <WordPressApi/WordPressApi.h>
 
-#import "WPcomLoginViewController.h"
 #import "UITableViewTextFieldCell.h"
-#import "SFHFKeychainUtils.h"
+#import "UITableViewActivityCell.h"
+#import "WPAccount.h"
 #import "WordPressComApi.h"
-#import "WPWebViewController.h"
 #import "ReachabilityUtils.h"
+#import "WPTableViewSectionFooterView.h"
 
 @interface WPcomLoginViewController () <UITextFieldDelegate> {
     UITableViewTextFieldCell *loginCell, *passwordCell;
 }
+@property (nonatomic, assign) BOOL isCancellable;
+@property (nonatomic, assign) BOOL dismissWhenFinished;
 @property (nonatomic, strong) NSString *footerText, *buttonText;
 @property (nonatomic, assign) BOOL isSigningIn;
 @property (nonatomic, strong) WordPressComApi *wpComApi;
-@property (nonatomic, strong) void (^successBlock)(NSString *username, NSString *password);
-@property (nonatomic, strong) void (^cancelBlock)();
 - (void)signIn:(id)sender;
 @end
 
@@ -30,16 +32,15 @@
 
 @synthesize footerText, buttonText, isSigningIn, isCancellable, predefinedUsername;
 @synthesize delegate;
-@synthesize wpComApi = _wpComApi, blog = _blog;
+@synthesize wpComApi = _wpComApi;
 
-+ (void)presentLoginScreenWithSuccess:(void (^)(NSString *username, NSString *password))success cancel:(void (^)())cancel {
++ (void)presentLoginScreen {
     UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
     WPcomLoginViewController *loginViewController = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    loginViewController.successBlock = success;
-    loginViewController.cancelBlock = cancel;
     loginViewController.isCancellable = YES;
     loginViewController.dismissWhenFinished = YES;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    navController.navigationBar.translucent = NO;
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [rootViewController presentViewController:navController animated:YES completion:nil];
@@ -52,8 +53,7 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
 
-    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern"]];
-    self.tableView.backgroundView = nil;
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.wpComApi = [WordPressComApi sharedApi];
 	self.footerText = @" ";
@@ -61,7 +61,10 @@
 	self.navigationItem.title = NSLocalizedString(@"Sign In", @"");
     
     if (isCancellable) {
-        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(cancel:)];
         self.navigationItem.leftBarButtonItem = barButton;
     }
     
@@ -69,7 +72,7 @@
 	CGRect headerFrame = CGRectMake(0, 0, 320, 70);
 	CGRect logoFrame = CGRectMake(40, 20, 229, 43);
 	NSString *logoFile = @"logo_wpcom.png";
-	if(IS_IPAD == YES) {
+	if(IS_IPAD) {
 		logoFile = @"logo_wpcom@2x.png";
 		logoFrame = CGRectMake(150, 20, 229, 43);
 	}
@@ -113,11 +116,24 @@
 }
 
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+- (NSString *)titleForFooterInSection:(NSInteger)section {
     if(section == 0)
 		return footerText;
     else
 		return @"";
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForFooterInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    NSString *title = [self titleForFooterInSection:section];
+    return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
 
@@ -151,13 +167,14 @@
         } else {
             activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
+        [WPStyleGuide configureTableViewActionCell:activityCell];
 		cell = activityCell;
 	} else {
         if ([indexPath row] == 0) {
             if (loginCell == nil) {
                 loginCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault 
                                                             reuseIdentifier:@"TextCell"];
-                loginCell.textField.text = self.wpComApi.username;
+                loginCell.textField.text = [[WPAccount defaultWordPressComAccount] username];
             }
             loginCell.textLabel.text = NSLocalizedString(@"Username", @"");
             loginCell.textField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
@@ -169,13 +186,13 @@
                 loginCell.textField.text = self.predefinedUsername;
             if(isSigningIn)
                 [loginCell.textField resignFirstResponder];
+            [WPStyleGuide configureTableViewTextCell:loginCell];
             cell = loginCell;
         }
         else {
             if (passwordCell == nil) {
                 passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault 
                                                                reuseIdentifier:@"TextCell"];
-                passwordCell.textField.text = self.wpComApi.password;
             }
             passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
             passwordCell.textField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
@@ -185,6 +202,7 @@
             passwordCell.textField.delegate = self;
             if(isSigningIn)
                 [passwordCell.textField resignFirstResponder];
+            [WPStyleGuide configureTableViewTextCell:passwordCell];
             cell = passwordCell;
         }
     }
@@ -324,12 +342,11 @@
         [self.wpComApi signInWithUsername:username
                                  password:password
                                   success:^{
+                                      WPAccount *account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username andPassword:password];
+                                      [WPAccount setDefaultWordPressComAccount:account];
                                       [loginController.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
                                       if (loginController.delegate) {
-                                          [loginController.delegate loginController:loginController didAuthenticateWithUsername:loginController.wpComApi.username];
-                                      }
-                                      if (loginController.successBlock) {
-                                          loginController.successBlock(username, password);
+                                          [loginController.delegate loginController:loginController didAuthenticateWithAccount:account];
                                       }
                                       if (self.dismissWhenFinished) {
                                           [self dismissViewControllerAnimated:YES completion:nil];
@@ -349,9 +366,6 @@
 - (IBAction)cancel:(id)sender {
     if (self.delegate) {
         [self.delegate loginControllerDidDismiss:self];
-    }
-    if (self.cancelBlock) {
-        self.cancelBlock();
     }
     if (self.dismissWhenFinished) {
         [self dismissViewControllerAnimated:YES completion:nil];

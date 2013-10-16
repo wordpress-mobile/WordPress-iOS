@@ -31,7 +31,9 @@
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *deleteButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *insertButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *cancelButton; 
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *cancelButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *leftSpacer;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *rightSpacer;
 @property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UIToolbar *toolbar; 
 @property (nonatomic, assign) BOOL isDeleting, isInserting;

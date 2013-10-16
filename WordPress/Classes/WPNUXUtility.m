@@ -42,6 +42,11 @@
     return [UIFont fontWithName:@"OpenSans" size:9.0];
 }
 
++ (UIFont *)confirmationLabelFont
+{
+    return [UIFont fontWithName:@"OpenSans" size:14];
+}
+
 #pragma mark - Colors
 
 + (UIColor *)textShadowColor

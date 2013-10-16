@@ -3,10 +3,10 @@ xcodeproj 'WordPress/WordPress.xcodeproj'
 platform :ios, '5.0'
 pod 'AFNetworking',	'1.2'
 pod 'Reachability',	'~> 3.0.0'
-pod 'JSONKit',		  '~> 1.4'
+pod 'JSONKit',		  '~> 1.4', :inhibit_warnings => true
 pod 'NSURL+IDN', :podspec => 'https://raw.github.com/koke/NSURL-IDN/master/Podfile'
 pod 'CTidy', :git => 'git://github.com/wordpress-mobile/CTidy.git'
-pod 'DTCoreText',   '~> 1.0.0'
+pod 'DTCoreText',   '~> 1.6'
 pod 'UIDeviceIdentifier', '~> 0.1'
 pod 'SVProgressHUD', '~> 0.9'
 pod 'SSKeychain',   '~> 0.2'
@@ -17,6 +17,9 @@ pod 'NSObject-SafeExpectations', :podspec => 'https://raw.github.com/koke/NSObje
 pod 'Mixpanel'
 pod 'CocoaLumberjack', '~>1.6.2'
 pod 'NSLogger-CocoaLumberjack-connector', '~>1.3'
+pod 'google-plus-ios-sdk', '~> 1.3.0'
+pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git'
+pod 'Quantcast-Measure', '~> 1.2.10'
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '~> 1.1'
@@ -60,11 +63,16 @@ post_install do |installer|
         if build_files.length > 0
             build_files.each { |build_file|
                 settings = build_file.settings
-                compiler_flags = settings[compiler_flags_key]
-                compiler_flags = (compiler_flags.nil?) ?
-                    new_compiler_flags :
-                    (compiler_flags + " " + new_compiler_flags)
-                settings[compiler_flags_key] = compiler_flags
+                if settings.nil?
+                  # If we don't have settings for the file we create a new hash
+                  settings = Hash[compiler_flags_key, new_compiler_flags]
+                else
+                  compiler_flags = settings[compiler_flags_key]
+                  compiler_flags = (compiler_flags.nil?) ?
+                      new_compiler_flags :
+                      (compiler_flags + " " + new_compiler_flags)
+                  settings[compiler_flags_key] = compiler_flags
+                end
                 build_file.settings = settings
             }
         else

@@ -137,7 +137,7 @@
     } else {
         checkButton.alpha = 0;
         checkButton.enabled = NO;
-        if (IS_IPAD == YES) {
+        if (IS_IPAD) {
             self.accessoryType = UITableViewCellAccessoryNone;
         } else {
             self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -186,7 +186,7 @@
     if (IS_IPHONE) 
          width -= 22;
     CGSize maximumLabelSize = CGSizeMake(width,COMMENT_LABEL_HEIGHT);
-    CGSize expectedLabelSize = [commentText sizeWithFont:[UIFont systemFontOfSize:COMMENT_FONT_SIZE] constrainedToSize:maximumLabelSize lineBreakMode:UILineBreakModeTailTruncation];   
+    CGSize expectedLabelSize = [commentText sizeWithFont:[UIFont systemFontOfSize:COMMENT_FONT_SIZE] constrainedToSize:maximumLabelSize lineBreakMode:NSLineBreakByTruncatingTail];
     // WPLog(@"Expected text size: %f", expectedLabelSize.height);
     return GRAVATAR_TOP_OFFSET + MIN(expectedLabelSize.height, 60) + CELL_PADDING;
 }
@@ -257,7 +257,7 @@
     commentLabel.highlightedTextColor = [UIColor whiteColor];
     commentLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     commentLabel.numberOfLines = 3;
-    commentLabel.lineBreakMode = UILineBreakModeTailTruncation;
+    commentLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     commentLabel.verticalAlignment = VerticalAlignmentTop;
 
     [self.contentView addSubview:commentLabel];

@@ -24,18 +24,15 @@
 @implementation Page
 @dynamic parentID;
 
-+ (Page *)newPageForBlog:(Blog *)blog {
-    Page *page = [[Page alloc] initWithEntity:[NSEntityDescription entityForName:@"Page"
-                                                          inManagedObjectContext:[blog managedObjectContext]]
-               insertIntoManagedObjectContext:[blog managedObjectContext]];
-    
-    page.blog = blog;
-    
++ (Page *)newPageForBlog:(Blog *)blog withContext:(NSManagedObjectContext*)context {
+    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
+    Page *page = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:context];
+    page.blog = contextBlog;
     return page;
 }
 
 + (Page *)newDraftForBlog:(Blog *)blog {
-    Page *page = [self newPageForBlog:blog];
+    Page *page = [self newPageForBlog:blog withContext:blog.managedObjectContext];
     page.dateCreated = [NSDate date];
     page.remoteStatus = AbstractPostRemoteStatusLocal;
     page.status = @"publish";
@@ -44,8 +41,9 @@
     return page;
 }
 
-+ (Page *)findWithBlog:(Blog *)blog andPageID:(NSNumber *)pageID {
-    NSSet *results = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@", pageID]];
++ (Page *)findWithBlog:(Blog *)blog andPageID:(NSNumber *)pageID withContext:(NSManagedObjectContext*)context {
+    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
+    NSSet *results = [contextBlog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@", pageID]];
     
     if (results && (results.count > 0)) {
         return [[results allObjects] objectAtIndex:0];
@@ -53,11 +51,11 @@
     return nil;
 }
 
-+ (Page *)findOrCreateWithBlog:(Blog *)blog andPageID:(NSNumber *)pageID {
-    Page *page = [self findWithBlog:blog andPageID:pageID];
++ (Page *)findOrCreateWithBlog:(Blog *)blog andPageID:(NSNumber *)pageID withContext:(NSManagedObjectContext*)context {
+    Page *page = [self findWithBlog:blog andPageID:pageID withContext:context];
     
     if (page == nil) {
-        page = [Page newPageForBlog:blog];
+        page = [Page newPageForBlog:blog withContext:context];
         page.postID = pageID;
         page.remoteStatus = AbstractPostRemoteStatusSync;
     }
@@ -78,7 +76,11 @@
     self.postID         = [[postInfo objectForKey:@"page_id"] numericValue];
     self.content        = [postInfo objectForKey:@"description"];
     self.date_created_gmt    = [postInfo objectForKey:@"date_created_gmt"];
-    self.status         = [postInfo objectForKey:@"page_status"];
+    NSString *status = [postInfo objectForKey:@"page_status"];
+    if ([status isEqualToString:@"future"]) {
+        status = @"publish";
+    }
+    self.status         = status;
     NSString *password = [postInfo objectForKey:@"wp_password"];
     if ([password isEqualToString:@""]) {
         password = nil;
@@ -156,7 +158,7 @@
 }
 
 - (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, [self.blog fetchPassword], nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, self.blog.password, nil];
     [self.blog.api callMethod:@"wp.getPage"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -183,7 +185,7 @@
         return;
     }
     
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, [self.blog fetchPassword], [self XMLRPCDictionary], nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.postID, self.blog.username, self.blog.password, [self XMLRPCDictionary], nil];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
     [self.blog.api callMethod:@"wp.editPage"
                    parameters:parameters

@@ -13,16 +13,13 @@
 @class EditPostViewController;
 @interface PostSettingsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, CLLocationManagerDelegate, UIActionSheetDelegate> {
     IBOutlet UITableView *tableView;
-    IBOutlet UITableViewCell *statusTableViewCell;
     IBOutlet UITableViewCell *visibilityTableViewCell;
-    IBOutlet UITableViewCell *publishOnTableViewCell;
-    IBOutlet UITableViewCell *postFormatTableViewCell;
-    IBOutlet UILabel *statusLabel;
+    UILabel *statusLabel;
     IBOutlet UILabel *visibilityLabel;
     IBOutlet UILabel *postFormatLabel;
     IBOutlet UITextField *passwordTextField;
-    IBOutlet UILabel *publishOnLabel;
-    IBOutlet UILabel *publishOnDateLabel;
+    UILabel *publishOnDateLabel;
+    UITextField *tagsTextField;
     EditPostViewController *__weak postDetailViewController;
     NSArray *statusList;
     NSArray *visibilityList;
@@ -45,7 +42,7 @@
 	PostAnnotation *annotation;
 	NSString *address;
 	BOOL isUpdatingLocation, isUploadingFeaturedImage;
-    IBOutlet UILabel *visibilityTitleLabel, *statusTitleLabel, *postFormatTitleLabel, *featuredImageLabel;
+    IBOutlet UILabel *visibilityTitleLabel, *featuredImageLabel;
     IBOutlet UIImageView *featuredImageView;
     IBOutlet UITableViewCell *featuredImageTableViewCell;
     IBOutlet UIActivityIndicatorView *featuredImageSpinner;
@@ -59,7 +56,6 @@
 
 - (void)reloadData;
 - (void)endEditingAction:(id)sender;
-- (UITableViewCell*) getGeolactionCellWithIndexPath: (NSIndexPath*)indexPath;
 - (void)featuredImageUploadFailed: (NSNotification *)notificationInfo;
 - (void)featuredImageUploadSucceeded: (NSNotification *)notificationInfo;
 - (void)showFeaturedImageUploader: (NSNotification *)notificationInfo;

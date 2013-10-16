@@ -7,17 +7,18 @@
 //
 
 #import "ReplyToCommentViewController.h"
+#import "IOS7CorrectedTextView.h"
 
 @implementation ReplyToCommentViewController
 
 @synthesize delegate;
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    WPFLogMethod();
 	[super viewDidLoad];
     
     // Replace the text of the existing save button with "Reply"
-    self.navigationItem.rightBarButtonItem.title = @"Reply";
+    self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Reply", nil);
 	self.isEditing = YES;
  }
 
@@ -28,8 +29,8 @@
 	//we should call endTextEnteringButtonAction here, bc if you click on reply without clicking on the 'done' btn
 	//within the keyboard, the textViewDidEndEditing is never called
 	[self endTextEnteringButtonAction:sender];
-	if(self.hasChanges == NO) {
-		if (IS_IPAD == YES) {
+	if(!self.hasChanges) {
+		if (IS_IPAD) {
 			[self.textView becomeFirstResponder];
 		}
 		UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"The Reply is Empty", @"")
@@ -76,7 +77,7 @@
 	if (delegate) {
 		[delegate cancelReplyToCommentViewController:self];
 	} else {
-		[self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
 	}
 }
 

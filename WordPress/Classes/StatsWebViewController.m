@@ -7,7 +7,6 @@
 #import "StatsWebViewController.h"
 #import "Blog+Jetpack.h"
 #import "WordPressAppDelegate.h"
-#import "SFHFKeychainUtils.h"
 #import "WordPressComApi.h"
 #import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
@@ -150,9 +149,10 @@ static NSString *_lastAuthedName = nil;
         controller.isCancellable = YES;
         controller.blog = self.blog;
         navController = [[UINavigationController alloc] initWithRootViewController:controller];
+        navController.navigationBar.translucent = NO;
         navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         navController.modalPresentationStyle = UIModalPresentationFormSheet;
-        [self.panelNavigationController presentModalViewController:navController animated:YES];
+        [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
     } else {
         JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:blog];
         controller.ignoreNavigationController = YES;
@@ -185,7 +185,10 @@ static NSString *_lastAuthedName = nil;
         WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
         if( !appDelegate.connectionAvailable ) {
             [webView hideRefreshingState];
-            [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
+            __weak StatsWebViewController *weakSelf = self;
+            [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
+                [weakSelf loadStats];
+            }];
             [webView loadHTMLString:@"<html><head></head><body></body></html>" baseURL:nil];
             
         } else {
@@ -263,7 +266,7 @@ static NSString *_lastAuthedName = nil;
     if ([blog isWPcom]) {
         //use set username/pw for wpcom blogs
         username = blog.username;
-        password = [blog fetchPassword];
+        password = blog.password;
         
     } else {
         username = blog.jetpackUsername;
@@ -342,7 +345,10 @@ static NSString *_lastAuthedName = nil;
     
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if( !appDelegate.connectionAvailable ) {
-        [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self]; 
+        __weak StatsWebViewController *weakSelf = self;
+        [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
+            [weakSelf loadStats];
+        }];
         return;
     }
 

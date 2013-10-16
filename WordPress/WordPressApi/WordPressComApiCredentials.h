@@ -13,4 +13,7 @@
 + (NSString *)secret;
 + (NSString *)pocketConsumerKey;
 + (NSString *)mixpanelAPIToken;
++ (NSString *)crashlyticsApiKey;
++ (NSString *)googlePlusClientId;
++ (NSString *)quantcastAPIKey;
 @end

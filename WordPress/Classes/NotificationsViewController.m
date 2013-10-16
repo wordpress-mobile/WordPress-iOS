@@ -12,7 +12,7 @@
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
 #import "EGORefreshTableHeaderView.h"
-#import "NotificationsTableViewCell.h"
+#import "NewNotificationsTableViewCell.h"
 #import "WPTableViewControllerSubclass.h"
 #import "NotificationSettingsViewController.h"
 
@@ -24,27 +24,18 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     BOOL _viewHasAppeared;
 }
 
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *settingsButton;
 @property (nonatomic, strong) id authListener;
 @property (nonatomic, strong) WordPressComApi *user;
 @property (nonatomic, assign) BOOL isPushingViewController;
-
-- (void)showNotificationsSettings;
 
 @end
 
 
 @implementation NotificationsViewController
 
-@synthesize settingsButton;
-
-#pragma mark - View Lifecycle methods
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+- (id)init {
+    self = [super init];
     if (self) {
-        // Custom initialization
         self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
         self.user = [WordPressComApi sharedApi];
     }
@@ -57,74 +48,27 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 - (void)viewDidLoad
 {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    WPFLogMethod();
     [super viewDidLoad];
+    
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
     self.panelNavigationController.delegate = self;
     self.infiniteScrollEnabled = YES;
-    // -[UITableView registerClass:forCellReuseIdentifier:] available in iOS 6.0 and later
-    if ([self.tableView respondsToSelector:@selector(registerClass:forCellReuseIdentifier:)]) {
-        [self.tableView registerClass:[NotificationsTableViewCell class] forCellReuseIdentifier:NotificationsTableViewNoteCellIdentifier];
-    }
-    
-    if([[WordPressComApi sharedApi] hasCredentials] && nil != [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]) {
-        if(IS_IPHONE) {
-            if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
-                
-                UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-                [btn setImage:[UIImage imageNamed:@"navbar_settings.png"] forState:UIControlStateNormal];
-                [btn setImage:[UIImage imageNamed:@"navbar_settings.png"] forState:UIControlStateHighlighted];
-                
-                UIImage *backgroundImage = [[UIImage imageNamed:@"navbar_button_bg"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-                [btn setBackgroundImage:backgroundImage forState:UIControlStateNormal];
-                
-                backgroundImage = [[UIImage imageNamed:@"navbar_button_bg_active"] stretchableImageWithLeftCapWidth:4 topCapHeight:0];
-                [btn setBackgroundImage:backgroundImage forState:UIControlStateHighlighted];
-                
-                btn.frame = CGRectMake(0.0f, 0.0f, 44.0f, 30.0f);
-                
-                [btn addTarget:self action:@selector(showNotificationsSettings) forControlEvents:UIControlEventTouchUpInside];
-                self.settingsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
-            } else {
-                self.settingsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                                                                    target:self
-                                                                                    action:@selector(showNotificationsSettings)];
-            }
-        } else {
-            //iPad
-            self.settingsButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settings.png"]
-                                                                   style:UIBarButtonItemStylePlain
-                                                                  target:self
-                                                                  action:@selector(showNotificationsSettings)];
-        }
-        
-        [self.settingsButton setAccessibilityLabel:NSLocalizedString(@"Settings", @"")];
-        
-        if ([self.settingsButton respondsToSelector:@selector(setTintColor:)]) {
-            UIColor *color = [UIColor UIColorFromHex:0x464646];
-            self.settingsButton.tintColor = color;
-        }
-        
-        if (IS_IPHONE) {
-            self.navigationItem.rightBarButtonItem = self.settingsButton;
-        } else {
-            self.toolbarItems = [NSArray arrayWithObjects: self.settingsButton , nil];
-        }
-    }
+    [self.tableView registerClass:[NewNotificationsTableViewCell class] forCellReuseIdentifier:NotificationsTableViewNoteCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    WPFLogMethod();
     [super viewWillAppear:animated];
-    if (IS_IPAD)
-        [self.panelNavigationController setToolbarHidden:NO forViewController:self animated:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+
     if (!_viewHasAppeared) {
-        _viewHasAppeared = true;
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsOpened];
+        _viewHasAppeared = YES;
+        [WPMobileStats incrementProperty:StatsPropertyNotificationsOpened forEvent:StatsEventAppClosed];
     }
     
     _isPushingViewController = NO;
@@ -138,6 +82,11 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     [super viewDidDisappear:animated];
     if (!_isPushingViewController)
         [self pruneOldNotes];
+}
+
+- (UIColor *)backgroundColorForRefreshHeaderView
+{
+    return [WPStyleGuide itsEverywhereGrey];
 }
 
 #pragma mark - Custom methods
@@ -180,24 +129,6 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     [Note pruneOldNotesBefore:pruneBefore withContext:self.resultsController.managedObjectContext];
 }
 
-
-- (void)showNotificationsSettings {
-    
-    NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    
-    if (IS_IPAD) {
-        notificationSettingsViewController.showCloseButton = YES;
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:notificationSettingsViewController];
-        
-        nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-		nav.modalPresentationStyle = UIModalPresentationFormSheet;
-      
-        [self presentModalViewController:nav animated:YES];
-    } else {
-        [self.panelNavigationController pushViewController:notificationSettingsViewController fromViewController:self animated:YES];
-    }
-}
-
 #pragma mark - Public methods
 
 - (void)refreshFromPushNotification {
@@ -211,14 +142,9 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 
 #pragma mark - UITableViewDelegate
 
-/*
- * Comments are taller to show comment text
- * TODO: calculate the height of the comment text area by using sizeWithFont:forWidth:lineBreakMode:
- */
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     Note *note = [self.resultsController objectAtIndexPath:indexPath];
-    return [note.type isEqualToString:@"comment"] ? 100.f : 63.f;
-    
+    return [NewNotificationsTableViewCell rowHeightForNotification:note andMaxWidth:CGRectGetWidth(tableView.bounds)];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -226,8 +152,8 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     
     BOOL hasDetailsView = [self noteHasDetailView:note];
     if (hasDetailsView) {
-        [WPMobileStats trackEventForWPCom:StatsEventNotificationsOpenedNotificationDetails];
-        
+        [WPMobileStats incrementProperty:StatsPropertyNotificationsOpenedDetails forEvent:StatsEventAppClosed];
+
         _isPushingViewController = YES;
         if ([note isComment]) {
             NotificationsCommentDetailViewController *detailViewController = [[NotificationsCommentDetailViewController alloc] initWithNibName:@"NotificationsCommentDetailViewController" bundle:nil];
@@ -246,8 +172,9 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
         note.unread = [NSNumber numberWithInt:0];
         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
-        if(hasDetailsView)
+        if(hasDetailsView) {
             [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
         
         [self.user markNoteAsRead:note.noteID success:^(AFHTTPRequestOperation *operation, id responseObject) {
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -289,22 +216,17 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
 }
 
 - (UITableViewCell *)newCell {
-    NotificationsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:NotificationsTableViewNoteCellIdentifier];
+    NewNotificationsTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:NotificationsTableViewNoteCellIdentifier];
 
-    // In iOS 6.0 and later, -[UITableViewCell dequeueReusableCellWithIdentifier:] always returns a valid cell
-    // since we registered the class
-    //
-    // The following initialisation is only needed for iOS 5
     if (cell == nil) {
-        cell = [[NotificationsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:NotificationsTableViewNoteCellIdentifier];
+        cell = [[NewNotificationsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:NotificationsTableViewNoteCellIdentifier];
     }
+    
     return cell;
 }
 
-- (void)configureCell:(NotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+- (void)configureCell:(NewNotificationsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     cell.note = [self.resultsController objectAtIndexPath:indexPath];
-    cell.accessoryView = nil;
-    cell.accessoryType = [self noteHasDetailView:cell.note] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 }
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *error))failure {
@@ -346,16 +268,16 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
         return;
     }
     
-    _retrievingNotifications = true;
+    _retrievingNotifications = YES;
     
     [self.user getNotificationsBefore:lastNote.timestamp success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        _retrievingNotifications = false;
+        _retrievingNotifications = NO;
                 
         if (success) {
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        _retrievingNotifications = false;
+        _retrievingNotifications = NO;
         
         if (failure) {
             failure(error);

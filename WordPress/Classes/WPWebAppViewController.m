@@ -13,6 +13,7 @@
 
 @implementation WPWebAppViewController {
     BOOL _pullToRefreshEnabled;
+    NSString *urlToLoad;
 }
 
 @synthesize webView, loading, lastWebViewRefreshDate, webBridge;
@@ -40,6 +41,15 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+- (void)loadView {
+    UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
+    view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectZero];
+    self.webView.delegate = self;
+    self.webView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    [view addSubview:self.webView];
+    [self setView:view];
+}
 
 - (void)viewDidLoad {
     WPFLogMethod();
@@ -62,6 +72,10 @@
                               [NSNumber numberWithFloat:1.f], @"blue",
                               [NSNumber numberWithFloat:1.f], @"alpha",
                               nil]];
+    
+    if (urlToLoad != nil) {
+        [self loadURL:urlToLoad];
+    }
 }
 
 
@@ -139,6 +153,10 @@
 
 - (void)loadURL:(NSString *)url
 {
+    if (self.webView == nil) {
+        urlToLoad = url;
+        return;
+    }
     
     NSHTTPCookieStorage *cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -147,7 +165,6 @@
     [request setValue:appDelegate.applicationUserAgent forHTTPHeaderField:@"User-Agent"];
     [request setValue:[cookieHeader valueForKey:@"Cookie"] forHTTPHeaderField:@"Cookie"];
     [self.webView loadRequest:[self.webBridge authorizeHybridRequest:request]];
-
 }
 
 // Just a Hello World for testing integration

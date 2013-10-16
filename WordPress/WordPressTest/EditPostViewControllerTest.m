@@ -15,9 +15,11 @@
 #import "EditPostViewControllerTest.h"
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
+#import "WPAccount.h"
 
 @implementation EditPostViewControllerTest {
     EditPostViewController *_controller;
+    WPAccount *_account;
     Blog *_blog;
     Post *_post;
 }
@@ -29,17 +31,19 @@
                                @"url": @"http://test.blog/",
                                @"xmlrpc": @"http://test.blog/xmlrpc.php",
                                @"blogName": @"A test blog",
-                               @"isAdmin": @YES,
-                               @"username": @"test",
-                               @"password": @"test"
+                               @"isAdmin": @YES
                                };
-    _blog = [Blog createFromDictionary:blogDict withContext:[[CoreDataTestHelper sharedHelper] managedObjectContext]];
+    [[CoreDataTestHelper sharedHelper] registerDefaultContext];
+    _account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:blogDict[@"xmlrpc"] username:@"test" andPassword:@"test"];
+    _blog = [_account findOrCreateBlogFromDictionary:blogDict withContext:[_account managedObjectContext]];
     _post = [Post newDraftForBlog:_blog];
     STAssertNoThrow(_controller = [[EditPostViewController alloc] initWithPost:[_post createRevision]], nil);
     UIViewController *rvc = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
-    STAssertNoThrow([rvc presentModalViewController:_controller animated:NO], nil);
-    STAssertNotNil(_controller.view, nil);
-    STAssertNotNil(_controller.view.superview, nil);
+    STAssertNoThrow([rvc presentViewController:_controller animated:NO completion:^{
+        NSLog(@"subviews: %@", [rvc.view subviews]);
+        STAssertNotNil(_controller.view, nil);
+        STAssertNotNil(_controller.view.superview, nil);
+    }], nil);
 }
 
 - (void)tearDown {
@@ -108,7 +112,7 @@
         ATHNotify();
     }];
     [titleTextField typeText:@"This is a very long title, which should trigger the autosave methods. Just in case... Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc est neque, adipiscing vitae euismod ut, elementum nec nibh. In hac habitasse platea dictumst. Mauris eu est lectus, sed elementum nunc. Praesent elit enim, facilisis eu tincidunt imperdiet, iaculis eu elit. In hac habitasse platea dictumst. Pellentesque feugiat elementum nulla, vitae pellentesque urna porttitor quis. Quisque et libero leo. Vestibulum ut erat ut ligula aliquet iaculis. Morbi egestas justo id nunc feugiat viverra vel sed risus. Nunc non ligula erat, eu ullamcorper purus. Nullam vitae erat velit, semper congue nibh. Vestibulum pulvinar mi a justo tincidunt venenatis in nec tortor. Curabitur tortor risus, consequat eget sollicitudin gravida, vestibulum vitae lacus. Aenean ut magna adipiscing mauris iaculis sollicitudin at id nisi."];
-    ATHWait();
+    ATHEnd();
     STAssertEqualObjects(_post.postID, @123, nil);
     STAssertEqualObjects(_post.status, @"draft", nil);
 }
@@ -116,7 +120,15 @@
 #pragma mark - Helpers
 
 - (UITextField *)titleTextField {
-    NSArray *views = [[[[[_controller.view subviews] objectAtIndex:0] subviews] objectAtIndex:0] subviews];
+    // For iOS7
+    NSArray *views = [_controller.view subviews];
+    for (UIView *view in views) {
+        if ([view isKindOfClass:[UITextField class]] && [[view accessibilityIdentifier] isEqualToString:@"EditorTitleField"]) {
+            return (UITextField *)view;
+        }
+    }
+    // For iOS6
+    views = [[[[[_controller.view subviews] objectAtIndex:0] subviews] objectAtIndex:0] subviews];
     for (UIView *view in views) {
         if ([view isKindOfClass:[UITextField class]] && [[view accessibilityIdentifier] isEqualToString:@"EditorTitleField"]) {
             return (UITextField *)view;

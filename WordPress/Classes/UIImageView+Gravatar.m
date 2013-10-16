@@ -10,24 +10,46 @@
 #import "UIImageView+AFNetworking.h"
 #import "NSString+Helpers.h"
 
-#define BLAVATAR_DEFAULT_IMAGE_WPORG @"blavatar-wporg.png"
-#define BLAVATAR_DEFAULT_IMAGE_WPCOM @"blavatar-wpcom.png"
-#define BLAVATAR_URL @"http://gravatar.com/blavatar/%@?s=86&d=404"
+NSInteger const BlavatarDefaultSize = 86;
+NSInteger const GravatarDefaultSize = 160;
 
-#define GRAVATAR_DEFAULT_IMAGE  @"gravatar.jpg"
-#define GRAVATAR_URL            @"http://www.gravatar.com/avatar/%@?s=160&d=404"
+NSString *const BlavatarBaseUrl = @"http://gravatar.com/blavatar";
+NSString *const GravatarBaseUrl = @"http://gravatar.com/avatar";
+
+NSString *const BlavatarDefaultWporg = @"blavatar-wporg.png";
+NSString *const BlavatarDefaultWpcom = @"blavatar-wpcom.png";
+NSString *const GravatarDefault = @"gravatar.png";
 
 @implementation UIImageView (Gravatar)
 
 - (void)setImageWithGravatarEmail:(NSString *)emailAddress {
     static UIImage *gravatarDefaultImage;
     if (gravatarDefaultImage == nil) {
-        gravatarDefaultImage = [UIImage imageNamed:GRAVATAR_DEFAULT_IMAGE];
+        gravatarDefaultImage = [UIImage imageNamed:GravatarDefault];
     }
 
-    NSURL *emailURL = [NSURL URLWithString:[NSString stringWithFormat:GRAVATAR_URL, [[emailAddress lowercaseString] md5]]];
+    [self setImageWithURL:[self gravatarURLForEmail:emailAddress] placeholderImage:gravatarDefaultImage];
+}
 
-    [self setImageWithURL:emailURL placeholderImage:gravatarDefaultImage];
+- (void)setImageWithGravatarEmail:(NSString *)emailAddress fallbackImage:(UIImage *)fallbackImage
+{
+    static UIImage *gravatarDefaultImage;
+    if (gravatarDefaultImage == nil) {
+        gravatarDefaultImage = [UIImage imageNamed:GravatarDefault];
+    }
+    
+    UIImage *defaultImage = fallbackImage;
+    if (defaultImage == nil) {
+        defaultImage = gravatarDefaultImage;
+    }
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[self gravatarURLForEmail:emailAddress]];
+    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    
+    __weak UIImageView *weakSelf = self;
+    [self setImageWithURLRequest:request placeholderImage:fallbackImage success:nil failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error){
+        weakSelf.image = fallbackImage;
+    }];
 }
 
 - (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl {
@@ -39,10 +61,10 @@
     static UIImage *blavatarDefaultImageWPcom;
     static UIImage *blavatarDefaultImageWPorg;
     if (blavatarDefaultImageWPcom == nil) {
-        blavatarDefaultImageWPcom = [UIImage imageNamed:BLAVATAR_DEFAULT_IMAGE_WPCOM];
+        blavatarDefaultImageWPcom = [UIImage imageNamed:BlavatarDefaultWpcom];
     }
     if (blavatarDefaultImageWPorg == nil) {
-        blavatarDefaultImageWPorg = [UIImage imageNamed:BLAVATAR_DEFAULT_IMAGE_WPORG];
+        blavatarDefaultImageWPorg = [UIImage imageNamed:BlavatarDefaultWporg];
     }
     
     UIImage *placeholderImage;
@@ -51,8 +73,49 @@
     } else {
         placeholderImage = blavatarDefaultImageWPorg;
     }
-    NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:BLAVATAR_URL, [blavatarUrl md5]]];
-    [self setImageWithURL:imageURL placeholderImage:placeholderImage];    
+    [self setImageWithURL:[self blavatarURLForHost:blavatarUrl] placeholderImage:placeholderImage];
+}
+
+- (NSURL *)gravatarURLForEmail:(NSString *)email
+{
+    return [self gravatarURLForEmail:email withSize:[self sizeForGravatar]];
+}
+
+- (NSURL *)gravatarURLForEmail:(NSString *)email withSize:(NSInteger)size
+{
+    NSString *gravatarUrl = [NSString stringWithFormat:@"%@/%@?d=404&s=%d", GravatarBaseUrl, [email md5], size];
+    return [NSURL URLWithString:gravatarUrl];
+}
+
+- (NSURL *)blavatarURLForHost:(NSString *)host
+{
+    return [self blavatarURLForHost:host withSize:[self sizeForBlavatar]];
+}
+
+- (NSURL *)blavatarURLForHost:(NSString *)host withSize:(NSInteger)size
+{
+    NSString *blavatarUrl = [NSString stringWithFormat:@"%@/%@?d=404&s=%d", BlavatarBaseUrl, [host md5], size];
+    return [NSURL URLWithString:blavatarUrl];
+}
+
+- (NSInteger)sizeForGravatar
+{
+    NSInteger size = GravatarDefaultSize;
+    if (!CGSizeEqualToSize(self.bounds.size, CGSizeZero)) {
+        size = MAX(self.bounds.size.width, self.bounds.size.height);
+        size *= [[UIScreen mainScreen] scale];
+    }
+    return size;
+}
+
+- (NSInteger)sizeForBlavatar
+{
+    NSInteger size = BlavatarDefaultSize;
+    if (!CGSizeEqualToSize(self.bounds.size, CGSizeZero)) {
+        size = MAX(self.bounds.size.width, self.bounds.size.height);
+        size *= [[UIScreen mainScreen] scale];
+    }
+    return size;
 }
 
 @end

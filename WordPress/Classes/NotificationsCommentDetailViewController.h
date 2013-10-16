@@ -12,6 +12,8 @@
 #import "NoteCommentPostBanner.h"
 #import "FollowButton.h"
 
+@class IOS7CorrectedTextView;
+
 @interface NotificationsCommentDetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
 @property (nonatomic, strong) WordPressComApi *user;
@@ -26,7 +28,7 @@
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *spamBarButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *replyBarButton;
 
-@property (nonatomic, strong) IBOutlet UITextView *replyTextView;
+@property (nonatomic, strong) IBOutlet IOS7CorrectedTextView *replyTextView;
 @property (nonatomic, strong) IBOutlet UIImageView *replyBackgroundImageView;
 @property (nonatomic, strong) IBOutlet UIView *tableFooterView;
 @property (nonatomic, strong) IBOutlet UIView *replyActivityView;

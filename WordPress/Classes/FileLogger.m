@@ -9,6 +9,7 @@
 #import "FileLogger.h"
 #import "DDFileLogger.h"
 #import "WordPressAppDelegate.h"
+#import <Crashlytics/Crashlytics.h>
 
 NSString *FileLoggerPath() {
     static NSString *filePath;

@@ -27,6 +27,8 @@
         self.textLabel.shadowColor = [UIColor blackColor];
         self.textLabel.textColor = [UIColor colorWithRed:221.0f/255.0f green:221.0f/255.0f blue:221.0f/255.0f alpha:1.0f];
         self.textLabel.font = [UIFont systemFontOfSize:17.0];
+        self.textLabel.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = [UIColor clearColor];
         self.backgroundView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"sidebar_cell_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
         self.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sidebar_cell_bg_selected"]];
     }
@@ -86,7 +88,7 @@
     aRect.origin.y = -1.0f;
     UILabel *commentsLbl = [[UILabel alloc]initWithFrame:aRect];
     commentsLbl.backgroundColor = [UIColor clearColor];
-    commentsLbl.textAlignment = UITextAlignmentCenter;
+    commentsLbl.textAlignment = NSTextAlignmentCenter;
     commentsLbl.text = text;
     commentsLbl.font = [UIFont systemFontOfSize:17.0];
     commentsLbl.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
@@ -94,4 +96,14 @@
     commentsLbl.shadowColor = [UIColor blackColor];
     return commentsLbl;
 }
+
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    if (self.accessoryView && [self.accessoryView isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton *)self.accessoryView;
+        [btn setHighlighted:NO];
+    }
+}
+
 @end

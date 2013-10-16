@@ -8,6 +8,7 @@
 #import "AddUsersBlogsViewController.h"
 #import "WordPressComApi.h"
 #import "JetpackSettingsViewController.h"
+#import "WPAccount.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 
 @interface EditSiteViewController (PrivateMethods)
@@ -21,15 +22,17 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
     UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wporg"]];
     logoImage.frame = CGRectMake(0.0f, 0.0f, AddSiteLogoSize.width, AddSiteLogoSize.height);
     logoImage.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     logoImage.contentMode = UIViewContentModeCenter;
     tableView.tableHeaderView = logoImage;
-    
-    self.tableView.backgroundView = nil;
-	self.tableView.backgroundColor = [UIColor clearColor];
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
+
+    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add", @"Add button to add a site from Settings.") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(save:)];
+    self.navigationItem.rightBarButtonItem = saveButton;
+
     self.navigationItem.title = NSLocalizedString(@"Add Blog", @"");
 }
 
@@ -37,7 +40,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
     return nil;
 }
 
-- (void)validationSuccess:(NSString *)xmlRpc {
+- (void)validationSuccess:(NSString *)xmlrpc {
     WPFLog(@"hasSubsites: %@", subsites);
 
     if ([subsites count] > 0) {
@@ -45,7 +48,12 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
         // assume they want to add that specific site.
         NSDictionary *subsite = nil;
         if ([subsites count] > 1) {
-            subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlRpc]] lastObject];
+            if (_blogId) {
+                subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"blogid = %@", _blogId]] lastObject];
+            }
+            if (!subsite) {
+                subsite = [[subsites filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@", xmlrpc]] lastObject];
+            }
         }
         
         if (subsite == nil) {
@@ -53,9 +61,12 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
         }
 
         if ([subsites count] > 1 && [[subsite objectForKey:@"blogid"] isEqualToString:@"1"]) {
-            [self displayAddUsersBlogsForXmlRpc:xmlRpc];
+            [self displayAddUsersBlogsForXmlRpc:xmlrpc];
         } else {
-            [self createBlogWithXmlRpc:xmlRpc andBlogDetails:subsite];
+            if (_isSiteDotCom) {
+                xmlrpc = [subsite objectForKey:@"xmlrpc"];
+            }
+            [self createBlogWithXmlRpc:xmlrpc andBlogDetails:subsite];
             [self synchronizeNewlyAddedBlog];
         }
     } else {
@@ -66,29 +77,30 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
     saveButton.enabled = YES;            
 }
 
-- (void)displayAddUsersBlogsForXmlRpc:(NSString *)xmlRpc
+- (void)displayAddUsersBlogsForXmlRpc:(NSString *)xmlrpc
 {
-    AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] init];
+    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:self.username andPassword:self.password];
+
+    AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithAccount:account];
     addUsersBlogsView.isWPcom = NO;
     addUsersBlogsView.usersBlogs = subsites;
-    addUsersBlogsView.url = xmlRpc;
+    addUsersBlogsView.url = xmlrpc;
     addUsersBlogsView.username = self.username;
     addUsersBlogsView.password = self.password;
     addUsersBlogsView.geolocationEnabled = self.geolocationEnabled;
     [self.navigationController pushViewController:addUsersBlogsView animated:YES];
 }
 
-- (void)createBlogWithXmlRpc:(NSString *)xmlRpc andBlogDetails:(NSDictionary *)blogDetails
+- (void)createBlogWithXmlRpc:(NSString *)xmlrpc andBlogDetails:(NSDictionary *)blogDetails
 {
     NSAssert(blogDetails != nil, nil);
-    
+
+    WPAccount *account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:self.username andPassword:self.password];
+
     NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
-    [newBlog setObject:self.username forKey:@"username"];
-    [newBlog setObject:self.password forKey:@"password"];
-    [newBlog setObject:xmlRpc forKey:@"xmlrpc"];
+    [newBlog setObject:xmlrpc forKey:@"xmlrpc"];
  
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    self.blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
+    self.blog = [account findOrCreateBlogFromDictionary:newBlog withContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext];
     self.blog.geolocationEnabled = self.geolocationEnabled;
     [self.blog dataSave];
 }
@@ -97,7 +109,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 {
     void (^successBlock)() = ^{
         [[WordPressComApi sharedApi] syncPushNotificationInfo];
-        if ([self.blog hasJetpack]) {
+        if (![self.blog isWPcom] && [self.blog hasJetpack]) {
             [self connectToJetpack];
         } else {
             [self dismiss];
@@ -130,7 +142,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 - (void)dismiss {
     [SVProgressHUD dismiss];
     if (IS_IPAD) {
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
     else {
         [self.navigationController popToRootViewControllerAnimated:YES];
@@ -143,9 +155,14 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
     JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
-        [self.presentingViewController dismissModalViewControllerAnimated:YES];
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }];
     [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
+}
+
+- (BOOL)canEditUsernameAndURL
+{
+    return YES;
 }
 
 @end

@@ -1,6 +1,6 @@
 //
 //  DTCoreTextLayoutFrame.h
-//  CoreTextExtensions
+//  DTCoreText
 //
 //  Created by Oliver Drobnik on 1/24/11.
 //  Copyright 2011 Drobnik.com. All rights reserved.
@@ -13,6 +13,8 @@
 #import <ApplicationServices/ApplicationServices.h>
 #endif
 
+#import "DTCoreTextConstants.h"
+
 @class DTCoreTextLayoutLine;
 @class DTTextBlock;
 
@@ -21,6 +23,32 @@
 #define CGFLOAT_OPEN_HEIGHT 16777215.0f
 
 typedef void (^DTCoreTextLayoutFrameTextBlockHandler)(DTTextBlock *textBlock, CGRect frame, CGContextRef context, BOOL *shouldDrawDefaultBackground); 
+
+/**
+ The drawing options for DTCoreTextLayoutFrame
+ */
+typedef NS_ENUM(NSUInteger, DTCoreTextLayoutFrameDrawingOptions)
+{
+	/**
+	 The default method for drawing draws links and attachments. Links are drawn non-highlighted
+	 */
+	DTCoreTextLayoutFrameDrawingDefault              = 1<<0,
+	
+	/**
+	 Links are not drawn, e.g. if they are displayed via custom buttons
+	 */
+	DTCoreTextLayoutFrameDrawingOmitLinks            = 1<<1,
+	
+	/**
+	 Text attachments are omitted from drawing, e.g. if they are displayed via custom views
+	 */
+	DTCoreTextLayoutFrameDrawingOmitAttachments      = 1<<2,
+	
+	/**
+	 If links are drawn they are displayed with the highlighted variant
+	 */
+	DTCoreTextLayoutFrameDrawingDrawLinksHighlighted = 1<<3
+} ;
 
 
 @class DTCoreTextLayouter;
@@ -98,24 +126,43 @@ typedef void (^DTCoreTextLayoutFrameTextBlockHandler)(DTTextBlock *textBlock, CG
 
 
 /**
+ Calculates the frame that is covered by the text content.
+ 
+ The result is calculated by enumerating over all lines and creating a union over all their frames. This is different than the frame property since this gets calculated.
+ @returns The area that is covered by the text content.
+ @note The width depends on how many glyphs Core Text was able to fit into a line. A line that gets broken might not have glyphs all the way to the margin. The y origin is always adjusted to be the same as frame since the first line might have some leading. The height is the minimum height that fits all layout lines.
+ */
+- (CGRect)intrinsicContentFrame;
+
+
+/**
  @name Drawing
  */
 
 
 /**
- Draws the entire layout frame into the given graphics context.
- 
+ Draws the receiver into the given graphics context.
+
+ @warning This method is deprecated, use -[DTCoreTextLayoutFrame drawInContext:options:] instead
  @param context A graphics context to draw into
  @param drawImages Whether images should be drawn together with the text. If you specify `NO` then space is left blank where images would go and you have to add your own views to display these images.
+ @param drawLinks Whether hyperlinks should be drawn together with the text. If you specify `NO` then space is left blank where links would go and you have to add your own views to display these images.
  @param drawImages Whether hyperlinks should be drawn together with the text. If you specify `NO` then space is left blank where links would go and you have to add your own views to display these links.
  */
-- (void)drawInContext:(CGContextRef)context drawImages:(BOOL)drawImages drawLinks:(BOOL)drawLinks;
+- (void)drawInContext:(CGContextRef)context drawImages:(BOOL)drawImages drawLinks:(BOOL)drawLinks __attribute__((deprecated("use -[DTCoreTextLayoutFrame drawInContext:options:] instead")));
 
 
 /**
- Set a custom handler to be executed before text belonging to a text block is drawn.
+ Draws the receiver into the given graphics context.
  
- @param handler A DTCoreTextLayoutFrameTextBlockHandler block.
+ @param context A graphics context to draw into
+ @param options The drawing options. See DTCoreTextLayoutFrameDrawingOptions for available options.
+ */
+- (void)drawInContext:(CGContextRef)context options:(DTCoreTextLayoutFrameDrawingOptions)options;
+
+
+/**
+ Set a custom handler to be executed before text belonging to a text block is drawn. Of type <DTCoreTextLayoutFrameTextBlockHandler>.
 */
 @property (nonatomic, copy) DTCoreTextLayoutFrameTextBlockHandler textBlockHandler;
 
@@ -204,12 +251,32 @@ typedef void (^DTCoreTextLayoutFrameTextBlockHandler)(DTTextBlock *textBlock, CG
 /**
  Finds the appropriate baseline origin for a line to position it at the correct distance from a previous line.
  
+ Support Layout options are:
+ 
+ - DTCoreTextLayoutFrameLinePositioningAlgorithmWebKit,
+ - DTCoreTextLayoutFrameLinePositioningAlgorithmLegacy
+ 
+ @param line The line
+ @param previousLine The line after which to position the line.
+ @param options The layout options to employ for positioning lines
+ @returns The correct baseline origin for the line.
+ */
+- (CGPoint)baselineOriginToPositionLine:(DTCoreTextLayoutLine *)line afterLine:(DTCoreTextLayoutLine *)previousLine options:(DTCoreTextLayoutFrameLinePositioningOptions)options;
+
+/**
+ Finds the appropriate baseline origin for a line to position it at the correct distance from a previous line using the DTCoreTextLayoutFrameLinePositioningOptionAlgorithmLegacy algorithm.
+ 
+ @warning This method is deprecated, use -[baselineOriginToPositionLine:afterLine:algorithm:] instead
  @param line The line
  @param previousLine The line after which to position the line.
  @returns The correct baseline origin for the line.
  */
-- (CGPoint)baselineOriginToPositionLine:(DTCoreTextLayoutLine *)line afterLine:(DTCoreTextLayoutLine *)previousLine;
+- (CGPoint)baselineOriginToPositionLine:(DTCoreTextLayoutLine *)line afterLine:(DTCoreTextLayoutLine *)previousLine __attribute__((deprecated("use use -[baselineOriginToPositionLine:afterLine:algorithm:] instead")));;
 
+/**
+ The ratio to decide when to create a justified line
+ */
+@property (nonatomic, readwrite) CGFloat justifyRatio;
 
 /**
  @name Text Attachments
@@ -281,5 +348,34 @@ typedef void (^DTCoreTextLayoutFrameTextBlockHandler)(DTTextBlock *textBlock, CG
  @param debugFrames if the debug drawing should occur
  */
 + (void)setShouldDrawDebugFrames:(BOOL)debugFrames;
+
+
+/**
+ @returns the current value of the debug frame drawing
+ */
++ (BOOL)shouldDrawDebugFrames;
+
+/**
+ @name Truncation
+ */
+
+
+/**
+ Maximum number of lines to display before truncation.  Default is 0 which indicates no limit.
+ */
+@property(nonatomic, assign) NSInteger numberOfLines;
+
+
+/**
+ Line break mode used to indicate how truncation should occur
+ */
+@property(nonatomic, assign) NSLineBreakMode lineBreakMode;
+
+
+/**
+ Optional attributed string tu use as truncation indicator.  If nil, will use "…" w/ attributes taken from text being truncated
+ */
+@property(nonatomic, strong)NSAttributedString *truncationString;
+
 
 @end

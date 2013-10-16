@@ -1,6 +1,6 @@
 //
 //  DTCoreTextParagraphStyle.h
-//  CoreTextExtensions
+//  DTCoreText
 //
 //  Created by Oliver Drobnik on 4/14/11.
 //  Copyright 2011 Drobnik.com. All rights reserved.
@@ -44,11 +44,34 @@
 - (id)initWithCTParagraphStyle:(CTParagraphStyleRef)ctParagraphStyle;
 
 /**
- Create a new `CTParagraphStyle` from the receiver for use as attributed in `NSAttributedString`
+ Create a new `CTParagraphStyle` from the receiver for use as attribute in `NSAttributedString`
  
  @returns The `CTParagraphStyle` based on the receiver's attributes.
  */
 - (CTParagraphStyleRef)createCTParagraphStyle;
+
+/**
+ @name Bridging to and from NSParagraphStyle
+ */
+
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES
+/**
+ Create a new paragraph style instance from an `NSParagraphStyle`.
+ 
+ Note: on iOS no tab stops are supported.
+ @param paragraphStyle the `NSParagraphStyle` from which to copy this new style's attributes.
+ */
++ (DTCoreTextParagraphStyle *)paragraphStyleWithNSParagraphStyle:(NSParagraphStyle *)paragraphStyle;
+
+/**
+ Create a new `NSParagraphStyle` from the receiver for use as attribute in `NSAttributedString`. 
+ 
+ Note: This method is requires iOS 6 or greater. This does not support tab stops.
+ 
+ @returns The `NSParagraphStyle` based on the receiver's attributes.
+ */
+- (NSParagraphStyle *)NSParagraphStyle;
+#endif
 
 
 /**-------------------------------------------------------------------------------------
@@ -103,10 +126,16 @@
 
 
 /**
+The distance in points from the margin of a text container to the end of lines. 
+ 
+ @note This value is negative if it is to be measured from the trailing margin, positive if measured from the same margin as the headIndent.
+ */
+@property (nonatomic, assign) CGFloat tailIndent;
+
+/**
  The distance in points from the leading margin of a text container to the beginning of lines other than the first. This value is always nonnegative.
  */
 @property (nonatomic, assign) CGFloat headIndent;
-
 
 /**
  The text alignment of the receiver.
@@ -162,15 +191,9 @@
  */
 
 /** 
- Text lists containing the paragraph, nested from outermost to innermost, to array.
+ Text lists containing the paragraph, nested from outermost to innermost. Each text list is a DTCSSListStyle object.
 */
 @property (nonatomic, copy) NSArray *textLists;
-
-
-/**
- The amount by which each list level is indented from the previous. NOTE: about to be replaced by textLists property.
- */
-@property (nonatomic, assign) CGFloat listIndent;
 
 
 /**-------------------------------------------------------------------------------------
@@ -179,7 +202,7 @@
  */
 
 /** 
- Text lists containing the paragraph, nested from outermost to innermost, to array.
+ Text blocks containing the paragraph, nested from outermost to innermost, to array. Each text block is a DTTextBlock object.
  */
 @property (nonatomic, copy) NSArray *textBlocks;
 

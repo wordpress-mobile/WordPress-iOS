@@ -8,13 +8,14 @@
 #import "EditSiteViewController.h"
 #import "NSURL+IDN.h"
 #import "WordPressComApi.h"
-#import "SFHFKeychainUtils.h"
 #import "UIBarButtonItem+Styled.h"
 #import "AFHTTPClient.h"
 #import "HelpViewController.h"
 #import "WPWebViewController.h"
 #import "JetpackSettingsViewController.h"
 #import "ReachabilityUtils.h"
+#import "WPAccount.h"
+#import "WPTableViewSectionHeaderView.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 
@@ -59,16 +60,12 @@
     
     if (blog) {
         self.navigationItem.title = NSLocalizedString(@"Edit Blog", @"");
-		self.tableView.backgroundColor = [UIColor clearColor];
-		if (IS_IPAD){
-			self.tableView.backgroundView = nil;
-			self.tableView.backgroundColor = [UIColor clearColor];
-		}
-        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
+
+        [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
         
         self.url = blog.url;
         self.username = blog.username;
-		self.password = [blog fetchPassword];
+		self.password = blog.password;
 
         self.startingUser = self.username;
         self.startingPwd = self.password;
@@ -93,11 +90,14 @@
     }
     
     if (isCancellable) {
-        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(cancel:)];
         self.navigationItem.leftBarButtonItem = barButton;
     }
     
-    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
+    saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(save:)];
     self.navigationItem.rightBarButtonItem = saveButton;
     
     if (!IS_IPAD) {
@@ -159,7 +159,21 @@
 }
 
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
 	NSString *result = nil;
 	switch (section) {
 		case 0:
@@ -174,7 +188,6 @@
 	return result;
 }
 
-
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath {    
     if ([indexPath section] == 0) {
@@ -184,15 +197,23 @@
                 self.urlCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UrlCell"];
 				self.urlCell.textLabel.text = NSLocalizedString(@"URL", @"");
 				urlTextField = self.urlCell.textField;
-				urlTextField.placeholder = NSLocalizedString(@"http://example.com", @"");
+				urlTextField.placeholder = NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field");
                 urlTextField.keyboardType = UIKeyboardTypeURL;
                 [urlTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:urlTextField asPassword:NO];
                 urlTextField.keyboardType = UIKeyboardTypeURL;
+                [WPStyleGuide configureTableViewCell:self.urlCell];
 				if (blog.url != nil) {
 					urlTextField.text = blog.url;
                 } else {
                     urlTextField.text = @"";
+                }
+                if ([self canEditUsernameAndURL]) {
+                    urlTextField.enabled = YES;
+                    urlTextField.textColor = [UIColor blackColor];
+                } else {
+                    urlTextField.enabled = NO;
+                    urlTextField.textColor = [UIColor darkGrayColor];
                 }
             }
             
@@ -202,9 +223,9 @@
             self.usernameCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"UsernameCell"];
             if (self.usernameCell == nil) {
                 self.usernameCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"UsernameCell"];
-				self.usernameCell.textLabel.text = NSLocalizedString(@"Username", @"");
+				self.usernameCell.textLabel.text = NSLocalizedString(@"Username", @"Label for entering username in the username field");
 				usernameTextField = self.usernameCell.textField;
-				usernameTextField.placeholder = NSLocalizedString(@"WordPress username", @"");
+				usernameTextField.placeholder = NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username");
                 [usernameTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:usernameTextField asPassword:NO];
 				if (blog.username != nil) {
@@ -212,6 +233,14 @@
                 } else {
                     usernameTextField.text = @"";
                 }
+                if ([self canEditUsernameAndURL]) {
+                    usernameTextField.enabled = YES;
+                    usernameTextField.textColor = [UIColor blackColor];
+                } else {
+                    usernameTextField.enabled = NO;
+                    usernameTextField.textColor = [UIColor darkGrayColor];
+                }
+                [WPStyleGuide configureTableViewCell:self.usernameCell];
 			}
             
             return self.usernameCell;
@@ -220,9 +249,9 @@
             self.passwordCell = (UITableViewTextFieldCell *)[tableView dequeueReusableCellWithIdentifier:@"PasswordCell"];
             if (self.passwordCell == nil) {
                 self.passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"PasswordCell"];
-				self.passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
+				self.passwordCell.textLabel.text = NSLocalizedString(@"Password", @"Label for entering password in password field");
 				passwordTextField = self.passwordCell.textField;
-				passwordTextField.placeholder = NSLocalizedString(@"WordPress password", @"");
+				passwordTextField.placeholder = NSLocalizedString(@"Enter password", @"(placeholder) Help user enter password in password field");
                 [passwordTextField addTarget:self action:@selector(enableDisableSaveButton) forControlEvents:UIControlEventEditingChanged];
                 [self configureTextField:passwordTextField asPassword:YES];
 				if (password != nil) {
@@ -230,6 +259,7 @@
                 } else {
                     passwordTextField.text = @"";
                 }
+                [WPStyleGuide configureTableViewCell:self.passwordCell];
 			}
             return self.passwordCell;
         }				        
@@ -250,6 +280,7 @@
             switchCell.selectionStyle = UITableViewCellSelectionStyleNone;
             switchCell.cellSwitch.on = self.geolocationEnabled;
             [switchCell.cellSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
+            [WPStyleGuide configureTableViewCell:switchCell];
             return switchCell;
         } else if(indexPath.row == 1) {
             if(switchCellPushNotifications == nil) {
@@ -330,27 +361,24 @@
 
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField.returnKeyType == UIReturnKeyNext) {
-        UITableViewCell *cell = (UITableViewCell *)[textField superview];
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:(indexPath.row + 1) inSection:indexPath.section];
-        UITableViewCell *nextCell = [self.tableView cellForRowAtIndexPath:nextIndexPath];
-        if (nextCell) {
-            for (UIView *subview in [nextCell subviews]) {
-                if ([subview isKindOfClass:[UITextField class]]) {
-                    [subview becomeFirstResponder];
-                    break;
-                }
-            }
-        }
+    if (textField == usernameTextField) {
+        [passwordTextField becomeFirstResponder];
+    } else if (textField == urlTextField) {
+        [usernameTextField becomeFirstResponder];
+    } else if (textField == passwordTextField) {
+        [textField resignFirstResponder];
     }
-	[textField resignFirstResponder];
 	return NO;
 }
 
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     UITableViewCell *cell = (UITableViewCell *)[textField superview];
+    
+    if (NSClassFromString(@"UITableViewCellScrollView")) {
+        // iOS7 introduced a private class in between the normal UITableViewCell and the cell views.
+        cell = (UITableViewCell*)[cell superview];
+    }
     NSMutableString *result = [NSMutableString stringWithString:textField.text];
     [result replaceCharactersInRange:range withString:string];
 
@@ -382,7 +410,7 @@
 		case 1:
             if (alertView.tag == 30){
                 NSString *path = nil;
-                NSError *error = NULL;
+                NSError *error = nil;
                 NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php" options:NSRegularExpressionCaseInsensitive error:&error];
                 NSString *msg = [alertView message];
                 NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
@@ -425,6 +453,7 @@
     textField.delegate = self;   
     if (asPassword) {
         textField.secureTextEntry = YES;
+        textField.returnKeyType = UIReturnKeyDone;
     } else {
         textField.returnKeyType = UIReturnKeyNext;
     }
@@ -447,7 +476,7 @@
     if(![urlToValidate hasPrefix:@"http"])
         urlToValidate = [NSString stringWithFormat:@"http://%@", url];
 	
-    NSError *error = NULL;
+    NSError *error = nil;
     
     NSRegularExpression *wplogin = [NSRegularExpression regularExpressionWithPattern:@"/wp-login.php$" options:NSRegularExpressionCaseInsensitive error:&error];
     NSRegularExpression *wpadmin = [NSRegularExpression regularExpressionWithPattern:@"/wp-admin/?$" options:NSRegularExpressionCaseInsensitive error:&error];
@@ -460,25 +489,46 @@
     return urlToValidate;
 }
 
+- (void)validateXmlprcURL:(NSURL *)xmlRpcURL
+{
+    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:usernameTextField.text password:passwordTextField.text];
+
+    [api getBlogOptionsWithSuccess:^(id options){
+        if ([options objectForKey:@"wordpress.com"] != nil) {
+            _isSiteDotCom = YES;
+            _blogId = [options stringForKeyPath:@"blog_id.value"];
+            [self loginForSiteWithXmlRpcUrl:[NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"]];
+        } else {
+            _isSiteDotCom = NO;
+            [self loginForSiteWithXmlRpcUrl:xmlRpcURL];
+        }
+    } failure:^(NSError *failure){
+        [SVProgressHUD dismiss];
+        [self validationDidFail:failure];
+    }];
+}
+
+- (void)loginForSiteWithXmlRpcUrl:(NSURL *)xmlRpcURL
+{
+    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:usernameTextField.text password:passwordTextField.text];
+    [api getBlogsWithSuccess:^(NSArray *blogs) {
+        [SVProgressHUD dismiss];
+        subsites = blogs;
+        [self validationSuccess:[xmlRpcURL absoluteString]];
+    } failure:^(NSError *error) {
+        [SVProgressHUD dismiss];
+        [self validationDidFail:error];
+    }];
+}
 
 - (void)checkURL {
 	NSString *urlToValidate = [self getURLToValidate];
 	
     [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate];
     
-    NSString *uname = usernameTextField.text;
-    NSString *pwd = passwordTextField.text;
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
     [WordPressXMLRPCApi guessXMLRPCURLForSite:urlToValidate success:^(NSURL *xmlrpcURL) {
-        WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlrpcURL username:uname password:pwd];
-        [api getBlogsWithSuccess:^(NSArray *blogs) {
-            [SVProgressHUD dismiss];
-            subsites = blogs;
-            [self validationSuccess:[xmlrpcURL absoluteString]];
-        } failure:^(NSError *error) {
-            [SVProgressHUD dismiss];
-            [self validationDidFail:error];
-        }];
+        [self validateXmlprcURL:xmlrpcURL];
     } failure:^(NSError *error){
         [SVProgressHUD dismiss];
         if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
@@ -506,38 +556,9 @@
 - (void)validationSuccess:(NSString *)xmlrpc {
 	[savingIndicator stopAnimating];
 	[savingIndicator setHidden:YES];
-    blog.url = self.url;
-    blog.xmlrpc = xmlrpc;
-    blog.username = self.username;
     blog.geolocationEnabled = self.geolocationEnabled;
-	NSError *error = nil;
-	//check if the blog is a WP.COM blog
-	if(blog.isWPcom) {
-		[SFHFKeychainUtils storeUsername:blog.username
-                             andPassword:self.password
-                          forServiceName:@"WordPress.com"
-                          updateExisting:YES
-                                   error:&error];
+    blog.account.password = self.password;
 
-        // If this is the account associated with the api, update the singleton's credentials also.
-        WordPressComApi *wpComApi = [WordPressComApi sharedApi];
-        if ([wpComApi.username isEqualToString:blog.username]) {
-            [wpComApi updateCredentailsFromStore];
-        }
-	} else {
-		[SFHFKeychainUtils storeUsername:blog.username
-							 andPassword:self.password
-						  forServiceName:blog.hostURL
-						  updateExisting:YES
-								   error:&error];        
-	}
-    
-    if (error) {
-		[FileLogger log:@"%@ %@ Error saving password for %@: %@", self, NSStringFromSelector(_cmd), blog.url, error];
-    } else {
-		[FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), blog.url];
-	}
-    
     [self cancel:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 
@@ -618,7 +639,13 @@
     }
     
     if (validFields) {
-        [self checkURL];
+        if (blog) {
+            // If we are editing an existing blog, use the known XML-RPC URL
+            // We don't allow editing URL on existing blogs, so XML-RPC shouldn't change
+            [self validateXmlprcURL:[NSURL URLWithString:blog.xmlrpc]];
+        } else {
+            [self checkURL];
+        }
     } else {
         [self validationDidFail:nil];
     }
@@ -695,7 +722,7 @@
 
 - (IBAction)cancel:(id)sender {
     if (isCancellable) {
-        [self dismissModalViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     } else {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
@@ -714,9 +741,9 @@
          [usernameTextField.text isEqualToString:@""] ||
          [passwordTextField.text isEqualToString:@""] )
     {
-        hasContent = FALSE;
+        hasContent = NO;
     } else {
-        hasContent = TRUE;
+        hasContent = YES;
     }
     
     self.navigationItem.rightBarButtonItem.enabled = hasContent;
@@ -746,6 +773,11 @@
     } else {
         return YES;
     }
+}
+
+- (BOOL)canEditUsernameAndURL
+{
+    return NO;
 }
 
 #pragma mark -

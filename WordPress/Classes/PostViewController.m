@@ -53,7 +53,7 @@
                                                                                  target:self
                                                                                  action:@selector(showModalEditor)];
     UIBarButtonItem *previewButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.")
-                                                                       style:UIBarButtonItemStyleBordered
+                                                                       style:[WPStyleGuide barButtonStyleForBordered]
                                                                       target:self
                                                                       action:@selector(showModalPreview)];
     
@@ -239,7 +239,7 @@
 }
 
 - (NSString *)formatString:(NSString *)str {
-    NSError *error = NULL;
+    NSError *error = nil;
     NSRegularExpression *linesBetweenTags = [NSRegularExpression regularExpressionWithPattern:@">\\n+<" options:NSRegularExpressionCaseInsensitive error:&error];
     NSRegularExpression *extraLines = [NSRegularExpression regularExpressionWithPattern:@"\\n{3,}" options:NSRegularExpressionCaseInsensitive error:&error];
     
@@ -261,7 +261,7 @@
 
 
 - (void)showModalEditor {
-    if (self.modalViewController) {
+    if (self.presentedViewController) {
         NSLog(@"Trying to show modal a second time: bad");
         return;
     }
@@ -280,14 +280,15 @@
     postViewController = [self getPostOrPageController: postRevision];
 
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:postViewController];
+    nav.navigationBar.translucent = NO;
     nav.modalPresentationStyle = UIModalPresentationPageSheet;
     nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     //nav.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
-    [self presentModalViewController:nav animated:YES];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)showModalPreview {
-    if (self.modalViewController) {
+    if (self.presentedViewController) {
         NSLog(@"Trying to show modal a second time: bad");
         return;
     }
@@ -298,15 +299,16 @@
     PostPreviewViewController *postPreviewViewController = [[PostPreviewViewController alloc] initWithPost:postRevision];
 
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:postPreviewViewController];
+    nav.navigationBar.translucent = NO;
     nav.modalPresentationStyle = UIModalPresentationPageSheet;
     nav.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     //nav.navigationBar.tintColor = [UIColor colorWithRed:31/256.0 green:126/256.0 blue:163/256.0 alpha:1.0];
     nav.navigationBar.topItem.title = NSLocalizedString(@"Preview", @"Post Editor / Preview screen title.");
 
-    UIBarButtonItem *c = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissPreview)];
+    UIBarButtonItem *c = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissPreview)];
     nav.navigationBar.topItem.leftBarButtonItem = c;
     
-    [self presentModalViewController:nav animated:YES];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 - (EditPostViewController *)getPostOrPageController:(AbstractPost *)revision {
@@ -320,7 +322,7 @@
 }
 
 - (void)dismissPreview {
-    [self.presentedViewController dismissModalViewControllerAnimated:YES];
+    [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {

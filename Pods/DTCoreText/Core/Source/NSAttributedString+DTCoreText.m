@@ -8,37 +8,48 @@
 
 #import "DTCoreText.h"
 #import "NSAttributedString+DTCoreText.h"
+#import "DTHTMLWriter.h"
+#import "NSURL+DTComparing.h"
 
 @implementation NSAttributedString (DTCoreText)
 
 #pragma mark Text Attachments
-- (NSArray *)textAttachmentsWithPredicate:(NSPredicate *)predicate
+- (NSArray *)textAttachmentsWithPredicate:(NSPredicate *)predicate class:(Class)class
 {
-	NSMutableArray *tmpArray = [NSMutableArray array];
-	
-	NSUInteger index = 0;
-	
-	while (index<[self length]) 
+	if (![self length])
 	{
-		NSRange range;
-		NSDictionary *attributes = [self attributesAtIndex:index effectiveRange:&range];
-		
-		DTTextAttachment *attachment = [attributes objectForKey:NSAttachmentAttributeName];
-		
-		if (attachment)
-		{
-			if ([predicate evaluateWithObject:attachment])
-			{
-				[tmpArray addObject:attachment];
-			}
-		}
-		
-		index += range.length;
+		return nil;
 	}
 	
-	if ([tmpArray count])
+	NSMutableArray *foundAttachments = [NSMutableArray array];
+	
+	NSRange entireRange = NSMakeRange(0, [self length]);
+	[self enumerateAttribute:NSAttachmentAttributeName inRange:entireRange options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(DTTextAttachment *attachment, NSRange range, BOOL *stop) {
+		
+		if (attachment == nil)
+		{
+			// no attachment value
+			return;
+		}
+		
+		if (predicate && ![predicate evaluateWithObject:attachment])
+		{
+			// doesn't fit predicate, next
+			return;
+		}
+		
+		if (class && ![attachment isKindOfClass:class])
+		{
+			// doesn't fit class, next
+			return;
+		}
+		
+		[foundAttachments addObject:attachment];
+	}];
+	
+	if ([foundAttachments count])
 	{
-		return tmpArray;
+		return foundAttachments;
 	}
 	
 	return nil;
@@ -116,6 +127,8 @@
 
 - (NSRange)_rangeOfObject:(id)object inArrayBehindAttribute:(NSString *)attribute atIndex:(NSUInteger)location
 {
+	@synchronized(self)
+	{
 	NSUInteger searchIndex = location;
 	
 	NSArray *arrayAtIndex;
@@ -178,15 +191,25 @@
 	}
 	
 	return NSMakeRange(minFoundIndex, maxFoundIndex-minFoundIndex);
+	}
 }
 
 - (NSRange)rangeOfTextList:(DTCSSListStyle *)list atIndex:(NSUInteger)location
 {
-	return [self _rangeOfObject:list inArrayBehindAttribute:DTTextListsAttribute atIndex:location];
+	NSParameterAssert(list);
+	
+	NSRange listRange = [self _rangeOfObject:list inArrayBehindAttribute:DTTextListsAttribute atIndex:location];
+	
+	// extend list range to full paragraphs to be safe
+	listRange = [self.string rangeOfParagraphsContainingRange:listRange parBegIndex:NULL parEndIndex:NULL];
+	
+	return listRange;
 }
 
 - (NSRange)rangeOfTextBlock:(DTTextBlock *)textBlock atIndex:(NSUInteger)location
 {
+	NSParameterAssert(textBlock);
+
 	return [self _rangeOfObject:textBlock inArrayBehindAttribute:DTTextBlocksAttribute atIndex:location];
 }
 
@@ -205,568 +228,92 @@
 	return foundRange;
 }
 
-#pragma mark HTML Encoding
-
-
-- (NSString *)_tagRepresentationForListStyle:(DTCSSListStyle *)listStyle closingTag:(BOOL)closingTag
+- (NSRange)rangeOfLinkAtIndex:(NSUInteger)location URL:(NSURL **)URL
 {
-	BOOL isOrdered = NO;
+	NSRange rangeSoFar;
 	
-	NSString *typeString = nil;
+	NSURL *foundURL = [self attribute:DTLinkAttribute atIndex:location effectiveRange:&rangeSoFar];
 	
-	switch (listStyle.type) 
+	if (!foundURL)
 	{
-		case DTCSSListStyleTypeInherit:
-		case DTCSSListStyleTypeDisc:
-		{
-			typeString = @"disc";
-			isOrdered = NO;
-			break;
-		}
-			
-		case DTCSSListStyleTypeCircle:
-		{
-			typeString = @"circle";
-			isOrdered = NO;
-			break;
-		}
-			
-		case DTCSSListStyleTypePlus:
-		{
-			typeString = @"plus";
-			isOrdered = NO;
-			break;
-		}
-			
-		case DTCSSListStyleTypeUnderscore:
-		{
-			typeString = @"underscore";
-			isOrdered = NO;
-			break;
-		}
-			
-		case DTCSSListStyleTypeImage: 
-		{
-			typeString = @"image";
-			isOrdered = NO;
-			break;
-		}
-			
-		case DTCSSListStyleTypeDecimal:
-		{
-			typeString = @"decimal";
-			isOrdered = YES;
-			break;
-		}
-			
-		case DTCSSListStyleTypeDecimalLeadingZero:
-		{
-			typeString = @"decimal-leading-zero";
-			isOrdered = YES;
-			break;
-		}
-			
-		case DTCSSListStyleTypeUpperAlpha:
-		{
-			typeString = @"upper-alpha";
-			isOrdered = YES;
-			break;
-		}
-			
-		case DTCSSListStyleTypeUpperLatin:
-		{
-			typeString = @"upper-latin";
-			isOrdered = YES;
-			break;
-		}
-			
-		case DTCSSListStyleTypeLowerAlpha:
-		{
-			typeString = @"lower-alpha";
-			isOrdered = YES;
-			break;
-		}
-			
-		case DTCSSListStyleTypeLowerLatin:
-		{
-			typeString = @"lower-latin";
-			isOrdered = YES;
-			break;
-		}
-			
-		default:
-			break;
+		return NSMakeRange(NSNotFound, 0);
 	}
 	
-	if (closingTag)
+	// search towards beginning
+	while (rangeSoFar.location>0)
 	{
-		if (isOrdered)
+		NSRange extendedRange;
+		NSURL *extendedURL = [self attribute:DTLinkAttribute atIndex:rangeSoFar.location-1 effectiveRange:&extendedRange];
+		
+		// abort search if key not found or value not identical
+		if (!extendedURL || ![extendedURL isEqualToURL:foundURL])
 		{
-			return @"</ol>";
-		}
-		else
-		{
-			return @"</ul>";
-		}
-	}
-	else
-	{
-		if (listStyle.position == DTCSSListStylePositionInside)
-		{
-			typeString = [typeString stringByAppendingString:@" inside"];
-		}
-		else if (listStyle.position == DTCSSListStylePositionOutside)
-		{
-			typeString = [typeString stringByAppendingString:@" outside"];
+			break;
 		}
 		
-		if (isOrdered)
-		{
-			return [NSString stringWithFormat:@"<ol style=\"list-style='%@';\">", typeString];
-		}
-		else
-		{
-			return [NSString stringWithFormat:@"<ul style=\"list-style='%@';\">", typeString];
-		}
+		rangeSoFar = NSUnionRange(rangeSoFar, extendedRange);
 	}
+	
+	NSUInteger length = [self length];
+	
+	// search towards end
+	while (NSMaxRange(rangeSoFar)<length)
+	{
+		NSRange extendedRange;
+		NSURL *extendedURL = [self attribute:DTLinkAttribute atIndex:NSMaxRange(rangeSoFar) effectiveRange:&extendedRange];
+		
+		// abort search if key not found or value not identical
+		if (!extendedURL || ![extendedURL isEqualToURL:foundURL])
+		{
+			break;
+		}
+		
+		rangeSoFar = NSUnionRange(rangeSoFar, extendedRange);
+	}
+	
+	if (URL)
+	{
+		*URL = foundURL;
+	}
+	
+	return rangeSoFar;
 }
 
-// TO DO: aggregate common styles (like font) into one span
-// TO DO: correctly encode LI/OL/UL
-// TO DO: correctly encode shadows
+- (NSRange)rangeOfFieldAtIndex:(NSUInteger)location
+{
+    if (location<[self length])
+    {
+        // get range of prefix
+        NSRange fieldRange;
+        NSString *fieldAttribute = [self attribute:DTFieldAttribute atIndex:location effectiveRange:&fieldRange];
+        
+        if (fieldAttribute)
+        {
+            return fieldRange;
+        }
+    }
+    
+    return NSMakeRange(NSNotFound, 0);
+}
+
+#pragma mark HTML Encoding
 
 - (NSString *)htmlString
 {
-	NSString *plainString = [self string];
+	// create a writer
+	DTHTMLWriter *writer = [[DTHTMLWriter alloc] initWithAttributedString:self];
 	
-	// divide the string into it's blocks, we assume that these are the P
-	NSArray *paragraphs = [plainString componentsSeparatedByString:@"\n"];
-	
-	NSMutableString *retString = [NSMutableString string];
-	
-	NSInteger location = 0;
-	
-	NSArray *previousListStyles = nil;
+	// return it's output
+	return [writer HTMLString];
+}
 
-	for (NSUInteger i=0; i<[paragraphs count]; i++)
-	{
-		NSString *oneParagraph = [paragraphs objectAtIndex:i];
-		NSRange paragraphRange = NSMakeRange(location, [oneParagraph length]);
-		
-		// skip empty paragraph at the end
-		if (i==[paragraphs count]-1)
-		{
-			if (!paragraphRange.length)
-			{
-				continue;
-			}
-		}
-		
-		BOOL needsToRemovePrefix = NO;
-		
-		BOOL fontIsBlockLevel = NO;
-		
-		// check if font is same in all paragraph
-		NSRange fontEffectiveRange;
-		CTFontRef paragraphFont = (__bridge CTFontRef)[self attribute:(id)kCTFontAttributeName atIndex:paragraphRange.location longestEffectiveRange:&fontEffectiveRange inRange:paragraphRange];
-		
-		if (NSEqualRanges(paragraphRange, fontEffectiveRange))
-		{
-			fontIsBlockLevel = YES;
-		}
-		
-		// next paragraph start
-		location = location + paragraphRange.length + 1;
-		
-		NSDictionary *paraAttributes = [self attributesAtIndex:paragraphRange.location effectiveRange:NULL];
-		
-		// lets see if we have a list style
-		NSArray *currentListStyles = [paraAttributes objectForKey:DTTextListsAttribute];
-		
-		DTCSSListStyle *effectiveListStyle = [currentListStyles lastObject];
-		
-		CTParagraphStyleRef paraStyle = (__bridge CTParagraphStyleRef)[paraAttributes objectForKey:(id)kCTParagraphStyleAttributeName];
-		NSString *paraStyleString = nil;
-		
-		if (paraStyle)
-		{
-			DTCoreTextParagraphStyle *para = [DTCoreTextParagraphStyle paragraphStyleWithCTParagraphStyle:paraStyle];
-			
-			paraStyleString = [para cssStyleRepresentation];
-		}
-		
-		if (!paraStyleString)
-		{
-			paraStyleString = @"";
-		}
-		
-		if (fontIsBlockLevel)
-		{
-			if (paragraphFont)
-			{
-				DTCoreTextFontDescriptor *desc = [DTCoreTextFontDescriptor fontDescriptorForCTFont:paragraphFont];
-				NSString *paraFontStyle = [desc cssStyleRepresentation];
-				
-				if (paraFontStyle)
-				{
-					paraStyleString = [paraStyleString stringByAppendingString:paraFontStyle];
-				}
-			}
-		}
-		
-		NSString *blockElement;
-		
-		// close until we are at current or nil
-		if ([previousListStyles count]>[currentListStyles count])
-		{
-			NSMutableArray *closingStyles = [previousListStyles mutableCopy];
-			
-			do 
-			{
-				DTCSSListStyle *closingStyle = [closingStyles lastObject];
-				
-				if (closingStyle == effectiveListStyle)
-				{
-					break;
-				}
-				
-				// end of a list block
-				[retString appendString:[self _tagRepresentationForListStyle:closingStyle closingTag:YES]];
-				[retString appendString:@"\n"];
-				
-				[closingStyles removeLastObject];
-				
-				previousListStyles = closingStyles;
-			}
-			while ([closingStyles count]);
-		}
-		
-		if (effectiveListStyle)
-		{
-			// next text needs to have list prefix removed
-			needsToRemovePrefix = YES;
-			
-			if (![previousListStyles containsObject:effectiveListStyle])
-			{
-				// beginning of a list block
-				[retString appendString:[self _tagRepresentationForListStyle:effectiveListStyle closingTag:NO]];
-				[retString appendString:@"\n"];
-			}
-			
-			blockElement = @"li";
-		}
-		else
-		{
-			blockElement = @"p";
-		}
-		
-		NSNumber *headerLevel = [paraAttributes objectForKey:DTHeaderLevelAttribute];
-		
-		if (headerLevel)
-		{
-			blockElement = [NSString stringWithFormat:@"h%d", (int)[headerLevel integerValue]];
-		}
-		
-		if ([paragraphs lastObject] == oneParagraph)
-		{
-			// last paragraph in string
-			
-			if (![plainString hasSuffix:@"\n"])
-			{
-				// not a whole paragraph, so we don't put it in P
-				blockElement = @"span";
-			}
-		}
-		
-		if ([paraStyleString length])
-		{
-			[retString appendFormat:@"<%@ style=\"%@\">", blockElement, paraStyleString];
-		}
-		else
-		{
-			[retString appendFormat:@"<%@>", blockElement];
-		}
-		
-		// add the attributed string ranges in this paragraph to the paragraph container
-		NSRange effectiveRange;
-		NSUInteger index = paragraphRange.location;
-		
-		while (index < NSMaxRange(paragraphRange))
-		{
-			NSDictionary *attributes = [self attributesAtIndex:index longestEffectiveRange:&effectiveRange inRange:paragraphRange];
-			
-			NSString *plainSubString =[plainString substringWithRange:effectiveRange];
-			
-			if (effectiveListStyle && needsToRemovePrefix)
-			{
-				NSInteger counter = [self itemNumberInTextList:effectiveListStyle atIndex:index];
-				NSString *prefix = [effectiveListStyle prefixWithCounter:counter];
-				
-				if ([plainSubString hasPrefix:prefix])
-				{
-					plainSubString = [plainSubString substringFromIndex:[prefix length]];
-				}
-				
-				needsToRemovePrefix = NO;
-			}
-			
-			index += effectiveRange.length;
-			
-			NSString *subString = [plainSubString stringByAddingHTMLEntities];
-			
-			if (!subString)
-			{
-				continue;
-			}
-			
-			DTTextAttachment *attachment = [attributes objectForKey:NSAttachmentAttributeName];
-			
-			
-			if (attachment)
-			{
-				NSString *urlString;
-				
-				if (attachment.contentURL)
-				{
-					
-					if ([attachment.contentURL isFileURL])
-					{
-						NSString *path = [attachment.contentURL path];
-						
-						NSRange range = [path rangeOfString:@".app/"];
-						
-						if (range.length)
-						{
-							urlString = [path substringFromIndex:NSMaxRange(range)];
-						}
-						else
-						{
-							urlString = [attachment.contentURL absoluteString];
-						}
-					}
-					else
-					{
-						urlString = [attachment.contentURL relativeString];
-					}
-				}
-				else
-				{
-					if (attachment.contentType == DTTextAttachmentTypeImage && attachment.contents)
-					{
-						urlString = [attachment dataURLRepresentation];
-					}
-					else
-					{
-						// no valid image remote or local
-						continue;
-					}
-				}
-				
-				// write appropriate tag
-				if (attachment.contentType == DTTextAttachmentTypeVideoURL)
-				{
-					[retString appendFormat:@"<video src=\"%@\"", urlString];
-				}
-				else if (attachment.contentType == DTTextAttachmentTypeImage)
-				{
-					[retString appendFormat:@"<img src=\"%@\"", urlString];
-				}
-				
-				
-				// build a HTML 5 conformant size style if set
-				NSMutableString *styleString = [NSMutableString string];
-				
-				if (attachment.originalSize.width>0)
-				{
-					[styleString appendFormat:@"width:%.0fpx;", attachment.originalSize.width];
-				}
-				
-				if (attachment.originalSize.height>0)
-				{
-					[styleString appendFormat:@"height:%.0fpx;", attachment.originalSize.height];
-				}
-				
-				if (attachment.verticalAlignment != DTTextAttachmentVerticalAlignmentBaseline)
-				{
-					switch (attachment.verticalAlignment) 
-					{
-						case DTTextAttachmentVerticalAlignmentBaseline:
-						{
-							[styleString appendString:@"vertical-align:baseline;"];
-							break;
-						}
-						case DTTextAttachmentVerticalAlignmentTop:
-						{
-							[styleString appendString:@"vertical-align:text-top;"];
-							break;
-						}	
-						case DTTextAttachmentVerticalAlignmentCenter:
-						{
-							[styleString appendString:@"vertical-align:middle;"];
-							break;
-						}
-						case DTTextAttachmentVerticalAlignmentBottom:
-						{
-							[styleString appendString:@"vertical-align:text-bottom;"];
-							break;
-						}
-					}
-				}
-				
-				if ([styleString length])
-				{
-					[retString appendFormat:@" style=\"%@\"", styleString];
-				}
-				
-				// attach the attributes dictionary
-				NSMutableDictionary *tmpAttributes = [attachment.attributes mutableCopy];
-				
-				// remove src and style, we already have that
-				[tmpAttributes removeObjectForKey:@"src"];
-				[tmpAttributes removeObjectForKey:@"style"];
-				
-				for (__strong NSString *oneKey in [tmpAttributes allKeys])
-				{
-					oneKey = [oneKey stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-					NSString *value = [[tmpAttributes objectForKey:oneKey] stringByAddingHTMLEntities];
-					[retString appendFormat:@" %@=\"%@\"", oneKey, value];
-				}
-				
-				// end
-				[retString appendString:@" />"];
-				
-				
-				continue;
-			}
-			
-			NSString *fontStyle = nil;
-			if (!fontIsBlockLevel)
-			{
-				CTFontRef font = (__bridge CTFontRef)[attributes objectForKey:(id)kCTFontAttributeName];
-				if (font)
-				{
-					DTCoreTextFontDescriptor *desc = [DTCoreTextFontDescriptor fontDescriptorForCTFont:font];
-					fontStyle = [desc cssStyleRepresentation];
-				}
-			}
-			
-			if (!fontStyle)
-			{
-				fontStyle = @"";
-			}
-			
-			CGColorRef textColor = (__bridge CGColorRef)[attributes objectForKey:(id)kCTForegroundColorAttributeName];
-			if (textColor)
-			{
-				DTColor *color = [DTColor colorWithCGColor:textColor];
-				
-				fontStyle = [fontStyle stringByAppendingFormat:@"color:#%@;", [color htmlHexString]];
-			}
-			
-			CGColorRef backgroundColor = (__bridge CGColorRef)[attributes objectForKey:DTBackgroundColorAttribute];
-			if (backgroundColor)
-			{
-				DTColor *color = [DTColor colorWithCGColor:backgroundColor];
-				
-				fontStyle = [fontStyle stringByAppendingFormat:@"background-color:#%@;", [color htmlHexString]];
-			}
-			
-			NSNumber *underline = [attributes objectForKey:(id)kCTUnderlineStyleAttributeName];
-			if (underline)
-			{
-				fontStyle = [fontStyle stringByAppendingString:@"text-decoration:underline;"];
-			}
-			else
-			{
-				// there can be no underline and strike-through at the same time
-				NSNumber *strikout = [attributes objectForKey:DTStrikeOutAttribute];
-				if ([strikout boolValue])
-				{
-					fontStyle = [fontStyle stringByAppendingString:@"text-decoration:line-through;"];
-				}
-			}
-			
-			NSNumber *superscript = [attributes objectForKey:(id)kCTSuperscriptAttributeName];
-			if (superscript)
-			{
-				NSInteger style = [superscript integerValue];
-				
-				switch (style)
-				{
-					case 1:
-					{
-						fontStyle = [fontStyle stringByAppendingString:@"vertical-align:super;"];
-						break;
-					}
-						
-					case -1:
-					{
-						fontStyle = [fontStyle stringByAppendingString:@"vertical-align:sub;"];
-						break;
-					}
-						
-					default:
-					{
-						// all other are baseline because we don't support anything else for text
-						fontStyle = [fontStyle stringByAppendingString:@"vertical-align:baseline;"];
-						
-						break;
-					}
-				}
-			}
-			
-			NSURL *url = [attributes objectForKey:DTLinkAttribute];
-			
-			if (url)
-			{
-				if ([fontStyle length])
-				{
-					[retString appendFormat:@"<a href=\"%@\" style=\"%@\">%@</a>", [url relativeString], fontStyle, subString];
-				}
-				else
-				{
-					[retString appendFormat:@"<a href=\"%@\">%@</a>", [url relativeString], subString];
-				}			
-			}
-			else
-			{
-				if ([fontStyle length])
-				{
-					[retString appendFormat:@"<span style=\"%@\">%@</span>", fontStyle, subString];
-				}
-				else
-				{
-					[retString appendString:subString];
-				}
-			}
-		}
-		
-		[retString appendFormat:@"</%@>\n", blockElement];
-		
-		
-		// end of paragraph loop
-		previousListStyles = [currentListStyles copy];
-	}
+- (NSString *)htmlFragment
+{
+	// create a writer
+	DTHTMLWriter *writer = [[DTHTMLWriter alloc] initWithAttributedString:self];
 	
-	// close list if still open
-	if ([previousListStyles count])
-	{
-		NSMutableArray *closingStyles = [previousListStyles mutableCopy];
-		
-		do 
-		{
-			DTCSSListStyle *closingStyle = [closingStyles lastObject];
-			
-			// end of a list block
-			[retString appendString:[self _tagRepresentationForListStyle:closingStyle closingTag:YES]];
-			[retString appendString:@"\n"];
-			
-			[closingStyles removeLastObject];
-		}
-		while ([closingStyles count]);
-	}
-	
-	return retString;
+	// return it's output
+	return [writer HTMLFragment];
 }
 
 - (NSString *)plainTextString
@@ -782,7 +329,6 @@
 	// get existing values from attributes
 	CTParagraphStyleRef paraStyle = (__bridge CTParagraphStyleRef)[attributes objectForKey:(id)kCTParagraphStyleAttributeName];
 	CTFontRef font = (__bridge CTFontRef)[attributes objectForKey:(id)kCTFontAttributeName];
-	CGColorRef textColor = (__bridge CGColorRef)[attributes objectForKey:(id)kCTForegroundColorAttributeName];
 	
 	DTCoreTextFontDescriptor *fontDescriptor = nil;
 	DTCoreTextParagraphStyle *paragraphStyle = nil;
@@ -794,17 +340,16 @@
 		paragraphStyle.tabStops = nil;
 		
 		paragraphStyle.headIndent = listIndent;
-		paragraphStyle.paragraphSpacing = 0;
 		
 		if (listStyle.type != DTCSSListStyleTypeNone)
 		{
 			// first tab is to right-align bullet, numbering against
-			CGFloat tabOffset = paragraphStyle.headIndent - 5.0f*1.0; // TODO: change with font size
+			CGFloat tabOffset = paragraphStyle.headIndent - (CGFloat)5.0; // TODO: change with font size
 			[paragraphStyle addTabStopAtPosition:tabOffset alignment:kCTRightTextAlignment];
 		}
 		
 		// second tab is for the beginning of first line after bullet
-		[paragraphStyle addTabStopAtPosition:paragraphStyle.headIndent alignment:	kCTLeftTextAlignment];	
+		[paragraphStyle addTabStopAtPosition:paragraphStyle.headIndent alignment:kCTLeftTextAlignment];	
 	}
 	
 	if (font)
@@ -824,20 +369,54 @@
 		
 		font = [fontDesc newMatchingFont];
 		
-		[newAttributes setObject:CFBridgingRelease(font) forKey:(id)kCTFontAttributeName];
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES && __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_5_1
+		if (___useiOS6Attributes)
+		{
+			UIFont *uiFont = [UIFont fontWithCTFont:font];
+			[newAttributes setObject:uiFont forKey:NSFontAttributeName];
+			
+			CFRelease(font);
+		}
+		else
+#endif
+		{
+			[newAttributes setObject:CFBridgingRelease(font) forKey:(id)kCTFontAttributeName];
+		}
 	}
 	
-	// text color for bullet same as text
+	CGColorRef textColor = (__bridge CGColorRef)[attributes objectForKey:(id)kCTForegroundColorAttributeName];
+	
 	if (textColor)
 	{
 		[newAttributes setObject:(__bridge id)textColor forKey:(id)kCTForegroundColorAttributeName];
 	}
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES
+	else if (___useiOS6Attributes)
+	{
+		DTColor *uiColor = [attributes foregroundColor];
+		
+		if (uiColor)
+		{
+			[newAttributes setObject:uiColor forKey:NSForegroundColorAttributeName];
+		}
+	}
+#endif
 	
 	// add paragraph style (this has the tabs)
 	if (paragraphStyle)
 	{
-		CTParagraphStyleRef newParagraphStyle = [paragraphStyle createCTParagraphStyle];
-		[newAttributes setObject:CFBridgingRelease(newParagraphStyle) forKey:(id)kCTParagraphStyleAttributeName];
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES
+		if (___useiOS6Attributes)
+		{
+			NSParagraphStyle *style = [paragraphStyle NSParagraphStyle];
+			[newAttributes setObject:style forKey:NSParagraphStyleAttributeName];
+		}
+		else
+#endif
+		{
+			CTParagraphStyleRef newParagraphStyle = [paragraphStyle createCTParagraphStyle];
+			[newAttributes setObject:CFBridgingRelease(newParagraphStyle) forKey:(id)kCTParagraphStyleAttributeName];
+		}
 	}
 	
 	// add textBlock if there's one (this has padding and background color)
@@ -847,14 +426,15 @@
 		[newAttributes setObject:textBlocks forKey:DTTextBlocksAttribute];
 	}
 	
-	// transfer list style to new attributes
-	if (listStyle)
+	// transfer all lists so that
+	NSArray *lists = [attributes objectForKey:DTTextListsAttribute];
+	if (lists)
 	{
-		[newAttributes setObject:[NSArray arrayWithObject:listStyle] forKey:DTTextListsAttribute];
+		[newAttributes setObject:lists forKey:DTTextListsAttribute];
 	}
 	
 	// add a marker so that we know that this is a field/prefix
-	[newAttributes setObject:@"{listprefix}" forKey:DTFieldAttribute];
+	[newAttributes setObject:DTListPrefixField forKey:DTFieldAttribute];
 	
 	NSString *prefix = [listStyle prefixWithCounter:listCounter];
 	
@@ -880,12 +460,11 @@
 		if (image)
 		{
 			// make an attachment for the image
-			DTTextAttachment *attachment = [[DTTextAttachment alloc] init];
-			attachment.contents = image;
-			attachment.contentType = DTTextAttachmentTypeImage;
+			DTImageTextAttachment *attachment = [[DTImageTextAttachment alloc] init];
+			attachment.image = image;
 			attachment.displaySize = image.size;
 			
-#if TARGET_OS_IPHONE
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES && TARGET_OS_IPHONE
 			// need run delegate for sizing
 			CTRunDelegateRef embeddedObjectRunDelegate = createEmbeddedObjectRunDelegate(attachment);
 			[newAttributes setObject:CFBridgingRelease(embeddedObjectRunDelegate) forKey:(id)kCTRunDelegateAttributeName];

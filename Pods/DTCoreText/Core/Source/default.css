@@ -90,9 +90,12 @@ code
 	font-family:Courier;
 }
 
-pre
+pre, xmp, plaintext, listing 
 {
-	font-family:Courier;
+	display: block;
+	font-family: monospace;
+	white-space: pre;
+	margin: 1em 0px;
 }
 
 /* color:-webkit-link */
@@ -101,6 +104,8 @@ a
 	color:#0000EE; 
 	text-decoration:underline;
 }
+
+a:active {color:#FF0000;}  /* link while finger down */
 
 center
 {
@@ -255,4 +260,11 @@ hr {
 	-webkit-margin-end: auto;
 	border-style: inset;
 	border-width: 1px;
+}
+
+table {
+   display: table;
+   border-collapse: separate;
+   border-spacing: 2px;
+   border-color: gray;
 }

@@ -113,7 +113,7 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
                         if (failure) {
                             failure(error);
                         }
-                    }];    
+                    }];
 }
 
 #pragma mark - Publishing a post
@@ -406,7 +406,7 @@ NSString *const WordPressXMLRPCApiErrorDomain = @"WordPressXMLRPCApiError";
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (isRedirected) {
-            if ([operation.responseString rangeOfString:@"<meta name=\"GENERATOR\" content=\"www.dudamobile.com\">"].location != NSNotFound) {
+            if (operation.responseString != nil && [operation.responseString rangeOfString:@"<meta name=\"GENERATOR\" content=\"www.dudamobile.com\">"].location != NSNotFound) {
                 error = [NSError errorWithDomain:WordPressXMLRPCApiErrorDomain code:WordPressXMLRPCApiMobilePluginRedirectedError userInfo:@{NSLocalizedDescriptionKey: NSLocalizedStringFromTable(@"You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog", @"WordPressApi", nil)}];
             }
         }

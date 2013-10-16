@@ -27,7 +27,6 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 @property (nonatomic, strong) UITableViewCell *swipeCell;
 @property (nonatomic, strong) UIView *noResultsView;
 
-- (void)simulatePullToRefresh;
 - (void)enableSwipeGestureRecognizer;
 - (void)disableSwipeGestureRecognizer;
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer direction:(UISwipeGestureRecognizerDirection)direction;
@@ -52,6 +51,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     BOOL _animatingRemovalOfModerationSwipeView;
     BOOL didPromptForCredentials;
     BOOL _isSyncing;
+    BOOL _isLoadingMore;
     BOOL didPlayPullSound;
     BOOL didTriggerRefresh;
     CGPoint savedScrollOffset;
@@ -77,10 +77,17 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+	
+	self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds];
+	self.tableView.delegate = self;
+	self.tableView.dataSource = self;
+	self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	[self.view addSubview:self.tableView];
     
     if (_refreshHeaderView == nil) {
-		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
+		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.tableView.frame.size.width, self.tableView.bounds.size.height)];
 		_refreshHeaderView.delegate = self;
+        _refreshHeaderView.backgroundColor = [self backgroundColorForRefreshHeaderView];
 		[self.tableView addSubview:_refreshHeaderView];
     }
 	
@@ -111,6 +118,9 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     
     [super viewDidUnload];
 
+	self.tableView.delegate = nil;
+	self.tableView.dataSource = nil;
+	self.tableView =  nil;
      _refreshHeaderView = nil;
     
     if (self.swipeActionsEnabled) {
@@ -127,9 +137,13 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     } else {
         [self.tableView scrollRectToVisible:CGRectMake(0.0, contentSize.height, 0.0, 0.0) animated:NO];
     }
+    if ([self.tableView indexPathForSelectedRow]) {
+        [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if( appDelegate.connectionAvailable == NO ) return; //do not start auto-synch if connection is down
 
@@ -190,6 +204,10 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     
 }
 
+- (UIColor *)backgroundColorForRefreshHeaderView
+{
+    return _refreshHeaderView.backgroundColor;
+}
 
 #pragma mark - Property accessors
 
@@ -204,6 +222,8 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if ( appDelegate.connectionAvailable == YES && [self.resultsController.fetchedObjects count] == 0 && ![self isSyncing] ) {
         [self simulatePullToRefresh];
+    } else {
+        [self configureNoResultsView];
     }
 }
 
@@ -293,20 +313,26 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (IS_IPAD == YES) {
+	if (IS_IPAD) {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	}
 
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == [self numberOfSectionsInTableView:tableView]) && (indexPath.row + 4 >= [self tableView:tableView numberOfRowsInSection:indexPath.section]) && [self tableView:tableView numberOfRowsInSection:indexPath.section] > 10) {
         // Only 3 rows till the end of table
-        if (![self isSyncing] && [self hasMoreContent]) {
-            [_activityFooter startAnimating];
-            [self loadMoreWithSuccess:^{
-                [_activityFooter stopAnimating];
-            } failure:^(NSError *error) {
-                [_activityFooter stopAnimating];
-            }];
+        
+        if ([self hasMoreContent] && !_isLoadingMore) {
+            if (![self isSyncing] || self.incrementalLoadingSupported) {
+                [_activityFooter startAnimating];
+                _isLoadingMore = YES;
+                [self loadMoreWithSuccess:^{
+                    _isLoadingMore = NO;
+                    [_activityFooter stopAnimating];
+                } failure:^(NSError *error) {
+                    _isLoadingMore = NO;
+                    [_activityFooter stopAnimating];
+                }];
+            }
         }
     }
 }
@@ -345,24 +371,30 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 #pragma mark -
 #pragma mark Fetched results controller
 
+- (UITableViewRowAnimation)tableViewRowAnimation {
+	return UITableViewRowAnimationFade;
+}
+
+- (NSString *)resultsControllerCacheName {
+	NSString *cacheName;
+    if (self.blog) {
+        cacheName = [NSString stringWithFormat:@"%@-%@", [self entityName], [self.blog objectID]];
+    } else {
+        cacheName = [self entityName];
+    }
+	return cacheName;
+}
+
 - (NSFetchedResultsController *)resultsController {
     if (_resultsController != nil) {
         return _resultsController;
     }
 
-    NSManagedObjectContext *moc;
-    NSString *cacheName;
-    if (self.blog) {
-        moc = self.blog.managedObjectContext;
-        cacheName = [NSString stringWithFormat:@"%@-%@", [self entityName], [self.blog objectID]];
-    } else {
-        moc = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-        cacheName = [self entityName];
-    }
+    NSManagedObjectContext *moc = [self managedObjectContext];
     _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest]
                                                              managedObjectContext:moc
                                                                sectionNameKeyPath:[self sectionNameKeyPath]
-                                                                        cacheName:cacheName];
+                                                                        cacheName:[self resultsControllerCacheName]];
     _resultsController.delegate = self;
         
     NSError *error = nil;
@@ -409,11 +441,11 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
     switch(type) {            
         case NSFetchedResultsChangeInsert:
-            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
             break;
             
         case NSFetchedResultsChangeDelete:
-            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:[self tableViewRowAnimation]];
             if ([_indexPathSelectedBeforeUpdates isEqual:indexPath]) {
                 [self.panelNavigationController popToViewController:self animated:YES];
             }
@@ -425,9 +457,9 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
             
         case NSFetchedResultsChangeMove:
             [self.tableView deleteRowsAtIndexPaths:[NSArray
-                                                       arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                                                       arrayWithObject:indexPath] withRowAnimation:[self tableViewRowAnimation]];
             [self.tableView insertRowsAtIndexPaths:[NSArray
-                                                       arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                                                       arrayWithObject:newIndexPath] withRowAnimation:[self tableViewRowAnimation]];
             if ([_indexPathSelectedBeforeUpdates isEqual:indexPath] && _indexPathSelectedAfterUpdates == nil) {
                 _indexPathSelectedAfterUpdates = newIndexPath;
             }
@@ -438,11 +470,11 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
     switch(type) {
         case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
             break;
             
         case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:[self tableViewRowAnimation]];
             break;
     }
 }
@@ -477,12 +509,17 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    _isScrolling = YES;
     if (self.panelNavigationController) {
         [self.panelNavigationController viewControllerWantsToBeFullyVisible:self];
     }
     if (self.swipeActionsEnabled) {
         [self removeSwipeView:YES];
     }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    _isScrolling = NO;
 }
 
 
@@ -494,14 +531,15 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 		case 0: {
             HelpViewController *helpViewController = [[HelpViewController alloc] init];
             helpViewController.isBlogSetup = YES;
-            helpViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModal:)];
+            helpViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
             // Probably should be modal
             UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:helpViewController];
+            navController.navigationBar.translucent = NO;
             if (IS_IPAD) {
                 navController.modalPresentationStyle = UIModalPresentationFormSheet;
                 navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             }
-            [self.panelNavigationController presentModalViewController:navController animated:YES];
+            [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
 
 			break;
 		}
@@ -528,19 +566,20 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
                 }
                 
                 WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-                webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissModal:)];
+                webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
                 [webViewController setUrl:[NSURL URLWithString:path]];
                 [webViewController setUsername:self.blog.username];
-                [webViewController setPassword:[self.blog fetchPassword]];
+                [webViewController setPassword:self.blog.password];
                 [webViewController setWpLoginURL:[NSURL URLWithString:self.blog.loginUrl]];
                 webViewController.shouldScrollToBottom = YES;
                 // Probably should be modal.
                 UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+                navController.navigationBar.translucent = NO;
                 if (IS_IPAD) {
                     navController.modalPresentationStyle = UIModalPresentationFormSheet;
                     navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 }
-                [self.panelNavigationController presentModalViewController:navController animated:YES];
+                [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
             }
 			break;
 		default:
@@ -567,32 +606,36 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
     if (self.resultsController && [[_resultsController fetchedObjects] count] == 0 && !self.isSyncing) {
         // Show no results view.
 
-        NSString *ttl = NSLocalizedString(@"No %@ yet", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
-        ttl = [NSString stringWithFormat:ttl, [self.title lowercaseString]];
+		if (self.noResultsView == nil) {
+			self.noResultsView = [self createNoResultsView];
+		}
 
-        NSString *msg = @"";
-        if ([self userCanCreateEntity]) {
-            msg = NSLocalizedString(@"Why not create one?", @"A call to action to create a post or page.");
-        }
-        
-     
-        self.noResultsView = [WPInfoView WPInfoViewWithTitle:ttl
-                                                     message:msg
-                                                cancelButton:nil];
         [self.tableView addSubview:self.noResultsView];
     }
 }
 
+- (UIView *)createNoResultsView {
+	NSString *ttl = NSLocalizedString(@"No %@ yet", @"A string format. The '%@' will be replaced by the relevant type of object, posts, pages or comments.");
+	ttl = [NSString stringWithFormat:ttl, [self.title lowercaseString]];
+	
+	NSString *msg = @"";
+	if ([self userCanCreateEntity]) {
+		msg = NSLocalizedString(@"Why not create one?", @"A call to action to create a post or page.");
+	}
+	
+	return [WPInfoView WPInfoViewWithTitle:ttl message:msg cancelButton:nil];
+}
+
 - (void)hideRefreshHeader {
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-    if ([self isViewLoaded] && self.view.window && didTriggerRefresh) {
+    if ([self isViewLoaded] && self.tableView.window && didTriggerRefresh) {
         [SoundUtil playRollupSound];
     }
     didTriggerRefresh = NO;
 }
 
 - (void)dismissModal:(id)sender {
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)simulatePullToRefresh {
@@ -669,13 +712,14 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 	editSiteViewController.isCancellable = YES;
 	editSiteViewController.delegate = self;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
+    navController.navigationBar.translucent = NO;
 	
-	if(IS_IPAD == YES) {
+	if(IS_IPAD) {
 		navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 		navController.modalPresentationStyle = UIModalPresentationFormSheet;
 	}
 	
-	[self.panelNavigationController presentModalViewController:navController animated:YES];
+    [self.panelNavigationController presentViewController:navController animated:YES completion:nil];
 }
 
 #pragma mark - Swipe gestures
@@ -844,7 +888,15 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 	return NO;
 }
 
-#define AssertSubclassMethod() NSAssert(false, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))
+- (NSManagedObjectContext *)managedObjectContext {
+	if (self.blog) {
+        return self.blog.managedObjectContext;
+    } else {
+        return [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
+    }
+}
+
+#define AssertSubclassMethod() NSAssert(NO, @"You must override %@ in a subclass", NSStringFromSelector(_cmd))
 #define AssertNoBlogSubclassMethod() NSAssert(self.blog, @"You must override %@ in a subclass if there is no blog", NSStringFromSelector(_cmd))
 
 #pragma clang diagnostic push
@@ -863,7 +915,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 - (NSFetchRequest *)fetchRequest {
     AssertNoBlogSubclassMethod();
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:self.blog.managedObjectContext]];
+    [fetchRequest setEntity:[NSEntityDescription entityForName:[self entityName] inManagedObjectContext:[self managedObjectContext]]];
     [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"blog == %@", self.blog]];
 
     return fetchRequest;
@@ -901,6 +953,11 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     AssertSubclassMethod();
+}
+
+- (void)resetResultsController {
+	_resultsController.delegate = nil;
+	_resultsController = nil;
 }
 
 @end

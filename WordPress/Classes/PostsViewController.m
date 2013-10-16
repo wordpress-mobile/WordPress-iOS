@@ -3,16 +3,11 @@
 #import "PostsViewController.h"
 #import "EditPostViewController.h"
 #import "PostTableViewCell.h"
+#import "NewPostTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "Reachability.h"
 
 #define TAG_OFFSET 1010
-
-@interface PostsViewController() {
-    BOOL _hasViewAppeared;
-}
-
-@end
 
 @implementation PostsViewController
 
@@ -31,19 +26,19 @@
     return self;
 }
 
-
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
-
+    
 	// ShouldRefreshPosts
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableViewAfterPostSaved:) name:@"AsynchronousPostIsPosted" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostsTableAfterDraftSaved:) name:@"DraftsUpdated" object:nil];
     
     UIBarButtonItem *composeButtonItem  = nil;
     
-    if (IS_IPHONE && [self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
-        composeButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]style:UIBarButtonItemStyleBordered 
+    if ([self.editButtonItem respondsToSelector:@selector(setTintColor:)]) {
+        composeButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navbar_add"]
+                                                             style:[WPStyleGuide barButtonStyleForBordered]
                                                              target:self 
                                                              action:@selector(showAddPostView)];
     } else {
@@ -54,12 +49,15 @@
     if ([composeButtonItem respondsToSelector:@selector(setTintColor:)]) {
         composeButtonItem.tintColor = [UIColor UIColorFromHex:0x333333];
     }
-    if (!IS_IPAD) {
-        self.navigationItem.rightBarButtonItem = composeButtonItem;
-    } else {
-        self.toolbarItems = [NSArray arrayWithObject:composeButtonItem];
+    if (IS_IOS7) {
+        UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+        [button setImage:image forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(showAddPostView) forControlEvents:UIControlEventTouchUpInside];
+        composeButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     }
-    
+
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:composeButtonItem forNavigationItem:self.navigationItem];
     
     if (IS_IPAD && self.selectedIndexPath && self.postReaderViewController) {
         @try {
@@ -74,16 +72,15 @@
     }
     
     self.infiniteScrollEnabled = YES;
+    
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
 
-    if (!_hasViewAppeared) {
-        _hasViewAppeared = true;
-        [WPMobileStats trackEventForWPCom:[self statsEventForViewOpening]];
-    }
+    [WPMobileStats flagProperty:[self statsPropertyForViewOpening] forEvent:StatsEventAppClosed];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -94,13 +91,13 @@
     
     self.panelNavigationController.delegate = self;
 
-	if (IS_IPAD == NO) {
+	if (!IS_IPAD) {
 		// iPhone table views should not appear selected
 		if ([self.tableView indexPathForSelectedRow]) {
 			[self.tableView scrollToRowAtIndexPath:[self.tableView indexPathForSelectedRow] atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 			[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
 		}
-	} else if (IS_IPAD == YES) {
+	} else if (IS_IPAD) {
 		// sometimes, iPad table views should
 		if (self.selectedIndexPath) {
             [self showSelectedPost];
@@ -127,6 +124,11 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (UIColor *)backgroundColorForRefreshHeaderView
+{
+    return [WPStyleGuide itsEverywhereGrey];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 
@@ -136,14 +138,9 @@
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
-- (NSString *)statsEventForViewOpening
+- (NSString *)statsPropertyForViewOpening
 {
-    return StatsEventPostsOpened;
-}
-
-- (NSString *)statsEventForViewingDetail
-{
-    return StatsEventPostsClickedPostDetail;
+    return StatsPropertyPostsOpened;
 }
 
 #pragma mark -
@@ -179,14 +176,16 @@
 #pragma mark TableView delegate
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-    NSString *sectionName = [sectionInfo name];
-    
-    return [Post titleForRemoteStatus:[sectionName numericValue]];
+    return nil;
 }
 
-- (void)configureCell:(PostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
-    AbstractPost *apost = (AbstractPost*) [self.resultsController objectAtIndexPath:indexPath];
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0.0;
+}
+
+- (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
+    Post *apost = (Post*) [self.resultsController objectAtIndexPath:indexPath];
     cell.post = apost;
 	if (cell.post.remoteStatus == AbstractPostRemoteStatusPushing) {
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -201,27 +200,18 @@
 		// Don't allow editing while pushing changes
 		return;
 	}
-    
-    [WPMobileStats trackEventForWPCom:[self statsEventForViewingDetail]];
-    
-    if (IS_IPAD) {
-        self.selectedIndexPath = indexPath;
-    } else {
-        [self editPost:post];
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    }
+
+    [self editPost:post];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return POST_ROW_HEIGHT;
+    AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
+    return [NewPostTableViewCell rowHeightForPost:post andWidth:CGRectGetWidth(self.tableView.bounds)];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (IS_IPAD) {
-        return NO;
-    } else {
-        return YES;
-    }
+    return YES;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -265,7 +255,7 @@
 }
 
 - (void)reselect {
-	if (self.selectedIndexPath != NULL) {
+	if (self.selectedIndexPath) {
 		[self.tableView selectRowAtIndexPath:self.selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		[self tableView:self.tableView didSelectRowAtIndexPath:self.selectedIndexPath];
 	}
@@ -276,19 +266,16 @@
 
     if (IS_IPAD)
         [self resetView];
+    
     Post *post = [Post newDraftForBlog:self.blog];
-    EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[post createRevision]];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-    navController.modalPresentationStyle = UIModalPresentationPageSheet;
-    [self.panelNavigationController presentModalViewController:navController animated:YES];
+    [self editPost:post];
 }
 
-// For iPhone
 - (void)editPost:(AbstractPost *)apost {
     EditPostViewController *editPostViewController = [[EditPostViewController alloc] initWithPost:[apost createRevision]];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-    navController.modalPresentationStyle = UIModalPresentationPageSheet;
-    [self.panelNavigationController presentModalViewController:navController animated:YES];
+    navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    [self.panelNavigationController.detailViewController presentViewController:navController animated:YES completion:nil];
 }
 
 // For iPad
@@ -308,7 +295,7 @@
         post = nil;
     }
     self.postReaderViewController = [[PostViewController alloc] initWithPost:post];
-    [self.panelNavigationController pushViewController:self.postReaderViewController fromViewController:self animated:YES];
+    [self.panelNavigationController.navigationController pushViewController:self.postReaderViewController animated:YES];
 }
 
 - (void)setSelectedIndexPath:(NSIndexPath *)indexPath {
@@ -318,7 +305,6 @@
         }
     } else {
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-        
 
         if (indexPath != nil) {
             @try {
@@ -332,7 +318,7 @@
             }
         } else {
             selectedIndexPath = nil;
-            if ( IS_IPHONE == NO ) //Fixes #1292. popToViewController:animated was called twice
+            if (IS_IPHONE == NO) //Fixes #1292. popToViewController:animated was called twice
                 [delegate showContentDetailViewController:nil];
         }
     }
@@ -353,7 +339,7 @@
 - (BOOL)refreshRequired {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	if ([defaults boolForKey:@"refreshPostsRequired"]) { 
-		[defaults setBool:false forKey:@"refreshPostsRequired"];
+		[defaults setBool:NO forKey:@"refreshPostsRequired"];
 		return YES;
 	}
 	
@@ -390,9 +376,11 @@
     NSString *cellIdentifier = @"PostCell";
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[PostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
-        [cell setBackgroundView:imageView];
+        cell = [[NewPostTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+        if (!IS_IOS7) {
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
+            [cell setBackgroundView:imageView];
+        }
     }
     return cell;
 }

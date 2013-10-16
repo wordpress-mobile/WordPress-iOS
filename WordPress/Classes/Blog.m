@@ -10,7 +10,7 @@
 #import "Page.h"
 #import "Category.h"
 #import "Comment.h"
-#import "SFHFKeychainUtils.h"
+#import "WPAccount.h"
 #import "UIImage+Resize.h"
 #import "NSURL+IDN.h"
 #import "NSString+XMLExtensions.h"
@@ -40,18 +40,19 @@
     BOOL _isReachable;
 }
 
-@dynamic blogID, blogName, url, username, password, xmlrpc, apiKey;
+@dynamic blogID, blogName, url, xmlrpc, apiKey;
 @dynamic isAdmin, hasOlderPosts, hasOlderPages;
 @dynamic posts, categories, comments; 
 @dynamic lastPostsSync, lastStatsSync, lastPagesSync, lastCommentsSync, lastUpdateWarning;
 @synthesize isSyncingPosts, isSyncingPages, isSyncingComments;
 @dynamic geolocationEnabled, options, postFormats, isActivated;
+@dynamic account;
+@dynamic jetpackAccount;
 
 #pragma mark -
 #pragma mark Dealloc
 
 - (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     _blavatarUrl = nil;
     _api = nil;
     [_reachability stopNotifier];
@@ -82,70 +83,6 @@
 #pragma mark -
 #pragma mark Custom methods
 
-+ (BOOL)blogExistsForURL:(NSString *)theURL withContext:(NSManagedObjectContext *)moc andUsername:(NSString *)username{
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog"
-                                        inManagedObjectContext:moc]];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"url like %@ AND username = %@", theURL, username]];
-    NSError *error = nil;
-    NSArray *results = [moc executeFetchRequest:fetchRequest error:&error];
-     fetchRequest = nil;
-    
-    return (results.count > 0);
-}
-
-+ (Blog *)createFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext *)moc {
-    Blog *blog = nil;
-    NSString *blogUrl = [[blogInfo objectForKey:@"url"] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	if([blogUrl hasSuffix:@"/"])
-		blogUrl = [blogUrl substringToIndex:blogUrl.length-1];
-	blogUrl= [blogUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
-    if (![self blogExistsForURL:blogUrl withContext:moc andUsername: [blogInfo objectForKey:@"username"]]) {
-        blog = [[Blog alloc] initWithEntity:[NSEntityDescription entityForName:@"Blog"
-                                                         inManagedObjectContext:moc]
-              insertIntoManagedObjectContext:moc];
-        
-        blog.url = blogUrl;
-        blog.blogID = [NSNumber numberWithInt:[[blogInfo objectForKey:@"blogid"] intValue]];
-        blog.blogName = [[blogInfo objectForKey:@"blogName"] stringByDecodingXMLCharacters];
-		blog.xmlrpc = [blogInfo objectForKey:@"xmlrpc"];
-        blog.username = [blogInfo objectForKey:@"username"];
-        blog.isAdmin = [NSNumber numberWithInt:[[blogInfo objectForKey:@"isAdmin"] intValue]];
-        
-        NSError *error = nil;
-		if(blog.isWPcom) {
-			[SFHFKeychainUtils storeUsername:[blogInfo objectForKey:@"username"]
-								 andPassword:[blogInfo objectForKey:@"password"]
-							  forServiceName:@"WordPress.com"
-							  updateExisting:TRUE
-									   error:&error ];
-		} else {
-			[SFHFKeychainUtils storeUsername:[blogInfo objectForKey:@"username"]
-								 andPassword:[blogInfo objectForKey:@"password"]
-							  forServiceName:blog.hostURL
-							  updateExisting:TRUE
-									   error:&error ];
-		}
-        // TODO: save blog settings
-	}
-    return blog;
-}
-
-+ (Blog *)findWithId:(int)blogId withContext:(NSManagedObjectContext *)moc {
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"blogID = %d", blogId]];
-
-    NSError *err = nil;
-    NSArray *result = [moc executeFetchRequest:request error:&err];
-    Blog *blog = nil;
-    if (err == nil && [result count] > 0 ) {
-        blog = [result objectAtIndex:0];
-    }
-    return blog;
-}
-
 + (NSInteger)countWithContext:(NSManagedObjectContext *)moc {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:moc]];
@@ -174,9 +111,15 @@
 
 // used as a key to store passwords, if you change the algorithm, logins will break
 - (NSString *)displayURL {
-    NSError *error = NULL;
+    NSString *url = [NSURL IDNDecodedHostname:self.url];
+    NSAssert(url != nil, @"Decoded url shouldn't be nil");
+    if (url == nil) {
+        WPFLog(@"displayURL: decoded url is nil: %@", self.url);
+        return self.url;
+    }
+    NSError *error = nil;
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
-    NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:[NSURL IDNDecodedHostname:self.url] options:0 range:NSMakeRange(0, [[NSURL IDNDecodedHostname:self.url] length]) withTemplate:@""]];
+    NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""]];
     
     if([result hasSuffix:@"/"])
         result = [result substringToIndex:[result length] - 1];
@@ -188,10 +131,19 @@
     return [self displayURL];
 }
 
+- (NSString *)homeURL
+{
+    NSString *homeURL = [self getOptionValue:@"home_url"];
+    if (!homeURL) {
+        homeURL = self.url;
+    }
+    return homeURL;
+}
+
 - (NSString *)hostname {
     NSString *hostname = [[NSURL URLWithString:self.xmlrpc] host];
     if (hostname == nil) {
-        NSError *error = NULL;
+        NSError *error = nil;
         NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"^.*://" options:NSRegularExpressionCaseInsensitive error:&error];
         hostname = [protocol stringByReplacingMatchesInString:self.url options:0 range:NSMakeRange(0, [self.url length]) withTemplate:@""];
     }
@@ -208,24 +160,43 @@
 }
 
 - (NSString *)loginUrl {
-    return [self urlWithPath:@"wp-login.php"];
+    NSString *loginUrl = [self getOptionValue:@"login_url"];
+    if (!loginUrl) {
+        loginUrl = [self urlWithPath:@"wp-login.php"];
+    }
+    return loginUrl;
 }
 
 - (NSString *)urlWithPath:(NSString *)path {
-    NSError *error = NULL;
+    NSError *error = nil;
     NSRegularExpression *xmlrpc = [NSRegularExpression regularExpressionWithPattern:@"xmlrpc.php$" options:NSRegularExpressionCaseInsensitive error:&error];
     return [xmlrpc stringByReplacingMatchesInString:self.xmlrpc options:0 range:NSMakeRange(0, [self.xmlrpc length]) withTemplate:path];
 }
 
 - (NSString *)adminUrlWithPath:(NSString *)path {
-    return [self urlWithPath:[NSString stringWithFormat:@"wp-admin/%@", path]];
+    NSString *adminBaseUrl = [self getOptionValue:@"admin_url"];
+    if (!adminBaseUrl) {
+        adminBaseUrl = [self urlWithPath:@"wp-admin/"];
+    }
+    if (![adminBaseUrl hasSuffix:@"/"]) {
+        adminBaseUrl = [adminBaseUrl stringByAppendingString:@"/"];
+    }
+    return [NSString stringWithFormat:@"%@%@", adminBaseUrl, path];
 }
 
 - (int)numberOfPendingComments{
     int pendingComments = 0;
-    for (Comment *element in self.comments) {
-        if ( [@"hold" isEqualToString: element.status] )
-            pendingComments++;
+    if ([self hasFaultForRelationshipNamed:@"comments"]) {
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Comment"];
+        [request setPredicate:[NSPredicate predicateWithFormat:@"blog = %@ AND status like 'hold'", self]];
+        [request setIncludesSubentities:NO];
+        NSError *error;
+        pendingComments = [self.managedObjectContext countForFetchRequest:request error:&error];
+    } else {
+        for (Comment *element in self.comments) {
+            if ( [@"hold" isEqualToString: element.status] )
+                pendingComments++;
+        }
     }
     
     return pendingComments;
@@ -297,12 +268,38 @@
 }
 
 - (void)dataSave {
-    NSError *error = nil;
-    if (![[self managedObjectContext] save:&error]) {
-        WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
-        exit(-1);
-    }
-	[[NSNotificationCenter defaultCenter] postNotificationName:BlogChangedNotification object:nil];
+    [self dataSaveWithContext:self.managedObjectContext];
+}
+
+- (void)dataSaveWithContext:(NSManagedObjectContext*)context {
+    __block NSError *error = nil;
+    [context performBlock:^{
+        if (![context save:&error]) {
+            WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+            #if DEBUG
+            exit(-1);
+            #endif
+        }
+        if (context.parentContext) {
+            [context.parentContext performBlock:^{
+                if (![context.parentContext save:&error]) {
+                    WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+                    #if DEBUG
+                    exit(-1);
+                    #endif
+                }
+            }];
+        }
+        // Is this needed?
+//        dispatch_block_t notify = ^{
+//            [[NSNotificationCenter defaultCenter] postNotificationName:BlogChangedNotification object:nil];
+//        };
+//        if (![NSThread isMainThread]) {
+//            dispatch_async(dispatch_get_main_queue(), notify);
+//        } else {
+//            notify();
+//        }
+    }];
 }
 
 - (void)remove {
@@ -327,9 +324,13 @@
 
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra {
     NSMutableArray *result = [NSMutableArray array];
+    NSString *password = self.password;
+    if (!password) {
+        password = @"";
+    }
     [result addObject:self.blogID];
     [result addObject:self.username];
-    [result addObject:[self fetchPassword]];
+    [result addObject:password];
     
     if ([extra isKindOfClass:[NSArray class]]) {
         [result addObjectsFromArray:extra];
@@ -338,27 +339,6 @@
     }
     
     return [NSArray arrayWithArray:result];
-}
-
-- (NSString *)fetchPassword {
-    NSError *err;
-	NSString *password;
-
-	if (self.isWPcom) {
-        password = [SFHFKeychainUtils getPasswordForUsername:self.username
-                                              andServiceName:@"WordPress.com"
-                                                       error:&err];
-    } else {
-		password = [SFHFKeychainUtils getPasswordForUsername:self.username
-                                              andServiceName:self.hostURL
-                                                       error:&err];
-	}
-    // The result of fetchPassword is stored in NSArrays in several places.
-    // Make sure we return an empty string instead of nil to prevent a crash.
-	if (password == nil)
-		password = @"";
-
-	return password;
 }
 
 - (NSString *)version {
@@ -392,12 +372,20 @@
     _isReachable = reachable;
 }
 
+- (NSString *)username {
+    return self.account.username ?: @"";
+}
+
+- (NSString *)password {
+    return self.account.password ?: @"";
+}
+
 #pragma mark -
 #pragma mark Synchronization
 
-- (NSArray *)syncedPostsWithEntityName:(NSString *)entityName {
+- (NSArray *)syncedPostsWithEntityName:(NSString *)entityName withContext:(NSManagedObjectContext*)context {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:[self managedObjectContext]]];
+    [request setEntity:[NSEntityDescription entityForName:entityName inManagedObjectContext:context]];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog = %@)",
 							  [NSNumber numberWithInt:AbstractPostRemoteStatusSync], self]; 
     [request setPredicate:predicate];
@@ -405,15 +393,11 @@
     [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     
     NSError *error = nil;
-    NSArray *array = [[self managedObjectContext] executeFetchRequest:request error:&error];
+    NSArray *array = [context executeFetchRequest:request error:&error];
     if (array == nil) {
         array = [NSArray array];
     }
     return array;
-}
-
-- (NSArray *)syncedPosts {
-    return [self syncedPostsWithEntityName:@"Post"];
 }
 
 - (void)syncPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
@@ -425,10 +409,6 @@
 
     WPXMLRPCRequestOperation *operation = [self operationForPostsWithSuccess:success failure:failure loadMore:more];
     [self.api enqueueXMLRPCRequestOperation:operation];
-}
-
-- (NSArray *)syncedPages {
-    return [self syncedPostsWithEntityName:@"Page"];
 }
 
 - (void)syncPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
@@ -589,6 +569,10 @@
 - (WPXMLRPCClient *)api {
     if (_api == nil) {
         _api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc]];
+        // Enable compression for wp.com only, as some self hosted have connection issues
+        if (self.isWPcom) {
+            [_api setDefaultHeader:@"gzip, deflate" value:@"Accept-Encoding"];
+        }
     }
     return _api;
 }
@@ -773,7 +757,7 @@
 - (WPXMLRPCRequestOperation *)operationForPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more {
     int num;
 	
-    int syncCount = [[self syncedPages] count];
+    int syncCount = [[self syncedPostsWithEntityName:@"Page" withContext:self.managedObjectContext] count];
     // Don't load more than 20 pages if we aren't at the end of the table,
     // even if they were previously donwloaded
     // 
@@ -857,98 +841,110 @@
     // Don't even bother if blog has been deleted while fetching posts
     if ([self isDeleted] || self.managedObjectContext == nil)
         return;
-
-    NSMutableArray *postsToKeep = [NSMutableArray array];
-    for (NSDictionary *postInfo in newPosts) {
-        NSNumber *postID = [[postInfo objectForKey:@"postid"] numericValue];
-        Post *newPost = [Post findOrCreateWithBlog:self andPostID:postID];
-        if (newPost.remoteStatus == AbstractPostRemoteStatusSync) {
-            [newPost updateFromDictionary:postInfo];
+    
+    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
+    
+    [backgroundMOC performBlock:^{
+        NSMutableArray *postsToKeep = [NSMutableArray array];
+        for (NSDictionary *postInfo in newPosts) {
+            NSNumber *postID = [[postInfo objectForKey:@"postid"] numericValue];
+            Post *newPost = [Post findOrCreateWithBlog:self andPostID:postID withContext:backgroundMOC];
+            if (newPost.remoteStatus == AbstractPostRemoteStatusSync) {
+                [newPost updateFromDictionary:postInfo];
+            }
+            [postsToKeep addObject:newPost];
         }
-        [postsToKeep addObject:newPost];
-    }
-
-    NSArray *syncedPosts = [self syncedPosts];
-    for (Post *post in syncedPosts) {
-
-        if (![postsToKeep containsObject:post]) {  /*&& post.blog.blogID == self.blogID*/
-			//the current stored post is not contained "as-is" on the server response
-
-            if (post.revision) { //edited post before the refresh is finished
-				//We should check if this post is already available on the blog
-				BOOL presence = NO;
-
-				for (Post *currentPostToKeep in postsToKeep) {
-					if([currentPostToKeep.postID isEqualToNumber:post.postID]) {
-						presence = YES;
-						break;
-					}
-				}
-				if( presence == YES ) {
-					//post is on the server (most cases), kept it unchanged
-				} else {
-					//post is deleted on the server, make it local, otherwise you can't upload it anymore
-					post.remoteStatus = AbstractPostRemoteStatusLocal;
-					post.postID = nil;
-					post.permaLink = nil;
-				}
-			} else {
-				//post is not on the server anymore. delete it.
-                WPLog(@"Deleting post: %@", post.postTitle);
-                WPLog(@"%d posts left", [self.posts count]);
-                [[self managedObjectContext] deleteObject:post];
+        
+        NSArray *syncedPosts = [self syncedPostsWithEntityName:@"Post" withContext:backgroundMOC];
+        NSArray *postsToKeepObjectIDs = [postsToKeep valueForKey:@"objectID"];
+        for (Post *post in syncedPosts) {
+            
+            if (![postsToKeepObjectIDs containsObject:post.objectID]) {
+                //the current stored post is not contained "as-is" on the server response
+                
+                if (post.revision) { //edited post before the refresh is finished
+                    //We should check if this post is already available on the blog
+                    BOOL presence = NO;
+                    
+                    for (Post *currentPostToKeep in postsToKeep) {
+                        if([currentPostToKeep.postID isEqualToNumber:post.postID]) {
+                            presence = YES;
+                            break;
+                        }
+                    }
+                    if( presence == YES ) {
+                        //post is on the server (most cases), kept it unchanged
+                    } else {
+                        //post is deleted on the server, make it local, otherwise you can't upload it anymore
+                        post.remoteStatus = AbstractPostRemoteStatusLocal;
+                        post.postID = nil;
+                        post.permaLink = nil;
+                    }
+                } else {
+                    //post is not on the server anymore. delete it.
+                    WPLog(@"Deleting post: %@", post.postTitle);
+                    WPLog(@"%d posts left", [self.posts count]);
+                    [backgroundMOC deleteObject:post];
+                }
             }
         }
-    }
-
-    [self dataSave];
+        
+        [self dataSaveWithContext:backgroundMOC];
+    }];
 }
 
 - (void)mergePages:(NSArray *)newPages {
     if ([self isDeleted] || self.managedObjectContext == nil)
         return;
+    
+    NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
 
-    NSMutableArray *pagesToKeep = [NSMutableArray array];
-    for (NSDictionary *pageInfo in newPages) {
-        NSNumber *pageID = [[pageInfo objectForKey:@"page_id"] numericValue];
-        Page *newPage = [Page findOrCreateWithBlog:self andPageID:pageID];
-        if (newPage.remoteStatus == AbstractPostRemoteStatusSync) {
-            [newPage updateFromDictionary:pageInfo];
+    [backgroundMOC performBlock:^{
+        NSMutableArray *pagesToKeep = [NSMutableArray array];
+        for (NSDictionary *pageInfo in newPages) {
+            NSNumber *pageID = [[pageInfo objectForKey:@"page_id"] numericValue];
+            Page *newPage = [Page findOrCreateWithBlog:self andPageID:pageID withContext:backgroundMOC];
+            if (newPage.remoteStatus == AbstractPostRemoteStatusSync) {
+                [newPage updateFromDictionary:pageInfo];
+            }
+            [pagesToKeep addObject:newPage];
         }
-        [pagesToKeep addObject:newPage];
-    }
 
-    NSArray *syncedPages = [self syncedPages];
-    for (Page *page in syncedPages) {
-		if (![pagesToKeep containsObject:page]) { /*&& page.blog.blogID == self.blogID*/
+        NSArray *syncedPages = [self syncedPostsWithEntityName:@"Page" withContext:backgroundMOC];
+        NSArray *pagesToKeepObjectIDs = [pagesToKeep valueForKey:@"objectID"];
+        for (Page *page in syncedPages) {
+            if (![pagesToKeepObjectIDs containsObject:page.objectID]) {
 
-			if (page.revision) { //edited page before the refresh is finished
-				//We should check if this page is already available on the blog
-				BOOL presence = NO;
+                if (page.revision) { //edited page before the refresh is finished
+                    //We should check if this page is already available on the blog
+                    BOOL presence = NO;
 
-				for (Page *currentPageToKeep in pagesToKeep) {
-					if([currentPageToKeep.postID isEqualToNumber:page.postID]) {
-						presence = YES;
-						break;
-					}
-				}
-				if( presence == YES ) {
-					//page is on the server (most cases), kept it unchanged
-				} else {
-					//page is deleted on the server, make it local, otherwise you can't upload it anymore
-					page.remoteStatus = AbstractPostRemoteStatusLocal;
-					page.postID = nil;
-					page.permaLink = nil;
-				}
-			} else {
-				//page is not on the server anymore. delete it.
-                WPLog(@"Deleting page: %@", page);
-                [[self managedObjectContext] deleteObject:page];
+                    for (Page *currentPageToKeep in pagesToKeep) {
+                        if([currentPageToKeep.postID isEqualToNumber:page.postID]) {
+                            presence = YES;
+                            break;
+                        }
+                    }
+                    if( presence == YES ) {
+                        //page is on the server (most cases), kept it unchanged
+                    } else {
+                        //page is deleted on the server, make it local, otherwise you can't upload it anymore
+                        page.remoteStatus = AbstractPostRemoteStatusLocal;
+                        page.postID = nil;
+                        page.permaLink = nil;
+                    }
+                } else {
+                    //page is not on the server anymore. delete it.
+                    WPLog(@"Deleting page: %@", page);
+                    [backgroundMOC deleteObject:page];
+                }
             }
         }
-    }
 
-    [self dataSave];
+        [self dataSaveWithContext:backgroundMOC];
+    }];
 }
 
 - (void)mergeComments:(NSArray *)newComments {

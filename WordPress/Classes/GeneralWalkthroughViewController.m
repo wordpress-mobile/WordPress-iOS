@@ -27,8 +27,8 @@
 #import "WPWalkthroughOverlayView.h"
 #import "LoginCompletedWalkthroughViewController.h"
 #import "ReachabilityUtils.h"
-#import "SFHFKeychainUtils.h"
 #import "WPNUXUtility.h"
+#import "WPAccount.h"
 
 @interface GeneralWalkthroughViewController () <
     UIScrollViewDelegate,
@@ -84,6 +84,7 @@
     BOOL _hasViewAppeared;
     BOOL _viewedPage2;
     BOOL _viewedPage3;
+    NSString *_dotComSiteUrl;
     NSUInteger _currentPage;
     NSArray *_blogs;
     Blog *_blog;
@@ -102,6 +103,7 @@ CGFloat const GeneralWalkthroughTextFieldWidth = 289.0;
 CGFloat const GeneralWalkthroughTextFieldHeight = 40.0;
 CGFloat const GeneralWalkthroughSignInButtonWidth = 160.0;
 CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
+CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 
 - (void)dealloc
 {
@@ -111,6 +113,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     _viewWidth = [self.view formSheetViewWidth];
     _viewHeight = [self.view formSheetViewHeight];
         
@@ -154,7 +157,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         [self moveStickyControlsForContentOffset:_scrollView.contentOffset];
     }
     
-    _hasViewAppeared = true;    
+    _hasViewAppeared = YES;
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -272,10 +275,14 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
     overlayView.rightButtonText = NSLocalizedString(@"Enable Now", nil);
     overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
+        
         [overlayView dismiss];
         [self showHelpViewController:NO];
     };
     overlayView.button2CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedEnableXMLRPCServices];
+        
         [overlayView dismiss];
         
         NSString *path = nil;
@@ -305,8 +312,9 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
     overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError];
-        [overlayView dismiss];        
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
+        
+        [overlayView dismiss];  
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         webViewController.url = [NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"];
         [self.navigationController setNavigationBarHidden:NO animated:NO];
@@ -322,7 +330,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
     overlayView.button1CompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError];
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedNeededHelpOnError properties:@{@"error_message": message}];
+        
         [overlayView dismiss];
         [self showHelpViewController:NO];
     };
@@ -340,8 +349,9 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     AboutViewController *aboutViewController = [[AboutViewController alloc] init];
 	aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
+    nc.navigationBar.translucent = NO;
     nc.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self.navigationController presentModalViewController:nc animated:YES];
+    [self.navigationController presentViewController:nc animated:YES completion:nil];
 	[self.navigationController setNavigationBarHidden:YES];
 }
 
@@ -370,6 +380,17 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 - (void)clickedBackground:(UITapGestureRecognizer *)tapGestureRecognizer
 {
     [self.view endEditing:YES];
+
+    // The info button is a little hard to hit so this adds a little buffer around it
+    if (_currentPage == 0) {
+        CGPoint touchPoint = [tapGestureRecognizer locationInView:self.view];
+        CGFloat x = CGRectGetMaxX(_page1InfoButton.frame) + 10;
+        CGFloat y = CGRectGetMaxY(_page1InfoButton.frame) + 10;
+        CGRect infoButtonRect = CGRectMake(0, 0, x, y);
+        if (CGRectContainsPoint(infoButtonRect, touchPoint)) {
+            [self clickedInfoButton:nil];
+        }
+    }
 }
 
 - (void)clickedBottomPanel:(UIGestureRecognizer *)gestureRecognizer
@@ -413,7 +434,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     scrollViewSize.width = _viewWidth * 3;
     _scrollView.frame = self.view.bounds;
     _scrollView.contentSize = scrollViewSize;
-    _scrollView.pagingEnabled = true;
+    _scrollView.pagingEnabled = YES;
     _scrollView.showsHorizontalScrollIndicator = NO;
     _scrollView.pagingEnabled = YES;
     [self.view addSubview:_scrollView];
@@ -459,9 +480,9 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_page1Title == nil) {
         _page1Title = [[UILabel alloc] init];
         _page1Title.backgroundColor = [UIColor clearColor];
-        _page1Title.textAlignment = UITextAlignmentCenter;
+        _page1Title.textAlignment = NSTextAlignmentCenter;
         _page1Title.numberOfLines = 0;
-        _page1Title.lineBreakMode = UILineBreakModeWordWrap;
+        _page1Title.lineBreakMode = NSLineBreakByWordWrapping;
         _page1Title.font = [WPNUXUtility titleFont];        
         _page1Title.text = NSLocalizedString(@"Welcome to WordPress", @"NUX First Walkthrough Page 1 Title");
         _page1Title.shadowColor = [WPNUXUtility textShadowColor];
@@ -481,9 +502,9 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_page1Description == nil) {
         _page1Description = [[UILabel alloc] init];
         _page1Description.backgroundColor = [UIColor clearColor];
-        _page1Description.textAlignment = UITextAlignmentCenter;
+        _page1Description.textAlignment = NSTextAlignmentCenter;
         _page1Description.numberOfLines = 0;
-        _page1Description.lineBreakMode = UILineBreakModeWordWrap;
+        _page1Description.lineBreakMode = NSLineBreakByWordWrapping;
         _page1Description.font = [WPNUXUtility descriptionTextFont];
         _page1Description.text = NSLocalizedString(@"Hold the web in the palm of your hand. Full publishing power in a pint-sized package.", @"NUX First Walkthrough Page 1 Description");
         _page1Description.shadowColor = [WPNUXUtility textShadowColor];
@@ -528,6 +549,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_pageControl == nil) {
         // The page control adds a bunch of extra space for padding that messes with our calculations.
         _pageControl = [[UIPageControl alloc] init];
+        [_pageControl addTarget:self action:@selector(pageNumberChanged:) forControlEvents:UIControlEventValueChanged];
         _pageControl.numberOfPages = 3;
         [_pageControl sizeToFit];
         [WPNUXUtility configurePageControlTintColors:_pageControl];
@@ -540,7 +562,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         [_page1SwipeToContinue setTextColor:[WPNUXUtility swipeToContinueTextColor]];
         [_page1SwipeToContinue setShadowColor:[WPNUXUtility textShadowColor]];
         _page1SwipeToContinue.backgroundColor = [UIColor clearColor];
-        _page1SwipeToContinue.textAlignment = UITextAlignmentCenter;
+        _page1SwipeToContinue.textAlignment = NSTextAlignmentCenter;
         _page1SwipeToContinue.numberOfLines = 1;
         _page1SwipeToContinue.font = [WPNUXUtility swipeToContinueFont];
         _page1SwipeToContinue.text = [NSLocalizedString(@"swipe to continue", nil) uppercaseString];
@@ -582,11 +604,14 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)layoutPage1Controls
 {
-    UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
-    _page1InfoButton.frame = CGRectMake(0, 0, infoButtonImage.size.width, infoButtonImage.size.height);
-
     CGFloat x,y;
-    
+
+    UIImage *infoButtonImage = [UIImage imageNamed:@"btn-about"];
+    y = 0;
+    if (IS_IOS7) {
+        y = GeneralWalkthroughiOS7StatusBarOffset;
+    }
+    _page1InfoButton.frame = CGRectMake(0, y, infoButtonImage.size.width, infoButtonImage.size.height);
     // Layout Icon
     x = (_viewWidth - CGRectGetWidth(_page1Icon.frame))/2.0;
     x = [self adjustX:x forPage:1];
@@ -594,7 +619,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     _page1Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page1Icon.frame), CGRectGetHeight(_page1Icon.frame)));
  
     // Layout Title
-    CGSize titleSize = [_page1Title.text sizeWithFont:_page1Title.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize titleSize = [_page1Title.text sizeWithFont:_page1Title.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - titleSize.width)/2.0;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMaxY(_page1Icon.frame) + 0.5*GeneralWalkthroughStandardOffset;
@@ -607,7 +632,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     _page1TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
     
     // Layout Description
-    CGSize labelSize = [_page1Description.text sizeWithFont:_page1Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize labelSize = [_page1Description.text sizeWithFont:_page1Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:1];
     y = CGRectGetMaxY(_page1TopSeparator.frame) + 0.5*GeneralWalkthroughStandardOffset;
@@ -687,9 +712,9 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_page2Title == nil) {
         _page2Title = [[UILabel alloc] init];
         _page2Title.backgroundColor = [UIColor clearColor];
-        _page2Title.textAlignment = UITextAlignmentCenter;
+        _page2Title.textAlignment = NSTextAlignmentCenter;
         _page2Title.numberOfLines = 0;
-        _page2Title.lineBreakMode = UILineBreakModeWordWrap;
+        _page2Title.lineBreakMode = NSLineBreakByWordWrapping;
         _page2Title.font = [WPNUXUtility titleFont];
         _page2Title.text = NSLocalizedString(@"Publish whenever inspiration strikes", @"NUX First Walkthrough Page 2 Title");
         _page2Title.shadowColor = [WPNUXUtility textShadowColor];
@@ -709,9 +734,9 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_page2Description == nil) {
         _page2Description = [[UILabel alloc] init];
         _page2Description.backgroundColor = [UIColor clearColor];
-        _page2Description.textAlignment = UITextAlignmentCenter;
+        _page2Description.textAlignment = NSTextAlignmentCenter;
         _page2Description.numberOfLines = 0;
-        _page2Description.lineBreakMode = UILineBreakModeWordWrap;
+        _page2Description.lineBreakMode = NSLineBreakByWordWrapping;
         _page2Description.font = [WPNUXUtility descriptionTextFont];
         _page2Description.text = NSLocalizedString(@"Brilliant insight? Hilarious link? Perfect pic? Capture genius as it happens and post in real time.", @"NUX First Walkthrough Page 2 Description");
         _page2Description.shadowColor = [WPNUXUtility textShadowColor];
@@ -739,7 +764,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     _page2Icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_page2Icon.frame), CGRectGetHeight(_page2Icon.frame)));
 
     // Layout Title
-    CGSize titleSize = [_page2Title.text sizeWithFont:_page2Title.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize titleSize = [_page2Title.text sizeWithFont:_page2Title.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - titleSize.width)/2.0;
     x = [self adjustX:x forPage:2];
     y = CGRectGetMaxY(_page2Icon.frame) + 0.5*GeneralWalkthroughStandardOffset;
@@ -752,7 +777,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     _page2TopSeparator.frame = CGRectMake(x, y, _viewWidth - 2*GeneralWalkthroughStandardOffset, 2);
 
     // Layout Description
-    CGSize labelSize = [_page2Description.text sizeWithFont:_page2Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize labelSize = [_page2Description.text sizeWithFont:_page2Description.font constrainedToSize:CGSizeMake(GeneralWalkthroughMaxTextWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - labelSize.width)/2.0;
     x = [self adjustX:x forPage:2];
     y = CGRectGetMaxY(_page2TopSeparator.frame) + 0.5*GeneralWalkthroughStandardOffset;
@@ -788,7 +813,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _usernameText.backgroundColor = [UIColor whiteColor];
         _usernameText.placeholder = NSLocalizedString(@"Username / Email", @"NUX First Walkthrough Page 3 Username Placeholder");
         _usernameText.font = [WPNUXUtility textFieldFont];
-        _usernameText.adjustsFontSizeToFitWidth = true;
+        _usernameText.adjustsFontSizeToFitWidth = YES;
         _usernameText.delegate = self;
         _usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
         _usernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -812,7 +837,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
         _siteUrlText.backgroundColor = [UIColor whiteColor];
         _siteUrlText.placeholder = NSLocalizedString(@"Site Address (URL)", @"NUX First Walkthrough Page 3 Site Address Placeholder");
         _siteUrlText.font = [WPNUXUtility textFieldFont];
-        _siteUrlText.adjustsFontSizeToFitWidth = true;
+        _siteUrlText.adjustsFontSizeToFitWidth = YES;
         _siteUrlText.delegate = self;
         _siteUrlText.keyboardType = UIKeyboardTypeURL;
         _siteUrlText.returnKeyType = UIReturnKeyGo;
@@ -834,8 +859,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     if (_createAccountLabel == nil) {
         _createAccountLabel = [[UILabel alloc] init];
         _createAccountLabel.numberOfLines = 2;
-        _createAccountLabel.lineBreakMode = UILineBreakModeWordWrap;
-        _createAccountLabel.textAlignment = UITextAlignmentCenter;
+        _createAccountLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        _createAccountLabel.textAlignment = NSTextAlignmentCenter;
         _createAccountLabel.backgroundColor = [UIColor clearColor];
         _createAccountLabel.textColor = [UIColor whiteColor];
         _createAccountLabel.font = [UIFont fontWithName:@"OpenSans" size:15.0];
@@ -883,7 +908,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     _signInButton.frame = CGRectMake(x, y, GeneralWalkthroughSignInButtonWidth, GeneralWalkthroughSignInButtonHeight);
 
     // Layout Create Account Label
-    CGSize createAccountLabelSize = [_createAccountLabel.text sizeWithFont:_createAccountLabel.font constrainedToSize:CGSizeMake(_viewWidth - 2*GeneralWalkthroughStandardOffset, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize createAccountLabelSize = [_createAccountLabel.text sizeWithFont:_createAccountLabel.font constrainedToSize:CGSizeMake(_viewWidth - 2*GeneralWalkthroughStandardOffset, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - createAccountLabelSize.width)/2.0;
     x = [self adjustX:x forPage:3];
     y = CGRectGetMinY(_bottomPanel.frame) + (CGRectGetHeight(_bottomPanel.frame) - createAccountLabelSize.height)/2.0;
@@ -898,7 +923,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     // The reason we save these positions is because it allows us to drag certain controls along
     // the scrollview as the user moves along the walkthrough.
     if (!_savedOriginalPositionsOfStickyControls) {
-        _savedOriginalPositionsOfStickyControls = true;
+        _savedOriginalPositionsOfStickyControls = YES;
         _skipToCreateAccountOriginalX = CGRectGetMinX(_skipToCreateAccount.frame);
         _skipToSignInOriginalX = CGRectGetMinX(_skipToSignIn.frame);
         _bottomPanelOriginalX = CGRectGetMinX(_bottomPanel.frame);
@@ -918,12 +943,21 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     _pageControl.currentPage = pageViewed - 1;
     // We do this so we don't keep flagging events if the user goes back and forth on pages
     if (pageViewed == 2 && !_viewedPage2) {
-        _viewedPage2 = true;
+        _viewedPage2 = YES;
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughViewedPage2];
     } else if (pageViewed == 3 && !_viewedPage3) {
-        _viewedPage3 = true;
+        _viewedPage3 = YES;
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughViewedPage3];
     }
+}
+
+- (void)pageNumberChanged:(UIPageControl *)pageControl
+{
+    NSInteger pageNumber = pageControl.currentPage;
+    
+    [_scrollView setContentOffset:CGPointMake(_viewWidth * pageNumber, 0) animated:YES];
+    
+    _currentPage = pageNumber;
 }
 
 - (void)showCompletionWalkthrough
@@ -939,7 +973,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     createAccountViewController.onCreatedUser = ^(NSString *username, NSString *password) {
         _usernameText.text = username;
         _passwordText.text = password;
-        _userIsDotCom = true;
+        _userIsDotCom = YES;
         [self.navigationController popViewControllerAnimated:NO];
         [self showAddUsersBlogsForWPCom];
     };
@@ -953,6 +987,13 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
         _blogConnectedToJetpack = didAuthenticate;
+        
+        if (_blogConnectedToJetpack) {
+            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserConnectedToJetpack];
+        } else {
+            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpack];            
+        }
+        
         [self.navigationController popViewControllerAnimated:NO];
         [self showCompletionWalkthrough];
     }];
@@ -1063,6 +1104,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     
     NSString *username = _usernameText.text;
     NSString *password = _passwordText.text;
+    _dotComSiteUrl = nil;
     
     if ([self hasUserOnlyEnteredValuesForDotCom]) {
         [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughSignedInWithoutUrl];
@@ -1084,6 +1126,8 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
             [SVProgressHUD dismiss];
             
             if ([options objectForKey:@"wordpress.com"] != nil) {
+                NSDictionary *siteUrl = [options dictionaryForKey:@"home_url"];
+                _dotComSiteUrl = [siteUrl objectForKey:@"value"];
                 [self signInForWPComForUsername:username andPassword:password];
             } else {
                 [self signInForSelfHostedForUsername:username password:password options:options andApi:api];
@@ -1109,7 +1153,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     
     void (^loginSuccessBlock)(void) = ^{
         [SVProgressHUD dismiss];
-        _userIsDotCom = true;
+        _userIsDotCom = YES;
         [self showAddUsersBlogsForWPCom];
     };
     
@@ -1193,6 +1237,10 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)displayRemoteError:(NSError *)error {
     NSString *message = [error localizedDescription];
+    if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain]) {
+        [self displayGenericErrorMessage:message];
+        return;
+    }
     if ([error code] == 403) {
         message = NSLocalizedString(@"Please update your credentials and try again.", nil);
     }
@@ -1212,11 +1260,11 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     }
 }
 
-- (NewAddUsersBlogViewController *)addUsersBlogViewController
+- (NewAddUsersBlogViewController *)addUsersBlogViewController:(NSString *)xmlRPCUrl
 {
+    BOOL isWPCom = (xmlRPCUrl == nil);
     NewAddUsersBlogViewController *vc = [[NewAddUsersBlogViewController alloc] init];
-    vc.username = _usernameText.text;
-    vc.password = _passwordText.text;
+    vc.account = [self createAccountWithUsername:_usernameText.text andPassword:_passwordText.text isWPCom:isWPCom xmlRPCUrl:xmlRPCUrl];
     vc.blogAdditionCompleted = ^(NewAddUsersBlogViewController * viewController){
         [self.navigationController popViewControllerAnimated:NO];
         [self showCompletionWalkthrough];
@@ -1236,16 +1284,22 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 
 - (void)showAddUsersBlogsForSelfHosted:(NSString *)xmlRPCUrl
 {
-    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController];
-    vc.isWPCom = NO;
-    vc.xmlRPCUrl = xmlRPCUrl;
+    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController:xmlRPCUrl];
+
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showAddUsersBlogsForWPCom
 {
-    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController];
-    vc.isWPCom = YES;
+    NewAddUsersBlogViewController *vc = [self addUsersBlogViewController:nil];
+
+    NSString *siteUrl = [_siteUrlText.text trim];
+    if ([siteUrl length] != 0) {
+        vc.siteUrl = siteUrl;
+    } else if ([_dotComSiteUrl length] != 0) {
+        vc.siteUrl = _dotComSiteUrl;
+    }
+
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -1253,14 +1307,24 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
 {
     NSParameterAssert(blogDetails != nil);
     
-    NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
-    [newBlog setObject:_usernameText.text forKey:@"username"];
-    [newBlog setObject:_passwordText.text forKey:@"password"];
-    [newBlog setObject:xmlRPCUrl forKey:@"xmlrpc"];
+    WPAccount *account = [self createAccountWithUsername:_usernameText.text andPassword:_passwordText.text isWPCom:NO xmlRPCUrl:xmlRPCUrl];
     
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    _blog = [Blog createFromDictionary:newBlog withContext:appDelegate.managedObjectContext];
+    NSMutableDictionary *newBlog = [NSMutableDictionary dictionaryWithDictionary:blogDetails];
+    [newBlog setObject:xmlRPCUrl forKey:@"xmlrpc"];
+
+    _blog = [account findOrCreateBlogFromDictionary:newBlog withContext:account.managedObjectContext];
     [_blog dataSave];
+
+}
+
+- (WPAccount *)createAccountWithUsername:(NSString *)username andPassword:(NSString *)password isWPCom:(BOOL)isWPCom xmlRPCUrl:(NSString *)xmlRPCUrl {
+    WPAccount *account;
+    if (isWPCom) {
+        account = [WPAccount createOrUpdateWordPressComAccountWithUsername:username andPassword:password];
+    } else {
+        account = [WPAccount createOrUpdateSelfHostedAccountWithXmlrpc:xmlRPCUrl username:username andPassword:password];
+    }
+    return account;
 }
 
 - (void)synchronizeNewlyAddedBlog
@@ -1269,6 +1333,7 @@ CGFloat const GeneralWalkthroughSignInButtonHeight = 41.0;
     void (^successBlock)() = ^{
         [[WordPressComApi sharedApi] syncPushNotificationInfo];
         [SVProgressHUD dismiss];
+        [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughUserSignedInToBlogWithJetpack];
         if ([_blog hasJetpack]) {
             [self showJetpackAuthentication];
         } else {

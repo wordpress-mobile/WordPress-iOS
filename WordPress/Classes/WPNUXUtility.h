@@ -15,6 +15,7 @@
 + (UIFont *)titleFont;
 + (UIFont *)swipeToContinueFont;
 + (UIFont *)tosLabelFont;
++ (UIFont *)confirmationLabelFont;
 
 + (UIColor *)textShadowColor;
 + (UIColor *)bottomPanelLineColor;

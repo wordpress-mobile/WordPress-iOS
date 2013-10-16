@@ -10,30 +10,38 @@
 
 // General
 extern NSString *const StatsEventAppOpened;
+extern NSString *const StatsEventAppClosed;
 extern NSString *const StatsEventAppOpenedDueToPushNotification;
 
 // Top Level Menu Items
-extern NSString *const StatsEventSidebarClickedReader;
-extern NSString *const StatsEventSidebarClickedNotifications;
-extern NSString *const StatsEventSidebarSiteClickedPosts;
-extern NSString *const StatsEventSidebarSiteClickedPages;
-extern NSString *const StatsEventSidebarSiteClickedComments;
-extern NSString *const StatsEventSidebarSiteClickedStats;
-extern NSString *const StatsEventSidebarSiteClickedViewSite;
-extern NSString *const StatsEventSidebarSiteClickedViewAdmin;
-extern NSString *const StatsEventSidebarClickedSettings;
-extern NSString *const StatsEventSidebarClickedQuickPhoto;
+extern NSString *const StatsPropertySidebarClickedReader;
+extern NSString *const StatsPropertySidebarClickedNotifications;
+extern NSString *const StatsPropertySidebarSiteClickedPosts;
+extern NSString *const StatsPropertySidebarSiteClickedPages;
+extern NSString *const StatsPropertySidebarSiteClickedComments;
+extern NSString *const StatsPropertySidebarSiteClickedStats;
+extern NSString *const StatsPropertySidebarSiteClickedViewSite;
+extern NSString *const StatsPropertySidebarSiteClickedViewAdmin;
+extern NSString *const StatsPropertySidebarClickedSettings;
+extern NSString *const StatsPropertySidebarClickedQuickPhoto;
 
 // Reader
 extern NSString *const StatsEventReaderOpened;
-extern NSString *const StatsEventReaderClickedShowTopicSelector;
+extern NSString *const StatsEventReaderHomePageRefresh;
+extern NSString *const StatsEventReaderInfiniteScroll;
 extern NSString *const StatsEventReaderSelectedFreshlyPressedTopic;
-extern NSString *const StatsEventReaderSelectedTopic;
-extern NSString *const StatsEventReaderClickedArticleDetails;
+extern NSString *const StatsEventReaderSelectedCategory;
+extern NSString *const StatsEventReaderOpenedArticleDetails;
+extern NSString *const StatsEventReaderPublishedComment;
+extern NSString *const StatsEventReaderReblogged;
+extern NSString *const StatsEventReaderLikedPost;
+extern NSString *const StatsEventReaderUnlikedPost;
+
+
 
 // Reader Detail
-extern NSString *const StatsEventReaderDetailClickedNext;
-extern NSString *const StatsEventReaderDetailClickedPrevious;
+extern NSString *const StatsPropertyReaderDetailClickedPrevious;
+extern NSString *const StatsPropertyReaderDetailClickedNext;
 
 // Web View Sharing
 extern NSString *const StatsEventWebviewClickedShowLinkOptions;
@@ -46,10 +54,11 @@ extern NSString *const StatsEventWebviewCopiedArticleDetails;
 extern NSString *const StatsEventWebviewOpenedArticleInSafari;
 extern NSString *const StatsEventWebviewSentArticleToPocket;
 extern NSString *const StatsEventWebviewSentArticleToInstapaper;
+extern NSString *const StatsEventWebviewSentArticleToGooglePlus;
 
 // Notifications
-extern NSString *const StatsEventNotificationsOpened;
-extern NSString *const StatsEventNotificationsOpenedNotificationDetails;
+extern NSString *const StatsPropertyNotificationsOpened;
+extern NSString *const StatsPropertyNotificationsOpenedDetails;
 
 // Notifications Detail
 extern NSString *const StatsEventNotificationsDetailClickedReplyButton;
@@ -64,25 +73,25 @@ extern NSString *const StatsEventNotificationsDetailFollowBlog;
 extern NSString *const StatsEventNotificationsDetailUnfollowBlog;
 
 // Posts
-extern NSString *const StatsEventPostsOpened;
-extern NSString *const StatsEventPostsClickedPostDetail;
+extern NSString *const StatsPropertyPostsOpened;
 extern NSString *const StatsEventPostsClickedNewPost;
 
 // Post Detail
-extern NSString *const StatsEventPostDetailClickedSettings;
-extern NSString *const StatsEventPostDetailClickedEdit;
-extern NSString *const StatsEventPostDetailClickedMedia;
-extern NSString *const StatsEventPostDetailClickedPreview;
-extern NSString *const StatsEventPostDetailClickedAddVideo;
-extern NSString *const StatsEventPostDetailClickedAddPhoto;
-extern NSString *const StatsEventPostDetailClickedShowCategories;
+extern NSString *const StatsPropertyPostDetailClickedEdit;
+extern NSString *const StatsPropertyPostDetailClickedSettings;
+extern NSString *const StatsPropertyPostDetailClickedMedia;
+extern NSString *const StatsPropertyPostDetailClickedPreview;
+extern NSString *const StatsPropertyPostDetailClickedMediaOptions;
+extern NSString *const StatsPropertyPostDetailClickedAddVideo;
+extern NSString *const StatsPropertyPostDetailClickedAddPhoto;
+extern NSString *const StatsPropertyPostDetailClickedShowCategories;
 extern NSString *const StatsEventPostDetailClickedKeyboardToolbarBoldButton;
 extern NSString *const StatsEventPostDetailClickedKeyboardToolbarItalicButton;
 extern NSString *const StatsEventPostDetailClickedKeyboardToolbarLinkButton;
 extern NSString *const StatsEventPostDetailClickedKeyboardToolbarBlockquoteButton;
 extern NSString *const StatsEventPostDetailClickedKeyboardToolbarDelButton;
-extern NSString *const StatsEventPostDetailClickedKeyboardToolbarOrderedListButton;
 extern NSString *const StatsEventPostDetailClickedKeyboardToolbarUnorderedListButton;
+extern NSString *const StatsEventPostDetailClickedKeyboardToolbarOrderedListButton;
 extern NSString *const StatsEventPostDetailClickedKeyboardToolbarListItemButton;
 extern NSString *const StatsEventPostDetailClickedKeyboardToolbarCodeButton;
 extern NSString *const StatsEventPostDetailClickedKeyboardToolbarMoreButton;
@@ -96,10 +105,10 @@ extern NSString *const StatsEventPostDetailOpenedEditor;
 extern NSString *const StatsEventPostDetailClosedEditor;
 
 // Post Detail - Settings
-extern NSString *const StatsEventPostDetailSettingsClickedStatus;
-extern NSString *const StatsEventPostDetailSettingsClickedVisibility;
-extern NSString *const StatsEventPostDetailSettingsClickedScheduleFor;
-extern NSString *const StatsEventPostDetailSettingsClickedPostFormat;
+extern NSString *const StatsPropertyPostDetailSettingsClickedStatus;
+extern NSString *const StatsPropertyPostDetailSettingsClickedVisibility;
+extern NSString *const StatsPropertyPostDetailSettingsClickedScheduleFor;
+extern NSString *const StatsPropertyPostDetailSettingsClickedPostFormat;
 extern NSString *const StatsEventPostDetailSettingsClickedSetFeaturedImage;
 extern NSString *const StatsEventPostDetailSettingsClickedRemoveFeaturedImage;
 extern NSString *const StatsEventPostDetailSettingsClickedAddLocation;
@@ -107,16 +116,10 @@ extern NSString *const StatsEventPostDetailSettingsClickedUpdateLocation;
 extern NSString *const StatsEventPostDetailSettingsClickedRemoveLocation;
 
 // Pages
-extern NSString *const StatsEventPagesOpened;
-extern NSString *const StatsEventPagesClickedPageDetail;
+extern NSString *const StatsPropertyPagedOpened;
 extern NSString *const StatsEventPagesClickedNewPage;
 
 // Comments
-extern NSString *const StatsEventCommentsApproved;
-extern NSString *const StatsEventCommentsUnapproved;
-extern NSString *const StatsEventCommentsFlagAsSpam;
-extern NSString *const StatsEventCommentsDeleted;
-extern NSString *const StatsEventCommentsReplied;
 extern NSString *const StatsEventCommentsViewCommentDetails;
 
 // Comment Detail
@@ -127,8 +130,7 @@ extern NSString *const StatsEventCommentDetailFlagAsSpam;
 extern NSString *const StatsEventCommentDetailEditComment;
 extern NSString *const StatsEventCommentDetailClickedReplyToComment;
 extern NSString *const StatsEventCommentDetailRepliedToComment;
-extern NSString *const StatsEventCommentDetailClickedShowPreviousComment;
-extern NSString *const StatsEventCommentDetailClickedShowNextComment;
+
 
 // Settings
 extern NSString *const StatsEventSettingsRemovedBlog;
@@ -172,7 +174,6 @@ extern NSString *const StatsEventWelcomeViewControllerClickedAddSelfHostedBlog;
 extern NSString *const StatsEventWelcomeViewControllerClickedAddWordpressDotComBlog;
 extern NSString *const StatsEventWelcomeViewControllerClickedCreateWordpressDotComBlog;
 
-
 // NUX Related
 extern NSString *const StatsEventNUXFirstWalkthroughOpened;
 extern NSString *const StatsEventNUXFirstWalkthroughViewedPage2;
@@ -185,7 +186,12 @@ extern NSString *const StatsEventNUXFirstWalkthroughSignedInWithoutUrl;
 extern NSString *const StatsEventNUXFirstWalkthroughSignedInWithUrl;
 extern NSString *const StatsEventNUXFirstWalkthroughSignedInForDotCom;
 extern NSString *const StatsEventNUXFirstWalkthroughSignedInForSelfHosted;
+extern NSString *const StatsEventNUXFirstWalkthroughClickedEnableXMLRPCServices;
 extern NSString *const StatsEventNUXFirstWalkthroughClickedNeededHelpOnError;
+extern NSString *const StatsEventNUXFirstWalkthroughUserSignedInToBlogWithJetpack;
+extern NSString *const StatsEventNUXFirstWalkthroughUserConnectedToJetpack;
+extern NSString *const StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpack;
+
 
 // NUX Create Account
 extern NSString *const StatsEventNUXCreateAccountOpened;
@@ -216,10 +222,24 @@ extern NSString *const StatsEventAddBlogsClickedAddSelected;
 @interface WPMobileStats : NSObject
 
 + (void)initializeStats;
++ (void)updateUserIDForStats:(NSString *)userID;
+
++ (void)pauseSession;
++ (void)endSession;
++ (void)resumeSession;
 
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event;
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event properties:(NSDictionary *)properties;
++ (void)trackEventForSelfHostedAndWPComWithSavedProperties:(NSString *)event;
 + (void)trackEventForWPCom:(NSString *)event;
 + (void)trackEventForWPCom:(NSString *)event properties:(NSDictionary *)properties;
++ (void)trackEventForWPComWithSavedProperties:(NSString *)event;
++ (void)pingWPComStatsEndpoint:(NSString *)statName;
++ (void)logQuantcastEvent:(NSString *)quantcast;
+
+// Property Related
++ (void)clearPropertiesForAllEvents;
++ (void)incrementProperty:(NSString *)property forEvent:(NSString *)event;
++ (void)flagProperty:(NSString *)property forEvent:(NSString *)event;
 
 @end

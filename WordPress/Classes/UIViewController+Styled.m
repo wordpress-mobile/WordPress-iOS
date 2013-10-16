@@ -16,6 +16,10 @@
 - (void)setStyledEditing:(BOOL)editing animated:(BOOL)animated {
     // Since we exchanged implementations, this actually calls UIKit's setEditing:animated:
     [self setStyledEditing:editing animated:animated];
+    
+    if (IS_IOS7)
+        return;
+    
     if (editing) {
         [UIBarButtonItem styleButtonAsPrimary:self.editButtonItem];
     } else {

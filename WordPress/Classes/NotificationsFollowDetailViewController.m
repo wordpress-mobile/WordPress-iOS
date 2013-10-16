@@ -11,6 +11,7 @@
 #import "WordPressComApi.h"
 #import "NSString+XMLExtensions.h"
 #import "NSString+Helpers.h"
+#import "NSURL+Util.h"
 #import "NotificationsFollowTableViewCell.h"
 #import "WPWebViewController.h"
 #import <QuartzCore/QuartzCore.h>
@@ -60,10 +61,10 @@
     NSString *headerText = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"header_text"];
     if (headerText) {
         UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.view.frame.size.width, 40.0f)];
-        [headerLabel setBackgroundColor:[UIColor UIColorFromHex:0xDEDEDE]];
+        [headerLabel setBackgroundColor:[WPStyleGuide itsEverywhereGrey]];
         [headerLabel setTextAlignment:NSTextAlignmentCenter];
-        [headerLabel setTextColor:[UIColor UIColorFromHex:0x5F5F5F]];
-        [headerLabel setFont:[UIFont systemFontOfSize:13.0f]];
+        [headerLabel setTextColor:[WPStyleGuide whisperGrey]];
+        [headerLabel setFont:[WPStyleGuide subtitleFont]];
         [headerLabel setText: [headerText stringByDecodingXMLCharacters]];
         [self.tableView setTableHeaderView:headerLabel];
         [self.view bringSubviewToFront:_postTitleView];
@@ -93,8 +94,9 @@
         _hasFooter = YES;
     }
     
-    [_tableView setDelegate: self];
-
+    [_tableView setDelegate:self];
+    
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -173,6 +175,7 @@
                 [cell.actionButton setTag:indexPath.row];
                 if ([noteActionDetails objectForKey:@"blog_url"]) {
                     cell.detailTextLabel.text = [[NSString decodeXMLCharactersIn:[noteActionDetails objectForKey:@"blog_url"]] stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+                    cell.detailTextLabel.textColor = [WPStyleGuide newKidOnTheBlockBlue];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 }
             } else {
@@ -203,12 +206,11 @@
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"cell_gradient_bg"] stretchableImageWithLeftCapWidth:0 topCapHeight:1]];
-            cell.backgroundView = imageView;
+            cell.backgroundColor = [WPStyleGuide itsEverywhereGrey];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.backgroundColor = [UIColor clearColor];
-            cell.textLabel.textColor = [UIColor UIColorFromHex:0x0074A2];
-            cell.textLabel.font = [UIFont boldSystemFontOfSize:15.0f];
+            cell.textLabel.textColor = [WPStyleGuide newKidOnTheBlockBlue];
+            cell.textLabel.font = [WPStyleGuide regularTextFont];
         }
         NSString *footerText = [[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer_text"];
         cell.textLabel.text = footerText;
@@ -241,7 +243,7 @@
     [cell setFollowing: !isFollowing];
 
     
-    NSUInteger blogID = [[noteDetails objectForKey:@"blog_id"] intValue];
+    NSUInteger blogID = [[noteDetails objectForKey:@"site_id"] intValue];
     if (blogID) {
         [[WordPressComApi sharedApi] followBlog:blogID isFollowing:isFollowing success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSDictionary *followResponse = (NSDictionary *)responseObject;
@@ -308,12 +310,19 @@
         if (likeDetails) {
             NSString *blogURLString = [likeDetails objectForKey:@"blog_url"];
             NSURL *blogURL = [NSURL URLWithString:blogURLString];
-            if (!blogURL)
+
+            if (!blogURL) {
                 return;
+            }
+            
             WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-            [webViewController setUsername:[WordPressComApi sharedApi].username];
-            [webViewController setPassword:[WordPressComApi sharedApi].password];
-            [webViewController setUrl:blogURL];
+            if ([blogURL isWordPressDotComUrl]) {
+                [webViewController setUsername:[WordPressComApi sharedApi].username];
+                [webViewController setPassword:[WordPressComApi sharedApi].password];
+                [webViewController setUrl:[blogURL ensureSecureURL]];
+            } else {
+                [webViewController setUrl:blogURL];
+            }
             [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
         } else {
             [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
@@ -321,7 +330,6 @@
     } else {
         [self loadWebViewWithURL:[[[_note getNoteData] objectForKey:@"body"] objectForKey:@"footer_link"]];
     }
-    
 }
 
 @end

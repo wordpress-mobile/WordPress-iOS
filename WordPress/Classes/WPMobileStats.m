@@ -8,35 +8,44 @@
 
 #import "WPMobileStats.h"
 #import <Mixpanel/Mixpanel.h>
+#import <Quantcast-Measure/QuantcastMeasurement.h>
 #import "WordPressComApiCredentials.h"
 #import "WordPressComApi.h"
+#import "WordPressAppDelegate.h"
+#import "NSString+Helpers.h"
 
 // General
 NSString *const StatsEventAppOpened = @"Application Opened";
+NSString *const StatsEventAppClosed = @"Application Closed";
 NSString *const StatsEventAppOpenedDueToPushNotification = @"Application Opened Due to Push Notification";
 
 // Top Level Menu Items
-NSString *const StatsEventSidebarClickedReader = @"Sidebar - Clicked Reader";
-NSString *const StatsEventSidebarClickedNotifications = @"Sidebar - Clicked Notifications";
-NSString *const StatsEventSidebarSiteClickedPosts = @"Sidebar - Site - Clicked Posts";
-NSString *const StatsEventSidebarSiteClickedPages = @"Sidebar - Site - Clicked Pages";
-NSString *const StatsEventSidebarSiteClickedComments = @"Sidebar - Site - Clicked Comments";
-NSString *const StatsEventSidebarSiteClickedStats = @"Sidebar - Site - Clicked Stats";
-NSString *const StatsEventSidebarSiteClickedViewSite = @"Sidebar - Site - Clicked View Site";
-NSString *const StatsEventSidebarSiteClickedViewAdmin = @"Sidebar - Site - Clicked View Admin";
-NSString *const StatsEventSidebarClickedSettings = @"Sidebar - Clicked Settings";
-NSString *const StatsEventSidebarClickedQuickPhoto = @"Sidebar - Clicked Quick Photo";
+NSString *const StatsPropertySidebarClickedReader = @"sidebar_clicked_reader";
+NSString *const StatsPropertySidebarClickedNotifications = @"sidebar_clicked_notifications";
+NSString *const StatsPropertySidebarSiteClickedPosts = @"sidebar_site_clicked_posts";
+NSString *const StatsPropertySidebarSiteClickedPages = @"sidebar_site_clicked_pages";
+NSString *const StatsPropertySidebarSiteClickedComments = @"sidebar_site_clicked_comments";
+NSString *const StatsPropertySidebarSiteClickedStats = @"sidebar_site_clicked_stats";
+NSString *const StatsPropertySidebarSiteClickedViewSite = @"sidebar_site_clicked_view_site";
+NSString *const StatsPropertySidebarSiteClickedViewAdmin = @"sidebar_site_clicked_view_admin";
+NSString *const StatsPropertySidebarClickedSettings = @"sidebar_clicked_settings";
+NSString *const StatsPropertySidebarClickedQuickPhoto = @"sidebar_clicked_quick_photo";
 
 // Reader
 NSString *const StatsEventReaderOpened = @"Reader - Opened";
-NSString *const StatsEventReaderClickedShowTopicSelector = @"Reader - Show Topic Selector";
+NSString *const StatsEventReaderHomePageRefresh = @"Reader - Home Page Refreshed";
+NSString *const StatsEventReaderInfiniteScroll = @"Reader - Infinite Scroll";
 NSString *const StatsEventReaderSelectedFreshlyPressedTopic = @"Reader - Selected Freshly Pressed Topic";
-NSString *const StatsEventReaderSelectedTopic = @"Reader - Selected Topic";
-NSString *const StatsEventReaderClickedArticleDetails = @"Reader - Clicked Article Details";
+NSString *const StatsEventReaderSelectedCategory = @"Reader - Selected Category";
+NSString *const StatsEventReaderOpenedArticleDetails = @"Reader - Opened Article Details";
+NSString *const StatsEventReaderPublishedComment = @"Reader - Published Comment";
+NSString *const StatsEventReaderReblogged = @"Reader - Reblogged";
+NSString *const StatsEventReaderLikedPost = @"Reader - Liked Post";
+NSString *const StatsEventReaderUnlikedPost = @"Reader - Unliked Post";
 
 // Reader Detail
-NSString *const StatsEventReaderDetailClickedNext = @"Reader Detail - Clicked Next Article";
-NSString *const StatsEventReaderDetailClickedPrevious = @"Reader Detail - Clicked Previous Article";
+NSString *const StatsPropertyReaderDetailClickedPrevious = @"reader_detail_clicked_previous";
+NSString *const StatsPropertyReaderDetailClickedNext = @"reader_detail_clicked_next";
 
 // Web View Sharing
 NSString *const StatsEventWebviewClickedShowLinkOptions = @"Clicked Show Link Options";
@@ -49,10 +58,11 @@ NSString *const StatsEventWebviewCopiedArticleDetails = @"Copied Article Details
 NSString *const StatsEventWebviewOpenedArticleInSafari = @"Opened Article in Safari";
 NSString *const StatsEventWebviewSentArticleToPocket = @"Sent Article to Pocket";
 NSString *const StatsEventWebviewSentArticleToInstapaper = @"Sent Article to Instapaper";
+NSString *const StatsEventWebviewSentArticleToGooglePlus = @"Sent Article to Google Plus";
 
 // Notifications
-NSString *const StatsEventNotificationsOpened = @"Notifications - Opened";
-NSString *const StatsEventNotificationsOpenedNotificationDetails = @"Notifications - Opened Notification Details";
+NSString *const StatsPropertyNotificationsOpened = @"notifications_opened";
+NSString *const StatsPropertyNotificationsOpenedDetails = @"notifications_opened_details";
 
 // Notifications Detail
 NSString *const StatsEventNotificationsDetailClickedReplyButton = @"Notifications Detail - Clicked Reply Button";
@@ -67,28 +77,28 @@ NSString *const StatsEventNotificationsDetailFollowBlog = @"Notifications Detail
 NSString *const StatsEventNotificationsDetailUnfollowBlog = @"Notifications Detail - Unfollowed Blog";
 
 // Posts
-NSString *const StatsEventPostsOpened = @"Posts - Opened";
-NSString *const StatsEventPostsClickedPostDetail = @"Posts - Clicked Post Detail";
+NSString *const StatsPropertyPostsOpened = @"posts_opened";
 NSString *const StatsEventPostsClickedNewPost = @"Posts - Clicked New Post";
 
 // Post Detail
-NSString *const StatsEventPostDetailClickedSettings = @"Clicked Settings";
-NSString *const StatsEventPostDetailClickedEdit = @"Clicked Edit";
-NSString *const StatsEventPostDetailClickedMedia = @"Clicked Media";
-NSString *const StatsEventPostDetailClickedPreview = @"Clicked Preview";
-NSString *const StatsEventPostDetailClickedAddVideo = @"Clicked Add Video";
-NSString *const StatsEventPostDetailClickedAddPhoto = @"Clicked Add Photo";
-NSString *const StatsEventPostDetailClickedShowCategories = @"Clicked Show Categories";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarBoldButton = @"Clicked Keyboard Toolbar Bold Button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarItalicButton = @"Clicked Keyboard Toolbar Italics Button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarLinkButton = @"Clicked Keyboard Toolbar Link Button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarBlockquoteButton = @"Clicked Keyboard Toolbar Blockquote Button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarDelButton = @"Clicked Keyboard Toolbar Del Button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarOrderedListButton = @"Clicked Keyboard Toolbar Ordered List Button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarUnorderedListButton = @"Clicked Keyboard Toolbar Unordered List Button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarListItemButton = @"Clicked Keyboard Toolbar List Item Button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarCodeButton = @"Clicked Keyboard Toolbar Code Button";
-NSString *const StatsEventPostDetailClickedKeyboardToolbarMoreButton = @"Clicked Keyboard Toolbar More Button";
+NSString *const StatsPropertyPostDetailClickedEdit = @"clicked_edit";
+NSString *const StatsPropertyPostDetailClickedSettings = @"clicked_settings";
+NSString *const StatsPropertyPostDetailClickedMedia = @"clicked_media";
+NSString *const StatsPropertyPostDetailClickedPreview = @"clicked_preview";
+NSString *const StatsPropertyPostDetailClickedMediaOptions = @"clicked_media_options";
+NSString *const StatsPropertyPostDetailClickedAddVideo = @"clicked_add_video";
+NSString *const StatsPropertyPostDetailClickedAddPhoto = @"clicked_add_photo";
+NSString *const StatsPropertyPostDetailClickedShowCategories = @"clicked_show_categories";
+NSString *const StatsEventPostDetailClickedKeyboardToolbarBoldButton = @"clicked_keyboard_toolbar_bold_button";
+NSString *const StatsEventPostDetailClickedKeyboardToolbarItalicButton = @"clicked_keyboard_toolbar_italic_button";
+NSString *const StatsEventPostDetailClickedKeyboardToolbarLinkButton = @"clicked_keyboard_toolbar_link_button";
+NSString *const StatsEventPostDetailClickedKeyboardToolbarBlockquoteButton = @"clicked_keyboard_toolbar_blockquote_button";
+NSString *const StatsEventPostDetailClickedKeyboardToolbarDelButton = @"clicked_keyboard_toolbar_del_button";
+NSString *const StatsEventPostDetailClickedKeyboardToolbarUnorderedListButton = @"clicked_keyboard_toolbar_unordered_list_button";
+NSString *const StatsEventPostDetailClickedKeyboardToolbarOrderedListButton = @"clicked_keyboard_toolbar_ordered_list_button";
+NSString *const StatsEventPostDetailClickedKeyboardToolbarListItemButton = @"clicked_keyboard_toolbar_list_item_button";
+NSString *const StatsEventPostDetailClickedKeyboardToolbarCodeButton = @"clicked_keyboard_toolbar_code_button";
+NSString *const StatsEventPostDetailClickedKeyboardToolbarMoreButton = @"clicked_keyboard_toolbar_more_button";
 NSString *const StatsEventPostDetailAddedPhoto = @"Added Photo";
 NSString *const StatsEventPostDetailRemovedPhoto = @"Removed Photo";
 NSString *const StatsEventPostDetailClickedSchedule = @"Clicked Schedule Button";
@@ -99,10 +109,10 @@ NSString *const StatsEventPostDetailOpenedEditor = @"Opened Editor";
 NSString *const StatsEventPostDetailClosedEditor = @"Closed Editor";
 
 // Post Detail - Settings
-NSString *const StatsEventPostDetailSettingsClickedStatus = @"Settings - Clicked Status";
-NSString *const StatsEventPostDetailSettingsClickedVisibility = @"Settings - Clicked Visibility";
-NSString *const StatsEventPostDetailSettingsClickedScheduleFor = @"Settings - Clicked Schedule For";
-NSString *const StatsEventPostDetailSettingsClickedPostFormat = @"Settings - Clicked Post Format";
+NSString *const StatsPropertyPostDetailSettingsClickedStatus = @"settings_clicked_status";
+NSString *const StatsPropertyPostDetailSettingsClickedVisibility = @"settings_clicked_visibility";
+NSString *const StatsPropertyPostDetailSettingsClickedScheduleFor = @"settings_clicked_schedule_for";
+NSString *const StatsPropertyPostDetailSettingsClickedPostFormat = @"settings_clicked_post_format";
 NSString *const StatsEventPostDetailSettingsClickedSetFeaturedImage = @"Settings - Clicked Set Featured Image";
 NSString *const StatsEventPostDetailSettingsClickedRemoveFeaturedImage = @"Settings - Clicked Remove Featured Image";
 NSString *const StatsEventPostDetailSettingsClickedAddLocation = @"Settings - Clicked Add Location";
@@ -110,16 +120,10 @@ NSString *const StatsEventPostDetailSettingsClickedUpdateLocation = @"Settings -
 NSString *const StatsEventPostDetailSettingsClickedRemoveLocation = @"Settings - Clicked Remove Location";
 
 // Pages
-NSString *const StatsEventPagesOpened = @"Pages - Opened";
-NSString *const StatsEventPagesClickedPageDetail = @"Pages - Clicked Page Detail";
+NSString *const StatsPropertyPagedOpened = @"pages_opened";
 NSString *const StatsEventPagesClickedNewPage = @"Pages - Clicked New Page";
 
 // Comments
-NSString *const StatsEventCommentsApproved = @"Comments - Approved Comments";
-NSString *const StatsEventCommentsUnapproved = @"Comments - Unapproved Comments";
-NSString *const StatsEventCommentsFlagAsSpam = @"Comments - Flagged Comments as Spam";
-NSString *const StatsEventCommentsDeleted = @"Comments - Deleted Comments";
-NSString *const StatsEventCommentsReplied = @"Comments - Clicked Reply to Comment";
 NSString *const StatsEventCommentsViewCommentDetails = @"Comments - View Comment Details";
 
 // Comment Detail
@@ -130,8 +134,7 @@ NSString *const StatsEventCommentDetailFlagAsSpam = @"Comment Detail - Flag Comm
 NSString *const StatsEventCommentDetailEditComment = @"Comment Detail - Edit Comment";
 NSString *const StatsEventCommentDetailClickedReplyToComment = @"Comment Detail - Clicked Reply to Comment";
 NSString *const StatsEventCommentDetailRepliedToComment = @"Comment Detail - Replied to Comment";
-NSString *const StatsEventCommentDetailClickedShowPreviousComment = @"Comment Detail - Clicked Show Previous Comment";
-NSString *const StatsEventCommentDetailClickedShowNextComment = @"Comment Detail - Clicked Show Next Comment";
+
 
 // Settings
 NSString *const StatsEventSettingsRemovedBlog = @"Settings - Remove Blog";
@@ -187,7 +190,12 @@ NSString *const StatsEventNUXFirstWalkthroughSignedInWithoutUrl = @"NUX - First 
 NSString *const StatsEventNUXFirstWalkthroughSignedInWithUrl = @"NUX - First Walkthrough - Signed In With URL";
 NSString *const StatsEventNUXFirstWalkthroughSignedInForDotCom = @"NUX - First Walkthrough - Signed In For WordPress.com";
 NSString *const StatsEventNUXFirstWalkthroughSignedInForSelfHosted = @"NUX - First Walkthrough - Signed In For Self Hosted Site";
+NSString *const StatsEventNUXFirstWalkthroughClickedEnableXMLRPCServices = @"NUX - First Walkthrough - Clicked Enable XML-RPC Services";
 NSString *const StatsEventNUXFirstWalkthroughClickedNeededHelpOnError = @"NUX - First Walkthrough - Clicked Needed Help on Error";
+NSString *const StatsEventNUXFirstWalkthroughUserSignedInToBlogWithJetpack = @"NUX - First Walkthrough - User Signed In To Blog With Jetpack";
+NSString *const StatsEventNUXFirstWalkthroughUserConnectedToJetpack = @"NUX - First Walkthrough - User Connected to Jetpack";
+NSString *const StatsEventNUXFirstWalkthroughUserSkippedConnectingToJetpack = @"NUX - First Walkthrough - User Skipped Connecting to Jetpack";
+
 
 // NUX Create Account
 NSString *const StatsEventNUXCreateAccountOpened = @"NUX - Create Account - Opened";
@@ -215,42 +223,224 @@ NSString *const StatsEventAddBlogsClickedSelectAll = @"Add Blogs - Clicked Selec
 NSString *const StatsEventAddBlogsClickedDeselectAll = @"Add Blogs - Clicked Deselect All";
 NSString *const StatsEventAddBlogsClickedAddSelected = @"Add Blogs - Clicked Add Selected";
 
+@interface WPMobileStats() {
+    NSMutableDictionary *_aggregatedEventProperties;
+}
+
+@end
+
 @implementation WPMobileStats
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        _aggregatedEventProperties = [[NSMutableDictionary alloc] init];
+    }
+    return self;
+}
+
++ (WPMobileStats *)sharedInstance
+{
+    static WPMobileStats *sharedInstance = nil;
+    
+    static dispatch_once_t predicate;
+    dispatch_once(&predicate, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    
+    return sharedInstance;
+}
 
 + (void)initializeStats
 {
     [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
+    NSDictionary *properties = @{
+                                 @"connected_to_dotcom": @([[WordPressComApi sharedApi] hasCredentials]),
+                                 @"number_of_blogs" : @([Blog countWithContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]]) };
+    [[Mixpanel sharedInstance] registerSuperProperties:properties];
+    
+    NSString *username = [WordPressComApi sharedApi].username;
+    if ([[WordPressComApi sharedApi] hasCredentials] && [username length] > 0) {
+        [[Mixpanel sharedInstance] identify:username];
+        [[Mixpanel sharedInstance].people increment:@"Application Opened" by:@(1)];
+        [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
+    }
+    
+    NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_user_id"];
+    [[QuantcastMeasurement sharedInstance] beginMeasurementSessionWithAPIKey:[WordPressComApiCredentials quantcastAPIKey] userIdentifier:[userId md5] labels:nil];
+}
+
++ (void)updateUserIDForStats:(NSString *)userID
+{
+    [[QuantcastMeasurement sharedInstance] recordUserIdentifier:[userID md5] withLabels:nil];
+}
+
++ (void)pauseSession
+{
+    [[QuantcastMeasurement sharedInstance] pauseSessionWithLabels:nil];
+}
+
++ (void)endSession
+{
+    [[QuantcastMeasurement sharedInstance] endMeasurementSessionWithLabels:nil];
+}
+
++ (void)resumeSession
+{
+    [[QuantcastMeasurement sharedInstance] resumeSessionWithLabels:nil];
 }
 
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event
 {
-    [[Mixpanel sharedInstance] track:event];
+    [[self sharedInstance] trackEventForSelfHostedAndWPCom:event];
 }
 
 + (void)trackEventForSelfHostedAndWPCom:(NSString *)event properties:(NSDictionary *)properties
 {
-    [[Mixpanel sharedInstance] track:event properties:properties];
+    [[self sharedInstance] trackEventForSelfHostedAndWPCom:event properties:properties];
+}
+
++ (void)trackEventForSelfHostedAndWPComWithSavedProperties:(NSString *)event
+{
+    [[self sharedInstance] trackEventForSelfHostedAndWPComWithSavedProperties:event];
 }
 
 + (void)trackEventForWPCom:(NSString *)event
+{
+    [[self sharedInstance] trackEventForWPCom:event];
+}
+
++ (void)trackEventForWPCom:(NSString *)event properties:(NSDictionary *)properties
+{
+    [[self sharedInstance] trackEventForWPCom:event properties:properties];
+}
+
++ (void)trackEventForWPComWithSavedProperties:(NSString *)event
+{
+    [[self sharedInstance] trackEventForWPComWithSavedProperties:event];
+}
+
++ (void)pingWPComStatsEndpoint:(NSString *)statName
+{
+    int x = arc4random();
+    NSString *statsURL = [NSString stringWithFormat:@"%@%@%@%@%d" , kMobileReaderURL, @"&template=stats&stats_name=", statName, @"&rnd=", x];
+    NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL  ]];
+    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
+    @autoreleasepool {
+        NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:nil];
+        [conn start];
+    }
+}
+
++ (void)logQuantcastEvent:(NSString *)quantcast
+{
+    [[QuantcastMeasurement sharedInstance] logEvent:quantcast withLabels:nil];
+}
+
++ (void)clearPropertiesForAllEvents
+{
+    [[self sharedInstance] clearPropertiesForAllEvents];
+}
+
++ (void)incrementProperty:(NSString *)property forEvent:(NSString *)event
+{
+    [[self sharedInstance] incrementProperty:property forEvent:event];
+}
+
++ (void)flagProperty:(NSString *)property forEvent:(NSString *)event
+{
+    [[self sharedInstance] flagProperty:property forEvent:event];
+}
+
+#pragma mark - Private Methods
+
+- (BOOL)connectedToWordPressDotCom
+{
+    return [[WordPressComApi sharedApi] hasCredentials];
+}
+
+- (void)trackEventForSelfHostedAndWPCom:(NSString *)event
+{
+    [[Mixpanel sharedInstance] track:event];
+}
+
+- (void)trackEventForSelfHostedAndWPCom:(NSString *)event properties:(NSDictionary *)properties
+{
+    [[Mixpanel sharedInstance] track:event properties:properties];
+}
+
+- (void)trackEventForSelfHostedAndWPComWithSavedProperties:(NSString *)event
+{
+    [[Mixpanel sharedInstance] track:event properties:[self propertiesForEvent:event]];
+}
+
+- (void)trackEventForWPCom:(NSString *)event
 {
     if ([self connectedToWordPressDotCom]) {
         [[Mixpanel sharedInstance] track:event];
     }
 }
 
-+ (void)trackEventForWPCom:(NSString *)event properties:(NSDictionary *)properties
+- (void)trackEventForWPCom:(NSString *)event properties:(NSDictionary *)properties
 {
     if ([self connectedToWordPressDotCom]) {
         [[Mixpanel sharedInstance] track:event properties:properties];
     }
 }
 
-#pragma mark - Private Methods
-
-+ (BOOL)connectedToWordPressDotCom
+- (void)trackEventForWPComWithSavedProperties:(NSString *)event
 {
-    return [[WordPressComApi sharedApi] hasCredentials];
+    if ([self connectedToWordPressDotCom]) {
+        [[Mixpanel sharedInstance] track:event properties:[self propertiesForEvent:event]];
+    }
+}
+
+- (void)clearPropertiesForAllEvents
+{
+    [_aggregatedEventProperties removeAllObjects];
+}
+
+- (void)incrementProperty:(NSString *)property forEvent:(NSString *)event
+{
+    NSNumber *currentValue = [self property:property forEvent:event];
+    int newValue;
+    if (currentValue == nil) {
+        newValue = 1;
+    } else {
+        newValue = [currentValue intValue];
+        newValue++;
+    }
+    
+    [self saveProperty:property withValue:@(newValue) forEvent:event];
+}
+
+- (void)flagProperty:(NSString *)property forEvent:(NSString *)event
+{
+    [self saveProperty:property withValue:@(YES) forEvent:event];
+}
+
+- (id)property:(NSString *)property forEvent:(NSString *)event
+{
+    NSMutableDictionary *eventProperties = [_aggregatedEventProperties objectForKey:event];
+    return [eventProperties objectForKey:property];
+}
+
+- (void)saveProperty:(NSString *)property withValue:(id)value forEvent:(NSString *)event
+{
+    NSMutableDictionary *eventProperties = [_aggregatedEventProperties objectForKey:event];
+    if (eventProperties == nil) {
+        eventProperties = [[NSMutableDictionary alloc] init];
+        [_aggregatedEventProperties setValue:eventProperties forKey:event];
+    }
+    
+    [eventProperties setValue:value forKey:property];
+}
+
+- (NSDictionary *)propertiesForEvent:(NSString *)event
+{
+    return [_aggregatedEventProperties objectForKey:event];
 }
 
 

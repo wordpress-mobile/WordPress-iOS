@@ -27,4 +27,18 @@
 + (NSString *)pocketConsumerKey {
     return @"";
 }
+
++ (NSString *)crashlyticsApiKey {
+    return @"";
+}
+
++ (NSString *)googlePlusClientId {
+    return @"";
+}
+
++ (NSString *)quantcastAPIKey
+{
+    return @"";
+}
+
 @end

@@ -31,11 +31,11 @@
 
 @implementation WPWalkthroughOverlayView
 
-NSUInteger const WPWalkthroughGrayOverlayIconVerticalOffset = 75.0;
-NSUInteger const WPWalkthroughGrayOverlayStandardOffset = 16.0;
-NSUInteger const WPWalkthroughGrayOverlayBottomLabelOffset = 91.0;
-NSUInteger const WPWalkthroughGrayOverlayBottomPanelHeight = 64.0;
-NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
+CGFloat const WPWalkthroughGrayOverlayIconVerticalOffset = 75.0;
+CGFloat const WPWalkthroughGrayOverlayStandardOffset = 16.0;
+CGFloat const WPWalkthroughGrayOverlayBottomLabelOffset = 91.0;
+CGFloat const WPWalkthroughGrayOverlayBottomPanelHeight = 64.0;
+CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -139,7 +139,7 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     _logo.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_logo.frame), CGRectGetHeight(_logo.frame)));
     
     // Layout Title
-    CGSize titleSize = [_title.text sizeWithFont:_title.font constrainedToSize:CGSizeMake(WPWalkthroughGrayOverlayMaxLabelWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize titleSize = [_title.text sizeWithFont:_title.font constrainedToSize:CGSizeMake(WPWalkthroughGrayOverlayMaxLabelWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - titleSize.width)/2.0;
     y = CGRectGetMaxY(_logo.frame) + 0.5*WPWalkthroughGrayOverlayStandardOffset;
     _title.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
@@ -150,7 +150,7 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     _topSeparator.frame = CGRectMake(x, y, _viewWidth-2*WPWalkthroughGrayOverlayStandardOffset, 2);
     
     // Layout Description
-    CGSize labelSize = [_description.text sizeWithFont:_description.font constrainedToSize:CGSizeMake(WPWalkthroughGrayOverlayMaxLabelWidth, CGFLOAT_MAX) lineBreakMode:UILineBreakModeWordWrap];
+    CGSize labelSize = [_description.text sizeWithFont:_description.font constrainedToSize:CGSizeMake(WPWalkthroughGrayOverlayMaxLabelWidth, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     x = (_viewWidth - labelSize.width)/2.0;
     y = CGRectGetMaxY(_topSeparator.frame) + 0.5*WPWalkthroughGrayOverlayStandardOffset;
     _description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
@@ -219,9 +219,9 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     // Add Title
     _title = [[UILabel alloc] init];
     _title.backgroundColor = [UIColor clearColor];
-    _title.textAlignment = UITextAlignmentCenter;
+    _title.textAlignment = NSTextAlignmentCenter;
     _title.numberOfLines = 0;
-    _title.lineBreakMode = UILineBreakModeWordWrap;
+    _title.lineBreakMode = NSLineBreakByWordWrapping;
     _title.font = [UIFont fontWithName:@"OpenSans-Light" size:25.0];
     _title.text = self.overlayTitle;
     _title.shadowColor = [UIColor blackColor];
@@ -236,9 +236,9 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     // Add Description
     _description = [[UILabel alloc] init];
     _description.backgroundColor = [UIColor clearColor];
-    _description.textAlignment = UITextAlignmentCenter;
+    _description.textAlignment = NSTextAlignmentCenter;
     _description.numberOfLines = 0;
-    _description.lineBreakMode = UILineBreakModeWordWrap;
+    _description.lineBreakMode = NSLineBreakByWordWrapping;
     _description.font = [WPNUXUtility descriptionTextFont];
     _description.text = self.overlayDescription;
     _description.shadowColor = [UIColor blackColor];
@@ -252,7 +252,7 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     // Add Bottom Label
     _bottomLabel = [[UILabel alloc] init];
     _bottomLabel.backgroundColor = [UIColor clearColor];
-    _bottomLabel.textAlignment = UITextAlignmentCenter;
+    _bottomLabel.textAlignment = NSTextAlignmentCenter;
     _bottomLabel.numberOfLines = 1;
     _bottomLabel.font = [UIFont fontWithName:@"OpenSans" size:10.0];
     _bottomLabel.text = self.footerDescription;
@@ -304,8 +304,14 @@ NSUInteger const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
 - (void)tappedOnView:(UITapGestureRecognizer *)gestureRecognizer
 {
     CGPoint touchPoint = [gestureRecognizer locationInView:self];
-    BOOL touchedButton1 = CGRectContainsPoint(_leftButton.frame, touchPoint);
-    BOOL touchedButton2 = CGRectContainsPoint(_rightButton.frame, touchPoint);
+
+    // To avoid accidentally dismissing the view when the user was trying to tap one of the buttons,
+    // add some padding around the button frames.
+    CGRect button1Frame = CGRectInset(_leftButton.frame, -2 * WPWalkthroughGrayOverlayStandardOffset, -WPWalkthroughGrayOverlayStandardOffset);
+    CGRect button2Frame = CGRectInset(_rightButton.frame, -2 * WPWalkthroughGrayOverlayStandardOffset, -WPWalkthroughGrayOverlayStandardOffset);
+
+    BOOL touchedButton1 = CGRectContainsPoint(button1Frame, touchPoint);
+    BOOL touchedButton2 = CGRectContainsPoint(button2Frame, touchPoint);
     
     if (touchedButton1 || touchedButton2)
         return;

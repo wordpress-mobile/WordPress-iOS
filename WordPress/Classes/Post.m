@@ -34,14 +34,6 @@
 - (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 @end
 
-
-@interface Post(PrivateMethods)
-+ (Post *)newPostForBlog:(Blog *)blog;
-- (void)uploadInBackground;
-- (void)didUploadInBackground;
-- (void)failedUploadInBackground;
-@end
-
 #pragma mark -
 
 @implementation Post 
@@ -50,18 +42,15 @@
 @dynamic categories;
 @synthesize specialType, featuredImageURL;
 
-+ (Post *)newPostForBlog:(Blog *)blog {
-    Post *post = [[Post alloc] initWithEntity:[NSEntityDescription entityForName:@"Post"
-                                                          inManagedObjectContext:[blog managedObjectContext]]
-               insertIntoManagedObjectContext:[blog managedObjectContext]];
-
-    post.blog = blog;
-    
++ (Post *)newPostForBlog:(Blog *)blog withContext:(NSManagedObjectContext*)context {
+    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
+    Post *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:context];
+    post.blog = contextBlog;
     return post;
 }
 
 + (Post *)newDraftForBlog:(Blog *)blog {
-    Post *post = [self newPostForBlog:blog];
+    Post *post = [self newPostForBlog:blog withContext:blog.managedObjectContext];
     post.remoteStatus = AbstractPostRemoteStatusLocal;
     post.status = @"publish";
     [post save];
@@ -69,8 +58,9 @@
     return post;
 }
 
-+ (Post *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID {
-    NSSet *results = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@ AND original == NULL",postID]];
++ (Post *)findWithBlog:(Blog *)blog andPostID:(NSNumber *)postID withContext:(NSManagedObjectContext*)context {
+    Blog *contextBlog = (Blog *)[context objectWithID:blog.objectID];
+    NSSet *results = [contextBlog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"postID == %@ AND original == NULL",postID]];
     
     if (results && (results.count > 0)) {
         return [[results allObjects] objectAtIndex:0];
@@ -78,11 +68,11 @@
     return nil;
 }
 
-+ (Post *)findOrCreateWithBlog:(Blog *)blog andPostID:(NSNumber *)postID {
-    Post *post = [self findWithBlog:blog andPostID:postID];
++ (Post *)findOrCreateWithBlog:(Blog *)blog andPostID:(NSNumber *)postID withContext:(NSManagedObjectContext*)context {
+    Post *post = [self findWithBlog:blog andPostID:postID withContext:context];
     
     if (post == nil) {
-        post = [Post newPostForBlog:blog];
+        post = [Post newPostForBlog:blog withContext:context];
         post.postID = postID;
         post.remoteStatus = AbstractPostRemoteStatusSync;
     }
@@ -99,7 +89,7 @@
 }
 
 
-- (void )updateFromDictionary:(NSDictionary *)postInfo {
+- (void)updateFromDictionary:(NSDictionary *)postInfo {
     self.postTitle      = [postInfo objectForKey:@"title"];
 	//keep attention: getPosts and getPost returning IDs in different types
 	if ([[postInfo objectForKey:@"postid"] isKindOfClass:[NSString class]]) {
@@ -126,7 +116,7 @@
 	self.mt_text_more	= [postInfo objectForKey:@"mt_text_more"];
     NSString *wp_more_text = [postInfo objectForKey:@"wp_more_text"];
     if ([wp_more_text length] > 0) {
-        wp_more_text = [@" " stringByAppendingFormat:wp_more_text]; // Give us a little padding.
+        wp_more_text = [@" " stringByAppendingString:wp_more_text]; // Give us a little padding.
     }
     if (self.mt_text_more && self.mt_text_more.length > 0) {
         self.content = [NSString stringWithFormat:@"%@\n\n<!--more%@-->\n\n%@", self.content, wp_more_text, self.mt_text_more];
@@ -183,7 +173,6 @@
 			self.publicID = geo_public_id;
 		}
 	}
-	return;   
 }
 
 - (NSString *)categoriesText {
@@ -218,7 +207,7 @@
 	NSMutableSet *categories = nil;
 	
     for (NSString *categoryName in categoryNames) {
-        NSSet *results = [self.blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryName like %@", categoryName]];
+        NSSet *results = [self.blog.categories filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"categoryName = %@", categoryName]];
         if (results && (results.count > 0)) {
 			if(categories == nil) {
 				categories = [NSMutableSet setWithSet:results];
@@ -295,12 +284,12 @@
 
 - (void)getFeaturedImageURLWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPFLogMethod();
-    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, [self.blog fetchPassword], self.post_thumbnail, nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.blog.blogID, self.blog.username, self.blog.password, self.post_thumbnail, nil];
     [self.blog.api callMethod:@"wp.getMediaItem"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
                           NSDictionary *mediaItem = (NSDictionary *)responseObject;
-                          self.featuredImageURL = [mediaItem objectForKey:@"link"];
+                          self.featuredImageURL = [mediaItem stringForKey:@"link"];
                           if (success) success();
                       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                           if (failure) {
@@ -396,8 +385,10 @@
                                                                                    if ([responseObject respondsToSelector:@selector(numericValue)]) {
                                                                                        self.postID = [responseObject numericValue];
                                                                                        self.remoteStatus = AbstractPostRemoteStatusSync;
-                                                                                       // Set the temporary date until we get it from the server so it sorts properly on the list
-                                                                                       self.date_created_gmt = [DateUtils localDateToGMTDate:[NSDate date]];
+                                                                                       if (!self.date_created_gmt) {
+                                                                                           // Set the temporary date until we get it from the server so it sorts properly on the list
+                                                                                           self.date_created_gmt = [DateUtils localDateToGMTDate:[NSDate date]];
+                                                                                       }
                                                                                        [self save];
                                                                                        [self getPostWithSuccess:success failure:failure];
                                                                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploaded" object:self];
@@ -422,7 +413,7 @@
 
 - (void)getPostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
     WPFLogMethod();
-    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, [self.blog fetchPassword], nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, self.blog.password, nil];
     [self.blog.api callMethod:@"metaWeblog.getPost"
                    parameters:parameters
                       success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -450,7 +441,7 @@
         return;
     }
 
-    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, [self.blog fetchPassword], [self XMLRPCDictionary], nil];
+    NSArray *parameters = [NSArray arrayWithObjects:self.postID, self.blog.username, self.blog.password, [self XMLRPCDictionary], nil];
     self.remoteStatus = AbstractPostRemoteStatusPushing;
     
     if( self.isFeaturedImageChanged == NO ) {
@@ -482,7 +473,7 @@
     WPFLogMethod();
     BOOL remote = [self hasRemote];
     if (remote) {
-        NSArray *parameters = [NSArray arrayWithObjects:@"unused", self.postID, self.blog.username, [self.blog fetchPassword], nil];
+        NSArray *parameters = [NSArray arrayWithObjects:@"unused", self.postID, self.blog.username, self.blog.password, nil];
         [self.blog.api callMethod:@"metaWeblog.deletePost"
                        parameters:parameters
                           success:^(AFHTTPRequestOperation *operation, id responseObject) {

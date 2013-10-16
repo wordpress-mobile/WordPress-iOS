@@ -1,115 +1,93 @@
 //
-//  CommentViewController.m
+//  CommentViewController.h
 //  WordPress
 //
-//  Created by Janakiram on 05/09/08.
+//  Created by Sendhil Panchadsaram on 8/22/13.
+//  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
 #import "CommentViewController.h"
-#import "Reachability.h"
-#import "WordPressAppDelegate.h"
-#import "NSString+XMLExtensions.h"
-#import "WPWebViewController.h"
 #import "UIImageView+Gravatar.h"
-#import "SFHFKeychainUtils.h"
-#import "UIColor+Helpers.h"
-#import "UIBarButtonItem+Styled.h"
+#import "NSString+XMLExtensions.h"
+#import "Comment.h"
+#import "CommentsViewController.h"
+#import "ReplyToCommentViewController.h"
+#import "EditCommentViewController.h"
+#import "WPWebViewController.h"
 
-#define COMMENT_BODY_TOP        100
-#define COMMENT_BODY_MAX_HEIGHT 4000
-#define COMMENT_BODY_PADDING 20
-
-#define kCustomButtonHeight     30.0
-
-@interface CommentViewController (Private)
-- (void)showSynchInProgressAlert;
-- (BOOL)isConnectedToHost;
-- (BOOL)isApprove;
-- (void)moderateCommentWithSelector:(SEL)selector;
-- (void)cancel;
-- (void)discard;
-
-- (void)showReplyToCommentViewWithAnimation:(BOOL)animate;
-- (void)showEditCommentViewWithAnimation:(BOOL)animate;
-- (void)insertPendingLabel;
-- (void)removePendingLabel;
-
-- (void)launchReplyToComments;
-
--(void)reachabilityChanged:(BOOL)reachable;
--(void)openInAppWebView:(NSURL*)url;
-@end
-
-@implementation CommentViewController {
+@interface CommentViewController () <UIWebViewDelegate, ReplyToCommentViewControllerDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate> {
+    ReplyToCommentViewController *_replyToCommentViewController;
+    EditCommentViewController *_editCommentViewController;
+    BOOL _isShowingActionSheet;
     AMBlockToken *_reachabilityToken;
+    NSLayoutConstraint *_authorSiteHeightConstraint;
 }
 
-@synthesize replyToCommentViewController, editCommentViewController, commentsViewController, wasLastCommentPending, commentAuthorUrlButton, commentAuthorEmailButton;
-@synthesize commentPostTitleButton, commentPostTitleLabel;
-@synthesize comment = _comment, isVisible;
-@synthesize delegate, toolbar;
+@property (nonatomic, strong) IBOutlet UIImageView *gravatarImageView;
+@property (nonatomic, strong) IBOutlet UILabel *authorNameLabel;
+@property (nonatomic, strong) IBOutlet UIButton *authorSiteButton;
+@property (nonatomic, strong) IBOutlet UIButton *authorEmailButton;
+@property (nonatomic, strong) IBOutlet UILabel *postTitleLabel;
+@property (nonatomic, strong) IBOutlet UILabel *dateLabel;
+@property (nonatomic, strong) IBOutlet UIWebView *commentWebview;
 
-#pragma mark -
-#pragma mark View Lifecycle
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *trashButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *approveButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *spamButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *editButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *replyButton;
+
+@end
+
+@implementation CommentViewController
+
+CGFloat const CommentViewDeletePromptActionSheetTag = 501;
+CGFloat const CommentViewReplyToCommentViewControllerHasChangesActionSheetTag = 401;
+CGFloat const CommentViewEditCommentViewControllerHasChangesActionSheetTag = 601;
+CGFloat const CommentViewApproveButtonTag = 700;
+CGFloat const CommentViewUnapproveButtonTag = 701;
 
 - (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-
+    WPFLogMethod();
+    
     [self.comment removeObserver:self forKeyPath:@"status"];
     if (_reachabilityToken) {
         [_comment.blog removeObserverWithBlockToken:_reachabilityToken];
         _reachabilityToken = nil;
     }
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-
-    self.delegate = nil;
-	commentBodyWebView.delegate = nil;
-    [commentBodyWebView stopLoading];
+    
+	self.commentWebview.delegate = nil;
+    [self.commentWebview stopLoading];
 }
 
-- (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	[super viewDidLoad];
-	
-    if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
-        segmentedControl = [[UISegmentedControl alloc] initWithItems:
-                            [NSArray arrayWithObjects:
-                             [UIImage imageNamed:@"up_dim.png"],
-                             [UIImage imageNamed:@"down_dim.png"],
-                             nil]];
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.authorNameLabel.font = [WPStyleGuide postTitleFont];
+    self.authorSiteButton.titleLabel.font = [WPStyleGuide subtitleFont];
+    [self.authorSiteButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
+    self.authorEmailButton.titleLabel.font = [WPStyleGuide subtitleFont];
+    [self.authorEmailButton setTitleColor:[WPStyleGuide newKidOnTheBlockBlue] forState:UIControlStateNormal];
+    self.postTitleLabel.font = [WPStyleGuide subtitleFont];
+    self.dateLabel.font = [WPStyleGuide subtitleFont];
+    self.commentWebview.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+
+    self.navigationController.toolbar.translucent = NO;
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    [self setToolbarItems:@[_trashButton, flexibleSpace, _approveButton, flexibleSpace, _spamButton, flexibleSpace, _editButton, flexibleSpace, _replyButton] animated:NO];
+    
+    if (IS_IOS7) {
+        self.navigationController.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
     } else {
-        segmentedControl = [[UISegmentedControl alloc] initWithItems:
-                            [NSArray arrayWithObjects:
-                             [UIImage imageNamed:@"up.png"],
-                             [UIImage imageNamed:@"down.png"],
-                             nil]];        
+        [self hideWebviewShadowForiOS6];
     }
-    
-    [segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
-    segmentedControl.frame = CGRectMake(0, 0, 90, kCustomButtonHeight);
-    segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
-    segmentedControl.momentary = YES;
-    
-    segmentBarItem = [[UIBarButtonItem alloc] initWithCustomView:segmentedControl];
-	
-	[self addOrRemoveSegmentedControl];
-	
-	self.title = NSLocalizedString(@"Comment", @"");
-	
-	commentBodyWebView.backgroundColor = [UIColor whiteColor];
-	//hide the shadow for the UIWebView, nicked from stackoverflow.com/questions/1074320/remove-uiwebview-shadow/
-	for(UIView *wview in [[[commentBodyWebView subviews] objectAtIndex:0] subviews]) { 
-		if([wview isKindOfClass:[UIImageView class]]) { wview.hidden = YES; } 
-	}
-    
-    //toolbar items
-    UIBarButtonItem *approveButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_approve"] style:UIBarButtonItemStylePlain target:self action:@selector(approveComment)];
-    UIBarButtonItem *deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_delete"] style:UIBarButtonItemStylePlain target:self action:@selector(launchDeleteCommentActionSheet)];
-    UIBarButtonItem *spamButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_flag"] style:UIBarButtonItemStylePlain target:self action:@selector(spamComment)];
-    UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_edit"] style:UIBarButtonItemStylePlain target:self action:@selector(launchEditComment)];
-    UIBarButtonItem *replyButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"toolbar_reply"] style:UIBarButtonItemStylePlain target:self action:@selector(launchReplyToComments)];
-    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    [toolbar setItems: [NSArray arrayWithObjects:approveButton, spacer, deleteButton, spacer, spamButton, spacer, editButton, spacer, replyButton, nil]];
+
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedPostTitle)];
+    gestureRecognizer.numberOfTapsRequired = 1;
+    [self.postTitleLabel addGestureRecognizer:gestureRecognizer];
     
     if (self.comment) {
         [self showComment:self.comment];
@@ -117,301 +95,340 @@
     }
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    if (_reachabilityToken) {
-        [_comment.blog removeObserverWithBlockToken:_reachabilityToken];
-         _reachabilityToken = nil;
-    }
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-     segmentedControl = nil;
-     gravatarImageView = nil;
-    self.commentAuthorEmailButton = nil;
-    self.commentAuthorUrlButton = nil;
-	self.commentPostTitleButton = nil;
-	self.commentPostTitleLabel = nil;
-}
-
 - (void)viewWillAppear:(BOOL)animated {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	wasLastCommentPending = NO;
-	isVisible = YES;
-    [super viewWillAppear:animated];    
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setToolbarHidden:NO animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-	isVisible = NO;
     [super viewWillDisappear:animated];
-}
-
-- (void)didReceiveMemoryWarning {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super didReceiveMemoryWarning];
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-	[self addOrRemoveSegmentedControl];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
-#pragma mark -
-#pragma mark Reachability
-
-- (void)reachabilityChanged:(BOOL)reachable {
     
-    for (int i=0;i < [[toolbar items] count]; i++) {
-        if ([[[toolbar items] objectAtIndex:i] isKindOfClass:[UIBarButtonItem class]]) {
-            UIBarButtonItem *button = [[toolbar items] objectAtIndex:i];
-            button.enabled = reachable;
-        }
-    }
-    if (reachable) {
-        // Load gravatar if it wasn't loaded yet
-        [gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim]];
-    }
+    [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
-
-#pragma mark -
-#pragma mark UIActionSheetDelegate methods
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-
-//handle action sheet from trash button
-	if ([actionSheet tag] == 501) {
-		if (buttonIndex == 0) {
-			[self deleteComment];
-		}
-		
-		if (buttonIndex == 1) {
-			
-		}
-	}
-	
-	//handle action sheet from replyToCommentsViewController
-	if ([actionSheet tag] == 401) {
-		if (buttonIndex == 0) {
-			if (replyToCommentViewController.hasChanges) { 
-				replyToCommentViewController.hasChanges = NO;
-				[replyToCommentViewController.comment remove];
-			} 
-			[self discard];
-		}
-		
-		if (buttonIndex == 1) {
-			[self cancel];
-		}
-	}
-	
-	
-	//handle action sheet from editCommentsViewController
-	if ([actionSheet tag] == 601) {
-		if (buttonIndex == 0) {
-			editCommentViewController.hasChanges = NO;
-			[self discard];
-		}
-		
-		if (buttonIndex == 1) {
-			[self cancel];
-		}
-	}
+- (void)setComment:(Comment *)comment {
+    if ([_comment isEqual:comment]) {
+        return;
+    }
+    if (_reachabilityToken) {
+        [_comment.blog removeObserverWithBlockToken:_reachabilityToken];
+    }
     
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate setAlertRunning:NO];
-    isShowingActionSheet = NO;
-}
-
-
-#pragma mark -
-#pragma mark ReplyToCommentViewController methods
-//These methods call the ReplyToCommentViewController as well as handling the "back-referenced" cancel button click
-//that has to be run here given the view heirarchy...
-
-- (void)showSynchInProgressAlert {
-	//the blog is using the network connection and cannot be stoped, show a message to the user
-	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
-																  message:NSLocalizedString(@"The blog is syncing with the server. Please try later.", @"")
-																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-	[blogIsCurrentlyBusy show];
-}
-
-- (void)launchReplyToComments {
-	if(self.commentsViewController.blog.isSyncingComments) {
-		[self showSynchInProgressAlert];
-	} else {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
-		[self showReplyToCommentViewWithAnimation:YES];
-	}
-}
-- (void)showReplyToCommentViewWithAnimation:(BOOL)animate {
-	if (self.replyToCommentViewController) {
-		self.replyToCommentViewController.delegate = nil;
-	}
-	
-	self.replyToCommentViewController = [[ReplyToCommentViewController alloc] 
-									 initWithNibName:@"ReplyToCommentViewController" 
-									 bundle:nil];
-	replyToCommentViewController.delegate = self;
-	replyToCommentViewController.comment = [self.comment newReply];
-	replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
-	
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:replyToCommentViewController];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navController animated:YES];
-}
-
-- (void)dismissEditViewController;
-{
-    [self dismissModalViewControllerAnimated:YES];
-}
-
-
-- (void)closeReplyViewAndSelectTheNewComment {
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailRepliedToComment];
-	[self dismissEditViewController];
+    [_comment removeObserver:self forKeyPath:@"status"];
+    [self willChangeValueForKey:@"comment"];
+    _comment = comment;
+    [self didChangeValueForKey:@"comment"];
+    [_comment addObserver:self forKeyPath:@"status" options:0 context:nil];
+    
+    _reachabilityToken = [comment.blog addObserverForKeyPath:@"reachable" task:^(id obj, NSDictionary *change) {
+        Blog *blog = (Blog *)obj;
+        [self reachabilityChanged:blog.reachable];
+    }];
+    
+    [self reachabilityChanged:comment.blog.reachable];
 }
 
 - (void)cancelView:(id)sender {
-
 	//there are no changes
-	if (!replyToCommentViewController.hasChanges && !editCommentViewController.hasChanges) {
+	if (!_replyToCommentViewController.hasChanges && !_editCommentViewController.hasChanges) {
 		[self dismissEditViewController];
 		
-		if(sender == replyToCommentViewController) {			
-			[replyToCommentViewController.comment remove]; //delete the empty comment
-			replyToCommentViewController.comment = nil;
+		if(sender == _replyToCommentViewController) {
+			[_replyToCommentViewController.comment remove]; //delete the empty comment
+			_replyToCommentViewController.comment = nil;
 			
-			if (IS_IPAD == YES)  //an half-patch for #790: sometimes the modal view is not disposed when click on cancel. 
-				[self dismissModalViewControllerAnimated:YES];
+			if (IS_IPAD) { //an half-patch for #790: sometimes the modal view is not disposed when click on cancel.
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
 			
-		} 
+		}
+        
 		return;
 	}
 	
 	
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
-															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") 
+															 delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
 											   destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
 													otherButtonTitles:nil];
+
+    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
+
+	if (_replyToCommentViewController.hasChanges) {
+		actionSheet.tag = CommentViewReplyToCommentViewControllerHasChangesActionSheetTag;
+        [actionSheet showInView:_replyToCommentViewController.view];
+    } else if (_editCommentViewController.hasChanges) {
+		actionSheet.tag = CommentViewEditCommentViewControllerHasChangesActionSheetTag;
+        [actionSheet showInView:_editCommentViewController.view];
+    }
     
-	if (replyToCommentViewController.hasChanges)
-		actionSheet.tag = 401;
-	else if (editCommentViewController.hasChanges)
-		actionSheet.tag = 601;
+	_isShowingActionSheet = YES;
     
-	actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-	
-	if (replyToCommentViewController.hasChanges) { 
-        if (IS_IPAD)
-            [actionSheet showFromBarButtonItem:replyToCommentViewController.navigationItem.leftBarButtonItem animated:YES];
-        else
-            [actionSheet showInView:replyToCommentViewController.view];
-	}else if (editCommentViewController.hasChanges) {
-        if (IS_IPAD)
-            [actionSheet showFromBarButtonItem:editCommentViewController.navigationItem.leftBarButtonItem animated:YES];
-        else
-            [actionSheet showInView:editCommentViewController.view];
-	}
-	isShowingActionSheet = YES;
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
     [appDelegate setAlertRunning:YES];
-	
 }
 
-- (void)launchEditComment {
-    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
-	[self showEditCommentViewWithAnimation:YES];
+- (void)updateViewConstraints
+{
+    [super updateViewConstraints];
+    [self.view removeConstraint:_authorSiteHeightConstraint];
+    if ([[self.authorSiteButton titleForState:UIControlStateNormal] length] == 0) {
+        _authorSiteHeightConstraint = [NSLayoutConstraint constraintWithItem:self.authorSiteButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:0 multiplier:0.0 constant:8];
+        [self.view addConstraint:_authorSiteHeightConstraint];
+    }
 }
 
+#pragma mark - Private Methods
 
-- (void)showEditCommentViewWithAnimation:(BOOL)animate {
-	self.editCommentViewController = [[EditCommentViewController alloc] 
-									 initWithNibName:@"EditCommentViewController" 
-									 bundle:nil];
-	editCommentViewController.commentViewController = self;
-	editCommentViewController.comment = self.comment;
-	editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
-
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editCommentViewController];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentModalViewController:navController animated:animate];
+- (void)dismissEditViewController;
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)showComment:(Comment *)comment
+{
+    self.comment = comment;
+    
+    static NSDateFormatter *dateFormatter = nil;
+    if (dateFormatter == nil) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateStyle:NSDateFormatterLongStyle];
+    }
+    
+    [self.gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
+    
+    self.authorNameLabel.text = [[self.comment.author stringByDecodingXMLCharacters] trim];
 
-#pragma mark -
-#pragma mark ReplyToCommentViewControllerDelegate Methods
+    [self.authorSiteButton setTitle:[self.comment.author_url trim] forState:UIControlStateNormal];
 
-- (void)cancelReplyToCommentViewController:(id)sender {
-	[self cancelView:sender];
-	if (self.commentsViewController) {
-//		[self.commentsViewController setReplying:NO];
-	}
+    [self.authorEmailButton setTitle:[self.comment.author_email trim] forState:UIControlStateNormal];
+    UIColor *textColor;
+    if (![MFMailComposeViewController canSendMail]) {
+        textColor = [UIColor blackColor];
+    } else {
+        textColor = [WPStyleGuide newKidOnTheBlockBlue];
+    }
+    [self.authorEmailButton setTitleColor:textColor forState:UIControlStateNormal];
+
+    self.postTitleLabel.attributedText = [self postTitleString];
+    
+    if(self.comment.dateCreated != nil) {
+        self.dateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:self.comment.dateCreated]];
+    }
+    else {
+        self.dateLabel.text = @"";
+    }
+    
+    NSString *htmlString;
+	if (self.comment.content == nil) {
+		htmlString = [NSString stringWithFormat:@"<html><head></head><body><p>%@</p></body></html>", @"<br />"];
+    }
+	else {
+		htmlString = [NSString stringWithFormat:@"<html><head><meta name=\"viewport\" content=\"initial-scale=1, maximum-scale=1\"><style type='text/css'>* { margin:0; padding:0 5px 0 0; } p { color:black; font-family:OpenSans; font-size:16px; line-height: 1.4} b { font-family:OpenSans-Bold } i { font-family:OpenSans-Italic } a { color:#21759b; text-decoration:none; } body { background-color: #eeeeee }</style></head><body><p>%@</p></body></html>", [[self.comment.content trim] stringByReplacingOccurrencesOfString:@"\n" withString:@"<br />"]];
+    }
+	self.commentWebview.delegate = self;
+	[self.commentWebview loadHTMLString:htmlString baseURL:nil];
+    
+    if ([self.comment.status isEqualToString:@"approve"]) {
+        self.approveButton.image = [UIImage imageNamed:@"icon-comments-unapprove"];
+        self.approveButton.tag = CommentViewUnapproveButtonTag;
+    } else {
+        self.approveButton.image = [UIImage imageNamed:@"icon-comments-approve"];
+        self.approveButton.tag = CommentViewApproveButtonTag;
+    }
 }
-	
-#pragma mark -
-#pragma mark Action Sheet Button Helper Methods
+
+- (NSAttributedString *)postTitleString
+{
+    NSString *postTitle;
+    if (self.comment.postTitle != nil) {
+        postTitle = [[self.comment.postTitle stringByDecodingXMLCharacters] trim];
+    } else {
+        postTitle = NSLocalizedString(@"(No Title)", nil);
+    }
+    NSString *postTitleOn = NSLocalizedString(@"on ", @"(Comment) on (Post Title)");
+    NSString *combinedString = [postTitleOn stringByAppendingString:postTitle];
+    NSRange titleRange = [combinedString rangeOfString:postTitle];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:combinedString];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:[WPStyleGuide newKidOnTheBlockBlue] range:titleRange];
+    return attributedString;
+}
 
 - (void)discard {
-//    hasChanges = NO;
-    replyToCommentViewController.navigationItem.rightBarButtonItem = nil;
+    _replyToCommentViewController.navigationItem.rightBarButtonItem = nil;
 	[self dismissEditViewController];
 }
 
-- (void)cancel {	
-    //if ([[replyToCommentViewController.leftView title] isEqualToString:@"Comment"])
-    //    [replyToCommentViewController.leftView setTitle:@"Cancel"];
-}
-
-
-
-#pragma mark -
-#pragma mark Action Methods
-
-- (void)segmentAction:(id)sender {
-	if ([self.comment.status isEqualToString:@"hold"]) {
-		wasLastCommentPending = YES;
-	}else {
-		wasLastCommentPending = NO;
-	}
-    if (segmentedControl.selectedSegmentIndex == 0) {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedShowPreviousComment];
-        [self.delegate showPreviousComment];
-    } else {
-        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedShowNextComment];
-        [self.delegate showNextComment];
+- (void)hideWebviewShadowForiOS6
+{
+    // From http://stackoverflow.com/a/4167060
+    for (UIView* subView in [self.commentWebview subviews])
+    {
+        if ([subView isKindOfClass:[UIScrollView class]]) {
+            for (UIView* shadowView in [subView subviews])
+            {
+                if ([shadowView isKindOfClass:[UIImageView class]]) {
+                    [shadowView setHidden:YES];
+                }
+            }
+        }
     }
 }
 
-- (void)launchDeleteCommentActionSheet {
-    if (!isShowingActionSheet) {
+
+#pragma mark - IBAction Methods
+
+- (IBAction)viewURL{
+	NSURL *url = [NSURL URLWithString: [self.comment.author_url trim]];
+    [self openInAppWebView:url];
+}
+
+- (IBAction)handleApproveOrUnapproveComment:(id)sender
+{
+    UIBarButtonItem *barButton = sender;
+    if (barButton.tag == CommentViewApproveButtonTag) {
+        [self approveComment];
+    } else {
+        [self unApproveComment];
+    }
+}
+
+- (IBAction)sendEmail{
+	if (self.comment.author_email && [MFMailComposeViewController canSendMail]) {
+		MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+		controller.mailComposeDelegate = self;
+		NSArray *recipient = [[NSArray alloc] initWithObjects:[self.comment.author_email trim], nil];
+		[controller setToRecipients: recipient];
+		[controller setSubject:[NSString stringWithFormat:NSLocalizedString(@"Re: %@", @""), self.comment.postTitle]];
+		[controller setMessageBody:[NSString stringWithFormat:NSLocalizedString(@"Hi %@,", @""), self.comment.author] isHTML:NO];
+        [self presentViewController:controller animated:YES completion:nil];
+	}
+}
+
+- (void)handlePostTitleButtonTapped:(id)sender {
+    [self openInAppWebView:[NSURL URLWithString:self.comment.link]];
+}
+
+- (IBAction)launchDeleteCommentActionSheet {
+    if (!_isShowingActionSheet) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Are you sure you want to delete this comment?", @"")
-                                                                 delegate:self 
-                                                        cancelButtonTitle:nil 
+                                                                 delegate:self
+                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
                                                    destructiveButtonTitle:NSLocalizedString(@"Delete", @"")
-                                                        otherButtonTitles:NSLocalizedString(@"Cancel", @""), nil];
-        actionSheet.tag = 501;
+                                                        otherButtonTitles:nil];
+        actionSheet.tag = CommentViewDeletePromptActionSheetTag;
         actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-        if (IS_IPAD)
-            [actionSheet showFromBarButtonItem:[[toolbar items] objectAtIndex: 2] animated:YES];
-        else 
-            [actionSheet showInView:self.view];
-        isShowingActionSheet = YES;
+        [actionSheet showFromToolbar:self.navigationController.toolbar];
+        
+        _isShowingActionSheet = YES;
+        
         WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
         [appDelegate setAlertRunning:YES];
-        
     }
 }
 
+#pragma mark - UIActionSheet Delegate methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag == CommentViewDeletePromptActionSheetTag) {
+        [self processDeletePromptActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
+    } else if (actionSheet.tag == CommentViewReplyToCommentViewControllerHasChangesActionSheetTag) {
+        [self processReplyToCommentViewHasChangesActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
+    } else if (actionSheet.tag == CommentViewEditCommentViewControllerHasChangesActionSheetTag) {
+        [self processEditCommentHasChangesActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
+    }
+    
+    _isShowingActionSheet = NO;
+}
+
+- (void)processDeletePromptActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        [self deleteComment];
+    }
+}
+
+- (void)processReplyToCommentViewHasChangesActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        if (_replyToCommentViewController.hasChanges) {
+            _replyToCommentViewController.hasChanges = NO;
+            [_replyToCommentViewController.comment remove];
+        }
+        [self discard];
+    }
+}
+
+- (void)processEditCommentHasChangesActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        _editCommentViewController.hasChanges = NO;
+        [self discard];
+    }
+}
+
+#pragma mark MFMailComposeViewControllerDelegate methods
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+#pragma mark - Reachability
+
+- (void)reachabilityChanged:(BOOL)reachable {
+    for (int i=0; i < [self.navigationController.toolbar.items count]; i++) {
+        if ([self.navigationController.toolbar.items[i] isKindOfClass:[UIBarButtonItem class]]) {
+            UIBarButtonItem *button = self.navigationController.toolbar.items[i];
+            button.enabled = reachable;
+        }
+    }
+    if (reachable) {
+        // Load gravatar if it wasn't loaded yet
+        [self.gravatarImageView setImageWithGravatarEmail:[self.comment.author_email trim] fallbackImage:[UIImage imageNamed:@"comment-default-gravatar-image"]];
+    }
+}
+
+
+#pragma mark UIWebView Delegate Methods
+
+- (BOOL)webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
+	if (inType == UIWebViewNavigationTypeLinkClicked) {
+        [self openInAppWebView:[inRequest URL]];
+		return NO;
+	}
+	return YES;
+}
+
+- (void)openInAppWebView:(NSURL*)url {
+    Blog *blog = [[self comment] blog];
+    
+	if ([[url description] length] > 0) {
+        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+        webViewController.url = url;
+        
+        if (blog.isPrivate && [blog isWPcom]) {
+            webViewController.username = blog.username;
+            webViewController.password = blog.password;
+        }
+        
+        if (self.panelNavigationController) {
+            [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
+        }
+	}
+}
+
+#pragma mark - Comment Moderation Methods
+
 - (void)deleteComment {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [_comment removeObserver:self forKeyPath:@"status"];
+    WPFLogMethod();
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailDelete];
+    [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(remove)];
     if (IS_IPAD) {
         [self.panelNavigationController popToRootViewControllerAnimated:YES];
@@ -419,47 +436,76 @@
 }
 
 - (void)approveComment {
+    WPFLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailApprove];
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentWithSelector:@selector(approve)];
 }
 
 - (void)unApproveComment {
+    WPFLogMethod();
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailUnapprove];
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [self moderateCommentWithSelector:@selector(unapprove)];
 }
 
-- (void)spamComment {
+- (IBAction)spamComment {
+    WPFLogMethodParam(NSStringFromSelector(_cmd));
     [WPMobileStats trackEventForWPCom:StatsEventCommentDetailFlagAsSpam];
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [_comment removeObserver:self forKeyPath:@"status"];
+    [self.comment removeObserver:self forKeyPath:@"status"];
     [self moderateCommentWithSelector:@selector(spam)];
     if (IS_IPAD) {
         [self.panelNavigationController popToRootViewControllerAnimated:YES];
     }
 }
 
-- (BOOL)isConnectedToHost {
-    WordPressAppDelegate  *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    if (appDelegate.currentBlogAvailable == NO ) {
-        UIAlertView *connectionFailAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No connection to host.", @"")
-                                            message:NSLocalizedString(@"Operation is not supported now.", @"Can't do operation (comment moderate/edit) since there's no connection")
-                                            delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
-        [connectionFailAlert show];
-        return NO;
-    }
-
-    return YES;
+- (IBAction)launchEditComment {
+    WPFLogMethod();
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailEditComment];
+	[self showEditCommentViewWithAnimation:YES];
 }
 
-- (BOOL)isApprove {
-	if ([self.comment.status isEqualToString:@"hold"]) {
-		return YES;
-    } else  {
-        return NO;
+- (IBAction)launchReplyToComments {
+	if(self.commentsViewController.blog.isSyncingComments) {
+		[self showSyncInProgressAlert];
+	} else {
+        [WPMobileStats trackEventForWPCom:StatsEventCommentDetailClickedReplyToComment];
+		[self showReplyToCommentViewWithAnimation:YES];
 	}
 }
+
+- (void)showReplyToCommentViewWithAnimation:(BOOL)animate {
+	if (_replyToCommentViewController) {
+		_replyToCommentViewController.delegate = nil;
+	}
+	
+	_replyToCommentViewController = [[ReplyToCommentViewController alloc]
+                                         initWithNibName:@"ReplyToCommentViewController"
+                                         bundle:nil];
+	_replyToCommentViewController.delegate = self;
+	_replyToCommentViewController.comment = [self.comment newReply];
+	_replyToCommentViewController.title = NSLocalizedString(@"Comment Reply", @"Comment Reply view title");
+	
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_replyToCommentViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent = NO;
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)showEditCommentViewWithAnimation:(BOOL)animate {
+	_editCommentViewController = [[EditCommentViewController alloc]
+                                      initWithNibName:@"EditCommentViewController"
+                                      bundle:nil];
+	_editCommentViewController.commentViewController = self;
+	_editCommentViewController.comment = self.comment;
+	_editCommentViewController.title = NSLocalizedString(@"Edit Comment", @"");
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_editCommentViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    navController.navigationBar.translucent = NO;
+    [self presentViewController:navController animated:animate completion:nil];
+}
+
 
 - (void)moderateCommentWithSelector:(SEL)selector {
     Blog *currentBlog = self.comment.blog;
@@ -470,292 +516,34 @@
     if (!IS_IPAD) {
         [self.navigationController popViewControllerAnimated:YES];
     }
-   [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:currentBlog];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:currentBlog];
 }
 
-#pragma mark resize top UIView
-
-- (void)insertPendingLabel {
-	
-	/*
-	 move all the labels down to accomodate the pending header
-	 which is 40 high.
-	 */
-	
-    CGRect rect;
-
-	float pendingLabelHeight = pendingLabelHolder.frame.size.height;
-    pendingLabelHolder.backgroundColor = [UIColor UIColorFromHex:0xf6f6dc alpha:1.0f];
-    pendingLabel.text = NSLocalizedString(@"Pending Comment", @"");
-    
-	[labelHolder addSubview:pendingLabelHolder];
-    
-    rect = pendingLabelHolder.frame;
-    rect.size.width = [pendingLabelHolder superview].frame.size.width;
-    pendingLabelHolder.frame = rect;
-
-    rect = gravatarImageView.frame;
-    rect.origin.y += pendingLabelHeight;
-    gravatarImageView.frame = rect;
-
-    rect = commentAuthorLabel.frame;
-    rect.origin.y += pendingLabelHeight;
-    commentAuthorLabel.frame = rect;
-
-    rect = commentAuthorUrlButton.frame;
-    rect.origin.y += pendingLabelHeight;
-    commentAuthorUrlButton.frame = rect;
-
-    rect = commentAuthorEmailButton.frame;
-    rect.origin.y += pendingLabelHeight;
-    commentAuthorEmailButton.frame = rect;
-
-    rect = commentPostTitleButton.frame;
-    rect.origin.y += pendingLabelHeight;
-    commentPostTitleButton.frame = rect;
-
-	rect = commentPostTitleLabel.frame;
-	rect.origin.y+= pendingLabelHeight;
-	commentPostTitleLabel.frame = rect;
-	
-    rect = commentDateLabel.frame;
-    rect.origin.y += pendingLabelHeight;
-    commentDateLabel.frame = rect;
-
-    rect = commentBodyWebView.frame;
-    rect.origin.y += pendingLabelHeight;
-    rect.size.height -= pendingLabelHeight;
-    commentBodyWebView.frame = rect;
-	
-	rect = labelHolder.frame;
-	rect.size.height += pendingLabelHeight;
-	labelHolder.frame = rect;
-	
+- (void)showSyncInProgressAlert {
+	//the blog is using the network connection and cannot be stoped, show a message to the user
+	UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info", @"Info alert title")
+																  message:NSLocalizedString(@"The blog is syncing with the server. Please try later.", @"")
+																 delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"") otherButtonTitles:nil];
+	[blogIsCurrentlyBusy show];
 }
-
-- (void)removePendingLabel {
-	
-	if ([pendingLabelHolder superview] == labelHolder) {
-		float pendingLabelHeight = pendingLabelHolder.frame.size.height;
-		[pendingLabelHolder removeFromSuperview];
-	
-		CGRect rect = gravatarImageView.frame;
-		rect.origin.y -= pendingLabelHeight;
-		gravatarImageView.frame = rect;
-		
-		rect = commentAuthorLabel.frame;
-		rect.origin.y -= pendingLabelHeight;
-		commentAuthorLabel.frame = rect;
-		
-		rect = commentAuthorUrlButton.frame;
-		rect.origin.y -= pendingLabelHeight;
-		commentAuthorUrlButton.frame = rect;
-		
-		rect = commentAuthorEmailButton.frame;
-		rect.origin.y -= pendingLabelHeight;
-		commentAuthorEmailButton.frame = rect;
-		
-		rect = commentPostTitleButton.frame;
-		rect.origin.y -= pendingLabelHeight;
-		commentPostTitleButton.frame = rect;
-
-		rect = commentPostTitleLabel.frame;
-		rect.origin.y -= pendingLabelHeight;
-		commentPostTitleLabel.frame = rect;
-		
-		rect = commentDateLabel.frame;
-		rect.origin.y -= pendingLabelHeight;
-		commentDateLabel.frame = rect;
-		
-		rect = commentBodyWebView.frame;
-		rect.origin.y -= pendingLabelHeight;
-		rect.size.height += pendingLabelHeight;
-		commentBodyWebView.frame = rect;
-		
-		rect = labelHolder.frame;
-		rect.size.height -= pendingLabelHeight;
-		labelHolder.frame = rect;
-	}
-}
-
 
 #pragma mark -
-#pragma mark Public Methods
+#pragma mark ReplyToCommentViewControllerDelegate Methods
 
-- (void)setComment:(Comment *)comment {
-    if ([_comment isEqual:comment]) {
-        return;
-    }
-    if (_reachabilityToken) {
-        [_comment.blog removeObserverWithBlockToken:_reachabilityToken];
-    }
-
-    [_comment removeObserver:self forKeyPath:@"status"];
-    [self willChangeValueForKey:@"comment"];
-    _comment = comment;
-    [self didChangeValueForKey:@"comment"];
-    [_comment addObserver:self forKeyPath:@"status" options:0 context:nil];
-
-    _reachabilityToken = [comment.blog addObserverForKeyPath:@"reachable" task:^(id obj, NSDictionary *change) {
-        Blog *blog = (Blog *)obj;
-        [self reachabilityChanged:blog.reachable];
-    }];
-
-    [self reachabilityChanged:comment.blog.reachable];
+- (void)cancelReplyToCommentViewController:(id)sender {
+	[self cancelView:sender];
 }
 
-- (void)showComment:(Comment *)comment {
-    WPFLogMethodParam(comment);
-    self.comment = comment;
-    static NSDateFormatter *dateFormatter = nil;
-
-    if (dateFormatter == nil) {
-        dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterLongStyle];
-    }
-	[gravatarImageView setImageWithGravatarEmail:[comment.author_email trim]];
-    commentAuthorLabel.text = [[comment.author stringByDecodingXMLCharacters] trim];
-	[commentAuthorUrlButton setTitle:[comment.author_url trim] forState:UIControlStateNormal];
-	[commentAuthorUrlButton setTitle:[comment.author_url trim] forState:UIControlStateHighlighted];
-	[commentAuthorUrlButton setTitle:[comment.author_url trim] forState:UIControlStateSelected];
-	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateNormal];
-	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateHighlighted];
-	[commentAuthorEmailButton setTitle:[comment.author_email trim] forState:UIControlStateSelected];
-    if (comment.author_email && ![comment.author_email isEqualToString:@""] && [MFMailComposeViewController canSendMail]) {
-        commentAuthorEmailButton.enabled = YES;
-        [commentAuthorEmailButton setTitleColor:[UIColor colorWithRed:0.1289f green:0.457f blue:0.6054f alpha:1.0f] forState:UIControlStateNormal];
-    } else {
-        commentAuthorEmailButton.enabled = NO;
-        [commentAuthorEmailButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    }
-    if (comment.postTitle) {
-		NSString *postTitleOn = NSLocalizedString(@"on ", @"(Comment) on (Post Title)");
-		
-		NSString *postTitle = [[comment.postTitle stringByDecodingXMLCharacters] trim];
-		
-		CGSize sz = [postTitleOn sizeWithFont:commentPostTitleLabel.font];
-		CGRect frm = commentPostTitleLabel.frame;
-		CGFloat widthDiff = frm.size.width - sz.width;
-
-		frm.size.width = sz.width;
-		commentPostTitleLabel.frame = frm;
-		
-		frm = commentPostTitleButton.frame;
-		frm.origin.x = frm.origin.x - widthDiff;
-		frm.size.width = frm.size.width + widthDiff;
-		commentPostTitleButton.frame = frm;
-		
-		commentPostTitleLabel.text = postTitleOn;
-		[commentPostTitleButton setTitle:postTitle forState:UIControlStateNormal];
-	}
-	if(comment.dateCreated != nil)
-		commentDateLabel.text = [@"" stringByAppendingString:[dateFormatter stringFromDate:comment.dateCreated]];
-	else
-		commentDateLabel.text = @"";
-	
-	NSString *htmlString;
-	if (comment.content == nil)
-		htmlString = [NSString stringWithFormat:@"<html><head></head><body><p>%@</p></body></html>", @"<br />"];
-	else
-		htmlString = [NSString stringWithFormat:@"<html><head><meta name=\"viewport\" content=\"initial-scale=1, maximum-scale=1\"><style type='text/css'>* { margin:0; padding:0 5px 0 0; } p { color:black; font-family:Helvetica; font-size:16px; } a { color:#21759b; text-decoration:none; }</style></head><body><p>%@</p></body></html>", [[comment.content trim] stringByReplacingOccurrencesOfString:@"\n" withString:@"<br />"]];
-	commentBodyWebView.delegate = self;
-	[commentBodyWebView loadHTMLString:htmlString baseURL:nil];
-
-    if ([comment.status isEqualToString:@"hold"] && ![pendingLabelHolder superview]) {
-		[self insertPendingLabel];		
-	} else if (![comment.status isEqualToString:@"hold"]){
-		[self removePendingLabel];
-    }
-
-    if ([[UIBarButtonItem class] respondsToSelector: @selector(appearance)]) {
-        UIButton *button = (UIButton*)[[[toolbar items] objectAtIndex:0] customView];
-        if (button != nil) {
-            if ([self isApprove]) {
-                [button setImage:[UIImage imageNamed:@"toolbar_approve"] forState:UIControlStateNormal];
-                [button addTarget:self action:@selector(approveComment) forControlEvents:UIControlEventTouchUpInside];
-                
-            } else {
-                [button setImage:[UIImage imageNamed:@"toolbar_unapprove"] forState:UIControlStateNormal];
-                [button addTarget:self action:@selector(unApproveComment) forControlEvents:UIControlEventTouchUpInside];
-            }
-        }
-    } else {
-        UIBarButtonItem *approveButton = [[toolbar items] objectAtIndex:0];
-        if (approveButton != nil) {
-            [approveButton setTarget:self];
-            if ([self isApprove]) {
-                [approveButton setImage:[UIImage imageNamed:@"toolbar_approve"]];
-                [approveButton setAction:@selector(approveComment)];
-            } else {
-                [approveButton setImage:[UIImage imageNamed:@"toolbar_unapprove"]];
-                [approveButton setAction:@selector(unApproveComment)];
-            }
-        }
-    }
-    
-    [segmentedControl setEnabled:[self.delegate hasPreviousComment] forSegmentAtIndex:0];
-    [segmentedControl setEnabled:[self.delegate hasNextComment] forSegmentAtIndex:1];
+- (void)closeReplyViewAndSelectTheNewComment {
+    [WPMobileStats trackEventForWPCom:StatsEventCommentDetailRepliedToComment];
+	[self dismissEditViewController];
 }
 
-- (IBAction)viewURL{
-	NSURL *url = [NSURL URLWithString: [self.comment.author_url trim]];
-    [self openInAppWebView:url];
-}
+#pragma mark - Gesture Recognizers
 
-- (void)sendEmail{
-	if (self.comment.author_email && [MFMailComposeViewController canSendMail]) {
-		MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
-		controller.mailComposeDelegate = self;
-		NSArray *recipient = [[NSArray alloc] initWithObjects:[self.comment.author_email trim], nil];
-		[controller setToRecipients: recipient];
-		[controller setSubject:[NSString stringWithFormat:NSLocalizedString(@"Re: %@", @""), self.comment.postTitle]]; 
-		[controller setMessageBody:[NSString stringWithFormat:NSLocalizedString(@"Hi %@,", @""), self.comment.author] isHTML:NO];
-		[self presentModalViewController:controller animated:YES];
-	}
-}
-
-- (void)openInAppWebView:(NSURL*)url {
-    Blog *blog = [[self comment] blog];
-    
-	if (url != nil && [[url description] length] > 0) {
-        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-        [webViewController setUrl:url];
-
-        if (blog.isPrivate && [blog isWPcom]) {
-            NSError *error;
-            webViewController.username = blog.username;
-            webViewController.password = [SFHFKeychainUtils getPasswordForUsername:blog.username andServiceName:@"WordPress.com" error:&error];
-        }
-        
-        if ( self.panelNavigationController  )
-            [self.panelNavigationController pushViewController:webViewController fromViewController:self animated:YES];
-	}
-}
-
-- (IBAction)handlePostTitleButtonTapped:(id)sender {
-    [self openInAppWebView:[NSURL URLWithString:self.comment.link]];
-}
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
+- (void)tappedPostTitle
 {
-	[self dismissModalViewControllerAnimated:YES];
-}
-
-- (void)addOrRemoveSegmentedControl {
-	if (IS_IPAD && (self.interfaceOrientation == UIInterfaceOrientationLandscapeLeft || self.interfaceOrientation == UIInterfaceOrientationLandscapeRight)){
-		self.navigationItem.rightBarButtonItem = nil;
-	}	
-	else
-		self.navigationItem.rightBarButtonItem = segmentBarItem;
-}
-
-- (BOOL)webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
-	if (inType == UIWebViewNavigationTypeLinkClicked) {
-        [self openInAppWebView:[inRequest URL]];
-		return NO;
-	}
-	return YES;
+    [self handlePostTitleButtonTapped:nil];
 }
 
 #pragma mark - KVO

@@ -10,16 +10,19 @@
 #import "EditPostViewController_Internal.h"
 #import "Post.h"
 #import <ImageIO/ImageIO.h>
-#import "SFHFKeychainUtils.h"
 #import "WPPopoverBackgroundView.h"
 
 #define TAG_ACTIONSHEET_PHOTO 1
 #define TAG_ACTIONSHEET_VIDEO 2
+#define TAG_ACTIONSHEET_PHOTO_SELECTION_PROMPT 3
 #define NUMBERS	@"0123456789"
 
 
 @interface PostMediaViewController ()
+
 @property (nonatomic, strong) AbstractPost *apost;
+@property (nonatomic, weak) UIActionSheet *addMediaActionSheet;
+
 - (void)getMetadataFromAssetForURL:(NSURL *)url;
 - (UITableViewCell *)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
@@ -27,8 +30,11 @@
 @implementation PostMediaViewController {
     CGRect actionSheetRect;
     UIAlertView *currentAlert;
+    
+    BOOL _dismissOnCancel;
+    BOOL _hasPromptedToAddPhotos;
 }
-@synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, addPopover, picker, customSizeAlert;
+@synthesize table, addMediaButton, hasPhotos, hasVideos, isAddingMedia, photos, videos, addPopover, picker;
 @synthesize isShowingMediaPickerActionSheet, currentOrientation, isShowingChangeOrientationActionSheet, spinner;
 @synthesize currentImage, currentImageMetadata, currentVideo, isLibraryMedia, didChangeOrientationDuringRecord, messageLabel;
 @synthesize postDetailViewController, postID, blogURL, bottomToolbar;
@@ -41,6 +47,7 @@
 - (void)dealloc {
     picker.delegate = nil;
     addPopover.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (id)initWithPost:(AbstractPost *)aPost {
@@ -54,9 +61,6 @@
 - (void)initObjects {
 	self.photos = [[NSMutableArray alloc] init];
 	self.videos = [[NSMutableArray alloc] init];
-	picker = [[UIImagePickerController alloc] init];
-	picker.delegate = self;
-	picker.allowsEditing = NO;
     actionSheetRect = CGRectZero;
 }
 
@@ -70,14 +74,102 @@
 - (void)viewDidLoad {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     [super viewDidLoad];
+    
+    if (IS_IOS7) {
+        self.table.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 10)];
+    }
+    
+    self.title = NSLocalizedString(@"Media", nil);
 	
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
 		
 	[self initObjects];
 	self.videoEnabled = YES;
     [self checkVideoPressEnabled];
+    
+    if (IS_IOS7) {
+        [self customizeForiOS7];
+    }
 	
-    [self addNotifications];
+    [self addNotifications];    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if (IS_IOS7 && !_hasPromptedToAddPhotos) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = nil;
+        sectionInfo = [[self.resultsController sections] objectAtIndex:0];
+        if ([sectionInfo numberOfObjects] == 0) {
+            _dismissOnCancel = YES;;
+            [self tappedAddButton];
+        }
+    }
+    _hasPromptedToAddPhotos = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if (currentActionSheet) {
+        [currentActionSheet dismissWithClickedButtonIndex:currentActionSheet.cancelButtonIndex animated:YES];
+    }
+    
+    [[[CPopoverManager instance] currentPopoverController] dismissPopoverAnimated:YES];
+}
+
+- (NSString *)statsPrefix
+{
+    if (_statsPrefix == nil)
+        return @"Post Detail";
+    else
+        return _statsPrefix;
+}
+
+- (void)customizeForiOS7
+{
+    UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+    [button setImage:image forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(tappedAddButton) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:addButton forNavigationItem:self.navigationItem];
+}
+
+- (void)tappedAddButton
+{
+    if (_addMediaActionSheet != nil || self.isShowingResizeActionSheet == YES)
+        return;
+
+    if (addPopover != nil) {
+        [addPopover dismissPopoverAnimated:YES];
+        [[CPopoverManager instance] setCurrentPopoverController:nil];
+        addPopover = nil;
+    }
+    
+    UIActionSheet *addMediaActionSheet;
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        if ([self isDeviceSupportVideoAndVideoPressEnabled]) {
+            addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), NSLocalizedString(@"Take Photo", nil), NSLocalizedString(@"Add Video from Library", @""), NSLocalizedString(@"Record Video", @""),nil];
+            _addMediaActionSheet = addMediaActionSheet;
+            
+        } else {
+            addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), NSLocalizedString(@"Take Photo", nil), nil];
+            _addMediaActionSheet = addMediaActionSheet;
+        }
+    } else {
+        addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), nil];
+        _addMediaActionSheet = addMediaActionSheet;
+    }
+    
+    _addMediaActionSheet.tag = TAG_ACTIONSHEET_PHOTO_SELECTION_PROMPT;
+    if (IS_IPAD) {
+        [_addMediaActionSheet showFromBarButtonItem:[self.navigationItem.rightBarButtonItems objectAtIndex:1] animated:YES];
+    } else {
+        [_addMediaActionSheet showInView:self.view];
+    }
 }
 
 
@@ -86,7 +178,6 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaDidUploadSuccessfully:) name:ImageUploadSuccessful object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:VideoUploadFailed object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mediaUploadFailed:) name:ImageUploadFailed object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissAlertViewKeyboard:) name:@"DismissAlertViewKeyboard" object:nil];
 }
 
 - (void)removeNotifications{
@@ -95,10 +186,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
 }
 
 - (void)viewDidUnload {
@@ -207,10 +294,13 @@
     }
 
 	[cell.imageView setBounds:CGRectMake(0.0f, 0.0f, 75.0f, 75.0f)];
-	[cell.imageView setClipsToBounds:NO];
+	[cell.imageView setClipsToBounds:YES];
 	[cell.imageView setFrame:CGRectMake(0.0f, 0.0f, 75.0f, 75.0f)];
 	[cell.imageView setContentMode:UIViewContentModeScaleAspectFill];
+    
 	filesizeString = nil;
+    
+    [WPStyleGuide configureTableViewCell:cell];
     
     return cell;
 }
@@ -234,6 +324,10 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
             [media save];
         } failure:^(NSError *error) {
+            // User canceled upload
+            if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+                return;
+            }
             [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
         }];
     } else if (media.remoteStatus == MediaRemoteStatusPushing) {
@@ -244,14 +338,15 @@
         MediaObjectViewController *mediaView = [[MediaObjectViewController alloc] initWithNibName:@"MediaObjectView" bundle:nil];
         [mediaView setMedia:media];
 
-        if(IS_IPAD == YES) {
+        if(IS_IPAD) {
 			mediaView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 			mediaView.modalPresentationStyle = UIModalPresentationFormSheet;
 			
-            [self presentModalViewController:mediaView animated:YES];
+            [self presentViewController:mediaView animated:YES completion:nil];
 		}
-        else
+        else {
             [self.postDetailViewController.navigationController pushViewController:mediaView animated:YES];
+        }
     }
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -327,8 +422,12 @@
 	
     actionSheet.tag = TAG_ACTIONSHEET_VIDEO;
     actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-    if (IS_IPAD) { 
-        [actionSheet showFromBarButtonItem:postDetailViewController.movieButton animated:YES];
+    if (IS_IPAD) {
+        if (IS_IOS7) {
+            [actionSheet showFromBarButtonItem:[self.navigationItem.rightBarButtonItems objectAtIndex:1] animated:YES];
+        } else {
+            [actionSheet showFromBarButtonItem:postDetailViewController.movieButton animated:YES];
+        }
     } else {
         [actionSheet showInView:postDetailViewController.view];
     }
@@ -375,7 +474,11 @@
             [actionSheet showFromBarButtonItem:postDetailViewController.photoButton animated:YES];
         }
     } else {
-        [actionSheet showInView:postDetailViewController.view];
+        if (IS_IOS7) {
+            [actionSheet showInView:self.view];
+        } else {
+            [actionSheet showInView:postDetailViewController.view];
+        }
     }
     
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
@@ -402,6 +505,13 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
 
+    _addMediaActionSheet = nil;
+    
+    if (actionSheet.tag == TAG_ACTIONSHEET_PHOTO_SELECTION_PROMPT) {
+        [self processPhotoPickerActionSheet:actionSheet didDismissWithButtonIndex:buttonIndex];
+        return;
+    }
+    
 	if(isShowingMediaPickerActionSheet == YES) {
 		switch (actionSheet.numberOfButtons) {
 			case 2:
@@ -447,39 +557,41 @@
 		self.isShowingChangeOrientationActionSheet = NO;
 	}
 	else if(isShowingResizeActionSheet == YES) {
-		switch (buttonIndex) {
-			case 0:
-				if (actionSheet.numberOfButtons == 2)
-					[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
-				else 
-					[self useImage:[self resizeImage:currentImage toSize:kResizeSmall]];
-				break;
-			case 1:
-				if (actionSheet.numberOfButtons == 2)
-					[self showCustomSizeAlert];
-				else if (actionSheet.numberOfButtons == 3)
-					[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
-				else
-					[self useImage:[self resizeImage:currentImage toSize:kResizeMedium]];
-				break;
-			case 2:
-				if (actionSheet.numberOfButtons == 3)
-					[self showCustomSizeAlert];
-				else if (actionSheet.numberOfButtons == 4)
-					[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
-				else
-					[self useImage:[self resizeImage:currentImage toSize:kResizeLarge]];
-				break;
-			case 3:
-				if (actionSheet.numberOfButtons == 4)
-					[self showCustomSizeAlert];
-				else
-					[self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
-				break;
-			case 4: 
-				[self showCustomSizeAlert]; 
-				break;
-		}
+        if (actionSheet.cancelButtonIndex != buttonIndex) {
+            switch (buttonIndex) {
+                case 0:
+                    if (actionSheet.numberOfButtons == 3)
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
+                    else
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeSmall]];
+                    break;
+                case 1:
+                    if (actionSheet.numberOfButtons == 3)
+                        [self showCustomSizeAlert];
+                    else if (actionSheet.numberOfButtons == 4)
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
+                    else
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeMedium]];
+                    break;
+                case 2:
+                    if (actionSheet.numberOfButtons == 4)
+                        [self showCustomSizeAlert];
+                    else if (actionSheet.numberOfButtons == 5)
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
+                    else
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeLarge]];
+                    break;
+                case 3:
+                    if (actionSheet.numberOfButtons == 5)
+                        [self showCustomSizeAlert];
+                    else
+                        [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
+                    break;
+                case 4: 
+                    [self showCustomSizeAlert]; 
+                    break;
+            }
+        }
 		self.isShowingResizeActionSheet = NO;
 	}
     
@@ -489,43 +601,68 @@
     self.currentActionSheet = nil;
 }
 
+- (void)processPhotoPickerActionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    
+    UIActionSheet *savedCurrentActionSheet = currentActionSheet;
+    currentActionSheet = nil;
+    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    
+    if (IS_IOS7 && [buttonTitle isEqualToString:NSLocalizedString(@"Cancel", nil)] && _dismissOnCancel) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+
+    if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Photo From Library", nil)]) {
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddPhoto forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+        [self pickPhotoFromPhotoLibrary:nil];
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Take Photo", nil)]) {
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddPhoto forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+        [self pickPhotoFromCamera:nil];
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Add Video from Library", nil)]) {
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddVideo forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+        actionSheet.tag = TAG_ACTIONSHEET_VIDEO;
+        [self pickPhotoFromPhotoLibrary:actionSheet];
+    } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Record Video", nil)]) {
+        [WPMobileStats flagProperty:StatsPropertyPostDetailClickedAddVideo forEvent:[self formattedStatEventString:StatsEventPostDetailClosedEditor]];
+        [self pickVideoFromCamera:actionSheet];
+    } else {
+        //
+        currentActionSheet = savedCurrentActionSheet;
+    }
+    _dismissOnCancel = NO;
+}
+
 #pragma mark -
 #pragma mark Picker Methods
+
+- (UIImagePickerController *)resetImagePicker {
+    picker.delegate = nil;
+    picker = [[UIImagePickerController alloc] init];
+    picker.navigationBar.translucent = NO;
+	picker.delegate = self;
+	picker.allowsEditing = NO;
+    return picker;
+}
 
 - (void)pickPhotoFromCamera:(id)sender {
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        [self resetImagePicker];
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
 		picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeImage];
+        picker.modalPresentationStyle = UIModalPresentationCurrentContext;
 		
-		if(IS_IPAD == YES) {
-			UIBarButtonItem *barButton = postDetailViewController.photoButton;
-			if (addPopover == nil) {
-				addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
-                if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
-                    addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
-                }
-				addPopover.delegate = self;
-			}
-			
-            if (!CGRectIsEmpty(actionSheetRect)) {
-                [addPopover presentPopoverFromRect:actionSheetRect inView:self.postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            } else {
-                [addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            }
-			[[CPopoverManager instance] setCurrentPopoverController:addPopover];
-		}
-		else {			
-			[postDetailViewController.navigationController presentModalViewController:picker animated:YES];
-		}
+        [postDetailViewController.navigationController presentViewController:picker animated:YES completion:nil];
     }
 }
 
 - (void)pickVideoFromCamera:(id)sender {
 	self.currentOrientation = [self interpretOrientation:[UIDevice currentDevice].orientation];
+    [self resetImagePicker];
 	picker.sourceType =  UIImagePickerControllerSourceTypeCamera;
 	picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
 	picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+    picker.modalPresentationStyle = UIModalPresentationCurrentContext;
 	
 	if([[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"] != nil) {
 		NSString *quality = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"];
@@ -548,22 +685,8 @@
 		}
 	}
 	
-	if(IS_IPAD == YES) {
-		UIBarButtonItem *barButton = postDetailViewController.movieButton;	
-		if (addPopover == nil) {
-			addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
-            if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
-                addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
-            }
-			addPopover.delegate = self;
-		}
-		[addPopover presentPopoverFromBarButtonItem:barButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-		[[CPopoverManager instance] setCurrentPopoverController:addPopover];
-	}
-	else {
-		[postDetailViewController.navigationController presentModalViewController:picker animated:YES];
-	}
-	
+    [postDetailViewController.navigationController presentViewController:picker animated:YES completion:nil];
+
 	/*[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(deviceDidRotate:)
 												 name:@"UIDeviceOrientationDidChangeNotification" object:nil];*/
@@ -576,11 +699,13 @@
         if (IS_IPAD && addPopover != nil) {
             [addPopover dismissPopoverAnimated:YES];
         }        
+        [self resetImagePicker];
         picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         if ([(UIView *)sender tag] == TAG_ACTIONSHEET_VIDEO) {
 			barButton = postDetailViewController.movieButton;
             picker.mediaTypes = [NSArray arrayWithObject:(NSString *)kUTTypeMovie];
 			picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+            picker.modalPresentationStyle = UIModalPresentationCurrentContext;
 			
 			if([[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"] != nil) {
 				NSString *quality = [[NSUserDefaults standardUserDefaults] objectForKey:@"video_quality_preference"];
@@ -611,13 +736,16 @@
         }
 		isLibraryMedia = YES;
 		
-		if(IS_IPAD == YES) {
+		if(IS_IPAD) {
             if (addPopover == nil) {
                 addPopover = [[UIPopoverController alloc] initWithContentViewController:picker];
-                if ([addPopover respondsToSelector:@selector(popoverBackgroundViewClass)]) {
-                    addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
-                }
+                addPopover.popoverBackgroundViewClass = [WPPopoverBackgroundView class];
                 addPopover.delegate = self;
+            }
+            if (IS_IOS7) {
+                // We insert a spacer into the barButtonItems so we need to grab the actual
+                // bar button item otherwise there is a crash.
+                barButton = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
             }
             if (!CGRectIsEmpty(actionSheetRect)) {
                 [addPopover presentPopoverFromRect:actionSheetRect inView:self.postDetailViewController.postSettingsViewController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -627,7 +755,7 @@
             [[CPopoverManager instance] setCurrentPopoverController:addPopover];
 		}
 		else {
-			[postDetailViewController.navigationController presentModalViewController:picker animated:YES];
+            [postDetailViewController.navigationController presentViewController:picker animated:YES completion:nil];
 		}
     }
 }
@@ -676,7 +804,7 @@
 }
 
 - (void)showResizeActionSheet {
-	if(self.isShowingResizeActionSheet == NO) {
+	if (!self.isShowingResizeActionSheet) {
 		isShowingResizeActionSheet = YES;
         
         Blog *currentBlog = self.apost.blog;
@@ -710,33 +838,40 @@
 		if(currentImage.size.width > largeSize.width  && currentImage.size.height > largeSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
 															delegate:self 
-												   cancelButtonTitle:nil 
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil 
 												   otherButtonTitles:resizeSmallStr, resizeMediumStr, resizeLargeStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 			
 		} else if(currentImage.size.width > mediumSize.width  && currentImage.size.height > mediumSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
 															delegate:self 
-												   cancelButtonTitle:nil 
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil 
 												   otherButtonTitles:resizeSmallStr, resizeMediumStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 			
 		} else if(currentImage.size.width > smallSize.width  && currentImage.size.height > smallSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
 															delegate:self 
-												   cancelButtonTitle:nil 
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil 
 												   otherButtonTitles:resizeSmallStr, originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
-			
 		} else {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
 															delegate:self 
-												   cancelButtonTitle:nil 
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
 											  destructiveButtonTitle:nil 
 												   otherButtonTitles: originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
 		}
 		
-        [resizeActionSheet showInView:postDetailViewController.view];
+        if (IS_IOS7) {
+            if (IS_IPAD) {
+                [resizeActionSheet showFromBarButtonItem:[self.navigationItem.rightBarButtonItems objectAtIndex:1] animated:YES];
+            } else {
+                [resizeActionSheet showInView:self.view];
+            }
+        } else {
+            [resizeActionSheet showInView:postDetailViewController.view];
+        }
 	}
 }
 
@@ -764,81 +899,92 @@
 }
 
 - (void)showCustomSizeAlert {
-	if(self.isShowingCustomSizeAlert || currentAlert != nil)
-        return;
-
-    isShowingCustomSizeAlert = YES;
-
-    UITextField *textWidth, *textHeight;
-    UILabel *labelWidth, *labelHeight;
-
-    NSString *lineBreaks;
-
-    if (IS_IPAD)
-        lineBreaks = @"\n\n\n\n";
-    else
-        lineBreaks = @"\n\n\n";
-
-
-    customSizeAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Custom Size", @"")
-                                                 message:lineBreaks // IMPORTANT
-                                                delegate:self
-                                       cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                       otherButtonTitles:NSLocalizedString(@"OK", @""), nil];
-
-    labelWidth = [[UILabel alloc] initWithFrame:CGRectMake(12.0, 50.0, 125.0, 25.0)];
-    labelWidth.backgroundColor = [UIColor clearColor];
-    labelWidth.textColor = [UIColor whiteColor];
-    labelWidth.text = NSLocalizedString(@"Width", @"");
-    [customSizeAlert addSubview:labelWidth];
-
-    textWidth = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 80.0, 125.0, 25.0)];
-    [textWidth setBackgroundColor:[UIColor whiteColor]];
-    [textWidth setPlaceholder:NSLocalizedString(@"Width", @"")];
-    [textWidth setKeyboardType:UIKeyboardTypeNumberPad];
-    [textWidth setDelegate:self];
-    [textWidth setTag:123];
-
-    // Check for previous width setting
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil)
-        [textWidth setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"]];
-    else
-        [textWidth setText:[NSString stringWithFormat:@"%d", (int)currentImage.size.width]];
-
-    [customSizeAlert addSubview:textWidth];
-
-    labelHeight = [[UILabel alloc] initWithFrame:CGRectMake(145.0, 50.0, 125.0, 25.0)];
-    labelHeight.backgroundColor = [UIColor clearColor];
-    labelHeight.textColor = [UIColor whiteColor];
-    labelHeight.text = NSLocalizedString(@"Height", @"");
-    [customSizeAlert addSubview:labelHeight];
-
-    textHeight = [[UITextField alloc] initWithFrame:CGRectMake(145.0, 80.0, 125.0, 25.0)];
-    [textHeight setBackgroundColor:[UIColor whiteColor]];
-    [textHeight setPlaceholder:NSLocalizedString(@"Height", @"")];
-    [textHeight setDelegate:self];
-    [textHeight setKeyboardType:UIKeyboardTypeNumberPad];
-    [textHeight setTag:456];
-
-    // Check for previous height setting
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil)
-        [textHeight setText:[[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"]];
-    else
-        [textHeight setText:[NSString stringWithFormat:@"%d", (int)currentImage.size.height]];
-
-    [customSizeAlert addSubview:textHeight];
-
-    //fix the dialog position for older devices on iOS 3
-    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
-    if (version <= 3.1)
-    {
-        customSizeAlert.transform = CGAffineTransformTranslate(customSizeAlert.transform, 0.0, 100.0);
+    if (self.customSizeAlert) {
+        [self.customSizeAlert dismiss];
+        self.customSizeAlert = nil;
     }
 
-    [customSizeAlert show];
-    currentAlert = customSizeAlert;
+    isShowingCustomSizeAlert = YES;
+    
+    // Check for previous width setting
+    NSString *widthText = nil;
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil) {
+        widthText = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"];
+    } else {
+        widthText = [NSString stringWithFormat:@"%d", (int)currentImage.size.width];
+    }
+    
+    NSString *heightText = nil;
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil) {
+        heightText = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"];
+    } else {
+        heightText = [NSString stringWithFormat:@"%d", (int)currentImage.size.height];
+    }
 
-    [textWidth becomeFirstResponder];
+    CGRect frame = IS_IOS7 ? self.view.bounds : postDetailViewController.view.bounds;
+    WPAlertView *alertView = [[WPAlertView alloc] initWithFrame:frame andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsSideBySideTwoButtonMode];
+    
+    alertView.overlayTitle = NSLocalizedString(@"Custom Size", @"");
+//    alertView.overlayDescription = NS Localized String(@"Provide a custom width and height for the image.", @"Alert view description for resizing an image with custom size.");
+    alertView.overlayDescription = @"";
+    alertView.footerDescription = nil;
+    alertView.firstTextFieldPlaceholder = NSLocalizedString(@"Width", @"");
+    alertView.firstTextFieldValue = widthText;
+    alertView.secondTextFieldPlaceholder = NSLocalizedString(@"Height", @"");
+    alertView.secondTextFieldValue = heightText;
+    alertView.leftButtonText = NSLocalizedString(@"Cancel", @"Cancel button");
+    alertView.rightButtonText = NSLocalizedString(@"OK", @"");
+    
+    alertView.firstTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    alertView.secondTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    alertView.firstTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
+    alertView.secondTextField.keyboardAppearance = UIKeyboardAppearanceAlert;
+    alertView.firstTextField.keyboardType = UIKeyboardTypeNumberPad;
+    alertView.secondTextField.keyboardType = UIKeyboardTypeNumberPad;
+    
+    alertView.button1CompletionBlock = ^(WPAlertView *overlayView){
+        // Cancel
+        [overlayView dismiss];
+        isShowingCustomSizeAlert = NO;
+        
+    };
+    alertView.button2CompletionBlock = ^(WPAlertView *overlayView){
+        [overlayView dismiss];
+        isShowingCustomSizeAlert = NO;
+        
+		NSNumber *width = [NSNumber numberWithInt:[overlayView.firstTextField.text intValue]];
+		NSNumber *height = [NSNumber numberWithInt:[overlayView.secondTextField.text intValue]];
+		
+		if([width intValue] < 10)
+			width = [NSNumber numberWithInt:10];
+		if([height intValue] < 10)
+			height = [NSNumber numberWithInt:10];
+		
+		overlayView.firstTextField.text = [NSString stringWithFormat:@"%@", width];
+		overlayView.secondTextField.text = [NSString stringWithFormat:@"%@", height];
+		
+		[[NSUserDefaults standardUserDefaults] setObject:overlayView.firstTextField.text forKey:@"prefCustomImageWidth"];
+		[[NSUserDefaults standardUserDefaults] setObject:overlayView.secondTextField.text forKey:@"prefCustomImageHeight"];
+		
+		[self useImage:[self resizeImage:currentImage width:[width floatValue] height:[height floatValue]]];
+    };
+    
+    alertView.alpha = 0.0;
+    
+    if (IS_IOS7) {
+        [self.view addSubview:alertView];
+    } else {
+        alertView.hideBackgroundView = YES;
+        alertView.firstTextField.keyboardAppearance = UIKeyboardAppearanceDefault;
+        alertView.secondTextField.keyboardAppearance = UIKeyboardAppearanceDefault;
+        [self.postDetailViewController.view addSubview:alertView];
+    }
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        alertView.alpha = 1.0;
+    }];
+
+    self.customSizeAlert = alertView;
 }
 
 
@@ -864,16 +1010,6 @@
     }
 }
 
-- (void)dismissAlertViewKeyboard: (NSNotification*)notification {
-	if(isShowingCustomSizeAlert) {
-		UITextField *textWidth = (UITextField *)[self.customSizeAlert viewWithTag:123];
-		UITextField *textHeight = (UITextField *)[self.customSizeAlert viewWithTag:456];
-		[textWidth resignFirstResponder];
-		[textHeight resignFirstResponder];
-	}
-}
-
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (currentAlert == alertView) {
         currentAlert = nil;
@@ -883,34 +1019,12 @@
 	
 		return;
 	}
-	
-	if(buttonIndex == 1) {
-		UITextField *textWidth = (UITextField *)[alertView viewWithTag:123];
-		UITextField *textHeight = (UITextField *)[alertView viewWithTag:456];
-		
-		NSNumber *width = [NSNumber numberWithInt:[textWidth.text intValue]];
-		NSNumber *height = [NSNumber numberWithInt:[textHeight.text intValue]];
-		
-		if([width intValue] < 10)
-			width = [NSNumber numberWithInt:10];
-		if([height intValue] < 10)
-			height = [NSNumber numberWithInt:10];
-		
-		textWidth.text = [NSString stringWithFormat:@"%@", width];
-		textHeight.text = [NSString stringWithFormat:@"%@", height];
-		
-		//NSLog(@"textWidth.text: %@ textHeight.text: %@", textWidth.text, textHeight.text);
-		
-		[[NSUserDefaults standardUserDefaults] setObject:textWidth.text forKey:@"prefCustomImageWidth"];
-		[[NSUserDefaults standardUserDefaults] setObject:textHeight.text forKey:@"prefCustomImageHeight"];
-		
-		[self useImage:[self resizeImage:currentImage width:[width floatValue] height:[height floatValue]]];
-	}
-	
-	isShowingCustomSizeAlert = NO;
 }
 
 - (void)imagePickerController:(UIImagePickerController *)thePicker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
 	if([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
 		self.currentVideo = [info mutableCopy];
 		if(self.didChangeOrientationDuringRecord == YES)
@@ -927,17 +1041,11 @@
 		currentImage = image;
 		
 		//UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
-        NSURL *assetURL = nil;
-        if (&UIImagePickerControllerReferenceURL != NULL) {
-            assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
-        }
+        NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
         if (assetURL) {
             [self getMetadataFromAssetForURL:assetURL];
         } else {
-            NSDictionary *metadata = nil;
-            if (&UIImagePickerControllerMediaMetadata != NULL) {
-                metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
-            }
+            NSDictionary *metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
             if (metadata) {
                 NSMutableDictionary *mutableMetadata = [metadata mutableCopy];
                 NSDictionary *gpsData = [mutableMetadata objectForKey:@"{GPS}"];
@@ -977,15 +1085,11 @@
 		NSNumber *resizePreference = [NSNumber numberWithInt:-1];
 		if([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil)
 			resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
-		
+		BOOL showResizeActionSheet = NO;
 		switch ([resizePreference intValue]) {
 			case 0:
             {
-                // Dispatch async to detal with a rare bug presenting the actionsheet after a memory warning when the
-                // view has been recreated.
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self showResizeActionSheet];
-                });
+                showResizeActionSheet = YES;
 				break;
             }
 			case 1:
@@ -1011,23 +1115,28 @@
             }
 			default:
             {
-                // Dispatch async to detal with a rare bug presenting the actionsheet after a memory warning when the
-                // view has been recreated.
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self showResizeActionSheet];
-                });
+                showResizeActionSheet = YES;
 				break;
             }
 		}
 		
-		if(!IS_IPAD) {
-			[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
-		}
+        if (addPopover != nil) {
+            [addPopover dismissPopoverAnimated:YES];
+            [[CPopoverManager instance] setCurrentPopoverController:nil];
+            addPopover = nil;
+            [self showResizeActionSheet];
+        } else {
+            [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:^{
+                if (showResizeActionSheet) {
+                    [self showResizeActionSheet];
+                }
+            }];
+        }
 	}
-	
+
 	if(IS_IPAD){
 		[addPopover dismissPopoverAnimated:YES];
-		[[CPopoverManager instance] setCurrentPopoverController:NULL];
+		[[CPopoverManager instance] setCurrentPopoverController:nil];
 		addPopover = nil;
 	}
 }
@@ -1063,9 +1172,9 @@
 														  freeWhenDone:YES];  // YES means free malloc'ed buf that backs this when deallocated
 					   
 					   CGImageSourceRef  source ;
-					   source = CGImageSourceCreateWithData((__bridge CFDataRef)imageJPEG, NULL);
+					   source = CGImageSourceCreateWithData((__bridge CFDataRef)imageJPEG, nil);
 					   
-                       NSDictionary *metadata = (NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,NULL));
+                       NSDictionary *metadata = (NSDictionary *) CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(source,0,nil));
                        
                        //make the metadata dictionary mutable so we can remove properties to it
                        NSMutableDictionary *metadataAsMutable = [metadata mutableCopy];
@@ -1089,19 +1198,18 @@
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-	[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
+    // On iOS7 Beta 6 the image picker seems to override our preferred setting so we force the status bar color back.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+    [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)processRecordedVideo {
-	if(IS_IPAD == YES)
-		[addPopover dismissPopoverAnimated:YES];
-	else {
-		[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
-	}
-	
+    [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
+
 	[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];
 	NSString *tempVideoPath = [(NSURL *)[currentVideo valueForKey:UIImagePickerControllerMediaURL] absoluteString];
-	tempVideoPath = [tempVideoPath substringFromIndex:16];
+    tempVideoPath = [self videoPathFromVideoUrl:tempVideoPath];
 	if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(tempVideoPath)) {
 		UISaveVideoAtPathToSavedPhotosAlbum(tempVideoPath, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
 	}
@@ -1113,17 +1221,15 @@
 		videoURL = [currentVideo valueForKey:UIImagePickerControllerReferenceURL];
 	
 	if(videoURL != nil) {
-		if(IS_IPAD == YES)
+		if(IS_IPAD)
 			[addPopover dismissPopoverAnimated:YES];
 		else {
-			[postDetailViewController.navigationController dismissModalViewControllerAnimated:YES];
+            [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:nil];
 		}
 		
 		[self.currentVideo setValue:[NSNumber numberWithInt:currentOrientation] forKey:@"orientation"];
 		
-		// Determine the video's library path
-		NSString *videoPath = [[videoURL absoluteString] substringFromIndex:16];
-		[self useVideo:videoPath];
+		[self useVideo:[self videoPathFromVideoUrl:[videoURL absoluteString]]];
 		self.currentVideo = nil;
 		self.isLibraryMedia = NO;
 	}
@@ -1144,7 +1250,7 @@
 	
     CGImageRef imageRef = [img CGImage];
     CGContextRef bitmap = CGBitmapContextCreate(
-												NULL,
+												nil,
 												size.width,
 												size.height,
 												CGImageGetBitsPerComponent(imageRef),
@@ -1281,16 +1387,16 @@
 
 	if (self.currentImageMetadata != nil) {
 		// Write the EXIF data with the image data to disk
-		CGImageSourceRef  source = NULL;
-        CGImageDestinationRef destination = NULL;
+		CGImageSourceRef  source = nil;
+        CGImageDestinationRef destination = nil;
 		BOOL success = NO;
         //this will be the data CGImageDestinationRef will write into
         NSMutableData *dest_data = [NSMutableData data];
 
-		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
+		source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, nil);
         if (source) {
             CFStringRef UTI = CGImageSourceGetType(source); //this is the type of image (e.g., public.jpeg)
-            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,NULL);
+            destination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)dest_data,UTI,1,nil);
             
             if(destination) {                
                 //add the image contained in the image source to the destination, copying the old metadata
@@ -1356,20 +1462,25 @@
         }
         [imageMedia save];
     } failure:^(NSError *error) {
+        if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+            return;
+        }
+
         [WPError showAlertWithError:error title:NSLocalizedString(@"Upload failed", @"")];
     }];
 	
 	isAddingMedia = NO;
 	
-	if (isPickingFeaturedImage)
-        [postDetailViewController switchToSettings];
-    else
-        [postDetailViewController switchToMedia];
-	
+    if (!IS_IOS7) {
+        if (isPickingFeaturedImage)
+            [postDetailViewController switchToSettings];
+        else
+            [postDetailViewController switchToMedia];
+    }
 }
 
 - (void)useVideo:(NSString *)videoURL {
-	BOOL copySuccess = FALSE;
+	BOOL copySuccess = NO;
 	Media *videoMedia;
 	NSDictionary *attributes;
     UIImage *thumbnail = nil;
@@ -1390,7 +1501,7 @@
         CMTime actualTime;
         CGImageRef halfWayImage = [imageGenerator copyCGImageAtTime:midpoint actualTime:&actualTime error:&error];
 
-        if (halfWayImage != NULL) {
+        if (halfWayImage != nil) {
             thumbnail = [UIImage imageWithCGImage:halfWayImage];
             // Do something interesting with the image.
             CGImageRelease(halfWayImage);
@@ -1449,8 +1560,10 @@
         }];
 		isAddingMedia = NO;
 		
-		//switch to the attachment view if we're not already there 
-		[postDetailViewController switchToMedia];
+        if (!IS_IOS7) {
+            //switch to the attachment view if we're not already there
+            [postDetailViewController switchToMedia];            
+        }
 	}
 	else {
         if (currentAlert == nil) {
@@ -1576,5 +1689,29 @@
 
 }
 
+- (NSString *)videoPathFromVideoUrl:(NSString *)videoUrl
+{
+    // Determine the video's library path.
+    // In iOS 6 this returns as file://localhost/private/var/mobile/Applications/73DCDAD0-397C-404D-9456-4C5A360ABE0D/tmp//trim.lmhYmN.MOV
+    // In iOS 7 this returns as file:///private/var/mobile/Applications/9946F4C5-5B16-4EA5-850C-DDA701A47E61/tmp/trim.4F72621B-04AE-47F2-A551-068F62E8D16F.MOV
+
+    NSError *error;
+    NSRegularExpression *regEx = [NSRegularExpression regularExpressionWithPattern:@"(/var.*$)" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSString *videoPath = videoUrl;
+    NSArray *matches = [regEx matchesInString:videoUrl options:0 range:NSMakeRange(0, [videoUrl length])];
+    for (NSTextCheckingResult *result in matches) {
+        if ([result numberOfRanges] < 2)
+            continue;
+        NSRange videoUrlRange = [result rangeAtIndex:1];
+        videoPath = [videoUrl substringWithRange:videoUrlRange];
+    }
+    
+    return videoPath;
+}
+
+- (NSString *)formattedStatEventString:(NSString *)event
+{
+    return [NSString stringWithFormat:@"%@ - %@", self.statsPrefix, event];
+}
 
 @end

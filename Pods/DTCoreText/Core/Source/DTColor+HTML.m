@@ -1,6 +1,6 @@
 //
 //  DTColor+HTML.m
-//  CoreTextExtensions
+//  DTCoreText
 //
 //  Created by Oliver Drobnik on 1/9/11.
 //  Copyright 2011 Drobnik.com. All rights reserved.
@@ -41,7 +41,8 @@ static NSDictionary *colorLookup = nil;
 		return [UIColor colorWithHexString:[name substringFromIndex:1]];
 	}
 	
-	if ([name hasPrefix:@"rgba"]) {
+	if ([name hasPrefix:@"rgba"])
+	{
 		NSString *rgbaName = [name stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"rgba() "]];
 		NSArray *rgba = [rgbaName componentsSeparatedByString:@","];
 		
@@ -291,11 +292,13 @@ static NSDictionary *colorLookup = nil;
 		return [NSColor colorWithHexString:[name substringFromIndex:1]];
 	}
 	
-	if ([name hasPrefix:@"rgba"]) {
+	if ([name hasPrefix:@"rgba"])
+	{
 		NSString *rgbaName = [name stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"rgba() "]];
 		NSArray *rgba = [rgbaName componentsSeparatedByString:@","];
 		
-		if ([rgba count] != 4) {
+		if ([rgba count] != 4)
+		{
 			// Incorrect syntax
 			return nil;
 		}
@@ -310,10 +313,13 @@ static NSDictionary *colorLookup = nil;
 	{
 		NSString * rgbName = [name stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"rbg() "]];
 		NSArray* rbg = [rgbName componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@","]];
-		if ([rbg count] != 3) {
+		
+		if ([rbg count] != 3)
+		{
 			// Incorrect syntax
 			return nil;
 		}
+		
 		return [NSColor colorWithDeviceRed:[[rbg objectAtIndex:0]floatValue]/255 
 											  green:[[rbg objectAtIndex:1]floatValue] /255
 												blue:[[rbg objectAtIndex:2]floatValue] /255
@@ -490,7 +496,7 @@ static NSDictionary *colorLookup = nil;
 				  (NSUInteger)(green * (CGFloat)255), (NSUInteger)(blue * (CGFloat)255)];
 }
 
-#if MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_8
+#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_7
 + (NSColor *)colorWithCGColor:(CGColorRef)cgColor
 {
 	size_t count = CGColorGetNumberOfComponents(cgColor);
@@ -512,10 +518,21 @@ static NSDictionary *colorLookup = nil;
 	return nil;
 }
 
-// pass through
-- (NSColor *)CGColor
+// From https://gist.github.com/1593255
+- (CGColorRef)CGColor
 {
-	return self;
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	
+	NSColor *selfCopy = [self colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+	
+	CGFloat colorValues[4];
+	[selfCopy getRed:&colorValues[0] green:&colorValues[1] blue:&colorValues[2] alpha:&colorValues[3]];
+	
+	CGColorRef color = CGColorCreate(colorSpace, colorValues);
+	
+	CGColorSpaceRelease(colorSpace);
+	
+	return color;
 }
 #endif
 

@@ -7,11 +7,12 @@
 //
 
 
-@interface DateUtils : NSObject {
+@interface DateUtils : NSObject
 
-}
-+ (NSDate *) currentGMTDate;
-+ (NSDate *) GMTDateTolocalDate:(NSDate *)gmtDate;
-+ (NSDate *) localDateToGMTDate:(NSDate *)localDate;
++ (NSDate *)currentGMTDate;
++ (NSDate *)GMTDateTolocalDate:(NSDate *)gmtDate;
++ (NSDate *)localDateToGMTDate:(NSDate *)localDate;
++ (NSDate *)dateFromISOString:(NSString *)isoString;
++ (NSString *)isoStringFromDate:(NSDate *)date;
 
 @end

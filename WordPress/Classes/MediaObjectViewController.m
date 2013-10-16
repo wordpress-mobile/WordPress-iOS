@@ -40,13 +40,7 @@
             [imageView setImageWithURL:[NSURL URLWithString:media.remoteURL]];
 		}
 	}
-	
-    if ([deleteButton respondsToSelector:@selector(setTintColor:)]) {
-        UIColor *color = [UIColor UIColorFromHex:0x464646];
-        deleteButton.tintColor = color;
-        cancelButton.tintColor = color;
-        insertButton.tintColor = color;
-    }    
+	 
 	if (IS_IPAD) {
         CGRect rect = self.scrollView.frame;
         rect.origin.y = 44.0f;
@@ -59,6 +53,17 @@
         topToolbar.items = [NSArray arrayWithObjects:flex, cancelButton, nil];
         [self.view addSubview:topToolbar];
 	}
+    
+    if (IS_IOS7) {
+        self.toolbar.translucent = NO;
+        self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+        self.toolbar.tintColor = [UIColor whiteColor];
+        self.leftSpacer.width = 1.0;
+        self.rightSpacer.width = -8.0;
+    }
+    deleteButton.tintColor = [UIColor whiteColor];
+    cancelButton.tintColor = deleteButton.tintColor;
+    insertButton.tintColor = deleteButton.tintColor;
 }
 
 - (void)viewDidUnload {
@@ -128,13 +133,13 @@
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if(isDeleting == YES) {
+    if(isDeleting) {
 		switch (buttonIndex) {
 			case 0:
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:media];
                 [media remove];
-				if(IS_IPAD == YES)
-					[self dismissModalViewControllerAnimated:YES];
+				if(IS_IPAD)
+                    [self dismissViewControllerAnimated:YES completion:nil];
 				else
 					[self.navigationController popViewControllerAnimated:YES];
 				break;
@@ -142,19 +147,19 @@
 				break;
 		}
 	}
-	else if(isInserting == YES) {
+	else if(isInserting) {
 		switch (buttonIndex) {
 			case 0:
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaAbove" object:media];
-				if(IS_IPAD == YES)
-					[self dismissModalViewControllerAnimated:YES];
+				if(IS_IPAD)
+                    [self dismissViewControllerAnimated:YES completion:nil];
 				else
 					[self.navigationController popViewControllerAnimated:YES];
 				break;
 			case 1:
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
-				if(IS_IPAD == YES)
-					[self dismissModalViewControllerAnimated:YES];
+				if(IS_IPAD)
+                    [self dismissViewControllerAnimated:YES completion:nil];
 				else
 					[self.navigationController popViewControllerAnimated:YES];
 				break;
@@ -209,8 +214,9 @@
 }
 
 - (IBAction)cancelSelection:(id)sender { 
- 	if (IS_IPAD) 
-		[self dismissModalViewControllerAnimated:YES]; 
-} 
+ 	if (IS_IPAD) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
 
 @end

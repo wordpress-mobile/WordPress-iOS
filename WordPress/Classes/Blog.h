@@ -14,10 +14,12 @@
 
 #define BlogChangedNotification @"BlogChangedNotification"
 
+@class WPAccount;
+
 @interface Blog : NSManagedObject
 
 @property (nonatomic, strong) NSNumber *blogID;
-@property (nonatomic, strong) NSString *blogName, *username, *password, *xmlrpc, *apiKey;
+@property (nonatomic, strong) NSString *blogName, *xmlrpc, *apiKey;
 @property (weak, readonly) NSString *blavatarUrl;
 @property (nonatomic, strong) NSNumber *isAdmin, *hasOlderPosts, *hasOlderPages;
 @property (nonatomic, strong) NSSet *posts;
@@ -35,9 +37,13 @@
 @property (nonatomic, weak) NSNumber *isActivated;
 @property (nonatomic, strong) NSDictionary *options; //we can store an NSArray or an NSDictionary as a transformable attribute... 
 @property (nonatomic, strong) NSDictionary *postFormats;
+@property (nonatomic, strong) WPAccount *account;
+@property (nonatomic, strong) WPAccount *jetpackAccount;
 @property (weak, readonly) NSArray *sortedPostFormatNames;
 @property (readonly, nonatomic, strong) WPXMLRPCClient *api;
 @property (weak, readonly) NSString *version;
+@property (nonatomic, readonly, strong) NSString *username;
+@property (nonatomic, readonly, strong) NSString *password;
 @property (weak, readonly) Reachability *reachability;
 @property (readonly) BOOL reachable;
 
@@ -51,6 +57,7 @@
 // alias of displayURL
 // kept for compatibilty, used as a key to store passwords
 @property (weak, readonly) NSString *hostURL;
+@property (weak, readonly) NSString *homeURL;
 // http://wp.koke.me/sub
 @property (nonatomic, strong) NSString *url;
 // Used for reachability checks (IDN encoded)
@@ -67,7 +74,6 @@
 - (NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
-- (NSString *)fetchPassword;
 - (int)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
 
@@ -78,7 +84,6 @@
 
 #pragma mark -
 #pragma mark Synchronization
-- (NSArray *)syncedPosts;
 - (void)syncPostsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
 - (void)syncPagesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure loadMore:(BOOL)more;
 - (void)syncCategoriesWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
@@ -94,9 +99,6 @@
 
 #pragma mark -
 #pragma mark Class methods
-+ (BOOL)blogExistsForURL:(NSString *)theURL withContext:(NSManagedObjectContext *)moc andUsername:(NSString *)username;
-+ (Blog *)createFromDictionary:(NSDictionary *)blogInfo withContext:(NSManagedObjectContext *)moc;
-+ (Blog *)findWithId:(int)blogId withContext:(NSManagedObjectContext *)moc;
 + (NSInteger)countWithContext:(NSManagedObjectContext *)moc;
 
 @end

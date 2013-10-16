@@ -11,6 +11,7 @@
 @interface WPComLanguages()
 
 @property (nonatomic, strong) NSArray *languages;
+@property (nonatomic, assign) BOOL rtl;
 
 @end
 
@@ -21,6 +22,7 @@
     self = [super init];
     if (self) {
         [self initializeLanguages];
+        _rtl = ([NSLocale characterDirectionForLanguage:[[NSLocale preferredLanguages] objectAtIndex:0]] == NSLocaleLanguageDirectionRightToLeft);
     }
     return self;
 }
@@ -51,6 +53,11 @@
     }
     
     return nil;
+}
+
++ (BOOL)isRightToLeft
+{
+    return [self sharedInstance].rtl;
 }
 
 #pragma mark - Private Methods

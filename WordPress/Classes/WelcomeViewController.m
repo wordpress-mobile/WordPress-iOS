@@ -2,163 +2,143 @@
 //  WelcomeViewController.m
 //  WordPress
 //
-//  Created by Dan Roundhill on 5/5/10.
+//  Created by Sendhil Panchadsaram on 9/4/13.
+//  Copyright (c) 2013 WordPress. All rights reserved.
 //
 
 #import "WelcomeViewController.h"
-#import "SFHFKeychainUtils.h"
 #import "WordPressAppDelegate.h"
-#import "AboutViewController.h"
-#import "AddUsersBlogsViewController.h"
-#import "CreateWPComBlogViewController.h"
-#import "CreateWPComAccountViewController.h"
 #import "AddSiteViewController.h"
-#import "EditSiteViewController.h"
 #import "WPcomLoginViewController.h"
+#import "CreateWPComAccountViewController.h"
+#import "CreateWPComBlogViewController.h"
+#import "AddUsersBlogsViewController.h"
 #import "WordPressComApi.h"
+#import "WPAccount.h"
+#import "WPTableViewSectionHeaderView.h"
 
 @interface WelcomeViewController () <
     WPcomLoginViewControllerDelegate,
     CreateWPComAccountViewControllerDelegate,
     CreateWPComBlogViewControllerDelegate> {
-    WordPressAppDelegate *__weak appDelegate;
+        NSArray *_buttonTitles;
+        NSArray *_sectionHeaderTitles;
+        WordPressAppDelegate *__weak _appDelegate;
 }
-
-@property (nonatomic, weak) WordPressAppDelegate *appDelegate;
-
-- (void)blogsRefreshNotificationReceived:(NSNotification *)notification;
 
 @end
 
-
 @implementation WelcomeViewController
 
-@synthesize appDelegate;
-
-@synthesize buttonView;
-@synthesize logoView;
-@synthesize infoButton;
-@synthesize orgBlogButton;
-@synthesize addBlogButton;
-@synthesize createBlogButton;
-@synthesize createLabel;
-
-#pragma mark -
-#pragma mark View lifecycle
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-
-- (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
-    [super viewDidLoad];
-	
-	appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
-    // If there are blogs, this is being shown in the Settings.
-    if ([Blog countWithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext] > 0) {
-        // Hide the Logo View on the iPhone, there isn't enough room for that and the navigation bar.
-        if (IS_IPHONE) {
-            self.logoView.hidden = YES;
-            CGRect frame = buttonView.frame;
-            frame.origin.y = 0.0f;
-            buttonView.frame = frame;
-        }
-        createLabel.text = NSLocalizedString(@"If you want to start another blog:", @"");
-    }
-}
-
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    self.buttonView = nil;
-    self.logoView = nil;
-    self.infoButton = nil;
-    self.orgBlogButton = nil;
-    self.addBlogButton = nil;
-    self.createBlogButton = nil;
-    self.createLabel = nil;
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    if (([Blog countWithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext] <= 0 && ( ![[WordPressComApi sharedApi] hasCredentials] )) || isFirstRun) {
-        isFirstRun = YES;
-        [self.navigationController setNavigationBarHidden:YES animated:animated];
-    }
-    [super viewWillAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
-    [super viewWillDisappear:animated];
-}
-
-
-- (NSUInteger)supportedInterfaceOrientations {
-    if (IS_IPHONE) {
-        if ([Blog countWithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext] == 0) {
-            return UIInterfaceOrientationMaskPortrait;
-        }
-        return UIInterfaceOrientationMaskAllButUpsideDown;
-    }
-    return UIInterfaceOrientationMaskAll;
-}
-
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (id)initWithStyle:(UITableViewStyle)style
 {
-    if (IS_IPAD || interfaceOrientation == UIDeviceOrientationPortrait)  
-        return YES;
-    else if (IS_IPHONE && [Blog countWithContext:[WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext] > 0)
-        return YES;
-    else
-        return NO;
+    self = [super initWithStyle:style];
+    if (self) {
+        _buttonTitles = @[@[NSLocalizedString(@"Add Self-Hosted Site", nil), NSLocalizedString(@"Add WordPress.com Site", nil)], @[NSLocalizedString(@"Create WordPress.com Site", nil)]];
+        _sectionHeaderTitles = @[NSLocalizedString(@"Add an existing Site:", nil), NSLocalizedString(@"Start a new Site:", nil)];
+    }
+    return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
 
-#pragma mark -
-#pragma mark Instance Methods
+    _appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 
-- (IBAction)handleInfoTapped:(id)sender {
-    [self showAboutView];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
 }
 
+#pragma mark - Table view data source
 
-- (IBAction)handleOrgBlogTapped:(id)sender {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
+    return _sectionHeaderTitles[section];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return [_buttonTitles count];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    return [_buttonTitles[section] count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    cell.textLabel.text = _buttonTitles[indexPath.section][indexPath.row];
+    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    cell.textLabel.font = [WPStyleGuide tableviewTextFont];
+    cell.textLabel.textColor = [WPStyleGuide tableViewActionColor];
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self isIndexPathForAddSelfHostedBlog:indexPath]) {
+        [self handleAddSelfHostedBlog];
+    } else if ([self isIndexPathForAddWordPressDotComBlog:indexPath]) {
+        [self handleAddWordPressDotComBlog];
+    } else if ([self isIndexPathForCreateWordPressDotComBlog:indexPath]) {
+        [self handleCreateWordPressDotComBlog];
+    }
+}
+
+#pragma mark - Private Methods
+
+- (BOOL)isIndexPathForAddSelfHostedBlog:(NSIndexPath *)indexPath
+{
+    return indexPath.section == 0 && indexPath.row == 0;
+}
+
+- (BOOL)isIndexPathForAddWordPressDotComBlog:(NSIndexPath *)indexPath
+{
+    return indexPath.section == 0 && indexPath.row == 1;
+}
+
+- (BOOL)isIndexPathForCreateWordPressDotComBlog:(NSIndexPath *)indexPath
+{
+    return indexPath.section == 1 && indexPath.row == 0;
+}
+
+- (void)handleAddSelfHostedBlog
+{
     [WPMobileStats trackEventForWPCom:StatsEventWelcomeViewControllerClickedAddSelfHostedBlog];
     
-    AddSiteViewController *addSiteView = [[AddSiteViewController alloc] initWithNibName:nil bundle:nil];    
+    AddSiteViewController *addSiteView = [[AddSiteViewController alloc] initWithNibName:nil bundle:nil];
     [self.navigationController pushViewController:addSiteView animated:YES];
 }
 
 
-- (IBAction)handleAddBlogTapped:(id)sender {
+- (void)handleAddWordPressDotComBlog
+{
     [WPMobileStats trackEventForWPCom:StatsEventWelcomeViewControllerClickedAddWordpressDotComBlog];
-
-    NSString *username = nil;
-    NSString *password = nil;
     
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"] != nil) {
-        NSError *error = nil;
-        username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
-        password = [SFHFKeychainUtils getPasswordForUsername:username
-                                              andServiceName:@"WordPress.com"
-                                                       error:&error];
-    }
-    
-    if(appDelegate.isWPcomAuthenticated) {
-        AddUsersBlogsViewController *addUsersBlogsView;
-        if (IS_IPAD == YES)
-            addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController-iPad" bundle:nil];
-        else
-            addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithNibName:@"AddUsersBlogsViewController" bundle:nil];
+    if(_appDelegate.isWPcomAuthenticated) {
+        AddUsersBlogsViewController *addUsersBlogsView = [[AddUsersBlogsViewController alloc] initWithAccount:[WPAccount defaultWordPressComAccount]];
         addUsersBlogsView.isWPcom = YES;
-        [addUsersBlogsView setUsername:username];
-        [addUsersBlogsView setPassword:password];
         [self.navigationController pushViewController:addUsersBlogsView animated:YES];
     }
     else {
@@ -168,7 +148,8 @@
     }
 }
 
-- (IBAction)handleCreateBlogTapped:(id)sender {
+- (void)handleCreateWordPressDotComBlog
+{
     [WPMobileStats trackEventForWPCom:StatsEventWelcomeViewControllerClickedCreateWordpressDotComBlog];
     
     if ([WordPressComApi sharedApi].hasCredentials) {
@@ -179,49 +160,7 @@
         CreateWPComAccountViewController *viewController = [[CreateWPComAccountViewController alloc] initWithStyle:UITableViewStyleGrouped];
         viewController.delegate = self;
         [self.navigationController pushViewController:viewController animated:YES];
-    }    
-}
-
-
-#pragma mark -
-#pragma mark Custom methods
-
-// Add itself as observer for the 'BlogsRefreshNotification' notification. It is used when the app shows the Welcome Screen, since this Screen need to be dismissed upon login action
--(void) automaticallyDismissOnLoginActions {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(blogsRefreshNotificationReceived:) name:@"BlogsRefreshNotification" object:nil];    
-}
-
-
-// Called when the AppDelegate receives an URL like 'wordpress://wpcom_signup_completed'
-- (void)wpcomSignupNotificationReceived:(NSNotification *)notification {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"wpcomSignupNotification" object:nil];
-    NSDictionary *info = [notification userInfo];
-    WPFLog(@"Info received in the notification %@", info);
-    [self.navigationController popViewControllerAnimated:NO];
-    WPcomLoginViewController *wpLoginView = [[WPcomLoginViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    wpLoginView.delegate = self;
-    wpLoginView.predefinedUsername = [info valueForKey:@"username"];
-    [self.navigationController pushViewController:wpLoginView animated:YES];
-}
-
-
-- (void)blogsRefreshNotificationReceived:(NSNotification *)notification {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"BlogsRefreshNotification" object:nil];
-    [super dismissModalViewControllerAnimated:YES];
-}
-
-
-- (IBAction)cancel:(id)sender {
-	[super dismissModalViewControllerAnimated:YES];
-}
-
-- (void)showAboutView {
-    AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
-	aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
-    nc.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self.navigationController presentModalViewController:nc animated:YES];
-	[self.navigationController setNavigationBarHidden:YES];
+    }
 }
 
 #pragma mark - WPcomLoginViewControllerDelegate
@@ -231,9 +170,9 @@
 }
 
 
-- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithUsername:(NSString *)username {
+- (void)loginController:(WPcomLoginViewController *)loginController didAuthenticateWithAccount:(WPAccount *)account {
     [self.navigationController popViewControllerAnimated:NO];
-    [self handleAddBlogTapped:nil];
+    [self handleAddWordPressDotComBlog];
 }
 
 #pragma mark - CreateWPComAccountViewControllerDelegate
@@ -241,7 +180,7 @@
 - (void)createdAndSignedInAccountWithUserName:(NSString *)userName
 {
     [self.navigationController popViewControllerAnimated:NO];
-    [self handleAddBlogTapped:nil];
+    [self handleAddWordPressDotComBlog];
 }
 
 - (void)createdAccountWithUserName:(NSString *)userName

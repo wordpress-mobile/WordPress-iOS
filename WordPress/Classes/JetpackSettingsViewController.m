@@ -68,9 +68,10 @@
 
     if ([self useNavigationController]) {
         if (self.canBeSkipped) {
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skip", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(skip:)];
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skip", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(skip:)];
         }
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"") style:UIBarButtonItemStyleDone target:self action:@selector(save:)];
+        
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(save:)];
     }
 
     [self updateMessage];
@@ -160,7 +161,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    cell.textLabel.textAlignment = UITextAlignmentCenter;
+    cell.textLabel.textAlignment = NSTextAlignmentCenter;
 
 	if ([_blog hasJetpack]) {
 		if (indexPath.section == 0) {
@@ -224,7 +225,7 @@
             NSString *jetpackURL = [_blog adminUrlWithPath:@"plugin-install.php?tab=plugin-information&plugin=jetpack"];
             [webViewController setUrl:[NSURL URLWithString:jetpackURL]];
             [webViewController setUsername:_blog.username];
-            [webViewController setPassword:[_blog fetchPassword]];
+            [webViewController setPassword:_blog.password];
             [webViewController setWpLoginURL:[NSURL URLWithString:_blog.loginUrl]];
         } else {
             [webViewController setUrl:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_15"]];
@@ -233,6 +234,7 @@
             [self.navigationController pushViewController:webViewController animated:YES];
         } else {
             UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+            navController.navigationBar.translucent = NO;
             navController.modalPresentationStyle = UIModalPresentationPageSheet;
             webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissBrowser)];
             [self presentViewController:navController animated:YES completion:nil];
@@ -299,8 +301,14 @@
     } else {
         _messageView.text = NSLocalizedString(@"Jetpack 1.8.2 or later is required for stats. Do you want to install Jetpack?", @"");
     }
-
     [_messageView sizeToFit];
+    
+    // Center Message
+    CGFloat centeredX = (CGRectGetWidth(self.view.bounds) - CGRectGetWidth(_messageView.frame))/2.0;
+    CGRect messageViewFrame = _messageView.frame;
+    messageViewFrame.origin.x = centeredX;
+    _messageView.frame = messageViewFrame;
+    
     CGRect headerFrame = _headerView.frame;
     headerFrame.size.height = CGRectGetMaxY(_messageView.frame) + 10;
     _headerView.frame = headerFrame;

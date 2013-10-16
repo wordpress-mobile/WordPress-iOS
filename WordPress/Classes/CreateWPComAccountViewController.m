@@ -14,6 +14,7 @@
 #import "WPComLanguages.h"
 #import "SelectWPComLanguageViewController.h"
 #import "WPAsyncBlockOperation.h"
+#import "WPTableViewSectionFooterView.h"
 
 @interface CreateWPComAccountViewController () <
     UITextFieldDelegate> {
@@ -73,12 +74,11 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 {
     [super viewDidLoad];
     
-    self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern"]];
-    self.tableView.backgroundView = nil;
-    
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+
 	_footerText = @" ";
-	_buttonText = NSLocalizedString(@"Create WordPress.com Blog", @"");
-	self.navigationItem.title = NSLocalizedString(@"Create Account", @"");
+	_buttonText = NSLocalizedString(@"Create WordPress.com Site", @"Button to complete creating a new WordPress.com site");
+	self.navigationItem.title = NSLocalizedString(@"Create Account", @"Label to create a new WordPress.com account.");
 
     UIImageView *logoImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_wpcom"]];
     logoImage.frame = CGRectMake(0.0f, 0.0f, CreateAccountHeaderSize.width, CreateAccountHeaderSize.height);
@@ -106,11 +106,24 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
         return 1;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+- (NSString *)titleForFooterInSection:(NSInteger)section {
     if(section == 0)
 		return _footerText;
     else
 		return @"";
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForFooterInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    NSString *title = [self titleForFooterInSection:section];
+    return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -144,6 +157,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
             activityCell.selectionStyle = UITableViewCellSelectionStyleBlue;
         }
         
+        [WPStyleGuide configureTableViewActionCell:activityCell];
 		cell = activityCell;
 	} else {
         if (indexPath.row == 0) {
@@ -158,6 +172,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
             _emailTextField.keyboardType = UIKeyboardTypeEmailAddress;
             _emailTextField.returnKeyType = UIReturnKeyNext;
             _emailTextField.delegate = self;
+            [WPStyleGuide configureTableViewTextCell:_emailCell];
             cell = _emailCell;
         }
         else if (indexPath.row == 1) {
@@ -165,48 +180,53 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
                 _usernameCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                                 reuseIdentifier:@"TextCell"];
             }
-            _usernameCell.textLabel.text = NSLocalizedString(@"Username", @"");
+            _usernameCell.textLabel.text = NSLocalizedString(@"Username", @"Label for username field");
             _usernameTextField = _usernameCell.textField;
             _usernameTextField.tag = CreateAccountUserNameTextFieldTag;
-            _usernameTextField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
+            _usernameTextField.placeholder = NSLocalizedString(@"Enter username", @"Help user enter username for log in");
             _usernameTextField.keyboardType = UIKeyboardTypeEmailAddress;
             _usernameTextField.returnKeyType = UIReturnKeyNext;
             _usernameTextField.delegate = self;
+            [WPStyleGuide configureTableViewTextCell:_usernameCell];
             cell = _usernameCell;
         } else if (indexPath.row == 2) {
             if (_passwordCell == nil) {
                 _passwordCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                                 reuseIdentifier:@"TextCell"];
             }
-            _passwordCell.textLabel.text = NSLocalizedString(@"Password", @"");
+            _passwordCell.textLabel.text = NSLocalizedString(@"Password", @"Label for password field");
             _passwordTextField = _passwordCell.textField;
             _passwordTextField.tag = CreateAccountPasswordTextFieldTag;
-            _passwordTextField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
+            _passwordTextField.placeholder = NSLocalizedString(@"Enter password", @"Help user enter password for log in");
             _passwordTextField.keyboardType = UIKeyboardTypeDefault;
             _passwordTextField.returnKeyType = UIReturnKeyNext;
             _passwordTextField.secureTextEntry = YES;
             _passwordTextField.delegate = self;
+            [WPStyleGuide configureTableViewTextCell:_passwordCell];
+            
             cell = _passwordCell;
         } else if (indexPath.row == 3) {
             if (_blogUrlCell == nil) {
                 _blogUrlCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                                 reuseIdentifier:@"TextCell"];
             }
-            _blogUrlCell.textLabel.text = NSLocalizedString(@"Blog URL", nil);
+            _blogUrlCell.textLabel.text = NSLocalizedString(@"Site URL", @"Label for Site URL field in the Create a site window");
             _blogUrlTextField = _blogUrlCell.textField;
             _blogUrlTextField.tag = CreateAccountBlogUrlTextFieldTag;
-            _blogUrlTextField.placeholder = NSLocalizedString(@"myblog.wordpress.com", nil);
+            _blogUrlTextField.placeholder = NSLocalizedString(@"http://(choose-address).wordpress.com", @"Help user enter a URL for their new site");
             _blogUrlTextField.keyboardType = UIKeyboardTypeURL;
             _blogUrlTextField.delegate = self;
+            [WPStyleGuide configureTableViewTextCell:_blogUrlCell];
             cell = _blogUrlCell;
         } else if (indexPath.row == 4) {
             if (_localeCell == nil) {
-                _localeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
+                _localeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                      reuseIdentifier:@"LocaleCell"];
             }
             _localeCell.textLabel.text = @"Language";
             _localeCell.detailTextLabel.text = [_currentLanguage objectForKey:@"name"];
             _localeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [WPStyleGuide configureTableViewCell:_localeCell];
             cell = _localeCell;
         }
     }
@@ -264,10 +284,22 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 
 - (BOOL)areFieldsValid
 {
-    BOOL areFieldsFilled = [[_usernameTextField.text trim] length] != 0 && [[_passwordTextField.text trim] length] != 0 && [[_emailTextField.text trim] length] != 0 && [[_blogUrlTextField.text trim] length] != 0;
-    BOOL urlDoesNotHavePeriod = [_blogUrlTextField.text rangeOfString:@"."].location == NSNotFound;
-    
-    return areFieldsFilled && urlDoesNotHavePeriod;
+    return [self areInputFieldsFilled] && ![self doesUrlHavePeriod] && [self isUsernameLessThanFiftyCharacters];
+}
+
+- (BOOL)areInputFieldsFilled
+{
+    return [[_usernameTextField.text trim] length] != 0 && [[_passwordTextField.text trim] length] != 0 && [[_emailTextField.text trim] length] != 0 && [[_blogUrlTextField.text trim] length] != 0;;
+}
+
+- (BOOL)doesUrlHavePeriod
+{
+    return [_blogUrlTextField.text rangeOfString:@"."].location != NSNotFound;
+}
+
+- (BOOL)isUsernameLessThanFiftyCharacters
+{
+    return [[_usernameTextField.text trim] length] <= 50;
 }
 
 - (void)showErrorMessage
@@ -282,8 +314,10 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
         errorMessage = NSLocalizedString(@"Password is required.", nil);
     } else if ([[_blogUrlTextField.text trim] length] == 0) {
         errorMessage = NSLocalizedString(@"Blog address is required.", nil);
-    } else if ([_blogUrlTextField.text rangeOfString:@"."].location != NSNotFound) {
+    } else if ([self doesUrlHavePeriod]) {
         errorMessage = NSLocalizedString(@"Blog url cannot contain a period", nil);
+    } else if (![self isUsernameLessThanFiftyCharacters]) {
+        errorMessage = NSLocalizedString(@"Username must be less than fifty characters.", nil);        
     }
     
     if (errorMessage != nil) {
@@ -310,7 +344,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
         }
 
         _footerText = @"";
-        _isCreatingAccount = true;
+        _isCreatingAccount = YES;
         [self.tableView reloadData];
         
         [self disableTextFields];
@@ -326,7 +360,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
     // or encounters strange behavior as a result of a failed or successful attempt to create an account.
     if (parent == nil) {
         self.delegate = nil;
-        _userPressedBackButton = true;
+        _userPressedBackButton = YES;
         [_operationQueue cancelAllOperations];
     }
 }
@@ -446,7 +480,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 - (void)processErrorDuringRemoteConnection:(NSError *)error
 {
     if (!_userPressedBackButton) {
-        _isCreatingAccount = false;
+        _isCreatingAccount = NO;
         [self enableTextFields];
         [self.tableView reloadData];
         [self displayCreationErrorMessage:error];
@@ -457,7 +491,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 {
     NSArray *textFields = @[_usernameTextField, _emailTextField, _passwordTextField, _blogUrlTextField];
     for (UITextField *textField in textFields) {
-        textField.enabled = false;
+        textField.enabled = NO;
     }
 }
 
@@ -465,7 +499,7 @@ CGSize const CreateAccountHeaderSize = { 320.0, 70.0 };
 {
     NSArray *textFields = @[_usernameTextField, _emailTextField, _passwordTextField, _blogUrlTextField];
     for (UITextField *textField in textFields) {
-        textField.enabled = true;
+        textField.enabled = YES;
     }
 }
 

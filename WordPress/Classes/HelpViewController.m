@@ -37,15 +37,38 @@
     
     if (!isBlogSetup) {
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                   style:UIBarButtonItemStyleDone target:self action:@selector(cancel:)];
+                                                      style:[WPStyleGuide barButtonStyleForDone]
+                                                     target:self
+                                                     action:@selector(cancel:)];
+
         self.navigationItem.leftBarButtonItem = doneButton;
     }
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"welcome_bg_pattern.png"]];
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
     self.helpText.text = NSLocalizedString(@"Please visit the FAQ to get answers to common questions. If you're still having trouble, please post in the forums.", @"");
+    self.helpText.font = [WPStyleGuide regularTextFont];
+    self.helpText.textColor = [WPStyleGuide littleEddieGrey];
+    
+    if (IS_IOS7) {
+        [self.faqButton setBackgroundImage:nil forState:UIControlStateNormal];
+        [self.faqButton setBackgroundImage:nil forState:UIControlStateHighlighted];
+        [self.faqButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
+    } else {
+        self.faqButton.titleLabel.textColor = [WPStyleGuide littleEddieGrey];
+    }
     [self.faqButton setTitle:NSLocalizedString(@"Visit the FAQ", @"") forState:UIControlStateNormal];
+    self.faqButton.titleLabel.font = [WPStyleGuide postTitleFont];
+    
+    if (IS_IOS7) {
+        [self.forumButton setBackgroundImage:nil forState:UIControlStateNormal];
+        [self.forumButton setBackgroundImage:nil forState:UIControlStateHighlighted];
+        [self.forumButton setTitleColor:[WPStyleGuide buttonActionColor] forState:UIControlStateNormal];
+    } else {
+        self.forumButton.titleLabel.textColor = [WPStyleGuide littleEddieGrey];        
+    }
     [self.forumButton setTitle:NSLocalizedString(@"Visit the Forums", @"") forState:UIControlStateNormal];
+    self.forumButton.titleLabel.font = [WPStyleGuide postTitleFont];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -54,7 +77,7 @@
 }
 
 -(void)cancel: (id)sender {
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)helpButtonTap: (id)sender {

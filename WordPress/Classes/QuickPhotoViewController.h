@@ -11,31 +11,30 @@
 #import "Post.h"
 #import "QuickPicturePreviewView.h"
 #import "WordPressAppDelegate.h"
-#import "SidebarViewController.h"
 
 #define QPVCBlogForQuickPhoto @"blogForQuickPhoto"
 
-@class Blog;
-
-@interface QuickPhotoViewController : UIViewController <UIPopoverControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, BlogSelectorButtonDelegate, QuickPicturePreviewViewDelegate> {
+@class Blog, IOS7CorrectedTextView;
+@class MP6SidebarViewController;
+@interface QuickPhotoViewController : UIViewController <UIPopoverControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, BlogSelectorButtonDelegate, QuickPicturePreviewViewDelegate, UITextViewDelegate> {
 	WordPressAppDelegate *appDelegate;
     Post *post;
     CGRect startingFrame;
     CGRect keyboardFrame;
     
-    SidebarViewController *sidebarViewController;
+    MP6SidebarViewController *sidebarViewController;
     Blog *startingBlog;
 }
 
 @property (nonatomic, strong) IBOutlet QuickPicturePreviewView *photoImageView;
 @property (nonatomic, strong) IBOutlet UITextField *titleTextField;
-@property (nonatomic, strong) IBOutlet UITextView *contentTextView;
+@property (nonatomic, strong) IBOutlet IOS7CorrectedTextView *contentTextView;
 @property (nonatomic, strong) IBOutlet BlogSelectorButton *blogSelector;
 @property (nonatomic, strong) UIBarButtonItem *postButtonItem;
 @property (nonatomic, strong) UIImage *photo;
 @property (nonatomic, assign) UIImagePickerControllerSourceType sourceType;
 @property (nonatomic, assign) BOOL isCameraPlus;
-@property (nonatomic, strong) SidebarViewController *sidebarViewController;
+@property (nonatomic, strong) MP6SidebarViewController *sidebarViewController;
 @property (nonatomic, strong) Blog *startingBlog;
 
 - (void)post;

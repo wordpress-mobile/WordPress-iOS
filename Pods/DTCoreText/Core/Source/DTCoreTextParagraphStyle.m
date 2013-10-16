@@ -1,31 +1,30 @@
 //
 //  DTCoreTextParagraphStyle.m
-//  CoreTextExtensions
+//  DTCoreText
 //
 //  Created by Oliver Drobnik on 4/14/11.
 //  Copyright 2011 Drobnik.com. All rights reserved.
 //
 
 #import "DTCoreTextParagraphStyle.h"
-
-static NSCache *_paragraphStyleCache;
-
-static dispatch_semaphore_t selfLock;
+#import "DTTextBlock.h"
+#import "DTCSSListStyle.h"
+#import "DTWeakSupport.h"
 
 @implementation DTCoreTextParagraphStyle
 {
-	CGFloat firstLineHeadIndent;
-	CGFloat defaultTabInterval;
-	CGFloat paragraphSpacingBefore;
-	CGFloat paragraphSpacing;
-	CGFloat headIndent;
-	CGFloat listIndent;
-	CGFloat lineHeightMultiple;
-	CGFloat minimumLineHeight;
-	CGFloat maximumLineHeight;
+	CGFloat _firstLineHeadIndent;
+	CGFloat _defaultTabInterval;
+	CGFloat _paragraphSpacingBefore;
+	CGFloat _paragraphSpacing;
+	CGFloat _headIndent;
+	CGFloat _tailIndent;
+	CGFloat _lineHeightMultiple;
+	CGFloat _minimumLineHeight;
+	CGFloat _maximumLineHeight;
 	
 	CTTextAlignment _alignment;
-	CTWritingDirection baseWritingDirection;
+	CTWritingDirection _baseWritingDirection;
 	
 	NSMutableArray *_tabStops;
 }
@@ -35,67 +34,75 @@ static dispatch_semaphore_t selfLock;
 	return [[DTCoreTextParagraphStyle alloc] init];
 }
 
-+ (NSString *)niceKeyFromParagraghStyle:(CTParagraphStyleRef)ctParagraphStyle {
-	
-	// this is naughty: CTParagraphStyle has a description
-	NSString *key = [(__bridge id)ctParagraphStyle description];
-	
-	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"0x[0123456789abcdef]{1,8}"
-																																				 options:NSRegularExpressionCaseInsensitive
-																																					 error:nil];
-	
-	NSString *newKey = [regex stringByReplacingMatchesInString:key 
-																										 options:0 
-																											 range:NSMakeRange(0, [key length]) 
-																								withTemplate:@""];
-	
-	return newKey;	
-}
-
 + (DTCoreTextParagraphStyle *)paragraphStyleWithCTParagraphStyle:(CTParagraphStyleRef)ctParagraphStyle
 {
-	DTCoreTextParagraphStyle *returnParagraphStyle = NULL;
-	static dispatch_once_t predicate;
-	
-	dispatch_once(&predicate, ^{
-		
-		_paragraphStyleCache = [[NSCache alloc] init];
-		selfLock = dispatch_semaphore_create(1);
-	});
-	
-	// synchronize class-wide
-	
-	dispatch_semaphore_wait(selfLock, DISPATCH_TIME_FOREVER);
-	{
-		
-		NSString *key = [self niceKeyFromParagraghStyle:ctParagraphStyle];
-		returnParagraphStyle = [_paragraphStyleCache objectForKey:key];
-		
-		if (!returnParagraphStyle) 
-		{
-			returnParagraphStyle = [[DTCoreTextParagraphStyle alloc] initWithCTParagraphStyle:ctParagraphStyle];
-			[_paragraphStyleCache setObject:returnParagraphStyle forKey:key];
-		}
-	}
-	dispatch_semaphore_signal(selfLock);
-	
-	return returnParagraphStyle;
+	return [[DTCoreTextParagraphStyle alloc] initWithCTParagraphStyle:ctParagraphStyle];
 }
+
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES
++ (DTCoreTextParagraphStyle *)paragraphStyleWithNSParagraphStyle:(NSParagraphStyle *)paragraphStyle
+{
+	DTCoreTextParagraphStyle *retStyle = [[DTCoreTextParagraphStyle alloc] init];
+	
+	retStyle.firstLineHeadIndent = paragraphStyle.firstLineHeadIndent;
+	retStyle.headIndent = paragraphStyle.headIndent;
+	
+	retStyle.paragraphSpacing = paragraphStyle.paragraphSpacing;
+	retStyle.paragraphSpacingBefore = paragraphStyle.paragraphSpacingBefore;
+	
+	retStyle.lineHeightMultiple = paragraphStyle.lineHeightMultiple;
+	retStyle.minimumLineHeight = paragraphStyle.minimumLineHeight;
+	retStyle.maximumLineHeight = paragraphStyle.maximumLineHeight;
+	
+	switch(paragraphStyle.alignment)
+	{
+		case NSTextAlignmentLeft:
+			retStyle.alignment = kCTLeftTextAlignment;
+			break;
+		case NSTextAlignmentRight:
+			retStyle.alignment = kCTRightTextAlignment;
+			break;
+		case NSTextAlignmentCenter:
+			retStyle.alignment = kCTCenterTextAlignment;
+			break;
+		case NSTextAlignmentJustified:
+			retStyle.alignment = kCTJustifiedTextAlignment;
+			break;
+		case NSTextAlignmentNatural:
+			retStyle.alignment = kCTNaturalTextAlignment;
+			break;
+	}
+	
+	switch (paragraphStyle.baseWritingDirection)
+	{
+		case NSWritingDirectionNatural:
+			retStyle.baseWritingDirection = kCTWritingDirectionNatural;
+			break;
+		case NSWritingDirectionLeftToRight:
+			retStyle.baseWritingDirection = kCTWritingDirectionLeftToRight;
+			break;
+		case NSWritingDirectionRightToLeft:
+			retStyle.baseWritingDirection = kCTWritingDirectionRightToLeft;
+			break;
+	}
+	
+	return retStyle;
+}
+#endif
 
 - (id)init
 {	
 	if ((self = [super init]))
 	{
 		// defaults
-		firstLineHeadIndent = 0.0;
-		defaultTabInterval = 36.0;
-		baseWritingDirection = kCTWritingDirectionNatural;
+		_firstLineHeadIndent = 0.0;
+		_defaultTabInterval = 36.0;
+		_baseWritingDirection = kCTWritingDirectionNatural;
 		_alignment = kCTNaturalTextAlignment;
-		lineHeightMultiple = 0.0;
-		minimumLineHeight = 0.0;
-		maximumLineHeight = 0.0;
-		paragraphSpacing = 0.0;
-		listIndent = 0;
+		_lineHeightMultiple = 0.0;
+		_minimumLineHeight = 0.0;
+		_maximumLineHeight = 0.0;
+		_paragraphSpacing = 0.0;
 	}
 	
 	return self;
@@ -106,85 +113,153 @@ static dispatch_semaphore_t selfLock;
 {	
 	if ((self = [super init]))
 	{
+		// text alignment
 		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierAlignment,sizeof(_alignment), &_alignment);
-		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierFirstLineHeadIndent, sizeof(firstLineHeadIndent), &firstLineHeadIndent);
-		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierDefaultTabInterval, sizeof(defaultTabInterval), &defaultTabInterval);
 		
+		// indents
+		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierFirstLineHeadIndent, sizeof(_firstLineHeadIndent), &_firstLineHeadIndent);
+		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierHeadIndent, sizeof(_headIndent), &_headIndent);
+		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierTailIndent, sizeof(_tailIndent), &_tailIndent);
 		
-		__unsafe_unretained NSArray *stops; // Could use a CFArray too, leave as a reminder how to do this in the future
+		// paragraph spacing
+		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierParagraphSpacing, sizeof(_paragraphSpacing), &_paragraphSpacing);
+		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierParagraphSpacingBefore,sizeof(_paragraphSpacingBefore), &_paragraphSpacingBefore);
+
+
+		// tab stops
+		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierDefaultTabInterval, sizeof(_defaultTabInterval), &_defaultTabInterval);
+		
+		DT_WEAK_VARIABLE NSArray *stops; // Could use a CFArray too, leave as a reminder how to do this in the future
 		if (CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierTabStops, sizeof(stops), &stops))
 		{
 			self.tabStops = stops;
 		}
-		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierParagraphSpacing, sizeof(paragraphSpacing), &paragraphSpacing);
-		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierParagraphSpacingBefore,sizeof(paragraphSpacingBefore), &paragraphSpacingBefore);
 		
-		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierHeadIndent, sizeof(headIndent), &headIndent);
-		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierBaseWritingDirection, sizeof(baseWritingDirection), &baseWritingDirection);
-		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierLineHeightMultiple, sizeof(lineHeightMultiple), &lineHeightMultiple);
 		
-		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierMinimumLineHeight, sizeof(minimumLineHeight), &minimumLineHeight);
-		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierMaximumLineHeight, sizeof(maximumLineHeight), &maximumLineHeight);
+		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierBaseWritingDirection, sizeof(_baseWritingDirection), &_baseWritingDirection);
 		
-		if (lineHeightMultiple)
-		{
-			// paragraph space is pre-multiplied
-			if (paragraphSpacing)
-			{
-				paragraphSpacing /= lineHeightMultiple;
-			}
-			
-			if (paragraphSpacingBefore)
-			{
-				paragraphSpacingBefore /= lineHeightMultiple;
-			}
-		}
+		// line height
+		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierMinimumLineHeight, sizeof(_minimumLineHeight), &_minimumLineHeight);
+		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierMaximumLineHeight, sizeof(_maximumLineHeight), &_maximumLineHeight);
+
+		
+		CTParagraphStyleGetValueForSpecifier(ctParagraphStyle, kCTParagraphStyleSpecifierLineHeightMultiple, sizeof(_lineHeightMultiple), &_lineHeightMultiple);
 	}
 	
 	return self;
 }
 
-
-
 - (CTParagraphStyleRef)createCTParagraphStyle
 {
-	// need to multiple paragraph spacing with line height multiplier
-	float tmpParagraphSpacing = paragraphSpacing;
-	float tmpParagraphSpacingBefore = paragraphSpacingBefore;
-	
-	if (lineHeightMultiple&&(lineHeightMultiple!=1.0))
-	{
-		tmpParagraphSpacing *= lineHeightMultiple;
-		tmpParagraphSpacingBefore *= lineHeightMultiple;
-	}
-	
 	// This just makes it that much easier to track down memory issues with tabstops
 	CFArrayRef stops = _tabStops ? CFArrayCreateCopy (NULL, (__bridge CFArrayRef)_tabStops) : NULL;
 	
 	CTParagraphStyleSetting settings[] = 
 	{
 		{kCTParagraphStyleSpecifierAlignment, sizeof(_alignment), &_alignment},
-		{kCTParagraphStyleSpecifierFirstLineHeadIndent, sizeof(firstLineHeadIndent), &firstLineHeadIndent},
-		{kCTParagraphStyleSpecifierDefaultTabInterval, sizeof(defaultTabInterval), &defaultTabInterval},
+		{kCTParagraphStyleSpecifierFirstLineHeadIndent, sizeof(_firstLineHeadIndent), &_firstLineHeadIndent},
+		{kCTParagraphStyleSpecifierDefaultTabInterval, sizeof(_defaultTabInterval), &_defaultTabInterval},
 		
 		{kCTParagraphStyleSpecifierTabStops, sizeof(stops), &stops},
 		
-		{kCTParagraphStyleSpecifierParagraphSpacing, sizeof(tmpParagraphSpacing), &tmpParagraphSpacing},
-		{kCTParagraphStyleSpecifierParagraphSpacingBefore, sizeof(tmpParagraphSpacingBefore), &tmpParagraphSpacingBefore},
+		{kCTParagraphStyleSpecifierParagraphSpacing, sizeof(_paragraphSpacing), &_paragraphSpacing},
+		{kCTParagraphStyleSpecifierParagraphSpacingBefore, sizeof(_paragraphSpacingBefore), &_paragraphSpacingBefore},
 		
-		{kCTParagraphStyleSpecifierHeadIndent, sizeof(headIndent), &headIndent},
-		{kCTParagraphStyleSpecifierBaseWritingDirection, sizeof(baseWritingDirection), &baseWritingDirection},
-		{kCTParagraphStyleSpecifierLineHeightMultiple, sizeof(lineHeightMultiple), &lineHeightMultiple},
+		{kCTParagraphStyleSpecifierHeadIndent, sizeof(_headIndent), &_headIndent},
+		{kCTParagraphStyleSpecifierTailIndent, sizeof(_tailIndent), &_tailIndent},
+		{kCTParagraphStyleSpecifierBaseWritingDirection, sizeof(_baseWritingDirection), &_baseWritingDirection},
+		{kCTParagraphStyleSpecifierLineHeightMultiple, sizeof(_lineHeightMultiple), &_lineHeightMultiple},
 		
-		{kCTParagraphStyleSpecifierMinimumLineHeight, sizeof(minimumLineHeight), &minimumLineHeight},
-		{kCTParagraphStyleSpecifierMaximumLineHeight, sizeof(maximumLineHeight), &maximumLineHeight}
+		{kCTParagraphStyleSpecifierMinimumLineHeight, sizeof(_minimumLineHeight), &_minimumLineHeight},
+		{kCTParagraphStyleSpecifierMaximumLineHeight, sizeof(_maximumLineHeight), &_maximumLineHeight}
 	};	
 	
-	CTParagraphStyleRef ret = CTParagraphStyleCreate(settings, 11);
-	if (stops) CFRelease(stops);
+	CTParagraphStyleRef ret = CTParagraphStyleCreate(settings, 12);
 	
+	if (stops)
+	{
+		CFRelease(stops);
+	}
+
 	return ret;
 }
+
+#if DTCORETEXT_SUPPORT_NS_ATTRIBUTES
+- (NSParagraphStyle *)NSParagraphStyle
+{
+	NSMutableParagraphStyle *mps = [[NSMutableParagraphStyle alloc] init];
+
+	[mps setFirstLineHeadIndent:_firstLineHeadIndent];
+
+	// _defaultTabInterval not supported
+
+	[mps setParagraphSpacing:_paragraphSpacing];
+	[mps setParagraphSpacingBefore:_paragraphSpacingBefore];
+	
+	[mps setHeadIndent:_headIndent];
+	[mps setTailIndent:_tailIndent];
+	
+	[mps setMinimumLineHeight:_minimumLineHeight];
+	[mps setMaximumLineHeight:_maximumLineHeight];
+	
+	switch(_alignment)
+	{
+		case kCTLeftTextAlignment:
+		{
+			[mps setAlignment:NSTextAlignmentLeft];
+			break;
+		}
+			
+		case kCTRightTextAlignment:
+		{
+			[mps setAlignment:NSTextAlignmentRight];
+			break;
+		}
+			
+		case kCTCenterTextAlignment:
+		{
+			[mps setAlignment:NSTextAlignmentCenter];
+			break;
+		}
+			
+		case kCTJustifiedTextAlignment:
+		{
+			[mps setAlignment:NSTextAlignmentJustified];
+			break;
+		}
+			
+		case kCTNaturalTextAlignment:
+		{
+			[mps setAlignment:NSTextAlignmentNatural];
+			break;
+		}
+	}
+	
+	switch (_baseWritingDirection)
+	{
+		case  kCTWritingDirectionNatural:
+		{
+			[mps setBaseWritingDirection:NSWritingDirectionNatural];
+			break;
+		}
+			
+		case  kCTWritingDirectionLeftToRight:
+		{
+			[mps setBaseWritingDirection:NSWritingDirectionLeftToRight];
+			break;
+		}
+			
+		case  kCTWritingDirectionRightToLeft:
+		{
+			[mps setBaseWritingDirection:NSWritingDirectionRightToLeft];
+			break;
+		}
+	}
+
+	// _tap stops not supported
+	return (NSParagraphStyle *)mps;
+}
+#endif
 
 - (void)addTabStopAtPosition:(CGFloat)position alignment:(CTTextAlignment)alignment
 {
@@ -196,7 +271,6 @@ static dispatch_semaphore_t selfLock;
 			_tabStops = [[NSMutableArray alloc] init];
 		}
 		[_tabStops addObject:CFBridgingRelease(tab)];
-		//CFRelease(tab);
 	}
 }
 
@@ -226,12 +300,13 @@ static dispatch_semaphore_t selfLock;
 			break;
 	}
 	
-	if (lineHeightMultiple && lineHeightMultiple!=1.0f)
+	if (_lineHeightMultiple && _lineHeightMultiple!=1.0f)
 	{
-		[retString appendFormat:@"line-height:%.2fem;", lineHeightMultiple];
+		NSNumber *number = [NSNumber numberWithFloat:_lineHeightMultiple];
+		[retString appendFormat:@"line-height:%@em;", number];
 	}
 	
-	switch (baseWritingDirection) 
+	switch (_baseWritingDirection)
 	{
 		case kCTWritingDirectionRightToLeft:
 			[retString appendString:@"direction:rtl;"];
@@ -244,6 +319,35 @@ static dispatch_semaphore_t selfLock;
 			break;
 	}	
 	
+	// Spacing at the bottom
+	if (_paragraphSpacing!=0.0f)
+	{
+		NSNumber *number = [NSNumber numberWithFloat:_paragraphSpacing];
+		[retString appendFormat:@"margin-bottom:%@px;", number];
+	}
+
+	// Spacing at the top
+	if (_paragraphSpacingBefore!=0.0f)
+	{
+		NSNumber *number = [NSNumber numberWithFloat:_paragraphSpacingBefore];
+		[retString appendFormat:@"margin-top:%@px;", number];
+	}
+	
+	// Spacing at the left
+	if (_headIndent!=0.0f)
+	{
+		NSNumber *number = [NSNumber numberWithFloat:_headIndent];
+		[retString appendFormat:@"margin-left:%@px;", number];
+	}
+
+	// Spacing at the right
+	if (_tailIndent!=0.0f)
+	{
+		// tail indent is negative if from trailing margin
+		NSNumber *number = [NSNumber numberWithFloat:-_tailIndent];
+		[retString appendFormat:@"margin-right:%@px;", number];
+	}
+
 	// return nil if no content
 	if ([retString length])
 	{
@@ -262,6 +366,7 @@ static dispatch_semaphore_t selfLock;
 	DTCoreTextParagraphStyle *newObject = [[DTCoreTextParagraphStyle allocWithZone:zone] init];
 	
 	newObject.firstLineHeadIndent = self.firstLineHeadIndent;
+	newObject.tailIndent = self.tailIndent;
 	newObject.defaultTabInterval = self.defaultTabInterval;
 	newObject.paragraphSpacing = self.paragraphSpacing;
 	newObject.paragraphSpacingBefore = self.paragraphSpacingBefore;
@@ -269,7 +374,6 @@ static dispatch_semaphore_t selfLock;
 	newObject.minimumLineHeight = self.minimumLineHeight;
 	newObject.maximumLineHeight = self.maximumLineHeight;
 	newObject.headIndent = self.headIndent;
-	newObject.listIndent = self.listIndent;
 	newObject.alignment = self.alignment;
 	newObject.baseWritingDirection = self.baseWritingDirection;
 	newObject.tabStops = self.tabStops; // copy
@@ -289,19 +393,124 @@ static dispatch_semaphore_t selfLock;
 	}
 }
 
-@synthesize firstLineHeadIndent;
-@synthesize defaultTabInterval;
-@synthesize paragraphSpacingBefore;
-@synthesize paragraphSpacing;
-@synthesize lineHeightMultiple;
-@synthesize minimumLineHeight;
-@synthesize maximumLineHeight;
-@synthesize headIndent;
-@synthesize listIndent;
+- (void)setFirstLineHeadIndent:(CGFloat)firstLineHeadIndent
+{
+	if (_firstLineHeadIndent != firstLineHeadIndent)
+	{
+		_firstLineHeadIndent = firstLineHeadIndent;
+	}
+}
+
+- (void)setDefaultTabInterval:(CGFloat)defaultTabInterval
+{
+	if (_defaultTabInterval != defaultTabInterval)
+	{
+		_defaultTabInterval = defaultTabInterval;
+	}
+}
+
+- (void)setParagraphSpacingBefore:(CGFloat)paragraphSpacingBefore
+{
+	if (_paragraphSpacingBefore != paragraphSpacingBefore)
+	{
+		_paragraphSpacingBefore = paragraphSpacingBefore;
+	}
+}
+
+- (void)setParagraphSpacing:(CGFloat)paragraphSpacing
+{
+	if (_paragraphSpacing != paragraphSpacing)
+	{
+		_paragraphSpacing = paragraphSpacing;
+	}
+}
+
+- (void)setLineHeightMultiple:(CGFloat)lineHeightMultiple
+{
+	if (_lineHeightMultiple != lineHeightMultiple)
+	{
+		_lineHeightMultiple = lineHeightMultiple;
+	}
+}
+
+- (void)setMinimumLineHeight:(CGFloat)minimumLineHeight
+{
+	if (_minimumLineHeight != minimumLineHeight)
+	{
+		_minimumLineHeight = minimumLineHeight;
+	}
+}
+
+- (void)setMaximumLineHeight:(CGFloat)maximumLineHeight
+{
+	if (_maximumLineHeight != maximumLineHeight)
+	{
+		_maximumLineHeight = maximumLineHeight;
+	}
+}
+
+- (void)setHeadIndent:(CGFloat)headIndent
+{
+	if (_headIndent != headIndent)
+	{
+		_headIndent = headIndent;
+	}
+}
+
+- (void)setTailIndent:(CGFloat)tailIndent
+{
+	if (_tailIndent != tailIndent)
+	{
+		_tailIndent = tailIndent;
+	}
+}
+
+- (void)setAlignment:(CTTextAlignment)alignment
+{
+	if (_alignment != alignment)
+	{
+		_alignment = alignment;
+	}
+}
+
+- (void)setTextLists:(NSArray *)textLists
+{
+	if (_textLists != textLists)
+	{
+		_textLists = [textLists copy];
+	}
+}
+
+- (void)setTextBlocks:(NSArray *)textBlocks
+{
+	if (_textBlocks != textBlocks)
+	{
+		_textBlocks = [textBlocks copy];
+	}
+}
+
+- (void)setBaseWritingDirection:(CTWritingDirection)baseWritingDirection
+{
+	if (_baseWritingDirection != baseWritingDirection)
+	{
+		_baseWritingDirection = baseWritingDirection;
+	}
+}
+
+@synthesize firstLineHeadIndent = _firstLineHeadIndent;
+@synthesize defaultTabInterval = _defaultTabInterval;
+@synthesize paragraphSpacingBefore = _paragraphSpacingBefore;
+@synthesize paragraphSpacing = _paragraphSpacing;
+
+@synthesize lineHeightMultiple = _lineHeightMultiple;
+@synthesize minimumLineHeight = _minimumLineHeight;
+@synthesize maximumLineHeight = _maximumLineHeight;
+@synthesize headIndent = _headIndent;
+@synthesize tailIndent = _tailIndent;
 @synthesize alignment = _alignment;
-@synthesize textLists;
-@synthesize textBlocks;
-@synthesize baseWritingDirection;
+@synthesize textLists = _textLists;
+@synthesize textBlocks = _textBlocks;
+@synthesize baseWritingDirection = _baseWritingDirection;
 @synthesize tabStops = _tabStops;
 
 @end

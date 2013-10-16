@@ -15,6 +15,8 @@
 #import "NSString+Helpers.h"
 #import "WPToast.h"
 #import <AFJSONRequestOperation.h>
+#import <UIDeviceHardware.h>
+#import "UIDevice+WordPressIdentifier.h"
 
 NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
 NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
@@ -72,6 +74,9 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 @property (readwrite, nonatomic, strong) NSString *username;
 @property (readwrite, nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *authToken;
+
+- (void)clearWpcomCookies;
+
 @end
 
 @implementation WordPressComApi {
@@ -88,7 +93,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
         if (username) {
             NSError *error = nil;
             password = [SFHFKeychainUtils getPasswordForUsername:username
-                                                  andServiceName:@"WordPress.com"
+                                                  andServiceName:kWPcomXMLRPCUrl
                                                            error:&error];
             authToken = [SFHFKeychainUtils getPasswordForUsername:username
                                                    andServiceName:WordPressComApiOauthServiceName
@@ -148,7 +153,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
         }
         self.authToken = accessToken;
         NSError *error = nil;
-        [SFHFKeychainUtils storeUsername:self.username andPassword:self.password forServiceName:@"WordPress.com" updateExisting:YES error:&error];
+        [SFHFKeychainUtils storeUsername:self.username andPassword:self.password forServiceName:kWPcomXMLRPCUrl updateExisting:YES error:&error];
         if (error) {
             if (failure) {
                 failure(error);
@@ -179,6 +184,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
         parameters:params
            success:successBlock
            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               WPFLog(@"Couldn't signin the user: %@", error);
                self.password = nil;
                if (operation.response.statusCode != 400) {
                    [WPError showAlertWithError:error];
@@ -201,10 +207,10 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 
 - (void)signOut {
     NSError *error = nil;
-#if FALSE
-    // Until we have accounts, don't delete the password or any blog with that username will stop working
+
     [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:@"WordPress.com" error:&error];
-#endif
+    [SFHFKeychainUtils deleteItemForUsername:self.username andServiceName:kWPcomXMLRPCUrl error:&error];
+    
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] unregisterApnsToken];
     [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = NO;
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey]; //Remove the token from Preferences, otherwise the token is never sent to the server on the next login
@@ -220,7 +226,7 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     // Remove all notes
     [Note removeAllNotesWithContext:[[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext]];
 
-    [self clearReaderCookies];
+    [self clearWpcomCookies];
 
     // Notify the world
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLogoutNotification object:nil];
@@ -263,8 +269,8 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
                 errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
             }
         } else {
+            NSString *localizedErrorMessage = [self errorMessageForError:error];
             NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
-            NSString *localizedErrorMessage = [self errorMessageForErrorCode:errorCode];
             NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
             [userInfo setValue:errorCode forKey:WordPressComApiErrorCodeKey];
             [userInfo setValue:localizedErrorMessage forKey:WordPressComApiErrorMessageKey];
@@ -289,12 +295,12 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 
 - (void)validateWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-    [self createWPComBlogWithUrl:blogUrl andBlogTitle:blogTitle andLanguageId:languageId andBlogVisibility:WordPressComApiBlogVisibilityPublic validate:true success:success failure:failure];
+    [self createWPComBlogWithUrl:blogUrl andBlogTitle:blogTitle andLanguageId:languageId andBlogVisibility:WordPressComApiBlogVisibilityPublic validate:YES success:success failure:failure];
 }
 
 - (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId andBlogVisibility:(WordPressComApiBlogVisibility)visibility success:(void (^)(id))success failure:(void (^)(NSError *))failure
 {
-    [self createWPComBlogWithUrl:blogUrl andBlogTitle:blogTitle andLanguageId:languageId andBlogVisibility:visibility validate:false success:success failure:failure];
+    [self createWPComBlogWithUrl:blogUrl andBlogTitle:blogTitle andLanguageId:languageId andBlogVisibility:visibility validate:NO success:success failure:failure];
 }
 
 - (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId andBlogVisibility:(WordPressComApiBlogVisibility)visibility validate:(BOOL)validate success:(void (^)(id))success failure:(void (^)(NSError *))failure
@@ -318,12 +324,25 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     };
     
     void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error){
-        NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
-        NSString *localizedErrorMessage = [self errorMessageForErrorCode:errorCode];
-        NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
-        [userInfo setValue:errorCode forKey:WordPressComApiErrorCodeKey];
-        [userInfo setValue:localizedErrorMessage forKey:WordPressComApiErrorMessageKey];
-        NSError *errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
+        NSError *errorWithLocalizedMessage;
+        
+        if ([error.userInfo objectForKey:WordPressComApiErrorCodeKey] == nil) {
+            NSString *responseString = [operation responseString];
+            if (responseString != nil && [responseString rangeOfString:@"Limit reached"].location != NSNotFound) {
+                NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
+                [userInfo setValue:NSLocalizedString(@"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support.", @"") forKey:WordPressComApiErrorMessageKey];
+                [userInfo setValue:@"too_many_requests" forKey:WordPressComApiErrorCodeKey];
+                errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];
+            }
+        }
+        else {
+            NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
+            NSString *localizedErrorMessage = [self errorMessageForError:error];
+            NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithDictionary:error.userInfo];
+            [userInfo setValue:errorCode forKey:WordPressComApiErrorCodeKey];
+            [userInfo setValue:localizedErrorMessage forKey:WordPressComApiErrorMessageKey];
+            errorWithLocalizedMessage = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:userInfo];            
+        }
         failure(errorWithLocalizedMessage);
     };
     
@@ -361,18 +380,18 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     self.username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
     NSError *error = nil;
     self.password = [SFHFKeychainUtils getPasswordForUsername:self.username
-                                          andServiceName:@"WordPress.com"
+                                          andServiceName:kWPcomXMLRPCUrl
                                                    error:&error];
-    [self clearReaderCookies];
+    [self clearWpcomCookies];
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLogoutNotification object:nil];
     [WordPressAppDelegate sharedWordPressApplicationDelegate].isWPcomAuthenticated = YES;
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] registerForPushNotifications];
     [[NSNotificationCenter defaultCenter] postNotificationName:WordPressComApiDidLoginNotification object:self.username];
 }
 
-- (void)clearReaderCookies {
-    NSArray *readerCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-    for (NSHTTPCookie *cookie in readerCookies) {
+- (void)clearWpcomCookies {
+    NSArray *wpcomCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+    for (NSHTTPCookie *cookie in wpcomCookies) {
         if ([cookie.domain hasSuffix:@"wordpress.com"]) {
             [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
         }
@@ -469,62 +488,54 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
 - (void)syncPushNotificationInfo {
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey];
     if( nil == token ) return; //no apns token available
-
+    
     if(![[WordPressComApi sharedApi] hasCredentials])
         return;
     
     NSString *authURL = kNotificationAuthURL;
-    NSError *error;
-    NSManagedObjectContext *context = [[WordPressAppDelegate sharedWordPressApplicationDelegate] managedObjectContext];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    [fetchRequest setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:context]];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"blogName" ascending:YES];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
-    [fetchRequest setSortDescriptors:sortDescriptors];
-    NSArray *blogs = [context executeFetchRequest:fetchRequest error:&error];
-
-    NSMutableArray *blogsID = [NSMutableArray array];
-
-    //get a references to media files linked in a post
-    for (Blog *blog in blogs) {
-        if( [blog isWPcom] ) {
-            [blogsID addObject:[blog blogID] ];
-        } else {
-            if ( [blog getOptionValue:@"jetpack_client_id"] )
-                [blogsID addObject:[blog getOptionValue:@"jetpack_client_id"] ];
-        }
-    }
-
-    // Send a multicall for the blogs list and retrieval of push notification settings
+    
+    // Send a multicall for register the token and retrieval of push notification settings
     NSMutableArray *operations = [NSMutableArray arrayWithCapacity:2];
     WPXMLRPCClient *api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:authURL]];
     
     [api setAuthorizationHeaderWithToken:self.authToken];
-  
-    NSDictionary *info = [[NSBundle mainBundle] infoDictionary];
-	NSString *appversion = [[info objectForKey:@"CFBundleVersion"] stringByUrlEncoding];
     
-    NSArray *blogsListParameters = [NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], token, blogsID, @"apple", appversion, nil];
-    WPXMLRPCRequest *blogsListRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_set_blogs_list" parameters:blogsListParameters];
-    WPXMLRPCRequestOperation *blogsListOperation = [api XMLRPCRequestOperationWithRequest:blogsListRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        WPFLog(@"Sent blogs list (%d blogs)", [blogsID count]);
+#ifdef DEBUG
+    NSNumber *production = @NO;
+#else
+    NSNumber *production = @YES;
+#endif
+
+    NSDictionary *tokenOptions = @{
+                                   @"device_family": @"apple",
+                                   @"device_model": [UIDeviceHardware platform],
+                                   @"device_name": [[UIDevice currentDevice] name],
+                                   @"device_uuid": [[UIDevice currentDevice] wordpressIdentifier],
+                                   @"production": production,
+                                   @"app_version": [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
+                                   @"os_version": [[UIDevice currentDevice] systemVersion],
+                                   };
+    WPXMLRPCRequest *tokenRequest = [api XMLRPCRequestWithMethod:@"wpcom.mobile_push_register_token" parameters:[NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], token, tokenOptions, nil]];
+    WPXMLRPCRequestOperation *tokenOperation = [api XMLRPCRequestOperationWithRequest:tokenRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        WPFLog(@"Registered token %@" , token);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Failed registering blogs list: %@", [error localizedDescription]);
+        WPFLog(@"Couldn't register token: %@", [error localizedDescription]);
     }];
-
-    [operations addObject:blogsListOperation];
-
+    
+    [operations addObject:tokenOperation];
+    
     NSArray *settingsParameters = [NSArray arrayWithObjects:[self usernameForXmlrpc], [self passwordForXmlrpc], token, @"apple", nil];
     WPXMLRPCRequest *settingsRequest = [api XMLRPCRequestWithMethod:@"wpcom.get_mobile_push_notification_settings" parameters:settingsParameters];
     WPXMLRPCRequestOperation *settingsOperation = [api XMLRPCRequestOperationWithRequest:settingsRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *supportedNotifications = (NSDictionary *)responseObject;
         [[NSUserDefaults standardUserDefaults] setObject:supportedNotifications forKey:@"notification_preferences"];
+        WPFLog(@"Notification settings loaded!");
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         WPFLog(@"Failed to receive supported notification list: %@", [error localizedDescription]);
     }];
-
+    
     [operations addObject:settingsOperation];
-
+    
     AFHTTPRequestOperation *combinedOperation = [api combinedHTTPRequestOperationWithOperations:operations success:^(AFHTTPRequestOperation *operation, id responseObject) {} failure:^(AFHTTPRequestOperation *operation, NSError *error) {}];
     [api enqueueHTTPRequestOperation:combinedOperation];
 }
@@ -742,9 +753,11 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
     return [WordPressComApiCredentials secret];
 }
 
-- (NSString *)errorMessageForErrorCode:(NSString *)errorCode
+- (NSString *)errorMessageForError:(NSError *)error
 {
-    // TODO : Review list of error codes
+    NSString *errorCode = [error.userInfo objectForKey:WordPressComApiErrorCodeKey];
+    NSString *errorMessage = [[error.userInfo objectForKey:NSLocalizedDescriptionKey] stringByStrippingHTML];
+    
     if ([errorCode isEqualToString:@"username_only_lowercase_letters_and_numbers"]) {
         return NSLocalizedString(@"Sorry, usernames can only contain lowercase letters (a-z) and numbers.", nil);
     } else if ([errorCode isEqualToString:@"username_required"]) {
@@ -759,8 +772,6 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
         return NSLocalizedString(@"Sorry, usernames may not contain the character &#8220;_&#8221;!", nil);
     } else if ([errorCode isEqualToString:@"username_must_include_letters"]) {
         return NSLocalizedString(@"Sorry, usernames must have letters (a-z) too!", nil);
-    } else if ([errorCode isEqualToString:@"email_invalid"]) {
-        return NSLocalizedString(@"Please enter a valid email address.", nil);
     } else if ([errorCode isEqualToString:@"email_not_allowed"]) {
         return NSLocalizedString(@"Sorry, that email address is not allowed!", nil);
     } else if ([errorCode isEqualToString:@"username_exists"]) {
@@ -769,6 +780,8 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
         return NSLocalizedString(@"Sorry, that email address is already being used!", nil);
     } else if ([errorCode isEqualToString:@"username_reserved_but_may_be_available"]) {
         return NSLocalizedString(@"That username is currently reserved but may be available in a couple of days.", nil);
+    } else if ([errorCode isEqualToString:@"username_unavailable"]) {
+        return NSLocalizedString(@"Sorry, that username is unavailable.", nil);
     } else if ([errorCode isEqualToString:@"email_reserved"]) {
         return NSLocalizedString(@"That email address has already been used. Please check your inbox for an activation email. If you don't activate you can try again in a few days.", nil);
     } else if ([errorCode isEqualToString:@"blog_name_required"]) {
@@ -795,15 +808,45 @@ NSString *const WordPressComApiErrorMessageKey = @"WordPressComApiErrorMessageKe
         return NSLocalizedString(@"That site is currently reserved but may be available in a couple days.", nil);
     } else if ([errorCode isEqualToString:@"password_invalid"]) {
         return NSLocalizedString(@"Your password is invalid because it does not meet our security guidelines. Please try a more complex password.", @"");
-    } else if ([errorCode isEqualToString:@"blog_name_invalid"]) {
-        return NSLocalizedString(@"Invalid Site Address", @"");
     } else if ([errorCode isEqualToString:@"blog_title_invalid"]) {
         return NSLocalizedString(@"Invalid Site Title", @"");
-    } else if ([errorCode isEqualToString:@"username_invalid"]) {
-        return NSLocalizedString(@"Invalid username", @"");
+    } else if ([errorCode isEqualToString:@"username_illegal_wpcom"]) {
+        // Try to extract the illegal phrase
+        NSError *error;
+        NSRegularExpression *regEx = [NSRegularExpression regularExpressionWithPattern:@"\"([^\"].*)\"" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSArray *matches = [regEx matchesInString:errorMessage options:0 range:NSMakeRange(0, [errorMessage length])];
+        NSString *invalidPhrase = @"";
+        for (NSTextCheckingResult *result in matches) {
+            if ([result numberOfRanges] < 2)
+                continue;
+            NSRange invalidTextRange = [result rangeAtIndex:1];
+            invalidPhrase = [NSString stringWithFormat:@" (\"%@\")", [errorMessage substringWithRange:invalidTextRange]];
+        }
+        
+        return [NSString stringWithFormat:NSLocalizedString(@"Sorry, but your username contains an invalid phrase%@.", @"This error message occurs when a user tries to create a username that contains an invalid phrase for WordPress.com. The %@ may include the phrase in question if it was sent down by the API"), invalidPhrase];
+    }
+
+    // We have a few ambiguous errors that come back from the api, they sometimes have error messages included so
+    // attempt to return that if possible. If not fall back to a generic error.
+    NSDictionary *ambiguousErrors = @{
+                                      @"email_invalid": NSLocalizedString(@"Please enter a valid email address.", nil),
+                                      @"blog_name_invalid" : NSLocalizedString(@"Invalid Site Address", @""),
+                                      @"username_invalid" : NSLocalizedString(@"Invalid username", @"")
+                                      };
+    if ([ambiguousErrors.allKeys containsObject:errorCode]) {
+        if (errorMessage != nil) {
+            return errorMessage;
+        } else {
+            return [ambiguousErrors objectForKey:errorCode];
+        }
     }
     
-    return NSLocalizedString(@"Unknown error", nil);
+    // Return an error message if there's one included rather than the unhelpful "Unknown Error"
+    if (errorMessage != nil) {
+        return errorMessage;
+    } else {
+        return NSLocalizedString(@"Unknown error", nil);
+    }
 }
 
 @end

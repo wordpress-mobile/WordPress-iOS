@@ -24,7 +24,7 @@
         self.textField.backgroundColor = [UIColor clearColor];
         self.textField.autocorrectionType = UITextAutocorrectionTypeNo;
         self.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        self.textField.textAlignment = UITextAlignmentLeft;
+        self.textField.textAlignment = NSTextAlignmentLeft;
         self.textField.clearButtonMode = UITextFieldViewModeNever;
         self.textField.enabled = YES;
         self.textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;

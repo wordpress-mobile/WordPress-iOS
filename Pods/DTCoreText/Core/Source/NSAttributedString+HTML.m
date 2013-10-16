@@ -1,6 +1,6 @@
 //
 //  NSAttributedString+HTML.m
-//  CoreTextExtensions
+//  DTCoreText
 //
 //  Created by Oliver Drobnik on 1/9/11.
 //  Copyright 2011 Drobnik.com. All rights reserved.
@@ -55,6 +55,68 @@
 	id string = [stringBuilder generatedAttributedString];
 	
 	return string;
+}
+
+#pragma mark - Working with Custom HTML Attributes
+
+- (NSDictionary *)HTMLAttributesAtIndex:(NSUInteger)index
+{
+	return [self attribute:DTCustomAttributesAttribute atIndex:index effectiveRange:NULL];
+}
+
+- (NSRange)rangeOfHTMLAttribute:(NSString *)name atIndex:(NSUInteger)index
+{
+	NSRange rangeSoFar;
+	
+	NSDictionary *attributes = [self attribute:DTCustomAttributesAttribute atIndex:index effectiveRange:&rangeSoFar];
+	
+	NSAssert(attributes, @"No custom attribute '%@' at index %d", name, (int)index);
+	
+	// check if there is a value for this custom attribute name
+	id value = [attributes objectForKey:name];
+	
+	if (!attributes || !value)
+	{
+		return NSMakeRange(NSNotFound, 0);
+	}
+	
+	// search towards beginning
+	while (rangeSoFar.location>0)
+	{
+		NSRange extendedRange;
+		attributes = [self attribute:DTCustomAttributesAttribute atIndex:rangeSoFar.location-1 effectiveRange:&extendedRange];
+		
+		id extendedValue = [attributes objectForKey:name];
+		
+		// abort search if key not found or value not identical
+		if (!extendedValue || ![extendedValue isEqual:value])
+		{
+			break;
+		}
+		
+		rangeSoFar = NSUnionRange(rangeSoFar, extendedRange);
+	}
+	
+	NSUInteger length = [self length];
+	
+	// search towards end
+	while (NSMaxRange(rangeSoFar)<length)
+	{
+		NSRange extendedRange;
+		attributes = [self attribute:DTCustomAttributesAttribute atIndex:NSMaxRange(rangeSoFar) effectiveRange:&extendedRange];
+		
+		id extendedValue = [attributes objectForKey:name];
+		
+		// abort search if key not found or value not identical
+		if (!extendedValue || ![extendedValue isEqual:value])
+		{
+			break;
+		}
+		
+		rangeSoFar = NSUnionRange(rangeSoFar, extendedRange);
+	}
+	
+	return rangeSoFar;
 }
 
 @end

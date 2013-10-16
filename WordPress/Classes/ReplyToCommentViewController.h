@@ -10,8 +10,6 @@
 #import "Comment.h"
 #import "EditCommentViewController.h"
 
-@class CommentViewController;
-
 @protocol ReplyToCommentViewControllerDelegate <NSObject>
 
 - (void)cancelReplyToCommentViewController:(id)sender;

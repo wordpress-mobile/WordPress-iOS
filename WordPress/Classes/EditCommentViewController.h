@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Comment.h"
 
-@class CommentViewController;
+@class CommentViewController, IOS7CorrectedTextView;
 
 @interface EditCommentViewController : UIViewController <UIActionSheetDelegate>
 	
@@ -21,7 +21,7 @@
 @property (nonatomic) BOOL hasChanges;
 @property (nonatomic) BOOL isTransitioning;
 @property (nonatomic) BOOL isEditing;
-@property (nonatomic, strong) IBOutlet UITextView *textView;
+@property (nonatomic, strong) IBOutlet IOS7CorrectedTextView *textView;
 @property (nonatomic, strong) NSString *textViewText;
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification;

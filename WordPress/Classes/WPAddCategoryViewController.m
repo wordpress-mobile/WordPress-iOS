@@ -13,10 +13,14 @@
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
 	[super viewDidLoad];
     catTableView.sectionFooterHeight = 0.0;
-    saveButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:UIBarButtonItemStyleDone target:self action:@selector(saveAddCategory:)];
 
-    newCatNameField.font = [UIFont fontWithName:@"Helvetica" size:17];
-    parentCatNameField.font = [UIFont fontWithName:@"Helvetica" size:17];
+    saveButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(saveAddCategory:)];
+
+    newCatNameField.font = [UIFont fontWithName:@"OpenSans" size:17];
+    parentCatNameLabel.font = [WPStyleGuide tableviewSectionHeaderFont];
+    parentCatNameLabel.textColor = [WPStyleGuide whisperGrey];
+    parentCatNameField.font = [WPStyleGuide tableviewTextFont];
+    parentCatNameField.textColor = [WPStyleGuide whisperGrey];
     parentCatNameLabel.text = NSLocalizedString(@"Parent Category", @"Placeholder to set a parent category for a new category.");
     parentCatNameField.placeholder = NSLocalizedString(@"Optional", @"Placeholder to indicate that filling out the field is optional.");
     newCatNameField.placeholder = NSLocalizedString(@"Title", @"Title of the new Category being created.");
@@ -24,9 +28,7 @@
     cancelButtonItem.title = NSLocalizedString(@"Cancel", @"Cancel button label.");
 
     parentCat = nil;
-    //Set background to clear for iOS 4. Delete this line when we set iOS 5 as the min OS
-    catTableView.backgroundColor = [UIColor clearColor];
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
+    [WPStyleGuide configureColorsForView:self.view andTableView:catTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -87,10 +89,10 @@
 }
 - (void)dismiss {
     WPFLogMethod();
-    if (IS_IPAD == YES) {
+    if (IS_IPAD) {
         [(WPSelectionTableViewController *)self.parentViewController popViewControllerAnimated:YES];
     } else {
-        [self.parentViewController dismissModalViewControllerAnimated:YES];
+        [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -222,8 +224,6 @@
     if (indexPath.section == 0) {
         return newCatNameCell;
     } else {
-//		parentCatNameCell.text = @"Parent Category";
-//		parentCatNameCell.textColor = [UIColor blueColor];
         return parentCatNameCell;
     }
 }

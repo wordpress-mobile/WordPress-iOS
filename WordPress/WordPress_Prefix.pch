@@ -24,12 +24,19 @@
     #import "UIColor+Helpers.h"
     #import "PanelNavigationController.h"
     #import "WPMobileStats.h"
+    #import "WPStyleGuide.h"
 
 #ifndef IS_IPAD
 #define IS_IPAD   ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
 #endif
 #ifndef IS_IPHONE
 #define IS_IPHONE   (!IS_IPAD)
+#endif
+#ifndef IS_IOS7
+#define IS_IOS7 (NSStringFromClass([UIDynamicAnimator class]) != nil)
+#endif
+#ifndef IS_RETINA
+#define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2)
 #endif
 
 #endif

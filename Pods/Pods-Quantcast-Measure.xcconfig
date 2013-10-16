@@ -1,0 +1,1 @@
+PODS_QUANTCAST_MEASURE_OTHER_LDFLAGS = -lsqlite3 -lz -framework CoreGraphics -framework CoreTelephony -framework Foundation -framework SystemConfiguration -framework UIKit -weak_framework AdSupport

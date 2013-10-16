@@ -7,6 +7,7 @@
 //
 
 #import "SelectWPComBlogVisibilityViewController.h"
+#import "WPTableViewSectionFooterView.h"
 
 @interface SelectWPComBlogVisibilityViewController () {
     NSArray *_visibilityOptions;
@@ -83,13 +84,26 @@
 
 #pragma mark - Private Methods
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+- (NSString *)titleForFooterInSection:(NSInteger)section {
     NSMutableString *text = [[NSMutableString alloc] init];
     [text appendFormat:@"%@ - %@\n\n", NSLocalizedString(@"Public", nil), NSLocalizedString(@"Blog_Visibility_Public_Description", nil)];
     [text appendFormat:@"%@ - %@\n\n", NSLocalizedString(@"Hidden", nil), NSLocalizedString(@"Blog_Visibility_Hidden_Description", nil)];
     [text appendFormat:@"%@ - %@", NSLocalizedString(@"Private", nil), NSLocalizedString(@"Blog_Visibility_Private_Description", nil)];
 
     return text;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForFooterInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    NSString *title = [self titleForFooterInSection:section];
+    return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
 @end

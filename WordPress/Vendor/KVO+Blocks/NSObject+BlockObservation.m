@@ -71,7 +71,7 @@ static NSString *AMObserverTrampolineContext = @"AMObserverTrampolineContext";
 @end
 
 static NSString *AMObserverMapKey = @"org.andymatuschak.observerMap";
-static dispatch_queue_t AMObserverMutationQueue = NULL;
+static dispatch_queue_t AMObserverMutationQueue = nil;
 
 static dispatch_queue_t AMObserverMutationQueueCreatingIfNecessary()
 {

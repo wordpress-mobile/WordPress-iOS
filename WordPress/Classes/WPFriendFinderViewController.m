@@ -8,8 +8,7 @@
 
 #import <AddressBook/AddressBook.h>
 #import <Accounts/Accounts.h>
-#import <Twitter/Twitter.h>
-#import "Facebook.h"
+#import <Social/Social.h>
 #import "WPFriendFinderViewController.h"
 #import "JSONKit.h"
 #import "WordPressAppDelegate.h"
@@ -23,6 +22,7 @@ typedef void (^CancelBlock)();
 @interface WPFriendFinderViewController () <UIAlertViewDelegate>
 
 @property (nonatomic, copy) DismissBlock dismissBlock;
+@property (nonatomic, strong) UIActivityIndicatorView *activityView;
 
 - (void)findEmails;
 - (void)findTwitterFriends;
@@ -44,11 +44,22 @@ typedef void (^CancelBlock)();
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(facebookDidLogIn:) name:kFacebookLoginNotificationName object:nil];
     [nc addObserver:self selector:@selector(facebookDidNotLogIn:) name:kFacebookNoLoginNotificationName object:nil];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone 
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:[WPStyleGuide barButtonStyleForDone]
                                                                                            target:self 
                                                                                            action:@selector(dismissFriendFinder:)];
-    if([[UIBarButtonItem class] respondsToSelector:@selector(appearance)])
-       [UIBarButtonItem styleButtonAsPrimary:self.navigationItem.rightBarButtonItem];
+    if (!IS_IOS7) {
+        [UIBarButtonItem styleButtonAsPrimary:self.navigationItem.rightBarButtonItem];        
+    }
+    
+    self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.activityView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin;
+    CGRect f1 = self.activityView.frame;
+    CGRect f2 = self.view.frame;
+    f1.origin.x = (f2.size.width / 2.0f) - (f1.size.width / 2.0f);
+    f1.origin.y = (f2.size.height / 2.0f) - (f1.size.height / 2.0f);
+    self.activityView.frame = f1;
+    
+    [self.view addSubview:self.activityView];
 }
 
 - (void)viewDidUnload
@@ -57,11 +68,12 @@ typedef void (^CancelBlock)();
     // remove notification
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.dismissBlock = nil;
+    self.activityView = nil;
 }
 
 - (void)dismissFriendFinder:(id)sender
 {
-    [self.navigationController dismissModalViewControllerAnimated:YES];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)configureFriendFinder:(id)config
@@ -71,14 +83,12 @@ typedef void (^CancelBlock)();
     
     NSMutableArray *available = [NSMutableArray arrayWithObjects:@"address-book", @"facebook", nil];
     
-    if ( [sources containsObject:@"twitter"] && [TWTweetComposeViewController performSelector:(@selector(canSendTweet))]){
+    if ([sources containsObject:@"twitter"]){
         [available addObject:@"twitter"];
     }
     
     
     [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.enableSources(%@)", [available JSONString]]];
-    
-    
 }
 
 - (void)authorizeSource:(NSString *)source
@@ -110,7 +120,7 @@ typedef void (^CancelBlock)();
             dismissBlock:^(int buttonIndex) {
                 
                 if (1 == buttonIndex) {
-                    ABAddressBookRef address_book = ABAddressBookCreate();
+                    ABAddressBookRef address_book = ABAddressBookCreateWithOptions(NULL, NULL);
                     CFArrayRef people = ABAddressBookCopyArrayOfAllPeople(address_book);
                     CFIndex count = CFArrayGetCount(people);
                     
@@ -153,7 +163,7 @@ typedef void (^CancelBlock)();
     ACAccountType *twitterAccountType = 
     [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     
-    [store requestAccessToAccountsWithType:twitterAccountType withCompletionHandler:^(BOOL granted, NSError *error) {
+    [store requestAccessToAccountsWithType:twitterAccountType options:nil completion:^(BOOL granted, NSError *error) {
         
         if (granted) {
             NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -165,9 +175,10 @@ typedef void (^CancelBlock)();
             NSArray *twitterAccounts = [store accountsWithAccountType:twitterAccountType];
             [twitterAccounts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 ACAccount *account = (ACAccount *)obj;
-                TWRequest *request = [[TWRequest alloc] initWithURL:followingURL
-                                                          parameters:params
-                                                       requestMethod:TWRequestMethodGET];
+                SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                                        requestMethod:SLRequestMethodGET
+                                                                  URL:followingURL
+                                                           parameters:params];
                 request.account = account;
                 [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
                     NSString *responseJSON = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
@@ -199,82 +210,39 @@ typedef void (^CancelBlock)();
 
 - (void) findFacebookFriends
 {
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    Facebook *facebook = appDelegate.facebook;
-    
-    if ([facebook isSessionValid]) {
-                
-        [facebook requestWithGraphPath:@"/me/friends" andDelegate:self];
-        
+    ACAccountStore *store = [[ACAccountStore alloc] init];
 
-    } else {
-        // authorize
-        if( ![ReachabilityUtils isInternetReachable] ) {
-            [ReachabilityUtils showAlertNoInternetConnection];
-            return;
+    NSDictionary *options = @{
+                              ACFacebookAppIdKey: kFacebookAppID,
+                              ACFacebookPermissionsKey: @[]
+                              };
+    [store requestAccessToAccountsWithType:[store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook] options:options completion:^(BOOL granted, NSError *error) {
+        if (granted) {
+            NSArray *facebookAccounts = [store accountsWithAccountType:[store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierFacebook]];
+            [facebookAccounts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                ACAccount *account = (ACAccount *)obj;
+                NSURL *friendsURL = [NSURL URLWithString:@"https://graph.facebook.com/me/friends"];
+                SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook
+                                                        requestMethod:SLRequestMethodGET
+                                                                  URL:friendsURL
+                                                           parameters:nil];
+                request.account = account;
+                [request performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+                    NSDictionary *response = [responseData objectFromJSONData];
+                    if (response && [response isKindOfClass:[NSDictionary class]]) {
+                        NSArray *friends = response[@"data"];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"FriendFinder.findByFacebookID(%@)", [friends JSONString]]];
+                        });
+                    }
+                }];
+            }];
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.webView stringByEvaluatingJavaScriptFromString:@"FriendFinder.findByFacebookID()"];
+            });
         }
-        
-        [facebook authorize:nil];
-    }
-    
-}
-
-/**
- * Called just before the request is sent to the server.
- */
-- (void)requestLoading:(FBRequest *)request
-{
-    
-}
-
-/**
- * Called when the Facebook API request has returned a response.
- *
- * This callback gives you access to the raw response. It's called before
- * (void)request:(FBRequest *)request didLoad:(id)result,
- * which is passed the parsed response object.
- */
-- (void)request:(FBRequest *)request didReceiveResponse:(NSURLResponse *)response
-{
-    
-}
-
-/**
- * Called when an error prevents the request from completing successfully.
- */
-- (void)request:(FBRequest *)request didFailWithError:(NSError *)error
-{
-    
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    Facebook *facebook = appDelegate.facebook;
-    [facebook authorize:nil];
-}
-
-/**
- * Called when a request returns and its response has been parsed into
- * an object.
- *
- * The resulting object may be a dictionary, an array or a string, depending
- * on the format of the API response. If you need access to the raw response,
- * use:
- *
- * (void)request:(FBRequest *)request
- *      didReceiveResponse:(NSURLResponse *)response
- */
-- (void)request:(FBRequest *)request didLoad:(id)result
-{
-    NSArray *friends = (NSArray *)[result objectForKey:@"data"];
-    [self.webView stringByEvaluatingJavaScriptFromString:
-     [NSString stringWithFormat:@"FriendFinder.findByFacebookID(%@)", [friends JSONString]]];
-}
-
-/**
- * Called when a request returns a response.
- *
- * The result object is the raw response from the server of type NSData
- */
-- (void)request:(FBRequest *)request didLoadRawResponse:(NSData *)data
-{
+    }];
 }
 
 - (UIAlertView *)alertWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle confirmButtonTitle:(NSString *)confirmButtonTitle dismissBlock:(DismissBlock)dismiss
@@ -319,5 +287,20 @@ typedef void (^CancelBlock)();
     }
 }
 
+#pragma mark - UIWebView Delegate Methods
+
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    if ([[[webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML.length"] numericValue] integerValue] == 0) {
+        [self.activityView startAnimating];
+    }
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [self.activityView stopAnimating];
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [self.activityView stopAnimating];
+}
 
 @end

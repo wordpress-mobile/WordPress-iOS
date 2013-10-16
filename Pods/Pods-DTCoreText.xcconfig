@@ -1,0 +1,1 @@
+PODS_DTCORETEXT_OTHER_LDFLAGS = -framework CoreGraphics -framework CoreText -framework ImageIO -framework MediaPlayer -framework QuartzCore

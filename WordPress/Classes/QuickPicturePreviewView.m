@@ -89,12 +89,7 @@
             imageFrame.size.height += 2 * QPP_FRAME_WIDTH;
             imageFrame.origin.x -= QPP_FRAME_WIDTH;
             imageFrame.origin.y -= QPP_FRAME_WIDTH;
-            frameLayer.frame = imageFrame;
-            
-            paperClipImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"paperclip.png"]];
-            paperClipImageView.frame = CGRectMake(3.0f, -8.0f, 15.0f, 41.0f);
-            [paperClipImageView setHidden:NO];
-            [imageView addSubview:paperClipImageView];
+            frameLayer.frame = imageFrame;            
         }
     }
     
@@ -144,12 +139,10 @@
             self.frame = [self.superview bounds];
             self.backgroundColor = [UIColor blackColor];
             imageView.frame = self.frame;
-            paperClipImageView.alpha = 0.0f;
         } else {
             self.frame = normalFrame;
             self.backgroundColor = [UIColor clearColor];
             imageView.frame = normalImageFrame;
-            paperClipImageView.alpha = 1.0f;
         }
         [UIView commitAnimations];
 

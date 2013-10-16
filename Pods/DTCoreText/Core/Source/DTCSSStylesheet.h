@@ -1,6 +1,6 @@
 //
 //  DTCSSStylesheet.h
-//  CoreTextExtensions
+//  DTCoreText
 //
 //  Created by Oliver Drobnik on 9/5/11.
 //  Copyright (c) 2011 Drobnik.com. All rights reserved.
@@ -67,9 +67,10 @@
  Returns a dictionary that contains the merged style for a given element and the applicable style rules from the receiver.
  
  @param element The HTML element.
+ @param matchedSelectors The CSS selectors that caused a match
  @returns The merged style dictionary containing only styles which selector matches the element
  */
-- (NSDictionary *)mergedStyleDictionaryForElement:(DTHTMLElement *)element;
+- (NSDictionary *)mergedStyleDictionaryForElement:(DTHTMLElement *)element matchedSelectors:(NSSet **)matchedSelectors;
 
 
 /**

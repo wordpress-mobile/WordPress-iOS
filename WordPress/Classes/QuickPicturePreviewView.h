@@ -19,7 +19,7 @@
 @end
 
 @interface QuickPicturePreviewView : UIView {
-    UIImageView *imageView, *paperClipImageView;
+    UIImageView *imageView;
     CALayer *frameLayer;
     BOOL zoomed;
     BOOL zooming;

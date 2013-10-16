@@ -10,8 +10,9 @@
 #import "WordPressAppDelegate.h"
 #import "PanelNavigationConstants.h"
 #import "ReachabilityUtils.h"
-#import "WPActivities.h"
+#import "WPActivityDefaults.h"
 #import "NSString+Helpers.h"
+#import "WPCookie.h"
 
 @class WPReaderDetailViewController;
 
@@ -72,7 +73,13 @@
 
     if( IS_IPHONE ) {
         
-        if ([[UIButton class] respondsToSelector:@selector(appearance)]) {
+        if (IS_IOS7) {
+            UIImage *image = [UIImage imageNamed:@"icon-posts-share"];
+            UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+            [button setImage:image forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
+            self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+        } else {
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
             
             [btn setImage:[UIImage imageNamed:@"navbar_actions.png"] forState:UIControlStateNormal];
@@ -89,14 +96,10 @@
             [btn addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
             
             self.optionsButton = [[UIBarButtonItem alloc] initWithCustomView:btn];
-        } else {
-            self.optionsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                                                               target:self
-                                                                               action:@selector(showLinkOptions)];
         }
         
         if (!self.hidesLinkOptions) {
-            self.navigationItem.rightBarButtonItem = optionsButton;
+            [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:optionsButton forNavigationItem:self.navigationItem];
         }
         
     } else {
@@ -126,8 +129,12 @@
         }
     }
     
-    if ([forwardButton respondsToSelector:@selector(setTintColor:)]) {
-        UIColor *color = [UIColor UIColorFromHex:0x464646];
+    if (IS_IOS7) {
+        toolbar.translucent = NO;
+        toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
+        toolbar.tintColor = [UIColor whiteColor];        
+    } else {
+        UIColor *color = [UIColor whiteColor];
         backButton.tintColor = color;
         forwardButton.tintColor = color;
         refreshButton.tintColor = color;
@@ -276,13 +283,13 @@
      
     NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_article_title();"];
     
-    if( title != nil && [[title trim] isEqualToString:@""] == false ) {
+    if( title != nil && [[title trim] isEqualToString:@""] == NO) {
         return [title trim];
     } else {
         //load the title from the document
         title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"]; 
         
-        if ( title != nil && [[title trim] isEqualToString:@""] == false)
+        if ( title != nil && [[title trim] isEqualToString:@""] == NO)
             return title;
         else {
              NSString* permaLink = [self getDocumentPermalink];
@@ -297,27 +304,21 @@
     
 }
 
-- (bool)canIHazCookie {
-    NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:kMobileReaderURL]];
-    for (NSHTTPCookie *cookie in cookies) {
-        if ([cookie.name isEqualToString:@"wordpress_logged_in"]) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
 - (void)refreshWebView {
     [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
     
     if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
+        __weak WPWebViewController *weakSelf = self;
+        [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
+            [weakSelf refreshWebView];
+        }];
+
         self.optionsButton.enabled = NO;
         self.refreshButton.enabled = NO;
         return;
     }
     
-    if (!needsLogin && self.username && self.password && ![self canIHazCookie]) {
+    if (!needsLogin && self.username && self.password && ![WPCookie hasCookieForURL:self.url andUsername:self.username]) {
         WPFLog(@"We have login credentials but no cookie, let's try login first");
         [self retryWithLogin];
         return;
@@ -497,9 +498,6 @@
 
     if (NSClassFromString(@"UIActivity") != nil) {
         NSString *title = [self getDocumentTitle];
-        SafariActivity *safariActivity = [[SafariActivity alloc] init];
-        InstapaperActivity *instapaperActivity = [[InstapaperActivity alloc] init];
-        PocketActivity *pocketActivity = [[PocketActivity alloc] init];
 
         NSMutableArray *activityItems = [NSMutableArray array];
         if (title) {
@@ -507,36 +505,14 @@
         }
 
         [activityItems addObject:[NSURL URLWithString:permaLink]];
-        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:@[safariActivity, instapaperActivity, pocketActivity]];
+        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:[WPActivityDefaults defaultActivities]];
+        if (title) {
+            [activityViewController setValue:title forKey:@"subject"];
+        }
         activityViewController.completionHandler = ^(NSString *activityType, BOOL completed) {
             if (!completed)
                 return;
-            
-            NSString *event;
-            if ([activityType isEqualToString:UIActivityTypeMail]) {
-                event = StatsEventWebviewSharedArticleViaEmail;
-            } else if ([activityType isEqualToString:UIActivityTypeMessage]) {
-                event = StatsEventWebviewSharedArticleViaSMS;
-            } else if ([activityType isEqualToString:UIActivityTypePostToTwitter]) {
-                event = StatsEventWebviewSharedArticleViaTwitter;
-            } else if ([activityType isEqualToString:UIActivityTypePostToFacebook]) {
-                event = StatsEventWebviewSharedArticleViaFacebook;
-            } else if ([activityType isEqualToString:UIActivityTypeCopyToPasteboard]) {
-                event = StatsEventWebviewCopiedArticleDetails;
-            } else if ([activityType isEqualToString:UIActivityTypePostToWeibo]) {
-                event = StatsEventWebviewSharedArticleViaWeibo;
-            } else if ([activityType isEqualToString:NSStringFromClass([SafariActivity class])]) {
-                event = StatsEventWebviewOpenedArticleInSafari;
-            } else if ([activityType isEqualToString:NSStringFromClass([InstapaperActivity class])]) {
-                event = StatsEventWebviewSentArticleToInstapaper;
-            } else if ([activityType isEqualToString:NSStringFromClass([PocketActivity class])]) {
-                event = StatsEventWebviewSentArticleToPocket;
-            }
-            
-            if (event != nil) {
-                event = [NSString stringWithFormat:@"%@ - %@", self.statsPrefixForShareActions, event];
-                [WPMobileStats trackEventForWPCom:event];
-            }
+            [WPActivityDefaults trackActivityType:activityType withPrefix:self.statsPrefixForShareActions];
         };
         [self presentViewController:activityViewController animated:YES completion:nil];
         return;
@@ -553,7 +529,10 @@
 
 - (void)reload {
     if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnectionWithDelegate:self];
+        __weak WPWebViewController *weakSelf = self;
+        [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
+            [weakSelf refreshWebView];
+        }];
         self.optionsButton.enabled = NO;
         self.refreshButton.enabled = NO;
         return;
@@ -663,17 +642,6 @@
     }
 }
 
-
-#pragma mark -
-#pragma mark AlertView Delegate Methods
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if(buttonIndex > 0) {
-        [self refreshWebView];
-    }
-}
-
-
 #pragma mark - UIActionSheetDelegate
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -695,8 +663,9 @@
         NSString *body = [permaLink trim];
         [controller setMessageBody:body isHTML:NO];
         
-        if (controller) 
-            [self.panelNavigationController presentModalViewController:controller animated:YES];        
+        if (controller) {
+            [self.panelNavigationController presentViewController:controller animated:YES completion:nil];
+        }
         [self setMFMailFieldAsFirstResponder:controller.view mfMailField:@"MFRecipientTextField"];
     } else if ( buttonIndex == 2 ) {
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
@@ -707,9 +676,8 @@
 
 #pragma mark - MFMailComposeViewControllerDelegate
 
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
-{
-	[self dismissModalViewControllerAnimated:YES];
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - custom methods
@@ -740,10 +708,10 @@
 }
 
 - (void)showCloseButton {
-    if ( IS_IPAD ) {
+    if (IS_IPAD) {
         if(self.navigationController.navigationBarHidden) {
             UINavigationItem *topItem = self.iPadNavBar.topItem;
-            topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(dismiss)];
+            topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
         }
     }
 }

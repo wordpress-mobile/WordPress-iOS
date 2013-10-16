@@ -1,28 +1,24 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import <CrashReporter/CrashReporter.h>
 
 #import "Constants.h"
 #import "Blog.h"
 #import "HelpViewController.h"
 #import "Reachability.h"
 #import "PanelNavigationController.h"
-#import "FBConnect.h"
-#import "CrashReportViewController.h"
 #import "Constants.h"
 #import "DDFileLogger.h"
 
 
 @class AutosaveManager;
 
-@interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate, FBSessionDelegate> {
+@interface WordPressAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate> {
 	Blog *currentBlog;
     //Connection Reachability variables
     Reachability *internetReachability;
     Reachability *wpcomReachability;
     Reachability *currentBlogReachability;
     BOOL connectionAvailable, wpcomAvailable, currentBlogAvailable;
-    Facebook *facebook;
 @private
     IBOutlet UIWindow *window;
     IBOutlet UINavigationController *navigationController;
@@ -34,7 +30,6 @@
 	NSMutableData *statsData;
 	NSString *postID;
     UITextField *passwordTextField;
-    NSString *oauthCallback;
 	    
 	// Core Data
     NSManagedObjectContext *managedObjectContext_;
@@ -60,7 +55,6 @@
 @property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (nonatomic, strong) Facebook *facebook;
 @property (nonatomic, strong) PanelNavigationController *panelNavigationController;
 @property (strong, nonatomic) DDFileLogger *fileLogger;
 
@@ -74,13 +68,13 @@
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
 
++ (void)wipeAllKeychainItems;
 - (void)showAlertWithTitle:(NSString *)title message:(NSString *)message;
 - (void)showNotificationErrorAlert:(NSNotification *)notification;
 - (BOOL)isWPcomAuthenticated;
 - (void)checkWPcomAuthentication;
 - (void)showContentDetailViewController:(UIViewController *)viewController;
 - (void)registerForPushNotifications;
-- (void)sendApnsToken;
 - (void)unregisterApnsToken;
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif;
 - (void)useDefaultUserAgent;

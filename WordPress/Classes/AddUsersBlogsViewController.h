@@ -10,6 +10,8 @@
 #import "Blog.h"
 #import "WPcomLoginViewController.h"
 
+@class WPAccount;
+
 @interface AddUsersBlogsViewController : UIViewController <UITableViewDelegate> {
 	WordPressAppDelegate *appDelegate;
 	BOOL hasCompletedGetUsersBlogs, isWPcom;
@@ -28,12 +30,13 @@
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *buttonAddSelected, *buttonSelectAll, *topAddSelectedButton;
 @property (nonatomic, assign) BOOL geolocationEnabled;
 
+- (AddUsersBlogsViewController *)initWithAccount:(WPAccount *)account;
+
 - (IBAction)selectAllBlogs:(id)sender;
 - (IBAction)deselectAllBlogs:(id)sender;
 - (void)refreshBlogs;
 - (IBAction)saveSelectedBlogs:(id)sender;
 - (void)createBlog:(NSDictionary *)blogInfo;
-- (void)cancelAddWPcomBlogs;
 - (void)saveSelectedBlogs;
 - (void)didSaveSelectedBlogsInBackground;
 - (void)signOut;

@@ -13,5 +13,6 @@
 + (NSDictionary *)currentLanguage;
 + (NSArray *)allLanguages;
 + (NSDictionary *)languageDataForLocale:(NSString *)locale;
++ (BOOL)isRightToLeft;
 
 @end

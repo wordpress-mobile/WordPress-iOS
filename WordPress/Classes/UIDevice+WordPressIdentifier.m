@@ -25,7 +25,6 @@ static NSString * const WordPressIdentifierDefaultsKey = @"WordPressIdentifier";
             [defaults synchronize];
         }
     }
-    WPFLog(@"UDID: %@", uuid);
     return uuid;
 }
 
