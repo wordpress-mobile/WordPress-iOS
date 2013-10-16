@@ -25,6 +25,9 @@
 #import "PocketAPI.h"
 #import "WPMobileStats.h"
 #import "WPComLanguages.h"
+#import "DDLog.h"
+#import "DDTTYLogger.h"
+#import "DDASLLogger.h"
 #import "WPAccount.h"
 #import "Note.h"
 #import "UIColor+Helpers.h"
@@ -38,6 +41,7 @@
 - (void)customizeAppearance;
 - (void)toggleExtraDebuggingIfNeeded;
 - (void)handleLogoutOrBlogsChangedNotification:(NSNotification *)notification;
+
 @end
 
 @implementation WordPressAppDelegate {
@@ -204,6 +208,17 @@
     // Since crashlytics is keeping a copy of the logs, we don't need to anymore
     // Start with an empty log file when the app launches
     [[FileLogger sharedInstance] reset];
+
+    // Sets up the CocoaLumberjack logging; debug output to console and file
+#ifdef DEBUG
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+#endif
+
+    self.fileLogger = [[DDFileLogger alloc] init];
+    self.fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
+    self.fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
+    [DDLog addLogger:self.fileLogger];
 
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
     NSString *currentLanguage = [languages objectAtIndex:0];
