@@ -50,9 +50,6 @@
 {
     [super viewDidLoad];
 
-    self.tableView.backgroundView = nil;
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"settings_bg"]];
-
     [self loadLogFiles];
 }
 
