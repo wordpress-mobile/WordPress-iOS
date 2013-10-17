@@ -889,7 +889,7 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     [SoundUtil playSwipeSound];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:SidebarOpenedNotification object:nil];
-    
+
     [UIView animateWithDuration:OPEN_SLIDE_DURATION(animated) delay:0 options:0 | UIViewAnimationOptionLayoutSubviews | UIViewAnimationOptionBeginFromCurrentState animations:^{
         [self setStackOffset:0 duration:0];
         [self disableDetailView];
@@ -912,6 +912,8 @@ CGFloat const PanelNavigationControllerStatusBarViewHeight = 20.0;
     
     [SoundUtil playSwipeSound];
 
+    [[NSNotificationCenter defaultCenter] postNotificationName:SidebarOpenedNotification object:nil];
+    
     [self disableDetailView];
     [self setStackOffset:0.f withVelocity:velocity];
 }

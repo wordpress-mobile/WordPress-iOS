@@ -18,14 +18,21 @@
  @class QuantcastPolicy
  @internal
  */
+
+#define QUANTCAST_NOTIFICATION_POLICYLOAD @"quantcast-privacy-policy-load"
+
 @interface QuantcastPolicy : NSObject <NSURLConnectionDataDelegate> {
     NSSet* _blacklistedParams;
     NSString* _didSalt;
     BOOL _isMeasurementBlackedout;
+    BOOL _allowGeoMeasurement;
     
     BOOL _policyHasBeenLoaded;
     BOOL _policyHasBeenDownloaded;
     BOOL _waitingForUpdate;
+    
+    double _desiredGeoLocationAccuracy;
+    double _geoMeasurementUpdateDistance;
     
     NSURL* _policyURL;
     NSURLConnection* _downloadConnection;
@@ -38,11 +45,17 @@
 @property (readonly) BOOL hasPolicyBeenLoaded;
 @property (readonly) BOOL hasUpdatedPolicyBeenDownloaded;
 @property (readonly) NSTimeInterval sessionPauseTimeoutSeconds;
+@property (readonly) BOOL allowGeoMeasurement;
+@property (readonly) double desiredGeoLocationAccuracy;
+@property (readonly) double geoMeasurementUpdateDistance;
 
 -(id)initWithPolicyURL:(NSURL*)inPolicyURL reachability:(id<QuantcastNetworkReachability>)inNetworkReachabilityOrNil enableLogging:(BOOL)inEnableLogging;
 -(void)downloadLatestPolicyWithReachability:(id<QuantcastNetworkReachability>)inNetworkReachabilityOrNil;
 
 -(BOOL)isBlacklistedParameter:(NSString*)inParamName;
+
++(BOOL)booleanValueForJSONObject:(id)inJSONObject defaultValue:(BOOL)inDefaultValue;
++(double)doubleValueForJSONObject:(id)inJSONObject defaultValue:(double)inDefaultValue;
 
 +(QuantcastPolicy*)policyWithAPIKey:(NSString*)inQuantcastAPIKey networkReachability:(id<QuantcastNetworkReachability>)inReachability carrier:(CTCarrier*)carrier enableLogging:(BOOL)inEnableLogging;
 

@@ -351,7 +351,6 @@
             [self presentViewController:mediaView animated:YES completion:nil];
 		}
         else {
-            self.postDetailViewController.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"") style:UIBarButtonItemStyleBordered target:nil action:nil];
             [self.postDetailViewController.navigationController pushViewController:mediaView animated:YES];
         }
     }
@@ -1125,7 +1124,6 @@
             }
 			case 4:
             {
-				//[self useImage:currentImage];
                 [self useImage:[self resizeImage:currentImage toSize:kResizeOriginal]];
 				break;
             }
@@ -1140,7 +1138,9 @@
             [addPopover dismissPopoverAnimated:YES];
             [[CPopoverManager instance] setCurrentPopoverController:nil];
             addPopover = nil;
-            [self showResizeActionSheet];
+            if (showResizeActionSheet) {
+                [self showResizeActionSheet];
+            }
         } else {
             [postDetailViewController.navigationController dismissViewControllerAnimated:YES completion:^{
                 if (showResizeActionSheet) {

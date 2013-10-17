@@ -19,20 +19,10 @@
  @class QuantcastOptOutViewController
  @internal
  */
-@interface QuantcastOptOutViewController : UIViewController {
-    BOOL _originalOptOutStatus;
-}
+@interface QuantcastOptOutViewController : UIViewController
+
+@property (assign,nonatomic) id<QuantcastOptOutDelegate> delegate;
 
 -(id)initWithMeasurement:(QuantcastMeasurement*)inMeasurement delegate:(id<QuantcastOptOutDelegate>)inDelegate;
-
--(IBAction)optOutStatusChanged:(id)inSender;
--(IBAction)reviewPrivacyPolicy:(id)inSender;
--(IBAction)done:(id)inSender;
-
-@end
-
-@interface QuantcastRoundedRectView : UIView {
-    
-}
 
 @end

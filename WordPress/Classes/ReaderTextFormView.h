@@ -39,6 +39,7 @@
 - (void)updateNavItem;
 - (void)configureNavItem;
 - (void)enableForm:(BOOL)enabled;
+- (BOOL)shouldEnableSendButton;
 
 @end
 

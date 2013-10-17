@@ -66,7 +66,7 @@
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:cacheDir]) {
         if (![[NSFileManager defaultManager] createDirectoryAtPath:cacheDir withIntermediateDirectories:YES attributes:nil error:nil]){
-            NSLog(@"QC Measurement: Unable to create cache director = %@", cacheDir );
+            NSLog(@"QC Measurement: Unable to create cache directory = %@", cacheDir );
             return nil;
         }
     }
@@ -83,7 +83,7 @@
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:cacheDir]) {
         if (![[NSFileManager defaultManager] createDirectoryAtPath:cacheDir withIntermediateDirectories:YES attributes:nil error:nil]){
-            NSLog(@"QC Measurement: Unable to create cache director = %@", cacheDir );
+            NSLog(@"QC Measurement: Unable to create cache directory = %@", cacheDir );
             return nil;
         }
     }
@@ -99,7 +99,7 @@
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:cacheDir]) {
         if (![[NSFileManager defaultManager] createDirectoryAtPath:cacheDir withIntermediateDirectories:YES attributes:nil error:nil]){
-            NSLog(@"QC Measurement: Unable to create cache director = %@", cacheDir );
+            NSLog(@"QC Measurement: Unable to create cache directory = %@", cacheDir );
             return nil;
         }
     }
@@ -114,7 +114,7 @@
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:cacheDir]) {
         if (![[NSFileManager defaultManager] createDirectoryAtPath:cacheDir withIntermediateDirectories:YES attributes:nil error:nil]){
-            NSLog(@"QC Measurement: Unable to create cache director = %@", cacheDir );
+            NSLog(@"QC Measurement: Unable to create cache directory = %@", cacheDir );
             return nil;
         }
     }
@@ -468,7 +468,7 @@
 +(NSString*)JSONEncodeString:(NSString*)inString {
 	NSMutableString* s = [NSMutableString stringWithString:inString];
     
-	[s replaceOccurrencesOfString:@"\\" withString:@"\\\\" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
+    [s replaceOccurrencesOfString:@"\\" withString:@"\\\\" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
 	[s replaceOccurrencesOfString:@"\"" withString:@"\\\"" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
 	[s replaceOccurrencesOfString:@"/" withString:@"\\/" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];
 	[s replaceOccurrencesOfString:@"\n" withString:@"\\n" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [s length])];

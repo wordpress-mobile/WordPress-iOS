@@ -244,6 +244,7 @@
 	if (_titleLabel) {
 		CGRect titleFrame = _titleLabel.frame;
 		titleFrame.size.height = [_titleLabel suggestedSizeForWidth:titleFrame.size.width].height;
+        titleFrame = CGRectIntegral(titleFrame);
 		_titleLabel.frame = titleFrame;
 		
 		CGRect contentFrame = _textContentView.frame;

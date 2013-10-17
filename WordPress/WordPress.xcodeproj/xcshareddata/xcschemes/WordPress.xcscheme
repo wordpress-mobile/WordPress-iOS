@@ -37,6 +37,17 @@
                BlueprintName = "WordPressTest"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "AccountMigrationTest">
+               </Test>
+               <Test
+                  Identifier = "ReaderTest/testGetPostsLikes">
+               </Test>
+               <Test
+                  Identifier = "ReaderTest/testGetPostsFollowing">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

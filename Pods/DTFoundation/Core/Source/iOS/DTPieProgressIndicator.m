@@ -49,7 +49,6 @@
 		[[UIColor whiteColor] set];
 	}
 	
-	CGContextSetShadowWithColor(ctx, CGSizeMake(0, 1), 1, [UIColor blackColor].CGColor);
 	CGContextBeginTransparencyLayer(ctx, NULL);
 	
 	CGFloat smallerDimension = MIN(self.bounds.size.width-6.0f, self.bounds.size.height-6.0f);
@@ -66,7 +65,6 @@
 		CGFloat angle = _progressPercent * 2.0f * M_PI;
 		
 		CGContextMoveToPoint(ctx, center.x, center.y);
-		//CGContextAddLineToPoint(ctx, center.x, drawRect.origin.y);
 		CGContextAddArc(ctx, center.x, center.y, radius, -M_PI_2, angle-M_PI_2, 0);
 		CGContextAddLineToPoint(ctx, center.x, center.y);
 		

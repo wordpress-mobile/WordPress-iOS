@@ -230,7 +230,11 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     
     SidebarTopLevelView *headerView = [[SidebarTopLevelView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), 44)];
     Blog *blog = [[self.resultsController fetchedObjects] objectAtIndex:(section - 1)];
-    headerView.blogTitle = blog.blogName;
+    if ([blog.blogName length] != 0) {
+        headerView.blogTitle = blog.blogName;
+    } else {
+        headerView.blogTitle = blog.url;
+    }
     headerView.blavatarUrl = blog.blavatarUrl;
     headerView.isWPCom = blog.isWPcom;
     headerView.onTap = ^{
@@ -396,7 +400,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         } else if ([self isRowForViewAdmin:indexPath]) {
             text = NSLocalizedString(@"View Admin", nil);
             image = [UIImage imageNamed:@"icon-menu-viewadmin"];
-            selectedImage = [UIImage imageNamed:@"icon-menu-viewsite-active"];
+            selectedImage = [UIImage imageNamed:@"icon-menu-viewadmin-active"];
         }
         
         cell.cellBackgroundColor = SidebarTableViewCellBackgroundColorLight;
@@ -916,11 +920,10 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             ( [curBlog getOptionValue:@"jetpack_client_id"] != nil && [[[curBlog getOptionValue:@"jetpack_client_id"] numericValue]  isEqualToNumber:blogId] ) ) {
             blogFound = YES;
             sectionNumber = idx + 1;
-            curBlog = blog;
+            blog = curBlog;
             *stop = YES;
         }
     }];
-    
     
     if (blogFound && [self isBlogSection:sectionNumber]) {
         if (![blog isEqual:_currentlyOpenedBlog]) {

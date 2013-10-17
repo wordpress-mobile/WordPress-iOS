@@ -48,6 +48,7 @@
 -(void)setPolicywithJSONData:(NSData*)inJSONData;
 -(void)networkReachabilityChanged:(NSNotification*)inNotification;
 -(void)startPolicyDownloadWithURL:(NSURL*)inPolicyURL;
+-(void)sendPolicyLoadNotification;
 
 @end
 
@@ -70,6 +71,11 @@
         _policyHasBeenLoaded = NO;
         _policyHasBeenDownloaded = NO;
         _waitingForUpdate = NO;
+        
+        _allowGeoMeasurement = NO;
+        _desiredGeoLocationAccuracy = 10.0;
+        _geoMeasurementUpdateDistance = 50.0;
+
        // first, determine if there is a saved polciy on disk, if not, create it with default polciy
         NSString* cacheDir = [QuantcastUtils quantcastCacheDirectoryPath];
         
@@ -155,11 +161,11 @@
                                              error:&jsonError];
     }
 #if QCMEASUREMENT_ENABLE_JSONKIT 
-    else {
+    else if(nil != NSClassFromString(@"JSONDecoder")) {
         // try with JSONKit
        policyDict = [[JSONDecoder decoder] objectWithData:inJSONData error:&jsonError];
     }
-#else
+#endif
     else {
         NSLog( @"QC Measurement: ERROR - There is no available JSON decoder to user. Please enable JSONKit in your project!" );
         @synchronized(self){
@@ -168,10 +174,13 @@
         }
         return;
     }
-#endif
+
     
     if ( nil != jsonError ) {
-        NSLog(@"QC Measurement: Unable to parse policy JSON data. error = %@", jsonError);
+        NSString* jsonStr = [[[NSString alloc] initWithData:inJSONData
+                                                   encoding:NSUTF8StringEncoding] autorelease];
+
+        NSLog(@"QC Measurement: Unable to parse policy JSON data. error = %@, json = %@", jsonError, jsonStr);
         @synchronized(self){
             _policyHasBeenLoaded = NO;
             _policyHasBeenDownloaded = NO;
@@ -270,11 +279,57 @@
                 _sessionTimeout = [(NSNumber*)sessionTimeOutObj doubleValue];
             }
             
+            _allowGeoMeasurement = [QuantcastPolicy booleanValueForJSONObject:[policyDict objectForKey:@"allowGeoMeasurement"] defaultValue:YES];
+            _desiredGeoLocationAccuracy = [QuantcastPolicy doubleValueForJSONObject:[policyDict objectForKey:@"desiredGeoLocationAccuracy"] defaultValue:10.0];
+            _geoMeasurementUpdateDistance = [QuantcastPolicy doubleValueForJSONObject:[policyDict objectForKey:@"geoMeasurementUpdateDistance"] defaultValue:50.0];
+            
             _policyHasBeenLoaded = YES;
+            
+            [self sendPolicyLoadNotification];
         }
     }
 }
 
+-(void)sendPolicyLoadNotification {
+    [[NSNotificationCenter defaultCenter] postNotificationName:QUANTCAST_NOTIFICATION_POLICYLOAD object:self];
+}
+
++(BOOL)booleanValueForJSONObject:(id)inJSONObject defaultValue:(BOOL)inDefaultValue {
+    
+    if ( nil != inJSONObject ) {
+        if ( [inJSONObject isKindOfClass:[NSString class]] ) {
+            NSSet* trueValues = [NSSet setWithArray:@[ @"YES", @"TRUE", @"yes", @"true", @"1"]];
+                                 
+            return [trueValues containsObject:inJSONObject];
+        }
+        else if ( [inJSONObject isKindOfClass:[NSNumber class]] ) {
+            NSNumber* value = (NSNumber*)inJSONObject;
+            
+            return [value boolValue];
+        }
+    }
+
+    return inDefaultValue;
+}
+
++(double)doubleValueForJSONObject:(id)inJSONObject defaultValue:(double)inDefaultValue {
+    if ( nil != inJSONObject ) {
+        if ( [inJSONObject isKindOfClass:[NSString class]] ) {
+            double value = inDefaultValue;
+            
+            if ( [[NSScanner scannerWithString:(NSString*)inJSONObject] scanDouble:&value] ) {
+                return value;
+            }
+        }
+        else if ( [inJSONObject isKindOfClass:[NSNumber class]] ) {
+            NSNumber* value = (NSNumber*)inJSONObject;
+            
+            return [value doubleValue];
+        }
+    }
+    
+    return inDefaultValue;
+}
 
 #pragma mark - Policy Values
 
@@ -289,6 +344,17 @@
     return isBlacklisted;
 }
 
+-(BOOL)allowGeoMeasurement {
+    return _allowGeoMeasurement;
+}
+
+-(double)desiredGeoLocationAccuracy {
+    return _desiredGeoLocationAccuracy;
+}
+
+-(double)geoMeasurementUpdateDistance {
+    return _geoMeasurementUpdateDistance;
+}
 
 #pragma mark - Download Handling
 

@@ -78,6 +78,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)dealloc {
     _featuredImageSource.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+	self.readerReblogFormView = nil;
+	self.friendFinderNudgeView = nil;
 }
 
 
@@ -88,7 +91,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 		_hasMoreContent = YES;
 		self.infiniteScrollEnabled = YES;
         self.incrementalLoadingSupported = YES;
-		[self fetchBlogsAndPrimaryBlog];
 	}
 	return self;
 }
@@ -96,6 +98,8 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+    
+    [self fetchBlogsAndPrimaryBlog];
 
     CGFloat maxWidth = self.tableView.bounds.size.width;
     if (IS_IPHONE) {
@@ -180,6 +184,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sidebarOpened) name:SidebarOpenedNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -197,16 +202,6 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     self.panelNavigationController.delegate = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
-
-- (void)viewDidUnload {
-	[super viewDidUnload];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.readerReblogFormView = nil;
-	self.friendFinderNudgeView = nil;
-}
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
@@ -253,6 +248,9 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	self.tableView.tableHeaderView = paddingView;
 }
 
+- (void)sidebarOpened {
+    [self dismissPopover];
+}
 
 - (void)handleTopicsButtonTapped:(id)sender {
     if (_popover) {
@@ -262,8 +260,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 	controller.delegate = self;
     if (IS_IPAD) {
         if (_popover) {
-            [_popover dismissPopoverAnimated:YES];
-            _popover = nil;
+            [self dismissPopover];
             return;
         }
         
@@ -285,6 +282,12 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
     }
 }
 
+- (void)dismissPopover {
+    if (_popover) {
+        [_popover dismissPopoverAnimated:YES];
+        _popover = nil;
+    }
+}
 
 - (void)handleReblogButtonTapped:(id)sender {
 	// Locate the cell this originated from. 
@@ -847,7 +850,7 @@ NSString *const WPReaderViewControllerDisplayedNativeFriendFinder = @"DisplayedN
 
 - (void)readerTopicChanged {
 	if (IS_IPAD){
-        [_popover dismissPopoverAnimated:YES];
+        [self dismissPopover];
 	}
 	
 	_loadingMore = NO;

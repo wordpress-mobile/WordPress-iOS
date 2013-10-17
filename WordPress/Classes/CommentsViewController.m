@@ -39,6 +39,11 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (NSString *)noResultsText
+{
+    return NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
+}
+
 - (void)viewDidLoad {
     WPFLogMethod();
     

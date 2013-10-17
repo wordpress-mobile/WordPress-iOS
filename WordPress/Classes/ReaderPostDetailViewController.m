@@ -29,7 +29,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 @interface ReaderPostDetailViewController ()<ReaderPostDetailViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate, ReaderTextFormDelegate> {
 	BOOL _hasMoreContent;
 	BOOL _loadingMore;
-    CGFloat _previousOffset;
 	CGPoint savedScrollOffset;
 	CGFloat keyboardOffset;
 	BOOL _infiniteScrollEnabled;
@@ -43,7 +42,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 @property (nonatomic) BOOL infiniteScrollEnabled;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
-@property (nonatomic, strong) UINavigationBar *navBar;
 @property (nonatomic, strong) UIBarButtonItem *commentButton;
 @property (nonatomic, strong) UIBarButtonItem *likeButton;
 @property (nonatomic, strong) UIBarButtonItem *reblogButton;
@@ -54,7 +52,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 @property (nonatomic) BOOL isScrollingCommentIntoView;
 @property (nonatomic) BOOL isShowingCommentForm;
 @property (nonatomic) BOOL isShowingReblogForm;
-@property (nonatomic) BOOL canUseFullScreen;
 
 - (void)buildHeader;
 - (void)buildTopToolbar;
@@ -104,8 +101,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		self.post = apost;
 		self.comments = [NSMutableArray array];
         self.wantsFullScreenLayout = YES;
-        // Disable full screen until it's more polished and iOS7 crashes are fixed
-		self.canUseFullScreen = NO;
 	}
 	return self;
 }
@@ -161,7 +156,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 
 	self.panelNavigationController.delegate = self;
-    [self setFullScreen:NO];
 
 	UIToolbar *toolbar = self.navigationController.toolbar;
     if (IS_IOS7) {
@@ -210,7 +204,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.toolbar.translucent = NO;
 	[self.navigationController setToolbarHidden:YES animated:YES];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 
@@ -222,7 +215,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	self.headerView = nil;
 	self.readerCommentFormView = nil;
 	self.readerReblogFormView = nil;
-	self.navBar = nil;
 	self.commentButton = nil;
 	self.likeButton = nil;
 	self.reblogButton = nil;
@@ -529,10 +521,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	} else {
 		[self hideReblogForm];
 	}
-    BOOL hideBars = !self.navigationController.toolbarHidden;
-    if (!hideBars || self.tableView.contentOffset.y > 60) {
-        [self setFullScreen:hideBars];
-    }
 }
 
 - (BOOL)isReplying {
@@ -573,7 +561,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 		return;
 	}
 	
-	self.canUseFullScreen = NO;
 	[self.navigationController setToolbarHidden:YES animated:NO];
 	
 	NSIndexPath *path = [self.tableView indexPathForSelectedRow];
@@ -609,7 +596,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	[_readerCommentFormView removeFromSuperview];
 	self.isShowingCommentForm = NO;
 	[self.view endEditing:YES];
-	self.canUseFullScreen = YES;
 	[self.navigationController setToolbarHidden:NO animated:YES];
 }
 
@@ -617,7 +603,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 - (void)showReblogForm {
 	[self hideCommentForm];
 	
-	self.canUseFullScreen = NO;
 	[self.navigationController setToolbarHidden:YES animated:NO];
 	
 	if (_readerReblogFormView.superview != nil) {
@@ -652,50 +637,8 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	self.isShowingReblogForm = NO;
 	[self.view endEditing:YES];
 	
-	self.canUseFullScreen = YES;
 	[self.navigationController setToolbarHidden:NO animated:YES];
 }
-
-
-- (void)setCanUseFullScreen:(BOOL)canUseFullScreen{
-	_canUseFullScreen = canUseFullScreen;
-	if (!_canUseFullScreen){
-		[self setFullScreen:NO];
-	}
-}
-
-
-- (void)setFullScreen:(BOOL)fullScreen {
-	if (!self.canUseFullScreen) {
-		fullScreen = NO;
-	}
-	
-    [self.navigationController setToolbarHidden:fullScreen animated:YES];
-    [self.navigationController setNavigationBarHidden:fullScreen animated:YES];
-    return;
-
-    if (fullScreen) {
-        [UIView animateWithDuration:.3f
-                         animations:^{
-                             self.navigationController.toolbar.alpha = 0.f;
-                             self.navigationController.navigationBar.alpha = 0.f;
-                         } completion:^(BOOL finished) {
-                             [self.navigationController setToolbarHidden:YES animated:NO];
-                             [self.navigationController setNavigationBarHidden:YES animated:NO];
-                         }];
-    } else {
-        [self.navigationController setToolbarHidden:NO animated:NO];
-        self.navigationController.toolbar.alpha = 0.f;
-        [self.navigationController setNavigationBarHidden:NO animated:NO];
-        self.navigationController.navigationBar.alpha = 0.f;
-        [UIView animateWithDuration:.3f
-                         animations:^{
-                             self.navigationController.toolbar.alpha = 1.f;
-                             self.navigationController.navigationBar.alpha = 1.f;
-                         }];
-    }
-}
-
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification {
 	CGRect frame = self.view.frame;
@@ -991,32 +934,6 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	if (_isScrollingCommentIntoView){
 		self.isScrollingCommentIntoView = NO;
 	}
-	
-	if (!self.canUseFullScreen) {
-		return;
-	}
-	
-	// Toolbars can vanish if the content is smaller than the screen and the user swipes quickly. 
-	if (self.tableView.contentSize.height < self.tableView.frame.size.height) {
-		return;
-	}
-	
-    CGFloat dY = scrollView.contentOffset.y - _previousOffset;
-    BOOL toolbarHidden = self.navigationController.toolbarHidden;
-    if (toolbarHidden &&
-        (dY < 0
-         || (dY > 0 && scrollView.contentOffset.y < 10)
-         || (dY > 0 && scrollView.contentOffset.y > _headerView.frame.size.height))) {
-            [self setFullScreen:NO];
-    }
-
-    // Should be around the start of the post
-    CGFloat hideThreshold = 60;
-    if (!toolbarHidden && _previousOffset < hideThreshold && scrollView.contentOffset.y > hideThreshold) {
-        [self setFullScreen:YES];
-    }
-
-    _previousOffset = scrollView.contentOffset.y;
 }
 
 

@@ -42,6 +42,11 @@ NSString * const NotificationsLastSyncDateKey = @"NotificationsLastSyncDate";
     return self;
 }
 
+- (NSString *)noResultsText
+{
+    return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
+}
+
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }

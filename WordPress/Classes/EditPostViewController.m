@@ -295,7 +295,16 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 }
 
 - (NSString *)editorTitle {
-    NSString *title = NSLocalizedString(@"Edit Post", @"");
+    NSString *title = @"";
+    if (self.editMode == EditPostViewControllerModeNewPost) {
+        title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
+    } else {
+        if ([self.apost.postTitle length]) {
+            title = self.apost.postTitle;
+        } else {
+            title = NSLocalizedString(@"Edit Post", @"Post Editor screen title.");
+        }
+    }
     self.navigationItem.backBarButtonItem.title = title;
     return title;
 }
@@ -656,7 +665,6 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 			[[CPopoverManager instance] setCurrentPopoverController:popover];
 		
         } else {
-            self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", @"") style:UIBarButtonItemStyleBordered target:nil action:nil];
 			self.editMode = EditPostViewControllerModeEditPost;
 			[self.navigationController pushViewController:segmentedTableViewController animated:YES];
 		}
@@ -1075,6 +1083,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         WordPressAppDelegate *delegate = (WordPressAppDelegate*)[[UIApplication sharedApplication] delegate];
 
         // Insert
+        
+        //Disable scrolling temporarily otherwise inserting text will scroll to the bottom in iOS6 and below.
+        editorTextView.scrollEnabled = NO;
         [overlayView dismiss];
         
         [editorTextView becomeFirstResponder];
@@ -1098,6 +1109,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
         NSString *oldText = editorTextView.text;
         NSRange oldRange = editorTextView.selectedRange;
         editorTextView.text = [editorTextView.text stringByReplacingCharactersInRange:range withString:aTagText];
+        
+        //Re-enable scrolling after insertion is complete
+        editorTextView.scrollEnabled = YES;
         
         //reset selection back to nothing
         range.length = 0;

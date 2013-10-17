@@ -352,6 +352,11 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
         NSString *title = [obj valueForKey:@"blogName"];
         title = [title stringByDecodingXMLCharacters];
         [obj setValue:title forKey:@"blogName"];
+    }];    
+    _usersBlogs = [_usersBlogs sortedArrayUsingComparator:^(id obj1, id obj2){
+        NSString *title1 = [obj1 valueForKey:@"blogName"];
+        NSString *title2 = [obj2 valueForKey:@"blogName"];
+        return [title1 localizedCaseInsensitiveCompare:title2];
     }];
 }
 
@@ -405,9 +410,9 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
     [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@ (%d)", NSLocalizedString(@"Add Selected", nil), [_selectedBlogs count]] forState:UIControlStateNormal];
     _selectAllButton.enabled = [_usersBlogs count] != 0;
     if ([_selectedBlogs count] == [_usersBlogs count]) {
-        [_selectAllButton setTitle:NSLocalizedString(@"Deselect All", nil) forState:UIControlStateNormal];
+        [self setupDeselectAllButton];
     } else {
-        [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
+        [self setupSelectAllButton];
     }
 }
 
@@ -415,9 +420,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAddBlogsClickedSelectAll];
 
-    [_selectAllButton removeTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAllButton addTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAllButton setTitle:NSLocalizedString(@"Deselect All", nil) forState:UIControlStateNormal];
+    [self setupDeselectAllButton];
     
     [_selectedBlogs removeAllObjects];
     for (NSDictionary *blogData in _usersBlogs) {
@@ -433,14 +436,26 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAddBlogsClickedDeselectAll];
 
-    [_selectAllButton removeTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAllButton addTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
-    [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
+    [self setupSelectAllButton];
     
     [_selectedBlogs removeAllObjects];
     
     [self toggleButtons];
     [self.tableView reloadData];
+}
+
+- (void)setupSelectAllButton
+{
+    [_selectAllButton removeTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton addTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton setTitle:NSLocalizedString(@"Select All", nil) forState:UIControlStateNormal];
+}
+
+- (void)setupDeselectAllButton
+{
+    [_selectAllButton removeTarget:self action:@selector(selectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton addTarget:self action:@selector(deselectAllBlogs) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton setTitle:NSLocalizedString(@"Deselect All", nil) forState:UIControlStateNormal];
 }
 
 - (NSString *)getCellTitleForIndexPath:(NSIndexPath *)indexPath
