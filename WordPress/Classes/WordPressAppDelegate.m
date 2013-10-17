@@ -1058,6 +1058,9 @@
 }
 
 - (void)handleNotification:(NSDictionary*)userInfo forState:(UIApplicationState)state completionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    
+    WPFLog(@"Received push notification:\nPayload: %@\nCurrent Application state: %d", userInfo, state);
+    
     switch (state) {
         case UIApplicationStateActive:
             [[WordPressComApi sharedApi] checkForNewUnseenNotifications];
