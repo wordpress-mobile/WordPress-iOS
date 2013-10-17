@@ -1041,67 +1041,60 @@
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-	NSLog(@"Failed to register for push notifications: %@", error);
+	WPFLog(@"Failed to register for push notifications: %@", error);
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey];
 }
 
-// The notification is delivered when the application is running
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    NSLog(@"didReceiveRemoteNotification: %@", userInfo);
-    application.applicationIconBadgeNumber = 0;
-    /*
-     {
-     aps =     {
-     alert = "New comment on test from maria";
-     badge = 1;
-     sound = default;
-     };
-     "blog_id" = 16841252;
-     "comment_id" = 571;
-     }*/
+    WPFLogMethod();
     
-    //You can determine whether an application is launched as a result of the user tapping the action button or 
-    //whether the notification was delivered to the already-running application by examining the application state.
-    switch (application.applicationState) {
-        case UIApplicationStateActive:
-            NSLog(@"app state UIApplicationStateActive"); //application is in foreground
-            [[WordPressComApi sharedApi] checkForNewUnseenNotifications];
-            [[WordPressComApi sharedApi] syncPushNotificationInfo];
-            [SoundUtil playNotificationSound];
-            break;
-        case UIApplicationStateInactive:
-            _hasRecordedApplicationOpenedEvent = YES;
-            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
-            
-            NSLog(@"app state UIApplicationStateInactive"); //application is in bg and the user tapped the view button
-             [self openNotificationScreenWithOptions:userInfo];
-            break;
-        case UIApplicationStateBackground:
-            _hasRecordedApplicationOpenedEvent = YES;
-            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
-
-            NSLog(@" app state UIApplicationStateBackground"); //application is in bg and the user tapped the view button
-            [self openNotificationScreenWithOptions:userInfo];
-            break;
-        default:
-            break;
-    }
+    [self handleNotification:userInfo forState:application.applicationState completionHandler:nil];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     WPFLogMethod();
+    
+    [self handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
+}
 
-    [Note getNewNotificationswithContext:self.managedObjectContext success:^(BOOL hasNewNotes) {
-        WPFLog(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
-        if (hasNewNotes) {
-            completionHandler(UIBackgroundFetchResultNewData);
-        } else {
-            completionHandler(UIBackgroundFetchResultNewData);
-        }
-    } failure:^(NSError *error) {
-        WPFLog(@"notification fetch completion handler failed with error: %@", error);
-        completionHandler(UIBackgroundFetchResultFailed);
-    }];
+- (void)handleNotification:(NSDictionary*)userInfo forState:(UIApplicationState)state completionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    switch (state) {
+        case UIApplicationStateActive:
+            [[WordPressComApi sharedApi] checkForNewUnseenNotifications];
+            [[WordPressComApi sharedApi] syncPushNotificationInfo];
+            [SoundUtil playNotificationSound];
+            break;
+            
+        case UIApplicationStateInactive:
+            _hasRecordedApplicationOpenedEvent = YES;
+            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
+
+            [self openNotificationScreenWithOptions:userInfo];
+            break;
+            
+        case UIApplicationStateBackground:
+            _hasRecordedApplicationOpenedEvent = YES;
+            [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventAppOpenedDueToPushNotification];
+
+            [self openNotificationScreenWithOptions:userInfo];
+            
+            if (completionHandler) {
+                [Note getNewNotificationswithContext:self.managedObjectContext success:^(BOOL hasNewNotes) {
+                    WPFLog(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
+                    if (hasNewNotes) {
+                        completionHandler(UIBackgroundFetchResultNewData);
+                    } else {
+                        completionHandler(UIBackgroundFetchResultNewData);
+                    }
+                } failure:^(NSError *error) {
+                    WPFLog(@"notification fetch completion handler failed with error: %@", error);
+                    completionHandler(UIBackgroundFetchResultFailed);
+                }];
+            }
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)registerForPushNotifications {
