@@ -101,14 +101,14 @@ const NSUInteger NoteKeepCount = 20;
     request.sortDescriptors = @[ dateSortDescriptor ];
     NSArray *notes = [context executeFetchRequest:request error:&error];
     if (error) {
-        WPFLog(@"Error pruning old notes: %@", error);
+        DDLogError(@"Error pruning old notes: %@", error);
         return;
     }
     for (Note *note in notes) {
         [context deleteObject:note];
     }
     if(![context save:&error]){
-        WPFLog(@"Failed to save after pruning notes: %@", error);
+        DDLogError(@"Failed to save after pruning notes: %@", error);
     }
     [context save:&error];
 }

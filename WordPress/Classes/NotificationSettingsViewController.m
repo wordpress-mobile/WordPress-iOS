@@ -301,7 +301,7 @@ BOOL hasChanges;
         
         cell.textLabel.text = NSLocalizedString(@"Notifications", @"");
      
-        WPFLog(@"muteDictionary: %@", _notificationMutePreferences);
+        DDLogInfo(@"muteDictionary: %@", _notificationMutePreferences);
         
         if (_notificationMutePreferences && [_notificationMutePreferences objectForKey:@"value"] != nil) {
             NSString *mute_value = [_notificationMutePreferences objectForKey:@"value"];
@@ -424,7 +424,7 @@ BOOL hasChanges;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	[actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
     
-    WPFLog(@"Button Clicked: %d", buttonIndex);
+    DDLogInfo(@"Button Clicked: %d", buttonIndex);
     NSMutableDictionary *muteDictionary;
     
     if (actionSheet.tag == 100 ) {
@@ -463,7 +463,7 @@ BOOL hasChanges;
                 NSCalendar *calendar = [NSCalendar currentCalendar];
                 NSDate *oneHourFromNow = [calendar dateByAddingComponents:comps toDate:currentDate options:0];
                 int timestamp = [oneHourFromNow timeIntervalSince1970];
-                 WPFLog(@"Time Stamp: %d", timestamp);
+                 DDLogInfo(@"Time Stamp: %d", timestamp);
                 mute_until_value = [NSString stringWithFormat:@"%d", timestamp];
                 break;
             }
@@ -492,7 +492,7 @@ BOOL hasChanges;
                 
                 NSDate *todayOrTomorrow8AM = [sysCalendar dateFromComponents:comps];
                 int timestamp = [todayOrTomorrow8AM timeIntervalSince1970];
-                WPFLog(@"Time Stamp: %d", timestamp);
+                DDLogInfo(@"Time Stamp: %d", timestamp);
                 mute_until_value = [NSString stringWithFormat:@"%d", timestamp];
                 break;
             }

@@ -187,7 +187,7 @@
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 [SVProgressHUD dismiss];
                 [self.tableView reloadData];
-                WPFLog(@"Failed getting user blogs: %@", [error localizedDescription]);
+                DDLogError(@"Failed getting user blogs: %@", [error localizedDescription]);
                 if (self.onErrorLoading) {
                     self.onErrorLoading(self, error);
                 }

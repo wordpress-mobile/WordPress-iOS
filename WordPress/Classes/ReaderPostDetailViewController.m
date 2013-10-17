@@ -1060,7 +1060,7 @@ NSTimeInterval const ReaderPostDetailViewControllerRefreshTimeout = 300; // 5 mi
 	
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
-        WPFLog(@"%@ couldn't fetch %@: %@", self, entityName, [error localizedDescription]);
+        DDLogError(@"%@ couldn't fetch %@: %@", self, entityName, [error localizedDescription]);
         _resultsController = nil;
     }
     

@@ -18,12 +18,12 @@ static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
 }
 
 - (BOOL)beginEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 	return YES;
 }
 
 - (BOOL)endEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_username_preference"];
     if (!username) {
@@ -55,7 +55,7 @@ static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
             }
         }
         if (error) {
-            WPFLog(@"Error migrating password: %@", error);
+            DDLogInfo(@"Error migrating password: %@", error);
         }
     }
 
@@ -67,7 +67,7 @@ static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
 }
 
 - (BOOL)performCustomValidationForEntityMapping:(NSEntityMapping *)mapping manager:(NSMigrationManager *)manager error:(NSError **)error {
-	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 	return YES;
 }
 
@@ -76,7 +76,7 @@ static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
                                             manager:(NSMigrationManager *)manager
                                               error:(NSError **)error
 {
-	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 
 	NSManagedObjectContext *destMOC = [manager destinationContext];
     BOOL isWpcom = [self blogIsWpcom:source];
@@ -123,7 +123,7 @@ static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
             }
         }
         if (error) {
-            WPFLog(@"Error migrating password: %@", error);
+            DDLogError(@"Error migrating password: %@", error);
         }
     }
 
@@ -137,7 +137,7 @@ static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
                                           manager:(NSMigrationManager*)manager
                                             error:(NSError**)error
 {
-	WPFLog(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
+	DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 
     NSArray *sourceBlogs = [manager sourceInstancesForEntityMappingNamed:@"BlogToAccount" destinationInstances:@[source]];
     NSArray *destBlogs = [manager destinationInstancesForEntityMappingNamed:@"BlogToBlog" sourceInstances:sourceBlogs];

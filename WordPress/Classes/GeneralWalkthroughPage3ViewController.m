@@ -469,7 +469,7 @@
     void (^loginFailBlock)(NSError *) = ^(NSError *error){
         // User shouldn't get here because the getOptions call should fail, but in the unlikely case they do throw up an error message.
         [SVProgressHUD dismiss];
-        WPFLog(@"Login failed with username %@ : %@", username, error);
+        DDLogError(@"Login failed with username %@ : %@", username, error);
         [self displayGenericErrorMessage:NSLocalizedString(@"Please update your credentials and try again.", nil)];
     };
     
@@ -579,7 +579,7 @@
         [self showCompletionWalkthrough];
     };
     vc.onErrorLoading = ^(NewerAddUsersBlogViewController *viewController, NSError *error) {
-        WPFLog(@"There was an error loading blogs after sign in");
+        DDLogError(@"There was an error loading blogs after sign in");
         [self.navigationController popViewControllerAnimated:YES];
         [self displayGenericErrorMessage:[error localizedDescription]];
     };

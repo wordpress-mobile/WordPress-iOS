@@ -19,7 +19,6 @@
 	// Project-specific
     #import "Constants.h"
     #import "NSString+Util.h"
-	#import "FileLogger.h"
     #import "WPError.h"
     #import "UIColor+Helpers.h"
     #import "PanelNavigationController.h"
@@ -38,6 +37,11 @@
 #ifndef IS_RETINA
 #define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2)
 #endif
+
+// WPFLog is deprecated - use DDLogError, Info, Verbose, etc
+#define WPFLog(fmt, ...) DDLogInfo(fmt, ##__VA_ARGS__)
+#define WPFLogMethod() DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+#define WPFLogMethodParam(param) DDLogInfo(@"%@ %@%@", self, NSStringFromSelector(_cmd), param);
 
 // CocoaLumberjack Default Logging Level
 extern int ddLogLevel;

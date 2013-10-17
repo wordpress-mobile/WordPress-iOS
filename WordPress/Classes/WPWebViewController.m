@@ -39,7 +39,7 @@
 
 - (void)dealloc
 {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
     self.webView.delegate = nil;
     if ([webView isLoading]) {
@@ -61,7 +61,7 @@
 
 - (void)viewDidLoad
 {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
     
     if (IS_IPHONE)
@@ -157,7 +157,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewWillAppear:animated];
         
     if( self.detailContent == nil ) {
@@ -181,7 +181,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[self setStatusTimer:nil];
     [super viewWillDisappear:animated];
 }
@@ -189,7 +189,7 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];  
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));  
     self.webView.delegate = nil;
     self.webView = nil;
     self.toolbar = nil;
@@ -235,7 +235,7 @@
 
 - (void)setStatusTimer:(NSTimer *)timer
 {
- //   [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+ //   DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 	if (statusTimer && timer != statusTimer) {
 		[statusTimer invalidate];
 	}
@@ -305,7 +305,7 @@
 }
 
 - (void)refreshWebView {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     if (![ReachabilityUtils isInternetReachable]) {
         __weak WPWebViewController *weakSelf = self;
@@ -319,7 +319,7 @@
     }
     
     if (!needsLogin && self.username && self.password && ![WPCookie hasCookieForURL:self.url andUsername:self.username]) {
-        WPFLog(@"We have login credentials but no cookie, let's try login first");
+        DDLogWarn(@"We have login credentials but no cookie, let's try login first");
         [self retryWithLogin];
         return;
     }
@@ -365,7 +365,7 @@
 }
 
 - (void)setUrl:(NSURL *)theURL {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     if (url != theURL) {
         url = theURL;
         if (url && self.webView) {
@@ -559,14 +559,14 @@
 #pragma mark - UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    [FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), [[request URL] absoluteString]];
+    DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), [[request URL] absoluteString]);
     
     NSURL *requestedURL = [request URL];
     NSString *requestedURLAbsoluteString = [requestedURL absoluteString];
     
     if (!needsLogin && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location != NSNotFound) {
         if (self.username && self.password) {
-            WPFLog(@"WP is asking for credentials, let's login first");
+            DDLogInfo(@"WP is asking for credentials, let's login first");
             [self retryWithLogin];
             return NO;
         }
@@ -591,7 +591,7 @@
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    [FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), error];
+    DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), error);
     // -999: Canceled AJAX request
     // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
     if (isLoading && ([error code] != -999) && [error code] != 102)
@@ -600,11 +600,11 @@
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView {
-    [FileLogger log:@"%@ %@%@", self, NSStringFromSelector(_cmd), aWebView.request.URL];
+    DDLogInfo(@"%@ %@%@", self, NSStringFromSelector(_cmd), aWebView.request.URL);
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self setLoading:NO];
     if ( !hasLoadedContent && ([aWebView.request.URL.absoluteString rangeOfString:kMobileReaderDetailURL].location == NSNotFound || self.detailContent)) {
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(%@);", self.readerAllItems]];

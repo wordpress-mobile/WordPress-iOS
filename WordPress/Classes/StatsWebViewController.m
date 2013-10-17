@@ -11,7 +11,6 @@
 #import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
 #import "WPWebViewController.h"
-#import "FileLogger.h" 
 #import "JetpackSettingsViewController.h"
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
@@ -180,7 +179,7 @@ static NSString *_lastAuthedName = nil;
     
     blog = aBlog;
     if (blog) {
-        [FileLogger log:@"Loading Stats for the following blog: %@", [blog url]];
+        DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
 
         WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
         if( !appDelegate.connectionAvailable ) {
@@ -201,7 +200,7 @@ static NSString *_lastAuthedName = nil;
 
 
 - (void)initStats {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
 	if ([blog isWPcom]) {
 		[self loadStats];
@@ -255,7 +254,7 @@ static NSString *_lastAuthedName = nil;
 }
 
 - (void)authStats {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     if (authed) {
         [self loadStats];
         return;
@@ -337,7 +336,7 @@ static NSString *_lastAuthedName = nil;
 
 
 - (void)loadStats {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     if (!self.isViewLoaded || !self.view.window) {
         loadStatsWhenViewAppears = YES;
         return;
@@ -403,7 +402,7 @@ static NSString *_lastAuthedName = nil;
 
 - (BOOL)wpWebView:(WPWebView *)wpWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     
-    [FileLogger log:@"The following URL was requested: %@", [request.URL absoluteString]]; 
+    DDLogInfo(@"The following URL was requested: %@", [request.URL absoluteString]);
     
     // On an ajax powered page like stats that manage state via the url hash, if we spawn a new controller when tapping on a link 
     // (like we do in the WPChromelessWebViewController)
@@ -427,13 +426,13 @@ static NSString *_lastAuthedName = nil;
         
     }
 
-    [FileLogger log:@"Stats webView is going to load the following URL: %@", [request.URL absoluteString]];
+    DDLogInfo(@"Stats webView is going to load the following URL: %@", [request.URL absoluteString]);
     return YES;
 }
 
 
 - (void)webViewDidFinishLoad:(WPWebView *)wpWebView {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
    
     // Override super so we do not change our title.
     self.title = @"Stats";
@@ -441,7 +440,7 @@ static NSString *_lastAuthedName = nil;
 
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    [FileLogger log:@"%@ %@: %@", self, NSStringFromSelector(_cmd), error];
+    DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), error);
     if ( ([error code] != -999) && [error code] != 102 )
         [[NSNotificationCenter defaultCenter] postNotificationName:@"OpenWebPageFailed" object:error userInfo:nil];
     // -999: Canceled AJAX request

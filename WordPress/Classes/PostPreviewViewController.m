@@ -38,7 +38,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 	self.webView.delegate = self;
 	if (loadingView == nil) {
         
@@ -207,10 +207,10 @@
             [req setValue:[NSString stringWithFormat:@"%d", [paramData length]] forHTTPHeaderField:@"Content-Length"];
             [req addValue:@"*/*" forHTTPHeaderField:@"Accept"];
             [self.webView loadRequest:req];
-            WPFLog(@"Showing real preview (login) for %@", link);
+            DDLogInfo(@"Showing real preview (login) for %@", link);
         } else {
             [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link]]];
-            WPFLog(@"Showing real preview for %@", link);
+            DDLogInfo(@"Showing real preview for %@", link);
         }
     }
 }
@@ -226,7 +226,7 @@
         BOOL autosave = [self.postDetailViewController autosaveRemoteWithSuccess:^{
             [self showRealPreview];
         } failure:^(NSError *error) {
-            WPFLog(@"Error autosaving post for preview: %@", error);
+            DDLogInfo(@"Error autosaving post for preview: %@", error);
             [self showSimplePreview];
         }];
 

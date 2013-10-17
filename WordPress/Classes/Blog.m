@@ -114,7 +114,7 @@
     NSString *url = [NSURL IDNDecodedHostname:self.url];
     NSAssert(url != nil, @"Decoded url shouldn't be nil");
     if (url == nil) {
-        WPFLog(@"displayURL: decoded url is nil: %@", self.url);
+        DDLogInfo(@"displayURL: decoded url is nil: %@", self.url);
         return self.url;
     }
     NSError *error = nil;
@@ -275,7 +275,7 @@
     __block NSError *error = nil;
     [context performBlock:^{
         if (![context save:&error]) {
-            WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+            DDLogInfo(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
             #if DEBUG
             exit(-1);
             #endif
@@ -283,7 +283,7 @@
         if (context.parentContext) {
             [context.parentContext performBlock:^{
                 if (![context.parentContext save:&error]) {
-                    WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+                    DDLogInfo(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
                     #if DEBUG
                     exit(-1);
                     #endif
@@ -303,7 +303,7 @@
 }
 
 - (void)remove {
-    WPFLog(@"<Blog:%@> remove", self.hostURL);
+    DDLogInfo(@"<Blog:%@> remove", self.hostURL);
     [self.api cancelAllHTTPOperations];
     _reachability.reachableBlock = nil;
     _reachability.unreachableBlock = nil;
@@ -600,7 +600,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Error syncing options: %@", [error localizedDescription]);
+        DDLogInfo(@"Error syncing options: %@", [error localizedDescription]);
 
         if (failure) {
             failure(error);
@@ -639,7 +639,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Error syncing post formats: %@", [error localizedDescription]);
+        DDLogInfo(@"Error syncing post formats: %@", [error localizedDescription]);
 
         if (failure) {
             failure(error);
@@ -666,7 +666,7 @@
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:kCommentsChangedNotificationName object:self];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Error syncing comments: %@", [error localizedDescription]);
+        DDLogInfo(@"Error syncing comments: %@", [error localizedDescription]);
         self.isSyncingComments = NO;
 
         if (failure) {
@@ -690,7 +690,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Error syncing categories: %@", [error localizedDescription]);
+        DDLogInfo(@"Error syncing categories: %@", [error localizedDescription]);
 
         if (failure) {
             failure(error);
@@ -743,7 +743,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Error syncing posts: %@", [error localizedDescription]);
+        DDLogInfo(@"Error syncing posts: %@", [error localizedDescription]);
         self.isSyncingPosts = NO;
 
         if (failure) {
@@ -796,7 +796,7 @@
             success();
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        WPFLog(@"Error syncing pages: %@", [error localizedDescription]);
+        DDLogInfo(@"Error syncing pages: %@", [error localizedDescription]);
         self.isSyncingPages = NO;
 
         if (failure) {
@@ -820,7 +820,7 @@
         if (newCat != nil) {
             [categoriesToKeep addObject:newCat];
         } else {
-            WPFLog(@"-[Category createOrReplaceFromDictionary:forBlog:] returned a nil category: %@", categoryInfo);
+            DDLogInfo(@"-[Category createOrReplaceFromDictionary:forBlog:] returned a nil category: %@", categoryInfo);
         }
     }
 
@@ -962,7 +962,7 @@
             if (newComment != nil) {
                 [commentsToKeep addObject:newComment];
             } else {
-                WPFLog(@"-[Comment createOrReplaceFromDictionary:forBlog:] returned a nil comment: %@", commentInfo);
+                DDLogInfo(@"-[Comment createOrReplaceFromDictionary:forBlog:] returned a nil comment: %@", commentInfo);
             }
         }
         
