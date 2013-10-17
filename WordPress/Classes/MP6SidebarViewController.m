@@ -436,24 +436,29 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             [self.tableView selectRowAtIndexPath:_currentIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
         return;
-    } else if ([self isIndexPathSectionForReaderAndNotifications:indexPath]) {
-        if ([self isRowForReader:indexPath]) {
-            [WPMobileStats incrementProperty:StatsPropertySidebarClickedReader forEvent:StatsEventAppClosed];
-            ReaderPostsViewController *readerViewController = [[ReaderPostsViewController alloc] init];
-            detailViewController = readerViewController;
-            [self closeCurrentlyOpenedSection];
-        } else if ([self isRowForNotifications:indexPath]) {
-            [WPMobileStats incrementProperty:StatsPropertySidebarClickedNotifications forEvent:StatsEventAppClosed];
-            _unseenNotificationCount = 0;
-            NotificationsViewController *notificationsViewController = [[NotificationsViewController alloc] init];
-            detailViewController = notificationsViewController;
-            [self closeCurrentlyOpenedSection];
-        }
     } else {
-        Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
-        
+        BOOL didBlogChange = YES;
         Class controllerClass = nil;
-        if ([self isRowForPosts:indexPath]) {
+        Blog *blog;
+
+        if (![self isIndexPathSectionForReaderAndNotifications:indexPath]){
+            blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:(indexPath.section - 1) inSection:0]];
+        }
+
+        if ([self isIndexPathSectionForReaderAndNotifications:indexPath]){
+            didBlogChange = NO;
+            if ([self isRowForReader:indexPath]) {
+                [WPMobileStats incrementProperty:StatsPropertySidebarClickedReader forEvent:StatsEventAppClosed];
+
+                controllerClass = [ReaderPostsViewController class];
+            } else if ([self isRowForNotifications:indexPath]) {
+                [WPMobileStats incrementProperty:StatsPropertySidebarClickedNotifications forEvent:StatsEventAppClosed];
+
+                _unseenNotificationCount = 0;
+                controllerClass = [NotificationsViewController class];
+            }
+            [self closeCurrentlyOpenedSection];
+        } else if ([self isRowForPosts:indexPath]) {
             [WPMobileStats incrementProperty:StatsPropertySidebarSiteClickedPosts forEvent:StatsEventAppClosed];
             
             controllerClass = [PostsViewController class];
@@ -481,13 +486,17 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
             controllerClass = [PostsViewController class];
         }
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:kSelectedBlogChanged
-                                                            object:nil
-                                                          userInfo:[NSDictionary dictionaryWithObject:blog forKey:@"blog"]];
+        if (didBlogChange) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kSelectedBlogChanged
+                                                                object:nil
+                                                              userInfo:[NSDictionary dictionaryWithObject:blog forKey:@"blog"]];
+        }
         
         //Check if the controller is already on the screen
-        if ([self.panelNavigationController.detailViewController isMemberOfClass:controllerClass] && [self.panelNavigationController.detailViewController respondsToSelector:@selector(setBlog:)]) {
-            [self.panelNavigationController.detailViewController performSelector:@selector(setBlog:) withObject:blog];
+        if ([self.panelNavigationController.detailViewController isMemberOfClass:controllerClass]) {
+            if ([self.panelNavigationController.detailViewController respondsToSelector:@selector(setBlog:)]) {
+                [self.panelNavigationController.detailViewController performSelector:@selector(setBlog:) withObject:blog];
+            }
             if (closingSidebar) {
                 [self.panelNavigationController closeSidebar];
             }
