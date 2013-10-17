@@ -578,7 +578,7 @@
             NSError *error = (NSError *)wrong;
 			NSString *message;
 			if ([error code] == 403) {
-				message = NSLocalizedString(@"Please update your credentials and try again.", @"");
+				message = NSLocalizedString(@"Please try entering your login details again.", @"");
 			} else {
 				message = [error localizedDescription];
 			}

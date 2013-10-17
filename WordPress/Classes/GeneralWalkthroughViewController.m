@@ -1161,7 +1161,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         // User shouldn't get here because the getOptions call should fail, but in the unlikely case they do throw up an error message.
         [SVProgressHUD dismiss];
         DDLogError(@"Login failed with username %@ : %@", username, error);
-        [self displayGenericErrorMessage:NSLocalizedString(@"Please update your credentials and try again.", nil)];
+        [self displayGenericErrorMessage:NSLocalizedString(@"Please try entering your login details again.", nil)];
     };
     
     [[WordPressComApi sharedApi] signInWithUsername:username
@@ -1242,7 +1242,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         return;
     }
     if ([error code] == 403) {
-        message = NSLocalizedString(@"Please update your credentials and try again.", nil);
+        message = NSLocalizedString(@"Please try entering your login details again.", nil);
     }
     
     if ([[message trim] length] == 0) {
