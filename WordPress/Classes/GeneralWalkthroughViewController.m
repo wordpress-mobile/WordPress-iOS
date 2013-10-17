@@ -1160,7 +1160,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     void (^loginFailBlock)(NSError *) = ^(NSError *error){
         // User shouldn't get here because the getOptions call should fail, but in the unlikely case they do throw up an error message.
         [SVProgressHUD dismiss];
-        WPFLog(@"Login failed with username %@ : %@", username, error);
+        DDLogError(@"Login failed with username %@ : %@", username, error);
         [self displayGenericErrorMessage:NSLocalizedString(@"Please update your credentials and try again.", nil)];
     };
     
@@ -1274,7 +1274,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         [self showCompletionWalkthrough];
     };
     vc.onErrorLoading = ^(NewAddUsersBlogViewController *viewController, NSError *error) {
-        WPFLog(@"There was an error loading blogs after sign in");
+        DDLogError(@"There was an error loading blogs after sign in");
         [self.navigationController popViewControllerAnimated:YES];
         [self displayGenericErrorMessage:[error localizedDescription]];
     };

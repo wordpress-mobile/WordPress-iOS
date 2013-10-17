@@ -10,7 +10,7 @@
 #pragma mark LifeCycle Methods
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super viewDidLoad];
     catTableView.sectionFooterHeight = 0.0;
 

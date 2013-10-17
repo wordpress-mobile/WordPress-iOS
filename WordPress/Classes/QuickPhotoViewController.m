@@ -46,20 +46,20 @@
 
 
 - (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     self.photoImageView.delegate = nil;
     self.popController.delegate = nil;
 }
 
 - (void)didReceiveMemoryWarning {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super didReceiveMemoryWarning];
 }
 
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
         
     appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -108,7 +108,7 @@
 }
 
 - (void)viewDidUnload {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidUnload];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     // Release any retained subviews of the main view.

@@ -41,7 +41,7 @@ CGSize const AddSiteLogoSize = { 320.0, 70.0 };
 }
 
 - (void)validationSuccess:(NSString *)xmlrpc {
-    WPFLog(@"hasSubsites: %@", subsites);
+    DDLogInfo(@"hasSubsites: %@", subsites);
 
     if ([subsites count] > 0) {
         // If the user has entered the URL of a site they own on a MultiSite install, 

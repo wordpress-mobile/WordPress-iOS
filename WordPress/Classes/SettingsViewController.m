@@ -618,7 +618,7 @@ typedef enum {
 
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
-        WPFLog(@"Couldn't fetch blogs: %@", [error localizedDescription]);
+        DDLogError(@"Couldn't fetch blogs: %@", [error localizedDescription]);
         _resultsController = nil;
     }
     return _resultsController;

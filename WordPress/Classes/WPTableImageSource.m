@@ -77,7 +77,7 @@
     [[WPImageSource sharedSource] downloadImageForURL:url
                                           withSuccess:successBlock
                                               failure:^(NSError *error) {
-                                              WPFLog(@"Failed getting image %@: %@", url, error);
+                                              DDLogError(@"Failed getting image %@: %@", url, error);
                                           }];
 }
 

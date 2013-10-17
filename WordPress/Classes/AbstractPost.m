@@ -183,7 +183,7 @@
     NSError *error = nil;
     if (![[self managedObjectContext] save:&error]) {
         // We better not crash on autosave
-        WPFLog(@"[Autosave] Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+        DDLogInfo(@"[Autosave] Unresolved Core Data Save error %@, %@", error, [error userInfo]);
     }
 }
 

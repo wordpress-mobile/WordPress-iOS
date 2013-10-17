@@ -170,7 +170,7 @@
 // Just a Hello World for testing integration
 - (void)enableAwesomeness
 {
-    [FileLogger log:@"Awesomeness Enabled"];
+    DDLogInfo(@"Awesomeness Enabled");
 }
 
 - (void)hideWebViewBackgrounds

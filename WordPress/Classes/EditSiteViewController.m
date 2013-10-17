@@ -55,7 +55,7 @@
 
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
     
     if (blog) {
@@ -524,7 +524,7 @@
 - (void)checkURL {
 	NSString *urlToValidate = [self getURLToValidate];
 	
-    [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate];
+    DDLogInfo(@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate);
     
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
     [WordPressXMLRPCApi guessXMLRPCURLForSite:urlToValidate success:^(NSURL *xmlrpcURL) {

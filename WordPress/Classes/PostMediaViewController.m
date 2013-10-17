@@ -72,7 +72,7 @@
 }
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
     
     if (IS_IOS7) {
@@ -1406,14 +1406,14 @@
                 //It will return false if something goes wrong
                 success = CGImageDestinationFinalize(destination);
             } else {
-                WPFLog(@"***Could not create image destination ***");
+                DDLogError(@"***Could not create image destination ***");
             }
         } else {
-            WPFLog(@"***Could not create image source ***");
+            DDLogError(@"***Could not create image source ***");
         }
 		
 		if(!success) {
-			WPLog(@"***Could not create data from image destination ***");
+			DDLogInfo(@"***Could not create data from image destination ***");
 			//write the data without EXIF to disk
 			NSFileManager *fileManager = [NSFileManager defaultManager];
 			[fileManager createFileAtPath:filepath contents:imageData attributes:nil];

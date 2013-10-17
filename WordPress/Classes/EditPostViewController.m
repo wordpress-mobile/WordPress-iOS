@@ -527,11 +527,11 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     if (_backupPost) {
         [self.apost.original cloneFrom:_backupPost];
         if (upload) {
-            WPFLog(@"Restoring post backup");
+            DDLogInfo(@"Restoring post backup");
             [self.apost.original uploadWithSuccess:^{
-                WPFLog(@"post uploaded: %@", self.apost.postTitle);
+                DDLogInfo(@"post uploaded: %@", self.apost.postTitle);
             } failure:^(NSError *error) {
-                WPFLog(@"post failed: %@", [error localizedDescription]);
+                DDLogError(@"post failed: %@", [error localizedDescription]);
             }];
             [self deleteBackupPost];
         }
@@ -742,7 +742,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
     }
     
     if (_isAutosaving) {
-        WPFLog(@"Canceling all auto save operations as user is about to force a save");
+        DDLogInfo(@"Canceling all auto save operations as user is about to force a save");
         // Cancel all blog network operations since the user tapped the save/publish button
         [self.apost.blog.api cancelAllHTTPOperations];
     }
@@ -766,9 +766,9 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 	if (upload) {
 		NSString *postTitle = self.apost.postTitle;
         [self.apost.original uploadWithSuccess:^{
-            WPFLog(@"post uploaded: %@", postTitle);
+            DDLogInfo(@"post uploaded: %@", postTitle);
         } failure:^(NSError *error) {
-            WPFLog(@"post failed: %@", [error localizedDescription]);
+            DDLogError(@"post failed: %@", [error localizedDescription]);
         }];
 	} else {
 		[self.apost.original save];
@@ -855,7 +855,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
             // If the post has been published or dismissed while autosaving
             // the network request should have been canceled
             // But just in case, don't try updating this post
-            WPFLog(@"!!! Autosave returned after post editor was dismissed");
+            DDLogInfo(@"!!! Autosave returned after post editor was dismissed");
             _isAutosaving = NO;
             [self hideAutosaveIndicatorWithSuccess:YES];
             return;
@@ -1151,7 +1151,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (alertView.tag == EditPostViewControllerAlertTagFailedMedia) {
         if (buttonIndex == 1) {
-            WPFLog(@"Saving post even after some media failed to upload");
+            DDLogInfo(@"Saving post even after some media failed to upload");
             [self savePost:YES];
         } else {
             [self switchToMedia];
@@ -1196,7 +1196,7 @@ CGFloat const EditPostViewControllerTextViewOffset = 10.0;
                 if ((![self.apost hasRemote] || _isAutosaved) && [self.apost.status isEqualToString:@"publish"]) {
                     self.apost.status = @"draft";
                 }
-                WPFLog(@"Saving post as a draft after user initially attempted to cancel");
+                DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
                 [self savePost:YES];
 			}
         }

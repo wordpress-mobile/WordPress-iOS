@@ -32,7 +32,7 @@
 }
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
     
 	// ShouldRefreshPosts
@@ -123,7 +123,7 @@
 }
 
 - (void)viewDidUnload {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 	[super viewDidUnload];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];

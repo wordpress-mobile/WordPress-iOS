@@ -50,7 +50,7 @@
 #pragma mark Lifecycle Methods
 
 - (void)dealloc {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 	if (locationManager) {
 		locationManager.delegate = nil;
 		[locationManager stopUpdatingLocation];
@@ -81,7 +81,7 @@
 - (void)viewDidLoad {
     self.title = NSLocalizedString(@"Properties", nil);
     
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -186,7 +186,7 @@
     [super viewDidUnload];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [locationManager stopUpdatingLocation];
     locationManager.delegate = nil;
     locationManager = nil;
@@ -1790,10 +1790,10 @@
                 //It will return false if something goes wrong
                 success = CGImageDestinationFinalize(destination);
             } else {
-                WPFLog(@"***Could not create image destination ***");
+                DDLogError(@"***Could not create image destination ***");
             }
         } else {
-            WPFLog(@"***Could not create image source ***");
+            DDLogError(@"***Could not create image source ***");
         }
 		
 		if(!success) {
