@@ -19,8 +19,7 @@
 
 typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 {
-    SettingsSectionFAQ,
-    SettingsSectionForums,
+    SettingsSectionFAQForums,
     SettingsSectionFeedback,
     SettingsSectionActivityLog,
 };
@@ -52,12 +51,12 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == SettingsSectionActivityLog)
+    if (section == SettingsSectionFAQForums || section == SettingsSectionActivityLog)
         return 2;
 
     return 1;
@@ -86,18 +85,18 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    cell.textLabel.textAlignment = NSTextAlignmentLeft;
     [WPStyleGuide configureTableViewCell:cell];
 
-    if (indexPath.section == SettingsSectionFAQ) {
-        cell.textLabel.text = NSLocalizedString(@"Visit the FAQ", @"");
+    if (indexPath.section == SettingsSectionFAQForums && indexPath.row == 0) {
+        cell.textLabel.text = NSLocalizedString(@"WordPress Help Center", @"");
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    } else if (indexPath.section == SettingsSectionForums) {
-        cell.textLabel.text = NSLocalizedString(@"Visit the Forums", @"");
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        [WPStyleGuide configureTableViewActionCell:cell];
+    } else if (indexPath.section == SettingsSectionFAQForums && indexPath.row == 1) {
+        cell.textLabel.text = NSLocalizedString(@"WordPress Forums", @"");
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else if (indexPath.section == SettingsSectionFeedback) {
-        cell.textLabel.text = NSLocalizedString(@"Send Us Feedback", @"");
+        cell.textLabel.text = NSLocalizedString(@"E-mail Support", @"");
+        cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.accessoryType = UITableViewCellAccessoryNone;
         [WPStyleGuide configureTableViewActionCell:cell];
     } else if (indexPath.section == SettingsSectionActivityLog) {
@@ -119,8 +118,8 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    if (section == SettingsSectionFAQ) {
-        return NSLocalizedString(@"Please visit the FAQ to get answers to common questions. If you're still having trouble, please post in the forums or send us feedback.", @"");
+    if (section == SettingsSectionFAQForums) {
+        return NSLocalizedString(@"Visit the Help Center to get answers to common questions, or visit the Forums to ask new ones.", @"");
     } else if (section == SettingsSectionActivityLog) {
         return NSLocalizedString(@"Turning on Extra Debug will log additional items to assist with us helping you with resolving a problem.", @"");
     }
@@ -135,11 +134,11 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (indexPath.section == SettingsSectionFAQ) {
+    if (indexPath.section == SettingsSectionFAQForums) {
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         [webViewController setUrl:[NSURL URLWithString:@"http://ios.wordpress.org/faq"]];
         [self.navigationController pushViewController:webViewController animated:YES];
-    } else if (indexPath.section == SettingsSectionForums) {
+    } else if (indexPath.section == SettingsSectionFAQForums && indexPath.row == 1) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.forums.wordpress.org"]];
     } else if (indexPath.section == SettingsSectionFeedback) {
         if ([MFMailComposeViewController canSendMail]) {
