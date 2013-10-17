@@ -15,15 +15,14 @@
 
 
 - (id)initWithChallenge:(NSURLAuthenticationChallenge *)challenge {
-    self = [self initWithTitle:nil
-                       message:nil
-                      delegate:nil
-             cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button label.")
-             otherButtonTitles:nil];
+    self = [super initWithTitle:nil
+                        message:nil
+                       delegate:self
+              cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel button label.")
+              otherButtonTitles:nil];
 
     if (self) {
         _challenge = challenge;
-        self.delegate = self;
 
         if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
             self.alertViewStyle = UIAlertViewStyleDefault;
@@ -41,8 +40,7 @@
 }
 
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
+-(void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {
     if (buttonIndex == 1) {
         NSURLCredential *credential;
         if ([_challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
@@ -64,6 +62,7 @@
     } else {
         [[_challenge sender] cancelAuthenticationChallenge:_challenge];
     }
+    [super dismissWithClickedButtonIndex:buttonIndex animated:animated];
 }
 
 @end
