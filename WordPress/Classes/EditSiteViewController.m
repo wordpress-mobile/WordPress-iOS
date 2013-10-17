@@ -18,6 +18,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <SVProgressHUD/SVProgressHUD.h>
+#import <NSDictionary+SafeExpectations.h>
 
 @interface EditSiteViewController (PrivateMethods)
 
