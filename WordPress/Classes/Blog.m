@@ -951,7 +951,7 @@
     // Don't even bother if blog has been deleted while fetching comments
     if ([self isDeleted] || self.managedObjectContext == nil)
         return;
-    
+
     NSManagedObjectContext *backgroundMOC = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     backgroundMOC.parentContext = [WordPressAppDelegate sharedWordPressApplicationDelegate].managedObjectContext;
     
