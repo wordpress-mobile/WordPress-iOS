@@ -10,6 +10,7 @@
 #import "WPWebViewController.h"
 #import "ActivityLogViewController.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import "WordPressAppDelegate.h"
 
 @interface SupportViewController ()
 
@@ -182,12 +183,23 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [messageBody appendFormat:@"%@: %@\n", NSLocalizedString(@"Locale", @""), locale];
     [messageBody appendFormat:@"%@: %@\n", NSLocalizedString(@"iOS Version", @""), iosVersion];
     
+    WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    DDFileLogger *fileLogger = delegate.fileLogger;
+    NSArray *logFiles = fileLogger.logFileManager.sortedLogFileInfos;
+    
     MFMailComposeViewController *mailComposeViewController = [[MFMailComposeViewController alloc] init];
     mailComposeViewController.mailComposeDelegate = self;
     
     [mailComposeViewController setMessageBody:messageBody isHTML:NO];
     [mailComposeViewController setSubject:@"WordPress for iOS Help Request"];
     [mailComposeViewController setToRecipients:@[@"support@wordpress.com"]];
+
+    if (logFiles.count > 0) {
+        DDLogFileInfo *logFileInfo = (DDLogFileInfo *)logFiles[0];
+        NSData *logData = [NSData dataWithContentsOfFile:logFileInfo.filePath];
+        
+        [mailComposeViewController addAttachmentData:logData mimeType:@"text/plain" fileName:@"current_log.txt"];
+    }
     
     if (IS_IOS7) {
         mailComposeViewController.modalPresentationCapturesStatusBarAppearance = NO;
