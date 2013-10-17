@@ -1124,7 +1124,7 @@ int ddLogLevel = LOG_LEVEL_INFO;
     }
 }
 
-=- (void)registerForPushNotifications {
+- (void)registerForPushNotifications {
     if (isWPcomAuthenticated) {
         [[UIApplication sharedApplication]
          registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
