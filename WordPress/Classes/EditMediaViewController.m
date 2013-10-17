@@ -14,7 +14,6 @@
 #import "WPStyleGuide.h"
 #import "WPLoadingView.h"
 #import <objc/runtime.h>
-#import "UIImage+ImageEffects.h"
 #import "UIImage+Resize.h"
 #import <MediaPlayer/MediaPlayer.h>
 
