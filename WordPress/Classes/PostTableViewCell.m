@@ -37,7 +37,7 @@ static const float statusLabelMaxWidthPortrait = 100.f;
 
 
 - (void)setSaving:(BOOL)value {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     saving = value;
 
     if (saving) {

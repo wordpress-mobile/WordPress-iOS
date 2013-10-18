@@ -789,6 +789,9 @@
 		93740DCB17D8F86700C41B2F /* WPAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 93740DCA17D8F86700C41B2F /* WPAlertView.m */; };
 		93740DCD17D8F87B00C41B2F /* WPAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93740DCC17D8F87B00C41B2F /* WPAlertView.xib */; };
 		93B17EDC17DFD626002B1014 /* WPAlertViewSideBySide.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93B17EDB17DFD626002B1014 /* WPAlertViewSideBySide.xib */; };
+		93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F581762410B000C966D /* ActivityLogDetailViewController.m */; };
+		93C486501810442200A24725 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93027BB71758332300483FFD /* SupportViewController.m */; };
+		93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F55176237A4000C966D /* ActivityLogViewController.m */; };
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */; };
@@ -976,7 +979,6 @@
 		E1B62A8513AA8D7700A6FCA4 /* link.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A7F13AA8D7700A6FCA4 /* link.png */; };
 		E1B62A8613AA8D7700A6FCA4 /* link@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A8013AA8D7700A6FCA4 /* link@2x.png */; };
 		E1B62A8713AA8D7700A6FCA4 /* link~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E1B62A8113AA8D7700A6FCA4 /* link~ipad.png */; };
-		E1B7B983131553FF005318BD /* FileLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B7B982131553FF005318BD /* FileLogger.m */; };
 		E1C43CA712E4D09E00330262 /* PageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C43CA612E4D09E00330262 /* PageViewController.m */; };
 		E1CAAE3713F413F00000C58D /* WPKeyboardToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CAAE3613F413F00000C58D /* WPKeyboardToolbar.m */; };
 		E1CAAE3A13F4142E0000C58D /* WPKeyboardToolbarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CAAE3913F4142E0000C58D /* WPKeyboardToolbarButtonItem.m */; };
@@ -1965,6 +1967,16 @@
 		85F2C4D217BA0ED400A303E0 /* MP6SidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MP6SidebarViewController.m; sourceTree = "<group>"; };
 		85F2C4D317BA0ED400A303E0 /* MP6SidebarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MP6SidebarViewController.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		93027BB61758332300483FFD /* SupportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportViewController.h; sourceTree = "<group>"; };
+		93027BB71758332300483FFD /* SupportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportViewController.m; sourceTree = "<group>"; };
+		93069F54176237A4000C966D /* ActivityLogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityLogViewController.h; sourceTree = "<group>"; };
+		93069F55176237A4000C966D /* ActivityLogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityLogViewController.m; sourceTree = "<group>"; };
+		93069F571762410B000C966D /* ActivityLogDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityLogDetailViewController.h; sourceTree = "<group>"; };
+		93069F581762410B000C966D /* ActivityLogDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityLogDetailViewController.m; sourceTree = "<group>"; };
+		93069F5A17625C28000C966D /* UIButtonBarActionBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIButtonBarActionBlack.png; sourceTree = "<group>"; };
+		93069F5B17625C28000C966D /* UIButtonBarActionBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIButtonBarActionBlack@2x.png"; sourceTree = "<group>"; };
+		93069F5C17625C28000C966D /* UIButtonBarActionSmallBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = UIButtonBarActionSmallBlack.png; sourceTree = "<group>"; };
+		93069F5D17625C28000C966D /* UIButtonBarActionSmallBlack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIButtonBarActionSmallBlack@2x.png"; sourceTree = "<group>"; };
 		93740DC817D8F85600C41B2F /* WPAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAlertView.h; sourceTree = "<group>"; };
 		93740DCA17D8F86700C41B2F /* WPAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAlertView.m; sourceTree = "<group>"; };
 		93740DCC17D8F87B00C41B2F /* WPAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WPAlertView.xib; sourceTree = "<group>"; };
@@ -2233,8 +2245,6 @@
 		E1B62A8113AA8D7700A6FCA4 /* link~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "link~ipad.png"; path = "Resources/Images/link~ipad.png"; sourceTree = "<group>"; };
 		E1B62A8813AAA5FE00A6FCA4 /* keyboardButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = keyboardButton.png; path = Resources/Images/keyboardButton.png; sourceTree = "<group>"; };
 		E1B62A8A13AAA96F00A6FCA4 /* keyboardButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "keyboardButton@2x.png"; path = "Resources/Images/keyboardButton@2x.png"; sourceTree = "<group>"; };
-		E1B7B981131553FF005318BD /* FileLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileLogger.h; sourceTree = "<group>"; };
-		E1B7B982131553FF005318BD /* FileLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileLogger.m; sourceTree = "<group>"; };
 		E1C43CA512E4D09E00330262 /* PageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageViewController.h; sourceTree = "<group>"; };
 		E1C43CA612E4D09E00330262 /* PageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageViewController.m; sourceTree = "<group>"; };
 		E1C807471696F72E00E545A6 /* WordPress 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 9.xcdatamodel"; sourceTree = "<group>"; };
@@ -2894,12 +2904,18 @@
 		5D87E10D15F512380012C595 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				E1AB07AB1578D34300D6AD64 /* SettingsViewController.h */,
-				E1AB07AC1578D34300D6AD64 /* SettingsViewController.m */,
-				5D87E10915F5120C0012C595 /* SettingsPageViewController.h */,
-				5D87E10A15F5120C0012C595 /* SettingsPageViewController.m */,
+				93069F571762410B000C966D /* ActivityLogDetailViewController.h */,
+				93069F581762410B000C966D /* ActivityLogDetailViewController.m */,
+				93069F54176237A4000C966D /* ActivityLogViewController.h */,
+				93069F55176237A4000C966D /* ActivityLogViewController.m */,
 				37B7924B16768FCB0021B3A4 /* NotificationSettingsViewController.h */,
 				37B7924C16768FCB0021B3A4 /* NotificationSettingsViewController.m */,
+				5D87E10915F5120C0012C595 /* SettingsPageViewController.h */,
+				5D87E10A15F5120C0012C595 /* SettingsPageViewController.m */,
+				E1AB07AB1578D34300D6AD64 /* SettingsViewController.h */,
+				E1AB07AC1578D34300D6AD64 /* SettingsViewController.m */,
+				93027BB61758332300483FFD /* SupportViewController.h */,
+				93027BB71758332300483FFD /* SupportViewController.m */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -3634,6 +3650,8 @@
 				37363A3C15AB105200D3A6B4 /* cell_gradient_bg@2x.png */,
 				C5C272E00E7EC00F0034AA46 /* check.png */,
 				6E461BAD11C0C06100B07942 /* check@2x.png */,
+				E12A08E116C9706200E3DDF6 /* clouds_header.png */,
+				E12A08E216C9706200E3DDF6 /* clouds_header@2x.png */,
 				E1895ECB1607272B007E6DD5 /* Default-568h@2x.png */,
 				3704ACFA13128C9800120911 /* Default.png */,
 				3704ACFB13128C9800120911 /* Default@2x.png */,
@@ -3664,7 +3682,11 @@
 				E151045C14E27F9300CE282B /* list.png */,
 				E151045D14E27F9300CE282B /* list@2x.png */,
 				2A8FF7D80E8A32F7001A9A40 /* lock.png */,
+				E15051CC16CA8E4900D3DDDC /* logo_jetpack.png */,
+				E15051CD16CA8E4900D3DDDC /* logo_jetpack@2x.png */,
 				83610B1311F4B42D00421116 /* logos */,
+				FD22C2B516CD2B20002BA030 /* navbar_settings.png */,
+				FD22C2B616CD2B20002BA030 /* navbar_settings@2x.png */,
 				371C161C15A3A3AD00BC653C /* Navigation Bar */,
 				30410681144E17AE00E98F07 /* next.png */,
 				30410682144E17AE00E98F07 /* next@2x.png */,
@@ -3714,6 +3736,10 @@
 				5D9832EB15A77EEF00A5E783 /* toolbar_bg@2x.png */,
 				5D9832F615A790BA00A5E783 /* toolbar_shadow.png */,
 				5D9832F715A790E500A5E783 /* toolbar_shadow@2x.png */,
+				93069F5A17625C28000C966D /* UIButtonBarActionBlack.png */,
+				93069F5B17625C28000C966D /* UIButtonBarActionBlack@2x.png */,
+				93069F5C17625C28000C966D /* UIButtonBarActionSmallBlack.png */,
+				93069F5D17625C28000C966D /* UIButtonBarActionSmallBlack@2x.png */,
 				7F3E104F13498200008CF73D /* UISegmentBarBlackButton.png */,
 				7F3E105013498200008CF73D /* UISegmentBarBlackButton@2x.png */,
 				7F3E105113498200008CF73D /* UISegmentBarBlackButtonHighlighted.png */,
@@ -3760,8 +3786,6 @@
 				C55A90D80E8026CD00E1C9B5 /* WPSegmentedSelectionTableViewController.m */,
 				FD9A948A12FAEA2300438F94 /* DateUtils.h */,
 				FD9A948B12FAEA2300438F94 /* DateUtils.m */,
-				E1B7B981131553FF005318BD /* FileLogger.h */,
-				E1B7B982131553FF005318BD /* FileLogger.m */,
 				E1B62A7913AA61A100A6FCA4 /* WPWebViewController.h */,
 				E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */,
 				5DEB61B6156FCD5200242C35 /* WPChromelessWebViewController.h */,
@@ -5222,6 +5246,7 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */,
 				2F970F740DF92274006BD934 /* PostsViewController.m in Sources */,
+				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
 				ACC156CC0E10E67600D6E1A0 /* EditPostViewController.m in Sources */,
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
 				85F2C4BE17B9F6E600A303E0 /* GeneralWalkthroughPage1ViewController.m in Sources */,
@@ -5252,6 +5277,7 @@
 				83610AAA11F4AD2C00421116 /* WPcomLoginViewController.m in Sources */,
 				8369FF9111F4F3BF003106C7 /* AddUsersBlogsViewController.m in Sources */,
 				8370D10A11FA499A009D650F /* UITableViewActivityCell.m in Sources */,
+				93C486501810442200A24725 /* SupportViewController.m in Sources */,
 				8370D1BD11FA6295009D650F /* AddSiteViewController.m in Sources */,
 				8320B5D611FCA41200607422 /* UITableViewSwitchCell.m in Sources */,
 				83FEFC7611FF6C5A0078B462 /* EditSiteViewController.m in Sources */,
@@ -5280,7 +5306,6 @@
 				85F2C4C117B9F6E600A303E0 /* LoginCompletedWalkthroughPage1ViewController.m in Sources */,
 				E18D43E1130BD8E9006155DE /* PostToAbstractPost.m in Sources */,
 				E11930C41312F8A800F34124 /* FakeMigration.m in Sources */,
-				E1B7B983131553FF005318BD /* FileLogger.m in Sources */,
 				375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */,
 				E13FA0D7134BE78D007DCDD0 /* QuickPhotoViewController.m in Sources */,
 				E13FA0DE134C6D34007DCDD0 /* BlogSelectorButton.m in Sources */,
@@ -5352,6 +5377,7 @@
 				CC5B0F27169BDC4000AA0291 /* NoteCommentContentCell.m in Sources */,
 				8516972C169D42F4006C5DED /* WPToast.m in Sources */,
 				CC098B8416A9ECF800450976 /* CameraPlusPickerManager.m in Sources */,
+				93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */,
 				E183EC9A16B16CCF00C2EB11 /* AutosavingIndicatorView.m in Sources */,
 				E1523EB516D3B305002C5A36 /* InstapaperActivity.m in Sources */,
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,

@@ -167,12 +167,12 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
         }
 		
         if(![backgroundMoc save:&error]){
-            WPFLog(@"Failed to sync ReaderPosts: %@", error);
+            DDLogError(@"Failed to sync ReaderPosts: %@", error);
         }
         [context performBlock:^{
             NSError *error;
             if (![context save:&error]) {
-                WPFLog(@"Failed to sync ReaderPosts: %@", error);
+                DDLogError(@"Failed to sync ReaderPosts: %@", error);
             }
         }];
 		
@@ -195,7 +195,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     NSArray *array = [context executeFetchRequest:request error:&error];
 
     if ([array count]) {
-		WPFLog(@"Deleting %i ReaderPosts synced earlier than: %@ ", [array count], syncedDate);
+		DDLogInfo(@"Deleting %i ReaderPosts synced earlier than: %@ ", [array count], syncedDate);
         for (ReaderPost *post in array) {
             [context deleteObject:post];
         }

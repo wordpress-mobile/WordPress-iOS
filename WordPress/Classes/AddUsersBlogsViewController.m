@@ -54,7 +54,7 @@
 }
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
 
 	self.navigationItem.title = NSLocalizedString(@"Select Blogs", @"");
@@ -400,7 +400,7 @@
                     
                 }
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                WPFLog(@"Failed getting user blogs: %@", [error localizedDescription]);
+                DDLogError(@"Failed getting user blogs: %@", [error localizedDescription]);
                 [self hideNoBlogsView];
                 hasCompletedGetUsersBlogs = YES; 
                 [self.tableView reloadData];

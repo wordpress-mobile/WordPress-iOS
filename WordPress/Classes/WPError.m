@@ -61,7 +61,7 @@
                 break;
         }
     } else if ([error.domain isEqualToString:WordPressComApiErrorDomain]) {
-        WPFLog(@"wp.com API error: %@: %@", [error.userInfo objectForKey:WordPressComApiErrorCodeKey], [error localizedDescription]);
+        DDLogError(@"wp.com API error: %@: %@", [error.userInfo objectForKey:WordPressComApiErrorCodeKey], [error localizedDescription]);
         if (error.code == WordPressComApiErrorInvalidToken || error.code == WordPressComApiErrorAuthorizationRequired) {
             if ([WordPressComApi sharedApi].password == nil) {
                 [WPcomLoginViewController presentLoginScreen];

@@ -6,6 +6,8 @@
 //
 
 // Blog archive file name
+#import "DDLog.h"
+
 #define BLOG_ARCHIVE_NAME       WordPress_Blogs
 
 // control dimensions

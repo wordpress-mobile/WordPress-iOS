@@ -82,7 +82,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                 NSArray *blogs = [responseObject arrayForKeyPath:@"userinfo.blog"];
                 NSNumber *searchID = [self jetpackBlogID];
                 NSString *searchURL = self.url;
-                WPFLog(@"Available wp.com/jetpack blogs for %@: %@", username, blogs);
+                DDLogInfo(@"Available wp.com/jetpack blogs for %@: %@", username, blogs);
                 NSArray *foundBlogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
                     BOOL valid = NO;
                     if (searchID && [[evaluatedObject numberForKey:@"id"] isEqualToNumber:searchID]) {
@@ -91,7 +91,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                         valid = YES;
                     }
                     if (valid) {
-                        WPFLog(@"Found blog: %@", evaluatedObject);
+                        DDLogInfo(@"Found blog: %@", evaluatedObject);
                         [self saveJetpackUsername:username andPassword:password];
                     }
                     return valid;

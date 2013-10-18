@@ -25,12 +25,19 @@
 #import "PocketAPI.h"
 #import "WPMobileStats.h"
 #import "WPComLanguages.h"
+#import "DDLog.h"
+#import "DDTTYLogger.h"
+#import "DDASLLogger.h"
 #import "WPAccount.h"
 #import "Note.h"
 #import "UIColor+Helpers.h"
 #import <Security/Security.h>
+#import "DDLog.h"
+#import "DDTTYLogger.h"
+#import "DDASLLogger.h"
 
 @interface WordPressAppDelegate (Private) <CrashlyticsDelegate>
+
 - (void)setAppBadge;
 - (void)checkIfStatsShouldRun;
 - (void)runStats;
@@ -38,7 +45,10 @@
 - (void)customizeAppearance;
 - (void)toggleExtraDebuggingIfNeeded;
 - (void)handleLogoutOrBlogsChangedNotification:(NSNotification *)notification;
+
 @end
+
+int ddLogLevel = LOG_LEVEL_INFO;
 
 @implementation WordPressAppDelegate {
     BOOL _listeningForBlogChanges;
@@ -98,7 +108,7 @@
 - (void)setupCoreData {
     NSManagedObjectContext *context = [self managedObjectContext];
     if (!context) {
-        WPFLog(@"Could not setup Core Data stack");
+        DDLogError(@"Could not setup Core Data stack");
     }
 }
 
@@ -201,29 +211,40 @@
 
     [self configureCrashlytics];
 
-    // Since crashlytics is keeping a copy of the logs, we don't need to anymore
-    // Start with an empty log file when the app launches
-    [[FileLogger sharedInstance] reset];
+    // Sets up the CocoaLumberjack logging; debug output to console and file
+#ifdef DEBUG
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+#endif
+
+    self.fileLogger = [[DDFileLogger alloc] init];
+    self.fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
+    self.fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
+    [DDLog addLogger:self.fileLogger];
 
     NSArray *languages = [[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"];
     NSString *currentLanguage = [languages objectAtIndex:0];
 
-    NSString *extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
-    WPFLog(@"===========================================================================");
-	WPFLog(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
-    WPFLog(@"Crash count:       %d", crashCount);
+    BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
+    if (extraDebug) {
+        ddLogLevel = LOG_LEVEL_VERBOSE;
+    }
+    
+    DDLogInfo(@"===========================================================================");
+	DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
+    DDLogInfo(@"Crash count:       %d", crashCount);
 #ifdef DEBUG
-    WPFLog(@"Debug mode:  Debug");
+    DDLogInfo(@"Debug mode:  Debug");
 #else
-    WPFLog(@"Debug mode:  Production");
+    DDLogInfo(@"Debug mode:  Production");
 #endif
-    WPFLog(@"Extra debug: %@", extraDebug);
-    WPFLog(@"Device model: %@ (%@)", [UIDeviceHardware platformString], [UIDeviceHardware platform]);
-    WPFLog(@"OS:        %@ %@", [device systemName], [device systemVersion]);
-    WPFLog(@"Language:  %@", currentLanguage);
-    WPFLog(@"UDID:      %@", [device wordpressIdentifier]);
-    WPFLog(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]);
-    WPFLog(@"===========================================================================");
+    DDLogInfo(@"Extra debug: %@", extraDebug ? @"YES" : @"NO");
+    DDLogInfo(@"Device model: %@ (%@)", [UIDeviceHardware platformString], [UIDeviceHardware platform]);
+    DDLogInfo(@"OS:        %@ %@", [device systemName], [device systemVersion]);
+    DDLogInfo(@"Language:  %@", currentLanguage);
+    DDLogInfo(@"UDID:      %@", [device wordpressIdentifier]);
+    DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:kApnsDeviceTokenPrefKey]);
+    DDLogInfo(@"===========================================================================");
 
     [self setupUserAgent];
     [WPMobileStats initializeStats];
@@ -365,7 +386,7 @@
         NSLog(@"Application launched with URL: %@", URLString);
         if ([[url absoluteString] hasPrefix:@"wordpress://wpcom_signup_completed"]) {
             NSDictionary *params = [[url query] dictionaryFromQueryString];
-            // WPFLog(@"%@", params);
+            DDLogInfo(@"%@", params);
             [[NSNotificationCenter defaultCenter] postNotificationName:@"wpcomSignupNotification" object:nil userInfo:params];
             return YES;
         }
@@ -375,13 +396,13 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self setAppBadge];
     [WPMobileStats endSession];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
     [WPMobileStats trackEventForWPComWithSavedProperties:StatsEventAppClosed];
     [self resetStatRelatedVariables];
@@ -412,7 +433,7 @@
 
     NSError *error = nil;
     if (![self.managedObjectContext save:&error]) {
-        WPFLog(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
+        DDLogError(@"Unresolved Core Data Save error %@, %@", error, [error userInfo]);
         exit(-1);
     }
 }
@@ -423,7 +444,7 @@
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];    
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));    
   
     if (passwordAlertRunning && passwordTextField != nil) {
         [passwordTextField resignFirstResponder];
@@ -433,7 +454,7 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ApplicationDidBecomeActive" object:nil];
     
@@ -584,41 +605,40 @@
 // The following conditional code is meant to test the detection of mapping model for migrations
 // It should remain disabled unless you are debugging why migrations aren't run
 #if FALSE
-	WPFLog(@"Debugging migration detection");
+	DDLogInfo(@"Debugging migration detection");
 	NSDictionary *sourceMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
 																							  URL:storeURL
 																							error:&error];
 	if (sourceMetadata == nil) {
-		WPFLog(@"Can't find source persistent store");
+		DDLogInfo(@"Can't find source persistent store");
 	} else {
-		WPFLog(@"Source store: %@", sourceMetadata);
+		DDLogInfo(@"Source store: %@", sourceMetadata);
 	}
 	NSManagedObjectModel *destinationModel = [self managedObjectModel];
 	BOOL pscCompatibile = [destinationModel
 						   isConfiguration:nil
 						   compatibleWithStoreMetadata:sourceMetadata];
 	if (pscCompatibile) {
-		WPFLog(@"No migration needed");
+		DDLogInfo(@"No migration needed");
 	} else {
-		WPFLog(@"Migration needed");
+		DDLogInfo(@"Migration needed");
 	}
 	NSManagedObjectModel *sourceModel = [NSManagedObjectModel mergedModelFromBundles:nil forStoreMetadata:sourceMetadata];
 	if (sourceModel != nil) {
-		WPFLog(@"source model found");
+		DDLogInfo(@"source model found");
 	} else {
-		WPFLog(@"source model not found");
+		DDLogInfo(@"source model not found");
 	}
 
 	NSMigrationManager *manager = [[NSMigrationManager alloc] initWithSourceModel:sourceModel
 																 destinationModel:destinationModel];
-	//WPFLog(@"Bundle contents: %@", [[NSBundle mainBundle] pathsForResourcesOfType:@"cdm" inDirectory:nil]);
 	NSMappingModel *mappingModel = [NSMappingModel mappingModelFromBundles:[NSArray arrayWithObject:[NSBundle mainBundle]]
 															forSourceModel:sourceModel
 														  destinationModel:destinationModel];
 	if (mappingModel != nil) {
-		WPFLog(@"mapping model found");
+		DDLogInfo(@"mapping model found");
 	} else {
-		WPFLog(@"mapping model not found");
+		DDLogInfo(@"mapping model not found");
 	}
 
 	if (NO) {
@@ -632,17 +652,17 @@
 											   error:&error];
 
 		if (migrates) {
-			WPFLog(@"migration went OK");
+			DDLogInfo(@"migration went OK");
 		} else {
-			WPFLog(@"migration failed: %@", [error localizedDescription]);
+			DDLogInfo(@"migration failed: %@", [error localizedDescription]);
 		}
 	}
 	
-	WPFLog(@"End of debugging migration detection");
+	DDLogInfo(@"End of debugging migration detection");
 #endif
     persistentStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
-		WPFLog(@"Error opening the database. %@\nDeleting the file and trying again", error);
+		DDLogError(@"Error opening the database. %@\nDeleting the file and trying again", error);
 #ifdef CORE_DATA_MIGRATION_DEBUG
 		// Don't delete the database on debug builds
 		// Makes migration debugging less of a pain
@@ -654,7 +674,7 @@
         // delete the sqlite file and try again
 		[[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:nil];
 		if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-			NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+			DDLogError(@"Unresolved error %@, %@", error, [error userInfo]);
 			abort();
 		}
 
@@ -674,12 +694,11 @@
 			MigrateBlogsFromFiles *blogMigrator = [[MigrateBlogsFromFiles alloc] init];
 			[blogMigrator forceBlogsMigrationInContext:destMOC error:&error];
 			if (![destMOC save:&error]) {
-				WPFLog(@"Error saving blogs-only migration: %@", error);
+				DDLogError(@"Error saving blogs-only migration: %@", error);
 			}
 			[fileManager removeItemAtPath:blogsArchiveFilePath error:&error];
 		}
 	}
-	[[FileLogger sharedInstance] flush];
     
     return persistentStoreCoordinator_;
 }
@@ -822,12 +841,12 @@
                 parameters:[NSArray arrayWithObjects:account.username, account.password, nil]
                    success:^(AFHTTPRequestOperation *operation, id responseObject) {
                        isWPcomAuthenticated = YES;
-                       WPFLog(@"Logged in to WordPress.com as %@", account.username);
+                       DDLogInfo(@"Logged in to WordPress.com as %@", account.username);
                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                        if ([error.domain isEqualToString:@"XMLRPC"] && error.code == 403) {
                            isWPcomAuthenticated = NO;
                        }
-                       WPFLog(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
+                       DDLogError(@"Error authenticating %@ with WordPress.com: %@", account.username, [error description]);
                    }];
 	} else {
 		isWPcomAuthenticated = NO;
@@ -931,7 +950,7 @@
 }
 
 - (void)cleanUnusedMediaFileFromTmpDir {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     NSMutableArray *mediaToKeep = [NSMutableArray array];
 
     NSError *error = nil;
@@ -944,10 +963,10 @@
     [fetchRequest setPredicate:predicate];
     NSArray *mediaObjectsToKeep = [context executeFetchRequest:fetchRequest error:&error];
     if (error != nil) {
-        WPFLog(@"Error cleaning up tmp files: %@", [error localizedDescription]);
+        DDLogError(@"Error cleaning up tmp files: %@", [error localizedDescription]);
     }
     //get a references to media files linked in a post
-    NSLog(@"%i media items to check for cleanup", [mediaObjectsToKeep count]);
+    DDLogInfo(@"%i media items to check for cleanup", [mediaObjectsToKeep count]);
     for (Media *media in mediaObjectsToKeep) {
         [mediaToKeep addObject:media.localURL];
     }
@@ -987,7 +1006,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:BlogChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLogoutOrBlogsChangedNotification:) name:WordPressComApiDidLogoutNotification object:nil];
     }
-
+    
 	int num_blogs = [Blog countWithContext:[self managedObjectContext]];
 	BOOL authed = [[[NSUserDefaults standardUserDefaults] objectForKey:@"wpcom_authenticated_flag"] boolValue];
 	if (num_blogs == 0 && !authed) {
@@ -1000,6 +1019,7 @@
 		NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
 		[[NSUserDefaults standardUserDefaults] setObject:origExtraDebug forKey:@"orig_extra_debug"];
 		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"extra_debug"];
+        ddLogLevel = LOG_LEVEL_VERBOSE;
 		[NSUserDefaults resetStandardUserDefaults];
 	} else {
 		NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] stringForKey:@"orig_extra_debug"];
@@ -1011,6 +1031,10 @@
 		[[NSUserDefaults standardUserDefaults] setBool:[origExtraDebug boolValue] forKey:@"extra_debug"];
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"orig_extra_debug"];
 		[NSUserDefaults resetStandardUserDefaults];
+        
+        if ([origExtraDebug boolValue]) {
+            ddLogLevel = LOG_LEVEL_VERBOSE;
+        }
 	}
 }
 
@@ -1041,7 +1065,7 @@
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-	WPFLog(@"Failed to register for push notifications: %@", error);
+	DDLogError(@"Failed to register for push notifications: %@", error);
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kApnsDeviceTokenPrefKey];
 }
 
@@ -1059,7 +1083,7 @@
 
 - (void)handleNotification:(NSDictionary*)userInfo forState:(UIApplicationState)state completionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     
-    WPFLog(@"Received push notification:\nPayload: %@\nCurrent Application state: %d", userInfo, state);
+    DDLogInfo(@"Received push notification:\nPayload: %@\nCurrent Application state: %d", userInfo, state);
     
     switch (state) {
         case UIApplicationStateActive:
@@ -1083,14 +1107,14 @@
             
             if (completionHandler) {
                 [Note getNewNotificationswithContext:self.managedObjectContext success:^(BOOL hasNewNotes) {
-                    WPFLog(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
+                    DDLogInfo(@"notification fetch completion handler completed with new notes: %@", hasNewNotes ? @"YES" : @"NO");
                     if (hasNewNotes) {
                         completionHandler(UIBackgroundFetchResultNewData);
                     } else {
                         completionHandler(UIBackgroundFetchResultNewData);
                     }
                 } failure:^(NSError *error) {
-                    WPFLog(@"notification fetch completion handler failed with error: %@", error);
+                    DDLogError(@"notification fetch completion handler failed with error: %@", error);
                     completionHandler(UIBackgroundFetchResultFailed);
                 }];
             }
@@ -1129,26 +1153,26 @@
         [api callMethod:@"wpcom.mobile_push_unregister_token"
              parameters:[NSArray arrayWithObjects:account.username, account.password, token, [[UIDevice currentDevice] wordpressIdentifier], @"apple", sandbox, nil]
                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    WPFLog(@"Unregistered token %@", token);
+                    DDLogInfo(@"Unregistered token %@", token);
                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    WPFLog(@"Couldn't unregister token: %@", [error localizedDescription]);
+                    DDLogError(@"Couldn't unregister token: %@", [error localizedDescription]);
                 }];
     }
 }
 
 - (void)openNotificationScreenWithOptions:(NSDictionary *)remoteNotif {
     if ([remoteNotif objectForKey:@"type"]) { //new social PNs
-        WPFLog(@"Received new notification: %@", remoteNotif);
+        DDLogInfo(@"Received new notification: %@", remoteNotif);
         
         if( self.panelNavigationController )
             [self.panelNavigationController showNotificationsView:YES];
         
     } else if ([remoteNotif objectForKey:@"blog_id"] && [remoteNotif objectForKey:@"comment_id"]) {
-        WPFLog(@"Received notification: %@", remoteNotif);
+        DDLogInfo(@"Received notification: %@", remoteNotif);
         MP6SidebarViewController *sidebar = (MP6SidebarViewController *)self.panelNavigationController.masterViewController;
         [sidebar showCommentWithId:[[remoteNotif objectForKey:@"comment_id"] numericValue] blogId:[[remoteNotif objectForKey:@"blog_id"] numericValue]];
     } else {
-        WPFLog(@"Got unsupported notification: %@", remoteNotif);
+        DDLogWarn(@"Got unsupported notification: %@", remoteNotif);
     }
 }
 

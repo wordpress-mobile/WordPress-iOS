@@ -406,7 +406,7 @@ NSTimeInterval const WPTableViewControllerRefreshTimeout = 300; // 5 minutes
         
     NSError *error = nil;
     if (![_resultsController performFetch:&error]) {
-        WPFLog(@"%@ couldn't fetch %@: %@", self, [self entityName], [error localizedDescription]);
+        DDLogError(@"%@ couldn't fetch %@: %@", self, [self entityName], [error localizedDescription]);
         _resultsController = nil;
     }
     

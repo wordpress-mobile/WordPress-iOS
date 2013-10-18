@@ -15,6 +15,7 @@
 #import "AddUsersBlogsViewController.h"
 #import "NewAddUsersBlogViewController.h"
 #import "AboutViewController.h"
+#import "SupportViewController.h"
 #import "WPNUXMainButton.h"
 #import "WPNUXPrimaryButton.h"
 #import "WPNUXSecondaryButton.h"
@@ -346,13 +347,13 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
 - (void)clickedInfoButton:(id)sender
 {
     [WPMobileStats trackEventForSelfHostedAndWPCom:StatsEventNUXFirstWalkthroughClickedInfo];
-    AboutViewController *aboutViewController = [[AboutViewController alloc] init];
-	aboutViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:aboutViewController];
+
+    SupportViewController *supportViewController = [[SupportViewController alloc] init];
+    UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:supportViewController];
     nc.navigationBar.translucent = NO;
     nc.modalPresentationStyle = UIModalPresentationFormSheet;
+    nc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     [self.navigationController presentViewController:nc animated:YES completion:nil];
-	[self.navigationController setNavigationBarHidden:YES];
 }
 
 - (void)clickedSkipToCreate:(id)sender
@@ -1160,8 +1161,8 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
     void (^loginFailBlock)(NSError *) = ^(NSError *error){
         // User shouldn't get here because the getOptions call should fail, but in the unlikely case they do throw up an error message.
         [SVProgressHUD dismiss];
-        WPFLog(@"Login failed with username %@ : %@", username, error);
-        [self displayGenericErrorMessage:NSLocalizedString(@"Please update your credentials and try again.", nil)];
+        DDLogError(@"Login failed with username %@ : %@", username, error);
+        [self displayGenericErrorMessage:NSLocalizedString(@"Please try entering your login details again.", nil)];
     };
     
     [[WordPressComApi sharedApi] signInWithUsername:username
@@ -1242,7 +1243,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         return;
     }
     if ([error code] == 403) {
-        message = NSLocalizedString(@"Please update your credentials and try again.", nil);
+        message = NSLocalizedString(@"Please try entering your login details again.", nil);
     }
     
     if ([[message trim] length] == 0) {
@@ -1274,7 +1275,7 @@ CGFloat const GeneralWalkthroughiOS7StatusBarOffset = 10.0;
         [self showCompletionWalkthrough];
     };
     vc.onErrorLoading = ^(NewAddUsersBlogViewController *viewController, NSError *error) {
-        WPFLog(@"There was an error loading blogs after sign in");
+        DDLogError(@"There was an error loading blogs after sign in");
         [self.navigationController popViewControllerAnimated:YES];
         [self displayGenericErrorMessage:[error localizedDescription]];
     };

@@ -294,7 +294,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                 [SVProgressHUD dismiss];
                 [self.tableView reloadData];
-                WPFLog(@"Failed getting user blogs: %@", [error localizedDescription]);
+                DDLogError(@"Failed getting user blogs: %@", [error localizedDescription]);
                 if (self.onErrorLoading) {
                     self.onErrorLoading(self, error);
                 }
@@ -379,7 +379,7 @@ CGFloat const AddUsersBlogBottomBackgroundHeight = 64;
         }
         NSError *error;
         if (![backgroundMOC save:&error]) {
-            WPFLog(@"Error saving context on new blogs added %@", error);
+            DDLogError(@"Error saving context on new blogs added %@", error);
         }
     }];
 

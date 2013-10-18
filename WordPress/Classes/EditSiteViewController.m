@@ -18,6 +18,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <SVProgressHUD/SVProgressHUD.h>
+#import <NSDictionary+SafeExpectations.h>
 
 @interface EditSiteViewController (PrivateMethods)
 
@@ -55,7 +56,7 @@
 
 
 - (void)viewDidLoad {
-    [FileLogger log:@"%@ %@", self, NSStringFromSelector(_cmd)];
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [super viewDidLoad];
     
     if (blog) {
@@ -524,7 +525,7 @@
 - (void)checkURL {
 	NSString *urlToValidate = [self getURLToValidate];
 	
-    [FileLogger log:@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate];
+    DDLogInfo(@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate);
     
     [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
     [WordPressXMLRPCApi guessXMLRPCURLForSite:urlToValidate success:^(NSURL *xmlrpcURL) {
@@ -578,7 +579,7 @@
             NSError *error = (NSError *)wrong;
 			NSString *message;
 			if ([error code] == 403) {
-				message = NSLocalizedString(@"Please update your credentials and try again.", @"");
+				message = NSLocalizedString(@"Please try entering your login details again.", @"");
 			} else {
 				message = [error localizedDescription];
 			}
