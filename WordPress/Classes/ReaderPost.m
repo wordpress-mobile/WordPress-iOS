@@ -147,9 +147,16 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 		}
         return;
     }
-    NSManagedObjectContext *backgroundMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    [backgroundMoc setParentContext:context];
-	
+    
+    // Reuse the same background context for every call. Update the parent context if necessary
+    static NSManagedObjectContext *backgroundMoc;
+    if (backgroundMoc == nil) {
+		backgroundMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    }
+    if (![backgroundMoc.parentContext isEqual:context]) {
+        [backgroundMoc setParentContext:context];
+    }
+
     [backgroundMoc performBlock:^{
         NSError *error;
         for (NSDictionary *postData in arr) {
@@ -157,7 +164,6 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
                 continue;
             }
             [self createOrUpdateWithDictionary:postData forEndpoint:endpoint withContext:backgroundMoc];
-			
         }
 		
         if(![backgroundMoc save:&error]){
