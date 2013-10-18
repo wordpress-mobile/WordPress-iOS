@@ -122,8 +122,6 @@ static const float statusLabelMaxWidthPortrait = 100.f;
         expectedStatusLabelWidth = expectedstatusLabelSize.width > statusLabelMaxWidthLandscape ? statusLabelMaxWidthLandscape : expectedstatusLabelSize.width;
     }
     
-    //NSLog(@"width of status label %f", expectedStatusLabelLength);
-    
     CGFloat x = self.frame.size.width - expectedStatusLabelWidth - RIGHT_MARGIN;
     if ( IS_IPHONE )
         x = x - 22; //the disclousure size

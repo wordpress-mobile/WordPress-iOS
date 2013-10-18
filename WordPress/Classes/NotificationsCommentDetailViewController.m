@@ -254,7 +254,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
     
     self.commentActions = indexedActions;
     
-    NSLog(@"available actions: %@", indexedActions);
+    DDLogVerbose(@"available actions: %@", indexedActions);
     
 }
 
@@ -436,7 +436,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
         [self.replyTextView resignFirstResponder];
         self.replyTextView.editable = NO;
         [self.user postPath:replyPath parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSLog(@"Response: %@", responseObject);
+            DDLogVerbose(@"Response: %@", responseObject);
             [WPToast showToastWithMessage:NSLocalizedString(@"Replied", @"User replied to a comment")
                                  andImage:[UIImage imageNamed:@"action_icon_replied"]];
             self.replyTextView.editable = YES;
@@ -446,7 +446,7 @@ NS_ENUM(NSUInteger, NotifcationCommentCellType){
             [self resetReplyView];
 
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Failure %@", error);
+            DDLogError(@"Failure %@", error);
             self.replyTextView.editable = YES;
             self.replyActivityView.hidden = YES;
             

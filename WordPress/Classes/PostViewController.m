@@ -262,7 +262,7 @@
 
 - (void)showModalEditor {
     if (self.presentedViewController) {
-        NSLog(@"Trying to show modal a second time: bad");
+        DDLogWarn(@"Trying to show modal a second time: bad");
         return;
     }
 	if (self.apost.remoteStatus == AbstractPostRemoteStatusPushing) {
@@ -289,7 +289,7 @@
 
 - (void)showModalPreview {
     if (self.presentedViewController) {
-        NSLog(@"Trying to show modal a second time: bad");
+        DDLogWarn(@"Trying to show modal a second time: bad");
         return;
     }
 

@@ -619,7 +619,7 @@
 
 - (void)validateFields {
     self.url = [NSURL IDNEncodedURL:urlTextField.text];
-    NSLog(@"blog url: %@", self.url);
+    DDLogInfo(@"blog url: %@", self.url);
     self.username = usernameTextField.text;
     self.password = passwordTextField.text;
     

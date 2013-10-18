@@ -44,20 +44,20 @@
 - (void)cloneFrom:(AbstractPost *)source {
     for (NSString *key in [[[source entity] attributesByName] allKeys]) {
         if ([key isEqualToString:@"permalink"]) {
-            NSLog(@"Skipping %@", key);
+            DDLogInfo(@"Skipping %@", key);
         } else {
-            NSLog(@"Copying attribute %@", key);
+            DDLogInfo(@"Copying attribute %@", key);
             [self setValue:[source valueForKey:key] forKey:key];
         }
     }
     for (NSString *key in [[[source entity] relationshipsByName] allKeys]) {
         if ([key isEqualToString:@"original"] || [key isEqualToString:@"revision"]) {
-            NSLog(@"Skipping relationship %@", key);
+            DDLogInfo(@"Skipping relationship %@", key);
         } else if ([key isEqualToString:@"comments"]) {
-            NSLog(@"Copying relationship %@", key);
+            DDLogInfo(@"Copying relationship %@", key);
             [self setComments:[source comments]];
         } else {
-            NSLog(@"Copying relationship %@", key);
+            DDLogInfo(@"Copying relationship %@", key);
             [self setValue: [source valueForKey:key] forKey: key];
         }
     }
@@ -65,11 +65,11 @@
 
 - (AbstractPost *)createRevision {
     if ([self isRevision]) {
-        NSLog(@"!!! Attempted to create a revision of a revision");
+        DDLogInfo(@"!!! Attempted to create a revision of a revision");
         return self;
     }
     if (self.revision) {
-        NSLog(@"!!! Already have revision");
+        DDLogInfo(@"!!! Already have revision");
         return self.revision;
     }
 	

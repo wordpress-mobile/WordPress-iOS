@@ -141,7 +141,7 @@ static NSString * const DotcomXmlrpcKey = @"https://wordpress.com/xmlrpc.php";
 
     NSArray *sourceBlogs = [manager sourceInstancesForEntityMappingNamed:@"BlogToAccount" destinationInstances:@[source]];
     NSArray *destBlogs = [manager destinationInstancesForEntityMappingNamed:@"BlogToBlog" sourceInstances:sourceBlogs];
-    NSLog(@"dest blogs: %@", destBlogs);
+    DDLogVerbose(@"dest blogs: %@", destBlogs);
     [source setValue:[NSSet setWithArray:destBlogs] forKey:@"blogs"];
 
     return YES;

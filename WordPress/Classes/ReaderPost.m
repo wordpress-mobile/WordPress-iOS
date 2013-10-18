@@ -239,7 +239,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
     NSError *error;
     NSArray *results = [context executeFetchRequest:request error:&error];
     if(error != nil){
-        NSLog(@"Error finding ReaderPost: %@", error);
+        DDLogError(@"Error finding ReaderPost: %@", error);
         return;
     }
 	

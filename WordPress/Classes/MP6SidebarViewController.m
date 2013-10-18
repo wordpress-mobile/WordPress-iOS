@@ -1082,7 +1082,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
     switch (type) {
         case NSFetchedResultsChangeInsert:
         {
-            NSLog(@"Inserting row %d: %@", newIndexPath.row, anObject);
+            DDLogVerbose(@"Inserting row %d: %@", newIndexPath.row, anObject);
             NSIndexPath *openIndexPath = [self.tableView indexPathForSelectedRow];
             if (openIndexPath.section == (newIndexPath.row + 1)) {
                 // We're swapping the content for the currently selected section and need to update accordingly.
@@ -1094,7 +1094,7 @@ CGFloat const SidebarViewControllerStatusBarViewHeight = 20.0;
         }
         case NSFetchedResultsChangeDelete:
         {
-            NSLog(@"Deleting row %d: %@", indexPath.row, anObject);
+            DDLogVerbose(@"Deleting row %d: %@", indexPath.row, anObject);
             Blog *blog = (Blog *)anObject;
             if ([blog isEqual:_currentlyOpenedBlog]) {
                 _currentlyOpenedBlog = nil;

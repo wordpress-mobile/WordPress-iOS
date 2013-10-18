@@ -58,7 +58,7 @@ const NSUInteger NoteKeepCount = 20;
     
     NSError *error;
     if(![context save:&error]){
-        NSLog(@"Failed to sync notes: %@", error);
+        DDLogError(@"Failed to sync notes: %@", error);
         return NO;
     } else {
         return YES;
@@ -170,7 +170,7 @@ const NSUInteger NoteKeepCount = 20;
     NSError *error;
     NSArray *results = [context executeFetchRequest:request error:&error];
     if(error != nil){
-        NSLog(@"Error finding note: %@", error);
+        DDLogError(@"Error finding note: %@", error);
         return;
     }
     Note *note;

@@ -318,7 +318,7 @@
     if (media.remoteStatus == MediaRemoteStatusFailed) {
         [media uploadWithSuccess:^{
             if (([media isDeleted])) {
-                NSLog(@"Media deleted while uploading (%@)", media);
+                DDLogWarn(@"Media deleted while uploading (%@)", media);
                 return;
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
@@ -382,7 +382,7 @@
 #pragma mark Custom methods
 
 - (void)scaleAndRotateImage:(UIImage *)image {
-	NSLog(@"scaling and rotating image...");
+	DDLogVerbose(@"scaling and rotating image...");
 }
 
 - (IBAction)showVideoPickerActionSheet:(id)sender {
@@ -833,7 +833,6 @@
         NSString *originalSizeStr = [NSString stringWithFormat:NSLocalizedString(@"Original (%@)", @"Original (width x height)"), [NSString stringWithFormat:@"%ix%i", (int)originalSize.width, (int)originalSize.height]];
         
 		UIActionSheet *resizeActionSheet;
-		//NSLog(@"img dimension: %f x %f ",currentImage.size.width, currentImage.size.height );
 		
 		if(currentImage.size.width > largeSize.width  && currentImage.size.height > largeSize.height) {
 			resizeActionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Choose Image Size", @"") 
@@ -1452,7 +1451,7 @@
 
     [imageMedia uploadWithSuccess:^{
         if ([imageMedia isDeleted]) {
-            NSLog(@"Media deleted while uploading (%@)", imageMedia);
+            DDLogWarn(@"Media deleted while uploading (%@)", imageMedia);
             return;
         }
         if (!isPickingFeaturedImage) {
@@ -1551,7 +1550,7 @@
 
 		[videoMedia uploadWithSuccess:^{
             if ([videoMedia isDeleted]) {
-                NSLog(@"Media deleted while uploading (%@)", videoMedia);
+                DDLogWarn(@"Media deleted while uploading (%@)", videoMedia);
                 return;
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:videoMedia];
@@ -1597,7 +1596,7 @@
 - (void)mediaDidUploadSuccessfully:(NSNotification *)notification {
     Media *media = (Media *)[notification object];
     if ((media == nil) || ([media isDeleted])) {
-        NSLog(@"Media deleted while uploading (%@)", media);
+        DDLogWarn(@"Media deleted while uploading (%@)", media);
         return;
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldInsertMediaBelow" object:media];
@@ -1663,7 +1662,7 @@
     
     NSError *error = nil;
     if (![resultsController performFetch:&error]) {
-        NSLog(@"Couldn't fetch media");
+        DDLogWarn(@"Couldn't fetch media");
         resultsController = nil;
     }
     

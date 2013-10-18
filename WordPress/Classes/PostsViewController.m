@@ -94,9 +94,6 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
-	// Force a crash for CrashReporter
-	//NSLog(@"crash time! %@", 1);
-    
     self.panelNavigationController.delegate = self;
 
 	if (!IS_IPAD) {
@@ -298,9 +295,9 @@
         WPLog(@"Selected post at indexPath: (%i,%i)", indexPath.section, indexPath.row);
     }
     @catch (NSException *e) {
-        NSLog(@"Can't select post at indexPath (%i,%i)", indexPath.section, indexPath.row);
-        NSLog(@"sections: %@", self.resultsController.sections);
-        NSLog(@"results: %@", self.resultsController.fetchedObjects);
+        DDLogError(@"Can't select post at indexPath (%i,%i)", indexPath.section, indexPath.row);
+        DDLogError(@"sections: %@", self.resultsController.sections);
+        DDLogError(@"results: %@", self.resultsController.fetchedObjects);
         post = nil;
     }
     self.postReaderViewController = [[PostViewController alloc] initWithPost:post];
