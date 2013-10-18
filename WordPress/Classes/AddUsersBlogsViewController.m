@@ -167,71 +167,52 @@
 #pragma mark Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (isWPcom && [Blog countWithContext:[appDelegate managedObjectContext]] == 0) {
-        return 2;
-    }
     return 1;
 }
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    int result = 0; 
-    switch (section) { 
-        case 0: 
-            result = usersBlogs.count; 
-            break; 
-        case 1: 
-            result = 1; 
-            break; 
-        default: 
-            break; 
-    } 
-    return result;
+    return usersBlogs.count;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
 	CGRect footerFrame = CGRectMake(0, 0, self.view.frame.size.width, 50);
 	UIView *footerView = [[UIView alloc] initWithFrame:footerFrame];
-	if(section == 0) {
-		CGRect footerSpinnerFrame = CGRectMake(0, 26.0f, 20, 20);
-		CGRect footerTextFrame = CGRectMake(0, 0, self.view.frame.size.width, 20);
-		if((usersBlogs.count == 0) && (!hasCompletedGetUsersBlogs)) {
-			UIActivityIndicatorView *footerSpinner = [[UIActivityIndicatorView alloc] initWithFrame:footerSpinnerFrame];
-			footerSpinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-			[footerSpinner startAnimating];
-            footerSpinner.center = CGPointMake(self.view.center.x, footerSpinner.center.y);
-			[footerView addSubview:footerSpinner];
-			
-			UILabel *footerText = [[UILabel alloc] initWithFrame:footerTextFrame];
-            footerText.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
-            footerText.textAlignment = NSTextAlignmentCenter;
-			footerText.backgroundColor = [UIColor clearColor];
-			footerText.textColor = [UIColor darkGrayColor];
-			footerText.text = NSLocalizedString(@"Loading blogs...", @"");
-			[footerView addSubview:footerText];
-		}
-		else if((usersBlogs.count == 0) && (hasCompletedGetUsersBlogs)) {
-            if (!isWPcom) {
-                UILabel *footerText = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 200, 20)];
-                footerText.backgroundColor = [UIColor clearColor];
-                footerText.textColor = [UIColor darkGrayColor];
-                footerText.text = NSLocalizedString(@"No blogs found.", @"");
-                [footerView addSubview:footerText];
-            } else {
-                //User has no blogs at WPCom but has signed in successfully, lets finish and take them to the reader
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
-            }
-		}
-	}
-
+    CGRect footerSpinnerFrame = CGRectMake(0, 26.0f, 20, 20);
+    CGRect footerTextFrame = CGRectMake(0, 0, self.view.frame.size.width, 20);
+    if((usersBlogs.count == 0) && (!hasCompletedGetUsersBlogs)) {
+        UIActivityIndicatorView *footerSpinner = [[UIActivityIndicatorView alloc] initWithFrame:footerSpinnerFrame];
+        footerSpinner.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+        [footerSpinner startAnimating];
+        footerSpinner.center = CGPointMake(self.view.center.x, footerSpinner.center.y);
+        [footerView addSubview:footerSpinner];
+        
+        UILabel *footerText = [[UILabel alloc] initWithFrame:footerTextFrame];
+        footerText.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
+        footerText.textAlignment = NSTextAlignmentCenter;
+        footerText.backgroundColor = [UIColor clearColor];
+        footerText.textColor = [UIColor darkGrayColor];
+        footerText.text = NSLocalizedString(@"Loading blogs...", @"");
+        [footerView addSubview:footerText];
+    }
+    else if((usersBlogs.count == 0) && (hasCompletedGetUsersBlogs)) {
+        if (!isWPcom) {
+            UILabel *footerText = [[UILabel alloc] initWithFrame:CGRectMake(110, 0, 200, 20)];
+            footerText.backgroundColor = [UIColor clearColor];
+            footerText.textColor = [UIColor darkGrayColor];
+            footerText.text = NSLocalizedString(@"No blogs found.", @"");
+            [footerView addSubview:footerText];
+        } else {
+            //User has no blogs at WPCom but has signed in successfully, lets finish and take them to the reader
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
+        }
+    }
 	return footerView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	if((section == 0) && (usersBlogs.count == 0))
 		return 60;
-    else if(section == 1) 
-        return 100;
 	else
 		return 0;
 }
@@ -273,15 +254,6 @@
             [WPStyleGuide configureTableViewCell:cell];
 			break;
         }
-        case 1:
-        {
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-            cell.accessoryType = UITableViewCellAccessoryNone; 
-            cell.textLabel.text = NSLocalizedString(@"Sign Out", @"");
-            cell.imageView.image = nil;
-            cell.hidden = _hideSignInButton;
-            break;
-        }
 		default:
         {
 			break;
@@ -321,9 +293,7 @@
 			[self selectAllBlogs:self];
 		else if(selectedBlogs.count == 0)
 			[self deselectAllBlogs:self];
-	} else if(indexPath.section == 1) { 
-        [self signOut]; 
-    }
+	}
 	
 	[self checkAddSelectedButtonStatus];
 
@@ -367,14 +337,6 @@
 	buttonSelectAll.title = NSLocalizedString(@"Select All", @"");
 	buttonSelectAll.action = @selector(selectAllBlogs:);
 	[self checkAddSelectedButtonStatus];
-}
-
-- (void)signOut { 
-    if (isWPcom) {
-        [WPAccount removeDefaultWordPressComAccount];
-        [[WordPressComApi sharedApi] signOut]; 
-    } 
-    [self.navigationController popViewControllerAnimated:YES]; 
 }
 
 - (void)refreshBlogs {

@@ -37,7 +37,6 @@
 - (void)refreshBlogs;
 - (IBAction)saveSelectedBlogs:(id)sender;
 - (void)saveSelectedBlogs;
-- (void)signOut;
 - (void)checkAddSelectedButtonStatus;
 
 @end
