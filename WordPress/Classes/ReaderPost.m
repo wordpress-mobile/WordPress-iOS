@@ -121,7 +121,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 
 + (NSArray *)fetchPostsForEndpoint:(NSString *)endpoint withContext:(NSManagedObjectContext *)context {
-
+    WPFLogMethod();
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
 	
@@ -141,6 +141,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 
 + (void)syncPostsFromEndpoint:(NSString *)endpoint withArray:(NSArray *)arr withContext:(NSManagedObjectContext *)context success:(void (^)())success {
+    WPFLogMethod();
     if (![arr isKindOfClass:[NSArray class]] || [arr count] == 0) {
 		if (success) {
 			dispatch_async(dispatch_get_main_queue(), success);
@@ -184,7 +185,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 
 
 + (void)deletePostsSyncedEarlierThan:(NSDate *)syncedDate withContext:(NSManagedObjectContext *)context {
-
+    WPFLogMethod();
 	NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"ReaderPost" inManagedObjectContext:context]];
 	
@@ -762,7 +763,7 @@ NSString *const ReaderExtrasArrayKey = @"ReaderExtrasArrayKey";
 				 loadingMore:(BOOL)loadingMore
 					 success:(WordPressComApiRestSuccessResponseBlock)success
 					 failure:(WordPressComApiRestSuccessFailureBlock)failure {
-	
+	WPFLogMethod();
 	[[WordPressComApi sharedApi] getPath:path
 							  parameters:params
 								 success:^(AFHTTPRequestOperation *operation, id responseObject) {
